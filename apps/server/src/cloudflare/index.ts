@@ -5,6 +5,7 @@ import type {
 	Hyperdrive,
 	R2Bucket,
 	ScheduledController,
+	SendEmail,
 } from "@cloudflare/workers-types";
 import type { CoordinationService } from "@rezumi/db/coordination";
 import { AsyncLocalStorage } from "node:async_hooks";
@@ -19,6 +20,7 @@ import { configureStorageService, getStorageService, isPublicUploadOwner } from 
 import { initializeAuth } from "@rezumi/auth/config";
 import { withDatabasePool } from "@rezumi/db/client";
 import { configureCoordination } from "@rezumi/db/coordination";
+import { configureEmailBinding } from "@rezumi/email/transport";
 import { env } from "@rezumi/env/server";
 import { configureOwnPictureReader } from "@rezumi/pdf/server";
 import { TRUSTED_IP_HEADERS } from "@rezumi/utils/rate-limit";
@@ -32,6 +34,7 @@ export type CloudflareBindings = {
 	HYPERDRIVE: Hyperdrive;
 	BUCKET: R2Bucket;
 	COORDINATION: DurableObjectNamespace;
+	EMAIL?: SendEmail;
 };
 
 /** `background` holds work that outlives the response, such as assistant runs, and still needs the pool. */
@@ -128,6 +131,7 @@ function createInvocation(bindings: CloudflareBindings, ctx: ExecutionContext) {
 	if (!env.CLOUDFLARE || env.STORAGE_BACKEND !== "r2" || !env.FLAG_DISABLE_IMAGE_PROCESSING || env.REDIS_URL) {
 		throw new Error("Cloudflare requires CLOUDFLARE=1, R2, disabled image processing and no REDIS_URL.");
 	}
+	configureEmailBinding(bindings.EMAIL as Parameters<typeof configureEmailBinding>[0]);
 	configureStorageService(new R2StorageService(bindings.BUCKET, env.DEPLOYMENT_NAMESPACE));
 	const pool = new Pool({
 		connectionString: bindings.HYPERDRIVE.connectionString,

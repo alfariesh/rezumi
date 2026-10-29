@@ -22,7 +22,7 @@ vi.mock("react-email", () => ({
 		opts?.plainText ? "plain text body" : "<p>html body</p>",
 }));
 
-const { sendEmail } = await import("./transport");
+const { sendEmail, configureEmailBinding } = await import("./transport");
 
 const fakeReact = { $$typeof: Symbol.for("react.element") } as unknown as React.ReactElement;
 
@@ -44,15 +44,18 @@ describe("sendEmail", () => {
 	it("skips email send and logs without body in production when SMTP is not configured", async () => {
 		resetEnv();
 		process.env.NODE_ENV = "production";
-		const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 		await expect(
 			sendEmail({ to: "user@example.com", subject: "Reset password", react: fakeReact }),
 		).resolves.toBeUndefined();
-		expect(infoSpy).toHaveBeenCalledWith("SMTP not configured; skipping email send.", {
-			to: "user@example.com",
-			subject: "Reset password",
-		});
-		infoSpy.mockRestore();
+		expect(errorSpy).toHaveBeenCalledWith(
+			"Email not configured (no send_email binding or SMTP); skipping email send.",
+			{
+				to: "user@example.com",
+				subject: "Reset password",
+			},
+		);
+		errorSpy.mockRestore();
 	});
 
 	it("skips email send and logs with body in development when SMTP is not configured", async () => {
@@ -83,7 +86,25 @@ describe("sendEmail", () => {
 		const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 		await expect(sendEmail({ to: "a@b.com", subject: "hi", react: fakeReact })).resolves.toBeUndefined();
 		expect(createTransport).toHaveBeenCalledWith(expect.objectContaining({ secure: false, requireTLS: true }));
-		expect(errorSpy).toHaveBeenCalledExactlyOnceWith("There was an error sending mail.");
+		expect(errorSpy).toHaveBeenCalledExactlyOnceWith("There was an error sending mail.", { name: "Error" });
 		errorSpy.mockRestore();
+	});
+
+	it("sends through the Cloudflare binding when configured, ahead of SMTP", async () => {
+		resetEnv();
+		process.env.NODE_ENV = "production";
+		envMock.SMTP_FROM = "Rezumi <noreply@rezumi.app>";
+		const send = vi.fn().mockResolvedValue({});
+		configureEmailBinding({ send });
+		await sendEmail({ to: "a@b.com", subject: "hi", react: fakeReact });
+		configureEmailBinding(undefined);
+		expect(send).toHaveBeenCalledExactlyOnceWith({
+			to: "a@b.com",
+			from: { email: "noreply@rezumi.app", name: "Rezumi" },
+			subject: "hi",
+			html: "<p>html body</p>",
+			text: "plain text body",
+		});
+		expect(createTransport).not.toHaveBeenCalled();
 	});
 });
