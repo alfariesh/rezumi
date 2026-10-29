@@ -33,8 +33,8 @@ The current version reads v4 JSON exports directly and converts them.
   <Step title="Export from v4">In your v4 instance, open each resume and export it as JSON.</Step>
   <Step title="Import into the new installation">
     Sign in to the new installation (create an account first if needed), select **New**, then **Import a resume**, and
-    choose the JSON file. Reactive Resume recognizes the v4 format on its own. See [Importing
-    resumes](/guides/importing-resumes) for details.
+    choose the JSON file. Rezumi recognizes the v4 format on its own. See [Importing resumes](/guides/importing-resumes)
+    for details.
   </Step>
   <Step title="Check and repeat">
     Look through the imported resume, especially dates and layout, then repeat for the next one.
@@ -135,7 +135,7 @@ It ends with a summary of resumes created, resumes skipped, and errors.
 
 ### Apply current migrations and deploy
 
-Point a current Reactive Resume checkout at the target database and apply the current migrations before you deploy. The Cloudflare Worker does not run migrations itself, so from the current repository run:
+Point a current Rezumi checkout at the target database and apply the current migrations before you deploy. The Cloudflare Worker does not run migrations itself, so from the current repository run:
 
 ```bash
 DATABASE_URL="postgresql://user:password@host:5432/reactive_resume" pnpm --filter @rezumi/db db:migrate

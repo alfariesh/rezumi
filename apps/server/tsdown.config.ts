@@ -79,7 +79,7 @@ const promptAssetsPlugin: TsdownPlugin = {
 	},
 };
 
-const agentSkillsDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../plugins/reactive-resume/skills");
+const agentSkillsDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../plugins/rezumi/skills");
 
 // Copies the published agent skills beside the bundle; src/static/agent-skills.ts archives them for discovery.
 const agentSkillAssetsPlugin: TsdownPlugin = {

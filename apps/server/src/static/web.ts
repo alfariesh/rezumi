@@ -169,13 +169,7 @@ function organization(origin: string): StructuredData {
 		url: `${origin}/`,
 		contactPoint: { "@type": "ContactPoint", contactType: "support", email: "amruth@rxresu.me" },
 		logo: { "@type": "ImageObject", url: `${origin}/pwa-512x512.png`, width: 512, height: 512 },
-		sameAs: [
-			githubUrl,
-			"https://www.linkedin.com/company/reactive-resume",
-			"https://www.reddit.com/r/reactiveresume",
-			"https://discord.gg/aSyA5ZSxpb",
-			"https://crowdin.com/project/reactive-resume",
-		],
+		sameAs: [githubUrl],
 	};
 }
 

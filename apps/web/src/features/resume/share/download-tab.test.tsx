@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
@@ -21,7 +21,7 @@ vi.mock("@/features/resume/export/use-resume-export", () => ({
 	sanitizeFileName: (value: string) => value,
 }));
 
-it("offers peer feedback only after a successful export and clears it for a new format or failure", async () => {
+it("downloads a file, and offers PDF when another format fails", async () => {
 	i18n.load("en", {});
 	i18n.activate("en");
 	const file = new Blob(["fictional resume"]);
@@ -32,23 +32,16 @@ it("offers peer feedback only after a successful export and clears it for a new 
 			<DownloadTab onReview={() => undefined} />
 		</I18nProvider>,
 	);
-	const invite = () => screen.queryByRole("link", { name: "Get resume feedback on Discord" });
-	expect(invite()).toBeNull();
 	fireEvent.click(screen.getByRole("button", { name: "Download PDF" }));
-	expect(invite()).toBeNull();
 	finish(file);
-	const link = await screen.findByRole("link", { name: "Get resume feedback on Discord" });
-	expect(link.getAttribute("href")).toBe("https://discord.gg/9kAqrGcwn5");
-	expect(mocks.download).toHaveBeenCalledWith(file, "resume.pdf");
+	await waitFor(() => expect(mocks.download).toHaveBeenCalledWith(file, "resume.pdf"));
 
 	fireEvent.click(screen.getByRole("radio", { name: /Word/ }));
-	expect(invite()).toBeNull();
 	mocks.generate.mockRejectedValueOnce(new Error("Export unavailable"));
 	fireEvent.click(screen.getByRole("button", { name: "Download Word" }));
 	await screen.findByRole("alert");
-	expect(invite()).toBeNull();
 	expect(mocks.download).toHaveBeenCalledTimes(1);
 	mocks.generate.mockResolvedValueOnce(file);
 	fireEvent.click(screen.getByRole("button", { name: "Download PDF instead" }));
-	expect(await screen.findByRole("link", { name: "Get resume feedback on Discord" })).toBeTruthy();
+	await waitFor(() => expect(mocks.download).toHaveBeenCalledTimes(2));
 });

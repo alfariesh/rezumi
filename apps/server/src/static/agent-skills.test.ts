@@ -5,7 +5,7 @@ import { gunzipSync } from "node:zlib";
 import { describe, expect, it } from "vite-plus/test";
 import { handleAgentSkillArchive, handleAgentSkillsIndex, loadAgentSkills } from "./agent-skills";
 
-const skillsRoot = fileURLToPath(new URL("../../../../plugins/reactive-resume/skills", import.meta.url));
+const skillsRoot = fileURLToPath(new URL("../../../../plugins/rezumi/skills", import.meta.url));
 
 function listTarEntries(archive: Buffer) {
 	const tar = gunzipSync(archive);

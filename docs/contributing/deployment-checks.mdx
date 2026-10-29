@@ -3,7 +3,7 @@ title: "Deployment checks"
 description: "How CI verifies the Cloudflare Workers bundle on every pull request, how the deploy workflow publishes it, and how to run the same checks locally."
 ---
 
-Reactive Resume deploys to Cloudflare Workers only. Three things guard that deployment: the `check:cloudflare` build check, the `test:cloudflare` smoke test, and the deploy workflow that publishes `main`. The first two run in the **CI** workflow (`.github/workflows/ci.yml`) on every pull request, and you can run them on your own machine. For setup of the Worker itself, see [Self-hosting on Cloudflare](/self-hosting/cloudflare).
+Rezumi deploys to Cloudflare Workers only. Three things guard that deployment: the `check:cloudflare` build check, the `test:cloudflare` smoke test, and the deploy workflow that publishes `main`. The first two run in the **CI** workflow (`.github/workflows/ci.yml`) on every pull request, and you can run them on your own machine. For setup of the Worker itself, see [Self-hosting on Cloudflare](/self-hosting/cloudflare).
 
 ## Build check
 

@@ -1,21 +1,21 @@
 ---
 title: "Checking service status"
-description: "Find out whether rxresu.me is up, see its recent uptime, and learn what to do when Reactive Resume is slow or unreachable."
+description: "Find out whether rezumi.app is up, see its recent uptime, and learn what to do when Rezumi is slow or unreachable."
 ---
 
-If rxresu.me won't load, is slow, or something that normally works keeps failing, check the status page first. It tells
+If rezumi.app won't load, is slow, or something that normally works keeps failing, check the status page first. It tells
 you whether the problem is on our side or yours.
 
 ## Check the status page
 
-Open [status.rxresu.me](https://status.rxresu.me). The page shows:
+Open [status.rezumi.app](https://status.rezumi.app). The page shows:
 
 - Whether the service is **Online** right now, and for how long.
 - Uptime for the last 24 hours, the last 7 days and each recent month.
 - When it last checked. The service is checked every minute from several locations around the world.
 
-<Card title="Reactive Resume status" icon="signal" href="https://status.rxresu.me">
-  Live and recent uptime for rxresu.me.
+<Card title="Rezumi status" icon="signal" href="https://status.rezumi.app">
+  Live and recent uptime for rezumi.app.
 </Card>
 
 ## If the service is down or slow
@@ -29,8 +29,8 @@ Open [status.rxresu.me](https://status.rxresu.me). The page shows:
     unavailable.
   </Step>
   <Step title="Look for announcements">
-    Longer outages and planned maintenance are announced on [GitHub](https://github.com/reactive-resume/reactive-resume)
-    and the [Discord server](https://discord.gg/aSyA5ZSxpb).
+    Longer outages and planned maintenance are announced on
+    [GitHub](https://github.com/reactive-resume/reactive-resume).
   </Step>
 </Steps>
 
@@ -40,7 +40,7 @@ The problem is probably between your device and the service. Try these in order:
 
 1. Reload the page.
 2. Check your internet connection by opening another website.
-3. Open rxresu.me in a private window. If it works there, a browser extension, such as an ad or script blocker, may be
+3. Open rezumi.app in a private window. If it works there, a browser extension, such as an ad or script blocker, may be
    getting in the way.
 4. Try a different browser or device.
 
@@ -52,11 +52,11 @@ If you can reproduce a bug, [open an issue](https://github.com/reactive-resume/r
 
 ## If you run your own copy
 
-The status page only covers rxresu.me. A self-hosted copy reports its own health at `/api/health` on your address, for
+The status page only covers rezumi.app. A self-hosted copy reports its own health at `/api/health` on your address, for
 example `https://resume.example.com/api/health`. It returns `healthy` when the database and file storage are working, and an HTTP `503` error when either fails. See
 [Self-hosting on Cloudflare Workers](/self-hosting/cloudflare) for setup and health checks.
 
 ## Help keep the service running
 
-Reactive Resume is free and has no ads or investors, so busy periods can still slow it down. If you need guaranteed
+Rezumi is free and has no ads or investors, so busy periods can still slow it down. If you need guaranteed
 availability, you can [host your own copy](/self-hosting/cloudflare).

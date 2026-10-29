@@ -3,7 +3,7 @@ title: "Large RPC requests"
 description: "Reference for the staged-body protocol for large RPC requests, which is not active on Cloudflare Workers installations."
 ---
 
-Some serverless hosts cap the request body of a function at a few megabytes. For those hosts, Reactive Resume can stage larger RPC requests, such as big file uploads or assistant attachments, in private blob storage first. The server then restores the original request and runs it with the usual authentication, validation and limits.
+Some serverless hosts cap the request body of a function at a few megabytes. For those hosts, Rezumi can stage larger RPC requests, such as big file uploads or assistant attachments, in private blob storage first. The server then restores the original request and runs it with the usual authentication, validation and limits.
 
 This staging is not active on Cloudflare Workers, the supported deployment target: the prepare step always returns `404`, and clients send large requests directly.
 
@@ -62,7 +62,7 @@ Content-Type: application/octet-stream
 <exact serialized body bytes>
 ```
 
-Don't send your Reactive Resume credentials to this URL. The body must be exactly `size` bytes, sent as `application/octet-stream`.
+Don't send your Rezumi credentials to this URL. The body must be exactly `size` bytes, sent as `application/octet-stream`.
 
 ### 3. Finalize
 

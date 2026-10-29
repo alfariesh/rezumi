@@ -11,16 +11,16 @@ API accounts. This guide adds optional keyword search, enhanced page reading and
 | ------------------------ | --------------------------------------------------------------------------------- | --------------------------------------------- |
 | Built-in reader          | Reads supported public pages.                                                     | Active without credentials.                   |
 | Firecrawl, Tavily or Exa | One selected connection supplies search and enhanced reading.                     | Optional keyword search and enhanced reading. |
-| SearXNG                  | Searches the web for Reactive Resume directly, or for your self-hosted Firecrawl. | Optional alternative search backend.          |
+| SearXNG                  | Searches the web for Rezumi directly, or for your self-hosted Firecrawl.          | Optional alternative search backend.          |
 | AI provider              | Extracts role, company, salary, requirements and other details from posting text. | AI extraction and other AI features.          |
 
-Reactive Resume calls the selected web service, SearXNG and the AI provider separately. Assistant web search
+Rezumi calls the selected web service, SearXNG and the AI provider separately. Assistant web search
 requires a configured Firecrawl, Tavily or Exa connection, or a SearXNG search URL. Without either, the assistant can
 read supplied public URLs with the built-in reader or work from pasted text.
 
 ## 1. Choose shared services or personal keys
 
-For shared web access, set one provider and key on the Reactive Resume Worker. Put the provider in `vars` in
+For shared web access, set one provider and key on the Rezumi Worker. Put the provider in `vars` in
 `wrangler.jsonc` and the key in a Wrangler secret:
 
 ```jsonc wrangler.jsonc
@@ -47,11 +47,11 @@ You can mix these choices, such as shared web access with personal AI keys. See 
 ## 2. Connect Firecrawl
 
 Follow the official [Firecrawl self-hosting guide](https://docs.firecrawl.dev/contributing/self-host) to deploy its
-API and supporting services on a host of your choice. Reactive Resume connects to that service over HTTPS. Because the
+API and supporting services on a host of your choice. Rezumi connects to that service over HTTPS. Because the
 Worker runs with `global_fetch_strictly_public`, the service needs a public HTTPS address; private-network and
 `localhost` addresses are unreachable from Cloudflare. Protect it with a bearer key.
 
-Add the connection to **Reactive Resume's** Worker configuration:
+Add the connection to **Rezumi's** Worker configuration:
 
 ```jsonc wrangler.jsonc
 "vars": {
@@ -69,7 +69,7 @@ pnpm exec wrangler secret put WEB_ACCESS_API_KEY
 Use the API base URL without `/v2`. A URL alone enables a keyless self-hosted service globally. Because it must be publicly reachable on Cloudflare,
 use a bearer key and follow Firecrawl's [production guidance](https://docs.firecrawl.dev/contributing/self-host#before-production).
 Keep its protections against private destination URLs, unsafe redirects and DNS rebinding enabled; job-posting URLs
-in Reactive Resume must point to public HTTPS destinations.
+in Rezumi must point to public HTTPS destinations.
 
 For Firecrawl Cloud, use its [quickstart](https://docs.firecrawl.dev/introduction) to get a key, set only
 `WEB_ACCESS_PROVIDER="firecrawl"` and `WEB_ACCESS_API_KEY`, and leave `WEB_ACCESS_API_URL` unset. Requests then go to
@@ -79,12 +79,12 @@ is rejected. Incomplete web-access configuration fails startup.
 ### Local development
 
 For host-run local development (`pnpm dev`), you can run Firecrawl on your machine. Publish its API port `3002` as host
-port `3102` to avoid Reactive Resume's email preview on `3002`, and add `WEB_ACCESS_PROVIDER="firecrawl"` and
+port `3102` to avoid Rezumi's email preview on `3002`, and add `WEB_ACCESS_PROVIDER="firecrawl"` and
 `WEB_ACCESS_API_URL="http://localhost:3102"` to `.env.local`. A deployed Worker cannot reach `localhost`.
 
 ## 3. Search through SearXNG (optional)
 
-SearXNG can serve web search in two ways: Reactive Resume can query it directly, or your self-hosted Firecrawl can use
+SearXNG can serve web search in two ways: Rezumi can query it directly, or your self-hosted Firecrawl can use
 it as its search backend. Either way, deploy SearXNG on a host of your choice using its official [installation guide](https://docs.searxng.org/admin/installation.html).
 In its `settings.yml`, add `json` to the existing `search.formats` list, keeping other search settings:
 
@@ -97,15 +97,15 @@ search:
 
 The [search settings reference](https://docs.searxng.org/admin/settings/settings_search.html) documents these formats.
 
-### Search directly from Reactive Resume
+### Search directly from Rezumi
 
-Add the following to **Reactive Resume's** `vars` in `wrangler.jsonc`, using a public HTTPS address reachable from the Worker:
+Add the following to **Rezumi's** `vars` in `wrangler.jsonc`, using a public HTTPS address reachable from the Worker:
 
 ```jsonc wrangler.jsonc
 "vars": { "WEB_SEARCH_SEARXNG_URL": "https://searxng.example.com" }
 ```
 
-Use the base URL without `/search`; Reactive Resume appends it and requests JSON. Every web search then goes to SearXNG
+Use the base URL without `/search`; Rezumi appends it and requests JSON. Every web search then goes to SearXNG
 for all users, whether or not they have a web connection. Shared and personal `WEB_ACCESS_*` connections keep working
 beside it. Each of a user's search countries becomes one SearXNG request. The server uses that country's likely language
 in `language`, such as `en-AU`, `ja-JP` or `pt-BR`, for Applications, the assistant, discovery and connection tests.
@@ -133,11 +133,11 @@ SEARXNG_ENDPOINT="http://searxng:8080"
 
 Replace `searxng` with the address of your SearXNG service. Use the base URL without `/search`: Firecrawl appends that
 path and requests JSON, as shown in its [SearXNG adapter](https://github.com/firecrawl/firecrawl/blob/v2.11.162/apps/api/src/search/v2/searxng.ts).
-These variables belong to Firecrawl, not Reactive Resume.
+These variables belong to Firecrawl, not Rezumi.
 
 ### Check JSON output
 
-Restart SearXNG after changing settings, then redeploy the Reactive Resume Worker or restart Firecrawl's services after
+Restart SearXNG after changing settings, then redeploy the Rezumi Worker or restart Firecrawl's services after
 changing their environment. To check JSON output, run this from a host that can reach SearXNG, replacing the
 address as needed:
 
@@ -178,7 +178,7 @@ reachable at a public HTTPS address from the Worker, because Cloudflare blocks p
 Node.js development server, local or private AI endpoints need `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true`, which you should
 enable only where you trust every user. Ollama can omit `AI_API_KEY`.
 
-The AI key belongs to Reactive Resume for this workflow. Web services receive search queries and selected public URLs;
+The AI key belongs to Rezumi for this workflow. Web services receive search queries and selected public URLs;
 they do not need the AI-provider key or candidate resume data.
 
 ## 5. Apply settings and verify the workflow

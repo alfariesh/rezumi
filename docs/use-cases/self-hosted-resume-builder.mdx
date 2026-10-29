@@ -1,9 +1,9 @@
 ---
 title: "Self-hosted resume builder"
-description: "Run Reactive Resume on your own Cloudflare account: Workers, PostgreSQL through Hyperdrive, R2 storage, single sign-on, and the full v6 feature set."
+description: "Run Rezumi on your own Cloudflare account: Workers, PostgreSQL through Hyperdrive, R2 storage, single sign-on, and the full v6 feature set."
 ---
 
-You can run Reactive Resume on your own infrastructure instead of using [rxresu.me](https://rxresu.me). A self-hosted instance has the same features as the hosted app: resumes, cover letters, Check mode, public links, the application tracker, the AI assistant, the API and the MCP server.
+You can run Rezumi on your own infrastructure instead of using [rezumi.app](https://rezumi.app). A self-hosted instance has the same features as the hosted app: resumes, cover letters, Check mode, public links, the application tracker, the AI assistant, the API and the MCP server.
 
 ## When self-hosting is a good fit
 
@@ -13,7 +13,7 @@ If you only need a resume for yourself, the hosted app is less work.
 
 ## What a deployment needs
 
-Reactive Resume runs on Cloudflare Workers. One Worker serves the app, the API and the MCP server, and static assets come from Workers Static Assets. Around it you need:
+Rezumi runs on Cloudflare Workers. One Worker serves the app, the API and the MCP server, and static assets come from Workers Static Assets. Around it you need:
 
 - **PostgreSQL** for accounts, documents and applications, reached through Hyperdrive. Run database migrations yourself before each upgrade.
 - **A private R2 bucket** for photos and uploads.
@@ -41,6 +41,6 @@ For sign-in providers, see [Single sign-on](/self-hosting/sso).
 Apply database migrations before you deploy a new version. Moving from an older v4 instance? See [Migrating from v4](/self-hosting/migration).
 
 <Tip>
-  When you follow API, MCP or sharing examples in these docs, replace `https://rxresu.me` with your own instance's
+  When you follow API, MCP or sharing examples in these docs, replace `https://rezumi.app` with your own instance's
   address.
 </Tip>

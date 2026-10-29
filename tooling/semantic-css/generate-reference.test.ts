@@ -7,7 +7,7 @@ import { buildGeneratedDocumentation } from "./generate-reference";
 const defaultDocumentationPaths = {
 	jsonSchemaGuide: fileURLToPath(new URL("../../docs/guides/json-resume-schema.mdx", import.meta.url)),
 	skillSchemaReference: fileURLToPath(
-		new URL("../../plugins/reactive-resume/skills/resume-builder/references/schema.md", import.meta.url),
+		new URL("../../plugins/rezumi/skills/resume-builder/references/schema.md", import.meta.url),
 	),
 };
 const applyingCustomStylesGuide = fileURLToPath(new URL("../../docs/applying-custom-styles.mdx", import.meta.url));

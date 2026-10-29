@@ -13,7 +13,6 @@ import { CtaLink, Doodle, labelClass } from "./ui";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { orpc } from "@/libs/orpc/client";
 
-const crowdinUrl = "https://crowdin.com/project/reactive-resume";
 // The statistics service caches the totals for six hours.
 const statisticsStaleTime = 6 * 60 * 60 * 1000;
 // A fresh self-hosted install has a handful of users; a total that small reads as a joke, so it isn't shown.
@@ -163,12 +162,6 @@ export function Languages() {
 			</div>
 			<p className="mt-3 flex max-w-[30em] flex-col font-display text-[clamp(17px,1.4vw,21px)] leading-normal text-pretty text-ink-2">
 				<span>{t`Translated into ${languageCount} languages.`}</span>{" "}
-				<a
-					href={crowdinUrl}
-					className="text-accent-text italic underline underline-offset-[3px] transition-colors hover:text-accent-hover"
-				>
-					{t`Help translate it into yours.`}
-				</a>
 			</p>
 		</section>
 	);

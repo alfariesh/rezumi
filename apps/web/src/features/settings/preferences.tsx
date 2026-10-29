@@ -49,14 +49,6 @@ export function PreferencesSettings() {
 				</div>
 				<p className="text-xs text-ink-3">
 					<Trans>Interface only. Each resume sets its own language in Design.</Trans>{" "}
-					<a
-						href="https://crowdin.com/project/reactive-resume"
-						target="_blank"
-						rel="noopener noreferrer"
-						className="underline underline-offset-2"
-					>
-						<Trans>Help translate</Trans>
-					</a>
 				</p>
 			</SettingsSection>
 

@@ -21,45 +21,7 @@
     <img src="https://img.shields.io/github/package-json/v/reactive-resume/reactive-resume?style=flat-square" alt="Rezumi Version">
     <img src="https://img.shields.io/github/stars/reactive-resume/reactive-resume?style=flat-square" alt="GitHub Stars">
     <img src="https://img.shields.io/github/license/reactive-resume/reactive-resume?style=flat-square" alt="License" />
-    <a href="https://discord.gg/u9pAd3za9t"><img src="https://img.shields.io/discord/1173518977851473940?style=flat-square&label=discord" alt="Discord" /></a>
-    <a href="https://crowdin.com/project/reactive-resume"><img src="https://badges.crowdin.net/reactive-resume/localized.svg?style=flat-square" alt="Crowdin" /></a>
   </p>
-
-  <p><sub>Sponsored by</sub></p>
-
-  <table align="center">
-    <tr>
-      <td align="center" valign="middle">
-        <a href="https://www.vultr.com/?ref=9929207">
-          <picture>
-            <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/e023617e-563e-4423-817b-2e2d4e70fc84" />
-            <img src="https://github.com/user-attachments/assets/2e47d6a3-75ac-4f62-a50c-eef1b7d1930a" alt="Vultr" height="24" />
-          </picture>
-        </a>
-      </td>
-      <td align="center" valign="middle">
-        <a href="https://www.hostg.xyz/aff_c?offer_id=48&amp;aff_id=232413&amp;url_id=6857">
-          <picture>
-            <source media="(prefers-color-scheme: dark)" srcset="docs/images/sponsors/hostinger-dark.svg" />
-            <img src="docs/images/sponsors/hostinger-light.svg" alt="Hostinger" height="24" />
-          </picture>
-        </a>
-      </td>
-      <td align="center" valign="middle">
-        <a href="https://ola.cv">
-          <picture>
-            <source media="(prefers-color-scheme: dark)" srcset="https://ola.cv/assets/ola-logo-white.png" />
-            <img src="https://ola.cv/assets/ola-logo.png" alt=".cv domains" height="24" />
-          </picture>
-        </a>
-      </td>
-      <td align="center" valign="middle">
-        <a href="https://vercel.com/open-source-program">
-          <img src="https://vercel.com/oss/program-badge-2026.svg" alt="Vercel OSS Program" height="24" />
-        </a>
-      </td>
-    </tr>
-  </table>
 </div>
 
 ---
@@ -69,16 +31,6 @@ Create a free account, import an existing resume or start fresh, and see the fin
 You own your data. The codebase is open source under the MIT license, with no tracking, no ads, and no paid tier. Optional AI features use a provider you connect; hosting and provider usage may have their own costs.
 
 ![Rezumi v6 editor with Write, Design, and Check modes and a live PDF preview](docs/images/getting-started/editor-overview.webp)
-
-## Build a better resume, together
-
-[Join the Rezumi community on Discord](https://discord.gg/u9pAd3za9t) to exchange resume feedback, get help using or self-hosting the app, and share ideas with other users and contributors.
-
-- **Resume feedback:** post a redacted resume and one specific question, or help someone improve theirs.
-- **Help:** find troubleshooting discussions and ask questions in dedicated forum threads.
-- **Contribute:** discuss ideas, translations, and code with the people building Rezumi.
-
-Feedback comes from fellow community members. Remove contact details and other private information before posting.
 
 ## Features
 
@@ -319,21 +271,6 @@ Rezumi is and always will be free and open source. Ways to help:
 - Report reproducible bugs and suggest actionable features
 - Help other users in [GitHub Discussions](https://github.com/reactive-resume/reactive-resume/discussions/categories/q-a)
 - Improve documentation
-- Help with translations
-
-<a href="https://blacksmith.sh/">
-  <img width="368" height="126" alt="powered-by-blacksmith" src="https://github.com/user-attachments/assets/3e95d11b-4579-4082-8d0c-6b574f925625" />
-</a>
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=reactive-resume%2Freactive-resume&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=reactive-resume/reactive-resume&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=reactive-resume/reactive-resume&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=reactive-resume/reactive-resume&type=date&legend=top-left" />
- </picture>
-</a>
 
 ## Contributing
 

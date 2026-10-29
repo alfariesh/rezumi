@@ -1,9 +1,9 @@
 ---
 title: "Environment variables"
-description: "Every environment variable the Reactive Resume server reads, and how to set each one on Cloudflare Workers: required settings, database, sign-in, email, storage, AI, Redis and feature flags."
+description: "Every environment variable the Rezumi server reads, and how to set each one on Cloudflare Workers: required settings, database, sign-in, email, storage, AI, Redis and feature flags."
 ---
 
-Reactive Resume is configured entirely through environment variables. This page lists every variable the server reads,
+Rezumi is configured entirely through environment variables. This page lists every variable the server reads,
 grouped by what it controls. Only three settings are required: `APP_URL`, a PostgreSQL connection and `AUTH_SECRET`. On
 Cloudflare Workers the PostgreSQL connection comes from the `HYPERDRIVE` binding, so you set `APP_URL` and `AUTH_SECRET`
 and bind Hyperdrive.
@@ -164,7 +164,7 @@ Its callback URL is `APP_URL` followed by `/api/auth/callback/custom`.
 
 ## Email
 
-Reactive Resume sends email for account verification, password resets and email changes. Store `SMTP_PASS` with `wrangler secret put` and the other values in `vars` or as secrets. Cloudflare blocks outbound SMTP port 25, so use port `465` or `587`. Sending turns on only when
+Rezumi sends email for account verification, password resets and email changes. Store `SMTP_PASS` with `wrangler secret put` and the other values in `vars` or as secrets. Cloudflare blocks outbound SMTP port 25, so use port `465` or `587`. Sending turns on only when
 `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` and `SMTP_FROM` are all set. Until then, each email is written to the server log
 instead, so you can still copy verification links from there.
 
@@ -174,7 +174,7 @@ instead, so you can still copy verification links from there.
 | `SMTP_PORT`   | `587`   | SMTP server port.                                                                                                                                                              |
 | `SMTP_USER`   | unset   | SMTP username.                                                                                                                                                                 |
 | `SMTP_PASS`   | unset   | SMTP password.                                                                                                                                                                 |
-| `SMTP_FROM`   | unset   | Sender address, for example `Reactive Resume <noreply@example.com>`.                                                                                                           |
+| `SMTP_FROM`   | unset   | Sender address, for example `Rezumi <noreply@example.com>`.                                                                                                                    |
 | `SMTP_SECURE` | `false` | `true` connects with TLS from the start (usually port `465`). `false` requires a successful STARTTLS upgrade and fails if the server does not support it (usually port `587`). |
 
 ## Storage
@@ -283,7 +283,7 @@ Each of a user's search countries is one SearXNG request, using its likely langu
 independently of the interface language. Reading still uses the web connection, then the built-in
 reader, so sites that block plain fetches still need Firecrawl, Tavily or Exa. With it set, **Test connection** tests
 search against SearXNG and reading against the connection. See
-[Search directly from Reactive Resume](/self-hosting/job-search-and-ai#search-directly-from-reactive-resume).
+[Search directly from Rezumi](/self-hosting/job-search-and-ai#search-directly-from-reactive-resume).
 
 Connections enable Applications keyword search and assistant web tools. URL import uses the selected reader, then
 falls back to the built-in reader on recoverable failures. Saving pasted text and manual preparation work without

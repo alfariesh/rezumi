@@ -33,7 +33,6 @@ const getColumns = (): { id: string; title: string; links: FooterLink[] }[] => [
 		links: [
 			{ label: t`About`, href: "https://docs.rezumi.app/getting-started" },
 			{ label: t`Documentation`, href: "https://docs.rezumi.app" },
-			{ label: t`Changelog`, href: "https://docs.rezumi.app/changelog" },
 			{ label: t`Source code`, href: githubUrl },
 			{ label: t`Self-hosting`, href: "https://docs.rezumi.app/self-hosting/cloudflare" },
 		],
@@ -41,15 +40,7 @@ const getColumns = (): { id: string; title: string; links: FooterLink[] }[] => [
 	{
 		id: "community",
 		title: t`Community`,
-		links: [
-			{ label: t`Join Discord`, href: "https://discord.gg/jSVSJyWd2k" },
-			{ label: t`Subreddit`, href: "https://reddit.com/r/reactiveresume" },
-			{ label: t`Translations`, href: "https://crowdin.com/project/reactive-resume" },
-			{ label: t`Contact`, href: "mailto:amruth@rxresu.me" },
-			{ label: "LinkedIn", href: "https://www.linkedin.com/company/reactive-resume" },
-			{ label: "Amruth Pillai · X", href: "https://x.com/KingOKings" },
-			{ label: t`Report a bug`, href: `${githubUrl}/issues` },
-		],
+		links: [{ label: t`Report a bug`, href: `${githubUrl}/issues` }],
 	},
 	{
 		id: "legal",

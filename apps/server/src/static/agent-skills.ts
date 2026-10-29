@@ -14,8 +14,8 @@ function resolveSkillsRoot() {
 	const candidates = [
 		// Bundled layout: apps/server/dist/*.mjs -> apps/server/dist/agent-skills (emitted by tsdown.config.ts)
 		fileURLToPath(new URL("./agent-skills", import.meta.url)),
-		// Source layout: apps/server/src/static/agent-skills.ts -> plugins/reactive-resume/skills
-		fileURLToPath(new URL("../../../../plugins/reactive-resume/skills", import.meta.url)),
+		// Source layout: apps/server/src/static/agent-skills.ts -> plugins/rezumi/skills
+		fileURLToPath(new URL("../../../../plugins/rezumi/skills", import.meta.url)),
 	];
 
 	return candidates.find((candidate) => existsSync(candidate));

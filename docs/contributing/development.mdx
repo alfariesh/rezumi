@@ -1,9 +1,9 @@
 ---
 title: "Development setup"
-description: "Run Reactive Resume locally with Node.js 24, pnpm, and Docker, then use the everyday commands for the database, tests, linting, and pull requests."
+description: "Run Rezumi locally with Node.js 24, pnpm, and Docker, then use the everyday commands for the database, tests, linting, and pull requests."
 ---
 
-This guide takes you from a fresh clone to a running local copy of Reactive Resume, then covers the commands you'll use while working on it. For how the code is organized, read [Project architecture](/contributing/architecture).
+This guide takes you from a fresh clone to a running local copy of Rezumi, then covers the commands you'll use while working on it. For how the code is organized, read [Project architecture](/contributing/architecture).
 
 ## Before you start
 
@@ -237,7 +237,7 @@ const label = t`Download PDF`;
 <Trans>Your resume is ready.</Trans>;
 ```
 
-Then run `pnpm lingui:extract`. It updates the catalogs in `apps/web/locales/*.po` and regenerates the PDF section-title catalog. You only add English strings; translators handle the rest on Crowdin. See [Contributing translations](/contributing/translations).
+Then run `pnpm lingui:extract`. It updates the catalogs in `apps/web/locales/*.po` and regenerates the PDF section-title catalog. You only add English strings.
 
 ## Code style
 

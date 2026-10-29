@@ -57,13 +57,6 @@ export default function SettingsScreen() {
 					onPress={() => openLink("https://github.com/reactive-resume/reactive-resume/issues/new/choose")}
 				/>
 				<ListRow
-					title={t`Join the Discord`}
-					subtitle={t`Resume feedback, product help, and community ideas.`}
-					leading="discord-logo"
-					external
-					onPress={() => openLink("https://discord.gg/9kAqrGcwn5")}
-				/>
-				<ListRow
 					title={t`Source code on GitHub`}
 					leading="github-logo"
 					external
