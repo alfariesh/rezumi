@@ -6,7 +6,7 @@ const microphonePermission = "Rezumi records your answers when you practise for 
 
 const config: ExpoConfig = {
 	name: "Rezumi",
-	slug: "reactive-resume",
+	slug: "rezumi",
 	platforms: process.env.EXPO_MOBILE_WEB_PREVIEW === "1" ? ["ios", "android", "web"] : ["ios", "android"],
 	scheme: "app.rezumi",
 	owner: "reactive-resume",
