@@ -209,6 +209,12 @@ catalogs:
     '@heroui/styles':
       specifier: ^3.2.7
       version: 3.2.7
+    '@hugeicons/core-free-icons':
+      specifier: 4.3.5
+      version: 4.3.5
+    '@hugeicons/react':
+      specifier: ^1.1.10
+      version: 1.1.10
     '@legendapp/list':
       specifier: 3.6.0
       version: 3.6.0
@@ -2045,6 +2051,12 @@ importers:
       '@heroui/styles':
         specifier: 'catalog:'
         version: 3.2.7(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
+      '@hugeicons/core-free-icons':
+        specifier: 'catalog:'
+        version: 4.3.5
+      '@hugeicons/react':
+        specifier: 'catalog:'
+        version: 1.1.10(react@19.3.1)
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -3853,6 +3865,14 @@ packages:
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4 || ^5.0.0-0
+
+  '@hugeicons/core-free-icons@4.3.5':
+    resolution: {integrity: sha512-Sv+NjHRPnQk+yZsGCMcGznCHdTfJR9PMMOEKcJYAQU4gy90dmlc9PwdtvYOImBZIjiheMsTLL5eMn2DmHxUiUg==}
+
+  '@hugeicons/react@1.1.10':
+    resolution: {integrity: sha512-9tAsd92yMVVGP+E+d8cM+wc0VnXuYZHNbWQi7TOe8k2neawmhiaFmVFbzyruejhOMa197/LbgvSED32ayUo3ZA==}
+    peerDependencies:
+      react: '>=16.0.0'
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -14499,6 +14519,12 @@ snapshots:
   '@hono/node-server@2.1.5(hono@4.13.14)':
     dependencies:
       hono: 4.13.14
+
+  '@hugeicons/core-free-icons@4.3.5': {}
+
+  '@hugeicons/react@1.1.10(react@19.3.1)':
+    dependencies:
+      react: 19.3.1
 
   '@img/colour@1.1.0': {}
 

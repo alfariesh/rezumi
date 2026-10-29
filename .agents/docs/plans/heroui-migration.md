@@ -1,6 +1,6 @@
 # Web app migration to HeroUI
 
-Status: planned; no code changed yet.
+Status: Phase 0 done (October 30, 2026); Phase 1 next.
 Date: October 29, 2026.
 
 ## Decisions
@@ -41,11 +41,11 @@ AppLayout, Sidebar, Kanban, Agenda and Segment were read in full for this plan; 
 Goal: HeroUI theme active everywhere with no broken screen; old components still render.
 
 1. **Dependencies.** Add `@hugeicons/react` and `@hugeicons/core-free-icons@4.3.5` to the catalog and `packages/ui`. Add Pro peers only when a phase adopts the component that needs them: `recharts` (charts, KPI), `@number-flow/react` (NumberValue), and `marked`, `remark-breaks`, `streamdown`, `shiki` (Pro Markdown imports all four statically).
-2. **Theme.** In `packages/ui/src/styles/globals.css`, delete the Desk & Paper definitions that shadow HeroUI variables (`--surface`, `--accent`, `--accent-hover`, `--accent-soft`, `--danger`, `--danger-soft`) and the rest of the palette. Keep only custom tokens HeroUI lacks: `--paper` (white in both themes), `--stage-*` (re-tuned to HeroUI lightness and chroma), `--shadow-page`, layout constants (`--editor-bar`, `--editor-panel`, `--sheet-*`, `--assistant`), motion durations, and `--info`/`--info-soft` added with HeroUI's custom-color recipe.
+2. **Theme.** In `packages/ui/src/styles/globals.css`, delete the Desk & Paper definitions that shadow HeroUI variables (`--surface`, `--accent`, `--accent-hover`, `--accent-soft`, `--danger`, `--danger-soft`) and the rest of the palette. Keep only custom tokens HeroUI lacks: `--paper` (white in both themes), `--stage-*`, `--shadow-page`, layout constants (`--editor-bar`, `--editor-panel`, `--sheet-*`, `--assistant`), motion durations and `--tooltip-delay: 400ms`. HeroUI has no info role and its info toasts use the accent, so the old `info-*` names alias the accent-soft tokens instead of adding a custom color.
 3. **Temporary aliases.** Add `packages/ui/src/styles/legacy-aliases.css` mapping old utility names to HeroUI variables (`ink` → `foreground`, `ink-2`/`ink-3` → `muted`, `sunken` → `default`, `line` → `border`, `raised` → `overlay`, `warn` → `warning`, `shadow-e1/e2/e3` → `shadow-surface/overlay/overlay`). Untouched screens adopt the HeroUI palette immediately; each later phase removes the old names from its files; Phase 9 deletes the file.
 4. **Homepage scope.** Move the Desk & Paper values and its fonts (Figtree, Instrument Serif, Geist Mono imports) into `features/homepage/landing.css` under `.landing`, so the homepage keeps its look.
 5. **Fonts.** Drop the app's `font-ui` and `font-display` usage in favour of HeroUI's system stack. Keep `font-mono` mapped to HeroUI's `--font-mono` for shortcuts, URLs and counts.
-6. **Providers in `routes/__root.tsx`.** Add React Aria `I18nProvider` (Lingui locale) and `RouterProvider` (TanStack Router). Mount `Toast.Provider` beside the old `Toaster` until Phase 1 moves the call sites. Keep Base UI `DirectionProvider` until Base UI is gone.
+6. **Providers in `routes/__root.tsx`.** Add React Aria `I18nProvider` (Lingui locale) and `RouterProvider` (TanStack Router). `Toast.Provider` replaces the old `Toaster` in batch 1g, together with the call sites. Keep Base UI `DirectionProvider` until Base UI is gone.
 7. **Icons.** Re-implement `packages/ui/src/components/icon.tsx` on Hugeicons, keeping the `Icon name="…"` API and `IconName` keys so the 162 importing files compile unchanged. Map each of the ~109 names to a Stroke Rounded glyph; mirror directional glyphs in RTL as today. Remove `IconContext` from the root once nothing uses Phosphor React.
 8. **Typeset.** Rename the variables `typeset.css` reads (`--ink`, `--ink-3`, `--sunken`, `--accent`, `--font-*`, `--radius`) to HeroUI tokens.
 
