@@ -32,6 +32,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
+  HEROUI_AUTH_TOKEN: ${{ secrets.HEROUI_AUTH_TOKEN }}
   FORMAT: ${{ inputs.format }}
   ABI: ${{ inputs.abi }}
   MOBILE_UPDATE_CHANNEL: ${{ inputs.format == 'apk' && 'preview' || 'production' }}

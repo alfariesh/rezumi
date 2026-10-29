@@ -1,3 +1,4 @@
+import "../global.css";
 import type { DefaultTheme } from "expo-router";
 import { I18nProvider } from "@lingui/react";
 import { useLingui } from "@lingui/react/macro";
@@ -8,6 +9,7 @@ import { Observe, ObserveErrorBoundary, ObserveRoot } from "expo-observe";
 import { Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
+import { HeroUINativeProvider } from "heroui-native";
 import { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
@@ -118,23 +120,25 @@ function RootLayout() {
 
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<SafeAreaProvider>
-				<WindowSafeAreaProvider>
-					<KeyboardProvider>
-						<QueryClientProvider client={queryClient}>
-							<I18nProvider i18n={i18n}>
-								<TrueSheetProvider>
-									<ObserveErrorBoundary fallback={({ resetError }) => <CrashScreen onRetry={resetError} />}>
-										<RootStack />
-										<SessionGate />
-									</ObserveErrorBoundary>
-									<Toaster />
-								</TrueSheetProvider>
-							</I18nProvider>
-						</QueryClientProvider>
-					</KeyboardProvider>
-				</WindowSafeAreaProvider>
-			</SafeAreaProvider>
+			<HeroUINativeProvider>
+				<SafeAreaProvider>
+					<WindowSafeAreaProvider>
+						<KeyboardProvider>
+							<QueryClientProvider client={queryClient}>
+								<I18nProvider i18n={i18n}>
+									<TrueSheetProvider>
+										<ObserveErrorBoundary fallback={({ resetError }) => <CrashScreen onRetry={resetError} />}>
+											<RootStack />
+											<SessionGate />
+										</ObserveErrorBoundary>
+										<Toaster />
+									</TrueSheetProvider>
+								</I18nProvider>
+							</QueryClientProvider>
+						</KeyboardProvider>
+					</WindowSafeAreaProvider>
+				</SafeAreaProvider>
+			</HeroUINativeProvider>
 		</GestureHandlerRootView>
 	);
 }
