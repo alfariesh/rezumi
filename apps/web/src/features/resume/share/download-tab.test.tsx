@@ -12,8 +12,8 @@ vi.mock("@tanstack/react-query", () => ({ useQuery: () => ({ data: [] }) }));
 vi.mock("@/features/applications/queries", () => ({ applicationsListQueryOptions: () => ({}) }));
 vi.mock("@/features/letters/export", () => ({ createLetterFile: vi.fn(), letterFileName: vi.fn() }));
 vi.mock("@/libs/orpc/client", () => ({ client: {} }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: mocks.toast } }));
-vi.mock("@reactive-resume/utils/file", () => ({ downloadWithAnchor: mocks.download }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: mocks.toast } }));
+vi.mock("@rezumi/utils/file", () => ({ downloadWithAnchor: mocks.download }));
 vi.mock("@/features/resume/export/use-resume-export", () => ({
 	createExportFile: mocks.generate,
 	getDefaultFileName: () => "resume",

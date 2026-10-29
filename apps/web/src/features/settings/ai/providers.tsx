@@ -1,12 +1,12 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import type { AIProvider } from "@reactive-resume/ai/types";
+import type { AIProvider } from "@rezumi/ai/types";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { AI_PROVIDER_DEFAULT_BASE_URLS } from "@reactive-resume/ai/types";
-import { Button } from "@reactive-resume/ui/components/button";
+import { AI_PROVIDER_DEFAULT_BASE_URLS } from "@rezumi/ai/types";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -14,13 +14,13 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { Switch } from "@reactive-resume/ui/components/switch";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dialog";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { Switch } from "@rezumi/ui/components/switch";
+import { cn } from "@rezumi/utils/style";
 import {
 	describeTest,
 	keyEnding,

@@ -1,6 +1,6 @@
 import { Trans } from "@lingui/react/macro";
-import { CommandItem } from "@reactive-resume/ui/components/command";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { CommandItem } from "@rezumi/ui/components/command";
+import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../../store";
 import { BaseCommandGroup } from "../base";
 import { LanguageCommandPage } from "./language";

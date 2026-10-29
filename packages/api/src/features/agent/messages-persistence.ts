@@ -1,7 +1,7 @@
 import type { UIMessage } from "ai";
 import { and, eq, max, sql } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
 
 // Crash-safe incremental persistence for the assistant message of an agent run.
 // A draft row is inserted before the stream starts, folded step-by-step in onStepEnd,

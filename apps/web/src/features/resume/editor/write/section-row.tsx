@@ -1,5 +1,5 @@
 import type { WriteSection } from "./model";
-import type { SectionType } from "@reactive-resume/schema/resume/data";
+import type { SectionType } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -7,9 +7,9 @@ import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
-import { sortSectionItemsByPeriod } from "@reactive-resume/resume/section-sort";
-import { Badge } from "@reactive-resume/ui/components/badge";
-import { Collapsible, CollapsibleContent } from "@reactive-resume/ui/components/collapsible";
+import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
+import { Badge } from "@rezumi/ui/components/badge";
+import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -22,12 +22,12 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { formatList } from "@reactive-resume/utils/locale";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { toast } from "@rezumi/ui/components/toast";
+import { formatList } from "@rezumi/utils/locale";
+import { cn } from "@rezumi/utils/style";
 import { pendingProposals } from "../proposals/proposals";
 import { useEditorStore } from "../store";
 import { addEntryTo } from "./actions";

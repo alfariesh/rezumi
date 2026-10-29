@@ -1,9 +1,9 @@
 import type z from "zod";
 import { Trans } from "@lingui/react/macro";
-import { pageSchema } from "@reactive-resume/schema/resume/data";
-import { FormControl, FormItem, FormLabel, FormMessage } from "@reactive-resume/ui/components/form";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@reactive-resume/ui/components/input-group";
-import { Switch } from "@reactive-resume/ui/components/switch";
+import { pageSchema } from "@rezumi/schema/resume/data";
+import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { InputGroup, InputGroupAddon, InputGroupText } from "@rezumi/ui/components/input-group";
+import { Switch } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";

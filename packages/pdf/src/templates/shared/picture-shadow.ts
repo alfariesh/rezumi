@@ -1,6 +1,6 @@
 import type { Style } from "../../forme/style-types";
 import { encode } from "fast-png";
-import { parseColorString, rgbaStringToHex } from "@reactive-resume/utils/color";
+import { parseColorString, rgbaStringToHex } from "@rezumi/utils/color";
 
 type PictureShadowStyle = Style & { shadowColor?: string; shadowWidth?: number };
 type ShadowImage = { src: string; extent: number };

@@ -1,4 +1,4 @@
-import type { CareerNotice } from "@reactive-resume/schema/career";
+import type { CareerNotice } from "@rezumi/schema/career";
 
 /**
  * The words for every career notice, in English for now. Rows keep the notice itself, so showing them in the

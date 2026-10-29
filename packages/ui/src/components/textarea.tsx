@@ -1,6 +1,6 @@
 import type * as React from "react";
-import { inputBaseClassName } from "@reactive-resume/ui/components/input";
-import { cn } from "@reactive-resume/utils/style";
+import { inputBaseClassName } from "@rezumi/ui/components/input";
+import { cn } from "@rezumi/utils/style";
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
 	return (

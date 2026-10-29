@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { HOST } from "../forme/primitives";
 import { toHtml } from "./to-html";
 import { renderResumeWebPage } from "./web-page";

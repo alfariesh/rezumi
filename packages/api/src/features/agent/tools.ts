@@ -1,12 +1,8 @@
-import type {
-	ProposeEditsInput,
-	ReadPageOutput,
-	SearchWebOutput,
-} from "@reactive-resume/ai/tools/agent-tool-contracts";
+import type { ProposeEditsInput, ReadPageOutput, SearchWebOutput } from "@rezumi/ai/tools/agent-tool-contracts";
 import type { ToolSet } from "ai";
 import { tool } from "ai";
 import z from "zod";
-import { assistantSystemPromptTemplate } from "@reactive-resume/ai/prompts";
+import { assistantSystemPromptTemplate } from "@rezumi/ai/prompts";
 import {
 	askUserQuestionInputSchema,
 	proposeEditsInputSchema,
@@ -14,7 +10,7 @@ import {
 	readPageOutputSchema,
 	searchWebInputSchema,
 	searchWebOutputSchema,
-} from "@reactive-resume/ai/tools/agent-tool-contracts";
+} from "@rezumi/ai/tools/agent-tool-contracts";
 import { dataBlock } from "../ai/data-block";
 
 export const MAX_AGENT_WEB_CALLS = 6;

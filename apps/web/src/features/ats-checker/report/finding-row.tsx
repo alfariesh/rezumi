@@ -1,7 +1,7 @@
-import type { PdfFinding, PdfSeverity } from "@reactive-resume/resume/ats-pdf";
+import type { PdfFinding, PdfSeverity } from "@rezumi/resume/ats-pdf";
 import { match } from "ts-pattern";
-import { Badge } from "@reactive-resume/ui/components/badge";
-import { cn } from "@reactive-resume/utils/style";
+import { Badge } from "@rezumi/ui/components/badge";
+import { cn } from "@rezumi/utils/style";
 import { getPdfFindingMessage, getPdfSeverityLabel } from "../messages";
 
 function severityDotClass(severity: PdfSeverity) {

@@ -2,15 +2,15 @@ import type { DesignWrite } from "./draft";
 import type { PickerSpec } from "./picker";
 import type { DensityId, FontPairingId, MarginId } from "./presets";
 import type { MessageDescriptor } from "@lingui/core";
-import type { EntryHeader, ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { EntryHeader, ResumeData } from "@rezumi/schema/resume/data";
+import type { Locale } from "@rezumi/utils/locale";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
 import Animated from "react-native-reanimated";
-import { entryHeaderLayouts, entryHeaderOf } from "@reactive-resume/schema/resume/data";
-import { localeSchema } from "@reactive-resume/utils/locale";
+import { entryHeaderLayouts, entryHeaderOf } from "@rezumi/schema/resume/data";
+import { localeSchema } from "@rezumi/utils/locale";
 import { Field, Slider, SwitchRow } from "./controls";
 import {
 	ACCENTS,

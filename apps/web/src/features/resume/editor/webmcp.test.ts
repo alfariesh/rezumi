@@ -6,7 +6,7 @@ import { renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { produce } from "immer";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { assignChanged, useResumeWebMcpTools } from "./webmcp";
 import { useResumeStore } from "@/features/resume/builder/draft";
 
@@ -16,7 +16,7 @@ const routerParams = vi.hoisted(() => ({ value: {} as { resumeId?: string } }));
 
 vi.mock("@tanstack/react-query", () => ({ useQueryClient: () => ({ setQueryData: vi.fn() }) }));
 vi.mock("@tanstack/react-router", () => ({ useParams: () => routerParams.value, useBlocker: vi.fn() }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: toastMocks }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: toastMocks }));
 vi.mock("@/libs/orpc/client", () => ({
 	orpc: {
 		resume: {

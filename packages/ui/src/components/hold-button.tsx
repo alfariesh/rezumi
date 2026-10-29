@@ -1,8 +1,8 @@
-import type { ButtonProps } from "@reactive-resume/ui/components/button";
+import type { ButtonProps } from "@rezumi/ui/components/button";
 import type * as React from "react";
 import { useEffect, useRef } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { cn } from "@rezumi/utils/style";
 
 type HoldButtonProps = Omit<ButtonProps, "onClick"> & {
 	/** Runs once the button has been held for `HOLD_DURATION`. */

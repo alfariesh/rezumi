@@ -1,6 +1,6 @@
 // Typed hrefs for every screen under app/. Navigate with these instead of writing paths by hand, so a route move
 // is one change here. Ids and slugs are URL-encoded.
-import type { WorkspaceTab } from "@reactive-resume/schema/career";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 
 export type BuilderPane = "write" | "page" | "design" | "check" | "share";
 export type LetterPane = "write" | "page" | "design";

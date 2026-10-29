@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: {
 		APP_URL: "https://example.com/app/",
 		AUTH_SECRET: "test-secret",

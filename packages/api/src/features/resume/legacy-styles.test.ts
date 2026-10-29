@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vite-plus/test";
-import { needsLegacyStyleConversion } from "@reactive-resume/pdf/semantic-legacy";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { needsLegacyStyleConversion } from "@rezumi/pdf/semantic-legacy";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { migrateLetterStylesheet, migrateResumeStylesheet } from "./legacy-styles";
 
 const legacy = () => {

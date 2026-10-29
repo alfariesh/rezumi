@@ -36,8 +36,8 @@ const { dbMock, queryMock, queryState } = vi.hoisted(() => {
 	};
 });
 
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
-vi.mock("@reactive-resume/db/schema", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/schema", () => ({
 	aiProvider: {
 		id: "ai_provider.id",
 		userId: "ai_provider.user_id",
@@ -68,7 +68,7 @@ vi.mock("drizzle-orm", () => ({
 	ne: (left: unknown, right: unknown) => ({ type: "ne", left, right }),
 	sql: (strings: TemplateStringsArray, ...values: unknown[]) => ({ type: "sql", strings: [...strings], values }),
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env: {} }));
+vi.mock("@rezumi/env/server", () => ({ env: {} }));
 vi.mock("../ai/credentials", () => ({
 	assertCredentialEncryptionConfigured: vi.fn(),
 	decryptCredential: vi.fn(() => "decrypted-key"),

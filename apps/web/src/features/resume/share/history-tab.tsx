@@ -5,18 +5,18 @@ import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Input } from "@reactive-resume/ui/components/input";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Input } from "@rezumi/ui/components/input";
+import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import { formatVersionMoment, formatVersionTime, getVersionDetail, getVersionTitle } from "./format";
 import { savePendingChanges, useCurrentResume, useResumeStore } from "@/features/resume/builder/draft";
 import { useEditorStore } from "@/features/resume/editor/store";

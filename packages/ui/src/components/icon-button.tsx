@@ -1,9 +1,9 @@
-import type { ButtonProps } from "@reactive-resume/ui/components/button";
-import type { IconName } from "@reactive-resume/ui/components/icon";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Kbd } from "@reactive-resume/ui/components/kbd";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@reactive-resume/ui/components/tooltip";
+import type { ButtonProps } from "@rezumi/ui/components/button";
+import type { IconName } from "@rezumi/ui/components/icon";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Kbd } from "@rezumi/ui/components/kbd";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 
 type IconButtonProps = Omit<ButtonProps, "children" | "aria-label"> & {
 	icon: IconName;

@@ -16,7 +16,7 @@ import {
 	serialize,
 } from "@formepdf/react";
 import { cloneElement, createElement, isValidElement } from "react";
-import { toSafeLink } from "@reactive-resume/utils/link";
+import { toSafeLink } from "@rezumi/utils/link";
 import { NODE_CONTENT_PREFIX, NODE_SOURCE_PREFIX, RESUME_NODE_PROP } from "../page-map";
 import { HOST } from "./primitives";
 import { flattenAlpha, flattenStyle, toFormeStyle, toPoints, WHITE } from "./style";

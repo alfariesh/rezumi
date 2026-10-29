@@ -50,7 +50,7 @@ export const createVitestProjectConfig = ({
 			maxWorkers: 2,
 			// Isolation stays on: without it, test files in a worker share one module registry, so a
 			// `vi.mock` in one file leaks into another and whichever file imported a module first wins.
-			// That made every suite mocking `@reactive-resume/env/server` order-dependent and flaky.
+			// That made every suite mocking `@rezumi/env/server` order-dependent and flaky.
 			passWithNoTests: true,
 			coverage: {
 				provider: "v8",

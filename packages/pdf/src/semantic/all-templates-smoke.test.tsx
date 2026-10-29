@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
-import { templateSchema } from "@reactive-resume/schema/templates";
+import { templateSchema } from "@rezumi/schema/templates";
 import { renderResume } from "../forme/render";
 import { filterSections } from "../templates/shared/filtering";
 import { buildAllTemplatesFixture } from "./all-templates-fixture";

@@ -5,7 +5,7 @@ import { useRouter, useGlobalSearchParams, useLocalSearchParams, useNavigation }
 import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaInsetsContext, useSafeAreaInsets } from "react-native-safe-area-context";
-import { WORKSPACE_TABS } from "@reactive-resume/schema/career";
+import { WORKSPACE_TABS } from "@rezumi/schema/career";
 import { createSlot } from "./slot";
 import { TopBar } from "./top-bar";
 import { useIsTablet } from "./use-is-tablet";

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@reactive-resume/utils/monorepo.node", () => ({ findWorkspaceRoot: () => null }));
+vi.mock("@rezumi/utils/monorepo.node", () => ({ findWorkspaceRoot: () => null }));
 
 beforeEach(() => {
 	vi.resetModules();

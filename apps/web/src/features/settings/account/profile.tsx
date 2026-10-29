@@ -1,22 +1,17 @@
-import type { AuthSession } from "@reactive-resume/auth/types";
+import type { AuthSession } from "@rezumi/auth/types";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useId, useRef, useState } from "react";
 import z from "zod";
-import { Avatar, AvatarFallback, AvatarImage } from "@reactive-resume/ui/components/avatar";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Input } from "@reactive-resume/ui/components/input";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupInput,
-	InputGroupText,
-} from "@reactive-resume/ui/components/input-group";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { getInitials } from "@reactive-resume/utils/string";
-import { cn } from "@reactive-resume/utils/style";
+import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
+import { Button } from "@rezumi/ui/components/button";
+import { Input } from "@rezumi/ui/components/input";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@rezumi/ui/components/input-group";
+import { toast } from "@rezumi/ui/components/toast";
+import { getInitials } from "@rezumi/utils/string";
+import { cn } from "@rezumi/utils/style";
 import { SettingsSection } from "../section";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";

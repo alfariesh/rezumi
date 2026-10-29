@@ -1,8 +1,8 @@
 import type { CheckIssue } from "./issues";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
+import { toast } from "@rezumi/ui/components/toast";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { useEditorStore } from "../store";
 import { useEditorMode } from "../use-editor-mode";
 import { getScrollBehavior, revealSelectionInPanel } from "../write/reveal";

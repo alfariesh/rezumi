@@ -1,4 +1,4 @@
-import type { PdfCategory, PdfRuleCode, PdfSeverity } from "@reactive-resume/resume/ats-pdf";
+import type { PdfCategory, PdfRuleCode, PdfSeverity } from "@rezumi/resume/ats-pdf";
 import { t } from "@lingui/core/macro";
 import { match } from "ts-pattern";
 

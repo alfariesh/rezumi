@@ -1,5 +1,5 @@
 import type { R2Bucket } from "@cloudflare/workers-types";
-import type { StorageService } from "@reactive-resume/api/features/storage";
+import type { StorageService } from "@rezumi/api/features/storage";
 
 /** Keep the bucket private. Public upload routes and authenticated attachment reads own access control. */
 export class R2StorageService implements StorageService {

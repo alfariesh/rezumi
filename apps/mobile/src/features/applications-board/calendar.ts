@@ -2,7 +2,7 @@
 // profile timezone), not the device's, so an interview lands on the same day as the detail screen shows it.
 // Pure: Node runs it in the M5-T3 scenarios.
 import type { ApplicationSummary as Application } from "../applications/types";
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { zonedParts } from "../reminders/schedule.ts";
 
 const DAY_MS = 86_400_000;

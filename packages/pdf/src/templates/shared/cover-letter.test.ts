@@ -1,8 +1,8 @@
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { createElement } from "react";
-import { copyCoverLetterStyle, createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { copyCoverLetterStyle, createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { ResumeDocument } from "../../document";
 import { pdf, type RenderedNode } from "../../forme/testing";
 import { shouldShowResumeHeader } from "./cover-letter";

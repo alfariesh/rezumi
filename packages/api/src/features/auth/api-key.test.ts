@@ -3,7 +3,7 @@ import { createProcedureClient } from "@orpc/server";
 
 const createApiKey = vi.hoisted(() => vi.fn());
 const getSession = vi.hoisted(() => vi.fn(async () => ({ session: { createdAt: new Date() } })));
-vi.mock("@reactive-resume/auth/config", () => ({ auth: { api: { createApiKey, getSession } } }));
+vi.mock("@rezumi/auth/config", () => ({ auth: { api: { createApiKey, getSession } } }));
 vi.mock("./service", () => ({ authService: {} }));
 const { authRouter } = await import("./router");
 

@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => ({
 	},
 }));
 
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: {
 		api: {
 			getSession: mocks.getSession,
@@ -29,13 +29,13 @@ vi.mock("@reactive-resume/auth/config", () => ({
 	setUserDeleteHook: () => {},
 }));
 
-vi.mock("@reactive-resume/api/features/storage", () => ({
+vi.mock("@rezumi/api/features/storage", () => ({
 	migrateUserStorage: mocks.migrateUserStorage,
 }));
 
-vi.mock("@reactive-resume/db/client", () => ({ db: {} }));
-vi.mock("@reactive-resume/db/schema", () => ({ oauthClient: {}, verification: {} }));
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: {} }));
+vi.mock("@rezumi/db/schema", () => ({ oauthClient: {}, verification: {} }));
+vi.mock("@rezumi/env/server", () => ({
 	env: mocks.env,
 }));
 

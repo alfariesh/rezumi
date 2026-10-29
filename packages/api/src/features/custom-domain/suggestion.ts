@@ -1,9 +1,9 @@
 import { eq } from "drizzle-orm";
 import z from "zod";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { env } from "@reactive-resume/env/server";
-import { cvDomainFor } from "@reactive-resume/resume/sharing";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
+import { cvDomainFor } from "@rezumi/resume/sharing";
 import { isCustomDomainsEnabled } from "./service";
 
 const CHECK_URL = "https://ola.cv/api/v1/domains/check";

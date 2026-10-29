@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => {
 	return { env, on, Redis };
 });
 
-vi.mock("@reactive-resume/env/server", () => ({ env: mocks.env }));
+vi.mock("@rezumi/env/server", () => ({ env: mocks.env }));
 vi.mock("ioredis", () => ({ Redis: mocks.Redis }));
 
 beforeEach(() => {

@@ -1,5 +1,5 @@
 import type { SavedItem } from "./hooks";
-import type { CareerProfileData, OfferTerms } from "@reactive-resume/schema/career";
+import type { CareerProfileData, OfferTerms } from "@rezumi/schema/career";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";

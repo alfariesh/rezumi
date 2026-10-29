@@ -2,10 +2,10 @@ import type { SheetTab } from "@/features/resume/editor/store";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@reactive-resume/ui/components/sheet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@reactive-resume/ui/components/tabs";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { cn } from "@reactive-resume/utils/style";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@rezumi/ui/components/sheet";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { useClosingValue } from "@/hooks/use-closing-value";
 

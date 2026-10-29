@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import { describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@reactive-resume/email/transport", () => ({ sendEmail: vi.fn() }));
+vi.mock("@rezumi/email/transport", () => ({ sendEmail: vi.fn() }));
 
 // Run only against an explicitly supplied disposable database, after applying migrations.
 const databaseURL = process.env.OAUTH_TEST_DATABASE_URL;
@@ -14,7 +14,7 @@ describe.skipIf(!databaseURL)("MCP OAuth flow with PostgreSQL", () => {
 		process.env.AUTH_SECRET = "oauth-integration-test-secret-only";
 		const { handleAuth, handleOAuth } = await import("./auth");
 		// Better Auth disables origin checks by default in test mode; exercise production behavior.
-		const { auth } = await import("@reactive-resume/auth/config");
+		const { auth } = await import("@rezumi/auth/config");
 		(await auth.$context).skipOriginCheck = false;
 		const origin = process.env.APP_URL;
 		const redirectURI = "http://127.0.0.1:33921/callback";

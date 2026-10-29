@@ -115,7 +115,7 @@ public resume addresses keep working. A hostname may remain in the app's cache f
 ## Upgrade an existing installation
 
 v6.0.7 adds a `custom_domain` table and the `show_in_search_engines`, `hide_contact_details` and `is_primary` resume
-columns. Back up your database, then run `pnpm --filter @reactive-resume/db db:migrate` before deploying the new Worker. Deploy the backend before
+columns. Back up your database, then run `pnpm --filter @rezumi/db db:migrate` before deploying the new Worker. Deploy the backend before
 mobile updates that use the new sharing controls.
 
 Existing resumes retain public/private status and download settings. Search indexing and contact hiding default

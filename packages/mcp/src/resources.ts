@@ -1,9 +1,9 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { RouterClient } from "@orpc/server";
-import type router from "@reactive-resume/api/routers";
+import type router from "@rezumi/api/routers";
 import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ORPCError } from "@orpc/server";
-import { createResumeDataJsonSchema } from "@reactive-resume/schema/resume/json-schema";
+import { createResumeDataJsonSchema } from "@rezumi/schema/resume/json-schema";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
 import { safeMcpError } from "./results";
 

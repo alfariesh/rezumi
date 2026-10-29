@@ -1,8 +1,8 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
-import { templateSchema } from "@reactive-resume/schema/templates";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
+import { templateSchema } from "@rezumi/schema/templates";
 import { renderResume } from "./render";
 
 const withFormat = (format: ResumeData["metadata"]["page"]["format"]): ResumeData => ({

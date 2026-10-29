@@ -2,11 +2,11 @@ import { ORPCError } from "@orpc/server";
 import { APIError } from "better-auth";
 import { createSelectSchema } from "drizzle-zod";
 import z from "zod";
-import { accountAuth, auth } from "@reactive-resume/auth/config";
-import * as schema from "@reactive-resume/db/schema";
-import { careerProfileDataSchema, careerWorkspaceSchema } from "@reactive-resume/schema/career";
-import { coverLetterSchema } from "@reactive-resume/schema/cover-letter/data";
-import { timezoneSchema } from "@reactive-resume/utils/timezone";
+import { accountAuth, auth } from "@rezumi/auth/config";
+import * as schema from "@rezumi/db/schema";
+import { careerProfileDataSchema, careerWorkspaceSchema } from "@rezumi/schema/career";
+import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
+import { timezoneSchema } from "@rezumi/utils/timezone";
 import { protectedProcedure, publicProcedure } from "../../context";
 import { applicationDto } from "../../dto/application";
 import {

@@ -1,13 +1,13 @@
 import type { SavedData, SavedItem } from "./hooks";
-import type { CareerProfileData } from "@reactive-resume/schema/career";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { CareerProfileData } from "@rezumi/schema/career";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,12 +15,12 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Skeleton } from "@reactive-resume/ui/components/skeleton";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { formatList } from "@reactive-resume/utils/locale";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Skeleton } from "@rezumi/ui/components/skeleton";
+import { toast } from "@rezumi/ui/components/toast";
+import { formatList } from "@rezumi/utils/locale";
+import { cn } from "@rezumi/utils/style";
 import { CareerLoadError } from "./load-state";
 import { defaultPair, formatMoney, matchingPlace, meetsMinimum, moneyDifference, sameTerms } from "./offer-compare";
 import { useCareerTime, useNow } from "./shared";

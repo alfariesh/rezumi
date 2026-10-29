@@ -1,6 +1,6 @@
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 function RadioGroup({ className, ...props }: RadioGroupPrimitive.Props) {
 	return <RadioGroupPrimitive data-slot="radio-group" className={cn("grid gap-2", className)} {...props} />;

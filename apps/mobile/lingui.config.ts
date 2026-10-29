@@ -1,6 +1,6 @@
 import { defineConfig } from "@lingui/cli";
 import { formatter } from "@lingui/format-po";
-import { localeSchema } from "@reactive-resume/utils/locale";
+import { localeSchema } from "@rezumi/utils/locale";
 
 // Same locales as apps/web/lingui.config.ts. After `lingui extract`, `pnpm lingui:seed` copies the web translations
 // of every matching msgid into these catalogs.

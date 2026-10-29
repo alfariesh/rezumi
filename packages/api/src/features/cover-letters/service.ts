@@ -1,24 +1,24 @@
 import type { CoverLetterListInput, CoverLetterUpdateInput } from "../../dto/cover-letter";
-import type { DbOrTx } from "@reactive-resume/db/client";
+import type { DbOrTx } from "@rezumi/db/client";
 import type {
 	CoverLetter,
 	CoverLetterDocument,
 	CoverLetterLayout,
 	CoverLetterStyle,
-} from "@reactive-resume/schema/cover-letter/data";
-import type { Template } from "@reactive-resume/schema/templates";
+} from "@rezumi/schema/cover-letter/data";
+import type { Template } from "@rezumi/schema/templates";
 import { ORPCError } from "@orpc/client";
 import { and, asc, count, desc, eq, ilike, inArray, isNull, sql } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
 import {
 	coverLetterContentSchema,
 	coverLetterDocumentSchema,
 	coverLetterSchema,
-} from "@reactive-resume/schema/cover-letter/data";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+} from "@rezumi/schema/cover-letter/data";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { lockUser } from "../documents/ownership";
 import { resumeService } from "../resume/service";
 import { sanitizeCoverLetterHtml } from "./html";

@@ -1,7 +1,7 @@
 import type { ApplicationSummary } from "../types";
 import { useLingui } from "@lingui/react";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
 import { describeNextStep, getNextStep } from "../next-step";
 import { ApplicationActionsMenu } from "./application-actions-menu";
 

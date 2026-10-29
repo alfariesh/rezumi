@@ -1,7 +1,7 @@
-import type { GenerateTask, SavedItemData } from "@reactive-resume/schema/career";
+import type { GenerateTask, SavedItemData } from "@rezumi/schema/career";
 import { ORPCError } from "@orpc/client";
 import z from "zod";
-import { careerWorkspaceSchema, savedItemDataSchema } from "@reactive-resume/schema/career";
+import { careerWorkspaceSchema, savedItemDataSchema } from "@rezumi/schema/career";
 import { aiProvidersService } from "../ai-providers/service";
 import { getModel } from "../ai/service";
 import { generateJson } from "../applications/ai";

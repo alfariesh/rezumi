@@ -7,14 +7,14 @@ import type {
 	TemplateSemanticPrimitivePart,
 	TemplateSemanticRegion,
 } from "./template-manifest";
-import type { SemanticNode, SemanticNodeKind } from "@reactive-resume/resume/stylesheet/types";
-import type { CustomSectionType, LayoutPage, ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { SemanticNode, SemanticNodeKind } from "@rezumi/resume/stylesheet/types";
+import type { CustomSectionType, LayoutPage, ResumeData, SectionType } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 import type { HTMLElement, Node } from "node-html-parser";
 import { NodeType } from "node-html-parser";
-import { entryHeaderOf } from "@reactive-resume/schema/resume/data";
-import { assertResumeRenderBudget } from "@reactive-resume/schema/resume/limits";
-import { isRTL } from "@reactive-resume/utils/locale";
+import { entryHeaderOf } from "@rezumi/schema/resume/data";
+import { assertResumeRenderBudget } from "@rezumi/schema/resume/limits";
+import { isRTL } from "@rezumi/utils/locale";
 import { getResumeSectionIcon } from "../section-icon";
 import { shouldUseSectionTimeline } from "../templates/shared/columns";
 import { getCustomFieldLinkUrl } from "../templates/shared/contact";

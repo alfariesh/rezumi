@@ -1,4 +1,4 @@
-import type { AuthSession } from "@reactive-resume/auth/types";
+import type { AuthSession } from "@rezumi/auth/types";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -16,9 +16,9 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { toast } from "@reactive-resume/ui/components/toast";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { useTheme } from "@/features/theme/provider";
 import { clearAccountData } from "@/libs/auth/clear-account-data";
 import { authClient } from "@/libs/auth/client";

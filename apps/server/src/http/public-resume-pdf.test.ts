@@ -4,7 +4,7 @@ const mocks = vi.hoisted(() => ({
 	createPublicResumePdf: vi.fn(),
 }));
 
-vi.mock("@reactive-resume/api/features/resume/public-pdf", () => ({
+vi.mock("@rezumi/api/features/resume/public-pdf", () => ({
 	createPublicResumePdf: mocks.createPublicResumePdf,
 }));
 

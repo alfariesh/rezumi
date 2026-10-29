@@ -1,6 +1,6 @@
 # dsh-plugin-reactive-resume Implementation Plan
 
-> **Historical record.** This plan was written and executed while the plugin lived in its own repository. It has since moved into the Rezumi monorepo at `packages/dsh-plugin`, where tests are colocated in `src/*.test.ts`, the build emits `dist/`, and the generated tool-name snapshot and its scheduled drift job were replaced by a local check against `@reactive-resume/mcp/tool-names`. Paths below are not current.
+> **Historical record.** This plan was written and executed while the plugin lived in its own repository. It has since moved into the Rezumi monorepo at `packages/dsh-plugin`, where tests are colocated in `src/*.test.ts`, the build emits `dist/`, and the generated tool-name snapshot and its scheduled drift job were replaced by a local check against `@rezumi/mcp/tool-names`. Paths below are not current.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 

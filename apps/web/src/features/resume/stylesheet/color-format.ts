@@ -1,5 +1,5 @@
 import { hexToRgba, hslaStringToHsva, hsvaToRgbaString, rgbaStringToHsva } from "@uiw/color-convert";
-import { parseColorString } from "@reactive-resume/utils/color";
+import { parseColorString } from "@rezumi/utils/color";
 
 // Literal names exposed by compiler-confirmed editor swatches. currentcolor stays contextual.
 const namedColors: Readonly<Record<string, string>> = {

@@ -3,7 +3,7 @@ import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { onError, ORPCError } from "@orpc/server";
 import { RequestHeadersPlugin, StrictGetMethodPlugin } from "@orpc/server/plugins";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 import { appVersion } from "../app-version";
 import { mergeResponseHeaders } from "../http/headers";
 import { getRequestLocale } from "../rpc/locale";

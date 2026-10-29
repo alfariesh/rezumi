@@ -12,18 +12,18 @@ const envMock = vi.hoisted(() => ({
 	S3_BUCKET: "test-bucket",
 	S3_FORCE_PATH_STYLE: true,
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env: envMock }));
+vi.mock("@rezumi/env/server", () => ({ env: envMock }));
 
 type StoredObject = { data: Buffer; contentType: string };
 type StorageRequest = { method: string; path: string; headers: IncomingHttpHeaders };
 const resolveAuthentication = vi.hoisted(() => vi.fn());
-vi.mock("@reactive-resume/api/context", () => ({
+vi.mock("@rezumi/api/context", () => ({
 	resolveAuthenticationFromRequestHeaders: resolveAuthentication,
 	resolveUserFromRequestHeaders: async (headers: Headers) => (await resolveAuthentication(headers))?.user ?? null,
 }));
 const isPublicUploadOwner = vi.hoisted(() => vi.fn());
-vi.mock("@reactive-resume/api/features/storage", async (original) => ({
-	...(await original<typeof import("@reactive-resume/api/features/storage")>()),
+vi.mock("@rezumi/api/features/storage", async (original) => ({
+	...(await original<typeof import("@rezumi/api/features/storage")>()),
 	isPublicUploadOwner,
 }));
 
@@ -60,7 +60,7 @@ const server = createServer(async (request, response) => {
 	response.end(object.data);
 });
 
-let storage: ReturnType<typeof import("@reactive-resume/api/features/storage").getStorageService>;
+let storage: ReturnType<typeof import("@rezumi/api/features/storage").getStorageService>;
 let handleUpload: typeof import("./uploads").handleUpload;
 
 beforeAll(async () => {
@@ -68,7 +68,7 @@ beforeAll(async () => {
 	const address = server.address();
 	if (!address || typeof address === "string") throw new Error("Missing stub TCP address");
 	envMock.S3_ENDPOINT = `http://127.0.0.1:${address.port}`;
-	storage = (await import("@reactive-resume/api/features/storage")).getStorageService();
+	storage = (await import("@rezumi/api/features/storage")).getStorageService();
 	({ handleUpload } = await import("./uploads"));
 });
 

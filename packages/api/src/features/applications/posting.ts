@@ -1,6 +1,6 @@
 import type { WebAccessContext } from "../web-access/contracts";
 import { z } from "zod";
-import { countryName } from "@reactive-resume/utils/region";
+import { countryName } from "@rezumi/utils/region";
 import { htmlToText } from "../web-access/builtin";
 import { MAX_CONTENT_CHARS, MAX_SEARCH_QUERY_CHARS, WebAccessError } from "../web-access/contracts";
 import { readPage, searchWeb } from "../web-access/service";

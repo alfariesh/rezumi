@@ -2,8 +2,8 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vite-plus/test";
 import { i18n } from "@lingui/core";
-import { referenceItemSchema } from "@reactive-resume/schema/resume/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { referenceItemSchema } from "@rezumi/schema/resume/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeReflow } from "./resume-reflow";
 
 it("shows the built-in Summary content in the reflowed view", () => {

@@ -1,6 +1,6 @@
 // Pure: how a Design control writes to the draft. No React, no native modules, so Node scenarios can drive it.
 import type { UpdateOptions } from "@/draft/types";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 
 type Update = (recipe: (draft: WritableDraft<ResumeData>) => void, options?: UpdateOptions) => void;

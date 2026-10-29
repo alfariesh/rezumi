@@ -2,7 +2,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { startCareerScheduler } from "./career-scheduler";
 
 const run = vi.hoisted(() => vi.fn<() => Promise<{ processed: number }>>());
-vi.mock("@reactive-resume/api/features/career/jobs", () => ({ runCareerJobs: run }));
+vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: run }));
 
 beforeEach(() => {
 	vi.useFakeTimers();

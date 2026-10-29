@@ -5,13 +5,13 @@ import { ORPCError } from "@orpc/client";
 import { createRouterClient } from "@orpc/server";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const fixture = vi.hoisted(() => ({
 	db: undefined as ReturnType<typeof drizzle> | undefined,
 	pool: undefined as Pool | undefined,
 }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	get db() {
 		return fixture.db;
 	},

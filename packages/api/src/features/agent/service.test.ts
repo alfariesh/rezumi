@@ -49,12 +49,12 @@ const aiProvidersServiceMock = {
 	markUsed: vi.fn(),
 };
 
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
-vi.mock("@reactive-resume/db/redis", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/redis", () => ({
 	getRedis: () => cancellationRedisMock,
 	redisKey: (...parts: string[]) => ["test", ...parts].join(":"),
 }));
-vi.mock("@reactive-resume/db/schema", () => ({
+vi.mock("@rezumi/db/schema", () => ({
 	agentThread: {
 		id: "agent_threads.id",
 		userId: "agent_threads.user_id",
@@ -209,10 +209,10 @@ vi.mock("./tools", () => ({
 	buildAgentInstructions: vi.fn(),
 	buildAgentTools: vi.fn(() => ({})),
 }));
-vi.mock("@reactive-resume/schema/resume/default", () => ({
+vi.mock("@rezumi/schema/resume/default", () => ({
 	defaultResumeData: {},
 }));
-vi.mock("@reactive-resume/utils/string", () => ({
+vi.mock("@rezumi/utils/string", () => ({
 	generateId: () => "test-id",
 }));
 vi.mock("@orpc/server", () => ({ streamToEventIterator: vi.fn() }));

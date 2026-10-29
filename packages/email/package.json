@@ -1,5 +1,5 @@
 {
-	"name": "@reactive-resume/email",
+	"name": "@rezumi/email",
 	"version": "0.0.0",
 	"type": "module",
 	"private": true,
@@ -15,14 +15,14 @@
 		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests"
 	},
 	"dependencies": {
-		"@reactive-resume/env": "workspace:*",
+		"@rezumi/env": "workspace:*",
 		"nodemailer": "^10.2.1",
 		"react": "catalog:",
 		"react-email": "^6.11.5"
 	},
 	"devDependencies": {
 		"@react-email/ui": "^6.11.5",
-		"@reactive-resume/config": "workspace:*",
+		"@rezumi/config": "workspace:*",
 		"@types/nodemailer": "^8.0.2",
 		"@types/react": "catalog:",
 		"tsrs": "catalog:",

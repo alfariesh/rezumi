@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import {
 	composeCoverLetter,
 	copyCoverLetterStyle,

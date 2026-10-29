@@ -1,9 +1,9 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const dbMock = vi.hoisted(() => ({ select: vi.fn(), insert: vi.fn(), update: vi.fn(), delete: vi.fn() }));
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
 
 const { saveSessionVersion } = await import("./version-history");
 

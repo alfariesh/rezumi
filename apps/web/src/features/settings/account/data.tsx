@@ -12,11 +12,11 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "@reactive-resume/ui/components/alert-dialog";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Input } from "@reactive-resume/ui/components/input";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { downloadWithAnchor } from "@reactive-resume/utils/file";
+} from "@rezumi/ui/components/alert-dialog";
+import { Button } from "@rezumi/ui/components/button";
+import { Input } from "@rezumi/ui/components/input";
+import { toast } from "@rezumi/ui/components/toast";
+import { downloadWithAnchor } from "@rezumi/utils/file";
 import { SettingsRow, SettingsSection } from "../section";
 import { buildAccountZip } from "./export";
 import { clearAccountData } from "@/libs/auth/clear-account-data";

@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 /** Field labels sit above their control: 12px, medium weight, secondary ink. */
 function Label({ className, htmlFor, ...props }: React.ComponentProps<"label">) {

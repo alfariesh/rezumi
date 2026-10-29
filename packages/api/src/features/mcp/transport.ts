@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 import { createRateLimiter } from "../../redis";
 
 const requestLimiter = createRateLimiter("mcp-requests", { maxRequests: 600, window: 60_000 });

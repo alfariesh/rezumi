@@ -3,22 +3,22 @@ import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { TabsList, TabsTrigger } from "@reactive-resume/ui/components/tabs";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { downloadWithAnchor } from "@reactive-resume/utils/file";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
+import { toast } from "@rezumi/ui/components/toast";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { downloadWithAnchor } from "@rezumi/utils/file";
+import { cn } from "@rezumi/utils/style";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { DocumentMenuTrigger } from "@/features/resume/editor/chrome";

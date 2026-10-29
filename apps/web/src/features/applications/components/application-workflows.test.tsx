@@ -41,12 +41,12 @@ vi.mock("../use-application-actions", () => ({
 	useApplicationActions: () => ({ moveTo: api.moveTo, close: api.close, remove: { mutate: api.remove } }),
 }));
 vi.mock("@/hooks/use-confirm", () => ({ useConfirm: () => api.confirm }));
-vi.mock("@reactive-resume/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => "desktop" }));
+vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => "desktop" }));
 vi.mock("@/features/settings/integrations/hooks/use-has-usable-ai-provider", () => ({
 	useHasUsableAiProvider: () => ({ hasUsableProvider: true }),
 }));
 vi.mock("@/dialogs/store", () => ({ useDialogStore: () => vi.fn() }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 
 import { AddApplicationDialog } from "./add-application-dialog";
 import { ApplicationBoard } from "./board";

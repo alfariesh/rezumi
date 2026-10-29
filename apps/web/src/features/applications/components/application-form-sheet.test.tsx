@@ -40,7 +40,7 @@ vi.mock("@/libs/orpc/client", () => ({
 
 const { ApplicationFormSheet } = await import("./application-form-sheet");
 
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn(), close: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn(), close: vi.fn() } }));
 
 const OLD_URL = "https://example.com/api/uploads/user-1/pictures/old.pdf";
 

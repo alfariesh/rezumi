@@ -1,5 +1,5 @@
 import { Outlet } from "@tanstack/react-router";
-import { BrandIcon } from "@reactive-resume/ui/components/brand-icon";
+import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 
 export function AuthLayout() {
 	return (

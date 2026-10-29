@@ -1,6 +1,6 @@
 import type { SemanticNode } from "./semantic-types";
-import type { Design, Layout, Page, ResumeData, Typography } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Design, Layout, Page, ResumeData, Typography } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 
 export type { SemanticNode, SemanticNodeKind } from "./semantic-types";
 

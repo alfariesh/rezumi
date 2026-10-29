@@ -5,9 +5,9 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import Cropper from "react-easy-crop";
-import { pictureSchema } from "@reactive-resume/schema/resume/data";
-import { Button } from "@reactive-resume/ui/components/button";
-import { ButtonGroup } from "@reactive-resume/ui/components/button-group";
+import { pictureSchema } from "@rezumi/schema/resume/data";
+import { Button } from "@rezumi/ui/components/button";
+import { ButtonGroup } from "@rezumi/ui/components/button-group";
 import {
 	Dialog,
 	DialogContent,
@@ -15,13 +15,13 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { FormControl, FormItem, FormLabel, FormMessage } from "@reactive-resume/ui/components/form";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@reactive-resume/ui/components/input-group";
-import { Slider } from "@reactive-resume/ui/components/slider";
-import { toast } from "@reactive-resume/ui/components/toast";
+} from "@rezumi/ui/components/dialog";
+import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { InputGroup, InputGroupAddon, InputGroupText } from "@rezumi/ui/components/input-group";
+import { Slider } from "@rezumi/ui/components/slider";
+import { toast } from "@rezumi/ui/components/toast";
 import "react-easy-crop/react-easy-crop.css";
 import { ColorPicker } from "@/components/input/color-picker";
 import { NumberInput } from "@/components/input/number-input";

@@ -90,9 +90,7 @@ const mocks = {
 	},
 	"@/ui": ui,
 	"@/ui/use-document-operations": { useDocumentOperations: () => ({ busy: false, run: async (fn) => fn() }) },
-	"@reactive-resume/resume/sharing": createRequire(new URL("../package.json", import.meta.url))(
-		"@reactive-resume/resume/sharing",
-	),
+	"@rezumi/resume/sharing": createRequire(new URL("../package.json", import.meta.url))("@rezumi/resume/sharing"),
 };
 
 const nodes = (tree) =>

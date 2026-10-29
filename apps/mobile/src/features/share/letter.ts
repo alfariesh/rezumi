@@ -1,9 +1,9 @@
 import type { Messages } from "@lingui/core";
-import type { LetterWords } from "@reactive-resume/resume/cover-letter";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { LetterWords } from "@rezumi/resume/cover-letter";
+import type { Locale } from "@rezumi/utils/locale";
 import { setupI18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
-import { defaultLocale, isLocale } from "@reactive-resume/utils/locale";
+import { defaultLocale, isLocale } from "@rezumi/utils/locale";
 
 // Static imports keep document language independent of the interface language in Metro.
 const loaders: Record<Locale, () => Promise<{ messages: Messages }>> = {

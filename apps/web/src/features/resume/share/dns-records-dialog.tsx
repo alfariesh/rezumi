@@ -1,8 +1,8 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
-import { formatTimeSince } from "@reactive-resume/resume/sharing";
-import { Button } from "@reactive-resume/ui/components/button";
+import { formatTimeSince } from "@rezumi/resume/sharing";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -10,7 +10,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
+} from "@rezumi/ui/components/dialog";
 import { CopyText } from "./copy-text";
 
 const cellClass =

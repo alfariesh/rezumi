@@ -1,15 +1,11 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
 import type { ReminderTarget } from "@/features/reminders";
-import type {
-	ApplicationClosedReason,
-	ApplicationTimelineEntry,
-	Contact,
-} from "@reactive-resume/schema/applications/data";
+import type { ApplicationClosedReason, ApplicationTimelineEntry, Contact } from "@rezumi/schema/applications/data";
 import { useLingui } from "@lingui/react/macro";
 import { openBrowserAsync } from "expo-web-browser";
 import { useState } from "react";
 import { Linking, View } from "react-native";
-import { contactSchema } from "@reactive-resume/schema/applications/data";
+import { contactSchema } from "@rezumi/schema/applications/data";
 import { WallClockField } from "./date-field";
 import { followUpReminder, leadLabel, useDocuments, useUserTime } from "./hooks";
 import { followUpDay } from "@/features/applications-board/calendar";

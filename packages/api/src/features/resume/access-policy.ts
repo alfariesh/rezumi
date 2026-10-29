@@ -1,8 +1,8 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { ORPCError } from "@orpc/client";
 import { sql } from "drizzle-orm";
-import * as schema from "@reactive-resume/db/schema";
-import { removeContactDetails } from "@reactive-resume/resume/contact-details";
+import * as schema from "@rezumi/db/schema";
+import { removeContactDetails } from "@rezumi/resume/contact-details";
 import { parseStoredResumeData } from "./resume-data-validation";
 
 /**

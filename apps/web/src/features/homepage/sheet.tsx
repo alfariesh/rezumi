@@ -2,7 +2,7 @@ import type { MessageDescriptor } from "@lingui/core";
 import type { CSSProperties, ReactNode } from "react";
 import { msg, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { Icon } from "@rezumi/ui/components/icon";
 
 /*
  * The demo resume page that every scene shows: Alex Morgan's resume, in one of five looks. Everything is sized in

@@ -1,4 +1,4 @@
-import type { AtsReport } from "@reactive-resume/resume/ats";
+import type { AtsReport } from "@rezumi/resume/ats";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useEffect } from "react";

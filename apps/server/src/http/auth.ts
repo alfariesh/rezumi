@@ -1,10 +1,10 @@
 import { isIP } from "node:net";
 import { APIError } from "better-auth/api";
-import { getStorageService, migrateUserStorage } from "@reactive-resume/api/features/storage";
-import { auth, setAccountLinkHook, setUserDeleteHook } from "@reactive-resume/auth/config";
-import { env } from "@reactive-resume/env/server";
-import { TRUSTED_IP_HEADERS } from "@reactive-resume/utils/rate-limit";
-import { isAllowedOAuthRedirectUri } from "@reactive-resume/utils/url-security.node";
+import { getStorageService, migrateUserStorage } from "@rezumi/api/features/storage";
+import { auth, setAccountLinkHook, setUserDeleteHook } from "@rezumi/auth/config";
+import { env } from "@rezumi/env/server";
+import { TRUSTED_IP_HEADERS } from "@rezumi/utils/rate-limit";
+import { isAllowedOAuthRedirectUri } from "@rezumi/utils/url-security.node";
 
 setAccountLinkHook(({ fromUserId, toUserId }) => migrateUserStorage(fromUserId, toUserId));
 

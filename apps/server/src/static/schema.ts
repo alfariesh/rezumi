@@ -1,4 +1,4 @@
-import { createResumeDataJsonSchema } from "@reactive-resume/schema/resume/json-schema";
+import { createResumeDataJsonSchema } from "@rezumi/schema/resume/json-schema";
 import { appVersion } from "../app-version";
 
 export function handleSchemaJson() {

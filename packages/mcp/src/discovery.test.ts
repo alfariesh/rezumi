@@ -1,6 +1,6 @@
 import type { MCP_ROUTER } from "./parity";
 import type { RouterClient } from "@orpc/server";
-import type { RequestAuthentication } from "@reactive-resume/api/context";
+import type { RequestAuthentication } from "@rezumi/api/context";
 import { expect, it } from "vite-plus/test";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";

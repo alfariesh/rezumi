@@ -4,8 +4,8 @@ import { useLingui } from "@lingui/react/macro";
 import { useRef, useState } from "react";
 import { View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { getResumeSectionTitle } from "@reactive-resume/pdf/section-title";
-import { templateLayouts } from "@reactive-resume/schema/templates";
+import { getResumeSectionTitle } from "@rezumi/pdf/section-title";
+import { templateLayouts } from "@rezumi/schema/templates";
 import { Stepper, SwitchRow } from "./controls";
 import {
 	addPage,

@@ -6,7 +6,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
-import { templateSchema } from "@reactive-resume/schema/templates";
+import { templateSchema } from "@rezumi/schema/templates";
 import {
 	ACCENTS,
 	FONT_PAIRINGS,

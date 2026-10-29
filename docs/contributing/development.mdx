@@ -139,11 +139,11 @@ Typechecks use [tsrs](https://github.com/oxc-project/tsrs), an experimental Rust
 | `pnpm lingui:extract`            | Extract new UI strings into `apps/web/locales/*.po`                                                                                       |
 | `pnpm docs:gen`                  | Regenerate the OpenAPI spec and the custom-styles CSS reference                                                                           |
 
-Prefer package-scoped commands while you work. Package names come from each `package.json`: the apps are `web` and `server`, and shared packages are `@reactive-resume/<name>`.
+Prefer package-scoped commands while you work. Package names come from each `package.json`: the apps are `web` and `server`, and shared packages are `@rezumi/<name>`.
 
 ```bash
 pnpm --filter web typecheck
-pnpm --filter @reactive-resume/pdf test
+pnpm --filter @rezumi/pdf test
 pnpm exec vp lint --deny-warnings apps/web/src/features/resume
 pnpm exec vp fmt --check apps/web/src/features/resume
 ```
@@ -179,16 +179,16 @@ PDF export text tests require Poppler's `pdftotext` to read logical Unicode text
 
 ```bash
 # One package
-pnpm --filter @reactive-resume/pdf test
+pnpm --filter @rezumi/pdf test
 
 # One file (the path is relative to the package)
-pnpm --filter @reactive-resume/pdf test src/templates/shared/filtering.test.ts
+pnpm --filter @rezumi/pdf test src/templates/shared/filtering.test.ts
 
 # One test by name
-pnpm --filter @reactive-resume/pdf exec vp test run src/templates/shared/filtering.test.ts -t "filterItems"
+pnpm --filter @rezumi/pdf exec vp test run src/templates/shared/filtering.test.ts -t "filterItems"
 
 # Coverage (V8, written to the package's coverage/ folder)
-pnpm --filter @reactive-resume/pdf test:coverage
+pnpm --filter @rezumi/pdf test:coverage
 ```
 
 Pass file paths straight after `test`. An extra `--` stops Vitest from filtering the run. Most test scripts use `--passWithNoTests`, so a green run with zero tests proves nothing about your change.

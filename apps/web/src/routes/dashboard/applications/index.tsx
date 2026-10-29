@@ -5,19 +5,19 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react";
 import z from "zod";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Skeleton } from "@reactive-resume/ui/components/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@reactive-resume/ui/components/tabs";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Skeleton } from "@rezumi/ui/components/skeleton";
+import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { PageHeader } from "@/components/layout/page-header";
 import { AddApplicationDialog } from "@/features/applications/components/add-application-dialog";
 import { ApplicationDetailSheet } from "@/features/applications/components/application-detail-sheet";

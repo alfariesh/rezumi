@@ -1,5 +1,5 @@
 // Board drag and drop state, kept pure so Node runs it in the M5-T3 scenarios.
-import type { ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus } from "@rezumi/schema/applications/data";
 
 /** A dropped card shown in its new column until the list's optimistic update lands. */
 export type PendingMove = { id: string; from: ApplicationStatus; to: ApplicationStatus };

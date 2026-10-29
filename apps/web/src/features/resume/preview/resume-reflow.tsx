@@ -1,10 +1,10 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { IconName } from "@reactive-resume/ui/components/icon";
-import { getResumeSectionTitle } from "@reactive-resume/pdf/section-title";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { contrastOnWhite } from "@reactive-resume/utils/color";
-import { isRTL } from "@reactive-resume/utils/locale";
-import { cn } from "@reactive-resume/utils/style";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { IconName } from "@rezumi/ui/components/icon";
+import { getResumeSectionTitle } from "@rezumi/pdf/section-title";
+import { Icon } from "@rezumi/ui/components/icon";
+import { contrastOnWhite } from "@rezumi/utils/color";
+import { isRTL } from "@rezumi/utils/locale";
+import { cn } from "@rezumi/utils/style";
 import { reflowOrder } from "./reflow";
 import { RichText } from "./rich-text";
 

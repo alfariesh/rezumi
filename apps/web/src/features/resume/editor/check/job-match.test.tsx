@@ -4,7 +4,7 @@ import { expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const api = vi.hoisted(() => ({
 	application: { id: "job-a", company: "Example", role: "Engineer", jobDescription: null as string | null },
@@ -37,7 +37,7 @@ vi.mock("@/features/resume/builder/draft", () => ({
 }));
 vi.mock("@/features/assistant/open", () => ({ openAssistantFrom: vi.fn() }));
 vi.mock("./actions", () => ({ checkStateOf: vi.fn(), editWithUndo: vi.fn() }));
-vi.mock("@reactive-resume/resume/ats-pdf", () => ({ matchJobDescription: () => ({ terms: [] }) }));
+vi.mock("@rezumi/resume/ats-pdf", () => ({ matchJobDescription: () => ({ terms: [] }) }));
 
 import { JobMatchTab, useJobMatch } from "./job-match";
 

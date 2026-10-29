@@ -1,12 +1,12 @@
 import type { LetterMode } from "@/features/letters/use-letter-mode";
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import { t } from "@lingui/core/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { getRouteApi } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Tabs, TabsContent } from "@reactive-resume/ui/components/tabs";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { cn } from "@reactive-resume/utils/style";
+import { Tabs, TabsContent } from "@rezumi/ui/components/tabs";
+import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import { LetterDesignPanel } from "./design-panel";
 import { LetterDownloadSheet } from "./download-sheet";
 import { LetterBar, useDownloadLetter } from "./letter-bar";

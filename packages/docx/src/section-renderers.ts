@@ -5,9 +5,9 @@ import type {
 	EntryHeader,
 	ResumeData,
 	SectionType,
-} from "@reactive-resume/schema/resume/data";
+} from "@rezumi/schema/resume/data";
 import { BorderStyle, ExternalHyperlink, HeadingLevel, Paragraph, TabStopPosition, TabStopType, TextRun } from "docx";
-import { toSafeLink } from "@reactive-resume/utils/link";
+import { toSafeLink } from "@rezumi/utils/link";
 import { htmlToParagraphs } from "./html-to-docx";
 
 type Sections = ResumeData["sections"];

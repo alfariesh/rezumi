@@ -7,7 +7,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { test } from "node:test";
 
-// @reactive-resume/utils is TypeScript with extensionless relative imports; Node strips the types itself.
+// @rezumi/utils is TypeScript with extensionless relative imports; Node strips the types itself.
 registerHooks({
 	resolve(specifier, context, next) {
 		try {
@@ -21,7 +21,7 @@ registerHooks({
 
 test("polyfills.ts gives countryName localized names without a native Intl.DisplayNames", async () => {
 	delete Intl.DisplayNames;
-	const { countryName } = await import("@reactive-resume/utils/region");
+	const { countryName } = await import("@rezumi/utils/region");
 	assert.equal(countryName("DE", "de-DE"), "DE", "the engine should start without Intl.DisplayNames");
 
 	const polyfills = readFileSync(new URL("../src/polyfills.ts", import.meta.url), "utf8");

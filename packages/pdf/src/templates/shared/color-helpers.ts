@@ -1,4 +1,4 @@
-import { parseColorString, rgbaStringToHex } from "@reactive-resume/utils/color";
+import { parseColorString, rgbaStringToHex } from "@rezumi/utils/color";
 
 /** Returns the primary color as an `rgba()` string at the given opacity, falling back to a hex color. */
 export const getPrimaryTint = (primaryColor: string, opacity: number): string => {

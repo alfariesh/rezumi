@@ -1,7 +1,7 @@
 import type { UIMessage } from "ai";
 import { Trans } from "@lingui/react/macro";
-import { agentApprovalRequests } from "@reactive-resume/ai/tools/agent-tool-contracts";
-import { Button } from "@reactive-resume/ui/components/button";
+import { agentApprovalRequests } from "@rezumi/ai/tools/agent-tool-contracts";
+import { Button } from "@rezumi/ui/components/button";
 
 type ToolApprovalsProps = {
 	message: UIMessage;

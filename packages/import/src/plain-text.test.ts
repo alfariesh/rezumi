@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { parseResumeText } from "./plain-text";
 
 const SAMPLE = `Ada Lovelace

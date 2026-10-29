@@ -1,8 +1,8 @@
 // @vitest-environment happy-dom
 
-import type { CustomSection, ResumeData } from "@reactive-resume/schema/resume/data";
+import type { CustomSection, ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
-import { getDefaultSectionIconName } from "@reactive-resume/schema/resume/section-icons";
+import { getDefaultSectionIconName } from "@rezumi/schema/resume/section-icons";
 import { renderCustomSection, renderSummary, setRenderConfig } from "./section-renderers";
 
 const baseConfig = {

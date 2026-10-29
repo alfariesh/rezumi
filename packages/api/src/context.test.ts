@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 import { createProcedureClient } from "@orpc/server";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 
 const authMock = vi.hoisted(() => ({
 	api: {
@@ -14,15 +14,15 @@ const dbMock = vi.hoisted(() => ({
 	select: vi.fn(),
 }));
 
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: authMock,
 	verifyOAuthToken: verifyOAuthTokenMock,
 }));
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
-vi.mock("@reactive-resume/db/schema", () => ({ user: { __table: "user" } }));
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/schema", () => ({ user: { __table: "user" } }));
 vi.mock("drizzle-orm", () => ({ eq: () => "EQ" }));
-vi.mock("@reactive-resume/env/server", async (importOriginal) => {
-	const { env } = await importOriginal<typeof import("@reactive-resume/env/server")>();
+vi.mock("@rezumi/env/server", async (importOriginal) => {
+	const { env } = await importOriginal<typeof import("@rezumi/env/server")>();
 	return { env: { ...env, APP_ALIAS_URL: "https://rx.cv" } };
 });
 

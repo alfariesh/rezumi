@@ -1,6 +1,6 @@
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 interface FontDisplayProps {
 	family: string;

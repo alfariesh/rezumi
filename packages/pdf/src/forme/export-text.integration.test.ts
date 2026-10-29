@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
 import { act } from "react";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { createResumePdfFile } from "../server";
 import { lostCharacters, renderResume } from "./render";
 

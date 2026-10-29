@@ -1,8 +1,8 @@
-import { assertRichTextComplexity } from "@reactive-resume/schema/resume/limits";
+import { assertRichTextComplexity } from "@rezumi/schema/resume/limits";
 // The rich text rules that need no editor: shared by the Tiptap extensions and the read-only preview shown while
 // the editor loads (features/resume/editor/write/rich-text-editor.tsx).
-import { isDarkColor } from "@reactive-resume/utils/color";
-import { escapeHtml, stripHtml } from "@reactive-resume/utils/string";
+import { isDarkColor } from "@rezumi/utils/color";
+import { escapeHtml, stripHtml } from "@rezumi/utils/string";
 
 export const MAX_TABLE_COLUMNS = 100;
 export const MAX_TABLE_ROWS = 1_000;

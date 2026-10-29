@@ -1,5 +1,5 @@
 import type { MessageContext } from "./chat";
-import type { AgentUIMessage } from "@reactive-resume/ai/tools/agent-tool-contracts";
+import type { AgentUIMessage } from "@rezumi/ai/tools/agent-tool-contracts";
 import type { ChatTransport, UIMessage } from "ai";
 import { useChat } from "@ai-sdk/react";
 import { eventIteratorToUnproxiedDataStream } from "@orpc/client";
@@ -10,7 +10,7 @@ import {
 	uiMessageChunkSchema,
 } from "ai";
 import { useLayoutEffect, useMemo, useRef } from "react";
-import { agentMessageMetadataSchema } from "@reactive-resume/ai/tools/agent-tool-contracts";
+import { agentMessageMetadataSchema } from "@rezumi/ai/tools/agent-tool-contracts";
 import { streamClient } from "@/libs/orpc/client";
 
 // Apart from chat.ts so pages that only list conversations don't load the AI SDK.

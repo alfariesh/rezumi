@@ -6,8 +6,8 @@ const mocks = vi.hoisted(() => ({
 		CRON_SECRET: "synthetic-career-runner-secret-32-characters" as string | undefined,
 	},
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env: mocks.env }));
-vi.mock("@reactive-resume/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));
+vi.mock("@rezumi/env/server", () => ({ env: mocks.env }));
+vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));
 
 beforeEach(() => {
 	mocks.run.mockReset().mockResolvedValue({ processed: 2 });

@@ -1,6 +1,6 @@
 import type { RenderInput, Rendered } from "./render";
-import type { PageMap } from "@reactive-resume/pdf/page-map";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { PageMap } from "@rezumi/pdf/page-map";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 
 type CreateResumePdfBlobExtras = {
 	/** Receives the page map (header, section and item boxes) of this render; used by the editor canvas. */

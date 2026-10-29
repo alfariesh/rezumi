@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { oauthProvider } from "@better-auth/oauth-provider";
 import { getColumns, is, Table } from "drizzle-orm";
-import * as dbSchema from "@reactive-resume/db/schema";
+import * as dbSchema from "@rezumi/db/schema";
 
 const plugin = oauthProvider({ loginPage: "/login", consentPage: "/consent" });
 

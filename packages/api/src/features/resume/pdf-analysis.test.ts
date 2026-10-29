@@ -1,6 +1,6 @@
 import { expect, it, vi } from "vite-plus/test";
 import { call } from "@orpc/server";
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: { api: { getSession: vi.fn().mockResolvedValue(null) } },
 	verifyOAuthToken: vi.fn(),
 }));

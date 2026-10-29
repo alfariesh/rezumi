@@ -1,5 +1,5 @@
 import * as pg from "drizzle-orm/pg-core";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { user } from "./auth";
 
 /** Private, operator-reviewed safety reports; deleted with the reporting account. */

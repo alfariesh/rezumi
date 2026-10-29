@@ -1,9 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { useEffect, useRef, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@reactive-resume/ui/components/tooltip";
-import { cn } from "@reactive-resume/utils/style";
+import { toast } from "@rezumi/ui/components/toast";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
+import { cn } from "@rezumi/utils/style";
 
 const COPIED_MS = 1600;
 

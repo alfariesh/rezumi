@@ -1,11 +1,11 @@
-import type { AuthProvider } from "@reactive-resume/auth/types";
+import type { AuthProvider } from "@rezumi/auth/types";
 import { ORPCError } from "@orpc/client";
 import { symmetricDecrypt } from "better-auth/crypto";
 import { and, eq } from "drizzle-orm";
-import { auth, isCustomOAuthProviderEnabled } from "@reactive-resume/auth/config";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { env } from "@reactive-resume/env/server";
+import { auth, isCustomOAuthProviderEnabled } from "@rezumi/auth/config";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
 import { careerService } from "../career/service";
 import { coverLetterService } from "../cover-letters/service";
 import { getStorageService } from "../storage/service";

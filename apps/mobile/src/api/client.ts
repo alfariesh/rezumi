@@ -6,7 +6,7 @@ import type { InferRouterInputs, InferRouterOutputs, RouterClient } from "@orpc/
 // The server router is a type-only peer dependency, so the runtime:server deny rule for app:mobile still holds;
 // the mobile override in the root vite.config.ts rejects value imports from it.
 // @boundaries-ignore type-only import of the server router
-import type router from "@reactive-resume/api/routers";
+import type router from "@rezumi/api/routers";
 import { createORPCClient, onError } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";

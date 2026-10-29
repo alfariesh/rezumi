@@ -1,11 +1,11 @@
 import type { RouterOutput } from "@/api/client";
-import type { CareerProfileData } from "@reactive-resume/schema/career";
+import type { CareerProfileData } from "@rezumi/schema/career";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AppState, View } from "react-native";
-import { careerProfileDataSchema } from "@reactive-resume/schema/career";
+import { careerProfileDataSchema } from "@rezumi/schema/career";
 import { parseAmount } from "./amount";
 import { useCareerTime } from "./hooks";
 import { SearchRegionsField } from "./search-regions-field";

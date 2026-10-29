@@ -1,9 +1,9 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { generateId } from "@reactive-resume/utils/string";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { generateId } from "@rezumi/utils/string";
 import { application } from "./applications";
 import { user } from "./auth";
 

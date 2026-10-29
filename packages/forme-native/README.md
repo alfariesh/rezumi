@@ -69,8 +69,8 @@ Run on a development/CI machine with the pinned Rust toolchain; EAS does not gen
 
 ```ts
 import { fetch } from "expo/fetch";
-import { nativeEngine, renderSerializedDocWithLayout, subsetFont } from "@reactive-resume/forme-native";
-import { configureFontReader, configureImageFetch, downloadFont, renderResumePdf } from "@reactive-resume/pdf/native";
+import { nativeEngine, renderSerializedDocWithLayout, subsetFont } from "@rezumi/forme-native";
+import { configureFontReader, configureImageFetch, downloadFont, renderResumePdf } from "@rezumi/pdf/native";
 
 const result = await renderSerializedDocWithLayout(document);
 // result.pdf: Uint8Array; result.layout and result.warnings match the core types.
@@ -85,7 +85,7 @@ const pdf = await renderResumePdf(nativeEngine, { data, onPageMap, onLostCharact
 
 Both expensive operations execute on dedicated serial native workers: a Swift dispatch queue on iOS and an executor-backed coroutine scope on Android, separate from Expo's shared async queue. Android closes the worker when the module is destroyed. Expo still handles result conversion and Promise rejection. JSON serialization and font-byte base64 encoding still run in JavaScript. Only `fonts[].src` `Uint8Array` sources become data URIs, without mutating the input. Font/image URLs must be resolved by the caller; this bridge performs no downloads. Both operations reject on invalid input; Rust panics are contained at the C ABI. Out-of-memory aborts cannot be recovered.
 
-`nativeEngine` is structurally compatible with `FormeEngine` from `@reactive-resume/pdf/native`. Its async font preparer adds generated digits, hyphens and fallback punctuation, caches the last prepared data URI per font/character set, and embeds the full font if subsetting fails, matching the browser policy. `subsetFont` remains available for direct use; do not pass it into the synchronous browser `createFontPreparer`.
+`nativeEngine` is structurally compatible with `FormeEngine` from `@rezumi/pdf/native`. Its async font preparer adds generated digits, hyphens and fallback punctuation, caches the last prepared data URI per font/character set, and embeds the full font if subsetting fails, matching the browser policy. `subsetFont` remains available for direct use; do not pass it into the synchronous browser `createFontPreparer`.
 
 Font downloads and `configureImageFetch` require a streaming response body; pass `expo/fetch` on mobile as above. Images stop downloading at 12 MB; there is no whole-body fallback. The app owns persistent font caching through `configureFontReader`; `downloadFont` retains the Google-host fallback and fails after 30 seconds without download progress. Shared font conversion stays inside `packages/pdf`.
 

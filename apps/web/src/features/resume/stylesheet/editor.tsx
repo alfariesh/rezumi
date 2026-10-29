@@ -1,9 +1,9 @@
 import type { SemanticCssColorToken } from "./color-tokens";
 import type { SemanticCssEditorMetadata } from "./protocol";
 import type { Extension } from "@codemirror/state";
-import type { SemanticCssDiagnostic, SemanticNode } from "@reactive-resume/resume/stylesheet";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { StylesheetSource } from "@reactive-resume/schema/resume/stylesheet";
+import type { SemanticCssDiagnostic, SemanticNode } from "@rezumi/resume/stylesheet";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { StylesheetSource } from "@rezumi/schema/resume/stylesheet";
 import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import { css } from "@codemirror/lang-css";
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
@@ -25,11 +25,11 @@ import {
 	getTemplateSemanticManifest,
 	semanticNodeKeys,
 	shouldShowResumeHeader,
-} from "@reactive-resume/pdf/semantic-tree";
-import { isFatalStylesheetDiagnostic } from "@reactive-resume/resume/stylesheet";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { PopoverTrigger } from "@reactive-resume/ui/components/popover";
-import { Sheet, SheetContent, SheetTitle } from "@reactive-resume/ui/components/sheet";
+} from "@rezumi/pdf/semantic-tree";
+import { isFatalStylesheetDiagnostic } from "@rezumi/resume/stylesheet";
+import { Icon } from "@rezumi/ui/components/icon";
+import { PopoverTrigger } from "@rezumi/ui/components/popover";
+import { Sheet, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
 import { useEditorStore } from "../editor/store";
 import { serializeStylesheetColor, toStylesheetPickerColor } from "./color-format";
 import {

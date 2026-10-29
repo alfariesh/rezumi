@@ -1,6 +1,6 @@
 import type { ApplicationSummary } from "@/features/applications/types";
 import type { LetterDraft } from "@/features/letters/store";
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -9,23 +9,23 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
 import { useId, useRef, useState } from "react";
-import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@reactive-resume/resume/cover-letter";
-import { Button, buttonVariants } from "@reactive-resume/ui/components/button";
+import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
+import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
-import { NativeSelect } from "@reactive-resume/ui/components/native-select";
-import { SwitchRow } from "@reactive-resume/ui/components/switch";
-import { Textarea } from "@reactive-resume/ui/components/textarea";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
+import { NativeSelect } from "@rezumi/ui/components/native-select";
+import { SwitchRow } from "@rezumi/ui/components/switch";
+import { Textarea } from "@rezumi/ui/components/textarea";
+import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import { templates } from "@/dialogs/resume/template/data";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { getStageColor, getStageLabel } from "@/features/applications/stages";

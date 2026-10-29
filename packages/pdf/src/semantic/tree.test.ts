@@ -1,7 +1,7 @@
-import type { SemanticNode } from "@reactive-resume/resume/stylesheet/types";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { SemanticNode } from "@rezumi/resume/stylesheet/types";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { semanticNodeKeys } from "./node-keys";
 import { buildSemanticTree } from "./tree";
 

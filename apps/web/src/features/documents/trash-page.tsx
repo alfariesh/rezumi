@@ -1,8 +1,8 @@
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { buttonVariants } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { buttonVariants } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
 import { DocumentRow } from "./document-card";
 import { LibraryError } from "./library-error";
 import { PageHeader } from "@/components/layout/page-header";

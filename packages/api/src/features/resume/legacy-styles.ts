@@ -1,8 +1,8 @@
-import type { CoverLetterStyle } from "@reactive-resume/schema/cover-letter/data";
-import type { SemanticStylesheet } from "@reactive-resume/schema/resume/stylesheet";
-import { convertLegacyStylesheet, needsLegacyStyleConversion } from "@reactive-resume/pdf/semantic-legacy";
-import { createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
-import { parseResumeData } from "@reactive-resume/schema/resume/data";
+import type { CoverLetterStyle } from "@rezumi/schema/cover-letter/data";
+import type { SemanticStylesheet } from "@rezumi/schema/resume/stylesheet";
+import { convertLegacyStylesheet, needsLegacyStyleConversion } from "@rezumi/pdf/semantic-legacy";
+import { createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { parseResumeData } from "@rezumi/schema/resume/data";
 
 type Metadata = { stylesheet?: unknown; styleRules?: unknown };
 

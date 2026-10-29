@@ -1,5 +1,5 @@
 import type { TemplatePlacement } from "./styles";
-import type { EntryHeader } from "@reactive-resume/schema/resume/data";
+import type { EntryHeader } from "@rezumi/schema/resume/data";
 import { hasSplitRowText } from "./split-row";
 
 type EntryLayout = EntryHeader["layout"];

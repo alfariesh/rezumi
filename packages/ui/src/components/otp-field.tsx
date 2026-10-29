@@ -1,5 +1,5 @@
 import { OTPField as OTPFieldPrimitive } from "@base-ui/react/otp-field";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 function OTPField({ className, length, children, ...props }: OTPFieldPrimitive.Root.Props) {
 	return (

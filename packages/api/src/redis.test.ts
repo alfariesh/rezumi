@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 const mocks = vi.hoisted(() => ({ evalScript: vi.fn(), redis: null as { eval: ReturnType<typeof vi.fn> } | null }));
 
-vi.mock("@reactive-resume/db/redis", () => ({
+vi.mock("@rezumi/db/redis", () => ({
 	getRedis: () => mocks.redis,
 	redisKey: (...parts: string[]) => ["reactive-resume", "preview-123", ...parts].join(":"),
 }));

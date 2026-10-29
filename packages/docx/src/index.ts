@@ -1,7 +1,7 @@
 import type { SectionTitleResolver } from "./builder";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { Packer } from "docx";
-import { parseResumeData } from "@reactive-resume/schema/resume/data";
+import { parseResumeData } from "@rezumi/schema/resume/data";
 import { buildDocument } from "./builder";
 
 /**

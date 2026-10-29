@@ -17,7 +17,7 @@ vi.mock("../../context", async () => {
 vi.mock("../../middleware/rate-limit", () => ({
 	aiVoiceRateLimit: ({ next }: { next: () => unknown }) => next(),
 }));
-vi.mock("@reactive-resume/db/client", () => ({ db: { insert: mocks.insert } }));
+vi.mock("@rezumi/db/client", () => ({ db: { insert: mocks.insert } }));
 vi.mock("../ai-providers/service", () => ({ aiProvidersService: { getRunnableById: mocks.provider } }));
 vi.mock("./service", () => ({ requireCareerApplication: mocks.requireApplication }));
 vi.mock("ai", async (importOriginal) => ({

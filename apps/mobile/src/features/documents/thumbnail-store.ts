@@ -1,8 +1,8 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { Directory, File, Paths } from "expo-file-system";
 import * as Updates from "expo-updates";
-import { createSerialQueue } from "@reactive-resume/utils/queue";
-import { fnv1a } from "@reactive-resume/utils/string";
+import { createSerialQueue } from "@rezumi/utils/queue";
+import { fnv1a } from "@rezumi/utils/string";
 
 // Library thumbnails (resume first pages) kept across launches, so an unchanged resume is never fetched or rendered
 // twice. Named `<owner>.<version>.<width>.png`; one set per document.

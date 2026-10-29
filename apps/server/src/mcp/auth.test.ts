@@ -1,7 +1,7 @@
 import { beforeEach, expect, it, vi } from "vite-plus/test";
 
 const resolve = vi.hoisted(() => vi.fn());
-vi.mock("@reactive-resume/api/context", () => ({ resolveAuthenticationFromRequestHeaders: resolve }));
+vi.mock("@rezumi/api/context", () => ({ resolveAuthenticationFromRequestHeaders: resolve }));
 
 import { AuthError, authenticateRequest } from "./auth";
 

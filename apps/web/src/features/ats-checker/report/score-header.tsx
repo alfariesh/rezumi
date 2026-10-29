@@ -1,9 +1,9 @@
-import type { PdfAtsReport } from "@reactive-resume/resume/ats-pdf";
+import type { PdfAtsReport } from "@rezumi/resume/ats-pdf";
 import type { CSSProperties } from "react";
 import { Trans } from "@lingui/react/macro";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@reactive-resume/ui/components/tooltip";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
+import { cn } from "@rezumi/utils/style";
 import { getPdfFindingMessage } from "../messages";
 import { RollingNumber } from "@/components/ui/rolling-number";
 

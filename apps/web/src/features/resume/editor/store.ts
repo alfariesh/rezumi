@@ -1,8 +1,8 @@
-import type { PageMap, PageMapTarget } from "@reactive-resume/pdf/page-map";
-import type { PdfAtsReport } from "@reactive-resume/resume/ats-pdf";
-import type { Proposal } from "@reactive-resume/resume/proposals";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { PageMap, PageMapTarget } from "@rezumi/pdf/page-map";
+import type { PdfAtsReport } from "@rezumi/resume/ats-pdf";
+import type { Proposal } from "@rezumi/resume/proposals";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 import { create } from "zustand/react";
 
 export const EDITOR_MODES = ["write", "design", "check", "share"] as const;

@@ -1,11 +1,11 @@
-import type { WorkspaceTab } from "@reactive-resume/schema/career";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 import { tool, type ToolSet } from "ai";
 import { and, desc, eq } from "drizzle-orm";
 import z from "zod";
-import { careerSystemPromptTemplate } from "@reactive-resume/ai/prompts";
-import { db } from "@reactive-resume/db/client";
-import { application, careerArtifact } from "@reactive-resume/db/schema";
-import { careerStoryInputSchema, factCategorySchema } from "@reactive-resume/schema/career";
+import { careerSystemPromptTemplate } from "@rezumi/ai/prompts";
+import { db } from "@rezumi/db/client";
+import { application, careerArtifact } from "@rezumi/db/schema";
+import { careerStoryInputSchema, factCategorySchema } from "@rezumi/schema/career";
 import { careerService, modelFact } from "./service";
 
 type CareerToolsInput = {

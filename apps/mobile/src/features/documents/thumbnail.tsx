@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { useState } from "react";
 import { PixelRatio, View } from "react-native";
-import { stripHtml } from "@reactive-resume/utils/string";
+import { stripHtml } from "@rezumi/utils/string";
 import { readStoredThumbnail, storeThumbnail } from "./thumbnail-store";
 import { orpc } from "@/api/client";
 import { useSession } from "@/auth/session";

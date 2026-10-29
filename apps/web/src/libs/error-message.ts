@@ -1,6 +1,6 @@
 import { plural, t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { toast } from "@rezumi/ui/components/toast";
 
 export function getReadableErrorMessage(error: unknown, fallback: string): string {
 	// A font download failed (see `assertPdfFonts`).

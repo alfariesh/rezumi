@@ -2,7 +2,7 @@ import type { DraftStore, UpdateOptions } from "./types";
 import type { WritableDraft } from "immer";
 import { produce } from "immer";
 import { create } from "zustand";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 
 type Document = { id: string; isLocked: boolean };
 type Record<D> = { baseline: D; document: D; sessionId: string; copyId?: string };

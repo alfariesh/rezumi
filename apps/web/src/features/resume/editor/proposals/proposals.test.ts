@@ -1,15 +1,9 @@
-import type { Proposal } from "@reactive-resume/resume/proposals";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { Proposal } from "@rezumi/resume/proposals";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
 import { produce } from "immer";
-import {
-	applyProposal,
-	canApply,
-	getProposalState,
-	readTarget,
-	replaceBlockText,
-} from "@reactive-resume/resume/proposals";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { applyProposal, canApply, getProposalState, readTarget, replaceBlockText } from "@rezumi/resume/proposals";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { markProposals } from "./proposals";
 
 const OLD_BULLET = "<li><p>Responsible for various design tasks</p></li>";

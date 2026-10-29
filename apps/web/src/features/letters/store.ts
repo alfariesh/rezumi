@@ -1,8 +1,8 @@
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { create } from "zustand/react";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { client, streamClient } from "@/libs/orpc/client";
 
 type LetterMetadata = CoverLetter["style"]["metadata"];

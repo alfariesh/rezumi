@@ -1,9 +1,9 @@
-import type { DateFormat, ResumeDates, YearMonth } from "@reactive-resume/schema/resume/dates";
+import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
 import { useLingui } from "@lingui/react/macro";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Platform, View } from "react-native";
-import { getPresentLabel } from "@reactive-resume/schema/resume/dates";
+import { getPresentLabel } from "@rezumi/schema/resume/dates";
 import { editDates, fromPickerDate, isReversed, pickerDate, readTypedDate, showYearMonth } from "./dates";
 import { resumeFieldFocus } from "@/draft";
 import { Button, Icon, IconButton, Sheet, Switch, Text, TextField, useTheme } from "@/ui";

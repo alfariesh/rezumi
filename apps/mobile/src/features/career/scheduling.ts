@@ -1,5 +1,5 @@
 import type { ApplicationSummary as Application } from "@/features/applications/types";
-import { fromZonedDateTime } from "@reactive-resume/utils/timezone";
+import { fromZonedDateTime } from "@rezumi/utils/timezone";
 
 export function toZoned(at: Date, timeZone: string) {
 	const parts = Object.fromEntries(

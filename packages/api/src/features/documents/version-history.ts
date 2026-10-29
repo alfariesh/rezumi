@@ -1,8 +1,8 @@
-import type { DbOrTx } from "@reactive-resume/db/client";
+import type { DbOrTx } from "@rezumi/db/client";
 import type { PgColumn, PgTable } from "drizzle-orm/pg-core";
 import { ORPCError } from "@orpc/client";
 import { and, count, desc, eq, inArray, lt, notInArray, or } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
+import { db } from "@rezumi/db/client";
 
 // An editing session's autosave is refreshed at most this often.
 const SESSION_REFRESH_MS = 2 * 60 * 1000;

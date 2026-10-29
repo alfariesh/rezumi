@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const mocks = vi.hoisted(() => ({
 	select: vi.fn(),
@@ -8,8 +8,8 @@ const mocks = vi.hoisted(() => ({
 	getLetter: vi.fn(),
 	exportCareer: vi.fn(),
 }));
-vi.mock("@reactive-resume/db/client", () => ({ db: { select: mocks.select } }));
-vi.mock("@reactive-resume/db/schema", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: { select: mocks.select } }));
+vi.mock("@rezumi/db/schema", () => ({
 	user: { id: "user.id" },
 	resume: { userId: "resume.userId" },
 	coverLetter: { userId: "coverLetter.userId" },
@@ -17,8 +17,8 @@ vi.mock("@reactive-resume/db/schema", () => ({
 	aiContentReport: { userId: "aiContentReport.userId" },
 }));
 vi.mock("drizzle-orm", () => ({ eq: (column: unknown, value: unknown) => ({ column, value }) }));
-vi.mock("@reactive-resume/env/server", () => ({ env: {} }));
-vi.mock("@reactive-resume/auth/config", () => ({ isCustomOAuthProviderEnabled: () => false }));
+vi.mock("@rezumi/env/server", () => ({ env: {} }));
+vi.mock("@rezumi/auth/config", () => ({ isCustomOAuthProviderEnabled: () => false }));
 vi.mock("../storage/service", () => ({ getStorageService: vi.fn() }));
 vi.mock("../cover-letters/service", () => ({ coverLetterService: { getById: mocks.getLetter } }));
 vi.mock("../career/service", () => ({ careerService: { exportData: mocks.exportCareer } }));

@@ -4,19 +4,19 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import z from "zod";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@reactive-resume/ui/components/form";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { generateRandomName } from "@reactive-resume/utils/slug";
+} from "@rezumi/ui/components/dialog";
+import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { toast } from "@rezumi/ui/components/toast";
+import { generateRandomName } from "@rezumi/utils/slug";
 import { useDialogStore } from "../store";
 import { ChipInput } from "@/components/input/chip-input";
 import { usePatchResume } from "@/features/resume/builder/draft";

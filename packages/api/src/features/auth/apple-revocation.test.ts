@@ -4,7 +4,7 @@ const settings = vi.hoisted(() => ({
 	APPLE_CLIENT_ID: "fixture.service",
 	APPLE_CLIENT_SECRET: "fixture-client-secret",
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env: settings }));
+vi.mock("@rezumi/env/server", () => ({ env: settings }));
 const { revokeAppleAuthorization } = await import("./apple-revocation");
 afterEach(() => vi.unstubAllGlobals());
 

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@reactive-resume/env/server", () => ({ env: { APP_URL: "https://rezumi.app/" } }));
-vi.mock("@reactive-resume/api/features/resume/web-page", () => ({
+vi.mock("@rezumi/env/server", () => ({ env: { APP_URL: "https://rezumi.app/" } }));
+vi.mock("@rezumi/api/features/resume/web-page", () => ({
 	listIndexableResumes: async () => [
 		{ username: "tess", slug: "game-dev", isPrimary: true, updatedAt: new Date("2026-10-01T00:00:00Z") },
 		{ username: "tess", slug: "level-design", isPrimary: false, updatedAt: new Date("2026-10-02T00:00:00Z") },

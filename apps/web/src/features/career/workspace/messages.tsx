@@ -5,13 +5,13 @@ import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Checkbox } from "@reactive-resume/ui/components/checkbox";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Skeleton } from "@reactive-resume/ui/components/skeleton";
-import { Textarea } from "@reactive-resume/ui/components/textarea";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { Checkbox } from "@rezumi/ui/components/checkbox";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Skeleton } from "@rezumi/ui/components/skeleton";
+import { Textarea } from "@rezumi/ui/components/textarea";
+import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import {
 	latest,
 	useDebouncedSave,

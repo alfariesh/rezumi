@@ -1,4 +1,4 @@
-import type { ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
+import type { ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import sectionTitleCatalog from "./section-title-catalog.json";
 
 // English headings by section id (builtin) or custom section type; the catalog translates them.

@@ -54,7 +54,7 @@ The Worker is bundled by `tooling/cloudflare/build.mjs` (esbuild) from `apps/ser
 `.github/workflows/deploy-cloudflare.yml` ("Deploy to Cloudflare") runs on every push to `main` and on manual dispatch. Runs never overlap: a deployment already in progress finishes before the next one starts. The single job:
 
 1. Checks out the source, installs pnpm and Node.js (from `.nvmrc`), and runs `pnpm install --frozen-lockfile`.
-2. Applies database migrations with `pnpm --filter @reactive-resume/db db:migrate`, only when the `DATABASE_URL` secret is set.
+2. Applies database migrations with `pnpm --filter @rezumi/db db:migrate`, only when the `DATABASE_URL` secret is set.
 3. Runs `pnpm deploy:cloudflare`, which builds the Worker and publishes it with Wrangler.
 
 It reads three repository secrets:

@@ -1,4 +1,4 @@
-import { escapeHtml } from "@reactive-resume/utils/string";
+import { escapeHtml } from "@rezumi/utils/string";
 
 export type ResumeCardInput = {
 	name: string;

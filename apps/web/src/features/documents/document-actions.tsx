@@ -1,13 +1,13 @@
 import type { DocumentSummary } from "./filter";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { publicResumeUrl } from "@reactive-resume/resume/sharing";
-import { Button } from "@reactive-resume/ui/components/button";
-import { ContextMenuContent, ContextMenuItem, ContextMenuSeparator } from "@reactive-resume/ui/components/context-menu";
+import { publicResumeUrl } from "@rezumi/resume/sharing";
+import { Button } from "@rezumi/ui/components/button";
+import { ContextMenuContent, ContextMenuItem, ContextMenuSeparator } from "@rezumi/ui/components/context-menu";
 import {
 	Dialog,
 	DialogContent,
@@ -15,14 +15,10 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import {
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { toast } from "@reactive-resume/ui/components/toast";
+} from "@rezumi/ui/components/dialog";
+import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { useNewDocumentsStore } from "./new-documents";
 import { ChipInput } from "@/components/input/chip-input";
 import { useDialogStore } from "@/dialogs/store";

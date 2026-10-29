@@ -1,18 +1,18 @@
-import type { Website } from "@reactive-resume/schema/resume/data";
+import type { Website } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
 import {
 	InputGroup,
 	InputGroupAddon,
 	InputGroupButton,
 	InputGroupInput,
 	InputGroupText,
-} from "@reactive-resume/ui/components/input-group";
-import { Label } from "@reactive-resume/ui/components/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@reactive-resume/ui/components/popover";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/input-group";
+import { Label } from "@rezumi/ui/components/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
+import { cn } from "@rezumi/utils/style";
 
 const DEFAULT_PREFIX = "https://";
 const HTTP_PREFIX = /^https?:\/\//i;

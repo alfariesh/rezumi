@@ -1,5 +1,5 @@
 import type { CheckIssue } from "./issues";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { ImperativeRouter } from "expo-router";
 import { t } from "@lingui/core/macro";
 import { Platform } from "react-native";

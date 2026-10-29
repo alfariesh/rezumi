@@ -1,6 +1,6 @@
 // Ported from apps/web/src/features/ats-checker/messages.ts (ts-pattern `match` → exhaustive `switch`). Keep the copy
 // identical so the catalogs share translations.
-import type { PdfCategory, PdfRuleCode } from "@reactive-resume/resume/ats-pdf";
+import type { PdfCategory, PdfRuleCode } from "@rezumi/resume/ats-pdf";
 import { t } from "@lingui/core/macro";
 
 export type PdfFindingMessage = {

@@ -1,10 +1,10 @@
 import type { CheckIssue } from "./issues";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { beforeAll, describe, expect, it } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { produce } from "immer";
-import { lintResumeForAts } from "@reactive-resume/resume/ats";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { lintResumeForAts } from "@rezumi/resume/ats";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { buildIssues } from "./issues";
 
 const NOW = new Date("2026-09-28T00:00:00Z");

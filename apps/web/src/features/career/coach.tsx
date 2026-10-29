@@ -1,6 +1,6 @@
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -9,27 +9,27 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { buttonVariants } from "@reactive-resume/ui/components/button";
+import { buttonVariants } from "@rezumi/ui/components/button";
 import {
 	ContextMenu,
 	ContextMenuContent,
 	ContextMenuItem,
 	ContextMenuTrigger,
-} from "@reactive-resume/ui/components/context-menu";
+} from "@rezumi/ui/components/context-menu";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Sheet, SheetContent, SheetTitle } from "@reactive-resume/ui/components/sheet";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { formatList } from "@reactive-resume/utils/locale";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Sheet, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { formatList } from "@rezumi/utils/locale";
+import { cn } from "@rezumi/utils/style";
 import {
 	CoachThread,
 	connectionName,

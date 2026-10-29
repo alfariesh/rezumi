@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { cn } from "@reactive-resume/utils/style";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { cn } from "@rezumi/utils/style";
 import { loadAssistantPanel } from "./dock";
 import { useEditorStore } from "@/features/resume/editor/store";
 

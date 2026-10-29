@@ -1,9 +1,9 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { Directory, File, Paths } from "expo-file-system";
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
-import { getResumeExportData } from "@reactive-resume/resume/export-sections";
+import { getResumeExportData } from "@rezumi/resume/export-sections";
 import { letterWords } from "./letter";
 import { getLostCharactersMessage } from "./messages";
 import { safeFileName } from "./model";

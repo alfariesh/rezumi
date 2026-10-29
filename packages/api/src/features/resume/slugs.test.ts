@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
 const dbMock = vi.hoisted(() => ({ insert: vi.fn(), delete: vi.fn(), select: vi.fn() }));
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
 
 const { checkSlug, findFreeSlug, matchesSlug, recordSlugChange } = await import("./slugs");
 

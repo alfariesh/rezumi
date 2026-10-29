@@ -1,10 +1,10 @@
 import type z from "zod";
 import { Trans } from "@lingui/react/macro";
 import * as React from "react";
-import { metadataSchema } from "@reactive-resume/schema/resume/data";
-import { FormControl, FormItem, FormLabel, FormMessage } from "@reactive-resume/ui/components/form";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@reactive-resume/ui/components/input-group";
-import { Slider } from "@reactive-resume/ui/components/slider";
+import { metadataSchema } from "@rezumi/schema/resume/data";
+import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { InputGroup, InputGroupAddon, InputGroupText } from "@rezumi/ui/components/input-group";
+import { Slider } from "@rezumi/ui/components/slider";
 import { SectionBase } from "../../shared/section-base";
 import { LayoutPages } from "./pages";
 import { NumberInput } from "@/components/input/number-input";

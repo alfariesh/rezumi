@@ -1,14 +1,14 @@
 // @vitest-environment happy-dom
 import type { SavedItem } from "../hooks";
 import type { Application } from "@/features/applications/types";
-import type { CareerWorkspace } from "@reactive-resume/schema/career";
+import type { CareerWorkspace } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { EMPTY_WORKSPACE } from "@reactive-resume/schema/career";
+import { EMPTY_WORKSPACE } from "@rezumi/schema/career";
 import { Workspace } from "./shell";
 
 const api = vi.hoisted(() => ({
@@ -46,7 +46,7 @@ vi.mock("@tanstack/react-router", () => ({
 	useRouter: () => ({ state: { location: { state: { __TSR_index: 0 } } } }),
 	Link: ({ children }: { children: ReactNode }) => <a href="#test-link">{children}</a>,
 }));
-vi.mock("@reactive-resume/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => "desktop" }));
+vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => "desktop" }));
 vi.mock("@/features/settings/integrations/hooks/use-has-usable-ai-provider", () => ({
 	useHasUsableAiProvider: () => ({ usableProviders: [], isLoading: false }),
 }));
@@ -60,7 +60,7 @@ vi.mock("./practise", () => ({ PractiseTab: () => null }));
 vi.mock("./debrief", () => ({ DebriefTab: () => null }));
 vi.mock("./messages", () => ({ MessagesTab: () => null }));
 vi.mock("./saved", () => ({ SavedTab: () => null }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 
 const application: Application = {
 	id: "shell-application",

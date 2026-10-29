@@ -1,6 +1,6 @@
 import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
-import type { WorkspaceTab } from "@reactive-resume/schema/career";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { View, useWindowDimensions } from "react-native";

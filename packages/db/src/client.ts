@@ -1,7 +1,7 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 import { authRelations } from "./schema/auth";
 
 const createDatabase = (pool: Pool) => drizzle({ client: pool, relations: authRelations });

@@ -1,26 +1,26 @@
 import type { ApplicationSummary } from "../types";
-import type { ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus } from "@rezumi/schema/applications/data";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, m } from "motion/react";
 import { memo, useMemo, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Checkbox } from "@reactive-resume/ui/components/checkbox";
+import { Button } from "@rezumi/ui/components/button";
+import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@reactive-resume/ui/components/popover";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Input } from "@rezumi/ui/components/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
+import { toast } from "@rezumi/ui/components/toast";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { describeNextStep, getNextStep } from "../next-step";
 import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, LIST_ORDER, PIPELINE } from "../stages";
 import { useInvalidateApplications } from "../use-application-actions";

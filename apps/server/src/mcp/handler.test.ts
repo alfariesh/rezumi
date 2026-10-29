@@ -3,9 +3,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ORPCError } from "@orpc/server";
 
 const mocks = vi.hoisted(() => ({ authentication: vi.fn(), limit: vi.fn() }));
-vi.mock("@reactive-resume/env/server", () => ({ env: { APP_URL: "https://resume.example" } }));
-vi.mock("@reactive-resume/api/context", () => ({ resolveAuthenticationFromRequestHeaders: mocks.authentication }));
-vi.mock("@reactive-resume/api/features/mcp/transport", () => ({
+vi.mock("@rezumi/env/server", () => ({ env: { APP_URL: "https://resume.example" } }));
+vi.mock("@rezumi/api/context", () => ({ resolveAuthenticationFromRequestHeaders: mocks.authentication }));
+vi.mock("@rezumi/api/features/mcp/transport", () => ({
 	consumeMcpRequestLimit: mocks.limit,
 	consumeMcpUserLimit: mocks.limit,
 }));

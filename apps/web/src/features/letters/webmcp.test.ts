@@ -1,13 +1,13 @@
 // @vitest-environment happy-dom
 
 import type { WebMcpTool } from "@/libs/webmcp";
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import { renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { ORPCError } from "@orpc/client";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { useLetterEditorStore } from "./store";
 import { useLetterWebMcpTools } from "./webmcp";
 
@@ -16,7 +16,7 @@ vi.mock("@/libs/orpc/client", () => ({
 	client: { coverLetters: { update: mocks.update } },
 	streamClient: { coverLetters: { draft: vi.fn() } },
 }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: mocks.toast }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: mocks.toast }));
 
 const letter: CoverLetter = {
 	id: "letter",

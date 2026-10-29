@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { createPublicResumePdf } from "./public-pdf";
 
 // The real lookup query, run against a stand-in `pg` client that records the SQL and returns `rows`.
 const pg = vi.hoisted(() => ({ queries: [] as { text: string; params: unknown[] }[], rows: [] as unknown[][] }));
-vi.mock("@reactive-resume/db/client", async () => {
+vi.mock("@rezumi/db/client", async () => {
 	const { drizzle } = await import("drizzle-orm/node-postgres");
 	const client = {
 		query: ({ text }: { text: string }, params: unknown[]) => {
@@ -25,7 +25,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock("./access", () => ({ hasResumeAccess: mocks.hasResumeAccess }));
 vi.mock("../../context", () => ({ resolveAuthenticationFromRequestHeaders: mocks.resolveAuthentication }));
 vi.mock("./public-render-rate-limit", () => ({ publicRenderRateLimiter: { consume: mocks.consume } }));
-vi.mock("@reactive-resume/pdf/server", () => ({ createResumePdfFile: mocks.renderPdf }));
+vi.mock("@rezumi/pdf/server", () => ({ createResumePdfFile: mocks.renderPdf }));
 // Storage that keeps files in memory, so tests never write to the local data folder.
 vi.mock("../storage", () => ({
 	getStorageService: () => ({

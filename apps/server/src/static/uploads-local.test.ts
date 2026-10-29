@@ -8,17 +8,17 @@ const envMock = vi.hoisted(() => ({
 	STORAGE_BACKEND: "local",
 	LOCAL_STORAGE_PATH: "",
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env: envMock }));
-vi.mock("@reactive-resume/api/features/storage", async (original) => ({
-	...(await original<typeof import("@reactive-resume/api/features/storage")>()),
+vi.mock("@rezumi/env/server", () => ({ env: envMock }));
+vi.mock("@rezumi/api/features/storage", async (original) => ({
+	...(await original<typeof import("@rezumi/api/features/storage")>()),
 	isPublicUploadOwner: async () => true,
 }));
 
-let storage: ReturnType<typeof import("@reactive-resume/api/features/storage").getStorageService>;
+let storage: ReturnType<typeof import("@rezumi/api/features/storage").getStorageService>;
 let handleUpload: typeof import("./uploads").handleUpload;
 beforeAll(async () => {
 	envMock.LOCAL_STORAGE_PATH = await mkdtemp(join(tmpdir(), "resume-private-upload-"));
-	storage = (await import("@reactive-resume/api/features/storage")).getStorageService();
+	storage = (await import("@rezumi/api/features/storage")).getStorageService();
 	({ handleUpload } = await import("./uploads"));
 });
 afterAll(async () => {
@@ -48,7 +48,7 @@ it.each(["uploads/user-1/pictures/private", "uploads/../agent/thread-1/private",
 );
 
 it("migrates guest upload pictures so they are accessible via the new user URL and removed from the old URL", async () => {
-	const { migrateUserStorage } = await import("@reactive-resume/api/features/storage");
+	const { migrateUserStorage } = await import("@rezumi/api/features/storage");
 	const guestKey = "uploads/guest-user/pictures/avatar.png";
 	const pngData = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 	await storage.write({ key: guestKey, data: pngData, contentType: "image/png" });

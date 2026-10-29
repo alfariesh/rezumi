@@ -1,9 +1,9 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { jsonrepair } from "jsonrepair";
 import { flattenError, ZodError } from "zod";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { generateId } from "@reactive-resume/utils/string";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { generateId } from "@rezumi/utils/string";
 import { buildAiExtractionTemplate } from "./extraction-template";
 
 function isObject(value: unknown): value is Record<string, unknown> {

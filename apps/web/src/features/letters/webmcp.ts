@@ -3,7 +3,7 @@ import type { WebMcpTool } from "@/libs/webmcp";
 import { t } from "@lingui/core/macro";
 import { useMemo } from "react";
 import z from "zod";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { toast } from "@rezumi/ui/components/toast";
 import { useLetterEditorStore } from "./store";
 import { defineWebMcpTool, useWebMcpTools } from "@/libs/webmcp";
 

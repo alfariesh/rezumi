@@ -1,9 +1,9 @@
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, Outlet, useMatchRoute } from "@tanstack/react-router";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Tabs, TabsList, TabsTrigger } from "@reactive-resume/ui/components/tabs";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { PageHeader } from "@/components/layout/page-header";
 
 export const Route = createFileRoute("/dashboard/career")({

@@ -6,7 +6,7 @@ const fixtures = vi.hoisted(() => ({
 	select: vi.fn(),
 	owner: [] as { timezone: string }[],
 }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	db: {
 		select: (...args: unknown[]) => {
 			fixtures.select(...args);

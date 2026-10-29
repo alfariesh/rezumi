@@ -1,6 +1,6 @@
 import type { IconName } from "../../forme/icons";
 import type { Style } from "../../forme/style-types";
-import { resolveLevelDisplaySizes } from "@reactive-resume/schema/resume/level-display-sizes";
+import { resolveLevelDisplaySizes } from "@rezumi/schema/resume/level-display-sizes";
 import { View } from "#react-pdf-renderer";
 import { useRender } from "../../context";
 import { resolvedPdfFlowProps } from "../../semantic/adapter";

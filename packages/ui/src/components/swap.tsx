@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 type SwapProps = {
 	/** False shows `from`, true shows `to`. */

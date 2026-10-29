@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: {
 		api: { getSession: vi.fn().mockResolvedValue(null), verifyApiKey: vi.fn().mockResolvedValue({ valid: false }) },
 	},

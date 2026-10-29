@@ -1,5 +1,5 @@
 import type { MessageDescriptor } from "@lingui/core";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import { msg } from "@lingui/core/macro";
 
 export type TemplateMetadata = {

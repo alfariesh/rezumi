@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@vercel/blob", () => mocks);
-vi.mock("@reactive-resume/env/server", () => ({ env: mocks.env }));
+vi.mock("@rezumi/env/server", () => ({ env: mocks.env }));
 
 import { BlobStorageService, blobOptions, blobPath } from "./blob";
 

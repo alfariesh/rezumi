@@ -39,7 +39,7 @@ test("AI imports retain the selecting account through parsing", async () => {
 				base64 = async () => "file";
 			},
 		},
-		"@reactive-resume/schema/cover-letter/data": {},
+		"@rezumi/schema/cover-letter/data": {},
 		"@/auth/session": { getAccountScope: () => scope },
 		"@/api/client": {
 			SessionChangedError,
@@ -78,7 +78,7 @@ function previewSession(values = [], development = true) {
 			"expo-web-browser": {},
 			"expo-sqlite/kv-store": {},
 			react: {},
-			"@reactive-resume/utils/string": { fnv1a: () => 1 },
+			"@rezumi/utils/string": { fnv1a: () => 1 },
 			"expo-secure-store": {
 				getItemAsync: async (key) => store.get(key) ?? null,
 				setItemAsync: async (key, value) => {

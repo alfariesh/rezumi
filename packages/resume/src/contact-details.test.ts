@@ -1,5 +1,5 @@
 import { expect, it } from "vite-plus/test";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { removeContactDetails } from "./contact-details";
 
 it("redacts built-in and custom reference phones without changing the source document", () => {

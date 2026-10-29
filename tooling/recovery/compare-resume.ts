@@ -1,6 +1,6 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createHash } from "node:crypto";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
 
 type RecoveryOutcome = "no-op" | "export-copy" | "blocked";
 type RecoveryBlockReason =

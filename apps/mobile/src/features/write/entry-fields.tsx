@@ -1,13 +1,13 @@
 import type { EntryField } from "./fields";
 import type { EntryWriter } from "./hooks";
 import type { Entry } from "./model";
-import type { CustomSectionType, RoleItem, Website } from "@reactive-resume/schema/resume/data";
-import type { DateFormat, ResumeDates } from "@reactive-resume/schema/resume/dates";
+import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
+import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { View } from "react-native";
-import { EMPTY_RESUME_DATES } from "@reactive-resume/schema/resume/dates";
-import { generateId } from "@reactive-resume/utils/string";
+import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
+import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./date-field";
 import { ENTRY_FIELDS } from "./fields";
 import { ColorPickerSheet, ColorRow, IconPickerSheet } from "./pickers";

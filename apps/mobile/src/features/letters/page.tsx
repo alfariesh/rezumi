@@ -1,9 +1,9 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PixelRatio, View } from "react-native";
-import { coverLetterTextToHtml } from "@reactive-resume/resume/cover-letter";
+import { coverLetterTextToHtml } from "@rezumi/resume/cover-letter";
 import { LETTER_RENDER_OPTIONS, letterPageData, useLetterWords } from "./compose";
 import { useLetterDrafting } from "./drafting";
 import { useLetterStore } from "@/draft";

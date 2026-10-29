@@ -1,6 +1,6 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import { strToU8, zipSync } from "fflate";
-import { slugify } from "@reactive-resume/utils/slug";
+import { slugify } from "@rezumi/utils/slug";
 
 type AccountExport = RouterOutput["auth"]["exportData"];
 

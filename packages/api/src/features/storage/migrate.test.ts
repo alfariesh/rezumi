@@ -15,7 +15,7 @@ const env = vi.hoisted(() => ({
 	LOCAL_STORAGE_PATH: "./data",
 	FLAG_DISABLE_IMAGE_PROCESSING: false,
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env }));
+vi.mock("@rezumi/env/server", () => ({ env }));
 
 const { configureStorageService, migrateUserStorage, processImageForUpload } = await import("./service");
 

@@ -6,22 +6,22 @@ import type {
 	R2Bucket,
 	ScheduledController,
 } from "@cloudflare/workers-types";
-import type { CoordinationService } from "@reactive-resume/db/coordination";
+import type { CoordinationService } from "@rezumi/db/coordination";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { on } from "node:events";
 import { isIP } from "node:net";
 import wasm from "@formepdf/core/pkg-web/forme_bg.wasm";
 import { init } from "@formepdf/core/worker";
 import { Pool } from "pg";
-import { configureAgentStreamLifetime } from "@reactive-resume/api/features/agent/streams";
-import { runCareerJobs } from "@reactive-resume/api/features/career/jobs";
-import { configureStorageService, getStorageService, isPublicUploadOwner } from "@reactive-resume/api/features/storage";
-import { initializeAuth } from "@reactive-resume/auth/config";
-import { withDatabasePool } from "@reactive-resume/db/client";
-import { configureCoordination } from "@reactive-resume/db/coordination";
-import { env } from "@reactive-resume/env/server";
-import { configureOwnPictureReader } from "@reactive-resume/pdf/server";
-import { TRUSTED_IP_HEADERS } from "@reactive-resume/utils/rate-limit";
+import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
+import { runCareerJobs } from "@rezumi/api/features/career/jobs";
+import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
+import { initializeAuth } from "@rezumi/auth/config";
+import { withDatabasePool } from "@rezumi/db/client";
+import { configureCoordination } from "@rezumi/db/coordination";
+import { env } from "@rezumi/env/server";
+import { configureOwnPictureReader } from "@rezumi/pdf/server";
+import { TRUSTED_IP_HEADERS } from "@rezumi/utils/rate-limit";
 import { createApp } from "../http/app";
 import { R2StorageService } from "./r2";
 

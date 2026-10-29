@@ -3,7 +3,7 @@
 import type { SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "../shell";
 import type { IconName } from "@/ui";
-import type { SavedItemKind, WorkspaceTab } from "@reactive-resume/schema/career";
+import type { SavedItemKind, WorkspaceTab } from "@rezumi/schema/career";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";

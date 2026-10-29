@@ -1,8 +1,8 @@
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
-import { parseResumeData } from "@reactive-resume/schema/resume/data";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { parseResumeData } from "@rezumi/schema/resume/data";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { renderResume } from "../../forme/render";
 
 /** Where the first page's sidebar and main sections sit, by their left edges. */

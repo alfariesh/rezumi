@@ -13,8 +13,8 @@ const writeVersionMock = vi.hoisted(() => vi.fn());
 const storageDeleteMock = vi.hoisted(() => vi.fn());
 const uploadFileMock = vi.hoisted(() => vi.fn());
 
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
-vi.mock("@reactive-resume/db/schema", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/schema", () => ({
 	user: { id: "owner_id" },
 	resume: { id: "resume_id", userId: "user_id", trashedAt: "trashed_at" },
 	application: {
@@ -212,7 +212,7 @@ describe("applicationService sent resume", () => {
 	it.each(["stage", "resume"] as const)(
 		"saves the sent version and score when the %s is linked at Applied",
 		async (field) => {
-			const data = structuredClone((await import("@reactive-resume/schema/resume/default")).defaultResumeData);
+			const data = structuredClone((await import("@rezumi/schema/resume/default")).defaultResumeData);
 			resumeGetByIdMock.mockResolvedValue({ id: "resume-1", data });
 			setSelectResults([existing], [{ id: "user-1" }], [existing], [{ id: "resume-1", data }]);
 			const setSent = vi.fn(() => ({ where: () => ({ returning: () => Promise.resolve([{ ...sentRow }]) }) }));
@@ -238,7 +238,7 @@ describe("applicationService sent resume", () => {
 	it.each([{ notes: "Private interview note" }, { role: "Senior Engineer" }])(
 		"does not record linked drafts as submitted during metadata edits: %j",
 		async (fields) => {
-			const data = structuredClone((await import("@reactive-resume/schema/resume/default")).defaultResumeData);
+			const data = structuredClone((await import("@rezumi/schema/resume/default")).defaultResumeData);
 			setSelectResults([sentRow], [{ id: "user-1" }], [sentRow], [{ id: "resume-1", data }]);
 			dbMock.update.mockReturnValue({
 				set: () => ({ where: () => ({ returning: () => Promise.resolve([sentRow]) }) }),
@@ -252,7 +252,7 @@ describe("applicationService sent resume", () => {
 	);
 
 	it("does not record linked drafts as submitted when bulk-adding tags", async () => {
-		const data = structuredClone((await import("@reactive-resume/schema/resume/default")).defaultResumeData);
+		const data = structuredClone((await import("@rezumi/schema/resume/default")).defaultResumeData);
 		setSelectResults([{ id: "user-1" }], [{ id: "resume-1", data }]);
 		dbMock.update.mockReturnValue({
 			set: () => ({ where: () => ({ returning: () => Promise.resolve([sentRow]) }) }),
@@ -693,7 +693,7 @@ describe("applicationService.importMany", () => {
 	});
 
 	it("saves the sent version for rows imported at Applied or later", async () => {
-		const data = structuredClone((await import("@reactive-resume/schema/resume/default")).defaultResumeData);
+		const data = structuredClone((await import("@rezumi/schema/resume/default")).defaultResumeData);
 		const imported = { ...existing, status: "applied" as const, resumeId: "resume-1", sentResumeVersionId: null };
 		setSelectResults([{ id: "user-1" }], [{ id: "resume-1", data }]);
 		dbMock.insert.mockReturnValue({ values: () => ({ returning: () => Promise.resolve([imported]) }) });

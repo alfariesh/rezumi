@@ -1,8 +1,8 @@
 import type { EditorSelection } from "../editor/store";
-import type { SemanticNode } from "@reactive-resume/resume/stylesheet/registry";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { SemanticNode } from "@rezumi/resume/stylesheet/registry";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
-import { escapeCssString } from "@reactive-resume/resume/stylesheet/registry";
+import { escapeCssString } from "@rezumi/resume/stylesheet/registry";
 import { describeEntry, findEntry, getSectionObject, resolveSection } from "../editor/write/model";
 import { getSectionTitle } from "@/libs/resume/section";
 

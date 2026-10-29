@@ -1,8 +1,8 @@
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { Alert, AlertDescription, AlertTitle } from "@reactive-resume/ui/components/alert";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
 
 /** Guests lose their work when the session ends, so the app says so and offers a way to keep it. */
 export function GuestBanner() {

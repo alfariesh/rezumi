@@ -1,10 +1,10 @@
 import type { EditorSelection } from "./store";
-import type { PageMap, PageMapNode } from "@reactive-resume/pdf/page-map";
+import type { PageMap, PageMapNode } from "@rezumi/pdf/page-map";
 import type { MouseEvent } from "react";
 import { Trans } from "@lingui/react/macro";
-import { entryHeaderOf } from "@reactive-resume/schema/resume/data";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { cn } from "@reactive-resume/utils/style";
+import { entryHeaderOf } from "@rezumi/schema/resume/data";
+import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
 import { isSameSelection, useEditorStore } from "./store";
 import { getSectionType } from "./write/model";
 import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";

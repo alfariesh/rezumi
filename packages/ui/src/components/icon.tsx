@@ -170,7 +170,7 @@ import {
 	XCircleIcon,
 	XIcon,
 } from "@phosphor-icons/react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 /** Every app icon, by its Phosphor name. Add an entry here to use another Phosphor glyph. */
 const icons = {

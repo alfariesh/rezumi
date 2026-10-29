@@ -1,9 +1,9 @@
 import { sql } from "drizzle-orm";
 import { withTimeout } from "es-toolkit";
-import { getStorageService } from "@reactive-resume/api/features/storage";
-import { db } from "@reactive-resume/db/client";
-import { getRedis } from "@reactive-resume/db/redis";
-import { env } from "@reactive-resume/env/server";
+import { getStorageService } from "@rezumi/api/features/storage";
+import { db } from "@rezumi/db/client";
+import { getRedis } from "@rezumi/db/redis";
+import { env } from "@rezumi/env/server";
 import { appVersion } from "../app-version";
 
 const HEALTHCHECK_TIMEOUT_MS = 1_500;

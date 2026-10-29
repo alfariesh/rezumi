@@ -2,7 +2,7 @@
 // ponytail: M4-T1 ports the same table for resume Design in parallel; keep one copy once both have merged.
 import type { LetterDocument } from "@/draft/types";
 import type { I18n } from "@lingui/core";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import type { WritableDraft } from "immer";
 import { msg } from "@lingui/core/macro";
 

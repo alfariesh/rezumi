@@ -1,6 +1,6 @@
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 /**
  * A small set of options (2–4) as segments on a sunken track; the chosen one is raised. It's a

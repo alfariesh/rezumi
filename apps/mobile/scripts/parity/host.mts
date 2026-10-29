@@ -4,8 +4,8 @@ import { readFile, mkdir, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import { createRequire, registerHooks } from "node:module";
 import { pathToFileURL } from "node:url";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
-import { templateSchema } from "@reactive-resume/schema/templates";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
+import { templateSchema } from "@rezumi/schema/templates";
 
 // Node 24's extension hook matches the existing images.node re-export when this script uses tsx.
 registerHooks({
@@ -13,8 +13,8 @@ registerHooks({
 		return next(specifier.startsWith(".") && specifier.endsWith(".node") ? `${specifier}.ts` : specifier, context);
 	},
 });
-const { createResumePdfFile } = await import("@reactive-resume/pdf/server");
-const requirePdf = createRequire(import.meta.resolve("@reactive-resume/pdf/server"));
+const { createResumePdfFile } = await import("@rezumi/pdf/server");
+const requirePdf = createRequire(import.meta.resolve("@rezumi/pdf/server"));
 const { getDocument } = await import(pathToFileURL(requirePdf.resolve("pdfjs-dist/legacy/build/pdf.mjs")).href);
 const picture = await readFile(new URL("../../../web/public/photos/sample-picture.jpg", import.meta.url));
 const font = await readFile(new URL("../../assets/fonts/Figtree-Regular.ttf", import.meta.url));

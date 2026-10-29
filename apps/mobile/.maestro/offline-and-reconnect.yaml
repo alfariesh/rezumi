@@ -1,4 +1,4 @@
-appId: me.rxresu
+appId: app.rezumi
 name: Queue notes offline and sync on reconnect
 onFlowComplete:
   - setAirplaneMode: disabled
@@ -6,7 +6,7 @@ onFlowComplete:
 # Android only: Maestro setAirplaneMode support. Wi-Fi must turn off with airplane mode.
 # Signed in, dedicated unlocked RESUME_ID. Warm draft and fonts while online first.
 - launchApp
-- openLink: me.rxresu://builder/${RESUME_ID}/share
+- openLink: app.rezumi://builder/${RESUME_ID}/share
 - extendedWaitUntil:
     visible: Document options
     timeout: 30000
@@ -32,7 +32,7 @@ onFlowComplete:
     timeout: 60000
 - stopApp
 - launchApp
-- openLink: me.rxresu://builder/${RESUME_ID}/share
+- openLink: app.rezumi://builder/${RESUME_ID}/share
 - tapOn: Document options
 - tapOn: Notes
 - assertVisible: .*Store readiness offline note.*

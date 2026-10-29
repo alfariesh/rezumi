@@ -1,8 +1,8 @@
 import { t } from "@lingui/core/macro";
 import { useRouter } from "@tanstack/react-router";
-import { BrandIcon } from "@reactive-resume/ui/components/brand-icon";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { cn } from "@reactive-resume/utils/style";
+import { BrandIcon } from "@rezumi/ui/components/brand-icon";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { cn } from "@rezumi/utils/style";
 
 export function LoadingScreen() {
 	// Fades in on in-app navigations. On first load it takes over from the identical HTML loader in index.html, which

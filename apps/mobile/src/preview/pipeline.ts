@@ -1,7 +1,7 @@
 import type { PdfDocument } from "../../modules/pdf-pages";
 import type { RenderRequest, RenderedPages } from "./types";
-import { nativeEngine } from "@reactive-resume/forme-native";
-import { renderResumePdf } from "@reactive-resume/pdf/native";
+import { nativeEngine } from "@rezumi/forme-native";
+import { renderResumePdf } from "@rezumi/pdf/native";
 import { pdfPages } from "../../modules/pdf-pages";
 import { configurePreviewResources, readPreviewImage } from "./resources";
 

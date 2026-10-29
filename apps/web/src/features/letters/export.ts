@@ -1,6 +1,6 @@
 import type { ExportFormat } from "@/features/resume/export/use-resume-export";
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
-import { createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
+import { createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
 import { createLetterWordsForLocale, letterPageData } from "./compose";
 import { createExportFile, getDefaultFileName } from "@/features/resume/export/use-resume-export";
 import { client } from "@/libs/orpc/client";

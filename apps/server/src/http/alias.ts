@@ -1,5 +1,5 @@
-import { env } from "@reactive-resume/env/server";
-import { isAppSectionPath } from "@reactive-resume/utils/app-paths";
+import { env } from "@rezumi/env/server";
+import { isAppSectionPath } from "@rezumi/utils/app-paths";
 
 // Host and port: in development both domains can be localhost on different ports.
 const aliasHost = env.APP_ALIAS_URL ? new URL(env.APP_ALIAS_URL).host : undefined;

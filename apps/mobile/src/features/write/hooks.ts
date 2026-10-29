@@ -1,9 +1,9 @@
 import type { Entry, WriteSection } from "./model";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import { useLingui } from "@lingui/react/macro";
 import { useCallback } from "react";
-import { sortSectionItemsByPeriod } from "@reactive-resume/resume/section-sort";
+import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
 import { SECTION_TITLES } from "./fields";
 import { createEntry, findEntry, getEntries, getSectionObject, readData } from "./model";
 import { useResumeStore } from "@/draft";

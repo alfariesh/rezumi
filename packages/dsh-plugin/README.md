@@ -61,7 +61,7 @@ Against `0.2.0-rc.2` this package needed no source change: `dsh-mcp-client@0.2.0
 
 ## Development
 
-This package lives in the [Rezumi monorepo](https://github.com/reactive-resume/reactive-resume) at `packages/dsh-plugin`, next to `packages/mcp` — the server it bridges. `src/tool-names.test.ts` checks every tool the prompt guide names against `@reactive-resume/mcp/tool-names`, so renaming a tool breaks this package in the same pull request.
+This package lives in the [Rezumi monorepo](https://github.com/reactive-resume/reactive-resume) at `packages/dsh-plugin`, next to `packages/mcp` — the server it bridges. `src/tool-names.test.ts` checks every tool the prompt guide names against `@rezumi/mcp/tool-names`, so renaming a tool breaks this package in the same pull request.
 
 ```bash
 pnpm --filter dsh-plugin-reactive-resume test

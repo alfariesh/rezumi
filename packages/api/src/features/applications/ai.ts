@@ -1,11 +1,11 @@
 import { ORPCError } from "@orpc/client";
 import { APICallError, generateText, RetryError } from "ai";
 import z from "zod";
-import { safetySystemPrompt } from "@reactive-resume/ai/prompts";
-import { coverLetterTextToHtml } from "@reactive-resume/resume/cover-letter";
-import { postingSourceSchema } from "@reactive-resume/schema/applications/data";
-import { slugify } from "@reactive-resume/utils/slug";
-import { generateId } from "@reactive-resume/utils/string";
+import { safetySystemPrompt } from "@rezumi/ai/prompts";
+import { coverLetterTextToHtml } from "@rezumi/resume/cover-letter";
+import { postingSourceSchema } from "@rezumi/schema/applications/data";
+import { slugify } from "@rezumi/utils/slug";
+import { generateId } from "@rezumi/utils/string";
 import { protectedProcedure } from "../../context";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
 import { aiProvidersService } from "../ai-providers/service";

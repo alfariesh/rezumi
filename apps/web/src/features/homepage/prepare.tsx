@@ -2,8 +2,8 @@ import type { CSSProperties, ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { useEffect, useRef, useState } from "react";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
 import { goToScene, INTERVIEW_AT, SCENE, useLanding } from "./scroll";
 import { Doodle, labelClass, SceneCaption, Stamp, TypedText } from "./ui";
 

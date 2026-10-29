@@ -1,12 +1,12 @@
-import type { DbOrTx } from "@reactive-resume/db/client";
+import type { DbOrTx } from "@rezumi/db/client";
 import type { SQL } from "drizzle-orm";
 import type { SelectedFields } from "drizzle-orm/pg-core";
 import type { SelectResultFields } from "drizzle-orm/query-builders/select.types";
 import { and, desc, eq, gt, inArray, isNull, like, or, sql } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { isValidSlug, MAX_SLUG_LENGTH } from "@reactive-resume/schema/resume/slug";
-import { slugify } from "@reactive-resume/utils/slug";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { isValidSlug, MAX_SLUG_LENGTH } from "@rezumi/schema/resume/slug";
+import { slugify } from "@rezumi/utils/slug";
 import { ownerIsNotBanned } from "./access-policy";
 
 // After a rename the old address keeps working this long.

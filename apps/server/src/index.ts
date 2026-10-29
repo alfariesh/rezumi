@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { serve } from "@hono/node-server";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 import { runStartupChecks } from "./startup/checks";
 
 export async function main() {
@@ -8,7 +8,7 @@ export async function main() {
 
 	// Load and initialize auth only after migrations have created the provider tables.
 	const { createApp } = await import("./http/app");
-	const { initializeAuth } = await import("@reactive-resume/auth/config");
+	const { initializeAuth } = await import("@rezumi/auth/config");
 	await initializeAuth();
 	const { startCareerScheduler } = await import("./startup/career-scheduler");
 

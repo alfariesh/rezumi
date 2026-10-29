@@ -1,4 +1,4 @@
-import type { HarvestProgress, RawExtraction } from "@reactive-resume/resume/ats-pdf";
+import type { HarvestProgress, RawExtraction } from "@rezumi/resume/ats-pdf";
 
 /**
  * The only file in the app that talks to PDF.js for the ATS checker.
@@ -69,7 +69,7 @@ export async function extractPdf(file: File, options: ExtractOptions = {}): Prom
 	// document shares its one worker instead of starting (and parsing) a new one per check.
 	const [{ getDocument, getPdfWorker }, { HARVEST_DEFAULTS, harvestPdfDocument }] = await Promise.all([
 		import("@/features/resume/preview/pdfjs"),
-		import("@reactive-resume/resume/ats-pdf"),
+		import("@rezumi/resume/ats-pdf"),
 	]);
 
 	const data = new Uint8Array(await file.arrayBuffer());

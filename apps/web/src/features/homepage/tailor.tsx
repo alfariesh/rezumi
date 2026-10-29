@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 import { SCENE, useLanding } from "./scroll";
 import { Sheet } from "./sheet";
 import { Doodle, labelClass, SceneCaption, Stamp } from "./ui";

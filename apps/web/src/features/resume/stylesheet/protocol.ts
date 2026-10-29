@@ -6,8 +6,8 @@ import type {
 	SemanticCssDiagnostic,
 	SemanticNode,
 	StyleProgram,
-} from "@reactive-resume/resume/stylesheet";
-import type { StylesheetSource } from "@reactive-resume/schema/resume/stylesheet";
+} from "@rezumi/resume/stylesheet";
+import type { StylesheetSource } from "@rezumi/schema/resume/stylesheet";
 
 export type SemanticCssEditorMetadata = {
 	semanticTree: SemanticNode;

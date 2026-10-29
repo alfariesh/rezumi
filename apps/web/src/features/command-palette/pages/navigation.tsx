@@ -1,8 +1,8 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
-import { CommandItem } from "@reactive-resume/ui/components/command";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { CommandItem } from "@rezumi/ui/components/command";
+import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../store";
 import { BaseCommandGroup } from "./base";
 import { useDialogStore } from "@/dialogs/store";

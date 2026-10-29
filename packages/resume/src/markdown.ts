@@ -1,6 +1,6 @@
-import type { CustomSection, CustomSectionType, ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
-import { assertResumeRenderBudget, assertRichTextComplexity } from "@reactive-resume/schema/resume/limits";
-import { toSafeLink } from "@reactive-resume/utils/link";
+import type { CustomSection, CustomSectionType, ResumeData, SectionType } from "@rezumi/schema/resume/data";
+import { assertResumeRenderBudget, assertRichTextComplexity } from "@rezumi/schema/resume/limits";
+import { toSafeLink } from "@rezumi/utils/link";
 import { isCoverLetterOnlyDocument } from "./export-sections";
 
 type Sections = ResumeData["sections"];

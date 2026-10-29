@@ -1,12 +1,12 @@
-import type { Contact } from "@reactive-resume/schema/applications/data";
+import type { Contact } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
-import { contactSchema } from "@reactive-resume/schema/applications/data";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@reactive-resume/ui/components/popover";
+import { contactSchema } from "@rezumi/schema/applications/data";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 
 const EMPTY_CONTACT = { name: "", role: "", type: "", email: "", phone: "" };
 

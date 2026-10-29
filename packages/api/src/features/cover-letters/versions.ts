@@ -1,7 +1,7 @@
-import type { DbOrTx } from "@reactive-resume/db/client";
-import type { CoverLetterVersionData, CoverLetterVersionKind } from "@reactive-resume/db/schema";
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
-import * as schema from "@reactive-resume/db/schema";
+import type { DbOrTx } from "@rezumi/db/client";
+import type { CoverLetterVersionData, CoverLetterVersionKind } from "@rezumi/db/schema";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
+import * as schema from "@rezumi/db/schema";
 import { createVersionHistory } from "../documents/version-history";
 
 /** The parts of a letter a version keeps. */

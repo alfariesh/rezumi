@@ -1,4 +1,4 @@
-import type { ResolvedNodeStyle } from "@reactive-resume/resume/stylesheet";
+import type { ResolvedNodeStyle } from "@rezumi/resume/stylesheet";
 import { describe, expect, it } from "vite-plus/test";
 import { adaptResolvedPdfNode } from "./adapter";
 

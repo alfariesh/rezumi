@@ -32,7 +32,7 @@ const origin = "http://localhost";
 try {
 	await admin.query(`CREATE DATABASE "${databaseName}"`);
 	created = true;
-	execFileSync("pnpm", ["--filter", "@reactive-resume/db", "db:migrate"], {
+	execFileSync("pnpm", ["--filter", "@rezumi/db", "db:migrate"], {
 		cwd: root,
 		env: { ...process.env, DATABASE_URL: databaseUrl.href, CLOUDFLARE: "0" },
 		stdio: "pipe",

@@ -1,7 +1,7 @@
 import type { ChatAttachment, MessageContext } from "./chat";
 import type { AssistantDocument } from "./document";
 import type { RouterOutput } from "@/libs/orpc/client";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -16,11 +16,11 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { cn } from "@rezumi/utils/style";
 import { useConversationConnection } from "./chat";
 import { Composer, Conversation } from "./conversation";
 import { ProviderSetup } from "./provider-setup";

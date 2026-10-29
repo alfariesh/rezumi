@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { useEffect, useRef } from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 import { prefersReducedMotion, SCENE } from "./scroll";
 import { Sheet } from "./sheet";
 import { CtaLink, Doodle } from "./ui";

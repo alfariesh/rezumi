@@ -1,7 +1,7 @@
 // Small pieces every workspace tab uses, ported from apps/web/src/features/career/shared.tsx.
 import type { IconName } from "@/ui";
 import type { ColorToken } from "@/ui/tokens";
-import type { GenerateTask, WorkspaceTab } from "@reactive-resume/schema/career";
+import type { GenerateTask, WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";

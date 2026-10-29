@@ -1,4 +1,4 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
 
 export type PreviewPageSize = {

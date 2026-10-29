@@ -1,6 +1,6 @@
 // Pure workspace logic ported from apps/web/src/features/career/workspace/{apply,debrief,practise,recorder,shell}.
 // No React Native, Lingui or path-alias imports, so the M6-T2 Node scenarios run it directly.
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 
 // ---- Answers (Apply) ----
 

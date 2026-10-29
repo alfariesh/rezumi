@@ -3,8 +3,8 @@ import type { PDFDocumentLoadingTask, PDFDocumentProxy } from "pdfjs-dist/legacy
 import { AnnotationMode } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { EventBus, LinkTarget, PDFLinkService, PDFViewer } from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
 import { useEffect, useReducer, useRef } from "react";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { cn } from "@reactive-resume/utils/style";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { cn } from "@rezumi/utils/style";
 import { getDocument, getPdfWorker } from "@/features/resume/preview/pdfjs";
 import "pdfjs-dist/legacy/web/pdf_viewer.css";
 

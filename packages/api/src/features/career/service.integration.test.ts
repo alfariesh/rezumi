@@ -1,4 +1,4 @@
-import type { CareerSource } from "@reactive-resume/schema/career";
+import type { CareerSource } from "@rezumi/schema/career";
 import { randomUUID } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
@@ -6,17 +6,17 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vite-
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as tables from "@reactive-resume/db/schema";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { careerProfileDataSchema, savedItemDataSchema } from "@reactive-resume/schema/career";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import * as tables from "@rezumi/db/schema";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { careerProfileDataSchema, savedItemDataSchema } from "@rezumi/schema/career";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const fixture = vi.hoisted(() => ({
 	db: undefined as ReturnType<typeof drizzle> | undefined,
 	generate: vi.fn(),
 	storageDelete: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	get db() {
 		return fixture.db;
 	},
@@ -1057,7 +1057,7 @@ describe.skipIf(!databaseUrl)("career knowledge, context and data lifecycle", ()
 		const running = runCareerJobs();
 		await started.promise;
 		try {
-			const { careerScheduleInputSchema } = await import("@reactive-resume/schema/career");
+			const { careerScheduleInputSchema } = await import("@rezumi/schema/career");
 			const [schedule] = await careerJobs.list("alice");
 			await careerJobs.save("alice", { ...careerScheduleInputSchema.parse(schedule), id: "pause-me", enabled: false });
 		} finally {

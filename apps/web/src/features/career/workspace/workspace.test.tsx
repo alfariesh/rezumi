@@ -2,14 +2,14 @@ import type { SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 // @vitest-environment happy-dom
 import type { Application } from "@/features/applications/types";
-import type { CareerWorkspace } from "@reactive-resume/schema/career";
+import type { CareerWorkspace } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { EMPTY_WORKSPACE } from "@reactive-resume/schema/career";
+import { EMPTY_WORKSPACE } from "@rezumi/schema/career";
 import { useDebouncedSave } from "../hooks";
 import { ApplyTab } from "./apply";
 import { DebriefTab } from "./debrief";
@@ -78,7 +78,7 @@ vi.mock("../shared", async (importOriginal) => ({
 	CollapseRow: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 	Swap: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 
 const application: Application = {
 	id: "workspace-application",

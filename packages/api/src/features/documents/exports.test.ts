@@ -1,15 +1,15 @@
 import { beforeEach, expect, it, vi } from "vite-plus/test";
 import { call } from "@orpc/server";
 import { unzipSync, strFromU8 } from "fflate";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const getResume = vi.hoisted(() => vi.fn());
 vi.mock("../resume/service", () => ({ resumeService: { getById: getResume } }));
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: { api: { getSession: vi.fn().mockResolvedValue({ user: { id: "owner" } }) } },
 	verifyOAuthToken: vi.fn(),
 }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	db: { select: () => ({ from: () => ({ where: () => ({ limit: async () => [{ id: "owner", banned: false }] }) }) }) },
 }));
 const { documentExports } = await import("./exports");

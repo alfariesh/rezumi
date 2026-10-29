@@ -1,6 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { lazy, Suspense } from "react";
-import { Skeleton } from "@reactive-resume/ui/components/skeleton";
+import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { SectionBase } from "../shared/section-base";
 
 const StylesheetEditorShell = lazy(() => import("@/features/resume/stylesheet/editor"));

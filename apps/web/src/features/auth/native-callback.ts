@@ -2,5 +2,5 @@
 export function androidCallbackIntent(search: string): string {
 	const callback = new URL("https://rezumi.app/auth/native-callback");
 	callback.search = search;
-	return `intent://${callback.host}${callback.pathname}${callback.search}#Intent;scheme=https;package=me.rxresu;end`;
+	return `intent://${callback.host}${callback.pathname}${callback.search}#Intent;scheme=https;package=app.rezumi;end`;
 }

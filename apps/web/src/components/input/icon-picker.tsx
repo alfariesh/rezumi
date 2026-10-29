@@ -1,9 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { lazyRouteComponent } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@reactive-resume/ui/components/popover";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
+import { cn } from "@rezumi/utils/style";
 
 // The icon list, its search index and the virtual grid load when the picker is about to open.
 const IconPickerGrid = lazyRouteComponent(() => import("./icon-picker-grid"), "IconPickerGrid");

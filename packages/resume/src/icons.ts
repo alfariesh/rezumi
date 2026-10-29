@@ -1,4 +1,4 @@
-import type { IconName } from "@reactive-resume/schema/icons";
+import type { IconName } from "@rezumi/schema/icons";
 
 // Whole words only: a substring match gave "Xing", "Dropbox" and "Stack Exchange" the X logo.
 const NETWORK_ICON_MAP: Array<{ match: RegExp; icon: IconName }> = [

@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { startTransition } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
 import { useTheme } from "./provider";
 
 export function ThemeToggleButton(props: React.ComponentProps<typeof Button>) {

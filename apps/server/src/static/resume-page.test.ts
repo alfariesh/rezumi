@@ -1,20 +1,20 @@
 import { createHash } from "node:crypto";
 import { expect, it, vi } from "vite-plus/test";
-import { WEB_PAGE_SCRIPT } from "@reactive-resume/pdf/web-page-document";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { WEB_PAGE_SCRIPT } from "@rezumi/pdf/web-page-document";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
-vi.mock("@reactive-resume/env/server", () => ({ env: { APP_URL: "https://resume.example" } }));
-vi.mock("@reactive-resume/api/features/resume/web-page", () => ({
+vi.mock("@rezumi/env/server", () => ({ env: { APP_URL: "https://resume.example" } }));
+vi.mock("@rezumi/api/features/resume/web-page", () => ({
 	loadPublicWebPage: vi.fn(),
 	verifyWebPagePassword: vi.fn(),
 }));
-vi.mock("@reactive-resume/pdf/web-page", () => ({
+vi.mock("@rezumi/pdf/web-page", () => ({
 	renderResumeWebPage: vi.fn(async () => ({ lang: "en-US", html: "<svg><script>untrusted()</script></svg>", css: "" })),
 	webPageImageUrl: () => () => undefined,
 }));
 
 it("authorizes only the fixed application script, even if rendered content contains a script", async () => {
-	const { loadPublicWebPage } = await import("@reactive-resume/api/features/resume/web-page");
+	const { loadPublicWebPage } = await import("@rezumi/api/features/resume/web-page");
 	vi.mocked(loadPublicWebPage).mockResolvedValue({
 		status: "ready",
 		data: structuredClone(defaultResumeData),

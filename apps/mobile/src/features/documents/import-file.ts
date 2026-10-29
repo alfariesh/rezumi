@@ -1,7 +1,7 @@
 import type { DocumentPickerAsset } from "expo-document-picker";
 import { t } from "@lingui/core/macro";
 import { File } from "expo-file-system";
-import { coverLetterDocumentSchema } from "@reactive-resume/schema/cover-letter/data";
+import { coverLetterDocumentSchema } from "@rezumi/schema/cover-letter/data";
 import { client, rest, SessionChangedError } from "@/api/client";
 import { getAccountScope } from "@/auth/session";
 

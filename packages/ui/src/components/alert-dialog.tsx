@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
-import { Button } from "@reactive-resume/ui/components/button";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { cn } from "@rezumi/utils/style";
 
 function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
 	return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />;

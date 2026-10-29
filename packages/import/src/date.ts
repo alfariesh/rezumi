@@ -1,4 +1,4 @@
-import type { ResumeDates, YearMonth } from "@reactive-resume/schema/resume/dates";
+import type { ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
 
 // ponytail: Intl replaces the 12-line MONTH_NAMES array; pinned to en-US so output is stable
 const fmt = new Intl.DateTimeFormat("en-US", { month: "long" });

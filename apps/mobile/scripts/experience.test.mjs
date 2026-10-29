@@ -145,7 +145,7 @@ const { exportFile } = load("features/share/files.ts", {
 	},
 	"expo-print": {},
 	"expo-sharing": {},
-	"@reactive-resume/resume/export-sections": {},
+	"@rezumi/resume/export-sections": {},
 	"./letter": { letterWords: async () => translatedLetterWords },
 	"./messages": {},
 	"./model": { safeFileName },
@@ -190,8 +190,8 @@ const exportBoundary = {
 };
 const { DownloadTab } = load("features/share/download.tsx", {
 	"expo-web-browser": { openBrowserAsync: async (url) => calls.push({ browser: url }) },
-	"@reactive-resume/resume/ats": { lintResumeForAts: () => ({ findings: [] }) },
-	"@reactive-resume/resume/cover-letter": {},
+	"@rezumi/resume/ats": { lintResumeForAts: () => ({ findings: [] }) },
+	"@rezumi/resume/cover-letter": {},
 	"./document": document,
 	"./files": exportBoundary,
 	"./letter": {},

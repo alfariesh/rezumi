@@ -1,9 +1,9 @@
 import type { MessageDescriptor, Messages } from "@lingui/core";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { Locale } from "@rezumi/utils/locale";
 import { i18n } from "@lingui/core";
 import { msg } from "@lingui/core/macro";
 import Cookies from "js-cookie";
-import { defaultLocale, isLocale } from "@reactive-resume/utils/locale";
+import { defaultLocale, isLocale } from "@rezumi/utils/locale";
 
 const storageKey = "locale";
 const messageLoaders = import.meta.glob<{ messages: Messages }>("../../locales/*.po");

@@ -1,9 +1,9 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { z } from "zod";
-import { getNetworkIcon } from "@reactive-resume/resume/icons";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { generateId } from "@reactive-resume/utils/string";
+import { getNetworkIcon } from "@rezumi/resume/icons";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { generateId } from "@rezumi/utils/string";
 import { toRangeDates, toSingleDates } from "./date";
 import { rethrowAsImportError } from "./error";
 import { arrayToHtmlList, toHtmlDescription } from "./html";

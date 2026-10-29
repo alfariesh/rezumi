@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { expect, it } from "vite-plus/test";
-import { compileStylesheet } from "@reactive-resume/resume/stylesheet";
+import { compileStylesheet } from "@rezumi/resume/stylesheet";
 import { buildGeneratedDocumentation } from "./generate-reference";
 
 const defaultDocumentationPaths = {

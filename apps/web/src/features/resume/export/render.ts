@@ -1,6 +1,6 @@
-import type { PageMap } from "@reactive-resume/pdf/page-map";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import { createResumePdfBlob } from "@reactive-resume/pdf/browser";
+import type { PageMap } from "@rezumi/pdf/page-map";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import { createResumePdfBlob } from "@rezumi/pdf/browser";
 
 export type RenderInput = { data: ResumeData; renderOptions?: { includeCoverLetterHeader?: boolean } | undefined };
 export type Rendered = { blob: Blob; pageMap: PageMap | undefined; lostCharacters: string[] | undefined };

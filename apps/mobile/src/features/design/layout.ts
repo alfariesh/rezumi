@@ -1,6 +1,6 @@
 // Layout pages: which sections sit in Main or Sidebar on each page. Ports the web Layout editor
 // (apps/web/src/routes/builder/$resumeId/-sidebar/right/sections/layout). Pure: no React.
-import type { ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
+import type { ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 
 type Layout = ResumeData["metadata"]["layout"];
@@ -10,7 +10,7 @@ export type Location = { page: number; column: ColumnId };
 export type Drop = Location & { index: number };
 
 // A section shows in the editor only when it has visible content, as on the page.
-export { isSectionVisible as isVisibleSection } from "@reactive-resume/pdf/filtering";
+export { isSectionVisible as isVisibleSection } from "@rezumi/pdf/filtering";
 
 export function locate(layout: Layout, id: string): Location | null {
 	for (const [page, value] of layout.pages.entries()) {

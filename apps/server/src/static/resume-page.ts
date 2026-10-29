@@ -1,10 +1,10 @@
-import type { ResumeMatch } from "@reactive-resume/api/features/resume/web-page";
-import type { ResumeWebPage } from "@reactive-resume/pdf/web-page";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeMatch } from "@rezumi/api/features/resume/web-page";
+import type { ResumeWebPage } from "@rezumi/pdf/web-page";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createHash } from "node:crypto";
-import { loadPublicWebPage, verifyWebPagePassword } from "@reactive-resume/api/features/resume/web-page";
-import { env } from "@reactive-resume/env/server";
-import { renderResumeWebPage, webPageImageUrl } from "@reactive-resume/pdf/web-page";
+import { loadPublicWebPage, verifyWebPagePassword } from "@rezumi/api/features/resume/web-page";
+import { env } from "@rezumi/env/server";
+import { renderResumeWebPage, webPageImageUrl } from "@rezumi/pdf/web-page";
 import {
 	localeFromAcceptLanguage,
 	renderPasswordDocument,
@@ -12,9 +12,9 @@ import {
 	renderWebPageDocument,
 	WEB_PAGE_SCRIPT,
 	webPageMessages,
-} from "@reactive-resume/pdf/web-page-document";
-import { publicResumePath } from "@reactive-resume/resume/sharing";
-import { getResumeSocialMeta } from "@reactive-resume/resume/social-meta";
+} from "@rezumi/pdf/web-page-document";
+import { publicResumePath } from "@rezumi/resume/sharing";
+import { getResumeSocialMeta } from "@rezumi/resume/social-meta";
 import { BASE_SECURITY_HEADERS, contentSecurityPolicy } from "./web";
 
 const origin = () => new URL(env.APP_URL).origin;

@@ -2,14 +2,8 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkeys } from "@tanstack/react-hotkeys";
 import { useEffect, useRef, useState } from "react";
-import { Command, CommandEmpty, CommandInput, CommandList } from "@reactive-resume/ui/components/command";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
+import { Command, CommandEmpty, CommandInput, CommandList } from "@rezumi/ui/components/command";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { AskCommandGroup } from "./pages/ask";
 import { NavigationCommandGroup } from "./pages/navigation";
 import { PreferencesCommandGroup } from "./pages/preferences";

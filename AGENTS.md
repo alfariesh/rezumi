@@ -103,7 +103,7 @@ Where each concern lives, and where new code for it goes:
 | Web routes, loaders, user-facing workflows                                                      | `apps/web/src/routes`, `apps/web/src/features` (file-based; never hand-edit `routeTree.gen.ts`)                                                                  |
 | Native mobile screens and workflows                                                             | `apps/mobile/app` (Expo Router), `apps/mobile/src/features`; native Forme engine in `packages/forme-native`                                                      |
 | Server HTTP routes/adapters, startup checks, static handlers, MCP transport, OpenAPI/well-known | `apps/server/src/{http,rpc,mcp,openapi,static,startup}`                                                                                                          |
-| Authenticated API contracts + business logic                                                    | `packages/api/src/features/*` (oRPC routers, DTOs, rate limiting; aggregated at `@reactive-resume/api/routers` for `/api/rpc`)                                   |
+| Authenticated API contracts + business logic                                                    | `packages/api/src/features/*` (oRPC routers, DTOs, rate limiting; aggregated at `@rezumi/api/routers` for `/api/rpc`)                                            |
 | Auth                                                                                            | `packages/auth` (Better Auth config/helpers/types; `apps/server/src/http/auth.ts` delegates to `auth.handler`)                                                   |
 | DB client + schema                                                                              | `packages/db` (Drizzle; migrations at repo root `migrations/`)                                                                                                   |
 | Server env validation                                                                           | `packages/env` (auto-loads root `.env`)                                                                                                                          |
@@ -118,7 +118,7 @@ Where each concern lives, and where new code for it goes:
 | Focused support surfaces                                                                        | `packages/fonts`, `packages/email`, `packages/import`, `packages/ai`, `packages/utils`, `packages/config` — prefer existing exports over cross-package shortcuts |
 | Dev-only scripts                                                                                | `tooling/`, not `packages/`, so packages only hold runtime-bundled code                                                                                          |
 
-Narrow cross-cutting helpers go in `packages/utils` only after checking no domain package is a better owner. Specifically: resume JSON Patch behavior belongs in `@reactive-resume/resume/patch` and DOCX builders in `@reactive-resume/docx` — not in `@reactive-resume/utils`.
+Narrow cross-cutting helpers go in `packages/utils` only after checking no domain package is a better owner. Specifically: resume JSON Patch behavior belongs in `@rezumi/resume/patch` and DOCX builders in `@rezumi/docx` — not in `@rezumi/utils`.
 
 ## Web app conventions
 
@@ -140,10 +140,10 @@ Narrow cross-cutting helpers go in `packages/utils` only after checking no domai
 
 `pnpm exec turbo boundaries` is the executable check. Rules:
 
-- Workspace deps go through package names and export maps. Never import another workspace's `src` tree via repo paths, `@reactive-resume/*/src/*`, or TS path aliases.
+- Workspace deps go through package names and export maps. Never import another workspace's `src` tree via repo paths, `@rezumi/*/src/*`, or TS path aliases.
 - Workspace `turbo.json` files declare coarse tags: `app:web`, `app:server`, `runtime:server` (server-only packages: API/auth/db/env/email/MCP), `runtime:browser` (browser-only shared UI), `runtime:universal` (environment-neutral domain packages), plus `role:domain|infra|adapter|api|rendering|tooling` for intent.
-- Runtime-specific code lives behind explicit export subpaths (`@reactive-resume/pdf/browser`, `@reactive-resume/pdf/server`, `@reactive-resume/env/server`). Keep root exports environment-neutral unless the package is intentionally server-only.
-- Wildcard exports are allowed only for leaf libraries with an intentionally file-like surface — currently `@reactive-resume/ui/components/*`, `@reactive-resume/ui/hooks/*`, and schema resume/application model files. Prefer explicit exports for packages owning runtime behavior.
+- Runtime-specific code lives behind explicit export subpaths (`@rezumi/pdf/browser`, `@rezumi/pdf/server`, `@rezumi/env/server`). Keep root exports environment-neutral unless the package is intentionally server-only.
+- Wildcard exports are allowed only for leaf libraries with an intentionally file-like surface — currently `@rezumi/ui/components/*`, `@rezumi/ui/hooks/*`, and schema resume/application model files. Prefer explicit exports for packages owning runtime behavior.
 - Prefer `protectedProcedure` from `packages/api/src/context.ts` for authenticated procedures. Expose only intentional public surfaces through `packages/api/package.json`.
 - Shared PDF section filtering: `packages/pdf/src/templates/shared/filtering.ts`. Template-specific visual exceptions stay in the owning template directory unless multiple templates need the behavior. `packages/pdf/src/hooks/use-register-fonts.ts` resolves font families, weights, and script fallback stacks; the Forme adapter owns conversion/rendering. PDF generation needs no Browserless or Chromium service.
 
@@ -166,14 +166,14 @@ Host development requires `APP_URL`, `DATABASE_URL`, and non-empty `AUTH_SECRET`
 
 ## Testing and checks
 
-Prefer package-scoped checks for the files changed. Package names come from their `package.json`: the apps are `web` and `server`, most shared packages are `@reactive-resume/<name>`.
+Prefer package-scoped checks for the files changed. Package names come from their `package.json`: the apps are `web` and `server`, most shared packages are `@rezumi/<name>`.
 
 ```sh
 pnpm --filter web typecheck
-pnpm --filter @reactive-resume/pdf test
-pnpm --filter @reactive-resume/pdf test src/templates/shared/filtering.test.ts
-pnpm --filter @reactive-resume/pdf exec vp test run src/templates/shared/filtering.test.ts -t "filterItems"
-pnpm --filter @reactive-resume/pdf test:coverage
+pnpm --filter @rezumi/pdf test
+pnpm --filter @rezumi/pdf test src/templates/shared/filtering.test.ts
+pnpm --filter @rezumi/pdf exec vp test run src/templates/shared/filtering.test.ts -t "filterItems"
+pnpm --filter @rezumi/pdf test:coverage
 pnpm exec vp lint --deny-warnings apps/web/src/features/resume
 pnpm exec vp fmt --check apps/web/src/features/resume
 pnpm exec turbo boundaries
@@ -234,7 +234,7 @@ pnpm deploy:cloudflare
 
 ### Deploy
 
-Push to `main` runs `.github/workflows/deploy-cloudflare.yml` (also `workflow_dispatch`). It installs deps, applies migrations with `pnpm --filter @reactive-resume/db db:migrate` only when secret `DATABASE_URL` is set (direct, non-pooled connection string), then runs `pnpm deploy:cloudflare`. Concurrent runs queue (`cancel-in-progress: false`). Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`; optional: `DATABASE_URL`. Runtime secrets and bindings (Hyperdrive, R2, `AUTH_SECRET`, etc.) live in Cloudflare per `wrangler.jsonc` and the Cloudflare guide.
+Push to `main` runs `.github/workflows/deploy-cloudflare.yml` (also `workflow_dispatch`). It installs deps, applies migrations with `pnpm --filter @rezumi/db db:migrate` only when secret `DATABASE_URL` is set (direct, non-pooled connection string), then runs `pnpm deploy:cloudflare`. Concurrent runs queue (`cancel-in-progress: false`). Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`; optional: `DATABASE_URL`. Runtime secrets and bindings (Hyperdrive, R2, `AUTH_SECRET`, etc.) live in Cloudflare per `wrangler.jsonc` and the Cloudflare guide.
 
 ### CI
 

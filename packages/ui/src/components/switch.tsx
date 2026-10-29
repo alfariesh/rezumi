@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 import { useId } from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 const trackClassName =
 	"relative inline-flex shrink-0 items-center rounded-sm bg-line-2 transition-colors duration-quick group-data-checked/switch:bg-accent group-data-disabled/switch:opacity-50 h-5 w-8";

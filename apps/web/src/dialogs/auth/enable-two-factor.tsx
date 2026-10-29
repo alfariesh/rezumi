@@ -8,20 +8,20 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { match } from "ts-pattern";
 import z from "zod";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { FormControl, FormItem, FormLabel, FormMessage } from "@reactive-resume/ui/components/form";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { OTPField } from "@reactive-resume/ui/components/otp-field";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { downloadWithAnchor } from "@reactive-resume/utils/file";
+} from "@rezumi/ui/components/dialog";
+import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { OTPField } from "@rezumi/ui/components/otp-field";
+import { toast } from "@rezumi/ui/components/toast";
+import { downloadWithAnchor } from "@rezumi/utils/file";
 import { useDialogStore } from "../store";
 import { PasswordInput } from "@/components/input/password-input";
 import { useFormBlocker } from "@/hooks/use-form-blocker";

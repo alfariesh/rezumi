@@ -1,7 +1,7 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { application } from "./applications";
 import { user } from "./auth";
 import { coverLetter } from "./cover-letter";

@@ -1,8 +1,8 @@
-import type { ApplicationClosedReason } from "@reactive-resume/schema/applications/data";
+import type { ApplicationClosedReason } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -10,8 +10,8 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { RadioGroup, RadioGroupItem } from "@reactive-resume/ui/components/radio-group";
+} from "@rezumi/ui/components/dialog";
+import { RadioGroup, RadioGroupItem } from "@rezumi/ui/components/radio-group";
 import { CLOSED_REASONS, getClosedReasonLabel } from "../../stages";
 
 type CloseDialogProps = {

@@ -1,7 +1,7 @@
 import type * as React from "react";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { inputBaseClassName } from "@reactive-resume/ui/components/input";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { inputBaseClassName } from "@rezumi/ui/components/input";
+import { cn } from "@rezumi/utils/style";
 
 /** The platform select, restyled like an input, with a 20px chevron at the end. */
 function NativeSelect({ className, children, ...props }: React.ComponentProps<"select">) {

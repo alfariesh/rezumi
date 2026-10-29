@@ -2,7 +2,7 @@ import type { RenderRequest, RenderedPages } from "../../src/preview/types";
 // Assert observable scheduling at the owning boundary; no fake timers or production-only test exports.
 import assert from "node:assert/strict";
 import { setTimeout as delay } from "node:timers/promises";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { PreviewScheduler } from "../../src/preview/scheduler";
 
 const calls: RenderRequest[] = [];

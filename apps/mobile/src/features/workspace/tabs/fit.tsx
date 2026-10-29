@@ -3,7 +3,7 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { EvidenceStatus } from "../parts";
 import type { WorkspaceTabProps } from "../shell";
-import type { CareerWorkspace } from "@reactive-resume/schema/career";
+import type { CareerWorkspace } from "@rezumi/schema/career";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { randomUUID } from "expo-crypto";

@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from "vite-plus/test";
 import { i18n } from "@lingui/core";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { detectImportKind, detectJsonImportKind, parseResumeJson } from "./read-file";
 
 beforeAll(() => i18n.loadAndActivate({ locale: "en-US", messages: {} }));

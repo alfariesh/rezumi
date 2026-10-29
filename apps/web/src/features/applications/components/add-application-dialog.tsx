@@ -3,7 +3,7 @@ import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useId, useRef, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -11,14 +11,14 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
-import { SegmentedControl, SegmentedControlItem } from "@reactive-resume/ui/components/segmented-control";
-import { Textarea } from "@reactive-resume/ui/components/textarea";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dialog";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
+import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
+import { Textarea } from "@rezumi/ui/components/textarea";
+import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import { useInvalidateApplications } from "../use-application-actions";
 import { useDialogStore } from "@/dialogs/store";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";

@@ -1,27 +1,21 @@
 import type { CheckTab } from "../store";
 import type { CheckIssue } from "./issues";
 import type { CheckResult } from "./use-check";
-import type { AtsCategory, AtsReport } from "@reactive-resume/resume/ats";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { AtsCategory, AtsReport } from "@rezumi/resume/ats";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
-import { ATS_CATEGORIES } from "@reactive-resume/resume/ats";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Collapsible, CollapsibleContent } from "@reactive-resume/ui/components/collapsible";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@reactive-resume/ui/components/tabs";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { cn } from "@reactive-resume/utils/style";
+import { ATS_CATEGORIES } from "@rezumi/resume/ats";
+import { Button } from "@rezumi/ui/components/button";
+import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
+import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { useCheckActions } from "./actions";
 import { getCategoryDescription, getCategoryName } from "./issues";

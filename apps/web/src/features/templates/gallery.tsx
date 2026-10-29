@@ -1,8 +1,8 @@
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { templateLayouts, templateSchema } from "@reactive-resume/schema/templates";
-import { Button } from "@reactive-resume/ui/components/button";
+import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
+import { Button } from "@rezumi/ui/components/button";
 import { templates } from "@/dialogs/resume/template/data";
 
 export function TemplateGallery() {

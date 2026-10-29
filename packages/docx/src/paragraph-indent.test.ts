@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from "vite-plus/test";
 import { Document } from "docx";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { buildDocument } from "./builder";
 import { htmlToParagraphs } from "./html-to-docx";
 

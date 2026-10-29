@@ -7,7 +7,7 @@ import type {
 } from "pdfjs-dist/legacy/build/pdf.mjs";
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 import { AnnotationMode, getDocument, getPdfWorker, RenderingCancelledException } from "./pdfjs";
 import { DEFAULT_PDF_PAGE_SIZE, getPreviewCanvasScale, getScaledPreviewPageSize } from "./preview.shared.utils";
 

@@ -1,13 +1,13 @@
-import type { DbOrTx } from "@reactive-resume/db/client";
-import type { CareerSource } from "@reactive-resume/schema/career";
+import type { DbOrTx } from "@rezumi/db/client";
+import type { CareerSource } from "@rezumi/schema/career";
 import type z from "zod";
 import { createHash } from "node:crypto";
 import { isDeepStrictEqual } from "node:util";
 import { ORPCError } from "@orpc/client";
 import { and, desc, eq, inArray, isNull, or, sql } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as tables from "@reactive-resume/db/schema";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
+import { db } from "@rezumi/db/client";
+import * as tables from "@rezumi/db/schema";
+import { buildMarkdown } from "@rezumi/resume/markdown";
 import {
 	careerProfileDataSchema,
 	careerWorkspaceSchema,
@@ -17,9 +17,9 @@ import {
 	type careerFactInputSchema,
 	type careerStoryInputSchema,
 	type SavedItemData,
-} from "@reactive-resume/schema/career";
-import { countryForTimeZone } from "@reactive-resume/utils/region";
-import { generateId } from "@reactive-resume/utils/string";
+} from "@rezumi/schema/career";
+import { countryForTimeZone } from "@rezumi/utils/region";
+import { generateId } from "@rezumi/utils/string";
 import { requestRunCancellation } from "../agent/cancellation";
 import { applicationService, recordSentResume } from "../applications/service";
 import { lockUser } from "../documents/ownership";

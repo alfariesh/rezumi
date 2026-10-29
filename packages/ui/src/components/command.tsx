@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
 
 function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
 	return (

@@ -9,9 +9,9 @@ const pool = vi.hoisted(() => ({
 // Tests that need real checkout limits swap in a real pg Pool here.
 const database = vi.hoisted(() => ({ pool: undefined as unknown }));
 
-vi.mock("@reactive-resume/db/client", () => ({ getPool: () => database.pool ?? pool }));
+vi.mock("@rezumi/db/client", () => ({ getPool: () => database.pool ?? pool }));
 const redis = vi.hoisted(() => ({ getRedis: vi.fn(), publish: vi.fn(), duplicate: vi.fn() }));
-vi.mock("@reactive-resume/db/redis", () => ({
+vi.mock("@rezumi/db/redis", () => ({
 	getRedis: redis.getRedis,
 	redisKey: (key: string) => `reactive-resume:preview:${key}`,
 }));

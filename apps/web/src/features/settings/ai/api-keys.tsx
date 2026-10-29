@@ -3,7 +3,7 @@ import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -11,14 +11,14 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
-import { Skeleton } from "@reactive-resume/ui/components/skeleton";
-import { Swap } from "@reactive-resume/ui/components/swap";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dialog";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
+import { Skeleton } from "@rezumi/ui/components/skeleton";
+import { Swap } from "@rezumi/ui/components/swap";
+import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import { SettingsSection } from "../section";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";

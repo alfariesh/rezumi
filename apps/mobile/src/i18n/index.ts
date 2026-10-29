@@ -1,12 +1,12 @@
 // Interface language: the device locale (expo-localization) unless the user picked one in Settings → Preferences.
 // Catalogs are apps/mobile/locales/*.po, seeded from the web catalogs by scripts/seed-locales.mjs.
 import type { Messages } from "@lingui/core";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { Locale } from "@rezumi/utils/locale";
 import { i18n } from "@lingui/core";
 import { getLocales } from "expo-localization";
 import Storage from "expo-sqlite/kv-store";
 import { I18nManager, Platform, Settings } from "react-native";
-import { defaultLocale, isLocale, isRTL, localeSchema } from "@reactive-resume/utils/locale";
+import { defaultLocale, isLocale, isRTL, localeSchema } from "@rezumi/utils/locale";
 
 const storageKey = "locale";
 

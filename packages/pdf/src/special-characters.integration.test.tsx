@@ -1,7 +1,7 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { createResumePdfFile } from "./server";
 
 type PdfGlyph = {

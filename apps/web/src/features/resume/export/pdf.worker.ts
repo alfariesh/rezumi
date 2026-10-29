@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 import type { PdfWorkerRequest, PdfWorkerResponse } from "./pdf-document";
-import { preloadResumePdf } from "@reactive-resume/pdf/browser";
+import { preloadResumePdf } from "@rezumi/pdf/browser";
 import { renderResumePdf } from "./render";
 
 // Renders off the main thread, so typing, scrolling and the gallery stay smooth while a page is laid out.

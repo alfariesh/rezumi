@@ -1,4 +1,4 @@
-export { isValidSlug, MAX_SLUG_LENGTH, normalizeSlug, SLUG_PATTERN } from "@reactive-resume/schema/resume/slug";
+export { isValidSlug, MAX_SLUG_LENGTH, normalizeSlug, SLUG_PATTERN } from "@rezumi/schema/resume/slug";
 
 /** A DNS label: what a username must look like to be a subdomain or a domain of its own. */
 export const DNS_LABEL = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;

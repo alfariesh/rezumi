@@ -1,8 +1,8 @@
 import { t } from "@lingui/core/macro";
 import { useToggle } from "usehooks-ts";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
 
 type PasswordInputProps = Omit<React.ComponentProps<"input">, "type">;
 

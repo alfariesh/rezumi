@@ -1,9 +1,9 @@
 import { createHmac, randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vite-plus/test";
 import { Pool } from "pg";
-import { auth } from "@reactive-resume/auth/config";
-import { withDatabasePool } from "@reactive-resume/db/client";
-import { env } from "@reactive-resume/env/server";
+import { auth } from "@rezumi/auth/config";
+import { withDatabasePool } from "@rezumi/db/client";
+import { env } from "@rezumi/env/server";
 
 // Uses an explicitly supplied disposable, migrated database and private fixture tables.
 describe.skipIf(!process.env.OAUTH_TEST_DATABASE_URL)("joined authentication reads", () => {

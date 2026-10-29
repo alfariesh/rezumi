@@ -1,5 +1,5 @@
 import z from "zod";
-import { timezoneSchema } from "@reactive-resume/utils/timezone";
+import { timezoneSchema } from "@rezumi/utils/timezone";
 
 // Pipeline stages are a fixed enum. If per-user custom stages are ever needed, promote this to a table.
 // `closed` is the terminal stage, with a reason; it replaced the old `rejected` stage and the `archived` flag.

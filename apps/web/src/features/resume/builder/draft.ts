@@ -1,4 +1,4 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import type { WritableDraft } from "immer";
 import { t } from "@lingui/core/macro";
@@ -9,9 +9,9 @@ import { debounce, isEqual } from "es-toolkit";
 import { useCallback, useEffect, useState } from "react";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
-import { syncResumeDates } from "@reactive-resume/schema/resume/dates";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { generateId } from "@reactive-resume/utils/string";
+import { syncResumeDates } from "@rezumi/schema/resume/dates";
+import { toast } from "@rezumi/ui/components/toast";
+import { generateId } from "@rezumi/utils/string";
 import { orpc, streamClient } from "@/libs/orpc/client";
 
 export type Resume = {

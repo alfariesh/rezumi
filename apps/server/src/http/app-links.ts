@@ -1,4 +1,4 @@
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 
 export function handleAppleAppSiteAssociation() {
 	if (!env.MOBILE_IOS_APP_IDS.length) return new Response(null, { status: 404 });

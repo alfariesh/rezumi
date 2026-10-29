@@ -2,7 +2,7 @@ import ExpoModulesCore
 import Foundation
 
 public class FormeNativeModule: Module {
-  private let queue = DispatchQueue(label: "me.rxresu.forme-native", qos: .userInitiated)
+  private let queue = DispatchQueue(label: "app.rezumi.forme-native", qos: .userInitiated)
 
   public func definition() -> ModuleDefinition {
     Name("FormeNative")

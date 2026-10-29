@@ -1,5 +1,5 @@
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
-import type { ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
+import type { ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import type { CSSProperties, HTMLAttributes, Ref } from "react";
 import {
 	closestCorners,
@@ -17,9 +17,9 @@ import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
 import { useCallback, useId, useState } from "react";
 import { match } from "ts-pattern";
-import { filterSections } from "@reactive-resume/pdf/filtering";
-import { templateLayouts } from "@reactive-resume/schema/templates";
-import { Button } from "@reactive-resume/ui/components/button";
+import { filterSections } from "@rezumi/pdf/filtering";
+import { templateLayouts } from "@rezumi/schema/templates";
+import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -30,10 +30,10 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Switch } from "@reactive-resume/ui/components/switch";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Switch } from "@rezumi/ui/components/switch";
+import { cn } from "@rezumi/utils/style";
 import { resolveLayoutSectionTitle } from "./title";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { DRAG_SETTLE } from "@/libs/motion";

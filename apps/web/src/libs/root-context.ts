@@ -1,4 +1,4 @@
-import type { AuthSession } from "@reactive-resume/auth/types";
+import type { AuthSession } from "@rezumi/auth/types";
 import type { QueryClient } from "@tanstack/react-query";
 import { getSession } from "./auth/session";
 import { getLocale, loadLocale } from "./locale";

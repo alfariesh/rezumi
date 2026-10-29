@@ -1,4 +1,4 @@
-import type { AIProvider } from "@reactive-resume/ai/types";
+import type { AIProvider } from "@rezumi/ai/types";
 import { t } from "@lingui/core/macro";
 import { Combobox } from "@/components/ui/combobox";
 

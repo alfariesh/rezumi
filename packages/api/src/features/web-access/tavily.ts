@@ -1,6 +1,6 @@
 import type { ProviderRequest } from "./contracts";
 import z from "zod";
-import { countryName } from "@reactive-resume/utils/region";
+import { countryName } from "@rezumi/utils/region";
 import { MAX_PAGE_BYTES, WebAccessError } from "./contracts";
 import { normalizeSearch, parseResponse, postJson } from "./transport";
 

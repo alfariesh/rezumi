@@ -1,9 +1,9 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
-import { cvDomainRegistrationUrl } from "@reactive-resume/resume/sharing";
-import { Button, buttonVariants } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { cvDomainRegistrationUrl } from "@rezumi/resume/sharing";
+import { Button, buttonVariants } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
 import { CopyText } from "./copy-text";
 
 type CvDomainCardProps = {

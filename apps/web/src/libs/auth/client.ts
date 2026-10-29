@@ -1,4 +1,4 @@
-import type { auth } from "@reactive-resume/auth/config";
+import type { auth } from "@rezumi/auth/config";
 import { apiKeyClient } from "@better-auth/api-key/client";
 import { dashClient } from "@better-auth/infra/client";
 import { oauthProviderClient } from "@better-auth/oauth-provider/client";

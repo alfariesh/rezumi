@@ -1,6 +1,6 @@
-import type { MoveTarget } from "@reactive-resume/resume/move-item";
+import type { MoveTarget } from "@rezumi/resume/move-item";
 // Write's data operations, ported from apps/web/src/features/resume/editor/write/model.ts; moving entries is shared
-// through @reactive-resume/resume/move-item. Pure: no React, no Lingui, so Design, Check and Node checks can use it.
+// through @rezumi/resume/move-item. Pure: no React, no Lingui, so Design, Check and Node checks can use it.
 import type {
 	CustomSection,
 	CustomSectionItem,
@@ -9,12 +9,12 @@ import type {
 	ResumeData,
 	SectionItem,
 	SectionType,
-} from "@reactive-resume/schema/resume/data";
+} from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
-import { moveItem as moveResumeItem } from "@reactive-resume/resume/move-item";
-import { sectionTypeSchema } from "@reactive-resume/schema/resume/data";
-import { EMPTY_RESUME_DATES } from "@reactive-resume/schema/resume/dates";
-import { generateId, stripHtml } from "@reactive-resume/utils/string";
+import { moveItem as moveResumeItem } from "@rezumi/resume/move-item";
+import { sectionTypeSchema } from "@rezumi/schema/resume/data";
+import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
+import { generateId, stripHtml } from "@rezumi/utils/string";
 
 type Data = ResumeData | WritableDraft<ResumeData>;
 

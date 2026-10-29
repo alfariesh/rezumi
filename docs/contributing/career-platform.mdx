@@ -144,7 +144,7 @@ Use a disposable PostgreSQL database and synthetic users. These integration suit
 
 ```sh
 export INTEGRATIONS_TEST_DATABASE_URL='postgresql://postgres:postgres@127.0.0.1:5432/career_test'
-pnpm --filter @reactive-resume/api test src/features/career
+pnpm --filter @rezumi/api test src/features/career
 pnpm --filter server test src/http/career-jobs.test.ts src/startup/career-scheduler.test.ts src/cloudflare/index.test.ts
 pnpm --filter web test src/features/settings/account/export.test.ts
 ```

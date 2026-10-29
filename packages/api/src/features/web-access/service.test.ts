@@ -23,7 +23,7 @@ const fixtures = vi.hoisted(() => ({
 vi.mock("../../redis", () => ({
 	createRateLimiter: () => ({ limit: fixtures.limit }),
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env: fixtures.env }));
+vi.mock("@rezumi/env/server", () => ({ env: fixtures.env }));
 vi.mock("node:dns/promises", () => ({ lookup: vi.fn() }));
 vi.mock("node:dns", () => ({ lookup: vi.fn() }));
 vi.mock("node:https", async (original) => ({

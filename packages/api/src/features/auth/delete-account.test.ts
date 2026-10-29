@@ -2,7 +2,7 @@ import { expect, it, vi } from "vite-plus/test";
 import { createProcedureClient } from "@orpc/server";
 
 const deleteAccount = vi.hoisted(() => vi.fn());
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: { api: { getSession: vi.fn(async () => ({ session: { createdAt: new Date() } })) } },
 }));
 vi.mock("./service", () => ({ authService: { deleteAccount } }));

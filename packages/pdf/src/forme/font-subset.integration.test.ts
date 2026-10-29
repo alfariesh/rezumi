@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { describe, expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { createFontPreparer, createFontSubsetter } from "./font-subset";
 import { lostCharacters, renderResume } from "./render";
 

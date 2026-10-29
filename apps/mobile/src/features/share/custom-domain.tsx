@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
 import { Linking, View } from "react-native";
-import { cvDomainRegistrationUrl, formatTimeSince } from "@reactive-resume/resume/sharing";
+import { cvDomainRegistrationUrl, formatTimeSince } from "@rezumi/resume/sharing";
 import { orpc } from "@/api/client";
 import { Banner, Button, Icon, ListGroup, ListRow, Sheet, Text, TextField, haptics, showToast, useTheme } from "@/ui";
 

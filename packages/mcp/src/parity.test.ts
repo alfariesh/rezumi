@@ -1,5 +1,5 @@
 import type { RouterClient } from "@orpc/server";
-import type { RequestAuthentication } from "@reactive-resume/api/context";
+import type { RequestAuthentication } from "@rezumi/api/context";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
@@ -7,7 +7,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ORPCError } from "@orpc/server";
 
 const storage = vi.hoisted(() => ({ read: vi.fn() }));
-vi.mock("@reactive-resume/api/features/storage", () => ({
+vi.mock("@rezumi/api/features/storage", () => ({
 	getStorageService: () => ({ read: storage.read }),
 }));
 

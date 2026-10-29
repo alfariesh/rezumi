@@ -1,9 +1,9 @@
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { strFromU8, unzipSync } from "fflate";
-import { getResumeExportData } from "@reactive-resume/resume/export-sections";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
-import { templateLayouts } from "@reactive-resume/schema/templates";
+import { getResumeExportData } from "@rezumi/resume/export-sections";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
+import { templateLayouts } from "@rezumi/schema/templates";
 import { buildOdtFiles, ODT_MIME_TYPE } from "./builder";
 import { htmlToOdtBlocks } from "./html-to-odt";
 import { buildOdt } from "./index";

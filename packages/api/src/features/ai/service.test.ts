@@ -6,11 +6,11 @@ const envMock = vi.hoisted(() => ({
 	FLAG_ALLOW_UNSAFE_AI_BASE_URL: false,
 }));
 
-vi.mock("@reactive-resume/env/server", () => ({ env: envMock }));
+vi.mock("@rezumi/env/server", () => ({ env: envMock }));
 // Provider requests still reach the stubbed global fetch; fetchPublic's own network checks are tested in utils.
 const fetchPublicMock = vi.hoisted(() => vi.fn((input: RequestInfo | URL, init?: RequestInit) => fetch(input, init)));
-vi.mock("@reactive-resume/utils/url-security.node", async (original) => ({
-	...(await original<typeof import("@reactive-resume/utils/url-security.node")>()),
+vi.mock("@rezumi/utils/url-security.node", async (original) => ({
+	...(await original<typeof import("@rezumi/utils/url-security.node")>()),
 	fetchPublic: fetchPublicMock,
 }));
 

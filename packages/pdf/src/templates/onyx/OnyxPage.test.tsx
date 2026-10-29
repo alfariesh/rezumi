@@ -2,7 +2,7 @@ import type { TextItem } from "pdfjs-dist/types/src/display/api";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act, createElement } from "react";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
 

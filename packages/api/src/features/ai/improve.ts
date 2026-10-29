@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { improveSystemPrompt, improveUserPromptTemplate } from "@reactive-resume/ai/prompts";
+import { improveSystemPrompt, improveUserPromptTemplate } from "@rezumi/ai/prompts";
 import { inertMarkers } from "./data-block";
 import { generateJson } from "./generate-json";
 import { getModel } from "./service";

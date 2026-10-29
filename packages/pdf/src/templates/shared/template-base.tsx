@@ -1,8 +1,8 @@
 import type { Style } from "../../forme/style-types";
 import type { TemplateIconSlot, TemplateStyleContext } from "./types";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { useMemo } from "react";
-import { rgbaStringToHex } from "@reactive-resume/utils/color";
+import { rgbaStringToHex } from "@rezumi/utils/color";
 import { View } from "#react-pdf-renderer";
 import { useRender } from "../../context";
 import { createBaseTemplateStyles } from "./base-template-styles";

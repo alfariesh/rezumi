@@ -29,7 +29,7 @@ This is the operational handoff. See [mobile-store-review.md](./mobile-store-rev
 | Google forms         | Sign-in access, no ads, category/support details, target ages 13–15/16–17/18+, IARC, Advertising ID No, and Data safety saved. App content page reported no outstanding declarations; changes still await submission |
 | Reviewer account     | Owner created account; browser login succeeded; fictional resume, cover letter, and saved job application seeded. Owner confirms credentials saved privately in both stores                                          |
 
-Brand is **Rezumi**, `rxresume`, or `reactive-resume`. The official domain `rezumi.app`, scheme/package `me.rxresu`, and registered Apple Services ID are existing technical identifiers; do not rename them casually.
+Brand is **Rezumi**, `rxresume`, or `reactive-resume`. The official domain `rezumi.app`, scheme/package `app.rezumi`, and registered Apple Services ID are existing technical identifiers; do not rename them casually.
 
 ## Production deployment and quirks
 
@@ -39,7 +39,7 @@ Owner controls merge/deployment. The backend runs only on Cloudflare Workers (se
 
 The checked-in `.github/workflows/deploy-cloudflare.yml` currently behaves as follows:
 
-- Push to `main` or manual dispatch: applies PostgreSQL migrations with `pnpm --filter @reactive-resume/db db:migrate` when the `DATABASE_URL` secret is set, then runs `pnpm deploy:cloudflare`.
+- Push to `main` or manual dispatch: applies PostgreSQL migrations with `pnpm --filter @rezumi/db db:migrate` when the `DATABASE_URL` secret is set, then runs `pnpm deploy:cloudflare`.
 - It needs the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. `DATABASE_URL` must be a direct (non-pooled) connection string; without it the migration step is skipped.
 - Confirm the deployed Worker with `/api/health` after the run. A green workflow alone does not prove migrations ran.
 
@@ -118,16 +118,16 @@ track as appropriate, and record actual store-build results separately.
 ### Required mobile environment
 
 ```dotenv
-MOBILE_IOS_APP_IDS=654ASRW868.me.rxresu
-MOBILE_ANDROID_PACKAGES=me.rxresu
+MOBILE_IOS_APP_IDS=654ASRW868.app.rezumi
+MOBILE_ANDROID_PACKAGES=app.rezumi
 MOBILE_ANDROID_CERT_SHA256=3E:8A:8B:56:BB:3D:B6:55:C6:04:F3:85:99:A8:4B:B0:4F:B7:E1:72:60:0A:95:8C:41:CD:59:D7:04:82:25:81
-APPLE_CLIENT_ID=me.rxresu.web
+APPLE_CLIENT_ID=app.rezumi.web
 APPLE_CLIENT_SECRET=<supply protected deployment value; never commit it>
 ```
 
 The Android fingerprint was read from **Play App Signing → Digital Asset Links JSON**, not EAS's upload certificate. Never use the local inspection APK's debug certificate in production. If Play rotates signing keys, update the supported fingerprint list from Play Console and retest links on affected Android versions.
 
-Apple setup is registered for domain `rezumi.app` and callback `https://rezumi.app/api/auth/callback/apple`, associated with primary app `654ASRW868.me.rxresu`. Associated Domains and Sign in with Apple capabilities were enabled. These settings do not replace the runtime client ID/secret.
+Apple setup is registered for domain `rezumi.app` and callback `https://rezumi.app/api/auth/callback/apple`, associated with primary app `654ASRW868.app.rezumi`. Associated Domains and Sign in with Apple capabilities were enabled. These settings do not replace the runtime client ID/secret.
 
 Protected Apple deployment values are local at `/Users/amruth/.config/rxresu/apple-sign-in.env`, mode 600; the authentication `.p8` key is outside the repository. **Client-secret JWT expires 2027-04-15T15:13:47Z; rotate before expiry.** Upload/signing API keys and the Sign in with Apple authentication key have different purposes. Do not copy any private key, JWT, reviewer password, or service-account JSON into this branch, logs, screenshots, or issue comments.
 
@@ -137,7 +137,7 @@ Protected Apple deployment values are local at `/Users/amruth/.config/rxresu/app
 - [ ] `/.well-known/apple-app-site-association` returns valid JSON with the expected team/app association.
 - [ ] `/.well-known/assetlinks.json` returns valid JSON containing package and Play signing fingerprint above. At the last live check on 2026-10-17, **both association URLs returned plain `OK`**, so HTTP 200 alone is insufficient.
 - [ ] A fresh store-installed app completes browser login and opens `/auth/native-callback` in the app; test cancellation and an expired session too.
-- [ ] Repeat Android browser login with **Open supported links** disabled. The callback page targets package `me.rxresu` through an Android intent while retaining the registered HTTPS callback and its OAuth query. If the browser blocks automatic opening, **Try opening the app again** must finish the handoff with a tap. This web fallback also supports existing store binaries; native sign-in still validates state, issuer and PKCE.
+- [ ] Repeat Android browser login with **Open supported links** disabled. The callback page targets package `app.rezumi` through an Android intent while retaining the registered HTTPS callback and its OAuth query. If the browser blocks automatic opening, **Try opening the app again** must finish the handoff with a tap. This web fallback also supports existing store binaries; native sign-in still validates state, issuer and PKCE.
 - [ ] Private reports persist in production and are visible to the authorized operator. Verify export includes the account's reports.
 - [ ] Test erasure with a separately created disposable account, including attachments/provider tokens and report cascade. Keep the primary reviewer account available.
 - [ ] Public support/privacy/deletion URLs show the final instructions, retention details, contact information, and shared-content policy.
@@ -169,7 +169,7 @@ Existing installed binaries retain the old native bridge until a new store build
 1. Deploy the backend first. Keep the API backward compatible: older binaries and OTA bundles remain in use.
 2. Optionally bump `version` in `apps/mobile/app.config.ts` (for example `1.0.0` to `1.1.0`). CI supplies increasing iOS build numbers and Android version codes. iOS needs a new version string after a version is released; Play needs only a higher `versionCode`.
 3. Complete the [signed-device test matrix](#signed-device-test-matrix), store declarations, listing/reviewer details, and release notes before submission. The workflow retains saved listings and screenshots. Ensure Play credentials permit production releases and the App Store Connect key has App Manager or Admin access. No testing tracks or TestFlight groups are required.
-4. Dispatch **Mobile release** on `main`, platform `all`, **format=store**, and **upload** enabled. Approve `mobile-signing`, inspect this run's signed artifacts, then approve `mobile-store` to submit them. Latest main-push CI must have passed for the exact source commit before upload begins. Leave **upload** disabled if only checking a build. The [Blacksmith setup guide](./mobile-ci.md) covers credentials, build numbering, and approval environments. No EAS Build credits are used. Fastlane does not synchronize Apple capabilities. If exporting credentials through `eas credentials`, keep `EXPO_NO_CAPABILITY_SYNC=1`; Apple sign-in uses web Services ID `me.rxresu.web`, so turning off its primary App ID's Sign in with Apple capability would break sign-in.
+4. Dispatch **Mobile release** on `main`, platform `all`, **format=store**, and **upload** enabled. Approve `mobile-signing`, inspect this run's signed artifacts, then approve `mobile-store` to submit them. Latest main-push CI must have passed for the exact source commit before upload begins. Leave **upload** disabled if only checking a build. The [Blacksmith setup guide](./mobile-ci.md) covers credentials, build numbering, and approval environments. No EAS Build credits are used. Fastlane does not synchronize Apple capabilities. If exporting credentials through `eas credentials`, keep `EXPO_NO_CAPABILITY_SYNC=1`; Apple sign-in uses web Services ID `app.rezumi.web`, so turning off its primary App ID's Sign in with Apple capability would break sign-in.
 5. **App Store Connect:** the workflow uploads the IPA, creates or updates its app version, waits for its matching processed build, submits for App Review, and sets automatic release after approval. Missing metadata or a pending review can block submission; review status and public availability must be checked separately.
 6. **Play Console:** the workflow uploads directly to production with a completed, full rollout and sends changes for review. It does not publish to testing tracks. Review and Managed Publishing still control public availability; if Managed Publishing is enabled, publish approved changes in the console, or disable it there for automatic publication after review.
 7. Verify both public store versions and smoke-test store-installed builds. Workflow success proves submission, not approval or publication. Confirm that a later OTA update reaches each new binary, because its fingerprint and runtime version changed.
@@ -189,7 +189,7 @@ artifact within 14 days. A separate evidence artifact retains the source SHA,
 fingerprint and available debugging files for 90 days. Neither a Git tag nor a
 GitHub Release is created, and pushes to `main` no longer build APKs.
 
-The APKs retain package `me.rxresu`. Their upload signing certificate may differ from
+The APKs retain package `app.rezumi`. Their upload signing certificate may differ from
 Play App Signing, so they cannot necessarily upgrade a Play installation or be
 upgraded by one. Back up local drafts before uninstalling to switch distributions.
 Retain the same upload signing key for future APK updates. For verified App Links,

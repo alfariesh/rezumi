@@ -4,7 +4,7 @@ const envMock = vi.hoisted(() => ({
 	FLAG_ALLOW_UNSAFE_AI_BASE_URL: false,
 }));
 
-vi.mock("@reactive-resume/env/server", () => ({ env: envMock }));
+vi.mock("@rezumi/env/server", () => ({ env: envMock }));
 
 const { resolveAiBaseUrl } = await import("./url-policy");
 

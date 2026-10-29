@@ -1,4 +1,4 @@
-import { createResumePdfDownload, verifyResumePdfDownloadToken } from "@reactive-resume/api/features/resume/export";
+import { createResumePdfDownload, verifyResumePdfDownloadToken } from "@rezumi/api/features/resume/export";
 
 const downloadHeaders = {
 	"Cache-Control": "private, no-store",

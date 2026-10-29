@@ -73,7 +73,7 @@ vi.mock("@/features/applications/queries", () => ({
 		retry: false,
 	}),
 }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 
 import { OffersPage } from "../offers";
 import { FactsPage } from "./facts";

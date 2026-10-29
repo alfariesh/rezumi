@@ -1,6 +1,6 @@
 import { is } from "drizzle-orm";
 import { getTableConfig, PgTable } from "drizzle-orm/pg-core";
-import * as schema from "@reactive-resume/db/schema";
+import * as schema from "@rezumi/db/schema";
 
 interface SchemaQueryable {
 	query(text: string, values?: unknown[]): Promise<{ rows: { table_name: string; column_name: string }[] }>;

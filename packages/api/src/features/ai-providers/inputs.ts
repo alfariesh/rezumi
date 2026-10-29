@@ -1,5 +1,5 @@
 import z from "zod";
-import { aiProviderSchema } from "@reactive-resume/ai/types";
+import { aiProviderSchema } from "@rezumi/ai/types";
 
 const providerFields = z.object({
 	label: z.string().trim().min(1),

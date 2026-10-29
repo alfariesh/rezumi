@@ -1,7 +1,7 @@
 import { plural, t } from "@lingui/core/macro";
 import { GithubLogoIcon, StarIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@reactive-resume/ui/components/button";
+import { Button } from "@rezumi/ui/components/button";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { orpc } from "@/libs/orpc/client";
 

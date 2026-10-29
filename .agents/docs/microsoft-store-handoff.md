@@ -49,5 +49,5 @@ Review usually takes 24–48 hours.
 
 ## Later manifest additions
 
-- `related_applications` (Play `me.rxresu`, App Store `6823975835`) with `prefer_related_applications: false`, once the native apps are public.
+- `related_applications` (Play `app.rezumi`, App Store `6823975835`) with `prefer_related_applications: false`, once the native apps are public.
 - `share_target` (receive a job posting URL) or `file_handlers` (open resume files). Both need app code and the matching native-app feature.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 import { auth } from "./config";
 
 describe("social provider signup policy", () => {

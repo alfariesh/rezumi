@@ -7,7 +7,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Pressable, View } from "react-native";
-import { formatList } from "@reactive-resume/utils/locale";
+import { formatList } from "@rezumi/utils/locale";
 import { refreshThreads, useThreads } from "./chat";
 import { ChatView, ContextChip } from "./chat-view";
 import { ModelButton, ModelSheet, ProviderGate, useConversationProvider } from "./provider";

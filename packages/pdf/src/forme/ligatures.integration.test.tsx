@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { renderResume } from "./render";
 
 const words = "Profiles efficient office affluent flourish";

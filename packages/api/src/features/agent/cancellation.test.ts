@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => {
 	return { values, redis, getRedis: vi.fn((): typeof redis | null => redis) };
 });
 
-vi.mock("@reactive-resume/db/redis", () => ({
+vi.mock("@rezumi/db/redis", () => ({
 	getRedis: mocks.getRedis,
 	redisKey: (...parts: string[]) => ["test", ...parts].join(":"),
 }));

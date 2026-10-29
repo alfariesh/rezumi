@@ -1,5 +1,5 @@
 import { Redis } from "ioredis";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 
 let redis: Redis | undefined;
 

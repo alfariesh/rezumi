@@ -1,5 +1,5 @@
 import type { ResumeDraftStore } from "@/draft/types";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import { t } from "@lingui/core/macro";
 import { useEffect, useMemo } from "react";
 import { create } from "zustand";

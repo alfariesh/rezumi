@@ -1,5 +1,5 @@
 import type { DensityId, FontPairingId, MarginId } from "./presets";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import type { CSSProperties } from "react";
 import { Radio } from "@base-ui/react/radio";
@@ -7,14 +7,14 @@ import { RadioGroup } from "@base-ui/react/radio-group";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createContext, useContext, useId, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { SegmentedControl, SegmentedControlItem } from "@reactive-resume/ui/components/segmented-control";
-import { Slider } from "@reactive-resume/ui/components/slider";
-import { SwitchRow } from "@reactive-resume/ui/components/switch";
-import { contrastOnWhite } from "@reactive-resume/utils/color";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
+import { Slider } from "@rezumi/ui/components/slider";
+import { SwitchRow } from "@rezumi/ui/components/switch";
+import { contrastOnWhite } from "@rezumi/utils/color";
+import { cn } from "@rezumi/utils/style";
 import {
 	ACCENTS,
 	applyDensity,

@@ -1,5 +1,5 @@
-import { getCoordination } from "@reactive-resume/db/coordination";
-import { getRedis, redisKey } from "@reactive-resume/db/redis";
+import { getCoordination } from "@rezumi/db/coordination";
+import { getRedis, redisKey } from "@rezumi/db/redis";
 import { getClientKey } from "../../middleware/rate-limit";
 
 const WINDOW_MS = 60 * 60 * 1000; // 1 hour

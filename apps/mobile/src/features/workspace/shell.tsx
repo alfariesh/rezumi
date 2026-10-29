@@ -3,15 +3,15 @@
 // interview editor. The context column (next step, what you sent, notes) is the Details screen on mobile.
 import type { SavedItem } from "./hooks";
 import type { Application } from "@/features/applications/types";
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
-import type { WorkspaceTab } from "@reactive-resume/schema/career";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { WORKSPACE_TABS } from "@reactive-resume/schema/career";
+import { WORKSPACE_TABS } from "@rezumi/schema/career";
 import { CoachSheet } from "./coach-sheet";
 import { useSavedItems, useWorkspace } from "./hooks";
 import { currentInterview, minutesUntil } from "./logic";

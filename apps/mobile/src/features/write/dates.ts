@@ -1,7 +1,7 @@
 // Typed month-year dates, as web's dates-field.tsx reads them. Pure, so Node can check it.
-import type { DateFormat, ResumeDates, YearMonth } from "@reactive-resume/schema/resume/dates";
-import { formatYearMonth, toYearMonth } from "@reactive-resume/schema/resume/dates";
-import { readSingleDate } from "@reactive-resume/schema/resume/period";
+import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
+import { formatYearMonth, toYearMonth } from "@rezumi/schema/resume/dates";
+import { readSingleDate } from "@rezumi/schema/resume/period";
 
 /** What someone typed ("Mar 2022", "03/2022", "2022-03", "2022"): a year-month, null when cleared, undefined if unreadable. */
 export function readTypedDate(text: string, locale: string): YearMonth | null | undefined {

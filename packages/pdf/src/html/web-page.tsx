@@ -1,7 +1,7 @@
 import type { PdfFontRequest } from "../hooks/use-register-fonts";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createElement } from "react";
-import { parseResumeData } from "@reactive-resume/schema/resume/data";
+import { parseResumeData } from "@rezumi/schema/resume/data";
 import { ResumeDocument } from "../document";
 import { loadRequestedIcons } from "../forme/icons";
 import { renderHostTree } from "../forme/reconciler";

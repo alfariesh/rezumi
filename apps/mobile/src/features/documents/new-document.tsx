@@ -9,7 +9,7 @@ import { getNetworkStateAsync } from "expo-network";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
-import { forEachDatedEntry } from "@reactive-resume/schema/resume/dates";
+import { forEachDatedEntry } from "@rezumi/schema/resume/dates";
 import { importDocument, ImportError } from "./import-file";
 import { useNewDocuments } from "./new-documents";
 import { documentError, useDocumentRefresh, useDocuments } from "./queries";

@@ -1,8 +1,8 @@
 import z from "zod";
-import { applicationTimelineEntrySchema, postingSourceSchema } from "@reactive-resume/schema/applications/data";
-import { coverLetterStyleSchema } from "@reactive-resume/schema/cover-letter/data";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
-import { writableResumeDataSchema } from "@reactive-resume/schema/resume/write";
+import { applicationTimelineEntrySchema, postingSourceSchema } from "@rezumi/schema/applications/data";
+import { coverLetterStyleSchema } from "@rezumi/schema/cover-letter/data";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { writableResumeDataSchema } from "@rezumi/schema/resume/write";
 
 export const fileInputSchema = z.union([
 	z.object({

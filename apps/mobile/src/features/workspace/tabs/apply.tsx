@@ -3,7 +3,7 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "../shell";
 import type { SaveResult } from "../state";
-import type { CareerWorkspace } from "@reactive-resume/schema/career";
+import type { CareerWorkspace } from "@rezumi/schema/career";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ import * as Clipboard from "expo-clipboard";
 import { randomUUID } from "expo-crypto";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Pressable, View } from "react-native";
-import { careerWorkspaceSchema } from "@reactive-resume/schema/career";
+import { careerWorkspaceSchema } from "@rezumi/schema/career";
 import {
 	clearDraft,
 	latest,

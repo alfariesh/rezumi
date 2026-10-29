@@ -6,7 +6,7 @@ const { limit, settings } = vi.hoisted(() => ({
 }));
 
 vi.mock("../../redis", () => ({ createRateLimiter: () => ({ limit }) }));
-vi.mock("@reactive-resume/env/server", () => ({ env: settings }));
+vi.mock("@rezumi/env/server", () => ({ env: settings }));
 
 afterEach(() => {
 	vi.unstubAllEnvs();

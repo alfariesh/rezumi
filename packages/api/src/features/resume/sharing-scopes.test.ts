@@ -1,11 +1,11 @@
 import type { RequestPermission } from "../../context";
 import { expect, it, vi } from "vite-plus/test";
 import { createProcedureClient } from "@orpc/server";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const fixture = vi.hoisted(() => ({ resume: {} as Record<string, unknown> }));
-vi.mock("@reactive-resume/auth/config", () => ({ auth: {}, verifyOAuthToken: vi.fn() }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/auth/config", () => ({ auth: {}, verifyOAuthToken: vi.fn() }));
+vi.mock("@rezumi/db/client", () => ({
 	db: {
 		select: () => ({
 			from: () => ({

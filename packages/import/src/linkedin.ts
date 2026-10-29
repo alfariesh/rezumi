@@ -1,8 +1,8 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { ResumeDates } from "@reactive-resume/schema/resume/dates";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { generateId } from "@reactive-resume/utils/string";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { ResumeDates } from "@rezumi/schema/resume/dates";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { generateId } from "@rezumi/utils/string";
 import { formatDate, toRangeDates, toSingleDates } from "./date";
 import { rethrowAsImportError } from "./error";
 import { toHtml } from "./html";

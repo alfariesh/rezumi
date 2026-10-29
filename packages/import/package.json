@@ -1,5 +1,5 @@
 {
-	"name": "@reactive-resume/import",
+	"name": "@rezumi/import",
 	"version": "0.0.0",
 	"type": "module",
 	"private": true,
@@ -19,14 +19,14 @@
 		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests"
 	},
 	"dependencies": {
-		"@reactive-resume/resume": "workspace:*",
-		"@reactive-resume/schema": "workspace:*",
-		"@reactive-resume/utils": "workspace:*",
+		"@rezumi/resume": "workspace:*",
+		"@rezumi/schema": "workspace:*",
+		"@rezumi/utils": "workspace:*",
 		"fflate": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@reactive-resume/config": "workspace:*",
+		"@rezumi/config": "workspace:*",
 		"tsrs": "catalog:",
 		"typescript": "catalog:",
 		"vite-plus": "catalog:"

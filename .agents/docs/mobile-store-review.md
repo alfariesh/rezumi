@@ -97,14 +97,14 @@ Owner deploys through the GitHub Actions → Cloudflare Workers workflow (`deplo
 Configure the Worker environment (plain variables in `wrangler.jsonc`, secrets with `wrangler secret put`):
 
 ```dotenv
-MOBILE_IOS_APP_IDS=654ASRW868.me.rxresu
-MOBILE_ANDROID_PACKAGES=me.rxresu
+MOBILE_IOS_APP_IDS=654ASRW868.app.rezumi
+MOBILE_ANDROID_PACKAGES=app.rezumi
 MOBILE_ANDROID_CERT_SHA256=3E:8A:8B:56:BB:3D:B6:55:C6:04:F3:85:99:A8:4B:B0:4F:B7:E1:72:60:0A:95:8C:41:CD:59:D7:04:82:25:81
 ```
 
 Use Play Console's **app signing certificate**, not merely EAS's upload certificate. Comma-separated supported fingerprints can include the direct-build upload certificate when required. Never include debug certificates on production.
 
-Apple browser sign-in uses approved Services ID `me.rxresu.web` for `APPLE_CLIENT_ID` and a valid Apple client-secret JWT for `APPLE_CLIENT_SECRET`. Protected deployment values are in the owner's local credential directory, outside this repository; current JWT expires 2027-04-15T15:13:47Z. Rotate before expiration. App ID capabilities and App Store Connect upload keys do not supply these. Register production callback `https://rezumi.app/api/auth/callback/apple` against the Services ID and test clean-account login after deployment. Keep secrets in deployment configuration.
+Apple browser sign-in uses approved Services ID `app.rezumi.web` for `APPLE_CLIENT_ID` and a valid Apple client-secret JWT for `APPLE_CLIENT_SECRET`. Protected deployment values are in the owner's local credential directory, outside this repository; current JWT expires 2027-04-15T15:13:47Z. Rotate before expiration. App ID capabilities and App Store Connect upload keys do not supply these. Register production callback `https://rezumi.app/api/auth/callback/apple` against the Services ID and test clean-account login after deployment. Keep secrets in deployment configuration.
 
 Live recheck on 2026-10-17 still returned plain `OK` at both association URLs; production deployment gate remains open.
 

@@ -2,11 +2,11 @@ import { expect, it, vi } from "vite-plus/test";
 import { call } from "@orpc/server";
 const create = vi.hoisted(() => vi.fn());
 vi.mock("./service", () => ({ resumeService: { create } }));
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: { api: { getSession: vi.fn().mockResolvedValue({ user: { id: "owner" } }) } },
 	verifyOAuthToken: vi.fn(),
 }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	db: { select: () => ({ from: () => ({ where: () => ({ limit: async () => [{ id: "owner", banned: false }] }) }) }) },
 }));
 const { importResumeFile } = await import("./imports");

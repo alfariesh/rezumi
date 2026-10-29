@@ -1,5 +1,5 @@
-import type { CustomSection, CustomSectionType, ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
-import { generateId } from "@reactive-resume/utils/string";
+import type { CustomSection, CustomSectionType, ResumeData, SectionType } from "@rezumi/schema/resume/data";
+import { generateId } from "@rezumi/utils/string";
 
 export type MoveTarget =
 	| { type: "section"; sectionId: string }

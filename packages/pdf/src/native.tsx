@@ -4,9 +4,9 @@
 import type { ResumeRenderOptions } from "./context";
 import type { FormeEngine } from "./forme/render";
 import type { PageMap } from "./page-map";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
-import { parseResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
+import { parseResumeData } from "@rezumi/schema/resume/data";
 import { loadFonts } from "./forme/fonts";
 import { assertPdfFonts, lostCharacters, renderResume, resumeFontRequests } from "./forme/render";
 

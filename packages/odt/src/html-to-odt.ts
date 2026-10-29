@@ -1,8 +1,8 @@
 import type { InlineStyle, OdtBlock, OdtInline, OdtListItem } from "./types";
 import type { HTMLElement, Node } from "node-html-parser";
 import { parse, NodeType } from "node-html-parser";
-import { isDarkColor, parseColorString } from "@reactive-resume/utils/color";
-import { toSafeLink } from "@reactive-resume/utils/link";
+import { isDarkColor, parseColorString } from "@rezumi/utils/color";
+import { toSafeLink } from "@rezumi/utils/link";
 import { paragraph, text } from "./types";
 
 /** Parses a CSS colour to lowercase `rrggbb`, or null when it cannot be read. */

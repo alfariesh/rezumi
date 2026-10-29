@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import { useRef } from "react";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 
 export type FileAttachment = { url: string; name: string };
 

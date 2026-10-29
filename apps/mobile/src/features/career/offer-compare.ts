@@ -1,4 +1,4 @@
-import type { CareerProfileData, OfferTerms } from "@reactive-resume/schema/career";
+import type { CareerProfileData, OfferTerms } from "@rezumi/schema/career";
 
 type Pay = Pick<OfferTerms, "currency" | "period">;
 

@@ -1,5 +1,5 @@
 import z from "zod";
-import { PDF_ATS_RULE_CODES } from "@reactive-resume/resume/ats-pdf";
+import { PDF_ATS_RULE_CODES } from "@rezumi/resume/ats-pdf";
 const severity = z.enum(["blocker", "warning", "tip"]);
 const category = z.enum(["parseability", "layout", "sections", "contact", "dates", "content"]);
 const code = z.enum(PDF_ATS_RULE_CODES);

@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 import { MessageScroller as MessageScrollerPrimitive } from "@shadcn/react/message-scroller";
-import { Button } from "@reactive-resume/ui/components/button";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { cn } from "@rezumi/utils/style";
 
 /**
  * shadcn Message Scroller (behaviour from `@shadcn/react`): a chat transcript that follows a streaming reply only while

@@ -1,12 +1,12 @@
 import type { Application } from "./types";
-import type { ApplicationStatus, Contact, PostingSource } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus, Contact, PostingSource } from "@rezumi/schema/applications/data";
 import {
 	applicationStatusSchema,
 	contactSchema,
 	INTERVIEW_KINDS,
 	postingSourceSchema,
 	STAGES,
-} from "@reactive-resume/schema/applications/data";
+} from "@rezumi/schema/applications/data";
 
 // Minimal RFC-4180-ish CSV parser: handles quoted fields, escaped quotes (""), commas and
 // newlines inside quotes, and \r\n. Enough for spreadsheet exports; not a full streaming parser.

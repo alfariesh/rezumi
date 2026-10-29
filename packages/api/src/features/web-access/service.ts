@@ -5,9 +5,9 @@ import type {
 	WebAccessContext,
 	WebAccessFailure,
 } from "./contracts";
-import { env } from "@reactive-resume/env/server";
-import { rateLimitConfig } from "@reactive-resume/utils/rate-limit";
-import { abortable } from "@reactive-resume/utils/url-security.node";
+import { env } from "@rezumi/env/server";
+import { rateLimitConfig } from "@rezumi/utils/rate-limit";
+import { abortable } from "@rezumi/utils/url-security.node";
 import { createRateLimiter } from "../../redis";
 import { assertPublicTarget, htmlToText, readBuiltinPage } from "./builtin";
 import { MAX_SEARCH_QUERY_CHARS, MAX_SEARCH_RESULTS, WEB_ACCESS_DEADLINE_MS, WebAccessError } from "./contracts";

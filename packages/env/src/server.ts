@@ -2,8 +2,8 @@ import { isIP } from "node:net";
 import { isAbsolute, join } from "node:path";
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
-import { aiProviderSchema } from "@reactive-resume/ai/types";
-import { findWorkspaceRoot } from "@reactive-resume/utils/monorepo.node";
+import { aiProviderSchema } from "@rezumi/ai/types";
+import { findWorkspaceRoot } from "@rezumi/utils/monorepo.node";
 import { deploymentEnvironment } from "./deployment";
 
 const workspaceRoot = process.env.CLOUDFLARE === "1" ? null : findWorkspaceRoot();

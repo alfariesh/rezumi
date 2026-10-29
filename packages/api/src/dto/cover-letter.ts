@@ -1,13 +1,13 @@
 import z from "zod";
-import { COVER_LETTER_VERSION_KINDS } from "@reactive-resume/db/schema";
+import { COVER_LETTER_VERSION_KINDS } from "@rezumi/db/schema";
 import {
 	coverLetterContentSchema,
 	coverLetterDocumentSchema,
 	coverLetterLayoutSchema,
 	coverLetterSchema,
 	coverLetterStyleSchema,
-} from "@reactive-resume/schema/cover-letter/data";
-import { templateSchema } from "@reactive-resume/schema/templates";
+} from "@rezumi/schema/cover-letter/data";
+import { templateSchema } from "@rezumi/schema/templates";
 import { paginationShape } from "../pagination";
 
 const idSchema = z.object({ id: z.string().min(1) });

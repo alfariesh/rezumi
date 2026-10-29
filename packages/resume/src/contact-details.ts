@@ -1,4 +1,4 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 
 /**
  * Clears the contact details an author chose to hide from the public: the header's email, phone, location and custom

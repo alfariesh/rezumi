@@ -1,7 +1,7 @@
 import type { OdtBlock, OdtInline, SectionTitleResolver } from "./types";
-import type { EntryHeader, ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
-import { entryHeaderOf } from "@reactive-resume/schema/resume/data";
-import { toSafeLink } from "@reactive-resume/utils/link";
+import type { EntryHeader, ResumeData, SectionType } from "@rezumi/schema/resume/data";
+import { entryHeaderOf } from "@rezumi/schema/resume/data";
+import { toSafeLink } from "@rezumi/utils/link";
 import { htmlToOdtBlocks } from "./html-to-odt";
 import { paragraph, text } from "./types";
 

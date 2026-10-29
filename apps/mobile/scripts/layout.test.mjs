@@ -482,7 +482,7 @@ const { Segmented } = load("ui/fields.tsx", {
 	"./layout": { ListRow },
 	"./overlays": { Sheet: "Sheet" },
 	"./switch": { Switch: "Switch" },
-	"@reactive-resume/utils/string": { filterOptions: (options) => options },
+	"@rezumi/utils/string": { filterOptions: (options) => options },
 });
 const { BarItem } = load("shell/app-tabs.tsx", { "react-native-reanimated": animation });
 const { KnowledgeScreen } = load("features/career/knowledge.tsx", {
@@ -637,7 +637,7 @@ const scrolled = [];
 const { WorkspaceChrome } = load("shell/workspace-chrome.tsx", {
 	"./slot": { createSlot: () => ({ Provider: "SlotProvider", useSlot: () => ({}) }) },
 	"./top-bar": { TopBar: "TopBar" },
-	"@reactive-resume/schema/career": {
+	"@rezumi/schema/career": {
 		WORKSPACE_TABS: ["fit", "apply", "prepare", "practise", "debrief", "messages", "saved"],
 	},
 	"expo-router": {
@@ -699,8 +699,8 @@ const iconPaths = Object.assign(
 const resumeIcons = load("../../../packages/schema/src/icons.ts").icons;
 const { IconPickerSheet } = load("features/write/pickers.tsx", {
 	"react-native-svg": { SvgXml: "SvgXml" },
-	"@reactive-resume/pdf/icons": { default: iconPaths, __esModule: true },
-	"@reactive-resume/schema/icons": { icons: resumeIcons },
+	"@rezumi/pdf/icons": { default: iconPaths, __esModule: true },
+	"@rezumi/schema/icons": { icons: resumeIcons },
 	"@/ui": { ...ui, Sheet: "Sheet", TextField: "TextField", ListRow: "ListRow" },
 });
 hooks.length = 0;

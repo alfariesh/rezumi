@@ -1,22 +1,22 @@
-import type { JdTermMatch } from "@reactive-resume/resume/ats-pdf";
-import type { ResumeData, SkillItem } from "@reactive-resume/schema/resume/data";
+import type { JdTermMatch } from "@rezumi/resume/ats-pdf";
+import type { ResumeData, SkillItem } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useMemo, useState } from "react";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
-import { NativeSelect } from "@reactive-resume/ui/components/native-select";
-import { Textarea } from "@reactive-resume/ui/components/textarea";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { formatList } from "@reactive-resume/utils/locale";
-import { generateId } from "@reactive-resume/utils/string";
-import { cn } from "@reactive-resume/utils/style";
+import { buildMarkdown } from "@rezumi/resume/markdown";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
+import { NativeSelect } from "@rezumi/ui/components/native-select";
+import { Textarea } from "@rezumi/ui/components/textarea";
+import { toast } from "@rezumi/ui/components/toast";
+import { formatList } from "@rezumi/utils/locale";
+import { generateId } from "@rezumi/utils/string";
+import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { checkStateOf, editWithUndo } from "./actions";
 import { applicationsListQueryKey, applicationsListQueryOptions } from "@/features/applications/queries";
@@ -43,7 +43,7 @@ export type JobMatch = {
 	hiddenTerms: readonly string[];
 };
 
-const loadAtsPdf = () => import("@reactive-resume/resume/ats-pdf");
+const loadAtsPdf = () => import("@rezumi/resume/ats-pdf");
 
 /**
  * Job match reads the posting of the application the resume is linked to, or one pasted for this visit, and sorts

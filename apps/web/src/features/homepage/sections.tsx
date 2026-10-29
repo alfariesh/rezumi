@@ -5,9 +5,9 @@ import { Trans } from "@lingui/react/macro";
 import { AppleLogoIcon, GooglePlayLogoIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { localeSchema } from "@reactive-resume/utils/locale";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { localeSchema } from "@rezumi/utils/locale";
+import { cn } from "@rezumi/utils/style";
 import { prefersReducedMotion, SCENE, useLanding } from "./scroll";
 import { CtaLink, Doodle, labelClass } from "./ui";
 import { RollingNumber } from "@/components/ui/rolling-number";
@@ -230,7 +230,7 @@ export function Closing() {
 				<p className={cn(labelClass, "text-ink-3")}>{t`Also on mobile`}</p>
 				<div className="flex flex-wrap justify-center gap-3">
 					<a
-						href="https://play.google.com/store/apps/details?id=me.rxresu"
+						href="https://play.google.com/store/apps/details?id=app.rezumi"
 						className="inline-flex min-h-14 items-center gap-3 rounded-xl border border-line-2 bg-raised px-5 py-2.5 text-start font-ui text-ink transition-[background-color,transform] duration-[160ms] ease-out-strong hover:bg-hover motion-safe:active:scale-[.97]"
 					>
 						<GooglePlayLogoIcon aria-hidden="true" size={28} weight="fill" className="shrink-0" />

@@ -2,7 +2,7 @@
 // applications list (it holds every application, closed ones included), so the figures match the server's stats
 // without a second query. Weeks are bucketed on the user's clock. Pure: Node runs it in the M5-T3 scenarios.
 import type { ApplicationSummary as Application } from "../applications/types";
-import type { ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus } from "@rezumi/schema/applications/data";
 import { zonedParts } from "../reminders/schedule.ts";
 
 const DAY_MS = 86_400_000;

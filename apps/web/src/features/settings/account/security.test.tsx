@@ -65,7 +65,7 @@ vi.mock("@/libs/orpc/client", () => ({
 	},
 }));
 
-vi.mock("@reactive-resume/ui/components/toast", () => ({
+vi.mock("@rezumi/ui/components/toast", () => ({
 	toast: { add: vi.fn(), close: vi.fn() },
 }));
 

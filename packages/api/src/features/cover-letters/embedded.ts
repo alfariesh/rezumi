@@ -1,10 +1,10 @@
-import type { DbOrTx } from "@reactive-resume/db/client";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { DbOrTx } from "@rezumi/db/client";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { ORPCError } from "@orpc/client";
 import { and, eq, inArray, sql } from "drizzle-orm";
-import * as schema from "@reactive-resume/db/schema";
-import { copyCoverLetterStyle, detachEmbeddedLetters } from "@reactive-resume/resume/cover-letter";
-import { coverLetterSchema } from "@reactive-resume/schema/cover-letter/data";
+import * as schema from "@rezumi/db/schema";
+import { copyCoverLetterStyle, detachEmbeddedLetters } from "@rezumi/resume/cover-letter";
+import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
 import { sanitizeCoverLetterHtml } from "./html";
 import { writeLetterVersion } from "./versions";
 

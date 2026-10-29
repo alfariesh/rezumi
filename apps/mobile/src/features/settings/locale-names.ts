@@ -1,5 +1,5 @@
 import type { MessageDescriptor } from "@lingui/core";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { Locale } from "@rezumi/utils/locale";
 import { msg } from "@lingui/core/macro";
 
 export const localeMap = {

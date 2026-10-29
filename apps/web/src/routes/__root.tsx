@@ -1,9 +1,9 @@
 import type { orpc } from "@/libs/orpc/client";
 import type { Theme } from "@/libs/theme";
 import type { IconProps } from "@phosphor-icons/react";
-import type { FeatureFlags } from "@reactive-resume/api/features/flags";
-import type { AuthSession } from "@reactive-resume/auth/types";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { FeatureFlags } from "@rezumi/api/features/flags";
+import type { AuthSession } from "@rezumi/auth/types";
+import type { Locale } from "@rezumi/utils/locale";
 import type { QueryClient } from "@tanstack/react-query";
 import { DirectionProvider } from "@base-ui/react/direction-provider";
 import { i18n } from "@lingui/core";
@@ -18,10 +18,10 @@ import { createRootRouteWithContext, HeadContent, Outlet, redirect } from "@tans
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { LazyMotion, MotionConfig } from "motion/react";
 import { useEffect } from "react";
-import { Toaster } from "@reactive-resume/ui/components/toast";
-import { TooltipProvider } from "@reactive-resume/ui/components/tooltip";
-import { isAppSectionPath } from "@reactive-resume/utils/app-paths";
-import { isRTL } from "@reactive-resume/utils/locale";
+import { Toaster } from "@rezumi/ui/components/toast";
+import { TooltipProvider } from "@rezumi/ui/components/tooltip";
+import { isAppSectionPath } from "@rezumi/utils/app-paths";
+import { isRTL } from "@rezumi/utils/locale";
 import { BreakpointIndicator } from "@/components/layout/breakpoint-indicator";
 import { DialogManager } from "@/dialogs/manager";
 import { CommandPalette } from "@/features/command-palette";

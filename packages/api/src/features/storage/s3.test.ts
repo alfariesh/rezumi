@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 import { DeleteObjectCommand, ListObjectsV2Command, S3Client } from "@aws-sdk/client-s3";
 
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: {
 		STORAGE_BACKEND: "s3",
 		S3_ACCESS_KEY_ID: "test-access-key",

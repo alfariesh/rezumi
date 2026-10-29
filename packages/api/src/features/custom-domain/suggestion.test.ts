@@ -4,10 +4,10 @@ const state = vi.hoisted(() => ({
 	user: { username: "", name: "" },
 	env: { FLAG_OLACV_SUGGESTION: true, OLACV_API_KEY: "token" as string | undefined },
 }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	db: { select: () => ({ from: () => ({ where: async () => [state.user] }) }) },
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env: state.env }));
+vi.mock("@rezumi/env/server", () => ({ env: state.env }));
 vi.mock("./service", () => ({ isCustomDomainsEnabled: () => true }));
 
 const { suggestCvDomain } = await import("./suggestion");

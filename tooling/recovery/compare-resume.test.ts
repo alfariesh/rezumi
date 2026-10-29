@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { compareResumeRecovery } from "./compare-resume";
 
 const SYNTHETIC_SOURCE_HASH = "6dd2fe6a7e9be1678c47094d8e678c74ff0213a500be80bf7d368a52df154695";

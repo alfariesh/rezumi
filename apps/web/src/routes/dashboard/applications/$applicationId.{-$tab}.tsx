@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import z from "zod";
-import { workspaceTabSchema } from "@reactive-resume/schema/career";
+import { workspaceTabSchema } from "@rezumi/schema/career";
 import { Workspace } from "@/features/career/workspace/shell";
 
 export const Route = createFileRoute("/dashboard/applications/$applicationId/{-$tab}")({

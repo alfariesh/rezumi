@@ -3,7 +3,7 @@
 // runtime-universal (consumed by both the API tool definitions and the web chat UI).
 import type { UIDataTypes, UIMessage } from "ai";
 import z from "zod";
-import { careerStoryInputSchema } from "@reactive-resume/schema/career";
+import { careerStoryInputSchema } from "@rezumi/schema/career";
 
 export const askUserQuestionInputSchema = z.object({
 	question: z.string().trim().min(1),

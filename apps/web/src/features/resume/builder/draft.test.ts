@@ -1,13 +1,13 @@
 // @vitest-environment happy-dom
 
 import type { Resume } from "./draft";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { ORPCError } from "@orpc/client";
-import { sortSectionItemsByPeriod } from "@reactive-resume/resume/section-sort";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import {
 	clearResumeDrafts,
 	readUnsavedResumeData,
@@ -82,7 +82,7 @@ vi.mock("@/libs/orpc/client", () => ({
 	},
 }));
 
-vi.mock("@reactive-resume/ui/components/toast", () => ({
+vi.mock("@rezumi/ui/components/toast", () => ({
 	toast: toastMocks,
 }));
 

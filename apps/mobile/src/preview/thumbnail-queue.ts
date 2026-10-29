@@ -1,7 +1,7 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 import { PixelRatio } from "react-native";
-import { createSerialQueue } from "@reactive-resume/utils/queue";
+import { createSerialQueue } from "@rezumi/utils/queue";
 import { createPreviewPipeline } from "./pipeline";
 
 export const A4_WIDTH_PT = 595.28;

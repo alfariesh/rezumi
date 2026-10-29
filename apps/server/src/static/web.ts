@@ -1,15 +1,15 @@
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { Locale } from "@rezumi/utils/locale";
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { serveStatic } from "@hono/node-server/serve-static";
-import { env } from "@reactive-resume/env/server";
-import { jsonLdScript, socialMetaTags } from "@reactive-resume/pdf/web-page-document";
-import { templateSchema } from "@reactive-resume/schema/templates";
-import { isAppSectionPath, RESERVED_SEGMENTS } from "@reactive-resume/utils/app-paths";
-import { defaultLocale, getLocaleAlternates, isLocale, localizedUrl } from "@reactive-resume/utils/locale";
-import { escapeHtml } from "@reactive-resume/utils/string";
+import { env } from "@rezumi/env/server";
+import { jsonLdScript, socialMetaTags } from "@rezumi/pdf/web-page-document";
+import { templateSchema } from "@rezumi/schema/templates";
+import { isAppSectionPath, RESERVED_SEGMENTS } from "@rezumi/utils/app-paths";
+import { defaultLocale, getLocaleAlternates, isLocale, localizedUrl } from "@rezumi/utils/locale";
+import { escapeHtml } from "@rezumi/utils/string";
 import { CONTEXT7_ASK_DESCRIPTION, CONTEXT7_ASK_URL } from "./seo";
 
 function resolveWebDistPath() {

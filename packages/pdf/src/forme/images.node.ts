@@ -1,6 +1,6 @@
 import { request as httpRequest } from "node:http";
 import { request as httpsRequest } from "node:https";
-import { fetchWorkerPublicUrl, isPrivateOrLoopbackHost, publicLookup } from "@reactive-resume/utils/url-security.node";
+import { fetchWorkerPublicUrl, isPrivateOrLoopbackHost, publicLookup } from "@rezumi/utils/url-security.node";
 import { IMAGE_TIMEOUT_MS, MAX_IMAGE_BYTES, readImageBytes } from "./images";
 
 let ownPictureReader: ((key: string) => Promise<Uint8Array>) | undefined;

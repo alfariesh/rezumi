@@ -1,6 +1,6 @@
 import { Slider as SliderPrimitive } from "@base-ui/react/slider";
-import { useFormControl } from "@reactive-resume/ui/components/form";
-import { cn } from "@reactive-resume/utils/style";
+import { useFormControl } from "@rezumi/ui/components/form";
+import { cn } from "@rezumi/utils/style";
 
 const THUMB_POSITION_KEYS = ["single", "start", "end"] as const;
 

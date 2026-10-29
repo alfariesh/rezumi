@@ -1,5 +1,5 @@
 import type { CheckIssue } from "./issues";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { ScrollViewInstance } from "react-native";
 import { useLingui } from "@lingui/react/macro";
 import { Image } from "expo-image";

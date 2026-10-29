@@ -21,8 +21,8 @@ vi.mock("@/libs/auth/client", () => ({
 	authClient: { signOut, useSession: () => ({ data: { user: { id: "user-1" } } }) },
 }));
 vi.mock("@/features/theme/provider", () => ({ useTheme: () => ({ theme: "light", setTheme: vi.fn() }) }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn(), close: vi.fn() } }));
-vi.mock("@reactive-resume/ui/components/dropdown-menu", () => {
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn(), close: vi.fn() } }));
+vi.mock("@rezumi/ui/components/dropdown-menu", () => {
 	const Passthrough = ({ children }: { children?: ReactNode }) => <>{children}</>;
 	return {
 		DropdownMenu: Passthrough,

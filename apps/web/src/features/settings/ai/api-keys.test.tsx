@@ -10,7 +10,7 @@ const apiKey = vi.hoisted(() => ({ list: vi.fn(), update: vi.fn(), delete: vi.fn
 const toasts = vi.hoisted(() => ({ add: vi.fn() }));
 
 vi.mock("@/libs/auth/client", () => ({ authClient: { apiKey } }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: toasts.add, close: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: toasts.add, close: vi.fn() } }));
 
 i18n.loadAndActivate({ locale: "en", messages: {} });
 

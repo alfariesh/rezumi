@@ -2,7 +2,7 @@ import type { DraftState, SaveResult } from "./state";
 // Data for the application workspace, ported from apps/web/src/features/career/hooks.ts. Query keys append the
 // server origin, as the other mobile features do, and stay under the oRPC prefixes so Career writes refresh them.
 import type { RouterOutput } from "@/api/client";
-import type { CareerWorkspace, GenerateTask } from "@reactive-resume/schema/career";
+import type { CareerWorkspace, GenerateTask } from "@rezumi/schema/career";
 import type { QueryClient } from "@tanstack/react-query";
 import type { SetStateAction } from "react";
 import { t } from "@lingui/core/macro";
@@ -11,7 +11,7 @@ import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Storage from "expo-sqlite/kv-store";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { EMPTY_WORKSPACE } from "@reactive-resume/schema/career";
+import { EMPTY_WORKSPACE } from "@rezumi/schema/career";
 import { createAutosave, createDraftStore, nextDraftState, saveFailure } from "./state";
 import { orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";

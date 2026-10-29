@@ -1,5 +1,5 @@
-import type { LayoutPage, ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { LayoutPage, ResumeData, SectionType } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 import {
 	BorderStyle,
 	convertMillimetersToTwip,
@@ -14,13 +14,13 @@ import {
 	TextRun,
 	WidthType,
 } from "docx";
-import { isCoverLetterOnlyDocument } from "@reactive-resume/resume/export-sections";
-import { entryHeaderOf } from "@reactive-resume/schema/resume/data";
-import { assertResumeRenderBudget } from "@reactive-resume/schema/resume/limits";
-import { templateLayouts } from "@reactive-resume/schema/templates";
-import { parseColorString } from "@reactive-resume/utils/color";
-import { toSafeLink } from "@reactive-resume/utils/link";
-import { isRTL } from "@reactive-resume/utils/locale";
+import { isCoverLetterOnlyDocument } from "@rezumi/resume/export-sections";
+import { entryHeaderOf } from "@rezumi/schema/resume/data";
+import { assertResumeRenderBudget } from "@rezumi/schema/resume/limits";
+import { templateLayouts } from "@rezumi/schema/templates";
+import { parseColorString } from "@rezumi/utils/color";
+import { toSafeLink } from "@rezumi/utils/link";
+import { isRTL } from "@rezumi/utils/locale";
 import { renderBuiltInSection, renderCustomSection, renderSummary, setRenderConfig } from "./section-renderers";
 
 // --- Color helpers ---

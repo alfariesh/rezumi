@@ -1,10 +1,10 @@
-import type { PdfAtsReport, PdfCategory, PdfCategoryScore } from "@reactive-resume/resume/ats-pdf";
+import type { PdfAtsReport, PdfCategory, PdfCategoryScore } from "@rezumi/resume/ats-pdf";
 import { Trans } from "@lingui/react/macro";
 import { useMemo } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@reactive-resume/ui/components/accordion";
-import { Badge } from "@reactive-resume/ui/components/badge";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { cn } from "@reactive-resume/utils/style";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@rezumi/ui/components/accordion";
+import { Badge } from "@rezumi/ui/components/badge";
+import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
 import { getPdfCategoryDescription, getPdfCategoryLabel } from "../messages";
 import { FindingRow } from "./finding-row";
 import { JdCoverage } from "./jd-coverage";

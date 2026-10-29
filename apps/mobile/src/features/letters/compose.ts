@@ -1,7 +1,7 @@
 import type { LetterDocument } from "@/draft/types";
-import type { LetterWords } from "@reactive-resume/resume/cover-letter";
+import type { LetterWords } from "@rezumi/resume/cover-letter";
 import { useQuery } from "@tanstack/react-query";
-import { composeCoverLetter, createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
+import { composeCoverLetter, createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
 import { letterWords } from "@/features/share/letter";
 
 /** Greeting, sign-off and date in the letter's own language, independent of the app's. */

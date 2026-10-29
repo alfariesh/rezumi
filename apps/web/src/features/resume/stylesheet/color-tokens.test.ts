@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { compileStylesheet } from "@reactive-resume/resume/stylesheet";
+import { compileStylesheet } from "@rezumi/resume/stylesheet";
 import { collectCompiledColorTokens } from "./color-tokens";
 
 describe("compiler color source ranges", () => {

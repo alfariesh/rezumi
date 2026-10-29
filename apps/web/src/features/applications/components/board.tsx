@@ -1,6 +1,6 @@
 import type { ApplicationSummary } from "../types";
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
-import type { ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus } from "@rezumi/schema/applications/data";
 import {
 	DndContext,
 	DragOverlay,
@@ -16,15 +16,9 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
 import { useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from "@reactive-resume/ui/components/dialog";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
+import { cn } from "@rezumi/utils/style";
 import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, PIPELINE } from "../stages";
 import { useApplicationActions } from "../use-application-actions";
 import { ApplicationCard } from "./application-card";

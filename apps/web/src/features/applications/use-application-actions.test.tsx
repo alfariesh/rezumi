@@ -19,7 +19,7 @@ vi.mock("@/libs/orpc/client", () => ({
 	},
 }));
 vi.mock("./queries", () => ({ applicationsListQueryKey: () => ["applications"] }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: mocks.toast } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: mocks.toast } }));
 
 import { useApplicationActions } from "./use-application-actions";
 

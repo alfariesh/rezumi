@@ -2,7 +2,7 @@ import { expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { renderResume } from "./render";
 
 it("preserves arrows with a standard PDF font", { timeout: 60_000 }, async () => {

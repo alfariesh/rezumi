@@ -138,7 +138,7 @@ It ends with a summary of resumes created, resumes skipped, and errors.
 Point a current Reactive Resume checkout at the target database and apply the current migrations before you deploy. The Cloudflare Worker does not run migrations itself, so from the current repository run:
 
 ```bash
-DATABASE_URL="postgresql://user:password@host:5432/reactive_resume" pnpm --filter @reactive-resume/db db:migrate
+DATABASE_URL="postgresql://user:password@host:5432/reactive_resume" pnpm --filter @rezumi/db db:migrate
 ```
 
 This applies every migration since `v5.0.20`, which also fills in the new columns for the migrated users. Then deploy the Worker with its Hyperdrive binding pointing at the same database.
@@ -233,8 +233,8 @@ Contributors can rehearse the comparison with `tooling/recovery/compare-resume.t
     a recovered resume. Keep the source export and import it by hand once you've confirmed it's valid.
   </Accordion>
   <Accordion title="Migrated users can't sign in">
-    Check that you ran `pnpm --filter @reactive-resume/db db:migrate` from the current repository against the target
-    database after the scripts, so the current migrations were applied.
+    Check that you ran `pnpm --filter @rezumi/db db:migrate` from the current repository against the target database
+    after the scripts, so the current migrations were applied.
   </Accordion>
   <Accordion title="The migration is slow">
     The scripts work in batches to spare the databases. Run them off-peak, give both databases enough resources, or

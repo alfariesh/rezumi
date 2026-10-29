@@ -6,12 +6,12 @@ Run from repository root (Node 24; generated Forme binaries required):
 TSX_TSCONFIG_PATH=packages/pdf/tsconfig.json node --import ./apps/server/node_modules/tsx/dist/loader.mjs apps/mobile/scripts/parity/host.mts
 ```
 
-Host renders the unchanged sample with all 17 templates through `@reactive-resume/pdf/server`, plus an Azurill free-form case to exercise a measured second pass. Only the picture source changes to the repository JPEG data URI, identically on both sides. PDF.js independently extracts page count and exact concatenated text per page from the Node and uploaded native PDFs. Results contain counts, timings and booleans, never document text or font/image bytes.
+Host renders the unchanged sample with all 17 templates through `@rezumi/pdf/server`, plus an Azurill free-form case to exercise a measured second pass. Only the picture source changes to the repository JPEG data URI, identically on both sides. PDF.js independently extracts page count and exact concatenated text per page from the Node and uploaded native PDFs. Results contain counts, timings and booleans, never document text or font/image bytes.
 
 Launch the dev build on a dedicated device with Metro on 8086, then open:
 
-- iOS: `me.rxresu://builder/preview-sample/page?parity=http%3A%2F%2F127.0.0.1%3A18086`
-- Android: `me.rxresu://builder/preview-sample/page?parity=http%3A%2F%2F127.0.0.1%3A18086`
+- iOS: `app.rezumi://builder/preview-sample/page?parity=http%3A%2F%2F127.0.0.1%3A18086`
+- Android: `app.rezumi://builder/preview-sample/page?parity=http%3A%2F%2F127.0.0.1%3A18086`
 
 The host binds only `127.0.0.1:18086`. On Android, use your own emulator serial: `adb -s <serial> reverse tcp:18086 tcp:18086` (and reverse Metro 8086 too).
 

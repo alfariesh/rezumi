@@ -8,7 +8,7 @@ import * as Clipboard from "expo-clipboard";
 import { openBrowserAsync } from "expo-web-browser";
 import { useState } from "react";
 import { View } from "react-native";
-import { publicResumeUrl } from "@reactive-resume/resume/sharing";
+import { publicResumeUrl } from "@rezumi/resume/sharing";
 import { CustomDomain } from "./custom-domain";
 import { flushResume } from "./document";
 import { client, orpc } from "@/api/client";

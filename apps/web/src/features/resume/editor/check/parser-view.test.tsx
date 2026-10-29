@@ -17,7 +17,7 @@ vi.mock("@/features/resume/builder/draft", () => ({
 }));
 vi.mock("./use-check", () => ({ useCheck: () => null }));
 vi.mock("@/features/ats-checker/extract-client", () => ({ extractPdf: mocks.extract }));
-vi.mock("@reactive-resume/resume/ats-pdf", () => ({
+vi.mock("@rezumi/resume/ats-pdf", () => ({
 	buildExtractedDocument: (text: string) => ({
 		pages: [],
 		lines: text.split("\n").map((text) => ({ text })),

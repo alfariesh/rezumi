@@ -2,7 +2,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { useEffect } from "react";
 import { Linking } from "react-native";
-import { publicResumeUrl } from "@reactive-resume/resume/sharing";
+import { publicResumeUrl } from "@rezumi/resume/sharing";
 import { getServer } from "@/auth/session";
 
 /**

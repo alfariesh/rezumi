@@ -2,7 +2,7 @@
 import { t } from "@lingui/core/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { toast } from "@rezumi/ui/components/toast";
 import { useNewDocumentsStore } from "./new-documents";
 import { useDialogStore } from "@/dialogs/store";
 import { toastError } from "@/libs/error-message";
@@ -45,7 +45,7 @@ export function useStartDocument(applicationId?: string) {
 		trySample: async () => {
 			try {
 				// The name generator is large; only a sample needs it.
-				const { generateRandomName } = await import("@reactive-resume/utils/slug");
+				const { generateRandomName } = await import("@rezumi/utils/slug");
 				const resumeId = await createResume({ name: generateRandomName(), tags: [], withSampleData: true });
 				await created(resumeId, "resume");
 				toast.add({ description: t`Sample resume added. Delete it anytime.` });

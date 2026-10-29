@@ -19,10 +19,10 @@ import type {
 	SkillItem,
 	SummaryItem,
 	VolunteerItem,
-} from "@reactive-resume/schema/resume/data";
+} from "@rezumi/schema/resume/data";
 import type { ReactNode } from "react";
 import { Children, createContext, Fragment, isValidElement, use } from "react";
-import { entryHeaderOf } from "@reactive-resume/schema/resume/data";
+import { entryHeaderOf } from "@rezumi/schema/resume/data";
 import { View } from "#react-pdf-renderer";
 import { useRender } from "../../context";
 import { HEADING_NODE_PROP } from "../../page-map";

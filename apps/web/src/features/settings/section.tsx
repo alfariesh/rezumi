@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 type SettingsSectionProps = {
 	title: ReactNode;

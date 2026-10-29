@@ -1,11 +1,11 @@
 import type { ResumeRenderOptions } from "./context";
 import type { PageMap } from "./page-map";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 import wasmUrl from "@formepdf/core/pkg-web/forme_bg.wasm?url";
 import * as forme from "@formepdf/core/worker";
 import subsetWasmUrl from "harfbuzzjs/dist/harfbuzz-subset.wasm?url";
-import { parseResumeData } from "@reactive-resume/schema/resume/data";
+import { parseResumeData } from "@rezumi/schema/resume/data";
 import { createFontPreparer, createFontSubsetter } from "./forme/font-subset";
 import { loadFonts } from "./forme/fonts";
 import { assertPdfFonts, lostCharacters, renderResume, resumeFontRequests } from "./forme/render";

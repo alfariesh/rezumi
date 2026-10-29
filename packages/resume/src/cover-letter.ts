@@ -1,7 +1,7 @@
-import type { CoverLetter, CoverLetterStyle } from "@reactive-resume/schema/cover-letter/data";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { escapeHtml } from "@reactive-resume/utils/string";
+import type { CoverLetter, CoverLetterStyle } from "@rezumi/schema/cover-letter/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { escapeHtml } from "@rezumi/utils/string";
 
 export function copyCoverLetterStyle(
 	data: ResumeData,

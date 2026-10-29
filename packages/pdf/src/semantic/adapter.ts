@@ -1,5 +1,5 @@
 import type { Style } from "../forme/style-types";
-import type { ResolvedNodeStyle, ResolvedPageSize } from "@reactive-resume/resume/stylesheet";
+import type { ResolvedNodeStyle, ResolvedPageSize } from "@rezumi/resume/stylesheet";
 
 type ResolvedPdfPageSize = ResolvedPageSize;
 

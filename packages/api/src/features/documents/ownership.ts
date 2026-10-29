@@ -1,7 +1,7 @@
-import type { DbOrTx } from "@reactive-resume/db/client";
+import type { DbOrTx } from "@rezumi/db/client";
 import { ORPCError } from "@orpc/client";
 import { eq } from "drizzle-orm";
-import * as schema from "@reactive-resume/db/schema";
+import * as schema from "@rezumi/db/schema";
 
 /**
  * Locks the user's row so one user's writers run one at a time (owner first, before document or application writes)

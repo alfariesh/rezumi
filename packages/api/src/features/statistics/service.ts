@@ -1,7 +1,7 @@
 import { count } from "drizzle-orm";
 import z from "zod";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
 
 const CACHE_DURATION_MS = 6 * 60 * 60 * 1000; // 6 hours
 const GITHUB_API_URL = "https://api.github.com/repos/reactive-resume/reactive-resume";

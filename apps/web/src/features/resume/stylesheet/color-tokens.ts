@@ -1,5 +1,5 @@
-import type { StyleProgram } from "@reactive-resume/resume/stylesheet";
-import { PROPERTY_REGISTRY_V1 } from "@reactive-resume/resume/stylesheet";
+import type { StyleProgram } from "@rezumi/resume/stylesheet";
+import { PROPERTY_REGISTRY_V1 } from "@rezumi/resume/stylesheet";
 
 export type SemanticCssColorToken = {
 	from: number;

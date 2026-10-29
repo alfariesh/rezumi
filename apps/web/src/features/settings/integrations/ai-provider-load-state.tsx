@@ -1,6 +1,6 @@
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
+import { Button } from "@rezumi/ui/components/button";
+import { Spinner } from "@rezumi/ui/components/spinner";
 
 type AiProviderLoadStateProps = {
 	state: { isLoading: boolean; error: unknown; retry: () => void };

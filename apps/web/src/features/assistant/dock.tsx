@@ -1,11 +1,11 @@
 import type { AssistantDocument } from "./document";
-import type { Breakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
+import type { Breakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import type { Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { useDirection } from "@base-ui/react/direction-provider";
 import { AnimatePresence, m } from "motion/react";
 import { lazy, Suspense } from "react";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
+import { Spinner } from "@rezumi/ui/components/spinner";
 import { useLetterAssistantDocument, useResumeAssistantDocument } from "./document";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { D2, D3, EASE, EXIT } from "@/libs/motion";

@@ -1,7 +1,7 @@
-import type { ResumeDates } from "@reactive-resume/schema/resume/dates";
-import type { PeriodEndpoint } from "@reactive-resume/schema/resume/period";
-import { resumeDatesToPeriod } from "@reactive-resume/schema/resume/dates";
-import { isReversedPeriod, parsePeriod } from "@reactive-resume/schema/resume/period";
+import type { ResumeDates } from "@rezumi/schema/resume/dates";
+import type { PeriodEndpoint } from "@rezumi/schema/resume/period";
+import { resumeDatesToPeriod } from "@rezumi/schema/resume/dates";
+import { isReversedPeriod, parsePeriod } from "@rezumi/schema/resume/period";
 
 type SectionItemWithPeriod = {
 	id: string;

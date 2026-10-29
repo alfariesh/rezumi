@@ -1,12 +1,12 @@
 import type { StorageService } from "../storage";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { createHash } from "node:crypto";
 import { ORPCError } from "@orpc/server";
 import { isbot } from "isbot";
-import * as schema from "@reactive-resume/db/schema";
-import { env } from "@reactive-resume/env/server";
-import { generateFilename } from "@reactive-resume/utils/file";
-import { matchesIfNoneMatch } from "@reactive-resume/utils/http";
+import * as schema from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
+import { generateFilename } from "@rezumi/utils/file";
+import { matchesIfNoneMatch } from "@rezumi/utils/http";
 import {
 	assertCanView,
 	isOwner,
@@ -109,7 +109,7 @@ async function renderAndStore(
 	storage: StorageService | undefined,
 	{ data, filename, folder, key }: { data: ResumeData; filename: string; folder: string; key: string },
 ): Promise<Uint8Array> {
-	const { createResumePdfFile } = await import("@reactive-resume/pdf/server");
+	const { createResumePdfFile } = await import("@rezumi/pdf/server");
 	const file = await createResumePdfFile({ data, filename, uploadOrigin: env.APP_URL });
 	const bytes = new Uint8Array(await file.arrayBuffer());
 	await storage

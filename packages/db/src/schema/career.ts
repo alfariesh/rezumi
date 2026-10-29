@@ -5,9 +5,9 @@ import type {
 	CareerStoryData,
 	CareerWorkspace,
 	SavedItemData,
-} from "@reactive-resume/schema/career";
+} from "@rezumi/schema/career";
 import * as pg from "drizzle-orm/pg-core";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { aiProvider } from "./agent";
 import { application } from "./applications";
 import { user } from "./auth";

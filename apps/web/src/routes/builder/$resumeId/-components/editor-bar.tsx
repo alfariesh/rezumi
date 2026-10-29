@@ -1,8 +1,8 @@
 import type { EditorMode } from "@/features/resume/editor/store";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { TabsList, TabsTrigger } from "@reactive-resume/ui/components/tabs";
+import { Icon } from "@rezumi/ui/components/icon";
+import { TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { DocumentMenu } from "./document-menu";
 import { useCurrentBuilderResumeSelector, useCurrentResume, useResumeStore } from "@/features/resume/builder/draft";
 import { useOpenIssueCount } from "@/features/resume/editor/check/use-check";

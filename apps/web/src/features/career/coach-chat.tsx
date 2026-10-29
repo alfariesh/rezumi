@@ -1,6 +1,6 @@
 import type { Knowledge, Prompt, SessionProps, Used } from "./coach-thread";
 import type { ChatAttachment } from "@/features/assistant/chat";
-import type { FactCategory } from "@reactive-resume/schema/career";
+import type { FactCategory } from "@rezumi/schema/career";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
 import { plural, t } from "@lingui/core/macro";
@@ -10,10 +10,10 @@ import { Link } from "@tanstack/react-router";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { memo, useEffect, useEffectEvent, useRef, useState } from "react";
 import z from "zod";
-import { agentWebSources } from "@reactive-resume/ai/tools/agent-tool-contracts";
-import { careerSourceSchema, factCategorySchema } from "@reactive-resume/schema/career";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { agentWebSources } from "@rezumi/ai/tools/agent-tool-contracts";
+import { careerSourceSchema, factCategorySchema } from "@rezumi/schema/career";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
 import {
 	MessageScroller,
 	MessageScrollerButton,
@@ -21,11 +21,11 @@ import {
 	MessageScrollerItem,
 	MessageScrollerProvider,
 	MessageScrollerViewport,
-} from "@reactive-resume/ui/components/message-scroller";
-import { Popover, PopoverContent, PopoverTrigger } from "@reactive-resume/ui/components/popover";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { TraceIcon, TraceLine, TraceTitle } from "@reactive-resume/ui/components/trace";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/message-scroller";
+import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
+import { cn } from "@rezumi/utils/style";
 import { Composer, contentClass, copyToClipboard, usedFor, usedSchema } from "./coach-thread";
 import { Eyebrow, MemoryProposal, Working, workingSteps } from "./shared";
 import { attachmentPart } from "@/features/assistant/chat";

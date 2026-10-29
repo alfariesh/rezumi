@@ -6,7 +6,7 @@ import { expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Dialog } from "@reactive-resume/ui/components/dialog";
+import { Dialog } from "@rezumi/ui/components/dialog";
 import { NewDocumentDialog } from "./new-document-dialog";
 import { applicationsListQueryKey } from "@/features/applications/queries";
 import { orpc } from "@/libs/orpc/client";

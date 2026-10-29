@@ -2,7 +2,7 @@ import type { UIMessageChunk } from "ai";
 import type { ResumableStreamContext } from "resumable-stream/ioredis";
 import { JsonToSseTransformStream } from "ai";
 import { createResumableStreamContext } from "resumable-stream/ioredis";
-import { getRedis, redisKey } from "@reactive-resume/db/redis";
+import { getRedis, redisKey } from "@rezumi/db/redis";
 
 type AgentStreamContext = Pick<ResumableStreamContext, "createNewResumableStream" | "resumeExistingStream">;
 

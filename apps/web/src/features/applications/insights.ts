@@ -1,6 +1,6 @@
 import type { ApplicationSummary } from "./types";
-import type { ApplicationStatus } from "@reactive-resume/schema/applications/data";
-import { STAGES } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus } from "@rezumi/schema/applications/data";
+import { STAGES } from "@rezumi/schema/applications/data";
 import { PIPELINE } from "./stages";
 
 export type StageCount = { status: ApplicationStatus; count: number };

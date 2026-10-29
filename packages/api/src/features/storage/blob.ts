@@ -1,5 +1,5 @@
 import { del, get, list, put } from "@vercel/blob";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 
 export function blobOptions() {
 	return {

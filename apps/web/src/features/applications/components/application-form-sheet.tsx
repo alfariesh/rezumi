@@ -1,16 +1,16 @@
 import type { Application } from "../types";
 import type { FileAttachment } from "./file-attachment-field";
-import type { ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { STAGES } from "@reactive-resume/schema/applications/data";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@reactive-resume/ui/components/accordion";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
+import { STAGES } from "@rezumi/schema/applications/data";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@rezumi/ui/components/accordion";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
 import {
 	Sheet,
 	SheetContent,
@@ -18,9 +18,9 @@ import {
 	SheetFooter,
 	SheetHeader,
 	SheetTitle,
-} from "@reactive-resume/ui/components/sheet";
-import { Textarea } from "@reactive-resume/ui/components/textarea";
-import { toast } from "@reactive-resume/ui/components/toast";
+} from "@rezumi/ui/components/sheet";
+import { Textarea } from "@rezumi/ui/components/textarea";
+import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryKey } from "../queries";
 import { FileAttachmentField } from "./file-attachment-field";
 import { Combobox } from "@/components/ui/combobox";

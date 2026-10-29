@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { atsReviewSystemPrompt, atsReviewUserPromptTemplate } from "@reactive-resume/ai/prompts";
+import { atsReviewSystemPrompt, atsReviewUserPromptTemplate } from "@rezumi/ai/prompts";
 import { dataBlock, inertMarkers } from "./data-block";
 import { generateJson } from "./generate-json";
 import { getModel } from "./service";

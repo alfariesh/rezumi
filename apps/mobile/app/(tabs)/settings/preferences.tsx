@@ -1,11 +1,11 @@
 import type { ThemePreference } from "@/ui";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { Locale } from "@rezumi/utils/locale";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { DevSettings, View, useWindowDimensions } from "react-native";
-import { localeSchema } from "@reactive-resume/utils/locale";
-import { timezoneSchema } from "@reactive-resume/utils/timezone";
+import { localeSchema } from "@rezumi/utils/locale";
+import { timezoneSchema } from "@rezumi/utils/timezone";
 import { client, orpc } from "@/api/client";
 import { SettingsGroup, SettingsPage } from "@/features/settings/layout";
 import { localeMap } from "@/features/settings/locale-names";

@@ -10,8 +10,8 @@ import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useMemo } from "react";
-import { Badge } from "@reactive-resume/ui/components/badge";
-import { Collapsible, CollapsibleContent } from "@reactive-resume/ui/components/collapsible";
+import { Badge } from "@rezumi/ui/components/badge";
+import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -21,12 +21,12 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { toast } from "@rezumi/ui/components/toast";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { EntryFields } from "./entries";
 import { useEntry, useEntryWriter } from "./fields";

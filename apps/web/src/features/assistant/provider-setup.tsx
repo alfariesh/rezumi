@@ -1,15 +1,15 @@
-import type { AIProvider } from "@reactive-resume/ai/types";
+import type { AIProvider } from "@rezumi/ai/types";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Button, buttonVariants } from "@reactive-resume/ui/components/button";
-import { Collapsible, CollapsibleContent } from "@reactive-resume/ui/components/collapsible";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
-import { cn } from "@reactive-resume/utils/style";
+import { Button, buttonVariants } from "@rezumi/ui/components/button";
+import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
+import { cn } from "@rezumi/utils/style";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 

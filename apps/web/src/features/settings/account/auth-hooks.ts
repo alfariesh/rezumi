@@ -1,9 +1,9 @@
-import type { AuthProvider } from "@reactive-resume/auth/types";
+import type { AuthProvider } from "@rezumi/auth/types";
 import { t } from "@lingui/core/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { match } from "ts-pattern";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { toast } from "@rezumi/ui/components/toast";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";

@@ -1,6 +1,6 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { eq, isNull } from "drizzle-orm";
-import * as schema from "@reactive-resume/db/schema";
+import * as schema from "@rezumi/db/schema";
 import { verifiedDomainColumn } from "../custom-domain/service";
 import { publicResumeData } from "./access-policy";
 import { findResume } from "./slugs";

@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@reactive-resume/ui/components/tooltip";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { copySourceToClipboard } from "./editor-extensions";
 
 type ToolbarButtonProps = {

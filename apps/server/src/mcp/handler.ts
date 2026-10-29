@@ -2,9 +2,9 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { randomUUID } from "node:crypto";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { ORPCError } from "@orpc/server";
-import { consumeMcpRequestLimit, consumeMcpUserLimit } from "@reactive-resume/api/features/mcp/transport";
-import { getTrustedOrigins } from "@reactive-resume/auth/trusted-origins";
-import { env } from "@reactive-resume/env/server";
+import { consumeMcpRequestLimit, consumeMcpUserLimit } from "@rezumi/api/features/mcp/transport";
+import { getTrustedOrigins } from "@rezumi/auth/trusted-origins";
+import { env } from "@rezumi/env/server";
 import { AuthError, authenticateRequest } from "./auth";
 import { createMcpServer } from "./server";
 

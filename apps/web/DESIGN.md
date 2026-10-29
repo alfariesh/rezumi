@@ -163,7 +163,7 @@ The front matter records the app type scale. Field labels use the separate `fiel
 
 ## Iconography
 
-App icons use **Phosphor** (regular weight) through `Icon` from `@reactive-resume/ui/components/icon`. `Icon` takes the glyph's Phosphor name (`x`, `gear-six`, `magnifying-glass`), the same names the [Phosphor catalog](https://phosphoricons.com) and resume icons use. To use another glyph, add it to the `icons` map in that file.
+App icons use **Phosphor** (regular weight) through `Icon` from `@rezumi/ui/components/icon`. `Icon` takes the glyph's Phosphor name (`x`, `gear-six`, `magnifying-glass`), the same names the [Phosphor catalog](https://phosphoricons.com) and resume icons use. To use another glyph, add it to the `icons` map in that file.
 
 Use 20px icons on desktop and 24px on touch interfaces. Regular weight is the default; reserve filled app icons for selected navigation. Marketing illustrations may use filled icons, such as the GitHub star.
 

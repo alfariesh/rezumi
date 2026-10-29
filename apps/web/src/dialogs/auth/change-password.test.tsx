@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { Dialog } from "@reactive-resume/ui/components/dialog";
+import { Dialog } from "@rezumi/ui/components/dialog";
 
 const mocks = vi.hoisted(() => ({ changePassword: vi.fn(), close: vi.fn() }));
 vi.mock("@/libs/auth/client", () => ({
@@ -11,7 +11,7 @@ vi.mock("@/libs/auth/client", () => ({
 }));
 vi.mock("@tanstack/react-query", () => ({ useQueryClient: () => ({ invalidateQueries: vi.fn(async () => {}) }) }));
 vi.mock("@/hooks/use-form-blocker", () => ({ useFormBlocker: () => ({ requestClose: mocks.close }) }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn(), close: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn(), close: vi.fn() } }));
 vi.mock("../store", () => ({
 	useDialogStore: (select: (state: unknown) => unknown) => select({ closeDialog: mocks.close }),
 }));

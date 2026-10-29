@@ -1,5 +1,5 @@
 import type { ToolPart } from "./proposals";
-import type { Proposal, ProposalState } from "@reactive-resume/resume/proposals";
+import type { Proposal, ProposalState } from "@rezumi/resume/proposals";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
 import { plural } from "@lingui/core/macro";
@@ -7,7 +7,7 @@ import { Trans, useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { memo, useState } from "react";
 import { ActivityIndicator, Linking, Pressable, TextInput, View } from "react-native";
-import { blockText } from "@reactive-resume/resume/proposals";
+import { blockText } from "@rezumi/resume/proposals";
 import { webSources } from "./chat";
 import { AssistantMarkdown } from "./markdown";
 import { isProposeEdits, skippedCount, toProposals } from "./proposals";

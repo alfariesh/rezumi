@@ -1,4 +1,4 @@
-import type { WorkspaceTab } from "@reactive-resume/schema/career";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ComponentType } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useLocalSearchParams, useRouter } from "expo-router";

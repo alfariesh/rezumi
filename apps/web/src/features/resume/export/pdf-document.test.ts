@@ -1,9 +1,9 @@
 import type { PdfWorkerRequest } from "./pdf-document";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 
 const mocks = vi.hoisted(() => ({ renderHere: vi.fn() }));
-vi.mock("@reactive-resume/pdf/browser", () => ({ createResumePdfBlob: mocks.renderHere }));
+vi.mock("@rezumi/pdf/browser", () => ({ createResumePdfBlob: mocks.renderHere }));
 
 const pageMap = { pages: [{ width: 595, height: 842 }], nodes: [] };
 

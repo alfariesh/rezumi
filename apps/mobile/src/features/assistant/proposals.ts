@@ -1,7 +1,7 @@
 // Proposed edits from the assistant: as cards in the chat, applied to the draft through the M3-T3 store, and marked on
 // the Page tab (ported from apps/web/src/features/resume/editor/proposals/proposals.ts).
-import type { Proposal } from "@reactive-resume/resume/proposals";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { Proposal } from "@rezumi/resume/proposals";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { plural, t } from "@lingui/core/macro";
 import { produce } from "immer";
 import { useMemo } from "react";
@@ -14,7 +14,7 @@ import {
 	splitBlock,
 	splitBlocks,
 	writeTarget,
-} from "@reactive-resume/resume/proposals";
+} from "@rezumi/resume/proposals";
 import { getAccountScope } from "@/auth/session";
 import { useResumeStore } from "@/draft";
 import { dismissToast, showToast } from "@/ui";

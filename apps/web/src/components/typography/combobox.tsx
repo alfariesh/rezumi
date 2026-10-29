@@ -1,6 +1,6 @@
 import type { MultiComboboxProps, SingleComboboxProps } from "@/components/ui/combobox";
-import { fontList, getFont, getFontDisplayName, getFontSearchKeywords, sortFontWeights } from "@reactive-resume/fonts";
-import { cn } from "@reactive-resume/utils/style";
+import { fontList, getFont, getFontDisplayName, getFontSearchKeywords, sortFontWeights } from "@rezumi/fonts";
+import { cn } from "@rezumi/utils/style";
 import { FontDisplay } from "./font-display";
 import { Combobox } from "@/components/ui/combobox";
 

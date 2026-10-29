@@ -1,6 +1,6 @@
 import z from "zod";
-import { searchRegionsSchema } from "@reactive-resume/utils/region";
-import { timezoneSchema } from "@reactive-resume/utils/timezone";
+import { searchRegionsSchema } from "@rezumi/utils/region";
+import { timezoneSchema } from "@rezumi/utils/timezone";
 
 /** The workspace tabs of one application, in the order a search happens. */
 export const WORKSPACE_TABS = ["fit", "apply", "prepare", "practise", "debrief", "messages", "saved"] as const;

@@ -4,16 +4,12 @@
  */
 import type { BehaviorAnnotations } from "./annotations";
 import z from "zod";
-import { resumePatchOperationsSchema } from "@reactive-resume/ai/tools/resume-tool-contracts";
-import { applicationDto } from "@reactive-resume/api/dto/application";
-import { coverLetterDto } from "@reactive-resume/api/dto/cover-letter";
-import { resumeDto } from "@reactive-resume/api/dto/resume";
-import {
-	applicationStatusSchema,
-	interviewDetailsSchema,
-	interviewKindSchema,
-} from "@reactive-resume/schema/applications/data";
-import { coverLetterDocumentSchema } from "@reactive-resume/schema/cover-letter/data";
+import { resumePatchOperationsSchema } from "@rezumi/ai/tools/resume-tool-contracts";
+import { applicationDto } from "@rezumi/api/dto/application";
+import { coverLetterDto } from "@rezumi/api/dto/cover-letter";
+import { resumeDto } from "@rezumi/api/dto/resume";
+import { applicationStatusSchema, interviewDetailsSchema, interviewKindSchema } from "@rezumi/schema/applications/data";
+import { coverLetterDocumentSchema } from "@rezumi/schema/cover-letter/data";
 import { READ_IDEMPOTENT, WRITE_DESTRUCTIVE_EXTERNAL, WRITE_NON_IDEMPOTENT, WRITE_DESTRUCTIVE } from "./annotations";
 import { toWireObjectSchema, toWireSchema } from "./contracts";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";

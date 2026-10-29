@@ -1,11 +1,11 @@
 import type { SQL } from "drizzle-orm";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { PgDialect } from "drizzle-orm/pg-core";
-import { collectPassages, readTarget } from "@reactive-resume/resume/proposals";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { collectPassages, readTarget } from "@rezumi/resume/proposals";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const dbMock = vi.hoisted(() => ({ select: vi.fn() }));
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
 vi.mock("../resume/service", () => ({ resumeService: {} }));
 vi.mock("../cover-letters/service", () => ({ coverLetterService: {} }));
 

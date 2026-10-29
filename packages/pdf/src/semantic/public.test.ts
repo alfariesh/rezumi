@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vite-plus/test";
-import { parseResumeData } from "@reactive-resume/schema/resume/data";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { parseResumeData } from "@rezumi/schema/resume/data";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { resolveResumeRuntime } from "./resolve";
 
-describe("@reactive-resume/pdf/semantic", () => {
+describe("@rezumi/pdf/semantic", () => {
 	it("falls back to base presentation and preserves fatal source diagnostics", () => {
 		const data = structuredClone(sampleResumeData);
 		data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 2, text: "@version 2;" } };

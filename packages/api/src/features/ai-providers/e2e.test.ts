@@ -34,8 +34,8 @@ const { dbMock, dbState } = vi.hoisted(() => {
 	return { dbMock: db, dbState: state };
 });
 
-vi.mock("@reactive-resume/db/client", () => ({ db: dbMock }));
-vi.mock("@reactive-resume/db/schema", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
+vi.mock("@rezumi/db/schema", () => ({
 	aiProvider: { id: "ai_provider.id", userId: "ai_provider.user_id" },
 	user: { id: "user.id" },
 }));
@@ -48,7 +48,7 @@ vi.mock("drizzle-orm", () => ({
 }));
 
 // Real AES-GCM credential encryption runs; it only needs a secret.
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: {
 		APP_URL: "http://localhost:3000",
 		ENCRYPTION_SECRET: "e2e-encryption-secret",
@@ -56,7 +56,7 @@ vi.mock("@reactive-resume/env/server", () => ({
 	},
 }));
 
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: {
 		api: {
 			getSession: async () => ({ user: { id: "user-1", email: "kaushik@example.test" } }),

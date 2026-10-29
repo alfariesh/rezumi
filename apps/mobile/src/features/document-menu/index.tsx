@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import { EnrichedTextInput } from "react-native-enriched-html";
-import { isValidSlug, MAX_SLUG_LENGTH, normalizeSlug } from "@reactive-resume/resume/sharing";
+import { isValidSlug, MAX_SLUG_LENGTH, normalizeSlug } from "@rezumi/resume/sharing";
 import { client } from "@/api/client";
 import { resumeFieldFocus, useResumeStore } from "@/draft";
 import { resume as draftResume } from "@/draft/runtime";

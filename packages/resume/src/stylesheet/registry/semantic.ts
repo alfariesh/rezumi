@@ -1,6 +1,6 @@
 import type { SemanticNodeKind } from "../semantic-types";
-import { sectionTypeSchema } from "@reactive-resume/schema/resume/data";
-import { templateSchema } from "@reactive-resume/schema/templates";
+import { sectionTypeSchema } from "@rezumi/schema/resume/data";
+import { templateSchema } from "@rezumi/schema/templates";
 
 export type SemanticNodeDefinition = {
 	parents: readonly SemanticNodeKind[];

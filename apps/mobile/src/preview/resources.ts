@@ -1,8 +1,8 @@
 import { CryptoDigestAlgorithm, digestStringAsync } from "expo-crypto";
 import { Directory, File, Paths } from "expo-file-system";
 import { fetch as expoFetch } from "expo/fetch";
-import { configureFontReader, configureImageFetch, downloadFont } from "@reactive-resume/pdf/native";
-import { createSerialQueue } from "@reactive-resume/utils/queue";
+import { configureFontReader, configureImageFetch, downloadFont } from "@rezumi/pdf/native";
+import { createSerialQueue } from "@rezumi/utils/queue";
 import { getServer } from "@/auth/session";
 
 const MAX_IMAGE_BYTES = 12_000_000;

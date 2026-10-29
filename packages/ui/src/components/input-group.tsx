@@ -1,10 +1,10 @@
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cva } from "class-variance-authority";
-import { Button } from "@reactive-resume/ui/components/button";
-import { useFormControl } from "@reactive-resume/ui/components/form";
-import { Input } from "@reactive-resume/ui/components/input";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { useFormControl } from "@rezumi/ui/components/form";
+import { Input } from "@rezumi/ui/components/input";
+import { cn } from "@rezumi/utils/style";
 
 function InputGroup({
 	className,

@@ -21,7 +21,7 @@ it("blocks private workspace paths in imports, re-exports, and dynamic imports",
 	const directory = mkdtempSync(join(tmpdir(), "reactive-resume-lint-"));
 	try {
 		const sources = [
-			"@reactive-resume/schema/src/resume/data",
+			"@rezumi/schema/src/resume/data",
 			"../../packages/schema/src/resume/data",
 			"packages/schema/resume/data",
 		];
@@ -37,10 +37,7 @@ it("blocks private workspace paths in imports, re-exports, and dynamic imports",
 				writeFileSync(join(directory, `${index++}.ts`), statement);
 			}
 		}
-		writeFileSync(
-			join(directory, "public.ts"),
-			'export { resumeDataSchema } from "@reactive-resume/schema/resume/data";',
-		);
+		writeFileSync(join(directory, "public.ts"), 'export { resumeDataSchema } from "@rezumi/schema/resume/data";');
 		const { status, diagnostics } = lint(directory);
 		const restricted = diagnostics.filter((diagnostic) => diagnostic.code === "eslint(no-restricted-imports)");
 		expect(status).toBe(1);
@@ -54,11 +51,8 @@ it("blocks private workspace paths in imports, re-exports, and dynamic imports",
 it("allows only type imports from the server API in mobile code", () => {
 	const directory = mkdtempSync(join(root, "apps/mobile/lint-fixture-"));
 	try {
-		writeFileSync(join(directory, "runtime.ts"), 'export { default as router } from "@reactive-resume/api/routers";');
-		writeFileSync(
-			join(directory, "types.ts"),
-			'export type { default as Router } from "@reactive-resume/api/routers";',
-		);
+		writeFileSync(join(directory, "runtime.ts"), 'export { default as router } from "@rezumi/api/routers";');
+		writeFileSync(join(directory, "types.ts"), 'export type { default as Router } from "@rezumi/api/routers";');
 		const { status, diagnostics } = lint(directory);
 		expect(status).toBe(1);
 		expect(diagnostics).toHaveLength(1);

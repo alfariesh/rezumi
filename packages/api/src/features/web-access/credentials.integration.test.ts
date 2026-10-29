@@ -16,8 +16,8 @@ const env = vi.hoisted(() => ({
 	AI_API_KEY: "",
 	AI_BASE_URL: "",
 }));
-vi.mock("@reactive-resume/env/server", () => ({ env }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/env/server", () => ({ env }));
+vi.mock("@rezumi/db/client", () => ({
 	get db() {
 		return fixture.db;
 	},

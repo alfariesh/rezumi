@@ -1,11 +1,11 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { ORPCError } from "@orpc/server";
 import z from "zod";
-import { env } from "@reactive-resume/env/server";
-import { composeCoverLetter, createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
-import { getResumeExportData } from "@reactive-resume/resume/export-sections";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
-import { generateFilename } from "@reactive-resume/utils/file";
+import { env } from "@rezumi/env/server";
+import { composeCoverLetter, createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { getResumeExportData } from "@rezumi/resume/export-sections";
+import { buildMarkdown } from "@rezumi/resume/markdown";
+import { generateFilename } from "@rezumi/utils/file";
 import { protectedProcedure } from "../../context";
 import { pdfExportRateLimit } from "../../middleware/rate-limit";
 import { coverLetterService } from "../cover-letters/service";
@@ -30,7 +30,7 @@ async function fileResponse(
 	try {
 		if (format === "json") body = new File([JSON.stringify(json, null, 2)], filename, { type: "application/json" });
 		else if (format === "pdf") {
-			const { createResumePdfFile } = await import("@reactive-resume/pdf/server");
+			const { createResumePdfFile } = await import("@rezumi/pdf/server");
 			body = await createResumePdfFile({
 				data,
 				filename,
@@ -38,14 +38,14 @@ async function fileResponse(
 				renderOptions: { includeCoverLetterHeader },
 			});
 		} else {
-			const { getResumeSectionTitle } = await import("@reactive-resume/pdf/section-title");
+			const { getResumeSectionTitle } = await import("@rezumi/pdf/section-title");
 			const resolveTitle = (id: string) => getResumeSectionTitle(data, id);
 			if (format === "md") body = new File([buildMarkdown(data, resolveTitle)], filename, { type: "text/markdown" });
 			else {
 				const blob =
 					format === "odt"
-						? await (await import("@reactive-resume/odt")).buildOdt(data, resolveTitle)
-						: await (await import("@reactive-resume/docx")).buildDocx(data, resolveTitle);
+						? await (await import("@rezumi/odt")).buildOdt(data, resolveTitle)
+						: await (await import("@rezumi/docx")).buildDocx(data, resolveTitle);
 				body = new File([blob], filename, { type: blob.type });
 			}
 		}

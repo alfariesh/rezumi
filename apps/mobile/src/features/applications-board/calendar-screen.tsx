@@ -1,6 +1,6 @@
 import type { CalendarEvent } from "./calendar";
 import type { ApplicationSummary as Application } from "@/features/applications/types";
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";

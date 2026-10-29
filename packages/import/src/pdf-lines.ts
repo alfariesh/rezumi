@@ -1,4 +1,4 @@
-import type { ExtractedDocument } from "@reactive-resume/resume/ats-pdf";
+import type { ExtractedDocument } from "@rezumi/resume/ats-pdf";
 
 /**
  * Turns a PDF into the plain lines `parseResumeText` reads.

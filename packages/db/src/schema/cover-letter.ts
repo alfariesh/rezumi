@@ -1,7 +1,7 @@
-import type { CoverLetterLayout, CoverLetterStyle } from "@reactive-resume/schema/cover-letter/data";
+import type { CoverLetterLayout, CoverLetterStyle } from "@rezumi/schema/cover-letter/data";
 import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { application } from "./applications";
 import { user } from "./auth";
 import { resume } from "./resume";

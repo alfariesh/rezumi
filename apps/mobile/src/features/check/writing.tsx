@@ -1,19 +1,13 @@
 import type { CheckIssue } from "./issues";
 import type { WritingNote } from "./review";
-import type { Proposal } from "@reactive-resume/resume/proposals";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { Proposal } from "@rezumi/resume/proposals";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Dispatch, SetStateAction } from "react";
 import { useLingui } from "@lingui/react/macro";
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
-import {
-	applyProposal,
-	blockText,
-	canApply,
-	collectPassages,
-	getProposalState,
-} from "@reactive-resume/resume/proposals";
+import { buildMarkdown } from "@rezumi/resume/markdown";
+import { applyProposal, blockText, canApply, collectPassages, getProposalState } from "@rezumi/resume/proposals";
 import { editWithUndo } from "./actions";
 import { getSectionName } from "./issues";
 import { mapWritingReview } from "./review";

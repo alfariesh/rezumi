@@ -2,11 +2,11 @@ import { expect, it, vi } from "vite-plus/test";
 import { call } from "@orpc/server";
 const list = vi.hoisted(() => vi.fn());
 vi.mock("./service", () => ({ resumeService: { list } }));
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: { api: { getSession: vi.fn().mockResolvedValue({ user: { id: "owner" } }) } },
 	verifyOAuthToken: vi.fn(),
 }));
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	db: { select: () => ({ from: () => ({ where: () => ({ limit: async () => [{ id: "owner", banned: false }] }) }) }) },
 }));
 const { crudRouter } = await import("./crud");

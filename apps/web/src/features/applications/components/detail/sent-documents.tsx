@@ -1,13 +1,13 @@
 import type { Application } from "../../types";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button, buttonVariants } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { Button, buttonVariants } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
 import { PIPELINE } from "../../stages";
 import { useInvalidateApplications } from "../../use-application-actions";
 import { FileAttachmentField } from "../file-attachment-field";

@@ -1,8 +1,8 @@
 import type { ApplicationSummary } from "./types";
-import type { ApplicationClosedReason, ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationClosedReason, ApplicationStatus } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryKey } from "./queries";
 import { getStageLabel } from "./stages";
 import { toastError } from "@/libs/error-message";

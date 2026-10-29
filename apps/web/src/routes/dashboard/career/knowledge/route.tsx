@@ -1,11 +1,11 @@
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { m } from "motion/react";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
 import { D2, EASE } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
 

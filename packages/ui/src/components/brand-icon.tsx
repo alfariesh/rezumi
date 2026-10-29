@@ -1,4 +1,4 @@
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 type Props = React.ComponentProps<"img"> & {
 	variant?: "logo" | "icon";

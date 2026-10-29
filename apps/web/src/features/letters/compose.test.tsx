@@ -3,9 +3,9 @@ import { i18n as app } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderToStaticMarkup } from "react-dom/server";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { coverLetterSchema } from "@reactive-resume/schema/cover-letter/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { letterPageData, letterWordsQueryOptions, useLetterWords } from "./compose";
 import { getLocaleMessages } from "@/libs/locale";
 

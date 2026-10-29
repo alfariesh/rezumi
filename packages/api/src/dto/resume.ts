@@ -1,10 +1,10 @@
 import { createSelectSchema } from "drizzle-zod";
 import z from "zod";
-import * as schema from "@reactive-resume/db/schema";
-import { jsonPatchOperationSchema } from "@reactive-resume/resume/patch";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
-import { slugSchema } from "@reactive-resume/schema/resume/slug";
-import { writableResumeDataSchema } from "@reactive-resume/schema/resume/write";
+import * as schema from "@rezumi/db/schema";
+import { jsonPatchOperationSchema } from "@rezumi/resume/patch";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { slugSchema } from "@rezumi/schema/resume/slug";
+import { writableResumeDataSchema } from "@rezumi/schema/resume/write";
 import { paginationShape } from "../pagination";
 
 const resumeSchema = createSelectSchema(schema.resume, {

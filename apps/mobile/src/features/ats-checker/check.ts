@@ -1,4 +1,4 @@
-import type { PdfAtsReport } from "@reactive-resume/resume/ats-pdf";
+import type { PdfAtsReport } from "@rezumi/resume/ats-pdf";
 import { t } from "@lingui/core/macro";
 import { File } from "expo-file-system";
 import { getNetworkStateAsync } from "expo-network";

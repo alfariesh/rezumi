@@ -1,5 +1,5 @@
 import type { ResolvedPdfNodePresentation } from "./adapter";
-import type { SemanticNode } from "@reactive-resume/resume/stylesheet";
+import type { SemanticNode } from "@rezumi/resume/stylesheet";
 import type { ReactNode } from "react";
 import { createContext, use, useMemo } from "react";
 import { semanticNodeKeys } from "./node-keys";

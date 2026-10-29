@@ -120,14 +120,14 @@ import "@formatjs/intl-displaynames/locale-data/zh.js";
 import "@formatjs/intl-displaynames/locale-data/zh-Hant.js";
 import "@formatjs/intl-displaynames/locale-data/zu.js";
 
-// `uuid` (v7 ids in @reactive-resume/utils/string) needs a CSPRNG.
+// `uuid` (v7 ids in @rezumi/utils/string) needs a CSPRNG.
 if (typeof globalThis.crypto?.getRandomValues !== "function") {
 	const crypto = (globalThis.crypto ?? {}) as Crypto;
 	Object.defineProperty(crypto, "getRandomValues", { value: getRandomValues, configurable: true, writable: true });
 	if (!globalThis.crypto) Object.defineProperty(globalThis, "crypto", { value: crypto, configurable: true });
 }
 
-// @reactive-resume/resume/section-sort uses it.
+// @rezumi/resume/section-sort uses it.
 if (!Array.prototype.toSorted) {
 	Object.defineProperty(Array.prototype, "toSorted", {
 		value: function toSorted<T>(this: T[], compare?: (a: T, b: T) => number) {

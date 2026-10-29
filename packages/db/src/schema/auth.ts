@@ -2,7 +2,7 @@ import type { SQL } from "drizzle-orm";
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import { defineRelations, sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 
 function lower<T extends AnyPgColumn>(column: T): SQL<T> {
 	return sql`lower(${column})`;

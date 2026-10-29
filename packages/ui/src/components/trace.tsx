@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 /**
  * shadcn Trace: the steps an agent took, one quiet line each ("Read the resume", "Searching the web…"). A running

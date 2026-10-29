@@ -1,9 +1,9 @@
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { Fragment } from "react";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { Icon } from "@rezumi/ui/components/icon";
 import { popTransition } from "@/features/settings/root";
 
 type Page = {

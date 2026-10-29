@@ -1,6 +1,6 @@
 import type * as React from "react";
 import { Input as InputPrimitive } from "@base-ui/react/input";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 /** Shared by text inputs and textareas: focus is an accent border plus a soft 3px ring. */
 const inputBaseClassName =

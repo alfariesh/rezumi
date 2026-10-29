@@ -2,7 +2,7 @@ import type { Pool } from "pg";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { createRouterClient } from "@orpc/server";
 import { getTableColumns } from "drizzle-orm";
-import { application } from "@reactive-resume/db/schema";
+import { application } from "@rezumi/db/schema";
 
 const fixture = vi.hoisted(() => ({
 	query: vi.fn<(config: { text: string }, params: unknown[]) => Promise<{ rows: unknown[][] }>>(),
@@ -12,7 +12,7 @@ const fixture = vi.hoisted(() => ({
 	total: 0,
 }));
 
-vi.mock("@reactive-resume/db/client", async () => {
+vi.mock("@rezumi/db/client", async () => {
 	const { drizzle } = await import("drizzle-orm/node-postgres");
 	return { db: drizzle({ client: { query: fixture.query } as unknown as Pool }) };
 });

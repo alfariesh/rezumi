@@ -7,7 +7,7 @@ import {
 	careerStoryInputSchema,
 	careerWorkspaceSchema,
 	generateTaskSchema,
-} from "@reactive-resume/schema/career";
+} from "@rezumi/schema/career";
 import { protectedProcedure } from "../../context";
 import {
 	careerFactSchema,

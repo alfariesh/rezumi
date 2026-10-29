@@ -1,23 +1,23 @@
-import type { ResumeExportTarget } from "@reactive-resume/resume/export-sections";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeExportTarget } from "@rezumi/resume/export-sections";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { useState } from "react";
-import { getResumeExportData } from "@reactive-resume/resume/export-sections";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { downloadWithAnchor } from "@reactive-resume/utils/file";
+import { getResumeExportData } from "@rezumi/resume/export-sections";
+import { buildMarkdown } from "@rezumi/resume/markdown";
+import { toast } from "@rezumi/ui/components/toast";
+import { downloadWithAnchor } from "@rezumi/utils/file";
 import { createResumePdfBlob } from "./pdf-document";
 import { getLostCharactersMessage, getReadableErrorMessage } from "@/libs/error-message";
 
 // DOCX and ODT are large and only some exports need them; they load when one starts.
-const loadDocx = () => import("@reactive-resume/docx");
-const loadOdt = () => import("@reactive-resume/odt");
+const loadDocx = () => import("@rezumi/docx");
+const loadOdt = () => import("@rezumi/odt");
 
 /** Starts loading the DOCX and ODT builders, for controls that lead to those formats. */
 export const preloadDocumentExport = () => {
 	void loadDocx();
 	void loadOdt();
-	void import("@reactive-resume/pdf/section-title");
+	void import("@rezumi/pdf/section-title");
 };
 
 type ExportableResume = {
@@ -73,7 +73,7 @@ export async function createExportFile(
 	}
 
 	// Section titles are stored empty by default; DOCX, ODT and Markdown use the PDF's localized headings.
-	const { getResumeSectionTitle } = await import("@reactive-resume/pdf/section-title");
+	const { getResumeSectionTitle } = await import("@rezumi/pdf/section-title");
 	const resolveTitle = (sectionId: string) => getResumeSectionTitle(data, sectionId);
 	if (format === "md") return new Blob([buildMarkdown(data, resolveTitle)], { type: "text/markdown" });
 	if (format === "odt") return (await loadOdt()).buildOdt(data, resolveTitle);

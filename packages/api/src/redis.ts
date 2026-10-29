@@ -2,8 +2,8 @@ import type { Ratelimiter } from "@orpc/experimental-ratelimit";
 import type { MemoryRatelimiterOptions } from "@orpc/experimental-ratelimit/memory";
 import { MemoryRatelimiter } from "@orpc/experimental-ratelimit/memory";
 import { RedisRatelimiter } from "@orpc/experimental-ratelimit/redis";
-import { getCoordination } from "@reactive-resume/db/coordination";
-import { getRedis, redisKey } from "@reactive-resume/db/redis";
+import { getCoordination } from "@rezumi/db/coordination";
+import { getRedis, redisKey } from "@rezumi/db/redis";
 
 export function createRateLimiter(name: string, config: MemoryRatelimiterOptions): Ratelimiter {
 	const memory = new MemoryRatelimiter(config);

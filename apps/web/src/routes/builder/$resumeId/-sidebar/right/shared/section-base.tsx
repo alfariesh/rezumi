@@ -1,5 +1,5 @@
 import type { RightSidebarSection } from "@/libs/resume/section";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 type Props = React.ComponentProps<"div"> & {
 	type: RightSidebarSection;

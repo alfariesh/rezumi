@@ -8,7 +8,7 @@ import type { ToolPart } from "./proposals";
 import type { SavedThread } from "./recovery";
 import type { IconName } from "@/ui";
 import type { LegendListRef } from "@legendapp/list/react-native";
-import type { Proposal } from "@reactive-resume/resume/proposals";
+import type { Proposal } from "@rezumi/resume/proposals";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
 import { LegendList } from "@legendapp/list/react-native";

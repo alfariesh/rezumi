@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
-import { env } from "@reactive-resume/env/server";
-import { getLocalDataDirectory } from "@reactive-resume/utils/monorepo.node";
+import { env } from "@rezumi/env/server";
+import { getLocalDataDirectory } from "@rezumi/utils/monorepo.node";
 import { verifyMigratedSchema } from "./schema-check";
 
 function resolveFromCurrentModule(relativePath: string) {
@@ -93,7 +93,7 @@ async function validateLocalStoragePath() {
 
 async function reapStaleAgentRuns() {
 	try {
-		const { reapStaleAgentRunsAtBoot } = await import("@reactive-resume/api/features/agent/runs");
+		const { reapStaleAgentRunsAtBoot } = await import("@rezumi/api/features/agent/runs");
 		await reapStaleAgentRunsAtBoot();
 	} catch (error) {
 		// A reap failure must not block serving traffic; stuck runs also heal lazily on access.

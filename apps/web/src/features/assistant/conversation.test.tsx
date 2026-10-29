@@ -14,7 +14,7 @@ vi.mock("@/libs/orpc/client", () => ({
 	client: { agent: { attachments: { create: mocks.attach } } },
 	orpc: { agent: { threads: { list: { key: () => ["threads"] } } } },
 }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 vi.mock("./use-assistant-chat", () => ({ useAssistantChat: mocks.chat }));
 vi.mock("./chat", () => ({
 	fileToBase64: async () => "Zm9v",

@@ -1,4 +1,4 @@
-import { escapeHtml } from "@reactive-resume/utils/string";
+import { escapeHtml } from "@rezumi/utils/string";
 /**
  * Converts a plain-text summary and optional highlights array into an escaped HTML description.
  * Summary becomes a <p> tag, highlights become a <ul> list.

@@ -1,6 +1,6 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
-import { createSampleResumeData } from "@reactive-resume/schema/resume/sample";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
+import { createSampleResumeData } from "@rezumi/schema/resume/sample";
 
 const comprehensiveStylesheet = {
 	languageVersion: 1,

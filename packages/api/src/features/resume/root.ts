@@ -10,9 +10,9 @@ type RootDependencies = {
 
 const getDependencies = async (): Promise<RootDependencies> => {
 	const [{ env }, { db }, schema, { eq }, { resumeService }] = await Promise.all([
-		import("@reactive-resume/env/server"),
-		import("@reactive-resume/db/client"),
-		import("@reactive-resume/db/schema"),
+		import("@rezumi/env/server"),
+		import("@rezumi/db/client"),
+		import("@rezumi/db/schema"),
 		import("drizzle-orm"),
 		import("./service"),
 	]);

@@ -2,11 +2,11 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { initWasm, Resvg } from "@resvg/resvg-wasm";
-import { getPublicResumeCardData } from "@reactive-resume/api/features/resume/social-meta";
-import { env } from "@reactive-resume/env/server";
-import { CARD_WIDTH, resumeCardSvg } from "@reactive-resume/pdf/web-page-card";
-import { publicResumePath } from "@reactive-resume/resume/sharing";
-import { matchesIfNoneMatch } from "@reactive-resume/utils/http";
+import { getPublicResumeCardData } from "@rezumi/api/features/resume/social-meta";
+import { env } from "@rezumi/env/server";
+import { CARD_WIDTH, resumeCardSvg } from "@rezumi/pdf/web-page-card";
+import { publicResumePath } from "@rezumi/resume/sharing";
+import { matchesIfNoneMatch } from "@rezumi/utils/http";
 
 let ready: Promise<void> | undefined;
 const initialize = () =>
@@ -53,7 +53,7 @@ export async function handleResumeCard(request: Request, username: string, slug:
 	if (!png) {
 		try {
 			// Loaded with the first card: the PDF engine and its fonts are heavy, and most requests never need them.
-			const { loadResumeCardAssets } = await import("@reactive-resume/pdf/server");
+			const { loadResumeCardAssets } = await import("@rezumi/pdf/server");
 			const assets = await loadResumeCardAssets(data, env.APP_URL);
 			const svg = resumeCardSvg({
 				...text,

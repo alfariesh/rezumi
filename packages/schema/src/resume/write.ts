@@ -7,7 +7,7 @@ import { assertResumeRenderBudget } from "./limits";
 const publishedInputSchema = z.fromJSONSchema(createResumeDataJsonSchema());
 
 // Write-only caps, so stored resumes over them still load. The document cap matches the JSON Patch copy budget in
-// `@reactive-resume/resume/patch`. The text cap is far beyond any real field and above the 128 KiB stylesheet limit;
+// `@rezumi/resume/patch`. The text cap is far beyond any real field and above the 128 KiB stylesheet limit;
 // `url` values are exempt because a picture may be a data URL, which the document cap still bounds.
 const MAX_DOCUMENT_CHARS = 10_000_000;
 const MAX_TEXT_CHARS = 200_000;

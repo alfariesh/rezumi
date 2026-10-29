@@ -1,7 +1,7 @@
 import type { WebPageMessages } from "./messages";
 import type { ResumeWebPage } from "./web-page";
-import { isRTL } from "@reactive-resume/utils/locale";
-import { escapeHtml } from "@reactive-resume/utils/string";
+import { isRTL } from "@rezumi/utils/locale";
+import { escapeHtml } from "@rezumi/utils/string";
 
 export { localeFromAcceptLanguage, webPageMessages } from "./messages";
 export type { WebPageMessages } from "./messages";

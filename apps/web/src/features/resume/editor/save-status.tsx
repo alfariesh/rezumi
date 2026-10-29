@@ -1,9 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Alert, AlertDescription } from "@reactive-resume/ui/components/alert";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { cn } from "@reactive-resume/utils/style";
+import { Alert, AlertDescription } from "@rezumi/ui/components/alert";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { cn } from "@rezumi/utils/style";
 import { useResumeStore } from "@/features/resume/builder/draft";
 import { ENTER_CLASS } from "@/libs/motion";
 

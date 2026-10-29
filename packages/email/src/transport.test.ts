@@ -12,7 +12,7 @@ const envMock = vi.hoisted(() => ({
 const sendMail = vi.hoisted(() => vi.fn().mockResolvedValue({ ok: true }));
 const createTransport = vi.hoisted(() => vi.fn(() => ({ sendMail })));
 
-vi.mock("@reactive-resume/env/server", () => ({ env: envMock }));
+vi.mock("@rezumi/env/server", () => ({ env: envMock }));
 vi.mock("nodemailer", () => ({
 	default: { createTransport },
 	createTransport,

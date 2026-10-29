@@ -1,6 +1,6 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import { nativeEngine } from "@reactive-resume/forme-native";
-import { renderResumePdf } from "@reactive-resume/pdf/native";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import { nativeEngine } from "@rezumi/forme-native";
+import { renderResumePdf } from "@rezumi/pdf/native";
 import { configurePreviewResources, readPreviewImage } from "./resources";
 
 /** Port of web design/presets: density, margins, then half-point steps with a 9 pt floor. */

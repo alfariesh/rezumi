@@ -1,4 +1,4 @@
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { useLingui } from "@lingui/react/macro";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";

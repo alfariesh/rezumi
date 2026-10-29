@@ -19,7 +19,7 @@ vi.mock("@/features/resume/builder/draft", () => ({
 	useCurrentResume: () => currentResumeMock(),
 }));
 
-vi.mock("@reactive-resume/ui/components/toast", () => ({
+vi.mock("@rezumi/ui/components/toast", () => ({
 	toast: { add: vi.fn() },
 }));
 

@@ -1,9 +1,9 @@
-import type { LetterWords } from "@reactive-resume/resume/cover-letter";
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
+import type { LetterWords } from "@rezumi/resume/cover-letter";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import { setupI18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { composeCoverLetter, createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
+import { composeCoverLetter, createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
 import { getLocaleMessages, resolveLocale } from "@/libs/locale";
 
 /** Document translations stay independent of the app's active language. */

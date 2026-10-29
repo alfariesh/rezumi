@@ -1,4 +1,4 @@
-import type { SectionType } from "@reactive-resume/schema/resume/data";
+import type { SectionType } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { match } from "ts-pattern";
 

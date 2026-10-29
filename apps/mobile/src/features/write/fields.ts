@@ -1,7 +1,7 @@
 // The entry field schema per section type (contract for Write, Design and Check). Data only: the order and kind of
 // each field an entry edits, as on web's entries.tsx. Render labels with `i18n._(field.label)`.
 import type { MessageDescriptor } from "@lingui/core";
-import type { CustomSectionType } from "@reactive-resume/schema/resume/data";
+import type { CustomSectionType } from "@rezumi/schema/resume/data";
 import { msg } from "@lingui/core/macro";
 
 export type EntryFieldKind =

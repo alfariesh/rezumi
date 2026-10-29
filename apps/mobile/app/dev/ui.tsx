@@ -1,7 +1,7 @@
 // Dev-only gallery of every src/ui primitive, for design review and screenshots. Not a product screen, so its
 // sample copy is not translated. Production builds redirect home.
 //
-// Deep links: `me.rxresu://dev/ui?group=fields`, and `&open=sheet|long|reopen|tags|footer|dialog|destructive|toast|undo`
+// Deep links: `app.rezumi://dev/ui?group=fields`, and `&open=sheet|long|reopen|tags|footer|dialog|destructive|toast|undo`
 // to open an overlay on arrival. `reopen` closes the sheet and reopens it while it is still sliding away.
 import type { ReactNode } from "react";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";

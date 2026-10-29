@@ -1,5 +1,5 @@
 import type { UploadContext } from "./upload";
-import type { Picture } from "@reactive-resume/schema/resume/data";
+import type { Picture } from "@rezumi/schema/resume/data";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { File } from "expo-file-system";

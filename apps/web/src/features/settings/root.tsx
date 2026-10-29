@@ -1,13 +1,13 @@
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { Avatar, AvatarFallback, AvatarImage } from "@reactive-resume/ui/components/avatar";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { getInitials } from "@reactive-resume/utils/string";
+import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
+import { Icon } from "@rezumi/ui/components/icon";
+import { getInitials } from "@rezumi/utils/string";
 import { SignOutButton } from "./account/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { useTheme } from "@/features/theme/provider";

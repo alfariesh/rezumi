@@ -51,8 +51,7 @@ const packageNameOf = (id: string) =>
 		.join("/");
 
 // Matches subpath imports too, such as `react-reconciler/constants.js`.
-const shouldBundle = (id: string) =>
-	id.startsWith("@reactive-resume/") || bundledInteropPackages.has(packageNameOf(id));
+const shouldBundle = (id: string) => id.startsWith("@rezumi/") || bundledInteropPackages.has(packageNameOf(id));
 
 const shouldExternalizeThirdParty = (id: string) => {
 	if (shouldBundle(id)) return false;

@@ -4,17 +4,17 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ORPCError } from "@orpc/server";
 import { TOOL_META } from "./tool-meta";
 
-vi.mock("@reactive-resume/api/context", () => ({
+vi.mock("@rezumi/api/context", () => ({
 	resolveUserFromRequestHeaders: vi.fn(),
 }));
 
 vi.mock("./files", () => ({ readMcpFile: vi.fn() }));
 
-vi.mock("@reactive-resume/api/features/resume/export", () => ({
+vi.mock("@rezumi/api/features/resume/export", () => ({
 	createResumePdfDownloadUrl: vi.fn(),
 }));
 
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: {
 		APP_URL: "https://example.com",
 	},

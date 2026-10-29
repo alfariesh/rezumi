@@ -1,6 +1,6 @@
 import type { ImproveLine } from "./improve";
 import type { Menu } from "@base-ui/react/menu";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { Editor } from "@tiptap/react";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
@@ -20,11 +20,11 @@ import {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { useKeyboardInset } from "@reactive-resume/ui/hooks/use-keyboard-inset";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { useKeyboardInset } from "@rezumi/ui/hooks/use-keyboard-inset";
+import { cn } from "@rezumi/utils/style";
 import { ImprovePanel, lineAtCaret } from "./improve";
 import { richTextExtensions } from "@/components/input/rich-text-extensions";
 import { hasUnsupportedTableMarkup, toPreviewHtml } from "@/components/input/rich-text-markup";

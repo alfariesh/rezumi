@@ -14,13 +14,13 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@vercel/blob", () => mocks.blob);
-vi.mock("@reactive-resume/env/server", () => ({ env: mocks.env }));
+vi.mock("@rezumi/env/server", () => ({ env: mocks.env }));
 vi.mock("../../context", () => ({
 	resolveAuthenticationFromRequestHeaders: mocks.authentication,
 	resolveUserFromRequestHeaders: async (headers: Headers) => (await mocks.authentication(headers))?.user ?? null,
 }));
 vi.mock("../../redis", () => ({ createRateLimiter: () => ({ limit: mocks.limit }) }));
-vi.mock("@reactive-resume/db/redis", () => ({
+vi.mock("@rezumi/db/redis", () => ({
 	getRedis: mocks.getRedis,
 	redisKey: (...parts: string[]) => ["test", ...parts].join(":"),
 }));

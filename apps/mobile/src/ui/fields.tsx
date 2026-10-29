@@ -5,7 +5,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useEffect, useRef, useState } from "react";
 import { I18nManager, Platform, Pressable, TextInput, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { filterOptions } from "@reactive-resume/utils/string";
+import { filterOptions } from "@rezumi/utils/string";
 import { Icon } from "./icon";
 import { ListRow } from "./layout";
 import { haptics } from "./motion";

@@ -1,5 +1,5 @@
 import { expect, it } from "vite-plus/test";
-import { MCP_TOOL_NAME } from "@reactive-resume/mcp/tool-names";
+import { MCP_TOOL_NAME } from "@rezumi/mcp/tool-names";
 import { buildPatchGuide } from "./prompt";
 
 /** Every raw tool name the prompt guide instructs the model to call. */

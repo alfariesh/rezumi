@@ -26,7 +26,7 @@ import * as SecureStore from "expo-secure-store";
 import Storage from "expo-sqlite/kv-store";
 import * as WebBrowser from "expo-web-browser";
 import { useSyncExternalStore } from "react";
-import { fnv1a } from "@reactive-resume/utils/string";
+import { fnv1a } from "@rezumi/utils/string";
 import {
 	discover,
 	forgetClient,

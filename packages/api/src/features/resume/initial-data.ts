@@ -1,8 +1,8 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Locale } from "@reactive-resume/utils/locale";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
-import { EMPTY_SEMANTIC_CSS_SOURCE } from "@reactive-resume/schema/resume/stylesheet";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Locale } from "@rezumi/utils/locale";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
+import { EMPTY_SEMANTIC_CSS_SOURCE } from "@rezumi/schema/resume/stylesheet";
 
 type CreateResumeDataOptions = {
 	withSampleData?: boolean;

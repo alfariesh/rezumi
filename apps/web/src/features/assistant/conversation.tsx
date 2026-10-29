@@ -1,8 +1,8 @@
 import type { ChatAttachment, MessageContext } from "./chat";
 import type { AssistantDocument } from "./document";
-import type { ProposeEditsOutput } from "@reactive-resume/ai/tools/agent-tool-contracts";
-import type { Proposal } from "@reactive-resume/resume/proposals";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { ProposeEditsOutput } from "@rezumi/ai/tools/agent-tool-contracts";
+import type { Proposal } from "@rezumi/resume/proposals";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
@@ -10,10 +10,10 @@ import { Plural, Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { memo, useEffect, useEffectEvent, useId, useMemo, useRef, useState } from "react";
-import { agentWebSources, readPageOutputSchema } from "@reactive-resume/ai/tools/agent-tool-contracts";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
+import { agentWebSources, readPageOutputSchema } from "@rezumi/ai/tools/agent-tool-contracts";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import {
 	MessageScroller,
 	MessageScrollerButton,
@@ -21,11 +21,11 @@ import {
 	MessageScrollerItem,
 	MessageScrollerProvider,
 	MessageScrollerViewport,
-} from "@reactive-resume/ui/components/message-scroller";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { Trace, TraceIcon, TraceLine, TraceTitle } from "@reactive-resume/ui/components/trace";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/message-scroller";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { toast } from "@rezumi/ui/components/toast";
+import { Trace, TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
+import { cn } from "@rezumi/utils/style";
 import { attachmentPart, fileToBase64, transcriptOf } from "./chat";
 import { AssistantMarkdown } from "./markdown";
 import { ToolApprovals } from "./tool-approvals";

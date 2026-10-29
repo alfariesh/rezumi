@@ -1,8 +1,8 @@
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { InputGroup, InputGroupButton, InputGroupInput } from "@reactive-resume/ui/components/input-group";
-import { popupSlideClassName } from "@reactive-resume/ui/components/menu-styles";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { InputGroup, InputGroupButton, InputGroupInput } from "@rezumi/ui/components/input-group";
+import { popupSlideClassName } from "@rezumi/ui/components/menu-styles";
+import { cn } from "@rezumi/utils/style";
 
 const ComboboxRoot = ComboboxPrimitive.Root;
 

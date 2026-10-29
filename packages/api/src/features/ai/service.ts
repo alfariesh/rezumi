@@ -1,5 +1,5 @@
-import type { AIProvider } from "@reactive-resume/ai/types";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { AIProvider } from "@rezumi/ai/types";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { ModelMessage } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createCerebras } from "@ai-sdk/cerebras";
@@ -23,11 +23,11 @@ import {
 	docxParserUserPrompt,
 	pdfParserSystemPrompt,
 	pdfParserUserPrompt,
-} from "@reactive-resume/ai/prompts";
-import { buildAiExtractionTemplate } from "@reactive-resume/ai/resume/extraction-template";
-import { sanitizeAndParseResumeJson } from "@reactive-resume/ai/resume/sanitize";
-import { AI_PROVIDER_DEFAULT_BASE_URLS, AI_PROVIDER_DISPLAY_NAMES, aiProviderSchema } from "@reactive-resume/ai/types";
-import { ZipEntryTooLargeError, unzipEntries } from "@reactive-resume/import/zip";
+} from "@rezumi/ai/prompts";
+import { buildAiExtractionTemplate } from "@rezumi/ai/resume/extraction-template";
+import { sanitizeAndParseResumeJson } from "@rezumi/ai/resume/sanitize";
+import { AI_PROVIDER_DEFAULT_BASE_URLS, AI_PROVIDER_DISPLAY_NAMES, aiProviderSchema } from "@rezumi/ai/types";
+import { ZipEntryTooLargeError, unzipEntries } from "@rezumi/import/zip";
 import { decodeEntities } from "../web-access/builtin";
 import { isDirectOpenAIProvider } from "./capabilities";
 import { aiDeadline } from "./generate-json";

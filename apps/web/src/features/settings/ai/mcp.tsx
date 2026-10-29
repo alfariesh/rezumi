@@ -1,8 +1,8 @@
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Swap } from "@reactive-resume/ui/components/swap";
+import { Button } from "@rezumi/ui/components/button";
+import { Swap } from "@rezumi/ui/components/swap";
 import { SettingsSection } from "../section";
 
 export function McpSection() {

@@ -3,7 +3,7 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "../shell";
 import type { Application } from "@/features/applications/types";
-import type { InterviewKind, InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

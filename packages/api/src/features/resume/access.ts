@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { parseCookies } from "better-auth/cookies";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 
 const RESUME_ACCESS_COOKIE_PREFIX = "resume_access";
 const RESUME_ACCESS_TTL_SECONDS = 60 * 10; // 10 minutes

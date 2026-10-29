@@ -5,10 +5,10 @@ import type {
 	ApplicationTimelineEntry,
 	Contact,
 	PostingSource,
-} from "@reactive-resume/schema/applications/data";
+} from "@rezumi/schema/applications/data";
 import type { AnyPgColumn } from "drizzle-orm/pg-core";
 import * as pg from "drizzle-orm/pg-core";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { user } from "./auth";
 import { coverLetter, coverLetterVersion } from "./cover-letter";
 import { resume, resumeVersion } from "./resume";

@@ -7,7 +7,7 @@ import { useRouter } from "expo-router";
 import { useDeferredValue, useMemo, useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
 import Animated, { FadeOut, LinearTransition, ReduceMotion } from "react-native-reanimated";
-import { ATS_CATEGORIES } from "@reactive-resume/resume/ats";
+import { ATS_CATEGORIES } from "@rezumi/resume/ats";
 import { editWithUndo, fixIssue } from "./actions";
 import { getCategoryDescription, getCategoryName } from "./issues";
 import { JobMatch } from "./job-match";

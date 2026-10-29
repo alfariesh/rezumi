@@ -2,14 +2,14 @@ import { describe, expect, it, vi } from "vite-plus/test";
 
 const verified = vi.hoisted(() => [] as { userId: string; hostname: string }[]);
 // Verified domains for the provider; the background re-check finds none stale.
-vi.mock("@reactive-resume/db/client", () => ({
+vi.mock("@rezumi/db/client", () => ({
 	db: {
 		select: () => ({
 			from: () => ({ where: () => Object.assign(Promise.resolve(verified), { limit: async () => [] }) }),
 		}),
 	},
 }));
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: {
 		APP_URL: "https://rezumi.app",
 		APP_ALIAS_URL: "https://rx.cv",

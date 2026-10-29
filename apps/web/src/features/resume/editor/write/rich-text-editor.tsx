@@ -1,7 +1,7 @@
 import type { FocusRequest, RichTextEditorProps } from "./rich-text-editor-field";
 import { Trans } from "@lingui/react/macro";
 import { lazy, Suspense, useMemo, useState } from "react";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 import { hasUnsupportedTableMarkup, toPreviewHtml } from "@/components/input/rich-text-markup";
 
 // Tiptap and ProseMirror are most of the builder's script. The editor loads when a field first renders (or earlier,

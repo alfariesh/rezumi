@@ -1,5 +1,5 @@
 import type { FlatRow, OutlineRow, WriteSection } from "./model";
-import type { CustomSectionType, ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
+import type { CustomSectionType, ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -7,7 +7,7 @@ import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { Pressable, View } from "react-native";
-import { getInitials } from "@reactive-resume/utils/string";
+import { getInitials } from "@rezumi/utils/string";
 import { EntrySheet } from "./entry-sheet";
 import { ADD_LABELS, SECTION_ICONS, SECTION_TITLES } from "./fields";
 import { addEntry, edit, requestFocus, useWriteData } from "./hooks";

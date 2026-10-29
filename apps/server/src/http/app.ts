@@ -6,9 +6,9 @@ import { getConnInfo } from "@hono/node-server/conninfo";
 import { Hono } from "hono";
 import { bodyLimit } from "hono/body-limit";
 import { compress } from "hono/compress";
-import { prepareStagedBody, withStagedBody } from "@reactive-resume/api/features/storage/transport";
-import { env } from "@reactive-resume/env/server";
-import { prepareMcpDiscovery } from "@reactive-resume/mcp";
+import { prepareStagedBody, withStagedBody } from "@rezumi/api/features/storage/transport";
+import { env } from "@rezumi/env/server";
+import { prepareMcpDiscovery } from "@rezumi/mcp";
 import { handleMcp } from "../mcp/handler";
 import { handleOpenApi, handleOpenApiDocument } from "../openapi/handler";
 import {

@@ -3,7 +3,7 @@ import { expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { renderResume } from "./render";
 
 // #3590: PDF extraction still finds text drawn at -Number.MAX_VALUE, but the continuation page looks empty.

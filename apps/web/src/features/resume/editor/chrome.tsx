@@ -1,16 +1,16 @@
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { buttonVariants } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@reactive-resume/ui/components/tooltip";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { cn } from "@reactive-resume/utils/style";
+import { buttonVariants } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { useEditorStore, ZOOM_MAX, ZOOM_MIN, ZOOM_STEP } from "./store";
 
 // The editor chrome resumes and letters share: the back link and drawer controls in the bar, the canvas width

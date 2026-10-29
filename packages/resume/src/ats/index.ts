@@ -1,7 +1,7 @@
 import type { AtsRuleCode } from "./catalog";
 import type { AtsRuleFinding, RuleContext } from "./rules";
 import type { AtsCategory, AtsCategoryScore, AtsFinding, AtsReport, AtsSeverity } from "./types";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { ATS_CATEGORIES, ATS_RULE_CODES, atsRuleCategory } from "./catalog";
 import { ATS_RULES, checksSectionTitles } from "./rules";
 import { walkSections } from "./walk";

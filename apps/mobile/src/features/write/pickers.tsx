@@ -3,8 +3,8 @@ import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { FlatList, Pressable, View } from "react-native";
 import { SvgXml } from "react-native-svg";
-import iconPaths from "@reactive-resume/pdf/icons";
-import { icons as resumeIcons } from "@reactive-resume/schema/icons";
+import iconPaths from "@rezumi/pdf/icons";
+import { icons as resumeIcons } from "@rezumi/schema/icons";
 import { Button, Icon, ListRow, Sheet, Text, TextField, useTheme } from "@/ui";
 
 type PromptSheetProps = {

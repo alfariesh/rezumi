@@ -1,5 +1,5 @@
 import { createHmac } from "node:crypto";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 import { safeEquals } from "./access";
 
 // Long enough to click, short enough that a leaked link is useless soon after.

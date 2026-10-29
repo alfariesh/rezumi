@@ -1,8 +1,8 @@
 import type { PageSize } from "../forme/primitives";
 import type { HostElement, HostNode } from "../forme/reconciler";
 import type { Style, StyleProp } from "../forme/style-types";
-import { toSafeLink } from "@reactive-resume/utils/link";
-import { escapeHtml } from "@reactive-resume/utils/string";
+import { toSafeLink } from "@rezumi/utils/link";
+import { escapeHtml } from "@rezumi/utils/string";
 import { HOST } from "../forme/primitives";
 import { COLOR_KEYS, flattenStyle, LENGTH_KEYS, toColor, toFormeStyle, toPoints } from "../forme/style";
 import { DEFAULT_PAGE, pageDimensions } from "../forme/to-forme";

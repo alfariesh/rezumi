@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { harvestPdfDocument } from "@reactive-resume/resume/ats-pdf";
+import { harvestPdfDocument } from "@rezumi/resume/ats-pdf";
 
 /** Server adapter for the same bounded extraction used by the browser's checker and importer. */
 export async function extractPdf(file: File, signal?: AbortSignal, operatorBudgetMs = 30_000) {

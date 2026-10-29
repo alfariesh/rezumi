@@ -1,8 +1,8 @@
-import type { CoverLetter } from "@reactive-resume/schema/cover-letter/data";
+import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { ORPCError } from "@orpc/client";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const mocks = vi.hoisted(() => ({ update: vi.fn(), draft: vi.fn() }));
 vi.mock("@/libs/orpc/client", () => ({

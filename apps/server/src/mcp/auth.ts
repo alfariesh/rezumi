@@ -1,4 +1,4 @@
-import { resolveAuthenticationFromRequestHeaders } from "@reactive-resume/api/context";
+import { resolveAuthenticationFromRequestHeaders } from "@rezumi/api/context";
 
 export class AuthError extends Error {
 	constructor() {

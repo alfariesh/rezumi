@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
-import { experienceItemSchema } from "@reactive-resume/schema/resume/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { experienceItemSchema } from "@rezumi/schema/resume/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { additionAfter, applyProposal, applyTo, collectLetterPassages, collectPassages, readTarget } from "./proposals";
 
 const labels = { body: "Letter", bullet: (n: number) => `bullet ${n}`, paragraph: (n: number) => `paragraph ${n}` };

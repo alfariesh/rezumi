@@ -1,6 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
-import { runCareerJobs } from "@reactive-resume/api/features/career/jobs";
-import { env } from "@reactive-resume/env/server";
+import { runCareerJobs } from "@rezumi/api/features/career/jobs";
+import { env } from "@rezumi/env/server";
 
 export async function handleCareerJobs(request: Request): Promise<Response> {
 	const headers = { "Cache-Control": "no-store" };

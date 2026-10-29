@@ -1,5 +1,5 @@
 {
-	"name": "@reactive-resume/env",
+	"name": "@rezumi/env",
 	"version": "0.0.0",
 	"type": "module",
 	"private": true,
@@ -13,13 +13,13 @@
 		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests"
 	},
 	"dependencies": {
-		"@reactive-resume/ai": "workspace:*",
-		"@reactive-resume/utils": "workspace:*",
+		"@rezumi/ai": "workspace:*",
+		"@rezumi/utils": "workspace:*",
 		"@t3-oss/env-core": "^0.13.11",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
-		"@reactive-resume/config": "workspace:*",
+		"@rezumi/config": "workspace:*",
 		"@types/node": "catalog:",
 		"tsrs": "catalog:",
 		"typescript": "catalog:",

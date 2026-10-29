@@ -2,10 +2,10 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useRef, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Swap } from "@reactive-resume/ui/components/swap";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Swap } from "@rezumi/ui/components/swap";
+import { toast } from "@rezumi/ui/components/toast";
 
 const COPIED_MS = 2000;
 

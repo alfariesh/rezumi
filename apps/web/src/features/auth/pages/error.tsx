@@ -1,9 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { Alert, AlertDescription, AlertTitle } from "@reactive-resume/ui/components/alert";
-import { buttonVariants } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
+import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
+import { buttonVariants } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
 
 function getErrorMessage(code: string | undefined): string {
 	switch (code) {

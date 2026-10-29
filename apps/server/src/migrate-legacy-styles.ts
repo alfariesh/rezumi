@@ -1,10 +1,10 @@
-import type { StylesheetChange } from "@reactive-resume/api/features/resume/legacy-styles-migration";
+import type { StylesheetChange } from "@rezumi/api/features/resume/legacy-styles-migration";
 import { closeSync, openSync, readFileSync, writeSync } from "node:fs";
 import { parseArgs } from "node:util";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { migrateLegacyStyles, restoreLegacyStyles } from "@reactive-resume/api/features/resume/legacy-styles-migration";
-import { env } from "@reactive-resume/env/server";
+import { migrateLegacyStyles, restoreLegacyStyles } from "@rezumi/api/features/resume/legacy-styles-migration";
+import { env } from "@rezumi/env/server";
 
 const usage = `Converts resumes and letters still styled by the old style editor (legacy style rules) to Semantic CSS.
 Uses DATABASE_URL. Run it once after deploying the version without the legacy renderer.

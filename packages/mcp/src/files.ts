@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { getStorageService } from "@reactive-resume/api/features/storage";
+import { getStorageService } from "@rezumi/api/features/storage";
 import { fileInputSchema } from "./contracts";
 
 export async function readMcpFile(value: unknown, userId: string, maxBytes = 10 * 1024 * 1024): Promise<File> {

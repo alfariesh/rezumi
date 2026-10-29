@@ -1,6 +1,6 @@
 import { eventIterator } from "@orpc/server";
 import z from "zod";
-import { workspaceTabSchema } from "@reactive-resume/schema/career";
+import { workspaceTabSchema } from "@rezumi/schema/career";
 import { protectedProcedure } from "../../context";
 import { uiMessageSchema } from "../../dto/agent";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";

@@ -1,13 +1,13 @@
-import type { PdfDocumentLike } from "@reactive-resume/resume/ats-pdf";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { PdfDocumentLike } from "@rezumi/resume/ats-pdf";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { createElement } from "react";
-import { analyzePdfResume, harvestPdfDocument, PDF_OPS } from "@reactive-resume/resume/ats-pdf";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { analyzePdfResume, harvestPdfDocument, PDF_OPS } from "@rezumi/resume/ats-pdf";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { ResumeDocument } from "./document";
 import { renderToBuffer } from "./forme/testing";
 

@@ -1,5 +1,5 @@
 // When local reminders fire, and wall-clock time in a named timezone. Pure: Node runs it in the M5-T2 scenarios.
-import { fromZonedDateTime } from "@reactive-resume/utils/timezone";
+import { fromZonedDateTime } from "@rezumi/utils/timezone";
 
 /** Minutes before an interview that a reminder can fire. */
 export const REMINDER_LEADS = [10, 30, 60, 1440] as const;

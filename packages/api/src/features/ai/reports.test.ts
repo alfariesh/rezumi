@@ -2,8 +2,8 @@ import { beforeEach, expect, it, vi } from "vite-plus/test";
 import { createProcedureClient } from "@orpc/server";
 
 const database = vi.hoisted(() => ({ insert: vi.fn(), values: vi.fn(), returning: vi.fn() }));
-vi.mock("@reactive-resume/db/client", () => ({ db: database }));
-vi.mock("@reactive-resume/auth/config", () => ({ auth: { api: {} } }));
+vi.mock("@rezumi/db/client", () => ({ db: database }));
+vi.mock("@rezumi/auth/config", () => ({ auth: { api: {} } }));
 const { reportAiContent } = await import("./reports");
 const owner = {
 	id: "owner",

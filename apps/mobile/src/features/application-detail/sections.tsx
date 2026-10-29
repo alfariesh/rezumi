@@ -1,6 +1,6 @@
 import type { AttachmentKind } from "./hooks";
 import type { Application } from "@/features/applications/types";
-import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { ReactNode } from "react";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";

@@ -1,6 +1,6 @@
 import type { AtsResult } from "./check";
 import type { IconName } from "@/ui";
-import type { PdfAtsReport, PdfCategory } from "@reactive-resume/resume/ats-pdf";
+import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
 import type { DocumentPickerAsset } from "expo-document-picker";
 import type { ReactNode } from "react";
 import { plural } from "@lingui/core/macro";

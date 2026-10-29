@@ -1,4 +1,4 @@
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 /** A placeholder at the real size of what's loading, so nothing moves when it arrives. */
 function Skeleton({ className, ...props }: React.ComponentProps<"div">) {

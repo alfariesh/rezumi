@@ -1,4 +1,4 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 
 type PageMetricsInput = Pick<ResumeData["metadata"]["page"], "gapX" | "gapY" | "marginX" | "marginY">;
 

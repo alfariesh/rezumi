@@ -1,5 +1,5 @@
 import z from "zod";
-import { jsonPatchOperationSchema } from "@reactive-resume/resume/patch";
+import { jsonPatchOperationSchema } from "@rezumi/resume/patch";
 
 export const resumePatchOperationsSchema = z
 	.array(jsonPatchOperationSchema)

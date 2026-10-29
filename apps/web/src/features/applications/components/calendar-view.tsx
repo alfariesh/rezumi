@@ -1,15 +1,15 @@
 import type { ScheduledInterview } from "../interviews";
 import type { ApplicationSummary } from "../types";
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
-import { INTERVIEW_KINDS } from "@reactive-resume/schema/applications/data";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@reactive-resume/ui/components/popover";
-import { cn } from "@reactive-resume/utils/style";
+import { INTERVIEW_KINDS } from "@rezumi/schema/applications/data";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
+import { cn } from "@rezumi/utils/style";
 import {
 	collectInterviews,
 	dayKey,

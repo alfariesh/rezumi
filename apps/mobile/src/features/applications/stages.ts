@@ -1,5 +1,5 @@
 import type { Colors, ColorToken } from "@/ui/tokens";
-import type { ApplicationClosedReason, ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationClosedReason, ApplicationStatus } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 
 /** The stages an application moves through; closed ends it from any of them. */

@@ -1,28 +1,28 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
-import type { CareerWorkspace } from "@reactive-resume/schema/career";
+import type { CareerWorkspace } from "@rezumi/schema/career";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { careerWorkspaceSchema } from "@reactive-resume/schema/career";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Checkbox } from "@reactive-resume/ui/components/checkbox";
+import { careerWorkspaceSchema } from "@rezumi/schema/career";
+import { Button } from "@rezumi/ui/components/button";
+import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Skeleton } from "@reactive-resume/ui/components/skeleton";
-import { Textarea } from "@reactive-resume/ui/components/textarea";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@reactive-resume/ui/components/tooltip";
-import { downloadWithAnchor, generateFilename } from "@reactive-resume/utils/file";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Skeleton } from "@rezumi/ui/components/skeleton";
+import { Textarea } from "@rezumi/ui/components/textarea";
+import { toast } from "@rezumi/ui/components/toast";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
+import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
+import { cn } from "@rezumi/utils/style";
 import { latest, useDebouncedSave, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
 import { CollapseRow, Swap, useCareerTime, withUndo, Working, workingSteps } from "../shared";
 import { AiNotice } from "./fit";

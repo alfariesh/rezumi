@@ -1,8 +1,8 @@
 import type { DocumentSummary } from "../../dto/documents";
 import { ORPCError } from "@orpc/client";
 import { and, asc, count, eq, isNotNull, isNull, lt, sql } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
 import { applicationService } from "../applications/service";
 import { coverLetterService } from "../cover-letters/service";
 import { resumeService } from "../resume/service";

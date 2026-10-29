@@ -1,10 +1,10 @@
 import type { CheckIssue } from "./issues";
-import type { PageMap, PageMapTarget } from "@reactive-resume/pdf/page-map";
-import type { ResumeData, SkillItem } from "@reactive-resume/schema/resume/data";
-import { lintResumeForAts } from "@reactive-resume/resume/ats";
-import { matchJobDescription, surfaceFormsOf } from "@reactive-resume/resume/ats-pdf";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
-import { generateId } from "@reactive-resume/utils/string";
+import type { PageMap, PageMapTarget } from "@rezumi/pdf/page-map";
+import type { ResumeData, SkillItem } from "@rezumi/schema/resume/data";
+import { lintResumeForAts } from "@rezumi/resume/ats";
+import { matchJobDescription, surfaceFormsOf } from "@rezumi/resume/ats-pdf";
+import { buildMarkdown } from "@rezumi/resume/markdown";
+import { generateId } from "@rezumi/utils/string";
 import { buildIssues } from "./issues";
 
 export function computeCheck(data: ResumeData, now = new Date()) {

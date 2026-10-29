@@ -1,10 +1,10 @@
 import type { IconName } from "@/ui";
-import type { PageMapTarget } from "@reactive-resume/pdf/page-map";
-import type { AtsCategory, AtsFinding, AtsReport } from "@reactive-resume/resume/ats";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { PageMapTarget } from "@rezumi/pdf/page-map";
+import type { AtsCategory, AtsFinding, AtsReport } from "@rezumi/resume/ats";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
-import { getResumeSectionTitle } from "@reactive-resume/pdf/section-title";
-import { atsRuleCategory } from "@reactive-resume/resume/ats";
+import { getResumeSectionTitle } from "@rezumi/pdf/section-title";
+import { atsRuleCategory } from "@rezumi/resume/ats";
 
 /** How a card fixes its issue: in one step on the resume (with undo), or by opening the entry in Write. */
 type IssueFix =

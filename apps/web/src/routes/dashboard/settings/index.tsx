@@ -1,5 +1,5 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { SettingsRoot } from "@/features/settings/root";
 
 // Phones (below 640px) get the three-row root; wider screens open Account, with the pages beside it.

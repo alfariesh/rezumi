@@ -2,7 +2,7 @@ import { defineConfig } from "vite-plus";
 
 const workspaceImportPatterns = [
 	{
-		regex: "@reactive-resume/[^/]+/src(?:/|$)|(?:^|/)(?:apps|packages)/[^/]+/src(?:/|$)",
+		regex: "@rezumi/[^/]+/src(?:/|$)|(?:^|/)(?:apps|packages)/[^/]+/src(?:/|$)",
 		message:
 			"Use the workspace package export map instead of private src paths, including re-exports and dynamic imports.",
 	},
@@ -105,7 +105,7 @@ export default defineConfig({
 							patterns: [
 								...workspaceImportPatterns,
 								{
-									group: ["@reactive-resume/api", "@reactive-resume/api/*"],
+									group: ["@rezumi/api", "@rezumi/api/*"],
 									allowTypeImports: true,
 									message:
 										"The app may only import types from the server API (it is a type-only peer dependency); call it through src/api/client.ts.",
@@ -146,7 +146,7 @@ export default defineConfig({
 				},
 				{
 					groupName: "workspace",
-					elementNamePattern: ["@reactive-resume/**"],
+					elementNamePattern: ["@rezumi/**"],
 				},
 			],
 			groups: [

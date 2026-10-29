@@ -1,10 +1,10 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { Directory, File, Paths } from "expo-file-system";
 import { fetch as expoFetch } from "expo/fetch";
 import { Platform } from "react-native";
-import { nativeEngine } from "@reactive-resume/forme-native";
-import { preloadResumePdf, renderResumePdf } from "@reactive-resume/pdf/native";
-import { templateSchema } from "@reactive-resume/schema/templates";
+import { nativeEngine } from "@rezumi/forme-native";
+import { preloadResumePdf, renderResumePdf } from "@rezumi/pdf/native";
+import { templateSchema } from "@rezumi/schema/templates";
 import { pdfPages } from "../../modules/pdf-pages";
 import { tightenResume } from "../../src/preview/fit";
 import { configurePreviewResources, readCachedFont, readPreviewImage } from "../../src/preview/resources";

@@ -1,7 +1,7 @@
 import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
-import type { WorkspaceTab } from "@reactive-resume/schema/career";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,11 +13,11 @@ import {
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@reactive-resume/ui/components/sheet";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
+import { Spinner } from "@rezumi/ui/components/spinner";
 import { CoachThread, connectionName, deleteConversation, titleFor, useConversationDate } from "../coach-thread";
 import { PrivacyLine, tabLabel } from "../shared";
 import { useConversationConnection } from "@/features/assistant/chat";

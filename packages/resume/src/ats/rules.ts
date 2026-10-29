@@ -1,16 +1,11 @@
 import type { AtsRuleCode } from "./catalog";
 import type { AtsFinding, AtsFindingParams } from "./types";
 import type { WalkedSection } from "./walk";
-import type { CustomSectionType, ResumeData } from "@reactive-resume/schema/resume/data";
-import { resumeDatesSchema, resumeDatesToPeriod } from "@reactive-resume/schema/resume/dates";
-import {
-	isFutureEndpoint,
-	isReversedPeriod,
-	parsePeriod,
-	parseSingleDate,
-} from "@reactive-resume/schema/resume/period";
-import { templateLayouts } from "@reactive-resume/schema/templates";
-import { stripHtml } from "@reactive-resume/utils/string";
+import type { CustomSectionType, ResumeData } from "@rezumi/schema/resume/data";
+import { resumeDatesSchema, resumeDatesToPeriod } from "@rezumi/schema/resume/dates";
+import { isFutureEndpoint, isReversedPeriod, parsePeriod, parseSingleDate } from "@rezumi/schema/resume/period";
+import { templateLayouts } from "@rezumi/schema/templates";
+import { stripHtml } from "@rezumi/utils/string";
 import { atsRuleSeverity } from "./catalog";
 import { SECTION_TITLE_ALIASES } from "./section-aliases";
 import { isRenderedSection } from "./walk";

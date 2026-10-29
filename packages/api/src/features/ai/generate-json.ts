@@ -2,7 +2,7 @@ import type { LanguageModel } from "ai";
 import { ORPCError } from "@orpc/client";
 import { generateText } from "ai";
 import { z } from "zod";
-import { safetySystemPrompt } from "@reactive-resume/ai/prompts";
+import { safetySystemPrompt } from "@rezumi/ai/prompts";
 
 // A provider that stops responding can't hold a standalone request open forever. Streamed chats have their own budgets.
 // Self-hosted local models that need longer (a CPU model reading a long PDF) can raise AI_REQUEST_TIMEOUT_MS.

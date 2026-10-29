@@ -1,6 +1,6 @@
 import { createSelectSchema } from "drizzle-zod";
 import z from "zod";
-import * as schema from "@reactive-resume/db/schema";
+import * as schema from "@rezumi/db/schema";
 import {
 	aiMetadataSchema,
 	applicationClosedReasonSchema,
@@ -10,7 +10,7 @@ import {
 	interviewDetailsSchema,
 	interviewKindSchema,
 	postingSourceSchema,
-} from "@reactive-resume/schema/applications/data";
+} from "@rezumi/schema/applications/data";
 import { paginationShape } from "../pagination";
 
 const MAX_APPLICATION_JOB_DESCRIPTION_CHARS = 20_000;

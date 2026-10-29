@@ -1,6 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { WEB_PAGE_SOURCE_MESSAGES } from "@reactive-resume/pdf/web-page-messages";
+import { WEB_PAGE_SOURCE_MESSAGES } from "@rezumi/pdf/web-page-messages";
 import { generatePresentLabels, generateSectionTitleCatalog, generateWebPageCatalog } from "./section-titles";
 
 const catalogs = fileURLToPath(new URL("../../apps/web/locales/", import.meta.url));

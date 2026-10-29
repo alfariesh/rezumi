@@ -1,5 +1,5 @@
-import { generateRandomName } from "@reactive-resume/utils/slug";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateRandomName } from "@rezumi/utils/slug";
+import { generateId } from "@rezumi/utils/string";
 import { protectedProcedure } from "../../context";
 import { resumeDto } from "../../dto/resume";
 import { resumeMutationRateLimit } from "../../middleware/rate-limit";

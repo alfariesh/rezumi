@@ -1,7 +1,7 @@
-import { env } from "@reactive-resume/env/server";
-import { publicResumeUrl } from "@reactive-resume/resume/sharing";
-import { templateSchema } from "@reactive-resume/schema/templates";
-import { getLocaleAlternates } from "@reactive-resume/utils/locale";
+import { env } from "@rezumi/env/server";
+import { publicResumeUrl } from "@rezumi/resume/sharing";
+import { templateSchema } from "@rezumi/schema/templates";
+import { getLocaleAlternates } from "@rezumi/utils/locale";
 
 const DOCS_URL = "https://docs.rezumi.app";
 export const CONTEXT7_ASK_URL = "https://context7.com/api/v2/ask?siteKey=ask_b3fd9335a63f1b21b1a814ac";
@@ -60,7 +60,7 @@ const xmlResponse = (root: string, lines: string[]) =>
 /** The sitemap index: the marketing pages, then resumes listed in search engines, 50,000 to a page. */
 export async function handleSitemap() {
 	const baseUrl = appUrl();
-	const { countIndexableResumes, SITEMAP_PAGE_SIZE } = await import("@reactive-resume/api/features/resume/web-page");
+	const { countIndexableResumes, SITEMAP_PAGE_SIZE } = await import("@rezumi/api/features/resume/web-page");
 	const pages = Math.ceil((await countIndexableResumes().catch(() => 0)) / SITEMAP_PAGE_SIZE);
 	const sitemaps = [
 		`${baseUrl}/sitemaps/pages.xml`,
@@ -94,7 +94,7 @@ export function handlePagesSitemap() {
 /** `/sitemaps/resumes-<n>.xml`: one page of resumes listed in search engines. */
 export async function handleResumesSitemap(page: number) {
 	const baseUrl = appUrl();
-	const { listIndexableResumes } = await import("@reactive-resume/api/features/resume/web-page");
+	const { listIndexableResumes } = await import("@rezumi/api/features/resume/web-page");
 	const resumes = Number.isInteger(page) && page >= 1 ? await listIndexableResumes(page - 1) : [];
 	if (resumes.length === 0) return new Response("Not Found", { status: 404 });
 	return xmlResponse(

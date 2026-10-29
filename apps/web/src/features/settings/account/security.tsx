@@ -1,11 +1,11 @@
-import type { AuthProvider } from "@reactive-resume/auth/types";
+import type { AuthProvider } from "@rezumi/auth/types";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Button, buttonVariants } from "@reactive-resume/ui/components/button";
-import { Switch } from "@reactive-resume/ui/components/switch";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { Button, buttonVariants } from "@rezumi/ui/components/button";
+import { Switch } from "@rezumi/ui/components/switch";
+import { toast } from "@rezumi/ui/components/toast";
 import { SettingsRow, SettingsSection } from "../section";
 import { getProviderName, useAuthAccounts, useAuthProviderActions, useEnabledProviders } from "./auth-hooks";
 import { useDialogStore } from "@/dialogs/store";

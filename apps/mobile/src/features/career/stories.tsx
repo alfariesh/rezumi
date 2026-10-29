@@ -1,11 +1,11 @@
 import type { Fact, Story } from "./hooks";
-import type { CareerStoryData } from "@reactive-resume/schema/career";
+import type { CareerStoryData } from "@rezumi/schema/career";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { View } from "react-native";
 import Animated from "react-native-reanimated";
-import { careerStoryInputSchema } from "@reactive-resume/schema/career";
+import { careerStoryInputSchema } from "@rezumi/schema/career";
 import { client, useCareerAction, useCareerQueries, useUndoRows } from "./hooks";
 import { Actions, EditorSheet, LoadState, SwitchRow } from "./shared";
 import {

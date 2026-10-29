@@ -7,10 +7,10 @@ import { I18nProvider } from "@lingui/react";
 import { RichTextEditor } from "./rich-text-editor-field";
 
 const mocks = vi.hoisted(() => ({ mobile: false }));
-vi.mock("@reactive-resume/ui/hooks/use-breakpoint", () => ({
+vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({
 	useBreakpoint: () => (mocks.mobile ? "mobile" : "desktop"),
 }));
-vi.mock("@reactive-resume/ui/hooks/use-keyboard-inset", () => ({ useKeyboardInset: () => 0 }));
+vi.mock("@rezumi/ui/hooks/use-keyboard-inset", () => ({ useKeyboardInset: () => 0 }));
 vi.mock("@/features/settings/integrations/hooks/use-has-usable-ai-provider", () => ({
 	useHasUsableAiProvider: () => ({ hasUsableProvider: false }),
 }));

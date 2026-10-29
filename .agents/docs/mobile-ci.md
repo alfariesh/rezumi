@@ -29,7 +29,7 @@ Download the **existing** Android upload keystore and iOS distribution certifica
 (including its private key) and App Store provisioning profile using `eas credentials`
 from `apps/mobile`. Do not generate replacement signing identities for this migration.
 If using that CLI for iOS, set `EXPO_NO_CAPABILITY_SYNC=1`: Apple capabilities remain
-managed manually. Native Apple sign-in uses the web Services ID `me.rxresu.web`;
+managed manually. Native Apple sign-in uses the web Services ID `app.rezumi.web`;
 neither this workflow nor Fastlane changes capabilities in Apple's portal.
 
 Save these as **repository Actions secrets**, using GitHub's settings or a secure local
@@ -43,7 +43,7 @@ workflow artifacts. Base64 is encoding, not encryption.
 - `IOS_DISTRIBUTION_P12_BASE64`: base64 of an Apple Distribution `.p12` containing
   the certificate and private key.
 - `IOS_DISTRIBUTION_P12_PASSWORD`: password for that `.p12`.
-- `IOS_PROVISION_PROFILE_BASE64`: base64 of the App Store profile for `me.rxresu`,
+- `IOS_PROVISION_PROFILE_BASE64`: base64 of the App Store profile for `app.rezumi`,
   team `654ASRW868`, covering the current app entitlements and certificate.
 - `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`: raw service-account JSON with release-to-production
   permission for this app. Required only for Android uploads.
@@ -53,7 +53,7 @@ workflow artifacts. Base64 is encoding, not encryption.
 
 Play App Signing retains its existing app-signing certificate. Do not replace
 `MOBILE_ANDROID_CERT_SHA256` with the upload-keystore fingerprint. Keep bundle/package
-ID `me.rxresu`, Apple team, keychain groups, and associated domains unchanged.
+ID `app.rezumi`, Apple team, keychain groups, and associated domains unchanged.
 
 Set repository Actions variable `MOBILE_BUILD_NUMBER_BASE` so the next workflow run
 allocates a number **greater than every build number/version code already allocated

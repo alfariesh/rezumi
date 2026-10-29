@@ -1,15 +1,15 @@
 import { beforeEach, expect, it, vi } from "vite-plus/test";
 import { exportJWK, generateKeyPair, SignJWT } from "jose";
-import * as schema from "@reactive-resume/db/schema";
+import * as schema from "@rezumi/db/schema";
 
 const mocks = vi.hoisted(() => ({ getJwks: vi.fn(), select: vi.fn() }));
 vi.mock("better-auth", async (importOriginal) => ({
 	...(await importOriginal<typeof import("better-auth")>()),
 	betterAuth: () => ({ $context: Promise.resolve({}), api: { getJwks: mocks.getJwks } }),
 }));
-vi.mock("@reactive-resume/db/client", () => ({ db: { select: mocks.select } }));
-vi.mock("@reactive-resume/email/transport", () => ({ sendEmail: vi.fn() }));
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: { select: mocks.select } }));
+vi.mock("@rezumi/email/transport", () => ({ sendEmail: vi.fn() }));
+vi.mock("@rezumi/env/server", () => ({
 	env: { APP_URL: "https://resume.example", AUTH_SECRET: "oauth-test" },
 }));
 

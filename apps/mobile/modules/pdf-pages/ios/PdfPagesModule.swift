@@ -3,7 +3,7 @@ import PDFKit
 import UIKit
 
 public class PdfPagesModule: Module {
-  private let queue = DispatchQueue(label: "me.rxresu.pdf-pages", qos: .userInitiated)
+  private let queue = DispatchQueue(label: "app.rezumi.pdf-pages", qos: .userInitiated)
   private var documents: [String: PDFDocument] = [:]
   private var directories: [String: URL] = [:]
 

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@reactive-resume/db/client", () => ({ db: {} }));
-vi.mock("@reactive-resume/db/schema", () => ({
+vi.mock("@rezumi/db/client", () => ({ db: {} }));
+vi.mock("@rezumi/db/schema", () => ({
 	agentThread: {
 		id: "agent_threads.id",
 		userId: "agent_threads.user_id",

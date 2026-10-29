@@ -1,4 +1,4 @@
-import type { SemanticStylesheet } from "@reactive-resume/schema/resume/stylesheet";
+import type { SemanticStylesheet } from "@rezumi/schema/resume/stylesheet";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import { sql } from "drizzle-orm";
 import { migrateLetterStylesheet, migrateResumeStylesheet } from "./legacy-styles";

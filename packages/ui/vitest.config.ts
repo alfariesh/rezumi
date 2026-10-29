@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { createVitestProjectConfig } from "../../vitest.shared.mts";
 
 export default createVitestProjectConfig({
-	name: "@reactive-resume/ui",
+	name: "@rezumi/ui",
 	dirname: fileURLToPath(new URL(".", import.meta.url)),
 	environment: "happy-dom",
 });

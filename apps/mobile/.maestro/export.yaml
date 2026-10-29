@@ -1,9 +1,9 @@
-appId: me.rxresu
+appId: app.rezumi
 name: Export resume PDF on device
 ---
 # Signed in, unlocked disposable RESUME_ID. SHARE_SHEET_TEXT matches localized OS share UI.
 - launchApp
-- openLink: me.rxresu://builder/${RESUME_ID}/share
+- openLink: app.rezumi://builder/${RESUME_ID}/share
 - extendedWaitUntil:
     visible: Download
     timeout: 30000

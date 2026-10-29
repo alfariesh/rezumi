@@ -3,9 +3,9 @@ import type { Application } from "../types";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Input } from "@reactive-resume/ui/components/input";
-import { Label } from "@reactive-resume/ui/components/label";
+import { Button } from "@rezumi/ui/components/button";
+import { Input } from "@rezumi/ui/components/input";
+import { Label } from "@rezumi/ui/components/label";
 import {
 	Sheet,
 	SheetContent,
@@ -13,8 +13,8 @@ import {
 	SheetFooter,
 	SheetHeader,
 	SheetTitle,
-} from "@reactive-resume/ui/components/sheet";
-import { downloadWithAnchor } from "@reactive-resume/utils/file";
+} from "@rezumi/ui/components/sheet";
+import { downloadWithAnchor } from "@rezumi/utils/file";
 import { exportApplicationsCsv, selectApplicationsForExport } from "../csv";
 import { Combobox } from "@/components/ui/combobox";
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { reflowOrder } from "./reflow";
 
 const clone = () => structuredClone(sampleResumeData);

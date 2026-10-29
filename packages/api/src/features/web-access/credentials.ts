@@ -1,9 +1,9 @@
 import type { WebAccessConnection, WebAccessProvider } from "./contracts";
 import { ORPCError } from "@orpc/client";
 import { eq } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import { webAccessCredential } from "@reactive-resume/db/schema";
-import { env } from "@reactive-resume/env/server";
+import { db } from "@rezumi/db/client";
+import { webAccessCredential } from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
 import { decryptCredential, encryptCredential } from "../ai/credentials";
 
 function serverConfig(): WebAccessConnection | null {

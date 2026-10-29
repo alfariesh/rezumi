@@ -4,9 +4,9 @@ import type { RouterInput } from "@/api/client";
 import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { produce } from "immer";
-import { coverLetterSchema } from "@reactive-resume/schema/cover-letter/data";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
-import { syncResumeDates } from "@reactive-resume/schema/resume/dates";
+import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { client } from "@/api/client";
 
 function dates(value: unknown) {

@@ -1,5 +1,5 @@
-import type { SemanticNode } from "@reactive-resume/resume/stylesheet";
-import { compileSelector, createSelectorMatcher } from "@reactive-resume/resume/stylesheet";
+import type { SemanticNode } from "@rezumi/resume/stylesheet";
+import { compileSelector, createSelectorMatcher } from "@rezumi/resume/stylesheet";
 
 type RuleSpan = { selector: string; from: number; to: number };
 

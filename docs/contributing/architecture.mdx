@@ -33,7 +33,7 @@ flowchart TD
   API --> DB["packages/db (Drizzle)"] --> Postgres[("PostgreSQL")]
   API --> Storage[("R2 (Workers), local disk, or S3")]
   API --> Redis[("Redis (optional; Durable Objects on Workers)")]
-  API --> ServerPDF["@reactive-resume/pdf/server"]
+  API --> ServerPDF["@rezumi/pdf/server"]
 ```
 
 ### How it runs
@@ -45,7 +45,7 @@ There is no request-time React server rendering. The web build prerenders the ma
 
 ### What happens at startup
 
-The Node.js server (local development and `pnpm start`) checks the environment, applies database migrations, and verifies the migrated schema before it initializes auth and accepts traffic. With `STRICT_SCHEMA_CHECK=true`, schema drift stops the server; otherwise it logs the drift and continues. The Cloudflare Worker does not run migrations or this schema check: apply migrations with `pnpm --filter @reactive-resume/db db:migrate` before each deployment, which the deploy workflow does for you.
+The Node.js server (local development and `pnpm start`) checks the environment, applies database migrations, and verifies the migrated schema before it initializes auth and accepts traffic. With `STRICT_SCHEMA_CHECK=true`, schema drift stops the server; otherwise it logs the drift and continues. The Cloudflare Worker does not run migrations or this schema check: apply migrations with `pnpm --filter @rezumi/db db:migrate` before each deployment, which the deploy workflow does for you.
 
 ## Workspace map
 
@@ -97,16 +97,16 @@ Turbo hashes shared Vitest configuration and setup files, tracks transitive sour
 
 A new template touches several places: `packages/schema/src/templates.ts`, `packages/pdf/src/templates/index.ts`, the template source under `packages/pdf/src/templates/<name>/`, and preview images under `apps/web/public/templates/{jpg,pdf}`.
 
-Add a helper to `packages/utils` only when no domain package is a better owner. JSON Patch behavior belongs in `@reactive-resume/resume/patch`, and DOCX builders belong in `@reactive-resume/docx`.
+Add a helper to `packages/utils` only when no domain package is a better owner. JSON Patch behavior belongs in `@rezumi/resume/patch`, and DOCX builders belong in `@rezumi/docx`.
 
 ## Boundary rules
 
 Turborepo enforces these rules with `pnpm exec turbo boundaries`:
 
-- Import other workspaces by package name and export subpath, such as `@reactive-resume/pdf/browser`. Never reach into another workspace's `src` through a relative path, `@reactive-resume/*/src/*`, or a TypeScript path alias.
+- Import other workspaces by package name and export subpath, such as `@rezumi/pdf/browser`. Never reach into another workspace's `src` through a relative path, `@rezumi/*/src/*`, or a TypeScript path alias.
 - Each workspace's `turbo.json` declares tags. `app:web` and `app:server` mark the apps. `runtime:server` marks server-only packages (API, auth, database, environment, email, MCP), `runtime:browser` marks browser-only UI, and `runtime:universal` marks environment-neutral domain packages.
-- Runtime-specific code sits behind explicit subpaths such as `@reactive-resume/pdf/browser`, `@reactive-resume/pdf/server`, and `@reactive-resume/env/server`. Keep root exports environment-neutral unless the whole package is server-only.
-- Wildcard exports are reserved for leaf libraries with a file-like surface: `@reactive-resume/ui/components/*`, `@reactive-resume/ui/hooks/*`, and the schema model files. Everything else uses explicit exports.
+- Runtime-specific code sits behind explicit subpaths such as `@rezumi/pdf/browser`, `@rezumi/pdf/server`, and `@rezumi/env/server`. Keep root exports environment-neutral unless the whole package is server-only.
+- Wildcard exports are reserved for leaf libraries with a file-like surface: `@rezumi/ui/components/*`, `@rezumi/ui/hooks/*`, and the schema model files. Everything else uses explicit exports.
 
 After you change a shared contract, an export, or an import path, run `pnpm exec turbo boundaries` and check the affected consumers.
 
@@ -132,8 +132,8 @@ Keep helpers inside the feature that uses them. Don't reintroduce technical-laye
 
 `packages/pdf` renders every PDF. Templates are React components built from the package's primitives. The code in `src/forme` renders them with a small React reconciler and converts the result into a [Forme](https://www.formepdf.com/) document. The Forme engine, compiled to WebAssembly, lays out and draws the pages. No Chromium, Browserless, or print service is involved.
 
-- `@reactive-resume/pdf/browser` creates PDFs in the browser. The editor's download and preview use it.
-- `@reactive-resume/pdf/server` creates PDFs on the server, for the public resume download and API exports.
+- `@rezumi/pdf/browser` creates PDFs in the browser. The editor's download and preview use it.
+- `@rezumi/pdf/server` creates PDFs on the server, for the public resume download and API exports.
 - `packages/pdf/src/templates/shared/filtering.ts` holds the section filtering shared by all templates. Template-specific visual exceptions stay in that template's folder.
 - `packages/pdf/src/hooks/use-register-fonts.ts` resolves font families, weights, and fallback stacks for other scripts.
 
@@ -141,13 +141,13 @@ Default section titles in the PDF come from a generated catalog, `packages/pdf/s
 
 ### Cover letters
 
-The same templates also lay out cover letters. `createCoverLetterResumeData` in `@reactive-resume/resume/cover-letter` turns a letter into the `ResumeData` the renderer expects, and returns it: one full-width page whose only section is the letter's `cover-letter` custom section, holding the composed `recipient` and `content`. Compose those first with `composeCoverLetter`, which adds the greeting, body and sign-off.
+The same templates also lay out cover letters. `createCoverLetterResumeData` in `@rezumi/resume/cover-letter` turns a letter into the `ResumeData` the renderer expects, and returns it: one full-width page whose only section is the letter's `cover-letter` custom section, holding the composed `recipient` and `content`. Compose those first with `composeCoverLetter`, which adds the greeting, body and sign-off.
 
-`createResumePdfFile` from `@reactive-resume/pdf/server` then takes that data and resolves to a `File` of type `application/pdf`:
+`createResumePdfFile` from `@rezumi/pdf/server` then takes that data and resolves to a `File` of type `application/pdf`:
 
 ```ts
-import { createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
-import { createResumePdfFile } from "@reactive-resume/pdf/server";
+import { createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { createResumePdfFile } from "@rezumi/pdf/server";
 
 const data = createCoverLetterResumeData({ name, recipient, content, style });
 const file = await createResumePdfFile({
@@ -157,7 +157,7 @@ const file = await createResumePdfFile({
 });
 ```
 
-A letter-only document prints no resume header unless `renderOptions.includeCoverLetterHeader` is set, because `shouldShowResumeHeader` sees that every visible layout section is a cover letter. The browser adapter, `createResumePdfBlob` from `@reactive-resume/pdf/browser`, takes the same data and options. For the user-facing side, see [Writing a cover letter](/guides/writing-a-cover-letter).
+A letter-only document prints no resume header unless `renderOptions.includeCoverLetterHeader` is set, because `shouldShowResumeHeader` sees that every visible layout section is a cover letter. The browser adapter, `createResumePdfBlob` from `@rezumi/pdf/browser`, takes the same data and options. For the user-facing side, see [Writing a cover letter](/guides/writing-a-cover-letter).
 
 ## DOCX export
 
@@ -170,7 +170,7 @@ A letter-only document prints no resume header unless `renderOptions.includeCove
 
 ## MCP
 
-`packages/mcp` implements the MCP server with canonical, unprefixed tool names such as `list_resumes`, `read_resume`, `apply_resume_patch`, `list_cover_letters`, and `list_applications`. The server process imports it from `@reactive-resume/mcp` and injects an in-process oRPC router client, so MCP tools run the same business logic as the web app. MCP must never import code from `apps/web`. For the user-facing side, see [Using the MCP server](/guides/using-the-mcp-server).
+`packages/mcp` implements the MCP server with canonical, unprefixed tool names such as `list_resumes`, `read_resume`, `apply_resume_patch`, `list_cover_letters`, and `list_applications`. The server process imports it from `@rezumi/mcp` and injects an in-process oRPC router client, so MCP tools run the same business logic as the web app. MCP must never import code from `apps/web`. For the user-facing side, see [Using the MCP server](/guides/using-the-mcp-server).
 
 ## Related pages
 

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vite-plus/test";
 
 const envMock = vi.hoisted(() => ({ APP_URL: "https://example.com", AUTH_SECRET: "test-resume-access-secret" }));
 
-vi.mock("@reactive-resume/env/server", () => ({ env: envMock }));
+vi.mock("@rezumi/env/server", () => ({ env: envMock }));
 
 const { createPreviewToken, hasResumeAccess, grantResumeAccess, isValidPreviewToken } = await import("./access");
 

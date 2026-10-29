@@ -1,6 +1,6 @@
 import type { Fact } from "./hooks";
 import type { RouterInput } from "@/api/client";
-import type { FactCategory } from "@reactive-resume/schema/career";
+import type { FactCategory } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { AnimatedLegendList } from "@legendapp/list/reanimated";
 import { plural, t } from "@lingui/core/macro";

@@ -1,8 +1,8 @@
 import type { ResumeRenderOptions } from "./context";
 import type { ResolvedResumeRuntime } from "./semantic/resolve";
-import type { LayoutPage, ResumeData, Typography } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { LayoutPage, ResumeData, Typography } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
+import type { Locale } from "@rezumi/utils/locale";
 import type { ComponentType } from "react";
 import { useMemo } from "react";
 import { Document } from "#react-pdf-renderer";

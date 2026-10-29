@@ -1,15 +1,15 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import { renderResumeWebPage, webPageImageUrl } from "@reactive-resume/pdf/web-page";
-import { renderWebPageDocument, webPageMessages } from "@reactive-resume/pdf/web-page-document";
-import { removeContactDetails } from "@reactive-resume/resume/contact-details";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@reactive-resume/ui/components/segmented-control";
-import { Spinner } from "@reactive-resume/ui/components/spinner";
-import { cn } from "@reactive-resume/utils/style";
+import { renderResumeWebPage, webPageImageUrl } from "@rezumi/pdf/web-page";
+import { renderWebPageDocument, webPageMessages } from "@rezumi/pdf/web-page-document";
+import { removeContactDetails } from "@rezumi/resume/contact-details";
+import { Icon } from "@rezumi/ui/components/icon";
+import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
+import { Spinner } from "@rezumi/ui/components/spinner";
+import { cn } from "@rezumi/utils/style";
 import { useCurrentResume, useResumeData } from "@/features/resume/builder/draft";
 // The page's own text, declared for translators; see the module.
 import "./web-page-text";

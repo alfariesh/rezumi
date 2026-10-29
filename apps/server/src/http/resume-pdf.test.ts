@@ -5,7 +5,7 @@ const mocks = vi.hoisted(() => ({
 	verifyResumePdfDownloadToken: vi.fn(),
 }));
 
-vi.mock("@reactive-resume/api/features/resume/export", () => ({
+vi.mock("@rezumi/api/features/resume/export", () => ({
 	createResumePdfDownload: mocks.createResumePdfDownload,
 	verifyResumePdfDownloadToken: mocks.verifyResumePdfDownloadToken,
 }));

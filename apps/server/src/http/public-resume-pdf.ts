@@ -1,4 +1,4 @@
-import { createPublicResumePdf } from "@reactive-resume/api/features/resume/public-pdf";
+import { createPublicResumePdf } from "@rezumi/api/features/resume/public-pdf";
 
 const noStoreResponse = (body: string, status: number) =>
 	new Response(body, { status, headers: { "Cache-Control": "private, no-store" } });

@@ -1,10 +1,6 @@
 import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu";
-import {
-	menuItemClassName,
-	menuPopupClassName,
-	menuSeparatorClassName,
-} from "@reactive-resume/ui/components/menu-styles";
-import { cn } from "@reactive-resume/utils/style";
+import { menuItemClassName, menuPopupClassName, menuSeparatorClassName } from "@rezumi/ui/components/menu-styles";
+import { cn } from "@rezumi/utils/style";
 
 function ContextMenu({ ...props }: ContextMenuPrimitive.Root.Props) {
 	return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />;

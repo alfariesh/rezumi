@@ -1,6 +1,6 @@
 import type { ColumnRect, PendingMove } from "./board";
 import type { ApplicationSummary as Application } from "@/features/applications/types";
-import type { ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationStatus } from "@rezumi/schema/applications/data";
 import type { ComponentRef } from "react";
 import type { ScrollView } from "react-native";
 import type { SharedValue } from "react-native-reanimated";

@@ -1,7 +1,7 @@
 import { ORPCError } from "@orpc/client";
 import { AISDKError } from "ai";
 import { flattenError, ZodError, z } from "zod";
-import { resumeDataSchema } from "@reactive-resume/schema/resume/data";
+import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { protectedProcedure } from "../../context";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
 import { aiProvidersService } from "../ai-providers/service";

@@ -1,6 +1,6 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
-import { contrastOnWhite } from "@reactive-resume/utils/color";
+import { contrastOnWhite } from "@rezumi/utils/color";
 
 type Data = ResumeData | WritableDraft<ResumeData>;
 /** The design a resume and a letter share. */

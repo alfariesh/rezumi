@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 import { createHash } from "node:crypto";
 import nodemailer from "nodemailer";
 import { render } from "react-email";
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 
 type SendEmailOptions = { to: string; subject: string; react: ReactElement };
 

@@ -5,7 +5,7 @@ import * as forme from "@formepdf/core";
 import { encode } from "fast-png";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { renderResume } from "../../forme/render";
 
 // Layout fixtures use Forme's built-in Times faces; no network font download is needed.

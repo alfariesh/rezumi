@@ -1,4 +1,4 @@
-import { env } from "@reactive-resume/env/server";
+import { env } from "@rezumi/env/server";
 
 type AppleTokens = { refreshToken: string | null; accessToken: string | null };
 

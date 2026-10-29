@@ -9,10 +9,10 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-} from "@reactive-resume/ui/components/alert-dialog";
-import { HoldButton } from "@reactive-resume/ui/components/hold-button";
-import { Input } from "@reactive-resume/ui/components/input";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/alert-dialog";
+import { HoldButton } from "@rezumi/ui/components/hold-button";
+import { Input } from "@rezumi/ui/components/input";
+import { cn } from "@rezumi/utils/style";
 import { isImeComposing } from "@/libs/keyboard";
 
 type AskOptions = {

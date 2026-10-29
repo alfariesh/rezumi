@@ -16,7 +16,7 @@ vi.mock("node:dns/promises", () => ({
 	resolve4: async () => [],
 	resolve6: async () => [],
 }));
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: {
 		APP_URL: "https://resume.example.test",
 		CUSTOM_DOMAIN_TARGET: "domains.example.test",
@@ -24,7 +24,7 @@ vi.mock("@reactive-resume/env/server", () => ({
 	},
 }));
 vi.mock("../resume/access-policy", () => ({ ownerIsNotBanned: vi.fn() }));
-vi.mock("@reactive-resume/db/schema", () => ({
+vi.mock("@rezumi/db/schema", () => ({
 	customDomain: Object.fromEntries(
 		["userId", "hostname", "verificationToken", "verifiedAt", "lastCheckedAt", "failingSince"].map((key) => [key, key]),
 	),
@@ -37,7 +37,7 @@ vi.mock("drizzle-orm", () => ({
 	eq: (key: keyof Row, value: unknown) => (row: Row) => row[key] === value,
 	ne: (key: keyof Row, value: unknown) => (row: Row) => row[key] !== value,
 }));
-vi.mock("@reactive-resume/db/client", () => {
+vi.mock("@rezumi/db/client", () => {
 	const db = {
 		select: () => ({
 			from: () => ({

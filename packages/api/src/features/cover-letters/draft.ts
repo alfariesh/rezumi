@@ -1,8 +1,8 @@
 import type { CoverLetterDraftInput } from "../../dto/cover-letter";
 import { ORPCError } from "@orpc/client";
 import { streamText } from "ai";
-import { letterDraftSystemPrompt } from "@reactive-resume/ai/prompts";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
+import { letterDraftSystemPrompt } from "@rezumi/ai/prompts";
+import { buildMarkdown } from "@rezumi/resume/markdown";
 import { aiProvidersService } from "../ai-providers/service";
 import { dataBlock } from "../ai/data-block";
 import { getModel } from "../ai/service";

@@ -2,8 +2,8 @@ import type { IShadingAttributesProperties } from "docx";
 import type { HTMLElement, Node } from "node-html-parser";
 import { ExternalHyperlink, HeadingLevel, Paragraph, TextRun } from "docx";
 import { parse, NodeType } from "node-html-parser";
-import { isDarkColor, parseColorString } from "@reactive-resume/utils/color";
-import { toSafeLink } from "@reactive-resume/utils/link";
+import { isDarkColor, parseColorString } from "@rezumi/utils/color";
+import { toSafeLink } from "@rezumi/utils/link";
 
 export interface HtmlStyleConfig {
 	font?: string;

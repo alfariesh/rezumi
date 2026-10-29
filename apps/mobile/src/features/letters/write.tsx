@@ -10,7 +10,7 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Keyboard, View, useWindowDimensions } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
-import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@reactive-resume/resume/cover-letter";
+import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
 import { useLetterWords } from "./compose";
 import { designSummary } from "./design-presets";
 import { discardLetterDraft, startLetterDraft, useLetterDrafting } from "./drafting";

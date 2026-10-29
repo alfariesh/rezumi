@@ -1,8 +1,8 @@
-import type { Proposal, ProposalState } from "@reactive-resume/resume/proposals";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { Proposal, ProposalState } from "@rezumi/resume/proposals";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { plural, t } from "@lingui/core/macro";
 import { useMemo } from "react";
-import { applyTo, getProposalState, getStateIn } from "@reactive-resume/resume/proposals";
+import { applyTo, getProposalState, getStateIn } from "@rezumi/resume/proposals";
 import { acceptResumeProposals } from "./proposals";
 import { getAccountScope } from "@/auth/session";
 import { useLetterStore, useResumeStore } from "@/draft";

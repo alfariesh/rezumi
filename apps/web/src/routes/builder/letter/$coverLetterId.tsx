@@ -3,7 +3,7 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, redirect, useBlocker } from "@tanstack/react-router";
 import { useEffect } from "react";
 import z from "zod";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { toast } from "@rezumi/ui/components/toast";
 import { LetterShell } from "./-components/letter-shell";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { orpc } from "@/libs/orpc/client";

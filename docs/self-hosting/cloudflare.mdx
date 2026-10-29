@@ -90,7 +90,7 @@ Keep `AUTH_SECRET` and `ENCRYPTION_SECRET` across deployments. Changing them inv
 Apply the repository's PostgreSQL migrations from a trusted machine **before** deploying. Set `DATABASE_URL` in your shell or secret manager to the database's direct connection string, then run:
 
 ```bash
-pnpm --filter @reactive-resume/db db:migrate
+pnpm --filter @rezumi/db db:migrate
 ```
 
 This package command reads `DATABASE_URL` directly. The root `pnpm db:migrate` command loads `.env.local`, so use the package command above to avoid selecting an unrelated local database. Never commit the connection string. Back up an existing database before an upgrade.

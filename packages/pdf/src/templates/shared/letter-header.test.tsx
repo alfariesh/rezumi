@@ -1,9 +1,9 @@
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
-import { createCoverLetterResumeData } from "@reactive-resume/resume/cover-letter";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { createCoverLetterResumeData } from "@rezumi/resume/cover-letter";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { renderResume } from "../../forme/render";
 
 const letterIn = (template: Template) => {

@@ -49,7 +49,7 @@ raise "Play must submit a full production release for review" unless
   play[:release_status] == "completed" && !play[:changes_not_sent_for_review] &&
     play[:rescue_changes_not_sent_for_review] == false
 raise "Play must upload this run's signed artifact to the correct app" unless
-  play[:package_name] == "me.rxresu" && play[:aab] == File.join(Dir.tmpdir, "mobile-release/ReactiveResume.aab")
+  play[:package_name] == "app.rezumi" && play[:aab] == File.join(Dir.tmpdir, "mobile-release/ReactiveResume.aab")
 
 contract.publish(:ios)
 app_store = contract.uploads.last
@@ -58,7 +58,7 @@ raise "App Store must submit for review and release after approval" unless
   app_store[:submit_for_review] && app_store[:automatic_release] && app_store[:skip_metadata] == false
 # Fastlane reads version/build from this IPA to create the version and await the matching processed build.
 raise "App Store must upload and select this run's signed artifact" unless
-  app_store[:app_identifier] == "me.rxresu" &&
+  app_store[:app_identifier] == "app.rezumi" &&
     app_store[:ipa] == File.join(Dir.tmpdir, "mobile-release/ReactiveResume.ipa") &&
     !app_store[:skip_binary_upload] && !app_store[:build_number]
 raise "App Store API-key precheck must exclude unsupported in-app purchase checks" unless

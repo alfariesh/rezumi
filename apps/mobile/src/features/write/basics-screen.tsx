@@ -1,10 +1,10 @@
-import type { Basics, CustomField } from "@reactive-resume/schema/resume/data";
+import type { Basics, CustomField } from "@rezumi/schema/resume/data";
 import { useLingui } from "@lingui/react/macro";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { generateId } from "@reactive-resume/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { BoundText, LinkField, useValidators } from "./entry-fields";
 import { EditorScreen } from "./entry-screen";
 import { useUndoToast, useWriteData } from "./hooks";

@@ -1,5 +1,5 @@
 import z from "zod";
-import { aiProviderSchema } from "@reactive-resume/ai/types";
+import { aiProviderSchema } from "@rezumi/ai/types";
 
 export const aiProviderResponseSchema = z.object({
 	managed: z.boolean(),

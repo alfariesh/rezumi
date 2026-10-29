@@ -1,14 +1,14 @@
-import type { EntryHeader } from "@reactive-resume/schema/resume/data";
+import type { EntryHeader } from "@rezumi/schema/resume/data";
 import type { ReactNode } from "react";
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { m } from "motion/react";
-import { entryHeaderOf } from "@reactive-resume/schema/resume/data";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { SegmentedControl, SegmentedControlItem } from "@reactive-resume/ui/components/segmented-control";
-import { cn } from "@reactive-resume/utils/style";
+import { entryHeaderOf } from "@rezumi/schema/resume/data";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
+import { cn } from "@rezumi/utils/style";
 import { useDesign } from "./style-groups";
 import { D2, EASE_MOVE } from "@/libs/motion";
 

@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@reactive-resume/ui/components/button";
-import { ButtonGroup } from "@reactive-resume/ui/components/button-group";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
+import { Button } from "@rezumi/ui/components/button";
+import { ButtonGroup } from "@rezumi/ui/components/button-group";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { AssistantButton } from "@/features/assistant/assistant-button";
 import { BackLink, DrawerControls } from "@/features/resume/editor/chrome";
 import { useEditorStore } from "@/features/resume/editor/store";

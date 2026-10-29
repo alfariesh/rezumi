@@ -1,12 +1,12 @@
-import type { careerScheduleInputSchema } from "@reactive-resume/schema/career";
+import type { careerScheduleInputSchema } from "@rezumi/schema/career";
 import type z from "zod";
 import { ORPCError } from "@orpc/client";
 import { and, asc, desc, eq, inArray, isNull, lte, notInArray, or, sql } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as tables from "@reactive-resume/db/schema";
-import { sendCareerNotification } from "@reactive-resume/email/transport";
-import { env } from "@reactive-resume/env/server";
-import { generateId } from "@reactive-resume/utils/string";
+import { db } from "@rezumi/db/client";
+import * as tables from "@rezumi/db/schema";
+import { sendCareerNotification } from "@rezumi/email/transport";
+import { env } from "@rezumi/env/server";
+import { generateId } from "@rezumi/utils/string";
 import { STALE_AGENT_RUN_TTL_MS } from "../agent/runs";
 import { aiProvidersService } from "../ai-providers/service";
 import { readOpenPosting, searchJobPostings } from "../applications/posting";

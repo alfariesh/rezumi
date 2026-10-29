@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { createVitestProjectConfig } from "../vitest.shared.mts";
 
 const config = createVitestProjectConfig({
-	name: "@reactive-resume/tooling",
+	name: "@rezumi/tooling",
 	dirname: fileURLToPath(new URL(".", import.meta.url)),
 });
 

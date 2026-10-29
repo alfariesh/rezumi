@@ -3,10 +3,10 @@ import { describe, expect, it, vi } from "vite-plus/test";
 const secret = "s".repeat(40);
 const mocks = vi.hoisted(() => ({ traefikConfiguration: vi.fn(async () => ({})) }));
 
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: { APP_URL: "https://rezumi.app", CUSTOM_DOMAIN_PROVIDER_SECRET: "s".repeat(40) },
 }));
-vi.mock("@reactive-resume/api/features/custom-domain", () => ({
+vi.mock("@rezumi/api/features/custom-domain", () => ({
 	isCustomDomainsEnabled: () => true,
 	customDomainUsername: vi.fn(),
 	ownHosts: () => new Set(["rezumi.app"]),

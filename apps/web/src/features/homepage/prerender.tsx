@@ -5,7 +5,7 @@
  * its place once the route has loaded.
  */
 import type { IconProps } from "@phosphor-icons/react";
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { Locale } from "@rezumi/utils/locale";
 import type { ReactNode } from "react";
 import { DirectionProvider } from "@base-ui/react/direction-provider";
 import { i18n } from "@lingui/core";
@@ -14,7 +14,7 @@ import { IconContext } from "@phosphor-icons/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createMemoryHistory, createRootRoute, createRouter, RouterContextProvider } from "@tanstack/react-router";
 import { renderToString } from "react-dom/server";
-import { isRTL, localeSchema } from "@reactive-resume/utils/locale";
+import { isRTL, localeSchema } from "@rezumi/utils/locale";
 import { Homepage } from "./page";
 import { AtsCheckerPage } from "@/features/ats-checker/page";
 import { TemplateGallery } from "@/features/templates/gallery";

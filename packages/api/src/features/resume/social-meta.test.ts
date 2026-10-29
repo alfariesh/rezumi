@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { getPublicResumeCardData } from "./social-meta";
 
 // The real lookup query, run against a stand-in `pg` client that records the SQL and returns `rows`.
 const pg = vi.hoisted(() => ({ queries: [] as { text: string; params: unknown[] }[], rows: [] as unknown[][] }));
-vi.mock("@reactive-resume/db/client", async () => {
+vi.mock("@rezumi/db/client", async () => {
 	const { drizzle } = await import("drizzle-orm/node-postgres");
 	const client = {
 		query: ({ text }: { text: string }, params: unknown[]) => {

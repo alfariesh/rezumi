@@ -1,13 +1,13 @@
 // The searchable grid behind ./icon-picker.tsx, loaded when the picker first opens.
-import type { IconName } from "@reactive-resume/schema/icons";
+import type { IconName } from "@rezumi/schema/icons";
 import type { CellComponentProps } from "react-window";
 import { t } from "@lingui/core/macro";
 import { ProhibitIcon } from "@phosphor-icons/react";
 import Fuse from "fuse.js";
 import { Grid } from "react-window";
-import { icons } from "@reactive-resume/schema/icons";
-import { Input } from "@reactive-resume/ui/components/input";
-import { cn } from "@reactive-resume/utils/style";
+import { icons } from "@rezumi/schema/icons";
+import { Input } from "@rezumi/ui/components/input";
+import { cn } from "@rezumi/utils/style";
 
 const columnCount = 8;
 const columnWidth = 36;

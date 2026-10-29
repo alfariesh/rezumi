@@ -1,12 +1,12 @@
 import type { MobileView } from "@/features/resume/editor/store";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { TabsContent } from "@reactive-resume/ui/components/tabs";
-import { useBreakpoint } from "@reactive-resume/ui/hooks/use-breakpoint";
-import { cn } from "@reactive-resume/utils/style";
+import { Icon } from "@rezumi/ui/components/icon";
+import { TabsContent } from "@rezumi/ui/components/tabs";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { cn } from "@rezumi/utils/style";
 import { MobileTabIndicator } from "@/components/layout/mobile-tab-indicator";
 import {
 	AssistantColumn,

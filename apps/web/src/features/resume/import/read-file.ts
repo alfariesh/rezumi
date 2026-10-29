@@ -1,11 +1,11 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { t } from "@lingui/core/macro";
-import { parseJSONResume } from "@reactive-resume/import/json-resume";
-import { parseReactiveResumeJSON } from "@reactive-resume/import/reactive-resume-json";
-import { parseReactiveResumeV4JSON } from "@reactive-resume/import/reactive-resume-v4-json";
-import { convertLegacyStylesheet, needsLegacyStyleConversion } from "@reactive-resume/pdf/semantic-legacy";
-import { forEachDatedEntry } from "@reactive-resume/schema/resume/dates";
-import { stripHtml } from "@reactive-resume/utils/string";
+import { parseJSONResume } from "@rezumi/import/json-resume";
+import { parseReactiveResumeJSON } from "@rezumi/import/reactive-resume-json";
+import { parseReactiveResumeV4JSON } from "@rezumi/import/reactive-resume-v4-json";
+import { convertLegacyStylesheet, needsLegacyStyleConversion } from "@rezumi/pdf/semantic-legacy";
+import { forEachDatedEntry } from "@rezumi/schema/resume/dates";
+import { stripHtml } from "@rezumi/utils/string";
 import { client } from "@/libs/orpc/client";
 
 /** What a file holds, read from its bytes and shape rather than its extension or type. */
@@ -149,7 +149,7 @@ export async function readResumeFile(
 	}
 
 	if (kind === "linkedin") {
-		const { parseLinkedInExport } = await import("@reactive-resume/import/linkedin");
+		const { parseLinkedInExport } = await import("@rezumi/import/linkedin");
 		const bytes = new Uint8Array(await file.arrayBuffer());
 		options.onRead?.(t`export opened`);
 		return parseLinkedInExport(bytes);
@@ -178,7 +178,7 @@ export async function readResumeFile(
 
 	const [{ extractPdfLines }, { parseResumeText }] = await Promise.all([
 		import("./pdf-text"),
-		import("@reactive-resume/import/plain-text"),
+		import("@rezumi/import/plain-text"),
 	]);
 	const lines = await extractPdfLines(file);
 	if (lines.length === 0) {

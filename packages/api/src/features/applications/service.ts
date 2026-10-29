@@ -1,20 +1,20 @@
 import type { ApplicationDocumentKind, EditableFields } from "../../dto/application";
-import type { DbOrTx } from "@reactive-resume/db/client";
+import type { DbOrTx } from "@rezumi/db/client";
 import type {
 	AiMetadata,
 	ApplicationClosedReason,
 	ApplicationStatus,
 	ApplicationTimelineEntry,
 	InterviewDetails,
-} from "@reactive-resume/schema/applications/data";
+} from "@rezumi/schema/applications/data";
 import { ORPCError } from "@orpc/client";
 import { and, arrayContains, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { lintResumeForAts } from "@reactive-resume/resume/ats";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { coverLetterSchema } from "@reactive-resume/schema/cover-letter/data";
-import { generateId } from "@reactive-resume/utils/string";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { lintResumeForAts } from "@rezumi/resume/ats";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
+import { generateId } from "@rezumi/utils/string";
 import { requestRunCancellation } from "../agent/cancellation";
 import { prepareRunAt } from "../career/scheduling";
 import { coverLetterService } from "../cover-letters/service";

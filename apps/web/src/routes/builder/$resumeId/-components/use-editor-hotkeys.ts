@@ -1,7 +1,7 @@
 import type { EditorMode } from "@/features/resume/editor/store";
 import { t } from "@lingui/core/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
-import { toast } from "@reactive-resume/ui/components/toast";
+import { toast } from "@rezumi/ui/components/toast";
 import { isEditableElementFocused, useCurrentResume, useResumeStore } from "@/features/resume/builder/draft";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { useResumeExport } from "@/features/resume/export/use-resume-export";

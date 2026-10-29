@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { assertCanView, redactResumeForViewer, requiresPassword } from "./access-policy";
 
 describe("assertCanView", () => {

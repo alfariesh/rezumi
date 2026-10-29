@@ -3,8 +3,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { createRef, useState } from "react";
-import { FormControl, FormDescription, FormItem, FormLabel } from "@reactive-resume/ui/components/form";
-import { InputGroup } from "@reactive-resume/ui/components/input-group";
+import { FormControl, FormDescription, FormItem, FormLabel } from "@rezumi/ui/components/form";
+import { InputGroup } from "@rezumi/ui/components/input-group";
 import { NumberInput } from "./number-input";
 
 function NumberForm() {

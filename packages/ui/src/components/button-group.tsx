@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import { cva } from "class-variance-authority";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 
 const buttonGroupVariants = cva(
 	"flex w-fit items-stretch *:focus-visible:relative *:focus-visible:z-10 *:active:scale-100! has-[>[data-slot=button-group]]:gap-2 has-[select[aria-hidden=true]:last-child]:[&>[data-slot=select-trigger]:last-of-type]:rounded-e-md [&>[data-slot=select-trigger]:not([class*='w-'])]:w-fit [&>input]:flex-1",

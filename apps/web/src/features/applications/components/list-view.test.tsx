@@ -19,7 +19,7 @@ vi.mock("@/libs/orpc/client", () => ({
 }));
 vi.mock("../use-application-actions", () => ({ useInvalidateApplications: () => mocks.invalidate }));
 vi.mock("@/hooks/use-confirm", () => ({ useConfirm: () => vi.fn() }));
-vi.mock("@reactive-resume/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => mocks.breakpoint }));
+vi.mock("@rezumi/ui/hooks/use-breakpoint", () => ({ useBreakpoint: () => mocks.breakpoint }));
 
 const LONG_NOTE =
 	"Call Priya back about the take-home timeline, then email a summary of the referral conversation " +

@@ -1,10 +1,10 @@
-import type { AIProvider } from "@reactive-resume/ai/types";
+import type { AIProvider } from "@rezumi/ai/types";
 import { ORPCError } from "@orpc/client";
 import { and, asc, desc, eq, isNull, ne, sql } from "drizzle-orm";
-import { aiProviderSchema } from "@reactive-resume/ai/types";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { env } from "@reactive-resume/env/server";
+import { aiProviderSchema } from "@rezumi/ai/types";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
 import { assertCredentialEncryptionConfigured, decryptCredential, encryptCredential } from "../ai/credentials";
 import { testConnection } from "../ai/service";
 import { resolveAiBaseUrl } from "../ai/url-policy";

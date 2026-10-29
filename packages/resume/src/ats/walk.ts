@@ -1,4 +1,4 @@
-import type { CustomSectionType, ResumeData, SectionType } from "@reactive-resume/schema/resume/data";
+import type { CustomSectionType, ResumeData, SectionType } from "@rezumi/schema/resume/data";
 
 export type SectionPlacement = "main" | "sidebar" | "none";
 

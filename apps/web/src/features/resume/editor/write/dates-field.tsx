@@ -1,13 +1,13 @@
-import type { DateFormat, ResumeDates, YearMonth } from "@reactive-resume/schema/resume/dates";
+import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
-import { formatYearMonth, getPresentLabel, toYearMonth } from "@reactive-resume/schema/resume/dates";
-import { readSingleDate } from "@reactive-resume/schema/resume/period";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { inputBaseClassName } from "@reactive-resume/ui/components/input";
-import { Switch } from "@reactive-resume/ui/components/switch";
-import { cn } from "@reactive-resume/utils/style";
+import { formatYearMonth, getPresentLabel, toYearMonth } from "@rezumi/schema/resume/dates";
+import { readSingleDate } from "@rezumi/schema/resume/period";
+import { Icon } from "@rezumi/ui/components/icon";
+import { inputBaseClassName } from "@rezumi/ui/components/input";
+import { Switch } from "@rezumi/ui/components/switch";
+import { cn } from "@rezumi/utils/style";
 
 type DateSettings = { locale: string; format?: DateFormat | undefined };
 

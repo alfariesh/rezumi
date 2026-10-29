@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import { useState } from "react";
-import { InputGroupInput } from "@reactive-resume/ui/components/input-group";
+import { InputGroupInput } from "@rezumi/ui/components/input-group";
 
 type NumberInputProps = Omit<ComponentProps<"input">, "value" | "onChange" | "min" | "max" | "type"> & {
 	value: number;

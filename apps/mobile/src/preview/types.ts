@@ -1,10 +1,10 @@
 // The preview pipeline's contract (M3-T4 implements it): draft data in, rasterised pages and the page map out.
-// Renders run on the device through @reactive-resume/pdf/native and @reactive-resume/forme-native.
-import type { PageMap, ResumeRenderOptions } from "@reactive-resume/pdf/native";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+// Renders run on the device through @rezumi/pdf/native and @rezumi/forme-native.
+import type { PageMap, ResumeRenderOptions } from "@rezumi/pdf/native";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 
-export type { ResumeRenderOptions } from "@reactive-resume/pdf/native";
+export type { ResumeRenderOptions } from "@rezumi/pdf/native";
 
 export type RenderRequest = {
 	/** Increases with every request. The scheduler drops a result when a newer request has been made. */

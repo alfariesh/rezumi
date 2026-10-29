@@ -1,5 +1,5 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import { escapeHtml, fnv1a } from "@reactive-resume/utils/string";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import { escapeHtml, fnv1a } from "@rezumi/utils/string";
 
 /**
  * Suggested edits to a document's text, shared by Check, the assistant and Improve. A proposal replaces one passage

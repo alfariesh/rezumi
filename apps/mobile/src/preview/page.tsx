@@ -1,5 +1,5 @@
 import type { ResumeDraftStore } from "@/draft/types";
-import type { PageMapNode } from "@reactive-resume/pdf/page-map";
+import type { PageMapNode } from "@rezumi/pdf/page-map";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";

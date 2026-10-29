@@ -1,6 +1,6 @@
-import type { JdMatchReport } from "@reactive-resume/resume/ats-pdf";
+import type { JdMatchReport } from "@rezumi/resume/ats-pdf";
 import { Trans } from "@lingui/react/macro";
-import { Badge } from "@reactive-resume/ui/components/badge";
+import { Badge } from "@rezumi/ui/components/badge";
 
 type JdCoverageProps = {
 	jd: JdMatchReport;

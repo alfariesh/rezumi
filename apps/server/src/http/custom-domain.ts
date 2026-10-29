@@ -4,8 +4,8 @@ import {
 	isCustomDomainsEnabled,
 	ownHosts,
 	traefikConfiguration,
-} from "@reactive-resume/api/features/custom-domain";
-import { env } from "@reactive-resume/env/server";
+} from "@rezumi/api/features/custom-domain";
+import { env } from "@rezumi/env/server";
 import { serveResumePage } from "../static/resume-page";
 import { onAppDomain } from "./alias";
 

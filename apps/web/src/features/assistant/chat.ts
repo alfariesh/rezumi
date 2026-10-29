@@ -1,8 +1,8 @@
-import type { WorkspaceTab } from "@reactive-resume/schema/career";
+import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { FileUIPart, UIMessage } from "ai";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { agentWebSources } from "@reactive-resume/ai/tools/agent-tool-contracts";
+import { agentWebSources } from "@rezumi/ai/tools/agent-tool-contracts";
 import { client, orpc } from "@/libs/orpc/client";
 
 /** What a message shares with the model; each context chip turns one off. The career coach uses the last four. */

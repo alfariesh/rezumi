@@ -13,7 +13,7 @@ import {
 	isValidSlug,
 	MAX_SLUG_LENGTH,
 	summarizeViews,
-} from "@reactive-resume/resume/sharing";
+} from "@rezumi/resume/sharing";
 import { flushResume } from "./document";
 import { WebPageSettings } from "./web-page";
 import { client, orpc } from "@/api/client";

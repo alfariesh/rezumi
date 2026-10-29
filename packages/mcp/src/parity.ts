@@ -1,13 +1,13 @@
 import type { BehaviorAnnotations } from "./annotations";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { AnyProcedure, InferRouterInitialContext, RouterClient } from "@orpc/server";
-import type { RequestAuthentication } from "@reactive-resume/api/context";
+import type { RequestAuthentication } from "@rezumi/api/context";
 import { call, ORPCError } from "@orpc/server";
 import z from "zod";
-import { requiredPermission } from "@reactive-resume/api/context";
-import { restAliases } from "@reactive-resume/api/rest";
-import router from "@reactive-resume/api/routers";
-import { env } from "@reactive-resume/env/server";
+import { requiredPermission } from "@rezumi/api/context";
+import { restAliases } from "@rezumi/api/rest";
+import router from "@rezumi/api/routers";
+import { env } from "@rezumi/env/server";
 import {
 	READ_EXTERNAL,
 	READ_IDEMPOTENT,

@@ -1,21 +1,15 @@
 import type { Style } from "../forme/style-types";
-import type {
-	CustomSectionType,
-	ResumeData,
-	StyleIntent,
-	StyleRule,
-	StyleSlot,
-} from "@reactive-resume/schema/resume/data";
-import type { SemanticStylesheet, StylesheetSource } from "@reactive-resume/schema/resume/stylesheet";
+import type { CustomSectionType, ResumeData, StyleIntent, StyleRule, StyleSlot } from "@rezumi/schema/resume/data";
+import type { SemanticStylesheet, StylesheetSource } from "@rezumi/schema/resume/stylesheet";
 import {
 	escapeCssComment,
 	escapeCssString,
 	SEMANTIC_CSS_LIMITS_V1,
 	serializeGeneratedStylesheet,
-} from "@reactive-resume/resume/stylesheet";
-import { styleRulesSchema } from "@reactive-resume/schema/resume/data";
-import { getSectionStyleRuleContext } from "@reactive-resume/schema/resume/style-rules";
-import { rgbaStringToHex } from "@reactive-resume/utils/color";
+} from "@rezumi/resume/stylesheet";
+import { styleRulesSchema } from "@rezumi/schema/resume/data";
+import { getSectionStyleRuleContext } from "@rezumi/schema/resume/style-rules";
+import { rgbaStringToHex } from "@rezumi/utils/color";
 import { resolveStyleRuleSlot } from "../templates/shared/style-rules";
 
 export type LegacyStyleConversion = {

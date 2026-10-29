@@ -4,11 +4,11 @@ import type {
 	CustomSectionType,
 	ResumeData,
 	SectionType,
-} from "@reactive-resume/schema/resume/data";
+} from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
-import { sectionTypeSchema } from "@reactive-resume/schema/resume/data";
-import { EMPTY_RESUME_DATES } from "@reactive-resume/schema/resume/dates";
-import { generateId, stripHtml } from "@reactive-resume/utils/string";
+import { sectionTypeSchema } from "@rezumi/schema/resume/data";
+import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
+import { generateId, stripHtml } from "@rezumi/utils/string";
 
 type Data = ResumeData | WritableDraft<ResumeData>;
 

@@ -10,10 +10,10 @@ afterAll(() => {
 	if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
 	else process.env.NODE_ENV = previousNodeEnv;
 });
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: { APP_URL: "https://resume.example", FLAG_DISABLE_API_RATE_LIMIT: false },
 }));
-vi.mock("@reactive-resume/db/redis", () => ({
+vi.mock("@rezumi/db/redis", () => ({
 	getRedis: () => null,
 	redisKey: (...parts: string[]) => parts.join(":"),
 }));
@@ -23,7 +23,7 @@ vi.mock("../../context", async () => {
 });
 vi.mock("./service", () => ({ resumeService: { getById: async () => ({ name: "Resume", data: {} }) } }));
 vi.mock("./resume-data-validation", () => ({ parseStoredResumeData: (data: unknown) => data }));
-vi.mock("@reactive-resume/pdf/server", () => ({ createResumePdfFile: render }));
+vi.mock("@rezumi/pdf/server", () => ({ createResumePdfFile: render }));
 
 import { createResumePdfDownload } from "./export";
 

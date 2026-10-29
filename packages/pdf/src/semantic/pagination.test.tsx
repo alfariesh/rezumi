@@ -1,9 +1,9 @@
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { createElement } from "react";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../document";
 import { pdf, renderToBuffer } from "../forme/testing";
 import { rasterizePdf } from "./test/rasterize-pdf";

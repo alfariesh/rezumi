@@ -1,10 +1,10 @@
-import type { ProposeEditsInput, ProposeEditsOutput } from "@reactive-resume/ai/tools/agent-tool-contracts";
-import type { Passage, ProposalTarget } from "@reactive-resume/resume/proposals";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ProposeEditsInput, ProposeEditsOutput } from "@rezumi/ai/tools/agent-tool-contracts";
+import type { Passage, ProposalTarget } from "@rezumi/resume/proposals";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { and, desc, eq } from "drizzle-orm";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { buildMarkdown } from "@reactive-resume/resume/markdown";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { buildMarkdown } from "@rezumi/resume/markdown";
 import {
 	additionAfter,
 	blockText,
@@ -13,8 +13,8 @@ import {
 	collectPassages,
 	readTarget,
 	replaceBlockText,
-} from "@reactive-resume/resume/proposals";
-import { generateId } from "@reactive-resume/utils/string";
+} from "@rezumi/resume/proposals";
+import { generateId } from "@rezumi/utils/string";
 import { coverLetterService } from "../cover-letters/service";
 import { resumeService } from "../resume/service";
 

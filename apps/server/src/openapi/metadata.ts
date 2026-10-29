@@ -1,7 +1,7 @@
 import { oauthProviderAuthServerMetadata, oauthProviderOpenIdConfigMetadata } from "@better-auth/oauth-provider";
-import { auth } from "@reactive-resume/auth/config";
-import { env } from "@reactive-resume/env/server";
-import { buildMcpServerCard } from "@reactive-resume/mcp/server-card";
+import { auth } from "@rezumi/auth/config";
+import { env } from "@rezumi/env/server";
+import { buildMcpServerCard } from "@rezumi/mcp/server-card";
 import { appVersion } from "../app-version";
 
 const DOCS_URL = "https://docs.rezumi.app";

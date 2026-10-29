@@ -1,5 +1,5 @@
 import type { ApplicationSort } from "./list";
-import type { ApplicationClosedReason, ApplicationStatus } from "@reactive-resume/schema/applications/data";
+import type { ApplicationClosedReason, ApplicationStatus } from "@rezumi/schema/applications/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";

@@ -1,4 +1,4 @@
-import type { RequestAuthentication } from "@reactive-resume/api/context";
+import type { RequestAuthentication } from "@rezumi/api/context";
 import { Socket } from "node:net";
 import { setImmediate } from "node:timers/promises";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
@@ -12,8 +12,8 @@ const mocks = vi.hoisted(() => ({
 	execute: vi.fn(),
 	healthcheck: vi.fn(),
 }));
-vi.mock("@reactive-resume/db/client", async (original) => {
-	const actual = await original<typeof import("@reactive-resume/db/client")>();
+vi.mock("@rezumi/db/client", async (original) => {
+	const actual = await original<typeof import("@rezumi/db/client")>();
 	return {
 		...actual,
 		db: new Proxy(actual.db, {
@@ -21,19 +21,19 @@ vi.mock("@reactive-resume/db/client", async (original) => {
 		}),
 	};
 });
-vi.mock("@reactive-resume/db/redis", async (original) => ({
-	...(await original<typeof import("@reactive-resume/db/redis")>()),
+vi.mock("@rezumi/db/redis", async (original) => ({
+	...(await original<typeof import("@rezumi/db/redis")>()),
 	getRedis: () => null,
 }));
-vi.mock("@reactive-resume/api/features/storage", async (original) => ({
-	...(await original<typeof import("@reactive-resume/api/features/storage")>()),
+vi.mock("@rezumi/api/features/storage", async (original) => ({
+	...(await original<typeof import("@rezumi/api/features/storage")>()),
 	getStorageService: () => ({ healthcheck: mocks.healthcheck }),
 }));
-vi.mock("@reactive-resume/api/context", async (original) => ({
-	...(await original<typeof import("@reactive-resume/api/context")>()),
+vi.mock("@rezumi/api/context", async (original) => ({
+	...(await original<typeof import("@rezumi/api/context")>()),
 	resolveAuthenticationFromRequestHeaders: mocks.authentication,
 }));
-vi.mock("@reactive-resume/api/features/mcp/transport", () => ({
+vi.mock("@rezumi/api/features/mcp/transport", () => ({
 	consumeMcpRequestLimit: mocks.limit,
 	consumeMcpUserLimit: mocks.limit,
 }));

@@ -1,4 +1,4 @@
-import type { SemanticNodeKind } from "@reactive-resume/resume/stylesheet";
+import type { SemanticNodeKind } from "@rezumi/resume/stylesheet";
 import { semanticNodeKeys } from "./node-keys";
 
 export type RichTextElement = {

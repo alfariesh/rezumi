@@ -1,7 +1,7 @@
-import type { CustomSectionType, ResumeData } from "@reactive-resume/schema/resume/data";
+import type { CustomSectionType, ResumeData } from "@rezumi/schema/resume/data";
 import { getSectionTitle as getDefaultSectionTitle } from "./section";
 
-export { moveItem } from "@reactive-resume/resume/move-item";
+export { moveItem } from "@rezumi/resume/move-item";
 
 /** A custom section's own title, or the localized default title for its type. */
 export function getSourceSectionTitle(

@@ -2,7 +2,7 @@
 // features/applications/queries.ts (optimistic list update with rollback); everything here refreshes on settlement.
 import type { Application } from "@/features/applications/types";
 import type { ReminderTarget } from "@/features/reminders";
-import type { InterviewKind, InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";

@@ -1,9 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import {
-	createCustomSectionItemJsonSchemas,
-	createResumeDataJsonSchema,
-} from "@reactive-resume/schema/resume/json-schema";
+import { createCustomSectionItemJsonSchemas, createResumeDataJsonSchema } from "@rezumi/schema/resume/json-schema";
 
 export type DocumentationPaths = {
 	jsonSchemaGuide: string;

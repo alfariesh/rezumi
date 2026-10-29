@@ -1,13 +1,13 @@
 // @vitest-environment happy-dom
 import type { Application } from "../types";
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Toaster } from "@reactive-resume/ui/components/toast";
+import { Toaster } from "@rezumi/ui/components/toast";
 
 const api = vi.hoisted(() => ({ add: vi.fn(), update: vi.fn(), remove: vi.fn(), read: vi.fn() }));
 vi.mock("@/libs/orpc/client", () => ({

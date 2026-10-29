@@ -1,5 +1,5 @@
-import type { GenerateTask, WorkspaceTab } from "@reactive-resume/schema/career";
-import type { IconName } from "@reactive-resume/ui/components/icon";
+import type { GenerateTask, WorkspaceTab } from "@rezumi/schema/career";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -7,12 +7,12 @@ import { Trans } from "@lingui/react/macro";
 import { useRouteContext } from "@tanstack/react-router";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Checkbox } from "@reactive-resume/ui/components/checkbox";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@reactive-resume/ui/components/tooltip";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { Checkbox } from "@rezumi/ui/components/checkbox";
+import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
+import { cn } from "@rezumi/utils/style";
 import { D2, EASE, EXIT } from "@/libs/motion";
 
 // ---- Time: always in the user's timezone, "Thu 8 Oct, 17:58". Relative time is secondary text. ----

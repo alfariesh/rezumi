@@ -1,12 +1,12 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import type { InterviewKind, InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { useLingui } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { Linking, View } from "react-native";
-import { interviewDetailsSchema } from "@reactive-resume/schema/applications/data";
-import { generateId } from "@reactive-resume/utils/string";
-import { fromZonedDateTime } from "@reactive-resume/utils/timezone";
+import { interviewDetailsSchema } from "@rezumi/schema/applications/data";
+import { generateId } from "@rezumi/utils/string";
+import { fromZonedDateTime } from "@rezumi/utils/timezone";
 import { WallClockField } from "./date-field";
 import {
 	interviewReminder,

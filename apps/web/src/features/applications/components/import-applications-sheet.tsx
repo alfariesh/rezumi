@@ -3,10 +3,10 @@ import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { Label } from "@reactive-resume/ui/components/label";
-import { NativeSelect } from "@reactive-resume/ui/components/native-select";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { Label } from "@rezumi/ui/components/label";
+import { NativeSelect } from "@rezumi/ui/components/native-select";
 import {
 	Sheet,
 	SheetContent,
@@ -14,10 +14,10 @@ import {
 	SheetFooter,
 	SheetHeader,
 	SheetTitle,
-} from "@reactive-resume/ui/components/sheet";
-import { Textarea } from "@reactive-resume/ui/components/textarea";
-import { toast } from "@reactive-resume/ui/components/toast";
-import { downloadWithAnchor } from "@reactive-resume/utils/file";
+} from "@rezumi/ui/components/sheet";
+import { Textarea } from "@rezumi/ui/components/textarea";
+import { toast } from "@rezumi/ui/components/toast";
+import { downloadWithAnchor } from "@rezumi/utils/file";
 import { autoMapHeaders, CSV_FIELDS, mapCsvToApplications, parseCsv, rowsToCsv } from "../csv";
 import { useInvalidateApplications } from "../use-application-actions";
 import { orpc } from "@/libs/orpc/client";

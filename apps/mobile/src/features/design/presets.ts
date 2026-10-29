@@ -1,11 +1,11 @@
 // Port of apps/web/src/features/resume/editor/design/presets.ts and the Advanced option lists. Pure: no React.
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { DateFormat } from "@reactive-resume/schema/resume/dates";
-import type { Template } from "@reactive-resume/schema/templates";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { DateFormat } from "@rezumi/schema/resume/dates";
+import type { Template } from "@rezumi/schema/templates";
 import type { WritableDraft } from "immer";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { templateLayouts, templateSchema } from "@reactive-resume/schema/templates";
-import { contrastOnWhite } from "@reactive-resume/utils/color";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
+import { contrastOnWhite } from "@rezumi/utils/color";
 
 type Metadata = ResumeData["metadata"];
 

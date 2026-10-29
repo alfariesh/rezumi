@@ -3,14 +3,14 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "../shell";
 import type { Application } from "@/features/applications/types";
-import type { InterviewTimelineEntry } from "@reactive-resume/schema/applications/data";
+import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { plural } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { formatList } from "@reactive-resume/utils/locale";
+import { formatList } from "@rezumi/utils/locale";
 import {
 	latest,
 	useGenerate,

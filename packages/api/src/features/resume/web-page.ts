@@ -1,11 +1,11 @@
 import type { ResumeMatch } from "./slugs";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ResumeData } from "@rezumi/schema/resume/data";
 import { and, asc, count, eq, isNull, sql } from "drizzle-orm";
 import { isbot } from "isbot";
-import { db } from "@reactive-resume/db/client";
-import * as schema from "@reactive-resume/db/schema";
-import { env } from "@reactive-resume/env/server";
-import { publicResumePath } from "@reactive-resume/resume/sharing";
+import { db } from "@rezumi/db/client";
+import * as schema from "@rezumi/db/schema";
+import { env } from "@rezumi/env/server";
+import { publicResumePath } from "@rezumi/resume/sharing";
 import { verifiedDomainColumn } from "../custom-domain/service";
 import { createPreviewToken, hasResumeAccess, isValidPreviewToken } from "./access";
 import {

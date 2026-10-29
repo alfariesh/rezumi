@@ -12,15 +12,15 @@ vi.mock("@better-auth/oauth-provider", () => ({
 	oauthProviderOpenIdConfigMetadata: vi.fn(() => vi.fn(() => Response.json({}))),
 }));
 
-vi.mock("@reactive-resume/auth/config", () => ({
+vi.mock("@rezumi/auth/config", () => ({
 	auth: mocks.auth,
 }));
 
-vi.mock("@reactive-resume/env/server", () => ({
+vi.mock("@rezumi/env/server", () => ({
 	env: mocks.env,
 }));
 
-vi.mock("@reactive-resume/mcp/server-card", () => ({
+vi.mock("@rezumi/mcp/server-card", () => ({
 	buildMcpServerCard: vi.fn(() => ({})),
 }));
 

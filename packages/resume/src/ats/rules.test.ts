@@ -1,7 +1,7 @@
-import type { ExperienceItem, ResumeData } from "@reactive-resume/schema/resume/data";
+import type { ExperienceItem, ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { sampleResumeData } from "@reactive-resume/schema/resume/sample";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { lintResumeForAts } from "./index";
 
 const NOW = new Date("2024-06-15T00:00:00Z");

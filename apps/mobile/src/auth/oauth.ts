@@ -20,7 +20,7 @@ const appHost = "rezumi.app";
  * no https callback can be verified locally; that server must run with `FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI=true`.
  */
 export function redirectUri(origin: string): string {
-	if (__DEV__ && origin.startsWith("http:")) return "me.rxresu:/auth/native-callback";
+	if (__DEV__ && origin.startsWith("http:")) return "app.rezumi:/auth/native-callback";
 	return `https://${appHost}/auth/native-callback`;
 }
 

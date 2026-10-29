@@ -1,8 +1,8 @@
 import type * as React from "react";
 import { Drawer as SheetPrimitive } from "@base-ui/react/drawer";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { cn } from "@reactive-resume/utils/style";
+import { Button } from "@rezumi/ui/components/button";
+import { Icon } from "@rezumi/ui/components/icon";
+import { cn } from "@rezumi/utils/style";
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
 	return <SheetPrimitive.Root data-slot="sheet" {...props} />;

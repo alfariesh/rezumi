@@ -1,4 +1,4 @@
-import type { Locale } from "@reactive-resume/utils/locale";
+import type { Locale } from "@rezumi/utils/locale";
 import { i18n } from "@lingui/core";
 import { localeMap } from "@/libs/locale";
 

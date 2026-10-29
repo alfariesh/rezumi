@@ -1,9 +1,9 @@
 import { beforeAll, describe, expect, it } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { strFromU8, unzipSync } from "fflate";
-import { copyCoverLetterStyle } from "@reactive-resume/resume/cover-letter";
-import { coverLetterDocumentSchema } from "@reactive-resume/schema/cover-letter/data";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
+import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
+import { coverLetterDocumentSchema } from "@rezumi/schema/cover-letter/data";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { buildAccountZip } from "./export";
 import { detectImportKind, detectJsonImportKind, parseResumeJson } from "@/features/resume/import/read-file";
 

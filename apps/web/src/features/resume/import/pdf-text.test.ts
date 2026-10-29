@@ -1,6 +1,6 @@
-import type { RawExtraction } from "@reactive-resume/resume/ats-pdf";
+import type { RawExtraction } from "@rezumi/resume/ats-pdf";
 import { describe, expect, it } from "vite-plus/test";
-import { buildExtractedDocument } from "@reactive-resume/resume/ats-pdf";
+import { buildExtractedDocument } from "@rezumi/resume/ats-pdf";
 import { documentToLines } from "./pdf-text";
 
 const PAGE = { width: 595, height: 842 };

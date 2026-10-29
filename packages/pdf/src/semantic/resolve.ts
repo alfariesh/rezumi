@@ -1,11 +1,11 @@
 import type { ResolvedResumePresentation } from "./context";
-import type { ResolveStylesheetResult, SemanticCssDiagnostic, SemanticNode } from "@reactive-resume/resume/stylesheet";
-import type { ResumeData } from "@reactive-resume/schema/resume/data";
-import type { StylesheetSource } from "@reactive-resume/schema/resume/stylesheet";
-import type { Template } from "@reactive-resume/schema/templates";
-import { compileStylesheet, isFatalStylesheetDiagnostic, resolveStylesheet } from "@reactive-resume/resume/stylesheet";
-import { assertResumeRenderBudget } from "@reactive-resume/schema/resume/limits";
-import { EMPTY_SEMANTIC_CSS_SOURCE } from "@reactive-resume/schema/resume/stylesheet";
+import type { ResolveStylesheetResult, SemanticCssDiagnostic, SemanticNode } from "@rezumi/resume/stylesheet";
+import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { StylesheetSource } from "@rezumi/schema/resume/stylesheet";
+import type { Template } from "@rezumi/schema/templates";
+import { compileStylesheet, isFatalStylesheetDiagnostic, resolveStylesheet } from "@rezumi/resume/stylesheet";
+import { assertResumeRenderBudget } from "@rezumi/schema/resume/limits";
+import { EMPTY_SEMANTIC_CSS_SOURCE } from "@rezumi/schema/resume/stylesheet";
 import { shouldShowResumeHeader } from "../templates/shared/cover-letter";
 import { getTemplatePageSize } from "../templates/shared/page-size";
 import { adaptResolvedPdfNode } from "./adapter";

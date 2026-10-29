@@ -8,7 +8,7 @@ const config: ExpoConfig = {
 	name: "Rezumi",
 	slug: "reactive-resume",
 	platforms: process.env.EXPO_MOBILE_WEB_PREVIEW === "1" ? ["ios", "android", "web"] : ["ios", "android"],
-	scheme: "me.rxresu",
+	scheme: "app.rezumi",
 	owner: "reactive-resume",
 	version: "1.0.0",
 	runtimeVersion: { policy: "fingerprint" },
@@ -27,7 +27,7 @@ const config: ExpoConfig = {
 			light: "./assets/icon.png",
 			dark: "./assets/icon-dark.png",
 		},
-		bundleIdentifier: "me.rxresu",
+		bundleIdentifier: "app.rezumi",
 		appleTeamId: "654ASRW868",
 		deploymentTarget: "17.4",
 		supportsTablet: true,
@@ -60,7 +60,7 @@ const config: ExpoConfig = {
 	},
 	android: {
 		versionCode: Number(process.env.MOBILE_BUILD_NUMBER ?? "1"),
-		package: "me.rxresu",
+		package: "app.rezumi",
 		predictiveBackGestureEnabled: false,
 		adaptiveIcon: {
 			foregroundImage: "./assets/adaptive-foreground.png",

@@ -1,12 +1,12 @@
 import { createSelectSchema } from "drizzle-zod";
 import z from "zod";
-import * as tables from "@reactive-resume/db/schema";
+import * as tables from "@rezumi/db/schema";
 import {
 	careerNoticeSchema,
 	careerSourceSchema,
 	careerStoryInputSchema,
 	savedItemDataSchema,
-} from "@reactive-resume/schema/career";
+} from "@rezumi/schema/career";
 
 export const careerFactSchema = createSelectSchema(tables.careerFact, {
 	source: careerSourceSchema,

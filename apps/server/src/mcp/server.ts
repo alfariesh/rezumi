@@ -1,5 +1,5 @@
 import type { RouterClient } from "@orpc/server";
-import type { RequestAuthentication } from "@reactive-resume/api/context";
+import type { RequestAuthentication } from "@rezumi/api/context";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { onError } from "@orpc/client";
 import { createRouterClient } from "@orpc/server";
@@ -12,7 +12,7 @@ import {
 	registerResources,
 	registerTools,
 	registerToolDiscovery,
-} from "@reactive-resume/mcp";
+} from "@rezumi/mcp";
 import { appVersion } from "../app-version";
 import { getRequestLocale } from "../rpc/locale";
 

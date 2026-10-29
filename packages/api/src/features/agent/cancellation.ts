@@ -1,4 +1,4 @@
-import { getRedis, redisKey } from "@reactive-resume/db/redis";
+import { getRedis, redisKey } from "@rezumi/db/redis";
 
 const controllers = new Map<string, AbortController>();
 const CANCELLATION_TTL_MS = 15 * 60_000;
@@ -60,4 +60,4 @@ export async function isRunAlive(runId: string, startedAt: Date | null): Promise
 		? (await shared.get(redisKey("agent-run-alive", runId))) !== null
 		: (await redis?.exists(redisKey("agent-run-alive", runId))) === 1;
 }
-import { getCoordination } from "@reactive-resume/db/coordination";
+import { getCoordination } from "@rezumi/db/coordination";

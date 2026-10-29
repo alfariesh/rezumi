@@ -4,24 +4,24 @@ import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@reactive-resume/ui/components/button";
-import { Checkbox } from "@reactive-resume/ui/components/checkbox";
+import { Button } from "@rezumi/ui/components/button";
+import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from "@reactive-resume/ui/components/dropdown-menu";
-import { Icon } from "@reactive-resume/ui/components/icon";
-import { IconButton } from "@reactive-resume/ui/components/icon-button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@reactive-resume/ui/components/input-group";
-import { Kbd } from "@reactive-resume/ui/components/kbd";
-import { NativeSelect } from "@reactive-resume/ui/components/native-select";
-import { SegmentedControl, SegmentedControlItem } from "@reactive-resume/ui/components/segmented-control";
-import { Skeleton } from "@reactive-resume/ui/components/skeleton";
-import { Tabs, TabsCount, TabsList, TabsTrigger } from "@reactive-resume/ui/components/tabs";
-import { cn } from "@reactive-resume/utils/style";
+} from "@rezumi/ui/components/dropdown-menu";
+import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@rezumi/ui/components/input-group";
+import { Kbd } from "@rezumi/ui/components/kbd";
+import { NativeSelect } from "@rezumi/ui/components/native-select";
+import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
+import { Skeleton } from "@rezumi/ui/components/skeleton";
+import { Tabs, TabsCount, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
+import { cn } from "@rezumi/utils/style";
 import { LinkApplicationDialog, TagsDialog, useBatchActions } from "./document-actions";
 import { DocumentCard, DocumentRow } from "./document-card";
 import { collectTags, filterDocuments } from "./filter";

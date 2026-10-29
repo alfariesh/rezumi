@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
-import { cn } from "@reactive-resume/utils/style";
+import { cn } from "@rezumi/utils/style";
 import { getHeadline } from "./hero";
 import { SCENE } from "./scroll";
 import { labelClass } from "./ui";

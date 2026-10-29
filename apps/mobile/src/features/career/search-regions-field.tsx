@@ -1,4 +1,4 @@
-import type { SearchRegionsAction } from "@reactive-resume/utils/region";
+import type { SearchRegionsAction } from "@rezumi/utils/region";
 import { useLingui } from "@lingui/react/macro";
 import { useMemo } from "react";
 import { View } from "react-native";
@@ -8,7 +8,7 @@ import {
 	nextSearchRegions,
 	SEARCH_REGION_CODES,
 	shownSearchRegions,
-} from "@reactive-resume/utils/region";
+} from "@rezumi/utils/region";
 import { deviceTimeZone } from "@/features/reminders/schedule";
 import { Button, Chip, SelectSheet, Text, useTheme } from "@/ui";
 

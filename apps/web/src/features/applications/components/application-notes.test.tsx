@@ -16,7 +16,7 @@ vi.mock("@/libs/orpc/client", () => ({
 	},
 }));
 vi.mock("../use-application-actions", () => ({ useInvalidateApplications: () => mocks.invalidate }));
-vi.mock("@reactive-resume/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
+vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: vi.fn() } }));
 
 afterEach(() => vi.resetAllMocks());
 

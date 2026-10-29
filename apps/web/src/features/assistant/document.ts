@@ -1,4 +1,4 @@
-import type { Passage, Proposal, ProposalState } from "@reactive-resume/resume/proposals";
+import type { Passage, Proposal, ProposalState } from "@rezumi/resume/proposals";
 import { t } from "@lingui/core/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
@@ -9,8 +9,8 @@ import {
 	collectPassages,
 	getProposalState,
 	getStateIn,
-} from "@reactive-resume/resume/proposals";
-import { toast } from "@reactive-resume/ui/components/toast";
+} from "@rezumi/resume/proposals";
+import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { useCurrentResume } from "@/features/resume/builder/draft";

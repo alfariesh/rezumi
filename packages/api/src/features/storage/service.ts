@@ -10,8 +10,8 @@ import {
 } from "@aws-sdk/client-s3";
 import { ORPCError } from "@orpc/server";
 import sharp from "sharp";
-import { env } from "@reactive-resume/env/server";
-import { getLocalDataDirectory } from "@reactive-resume/utils/monorepo.node";
+import { env } from "@rezumi/env/server";
+import { getLocalDataDirectory } from "@rezumi/utils/monorepo.node";
 import { BlobStorageService } from "./blob";
 
 interface StorageWriteInput {
@@ -138,8 +138,8 @@ export async function processImageForUpload(file: File): Promise<ProcessedImage>
 /** Public pictures stop serving once their owner is banned or gone. */
 export async function isPublicUploadOwner(userId: string): Promise<boolean> {
 	const [{ db }, { user }, { and, eq }, { ownerIsNotBanned }] = await Promise.all([
-		import("@reactive-resume/db/client"),
-		import("@reactive-resume/db/schema"),
+		import("@rezumi/db/client"),
+		import("@rezumi/db/schema"),
 		import("drizzle-orm"),
 		import("../resume/access-policy"),
 	]);

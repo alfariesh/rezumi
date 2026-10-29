@@ -1,7 +1,7 @@
 import { t } from "@lingui/core/macro";
 import * as WebBrowser from "expo-web-browser";
 import { Alert } from "react-native";
-import { createSerialQueue } from "@reactive-resume/utils/queue";
+import { createSerialQueue } from "@rezumi/utils/queue";
 import { parseDeepLink } from "./parse";
 import { getAccessToken, getServer, restoreSession, signIn } from "@/auth/session";
 import { initI18n } from "@/i18n";

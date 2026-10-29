@@ -1,9 +1,9 @@
-import type { Template } from "@reactive-resume/schema/templates";
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { createCanvas } from "@napi-rs/canvas";
 import { act, createElement } from "react";
-import { defaultResumeData } from "@reactive-resume/schema/resume/default";
-import { templateSchema } from "@reactive-resume/schema/templates";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { templateSchema } from "@rezumi/schema/templates";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
 import { rasterizePdf } from "../../semantic/test/rasterize-pdf";
