@@ -12,7 +12,7 @@ const getResumeAccessCookieName = (resumeId: string) => `${RESUME_ACCESS_COOKIE_
  * stand in for, another use of the secret.
  */
 const sign = (purpose: "resume-access" | "web-page-preview", parts: unknown[]) =>
-	createHmac("sha256", createHmac("sha256", env.AUTH_SECRET).update(`reactive-resume:${purpose}:v1`).digest())
+	createHmac("sha256", createHmac("sha256", env.AUTH_SECRET).update(`rezumi:${purpose}:v1`).digest())
 		.update(JSON.stringify(parts))
 		.digest("hex");
 

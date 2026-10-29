@@ -531,7 +531,7 @@ const NOTES_SAVE_DELAY_MS = 800;
 const notesQueue = createNotesQueue(Storage);
 // Partitioned like resume drafts (server + OAuth subject), so another account never sees or replays them.
 const notesKey = async (applicationId: string) =>
-	`reactive-resume:application-notes:${(await getDraftScope()) ?? JSON.stringify([getServer()])}:${applicationId}`;
+	`rezumi:application-notes:${(await getDraftScope()) ?? JSON.stringify([getServer()])}:${applicationId}`;
 
 /**
  * NOTES save a moment after typing stops, on blur and when leaving. Saves are serialized per application with the

@@ -8,7 +8,7 @@ import { getAccountScope, useSession } from "@/auth/session";
 const delay = 5 * 60 * 1000;
 const cooldown = 3 * 24 * 60 * 60 * 1000;
 // Store reviews belong to this installation; switching accounts must not reset the cooldown.
-const nextPromptKey = "reactive-resume:review-next-at";
+const nextPromptKey = "rezumi:review-next-at";
 
 /** Native prompts expose neither ratings nor dismissals. Persist attempts, never an assumed completed review. */
 export function useReviewPrompt() {

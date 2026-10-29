@@ -13,7 +13,7 @@ vi.mock("@rezumi/db/client", () => ({ getPool: () => database.pool ?? pool }));
 const redis = vi.hoisted(() => ({ getRedis: vi.fn(), publish: vi.fn(), duplicate: vi.fn() }));
 vi.mock("@rezumi/db/redis", () => ({
 	getRedis: redis.getRedis,
-	redisKey: (key: string) => `reactive-resume:preview:${key}`,
+	redisKey: (key: string) => `rezumi:preview:${key}`,
 }));
 
 beforeEach(() => {
@@ -35,7 +35,7 @@ describe("publishResumeUpdated", () => {
 	it("publishes through namespaced Redis when configured without querying Postgres", async () => {
 		redis.getRedis.mockReturnValue(redis);
 		await publishResumeUpdated(exampleEvent);
-		expect(redis.publish).toHaveBeenCalledWith("reactive-resume:preview:resume_updated", JSON.stringify(exampleEvent));
+		expect(redis.publish).toHaveBeenCalledWith("rezumi:preview:resume_updated", JSON.stringify(exampleEvent));
 		expect(pool.query).not.toHaveBeenCalled();
 	});
 
@@ -72,7 +72,7 @@ describe("Redis resume subscriptions", () => {
 		const controller = new AbortController();
 		const iterator = subscribeResumeUpdated({ resumeId: "r1", userId: "u1", signal: controller.signal });
 		const first = iterator.next();
-		const channel = "reactive-resume:preview:resume_updated";
+		const channel = "rezumi:preview:resume_updated";
 		subscriber.send("other", JSON.stringify(exampleEvent));
 		subscriber.send(channel, "not json");
 		subscriber.send(channel, JSON.stringify({ ...exampleEvent, userId: "other" }));
@@ -346,8 +346,8 @@ describe("Redis resume subscriptions share one subscriber", () => {
 		);
 		const nexts = iterators.map((iterator) => iterator.next());
 		await tick();
-		subscriber.send("reactive-resume:preview:resume_updated", JSON.stringify({ ...exampleEvent, resumeId: "r2" }));
-		subscriber.send("reactive-resume:preview:resume_updated", JSON.stringify(exampleEvent));
+		subscriber.send("rezumi:preview:resume_updated", JSON.stringify({ ...exampleEvent, resumeId: "r2" }));
+		subscriber.send("rezumi:preview:resume_updated", JSON.stringify(exampleEvent));
 
 		expect(await nexts[0]).toEqual({ done: false, value: exampleEvent });
 		expect(await nexts[1]).toEqual({ done: false, value: { ...exampleEvent, resumeId: "r2" } });

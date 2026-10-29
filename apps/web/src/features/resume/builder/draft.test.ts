@@ -401,17 +401,17 @@ describe("builder resume autosave", () => {
 
 	it("expires local recovery after seven days", () => {
 		window.localStorage.setItem(
-			"reactive-resume:unsaved:expired",
+			"rezumi:unsaved:expired",
 			JSON.stringify({ data: defaultResumeData, storedAt: Date.now() - 8 * 86_400_000 }),
 		);
 		expect(readUnsavedResumeData("expired")).toBeUndefined();
-		expect(window.localStorage.getItem("reactive-resume:unsaved:expired")).toBeNull();
+		expect(window.localStorage.getItem("rezumi:unsaved:expired")).toBeNull();
 	});
 
 	it("restores changes kept on this device when the editor opens again", async () => {
 		const initial = makeResume("resume-restore");
 		window.localStorage.setItem(
-			"reactive-resume:unsaved:resume-restore",
+			"rezumi:unsaved:resume-restore",
 			JSON.stringify({ data: withBasicsName(initial, "Kept locally").data, storedAt: Date.now() }),
 		);
 		orpcMocks.updateResume.mockImplementation((input: { id: string; data: ResumeData }) =>

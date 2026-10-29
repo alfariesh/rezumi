@@ -12,11 +12,7 @@ export function clearAccountData(queryClient: QueryClient) {
 		try {
 			const storage = window[kind];
 			for (const key of Object.keys(storage)) {
-				if (
-					/^(?:letter-sender:|reactive-resume:unsaved:|career[-:]|applications-follow-up-dismissed$|new-documents$)/.test(
-						key,
-					)
-				)
+				if (/^(?:letter-sender:|rezumi:unsaved:|career[-:]|applications-follow-up-dismissed$|new-documents$)/.test(key))
 					storage.removeItem(key);
 			}
 		} catch {

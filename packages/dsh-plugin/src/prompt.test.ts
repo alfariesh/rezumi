@@ -16,7 +16,7 @@ it("names the tools it references with the configured namespace", async () => {
 	await apply(ctx as never, Config({ apiKey: "test-key", serverName: "rr" }));
 
 	const section = ctx.systemPrompt.section.mock.calls[0]?.[0] as PromptSection;
-	expect(section.name).toBe("reactive-resume:rr");
+	expect(section.name).toBe("rezumi:rr");
 	expect(section.text).toContain("mcp__rr__read_resume");
 	expect(section.text).not.toContain("mcp__resume__read_resume");
 });

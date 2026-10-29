@@ -71,7 +71,7 @@ const healthDependencySchema = {
 const healthResponseSchema = {
 	type: "object",
 	properties: {
-		service: { type: "string", enum: ["reactive-resume"] },
+		service: { type: "string", enum: ["rezumi"] },
 		version: { type: "string", description: "The running application's build version." },
 		revision: {
 			anyOf: [{ type: "string", pattern: "^[a-f0-9]{40}$" }, { enum: [null] }],

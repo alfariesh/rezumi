@@ -2,7 +2,7 @@
  * "Fix these in the editor" survives signing up: the checked file waits in this browser's IndexedDB until the
  * visitor comes back signed in, then it's imported and removed. It never leaves the browser before that.
  */
-const DB = "reactive-resume";
+const DB = "rezumi";
 const STORE = "pending-import";
 const KEY = "ats-checker";
 

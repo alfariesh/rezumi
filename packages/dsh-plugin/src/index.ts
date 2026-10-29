@@ -59,7 +59,7 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
 	ctx.systemPrompt.section({
 		// Namespaced by `serverName` so a second instance (e.g. a self-hosted
 		// account alongside the hosted one) doesn't collide on section name.
-		name: `reactive-resume:${config.serverName}`,
+		name: `rezumi:${config.serverName}`,
 		order: 150,
 		text: buildPatchGuide(config.serverName),
 	});

@@ -19,5 +19,5 @@ export function getRedis(): Redis | null {
 }
 
 export function redisKey(...parts: string[]): string {
-	return ["reactive-resume", env.DEPLOYMENT_NAMESPACE, ...parts].join(":");
+	return ["rezumi", env.DEPLOYMENT_NAMESPACE, ...parts].join(":");
 }

@@ -37,7 +37,7 @@ async function prepare(id: string, origin: string, fullParity: boolean) {
 	const subject = "rr-M3T4-preview";
 	const owner = JSON.stringify([origin, subject]);
 	Storage.setItemSync(
-		`reactive-resume:unsaved:${encodeURIComponent(owner)}:resume:${id}`,
+		`rezumi:unsaved:${encodeURIComponent(owner)}:resume:${id}`,
 		JSON.stringify({ baseline: document, document, sessionId: "rr-M3T4-preview" }),
 	);
 	console.info(`[preview-review] ${Platform.OS} SQLite draft prepared for the real Page hook`);
@@ -60,7 +60,7 @@ export function DevelopmentTools({ id, origin, fullParity }: DevelopmentToolsPro
 			);
 		await draft.flush();
 		const owner = JSON.stringify([origin, "rr-M3T4-preview"]);
-		const stored = Storage.getItemSync(`reactive-resume:unsaved:${encodeURIComponent(owner)}:resume:${id}`);
+		const stored = Storage.getItemSync(`rezumi:unsaved:${encodeURIComponent(owner)}:resume:${id}`);
 		const expected = undoing ? "Draft-backed preview" : "Draft-backed edit";
 		if (useResumeStore.getState().data?.basics.name !== expected || !stored?.includes(expected))
 			throw new Error("Draft edit/undo did not reach SQLite");

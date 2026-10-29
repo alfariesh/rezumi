@@ -281,7 +281,7 @@ const draftStore = createDraftStore(Storage);
 const BLOCKED = "#save-error";
 type Blocked = { value: string; code: string };
 /** The key prefix of every workspace draft for one account; sign-out cleanup can sweep it. */
-export const draftPrefix = (scope: string) => `reactive-resume:career-draft:${scope}:`;
+export const draftPrefix = (scope: string) => `rezumi:career-draft:${scope}:`;
 
 /**
  * Writes and clears check the account again when they run: a draft never lands under, or removes, another identity's

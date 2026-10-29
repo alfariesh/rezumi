@@ -29,7 +29,7 @@ type StoredVoice = {
 	keep?: boolean | undefined;
 };
 
-const voiceKey = (server: string) => `reactive-resume:career-voice:${server}`;
+const voiceKey = (server: string) => `rezumi:career-voice:${server}`;
 
 const readStored = (server: string): StoredVoice => {
 	try {

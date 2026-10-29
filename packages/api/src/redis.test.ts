@@ -4,7 +4,7 @@ const mocks = vi.hoisted(() => ({ evalScript: vi.fn(), redis: null as { eval: Re
 
 vi.mock("@rezumi/db/redis", () => ({
 	getRedis: () => mocks.redis,
-	redisKey: (...parts: string[]) => ["reactive-resume", "preview-123", ...parts].join(":"),
+	redisKey: (...parts: string[]) => ["rezumi", "preview-123", ...parts].join(":"),
 }));
 
 beforeEach(() => {
@@ -22,7 +22,7 @@ describe("createRateLimiter", () => {
 		expect(mocks.evalScript).toHaveBeenCalledWith(
 			expect.any(String),
 			1,
-			"reactive-resume:preview-123:rate-limit:pdf:user-1",
+			"rezumi:preview-123:rate-limit:pdf:user-1",
 			expect.any(String),
 			"60000",
 			"5",

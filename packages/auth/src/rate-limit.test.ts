@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 const mocks = vi.hoisted(() => ({ eval: vi.fn(), redis: null as { eval: ReturnType<typeof vi.fn> } | null }));
 vi.mock("@rezumi/db/redis", () => ({
 	getRedis: () => mocks.redis,
-	redisKey: (...parts: string[]) => ["reactive-resume", "preview-1", ...parts].join(":"),
+	redisKey: (...parts: string[]) => ["rezumi", "preview-1", ...parts].join(":"),
 }));
 
 beforeEach(() => {
@@ -37,7 +37,7 @@ describe("authRateLimitStorage", () => {
 		expect(mocks.eval).toHaveBeenCalledWith(
 			expect.stringContaining("redis.call('PEXPIRE', KEYS[1], ARGV[1])"),
 			1,
-			"reactive-resume:preview-1:auth:sign-in:ip",
+			"rezumi:preview-1:auth:sign-in:ip",
 			10_000,
 			3,
 		);

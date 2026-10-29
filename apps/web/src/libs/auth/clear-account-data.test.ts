@@ -9,7 +9,7 @@ vi.mock("@/features/documents/thumbnail-store", () => ({ clearStoredThumbnails: 
 it("removes contact snapshots, unsaved resumes, and career drafts from both browser stores", () => {
 	const privateKeys = [
 		"letter-sender:letter",
-		"reactive-resume:unsaved:resume",
+		"rezumi:unsaved:resume",
 		"career-story:user",
 		"career:debrief:application",
 		"new-documents",

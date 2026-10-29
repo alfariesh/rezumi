@@ -37,7 +37,7 @@ jobs:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
         run: |
           if [[ -z "$EXPO_TOKEN" ]]; then
-            echo "::error::Add the EXPO_TOKEN Actions secret with access to the reactive-resume Expo project."
+            echo "::error::Add the EXPO_TOKEN Actions secret with access to the Expo project."
             exit 1
           fi
 
@@ -82,7 +82,7 @@ jobs:
             if curl --fail --silent --show-error --max-time 10 \
               -H 'Cache-Control: no-cache' "https://rezumi.app/api/health?revision=$COMMIT_SHA&probe=$attempt" \
               | jq --exit-status --arg sha "$COMMIT_SHA" \
-                '.service == "reactive-resume" and .status == "healthy" and .revision == $sha' > /dev/null; then
+                '.service == "rezumi" and .status == "healthy" and .revision == $sha' > /dev/null; then
               matches=$((matches + 1))
               if [[ "$matches" -ge 3 ]]; then exit 0; fi
             else

@@ -70,7 +70,7 @@ export async function handleHealth() {
 	const status = [database, storage, redis].some((check) => check?.status === "unhealthy") ? "unhealthy" : "healthy";
 
 	const checks = {
-		service: "reactive-resume",
+		service: "rezumi",
 		version: appVersion,
 		revision: env.APP_REVISION ?? null,
 		status,

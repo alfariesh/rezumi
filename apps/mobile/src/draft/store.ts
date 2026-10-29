@@ -68,7 +68,7 @@ export function createDraftStore<D extends Document, T>(adapter: DraftAdapter<D,
 	let undo: T[] = [];
 	let redo: T[] = [];
 	let last: { at: number; key: string | undefined; coalesce: boolean } | null = null;
-	const prefix = (owner: string) => `reactive-resume:unsaved:${encodeURIComponent(owner)}:${adapter.kind}:`;
+	const prefix = (owner: string) => `rezumi:unsaved:${encodeURIComponent(owner)}:${adapter.kind}:`;
 	const key = () => {
 		if (!scope || !record) throw new Error("No draft is open.");
 		return `${prefix(scope)}${record.document.id}`;

@@ -118,7 +118,7 @@ const HISTORY_COALESCE_MS = 500;
 const FIELD_COALESCE_MS = 1000;
 // Bounded stacks. Entries are shared-structure references, so 200 steps stay cheap.
 const MAX_HISTORY_ENTRIES = 200;
-const UNSAVED_STORAGE_PREFIX = "reactive-resume:unsaved:";
+const UNSAVED_STORAGE_PREFIX = "rezumi:unsaved:";
 const runtimes = new Map<string, Runtime>();
 
 // Coalescing bookkeeping. Not reactive — only decides whether the next edit opens a new undo step.

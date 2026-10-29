@@ -200,7 +200,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 	);
 }
 
-const dismissKey = (id: string) => `reactive-resume:career-memory-dismissed:${id}`;
+const dismissKey = (id: string) => `rezumi:career-memory-dismissed:${id}`;
 
 type ReviewCardProps = { application: Application; review: Review; readOnly: boolean };
 

@@ -389,7 +389,7 @@ export function cancelSignIn(): void {
 
 // kv-store prefixes other features keep per account (`<prefix><scope>:<id>`): application notes (M5-T2) and Career
 // workspace drafts (M6-T2). Resume and letter drafts are cleared by the draft runtime.
-const scopedStoragePrefixes = ["reactive-resume:application-notes:", "reactive-resume:career-draft:"];
+const scopedStoragePrefixes = ["rezumi:application-notes:", "rezumi:career-draft:"];
 
 /** Best-effort revocation of a refresh token on `server`, given up after `revokeTimeout`. */
 async function revoke(server: string, refreshToken: string | undefined): Promise<void> {
