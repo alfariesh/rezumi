@@ -22,9 +22,9 @@ const SETTINGS_PAGES: Page[] = [
 // The project's own links: where to read up, see the code, help translate or report a problem.
 const getProjectLinks = () => [
 	{ href: "https://docs.rezumi.app", label: t`Docs` },
-	{ href: "https://github.com/reactive-resume/reactive-resume", label: t`Source` },
+	{ href: "https://github.com/alfariesh/rezumi", label: t`Source` },
 	{ href: "https://crowdin.com/project/reactive-resume", label: t`Translate` },
-	{ href: "https://github.com/reactive-resume/reactive-resume/issues", label: t`Report a bug` },
+	{ href: "https://github.com/alfariesh/rezumi/issues", label: t`Report a bug` },
 ];
 
 export const Route = createFileRoute("/dashboard/settings")({ component: RouteComponent });

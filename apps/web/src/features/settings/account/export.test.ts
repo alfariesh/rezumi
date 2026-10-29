@@ -34,7 +34,7 @@ describe("buildAccountZip", () => {
 			career: emptyCareer,
 			aiContentReports: [],
 		} as never);
-		await expect(detectImportKind(new File([new Uint8Array(archive)], "reactive-resume.zip"))).rejects.toThrow(
+		await expect(detectImportKind(new File([new Uint8Array(archive)], "rezumi.zip"))).rejects.toThrow(
 			"Extract this account archive",
 		);
 	});

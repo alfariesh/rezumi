@@ -78,7 +78,7 @@ Dir.mktmpdir do |directory|
     raise "Resource shrinking disabled" unless options[:properties]["android.enableShrinkResourcesInReleaseBuilds"] == "true"
     raise "Signing command exposed" unless options[:print_command] == false
     raise "Keystore leaked" if File.exist?(contract.keystore_path)
-    name = abi ? "reactive-resume-#{abi}.apk" : "ReactiveResume.aab"
+    name = abi ? "rezumi-#{abi}.apk" : "Rezumi.aab"
     expected = abi ? "signed APK" : "signed AAB"
     raise "Wrong artifact" unless File.read(File.join(directory, "mobile-release", name)) == expected
   end

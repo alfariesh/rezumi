@@ -3,6 +3,6 @@ import { fileURLToPath } from "node:url";
 import { createVitestProjectConfig } from "../../vitest.shared.mts";
 
 export default createVitestProjectConfig({
-	name: "dsh-plugin-reactive-resume",
+	name: "dsh-plugin-rezumi",
 	dirname: fileURLToPath(new URL(".", import.meta.url)),
 });

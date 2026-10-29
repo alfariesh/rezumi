@@ -134,7 +134,7 @@ export async function sendCareerNotification({
 			from: env.SMTP_FROM,
 			subject,
 			text: `${text}\n\n${link.toString()}`,
-			messageId: `<career-${createHash("sha256").update(key).digest("hex")}@reactive-resume.local>`,
+			messageId: `<career-${createHash("sha256").update(key).digest("hex")}@rezumi.local>`,
 		});
 		return true;
 	} catch {

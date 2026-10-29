@@ -55,7 +55,7 @@ Keep `AUTH_SECRET` and `ENCRYPTION_SECRET` across deployments. Changing them inv
 1. Create a private R2 bucket:
 
    ```bash
-   pnpm exec wrangler r2 bucket create reactive-resume
+   pnpm exec wrangler r2 bucket create rezumi
    ```
 
    Leave public access and `r2.dev` disabled. The application exposes public profile pictures itself; other uploads require the owning account's session.

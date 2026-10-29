@@ -1,4 +1,4 @@
-# dsh-plugin-reactive-resume Implementation Plan
+# dsh-plugin-rezumi Implementation Plan
 
 > **Historical record.** This plan was written and executed while the plugin lived in its own repository. It has since moved into the Rezumi monorepo at `packages/dsh-plugin`, where tests are colocated in `src/*.test.ts`, the build emits `dist/`, and the generated tool-name snapshot and its scheduled drift job were replaced by a local check against `@rezumi/mcp/tool-names`. Paths below are not current.
 
@@ -148,10 +148,10 @@ rm -rf /tmp/dsh-spike
 
 ```json
 {
-  "name": "dsh-plugin-reactive-resume",
+  "name": "dsh-plugin-rezumi",
   "version": "0.1.0",
   "description": "DeepSeek Harness plugin for Rezumi: bridges your resumes and job applications into a Harness session over MCP.",
-  "keywords": ["dsh-plugin", "deepseek-harness", "mcp", "reactive-resume", "resume"],
+  "keywords": ["dsh-plugin", "deepseek-harness", "mcp", "rezumi", "resume"],
   "license": "MIT",
   "type": "module",
   "main": "lib/index.js",
@@ -275,7 +275,7 @@ import { expect, it } from "vitest";
 import { name } from "../src/index.ts";
 
 it("exports the cordis plugin name", () => {
-  expect(name).toBe("reactive-resume");
+  expect(name).toBe("rezumi");
 });
 ```
 
@@ -295,11 +295,11 @@ Expected: FAIL — `Failed to resolve import "../src/index.ts"`.
 ```ts
 /**
  * DeepSeek Harness plugin for Rezumi.
- * @module dsh-plugin-reactive-resume
+ * @module dsh-plugin-rezumi
  */
 
 /** Cordis plugin name used by loader diagnostics. */
-export const name = "reactive-resume";
+export const name = "rezumi";
 ```
 
 - [ ] **Step 6: Run tests, typecheck, and build**
@@ -545,7 +545,7 @@ Modify `src/index.ts` to read in full:
 ```ts
 /**
  * DeepSeek Harness plugin for Rezumi.
- * @module dsh-plugin-reactive-resume
+ * @module dsh-plugin-rezumi
  */
 
 import type { Config } from "./config.ts";
@@ -558,7 +558,7 @@ import * as mcpClient from "@deepseek-ai/dsh-mcp-client";
 export { Config, type ToolProfile } from "./config.ts";
 
 /** Cordis plugin name used by loader diagnostics. */
-export const name = "reactive-resume";
+export const name = "rezumi";
 
 /** Services required by this plugin. */
 export const inject = ["tools", "systemPrompt"];
@@ -646,7 +646,7 @@ it("registers one prompt section in the tool-guidance order band", async () => {
 
   expect(ctx.systemPrompt.section).toHaveBeenCalledTimes(1);
   const section = ctx.systemPrompt.section.mock.calls[0]?.[0];
-  expect(section.name).toBe("reactive-resume");
+  expect(section.name).toBe("rezumi");
   expect(section.order).toBeGreaterThanOrEqual(100);
   expect(section.order).toBeLessThanOrEqual(199);
   expect(section.text).toBe(PATCH_GUIDE);
@@ -738,7 +738,7 @@ and append to the end of `apply`, after the `ctx.plugin(...)` call:
 
 ```ts
 ctx.systemPrompt.section({
-  name: "reactive-resume",
+  name: "rezumi",
   order: 150,
   text: buildPatchGuide(config.serverName),
 });
@@ -909,11 +909,11 @@ Then run `pnpm typecheck` to confirm nothing else referenced it.
 import { expect, it } from "vitest";
 import { TOOL_NAMES } from "../src/tool-names.generated.ts";
 
-const ORIGIN = process.env.RXRESUME_ORIGIN ?? "https://rezumi.app";
+const ORIGIN = process.env.REZUMI_ORIGIN ?? "https://rezumi.app";
 
-// Network test: skipped unless RXRESUME_CHECK_DRIFT=1, so ordinary `pnpm test`
+// Network test: skipped unless REZUMI_CHECK_DRIFT=1, so ordinary `pnpm test`
 // stays offline and deterministic. CI sets the flag on a schedule.
-it.runIf(process.env.RXRESUME_CHECK_DRIFT === "1")(
+it.runIf(process.env.REZUMI_CHECK_DRIFT === "1")(
   "matches the live server card",
   async () => {
     const response = await fetch(`${ORIGIN}/.well-known/mcp/server-card.json`);
@@ -932,7 +932,7 @@ it.runIf(process.env.RXRESUME_CHECK_DRIFT === "1")(
 
 ```bash
 pnpm test
-RXRESUME_CHECK_DRIFT=1 pnpm vitest run test/tool-names-drift.test.ts
+REZUMI_CHECK_DRIFT=1 pnpm vitest run test/tool-names-drift.test.ts
 ```
 
 Expected: the first run passes with the drift test skipped; the second passes with it executed.
@@ -962,7 +962,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm vitest run test/tool-names-drift.test.ts
         env:
-          RXRESUME_CHECK_DRIFT: "1"
+          REZUMI_CHECK_DRIFT: "1"
 ```
 
 Note: `pnpm install` needs no `--config` flags here — `pnpm-workspace.yaml` (added in Task 2) carries `autoInstallPeers: false`, `strictPeerDependencies: false`, and `verifyDepsBeforeRun: false`, which is what makes the unpublished `@deepseek-ai/dsh-type-meta` peer a non-issue on a clean runner.
@@ -988,7 +988,7 @@ git commit -m "feat: guard the prompt guide against tool-name drift"
 **Interfaces:**
 
 - Consumes: everything from Tasks 2–6.
-- Produces: a published `dsh-plugin-reactive-resume@0.1.0` on npm.
+- Produces: a published `dsh-plugin-rezumi@0.1.0` on npm.
 
 - [ ] **Step 1: Add the CI workflow**
 
@@ -1024,14 +1024,14 @@ jobs:
 `README.md`:
 
 ````markdown
-# dsh-plugin-reactive-resume
+# dsh-plugin-rezumi
 
 Connect [Rezumi](https://rezumi.app) to [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Read, create, and edit your resumes and job applications from a Harness session.
 
 ## Install
 
 ```bash
-pnpm add dsh-plugin-reactive-resume
+pnpm add dsh-plugin-rezumi
 ```
 
 ## Configure
@@ -1040,10 +1040,10 @@ Mint an API key at `https://rezumi.app/dashboard/settings/api-keys`, then add a 
 
 ```yaml
 - insert:
-    - id: reactive-resume
-      name: dsh-plugin-reactive-resume
+    - id: rezumi
+      name: dsh-plugin-rezumi
       config:
-        apiKey: !!js process.env.RXRESUME_API_KEY
+        apiKey: !!js process.env.REZUMI_API_KEY
 ```
 
 ### Options
@@ -1061,7 +1061,7 @@ All 33 of Rezumi's tools are exposed. Narrowing that set is not currently possib
 
 ```yaml
 config:
-  apiKey: !!js process.env.RXRESUME_API_KEY
+  apiKey: !!js process.env.REZUMI_API_KEY
   url: http://localhost:3000
 ```
 

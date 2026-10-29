@@ -103,11 +103,11 @@ export async function discover(origin: string): Promise<Discovery> {
 
 	const metadata = (await getJson(`${origin}/.well-known/oauth-authorization-server`).catch(async () => {
 		// A Rezumi server that predates app sign-in still answers its flags.
-		const isReactiveResume = await getJson(`${origin}/api/openapi/flags`).then(
+		const isRezumi = await getJson(`${origin}/api/openapi/flags`).then(
 			() => true,
 			() => false,
 		);
-		throw new ServerError(isReactiveResume ? "outdated" : "unreachable");
+		throw new ServerError(isRezumi ? "outdated" : "unreachable");
 	})) as Metadata | null;
 
 	const string = (value: unknown) => (typeof value === "string" && value ? value : undefined);

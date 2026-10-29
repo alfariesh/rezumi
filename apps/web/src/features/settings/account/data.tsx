@@ -35,7 +35,7 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 		mutationFn: async () => {
 			const zip = buildAccountZip(await client.auth.exportData());
 			const date = new Date().toISOString().slice(0, 10);
-			downloadWithAnchor(new Blob([zip as BlobPart], { type: "application/zip" }), `reactive-resume-${date}.zip`);
+			downloadWithAnchor(new Blob([zip as BlobPart], { type: "application/zip" }), `rezumi-${date}.zip`);
 		},
 		onError: (error) =>
 			toast.add({

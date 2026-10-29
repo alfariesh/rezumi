@@ -21,7 +21,7 @@ describe("buildIcs", () => {
 			"PRODID:-//Rezumi//Applications//EN",
 			"CALSCALE:GREGORIAN",
 			"BEGIN:VEVENT",
-			"UID:i1@reactive-resume",
+			"UID:i1@rezumi",
 			"DTSTAMP:20260928T083000Z",
 			"DTSTART:20261002T120000Z",
 			"DTEND:20261002T130000Z",

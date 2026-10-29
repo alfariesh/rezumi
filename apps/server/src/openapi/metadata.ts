@@ -41,7 +41,7 @@ export function handleAgentCatalog() {
 		host: { displayName: "Rezumi", documentationUrl: DOCS_URL, logoUrl: `${baseUrl}/pwa-512x512.png` },
 		entries: [
 			{
-				identifier: `urn:air:${new URL(baseUrl).hostname}:mcp:reactive-resume`,
+				identifier: `urn:air:${new URL(baseUrl).hostname}:mcp:rezumi`,
 				displayName: "Rezumi MCP server",
 				type: "application/mcp-server-card+json",
 				url: `${baseUrl}/.well-known/mcp/server-card.json`,
@@ -132,7 +132,7 @@ function buildIntegrations() {
 		surfaces: [
 			{
 				type: "http",
-				slug: "reactive-resume-api",
+				slug: "rezumi-api",
 				name: "Rezumi REST API",
 				docs: `${DOCS_URL}/guides/using-the-api`,
 				basis,
@@ -156,7 +156,7 @@ function buildIntegrations() {
 			},
 			{
 				type: "mcp",
-				slug: "reactive-resume-mcp",
+				slug: "rezumi-mcp",
 				name: "Rezumi MCP server",
 				docs: `${DOCS_URL}/guides/using-the-mcp-server`,
 				basis,

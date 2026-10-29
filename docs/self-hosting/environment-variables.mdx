@@ -137,8 +137,8 @@ whitespace around each value is ignored.
 
 | Variable                     | Description                                                                                                                                                                                   |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MOBILE_IOS_APP_IDS`         | Apple application identifiers, such as `ABCDE12345.me.rxresu` (`TEAMID.bundle.id`). Serves `/.well-known/apple-app-site-association` with `applinks` and `webcredentials`.                    |
-| `MOBILE_ANDROID_PACKAGES`    | Android package names, such as `me.rxresu`. Together with the fingerprints below, serves `/.well-known/assetlinks.json`.                                                                      |
+| `MOBILE_IOS_APP_IDS`         | Apple application identifiers, such as `ABCDE12345.app.rezumi` (`TEAMID.bundle.id`). Serves `/.well-known/apple-app-site-association` with `applinks` and `webcredentials`.                   |
+| `MOBILE_ANDROID_PACKAGES`    | Android package names, such as `app.rezumi`. Together with the fingerprints below, serves `/.well-known/assetlinks.json`.                                                                     |
 | `MOBILE_ANDROID_CERT_SHA256` | Colon-separated SHA-256 certificate fingerprints (32 hexadecimal byte pairs). Every listed package trusts every listed fingerprint; include the Play app-signing certificate for Play builds. |
 
 The app must also configure its associated domains or Android intent filters for your HTTPS host. Links cover
@@ -283,7 +283,7 @@ Each of a user's search countries is one SearXNG request, using its likely langu
 independently of the interface language. Reading still uses the web connection, then the built-in
 reader, so sites that block plain fetches still need Firecrawl, Tavily or Exa. With it set, **Test connection** tests
 search against SearXNG and reading against the connection. See
-[Search directly from Rezumi](/self-hosting/job-search-and-ai#search-directly-from-reactive-resume).
+[Search directly from Rezumi](/self-hosting/job-search-and-ai#search-directly-from-rezumi).
 
 Connections enable Applications keyword search and assistant web tools. URL import uses the selected reader, then
 falls back to the built-in reader on recoverable failures. Saving pasted text and manual preparation work without

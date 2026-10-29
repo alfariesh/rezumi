@@ -50,7 +50,7 @@ Skills work on their own: paste your resume or a job posting and you get text, a
 
 ## Install the skills
 
-The skills live in the [`plugins/rezumi/skills` folder](https://github.com/reactive-resume/reactive-resume/tree/main/plugins/rezumi/skills) of the Rezumi repository, one folder per skill. Install all eight if you can: each skill hands off to the others, and when one is missing it does a lighter version of that work itself and tells you so.
+The skills live in the [`plugins/rezumi/skills` folder](https://github.com/alfariesh/rezumi/tree/main/plugins/rezumi/skills) of the Rezumi repository, one folder per skill. Install all eight if you can: each skill hands off to the others, and when one is missing it does a lighter version of that work itself and tells you so.
 
 <Note>Keep each skill's folder whole. The `references` folder inside it holds detail the skill reads on demand.</Note>
 
@@ -61,17 +61,17 @@ The Rezumi plugin installs all eight skills and connects the [MCP server](/guide
 <Tabs>
   <Tab title="Claude Code">
     ```sh
-    claude plugin install reactive-resume --marketplace reactive-resume/reactive-resume
+    claude plugin install rezumi --marketplace alfariesh/rezumi
     ```
 
-    Or, inside a session, run `/plugin marketplace add reactive-resume/reactive-resume`, then `/plugin install reactive-resume@reactive-resume`. Plugin skills are namespaced, so you call one directly as `/rezumi:resume-tailor`. Run `/mcp` to sign in to the server.
+    Or, inside a session, run `/plugin marketplace add alfariesh/rezumi`, then `/plugin install rezumi@rezumi`. Plugin skills are namespaced, so you call one directly as `/rezumi:resume-tailor`. Run `/mcp` to sign in to the server.
 
   </Tab>
   <Tab title="Codex">
     ```sh
-    codex plugin marketplace add reactive-resume/reactive-resume
-    codex plugin add reactive-resume@reactive-resume
-    codex mcp login reactive-resume
+    codex plugin marketplace add alfariesh/rezumi
+    codex plugin add rezumi@rezumi
+    codex mcp login rezumi
     ```
 
     Start a new session afterwards. You can also browse and toggle plugins with `/plugins`.
@@ -79,7 +79,7 @@ The Rezumi plugin installs all eight skills and connects the [MCP server](/guide
   </Tab>
 </Tabs>
 
-The plugin connects to the hosted instance at `https://rezumi.app/mcp`. If you self-host, install the skills on their own (below) and connect your own instance with `npx add-mcp <your-app-url>/mcp --name reactive-resume`.
+The plugin connects to the hosted instance at `https://rezumi.app/mcp`. If you self-host, install the skills on their own (below) and connect your own instance with `npx add-mcp <your-app-url>/mcp --name rezumi`.
 
 ### With the skills CLI
 
@@ -87,16 +87,16 @@ The open-source [`skills` CLI](https://github.com/vercel-labs/skills) installs s
 
 ```sh
 # See the skills without installing anything
-npx skills add reactive-resume/reactive-resume --list
+npx skills add alfariesh/rezumi --list
 
 # Choose skills and agents interactively
-npx skills add reactive-resume/reactive-resume
+npx skills add alfariesh/rezumi
 
 # Install one skill
-npx skills add reactive-resume/reactive-resume --skill resume-tailor
+npx skills add alfariesh/rezumi --skill resume-tailor
 
 # Install all eight for one agent, for your user account, without prompts
-npx skills add reactive-resume/reactive-resume --skill '*' -a claude-code -g -y
+npx skills add alfariesh/rezumi --skill '*' -a claude-code -g -y
 ```
 
 - `--skill` (or `-s`) picks skills by name; `'*'` means all of them.
@@ -114,7 +114,7 @@ npx skills add reactive-resume/reactive-resume --skill '*' -a claude-code -g -y
 For the Claude apps, or to copy skills by hand, fetch only the skills folder. The repository is large, so use a sparse clone:
 
 ```sh
-git clone --depth 1 --filter=blob:none --sparse https://github.com/reactive-resume/reactive-resume.git rr
+git clone --depth 1 --filter=blob:none --sparse https://github.com/alfariesh/rezumi.git rr
 git -C rr sparse-checkout set plugins/rezumi/skills
 ```
 
@@ -183,7 +183,7 @@ Copy the skill folders into one of these folders, or use the skills CLI with the
 Gemini CLI can also install one skill straight from the repository:
 
 ```sh
-gemini skills install https://github.com/reactive-resume/reactive-resume.git --path plugins/rezumi/skills/resume-tailor
+gemini skills install https://github.com/alfariesh/rezumi.git --path plugins/rezumi/skills/resume-tailor
 ```
 
 ### Connect the MCP server (optional)
@@ -191,7 +191,7 @@ gemini skills install https://github.com/reactive-resume/reactive-resume.git --p
 To let the skills read and update your resumes and applications, connect your agent to the Rezumi MCP server:
 
 ```sh
-npx add-mcp https://rezumi.app/mcp --name reactive-resume
+npx add-mcp https://rezumi.app/mcp --name rezumi
 ```
 
 If you self-host, use your own instance's `/mcp` address. Then sign in from your agent; [Using the MCP server](/guides/using-the-mcp-server) has the steps for each client. Without the server, the skills work from what you paste into the chat.

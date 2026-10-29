@@ -1,6 +1,6 @@
 /**
  * DeepSeek Harness plugin for Rezumi.
- * @module dsh-plugin-reactive-resume
+ * @module dsh-plugin-rezumi
  */
 
 import type { Config } from "./config";
@@ -17,7 +17,7 @@ import { buildPatchGuide } from "./prompt";
 export { Config } from "./config";
 
 /** Cordis plugin name used by loader diagnostics. */
-export const name = "reactive-resume";
+export const name = "rezumi";
 
 /**
  * Services required by this plugin.

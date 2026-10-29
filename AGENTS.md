@@ -35,7 +35,7 @@ This block is written and re-added by `turbo` before repository-scoped commands 
 
 ## Agent skills
 
-- Issues and specs: GitHub Issues for `reactive-resume/reactive-resume`. See `.agents/docs/issue-tracker.md`.
+- Issues and specs: GitHub Issues for `alfariesh/rezumi`. See `.agents/docs/issue-tracker.md`.
 - Check `git status --short` before editing. Preserve unrelated changes, including existing edits in this file.
 - Use scripts and configuration as the source of truth when documentation disagrees with them.
 

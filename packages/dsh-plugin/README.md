@@ -1,23 +1,23 @@
-# dsh-plugin-reactive-resume
+# dsh-plugin-rezumi
 
 Connect [Rezumi](https://rezumi.app) to [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Read, create, and edit your resumes and job applications from a Harness session.
 
 ## Install
 
 ```bash
-dsh plugin --profile <name> add dsh-plugin-reactive-resume
+dsh plugin --profile <name> add dsh-plugin-rezumi
 ```
 
 This package declares `dsh.bundle`, so the profile picks it up as a layer and mounts it automatically. Until you configure a key it mounts nothing and logs a warning, so installing it never leaves a profile unbootable.
 
 ## Configure
 
-Mint an API key at `https://rezumi.app/dashboard/settings/api-keys` and export it as `RXRESUME_API_KEY` — the bundle patch reads that variable. To set it explicitly, or to change any other option, patch the row by id from your profile's `cordis.patch.yml`:
+Mint an API key at `https://rezumi.app/dashboard/settings/api-keys` and export it as `REZUMI_API_KEY` — the bundle patch reads that variable. To set it explicitly, or to change any other option, patch the row by id from your profile's `cordis.patch.yml`:
 
 ```yaml
-- id: reactive-resume
+- id: rezumi
   config:
-    apiKey: !!js process.env.RXRESUME_API_KEY
+    apiKey: !!js process.env.REZUMI_API_KEY
 ```
 
 ### Options
@@ -34,9 +34,9 @@ Every tool Rezumi publishes is exposed. Narrowing that set is not currently poss
 ### Self-hosted
 
 ```yaml
-- id: reactive-resume
+- id: rezumi
   config:
-    apiKey: !!js process.env.RXRESUME_API_KEY
+    apiKey: !!js process.env.REZUMI_API_KEY
     url: http://localhost:3000
 ```
 
@@ -61,11 +61,11 @@ Against `0.2.0-rc.2` this package needed no source change: `dsh-mcp-client@0.2.0
 
 ## Development
 
-This package lives in the [Rezumi monorepo](https://github.com/reactive-resume/reactive-resume) at `packages/dsh-plugin`, next to `packages/mcp` — the server it bridges. `src/tool-names.test.ts` checks every tool the prompt guide names against `@rezumi/mcp/tool-names`, so renaming a tool breaks this package in the same pull request.
+This package lives in the [Rezumi monorepo](https://github.com/alfariesh/rezumi) at `packages/dsh-plugin`, next to `packages/mcp` — the server it bridges. `src/tool-names.test.ts` checks every tool the prompt guide names against `@rezumi/mcp/tool-names`, so renaming a tool breaks this package in the same pull request.
 
 ```bash
-pnpm --filter dsh-plugin-reactive-resume test
-pnpm --filter dsh-plugin-reactive-resume build
+pnpm --filter dsh-plugin-rezumi test
+pnpm --filter dsh-plugin-rezumi build
 ```
 
 ## License

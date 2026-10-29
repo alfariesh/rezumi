@@ -18,7 +18,7 @@ function lint(directory: string) {
 }
 
 it("blocks private workspace paths in imports, re-exports, and dynamic imports", () => {
-	const directory = mkdtempSync(join(tmpdir(), "reactive-resume-lint-"));
+	const directory = mkdtempSync(join(tmpdir(), "rezumi-lint-"));
 	try {
 		const sources = [
 			"@rezumi/schema/src/resume/data",

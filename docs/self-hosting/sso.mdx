@@ -121,14 +121,14 @@ Replace the hostnames with your own. The redirect URI is always `{APP_URL}/api/a
 <AccordionGroup>
   <Accordion title="Authentik">
     1. In the admin interface, open **Applications → Providers** and create an **OAuth2/OpenID Provider**. Set **Client type** to **Confidential** and add the redirect URI.
-    2. Open **Applications → Applications**, create an application with the slug `reactive-resume`, and select the provider.
+    2. Open **Applications → Applications**, create an application with the slug `rezumi`, and select the provider.
     3. Copy the client ID and secret from the provider.
 
     ```bash .env
     OAUTH_PROVIDER_NAME="Authentik"
     OAUTH_CLIENT_ID="your-client-id"
     OAUTH_CLIENT_SECRET="your-client-secret"
-    OAUTH_DISCOVERY_URL="https://auth.example.com/application/o/reactive-resume/.well-known/openid-configuration"
+    OAUTH_DISCOVERY_URL="https://auth.example.com/application/o/rezumi/.well-known/openid-configuration"
     ```
 
   </Accordion>
@@ -140,7 +140,7 @@ Replace the hostnames with your own. The redirect URI is always `{APP_URL}/api/a
     identity_providers:
       oidc:
         clients:
-          - client_id: reactive-resume
+          - client_id: rezumi
             client_name: Rezumi
             client_secret: "the-hashed-secret"
             public: false
@@ -158,7 +158,7 @@ Replace the hostnames with your own. The redirect URI is always `{APP_URL}/api/a
 
     ```bash .env
     OAUTH_PROVIDER_NAME="Authelia"
-    OAUTH_CLIENT_ID="reactive-resume"
+    OAUTH_CLIENT_ID="rezumi"
     OAUTH_CLIENT_SECRET="the-plain-text-secret"
     OAUTH_DISCOVERY_URL="https://auth.example.com/.well-known/openid-configuration"
     ```
@@ -166,14 +166,14 @@ Replace the hostnames with your own. The redirect URI is always `{APP_URL}/api/a
   </Accordion>
 
   <Accordion title="Keycloak">
-    1. In your realm, open **Clients → Create client** and set **Client ID** to `reactive-resume`.
+    1. In your realm, open **Clients → Create client** and set **Client ID** to `rezumi`.
     2. Turn **Client authentication** on and keep **Standard flow** enabled.
     3. Add the redirect URI under **Valid redirect URIs**.
     4. Copy the secret from the **Credentials** tab.
 
     ```bash .env
     OAUTH_PROVIDER_NAME="Keycloak"
-    OAUTH_CLIENT_ID="reactive-resume"
+    OAUTH_CLIENT_ID="rezumi"
     OAUTH_CLIENT_SECRET="your-client-secret"
     OAUTH_DISCOVERY_URL="https://keycloak.example.com/realms/myrealm/.well-known/openid-configuration"
     ```

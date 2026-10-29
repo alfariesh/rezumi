@@ -160,7 +160,7 @@ jobs:
         if: inputs.format == 'apk'
         run: |
           set -euo pipefail
-          apk="$RUNNER_TEMP/mobile-release/reactive-resume-$ABI.apk"
+          apk="$RUNNER_TEMP/mobile-release/rezumi-$ABI.apk"
           "$ANDROID_HOME/build-tools/37.0.0/apksigner" verify --verbose --print-certs "$apk"
           abis=$(unzip -Z1 "$apk" | awk -F/ '/^lib\/[^/]+\/.*\.so$/ {print $2}' | sort -u)
           [[ "$abis" == "$ABI" ]]

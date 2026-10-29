@@ -24,7 +24,7 @@ const databaseName = `cloudflare_smoke_${randomBytes(8).toString("hex")}`;
 const databaseUrl = new URL(adminUrl);
 databaseUrl.pathname = `/${databaseName}`;
 const admin = new Pool({ connectionString: adminUrl.href });
-const temporary = await mkdtemp(resolve(tmpdir(), "reactive-resume-cloudflare-"));
+const temporary = await mkdtemp(resolve(tmpdir(), "rezumi-cloudflare-"));
 let harness;
 let created = false;
 let ai;

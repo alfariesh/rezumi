@@ -84,7 +84,7 @@ export function AtsChecker() {
 
 	const sample = async () => {
 		try {
-			const target = new File(Paths.cache, "reactive-resume-sample.pdf");
+			const target = new File(Paths.cache, "rezumi-sample.pdf");
 			const file = await File.downloadFileAsync(`${getServer()}/templates/pdf/onyx.pdf`, target, { idempotent: true });
 			void check({ uri: file.uri, name: "Sample resume.pdf", size: file.size, lastModified: Date.now() });
 		} catch {

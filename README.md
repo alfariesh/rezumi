@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> Rezumi lives at **[`reactive-resume/reactive-resume`](https://github.com/reactive-resume/reactive-resume)** on GitHub.  
+> Rezumi lives at **[`alfariesh/rezumi`](https://github.com/alfariesh/rezumi)** on GitHub.  
 > This fork deploys only to Cloudflare Workers. See the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cloudflare).
 
 <div align="center">
@@ -18,9 +18,9 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/github/package-json/v/reactive-resume/reactive-resume?style=flat-square" alt="Rezumi Version">
-    <img src="https://img.shields.io/github/stars/reactive-resume/reactive-resume?style=flat-square" alt="GitHub Stars">
-    <img src="https://img.shields.io/github/license/reactive-resume/reactive-resume?style=flat-square" alt="License" />
+    <img src="https://img.shields.io/github/package-json/v/alfariesh/rezumi?style=flat-square" alt="Rezumi Version">
+    <img src="https://img.shields.io/github/stars/alfariesh/rezumi?style=flat-square" alt="GitHub Stars">
+    <img src="https://img.shields.io/github/license/alfariesh/rezumi?style=flat-square" alt="License" />
   </p>
 </div>
 
@@ -187,8 +187,8 @@ Use the [hosted app](https://rezumi.app) to start writing, or run this checkout 
 
 ```bash
 # Clone the repository
-git clone --depth=1 https://github.com/reactive-resume/reactive-resume.git reactive-resume
-cd reactive-resume
+git clone --depth=1 https://github.com/alfariesh/rezumi.git rezumi
+cd rezumi
 
 # Install dependencies and create your local configuration
 pnpm install --frozen-lockfile
@@ -269,7 +269,7 @@ Rezumi is and always will be free and open source. Ways to help:
 
 - Star this repository
 - Report reproducible bugs and suggest actionable features
-- Help other users in [GitHub Discussions](https://github.com/reactive-resume/reactive-resume/discussions/categories/q-a)
+- Help other users in [GitHub Discussions](https://github.com/alfariesh/rezumi/discussions/categories/q-a)
 - Improve documentation
 
 ## Contributing
@@ -284,7 +284,7 @@ Every contribution helps, whether it is a typo fix or a new feature.
 
 See the [development setup guide](https://docs.rezumi.app/contributing/development) for how to run the project locally.
 
-Maintainers review the [`status: needs triage` queue](https://github.com/reactive-resume/reactive-resume/issues?q=is%3Aissue+is%3Aopen+label%3A%22status%3A+needs+triage%22)
+Maintainers review the [`status: needs triage` queue](https://github.com/alfariesh/rezumi/issues?q=is%3Aissue+is%3Aopen+label%3A%22status%3A+needs+triage%22)
 weekly. Triaged bugs become `status: confirmed`; feature proposals become `status: accepted`; reports that need details become
 `status: needs info`.
 

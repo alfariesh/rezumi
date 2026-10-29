@@ -66,7 +66,7 @@ Keep job titles, employers, dates and education easy to find, because first-pass
 
 If a resume is available (MCP or pasted), read it before asking anything.
 
-- With the Rezumi MCP server, follow [With Rezumi MCP](#with-reactive-resume-mcp); it also reads what the user already recorded in the app's Career profile.
+- With the Rezumi MCP server, follow [With Rezumi MCP](#with-rezumi-mcp); it also reads what the user already recorded in the app's Career profile.
 - Otherwise ask the user to paste the text. They can replace their phone number and email with placeholders; you don't need them.
 
 Note the sections and their order, every date range, the page count and every personal-data field. Page count: with MCP, the number of entries in `metadata.layout.pages` (content can still overflow; confirm with the user or `download_resume_pdf`); without MCP, ask.

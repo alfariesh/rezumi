@@ -1,7 +1,7 @@
 import ExpoModulesCore
 import UIKit
 
-private let keyCommandPressed = Notification.Name("ReactiveResumeKeyCommandPressed")
+private let keyCommandPressed = Notification.Name("RezumiKeyCommandPressed")
 
 internal struct KeyCommandRecord: Record {
   @Field

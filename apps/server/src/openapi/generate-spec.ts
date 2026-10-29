@@ -8,7 +8,7 @@ async function generateOpenApiDocumentation(
 		version: string;
 	};
 	process.env.APP_URL ??= "https://rezumi.app";
-	process.env.DATABASE_URL ??= "postgresql://localhost/reactive_resume_docs";
+	process.env.DATABASE_URL ??= "postgresql://localhost/rezumi_docs";
 	process.env.AUTH_SECRET ??= "documentation-generation-isolated-process-only";
 	const { generateOpenApiSpec } = await import("./generator");
 	const spec = await generateOpenApiSpec({ appUrl: "https://rezumi.app", version: packageJson.version });

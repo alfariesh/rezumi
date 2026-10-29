@@ -150,7 +150,7 @@ export function handleLlms() {
 		"",
 		"## Community",
 		"",
-		"- [Source code on GitHub](https://github.com/reactive-resume/reactive-resume)",
+		"- [Source code on GitHub](https://github.com/alfariesh/rezumi)",
 		"",
 	].join("\n");
 

@@ -117,10 +117,10 @@ function AuthEmailLayout({ preview, heading, intro, details, actionLabel, action
 								<Link
 									target="_blank"
 									rel="noopener noreferrer"
-									href="https://amruthpillai.com"
+									href="https://rezumi.app"
 									className="text-inherit underline underline-offset-2"
 								>
-									Amruth Pillai
+									Salman Alfariesh
 								</Link>
 								.
 							</Text>

@@ -57,8 +57,8 @@ Install `tsx` and a `.env` loader such as `dotenvx` on the machine that runs the
 
 ```bash
 npm install -g tsx @dotenvx/dotenvx
-git clone https://github.com/reactive-resume/reactive-resume.git reactive-resume-migration
-cd reactive-resume-migration
+git clone https://github.com/alfariesh/rezumi.git rezumi-migration
+cd rezumi-migration
 git checkout tags/v5.0.20
 pnpm install
 ```
@@ -69,10 +69,10 @@ Create a `.env` file at the root of the checkout:
 
 ```bash .env
 # The NEW, empty database (target)
-DATABASE_URL="postgresql://user:password@localhost:5432/reactive_resume"
+DATABASE_URL="postgresql://user:password@localhost:5432/rezumi"
 
 # The OLD v4 database (source)
-PRODUCTION_DATABASE_URL="postgresql://user:password@localhost:5432/reactive_resume_v4"
+PRODUCTION_DATABASE_URL="postgresql://user:password@localhost:5432/rezumi_v4"
 ```
 
 <Warning>
@@ -138,7 +138,7 @@ It ends with a summary of resumes created, resumes skipped, and errors.
 Point a current Rezumi checkout at the target database and apply the current migrations before you deploy. The Cloudflare Worker does not run migrations itself, so from the current repository run:
 
 ```bash
-DATABASE_URL="postgresql://user:password@host:5432/reactive_resume" pnpm --filter @rezumi/db db:migrate
+DATABASE_URL="postgresql://user:password@host:5432/rezumi" pnpm --filter @rezumi/db db:migrate
 ```
 
 This applies every migration since `v5.0.20`, which also fills in the new columns for the migrated users. Then deploy the Worker with its Hyperdrive binding pointing at the same database.

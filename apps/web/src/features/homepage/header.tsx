@@ -9,7 +9,7 @@ import { CtaLink } from "./ui";
 import { useTheme } from "@/features/theme/provider";
 import { orpc } from "@/libs/orpc/client";
 
-const githubUrl = "https://github.com/reactive-resume/reactive-resume";
+const githubUrl = "https://github.com/alfariesh/rezumi";
 
 const getStoryScenes = () => [
 	{ scene: SCENE.write, label: t`Write` },

@@ -35,7 +35,7 @@ platform :android do
         }.merge(abi ? { "reactNativeArchitectures" => abi } : {})
       )
       source = lane_context[abi ? SharedValues::GRADLE_APK_OUTPUT_PATH : SharedValues::GRADLE_AAB_OUTPUT_PATH]
-      name = abi ? "reactive-resume-#{abi}.apk" : "ReactiveResume.aab"
+      name = abi ? "rezumi-#{abi}.apk" : "Rezumi.aab"
       FileUtils.cp(source, File.join(OUTPUT, name))
       maps = File.join(MOBILE, "android/app/build/generated/sourcemaps/react/release")
       FileUtils.cp_r(maps, File.join(OUTPUT, "sourcemaps")) if Dir.exist?(maps)
@@ -51,7 +51,7 @@ platform :android do
     upload_to_play_store(
       package_name: "app.rezumi",
       json_key_data: ENV.fetch("GOOGLE_PLAY_SERVICE_ACCOUNT_JSON"),
-      aab: File.join(OUTPUT, "ReactiveResume.aab"),
+      aab: File.join(OUTPUT, "Rezumi.aab"),
       track: "production", release_status: "completed",
       changes_not_sent_for_review: false, rescue_changes_not_sent_for_review: false,
       skip_upload_apk: true, skip_upload_metadata: true, skip_upload_changelogs: true,
@@ -86,24 +86,24 @@ platform :ios do
             profile_data["Entitlements"]["get-task-allow"]
           cocoapods(podfile: File.join(MOBILE, "ios/Podfile"))
           update_code_signing_settings(
-            path: File.join(MOBILE, "ios/ReactiveResume.xcodeproj"),
-            use_automatic_signing: false, team_id: "654ASRW868", targets: ["ReactiveResume"],
+            path: File.join(MOBILE, "ios/Rezumi.xcodeproj"),
+            use_automatic_signing: false, team_id: "654ASRW868", targets: ["Rezumi"],
             build_configurations: ["Release"], code_sign_identity: "Apple Distribution",
             profile_uuid: profile_data.fetch("UUID")
           )
           ENV["SOURCEMAP_FILE"] = File.join(OUTPUT, "main.jsbundle.map")
           build_app(
-            workspace: File.join(MOBILE, "ios/ReactiveResume.xcworkspace"), scheme: "ReactiveResume",
+            workspace: File.join(MOBILE, "ios/Rezumi.xcworkspace"), scheme: "Rezumi",
             configuration: "Release", export_method: "app-store",
-            output_directory: OUTPUT, output_name: "ReactiveResume.ipa",
-            archive_path: File.join(ENV.fetch("RUNNER_TEMP"), "ReactiveResume.xcarchive"),
+            output_directory: OUTPUT, output_name: "Rezumi.ipa",
+            archive_path: File.join(ENV.fetch("RUNNER_TEMP"), "Rezumi.xcarchive"),
             buildlog_path: File.join(ENV.fetch("RUNNER_TEMP"), "mobile-build-logs"), xcodebuild_formatter: "",
             export_options: {
               signingStyle: "manual", teamID: "654ASRW868",
               provisioningProfiles: { "app.rezumi" => profile_data.fetch("UUID") }
             }
           )
-          symbols = File.join(ENV.fetch("RUNNER_TEMP"), "ReactiveResume.xcarchive/dSYMs")
+          symbols = File.join(ENV.fetch("RUNNER_TEMP"), "Rezumi.xcarchive/dSYMs")
           FileUtils.cp_r(symbols, File.join(OUTPUT, "dSYMs")) if Dir.exist?(symbols)
         ensure
           FileUtils.rm_f(installed)
@@ -122,7 +122,7 @@ platform :ios do
     )
     upload_to_app_store(
       api_key: api_key, app_identifier: "app.rezumi",
-      ipa: File.join(OUTPUT, "ReactiveResume.ipa"),
+      ipa: File.join(OUTPUT, "Rezumi.ipa"),
       submit_for_review: true, automatic_release: true,
       # Metadata processing also applies automatic_release; existing listing fields stay in App Store Connect.
       skip_metadata: false, skip_screenshots: true, force: true,

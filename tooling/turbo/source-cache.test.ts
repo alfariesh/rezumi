@@ -24,7 +24,7 @@ function dryRun(environment: NodeJS.ProcessEnv = {}) {
 }
 
 beforeAll(async () => {
-	directory = await mkdtemp(join(tmpdir(), "reactive-resume-turbo-cache-"));
+	directory = await mkdtemp(join(tmpdir(), "rezumi-turbo-cache-"));
 	const packageJson = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
 	await writeFile(
 		join(directory, "package.json"),

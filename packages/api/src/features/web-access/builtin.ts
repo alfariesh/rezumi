@@ -53,7 +53,7 @@ export function readBuiltinPage(
 				signal,
 				headers: {
 					accept: "text/html,application/xhtml+xml,text/plain;q=0.9",
-					"user-agent": "Mozilla/5.0 (compatible; ReactiveResume; public page reader)",
+					"user-agent": "Mozilla/5.0 (compatible; Rezumi; public page reader)",
 				},
 			},
 			(res) => {

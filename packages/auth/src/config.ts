@@ -671,7 +671,7 @@ const getAuthConfig = () => {
 				validationOrder: { username: "post-normalization", displayUsername: "post-normalization" },
 			}),
 			anonymous({
-				emailDomainName: "reactive-resume.local",
+				emailDomainName: "rezumi.local",
 				generateName: () => "Guest",
 				// Signing up or in from a guest session moves the guest's documents to that account; the plugin then
 				// deletes the guest account, along with anything not moved here (assistant threads, career data).

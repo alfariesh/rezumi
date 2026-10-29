@@ -21,12 +21,7 @@ export function GithubStarsButton() {
 			variant="secondary"
 			nativeButton={false}
 			render={
-				<a
-					target="_blank"
-					href="https://github.com/reactive-resume/reactive-resume"
-					aria-label={ariaLabel}
-					rel="noopener noreferrer"
-				>
+				<a target="_blank" href="https://github.com/alfariesh/rezumi" aria-label={ariaLabel} rel="noopener noreferrer">
 					<GithubLogoIcon aria-hidden="true" />
 					{starCount != null ? <RollingNumber value={starCount} className="font-bold" /> : null}
 					<StarIcon aria-hidden="true" />

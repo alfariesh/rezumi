@@ -145,7 +145,7 @@ function htmlResponse(html: string, headers: Record<string, string>, template = 
 	});
 }
 
-const githubUrl = "https://github.com/reactive-resume/reactive-resume";
+const githubUrl = "https://github.com/alfariesh/rezumi";
 // The English copy, for a build without prerendered pages; a prerendered page carries its own locale's title and
 // description, and the social cards reuse them.
 const ROOT_TITLE = "Free resume builder with PDF &amp; Word downloads | Rezumi";
@@ -167,7 +167,7 @@ function organization(origin: string): StructuredData {
 		"@id": `${origin}/#organization`,
 		name: "Rezumi",
 		url: `${origin}/`,
-		contactPoint: { "@type": "ContactPoint", contactType: "support", email: "amruth@rxresu.me" },
+		contactPoint: { "@type": "ContactPoint", contactType: "support", email: "hi@rezumi.app" },
 		logo: { "@type": "ImageObject", url: `${origin}/pwa-512x512.png`, width: 512, height: 512 },
 		sameAs: [githubUrl],
 	};

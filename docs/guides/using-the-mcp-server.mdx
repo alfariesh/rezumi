@@ -31,7 +31,7 @@ The server address is your instance's address followed by `/mcp`. On the hosted 
     For coding agents, run:
 
     ```bash
-    npx add-mcp https://rezumi.app/mcp --name reactive-resume
+    npx add-mcp https://rezumi.app/mcp --name rezumi
     ```
 
     Otherwise, add a remote MCP server with the address `https://rezumi.app/mcp` and no headers. Client-specific steps are in [Set up popular clients](#set-up-popular-clients).
@@ -58,7 +58,7 @@ The server address is your instance's address followed by `/mcp`. On the hosted 
 If your client can't do OAuth, send your API key in the `x-api-key` header. For coding agents, `add-mcp` writes the header for you:
 
 ```bash
-npx add-mcp https://rezumi.app/mcp --name reactive-resume --header "x-api-key: YOUR_API_KEY"
+npx add-mcp https://rezumi.app/mcp --name rezumi --header "x-api-key: YOUR_API_KEY"
 ```
 
 To edit the configuration yourself:
@@ -66,7 +66,7 @@ To edit the configuration yourself:
 ```json
 {
   "mcpServers": {
-    "reactive-resume": {
+    "rezumi": {
       "url": "https://rezumi.app/mcp",
       "headers": { "x-api-key": "YOUR_API_KEY" }
     }
@@ -79,7 +79,7 @@ If your client only runs local commands, use `mcp-remote` as a bridge. It needs 
 ```json
 {
   "mcpServers": {
-    "reactive-resume": {
+    "rezumi": {
       "command": "npx",
       "args": ["mcp-remote", "https://rezumi.app/mcp", "--header", "x-api-key:YOUR_API_KEY"]
     }
@@ -97,7 +97,7 @@ If your client only runs local commands, use `mcp-remote` as a bridge. It needs 
 For coding agents, the open-source [`add-mcp`](https://github.com/neon-solutions/add-mcp) CLI adds the server to each agent's configuration in one step. It needs [Node.js](https://nodejs.org), detects the agents you use and lets you choose:
 
 ```bash
-npx add-mcp https://rezumi.app/mcp --name reactive-resume
+npx add-mcp https://rezumi.app/mcp --name rezumi
 ```
 
 - `-a` picks an agent, for example `-a claude-code -a cursor -a codex`. It supports [over 20 agents](https://github.com/neon-solutions/add-mcp#supported-agents), including Claude Code, Codex, Cursor, VS Code, Gemini CLI, OpenCode, Windsurf and Zed.
@@ -112,15 +112,15 @@ Then sign in from your agent, as described below.
   </Accordion>
   <Accordion title="Claude Code">
     ```bash
-    npx add-mcp https://rezumi.app/mcp --name reactive-resume -a claude-code -g
+    npx add-mcp https://rezumi.app/mcp --name rezumi -a claude-code -g
     ```
 
-    Then run `/mcp` inside Claude Code and choose **reactive-resume** to sign in. Leave out `-g` to add it to the project's `.mcp.json` instead.
+    Then run `/mcp` inside Claude Code and choose **rezumi** to sign in. Leave out `-g` to add it to the project's `.mcp.json` instead.
 
   </Accordion>
   <Accordion title="Cursor">
     ```bash
-    npx add-mcp https://rezumi.app/mcp --name reactive-resume -a cursor
+    npx add-mcp https://rezumi.app/mcp --name rezumi -a cursor
     ```
 
     This adds the server to `.cursor/mcp.json` in your project; add `-g` for `~/.cursor/mcp.json` and all projects. Cursor offers to sign in when it first connects. To use an API key instead, add `--header "x-api-key: YOUR_API_KEY"`.
@@ -128,15 +128,15 @@ Then sign in from your agent, as described below.
   </Accordion>
   <Accordion title="Codex">
     ```bash
-    npx add-mcp https://rezumi.app/mcp --name reactive-resume -a codex -g
-    codex mcp login reactive-resume
+    npx add-mcp https://rezumi.app/mcp --name rezumi -a codex -g
+    codex mcp login rezumi
     ```
 
     This adds the server to `~/.codex/config.toml`. To use an API key instead of signing in, add `--header "x-api-key: YOUR_API_KEY"` and skip `codex mcp login`.
 
   </Accordion>
   <Accordion title="Other clients">
-    Run `npx add-mcp https://rezumi.app/mcp --name reactive-resume` and choose your agent from the list. If your client isn't listed, use the server address with its remote MCP (Streamable HTTP) option. If it asks for a transport, choose HTTP. If it can't do OAuth, send the `x-api-key` header.
+    Run `npx add-mcp https://rezumi.app/mcp --name rezumi` and choose your agent from the list. If your client isn't listed, use the server address with its remote MCP (Streamable HTTP) option. If it asks for a transport, choose HTTP. If it can't do OAuth, send the `x-api-key` header.
   </Accordion>
 </AccordionGroup>
 

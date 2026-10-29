@@ -8,7 +8,7 @@ import { SCENE } from "./scroll";
 import { labelClass } from "./ui";
 import { useTheme } from "@/features/theme/provider";
 
-const githubUrl = "https://github.com/reactive-resume/reactive-resume";
+const githubUrl = "https://github.com/alfariesh/rezumi";
 const licenseUrl = `${githubUrl}/blob/main/LICENSE`;
 const linkClass = "text-ink transition-colors hover:text-accent-text";
 

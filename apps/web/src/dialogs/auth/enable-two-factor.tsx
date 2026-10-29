@@ -170,7 +170,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 
 	const handleDownloadBackupCodes = () => {
 		if (!backupCodes) return;
-		downloadWithAnchor(new Blob([backupCodes.join("\n")], { type: "text/plain" }), "reactive-resume_backup-codes.txt");
+		downloadWithAnchor(new Blob([backupCodes.join("\n")], { type: "text/plain" }), "rezumi_backup-codes.txt");
 	};
 
 	return (

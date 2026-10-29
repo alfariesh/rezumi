@@ -54,13 +54,13 @@ export default function SettingsScreen() {
 					title={t`Report an issue`}
 					leading="bug"
 					external
-					onPress={() => openLink("https://github.com/reactive-resume/reactive-resume/issues/new/choose")}
+					onPress={() => openLink("https://github.com/alfariesh/rezumi/issues/new/choose")}
 				/>
 				<ListRow
 					title={t`Source code on GitHub`}
 					leading="github-logo"
 					external
-					onPress={() => openLink("https://github.com/reactive-resume/reactive-resume")}
+					onPress={() => openLink("https://github.com/alfariesh/rezumi")}
 				/>
 			</SettingsGroup>
 			<SettingsGroup title={t`Legal`}>
@@ -80,7 +80,7 @@ export default function SettingsScreen() {
 					title={t`MIT License`}
 					leading="scales"
 					external
-					onPress={() => openLink("https://github.com/reactive-resume/reactive-resume/blob/main/LICENSE")}
+					onPress={() => openLink("https://github.com/alfariesh/rezumi/blob/main/LICENSE")}
 				/>
 				<ListRow
 					title={t`Open-source licenses`}
@@ -103,10 +103,10 @@ export default function SettingsScreen() {
 							variant="caption"
 							color="accentText"
 							accessibilityRole="link"
-							onPress={() => openLink("https://amruthpillai.com")}
+							onPress={() => openLink("https://rezumi.app")}
 							style={{ textDecorationLine: "underline" }}
 						>
-							Amruth Pillai
+							Salman Alfariesh
 						</Text>
 					</Trans>
 				</Text>

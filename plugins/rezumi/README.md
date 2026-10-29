@@ -23,21 +23,21 @@ The plugin connects to `https://rezumi.app/mcp`. The first time a skill needs yo
 
 Data goes only to your Rezumi account, under its [privacy policy](https://docs.rezumi.app/legal/privacy-policy). Tools that use AI (match scores, tailored summaries, drafted messages) run on the AI provider you configured in Rezumi, and the skills ask before calling them.
 
-Self-hosting Rezumi? Install the skills on their own and connect your own server instead: `npx add-mcp <your-app-url>/mcp --name reactive-resume`.
+Self-hosting Rezumi? Install the skills on their own and connect your own server instead: `npx add-mcp <your-app-url>/mcp --name rezumi`.
 
 ## Install
 
 Claude Code:
 
 ```sh
-claude plugin install reactive-resume --marketplace reactive-resume/reactive-resume
+claude plugin install rezumi --marketplace alfariesh/rezumi
 ```
 
 Codex:
 
 ```sh
-codex plugin marketplace add reactive-resume/reactive-resume
-codex plugin add reactive-resume@reactive-resume
+codex plugin marketplace add alfariesh/rezumi
+codex plugin add rezumi@rezumi
 ```
 
 Then ask in plain language, for example "Tailor my resume to this job posting" or "Mock interview me for this role". Full guide: [Using agent skills](https://docs.rezumi.app/guides/using-agent-skills).

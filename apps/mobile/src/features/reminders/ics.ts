@@ -54,7 +54,7 @@ export function buildIcs(event: CalendarEvent | CalendarEvent[], now = new Date(
 		"CALSCALE:GREGORIAN",
 		...events.flatMap((item) => [
 			"BEGIN:VEVENT",
-			`UID:${item.uid}@reactive-resume`,
+			`UID:${item.uid}@rezumi`,
 			`DTSTAMP:${utcStamp(now)}`,
 			`DTSTART:${utcStamp(item.start)}`,
 			`DTEND:${utcStamp(item.end)}`,

@@ -84,7 +84,7 @@ CRON_SECRET=replace-with-at-least-16-random-characters
 ```
 
 ```sh
-node --env-file=/etc/reactive-resume/career-runner.env tooling/career/run.mjs
+node --env-file=/etc/rezumi/career-runner.env tooling/career/run.mjs
 ```
 
 The CLI rejects redirects, and times out after 250 seconds. The HTTP response waits for the processing result. Monitor unsuccessful Cron Trigger ticks and long gaps between invocations; a successful empty tick alone does not prove a provider or a user's schedule is functioning.
@@ -153,7 +153,7 @@ Use credentials for your disposable database in the first command. Without `INTE
 
 The deterministic cases cover ownership, submitted-version isolation, correction/forget behavior, practice/debrief separation, stale material, exports/cascades, overlapping ticks, retries/cancellation, recurrence, and endpoint authorization. Also run affected package typechecks, existing assistant regression suites, boundary/lint/format checks, and the production build. Test the deployed endpoint and owner-email flow in a dedicated Cloudflare installation (see [Self-hosting on Cloudflare](/self-hosting/cloudflare)); [deployment checks](/contributing/deployment-checks) covers the automated Worker smoke test.
 
-Career browser scenarios require `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true` for the local synthetic provider. With the [browser test environment](https://github.com/reactive-resume/reactive-resume/blob/main/tests/e2e/README.md) configured, run `pnpm test:e2e tests/e2e/specs/career.spec.ts`. These cover offline urgent preparation, memory controls, selected submitted snapshots, persistence, and first-send context exclusions.
+Career browser scenarios require `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true` for the local synthetic provider. With the [browser test environment](https://github.com/alfariesh/rezumi/blob/main/tests/e2e/README.md) configured, run `pnpm test:e2e tests/e2e/specs/career.spec.ts`. These cover offline urgent preparation, memory controls, selected submitted snapshots, persistence, and first-send context exclusions.
 
 ### Opt-in live evaluation
 
