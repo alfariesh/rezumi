@@ -4,6 +4,9 @@
 	// Cloudflare dashboard, deliberately not under "routes" so the CI token needs no zone permissions) belong to this name.
 	"name": "vitaekit",
 	"main": "apps/server/dist-cloudflare/index.js",
+	// The app is served from the rezumi.app Custom Domain only; its APP_URL rejects sign-in from any other origin.
+	"workers_dev": false,
+	"preview_urls": false,
 	"compatibility_date": "2026-10-02",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 	"triggers": { "crons": ["* * * * *"] },
