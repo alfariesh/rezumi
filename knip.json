@@ -24,6 +24,19 @@
 		},
 		"apps/web": {
 			"entry": ["lingui.config.ts", "vitest.config.ts", "src/features/homepage/prerender.tsx"],
+			"ignoreDependencies": [
+				"@heroui-pro/react",
+				"@heroui/react",
+				"@heroui/styles",
+				"@react-aria/utils",
+				"react-aria",
+				"react-aria-components",
+				"react-resizable-panels",
+				"react-stately",
+				"tailwind-merge",
+				"tailwind-variants",
+				"tailwindcss"
+			],
 			"vite": {
 				"config": []
 			},
