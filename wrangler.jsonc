@@ -1,5 +1,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
+	// Do not rename the Worker: its secrets, Durable Object namespace and the rezumi.app Custom Domain (attached in the
+	// Cloudflare dashboard, deliberately not under "routes" so the CI token needs no zone permissions) belong to this name.
 	"name": "vitaekit",
 	"main": "apps/server/dist-cloudflare/index.js",
 	"compatibility_date": "2026-10-02",
@@ -38,7 +40,7 @@
 		"STORAGE_BACKEND": "r2",
 		"FLAG_DISABLE_IMAGE_PROCESSING": "true",
 		"DEPLOYMENT_NAMESPACE": "production",
-		"APP_URL": "https://vitaekit.alfarieshsalman.workers.dev",
+		"APP_URL": "https://rezumi.app",
 	},
 	"hyperdrive": [{ "binding": "HYPERDRIVE", "id": "f2e0cd8d0b084ed5bdbfb8a1de8a80dc" }],
 	"r2_buckets": [{ "binding": "BUCKET", "bucket_name": "vitaekit" }],
