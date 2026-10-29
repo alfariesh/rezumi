@@ -25,7 +25,7 @@ function resolveWorkspaceFolder(folderName: string): string {
 	throw new Error(`Could not locate ${folderName} folder relative to ${resolveFromCurrentModule(".")}`);
 }
 
-export async function runDatabaseMigrations() {
+async function runDatabaseMigrations() {
 	console.info("Running database migrations...");
 
 	const pool = new Pool({
