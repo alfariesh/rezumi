@@ -3,7 +3,7 @@ title: "Mirror Computer Modern fonts"
 description: "Serve Computer Modern font files from your own host for server-generated PDFs, and understand which font requests remain external."
 ---
 
-Set `WEB_FONT_BASE_URL` when you want the Node.js server to fetch Computer Modern font files from a
+Set `WEB_FONT_BASE_URL` when you want the server (the Cloudflare Worker, or the local Node.js server) to fetch Computer Modern font files from a
 mirror you control. You need a running Reactive Resume instance and an HTTP(S) server that can serve static files.
 
 <Warning>
@@ -44,33 +44,37 @@ https://fonts.example.com/cm/font/Bright/cmunbmr.woff
 ```
 
 Use an absolute HTTP(S) URL without a query string or fragment. Surrounding whitespace and trailing slashes are removed. Do not include
-the `font/` segment in the base URL: the resolver appends it. Use an address reachable from the app server; inside
-Docker, `localhost` refers to the app container itself. The mirror must serve font bytes without a login page.
+the `font/` segment in the base URL: the resolver appends it. Use a public HTTPS address: the Worker's `global_fetch_strictly_public` flag makes
+private-network and `localhost` addresses unreachable from Cloudflare. The mirror must serve font bytes without a login
+page. A static host such as an R2 bucket with a public custom domain, or Workers Static Assets on another Worker, works.
 
 ## 2. Configure the deployment
 
-```dotenv
-WEB_FONT_BASE_URL="https://fonts.example.com/cm"
+```jsonc wrangler.jsonc
+"vars": {
+  "WEB_FONT_BASE_URL": "https://fonts.example.com/cm"
+}
 ```
 
-| Deployment      | Where to set it                                                              | Apply the change                                                                      |
-| --------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| Docker Compose  | The app's `.env` file, loaded through `env_file`.                            | Run `docker compose up -d` to recreate the app container. No image rebuild is needed. |
-| Kubernetes      | The app's environment Secret or ConfigMap.                                   | Restart the app deployment so the new pods read it.                                   |
-| Source checkout | Root `.env` for the production server, or `.env.local` for `pnpm dev`.       | Restart the server or development command.                                            |
-| Vercel          | The project's environment variables for the intended deployment environment. | Redeploy the backend.                                                                 |
+In a local `.dev.vars`, `.env` or `.env.local` file, use `WEB_FONT_BASE_URL="https://fonts.example.com/cm"`.
+
+| Environment           | Where to set it                                                   | Apply the change                           |
+| --------------------- | ----------------------------------------------------------------- | ------------------------------------------ |
+| Cloudflare Worker     | `vars` in the root `wrangler.jsonc`. It is not a secret.          | Redeploy with `pnpm deploy:cloudflare`.    |
+| Local `wrangler dev`  | The ignored `.dev.vars` file.                                     | Restart `pnpm dev:cloudflare`.             |
+| Local source checkout | Root `.env` for the built server, or `.env.local` for `pnpm dev`. | Restart the server or development command. |
 
 The server validates the URL at startup. An unset or empty value preserves the original URLs. Remove the variable
 and restart or redeploy to return to the default CDN.
 
-Set this value before starting the server. The server PDF entry supplies it to the font loader; the shared font
-catalog does not read environment variables. This setting is not exposed to the Vite browser app; rebuilding the
-web app does not enable browser mirroring.
-The Cloudflare Workers deployment is not covered by this Node.js server setup.
+Set this value before starting the server. The server PDF entry reads it from `process.env`, which Workers populates
+from `vars` under the `nodejs_compat` flag, and supplies it to the font loader; the shared font catalog does not read
+environment variables. This setting is not exposed to the Vite browser app; rebuilding the web app does not enable
+browser mirroring.
 
 ## 3. Check delivery
 
-From the app server's network, request a mirrored file:
+From a machine outside your network, confirm the mirror is public:
 
 ```bash
 curl --fail --output /dev/null https://fonts.example.com/cm/font/Bright/cmunbmr.woff
@@ -91,5 +95,5 @@ also expected with the current implementation.
 ## Related pages
 
 - [Environment variables](/self-hosting/environment-variables#font-mirror): the setting's default and URL constraints.
-- [Self-hosting with Docker](/self-hosting/docker): configure the application container.
+- [Self-hosting on Cloudflare](/self-hosting/cloudflare): configure the Worker.
 - [Customizing typography](/guides/customizing-typography): choose heading and body fonts.

@@ -24,10 +24,8 @@ A few things look different after the move:
 There's no hosted copy of v5 that you can count on. If you need a resume exactly as it was in v5, your best option is a
 JSON file you downloaded from v5 earlier, or a v5 copy that you or your organization runs.
 
-People who host Reactive Resume themselves can keep running v5 by pinning the `v5` image tag (for example,
-`amruthpillai/reactive-resume:v5`) on a database that hasn't been upgraded. v5 isn't meant to run on a database that v6
-has already upgraded, so back up the database first. Server owners should read
-[Migrating from v5](/self-hosting/upgrading-to-v6) before they update.
+People who host Reactive Resume themselves can keep running an existing v5 copy on a database that hasn't been
+upgraded. v5 isn't meant to run on a database that v6 has already upgraded, so back up the database before you update.
 
 ## Move a resume from v5 into v6
 
@@ -60,8 +58,7 @@ Version 4 is two versions old. At the time of writing, a copy may still be reach
 [v4.rxresu.me](https://v4.rxresu.me), but its availability isn't guaranteed. If you can sign in there, open each resume,
 export it as JSON, and import it into v6 as described above. v6 recognizes v4 files automatically.
 
-Server owners moving a self-hosted v4 installation should follow [Migrating from v4](/self-hosting/migration)
-first, then [Migrating from v5](/self-hosting/upgrading-to-v6).
+Server owners moving a self-hosted v4 installation should follow [Migrating from v4](/self-hosting/migration).
 
 ## If something is missing
 

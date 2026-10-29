@@ -213,16 +213,15 @@ REST data responses use `Cache-Control: no-store`. Uploaded profile images are p
 
 ## Limits
 
-| Limit                                                                                           | Value                                                         |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| Requests per API key                                                                            | 1,000 per hour                                                |
-| Changes to one resume, document or application (create, update, patch, lock, duplicate, delete) | 300 per minute                                                |
-| PDF downloads of one resume (`GET /resumes/{id}/pdf`)                                           | 5 per minute                                                  |
-| PDF downloads across all your resumes                                                           | 30 per minute                                                 |
-| Public PDF checks per client address                                                            | 5 per minute                                                  |
-| REST request body size (before endpoint-specific limits)                                        | 40 MiB                                                        |
-| AI requests per account (voice transcription and speech count separately)                       | 20 per minute                                                 |
-| Request body size on Vercel installations                                                       | 4.5 MB (see [Large RPC requests](/guides/large-rpc-requests)) |
+| Limit                                                                                           | Value          |
+| ----------------------------------------------------------------------------------------------- | -------------- |
+| Requests per API key                                                                            | 1,000 per hour |
+| Changes to one resume, document or application (create, update, patch, lock, duplicate, delete) | 300 per minute |
+| PDF downloads of one resume (`GET /resumes/{id}/pdf`)                                           | 5 per minute   |
+| PDF downloads across all your resumes                                                           | 30 per minute  |
+| Public PDF checks per client address                                                            | 5 per minute   |
+| REST request body size (before endpoint-specific limits)                                        | 40 MiB         |
+| AI requests per account (voice transcription and speech count separately)                       | 20 per minute  |
 
 Procedure limits apply in production. When you hit a limit, the API responds with `429`. On a self-hosted installation, `FLAG_DISABLE_API_RATE_LIMIT` turns off the per-key limit together with the sign-in limits; the procedure limits also turn off (see [Environment variables](/self-hosting/environment-variables)).
 
@@ -271,8 +270,6 @@ If you built against the v5 API, check these changes:
 - **Application stages.** The `rejected` stage and the `archived` flag are gone. Close an application with the `closed` stage and a `closedReason` (`not-selected`, `withdrew`, `accepted-other` or `no-response`).
 - **Resume versions.** Versions have a `kind` and an optional `name` instead of a free-text label.
 
-Self-hosters upgrading an installation can read [Migrating from v5](/self-hosting/upgrading-to-v6).
-
 ## Related guides
 
 <CardGroup cols={2}>
@@ -286,6 +283,6 @@ Self-hosters upgrading an installation can read [Migrating from v5](/self-hostin
     The structure of resume data, for validation and code generation.
   </Card>
   <Card title="Large RPC requests" href="/guides/large-rpc-requests">
-    How large request bodies reach Vercel installations.
+    How the staged-body protocol for large RPC requests works.
   </Card>
 </CardGroup>

@@ -29,7 +29,7 @@ export async function rpcFetch(input: RequestInfo | URL, init?: RequestInit): Pr
 			size: body.byteLength,
 		}),
 	});
-	// Docker has no staging endpoint; send large bodies directly from now on.
+	// Without a staging endpoint (anything but Vercel Blob), send large bodies directly from now on.
 	if (prepared.status === 404) {
 		stagingUnavailable = true;
 		return sendDirect();

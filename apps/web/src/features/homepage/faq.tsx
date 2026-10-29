@@ -64,8 +64,8 @@ function useQuestions(): Question[] {
 		{
 			id: "self-host",
 			question: t`Can I host it myself?`,
-			answer: t`Yes. Reactive Resume is open source under the MIT License and ships as a Docker image, so it runs on your own server with your own database and storage.`,
-			link: { label: t`Read the self-hosting guide`, href: "https://docs.rxresu.me/self-hosting/docker" },
+			answer: t`Yes. Reactive Resume is open source under the MIT License and can run on your own Cloudflare account with your own database and storage.`,
+			link: { label: t`Read the self-hosting guide`, href: "https://docs.rxresu.me/self-hosting/cloudflare" },
 		},
 		{
 			id: "languages",

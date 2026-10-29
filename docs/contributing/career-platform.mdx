@@ -61,23 +61,20 @@ Undo replaces confirmation dialogs throughout: forgetting, deleting, dismissing 
 
 ## Operate scheduled work
 
-Supported deployments schedule career work automatically once a minute. Users still explicitly enable each schedule and configure any required AI/web connection.
+Cloudflare schedules career work automatically once a minute. Users still explicitly enable each schedule and configure any required AI/web connection.
 
-| Deployment       | How ticks run                                                                                                                               | Configuration                                                                                                             |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Node.js / Docker | The long-running server starts a timer after migrations and authentication initialization. Shutdown stops new ticks and drains active work. | No runner secret or external cron needed.                                                                                 |
-| Vercel           | The `crons` entry in root `vercel.json` sends `GET /api/career/run`.                                                                        | Set a random `CRON_SECRET` in the production environment, then redeploy. Vercel supplies the bearer header automatically. |
-| Cloudflare       | Root `wrangler.jsonc` defines a Cron Trigger; the Worker's `scheduled()` handler processes jobs directly.                                   | Deploy the checked-in trigger configuration. No HTTP runner secret needed.                                                |
+| Environment                | How ticks run                                                                                                                               | Configuration                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Cloudflare (production)    | Root `wrangler.jsonc` defines a Cron Trigger; the Worker's `scheduled()` handler processes jobs directly.                                   | Deploy the checked-in trigger configuration. No HTTP runner secret needed. |
+| Node.js (local dev, tests) | The long-running server starts a timer after migrations and authentication initialization. Shutdown stops new ticks and drains active work. | No runner secret or external cron needed.                                  |
 
-Vercel's checked-in once-per-minute schedule requires **Pro or Enterprise**. Hobby supports at most one invocation per day and rejects more frequent schedules during deployment. On Hobby, change the schedule to `0 0 * * *`; daily ticks can delay reminders and preparation by a day. See [Vercel Cron limits](https://vercel.com/docs/cron-jobs/usage-and-pricing). Native Vercel Cron runs on production deployments. Cloudflare trigger changes can take up to 15 minutes to propagate; see [Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/).
+Cloudflare trigger changes can take up to 15 minutes to propagate; see [Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/). The UI checks deployment configuration, not successful delivery of ticks. Verify a due test reminder in a dedicated installation after deployment, and check the Cron Trigger event status in the Cloudflare dashboard. Minute-by-minute polling queries PostgreSQL even when no schedules are due, so a database that scales to zero can remain awake.
 
-Generate the Vercel token with `openssl rand -hex 32`, supply it through the deployment's secret mechanism, and never log authorization headers. The UI checks deployment configuration, not successful delivery of ticks. Verify a due test reminder in a dedicated installation after deployment. Minute-by-minute polling queries PostgreSQL even when no schedules are due, so a database that scales to zero can remain awake.
-
-All adapters await the same bounded PostgreSQL-backed processor. Node prevents overlapping ticks within its process; database claims coordinate multiple processes and native platform invocations. Cloudflare keeps scheduled work alive with `waitUntil()` and releases its invocation's database pool after work completes. No task depends on an open browser.
+Both adapters await the same bounded PostgreSQL-backed processor. Node prevents overlapping ticks within its process; database claims coordinate multiple processes and Worker invocations. Cloudflare keeps scheduled work alive with `waitUntil()` and releases its invocation's database pool after work completes. No task depends on an open browser.
 
 ### Optional manual invocation
 
-An operator can trigger a tick for diagnostics or use a custom scheduler. Set `CRON_SECRET` (at least 16 characters), then call `GET` or `POST /api/career/run` with `Authorization: Bearer <secret>`. Without this token the HTTP endpoint returns `404`; invalid authorization returns `401`. Internal Node and Cloudflare ticks continue without this token.
+An operator can trigger a tick for diagnostics or use a custom scheduler. Set `CRON_SECRET` (at least 16 characters; on Cloudflare use `wrangler secret put CRON_SECRET`), then call `GET` or `POST /api/career/run` with `Authorization: Bearer <secret>`. Without this token the HTTP endpoint returns `404`; invalid authorization returns `401`. Internal Node and Cloudflare Cron ticks continue without this token.
 
 From a source checkout with Node.js 24, a manual tick can use a protected environment file outside the repository:
 
@@ -90,7 +87,7 @@ CRON_SECRET=replace-with-at-least-16-random-characters
 node --env-file=/etc/reactive-resume/career-runner.env tooling/career/run.mjs
 ```
 
-The CLI rejects redirects, and times out after 250 seconds. The HTTP response waits for the processing result. Monitor unsuccessful native ticks and long gaps between invocations; a successful empty tick alone does not prove a provider or a user's schedule is functioning.
+The CLI rejects redirects, and times out after 250 seconds. The HTTP response waits for the processing result. Monitor unsuccessful Cron Trigger ticks and long gaps between invocations; a successful empty tick alone does not prove a provider or a user's schedule is functioning.
 
 ### Enable a user's schedule
 
@@ -154,7 +151,7 @@ pnpm --filter web test src/features/settings/account/export.test.ts
 
 Use credentials for your disposable database in the first command. Without `INTEGRATIONS_TEST_DATABASE_URL` or the supported `COVER_LETTER_TEST_DATABASE_URL` fallback, the career database suites skip; a green run with skipped suites is not verification. Follow [development setup](/contributing/development) for the remaining environment and package prerequisites.
 
-The deterministic cases cover ownership, submitted-version isolation, correction/forget behavior, practice/debrief separation, stale material, exports/cascades, overlapping ticks, retries/cancellation, recurrence, and endpoint authorization. Also run affected package typechecks, existing assistant regression suites, boundary/lint/format checks, and the production build. Test the deployed endpoint and owner-email flow in a dedicated installation as described in [deployment checks](/contributing/deployment-checks).
+The deterministic cases cover ownership, submitted-version isolation, correction/forget behavior, practice/debrief separation, stale material, exports/cascades, overlapping ticks, retries/cancellation, recurrence, and endpoint authorization. Also run affected package typechecks, existing assistant regression suites, boundary/lint/format checks, and the production build. Test the deployed endpoint and owner-email flow in a dedicated Cloudflare installation (see [Self-hosting on Cloudflare](/self-hosting/cloudflare)); [deployment checks](/contributing/deployment-checks) covers the automated Worker smoke test.
 
 Career browser scenarios require `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true` for the local synthetic provider. With the [browser test environment](https://github.com/reactive-resume/reactive-resume/blob/main/tests/e2e/README.md) configured, run `pnpm test:e2e tests/e2e/specs/career.spec.ts`. These cover offline urgent preparation, memory controls, selected submitted snapshots, persistence, and first-send context exclusions.
 

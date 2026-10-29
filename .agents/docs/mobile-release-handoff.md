@@ -7,7 +7,7 @@ This is the operational handoff. See [mobile-store-review.md](./mobile-store-rev
 ## Finish these gates before submission
 
 - [ ] Build and distribute fresh iOS/Android binaries with OTA configuration below; previously uploaded builds 4/5 do not contain the update client. Verify an actual downloaded update on both platforms.
-- [ ] Owner merges and deploys matching server/web changes and database migration to the Frankfurt Docker Swarm installation. Publish the updated privacy policy and acceptable-use terms on the documentation site too.
+- [ ] Owner merges and deploys matching server/web changes and database migration to the Cloudflare Workers deployment. Publish the updated privacy policy and acceptable-use terms on the documentation site too.
 - [ ] Configure production association and Apple sign-in environment below. Verify actual association JSON, browser-to-native callbacks, clean Apple/GitHub login, and reviewer sign-in after deployment.
 - [ ] Configure testers, distribute iOS build 4 through TestFlight and Android version code 5 through Play internal testing, and install both from the stores. Android tester Google-account email and iPhone/iPad TestFlight device confirmation were requested but remain outstanding.
 - [ ] Complete the signed-device matrix below. Record device/OS, build, result, and any remaining failure. A successful upload or simulator run does not close this gate.
@@ -33,20 +33,15 @@ Brand is **Reactive Resume**, `rxresume`, or `reactive-resume`. The official dom
 
 ## Production deployment and quirks
 
-Owner controls merge/deployment. Backend runs on a VPS in Frankfurt, Germany, using Docker Swarm. Do not infer deployment from a Git push or a successful image build.
+Owner controls merge/deployment. The backend runs only on Cloudflare Workers (see [the Cloudflare guide](../../docs/self-hosting/cloudflare.mdx)). Do not infer deployment from a Git push alone.
 
-### Image publishing is not automatic Swarm deployment
+### Worker deployment
 
-The checked-in `.github/workflows/docker-publish.yml` currently behaves as follows:
+The checked-in `.github/workflows/deploy-cloudflare.yml` currently behaves as follows:
 
-- Push to `main`: builds native AMD64/ARM64 images and publishes SHA/nightly aliases; **does not run the SSH redeploy step**.
-- Manual dispatch with `release=false`: builds a canary/SHA image; no production deployment.
-- Stable release tag or dispatch with `release=true`: promotes an existing full-SHA image; stable release mode can run SSH redeploy and cache purge when their secrets are configured.
-- SSH requires `SSH_KEY`, `SSH_HOST`, and `SSH_USER`; cache purge requires its Cloudflare secrets. Missing integration secrets cause those integrations to be skipped.
-- Current SSH command runs `cd docker` then `./manage_stack.sh up reactive_resume`. Verify the actual VPS script pulls the intended image and updates every replica.
-- GHCR is primary; Docker Hub is a best-effort mirror. A successful workflow may still have failed mirror steps. Confirm the registry/tag/digest consumed by Swarm.
-
-Before invoking a promotion, follow [container publishing](./container-publishing.md). Pushing this feature branch alone does not build or deploy the production Docker image. Do not assume an unrelated external pull trigger follows the same rules; verify its actual execution and the running image digest.
+- Push to `main` or manual dispatch: applies PostgreSQL migrations with `pnpm --filter @reactive-resume/db db:migrate` when the `DATABASE_URL` secret is set, then runs `pnpm deploy:cloudflare`.
+- It needs the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. `DATABASE_URL` must be a direct (non-pooled) connection string; without it the migration step is skipped.
+- Confirm the deployed Worker with `/api/health` after the run. A green workflow alone does not prove migrations ran.
 
 ### Over-the-air updates
 
@@ -77,16 +72,11 @@ One-time activation:
 3. Configure [Blacksmith native releases](./mobile-ci.md), then build store binaries on
    both platforms. These builds explicitly embed the `production` update channel;
    complete the store/device gates in this document before production release.
-4. Publish a production update through the Docker release workflow, install the matching
+4. Publish a production update (see the note below on `mobile-ota-update.yml`), install the matching
    store build, open it to download, then restart to apply. Verify startup offline and
    saved drafts. Repeat on iOS and Android. Existing preview binaries keep their channel.
 
-The Docker workflow calls `mobile-ota-update.yml` only for stable production releases,
-using the image's exact source commit after successful SSH deployment. Nightlies, canaries,
-and prereleases skip OTA. The OTA workflow requires three matching healthy commit probes. Production deployment must expose `/api/health` from
-the application without caching or substituting a proxy's `OK` response. A missing
-`APP_REVISION`, old replica, or unhealthy backend withholds the mobile update. A timeout
-or missing `EXPO_TOKEN` fails the mobile job; Docker publishing is not rolled back.
+`mobile-ota-update.yml` is a `workflow_call` workflow. It was called by the Docker publish workflow, which has been deleted, so **nothing triggers it today**. Until an owner decides on a new trigger, production OTA updates are not published automatically. The workflow itself still expects the exact source commit of the deployed backend (`sha` input) and requires three matching healthy commit probes against `/api/health`, which must be served by the application without caching or substituting a proxy's `OK` response. A missing `APP_REVISION`, old replica, or unhealthy backend withholds the mobile update. A timeout or missing `EXPO_TOKEN` fails the mobile job.
 
 Updates download on launch and normally apply on the next restart. Never reload an
 active editor to force an update; let the existing draft lifecycle finish. A matching
@@ -118,10 +108,10 @@ track as appropriate, and record actual store-build results separately.
 
 ### Database and web release
 
-- Include migration `migrations/20261017135047_clammy_the_enforcers/` for `ai_content_report`; normal server startup applies migrations. Back up production before deployment and inspect migration logs. Do not reset the database or delete volumes.
-- Deploy server and web together. New native report calls need the new backend; the direct account-deletion query parameter needs the new web code. During a rolling update, old replicas can still serve old behavior; verify after rollout completes.
+- Include migration `migrations/20261017135047_clammy_the_enforcers/` for `ai_content_report`; the Worker does not run migrations itself, so apply them through the deploy workflow or `pnpm db:migrate` before deploying. Back up production before deployment and inspect migration logs. Do not reset the database or delete volumes.
+- Deploy server and web together. New native report calls need the new backend; the direct account-deletion query parameter needs the new web code. Verify the deployed Worker version after rollout completes.
 - Keep `APP_URL=https://rxresu.me`. Preserve existing `AUTH_SECRET` and `ENCRYPTION_SECRET`; rotating these casually can invalidate sessions or make saved provider credentials unreadable.
-- Swarm service environment/secrets must be updated separately from pulling a new image. The application expects actual environment values, not an assumed `*_FILE` convention.
+- Worker variables and secrets (`wrangler secret put`) are managed separately from code deploys. The application expects actual environment values, not an assumed `*_FILE` convention.
 - Documentation hosting may have an independent deployment. Source changes to `docs/legal/privacy-policy.mdx` and `docs/legal/terms-of-service.mdx` are not proof that public policies changed.
 - PWA icon changes need the web deployment and browser/service-worker cache refresh. An installed PWA may retain old artwork until refreshed or reinstalled.
 
@@ -143,7 +133,7 @@ Protected Apple deployment values are local at `/Users/amruth/.config/rxresu/app
 
 ### Post-deploy acceptance
 
-- [ ] `/api/health` reports healthy and the running image matches the intended commit/digest.
+- [ ] `/api/health` reports healthy and the running Worker version matches the intended commit.
 - [ ] `/.well-known/apple-app-site-association` returns valid JSON with the expected team/app association.
 - [ ] `/.well-known/assetlinks.json` returns valid JSON containing package and Play signing fingerprint above. At the last live check on 2026-10-17, **both association URLs returned plain `OK`**, so HTTP 200 alone is insufficient.
 - [ ] A fresh store-installed app completes browser login and opens `/auth/native-callback` in the app; test cancellation and an expired session too.
@@ -162,7 +152,7 @@ fingerprint, from `apps/mobile`:
 eas fingerprint:compare <INSTALLED_NATIVE_FINGERPRINT_HASH> --environment production
 ```
 
-**Fingerprint unchanged (JavaScript-only change):** no store work. A stable Docker release publishes the update to the `production` channel after the deployment health probes pass (see [Over-the-air updates](#over-the-air-updates)). Apps download it on launch and apply it on the next restart. OTA updates must not change the app's primary purpose or add features that need new store declarations; ship those through review.
+**Fingerprint unchanged (JavaScript-only change):** no store work. Publish the update to the `production` channel (see [Over-the-air updates](#over-the-air-updates); `mobile-ota-update.yml` is currently not triggered by any workflow). Apps download it on launch and apply it on the next restart. OTA updates must not change the app's primary purpose or add features that need new store declarations; ship those through review.
 
 For an older EAS-built binary, `--build-id <EAS build ID>` remains supported instead
 of the hash. Compare both platforms. Keep API changes backward compatible with older

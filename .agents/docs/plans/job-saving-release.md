@@ -181,7 +181,7 @@ This order avoids rewriting the UI or assistant once per provider. Keep all runt
 - Native assistant search works for verified OpenAI, Anthropic, and Gemini configurations without an external web connection. Unsupported combinations fail clearly or use an explicitly configured external connection.
 - Explicit provider selection is respected; each account has one encrypted connection, with changes disabled under server configuration.
 - All web tools show correct progress, errors, and validated sources after streaming and after reloading a conversation. Cancellation stops outstanding retrieval.
-- Core behavior works on Docker and Vercel without adding required services or containers.
+- Core behavior works on Cloudflare Workers without adding required services or containers.
 
 ## Verification for the complete release
 
@@ -194,7 +194,7 @@ Use the existing Vitest and Playwright setup. Add focused behavior checks; no ne
 | Credentials and migration | The retired table is removed; users cannot access each other's keys; server precedence, partial env errors, connection replacement and deletion behave as specified.                                                  |
 | AI SDK and history        | Tool selection, compatible native/custom combinations, capability-aware instructions, sources, stop behavior, and old conversation rendering/replay.                                                                  |
 | Product journey           | Save/paste/manual preparation without services; all three provider choices through the same UI; failed enrichment retains the posting; Saved stays distinct from Applied; submitted document versions remain correct. |
-| Deployment                | Affected typechecks/tests, non-mutating lint, package boundaries, production build, and existing serverless artifact checks. Verify Docker and Vercel environment handling.                                           |
+| Deployment                | Affected typechecks/tests, non-mutating lint, package boundaries, production build, and existing Cloudflare bundle checks. Verify Cloudflare environment handling.                                                    |
 
 Run `pnpm db:generate` for the schema change and inspect its SQL, `pnpm lingui:extract` for new UI strings, and `pnpm docs:gen` for changed public API surfaces. Inspect generated diffs. Use package-scoped tests/typechecks before the production build and boundary check.
 

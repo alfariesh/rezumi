@@ -92,9 +92,9 @@ Additional corrections in this worktree:
 
 ## Production deployment handoff
 
-Owner deploys through existing GitHub Actions → Docker Swarm workflow. Merge server/web changes and migration `20261017135047_clammy_the_enforcers`; normal server startup applies migrations. Publish privacy-policy documentation separately if its hosting does not follow this workflow.
+Owner deploys through the GitHub Actions → Cloudflare Workers workflow (`deploy-cloudflare.yml`). Merge server/web changes and migration `20261017135047_clammy_the_enforcers`; the workflow applies migrations before deploying the Worker. Publish privacy-policy documentation separately if its hosting does not follow this workflow.
 
-Configure Swarm service environment:
+Configure the Worker environment (plain variables in `wrangler.jsonc`, secrets with `wrangler secret put`):
 
 ```dotenv
 MOBILE_IOS_APP_IDS=654ASRW868.me.rxresu

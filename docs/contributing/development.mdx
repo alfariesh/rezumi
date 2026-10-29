@@ -10,8 +10,8 @@ This guide takes you from a fresh clone to a running local copy of Reactive Resu
 You need:
 
 - **[Node.js](https://nodejs.org/) 24.** The version is pinned in `.nvmrc` and the root `engines` field, so `nvm use` or `fnm use` picks it up.
-- **[pnpm](https://pnpm.io/installation) 12.** The root `packageManager` field pins the exact version (currently `pnpm@12.11.2`), and pnpm switches to it automatically when you run it inside the repository.
-- **[Docker](https://docs.docker.com/get-docker/) with Docker Compose** for PostgreSQL, Redis, and S3-compatible storage. Start the Docker daemon first.
+- **[pnpm](https://pnpm.io/installation) 12.** The root `packageManager` field pins the exact version (currently `pnpm@12.16.1`), and pnpm switches to it automatically when you run it inside the repository.
+- **[Docker](https://docs.docker.com/get-docker/) with Docker Compose** for the local PostgreSQL, Redis, and S3-compatible storage in `compose.dev.yml`. This is development infrastructure only; production runs on Cloudflare Workers (see [Self-hosting on Cloudflare](/self-hosting/cloudflare)). Start the Docker daemon first.
 - **[Git](https://git-scm.com/).**
 
 ## Set up your checkout
@@ -116,25 +116,28 @@ Keep the pinned `vite-plus` catalog version and `vite` override together. The `v
 
 Typechecks use [tsrs](https://github.com/oxc-project/tsrs), an experimental Rust port of TypeScript. The pinned release supports macOS arm64 and Linux x64/arm64 (GNU/musl); Windows and Intel macOS binaries are not published. Existing `tsconfig.json` strictness settings and `--noEmit` remain in force. TypeScript stays installed for tools that consume its API and for editors; this migration does not switch editor language servers.
 
-| Command                          | What it does                                                                                                           |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `pnpm dev`                       | Start the web app, server, and email preview                                                                           |
-| `pnpm dev:web`                   | Start only the web app                                                                                                 |
-| `pnpm build`                     | Build the web app and server for production (regenerates PDF translations first)                                       |
-| `NODE_ENV=production pnpm start` | Run the built server on `PORT`. It reads exported variables or the root `.env`, not `.env.local`.                      |
-| `pnpm typecheck`                 | Type-check every workspace with `tsrs`                                                                                 |
-| `pnpm test`                      | Run the Vitest suites of every workspace                                                                               |
-| `pnpm test:e2e`                  | Run the Playwright browser tests (see [Browser tests](#browser-tests))                                                 |
-| `pnpm lint`                      | Check code with Oxlint; errors and warnings fail the command                                                           |
-| `pnpm lint:agent`                | The same lint check with compact coding-agent diagnostics                                                              |
-| `pnpm format:check`              | Check formatting, import order, and Tailwind class order without changing files                                        |
-| `pnpm lint:fix`                  | Apply safe lint fixes                                                                                                  |
-| `pnpm format`                    | Format files and sort imports/Tailwind classes with Oxfmt                                                              |
-| `pnpm check`                     | **Changes files:** regenerates PDF translations, applies safe lint fixes, formats, then checks remaining lint findings |
-| `pnpm exec turbo boundaries`     | Check package boundary rules                                                                                           |
-| `pnpm knip`                      | Find unused files, exports, and dependencies                                                                           |
-| `pnpm lingui:extract`            | Extract new UI strings into `apps/web/locales/*.po`                                                                    |
-| `pnpm docs:gen`                  | Regenerate the OpenAPI spec and the custom-styles CSS reference                                                        |
+| Command                          | What it does                                                                                                                              |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm dev`                       | Start the web app, server, and email preview                                                                                              |
+| `pnpm dev:web`                   | Start only the web app                                                                                                                    |
+| `pnpm build`                     | Build the web app and server for production (regenerates PDF translations first)                                                          |
+| `NODE_ENV=production pnpm start` | Run the built server on `PORT`. It reads exported variables or the root `.env`, not `.env.local`.                                         |
+| `pnpm check:cloudflare`          | Build the Cloudflare Worker and run a Wrangler dry run (nothing is published)                                                             |
+| `pnpm test:cloudflare`           | Smoke-test the built Worker against local emulated bindings and a disposable local database                                               |
+| `pnpm dev:cloudflare`            | Run the built Worker locally with Wrangler (see [Self-hosting on Cloudflare](/self-hosting/cloudflare#local-development-and-smoke-tests)) |
+| `pnpm typecheck`                 | Type-check every workspace with `tsrs`                                                                                                    |
+| `pnpm test`                      | Run the Vitest suites of every workspace                                                                                                  |
+| `pnpm test:e2e`                  | Run the Playwright browser tests (see [Browser tests](#browser-tests))                                                                    |
+| `pnpm lint`                      | Check code with Oxlint; errors and warnings fail the command                                                                              |
+| `pnpm lint:agent`                | The same lint check with compact coding-agent diagnostics                                                                                 |
+| `pnpm format:check`              | Check formatting, import order, and Tailwind class order without changing files                                                           |
+| `pnpm lint:fix`                  | Apply safe lint fixes                                                                                                                     |
+| `pnpm format`                    | Format files and sort imports/Tailwind classes with Oxfmt                                                                                 |
+| `pnpm check`                     | **Changes files:** regenerates PDF translations, applies safe lint fixes, formats, then checks remaining lint findings                    |
+| `pnpm exec turbo boundaries`     | Check package boundary rules                                                                                                              |
+| `pnpm knip`                      | Find unused files, exports, and dependencies                                                                                              |
+| `pnpm lingui:extract`            | Extract new UI strings into `apps/web/locales/*.po`                                                                                       |
+| `pnpm docs:gen`                  | Regenerate the OpenAPI spec and the custom-styles CSS reference                                                                           |
 
 Prefer package-scoped commands while you work. Package names come from each `package.json`: the apps are `web` and `server`, and shared packages are `@reactive-resume/<name>`.
 
@@ -255,21 +258,20 @@ Before you open a pull request:
 
 1. Run the type checks and tests for the packages you changed, plus `pnpm lint` and `pnpm format:check`.
 2. Run `pnpm exec turbo boundaries` if you changed imports, exports, or shared contracts.
-3. Run `pnpm build` if you changed runtime or bundling behavior.
+3. Run `pnpm build` if you changed runtime or bundling behavior, and `pnpm check:cloudflare` (then `pnpm test:cloudflare`) if you changed server code that runs on Workers.
 4. Keep the pull request focused. Describe the problem, the new behavior, and the checks you ran, and link the related [GitHub issue](https://github.com/reactive-resume/reactive-resume/issues).
 
-Pull requests run the **CI** workflow (`.github/workflows/ci.yml`) with four parallel checks:
+Pull requests run the **CI** workflow (`.github/workflows/ci.yml`) with these parallel checks:
 
-| Job                            | What it checks                                                                                                                |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| Run unit tests                 | Unit tests for every workspace, affected-package typechecks, and package boundaries. Test concurrency adapts to the runner.   |
-| Run browser tests              | A production build and Playwright browser tests. Browser workers adapt to the runner.                                         |
-| Check Vercel compatibility     | Builds the Vercel artifact offline and checks the backend Function. See [Deployment checks](/contributing/deployment-checks). |
-| Check Cloudflare compatibility | Checks the Cloudflare build and runs tests against the local Workers runtime without cloud credentials                        |
+| Job                            | What it checks                                                                                                                                                                          |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Run unit tests                 | Unit tests for every workspace, affected-package typechecks, and package boundaries. Test concurrency adapts to the runner.                                                             |
+| Run browser tests              | A production build and Playwright browser tests. Browser workers adapt to the runner.                                                                                                   |
+| Check Cloudflare compatibility | Builds the Worker, runs a Wrangler dry run, and runs smoke tests against the local Workers runtime without cloud credentials. See [Deployment checks](/contributing/deployment-checks). |
 
 The separate **autofix.ci** workflow (`autofix.yml`) runs `pnpm knip --fix` and `pnpm check`, then pushes any fixes to your branch. The autofix.ci service requires its own workflow name.
 
-New commits to a pull request cancel its superseded CI and autofix runs. Docker publishing and mobile release workflows run separately.
+New commits to a pull request cancel its superseded CI and autofix runs. The Cloudflare deploy workflow (on pushes to `main`) and the mobile release workflows run separately.
 
 Keep credentials and personal resume data out of code, logs, test fixtures, issues, and pull requests.
 
@@ -302,8 +304,8 @@ Keep credentials and personal resume data out of code, logs, test fixtures, issu
       Saved AI providers and the assistant need `ENCRYPTION_SECRET` (at least 32 characters). Set it in `.env.local` and restart `pnpm dev`.
     </Accordion>
 
-    <Accordion title="A server dependency fails to load on Vercel">
-      CommonJS server dependencies must be bundled. Add the package and its dependencies to `bundledInteropPackages` in `apps/server/tsdown.config.ts`. See [Deployment checks](/contributing/deployment-checks).
+    <Accordion title="A server dependency breaks the Cloudflare build">
+      The Worker is bundled by `tooling/cloudflare/build.mjs`. Run `pnpm check:cloudflare` to reproduce the error. See [Deployment checks](/contributing/deployment-checks).
     </Accordion>
 
 </AccordionGroup>

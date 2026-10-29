@@ -1,6 +1,6 @@
 # Dependency compatibility
 
-Registry audit: October 18, 2026. Workspace npm dependencies, pnpm, EAS CLI, Docker build pins and GitHub Actions were checked against current releases, including major versions. Rust crates and the generated Android/iOS build stack were checked separately. Compatible npm and CI upgrades are applied; the following versions remain intentional holds.
+Registry audit: October 18, 2026. Workspace npm dependencies, pnpm, EAS CLI and GitHub Actions were checked against current releases, including major versions. Rust crates and the generated Android/iOS build stack were checked separately. Compatible npm and CI upgrades are applied; the following versions remain intentional holds.
 
 | Dependency                              | Current                | Newer available        | Reason                                                                                                                                                                                                                                                                     |
 | --------------------------------------- | ---------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

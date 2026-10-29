@@ -18,7 +18,7 @@ string is defined, so you can read the surrounding code when this file is not en
 Product and technology names stay in English (or in the locale's established transliteration, if
 the catalog already uses one consistently):
 
-Reactive Resume, GitHub, Crowdin, Docker, PostgreSQL, Better Auth, TanStack, Microsoft Word,
+Reactive Resume, GitHub, Crowdin, Cloudflare, PostgreSQL, Better Auth, TanStack, Microsoft Word,
 PDF, DOCX, JSON, CSV, API, MCP, oRPC, SSO, CSS, URL, JSON Resume.
 
 Also keep LinkedIn, Discord, Figma, Claude Desktop, PDF.js, models.dev, iOS, MIT License,

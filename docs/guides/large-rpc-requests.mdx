@@ -1,23 +1,25 @@
 ---
 title: "Large RPC requests"
-description: "Reference for the staged-body protocol that lets RPC requests larger than Vercel's 4.5 MB request limit reach a Reactive Resume installation."
+description: "Reference for the staged-body protocol for large RPC requests, which is not active on Cloudflare Workers installations."
 ---
 
-Vercel limits the request body of a Function to 4.5 MB. On a Reactive Resume installation hosted on Vercel, larger RPC requests, such as big file uploads or assistant attachments, are first uploaded to private Blob storage. The server then restores the original request and runs it with the usual authentication, validation and limits.
+Some serverless hosts cap the request body of a function at a few megabytes. For those hosts, Reactive Resume can stage larger RPC requests, such as big file uploads or assistant attachments, in private blob storage first. The server then restores the original request and runs it with the usual authentication, validation and limits.
 
-The web app does this for you: it stages any RPC request body of 3 MiB or more, and sends smaller bodies directly. You only need this page if you write your own client for `/api/rpc` against a Vercel installation.
+This staging is not active on Cloudflare Workers, the supported deployment target: the prepare step always returns `404`, and clients send large requests directly.
+
+The web app does this for you: it stages any RPC request body of 3 MiB or more, and sends smaller bodies directly. You only need this page if you write your own client for `/api/rpc` and want to handle a `404` from the prepare step.
 
 ## Scope
 
-| Item                | Value                                                                                                                                                                                                                                                 |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Applies to          | `POST /api/rpc/...` only                                                                                                                                                                                                                              |
-| Does not apply to   | The REST API (`/api/openapi`) and MCP (`/mcp`). Their bodies stay subject to the 4.5 MB limit on Vercel.                                                                                                                                              |
-| Available on        | Installations running on Vercel with Blob storage (`STORAGE_BACKEND=blob`, the default there). Everywhere else the prepare step returns `404` and you send the request directly. Staging also needs Redis; without it the prepare step returns `503`. |
-| Maximum staged size | 160 MiB of serialized request bytes, including base64 and RPC framing                                                                                                                                                                                 |
-| Lifetimes           | Upload URL: 5 minutes. Staging reference: 10 minutes.                                                                                                                                                                                                 |
-| Use count           | One. The reference is used up as soon as a finalize request passes the user and path checks, whether the RPC call then succeeds or fails.                                                                                                             |
-| Rate limit          | 30 prepare requests per user per minute                                                                                                                                                                                                               |
+| Item                | Value                                                                                                                                                                                                                             |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Applies to          | `POST /api/rpc/...` only                                                                                                                                                                                                          |
+| Does not apply to   | The REST API (`/api/openapi`) and MCP (`/mcp`). Their bodies are sent directly.                                                                                                                                                   |
+| Available on        | Only on hosts that enable blob staging, which excludes Cloudflare Workers. Everywhere else the prepare step returns `404` and you send the request directly. Staging also needs Redis; without it the prepare step returns `503`. |
+| Maximum staged size | 160 MiB of serialized request bytes, including base64 and RPC framing                                                                                                                                                             |
+| Lifetimes           | Upload URL: 5 minutes. Staging reference: 10 minutes.                                                                                                                                                                             |
+| Use count           | One. The reference is used up as soon as a finalize request passes the user and path checks, whether the RPC call then succeeds or fails.                                                                                         |
+| Rate limit          | 30 prepare requests per user per minute                                                                                                                                                                                           |
 
 ## Protocol
 
@@ -47,7 +49,7 @@ Response `200`:
 { "id": "3f2b9c1e-6a0d-4a57-9d0a-3c1f7b8e2d44", "url": "https://..." }
 ```
 
-If you get `404`, the installation doesn't stage bodies (for example, it runs in Docker). Send the original request unchanged, and skip staging for later requests too.
+If you get `404`, the installation doesn't stage bodies (as on Cloudflare Workers). Send the original request unchanged, and skip staging for later requests too.
 
 ### 2. Upload
 
@@ -94,4 +96,4 @@ A reference can't be retried. If a finalize response is lost, check whether the 
 ## Related pages
 
 - [Using the API](/guides/using-the-api): the REST API, which most integrations should use.
-- [Deploying to Vercel](/self-hosting/vercel): hosting requirements, including Blob storage and Redis.
+- [Self-hosting on Cloudflare Workers](/self-hosting/cloudflare): the supported deployment, where this staging is inactive.

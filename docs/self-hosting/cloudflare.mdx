@@ -34,7 +34,7 @@ Durable Object requests, active duration, and SQLite storage have their own incl
 
 ## Before you start
 
-You need a Cloudflare account with Workers Paid and R2 enabled, Node.js 24, pnpm 12.11.2, and a PostgreSQL database reachable by Hyperdrive. Keep PostgreSQL TLS enabled. Run the commands below from the repository root.
+You need a Cloudflare account with Workers Paid and R2 enabled, Node.js 24, pnpm 12.16.1, and a PostgreSQL database reachable by Hyperdrive. Keep PostgreSQL TLS enabled. Run the commands below from the repository root.
 
 ```bash
 pnpm install --frozen-lockfile
@@ -80,8 +80,8 @@ Keep `AUTH_SECRET` and `ENCRYPTION_SECRET` across deployments. Changing them inv
    ```
 
 <Warning>
-  Do not copy Docker's `.env.example` or `.env.local` into Cloudflare. Container hostnames and S3 credentials select the
-  wrong services. Do not set `DATABASE_URL` or `REDIS_URL` on the Worker: its database connection comes from the
+  Do not copy `.env.example` or `.env.local` into Cloudflare. Their local container hostnames and S3 credentials select
+  the wrong services. Do not set `DATABASE_URL` or `REDIS_URL` on the Worker: its database connection comes from the
   Hyperdrive binding and its coordination comes from Durable Objects.
 </Warning>
 
@@ -171,4 +171,4 @@ The smoke test creates, migrates, and deletes a new disposable database. It cove
 
 ## Backups and upgrades
 
-Back up PostgreSQL and R2, and preserve both secrets separately. Redeploy the same Worker and bindings after applying migrations. Keep the Durable Object migration history in `wrangler.jsonc`; do not remove an applied tag. Rolling back code does not roll back PostgreSQL schema or file changes. Moving from Docker/Vercel does not copy data or uploads automatically.
+Back up PostgreSQL and R2, and preserve both secrets separately. Redeploy the same Worker and bindings after applying migrations. Keep the Durable Object migration history in `wrangler.jsonc`; do not remove an applied tag. Rolling back code does not roll back PostgreSQL schema or file changes. Moving from another host does not copy data or uploads automatically.

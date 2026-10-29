@@ -34,7 +34,7 @@ Copy the client ID and client secret. The callback must match exactly, including
 
 ## Configure the environment variables
 
-Set the client credentials and one way of finding the provider's endpoints, then restart Reactive Resume.
+Set the client credentials and one way of finding the provider's endpoints, then redeploy the Worker (`pnpm deploy:cloudflare`). Plain values go in `vars` in `wrangler.jsonc`; client secrets go in Wrangler secrets. The `.env` blocks below show the variable names and values for local development, where you restart `pnpm dev` after changing them.
 
 <Tabs>
   <Tab title="OIDC discovery (recommended)">
@@ -72,12 +72,12 @@ Set the client credentials and one way of finding the provider's endpoints, then
 | `OAUTH_PROVIDER_NAME`                                               | No                     | Label on the sign-in button and in **Settings**. Default `Custom OAuth`. |
 | `OAUTH_SCOPES`                                                      | No                     | Space-separated scopes. Default `openid profile email`.                  |
 
-All URLs must use `http` or `https`. On Docker, restart the container after changing `.env`; on Vercel, add the variables to the project and redeploy.
+All URLs must use `http` or `https`. On Cloudflare, put `OAUTH_CLIENT_SECRET` in a Wrangler secret (`pnpm exec wrangler secret put OAUTH_CLIENT_SECRET`) and the other values in `vars` in `wrangler.jsonc`, then redeploy.
 
 <Note>
   The sign-in button appears only when `OAUTH_CLIENT_ID` and `OAUTH_CLIENT_SECRET` are set together with
-  `OAUTH_DISCOVERY_URL` or all three manual endpoint URLs. If it is missing, check that configuration and restart the
-  server.
+  `OAUTH_DISCOVERY_URL` or all three manual endpoint URLs. If it is missing, check that configuration and redeploy the
+  Worker.
 </Note>
 
 ## Check that it works
@@ -203,7 +203,7 @@ Without it, existing users who sign in through your provider no longer match the
 
 - Set `APP_URL` to the exact public address people use, with `https` in production. Callback URLs, secure cookies, and trusted origins all come from it.
 - Only the `APP_URL` origin (plus `localhost` and `127.0.0.1` on port 3000) is trusted. Other domains pointing at the same installation aren't.
-- Behind a reverse proxy, pass the `Host` and `X-Forwarded-Proto` headers through unchanged.
+- Cloudflare passes the `Host` header and HTTPS scheme through to the Worker; no proxy configuration is needed.
 
 ## Troubleshooting
 
@@ -219,11 +219,12 @@ Without it, existing users who sign in through your provider no longer match the
   </Accordion>
   <Accordion title="Sign-in succeeds at the provider but you land on an error page or aren't signed in">
     Failed callbacks open the app's `/auth/error` page. The most common cause is an `APP_URL` that doesn't match the
-    real public address, for example `http://` behind a TLS proxy. Set `APP_URL` to the canonical `https` address and
-    restart.
+    real public address, for example `http://` instead of `https://`. Set `APP_URL` in `wrangler.jsonc` to the canonical
+    `https` address and redeploy.
   </Accordion>
   <Accordion title="The SSO button doesn't appear">
-    Both `OAUTH_CLIENT_ID` and `OAUTH_CLIENT_SECRET` must be set and non-empty. Restart after changing them.
+    Both `OAUTH_CLIENT_ID` and `OAUTH_CLIENT_SECRET` must be set and non-empty. Redeploy or update the secret after
+    changing them.
   </Accordion>
   <Accordion title='Sign-in fails with "account not linked"'>
     An account with the same email already exists, and its email address isn't verified in Reactive Resume. The person
@@ -251,5 +252,4 @@ Without it, existing users who sign in through your provider no longer match the
 ## Related pages
 
 - [Environment variables](/self-hosting/environment-variables): every variable the server reads.
-- [Self-hosting with Docker](/self-hosting/docker): where to put these variables in a container setup.
-- [Self-hosting on Vercel](/self-hosting/vercel): adding variables to a Vercel project.
+- [Self-hosting on Cloudflare](/self-hosting/cloudflare): where to put these variables (`vars` and Wrangler secrets).

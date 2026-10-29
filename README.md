@@ -1,7 +1,6 @@
 > [!IMPORTANT]
-> Reactive Resume now lives at **[`reactive-resume/reactive-resume`](https://github.com/reactive-resume/reactive-resume)** on GitHub.  
-> GHCR images publish to `ghcr.io/reactive-resume/reactive-resume`.  
-> Docker Hub stays at `amruthpillai/reactive-resume`.
+> Reactive Resume lives at **[`reactive-resume/reactive-resume`](https://github.com/reactive-resume/reactive-resume)** on GitHub.  
+> This fork deploys only to Cloudflare Workers. See the [Cloudflare guide](https://docs.rxresu.me/self-hosting/cloudflare).
 
 <div align="center">
   <a href="https://rxresu.me">
@@ -22,7 +21,6 @@
     <img src="https://img.shields.io/github/package-json/v/reactive-resume/reactive-resume?style=flat-square" alt="Reactive Resume Version">
     <img src="https://img.shields.io/github/stars/reactive-resume/reactive-resume?style=flat-square" alt="GitHub Stars">
     <img src="https://img.shields.io/github/license/reactive-resume/reactive-resume?style=flat-square" alt="License" />
-    <img src="https://img.shields.io/docker/pulls/amruthpillai/reactive-resume?style=flat-square" alt="Docker Pulls" />
     <a href="https://discord.gg/u9pAd3za9t"><img src="https://img.shields.io/discord/1173518977851473940?style=flat-square&label=discord" alt="Discord" /></a>
     <a href="https://crowdin.com/project/reactive-resume"><img src="https://badges.crowdin.net/reactive-resume/localized.svg?style=flat-square" alt="Crowdin" /></a>
   </p>
@@ -141,7 +139,7 @@ Feedback comes from fellow community members. Remove contact details and other p
 
 **Privacy and Control**
 
-- Self-host with Docker, Vercel, Cloudflare Workers, or a 1-click deploy on Hostinger
+- Self-host on Cloudflare Workers with R2 storage and PostgreSQL through Hyperdrive
 - No tracking or ads; export your account data or delete your account
 - Passkeys, two-factor authentication, and linked sign-in providers
 - Multiple interface languages, light/dark/system themes, and reduced-motion support
@@ -233,43 +231,45 @@ Feedback comes from fellow community members. Remove contact details and other p
 
 ## Quick Start
 
-Use the [hosted app](https://rxresu.me) to start writing, or build this checkout locally with Docker and Docker Compose:
+Use the [hosted app](https://rxresu.me) to start writing, or run this checkout locally. Local development uses Docker Compose only for PostgreSQL, Redis, and SeaweedFS (`compose.dev.yml`); the app itself runs on your host:
 
 ```bash
 # Clone the repository
 git clone --depth=1 https://github.com/reactive-resume/reactive-resume.git reactive-resume
 cd reactive-resume
 
-# Create your local configuration
-cp .env.example .env
-# Edit .env: set AUTH_SECRET and a separate ENCRYPTION_SECRET.
+# Install dependencies and create your local configuration
+pnpm install --frozen-lockfile
+cp .env.example .env.local
+# Edit .env.local: set AUTH_SECRET and a separate ENCRYPTION_SECRET, and use localhost hostnames.
 # Generate each secret with: openssl rand -hex 32
 
-# Build the app and start PostgreSQL, Redis, and SeaweedFS
-docker compose up -d --build
+# Start local PostgreSQL, Redis, and SeaweedFS
+docker compose -f compose.dev.yml up -d postgres redis seaweedfs seaweedfs_create_bucket
 
-# Open http://localhost:3000 in your browser
+# Start the app and open http://localhost:3000 in your browser
+pnpm dev
 ```
 
-This builds the checked-out source. For a deployment using published images, follow the [Docker guide](https://docs.rxresu.me/self-hosting/docker). For source development, see the [development setup guide](https://docs.rxresu.me/contributing/development).
+To deploy, follow the [Cloudflare guide](https://docs.rxresu.me/self-hosting/cloudflare). For source development, see the [development setup guide](https://docs.rxresu.me/contributing/development).
 
 ## Tech Stack
 
-| Category         | Technology                               |
-| ---------------- | ---------------------------------------- |
-| Web app          | React 19 SPA, TanStack Router, and Vite  |
-| Server           | Hono on Node.js 24 or Cloudflare Workers |
-| Language         | TypeScript                               |
-| Monorepo         | pnpm and Turborepo                       |
-| Database         | PostgreSQL with Drizzle ORM              |
-| API              | oRPC, OpenAPI REST, and MCP              |
-| Auth             | Better Auth                              |
-| Styling          | Tailwind CSS                             |
-| UI Components    | Base UI + shared UI package              |
-| State Management | Zustand + TanStack Query                 |
-| PDF rendering    | Forme, with PDF.js for the viewer        |
-| Rich text        | TipTap                                   |
-| Localization     | Lingui                                   |
+| Category         | Technology                              |
+| ---------------- | --------------------------------------- |
+| Web app          | React 19 SPA, TanStack Router, and Vite |
+| Server           | Hono on Cloudflare Workers              |
+| Language         | TypeScript                              |
+| Monorepo         | pnpm and Turborepo                      |
+| Database         | PostgreSQL with Drizzle ORM             |
+| API              | oRPC, OpenAPI REST, and MCP             |
+| Auth             | Better Auth                             |
+| Styling          | Tailwind CSS                            |
+| UI Components    | Base UI + shared UI package             |
+| State Management | Zustand + TanStack Query                |
+| PDF rendering    | Forme, with PDF.js for the viewer       |
+| Rich text        | TipTap                                  |
+| Localization     | Lingui                                  |
 
 ## Documentation
 
@@ -285,72 +285,31 @@ The full documentation lives at [docs.rxresu.me](https://docs.rxresu.me):
 | [Tracking job applications](https://docs.rxresu.me/guides/tracking-job-applications)                             | Saved jobs, stages, interviews, and insights |
 | [Exporting your resume](https://docs.rxresu.me/guides/exporting-your-resume)                                     | PDF, Word, Markdown, and JSON downloads      |
 | [API](https://docs.rxresu.me/guides/using-the-api) and [MCP](https://docs.rxresu.me/guides/using-the-mcp-server) | Connect scripts and external assistants      |
-| [Self-hosting](https://docs.rxresu.me/self-hosting/docker)                                                       | Deploy on your own infrastructure            |
-| [Migrating from v5](https://docs.rxresu.me/self-hosting/upgrading-to-v6)                                         | Migrations and integration changes           |
+| [Self-hosting](https://docs.rxresu.me/self-hosting/cloudflare)                                                   | Deploy on Cloudflare Workers                 |
 | [Development setup](https://docs.rxresu.me/contributing/development)                                             | Local development environment                |
 | [Project architecture](https://docs.rxresu.me/contributing/architecture)                                         | Codebase structure and package boundaries    |
 
 ## Self-Hosting
 
-Reactive Resume runs the same application everywhere: PostgreSQL for data, plus storage for uploads. Pick the option that fits how much you want to manage.
-
-| Option                                          | Best for                                      | Guide                                                                                                               |
-| ----------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| [Hostinger](#hostinger)                         | A ready-made VPS with no setup                | [Hostinger guide](https://docs.rxresu.me/self-hosting/hostinger)                                                    |
-| [Vercel](#vercel)                               | Serverless, with managed database and storage | [Vercel guide](https://docs.rxresu.me/self-hosting/vercel)                                                          |
-| [Cloudflare Workers](#cloudflare-workers)       | Workers, R2 and your own PostgreSQL           | [Cloudflare guide](https://docs.rxresu.me/self-hosting/cloudflare)                                                  |
-| [Docker and Kubernetes](#docker-and-kubernetes) | Your own server, homelab or cluster           | [Docker](https://docs.rxresu.me/self-hosting/docker) · [Kubernetes](https://docs.rxresu.me/self-hosting/kubernetes) |
+This fork deploys only to Cloudflare Workers: PostgreSQL through Hyperdrive for data, private R2 for uploads, Static Assets for the web app, and SQLite Durable Objects for coordination.
 
 > **PDF generation in v6** uses Forme in the browser and on the server. No Browserless, Chromium, or external print service is needed. Legacy `PRINTER_*` and `BROWSERLESS_*` environment variables can be removed.
-
-### Hostinger
-
-The quickest way to get going is a 1-click deploy on Hostinger, starting at $6.49/month. Their VPS plans include a ready-made Reactive Resume template that provisions the Docker environment and brings the app up for you, with weekly backups and a Docker manager UI included — so you can skip the setup entirely.
-
-<a href="https://www.hostg.xyz/aff_c?offer_id=48&amp;aff_id=232413&amp;url_id=6857">
-  <img src="https://assets.hostinger.com/vps/deploy.svg" alt="Deploy on Hostinger" width="148" height="32" />
-</a>
-
-See the [Hostinger guide](https://docs.rxresu.me/self-hosting/hostinger) for what the template sets up and what to configure afterwards, such as email, your own domain, and turning off sign-ups.
-
-### Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Freactive-resume%2Freactive-resume&project-name=reactive-resume&repository-name=reactive-resume&env=AUTH_SECRET%2CENCRYPTION_SECRET&envDescription=Generate+two+independent+secrets+with+openssl+rand+-hex+32.+Keep+these+values+across+deployments.&envLink=https%3A%2F%2Fdocs.rxresu.me%2Fself-hosting%2Fvercel&stores=%5B%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22storage%22%2C%22integrationSlug%22%3A%22neon%22%2C%22productSlug%22%3A%22neon%22%7D%2C%7B%22type%22%3A%22integration%22%2C%22protocol%22%3A%22storage%22%2C%22integrationSlug%22%3A%22upstash%22%2C%22productSlug%22%3A%22upstash-kv%22%7D%2C%7B%22type%22%3A%22blob%22%2C%22access%22%3A%22private%22%7D%5D)
-
-Vercel provisions Neon PostgreSQL, private Blob storage, and Upstash Redis through its deployment wizard. Supply two persistent secrets and use the **Services** framework preset. Static assets run in the frontend service, and Hono serves the application routes and APIs from the backend service. See the [Vercel guide](https://docs.rxresu.me/self-hosting/vercel) for setup, limits, and optional SMTP/OAuth configuration.
 
 ### Cloudflare Workers
 
 Cloudflare deployment requires **Workers Paid** and uses Static Assets, private R2 storage, SQLite Durable Objects, and PostgreSQL through Hyperdrive. Supply an existing PostgreSQL database and apply migrations before deployment. See the [Cloudflare guide](https://docs.rxresu.me/self-hosting/cloudflare) for setup and runtime limits.
 
-### Docker and Kubernetes
+Deploy manually with `pnpm deploy:cloudflare`, or let GitHub Actions do it: every push to `main` runs `.github/workflows/deploy-cloudflare.yml`, which applies migrations (when the optional `DATABASE_URL` secret is set) and then deploys the Worker. Add the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
 The application needs:
 
-- **PostgreSQL** — Accounts, documents, applications, and assistant conversations
-- **Upload storage** — A persistent local directory or an S3-compatible bucket, such as SeaweedFS
-- **Redis** (optional) — Shared coordination across instances and resumable assistant replies
-- **SMTP** (optional) — Verification and password-reset emails
-
-Published releases are available from Docker Hub and GitHub Container Registry (`latest` tracks the latest stable release):
-
-```bash
-# Docker Hub
-docker pull amruthpillai/reactive-resume:latest
-
-# GitHub Container Registry
-docker pull ghcr.io/reactive-resume/reactive-resume:latest
-```
-
-See the [Docker guide](https://docs.rxresu.me/self-hosting/docker) or [Kubernetes guide](https://docs.rxresu.me/self-hosting/kubernetes) for complete instructions. Running on a NAS? See the [Synology and UGREEN guides](https://docs.rxresu.me/self-hosting/nas).
+- **PostgreSQL** — Accounts, documents, applications, and assistant conversations (through Hyperdrive)
+- **Upload storage** — A private R2 bucket
+- **SMTP** (optional) — Verification and password-reset emails. Use port 465 or 587; Cloudflare blocks port 25
 
 ### Configuration
 
 Every setting is listed in the [environment variables reference](https://docs.rxresu.me/self-hosting/environment-variables). Self-hosters can also configure [shared AI and job-search services](https://docs.rxresu.me/self-hosting/job-search-and-ai) and [single sign-on](https://docs.rxresu.me/self-hosting/sso).
-
-### Upgrading from v5
-
-Back up your database and uploads and stop all v5 instances before applying v6 migrations. Old visual style rules require a manual conversion; API and MCP integrations also have changes. Follow [Migrating from v5](https://docs.rxresu.me/self-hosting/upgrading-to-v6).
 
 ## Support
 

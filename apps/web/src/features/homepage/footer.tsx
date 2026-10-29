@@ -35,7 +35,7 @@ const getColumns = (): { id: string; title: string; links: FooterLink[] }[] => [
 			{ label: t`Documentation`, href: "https://docs.rxresu.me" },
 			{ label: t`Changelog`, href: "https://docs.rxresu.me/changelog" },
 			{ label: t`Source code`, href: githubUrl },
-			{ label: t`Self-hosting`, href: "https://docs.rxresu.me/self-hosting/docker" },
+			{ label: t`Self-hosting`, href: "https://docs.rxresu.me/self-hosting/cloudflare" },
 		],
 	},
 	{

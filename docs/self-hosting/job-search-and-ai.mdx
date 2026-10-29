@@ -5,7 +5,7 @@ description: "Configure one optional Firecrawl, Tavily or Exa connection and an 
 
 Users can save pasted job descriptions, read supported public links and prepare resumes manually without adding
 API accounts. This guide adds optional keyword search, enhanced page reading and AI assistance to a working
-[Docker](/self-hosting/docker), [Kubernetes](/self-hosting/kubernetes) or [Vercel](/self-hosting/vercel) deployment.
+[Cloudflare Workers deployment](/self-hosting/cloudflare).
 
 | Service                  | What it does                                                                      | Required for                                  |
 | ------------------------ | --------------------------------------------------------------------------------- | --------------------------------------------- |
@@ -20,11 +20,15 @@ read supplied public URLs with the built-in reader or work from pasted text.
 
 ## 1. Choose shared services or personal keys
 
-For shared web access, set one provider and key on the Reactive Resume server:
+For shared web access, set one provider and key on the Reactive Resume Worker. Put the provider in `vars` in
+`wrangler.jsonc` and the key in a Wrangler secret:
 
-```dotenv
-WEB_ACCESS_PROVIDER="tavily" # firecrawl, tavily or exa
-WEB_ACCESS_API_KEY="replace-with-your-provider-key"
+```jsonc wrangler.jsonc
+"vars": { "WEB_ACCESS_PROVIDER": "tavily" } // firecrawl, tavily or exa
+```
+
+```bash
+pnpm exec wrangler secret put WEB_ACCESS_API_KEY
 ```
 
 **Settings → AI & developer → Web access** then says **Provided by the server**, and personal connection changes are
@@ -43,21 +47,27 @@ You can mix these choices, such as shared web access with personal AI keys. See 
 ## 2. Connect Firecrawl
 
 Follow the official [Firecrawl self-hosting guide](https://docs.firecrawl.dev/contributing/self-host) to deploy its
-API and supporting services. Use the release and Compose files recommended there. Reactive Resume connects to
-that service over HTTP.
+API and supporting services on a host of your choice. Reactive Resume connects to that service over HTTPS. Because the
+Worker runs with `global_fetch_strictly_public`, the service needs a public HTTPS address; private-network and
+`localhost` addresses are unreachable from Cloudflare. Protect it with a bearer key.
 
-Add the connection to **Reactive Resume's** environment:
+Add the connection to **Reactive Resume's** Worker configuration:
 
-```dotenv
-# Replace with the address reachable from the Reactive Resume server.
-WEB_ACCESS_PROVIDER="firecrawl"
-WEB_ACCESS_API_URL="http://firecrawl-api:3002"
-# Set only if your Firecrawl deployment requires a bearer key.
-# WEB_ACCESS_API_KEY="replace-with-your-firecrawl-key"
+```jsonc wrangler.jsonc
+"vars": {
+  "WEB_ACCESS_PROVIDER": "firecrawl",
+  // Replace with the public HTTPS address of your Firecrawl API.
+  "WEB_ACCESS_API_URL": "https://firecrawl.example.com"
+}
 ```
 
-Use the API base URL without `/v2`. A URL alone enables a keyless self-hosted service globally. Keep such a service
-private and follow Firecrawl's [production guidance](https://docs.firecrawl.dev/contributing/self-host#before-production).
+```bash
+# Set only if your Firecrawl deployment requires a bearer key.
+pnpm exec wrangler secret put WEB_ACCESS_API_KEY
+```
+
+Use the API base URL without `/v2`. A URL alone enables a keyless self-hosted service globally. Because it must be publicly reachable on Cloudflare,
+use a bearer key and follow Firecrawl's [production guidance](https://docs.firecrawl.dev/contributing/self-host#before-production).
 Keep its protections against private destination URLs, unsafe redirects and DNS rebinding enabled; job-posting URLs
 in Reactive Resume must point to public HTTPS destinations.
 
@@ -66,21 +76,16 @@ For Firecrawl Cloud, use its [quickstart](https://docs.firecrawl.dev/introductio
 `https://api.firecrawl.dev`. Tavily and Exa use fixed official endpoints and require a key. Supplying their own API URL
 is rejected. Incomplete web-access configuration fails startup.
 
-### Container networking and local development
+### Local development
 
-`firecrawl-api` above is an example network alias. Replace it with your service's actual name or alias. Containers in
-separate Compose projects need a [shared external network](https://docs.docker.com/compose/how-tos/networking/#use-an-existing-external-network).
-Inside a container, `localhost` points to that container; use the service's container port on a shared network.
-On Kubernetes or another platform, use an address reachable from the Reactive Resume server.
-
-For host-run local development, publish Firecrawl's container port `3002` as host port `3102` to avoid Reactive
-Resume's email preview on `3002`. Add `WEB_ACCESS_PROVIDER="firecrawl"` and
-`WEB_ACCESS_API_URL="http://localhost:3102"` to Reactive Resume's `.env.local`.
+For host-run local development (`pnpm dev`), you can run Firecrawl on your machine. Publish its API port `3002` as host
+port `3102` to avoid Reactive Resume's email preview on `3002`, and add `WEB_ACCESS_PROVIDER="firecrawl"` and
+`WEB_ACCESS_API_URL="http://localhost:3102"` to `.env.local`. A deployed Worker cannot reach `localhost`.
 
 ## 3. Search through SearXNG (optional)
 
 SearXNG can serve web search in two ways: Reactive Resume can query it directly, or your self-hosted Firecrawl can use
-it as its search backend. Either way, deploy SearXNG using its official [container installation guide](https://docs.searxng.org/admin/installation-docker.html).
+it as its search backend. Either way, deploy SearXNG on a host of your choice using its official [installation guide](https://docs.searxng.org/admin/installation.html).
 In its `settings.yml`, add `json` to the existing `search.formats` list, keeping other search settings:
 
 ```yaml
@@ -94,10 +99,10 @@ The [search settings reference](https://docs.searxng.org/admin/settings/settings
 
 ### Search directly from Reactive Resume
 
-Add the following to **Reactive Resume's** environment, using an address reachable from the Reactive Resume server:
+Add the following to **Reactive Resume's** `vars` in `wrangler.jsonc`, using a public HTTPS address reachable from the Worker:
 
-```dotenv
-WEB_SEARCH_SEARXNG_URL="http://searxng:8080"
+```jsonc wrangler.jsonc
+"vars": { "WEB_SEARCH_SEARXNG_URL": "https://searxng.example.com" }
 ```
 
 Use the base URL without `/search`; Reactive Resume appends it and requests JSON. Every web search then goes to SearXNG
@@ -126,18 +131,18 @@ SEARXNG_ENDPOINT="http://searxng:8080"
 # SEARXNG_CATEGORIES="general"
 ```
 
-Replace `searxng` with your service name or network alias. Use the base URL without `/search`: Firecrawl appends that
+Replace `searxng` with the address of your SearXNG service. Use the base URL without `/search`: Firecrawl appends that
 path and requests JSON, as shown in its [SearXNG adapter](https://github.com/firecrawl/firecrawl/blob/v2.11.162/apps/api/src/search/v2/searxng.ts).
 These variables belong to Firecrawl, not Reactive Resume.
 
 ### Check JSON output
 
-Restart SearXNG after changing settings, then restart Reactive Resume or recreate Firecrawl's services after changing
-their environment. To check JSON output, run this from a host or container that can reach SearXNG, replacing the
+Restart SearXNG after changing settings, then redeploy the Reactive Resume Worker or restart Firecrawl's services after
+changing their environment. To check JSON output, run this from a host that can reach SearXNG, replacing the
 address as needed:
 
 ```bash
-curl --get 'http://searxng:8080/search' \
+curl --get 'https://searxng.example.com/search' \
   --data-urlencode 'q=software engineer jobs' \
   --data-urlencode 'format=json'
 ```
@@ -151,12 +156,14 @@ For OpenAI, follow its [API quickstart](https://developers.openai.com/api/docs/q
 [API dashboard](https://platform.openai.com/api-keys), and enable API billing. API usage is
 [billed separately from ChatGPT subscriptions](https://help.openai.com/en/articles/9039756-managing-billing-settings-on-the-chatgpt-web-and-api-platform).
 
-Set these variables on **Reactive Resume**:
+Set the provider and model in `vars` in `wrangler.jsonc`, and the key as a Wrangler secret:
 
-```dotenv
-AI_PROVIDER="openai"
-AI_MODEL="gpt-5-mini"
-AI_API_KEY="replace-with-your-openai-api-key"
+```jsonc wrangler.jsonc
+"vars": { "AI_PROVIDER": "openai", "AI_MODEL": "gpt-5-mini" }
+```
+
+```bash
+pnpm exec wrangler secret put AI_API_KEY
 ```
 
 `gpt-5-mini` is an example; choose a model your API account can use. Check its
@@ -165,20 +172,20 @@ Resume's Assistant needs a supported model with tool calling. Leave `AI_BASE_URL
 for OpenAI's default endpoint. The app reads `AI_API_KEY`, not `OPENAI_API_KEY`.
 
 Other [supported providers](/guides/using-ai#supported-providers) use the same shared variables with their provider
-identifier and model. An OpenAI-compatible gateway also needs `AI_BASE_URL`. For a local model, see
-[Ollama setup](/self-hosting/examples#use-a-local-ai-model-with-ollama) and the
-[AI environment reference](/self-hosting/environment-variables#ai-and-redis). Local or private AI endpoints need
-`FLAG_ALLOW_UNSAFE_AI_BASE_URL=true`; enable it only where you trust every user. Ollama can omit `AI_API_KEY`.
+identifier and model. An OpenAI-compatible gateway also needs `AI_BASE_URL`. For the other shared settings, see the
+[AI environment reference](/self-hosting/environment-variables#ai-and-redis). A local model such as Ollama must be
+reachable at a public HTTPS address from the Worker, because Cloudflare blocks private-network fetches; on a local
+Node.js development server, local or private AI endpoints need `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true`, which you should
+enable only where you trust every user. Ollama can omit `AI_API_KEY`.
 
 The AI key belongs to Reactive Resume for this workflow. Web services receive search queries and selected public URLs;
 they do not need the AI-provider key or candidate resume data.
 
 ## 5. Apply settings and verify the workflow
 
-For the [Docker guide's setup](/self-hosting/docker), put Reactive Resume variables in `.env` and run
-`docker compose up -d reactive-resume`. The source repository's Compose service is named `reactive_resume` instead.
-For local development, edit `.env.local` and restart `pnpm dev`. On other platforms, update the server's environment
-and restart or redeploy it. Keep keys in server configuration or secret storage, never browser build variables.
+On Cloudflare, set plain values in `vars` in `wrangler.jsonc` and secrets with `wrangler secret put`, then redeploy with
+`pnpm deploy:cloudflare`. For local development, edit `.env.local` and restart `pnpm dev`. Keep keys in Wrangler secrets
+or server configuration, never browser build variables.
 
 1. Open **Settings → AI & developer → Web access**. The built-in reader should show **Active**. The selected web service
    should show its provider and ownership.
@@ -225,6 +232,6 @@ credentials. Do not commit credentials or shell output containing them.
 
 The same web connection supports [automatic role discovery](/guides/finding-roles-automatically). Users enable a search schedule in **Career → Today**. Interview briefings use AI separately, and users must enable their preparation schedule too. Work runs on the server while the browser is closed.
 
-Node.js and Docker run the scheduler in the long-running server. Vercel uses the checked-in cron configuration and requires `CRON_SECRET`; Cloudflare uses its Cron Trigger. Check platform limits and verify a due reminder in a dedicated test installation. See [Operating scheduled work](/contributing/career-platform#operate-scheduled-work) for setup, delivery and retry details.
+On Cloudflare, the scheduler is the once-per-minute Cron Trigger in `wrangler.jsonc`; no runner secret is needed. Verify a due reminder in a dedicated test installation. See [Operating scheduled work](/contributing/career-platform#operate-scheduled-work) for setup, delivery and retry details.
 
 Optional email copies require a verified user email, explicit user opt-in and working SMTP. In-app results stay available in Today. A successful health check does not establish that schedules or provider connections work.

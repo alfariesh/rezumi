@@ -138,8 +138,7 @@ function htmlResponse(html: string, headers: Record<string, string>, template = 
 		headers: {
 			...headers,
 			Link: [headers.Link, ...preloadLinks(template)].filter(Boolean).join(", "),
-			// Pages name the current build's assets, so a release purges this tag from Cloudflare's cache
-			// (.github/workflows/docker-publish.yml).
+			// Pages name the current build's assets, so a release can purge this tag from Cloudflare's cache.
 			"Cache-Tag": "html",
 			"Content-Security-Policy": contentSecurityPolicy(template),
 		},
@@ -213,7 +212,7 @@ function homepageStructuredData(origin: string): StructuredData {
 					"Public or password-protected sharing links",
 					"Cover letters and a job application tracker",
 					"Optional AI assistant with your own API key",
-					"Self-hosting with Docker",
+					"Self-hosting on Cloudflare",
 				],
 			},
 		],
@@ -285,7 +284,7 @@ export const serveWebDistStatic = env.CLOUDFLARE
 	? undefined
 	: serveStatic({
 			root: staticRoot,
-			// The Docker build writes brotli copies beside the text files and WASM (tooling/docker/precompress.mjs).
+			// Serves pre-compressed brotli copies of the text files and WASM when present.
 			precompressed: true,
 			onFound: (_path, context) => {
 				// Vite fingerprints everything under /assets, so a file there never changes.

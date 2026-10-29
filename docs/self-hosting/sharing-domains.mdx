@@ -3,7 +3,7 @@ title: "Sharing domains"
 description: "Serve public resume pages on an alias domain, enable users' own domains with DNS verification and HTTPS, and troubleshoot sharing after an upgrade."
 ---
 
-Use this guide when you operate a Reactive Resume server and want a shorter public address or want users to connect
+Use this guide when you operate a Reactive Resume Worker on Cloudflare and want a shorter public address or want users to connect
 their own domains. Ordinary public resume links work with `APP_URL` alone. Domain settings are optional.
 
 ## Choose which address you need
@@ -17,21 +17,24 @@ their own domains. Ordinary public resume links work with `APP_URL` alone. Domai
 
 An alias doesn't move accounts or create another database. A custom domain doesn't host the editor. Choose
 `ROOT_RESUME_ID` for a personal instance that only needs its own homepage; see
-[Show one resume at your root address](/self-hosting/examples#show-one-resume-at-your-root-address).
+the `ROOT_RESUME_ID` variable in the [environment reference](/self-hosting/environment-variables#server).
 
 ## Add an alias domain
 
-1. Point the alias domain's DNS to the same server as your main domain.
-2. Configure your reverse proxy to accept both hostnames, send both to Reactive Resume, and provide valid HTTPS
-   certificates for both. Preserve the incoming hostname so the app can distinguish them.
-3. Add the alias to the app's environment and recreate or redeploy the app:
+1. Add the alias hostname to the same Worker: in the Cloudflare dashboard open the Worker, then **Settings → Domains &
+   Routes**, and add it as a **Custom Domain**. The domain's DNS zone must be on Cloudflare. Cloudflare issues and
+   renews the HTTPS certificate for it. The Worker receives the incoming hostname unchanged, so the app can tell the two
+   addresses apart.
+2. Set the alias in `vars` in `wrangler.jsonc`, next to `APP_URL`, and redeploy with `pnpm deploy:cloudflare`:
 
-   ```dotenv
-   APP_URL=https://resume.example.com
-   APP_ALIAS_URL=https://cv.example.com
+   ```jsonc
+   "vars": {
+     "APP_URL": "https://resume.example.com",
+     "APP_ALIAS_URL": "https://cv.example.com"
+   }
    ```
 
-4. Open a published resume at `https://cv.example.com/<username>/<slug>`. It should show the same page as the main
+3. Open a published resume at `https://cv.example.com/<username>/<slug>`. It should show the same page as the main
    address. Open `/auth/login` on the alias; it should redirect to your main domain.
 
 The **Share** mode copies the alias when configured. Public pages, the homepage and marketing pages remain available
@@ -42,42 +45,35 @@ verified custom domain. Keep `APP_URL` as the sign-in origin; cookies, passkeys 
 
 ### Before you start
 
-- Control a public DNS hostname such as `domains.example.com`, pointing to your server. This is the CNAME target
-  users will see; it isn't itself a user's custom domain.
-- Have a reverse proxy capable of routing verified hostnames and issuing a certificate for each. The app supplies
-  router configuration for Traefik's HTTP provider; environment variables alone don't configure DNS or TLS.
-- Start from a working HTTPS deployment, such as the [Traefik example](/self-hosting/examples#traefik), with a named
-  backend service, HTTPS entry point and certificate resolver.
+- Have a hostname such as `domains.example.com` on a Cloudflare-managed zone, attached to the Worker as a **Custom
+  Domain**. This is the CNAME target users will see; it isn't itself a user's custom domain.
+- Have a way to deliver each verified user hostname to the Worker with a valid certificate. On Cloudflare this is
+  [Cloudflare for SaaS custom hostnames](https://developers.cloudflare.com/cloudflare-for-platforms/cloudflare-for-saas/),
+  with the target hostname above as the fallback origin. The app verifies ownership and serves the right resume by
+  hostname, but it does not call the Cloudflare API: you add each hostname to Cloudflare yourself, or with your own
+  automation. Environment variables alone don't configure DNS or TLS.
+
+<Note>
+  The app's built-in router endpoint (`/api/internal/traefik`) returns Traefik-format configuration and is not used on
+  Cloudflare. Without a provider polling it, the background DNS rechecks described under [Keep domains
+  working](#keep-domains-working) do not run, so check a domain with **Check DNS** after DNS changes.
+</Note>
 
 ### Set the app's environment
 
-```dotenv
-CUSTOM_DOMAIN_TARGET=domains.example.com
-CUSTOM_DOMAIN_PROVIDER_SECRET=<a-generated-secret-of-at-least-32-characters>
+Add the target to `vars` in `wrangler.jsonc`, then store a secret for the controls to unlock:
+
+```jsonc
+"vars": { "CUSTOM_DOMAIN_TARGET": "domains.example.com" }
 ```
 
-Use a hostname for `CUSTOM_DOMAIN_TARGET`, without a scheme, path or port. Generate the provider secret in your
-secret manager, pass it to both the app and proxy, and recreate the app. Both variables must be set before the
-custom-domain controls become available on web and mobile. Keep the secret out of URLs, public configuration and logs.
-
-### Connect the reverse proxy
-
-Configure Traefik's HTTP provider to poll the app's endpoint, passing your deployment's own names:
-
-```text
-GET /api/internal/traefik?service=reactive-resume%40docker&entryPoint=websecure&certResolver=letsencrypt
-X-Provider-Secret: <the-same-provider-secret>
+```bash
+openssl rand -hex 32 | pnpm exec wrangler secret put CUSTOM_DOMAIN_PROVIDER_SECRET
 ```
 
-The example refers to the `reactive-resume` service from the Docker provider. Replace the service, entry point and
-resolver with your actual names. Use an app URL reachable from the proxy, and set the header in the provider's
-configuration. The endpoint returns only routers; the backend service, entry point, certificate resolver and
-HTTP-to-HTTPS redirect must already exist in your proxy configuration.
-
-An authenticated request returns JSON with `http.routers`. Before any user verifies a domain, an empty router map
-is expected. Missing or incorrect provider credentials return `404`. Invalid deployment names return `400`.
-Allow the proxy to reach the endpoint while keeping its credentials private. Continue following your deployment's
-[trusted-proxy configuration](/self-hosting/environment-variables) for client IP handling.
+Use a hostname for `CUSTOM_DOMAIN_TARGET`, without a scheme, path or port. Redeploy after changing `vars`. Both settings
+must be present before the custom-domain controls become available on web and mobile. The secret is only checked on the
+Traefik-format endpoint, which Cloudflare doesn't use; keep it out of URLs, public configuration and logs anyway.
 
 ### Verify one domain end to end
 
@@ -95,8 +91,8 @@ Allow the proxy to reach the endpoint while keeping its credentials private. Con
    and hides the target addresses, use DNS-only records for this check.
 
 4. Select **Check DNS**. Wait for DNS propagation and try again if the records aren't visible yet.
-5. After verification, allow the app's hostname cache (up to a minute), your proxy's next provider poll and certificate
-   issuance to complete. Open `https://<custom-domain>/` from a signed-out browser.
+5. After verification, add the hostname to Cloudflare for SaaS (see above), then allow the app's hostname cache (up to a
+   minute) and certificate issuance to complete. Open `https://<custom-domain>/` from a signed-out browser.
 6. Check that the primary resume appears, its password and contact settings apply, and its PDF downloads follow
    **Visitors can download the PDF**. Check HTTPS separately: successful DNS verification doesn't prove a certificate
    was issued.
@@ -107,7 +103,7 @@ Paths other than `/`, public PDF routes and favicons redirect to the main applic
 
 ### Keep domains working
 
-Leave the ownership TXT and routing records in place. Provider polling triggers background rechecks for verified
+Leave the ownership TXT and routing records in place. With a router provider polling the app, background rechecks run for verified
 domains not checked within a day. After a domain's DNS fails verification continuously for seven days, its verification
 and router are removed. Restoring DNS and choosing **Check DNS** reconnects it. Without provider polling, those
 background rechecks don't run.
@@ -119,7 +115,7 @@ public resume addresses keep working. A hostname may remain in the app's cache f
 ## Upgrade an existing installation
 
 v6.0.7 adds a `custom_domain` table and the `show_in_search_engines`, `hide_contact_details` and `is_primary` resume
-columns. Back up your database, then start the new server so startup migrations run. Deploy the backend before
+columns. Back up your database, then run `pnpm --filter @reactive-resume/db db:migrate` before deploying the new Worker. Deploy the backend before
 mobile updates that use the new sharing controls.
 
 Existing resumes retain public/private status and download settings. Search indexing and contact hiding default
@@ -128,24 +124,23 @@ addresses longer than 64 characters. New or changed addresses use lowercase lett
 single dashes, up to 64 characters. A renamed address redirects for 30 days.
 
 No new domain variables are required if you keep using your main address. Existing public links now show responsive
-HTML resume pages; the public PDF remains a separate download. Review your proxy rules so both resume paths and
-their `/api/resumes/…` requests reach the app. If you maintain an API client, see
+HTML resume pages; the public PDF remains a separate download. Check that your Worker routes send both resume paths and
+their `/api/resumes/…` requests to the app. If you maintain an API client, see
 [sharing API behavior](/guides/using-the-api#public-sharing-settings).
 
 ## Troubleshoot
 
 | Symptom                                   | Check                                                                                                                                                    |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Your domain** is missing                | Set both custom-domain variables and restart the app.                                                                                                    |
+| **Your domain** is missing                | Set both custom-domain settings and redeploy the Worker.                                                                                                 |
 | **Check DNS** says records aren't visible | Verify the exact TXT name/value, the CNAME target or all A/AAAA addresses, and DNS propagation. Keep DNS-only routing where a proxy hides those records. |
-| Domain is connected but HTTPS fails       | Check the HTTP provider's response, service name, polling, certificate resolver and certificate challenge reachability.                                  |
+| Domain is connected but HTTPS fails       | Check that the hostname is added in Cloudflare for SaaS, its certificate status, and that the fallback origin is your target hostname.                   |
 | Domain opens an unavailable page          | Publish a resume and make it primary; also check whether it is in Trash.                                                                                 |
-| Alias opens the wrong site                | Route the alias to the same backend, preserve its hostname and issue its certificate.                                                                    |
+| Alias opens the wrong site                | Attach the alias as a Custom Domain on the same Worker and check its certificate.                                                                        |
 | Owner visit is counted                    | Sign-in cookies belong to the main origin; an alias or custom domain can see an anonymous visitor.                                                       |
 
 ## Related pages
 
 - [Sharing your resume as a web page](/guides/sharing-your-resume-publicly): the user's publishing and privacy controls.
-- [Environment variables](/self-hosting/environment-variables): domain and proxy settings.
-- [Deployment examples](/self-hosting/examples): working HTTPS baselines.
-- [Self-hosting with Docker](/self-hosting/docker): upgrades and backups.
+- [Environment variables](/self-hosting/environment-variables): domain settings.
+- [Self-hosting on Cloudflare](/self-hosting/cloudflare): bindings, secrets, upgrades and backups.

@@ -3,8 +3,9 @@
 The **Mobile release** GitHub Actions workflow builds Android on Blacksmith Linux and
 iOS on Blacksmith Apple Silicon macOS. Expo Prebuild generates native projects; Gradle
 and Xcode compile them; Fastlane signs and optionally uploads them. It does not call
-EAS Build or EAS Submit. EAS Update still delivers compatible OTA updates through the
-existing Docker release workflow.
+EAS Build or EAS Submit. EAS Update still delivers compatible OTA updates. `mobile-ota-update.yml` was a
+`workflow_call` from the Docker publish workflow, which has been deleted; nothing triggers
+it today.
 
 Setup verified on **2026-10-21**: all eleven signing/upload secrets were copied from
 existing EAS credentials into repository Actions secrets; the existing `EXPO_TOKEN`
@@ -180,15 +181,15 @@ are excluded from Expo's normalized config fingerprint. Native project output an
 generated Forme binaries remain excluded through `fingerprint.config.js`; reviewed
 native sources and binary pins still determine compatibility.
 
-After the first store-installed Blacksmith build, publish a matching OTA update through
-the normal Docker release path, download it, restart the app and verify saved drafts on
+After the first store-installed Blacksmith build, publish a matching OTA update (the
+`mobile-ota-update.yml` workflow is currently not triggered by anything), download it, restart the app and verify saved drafts on
 both platforms. A native change requires a new store binary. Existing binaries keep
 receiving updates for their compatible runtime; never force a runtime match.
 
 EAS Observe instrumentation remains bundled. However, Expo currently supports native
 embedded-bundle source-map uploads only for builds on EAS Build servers, so the new
 embedded bundles do not have that managed symbolication/build-dashboard linkage.
-Keep the generated maps/symbols for debugging. The Docker workflow still uses
+Keep the generated maps/symbols for debugging. `mobile-ota-update.yml` still uses
 `eas update --upload-source-maps`, preserving source-map uploads for OTA bundles.
 No new monitoring service is introduced.
 

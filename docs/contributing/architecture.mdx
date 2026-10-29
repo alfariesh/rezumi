@@ -31,22 +31,21 @@ flowchart TD
   MCP --> API
   AuthRoutes --> Auth["packages/auth (Better Auth)"]
   API --> DB["packages/db (Drizzle)"] --> Postgres[("PostgreSQL")]
-  API --> Storage[("Local disk, S3, or Vercel Blob")]
-  API --> Redis[("Redis (optional)")]
+  API --> Storage[("R2 (Workers), local disk, or S3")]
+  API --> Redis[("Redis (optional; Durable Objects on Workers)")]
   API --> ServerPDF["@reactive-resume/pdf/server"]
 ```
 
 ### How it runs
 
 - **Development.** `pnpm dev` starts Vite on `PORT` (default `3000`), the Hono server on `SERVER_PORT` (default `3001`), and the email template preview on port `3002`. Vite proxies `/api`, `/mcp`, `/uploads`, `/.well-known`, and `/schema.json` to Hono, so you always open `http://localhost:3000`.
-- **Docker.** The production image runs one Node.js process on port `3000`. Hono mounts the API, auth, MCP, and static routes, then serves the built web app.
-- **Vercel.** One project deploys two services: `frontend` serves the static web build from the CDN, and `backend` runs the same Hono app in a Node.js Function. See [Deployment checks](/contributing/deployment-checks).
+- **Cloudflare Workers.** Production runs as a single Worker built by `tooling/cloudflare/build.mjs` from `apps/server/src/cloudflare`. Workers Static Assets serves the built web app, and the Worker runs the same Hono app for the API, auth, MCP, upload, and dynamic HTML routes. PostgreSQL connects through the Hyperdrive binding, files live in R2, and SQLite Durable Objects replace Redis for shared rate limits, live updates, and cancellation. See [Self-hosting on Cloudflare](/self-hosting/cloudflare) and [Deployment checks](/contributing/deployment-checks).
 
 There is no request-time React server rendering. The web build prerenders the marketing homepage for each locale, and `apps/server/src/static/web.ts` serves HTML shells with OpenGraph, canonical, and JSON-LD metadata injected.
 
 ### What happens at startup
 
-The server checks the environment, applies database migrations, and verifies the migrated schema before it initializes auth and accepts traffic. With `STRICT_SCHEMA_CHECK=true`, schema drift stops the server; otherwise it logs the drift and continues.
+The Node.js server (local development and `pnpm start`) checks the environment, applies database migrations, and verifies the migrated schema before it initializes auth and accepts traffic. With `STRICT_SCHEMA_CHECK=true`, schema drift stops the server; otherwise it logs the drift and continues. The Cloudflare Worker does not run migrations or this schema check: apply migrations with `pnpm --filter @reactive-resume/db db:migrate` before each deployment, which the deploy workflow does for you.
 
 ## Workspace map
 
@@ -117,7 +116,7 @@ After you change a shared contract, an export, or an import path, run `pnpm exec
 
 `apps/web/src/router.tsx` creates the router context with `queryClient`, `orpc`, `theme`, `locale`, `session`, and `flags`. Read these from route context instead of fetching them again. Never edit `routeTree.gen.ts` by hand; Vite regenerates it when you add or rename a route.
 
-The oRPC client in `apps/web/src/libs/orpc/client.ts` calls `/api/rpc` with credentials. On Vercel, `apps/web/src/libs/orpc/fetch.ts` stages large request bodies through Blob storage.
+The oRPC client in `apps/web/src/libs/orpc/client.ts` calls `/api/rpc` with credentials. `apps/web/src/libs/orpc/fetch.ts` adds the client time zone and stages very large request bodies through `/api/storage/stage` when a deployment offers that endpoint; on Cloudflare the endpoint is absent, so large bodies are sent directly.
 
 When you add a public marketing route, also update its server fallback and SEO handling in `apps/server/src/static/web.ts`. Vite's dev fallback can hide a production 404.
 
@@ -176,5 +175,5 @@ A letter-only document prints no resume header unless `renderOptions.includeCove
 ## Related pages
 
 - [Development setup](/contributing/development): run the app locally and learn the everyday commands.
-- [Deployment checks](/contributing/deployment-checks): how CI verifies the Vercel build and how to smoke-test an installation.
+- [Deployment checks](/contributing/deployment-checks): how CI verifies the Cloudflare Worker bundle and how deployments are published.
 - [Contributing translations](/contributing/translations): Crowdin, the glossary, and catalog commands.

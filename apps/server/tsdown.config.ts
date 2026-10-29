@@ -102,8 +102,6 @@ const agentSkillAssetsPlugin: TsdownPlugin = {
 export default defineConfig({
 	entry: {
 		index: "src/index.ts",
-		vercel: "src/vercel.ts",
-		"prepare-deployment": "src/prepare-deployment.ts",
 		"migrate-legacy-styles": "src/migrate-legacy-styles.ts",
 	},
 	// Keep import.meta.url-based asset lookup adjacent to the entrypoints.

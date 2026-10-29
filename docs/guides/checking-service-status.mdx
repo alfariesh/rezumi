@@ -53,11 +53,10 @@ If you can reproduce a bug, [open an issue](https://github.com/reactive-resume/r
 ## If you run your own copy
 
 The status page only covers rxresu.me. A self-hosted copy reports its own health at `/api/health` on your address, for
-example `https://resume.example.com/api/health`. It returns `healthy` when the database, file storage and (if you use it)
-Redis are working, and an HTTP `503` error when any of them fails. See [Self-hosting with Docker](/self-hosting/docker) for setup and
-health checks.
+example `https://resume.example.com/api/health`. It returns `healthy` when the database and file storage are working, and an HTTP `503` error when either fails. See
+[Self-hosting on Cloudflare Workers](/self-hosting/cloudflare) for setup and health checks.
 
 ## Help keep the service running
 
 Reactive Resume is free and has no ads or investors, so busy periods can still slow it down. If you need guaranteed
-availability, you can [host your own copy](/self-hosting/docker).
+availability, you can [host your own copy](/self-hosting/cloudflare).

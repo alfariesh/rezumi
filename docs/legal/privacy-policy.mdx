@@ -89,7 +89,7 @@ If you upload files, the Service stores them either:
 
 - On the **local filesystem** of the server (default: under a `data/` directory), or
 - In **S3-compatible object storage**, if configured by the Service Operator, or
-- In **Vercel Blob** storage, when the Service runs on Vercel
+- In a private **Cloudflare R2** bucket, when the Service runs on Cloudflare Workers
 
 Depending on configuration, uploaded files may be publicly accessible (for example, some S3 configurations may default to public read access for uploaded objects). The Service Operator is responsible for selecting appropriate access controls for uploads.
 
@@ -172,7 +172,7 @@ When you download a PDF from the editor, the Service renders the document direct
 
 ### Storage providers (optional)
 
-If configured, uploaded files may be stored in an S3-compatible provider or in Vercel Blob. In that case, the storage provider processes and stores file data on behalf of the Service Operator.
+If configured, uploaded files may be stored in an S3-compatible provider or in Cloudflare R2. In that case, the storage provider processes and stores file data on behalf of the Service Operator.
 
 ### OAuth providers (optional)
 

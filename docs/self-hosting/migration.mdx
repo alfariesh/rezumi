@@ -3,7 +3,7 @@ title: "Migrating from v4"
 description: "Move users and resumes from a self-hosted Reactive Resume v4 instance to the current version, by importing resumes one by one or with the migration scripts."
 ---
 
-Reactive Resume v4 used a different database schema, so you can't upgrade a v4 installation in place. Instead, you set up a new installation next to it and copy your users and resumes across. This page covers that move. To upgrade an existing v5 installation, see [Migrating from v5](/self-hosting/upgrading-to-v6) instead.
+Reactive Resume v4 used a different database schema, so you can't upgrade a v4 installation in place. Instead, you set up a new installation next to it and copy your users and resumes across. This page covers that move.
 
 <Warning>
   Keep your v4 instance running until every user and resume is in the new installation and you've checked the result.
@@ -16,7 +16,7 @@ You need:
 
 - Your running v4 instance, and a recent backup of its PostgreSQL database.
 - Access to the v4 database (the source) and to a new, empty PostgreSQL database for the new installation (the target).
-- A plan for the new installation. [Self-hosting with Docker](/self-hosting/docker) is the usual choice.
+- A plan for the new installation: a [Cloudflare Workers deployment](/self-hosting/cloudflare) with a PostgreSQL database reachable through Hyperdrive.
 
 ## Choose a method
 
@@ -43,12 +43,12 @@ The current version reads v4 JSON exports directly and converts them.
 
 ## Run the migration scripts
 
-The scripts live in the repository at tag `v5.0.20`, the last release that includes them. They were written against the database schema of that release, so you create the target database with that release first, run the scripts, and only then start the current version, which brings the data forward with its own migrations.
+The scripts live in the repository at tag `v5.0.20`, the last release that includes them. They were written against the database schema of that release, so you create the target database with that release first, run the scripts, and only then apply the current release's migrations, which bring the data forward.
 
 <Warning>
   Don't run the scripts against a database that a newer release has already set up. They don't fill in columns added
-  later (such as the sign-in `issuer` added in v5.2.8), so migrated users could fail to sign in. Starting the current
-  version after the scripts fills those columns in.
+  later (such as the sign-in `issuer` added in v5.2.8), so migrated users could fail to sign in. Applying the current
+  migrations after the scripts fills those columns in.
 </Warning>
 
 ### Prepare the scripts
@@ -133,9 +133,15 @@ It ends with a summary of resumes created, resumes skipped, and errors.
   stopping it. After an interruption, retain the progress and ID-map files and verify the last batch before resuming.
 </Note>
 
-### Start the current version
+### Apply current migrations and deploy
 
-Point a current Reactive Resume installation at the target database and start it. On startup it applies every migration since `v5.0.20`, which also fills in the new columns for the migrated users. Watch the logs for `Database migrations completed`.
+Point a current Reactive Resume checkout at the target database and apply the current migrations before you deploy. The Cloudflare Worker does not run migrations itself, so from the current repository run:
+
+```bash
+DATABASE_URL="postgresql://user:password@host:5432/reactive_resume" pnpm --filter @reactive-resume/db db:migrate
+```
+
+This applies every migration since `v5.0.20`, which also fills in the new columns for the migrated users. Then deploy the Worker with its Hyperdrive binding pointing at the same database.
 
 ## After the migration
 
@@ -144,7 +150,7 @@ Point a current Reactive Resume installation at the target database and start it
   <Step title="Test the essentials">
     Download a resume as PDF, and sign in with email and password and with each social provider you use.
   </Step>
-  <Step title="Switch traffic">Point your DNS or reverse proxy at the new installation.</Step>
+  <Step title="Switch traffic">Point your DNS at the new Worker, for example by moving your custom domain to it.</Step>
   <Step title="Retire v4">After a grace period with no problems, shut down the v4 instance.</Step>
 </Steps>
 
@@ -155,8 +161,8 @@ Point a current Reactive Resume installation at the target database and start it
     People who signed up with email and password keep their password. No reset is needed.
   </Accordion>
   <Accordion title="Profile pictures and images">
-    The database stores references to pictures, not the files. Give the new installation access to the same storage (for
-    example the same S3 bucket), or people re-upload their pictures.
+    The database stores references to pictures, not the files. Files live in the new installation's R2 bucket and are
+    not copied automatically. Copy the objects across yourself, or people re-upload their pictures.
   </Accordion>
   <Accordion title="Social and custom OAuth sign-in">
     Configure the same providers with the same client IDs in the new installation. Custom OAuth now uses a different
@@ -227,8 +233,8 @@ Contributors can rehearse the comparison with `tooling/recovery/compare-resume.t
     a recovered resume. Keep the source export and import it by hand once you've confirmed it's valid.
   </Accordion>
   <Accordion title="Migrated users can't sign in">
-    Check that you started the current version against the target database after the scripts, so its migrations ran. The
-    startup log shows `Database migrations completed`.
+    Check that you ran `pnpm --filter @reactive-resume/db db:migrate` from the current repository against the target
+    database after the scripts, so the current migrations were applied.
   </Accordion>
   <Accordion title="The migration is slow">
     The scripts work in batches to spare the databases. Run them off-peak, give both databases enough resources, or

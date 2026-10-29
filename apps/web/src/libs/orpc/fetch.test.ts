@@ -55,7 +55,7 @@ describe("RPC fetch", () => {
 		expect(headers.get("x-client-timezone")).toBe(Intl.DateTimeFormat().resolvedOptions().timeZone);
 	});
 
-	it("sends large requests directly once staging is unavailable on Docker", async () => {
+	it("sends large requests directly once the staging endpoint is unavailable", async () => {
 		fetchMock.mockResolvedValueOnce(new Response("Not Found", { status: 404 })).mockResolvedValue(new Response("ok"));
 		const { rpcFetch } = await import("./fetch");
 		await rpcFetch(rpcUrl, { method: "POST", body: largeBody });

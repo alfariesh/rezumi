@@ -99,7 +99,7 @@ Cloudflare Web Analytics beacon allowed in `script-src`. The zone settings that 
 | --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | 1   | Precompress text assets with brotli at build time; `precompressed: true` in `serveWebDistStatic`                                                                                 | Docker without a CDN: −15% first-load JS/CSS, −26% WASM, origin CPU per first load ~58 → 21 ms        | build script, `apps/server/src/static/web.ts`           |
 | 2   | `Cache-Control: public, max-age=86400, stale-while-revalidate=604800` for non-hashed public files, plus 304s                                                                     | Returning visitors stop re-downloading up to ~2.6 MB of homepage images per release                   | `web.ts` `onFound`                                      |
-| 3   | `headers` for the Vercel frontend and a `_headers` file for Workers: immutable `/assets/*`                                                                                       | Removes ~46 revalidations per repeat load on those targets                                            | `vercel.json`, `tooling/cloudflare/build.mjs`           |
+| 3   | a `_headers` file for Workers (and, then, the Vercel frontend): immutable `/assets/*`                                                                                            | Removes ~46 revalidations per repeat load on those targets                                            | `tooling/cloudflare/build.mjs`                          |
 | 4   | Start the pdf.js worker with the preview, not after the first PDF                                                                                                                | Cold PDF-to-visible 0.90 → 0.34 s                                                                     | `features/resume/preview`                               |
 | 5   | Stop the second signed-out session check on startup and on hover preloads, keeping the "signing in elsewhere shows on next navigation" contract                                  | ~0.2 s per signed-out load                                                                            | `libs/root-context.ts:23`                               |
 | 6   | Dashboard route `loader` prefetching its existing query; start root context earlier (preload hints or inline flags)                                                              | Dashboard warm 1.23 → 0.89 s, cold 2.28 → 1.92 s (both, measured what-if)                             | `routes/dashboard/index.tsx`, `main.tsx`, server shell  |
@@ -151,8 +151,6 @@ the modern pdf.js build (−36 KB, breaks older Safari); removing the `framework
 - **Pictures blocked on rx.cv and custom domains.** Uploads send `Cross-Origin-Resource-Policy: same-site`
   (`apps/server/src/static/uploads.ts:56`), so Chromium blocks them on other sites (`ERR_BLOCKED_BY_RESPONSE`).
   Reproduced locally by the auditor; not checked live. Public pictures need `cross-origin`.
-- **Vercel: OG cards and resume sitemaps 404.** `/cards/*.png` and `/sitemaps/*.xml` match the file-extension rewrite
-  to the static `frontend` service in `vercel.json`. From reading the config; not tested on a deployment.
 - The welcome email's logo is an SVG, which Gmail and Outlook do not render.
 - Unreferenced: `public/fonts/{fira-sans-condensed-500,ibm-plex-serif-400,ibm-plex-serif-600}.ttf` (613 KB),
   `public/opengraph/logo.svg` and `features.jpg` (recompressed here, not deleted, in case of external links), the
@@ -164,8 +162,8 @@ the modern pdf.js build (−36 KB, breaks older Safari); removing the `framework
 Revisit when all of these hold: a concrete need beyond static marketing HTML and Hono's resume pages (many dynamic
 public pages, or data-rich views that benefit from server reads); a native-React pilot beats the optimized current
 baseline on `/`, an RTL locale, the dashboard, a large resume in the builder and a public resume (p75 FCP/LCP,
-interaction readiness, transferred JS and serialized data, server CPU and cold starts); Docker, Vercel Services and
-Cloudflare Workers pass runtime gates; hydration, locale, theme, CSP and auth are proven; and the custom prerender and
+interaction readiness, transferred JS and serialized data, server CPU and cold starts); Cloudflare Workers
+passes runtime gates; hydration, locale, theme, CSP and auth are proven; and the custom prerender and
 SEO code is deleted rather than kept beside Start. Keep oRPC, Better Auth, MCP and the mobile API contracts either way;
 Start server functions must not become a mobile protocol. Router's own SSR utilities are a smaller path if only the
 marketing pages need hydration.
@@ -176,5 +174,5 @@ marketing pages need hydration.
   Rerun with an API key before ranking by real-user impact.
 - Safari/WebKit (image `srcset` choice, hidden lazy footer image), real devices and Firefox interaction timings.
 - Cloudflare zone settings were inferred from response headers; the zone configuration itself was not inspected.
-- Vercel and Workers behaviour came from documentation and the installed preset source, not a live deployment.
+- Workers behaviour came from documentation and the installed preset source, not a live deployment.
 - Builder and mobile picker image bytes come from code reading plus the browser cache model, not a captured session.

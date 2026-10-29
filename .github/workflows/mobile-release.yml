@@ -227,7 +227,7 @@ jobs:
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           script: |
-            const { requireSuccessfulCI } = await import(`${process.env.GITHUB_WORKSPACE}/tooling/docker/check-ci.mjs`);
+            const { requireSuccessfulCI } = await import(`${process.env.GITHUB_WORKSPACE}/tooling/ci/check-ci.mjs`);
             await requireSuccessfulCI({ github, repo: context.repo, sha: context.sha });
       - name: Set up Node.js
         uses: actions/setup-node@v7
