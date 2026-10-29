@@ -49,5 +49,22 @@ jobs:
         if: ${{ env.DATABASE_URL != '' }}
         run: pnpm --filter @rezumi/db db:migrate
 
-      - name: Build and deploy
-        run: pnpm deploy:cloudflare
+      - name: Build
+        run: pnpm build:cloudflare
+
+      # Cloudflare validates the Worker's startup CPU time on upload and the Worker sits close to the limit, so the
+      # same bundle is accepted or rejected (error 10021) from one attempt to the next. Retry only that error; a
+      # rejected version is never activated, so production keeps serving the previous one meanwhile.
+      - name: Deploy
+        shell: bash
+        run: |
+          for attempt in 1 2 3; do
+            if pnpm exec wrangler deploy 2>&1 | tee "$RUNNER_TEMP/deploy.log"; then
+              exit 0
+            fi
+            grep -q "10021" "$RUNNER_TEMP/deploy.log" || exit 1
+            echo "::warning::Worker startup CPU limit hit (attempt $attempt of 3)"
+            sleep 15
+          done
+          echo "::error::Worker failed the startup CPU limit validation 3 times"
+          exit 1
