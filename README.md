@@ -25,8 +25,6 @@
     <img src="https://img.shields.io/docker/pulls/amruthpillai/reactive-resume?style=flat-square" alt="Docker Pulls" />
     <a href="https://discord.gg/u9pAd3za9t"><img src="https://img.shields.io/discord/1173518977851473940?style=flat-square&label=discord" alt="Discord" /></a>
     <a href="https://crowdin.com/project/reactive-resume"><img src="https://badges.crowdin.net/reactive-resume/localized.svg?style=flat-square" alt="Crowdin" /></a>
-    <a href="https://github.com/sponsors/AmruthPillai"><img src="https://img.shields.io/github/sponsors/AmruthPillai?style=flat-square&label=sponsors" alt="Sponsors" /></a>
-    <a href="https://opencollective.com/reactive-resume/donate"><img src="https://img.shields.io/opencollective/backers/reactive-resume?style=flat-square&label=donations" alt="Donations" /></a>
   </p>
 
   <p><sub>Sponsored by</sub></p>
@@ -356,18 +354,7 @@ Back up your database and uploads and stop all v5 instances before applying v6 m
 
 ## Support
 
-Reactive Resume is and always will be free and open source. If it has helped you land a job or saved you time, please consider supporting continued development:
-
-<p>
-  <a href="https://github.com/sponsors/AmruthPillai">
-    <img src="https://img.shields.io/badge/GitHub%20Sponsors-Support-ea4aaa?style=flat-square&logo=github-sponsors" alt="GitHub Sponsors" />
-  </a>
-  <a href="https://opencollective.com/reactive-resume/donate">
-    <img src="https://img.shields.io/badge/Open%20Collective-Contribute-7FADF2?style=flat-square&logo=open-collective" alt="Open Collective" />
-  </a>
-</p>
-
-Other ways to support:
+Reactive Resume is and always will be free and open source. Ways to help:
 
 - Star this repository
 - Report reproducible bugs and suggest actionable features

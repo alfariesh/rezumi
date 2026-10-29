@@ -382,25 +382,6 @@
 	transform: skewX(-16deg) rotate(-8deg);
 }
 
-/* The receipt's torn, zig-zag bottom edge. */
-@utility receipt-paper {
-	mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
-}
-
-@utility receipt-barcode {
-	background: repeating-linear-gradient(
-		90deg,
-		oklch(0.22 0.01 95) 0 2px,
-		transparent 2px 4px,
-		oklch(0.22 0.01 95) 4px 5px,
-		transparent 5px 8px,
-		oklch(0.22 0.01 95) 8px 11px,
-		transparent 11px 12px,
-		oklch(0.22 0.01 95) 12px 13px,
-		transparent 13px 17px
-	);
-}
-
 /*
  * 09 Questions. Each is a <details>: opening one draws a pencil circle round its number and finishes the underline that
  * hovering starts, turns the plus into a cross, and unfolds the answer like a folded note swinging down from its crease.

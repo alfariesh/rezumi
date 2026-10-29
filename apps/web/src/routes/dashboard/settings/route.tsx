@@ -19,13 +19,12 @@ const SETTINGS_PAGES: Page[] = [
 	{ to: "/dashboard/settings/ai", icon: "sparkle", label: () => t`AI & developer` },
 ];
 
-// The project's own links: where to read up, see the code, help translate, report a problem or donate.
+// The project's own links: where to read up, see the code, help translate or report a problem.
 const getProjectLinks = () => [
 	{ href: "https://docs.rxresu.me", label: t`Docs` },
 	{ href: "https://github.com/reactive-resume/reactive-resume", label: t`Source` },
 	{ href: "https://crowdin.com/project/reactive-resume", label: t`Translate` },
 	{ href: "https://github.com/reactive-resume/reactive-resume/issues", label: t`Report a bug` },
-	{ href: "https://opencollective.com/reactive-resume/donate", label: t`Donate` },
 ];
 
 export const Route = createFileRoute("/dashboard/settings")({ component: RouteComponent });

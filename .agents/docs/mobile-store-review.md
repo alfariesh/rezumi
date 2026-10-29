@@ -76,7 +76,6 @@ Implemented in this worktree:
 
 - Privacy-policy access from authentication screens and Settings. The existing public URL returned HTTP 200; mobile-specific policy changes are source changes and still need publication.
 - Account deletion opens `/dashboard/settings/account?deleteAccount=true`, which displays the existing typed confirmation immediately. Navigation never deletes an account. Browser-session-only authorization stays intact. Deploy the web change with the app; older self-hosted servers may ignore the new query parameter.
-- Removed the external Donate row on iOS as a conservative review choice while fundraising eligibility is unverified. This is not a claim that every external donation link is prohibited. Android retains its existing row.
 - Expanded privacy-policy source with native storage, server selection, camera, voice-provider processing, local reminders, and deletion instructions.
 
 Regression coverage verifies that direct deletion entry opens confirmation, requires typed confirmation, and cancels without sending a deletion request. It failed before the repair and passed afterward. Existing API tests separately verify browser-session authorization and denial of account deletion through OAuth/API keys.

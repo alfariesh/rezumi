@@ -57,7 +57,6 @@ const doodleSizes = {
 	curve: [800, 634],
 	eraser: [800, 665],
 	globe: [575, 800],
-	jar: [601, 800],
 	magnifier: [800, 800],
 	note: [800, 746],
 	paperclip: [800, 717],

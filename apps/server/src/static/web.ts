@@ -173,7 +173,6 @@ function organization(origin: string): StructuredData {
 		sameAs: [
 			githubUrl,
 			"https://www.linkedin.com/company/reactive-resume",
-			"https://opencollective.com/reactive-resume",
 			"https://www.reddit.com/r/reactiveresume",
 			"https://discord.gg/aSyA5ZSxpb",
 			"https://crowdin.com/project/reactive-resume",
