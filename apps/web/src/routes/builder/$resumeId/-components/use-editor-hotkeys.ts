@@ -1,0 +1,61 @@
+import type { EditorMode } from "@/features/resume/editor/store";
+import { t } from "@lingui/core/macro";
+import { useHotkey } from "@tanstack/react-hotkeys";
+import { toast } from "@reactive-resume/ui/components/toast";
+import { isEditableElementFocused, useCurrentResume, useResumeStore } from "@/features/resume/builder/draft";
+import { useEditorStore } from "@/features/resume/editor/store";
+import { useResumeExport } from "@/features/resume/export/use-resume-export";
+import { switchModeInstantly } from "@/libs/motion";
+
+/**
+ * The editor's keyboard map: 1/2/3/4 switch modes (4 is Share) outside fields, ⌘Z and ⇧⌘Z undo and redo outside
+ * fields (fields keep their own undo), ⌘P downloads the PDF, ⌘⇧E opens Download, ⌘J toggles the assistant, and Esc
+ * clears the page selection. Downloads need a connection, so ⌘P and ⌘⇧E do nothing offline.
+ */
+export function useEditorHotkeys(setMode: (mode: EditorMode) => void) {
+	const undo = useResumeStore((state) => state.undo);
+	const redo = useResumeStore((state) => state.redo);
+	const resume = useCurrentResume();
+	const { onDownloadPDF } = useResumeExport(resume);
+	const isOnline = () => useResumeStore.getState().saveStatus !== "offline";
+
+	useHotkey("1", () => switchModeInstantly(() => setMode("write")));
+	useHotkey("2", () => switchModeInstantly(() => setMode("design")));
+	useHotkey("3", () => switchModeInstantly(() => setMode("check")));
+	useHotkey("4", () => switchModeInstantly(() => setMode("share")));
+
+	useHotkey("Mod+Z", () => {
+		if (!isEditableElementFocused()) undo();
+	});
+	useHotkey("Mod+Shift+Z", () => {
+		if (!isEditableElementFocused()) redo();
+	});
+	useHotkey("Control+Y", () => {
+		if (!isEditableElementFocused()) redo();
+	});
+
+	useHotkey("Mod+P", () => {
+		if (isOnline()) void onDownloadPDF();
+	});
+	useHotkey("Mod+Shift+E", () => {
+		if (isOnline()) useEditorStore.getState().setSheetTab("download");
+	});
+	useHotkey("Mod+J", () => {
+		const { assistantOpen, setAssistantOpen } = useEditorStore.getState();
+		setAssistantOpen(!assistantOpen, true);
+	});
+	useHotkey(
+		"Escape",
+		() => {
+			if (!useEditorStore.getState().selection) return;
+			if (isEditableElementFocused() && document.activeElement instanceof HTMLElement) document.activeElement.blur();
+			useEditorStore.setState({ selection: null });
+		},
+		// Command palette binds Escape too. Both handlers should run.
+		{ preventDefault: false, stopPropagation: false, conflictBehavior: "allow" },
+	);
+
+	useHotkey("Mod+S", () => {
+		toast.add({ type: "info", description: t`Your changes are saved automatically.`, id: "auto-save" });
+	});
+}

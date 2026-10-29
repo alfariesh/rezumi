@@ -1,0 +1,32 @@
+{
+	"name": "@reactive-resume/mcp",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"exports": {
+		".": "./src/index.ts",
+		"./server-card": "./src/mcp-server-card.ts",
+		"./tool-names": "./src/mcp-tool-names.ts"
+	},
+	"scripts": {
+		"typecheck": "tsrs --noEmit",
+		"test": "vp test run --passWithNoTests",
+		"test:coverage": "vp test run --coverage --passWithNoTests",
+		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.32.2",
+		"@orpc/server": "catalog:",
+		"@reactive-resume/ai": "workspace:*",
+		"@reactive-resume/api": "workspace:*",
+		"@reactive-resume/env": "workspace:*",
+		"@reactive-resume/schema": "workspace:*",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@reactive-resume/config": "workspace:*",
+		"tsrs": "catalog:",
+		"typescript": "catalog:",
+		"vite-plus": "catalog:"
+	}
+}

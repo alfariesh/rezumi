@@ -1,0 +1,29 @@
+import { t } from "@lingui/core/macro";
+import { useHotkeys } from "@tanstack/react-hotkeys";
+import { lazy, Suspense } from "react";
+import { useCommandPaletteStore } from "./store";
+
+const Content = lazy(() => import("./content"));
+
+/** Keep the shortcut available; command groups load only when someone opens the palette. */
+export function CommandPalette() {
+	const open = useCommandPaletteStore((state) => state.open);
+	const setOpen = useCommandPaletteStore((state) => state.setOpen);
+	useHotkeys([
+		{ hotkey: "Mod+K", callback: () => setOpen(!open) },
+		{ hotkey: "Escape", options: { enabled: open, conflictBehavior: "allow" }, callback: () => setOpen(false) },
+	]);
+
+	return open ? (
+		<Suspense
+			fallback={
+				<div
+					role="status"
+					className="fixed inset-x-4 top-24 z-50 mx-auto max-w-lg rounded-lg bg-surface p-4 text-ink shadow-e3"
+				>{t`Loading…`}</div>
+			}
+		>
+			<Content />
+		</Suspense>
+	) : null;
+}

@@ -1,0 +1,142 @@
+---
+title: "Sharing your resume as a web page"
+description: "Publish your resume as a web page, choose its address, decide who can find it and what they see, and see how many people visited."
+---
+
+The **Share** mode publishes your resume as a web page that anyone you send the link to can open in a browser, without an account. The page uses your resume's template and Design, fits any screen, and always shows your latest changes. Resumes are private until you publish them.
+
+## Before you start
+
+- Open the resume in the editor. Web pages belong to resumes; cover letters don't have one.
+- Check your username in **Settings** → **Account**. It's part of every public address, for example `https://rx.cv/dkowalski/game-developer`. The same address works on `rxresu.me`. If you host Reactive Resume yourself, your own address replaces both.
+
+## Publish your web page
+
+<Steps>
+  <Step title="Open Share">
+    In the editor bar, select **Share**, next to Write, Design and Check (or press <kbd>4</kbd>). On a phone, select **Share** in the tab bar at the bottom.
+
+    The page area shows your web page as visitors will see it. Switch between **Computer** and **Phone** to check both.
+
+  </Step>
+  <Step title="Select Publish">
+    Select **Publish**. The page is live at once, and **Share** in the editor bar gains a dot so you can tell at a glance.
+  </Step>
+  <Step title="Copy the address">
+    Select **Copy** next to the **Address** field and paste the link into an email, a job application or your LinkedIn profile. On a phone or tablet you can also select **Share via…**.
+  </Step>
+</Steps>
+
+**Open web page** opens it in a new tab, and **QR code** shows a code that opens the link, handy for a printed card or a slide. In the mobile app, **Preview web page** opens the page in the app's browser, even before you publish it.
+
+## What visitors see
+
+- **On a computer**, the resume sits on the page like a sheet of paper, in your template.
+- **On a phone**, the same design narrows to the screen: your header first, then the main column, then the sidebar.
+- **Download PDF** and **Share** stay at the bottom of the screen. Download PDF only shows when visitors can download it.
+- **With a password**, visitors first see **This resume is password-protected**, enter the password you shared and select **Unlock**. The page stays unlocked for about 10 minutes.
+- **When the page isn't published**, or the resume is in Trash, visitors see **This resume isn't shared right now.** The page gives nothing away about you.
+
+When someone pastes your link into LinkedIn, Slack or a chat, the preview shows your name, headline and photo in your resume's colours.
+
+Visitors never see your private notes, or any section or entry you've hidden. A small Reactive Resume mark sits under the page; you can turn it off under **Web page**.
+
+To change the page's template, colours or typography, use **Design**; the web page reuses those settings. Under
+**Web page**, **Show “Made with Reactive Resume”** controls only the footer credit. Preview links let you review an
+unpublished page for 15 minutes; keep them private, since anyone with that preview link can open it while it's valid.
+
+## Change the address
+
+The last part of the address is yours to choose. It starts out based on the resume's name.
+
+<Steps>
+  <Step title="Edit the Address field">
+    With the page published, type a new ending in the **Address** field. Use up to 64 lowercase letters, numbers and
+    single dashes; spaces turn into dashes as you type. Don't start or end with a dash.
+  </Step>
+  <Step title="Wait for the check">
+    Reactive Resume checks the address as you type and saves it once it's free. Until then, the old address keeps
+    working.
+  </Step>
+</Steps>
+
+If another of your resumes already uses that address, the message names it and suggests a free one. After a change, the old address still leads to your resume for 30 days. Changing your username is different: every public address and your short link change at once, and old links stop working.
+
+An older address that exceeds today's limit keeps working. You can keep it while editing the resume; choosing a new
+address requires the current format and length limit.
+
+## Decide who can find it and what they see
+
+Everything under **Privacy** applies to the web page, its PDF, link previews and search results.
+
+| Setting                           | What it does                                                                                                                                                                                                |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Require a password**            | Visitors enter a password you share separately before they see anything.                                                                                                                                    |
+| **Hide contact details**          | Leaves out your email, phone, location and other header details, and references' phone numbers.                                                                                                             |
+| **Show in search engines**        | Off by default. Turn it on to let search engines such as Google list your page. It can take weeks to appear, and weeks to disappear after you turn it off. Not available while the resume needs a password. |
+| **Visitors can download the PDF** | On by default. Turn it off and the page has no Download PDF button.                                                                                                                                         |
+
+<Tip>
+  Turning on **Show in search engines** with **Hide contact details** lets recruiters find you without your phone number
+  or address ending up in search results.
+</Tip>
+
+These controls apply to what visitors receive. **Hide contact details** removes the dedicated email, phone,
+location and custom header fields, plus references' phone numbers. It doesn't find personal details you've typed
+inside summaries, descriptions or other free text. Review the web page before publishing it.
+
+Turning off PDF downloads also blocks visitors from fetching the public PDF directly. It doesn't prevent copying,
+screenshots or printing the visible web page, and it can't recall files someone already downloaded. Files you export
+from your editor are separate from the public page and can still include your contact details.
+
+## Short link and your own domain
+
+One resume can be your **Primary resume**. It opens at your short link, such as `rx.cv/dkowalski`, and at your own domain if you connect one.
+
+- Turn on **Primary resume** in Share. The resume must be published first. If another resume was primary, Reactive Resume asks before moving the role.
+- **Copy** next to your short link to paste it anywhere. It always leads to your current primary resume.
+- On rxresu.me, every public address works on both `rx.cv` and `rxresu.me`, so `rxresu.me/dkowalski` opens the same page. Share copies the shorter `rx.cv` one.
+- To use your own domain, type it under **Your domain** and select **Connect**. A dialog lists the DNS records to add where you manage the domain; select a name or value to copy it. Then select **Check DNS**. A subdomain such as `resume.example.com` uses a CNAME record; a root domain such as `example.com` uses A and AAAA records instead. Changes can take a few hours to reach everyone. To see the records again, select **Show DNS records**.
+- On rxresu.me, Share may suggest a `.cv` domain made from your username or name, such as `dkowalski.cv`, when it's free to register. It's an optional suggestion: OlaCV, the `.cv` registry, sells it, and the code `RX` takes 50% off the first year. After you register it, select **Connect** on the suggestion to add it here.
+
+Once connected, your domain shows your primary resume, and search engines are pointed to your domain rather than the rxresu.me address. If your domain's records stop pointing at Reactive Resume for a week, it's disconnected.
+
+Each account connects one domain. Keep the ownership TXT record as well as the routing records after verification.
+Your domain opens the primary resume at `/`; it doesn't move your account or editor there. To change domains,
+select **Remove**, then connect the replacement. Removing a domain doesn't unpublish the resume at its normal address.
+
+On a self-hosted instance, **Your domain** appears only when the operator enables custom domains. See
+[Sharing domains for self-hosters](/self-hosting/sharing-domains) for setup and troubleshooting.
+
+## See who visited
+
+The bottom of Share shows **Visitors**. Only you see these numbers.
+
+| Number              | What it counts                                                        |
+| ------------------- | --------------------------------------------------------------------- |
+| **views · 30 days** | Visits to your web page in the last 30 days                           |
+| **downloads**       | PDFs visitors downloaded from the page in the last 30 days            |
+| **since last view** | How long ago someone last opened the page, such as `5m`, `2h` or `3d` |
+
+- Your own visits and downloads don't count while you're signed in, and search engines and other bots never count.
+- Repeat visits from the same visitor within an hour count once.
+- Counts are anonymous. Reactive Resume doesn't record who viewed your resume.
+
+Visits and downloads made on a different domain may count as visitor activity if that domain doesn't have your
+signed-in session. The numbers aren't a list of readers or proof that a recruiter read the resume.
+
+## Stop sharing
+
+Turn off **Public link** in Share. The page stops working immediately, and visitors see **This resume isn't shared right now.** Your address is kept, so publishing again brings the same address back. Moving the resume to Trash also stops its page.
+
+<Note>
+  While a resume is locked, you can't change its Share settings. Select the resume's name in the editor bar, then
+  **Unlock editing** first. Share needs a connection.
+</Note>
+
+## Related guides
+
+- [Exporting your resume](/guides/exporting-your-resume): download a PDF, Word, OpenDocument, Markdown or JSON file instead of sending a link. Downloads and version history are under **Download & history** in the editor bar.
+- [Updating your profile](/guides/updating-your-profile): change the username that appears in your public addresses.
+- [Checking your resume](/guides/checking-your-resume): review your resume before you share it.
+- [Using the Trash](/guides/using-the-trash): what happens to a shared resume you delete.
