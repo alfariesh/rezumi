@@ -1,24 +1,24 @@
 > [!IMPORTANT]
-> Reactive Resume lives at **[`reactive-resume/reactive-resume`](https://github.com/reactive-resume/reactive-resume)** on GitHub.  
-> This fork deploys only to Cloudflare Workers. See the [Cloudflare guide](https://docs.rxresu.me/self-hosting/cloudflare).
+> Rezumi lives at **[`reactive-resume/reactive-resume`](https://github.com/reactive-resume/reactive-resume)** on GitHub.  
+> This fork deploys only to Cloudflare Workers. See the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cloudflare).
 
 <div align="center">
-  <a href="https://rxresu.me">
-    <img src="apps/web/public/opengraph/banner.jpg" alt="Reactive Resume" />
+  <a href="https://rezumi.app">
+    <img src="apps/web/public/opengraph/banner.jpg" alt="Rezumi" />
   </a>
 
-  <h1>Reactive Resume</h1>
+  <h1>Rezumi</h1>
 
-  <p>Reactive Resume is a free and open-source resume builder for writing resumes and cover letters, checking your work, and tracking job applications.</p>
+  <p>Rezumi is a free and open-source resume builder for writing resumes and cover letters, checking your work, and tracking job applications.</p>
 
   <p>
-    <a href="https://rxresu.me"><strong>Get Started</strong></a>
+    <a href="https://rezumi.app"><strong>Get Started</strong></a>
     ·
-    <a href="https://docs.rxresu.me"><strong>Learn More</strong></a>
+    <a href="https://docs.rezumi.app"><strong>Learn More</strong></a>
   </p>
 
   <p>
-    <img src="https://img.shields.io/github/package-json/v/reactive-resume/reactive-resume?style=flat-square" alt="Reactive Resume Version">
+    <img src="https://img.shields.io/github/package-json/v/reactive-resume/reactive-resume?style=flat-square" alt="Rezumi Version">
     <img src="https://img.shields.io/github/stars/reactive-resume/reactive-resume?style=flat-square" alt="GitHub Stars">
     <img src="https://img.shields.io/github/license/reactive-resume/reactive-resume?style=flat-square" alt="License" />
     <a href="https://discord.gg/u9pAd3za9t"><img src="https://img.shields.io/discord/1173518977851473940?style=flat-square&label=discord" alt="Discord" /></a>
@@ -68,15 +68,15 @@ Create a free account, import an existing resume or start fresh, and see the fin
 
 You own your data. The codebase is open source under the MIT license, with no tracking, no ads, and no paid tier. Optional AI features use a provider you connect; hosting and provider usage may have their own costs.
 
-![Reactive Resume v6 editor with Write, Design, and Check modes and a live PDF preview](docs/images/getting-started/editor-overview.webp)
+![Rezumi v6 editor with Write, Design, and Check modes and a live PDF preview](docs/images/getting-started/editor-overview.webp)
 
 ## Build a better resume, together
 
-[Join the Reactive Resume community on Discord](https://discord.gg/u9pAd3za9t) to exchange resume feedback, get help using or self-hosting the app, and share ideas with other users and contributors.
+[Join the Rezumi community on Discord](https://discord.gg/u9pAd3za9t) to exchange resume feedback, get help using or self-hosting the app, and share ideas with other users and contributors.
 
 - **Resume feedback:** post a redacted resume and one specific question, or help someone improve theirs.
 - **Help:** find troubleshooting discussions and ask questions in dedicated forum threads.
-- **Contribute:** discuss ideas, translations, and code with the people building Reactive Resume.
+- **Contribute:** discuss ideas, translations, and code with the people building Rezumi.
 
 Feedback comes from fellow community members. Remove contact details and other private information before posting.
 
@@ -103,7 +103,7 @@ Feedback comes from fellow community members. Remove contact details and other p
 - Readability checks with findings pinned to the relevant lines
 - Job-posting keyword matching and a view of the text hiring software reads
 - Checks on the exported PDF, plus an optional AI writing review
-- A public [ATS checker](https://rxresu.me/ats-checker) that reads PDFs in your browser without an account
+- A public [ATS checker](https://rezumi.app/ats-checker) that reads PDFs in your browser without an account
 
 **Documents and Cover Letters**
 
@@ -131,7 +131,7 @@ Feedback comes from fellow community members. Remove contact details and other p
 
 **Import, Export, and Sharing**
 
-- Import Reactive Resume JSON, JSON Resume, LinkedIn data exports, PDF, and Word files
+- Import Rezumi JSON, JSON Resume, LinkedIn data exports, PDF, and Word files
 - JSON, LinkedIn, and readable PDF imports work without AI; Word imports require a connected provider
 - Export resumes and letters as PDF, Word (DOCX), Markdown, or JSON
 - Share resumes through public links with optional password protection and view/download statistics
@@ -231,7 +231,7 @@ Feedback comes from fellow community members. Remove contact details and other p
 
 ## Quick Start
 
-Use the [hosted app](https://rxresu.me) to start writing, or run this checkout locally. Local development uses Docker Compose only for PostgreSQL, Redis, and SeaweedFS (`compose.dev.yml`); the app itself runs on your host:
+Use the [hosted app](https://rezumi.app) to start writing, or run this checkout locally. Local development uses Docker Compose only for PostgreSQL, Redis, and SeaweedFS (`compose.dev.yml`); the app itself runs on your host:
 
 ```bash
 # Clone the repository
@@ -251,7 +251,7 @@ docker compose -f compose.dev.yml up -d postgres redis seaweedfs seaweedfs_creat
 pnpm dev
 ```
 
-To deploy, follow the [Cloudflare guide](https://docs.rxresu.me/self-hosting/cloudflare). For source development, see the [development setup guide](https://docs.rxresu.me/contributing/development).
+To deploy, follow the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cloudflare). For source development, see the [development setup guide](https://docs.rezumi.app/contributing/development).
 
 ## Tech Stack
 
@@ -273,21 +273,21 @@ To deploy, follow the [Cloudflare guide](https://docs.rxresu.me/self-hosting/clo
 
 ## Documentation
 
-The full documentation lives at [docs.rxresu.me](https://docs.rxresu.me):
+The full documentation lives at [docs.rezumi.app](https://docs.rezumi.app):
 
-| Guide                                                                                                            | Description                                  |
-| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| [Getting started](https://docs.rxresu.me/getting-started)                                                        | First-time setup and basic usage             |
-| [What's new in v6](https://docs.rxresu.me/guides/whats-new-in-v6)                                                | Changes and where familiar features moved    |
-| [Checking your resume](https://docs.rxresu.me/guides/checking-your-resume)                                       | Readability, job match, and writing reviews  |
-| [Using the assistant](https://docs.rxresu.me/guides/using-the-assistant)                                         | Ask for changes and review proposed edits    |
-| [Writing a cover letter](https://docs.rxresu.me/guides/writing-a-cover-letter)                                   | Create a letter and link it to a resume      |
-| [Tracking job applications](https://docs.rxresu.me/guides/tracking-job-applications)                             | Saved jobs, stages, interviews, and insights |
-| [Exporting your resume](https://docs.rxresu.me/guides/exporting-your-resume)                                     | PDF, Word, Markdown, and JSON downloads      |
-| [API](https://docs.rxresu.me/guides/using-the-api) and [MCP](https://docs.rxresu.me/guides/using-the-mcp-server) | Connect scripts and external assistants      |
-| [Self-hosting](https://docs.rxresu.me/self-hosting/cloudflare)                                                   | Deploy on Cloudflare Workers                 |
-| [Development setup](https://docs.rxresu.me/contributing/development)                                             | Local development environment                |
-| [Project architecture](https://docs.rxresu.me/contributing/architecture)                                         | Codebase structure and package boundaries    |
+| Guide                                                                                                              | Description                                  |
+| ------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| [Getting started](https://docs.rezumi.app/getting-started)                                                         | First-time setup and basic usage             |
+| [What's new in v6](https://docs.rezumi.app/guides/whats-new-in-v6)                                                 | Changes and where familiar features moved    |
+| [Checking your resume](https://docs.rezumi.app/guides/checking-your-resume)                                        | Readability, job match, and writing reviews  |
+| [Using the assistant](https://docs.rezumi.app/guides/using-the-assistant)                                          | Ask for changes and review proposed edits    |
+| [Writing a cover letter](https://docs.rezumi.app/guides/writing-a-cover-letter)                                    | Create a letter and link it to a resume      |
+| [Tracking job applications](https://docs.rezumi.app/guides/tracking-job-applications)                              | Saved jobs, stages, interviews, and insights |
+| [Exporting your resume](https://docs.rezumi.app/guides/exporting-your-resume)                                      | PDF, Word, Markdown, and JSON downloads      |
+| [API](https://docs.rezumi.app/guides/using-the-api) and [MCP](https://docs.rezumi.app/guides/using-the-mcp-server) | Connect scripts and external assistants      |
+| [Self-hosting](https://docs.rezumi.app/self-hosting/cloudflare)                                                    | Deploy on Cloudflare Workers                 |
+| [Development setup](https://docs.rezumi.app/contributing/development)                                              | Local development environment                |
+| [Project architecture](https://docs.rezumi.app/contributing/architecture)                                          | Codebase structure and package boundaries    |
 
 ## Self-Hosting
 
@@ -297,7 +297,7 @@ This fork deploys only to Cloudflare Workers: PostgreSQL through Hyperdrive for 
 
 ### Cloudflare Workers
 
-Cloudflare deployment requires **Workers Paid** and uses Static Assets, private R2 storage, SQLite Durable Objects, and PostgreSQL through Hyperdrive. Supply an existing PostgreSQL database and apply migrations before deployment. See the [Cloudflare guide](https://docs.rxresu.me/self-hosting/cloudflare) for setup and runtime limits.
+Cloudflare deployment requires **Workers Paid** and uses Static Assets, private R2 storage, SQLite Durable Objects, and PostgreSQL through Hyperdrive. Supply an existing PostgreSQL database and apply migrations before deployment. See the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cloudflare) for setup and runtime limits.
 
 Deploy manually with `pnpm deploy:cloudflare`, or let GitHub Actions do it: every push to `main` runs `.github/workflows/deploy-cloudflare.yml`, which applies migrations (when the optional `DATABASE_URL` secret is set) and then deploys the Worker. Add the repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
@@ -309,11 +309,11 @@ The application needs:
 
 ### Configuration
 
-Every setting is listed in the [environment variables reference](https://docs.rxresu.me/self-hosting/environment-variables). Self-hosters can also configure [shared AI and job-search services](https://docs.rxresu.me/self-hosting/job-search-and-ai) and [single sign-on](https://docs.rxresu.me/self-hosting/sso).
+Every setting is listed in the [environment variables reference](https://docs.rezumi.app/self-hosting/environment-variables). Self-hosters can also configure [shared AI and job-search services](https://docs.rezumi.app/self-hosting/job-search-and-ai) and [single sign-on](https://docs.rezumi.app/self-hosting/sso).
 
 ## Support
 
-Reactive Resume is and always will be free and open source. Ways to help:
+Rezumi is and always will be free and open source. Ways to help:
 
 - Star this repository
 - Report reproducible bugs and suggest actionable features
@@ -345,7 +345,7 @@ Every contribution helps, whether it is a typo fix or a new feature.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-See the [development setup guide](https://docs.rxresu.me/contributing/development) for how to run the project locally.
+See the [development setup guide](https://docs.rezumi.app/contributing/development) for how to run the project locally.
 
 Maintainers review the [`status: needs triage` queue](https://github.com/reactive-resume/reactive-resume/issues?q=is%3Aissue+is%3Aopen+label%3A%22status%3A+needs+triage%22)
 weekly. Triaged bugs become `status: confirmed`; feature proposals become `status: accepted`; reports that need details become

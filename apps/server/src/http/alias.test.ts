@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
 vi.mock("@reactive-resume/env/server", () => ({
-	env: { APP_URL: "https://rxresu.me", APP_ALIAS_URL: "https://rx.cv" },
+	env: { APP_URL: "https://rezumi.app", APP_ALIAS_URL: "https://rx.cv" },
 }));
 
 const { handleAlias, onAppDomain } = await import("./alias");
@@ -14,7 +14,7 @@ describe("the app's alias domain", () => {
 		(path) => {
 			const response = visit(path);
 			expect(response?.status).toBe(301);
-			expect(response?.headers.get("Location")).toBe(`https://rxresu.me${path}`);
+			expect(response?.headers.get("Location")).toBe(`https://rezumi.app${path}`);
 		},
 	);
 
@@ -27,7 +27,7 @@ describe("the app's alias domain", () => {
 
 	it("keeps a path that looks like another host on the app's own address", () => {
 		expect(onAppDomain(new URL("https://rx.cv//evil.example/login?next=1"))).toBe(
-			"https://rxresu.me//evil.example/login?next=1",
+			"https://rezumi.app//evil.example/login?next=1",
 		);
 	});
 });

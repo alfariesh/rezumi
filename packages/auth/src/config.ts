@@ -282,7 +282,7 @@ const getAuthConfig = () => {
 	}
 
 	return betterAuth({
-		appName: "Reactive Resume",
+		appName: "Rezumi",
 		baseURL: authBaseUrl,
 		secret: env.AUTH_SECRET,
 
@@ -624,7 +624,7 @@ const getAuthConfig = () => {
 			admin(),
 			passkey(),
 			genericOAuth({ config: authConfigs }),
-			twoFactor({ issuer: "Reactive Resume" }),
+			twoFactor({ issuer: "Rezumi" }),
 			apiKey({
 				enableSessionForAPIKeys: false,
 				rateLimit: {

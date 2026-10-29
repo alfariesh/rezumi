@@ -81,7 +81,7 @@ const mocks = {
 			},
 		},
 	},
-	"@/auth/session": { getServer: () => "https://test.rxresu.me" },
+	"@/auth/session": { getServer: () => "https://test.rezumi.app" },
 	"@/draft": { useResumeStore: (selector) => (typeof selector === "function" ? selector({ status: "idle" }) : "idle") },
 	"@/draft/runtime": { draftResume: { refresh: async () => {} } },
 	"@/features/documents/queries": {

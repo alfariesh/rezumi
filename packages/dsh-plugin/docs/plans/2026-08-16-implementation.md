@@ -1,12 +1,12 @@
 # dsh-plugin-reactive-resume Implementation Plan
 
-> **Historical record.** This plan was written and executed while the plugin lived in its own repository. It has since moved into the Reactive Resume monorepo at `packages/dsh-plugin`, where tests are colocated in `src/*.test.ts`, the build emits `dist/`, and the generated tool-name snapshot and its scheduled drift job were replaced by a local check against `@reactive-resume/mcp/tool-names`. Paths below are not current.
+> **Historical record.** This plan was written and executed while the plugin lived in its own repository. It has since moved into the Rezumi monorepo at `packages/dsh-plugin`, where tests are colocated in `src/*.test.ts`, the build emits `dist/`, and the generated tool-name snapshot and its scheduled drift job were replaced by a local check against `@reactive-resume/mcp/tool-names`. Paths below are not current.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Ship an npm-distributed DeepSeek Harness plugin that connects a Harness session to a Reactive Resume account through the existing `/mcp` endpoint, curates the tool surface, and teaches the model Reactive Resume's JSON Patch semantics.
+**Goal:** Ship an npm-distributed DeepSeek Harness plugin that connects a Harness session to a Rezumi account through the existing `/mcp` endpoint, curates the tool surface, and teaches the model Rezumi's JSON Patch semantics.
 
-**Architecture:** A namespace Cordis plugin exporting `name`, `inject`, `Config`, and `apply(ctx, config)`. `apply` mounts `@deepseek-ai/dsh-mcp-client` over Streamable HTTP with an `x-api-key` header, optionally narrows the bridged tools with `ctx.tools.restrict`, and registers one system-prompt section via `ctx.systemPrompt.section`. The plugin holds no Reactive Resume code — it speaks HTTP to a server that already exists.
+**Architecture:** A namespace Cordis plugin exporting `name`, `inject`, `Config`, and `apply(ctx, config)`. `apply` mounts `@deepseek-ai/dsh-mcp-client` over Streamable HTTP with an `x-api-key` header, optionally narrows the bridged tools with `ctx.tools.restrict`, and registers one system-prompt section via `ctx.systemPrompt.section`. The plugin holds no Rezumi code — it speaks HTTP to a server that already exists.
 
 **Tech Stack:** TypeScript, pnpm, `tsdown` (build), Vitest (test), Biome (lint/format), `@deepseek-ai/cordis` + `@deepseek-ai/dsh-mcp-client` + `@deepseek-ai/dsh-tools` + `@deepseek-ai/dsh-system-prompt` + `@deepseek-ai/schemastery` (peer deps).
 
@@ -20,7 +20,7 @@
 - Public tool names bridged by `dsh-mcp-client` are `mcp__<serverName>__<rawName>`. Default `serverName` is `resume`.
 - `serverName` must match `[A-Za-z0-9_-]{1,32}`.
 - System prompt section `order` must be in the 100–199 tool-guidance band. This plan uses `150`.
-- Default Reactive Resume origin is `https://rxresu.me` with no trailing slash.
+- Default Rezumi origin is `https://rezumi.app` with no trailing slash.
 - Auth header is exactly `x-api-key` (lowercase).
 - Never commit an API key. Tests use the literal string `test-key`.
 
@@ -32,7 +32,7 @@ This task produces a written finding, not shipped code. It gates the `tools` con
 
 `ToolRegistry.restrict` documents itself as filtering only what a scope **inherits** from ancestors: _"Per-scope filter over the tools a scope INHERITS — the global layer and every ancestor layer on its chain. Restrictions intersect, and do not affect the scope's own registrations."_ But `ctx.plugin(mcpClient, …)` mounts the bridge in a **child** scope of the plugin's context. If a parent-scope restriction cannot reach a child scope's registrations, the `tools` key must not ship in 0.1.0 — removing a public config key later is a breaking change.
 
-The question is purely about Cordis scope semantics. It does not need a live MCP server, a Reactive Resume instance, or an API key: a stub plugin that registers one tool in a child scope reproduces the exact topology. Verify it that way.
+The question is purely about Cordis scope semantics. It does not need a live MCP server, a Rezumi instance, or an API key: a stub plugin that registers one tool in a child scope reproduces the exact topology. Verify it that way.
 
 **Files:**
 
@@ -150,7 +150,7 @@ rm -rf /tmp/dsh-spike
 {
   "name": "dsh-plugin-reactive-resume",
   "version": "0.1.0",
-  "description": "DeepSeek Harness plugin for Reactive Resume: bridges your resumes and job applications into a Harness session over MCP.",
+  "description": "DeepSeek Harness plugin for Rezumi: bridges your resumes and job applications into a Harness session over MCP.",
   "keywords": ["dsh-plugin", "deepseek-harness", "mcp", "reactive-resume", "resume"],
   "license": "MIT",
   "type": "module",
@@ -294,7 +294,7 @@ Expected: FAIL — `Failed to resolve import "../src/index.ts"`.
 
 ```ts
 /**
- * DeepSeek Harness plugin for Reactive Resume.
+ * DeepSeek Harness plugin for Rezumi.
  * @module dsh-plugin-reactive-resume
  */
 
@@ -352,7 +352,7 @@ it("applies defaults for every optional field", () => {
 
   expect(parsed).toEqual({
     apiKey: "test-key",
-    url: "https://rxresu.me",
+    url: "https://rezumi.app",
     serverName: "resume",
     tools: "all",
     toolCallTimeoutMs: 60_000,
@@ -398,14 +398,14 @@ Expected: FAIL — cannot resolve `../src/config.ts`.
 ```ts
 import z from "@deepseek-ai/schemastery";
 
-/** Which group of Reactive Resume tools to expose to the model. */
+/** Which group of Rezumi tools to expose to the model. */
 export type ToolProfile = "resume" | "applications" | "all";
 
 /** Resolved plugin configuration. Every field is populated after parsing. */
 export interface Config {
   /** API key minted at `<url>/dashboard/settings/api-keys`. */
   apiKey: string;
-  /** Reactive Resume origin, no trailing slash. */
+  /** Rezumi origin, no trailing slash. */
   url: string;
   /** Tool namespace: tools reach the model as `mcp__<serverName>__<rawName>`. */
   serverName: string;
@@ -417,10 +417,7 @@ export interface Config {
 
 export const Config: z<Config> = z.object({
   apiKey: z.string().required().description("API key from <url>/dashboard/settings/api-keys."),
-  url: z
-    .string()
-    .default("https://rxresu.me")
-    .description("Reactive Resume origin. Set this for a self-hosted instance."),
+  url: z.string().default("https://rezumi.app").description("Rezumi origin. Set this for a self-hosted instance."),
   serverName: z
     .string()
     .default("resume")
@@ -428,7 +425,7 @@ export const Config: z<Config> = z.object({
   tools: z
     .union(["resume", "applications", "all"] as const)
     .default("all")
-    .description("Which Reactive Resume tool group the model sees."),
+    .description("Which Rezumi tool group the model sees."),
   toolCallTimeoutMs: z.natural().default(60_000).description("Per-tool-call timeout in milliseconds."),
 });
 ```
@@ -509,7 +506,7 @@ it("mounts the MCP bridge with streamable-http and the api key header", async ()
   expect(ctx.plugin.mock.calls[0]?.[1]).toEqual({
     transport: "streamable-http",
     serverName: "resume",
-    url: "https://rxresu.me/mcp",
+    url: "https://rezumi.app/mcp",
     headers: { "x-api-key": "test-key" },
     toolCallTimeoutMs: 60_000,
     failOnStartupError: true,
@@ -547,7 +544,7 @@ Modify `src/index.ts` to read in full:
 
 ```ts
 /**
- * DeepSeek Harness plugin for Reactive Resume.
+ * DeepSeek Harness plugin for Rezumi.
  * @module dsh-plugin-reactive-resume
  */
 
@@ -570,7 +567,7 @@ export const inject = ["tools", "systemPrompt"];
 const SERVER_NAME_PATTERN = /^[A-Za-z0-9_-]{1,32}$/;
 
 /**
- * Connect a Reactive Resume account to the session.
+ * Connect a Rezumi account to the session.
  * @param ctx - plugin context carrying the tool registry and prompt assembly.
  * @param config - resolved plugin configuration.
  */
@@ -604,7 +601,7 @@ Expected: all tests PASS.
 
 ```bash
 git add -A
-git commit -m "feat: mount the Reactive Resume MCP bridge over streamable http"
+git commit -m "feat: mount the Rezumi MCP bridge over streamable http"
 ```
 
 ---
@@ -622,7 +619,7 @@ git commit -m "feat: mount the Reactive Resume MCP bridge over streamable http"
 - Consumes: `apply` from Task 4.
 - Produces: `export const PATCH_GUIDE: string`.
 
-This is the plugin's substance — the reason it exists rather than a raw `dsh-mcp-client` row. Its content mirrors the error hints Reactive Resume already emits from `packages/mcp/src/tools.ts` (`errorHint`), which exist because models get exactly these things wrong.
+This is the plugin's substance — the reason it exists rather than a raw `dsh-mcp-client` row. Its content mirrors the error hints Rezumi already emits from `packages/mcp/src/tools.ts` (`errorHint`), which exist because models get exactly these things wrong.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -688,7 +685,7 @@ Expected: FAIL — cannot resolve `../src/prompt.ts`.
 
 ```ts
 /**
- * Build the Reactive Resume system-prompt section for one tool namespace.
+ * Build the Rezumi system-prompt section for one tool namespace.
  * @param serverName - the MCP namespace bridged tools are published under.
  * @returns prompt text naming tools exactly as the model will see them.
  */
@@ -696,7 +693,7 @@ export function buildPatchGuide(serverName: string): string {
   const t = (raw: string) => `\`mcp__${serverName}__${raw}\``;
 
   return [
-    "## Reactive Resume",
+    "## Rezumi",
     "",
     "These tools operate on the user's real, live resumes and job applications. Changes are immediate and visible in their account.",
     "",
@@ -759,7 +756,7 @@ Expected: all tests PASS.
 
 ```bash
 git add -A
-git commit -m "feat: teach the model Reactive Resume patch semantics"
+git commit -m "feat: teach the model Rezumi patch semantics"
 ```
 
 ---
@@ -782,7 +779,7 @@ git commit -m "feat: teach the model Reactive Resume patch semantics"
 
 **This task was rescoped after Task 1.** As originally written it built `groupOf()` and `deniedToolNames()` to support a `tools` config key. Task 1's spike found `ctx.tools.restrict()` throws from a plugin context, that key was cut, and those two functions now have no consumer in this package — they would ship as dead code for a feature that may never live here at all. They are dropped.
 
-What survives, and why it is not dead: `buildPatchGuide` (Task 5) names five specific tools — `list_resumes`, `read_resume`, `apply_resume_patch`, `update_resume`, `unlock_resume`. If Reactive Resume renames or removes one, the prompt section starts instructing the model to call a tool that does not exist, silently. The generated name list plus the two tests below are what catch that. The guide is this release's entire product, so guarding its accuracy is the point.
+What survives, and why it is not dead: `buildPatchGuide` (Task 5) names five specific tools — `list_resumes`, `read_resume`, `apply_resume_patch`, `update_resume`, `unlock_resume`. If Rezumi renames or removes one, the prompt section starts instructing the model to call a tool that does not exist, silently. The generated name list plus the two tests below are what catch that. The guide is this release's entire product, so guarding its accuracy is the point.
 
 - [ ] **Step 1: Write the generator**
 
@@ -790,12 +787,12 @@ What survives, and why it is not dead: `buildPatchGuide` (Task 5) names five spe
 
 ```ts
 /**
- * Regenerate `src/tool-names.generated.ts` from a live Reactive Resume server card.
+ * Regenerate `src/tool-names.generated.ts` from a live Rezumi server card.
  * Usage: node --experimental-strip-types scripts/generate-tool-names.ts [origin]
  */
 import { writeFileSync } from "node:fs";
 
-const origin = (process.argv[2] ?? "https://rxresu.me").replace(/\/+$/, "");
+const origin = (process.argv[2] ?? "https://rezumi.app").replace(/\/+$/, "");
 
 const response = await fetch(`${origin}/.well-known/mcp/server-card.json`);
 if (!response.ok) throw new Error(`Server card fetch failed: ${response.status} ${response.statusText}`);
@@ -809,7 +806,7 @@ const body = [
   "// Generated by scripts/generate-tool-names.ts. Do not edit by hand.",
   `// Source: ${origin}/.well-known/mcp/server-card.json`,
   "",
-  "/** Raw (un-namespaced) tool names published by Reactive Resume. */",
+  "/** Raw (un-namespaced) tool names published by Rezumi. */",
   "export const TOOL_NAMES = [",
   ...names.map((name) => `\t'${name}',`),
   "] as const satisfies readonly string[]",
@@ -826,7 +823,7 @@ console.log(`Wrote ${names.length} tool names from ${origin}`);
 pnpm generate:tool-names
 ```
 
-Expected: `Wrote 33 tool names from https://rxresu.me` and a new `src/tool-names.generated.ts`. A different count is fine — Reactive Resume may have shipped tools since this plan was written. Use the real number when reporting.
+Expected: `Wrote 33 tool names from https://rezumi.app` and a new `src/tool-names.generated.ts`. A different count is fine — Rezumi may have shipped tools since this plan was written. Use the real number when reporting.
 
 - [ ] **Step 3: Write the failing guide-coverage test**
 
@@ -852,7 +849,7 @@ it("references at least one tool", () => {
   expect(toolsReferencedByGuide().length).toBeGreaterThan(0);
 });
 
-it("only references tools Reactive Resume actually publishes", () => {
+it("only references tools Rezumi actually publishes", () => {
   const published: readonly string[] = TOOL_NAMES;
 
   for (const referenced of toolsReferencedByGuide()) {
@@ -886,7 +883,7 @@ Task 3 exported `ToolProfile` solely so this task could consume it. With `groupO
 In `src/config.ts`, delete:
 
 ```ts
-/** Which group of Reactive Resume tools to expose to the model. */
+/** Which group of Rezumi tools to expose to the model. */
 export type ToolProfile = "resume" | "applications" | "all";
 ```
 
@@ -912,7 +909,7 @@ Then run `pnpm typecheck` to confirm nothing else referenced it.
 import { expect, it } from "vitest";
 import { TOOL_NAMES } from "../src/tool-names.generated.ts";
 
-const ORIGIN = process.env.RXRESUME_ORIGIN ?? "https://rxresu.me";
+const ORIGIN = process.env.RXRESUME_ORIGIN ?? "https://rezumi.app";
 
 // Network test: skipped unless RXRESUME_CHECK_DRIFT=1, so ordinary `pnpm test`
 // stays offline and deterministic. CI sets the flag on a schedule.
@@ -1029,7 +1026,7 @@ jobs:
 ````markdown
 # dsh-plugin-reactive-resume
 
-Connect [Reactive Resume](https://rxresu.me) to [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Read, create, and edit your resumes and job applications from a Harness session.
+Connect [Rezumi](https://rezumi.app) to [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness). Read, create, and edit your resumes and job applications from a Harness session.
 
 ## Install
 
@@ -1039,7 +1036,7 @@ pnpm add dsh-plugin-reactive-resume
 
 ## Configure
 
-Mint an API key at `https://rxresu.me/dashboard/settings/api-keys`, then add a row to your `cordis.yml`:
+Mint an API key at `https://rezumi.app/dashboard/settings/api-keys`, then add a row to your `cordis.yml`:
 
 ```yaml
 - insert:
@@ -1051,14 +1048,14 @@ Mint an API key at `https://rxresu.me/dashboard/settings/api-keys`, then add a r
 
 ### Options
 
-| Key                 | Default             | Description                                                              |
-| ------------------- | ------------------- | ------------------------------------------------------------------------ |
-| `apiKey`            | _(required)_        | API key from `<url>/dashboard/settings/api-keys`.                        |
-| `url`               | `https://rxresu.me` | Origin of your instance. Set this if you self-host.                      |
-| `serverName`        | `resume`            | Tool namespace. Tools reach the model as `mcp__<serverName>__<rawName>`. |
-| `toolCallTimeoutMs` | `60000`             | Per-tool-call timeout.                                                   |
+| Key                 | Default              | Description                                                              |
+| ------------------- | -------------------- | ------------------------------------------------------------------------ |
+| `apiKey`            | _(required)_         | API key from `<url>/dashboard/settings/api-keys`.                        |
+| `url`               | `https://rezumi.app` | Origin of your instance. Set this if you self-host.                      |
+| `serverName`        | `resume`             | Tool namespace. Tools reach the model as `mcp__<serverName>__<rawName>`. |
+| `toolCallTimeoutMs` | `60000`              | Per-tool-call timeout.                                                   |
 
-All 33 of Reactive Resume's tools are exposed. Narrowing that set is not currently possible from a plugin: Harness's `ctx.tools.restrict()` requires an agent-scoped context, which a plugin context is not.
+All 33 of Rezumi's tools are exposed. Narrowing that set is not currently possible from a plugin: Harness's `ctx.tools.restrict()` requires an agent-scoped context, which a plugin context is not.
 
 ### Self-hosted
 
@@ -1070,7 +1067,7 @@ config:
 
 ## What it does
 
-Bridges Reactive Resume's MCP server into `ctx.tools`, and contributes a system-prompt section covering the things models get wrong about resume editing: reading before patching, RFC 6902 path construction against the published schema, UUID-keyed section entries, and locked resumes.
+Bridges Rezumi's MCP server into `ctx.tools`, and contributes a system-prompt section covering the things models get wrong about resume editing: reading before patching, RFC 6902 path construction against the published schema, UUID-keyed section entries, and locked resumes.
 
 You could wire the bridge yourself with a raw `@deepseek-ai/dsh-mcp-client` row. What you cannot do that way is contribute the prompt section — that is what this package adds.
 
@@ -1097,7 +1094,7 @@ Install the packed tarball into a Harness workspace, add the `cordis.yml` row wi
 
 1. "List my resumes" returns real titles.
 2. "Read <title>" returns real content.
-3. "Change my headline to X" applies and is visible at `https://rxresu.me`.
+3. "Change my headline to X" applies and is visible at `https://rezumi.app`.
 4. With `tools: resume`, no `mcp__resume__*application*` tool appears (skip if the spike verdict was `NO`).
 
 Do not publish until all of these pass.

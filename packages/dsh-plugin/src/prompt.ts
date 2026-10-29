@@ -1,5 +1,5 @@
 /**
- * Build the Reactive Resume system-prompt section for one tool namespace.
+ * Build the Rezumi system-prompt section for one tool namespace.
  * @param serverName - the MCP namespace bridged tools are published under.
  * @returns prompt text naming tools exactly as the model will see them.
  */
@@ -7,7 +7,7 @@ export function buildPatchGuide(serverName: string): string {
 	const t = (raw: string) => `\`mcp__${serverName}__${raw}\``;
 
 	return [
-		"## Reactive Resume",
+		"## Rezumi",
 		"",
 		"These tools operate on the user's real, live resumes and job applications. Changes are immediate and visible in their account.",
 		"",

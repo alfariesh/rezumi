@@ -7,9 +7,9 @@ Delivery decision: implement and release the full scope together, including thre
 
 ## Product promise
 
-Bring a job you found elsewhere into Reactive Resume, prepare your documents, and keep track of what happened. The complete manual workflow requires no new API account. Optional services improve it without interrupting it with setup.
+Bring a job you found elsewhere into Rezumi, prepare your documents, and keep track of what happened. The complete manual workflow requires no new API account. Optional services improve it without interrupting it with setup.
 
-Reactive Resume is a free, open-source, self-hostable application. Release scope must fit limited maintenance capacity and cannot depend on subsidizing unlimited search, scraping, or model usage.
+Rezumi is a free, open-source, self-hostable application. Release scope must fit limited maintenance capacity and cannot depend on subsidizing unlimited search, scraping, or model usage.
 
 ## User experience
 

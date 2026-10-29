@@ -29,7 +29,7 @@ This is the operational handoff. See [mobile-store-review.md](./mobile-store-rev
 | Google forms         | Sign-in access, no ads, category/support details, target ages 13–15/16–17/18+, IARC, Advertising ID No, and Data safety saved. App content page reported no outstanding declarations; changes still await submission |
 | Reviewer account     | Owner created account; browser login succeeded; fictional resume, cover letter, and saved job application seeded. Owner confirms credentials saved privately in both stores                                          |
 
-Brand is **Reactive Resume**, `rxresume`, or `reactive-resume`. The official domain `rxresu.me`, scheme/package `me.rxresu`, and registered Apple Services ID are existing technical identifiers; do not rename them casually.
+Brand is **Rezumi**, `rxresume`, or `reactive-resume`. The official domain `rezumi.app`, scheme/package `me.rxresu`, and registered Apple Services ID are existing technical identifiers; do not rename them casually.
 
 ## Production deployment and quirks
 
@@ -110,7 +110,7 @@ track as appropriate, and record actual store-build results separately.
 
 - Include migration `migrations/20261017135047_clammy_the_enforcers/` for `ai_content_report`; the Worker does not run migrations itself, so apply them through the deploy workflow or `pnpm db:migrate` before deploying. Back up production before deployment and inspect migration logs. Do not reset the database or delete volumes.
 - Deploy server and web together. New native report calls need the new backend; the direct account-deletion query parameter needs the new web code. Verify the deployed Worker version after rollout completes.
-- Keep `APP_URL=https://rxresu.me`. Preserve existing `AUTH_SECRET` and `ENCRYPTION_SECRET`; rotating these casually can invalidate sessions or make saved provider credentials unreadable.
+- Keep `APP_URL=https://rezumi.app`. Preserve existing `AUTH_SECRET` and `ENCRYPTION_SECRET`; rotating these casually can invalidate sessions or make saved provider credentials unreadable.
 - Worker variables and secrets (`wrangler secret put`) are managed separately from code deploys. The application expects actual environment values, not an assumed `*_FILE` convention.
 - Documentation hosting may have an independent deployment. Source changes to `docs/legal/privacy-policy.mdx` and `docs/legal/terms-of-service.mdx` are not proof that public policies changed.
 - PWA icon changes need the web deployment and browser/service-worker cache refresh. An installed PWA may retain old artwork until refreshed or reinstalled.
@@ -127,7 +127,7 @@ APPLE_CLIENT_SECRET=<supply protected deployment value; never commit it>
 
 The Android fingerprint was read from **Play App Signing → Digital Asset Links JSON**, not EAS's upload certificate. Never use the local inspection APK's debug certificate in production. If Play rotates signing keys, update the supported fingerprint list from Play Console and retest links on affected Android versions.
 
-Apple setup is registered for domain `rxresu.me` and callback `https://rxresu.me/api/auth/callback/apple`, associated with primary app `654ASRW868.me.rxresu`. Associated Domains and Sign in with Apple capabilities were enabled. These settings do not replace the runtime client ID/secret.
+Apple setup is registered for domain `rezumi.app` and callback `https://rezumi.app/api/auth/callback/apple`, associated with primary app `654ASRW868.me.rxresu`. Associated Domains and Sign in with Apple capabilities were enabled. These settings do not replace the runtime client ID/secret.
 
 Protected Apple deployment values are local at `/Users/amruth/.config/rxresu/apple-sign-in.env`, mode 600; the authentication `.p8` key is outside the repository. **Client-secret JWT expires 2027-04-15T15:13:47Z; rotate before expiry.** Upload/signing API keys and the Sign in with Apple authentication key have different purposes. Do not copy any private key, JWT, reviewer password, or service-account JSON into this branch, logs, screenshots, or issue comments.
 
@@ -240,11 +240,11 @@ Design sources live in [Figma](https://www.figma.com/design/paEvXcSQes7pnrGtnLS7
 
 All 264 supplied listing PNGs passed decoding/dimension/no-alpha checks: per language, 5 large iPhone (1320×2868), 5 medium iPhone (1206×2622), 5 Android phone (1080×1920), 4 iPad (2064×2752), 4 Android tablet (1920×1080), and 1 Play feature graphic (1024×500). Check active store slots again before upload. Dimension checks do not prove screenshot fidelity. Original READMEs explicitly identify phone/tablet panels, template thumbnails, and tablet navigation as illustrative reconstructions.
 
-Metadata source is `apps/mobile/store/metadata.json`. Name remains **Reactive Resume** (30-character store limit); the longer free/open-source phrase belongs in descriptions. All 11 locales are saved in both stores, but native-language review is not established. Newly added safety messages also have untranslated mobile catalog entries with English fallback; do not promise fully localized runtime UI without checking.
+Metadata source is `apps/mobile/store/metadata.json`. Name remains **Rezumi** (30-character store limit); the longer free/open-source phrase belongs in descriptions. All 11 locales are saved in both stores, but native-language review is not established. Newly added safety messages also have untranslated mobile catalog entries with English fallback; do not promise fully localized runtime UI without checking.
 
-Reviewer account has fictional resume, letter, and saved application; email/username and password are in private store review-access fields. Owner confirms both stores saved them. No 2FA, QR code, membership, location, or biometric restriction is required. Default server is `https://rxresu.me`. Do not delete this primary account or paste its password into chat/source. A real provider is not configured for this account yet; resolve how reviewers exercise advertised AI tools without exposing personal keys.
+Reviewer account has fictional resume, letter, and saved application; email/username and password are in private store review-access fields. Owner confirms both stores saved them. No 2FA, QR code, membership, location, or biometric restriction is required. Default server is `https://rezumi.app`. Do not delete this primary account or paste its password into chat/source. A real provider is not configured for this account yet; resolve how reviewers exercise advertised AI tools without exposing personal keys.
 
-Apple access fields: App Store Connect → Reactive Resume → Distribution → iOS App 1.0.0 → App Review Information → Sign-in required. Google: App content → Sign in details. Retest access immediately before review and keep backend/sample content available throughout review.
+Apple access fields: App Store Connect → Rezumi → Distribution → iOS App 1.0.0 → App Review Information → Sign-in required. Google: App content → Sign in details. Retest access immediately before review and keep backend/sample content available throughout review.
 
 Apple Silicon Mac and Vision Pro availability defaults remain enabled but untested. Test these targets or explicitly choose supported availability before submission; do not click compatibility verification without testing. Play Data safety's no-sharing answer relies on explicit user-initiated/consented transfers and service-provider exemptions; review actual providers before final submission. IARC Everyone/PEGI 3 is a content rating, distinct from the intended audience of ages 13+.
 

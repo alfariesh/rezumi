@@ -2,19 +2,19 @@
 
 Last updated: **2026-10-20**. Not submitted yet.
 
-The Microsoft Store app is the web app at `https://rxresu.me`, wrapped by [PWABuilder](https://www.pwabuilder.com/) into an MSIX package. Windows runs it in Edge's app host, so every web deploy updates it without a new Store submission.
+The Microsoft Store app is the web app at `https://rezumi.app`, wrapped by [PWABuilder](https://www.pwabuilder.com/) into an MSIX package. Windows runs it in Edge's app host, so every web deploy updates it without a new Store submission.
 
 The PWA is manifest-only by decision (May 2026): no service worker and no offline support. PWABuilder lists the missing service worker as a warning, not a blocker. The Store listing must not claim offline use.
 
 ## Before packaging
 
 - [ ] Deploy the current web build. PWABuilder reads the live manifest, and the live manifest still declares `favicon.ico`, PWABuilder's only blocking item.
-- [ ] Re-run the [report card](https://www.pwabuilder.com/reportcard?site=https://rxresu.me) and confirm **Package For Stores** is enabled.
+- [ ] Re-run the [report card](https://www.pwabuilder.com/reportcard?site=https://rezumi.app) and confirm **Package For Stores** is enabled.
 
 ## One-time Partner Center setup
 
 1. Sign in to [Partner Center](https://partner.microsoft.com/dashboard/home) with a **personal** Microsoft account. Registration is free for individual developers.
-2. **Apps and games → New product → MSIX or PWA app**. Reserve **Reactive Resume**.
+2. **Apps and games → New product → MSIX or PWA app**. Reserve **Rezumi**.
 3. **Product management → Product identity**: copy **Package ID**, **Publisher ID** and **Publisher display name**.
 
 ## Package
@@ -32,8 +32,8 @@ Before submitting, install the test package on Windows. Check sign-in with email
 | Pricing             | Free, all markets                                                                                           |
 | Category            | Productivity                                                                                                |
 | Age rating          | IARC questionnaire; answer as for Google Play (user-generated public resumes, optional AI features)         |
-| Privacy policy      | `https://docs.rxresu.me/legal/privacy-policy`                                                               |
-| Support / website   | `https://docs.rxresu.me` / `https://rxresu.me`                                                              |
+| Privacy policy      | `https://docs.rezumi.app/legal/privacy-policy`                                                              |
+| Support / website   | `https://docs.rezumi.app` / `https://rezumi.app`                                                            |
 | Description         | Reuse `apps/mobile/store/metadata.json` (English and ten translations)                                      |
 | Screenshots         | PNG, 1366 × 768 or larger. Convert `apps/web/public/screenshots/web/*.webp` (1920 × 1080) to PNG            |
 | Certification notes | The app needs sign-in. Give the reviewer account from the mobile handoff in Partner Center only, never here |

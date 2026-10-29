@@ -9,13 +9,13 @@ export function buildMcpServerInfo(version: string) {
 	return {
 		name: "reactive-resume",
 		version,
-		title: "Reactive Resume",
-		websiteUrl: "https://rxresu.me",
+		title: "Rezumi",
+		websiteUrl: "https://rezumi.app",
 		description:
-			"Reactive Resume is a free and open-source resume builder. Use this MCP server to interact with your resume using an LLM of your choice.",
+			"Rezumi is a free and open-source resume builder. Use this MCP server to interact with your resume using an LLM of your choice.",
 		icons: [
-			{ src: "https://rxresu.me/icon/light.svg", mimeType: "image/svg+xml", theme: "light" as const },
-			{ src: "https://rxresu.me/icon/dark.svg", mimeType: "image/svg+xml", theme: "dark" as const },
+			{ src: "https://rezumi.app/icon/light.svg", mimeType: "image/svg+xml", theme: "light" as const },
+			{ src: "https://rezumi.app/icon/dark.svg", mimeType: "image/svg+xml", theme: "dark" as const },
 		],
 	};
 }

@@ -1,5 +1,5 @@
 /**
- * DeepSeek Harness plugin for Reactive Resume.
+ * DeepSeek Harness plugin for Rezumi.
  * @module dsh-plugin-reactive-resume
  */
 
@@ -31,7 +31,7 @@ export const name = "reactive-resume";
 export const inject: string[] = ["systemPrompt"];
 
 /**
- * Connect a Reactive Resume account to the session.
+ * Connect a Rezumi account to the session.
  * @param ctx - plugin context carrying prompt assembly.
  * @param config - resolved plugin configuration. `Config` already rejects an
  *   invalid `serverName` at parse time, before `apply` ever runs.

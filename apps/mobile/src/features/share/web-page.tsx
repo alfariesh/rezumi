@@ -122,10 +122,10 @@ export function WebPageSettings({ resume, offline, username, origin, flags, oper
 				footer={t`Uses your resume's template and Design, and fits any screen. Change them in Design.`}
 			>
 				<ListRow
-					title={t`Show “Made with Reactive Resume”`}
+					title={t`Show “Made with Rezumi”`}
 					trailing={
 						<Switch
-							label={t`Show “Made with Reactive Resume”`}
+							label={t`Show “Made with Rezumi”`}
 							value={resume.data.metadata.web?.showCredit !== false}
 							disabled={resume.isLocked}
 							onValueChange={(value) =>

@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary = 'Hardware keyboard shortcuts'
   s.description = s.summary
   s.license = 'MIT'
-  s.author = 'Reactive Resume'
+  s.author = 'Rezumi'
   s.homepage = 'https://github.com/reactive-resume/reactive-resume'
   s.platforms = { :ios => '17.4' }
   s.source = { :git => 'https://github.com/reactive-resume/reactive-resume.git' }

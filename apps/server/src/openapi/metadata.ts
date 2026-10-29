@@ -4,7 +4,7 @@ import { env } from "@reactive-resume/env/server";
 import { buildMcpServerCard } from "@reactive-resume/mcp/server-card";
 import { appVersion } from "../app-version";
 
-const DOCS_URL = "https://docs.rxresu.me";
+const DOCS_URL = "https://docs.rezumi.app";
 
 export const handleOAuthAuthorizationServer = oauthProviderAuthServerMetadata(auth);
 export const handleOpenIdConfiguration = oauthProviderOpenIdConfigMetadata(auth);
@@ -38,15 +38,15 @@ export function handleAgentCatalog() {
 	const baseUrl = appUrl();
 	const catalog = {
 		specVersion: "1.0",
-		host: { displayName: "Reactive Resume", documentationUrl: DOCS_URL, logoUrl: `${baseUrl}/pwa-512x512.png` },
+		host: { displayName: "Rezumi", documentationUrl: DOCS_URL, logoUrl: `${baseUrl}/pwa-512x512.png` },
 		entries: [
 			{
 				identifier: `urn:air:${new URL(baseUrl).hostname}:mcp:reactive-resume`,
-				displayName: "Reactive Resume MCP server",
+				displayName: "Rezumi MCP server",
 				type: "application/mcp-server-card+json",
 				url: `${baseUrl}/.well-known/mcp/server-card.json`,
 				description:
-					"Reads and edits the user's resumes, cover letters and job applications in Reactive Resume, a free and open-source resume builder.",
+					"Reads and edits the user's resumes, cover letters and job applications in Rezumi, a free and open-source resume builder.",
 				tags: ["resume", "cover letter", "job applications", "careers"],
 				representativeQueries: [
 					"update my resume with my new job",
@@ -108,11 +108,11 @@ function buildIntegrations() {
 	return {
 		version: 3,
 		summary:
-			"Reactive Resume is a free and open-source resume builder. Agents can read and edit a user's resumes, cover letters and job applications through the REST API or the MCP server.",
+			"Rezumi is a free and open-source resume builder. Agents can read and edit a user's resumes, cover letters and job applications through the REST API or the MCP server.",
 		credentials: {
 			"api-key": {
 				type: "api_key",
-				label: "Reactive Resume API key",
+				label: "Rezumi API key",
 				generateUrl: `${baseUrl}/dashboard/settings/ai`,
 				setup: [
 					"Open **Settings → AI & developer**, select **New key** in the **API keys** section, name it, choose when it expires, then copy it.",
@@ -122,10 +122,10 @@ function buildIntegrations() {
 			},
 			oauth: {
 				type: "oauth2",
-				label: "Reactive Resume OAuth",
+				label: "Rezumi OAuth",
 				setup: [
 					`OAuth authorization-code flow with dynamic client registration (RFC 7591). Clients discover the authorization server from \`${baseUrl}/.well-known/oauth-protected-resource\` (issuer \`${authorizationServer()}\`).`,
-					"The user signs in to Reactive Resume and approves the client on the consent screen; the resulting access token is sent as `Authorization: Bearer <token>`.",
+					"The user signs in to Rezumi and approves the client on the consent screen; the resulting access token is sent as `Authorization: Bearer <token>`.",
 				].join("\n\n"),
 			},
 		},
@@ -133,7 +133,7 @@ function buildIntegrations() {
 			{
 				type: "http",
 				slug: "reactive-resume-api",
-				name: "Reactive Resume REST API",
+				name: "Rezumi REST API",
 				docs: `${DOCS_URL}/guides/using-the-api`,
 				basis,
 				spec: `${baseUrl}/openapi.json`,
@@ -157,7 +157,7 @@ function buildIntegrations() {
 			{
 				type: "mcp",
 				slug: "reactive-resume-mcp",
-				name: "Reactive Resume MCP server",
+				name: "Rezumi MCP server",
 				docs: `${DOCS_URL}/guides/using-the-mcp-server`,
 				basis,
 				url: `${baseUrl}/mcp`,

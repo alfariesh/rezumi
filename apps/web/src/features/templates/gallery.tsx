@@ -24,7 +24,7 @@ export function TemplateGallery() {
 							{t`Build your resume`}
 						</Button>
 						<a
-							href="https://docs.rxresu.me/guides/choosing-a-template"
+							href="https://docs.rezumi.app/guides/choosing-a-template"
 							className="text-accent-text underline underline-offset-4"
 						>
 							{t`How to choose a template`}

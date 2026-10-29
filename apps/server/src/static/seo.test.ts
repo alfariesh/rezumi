@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
-vi.mock("@reactive-resume/env/server", () => ({ env: { APP_URL: "https://rxresu.me/" } }));
+vi.mock("@reactive-resume/env/server", () => ({ env: { APP_URL: "https://rezumi.app/" } }));
 vi.mock("@reactive-resume/api/features/resume/web-page", () => ({
 	listIndexableResumes: async () => [
 		{ username: "tess", slug: "game-dev", isPrimary: true, updatedAt: new Date("2026-10-01T00:00:00Z") },
@@ -13,15 +13,15 @@ const { handlePagesSitemap, handleResumesSitemap, handleLlms } = await import(".
 it("lists each indexed resume at its canonical address: the primary at /<username>", async () => {
 	const xml = await (await handleResumesSitemap(1)).text();
 	expect([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1])).toEqual([
-		"https://rxresu.me/tess",
-		"https://rxresu.me/tess/level-design",
+		"https://rezumi.app/tess",
+		"https://rezumi.app/tess/level-design",
 	]);
 });
 
 it("publishes Context7 Ask after the llms title and summary", async () => {
 	const text = await handleLlms().text();
 	expect(text).toMatch(
-		/^# Reactive Resume\n\n> [^\n]+\n\n## Search\n\nThis site has a search endpoint: https:\/\/context7.com\/api\/v2\/ask\?siteKey=ask_b3fd9335a63f1b21b1a814ac&query=<URL-encoded question>\./,
+		/^# Rezumi\n\n> [^\n]+\n\n## Search\n\nThis site has a search endpoint: https:\/\/context7.com\/api\/v2\/ask\?siteKey=ask_b3fd9335a63f1b21b1a814ac&query=<URL-encoded question>\./,
 	);
 	expect(text).toContain(
 		"It returns documentation that answers the question, with a source link for each part. No API key is needed. If nothing matches, it says so.\n\n## Product",
@@ -45,7 +45,7 @@ describe("localized sitemap", () => {
 		expect(entries).toHaveLength(162); // Three public pages, 54 real locales; x-default shares English's URL.
 		expect(new Set(locations).size).toBe(entries.length);
 		for (const path of ["/", "/ats-checker", "/resume-templates"]) {
-			const base = `https://rxresu.me${path}`;
+			const base = `https://rezumi.app${path}`;
 			expect(locations).toContain(base);
 			expect(locations).toContain(`${base}?locale=de-DE`);
 			expect(locations).toContain(`${base}?locale=ar-SA`);

@@ -1,4 +1,4 @@
-# Reactive Resume: agent instructions
+# Rezumi: agent instructions
 
 This file applies across the repository. Follow a closer `AGENTS.md` when one exists. Keep this guide focused on agent workflows. Keep `docs/` for public product, integration, self-hosting, and contributor guides; agent instructions, internal runbooks, plans, and research belong in `.agents/docs/`. Format guidance: [agents.md](https://agents.md/).
 
@@ -41,7 +41,7 @@ This block is written and re-added by `turbo` before repository-scoped commands 
 
 ## Overview
 
-Reactive Resume is a free, open-source resume builder for creating, importing, exporting, and sharing resumes, cover letters, and job applications. It is a TypeScript pnpm monorepo managed by Turborepo, with three apps: `apps/web` (React 19 SPA with TanStack Router, TanStack Query, Tailwind CSS, and Vite), `apps/server` (Hono / Node.js), and `apps/mobile` (Expo / React Native iOS and Android app with the native Forme renderer from `packages/forme-native`). oRPC connects browser workflows to server business logic; Better Auth handles authentication; Drizzle accesses PostgreSQL. Forme renders PDFs in the browser and on the server.
+Rezumi is a free, open-source resume builder for creating, importing, exporting, and sharing resumes, cover letters, and job applications. It is a TypeScript pnpm monorepo managed by Turborepo, with three apps: `apps/web` (React 19 SPA with TanStack Router, TanStack Query, Tailwind CSS, and Vite), `apps/server` (Hono / Node.js), and `apps/mobile` (Expo / React Native iOS and Android app with the native Forme renderer from `packages/forme-native`). oRPC connects browser workflows to server business logic; Better Auth handles authentication; Drizzle accesses PostgreSQL. Forme renders PDFs in the browser and on the server.
 
 Production runs only on Cloudflare Workers (`wrangler.jsonc`): Static Assets serve the built web app, the Worker runs the Hono application from `apps/server` (API/auth/MCP/static routes), PostgreSQL is reached through Hyperdrive, and uploads live in private R2. Local dev and `pnpm start` run the same app as a plain Node.js process. Docker, Vercel, Kubernetes, Hostinger, Cloudron, and NAS deployments are dropped; their files and docs are deleted. Some runtime adapters (storage `s3`/`blob`/`local`, Vercel env aliases in `packages/env/src/deployment.ts`) remain in code. Setup and runtime limits: `docs/self-hosting/cloudflare.mdx`.
 

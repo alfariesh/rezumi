@@ -253,7 +253,7 @@ function WebPageSettings() {
 						draft.metadata.web = { ...draft.metadata.web, showCredit: checked };
 					})
 				}
-				label={t`Show “Made with Reactive Resume”`}
+				label={t`Show “Made with Rezumi”`}
 				className="py-0"
 			/>
 		</section>

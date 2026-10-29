@@ -71,7 +71,7 @@ export const getExportFormats = (): DownloadFormat[] => [
 		label: "JSON",
 		extension: ".json",
 		icon: "brackets-curly",
-		description: t`Complete data backup. Imports back into Reactive Resume or JSON Resume tools.`,
+		description: t`Complete data backup. Imports back into Rezumi or JSON Resume tools.`,
 	},
 ];
 

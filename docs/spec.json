@@ -1,8 +1,8 @@
 {
 	"info": {
-		"title": "Reactive Resume",
+		"title": "Rezumi",
 		"version": "6.0.7",
-		"description": "Reactive Resume API. Mutations do not support Idempotency-Key. Do not automatically retry POST, PUT, PATCH or DELETE requests after a timeout: first read the resource to determine whether the operation succeeded. Existing enum values and response shapes are retained for compatibility.",
+		"description": "Rezumi API. Mutations do not support Idempotency-Key. Do not automatically retry POST, PUT, PATCH or DELETE requests after a timeout: first read the resource to determine whether the operation succeeded. Existing enum values and response shapes are retained for compatibility.",
 		"license": {
 			"name": "MIT",
 			"url": "https://github.com/reactive-resume/reactive-resume/blob/main/LICENSE"
@@ -15,7 +15,7 @@
 	},
 	"servers": [
 		{
-			"url": "https://rxresu.me/api/openapi"
+			"url": "https://rezumi.app/api/openapi"
 		}
 	],
 	"paths": {
@@ -29,7 +29,7 @@
 				"description": "Checks database and storage availability. Does not require authentication.",
 				"servers": [
 					{
-						"url": "https://rxresu.me"
+						"url": "https://rezumi.app"
 					}
 				],
 				"security": [],
@@ -255,7 +255,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/health\""
+						"source": "curl \"https://rezumi.app/api/health\""
 					}
 				]
 			}
@@ -383,7 +383,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/content-reports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"source\": \"assistant\",\n  \"reason\": \"hate\",\n  \"content\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/content-reports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"source\": \"assistant\",\n  \"reason\": \"hate\",\n  \"content\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -4662,7 +4662,7 @@
 													"properties": {
 														"showCredit": {
 															"type": "boolean",
-															"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+															"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 														}
 													},
 													"required": [
@@ -4886,7 +4886,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/parse-pdf\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/parse-pdf\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  }\n}'"
 					}
 				]
 			}
@@ -9173,7 +9173,7 @@
 													"properties": {
 														"showCredit": {
 															"type": "boolean",
-															"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+															"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 														}
 													},
 													"required": [
@@ -9397,7 +9397,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/parse-docx\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  },\n  \"mediaType\": \"application/msword\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/parse-docx\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  },\n  \"mediaType\": \"application/msword\"\n}'"
 					}
 				]
 			}
@@ -9704,7 +9704,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/ats-review\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"extractedText\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/ats-review\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"extractedText\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -9959,7 +9959,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/improve\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"line\": \"<string>\",\n  \"action\": \"verb\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/improve\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"line\": \"<string>\",\n  \"action\": \"verb\"\n}'"
 					}
 				]
 			}
@@ -10261,7 +10261,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/ai-providers\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/ai-providers\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -10685,7 +10685,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai-providers\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"label\": \"<string>\",\n  \"provider\": \"openai\",\n  \"model\": \"<string>\",\n  \"apiKey\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai-providers\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"label\": \"<string>\",\n  \"provider\": \"openai\",\n  \"model\": \"<string>\",\n  \"apiKey\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -11178,7 +11178,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/ai-providers/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/ai-providers/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			},
@@ -11370,7 +11370,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/ai-providers/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/ai-providers/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -11813,7 +11813,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai-providers/<id>/default\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai-providers/<id>/default\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -12316,7 +12316,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai-providers/<id>/test\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai-providers/<id>/test\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -12611,7 +12611,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/agent/threads\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/agent/threads\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -12892,7 +12892,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/agent/threads\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/agent/threads\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -13287,7 +13287,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/agent/threads/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/agent/threads/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -13562,7 +13562,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/agent/threads/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/agent/threads/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			},
@@ -13633,7 +13633,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/agent/threads/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/agent/threads/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -13877,7 +13877,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/agent/messages/send\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\",\n  \"message\": {\n    \"id\": \"<string>\",\n    \"role\": \"system\",\n    \"parts\": [\n      {\n        \"type\": \"<string>\"\n      }\n    ]\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/agent/messages/send\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\",\n  \"message\": {\n    \"id\": \"<string>\",\n    \"role\": \"system\",\n    \"parts\": [\n      {\n        \"type\": \"<string>\"\n      }\n    ]\n  }\n}'"
 					}
 				]
 			}
@@ -13995,7 +13995,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/agent/messages/stop\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/agent/messages/stop\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -14135,7 +14135,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/agent/messages/resume?threadId=<threadId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/agent/messages/resume?threadId=<threadId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -14270,7 +14270,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/agent/messages/edit-status\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\",\n  \"messageId\": \"<string>\",\n  \"toolCallId\": \"<string>\",\n  \"edits\": [\n    {\n      \"id\": \"<string>\",\n      \"status\": \"pending\"\n    }\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/agent/messages/edit-status\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\",\n  \"messageId\": \"<string>\",\n  \"toolCallId\": \"<string>\",\n  \"edits\": [\n    {\n      \"id\": \"<string>\",\n      \"status\": \"pending\"\n    }\n  ]\n}'"
 					}
 				]
 			}
@@ -14421,7 +14421,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/agent/attachments\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\",\n  \"filename\": \"<string>\",\n  \"mediaType\": \"<string>\",\n  \"data\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/agent/attachments\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"threadId\": \"<string>\",\n  \"filename\": \"<string>\",\n  \"mediaType\": \"<string>\",\n  \"data\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -14494,7 +14494,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/agent/attachments/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/agent/attachments/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -14647,7 +14647,7 @@
 														"type": "null"
 													}
 												],
-												"description": "The linked Reactive Resume, if any."
+												"description": "The linked Rezumi, if any."
 											},
 											"coverLetterId": {
 												"anyOf": [
@@ -15231,7 +15231,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/applications\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/applications\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -15500,7 +15500,7 @@
 												"type": "null"
 											}
 										],
-										"description": "The linked Reactive Resume, if any."
+										"description": "The linked Rezumi, if any."
 									},
 									"coverLetterId": {
 										"anyOf": [
@@ -15820,7 +15820,7 @@
 												"type": "null"
 											}
 										],
-										"description": "The linked Reactive Resume, if any."
+										"description": "The linked Rezumi, if any."
 									},
 									"coverLetterId": {
 										"anyOf": [
@@ -15954,7 +15954,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"company\": \"<string>\",\n  \"role\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"company\": \"<string>\",\n  \"role\": \"<string>\"\n}'"
 					}
 				]
 			},
@@ -16088,7 +16088,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/applications\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/applications\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
 					}
 				]
 			},
@@ -16188,7 +16188,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/applications\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/applications\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
 					}
 				]
 			}
@@ -16352,7 +16352,7 @@
 														"type": "null"
 													}
 												],
-												"description": "The linked Reactive Resume, if any."
+												"description": "The linked Rezumi, if any."
 											},
 											"coverLetterId": {
 												"anyOf": [
@@ -16710,7 +16710,7 @@
 																"type": "null"
 															}
 														],
-														"description": "The linked Reactive Resume, if any."
+														"description": "The linked Rezumi, if any."
 													},
 													"coverLetterId": {
 														"anyOf": [
@@ -17318,7 +17318,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/applications/summary\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/applications/summary\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -17423,7 +17423,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -17986,7 +17986,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -18265,7 +18265,7 @@
 												"type": "null"
 											}
 										],
-										"description": "The linked Reactive Resume, if any."
+										"description": "The linked Rezumi, if any."
 									},
 									"coverLetterId": {
 										"anyOf": [
@@ -18582,7 +18582,7 @@
 												"type": "null"
 											}
 										],
-										"description": "The linked Reactive Resume, if any."
+										"description": "The linked Rezumi, if any."
 									},
 									"coverLetterId": {
 										"anyOf": [
@@ -18735,7 +18735,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -19298,7 +19298,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			},
@@ -19371,7 +19371,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -19650,7 +19650,7 @@
 												"type": "null"
 											}
 										],
-										"description": "The linked Reactive Resume, if any."
+										"description": "The linked Rezumi, if any."
 									},
 									"coverLetterId": {
 										"anyOf": [
@@ -19967,7 +19967,7 @@
 												"type": "null"
 											}
 										],
-										"description": "The linked Reactive Resume, if any."
+										"description": "The linked Rezumi, if any."
 									},
 									"coverLetterId": {
 										"anyOf": [
@@ -20120,7 +20120,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -20683,7 +20683,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/applications/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -20961,7 +20961,7 @@
 															"type": "null"
 														}
 													],
-													"description": "The linked Reactive Resume, if any."
+													"description": "The linked Rezumi, if any."
 												},
 												"coverLetterId": {
 													"anyOf": [
@@ -21100,7 +21100,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/import\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"items\": [\n    {\n      \"company\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/import\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"items\": [\n    {\n      \"company\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}'"
 					}
 				]
 			}
@@ -21235,7 +21235,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -21787,7 +21787,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/documents/<kind>\" --header \"x-api-key: <api-key>\" --form \"file=@<file>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/documents/<kind>\" --header \"x-api-key: <api-key>\" --form \"file=@<file>\""
 					}
 				]
 			},
@@ -21901,7 +21901,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -22464,7 +22464,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/applications/<id>/documents/<kind>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/applications/<id>/documents/<kind>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -22591,7 +22591,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -23154,7 +23154,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/notes\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"text\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/notes\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"text\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -23350,7 +23350,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -23913,7 +23913,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/interviews\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"screening\",\n  \"at\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/interviews\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"screening\",\n  \"at\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -24107,7 +24107,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -24670,7 +24670,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/applications/<id>/interviews/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/applications/<id>/interviews/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			},
@@ -24862,7 +24862,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -25425,7 +25425,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/applications/<id>/interviews/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/applications/<id>/interviews/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -25557,7 +25557,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -26120,7 +26120,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/applications/<id>/timeline/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/applications/<id>/timeline/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			},
@@ -26230,7 +26230,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -26793,7 +26793,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/applications/<id>/timeline/<entryId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/applications/<id>/timeline/<entryId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -26923,7 +26923,7 @@
 													"type": "null"
 												}
 											],
-											"description": "The linked Reactive Resume, if any."
+											"description": "The linked Rezumi, if any."
 										},
 										"coverLetterId": {
 											"anyOf": [
@@ -27486,7 +27486,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/applications/<id>/timeline/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/applications/<id>/timeline/<entryId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -27622,7 +27622,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/bulk-update\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/bulk-update\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
 					}
 				]
 			}
@@ -27724,7 +27724,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/bulk-delete\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/bulk-delete\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"ids\": [\n    \"<string>\"\n  ]\n}'"
 					}
 				]
 			}
@@ -27850,7 +27850,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/applications/stats\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/applications/stats\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -27970,7 +27970,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/applications/tags\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/applications/tags\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -28263,7 +28263,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/ai/search-postings\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"query\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/search-postings\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"query\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -28736,7 +28736,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/ai/parse-posting\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"input\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/parse-posting\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"input\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -28966,7 +28966,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/ai/autofill\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"jobDescription\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/autofill\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"jobDescription\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -29171,7 +29171,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/ai/match-score\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/match-score\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -29404,7 +29404,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/ai/draft-message\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"cover-letter\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/draft-message\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"cover-letter\"\n}'"
 					}
 				]
 			}
@@ -29616,7 +29616,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/ai/tailor-resume\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/tailor-resume\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -29731,7 +29731,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/auth/profile\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/auth/profile\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -29846,7 +29846,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/auth/profile\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/auth/profile\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -30036,7 +30036,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/auth/api-keys\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/auth/api-keys\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -30155,7 +30155,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/auth/api-keys\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\",\n  \"expiresIn\": 123,\n  \"access\": \"read\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/auth/api-keys\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\",\n  \"expiresIn\": 123,\n  \"access\": \"read\"\n}'"
 					}
 				]
 			}
@@ -30245,7 +30245,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/auth/api-keys/<keyId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/auth/api-keys/<keyId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -30254,7 +30254,7 @@
 			"get": {
 				"operationId": "listAuthProviders",
 				"summary": "List authentication providers",
-				"description": "Returns a list of all authentication providers enabled on this Reactive Resume instance, along with their display names. Possible providers include password-based credentials, Apple, Google, GitHub, LinkedIn, and custom OAuth. No authentication required.",
+				"description": "Returns a list of all authentication providers enabled on this Rezumi instance, along with their display names. Possible providers include password-based credentials, Apple, Google, GitHub, LinkedIn, and custom OAuth. No authentication required.",
 				"tags": [
 					"Authentication"
 				],
@@ -30322,7 +30322,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/auth/providers\""
+						"source": "curl \"https://rezumi.app/api/openapi/auth/providers\""
 					}
 				]
 			}
@@ -34580,7 +34580,7 @@
 																		"properties": {
 																			"showCredit": {
 																				"type": "boolean",
-																				"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																				"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																			}
 																		},
 																		"required": [
@@ -35219,7 +35219,7 @@
 																		"properties": {
 																			"showCredit": {
 																				"type": "boolean",
-																				"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																				"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																			}
 																		},
 																		"required": [
@@ -35455,7 +35455,7 @@
 																"type": "null"
 															}
 														],
-														"description": "The linked Reactive Resume, if any."
+														"description": "The linked Rezumi, if any."
 													},
 													"coverLetterId": {
 														"anyOf": [
@@ -38419,7 +38419,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/auth/account/export\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/auth/account/export\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -38487,7 +38487,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/auth/account\" --cookie \"<session-cookie>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/auth/account\" --cookie \"<session-cookie>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -38625,7 +38625,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/voice/transcripts\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/voice/transcripts\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -38771,7 +38771,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/voice/transcribe\" --header \"x-api-key: <api-key>\" --form \"providerId=<string>\" --form \"model=<string>\" --form \"audio=<string>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/voice/transcribe\" --header \"x-api-key: <api-key>\" --form \"providerId=<string>\" --form \"model=<string>\" --form \"audio=<string>\""
 					}
 				]
 			}
@@ -38863,7 +38863,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/career/voice/transcripts/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"text\": \"<string>\"\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/career/voice/transcripts/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"text\": \"<string>\"\n}'"
 					}
 				]
 			},
@@ -38933,7 +38933,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/career/voice/transcripts/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/career/voice/transcripts/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -39045,7 +39045,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/voice/speak\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"providerId\": \"<string>\",\n  \"model\": \"<string>\",\n  \"text\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/voice/speak\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"providerId\": \"<string>\",\n  \"model\": \"<string>\",\n  \"text\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -39243,7 +39243,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/schedules\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/schedules\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -39554,7 +39554,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/schedules\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"discovery\",\n  \"nextRunAt\": \"<string>\",\n  \"timezone\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/schedules\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"discovery\",\n  \"nextRunAt\": \"<string>\",\n  \"timezone\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -39628,7 +39628,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/career/schedules/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/career/schedules/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -39904,7 +39904,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/notifications\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/notifications\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -39978,7 +39978,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/notifications/<id>/read\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/notifications/<id>/read\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -40150,7 +40150,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/opportunities\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/opportunities\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -40224,7 +40224,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/career/opportunities/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/career/opportunities/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -40315,7 +40315,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/opportunities/<id>/track\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/opportunities/<id>/track\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -40502,7 +40502,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/profile\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/profile\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -40812,7 +40812,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/career/profile\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/career/profile\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -41054,7 +41054,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/facts\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/facts\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -41305,7 +41305,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/facts\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"text\": \"<string>\",\n  \"category\": \"accomplishment\",\n  \"source\": {\n    \"kind\": \"user-message\",\n    \"id\": \"<string>\",\n    \"quote\": \"<string>\"\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/facts\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"text\": \"<string>\",\n  \"category\": \"accomplishment\",\n  \"source\": {\n    \"kind\": \"user-message\",\n    \"id\": \"<string>\",\n    \"quote\": \"<string>\"\n  }\n}'"
 					}
 				]
 			}
@@ -41406,7 +41406,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/career/facts/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/career/facts/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			},
@@ -41478,7 +41478,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/career/facts/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/career/facts/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -41679,7 +41679,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/stories\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/stories\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -41937,7 +41937,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/stories\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"title\": \"<string>\",\n  \"situation\": \"<string>\",\n  \"task\": \"<string>\",\n  \"action\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/stories\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"title\": \"<string>\",\n  \"situation\": \"<string>\",\n  \"task\": \"<string>\",\n  \"action\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -42011,7 +42011,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/career/stories/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/career/stories/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -43107,7 +43107,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/saved\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/saved\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -43181,7 +43181,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/career/saved/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/career/saved/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -44453,7 +44453,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/generate\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"applicationId\": \"<string>\",\n  \"task\": {\n    \"task\": \"fit\"\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/generate\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"applicationId\": \"<string>\",\n  \"task\": {\n    \"task\": \"fit\"\n  }\n}'"
 					}
 				]
 			}
@@ -44551,7 +44551,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/saved/<id>/apply\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"changes\": [\n    123\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/saved/<id>/apply\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"changes\": [\n    123\n  ]\n}'"
 					}
 				]
 			}
@@ -44737,7 +44737,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/career/workspace/<applicationId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/career/workspace/<applicationId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -45131,7 +45131,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/career/workspace/<applicationId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expected\": {}\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/career/workspace/<applicationId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expected\": {}\n}'"
 					}
 				]
 			}
@@ -45291,7 +45291,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/workspace/<applicationId>/submit\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"answers\": [\n    {\n      \"id\": \"<string>\",\n      \"question\": \"<string>\",\n      \"answer\": \"<string>\",\n      \"factIds\": [\n        \"<string>\"\n      ]\n    }\n  ],\n  \"expectedAnswers\": [\n    {\n      \"id\": \"<string>\",\n      \"question\": \"<string>\",\n      \"answer\": \"<string>\",\n      \"factIds\": [\n        \"<string>\"\n      ]\n    }\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/workspace/<applicationId>/submit\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"answers\": [\n    {\n      \"id\": \"<string>\",\n      \"question\": \"<string>\",\n      \"answer\": \"<string>\",\n      \"factIds\": [\n        \"<string>\"\n      ]\n    }\n  ],\n  \"expectedAnswers\": [\n    {\n      \"id\": \"<string>\",\n      \"question\": \"<string>\",\n      \"answer\": \"<string>\",\n      \"factIds\": [\n        \"<string>\"\n      ]\n    }\n  ]\n}'"
 					}
 				]
 			}
@@ -45366,7 +45366,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/career/workspace/<applicationId>/answers\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/career/workspace/<applicationId>/answers\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -45998,7 +45998,7 @@
 																		"properties": {
 																			"showCredit": {
 																				"type": "boolean",
-																				"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																				"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																			}
 																		},
 																		"required": [
@@ -46215,7 +46215,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/cover-letters\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/cover-letters\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -46897,7 +46897,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -47104,7 +47104,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -47686,7 +47686,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -47893,7 +47893,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -48893,7 +48893,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -49100,7 +49100,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123\n}'"
 					}
 				]
 			},
@@ -49193,7 +49193,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123\n}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123\n}'"
 					}
 				]
 			},
@@ -50193,7 +50193,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -50400,7 +50400,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/cover-letters/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123\n}'"
 					}
 				]
 			}
@@ -51007,7 +51007,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -51214,7 +51214,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/refresh-style\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123,\n  \"resumeId\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/refresh-style\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123,\n  \"resumeId\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -51813,7 +51813,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -52020,7 +52020,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/duplicate\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/duplicate\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -52029,7 +52029,7 @@
 			"get": {
 				"operationId": "exportCoverLetter",
 				"summary": "Export a cover letter",
-				"description": "Exports a saved cover letter as a standalone Reactive Resume cover-letter document.",
+				"description": "Exports a saved cover letter as a standalone Rezumi cover-letter document.",
 				"tags": [
 					"Cover Letters"
 				],
@@ -52602,7 +52602,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -52758,7 +52758,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/cover-letters/<id>/export\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/cover-letters/<id>/export\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -52767,7 +52767,7 @@
 			"post": {
 				"operationId": "importCoverLetter",
 				"summary": "Import a cover letter",
-				"description": "Creates a saved cover letter from an exported Reactive Resume cover-letter document.",
+				"description": "Creates a saved cover letter from an exported Rezumi cover-letter document.",
 				"tags": [
 					"Cover Letters"
 				],
@@ -53333,7 +53333,7 @@
 																"properties": {
 																	"showCredit": {
 																		"type": "boolean",
-																		"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																		"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																	}
 																},
 																"required": [
@@ -54006,7 +54006,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -54213,7 +54213,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/import\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"document\": {\n    \"name\": \"<string>\",\n    \"recipient\": \"<string>\",\n    \"content\": \"<string>\",\n    \"style\": {\n      \"basics\": {\n        \"name\": \"<string>\",\n        \"headline\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"location\": \"<string>\",\n        \"website\": {\n          \"url\": \"<string>\",\n          \"label\": \"<string>\"\n        },\n        \"customFields\": [\n          {\n            \"id\": \"<string>\",\n            \"icon\": \"<string>\",\n            \"text\": \"<string>\",\n            \"link\": \"<string>\"\n          }\n        ]\n      },\n      \"picture\": {\n        \"hidden\": true,\n        \"fit\": \"cover\",\n        \"url\": \"<string>\",\n        \"size\": 123,\n        \"rotation\": 123,\n        \"aspectRatio\": 123,\n        \"borderRadius\": 123,\n        \"borderColor\": \"<string>\",\n        \"borderWidth\": 123,\n        \"shadowColor\": \"<string>\",\n        \"shadowWidth\": 123\n      },\n      \"metadata\": {\n        \"template\": \"azurill\",\n        \"page\": {\n          \"gapX\": 123,\n          \"gapY\": 123,\n          \"marginX\": 123,\n          \"marginY\": 123,\n          \"format\": \"a4\",\n          \"locale\": \"<string>\",\n          \"hideLinkUnderline\": true,\n          \"hideIcons\": true,\n          \"hideSectionIcons\": true\n        },\n        \"design\": {\n          \"level\": {\n            \"icon\": \"<string>\",\n            \"type\": \"hidden\"\n          },\n          \"colors\": {\n            \"primary\": \"<string>\",\n            \"text\": \"<string>\",\n            \"background\": \"<string>\"\n          }\n        },\n        \"typography\": {\n          \"body\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          },\n          \"heading\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          }\n        },\n        \"styleRules\": [\n          \"<string>\"\n        ]\n      },\n      \"sectionId\": \"<string>\",\n      \"itemId\": \"<string>\"\n    },\n    \"format\": \"reactive-resume-cover-letter\",\n    \"version\": 1\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/import\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"document\": {\n    \"name\": \"<string>\",\n    \"recipient\": \"<string>\",\n    \"content\": \"<string>\",\n    \"style\": {\n      \"basics\": {\n        \"name\": \"<string>\",\n        \"headline\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"location\": \"<string>\",\n        \"website\": {\n          \"url\": \"<string>\",\n          \"label\": \"<string>\"\n        },\n        \"customFields\": [\n          {\n            \"id\": \"<string>\",\n            \"icon\": \"<string>\",\n            \"text\": \"<string>\",\n            \"link\": \"<string>\"\n          }\n        ]\n      },\n      \"picture\": {\n        \"hidden\": true,\n        \"fit\": \"cover\",\n        \"url\": \"<string>\",\n        \"size\": 123,\n        \"rotation\": 123,\n        \"aspectRatio\": 123,\n        \"borderRadius\": 123,\n        \"borderColor\": \"<string>\",\n        \"borderWidth\": 123,\n        \"shadowColor\": \"<string>\",\n        \"shadowWidth\": 123\n      },\n      \"metadata\": {\n        \"template\": \"azurill\",\n        \"page\": {\n          \"gapX\": 123,\n          \"gapY\": 123,\n          \"marginX\": 123,\n          \"marginY\": 123,\n          \"format\": \"a4\",\n          \"locale\": \"<string>\",\n          \"hideLinkUnderline\": true,\n          \"hideIcons\": true,\n          \"hideSectionIcons\": true\n        },\n        \"design\": {\n          \"level\": {\n            \"icon\": \"<string>\",\n            \"type\": \"hidden\"\n          },\n          \"colors\": {\n            \"primary\": \"<string>\",\n            \"text\": \"<string>\",\n            \"background\": \"<string>\"\n          }\n        },\n        \"typography\": {\n          \"body\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          },\n          \"heading\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          }\n        },\n        \"styleRules\": [\n          \"<string>\"\n        ]\n      },\n      \"sectionId\": \"<string>\",\n      \"itemId\": \"<string>\"\n    },\n    \"format\": \"reactive-resume-cover-letter\",\n    \"version\": 1\n  }\n}'"
 					}
 				]
 			}
@@ -54381,7 +54381,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/cover-letters/<id>/versions\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/cover-letters/<id>/versions\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -54520,7 +54520,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/versions\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/versions\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -55141,7 +55141,7 @@
 																	"properties": {
 																		"showCredit": {
 																			"type": "boolean",
-																			"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																			"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																		}
 																	},
 																	"required": [
@@ -55293,7 +55293,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/cover-letters/<id>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/cover-letters/<id>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -55441,7 +55441,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/cover-letters/<id>/versions/<versionId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/cover-letters/<id>/versions/<versionId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
 					}
 				]
 			},
@@ -55523,7 +55523,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/cover-letters/<id>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/cover-letters/<id>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -56114,7 +56114,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -56321,7 +56321,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/versions/<versionId>/restore\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/versions/<versionId>/restore\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -56489,7 +56489,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/draft\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/draft\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -56702,7 +56702,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/custom-domain\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/custom-domain\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -56985,7 +56985,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/custom-domain\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"hostname\": \"<string>\"\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/custom-domain\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"hostname\": \"<string>\"\n}'"
 					}
 				]
 			},
@@ -57117,7 +57117,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/custom-domain\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/custom-domain\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -57332,7 +57332,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/custom-domain/verify\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/custom-domain/verify\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -57406,7 +57406,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/documents/trash/expired\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/documents/trash/expired\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -57640,7 +57640,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/documents\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/documents\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -57728,7 +57728,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/documents/counts\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/documents/counts\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -57827,7 +57827,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/rename\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"name\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/rename\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"name\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -57930,7 +57930,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/tags\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"tags\": [\n    \"<string>\"\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/tags\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"tags\": [\n    \"<string>\"\n  ]\n}'"
 					}
 				]
 			}
@@ -58027,7 +58027,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"isLocked\": true\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"isLocked\": true\n}'"
 					}
 				]
 			}
@@ -58133,7 +58133,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/application\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"applicationId\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/application\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\",\n  \"applicationId\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -58226,7 +58226,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/trash\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/trash\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -58319,7 +58319,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/restore\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/restore\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -58412,7 +58412,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/purge\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/purge\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"type\": \"resume\",\n  \"id\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -58515,7 +58515,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/copy-for-job\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"resumeId\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/copy-for-job\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"resumeId\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -58524,7 +58524,7 @@
 			"get": {
 				"operationId": "getFeatureFlags",
 				"summary": "Get feature flags",
-				"description": "Returns the current feature flags for this Reactive Resume instance. Feature flags control instance-wide settings such as whether new user signups or email-based authentication are disabled. No authentication required.",
+				"description": "Returns the current feature flags for this Rezumi instance. Feature flags control instance-wide settings such as whether new user signups or email-based authentication are disabled. No authentication required.",
 				"tags": [
 					"Feature Flags"
 				],
@@ -58625,7 +58625,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/flags\""
+						"source": "curl \"https://rezumi.app/api/openapi/flags\""
 					}
 				]
 			}
@@ -58745,7 +58745,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/tags\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/tags\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -58824,7 +58824,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<username>/<slug>/statistics/download\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<username>/<slug>/statistics/download\""
 					}
 				]
 			}
@@ -58953,7 +58953,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>/statistics\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>/statistics\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -59070,7 +59070,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>/statistics/daily\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>/statistics/daily\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -59243,7 +59243,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>/updates\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>/updates\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -59471,7 +59471,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -59666,7 +59666,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\",\n  \"tags\": [\n    \"<string>\"\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\",\n  \"tags\": [\n    \"<string>\"\n  ]\n}'"
 					}
 				]
 			}
@@ -63969,7 +63969,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -64118,7 +64118,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -68480,7 +68480,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -68847,7 +68847,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			},
@@ -73279,7 +73279,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -73596,7 +73596,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"<string>\"\n    }\n  ]\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"operations\": [\n    {\n      \"op\": \"add\",\n      \"path\": \"<string>\"\n    }\n  ]\n}'"
 					}
 				]
 			},
@@ -73729,7 +73729,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/resumes/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -78034,7 +78034,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -78146,7 +78146,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<username>/<slug>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<username>/<slug>\""
 					}
 				]
 			}
@@ -78229,7 +78229,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>/web-page/preview\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>/web-page/preview\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -78345,7 +78345,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<resumeId>/slug-check?slug=<slug>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<resumeId>/slug-check?slug=<slug>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -78495,7 +78495,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/import\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"data\": {\n    \"picture\": {\n      \"hidden\": true,\n      \"url\": \"<string>\",\n      \"size\": 123,\n      \"rotation\": 123,\n      \"aspectRatio\": 123,\n      \"borderRadius\": 123,\n      \"borderColor\": \"<string>\",\n      \"borderWidth\": 123,\n      \"shadowColor\": \"<string>\",\n      \"shadowWidth\": 123\n    },\n    \"basics\": {\n      \"name\": \"<string>\",\n      \"headline\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"location\": \"<string>\",\n      \"website\": {\n        \"url\": \"<string>\",\n        \"label\": \"<string>\"\n      },\n      \"customFields\": [\n        {\n          \"id\": \"<string>\",\n          \"icon\": \"<string>\",\n          \"text\": \"<string>\",\n          \"link\": \"<string>\"\n        }\n      ]\n    },\n    \"summary\": {\n      \"title\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"columns\": 123,\n      \"hidden\": true,\n      \"keepTogether\": true,\n      \"startOnNewPage\": true,\n      \"content\": \"<string>\"\n    },\n    \"sections\": {\n      \"profiles\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"network\": \"<string>\",\n            \"username\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            }\n          }\n        ]\n      },\n      \"experience\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"company\": \"<string>\",\n            \"position\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\",\n            \"roles\": [\n              {\n                \"id\": \"<string>\",\n                \"position\": \"<string>\",\n                \"period\": \"<string>\",\n                \"description\": \"<string>\"\n              }\n            ]\n          }\n        ]\n      },\n      \"education\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"school\": \"<string>\",\n            \"degree\": \"<string>\",\n            \"area\": \"<string>\",\n            \"grade\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"projects\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"skills\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"proficiency\": \"<string>\",\n            \"level\": 123,\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"languages\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"language\": \"<string>\",\n            \"fluency\": \"<string>\",\n            \"level\": 123\n          }\n        ]\n      },\n      \"interests\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"awards\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"awarder\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"certifications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"issuer\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"publications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"publisher\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"volunteer\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"organization\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"references\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"position\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"phone\": \"<string>\",\n            \"description\": \"<string>\"\n          }\n        ]\n      }\n    },\n    \"customSections\": [\n      {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"id\": \"<string>\",\n        \"type\": \"cover-letter\",\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"recipient\": \"<string>\",\n            \"content\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"metadata\": {\n      \"template\": \"azurill\",\n      \"layout\": {\n        \"sidebarWidth\": 123,\n        \"pages\": [\n          {\n            \"fullWidth\": true,\n            \"main\": [\n              \"<string>\"\n            ],\n            \"sidebar\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"page\": {\n        \"gapX\": 123,\n        \"gapY\": 123,\n        \"marginX\": 123,\n        \"marginY\": 123,\n        \"format\": \"a4\",\n        \"locale\": \"<string>\",\n        \"hideLinkUnderline\": true,\n        \"hideIcons\": true,\n        \"hideSectionIcons\": true\n      },\n      \"design\": {\n        \"level\": {\n          \"icon\": \"<string>\",\n          \"type\": \"hidden\"\n        },\n        \"colors\": {\n          \"primary\": \"<string>\",\n          \"text\": \"<string>\",\n          \"background\": \"<string>\"\n        }\n      },\n      \"typography\": {\n        \"body\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        },\n        \"heading\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        }\n      },\n      \"notes\": \"<string>\",\n      \"styleRules\": [\n        \"<string>\"\n      ]\n    }\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/import\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"data\": {\n    \"picture\": {\n      \"hidden\": true,\n      \"url\": \"<string>\",\n      \"size\": 123,\n      \"rotation\": 123,\n      \"aspectRatio\": 123,\n      \"borderRadius\": 123,\n      \"borderColor\": \"<string>\",\n      \"borderWidth\": 123,\n      \"shadowColor\": \"<string>\",\n      \"shadowWidth\": 123\n    },\n    \"basics\": {\n      \"name\": \"<string>\",\n      \"headline\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"location\": \"<string>\",\n      \"website\": {\n        \"url\": \"<string>\",\n        \"label\": \"<string>\"\n      },\n      \"customFields\": [\n        {\n          \"id\": \"<string>\",\n          \"icon\": \"<string>\",\n          \"text\": \"<string>\",\n          \"link\": \"<string>\"\n        }\n      ]\n    },\n    \"summary\": {\n      \"title\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"columns\": 123,\n      \"hidden\": true,\n      \"keepTogether\": true,\n      \"startOnNewPage\": true,\n      \"content\": \"<string>\"\n    },\n    \"sections\": {\n      \"profiles\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"network\": \"<string>\",\n            \"username\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            }\n          }\n        ]\n      },\n      \"experience\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"company\": \"<string>\",\n            \"position\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\",\n            \"roles\": [\n              {\n                \"id\": \"<string>\",\n                \"position\": \"<string>\",\n                \"period\": \"<string>\",\n                \"description\": \"<string>\"\n              }\n            ]\n          }\n        ]\n      },\n      \"education\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"school\": \"<string>\",\n            \"degree\": \"<string>\",\n            \"area\": \"<string>\",\n            \"grade\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"projects\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"skills\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"proficiency\": \"<string>\",\n            \"level\": 123,\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"languages\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"language\": \"<string>\",\n            \"fluency\": \"<string>\",\n            \"level\": 123\n          }\n        ]\n      },\n      \"interests\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"awards\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"awarder\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"certifications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"issuer\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"publications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"publisher\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"volunteer\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"organization\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"references\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"position\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"phone\": \"<string>\",\n            \"description\": \"<string>\"\n          }\n        ]\n      }\n    },\n    \"customSections\": [\n      {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"id\": \"<string>\",\n        \"type\": \"cover-letter\",\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"recipient\": \"<string>\",\n            \"content\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"metadata\": {\n      \"template\": \"azurill\",\n      \"layout\": {\n        \"sidebarWidth\": 123,\n        \"pages\": [\n          {\n            \"fullWidth\": true,\n            \"main\": [\n              \"<string>\"\n            ],\n            \"sidebar\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"page\": {\n        \"gapX\": 123,\n        \"gapY\": 123,\n        \"marginX\": 123,\n        \"marginY\": 123,\n        \"format\": \"a4\",\n        \"locale\": \"<string>\",\n        \"hideLinkUnderline\": true,\n        \"hideIcons\": true,\n        \"hideSectionIcons\": true\n      },\n      \"design\": {\n        \"level\": {\n          \"icon\": \"<string>\",\n          \"type\": \"hidden\"\n        },\n        \"colors\": {\n          \"primary\": \"<string>\",\n          \"text\": \"<string>\",\n          \"background\": \"<string>\"\n        }\n      },\n      \"typography\": {\n        \"body\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        },\n        \"heading\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        }\n      },\n      \"notes\": \"<string>\",\n      \"styleRules\": [\n        \"<string>\"\n      ]\n    }\n  }\n}'"
 					}
 				]
 			}
@@ -78589,7 +78589,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<id>/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"isLocked\": true\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<id>/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"isLocked\": true\n}'"
 					}
 				]
 			},
@@ -78681,7 +78681,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/resumes/<id>/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"isLocked\": true\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/resumes/<id>/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"isLocked\": true\n}'"
 					}
 				]
 			}
@@ -78836,7 +78836,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/resumes/<id>/password\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"password\": \"<string>\"\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/resumes/<id>/password\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"password\": \"<string>\"\n}'"
 					}
 				]
 			},
@@ -78969,7 +78969,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/resumes/<id>/password\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/resumes/<id>/password\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -79073,7 +79073,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<username>/<slug>/password/verify\" --header \"Content-Type: application/json\" --data '{\n  \"password\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<username>/<slug>/password/verify\" --header \"Content-Type: application/json\" --data '{\n  \"password\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -79329,7 +79329,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<id>/duplicate\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<id>/duplicate\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -79501,7 +79501,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<resumeId>/versions\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<resumeId>/versions\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -79645,7 +79645,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<resumeId>/versions\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<resumeId>/versions\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -83947,7 +83947,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -84060,7 +84060,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<resumeId>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<resumeId>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -84213,7 +84213,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/resumes/<resumeId>/versions/<versionId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/resumes/<resumeId>/versions/<versionId>\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
 					}
 				]
 			},
@@ -84295,7 +84295,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/resumes/<resumeId>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/resumes/<resumeId>/versions/<versionId>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -88607,7 +88607,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -88744,7 +88744,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<resumeId>/versions/<versionId>/restore\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<resumeId>/versions/<versionId>/restore\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -88845,7 +88845,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>/pdf\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>/pdf\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -88930,7 +88930,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/statistics\""
+						"source": "curl \"https://rezumi.app/api/openapi/statistics\""
 					}
 				]
 			}
@@ -88939,14 +88939,14 @@
 			"get": {
 				"operationId": "getGitHubStarCount",
 				"summary": "Get GitHub star count",
-				"description": "Returns the number of GitHub stars for the Reactive Resume repository. The count is cached for up to 6 hours and falls back to a last-known value if the GitHub API is unavailable. No authentication required.",
+				"description": "Returns the number of GitHub stars for the Rezumi repository. The count is cached for up to 6 hours and falls back to a last-known value if the GitHub API is unavailable. No authentication required.",
 				"tags": [
 					"Platform Statistics"
 				],
 				"parameters": [],
 				"responses": {
 					"200": {
-						"description": "The number of GitHub stars for the Reactive Resume repository.",
+						"description": "The number of GitHub stars for the Rezumi repository.",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -88993,7 +88993,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/statistics/github/stars\""
+						"source": "curl \"https://rezumi.app/api/openapi/statistics/github/stars\""
 					}
 				]
 			}
@@ -89112,7 +89112,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/integrations/web-access\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/integrations/web-access\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -89322,7 +89322,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/integrations/web-access\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"provider\": \"firecrawl\",\n  \"apiKey\": \"<string>\"\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/integrations/web-access\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"provider\": \"firecrawl\",\n  \"apiKey\": \"<string>\"\n}'"
 					}
 				]
 			},
@@ -89513,7 +89513,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/integrations/web-access\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/integrations/web-access\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -89747,7 +89747,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/integrations/web-access/test\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/integrations/web-access/test\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -89853,7 +89853,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>/exports/<format>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>/exports/<format>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -89995,7 +89995,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/cover-letters/<id>/exports/<format>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/cover-letters/<id>/exports/<format>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -90288,7 +90288,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<id>/checks\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<id>/checks\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -91312,7 +91312,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/pdf-checks\" --form \"file=@<file>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/pdf-checks\" --form \"file=@<file>\""
 					}
 				]
 			}
@@ -91484,7 +91484,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<id>/job-matches\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"jobDescription\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<id>/job-matches\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"jobDescription\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -91586,7 +91586,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/file-imports\" --header \"x-api-key: <api-key>\" --form \"file=@<file>\" --form \"format=REACTIVE_RESUME\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/file-imports\" --header \"x-api-key: <api-key>\" --form \"file=@<file>\" --form \"format=REACTIVE_RESUME\""
 					}
 				]
 			}
@@ -95950,7 +95950,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -96317,7 +96317,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/resumes/<id>/metadata\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/resumes/<id>/metadata\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -96573,7 +96573,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<id>/copies\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<id>/copies\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -96723,7 +96723,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/imports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"data\": {\n    \"picture\": {\n      \"hidden\": true,\n      \"url\": \"<string>\",\n      \"size\": 123,\n      \"rotation\": 123,\n      \"aspectRatio\": 123,\n      \"borderRadius\": 123,\n      \"borderColor\": \"<string>\",\n      \"borderWidth\": 123,\n      \"shadowColor\": \"<string>\",\n      \"shadowWidth\": 123\n    },\n    \"basics\": {\n      \"name\": \"<string>\",\n      \"headline\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"location\": \"<string>\",\n      \"website\": {\n        \"url\": \"<string>\",\n        \"label\": \"<string>\"\n      },\n      \"customFields\": [\n        {\n          \"id\": \"<string>\",\n          \"icon\": \"<string>\",\n          \"text\": \"<string>\",\n          \"link\": \"<string>\"\n        }\n      ]\n    },\n    \"summary\": {\n      \"title\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"columns\": 123,\n      \"hidden\": true,\n      \"keepTogether\": true,\n      \"startOnNewPage\": true,\n      \"content\": \"<string>\"\n    },\n    \"sections\": {\n      \"profiles\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"network\": \"<string>\",\n            \"username\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            }\n          }\n        ]\n      },\n      \"experience\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"company\": \"<string>\",\n            \"position\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\",\n            \"roles\": [\n              {\n                \"id\": \"<string>\",\n                \"position\": \"<string>\",\n                \"period\": \"<string>\",\n                \"description\": \"<string>\"\n              }\n            ]\n          }\n        ]\n      },\n      \"education\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"school\": \"<string>\",\n            \"degree\": \"<string>\",\n            \"area\": \"<string>\",\n            \"grade\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"projects\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"skills\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"proficiency\": \"<string>\",\n            \"level\": 123,\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"languages\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"language\": \"<string>\",\n            \"fluency\": \"<string>\",\n            \"level\": 123\n          }\n        ]\n      },\n      \"interests\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"awards\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"awarder\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"certifications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"issuer\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"publications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"publisher\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"volunteer\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"organization\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"references\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"position\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"phone\": \"<string>\",\n            \"description\": \"<string>\"\n          }\n        ]\n      }\n    },\n    \"customSections\": [\n      {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"id\": \"<string>\",\n        \"type\": \"cover-letter\",\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"recipient\": \"<string>\",\n            \"content\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"metadata\": {\n      \"template\": \"azurill\",\n      \"layout\": {\n        \"sidebarWidth\": 123,\n        \"pages\": [\n          {\n            \"fullWidth\": true,\n            \"main\": [\n              \"<string>\"\n            ],\n            \"sidebar\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"page\": {\n        \"gapX\": 123,\n        \"gapY\": 123,\n        \"marginX\": 123,\n        \"marginY\": 123,\n        \"format\": \"a4\",\n        \"locale\": \"<string>\",\n        \"hideLinkUnderline\": true,\n        \"hideIcons\": true,\n        \"hideSectionIcons\": true\n      },\n      \"design\": {\n        \"level\": {\n          \"icon\": \"<string>\",\n          \"type\": \"hidden\"\n        },\n        \"colors\": {\n          \"primary\": \"<string>\",\n          \"text\": \"<string>\",\n          \"background\": \"<string>\"\n        }\n      },\n      \"typography\": {\n        \"body\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        },\n        \"heading\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        }\n      },\n      \"notes\": \"<string>\",\n      \"styleRules\": [\n        \"<string>\"\n      ]\n    }\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/imports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"data\": {\n    \"picture\": {\n      \"hidden\": true,\n      \"url\": \"<string>\",\n      \"size\": 123,\n      \"rotation\": 123,\n      \"aspectRatio\": 123,\n      \"borderRadius\": 123,\n      \"borderColor\": \"<string>\",\n      \"borderWidth\": 123,\n      \"shadowColor\": \"<string>\",\n      \"shadowWidth\": 123\n    },\n    \"basics\": {\n      \"name\": \"<string>\",\n      \"headline\": \"<string>\",\n      \"email\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"location\": \"<string>\",\n      \"website\": {\n        \"url\": \"<string>\",\n        \"label\": \"<string>\"\n      },\n      \"customFields\": [\n        {\n          \"id\": \"<string>\",\n          \"icon\": \"<string>\",\n          \"text\": \"<string>\",\n          \"link\": \"<string>\"\n        }\n      ]\n    },\n    \"summary\": {\n      \"title\": \"<string>\",\n      \"icon\": \"<string>\",\n      \"columns\": 123,\n      \"hidden\": true,\n      \"keepTogether\": true,\n      \"startOnNewPage\": true,\n      \"content\": \"<string>\"\n    },\n    \"sections\": {\n      \"profiles\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"network\": \"<string>\",\n            \"username\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            }\n          }\n        ]\n      },\n      \"experience\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"company\": \"<string>\",\n            \"position\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\",\n            \"roles\": [\n              {\n                \"id\": \"<string>\",\n                \"position\": \"<string>\",\n                \"period\": \"<string>\",\n                \"description\": \"<string>\"\n              }\n            ]\n          }\n        ]\n      },\n      \"education\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"school\": \"<string>\",\n            \"degree\": \"<string>\",\n            \"area\": \"<string>\",\n            \"grade\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"projects\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"skills\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"proficiency\": \"<string>\",\n            \"level\": 123,\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"languages\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"language\": \"<string>\",\n            \"fluency\": \"<string>\",\n            \"level\": 123\n          }\n        ]\n      },\n      \"interests\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"icon\": \"<string>\",\n            \"iconColor\": \"<string>\",\n            \"name\": \"<string>\",\n            \"keywords\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"awards\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"awarder\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"certifications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"issuer\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"publications\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"title\": \"<string>\",\n            \"publisher\": \"<string>\",\n            \"date\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"volunteer\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"organization\": \"<string>\",\n            \"location\": \"<string>\",\n            \"period\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"description\": \"<string>\"\n          }\n        ]\n      },\n      \"references\": {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"name\": \"<string>\",\n            \"position\": \"<string>\",\n            \"website\": {\n              \"url\": \"<string>\",\n              \"label\": \"<string>\",\n              \"inlineLink\": true\n            },\n            \"phone\": \"<string>\",\n            \"description\": \"<string>\"\n          }\n        ]\n      }\n    },\n    \"customSections\": [\n      {\n        \"title\": \"<string>\",\n        \"icon\": \"<string>\",\n        \"columns\": 123,\n        \"hidden\": true,\n        \"keepTogether\": true,\n        \"startOnNewPage\": true,\n        \"id\": \"<string>\",\n        \"type\": \"cover-letter\",\n        \"items\": [\n          {\n            \"id\": \"<string>\",\n            \"hidden\": true,\n            \"recipient\": \"<string>\",\n            \"content\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"metadata\": {\n      \"template\": \"azurill\",\n      \"layout\": {\n        \"sidebarWidth\": 123,\n        \"pages\": [\n          {\n            \"fullWidth\": true,\n            \"main\": [\n              \"<string>\"\n            ],\n            \"sidebar\": [\n              \"<string>\"\n            ]\n          }\n        ]\n      },\n      \"page\": {\n        \"gapX\": 123,\n        \"gapY\": 123,\n        \"marginX\": 123,\n        \"marginY\": 123,\n        \"format\": \"a4\",\n        \"locale\": \"<string>\",\n        \"hideLinkUnderline\": true,\n        \"hideIcons\": true,\n        \"hideSectionIcons\": true\n      },\n      \"design\": {\n        \"level\": {\n          \"icon\": \"<string>\",\n          \"type\": \"hidden\"\n        },\n        \"colors\": {\n          \"primary\": \"<string>\",\n          \"text\": \"<string>\",\n          \"background\": \"<string>\"\n        }\n      },\n      \"typography\": {\n        \"body\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        },\n        \"heading\": {\n          \"fontFamily\": \"<string>\",\n          \"fontWeights\": [\n            \"100\"\n          ],\n          \"fontSize\": 123,\n          \"lineHeight\": 123\n        }\n      },\n      \"notes\": \"<string>\",\n      \"styleRules\": [\n        \"<string>\"\n      ]\n    }\n  }\n}'"
 					}
 				]
 			}
@@ -101035,7 +101035,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -101172,7 +101172,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<resumeId>/versions/<versionId>/restorations\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<resumeId>/versions/<versionId>/restorations\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -101276,7 +101276,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<username>/<slug>/password-verifications\" --header \"Content-Type: application/json\" --data '{\n  \"password\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<username>/<slug>/password-verifications\" --header \"Content-Type: application/json\" --data '{\n  \"password\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -101392,7 +101392,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/resumes/<resumeId>/slug-availability?slug=<slug>\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/resumes/<resumeId>/slug-availability?slug=<slug>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -101471,7 +101471,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/resumes/<username>/<slug>/statistics/downloads\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/resumes/<username>/<slug>/statistics/downloads\""
 					}
 				]
 			}
@@ -102070,7 +102070,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -102277,7 +102277,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/copies\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/copies\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -102286,7 +102286,7 @@
 			"post": {
 				"operationId": "createCoverLetterImport",
 				"summary": "Import a cover letter",
-				"description": "Creates a saved cover letter from an exported Reactive Resume cover-letter document.",
+				"description": "Creates a saved cover letter from an exported Rezumi cover-letter document.",
 				"tags": [
 					"Cover Letters"
 				],
@@ -102852,7 +102852,7 @@
 																"properties": {
 																	"showCredit": {
 																		"type": "boolean",
-																		"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																		"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																	}
 																},
 																"required": [
@@ -103525,7 +103525,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -103732,7 +103732,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/imports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"document\": {\n    \"name\": \"<string>\",\n    \"recipient\": \"<string>\",\n    \"content\": \"<string>\",\n    \"style\": {\n      \"basics\": {\n        \"name\": \"<string>\",\n        \"headline\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"location\": \"<string>\",\n        \"website\": {\n          \"url\": \"<string>\",\n          \"label\": \"<string>\"\n        },\n        \"customFields\": [\n          {\n            \"id\": \"<string>\",\n            \"icon\": \"<string>\",\n            \"text\": \"<string>\",\n            \"link\": \"<string>\"\n          }\n        ]\n      },\n      \"picture\": {\n        \"hidden\": true,\n        \"fit\": \"cover\",\n        \"url\": \"<string>\",\n        \"size\": 123,\n        \"rotation\": 123,\n        \"aspectRatio\": 123,\n        \"borderRadius\": 123,\n        \"borderColor\": \"<string>\",\n        \"borderWidth\": 123,\n        \"shadowColor\": \"<string>\",\n        \"shadowWidth\": 123\n      },\n      \"metadata\": {\n        \"template\": \"azurill\",\n        \"page\": {\n          \"gapX\": 123,\n          \"gapY\": 123,\n          \"marginX\": 123,\n          \"marginY\": 123,\n          \"format\": \"a4\",\n          \"locale\": \"<string>\",\n          \"hideLinkUnderline\": true,\n          \"hideIcons\": true,\n          \"hideSectionIcons\": true\n        },\n        \"design\": {\n          \"level\": {\n            \"icon\": \"<string>\",\n            \"type\": \"hidden\"\n          },\n          \"colors\": {\n            \"primary\": \"<string>\",\n            \"text\": \"<string>\",\n            \"background\": \"<string>\"\n          }\n        },\n        \"typography\": {\n          \"body\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          },\n          \"heading\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          }\n        },\n        \"styleRules\": [\n          \"<string>\"\n        ]\n      },\n      \"sectionId\": \"<string>\",\n      \"itemId\": \"<string>\"\n    },\n    \"format\": \"reactive-resume-cover-letter\",\n    \"version\": 1\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/imports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"document\": {\n    \"name\": \"<string>\",\n    \"recipient\": \"<string>\",\n    \"content\": \"<string>\",\n    \"style\": {\n      \"basics\": {\n        \"name\": \"<string>\",\n        \"headline\": \"<string>\",\n        \"email\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"location\": \"<string>\",\n        \"website\": {\n          \"url\": \"<string>\",\n          \"label\": \"<string>\"\n        },\n        \"customFields\": [\n          {\n            \"id\": \"<string>\",\n            \"icon\": \"<string>\",\n            \"text\": \"<string>\",\n            \"link\": \"<string>\"\n          }\n        ]\n      },\n      \"picture\": {\n        \"hidden\": true,\n        \"fit\": \"cover\",\n        \"url\": \"<string>\",\n        \"size\": 123,\n        \"rotation\": 123,\n        \"aspectRatio\": 123,\n        \"borderRadius\": 123,\n        \"borderColor\": \"<string>\",\n        \"borderWidth\": 123,\n        \"shadowColor\": \"<string>\",\n        \"shadowWidth\": 123\n      },\n      \"metadata\": {\n        \"template\": \"azurill\",\n        \"page\": {\n          \"gapX\": 123,\n          \"gapY\": 123,\n          \"marginX\": 123,\n          \"marginY\": 123,\n          \"format\": \"a4\",\n          \"locale\": \"<string>\",\n          \"hideLinkUnderline\": true,\n          \"hideIcons\": true,\n          \"hideSectionIcons\": true\n        },\n        \"design\": {\n          \"level\": {\n            \"icon\": \"<string>\",\n            \"type\": \"hidden\"\n          },\n          \"colors\": {\n            \"primary\": \"<string>\",\n            \"text\": \"<string>\",\n            \"background\": \"<string>\"\n          }\n        },\n        \"typography\": {\n          \"body\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          },\n          \"heading\": {\n            \"fontFamily\": \"<string>\",\n            \"fontWeights\": [\n              \"100\"\n            ],\n            \"fontSize\": 123,\n            \"lineHeight\": 123\n          }\n        },\n        \"styleRules\": [\n          \"<string>\"\n        ]\n      },\n      \"sectionId\": \"<string>\",\n      \"itemId\": \"<string>\"\n    },\n    \"format\": \"reactive-resume-cover-letter\",\n    \"version\": 1\n  }\n}'"
 					}
 				]
 			}
@@ -104339,7 +104339,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -104546,7 +104546,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/style-refreshes\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123,\n  \"resumeId\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/style-refreshes\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"expectedRevision\": 123,\n  \"resumeId\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -104714,7 +104714,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/drafts\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/drafts\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -105305,7 +105305,7 @@
 															"properties": {
 																"showCredit": {
 																	"type": "boolean",
-																	"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+																	"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 																}
 															},
 															"required": [
@@ -105512,7 +105512,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/cover-letters/<id>/versions/<versionId>/restorations\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/cover-letters/<id>/versions/<versionId>/restorations\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -105621,7 +105621,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/documents/<type>/<id>/name\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/documents/<type>/<id>/name\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"name\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -105734,7 +105734,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/documents/<type>/<id>/tags\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"tags\": [\n    \"<string>\"\n  ]\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/documents/<type>/<id>/tags\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"tags\": [\n    \"<string>\"\n  ]\n}'"
 					}
 				]
 			}
@@ -105841,7 +105841,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/documents/<type>/<id>/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"isLocked\": true\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/documents/<type>/<id>/lock\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"isLocked\": true\n}'"
 					}
 				]
 			}
@@ -105957,7 +105957,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/documents/<type>/<id>/application\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"applicationId\": \"<string>\"\n}'"
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/documents/<type>/<id>/application\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"applicationId\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -106046,7 +106046,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PUT \"https://rxresu.me/api/openapi/documents/<type>/<id>/trash\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request PUT \"https://rezumi.app/api/openapi/documents/<type>/<id>/trash\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			},
@@ -106133,7 +106133,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/documents/<type>/<id>/trash\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/documents/<type>/<id>/trash\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -106222,7 +106222,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/documents/<type>/<id>\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/documents/<type>/<id>\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -106325,7 +106325,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/documents/copies\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"resumeId\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/documents/copies\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"resumeId\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -106618,7 +106618,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/ai/posting-searches\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"query\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/posting-searches\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"query\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -107091,7 +107091,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/ai/posting-parses\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"input\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/posting-parses\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"input\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -107321,7 +107321,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/ai/autofills\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"jobDescription\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/ai/autofills\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"jobDescription\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -107526,7 +107526,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/ai/match-scores\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/match-scores\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -107759,7 +107759,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/ai/message-drafts\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"cover-letter\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/message-drafts\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"kind\": \"cover-letter\"\n}'"
 					}
 				]
 			}
@@ -107971,7 +107971,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/<id>/ai/tailored-resumes\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/tailored-resumes\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -108249,7 +108249,7 @@
 															"type": "null"
 														}
 													],
-													"description": "The linked Reactive Resume, if any."
+													"description": "The linked Rezumi, if any."
 												},
 												"coverLetterId": {
 													"anyOf": [
@@ -108388,7 +108388,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/applications/imports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"items\": [\n    {\n      \"company\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/imports\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"items\": [\n    {\n      \"company\": \"<string>\",\n      \"role\": \"<string>\"\n    }\n  ]\n}'"
 					}
 				]
 			}
@@ -108891,7 +108891,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai-providers/<id>/tests\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai-providers/<id>/tests\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -109125,7 +109125,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/integrations/web-access/tests\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/integrations/web-access/tests\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -109375,7 +109375,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/agent/threads/<threadId>/messages\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"message\": {\n    \"id\": \"<string>\",\n    \"role\": \"system\",\n    \"parts\": [\n      {\n        \"type\": \"<string>\"\n      }\n    ]\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/agent/threads/<threadId>/messages\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"message\": {\n    \"id\": \"<string>\",\n    \"role\": \"system\",\n    \"parts\": [\n      {\n        \"type\": \"<string>\"\n      }\n    ]\n  }\n}'"
 					}
 				]
 			}
@@ -109497,7 +109497,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/agent/threads/<threadId>/run\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/agent/threads/<threadId>/run\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -109635,7 +109635,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl \"https://rxresu.me/api/openapi/agent/threads/<threadId>/stream\" --header \"x-api-key: <api-key>\""
+						"source": "curl \"https://rezumi.app/api/openapi/agent/threads/<threadId>/stream\" --header \"x-api-key: <api-key>\""
 					}
 				]
 			}
@@ -109780,7 +109780,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request PATCH \"https://rxresu.me/api/openapi/agent/threads/<threadId>/messages/<messageId>/edits\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"toolCallId\": \"<string>\",\n  \"edits\": [\n    {\n      \"id\": \"<string>\",\n      \"status\": \"pending\"\n    }\n  ]\n}'"
+						"source": "curl --request PATCH \"https://rezumi.app/api/openapi/agent/threads/<threadId>/messages/<messageId>/edits\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"toolCallId\": \"<string>\",\n  \"edits\": [\n    {\n      \"id\": \"<string>\",\n      \"status\": \"pending\"\n    }\n  ]\n}'"
 					}
 				]
 			}
@@ -114059,7 +114059,7 @@
 													"properties": {
 														"showCredit": {
 															"type": "boolean",
-															"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+															"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 														}
 													},
 													"required": [
@@ -114283,7 +114283,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/pdf-parses\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  }\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/pdf-parses\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  }\n}'"
 					}
 				]
 			}
@@ -118570,7 +118570,7 @@
 													"properties": {
 														"showCredit": {
 															"type": "boolean",
-															"description": "Whether the web page shows the small 'Made with Reactive Resume' footer."
+															"description": "Whether the web page shows the small 'Made with Rezumi' footer."
 														}
 													},
 													"required": [
@@ -118794,7 +118794,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/docx-parses\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  },\n  \"mediaType\": \"application/msword\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/docx-parses\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"file\": {\n    \"name\": \"<string>\",\n    \"data\": \"<string>\"\n  },\n  \"mediaType\": \"application/msword\"\n}'"
 					}
 				]
 			}
@@ -119101,7 +119101,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/ats-reviews\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"extractedText\": \"<string>\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/ats-reviews\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"extractedText\": \"<string>\"\n}'"
 					}
 				]
 			}
@@ -119356,7 +119356,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/ai/improvements\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"line\": \"<string>\",\n  \"action\": \"verb\"\n}'"
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/ai/improvements\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"line\": \"<string>\",\n  \"action\": \"verb\"\n}'"
 					}
 				]
 			}
@@ -119465,7 +119465,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rxresu.me/api/openapi/files\" --header \"x-api-key: <api-key>\" --form \"file=@<file>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/files\" --header \"x-api-key: <api-key>\" --form \"file=@<file>\""
 					}
 				]
 			},
@@ -119667,15 +119667,15 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request DELETE \"https://rxresu.me/api/openapi/files\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"filename\": \"<string>\"\n}'"
+						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/files\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"filename\": \"<string>\"\n}'"
 					}
 				]
 			}
 		}
 	},
 	"externalDocs": {
-		"url": "https://docs.rxresu.me",
-		"description": "Reactive Resume Documentation"
+		"url": "https://docs.rezumi.app",
+		"description": "Rezumi Documentation"
 	},
 	"components": {
 		"securitySchemes": {
@@ -124362,7 +124362,7 @@
 								"properties": {
 									"showCredit": {
 										"default": true,
-										"description": "Whether the web page shows the small 'Made with Reactive Resume' footer.",
+										"description": "Whether the web page shows the small 'Made with Rezumi' footer.",
 										"type": "boolean"
 									}
 								},

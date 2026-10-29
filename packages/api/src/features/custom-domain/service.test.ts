@@ -11,7 +11,7 @@ vi.mock("@reactive-resume/db/client", () => ({
 }));
 vi.mock("@reactive-resume/env/server", () => ({
 	env: {
-		APP_URL: "https://rxresu.me",
+		APP_URL: "https://rezumi.app",
 		APP_ALIAS_URL: "https://rx.cv",
 		CUSTOM_DOMAIN_TARGET: "domains.rx.cv",
 		CUSTOM_DOMAIN_PROVIDER_SECRET: "x".repeat(32),
@@ -35,8 +35,8 @@ describe("normalizeHostname", () => {
 		"localhost",
 		"192.168.0.1",
 		"[::1]",
-		"rxresu.me",
-		"evil.rxresu.me",
+		"rezumi.app",
+		"evil.rezumi.app",
 		"rx.cv",
 		"jane.rx.cv",
 		"domains.rx.cv",

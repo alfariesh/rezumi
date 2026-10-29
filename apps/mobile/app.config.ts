@@ -1,11 +1,11 @@
 import type { ExpoConfig } from "expo/config";
 
 // The official host. Universal Links, App Links and the OAuth callback (`/auth/native-callback`) verify against it.
-const host = "rxresu.me";
-const microphonePermission = "Reactive Resume records your answers when you practise for an interview.";
+const host = "rezumi.app";
+const microphonePermission = "Rezumi records your answers when you practise for an interview.";
 
 const config: ExpoConfig = {
-	name: "Reactive Resume",
+	name: "Rezumi",
 	slug: "reactive-resume",
 	platforms: process.env.EXPO_MOBILE_WEB_PREVIEW === "1" ? ["ios", "android", "web"] : ["ios", "android"],
 	scheme: "me.rxresu",
@@ -137,8 +137,8 @@ const config: ExpoConfig = {
 		[
 			"expo-image-picker",
 			{
-				photosPermission: "Reactive Resume uses your photos to set the picture on your resume.",
-				cameraPermission: "Reactive Resume uses your camera to take a profile photo.",
+				photosPermission: "Rezumi uses your photos to set the picture on your resume.",
+				cameraPermission: "Rezumi uses your camera to take a profile photo.",
 				microphonePermission,
 			},
 		],

@@ -21,7 +21,7 @@ const SETTINGS_PAGES: Page[] = [
 
 // The project's own links: where to read up, see the code, help translate or report a problem.
 const getProjectLinks = () => [
-	{ href: "https://docs.rxresu.me", label: t`Docs` },
+	{ href: "https://docs.rezumi.app", label: t`Docs` },
 	{ href: "https://github.com/reactive-resume/reactive-resume", label: t`Source` },
 	{ href: "https://crowdin.com/project/reactive-resume", label: t`Translate` },
 	{ href: "https://github.com/reactive-resume/reactive-resume/issues", label: t`Report a bug` },
@@ -53,7 +53,7 @@ function RouteComponent() {
 					))}
 				</div>
 				<p className="mt-auto px-2.5 text-xs leading-[18px] text-ink-3 max-lg:hidden">
-					<Trans>Reactive Resume {__APP_VERSION__} · MIT</Trans>
+					<Trans>Rezumi {__APP_VERSION__} · MIT</Trans>
 					<br />
 					{getProjectLinks().map((link, index) => (
 						<Fragment key={link.href}>

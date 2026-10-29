@@ -80,7 +80,7 @@ export function SettingsRoot() {
 			</nav>
 
 			<a
-				href="https://docs.rxresu.me"
+				href="https://docs.rezumi.app"
 				target="_blank"
 				rel="noopener noreferrer"
 				className="flex h-12 items-center rounded-lg border border-line bg-surface px-3.5 font-medium transition-colors duration-quick ease-enter active:bg-press"

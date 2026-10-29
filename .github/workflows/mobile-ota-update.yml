@@ -80,7 +80,7 @@ jobs:
           matches=0
           for attempt in $(seq 1 60); do
             if curl --fail --silent --show-error --max-time 10 \
-              -H 'Cache-Control: no-cache' "https://rxresu.me/api/health?revision=$COMMIT_SHA&probe=$attempt" \
+              -H 'Cache-Control: no-cache' "https://rezumi.app/api/health?revision=$COMMIT_SHA&probe=$attempt" \
               | jq --exit-status --arg sha "$COMMIT_SHA" \
                 '.service == "reactive-resume" and .status == "healthy" and .revision == $sha' > /dev/null; then
               matches=$((matches + 1))

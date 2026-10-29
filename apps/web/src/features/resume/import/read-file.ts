@@ -37,13 +37,13 @@ export function detectJsonImportKind(parsed: unknown): ImportKind | null {
 		return detectJsonImportKind(data.data);
 	}
 
-	// A saved cover letter exported from Reactive Resume.
+	// A saved cover letter exported from Rezumi.
 	if (data.format === "reactive-resume-cover-letter") return "cover-letter-json";
 
-	// JSON Resume standard: top-level `basics`, without Reactive Resume's `sections`/`metadata`.
+	// JSON Resume standard: top-level `basics`, without Rezumi's `sections`/`metadata`.
 	if ("basics" in data && !("sections" in data) && !("metadata" in data)) return "json-resume-json";
 
-	// Reactive Resume exports carry `sections` + `metadata`. V4 stores layout as nested arrays, while the current
+	// Rezumi exports carry `sections` + `metadata`. V4 stores layout as nested arrays, while the current
 	// schema stores a layout object. Both versions can have `metadata.page`, so that key alone cannot distinguish them.
 	if ("sections" in data || "metadata" in data) {
 		const metadata = data.metadata as Record<string, unknown> | undefined;

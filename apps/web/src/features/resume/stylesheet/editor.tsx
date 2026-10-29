@@ -548,7 +548,7 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 					<Trans>Not sure what to write?</Trans>{" "}
 					<a
 						className="text-accent-text underline underline-offset-4"
-						href="https://docs.rxresu.me/applying-custom-styles"
+						href="https://docs.rezumi.app/applying-custom-styles"
 						target="_blank"
 						rel="noopener noreferrer"
 					>

@@ -57,7 +57,7 @@ export function LandingHeader() {
 					className={cn("hidden size-[30px] dark:block", night && "block")}
 				/>
 				{/* The wordmark stays in the DOM for screen readers and crawlers; the logomark is what shows. */}
-				<span className="sr-only">Reactive Resume</span>
+				<span className="sr-only">Rezumi</span>
 			</a>
 
 			<nav aria-label={t`Story`} className="mx-auto hidden items-center gap-0.5 min-[1240px]:flex">
@@ -121,10 +121,10 @@ function GithubLink() {
 
 	const label =
 		stars == null
-			? t`Star Reactive Resume on GitHub`
+			? t`Star Rezumi on GitHub`
 			: plural(stars, {
-					one: "Star Reactive Resume on GitHub, # star",
-					other: "Star Reactive Resume on GitHub, # stars",
+					one: "Star Rezumi on GitHub, # star",
+					other: "Star Rezumi on GitHub, # stars",
 				});
 
 	return (

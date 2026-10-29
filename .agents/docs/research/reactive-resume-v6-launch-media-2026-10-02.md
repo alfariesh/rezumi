@@ -1,4 +1,4 @@
-# Reactive Resume v6 launch media research
+# Rezumi v6 launch media research
 
 Research date: 2026-10-02. Question: which media should accompany a founder's organic launch announcement on LinkedIn, X, and Show HN?
 
@@ -60,7 +60,7 @@ GIF uploads are supported, but none of the studies above isolates GIF performanc
 - **GIF:** use only if one brief loop explains a feature more clearly. No evidence warrants choosing it for a reach boost.
 - **Measure:** impressions/reach, outbound visits, and new signups. Engagement and video views are supporting metrics. A sequential launch and follow-up cannot isolate format effects because timing and audience fatigue differ.
 
-All quantitative format studies here are observational. They describe their own user samples and dates; none randomly assigns the same Reactive Resume post to video, GIF, and image.
+All quantitative format studies here are observational. They describe their own user samples and dates; none randomly assigns the same Rezumi post to video, GIF, and image.
 
 ## X: evidence and recommendation
 

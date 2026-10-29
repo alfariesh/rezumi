@@ -7,7 +7,7 @@ import { msg } from "@lingui/core/macro";
 msg`Download PDF`;
 msg`Share`;
 msg`Link copied`;
-msg`Made with Reactive Resume, free and open source`;
+msg`Made with Rezumi, free and open source`;
 msg`This resume is password-protected`;
 msg`Enter the password the resume owner shared with you.`;
 msg`Password`;

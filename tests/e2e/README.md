@@ -1,6 +1,6 @@
 # E2E Tests
 
-Reactive Resume uses Playwright for PR-gated browser coverage of deterministic core flows.
+Rezumi uses Playwright for PR-gated browser coverage of deterministic core flows.
 
 ## Local setup
 

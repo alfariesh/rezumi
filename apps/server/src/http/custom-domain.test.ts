@@ -4,19 +4,19 @@ const secret = "s".repeat(40);
 const mocks = vi.hoisted(() => ({ traefikConfiguration: vi.fn(async () => ({})) }));
 
 vi.mock("@reactive-resume/env/server", () => ({
-	env: { APP_URL: "https://rxresu.me", CUSTOM_DOMAIN_PROVIDER_SECRET: "s".repeat(40) },
+	env: { APP_URL: "https://rezumi.app", CUSTOM_DOMAIN_PROVIDER_SECRET: "s".repeat(40) },
 }));
 vi.mock("@reactive-resume/api/features/custom-domain", () => ({
 	isCustomDomainsEnabled: () => true,
 	customDomainUsername: vi.fn(),
-	ownHosts: () => new Set(["rxresu.me"]),
+	ownHosts: () => new Set(["rezumi.app"]),
 	traefikConfiguration: mocks.traefikConfiguration,
 }));
 
 const { handleTraefikProvider } = await import("./custom-domain");
 
 const poll = (headers: Record<string, string>, query = "?service=app@swarm&entryPoint=websecure&certResolver=le") =>
-	handleTraefikProvider(new Request(`https://rxresu.me/api/internal/traefik${query}`, { headers }));
+	handleTraefikProvider(new Request(`https://rezumi.app/api/internal/traefik${query}`, { headers }));
 
 describe("Traefik provider endpoint", () => {
 	it.each([{}, { "x-provider-secret": "wrong" }, { "x-provider-secret": `${secret}x` }])(

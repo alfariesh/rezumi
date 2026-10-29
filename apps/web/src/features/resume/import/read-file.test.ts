@@ -6,11 +6,11 @@ import { detectImportKind, detectJsonImportKind, parseResumeJson } from "./read-
 beforeAll(() => i18n.loadAndActivate({ locale: "en-US", messages: {} }));
 
 describe("detectJsonImportKind", () => {
-	it("detects JSON Resume by a top-level basics without Reactive Resume sections/metadata", () => {
+	it("detects JSON Resume by a top-level basics without Rezumi sections/metadata", () => {
 		expect(detectJsonImportKind({ basics: { name: "A" }, work: [] })).toBe("json-resume-json");
 	});
 
-	it("detects the current Reactive Resume schema by metadata.page", () => {
+	it("detects the current Rezumi schema by metadata.page", () => {
 		expect(detectJsonImportKind({ basics: {}, sections: {}, metadata: { page: { locale: "en-US" } } })).toBe(
 			"reactive-resume-json",
 		);

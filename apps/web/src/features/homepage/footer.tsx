@@ -31,11 +31,11 @@ const getColumns = (): { id: string; title: string; links: FooterLink[] }[] => [
 		id: "resources",
 		title: t`Resources`,
 		links: [
-			{ label: t`About`, href: "https://docs.rxresu.me/getting-started" },
-			{ label: t`Documentation`, href: "https://docs.rxresu.me" },
-			{ label: t`Changelog`, href: "https://docs.rxresu.me/changelog" },
+			{ label: t`About`, href: "https://docs.rezumi.app/getting-started" },
+			{ label: t`Documentation`, href: "https://docs.rezumi.app" },
+			{ label: t`Changelog`, href: "https://docs.rezumi.app/changelog" },
 			{ label: t`Source code`, href: githubUrl },
-			{ label: t`Self-hosting`, href: "https://docs.rxresu.me/self-hosting/cloudflare" },
+			{ label: t`Self-hosting`, href: "https://docs.rezumi.app/self-hosting/cloudflare" },
 		],
 	},
 	{
@@ -55,7 +55,7 @@ const getColumns = (): { id: string; title: string; links: FooterLink[] }[] => [
 		id: "legal",
 		title: t`Legal`,
 		links: [
-			{ label: t`Privacy policy`, href: "https://docs.rxresu.me/legal/privacy-policy" },
+			{ label: t`Privacy policy`, href: "https://docs.rezumi.app/legal/privacy-policy" },
 			{ label: t`MIT License`, href: licenseUrl },
 		],
 	},
@@ -91,7 +91,7 @@ export function LandingFooter() {
 					<img
 						loading="lazy"
 						src="/logo/light.svg"
-						alt="Reactive Resume"
+						alt="Rezumi"
 						width={140}
 						height={140}
 						className="-ms-[18px] -mt-[22px] -mb-[22px] size-[140px] dark:hidden"
@@ -99,7 +99,7 @@ export function LandingFooter() {
 					<img
 						loading="lazy"
 						src="/logo/dark.svg"
-						alt="Reactive Resume"
+						alt="Rezumi"
 						width={140}
 						height={140}
 						className="-ms-[18px] -mt-[22px] -mb-[22px] hidden size-[140px] dark:block"

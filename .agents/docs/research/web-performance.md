@@ -40,7 +40,7 @@ and the request structure more than the absolute milliseconds.
 | **All of `apps/web/public`** (also the Docker image's copy)                                           | 30,656,516 | **9,233,453 (−69.9%)** |
 
 - The builder's Design panel, the cover letter design panel and the mobile picker mount all 18 previews:
-  **22.7 MB → 1.2 MB** when opened on a self-hosted server. rxresu.me's Cloudflare Polish converted them to WebP but
+  **22.7 MB → 1.2 MB** when opened on a self-hosted server. rezumi.app's Cloudflare Polish converted them to WebP but
   did not resize them (gengar: 566,638 B). Mean SSIM 0.990 against a lossless 600 px render; 600 px covers every
   consumer at 3× (web cards up to 178 CSS px, mobile cards 112–178 dp, README 150 px).
 - Old mobile builds and the README keep working: same URL, still JPEG, same aspect ratio.

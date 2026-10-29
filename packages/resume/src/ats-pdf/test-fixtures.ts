@@ -137,8 +137,8 @@ export function makeRawExtraction(options: FixtureOptions = {}): RawExtraction {
 		})),
 		links: (options.links ?? []).map((link) => ({ page: 1, url: null, rect: [0, 0, 0, 0], ...link })),
 		metadata: {
-			producer: "Reactive Resume",
-			creator: "Reactive Resume",
+			producer: "Rezumi",
+			creator: "Rezumi",
 			title: null,
 			author: null,
 			language: "en-GB",

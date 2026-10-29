@@ -50,7 +50,7 @@ const visibilityIcons: IconName[] = ["globe-hemisphere-west", "lock", "eye-slash
  */
 export function Share() {
 	const origin = useShareOrigin();
-	const host = origin ? new URL(origin).host : "rxresu.me";
+	const host = origin ? new URL(origin).host : "rezumi.app";
 	const address = `${host}/alex-morgan`;
 	const active = useLanding((state) => state.activeScene === SCENE.share);
 	const ready = useLanding((state) => state.shareReady);

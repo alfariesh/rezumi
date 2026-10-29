@@ -48,7 +48,7 @@ export default function SettingsScreen() {
 					title={t`Help & docs`}
 					leading="question"
 					external
-					onPress={() => openLink("https://docs.rxresu.me")}
+					onPress={() => openLink("https://docs.rezumi.app")}
 				/>
 				<ListRow
 					title={t`Report an issue`}
@@ -75,13 +75,13 @@ export default function SettingsScreen() {
 					title={t`Privacy policy`}
 					leading="shield-check"
 					external
-					onPress={() => openLink("https://docs.rxresu.me/legal/privacy-policy")}
+					onPress={() => openLink("https://docs.rezumi.app/legal/privacy-policy")}
 				/>
 				<ListRow
 					title={t`Terms of service`}
 					leading="scroll"
 					external
-					onPress={() => openLink("https://docs.rxresu.me/legal/terms-of-service")}
+					onPress={() => openLink("https://docs.rezumi.app/legal/terms-of-service")}
 				/>
 				<ListRow
 					title={t`MIT License`}
@@ -101,7 +101,7 @@ export default function SettingsScreen() {
 			</SettingsGroup>
 			<View style={{ alignItems: "center", gap: space.s1 }}>
 				<Text variant="caption" color="ink3" align="center">
-					Reactive Resume
+					Rezumi
 				</Text>
 				<Text variant="caption" color="ink3" align="center">
 					<Trans>

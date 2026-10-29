@@ -242,7 +242,7 @@ describe("createApp", () => {
 
 	it("compresses the web app's HTML but never API streams or the Vercel app", async () => {
 		const { createApp } = await import("./app");
-		const html = `<!doctype html>${"<p>Reactive Resume</p>".repeat(200)}`;
+		const html = `<!doctype html>${"<p>Rezumi</p>".repeat(200)}`;
 		const htmlResponse = () =>
 			new Response(html, {
 				headers: { "Content-Type": "text/html; charset=UTF-8", "Cache-Control": "private, no-store", Vary: "Cookie" },

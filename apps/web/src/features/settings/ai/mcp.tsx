@@ -33,7 +33,7 @@ export function McpSection() {
 				</Button>
 			</div>
 			<a
-				href="https://docs.rxresu.me/guides/using-the-mcp-server"
+				href="https://docs.rezumi.app/guides/using-the-mcp-server"
 				target="_blank"
 				rel="noopener noreferrer"
 				className="w-fit text-sm text-ink-2 underline underline-offset-2"
