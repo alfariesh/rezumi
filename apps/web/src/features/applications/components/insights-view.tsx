@@ -496,7 +496,7 @@ function PipelineFlow({ insights }: { insights: ReturnType<typeof computeInsight
 						width={ICON_SIZE}
 						height={ICON_SIZE}
 						viewBox="17.25 -12.7 36 36"
-						fill="#00BAFF"
+						fill="#0485F7"
 					>
 						<path
 							opacity="0.4"

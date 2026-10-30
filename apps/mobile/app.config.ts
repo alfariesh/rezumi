@@ -66,7 +66,7 @@ const config: ExpoConfig = {
 			foregroundImage: "./assets/adaptive-foreground.png",
 			backgroundImage: "./assets/adaptive-background.png",
 			monochromeImage: "./assets/adaptive-monochrome.png",
-			backgroundColor: "#00BAFF",
+			backgroundColor: "#0485F7",
 		},
 		// Legacy camera capture needs WRITE_EXTERNAL_STORAGE; dependencies cap it at API 32. Keep read access blocked.
 		blockedPermissions: [
