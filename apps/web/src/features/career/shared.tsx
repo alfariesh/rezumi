@@ -362,9 +362,9 @@ export function ContextChip({ pressed, onPressedChange, label, tooltip, offIcon 
 				variant={pressed ? "secondary" : "outline"}
 				aria-pressed={pressed}
 				onPress={() => onPressedChange(!pressed)}
-				className="touch-target gap-1"
+				className="touch-target h-7 min-h-0 gap-1 px-2 text-xs"
 			>
-				<Icon name={pressed ? "check" : offIcon} size={16} />
+				<Icon name={pressed ? "check" : offIcon} size={14} />
 				{label}
 			</Button>
 			<Tooltip.Content>{tooltip}</Tooltip.Content>

@@ -403,6 +403,7 @@ export function Composer(props: ComposerProps) {
 		<div className={page ? "pt-2" : "px-3.5 pt-2 pb-3.5"}>
 			<div className={cn("grid gap-2", page && "mx-auto w-full max-w-[720px]")}>
 				<PromptBox
+					variant={page ? "primary" : "secondary"}
 					value={text}
 					onValueChange={setText}
 					onSubmit={() => void submit()}

@@ -451,14 +451,14 @@ function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }
 			placeholder={label}
 			isOpen={open}
 			onOpenChange={onOpenChange}
-			className="w-[140px] sm:w-[190px]"
+			className="w-auto max-w-[180px]"
 			value={current?.id ?? null}
 			onChange={(key) => {
 				if (key === "connect") void navigate({ to: "/dashboard/settings/ai" });
 				else if (typeof key === "string") onChoose(key);
 			}}
 		>
-			<Select.Trigger className="h-8 min-h-8 text-[13px]">
+			<Select.Trigger className="h-7 min-h-0 bg-transparent ps-2 pe-7 text-xs text-muted shadow-none hover:bg-default">
 				<Select.Value />
 				<Select.Indicator />
 			</Select.Trigger>
