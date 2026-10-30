@@ -190,6 +190,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						</Label>
 						<div className="flex gap-2">
 							<Input
+								variant="secondary"
 								fullWidth
 								id={`${id}-search`}
 								value={query}
@@ -277,6 +278,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						<Trans>Job link or posting text</Trans>
 					</Label>
 					<TextArea
+						variant="secondary"
 						fullWidth
 						id={`${id}-posting`}
 						rows={4}
@@ -310,6 +312,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 								<Trans>Pasted description</Trans>
 							</Label>
 							<TextArea
+								variant="secondary"
 								fullWidth
 								id={`${id}-recovery`}
 								rows={5}
@@ -354,6 +357,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 								<Trans>Saved description</Trans>
 							</Label>
 							<TextArea
+								variant="secondary"
 								fullWidth
 								id={`${id}-description`}
 								rows={5}
@@ -390,13 +394,20 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						<Label htmlFor={`${id}-role`}>
 							<Trans>Role</Trans>
 						</Label>
-						<Input fullWidth id={`${id}-role`} value={role} onChange={(event) => setRole(event.target.value)} />
+						<Input
+							variant="secondary"
+							fullWidth
+							id={`${id}-role`}
+							value={role}
+							onChange={(event) => setRole(event.target.value)}
+						/>
 					</div>
 					<div className="grid gap-1.5">
 						<Label htmlFor={`${id}-company`}>
 							<Trans>Company</Trans>
 						</Label>
 						<Input
+							variant="secondary"
 							fullWidth
 							id={`${id}-company`}
 							value={company}
@@ -439,6 +450,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							<Trans>Location</Trans>
 						</Label>
 						<Input
+							variant="secondary"
 							fullWidth
 							id={`${id}-location`}
 							value={location}
@@ -449,7 +461,13 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						<Label htmlFor={`${id}-salary`}>
 							<Trans>Salary</Trans>
 						</Label>
-						<Input fullWidth id={`${id}-salary`} value={salary} onChange={(event) => setSalary(event.target.value)} />
+						<Input
+							variant="secondary"
+							fullWidth
+							id={`${id}-salary`}
+							value={salary}
+							onChange={(event) => setSalary(event.target.value)}
+						/>
 					</div>
 				</div>
 				{stage !== "saved" && (
@@ -458,6 +476,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							<Trans>Application date</Trans>
 						</Label>
 						<Input
+							variant="secondary"
 							fullWidth
 							id={`${id}-date`}
 							type="date"
@@ -475,7 +494,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						id={`${id}-resume`}
 						value={resumeId}
 						onChange={(event) => setResumeId(event.target.value)}
-						className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
+						className="h-9 rounded-xl border-0 bg-default px-2 text-sm"
 					>
 						<option value="">{t`None`}</option>
 						{documents
@@ -496,7 +515,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							id={`${id}-letter`}
 							value={coverLetterId}
 							onChange={(event) => setCoverLetterId(event.target.value)}
-							className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
+							className="h-9 rounded-xl border-0 bg-default px-2 text-sm"
 						>
 							<option value="">{t`None`}</option>
 							{documents
