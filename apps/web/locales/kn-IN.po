@@ -1653,8 +1653,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "ಈಗಾಗಲೇ ಮುಚ್ಚಲಾಗಿದೆ · ಪುಟದಲ್ಲಿ ಅದನ್ನು ಹುಡುಕಲು ಒಂದನ್ನು ಆರಿಸಿ"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3898,11 +3898,6 @@ msgstr "ರಚಿಸಿ ಮತ್ತು ತೆರೆಯಿರಿ"
 msgid "Create key"
 msgstr "ಕೀಲಿಯನ್ನು ರಚಿಸಿ"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "ಇದೀಗ ಒಂದನ್ನು ರಚಿಸಿ"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4377,8 +4372,8 @@ msgid "Domain connected"
 msgstr "ಡೊಮೇನ್ ಸಂಪರ್ಕಿಸಲಾಗಿದೆ"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "ಖಾತೆ ಇಲ್ಲವೇ? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6751,6 +6746,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "ಲೈವ್ ಒಟ್ಟುಗಳು, ಪ್ರತಿ 6 ಗಂಟೆಗಳಿಗೊಮ್ಮೆ ರಿಫ್ರೆಶ್ ಮಾಡಲಾಗುತ್ತದೆ."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ"
 
@@ -9380,8 +9380,8 @@ msgid "Remember this for future coaching?"
 msgstr "ಭವಿಷ್ಯದ ಕೋಚಿಂಗ್‌ಗಾಗಿ ಇದನ್ನು ನೆನಪಿಡಬೇಕೇ?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ನೆನಪಿದೆಯೇ? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10727,13 +10727,6 @@ msgstr "ಸೈಡ್‌ಬಾರ್‌ಗಳನ್ನು ಸಾಮಾನ್ಯ�
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "ಸೈನ್ ಇನ್ ಮಾಡಿ"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "ಈಗ ಸೈನ್ ಇನ್ ಮಾಡಿ"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13303,6 +13296,10 @@ msgstr "ಪಠ್ಯ ಹೊರತೆಗೆದಾಗ ಪದಗಳು ಒಟ್ಟ
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI ಅಥವಾ ಹೊಸ ಸಂಶೋಧನೆ ಇಲ್ಲದೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

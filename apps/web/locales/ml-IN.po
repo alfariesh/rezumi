@@ -1653,8 +1653,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "ഇതിനകം ഉൾപ്പെടുത്തിയിട്ടുണ്ട് · പേജിൽ അത് കണ്ടെത്താൻ ഒരെണ്ണം തിരഞ്ഞെടുക്കുക"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "ഇതിനകം അക്കൗണ്ട് ഉണ്ടോ? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3898,11 +3898,6 @@ msgstr "സൃഷ്ടിച്ച് തുറക്കുക"
 msgid "Create key"
 msgstr "കീ സൃഷ്ടിക്കുക"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "ഇപ്പോൾ ഒരെണ്ണം ഉണ്ടാക്കുക"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4377,8 +4372,8 @@ msgid "Domain connected"
 msgstr "ഡൊമെയ്ൻ കണക്റ്റ് ചെയ്തു"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "അക്കൗണ്ട് ഇല്ലേ? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6751,6 +6746,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "തത്സമയ മൊത്തങ്ങൾ, ഓരോ 6 മണിക്കൂറിലും പുതുക്കുന്നു."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "ലോഡ് ചെയ്യുന്നു"
 
@@ -9380,8 +9380,8 @@ msgid "Remember this for future coaching?"
 msgstr "ഭാവിയിലെ കോച്ചിംഗിനായി ഇത് ഓർമ്മിക്കണോ?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "നിങ്ങളുടെ പാസ്‌വേഡ് ഓർമ്മയുണ്ടോ? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10727,13 +10727,6 @@ msgstr "സൈഡ്‌ബാറുകൾ പലപ്പോഴും അവസ�
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "സൈൻ ഇൻ"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "ഇപ്പോൾ സൈൻ ഇൻ ചെയ്യുക"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13303,6 +13296,10 @@ msgstr "ടെക്സ്റ്റ് എക്‌സ്ട്രാക്റ�
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI അല്ലെങ്കിൽ പുതിയ ഗവേഷണം ഇല്ലാതെ പ്രവർത്തിക്കും"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

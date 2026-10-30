@@ -1,4 +1,4 @@
-import { Button, Input, Label, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +13,6 @@ import {
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { Swap } from "@rezumi/ui/components/swap";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";

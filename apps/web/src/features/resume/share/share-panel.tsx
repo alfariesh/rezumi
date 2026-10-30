@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -9,7 +9,6 @@ import { useState } from "react";
 import { formatTimeSince, publicResumeUrl, summarizeViews } from "@rezumi/resume/sharing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
-import { Separator } from "@rezumi/ui/components/separator";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";

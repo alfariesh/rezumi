@@ -1,13 +1,12 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, Kbd, Tooltip } from "@heroui/react";
+import { Avatar, Button, Kbd, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useMatchRoute } from "@tanstack/react-router";
 import { cloneElement } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -179,8 +178,8 @@ function Sidebar() {
 							className="flex h-11 items-center gap-2.5 rounded-lg px-1.5 text-start transition-colors duration-quick hover:bg-hover"
 						>
 							<Avatar className="size-7">
-								<AvatarImage src={session.user.image ?? undefined} />
-								<AvatarFallback className="text-[11px]">{getInitials(session.user.name)}</AvatarFallback>
+								{session.user.image && <Avatar.Image src={session.user.image} alt="" />}
+								<Avatar.Fallback className="text-[11px]">{getInitials(session.user.name)}</Avatar.Fallback>
 							</Avatar>
 							<span className="grid min-w-0">
 								<span className="truncate text-sm font-medium">{session.user.name}</span>
@@ -268,8 +267,8 @@ function Rail() {
 					{({ session }) => (
 						<button type="button" aria-label={t`Account`} className="rounded-sm">
 							<Avatar className="size-8">
-								<AvatarImage src={session.user.image ?? undefined} />
-								<AvatarFallback className="text-[11px]">{getInitials(session.user.name)}</AvatarFallback>
+								{session.user.image && <Avatar.Image src={session.user.image} alt="" />}
+								<Avatar.Fallback className="text-[11px]">{getInitials(session.user.name)}</Avatar.Fallback>
 							</Avatar>
 						</button>
 					)}

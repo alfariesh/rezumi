@@ -1653,8 +1653,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "이미 다뤘습니다. 페이지에서 찾으려면 하나를 선택하세요."
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "이미 계정이 있으신가요? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3898,11 +3898,6 @@ msgstr "생성 및 열기"
 msgid "Create key"
 msgstr "키 생성"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "지금 만들기"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4377,8 +4372,8 @@ msgid "Domain connected"
 msgstr "도메인 연결됨"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "계정이 없으신가요? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6751,6 +6746,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "실시간 합계는 6시간마다 새로 고쳐집니다."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "불러오는 중"
 
@@ -9380,8 +9380,8 @@ msgid "Remember this for future coaching?"
 msgstr "이후 코칭을 위해 기억할까요?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "비밀번호가 기억나시나요? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10727,13 +10727,6 @@ msgstr "사이드바는 종종 마지막으로 읽히거나 기본 열에 혼합
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "로그인"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "지금 로그인"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13303,6 +13296,10 @@ msgstr "텍스트를 추출하면 단어들이 서로 붙어버립니다."
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI나 새 리서치 없이 작동"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

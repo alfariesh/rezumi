@@ -5,14 +5,12 @@ import type { KeyboardEvent, ReactNode } from "react";
 import { useDirection } from "@base-ui/react/direction-provider";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { buttonVariants } from "@heroui/react";
+import { buttonVariants, Chip, Disclosure } from "@heroui/react";
 import { msg, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useMemo } from "react";
-import { Badge } from "@rezumi/ui/components/badge";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -145,14 +143,14 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 							{title || <Trans>Untitled</Trans>}
 						</span>
 						{draft && (
-							<Badge variant="neutral" className="shrink-0">
+							<Chip size="sm" variant="soft" className="shrink-0">
 								<Trans>Draft</Trans>
-							</Badge>
+							</Chip>
 						)}
 						{entry.hidden && (
-							<Badge variant="outline" className="shrink-0">
+							<Chip size="sm" variant="secondary" className="shrink-0">
 								<Trans>Hidden</Trans>
-							</Badge>
+							</Chip>
 						)}
 					</span>
 					{meta && <span className="max-w-full truncate text-xs leading-4 text-ink-3">{meta}</span>}
@@ -171,16 +169,18 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 			</div>
 
 			{!isPhone && (
-				<Collapsible open={open}>
-					<CollapsibleContent>
-						<fieldset
-							disabled={locked}
-							className="m-0 grid min-w-0 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
-						>
-							{fields}
-						</fieldset>
-					</CollapsibleContent>
-				</Collapsible>
+				<Disclosure isExpanded={open}>
+					<Disclosure.Content>
+						<Disclosure.Body>
+							<fieldset
+								disabled={locked}
+								className="m-0 grid min-w-0 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
+							>
+								{fields}
+							</fieldset>
+						</Disclosure.Body>
+					</Disclosure.Content>
+				</Disclosure>
 			)}
 
 			<AnimatePresence>

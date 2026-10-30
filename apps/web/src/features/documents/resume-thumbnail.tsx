@@ -1,11 +1,11 @@
 import type { ResumeThumbnailSize } from "@/features/resume/preview/resume-thumbnail.shared";
 import type { QueryClient } from "@tanstack/react-query";
 import type { RefObject } from "react";
+import { Skeleton } from "@heroui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { readStoredThumbnail, storeThumbnail } from "./thumbnail-store";
 import { createResumePdfBlob } from "@/features/resume/export/pdf-document";
 import { createPdfFirstPageImage, releaseThumbnailUrls } from "@/features/resume/preview/pdf-thumbnail";

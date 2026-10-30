@@ -1653,8 +1653,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "已经涵盖·选择一个在页面上找到它"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "已有账户？<0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3898,11 +3898,6 @@ msgstr "创建并打开"
 msgid "Create key"
 msgstr "创建密钥"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "现在就创建一个"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4377,8 +4372,8 @@ msgid "Domain connected"
 msgstr "域名已连接"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "没有账户？<0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6751,6 +6746,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "实时统计，每 6 小时更新一次。"
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "加载中"
 
@@ -9380,8 +9380,8 @@ msgid "Remember this for future coaching?"
 msgstr "记住这条以便日后辅导？"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "记得密码？<0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10727,13 +10727,6 @@ msgstr "侧边栏通常是最后阅读的，或者混合到主栏中。"
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "登录"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "立即登录"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13303,6 +13296,10 @@ msgstr "文字提取出来后，单词会连在一起。"
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "无需 AI 或新的调研"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

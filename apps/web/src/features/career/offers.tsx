@@ -2,7 +2,7 @@ import type { SavedData, SavedItem } from "./hooks";
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +17,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";

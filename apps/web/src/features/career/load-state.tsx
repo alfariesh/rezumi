@@ -1,6 +1,5 @@
-import { Button } from "@heroui/react";
+import { Button, Skeleton } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 
 type CareerLoadErrorProps = { onRetry: () => void };
 

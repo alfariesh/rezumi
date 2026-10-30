@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
 import type z from "zod";
-import { InputGroup, Switch } from "@heroui/react";
+import { InputGroup, Switch, Separator } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { typographySchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { Separator } from "@rezumi/ui/components/separator";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";

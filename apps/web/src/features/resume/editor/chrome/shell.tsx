@@ -1,10 +1,10 @@
 import type { MobileView } from "@/features/resume/editor/store";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
-import { TabsContent } from "@rezumi/ui/components/tabs";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { MobileTabIndicator } from "@/components/layout/mobile-tab-indicator";
@@ -129,9 +129,9 @@ function DesktopBody({ mode, panelLabel, panel, page, assistant, column, replace
 				replaced={replace && assistantOpen}
 				assistant={<div className="min-h-0 border-e border-line">{assistant}</div>}
 			>
-				<TabsContent
+				<Tabs.Panel
 					key={mode}
-					value={mode}
+					id={mode}
 					aria-label={panelLabel}
 					// `relative`: absolutely positioned descendants (sr-only text, say) stay inside this scroller instead of
 					// stretching the document, which would let scrollIntoView shift the whole editor. Keyed by mode so each
@@ -139,7 +139,7 @@ function DesktopBody({ mode, panelLabel, panel, page, assistant, column, replace
 					className="relative min-h-0 overflow-y-auto border-e border-line bg-surface [overflow-anchor:none]"
 				>
 					{panel}
-				</TabsContent>
+				</Tabs.Panel>
 			</AssistantReplace>
 			<main id="main-content" className="min-h-0 min-w-0">
 				{page}
@@ -158,9 +158,9 @@ function TabletBody({ mode, panelLabel, panel, page }: BodyProps) {
 			<main id="main-content" className="h-full min-w-0">
 				{page}
 			</main>
-			<TabsContent
+			<Tabs.Panel
 				key={mode}
-				value={mode}
+				id={mode}
 				aria-label={panelLabel}
 				inert={!drawerOpen}
 				className={cn(
@@ -169,7 +169,7 @@ function TabletBody({ mode, panelLabel, panel, page }: BodyProps) {
 				)}
 			>
 				{panel}
-			</TabsContent>
+			</Tabs.Panel>
 		</div>
 	);
 }

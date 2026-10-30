@@ -1653,8 +1653,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "כבר מכוסה · בחר אחד כדי למצוא אותו בדף"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "כבר יש לך חשבון? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3898,11 +3898,6 @@ msgstr "צור ופתח"
 msgid "Create key"
 msgstr "צור מפתח"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "צור אחד עכשיו"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4377,8 +4372,8 @@ msgid "Domain connected"
 msgstr "הדומיין מחובר"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "אין לך חשבון? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6751,6 +6746,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "סיכומים חיים, רענון כל 6 שעות."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "טוען"
 
@@ -9380,8 +9380,8 @@ msgid "Remember this for future coaching?"
 msgstr "לזכור את זה לאימון בעתיד?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "זוכר את הסיסמה? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10727,13 +10727,6 @@ msgstr "סרגלי צד נקראים לרוב אחרונים, או מעורבב�
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "כניסה"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "התחבר עכשיו"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13303,6 +13296,10 @@ msgstr "מילים מתמזגות זו בזו כשהטקסט מחולץ."
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "עובד בלי AI ובלי מחקר חדש"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

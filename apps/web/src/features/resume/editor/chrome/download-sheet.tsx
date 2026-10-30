@@ -1,9 +1,9 @@
 import type { SheetTab } from "@/features/resume/editor/store";
 import type { ReactNode } from "react";
+import { Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@rezumi/ui/components/sheet";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "@/features/resume/editor/store";
@@ -41,25 +41,30 @@ export function DownloadSheetFrame({ tabs, fallback }: DownloadSheetFrameProps) 
 				</SheetHeader>
 
 				<Tabs
-					value={tabs.some((item) => item.value === shownTab) ? shownTab : fallback}
-					onValueChange={(value) => {
+					selectedKey={tabs.find((item) => item.value === shownTab)?.value ?? fallback}
+					onSelectionChange={(key) => {
+						const value = String(key);
 						// The page shows a version only while History is open.
 						if (value !== "history") useEditorStore.setState({ historyVersionId: null });
 						setTab(value as SheetTab);
 					}}
+					variant="secondary"
 					className="min-h-0 flex-1 gap-0"
 				>
-					<TabsList variant="line" aria-label={t`Share sections`} className="w-full justify-start gap-5 px-5">
-						{tabs.map((item) => (
-							<TabsTrigger key={item.value} value={item.value}>
-								{item.label}
-							</TabsTrigger>
-						))}
-					</TabsList>
+					<Tabs.ListContainer className="px-5">
+						<Tabs.List aria-label={t`Share sections`} className="w-full justify-start gap-5">
+							{tabs.map((item) => (
+								<Tabs.Tab key={item.value} id={item.value}>
+									{item.label}
+									<Tabs.Indicator />
+								</Tabs.Tab>
+							))}
+						</Tabs.List>
+					</Tabs.ListContainer>
 					{tabs.map((item) => (
-						<TabsContent key={item.value} value={item.value} className="overflow-y-auto p-5">
+						<Tabs.Panel key={item.value} id={item.value} className="overflow-y-auto p-5">
 							{item.content}
-						</TabsContent>
+						</Tabs.Panel>
 					))}
 				</Tabs>
 			</SheetContent>

@@ -1653,8 +1653,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "ఇప్పటికే కవర్ చేయబడింది · పేజీలో దాన్ని కనుగొనడానికి ఒకదాన్ని ఎంచుకోండి"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "ఇప్పటికే ఖాతా ఉందా? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3898,11 +3898,6 @@ msgstr "సృష్టించండి మరియు తెరవండి"
 msgid "Create key"
 msgstr "కీని సృష్టించండి"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "ఇప్పుడే సృష్టించండి"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4377,8 +4372,8 @@ msgid "Domain connected"
 msgstr "డొమైన్ కనెక్ట్ అయింది"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "ఖాతా లేదా? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6751,6 +6746,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "ప్రత్యక్ష ప్రసార మొత్తాలు, ప్రతి 6 గంటలకు రిఫ్రెష్ చేయబడతాయి."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "లోడ్ అవుతోంది"
 
@@ -9380,8 +9380,8 @@ msgid "Remember this for future coaching?"
 msgstr "భవిష్యత్ కోచింగ్ కోసం దీన్ని గుర్తుంచుకోవాలా?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "మీ పాస్‌వర్డ్ గుర్తుందా? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10727,13 +10727,6 @@ msgstr "సైడ్‌బార్లు తరచుగా చివరిగ�
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "సైన్ ఇన్ చేయండి"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "ఇప్పుడు సైన్ ఇన్ చేయండి"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13303,6 +13296,10 @@ msgstr "టెక్స్ట్ ఎక్స్‌ట్రాక్ట్ అ�
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI లేదా కొత్త పరిశోధన లేకుండానే పనిచేస్తుంది"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

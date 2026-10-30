@@ -169,6 +169,11 @@
 	}
 }
 
+/* A keyboard mode switch moves the editor's tab indicator at once (switchModeInstantly in apps/web/src/libs/motion.ts). */
+[data-mode-switch][data-instant] .tabs__indicator {
+	transition: none !important;
+}
+
 /* An undo toast's fuse: it burns down over the toast's timeout (see ToastFuse). */
 @keyframes toast-fuse {
 	to {

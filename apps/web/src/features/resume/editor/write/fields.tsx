@@ -1,11 +1,10 @@
 import type { Entry } from "./model";
 import type { Website } from "@rezumi/schema/resume/data";
 import type { ComponentProps, ReactNode } from "react";
-import { Checkbox, Input } from "@heroui/react";
+import { Checkbox, Disclosure, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useCallback, useState } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@rezumi/ui/components/collapsible";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
 import { findEntry } from "./model";
@@ -162,20 +161,26 @@ type MoreOptionsProps = { children: ReactNode };
 
 /** Secondary fields (level, icon, colour) stay out of the way until asked for. */
 export function MoreOptions({ children }: MoreOptionsProps) {
+	const [open, setOpen] = useState(false);
+
 	return (
-		<Collapsible className="col-span-full">
-			<CollapsibleTrigger className="group/more flex w-fit cursor-pointer items-center gap-1 rounded-sm text-[13px] font-medium text-ink-2 transition-colors duration-quick hover:text-ink">
-				<span
-					aria-hidden="true"
-					className="transition-transform duration-standard ease-enter group-data-panel-open/more:rotate-90"
-				>
-					›
-				</span>
-				<Trans>More options</Trans>
-			</CollapsibleTrigger>
-			<CollapsibleContent hiddenUntilFound>
-				<div className="grid gap-y-2.5 pt-3">{children}</div>
-			</CollapsibleContent>
-		</Collapsible>
+		<Disclosure isExpanded={open} onExpandedChange={setOpen} className="col-span-full">
+			<Disclosure.Heading>
+				<Disclosure.Trigger className="flex w-fit cursor-pointer items-center gap-1 rounded-sm text-[13px] font-medium text-ink-2 transition-colors duration-quick hover:text-ink">
+					<span
+						aria-hidden="true"
+						className={cn("transition-transform duration-standard ease-enter", open && "rotate-90")}
+					>
+						›
+					</span>
+					<Trans>More options</Trans>
+				</Disclosure.Trigger>
+			</Disclosure.Heading>
+			<Disclosure.Content>
+				<Disclosure.Body>
+					<div className="grid gap-y-2.5 pt-3">{children}</div>
+				</Disclosure.Body>
+			</Disclosure.Content>
+		</Disclosure>
 	);
 }

@@ -1,8 +1,7 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
-import { Input, buttonVariants } from "@heroui/react";
+import { Disclosure, Input, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
@@ -49,71 +48,67 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 				selected && "border-accent",
 			)}
 		>
-			<button
-				type="button"
-				aria-expanded={open}
-				onClick={() => useEditorStore.setState({ basicsOpen: !open })}
-				className="flex w-full items-center gap-3 rounded-xl p-3 text-start"
-			>
-				<span
-					aria-hidden="true"
-					className="grid size-10 shrink-0 place-items-center rounded-sm bg-accent-soft text-sm font-semibold text-accent-text"
-				>
-					{getInitials(basics.name || "?")}
-				</span>
-				<span className="min-w-0 flex-1">
-					<span className={cn("block truncate text-sm font-semibold", !basics.name && "text-ink-3")}>
-						{basics.name || <Trans>Your name</Trans>}
-					</span>
-					<span className="block truncate text-xs text-ink-3">
-						{[basics.headline, basics.location].filter((part) => part.trim()).join(" · ")}
-					</span>
-				</span>
-				<Icon
-					name="caret-down"
-					className={cn("text-ink-2 transition-transform duration-standard ease-enter", open && "rotate-180")}
-				/>
-			</button>
+			<Disclosure isExpanded={open} onExpandedChange={(next) => useEditorStore.setState({ basicsOpen: next })}>
+				<Disclosure.Heading>
+					<Disclosure.Trigger className="flex w-full items-center gap-3 rounded-xl p-3 text-start">
+						<span
+							aria-hidden="true"
+							className="grid size-10 shrink-0 place-items-center rounded-sm bg-accent-soft text-sm font-semibold text-accent-text"
+						>
+							{getInitials(basics.name || "?")}
+						</span>
+						<span className="min-w-0 flex-1">
+							<span className={cn("block truncate text-sm font-semibold", !basics.name && "text-ink-3")}>
+								{basics.name || <Trans>Your name</Trans>}
+							</span>
+							<span className="block truncate text-xs text-ink-3">
+								{[basics.headline, basics.location].filter((part) => part.trim()).join(" · ")}
+							</span>
+						</span>
+						<Disclosure.Indicator className="text-ink-2" />
+					</Disclosure.Trigger>
+				</Disclosure.Heading>
 
-			<Collapsible open={open}>
-				<CollapsibleContent>
-					<fieldset
-						disabled={locked}
-						className="m-0 grid min-w-0 grid-cols-2 gap-x-3 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
-					>
-						<PhotoRow locked={locked} />
-						<TextField
-							label={<Trans>Full name</Trans>}
-							wide
-							autoComplete="name"
-							// A blank resume opens straight into the name field.
-							autoFocus={!locked && !basics.name}
-							{...text("name")}
-						/>
-						<TextField label={<Trans>Headline</Trans>} wide {...text("headline")} />
-						<TextField
-							label={<Trans>Email</Trans>}
-							type="email"
-							autoComplete="email"
-							validate={validateEmail}
-							{...text("email")}
-						/>
-						<TextField label={<Trans>Phone</Trans>} type="tel" autoComplete="tel" {...text("phone")} />
-						<TextField label={<Trans>Location</Trans>} wide {...text("location")} />
-						<WebsiteField
-							label={<Trans>Website</Trans>}
-							value={basics.website}
-							allowInlineLink={false}
-							onChange={(website) =>
-								write("website", (target) => {
-									target.website = { url: website.url, label: website.label };
-								})
-							}
-						/>
-						<CustomFields fields={basics.customFields} locked={locked} />
-					</fieldset>
-				</CollapsibleContent>
-			</Collapsible>
+				<Disclosure.Content>
+					<Disclosure.Body>
+						<fieldset
+							disabled={locked}
+							className="m-0 grid min-w-0 grid-cols-2 gap-x-3 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
+						>
+							<PhotoRow locked={locked} />
+							<TextField
+								label={<Trans>Full name</Trans>}
+								wide
+								autoComplete="name"
+								// A blank resume opens straight into the name field.
+								autoFocus={!locked && !basics.name}
+								{...text("name")}
+							/>
+							<TextField label={<Trans>Headline</Trans>} wide {...text("headline")} />
+							<TextField
+								label={<Trans>Email</Trans>}
+								type="email"
+								autoComplete="email"
+								validate={validateEmail}
+								{...text("email")}
+							/>
+							<TextField label={<Trans>Phone</Trans>} type="tel" autoComplete="tel" {...text("phone")} />
+							<TextField label={<Trans>Location</Trans>} wide {...text("location")} />
+							<WebsiteField
+								label={<Trans>Website</Trans>}
+								value={basics.website}
+								allowInlineLink={false}
+								onChange={(website) =>
+									write("website", (target) => {
+										target.website = { url: website.url, label: website.label };
+									})
+								}
+							/>
+							<CustomFields fields={basics.customFields} locked={locked} />
+						</fieldset>
+					</Disclosure.Body>
+				</Disclosure.Content>
+			</Disclosure>
 		</section>
 	);
 }

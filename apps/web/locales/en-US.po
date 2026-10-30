@@ -1648,8 +1648,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "Already covered · pick one to find it on the page"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "Already have an account? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr "Already have an account? <0>Sign in now <1/></0>"
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3893,11 +3893,6 @@ msgstr "Create and open"
 msgid "Create key"
 msgstr "Create key"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "Create one now"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4372,8 +4367,8 @@ msgid "Domain connected"
 msgstr "Domain connected"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "Don't have an account? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr "Don't have an account? <0>Create one now <1/></0>"
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6746,6 +6741,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "Live totals, refreshed every 6 hours."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "Loading"
 
@@ -9375,8 +9375,8 @@ msgid "Remember this for future coaching?"
 msgstr "Remember this for future coaching?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "Remember your password? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr "Remember your password? <0>Sign in now <1/></0>"
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10722,13 +10722,6 @@ msgstr "Sidebars are often read last, or mixed into the main column."
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "Sign in"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "Sign in now"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13298,6 +13291,10 @@ msgstr "Words run together when the text is extracted."
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "Works without AI or new research"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr "Workspace sections"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

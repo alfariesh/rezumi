@@ -1,5 +1,5 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import { Button, buttonVariants, Input } from "@heroui/react";
+import { Button, buttonVariants, Input, Skeleton, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,8 +13,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { PageHeader } from "@/components/layout/page-header";
@@ -236,34 +234,40 @@ function RouteComponent() {
 				{!(isError && !applications) && !empty && (
 					<>
 						<Tabs
-							value={shown}
-							onValueChange={(value) => {
+							selectedKey={shown}
+							onSelectionChange={(key) => {
 								setViewSwitched(true);
-								setSearch({ view: value as View });
+								setSearch({ view: String(key) as View });
 							}}
 						>
-							<TabsList aria-label={t`View`}>
-								<TabsTrigger value="list">
-									<Icon name="rows" size={18} />
-									<Trans>List</Trans>
-								</TabsTrigger>
-								{!phone && (
-									<TabsTrigger value="board">
-										<Icon name="kanban" size={18} />
-										<Trans>Board</Trans>
-									</TabsTrigger>
-								)}
-								<TabsTrigger value="insights">
-									<Icon name="chart-line-up" size={18} />
-									<Trans>Insights</Trans>
-								</TabsTrigger>
-								{!phone && (
-									<TabsTrigger value="calendar">
-										<Icon name="calendar-dots" size={18} />
-										<Trans>Calendar</Trans>
-									</TabsTrigger>
-								)}
-							</TabsList>
+							<Tabs.ListContainer>
+								<Tabs.List aria-label={t`View`}>
+									<Tabs.Tab id="list">
+										<Icon name="rows" size={18} />
+										<Trans>List</Trans>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									{!phone && (
+										<Tabs.Tab id="board">
+											<Icon name="kanban" size={18} />
+											<Trans>Board</Trans>
+											<Tabs.Indicator />
+										</Tabs.Tab>
+									)}
+									<Tabs.Tab id="insights">
+										<Icon name="chart-line-up" size={18} />
+										<Trans>Insights</Trans>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									{!phone && (
+										<Tabs.Tab id="calendar">
+											<Icon name="calendar-dots" size={18} />
+											<Trans>Calendar</Trans>
+											<Tabs.Indicator />
+										</Tabs.Tab>
+									)}
+								</Tabs.List>
+							</Tabs.ListContainer>
 						</Tabs>
 
 						<div className="relative max-w-72 min-w-40 flex-1">

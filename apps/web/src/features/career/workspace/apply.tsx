@@ -1,7 +1,7 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
-import { Button, buttonVariants, Checkbox, Spinner, TextArea, Tooltip } from "@heroui/react";
+import { Button, buttonVariants, Checkbox, Spinner, TextArea, Tooltip, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,7 +15,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";

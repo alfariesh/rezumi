@@ -1,4 +1,4 @@
-import { Button, Spinner } from "@heroui/react";
+import { Button, Spinner, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
@@ -13,7 +13,6 @@ import {
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { downloadWithAnchor } from "@rezumi/utils/file";
@@ -50,16 +49,20 @@ export function LetterBar({ layout, pinnable }: LetterBarProps) {
 			pinnable={pinnable}
 			menu={<LetterMenu />}
 			modes={
-				<TabsList aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
-					<TabsTrigger value="write" className="px-4">
-						<Icon name="pencil-simple" size={18} />
-						<Trans>Write</Trans>
-					</TabsTrigger>
-					<TabsTrigger value="design" className="px-4">
-						<Icon name="palette" size={18} />
-						<Trans>Design</Trans>
-					</TabsTrigger>
-				</TabsList>
+				<Tabs.ListContainer>
+					<Tabs.List aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
+						<Tabs.Tab id="write" className="px-4">
+							<Icon name="pencil-simple" size={18} />
+							<Trans>Write</Trans>
+							<Tabs.Indicator />
+						</Tabs.Tab>
+						<Tabs.Tab id="design" className="px-4">
+							<Icon name="palette" size={18} />
+							<Trans>Design</Trans>
+							<Tabs.Indicator />
+						</Tabs.Tab>
+					</Tabs.List>
+				</Tabs.ListContainer>
 			}
 		>
 			{layout === "desktop" && wide ? (

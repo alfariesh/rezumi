@@ -1,10 +1,10 @@
 import type { ColorResult } from "@uiw/color-convert";
+import { Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { hsvaToRgbaString, rgbaStringToHsva } from "@uiw/color-convert";
 import ReactColorColorful from "@uiw/react-color-colorful";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
-import { Separator } from "@rezumi/ui/components/separator";
 import { cn } from "@rezumi/utils/style";
 import { useControlledState } from "@/hooks/use-controlled-state";
 

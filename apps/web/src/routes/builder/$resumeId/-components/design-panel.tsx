@@ -1,14 +1,12 @@
 import type { DateFormat } from "@rezumi/schema/resume/dates";
 import type { ReactNode } from "react";
-import { Button } from "@heroui/react";
+import { Button, Disclosure, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { CustomStylesSectionBuilder } from "../-sidebar/right/sections/custom-styles";
@@ -146,14 +144,22 @@ export function DesignSheet() {
 				<span className="h-1 w-9 rounded-sm bg-line-2" />
 			</button>
 
-			<Tabs value={tab} onValueChange={(value) => setTab(value as SheetTab)} className="min-h-0 flex-1 gap-0">
-				<TabsList variant="line" className="w-full shrink-0 justify-around px-4">
-					{GROUPS.filter((group) => group.id !== "advanced").map((group) => (
-						<TabsTrigger key={group.id} value={group.id}>
-							{group.label()}
-						</TabsTrigger>
-					))}
-				</TabsList>
+			<Tabs
+				selectedKey={tab}
+				onSelectionChange={(key) => setTab(String(key) as SheetTab)}
+				variant="secondary"
+				className="min-h-0 flex-1 gap-0"
+			>
+				<Tabs.ListContainer>
+					<Tabs.List aria-label={t`Design`} className="w-full shrink-0 justify-around px-4">
+						{GROUPS.filter((group) => group.id !== "advanced").map((group) => (
+							<Tabs.Tab key={group.id} id={group.id}>
+								{group.label()}
+								<Tabs.Indicator />
+							</Tabs.Tab>
+						))}
+					</Tabs.List>
+				</Tabs.ListContainer>
 
 				<fieldset disabled={locked} className="m-0 min-h-0 min-w-0 flex-1 overflow-y-auto border-0 p-4">
 					<OfflineBanner className="mb-4" />
@@ -237,61 +243,62 @@ function AdvancedGroup({ open, onOpenChange }: AdvancedGroupProps) {
 	};
 
 	return (
-		<Collapsible id="design-advanced" open={open} onOpenChange={onOpenChange} className="scroll-mt-14 px-4 py-5">
-			<CollapsibleTrigger className="group/advanced flex w-full cursor-pointer items-center justify-between text-start text-[15px] font-semibold">
-				<Trans>Advanced</Trans>
-				<Icon
-					name="caret-down"
-					className="text-ink-2 transition-transform duration-standard ease-enter group-data-panel-open/advanced:rotate-180"
-				/>
-			</CollapsibleTrigger>
+		<div id="design-advanced" className="scroll-mt-14 px-4 py-5">
+			<Disclosure isExpanded={open} onExpandedChange={onOpenChange}>
+				<Disclosure.Heading>
+					<Disclosure.Trigger className="flex w-full cursor-pointer items-center justify-between text-start text-[15px] font-semibold">
+						<Trans>Advanced</Trans>
+						<Disclosure.Indicator className="text-ink-2" />
+					</Disclosure.Trigger>
+				</Disclosure.Heading>
 
-			<CollapsibleContent>
-				<div className="@container grid gap-6 pt-4">
-					<div className="grid gap-1.5">
-						<label htmlFor="design-date-format" className="text-[13px] font-medium">
-							<Trans>Date format</Trans>
-						</label>
-						<NativeSelect
-							id="design-date-format"
-							value={data?.metadata.page.dateFormat ?? "short"}
-							onChange={(event) =>
-								updateResumeData(
-									(draft) => {
-										draft.metadata.page.dateFormat = event.target.value as DateFormat;
-									},
-									{ newStep: true },
-								)
-							}
-						>
-							{DATE_FORMATS.map((format) => (
-								<option key={format.value} value={format.value}>
-									{format.label}
-								</option>
-							))}
-						</NativeSelect>
-					</div>
+				<Disclosure.Content>
+					<Disclosure.Body className="@container grid gap-6 pt-4">
+						<div className="grid gap-1.5">
+							<label htmlFor="design-date-format" className="text-[13px] font-medium">
+								<Trans>Date format</Trans>
+							</label>
+							<NativeSelect
+								id="design-date-format"
+								value={data?.metadata.page.dateFormat ?? "short"}
+								onChange={(event) =>
+									updateResumeData(
+										(draft) => {
+											draft.metadata.page.dateFormat = event.target.value as DateFormat;
+										},
+										{ newStep: true },
+									)
+								}
+							>
+								{DATE_FORMATS.map((format) => (
+									<option key={format.value} value={format.value}>
+										{format.label}
+									</option>
+								))}
+							</NativeSelect>
+						</div>
 
-					{EXACT_SECTIONS.map(([type, Section]) => (
-						<section
-							key={type}
-							id={`design-advanced-${type}`}
-							aria-labelledby={`design-advanced-${type}-title`}
-							className="grid scroll-mt-14 gap-3"
-						>
-							<h3 id={`design-advanced-${type}-title`} className="text-[13px] font-semibold text-ink-2">
-								{getSectionTitle(type)}
-							</h3>
-							<Section />
-						</section>
-					))}
+						{EXACT_SECTIONS.map(([type, Section]) => (
+							<section
+								key={type}
+								id={`design-advanced-${type}`}
+								aria-labelledby={`design-advanced-${type}-title`}
+								className="grid scroll-mt-14 gap-3"
+							>
+								<h3 id={`design-advanced-${type}-title`} className="text-[13px] font-semibold text-ink-2">
+									{getSectionTitle(type)}
+								</h3>
+								<Section />
+							</section>
+						))}
 
-					<Button variant="secondary" className="w-fit" onPress={() => reset()}>
-						<Icon name="arrow-counter-clockwise" size={18} />
-						<Trans>Reset design defaults</Trans>
-					</Button>
-				</div>
-			</CollapsibleContent>
-		</Collapsible>
+						<Button variant="secondary" className="w-fit" onPress={() => reset()}>
+							<Icon name="arrow-counter-clockwise" size={18} />
+							<Trans>Reset design defaults</Trans>
+						</Button>
+					</Disclosure.Body>
+				</Disclosure.Content>
+			</Disclosure>
+		</div>
 	);
 }

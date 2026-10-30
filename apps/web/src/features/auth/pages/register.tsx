@@ -1,4 +1,4 @@
-import { Button, buttonVariants, Input } from "@heroui/react";
+import { Button, buttonVariants, Input, Alert } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -6,7 +6,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Link, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import z from "zod";
-import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -267,13 +266,16 @@ function PostSignupScreen() {
 				</p>
 			</div>
 
-			<Alert>
-				<AlertTitle>
-					<Trans>This step is optional, but recommended.</Trans>
-				</AlertTitle>
-				<AlertDescription>
-					<Trans>Verifying your email confirms that you own this address.</Trans>
-				</AlertDescription>
+			<Alert status="default">
+				<Alert.Indicator />
+				<Alert.Content>
+					<Alert.Title>
+						<Trans>This step is optional, but recommended.</Trans>
+					</Alert.Title>
+					<Alert.Description>
+						<Trans>Verifying your email confirms that you own this address.</Trans>
+					</Alert.Description>
+				</Alert.Content>
 			</Alert>
 
 			<Link

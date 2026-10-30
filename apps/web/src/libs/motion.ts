@@ -28,7 +28,7 @@ export const DRAG_SETTLE = { duration: D2 * 1000, easing: `cubic-bezier(${EASE_M
  * (keyboard shortcuts are used too often to animate). The flag stays two frames, until the new position has painted.
  */
 export function switchModeInstantly(change: () => void) {
-	const list = document.querySelector<HTMLElement>('[data-slot="tabs-list"][data-mode-switch]');
+	const list = document.querySelector<HTMLElement>("[data-mode-switch]");
 	list?.setAttribute("data-instant", "");
 	change();
 	requestAnimationFrame(() => requestAnimationFrame(() => list?.removeAttribute("data-instant")));

@@ -4,7 +4,7 @@ import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
-import { Button, buttonVariants, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Spinner, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -14,7 +14,6 @@ import { m } from "motion/react";
 import { useState } from "react";
 import { WORKSPACE_TABS } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { getInitials } from "@rezumi/utils/string";
@@ -226,28 +225,36 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 						</div>
 					</details>
 				)}
-				<Tabs value={tab} onValueChange={(value) => go(value as WorkspaceTab)} className="min-w-0 gap-0">
-					<TabsList
-						variant="line"
-						className="h-[46px] w-full [scrollbar-width:none] justify-start gap-0 overflow-x-auto px-4 md:px-6 [&_[data-slot=tabs-indicator]]:bg-accent"
-					>
-						{WORKSPACE_TABS.map((value) => (
-							<TabsTrigger key={value} value={value} className="gap-1.5 px-3 data-active:font-semibold">
-								{tabLabel(value)}
-								{value === "prepare" && minutes !== null && minutes > 0 && minutes < 7 * 24 * 60 && (
-									<TabBadge tone={minutes <= 60 ? "warn" : "accent"}>
-										{minutes <= 60 ? t`${minutes} min` : t`${Math.round(minutes / 60)} h`}
-									</TabBadge>
-								)}
-								{value === "messages" && unreadMessages > 0 && <TabBadge tone="info">{unreadMessages}</TabBadge>}
-								{value === "saved" && (saved.data?.length ?? 0) > 0 && (
-									<TabBadge tone="plain">{saved.data?.length}</TabBadge>
-								)}
-							</TabsTrigger>
-						))}
-					</TabsList>
+				<Tabs
+					selectedKey={tab}
+					onSelectionChange={(key) => go(String(key) as WorkspaceTab)}
+					variant="secondary"
+					className="min-w-0 gap-0"
+				>
+					<Tabs.ListContainer>
+						<Tabs.List
+							aria-label={t`Workspace sections`}
+							className="h-[46px] w-full [scrollbar-width:none] justify-start gap-0 overflow-x-auto px-4 md:px-6"
+						>
+							{WORKSPACE_TABS.map((value) => (
+								<Tabs.Tab key={value} id={value} className="gap-1.5 px-3 data-[selected=true]:font-semibold">
+									{tabLabel(value)}
+									{value === "prepare" && minutes !== null && minutes > 0 && minutes < 7 * 24 * 60 && (
+										<TabBadge tone={minutes <= 60 ? "warn" : "accent"}>
+											{minutes <= 60 ? t`${minutes} min` : t`${Math.round(minutes / 60)} h`}
+										</TabBadge>
+									)}
+									{value === "messages" && unreadMessages > 0 && <TabBadge tone="info">{unreadMessages}</TabBadge>}
+									{value === "saved" && (saved.data?.length ?? 0) > 0 && (
+										<TabBadge tone="plain">{saved.data?.length}</TabBadge>
+									)}
+									<Tabs.Indicator />
+								</Tabs.Tab>
+							))}
+						</Tabs.List>
+					</Tabs.ListContainer>
 					{WORKSPACE_TABS.map((value) => (
-						<TabsContent key={value} value={value} className="@container min-w-0 px-4 py-6 md:px-7">
+						<Tabs.Panel key={value} id={value} className="@container min-w-0 px-4 py-6 md:px-7">
 							{value === tab && (
 								<m.div
 									initial={{ opacity: 0, transform: "translateY(4px)" }}
@@ -314,7 +321,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 									)}
 								</m.div>
 							)}
-						</TabsContent>
+						</Tabs.Panel>
 					))}
 				</Tabs>
 			</div>

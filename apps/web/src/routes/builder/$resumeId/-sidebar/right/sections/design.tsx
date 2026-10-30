@@ -1,12 +1,11 @@
 import type { ReactNode } from "react";
 import type z from "zod";
-import { Input } from "@heroui/react";
+import { Input, Separator } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { colorDesignSchema, levelDesignSchema } from "@rezumi/schema/resume/data";
 import { resolveLevelDisplaySizes } from "@rezumi/schema/resume/level-display-sizes";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { Separator } from "@rezumi/ui/components/separator";
 import { SectionBase } from "../shared/section-base";
 import { ColorPicker } from "@/components/input/color-picker";
 import { IconPicker } from "@/components/input/icon-picker";

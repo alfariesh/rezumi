@@ -1,6 +1,6 @@
 import type { PdfFinding, PdfSeverity } from "@rezumi/resume/ats-pdf";
+import { Chip } from "@heroui/react";
 import { match } from "ts-pattern";
-import { Badge } from "@rezumi/ui/components/badge";
 import { cn } from "@rezumi/utils/style";
 import { getPdfFindingMessage, getPdfSeverityLabel } from "../messages";
 
@@ -30,9 +30,9 @@ export function FindingRow({ finding }: FindingRowProps) {
 					<p className="text-xs leading-normal text-ink-3">{message.action}</p>
 				</div>
 
-				<Badge variant="neutral" className="shrink-0">
+				<Chip size="sm" variant="soft" className="shrink-0">
 					{getPdfSeverityLabel(finding.severity)}
-				</Badge>
+				</Chip>
 			</div>
 
 			{(evidence?.snippet || evidence?.page !== undefined) && (
@@ -43,9 +43,9 @@ export function FindingRow({ finding }: FindingRowProps) {
 						</code>
 					)}
 					{evidence.page !== undefined && (
-						<Badge variant="outline" className="shrink-0 text-xs font-normal">
+						<Chip size="sm" variant="secondary" className="shrink-0 text-xs font-normal">
 							Page {evidence.page}
-						</Badge>
+						</Chip>
 					)}
 				</div>
 			)}

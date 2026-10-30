@@ -1653,8 +1653,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "ஏற்கனவே உள்ளது · பக்கத்தில் அதைக் கண்டுபிடிக்க ஒன்றைத் தேர்ந்தெடுக்கவும்"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "ஏற்கனவே கணக்கு உள்ளதா? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -3898,11 +3898,6 @@ msgstr "உருவாக்கி திறக்கவும்"
 msgid "Create key"
 msgstr "விசையை உருவாக்கவும்"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "இப்போதே உருவாக்குங்கள்"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4377,8 +4372,8 @@ msgid "Domain connected"
 msgstr "டொமைன் இணைக்கப்பட்டது"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "கணக்கு இல்லையா? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -6751,6 +6746,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "மொத்த நேரலை, ஒவ்வொரு 6 மணிநேரமும் புதுப்பிக்கப்படும்."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "ஏற்றப்படுகிறது"
 
@@ -9380,8 +9380,8 @@ msgid "Remember this for future coaching?"
 msgstr "எதிர்கால ஆலோசனைக்காக இதை நினைவில் வைக்கவா?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "உங்கள் கடவுச்சொல் நினைவிருக்கிறதா? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -10727,13 +10727,6 @@ msgstr "பக்கப்பட்டிகள் பெரும்பால�
 #: src/features/auth/pages/login.tsx
 msgid "Sign in"
 msgstr "உள்நுழைக"
-
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "இப்போது உள்நுழையவும்"
 
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
@@ -13303,6 +13296,10 @@ msgstr "உரை பிரித்தெடுக்கப்படும்�
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI அல்லது புதிய ஆய்வு இல்லாமலும் வேலை செய்யும்"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

@@ -1,13 +1,10 @@
 import type { AIProvider } from "@rezumi/ai/types";
-import { Button, Input, Label, Spinner } from "@heroui/react";
+import { Button, Disclosure, Input, Label, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
-import { Icon } from "@rezumi/ui/components/icon";
-import { cn } from "@rezumi/utils/style";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
@@ -43,27 +40,19 @@ export function ProviderSetup() {
 					const expanded = open === choice.provider;
 					return (
 						<li key={choice.provider}>
-							<button
-								type="button"
-								aria-expanded={expanded}
-								onClick={() => setOpen(expanded ? null : choice.provider)}
-								className="flex h-11 w-full items-center justify-between px-3 text-start text-sm transition-colors duration-quick hover:bg-hover"
-							>
-								{choice.provider === "openai-compatible" ? <Trans>Other · OpenAI-compatible</Trans> : choice.label}
-								<Icon
-									name="caret-right"
-									size={18}
-									className={cn(
-										"text-ink-3 transition-transform duration-standard ease-enter",
-										expanded && "rotate-90",
-									)}
-								/>
-							</button>
-							<Collapsible open={expanded}>
-								<CollapsibleContent>
-									<ConnectForm choice={choice} />
-								</CollapsibleContent>
-							</Collapsible>
+							<Disclosure isExpanded={expanded} onExpandedChange={(next) => setOpen(next ? choice.provider : null)}>
+								<Disclosure.Heading>
+									<Disclosure.Trigger className="flex h-11 w-full items-center justify-between px-3 text-start text-sm transition-colors duration-quick hover:bg-hover">
+										{choice.provider === "openai-compatible" ? <Trans>Other · OpenAI-compatible</Trans> : choice.label}
+										<Disclosure.Indicator className="text-ink-3" />
+									</Disclosure.Trigger>
+								</Disclosure.Heading>
+								<Disclosure.Content>
+									<Disclosure.Body>
+										<ConnectForm choice={choice} />
+									</Disclosure.Body>
+								</Disclosure.Content>
+							</Disclosure>
 						</li>
 					);
 				})}

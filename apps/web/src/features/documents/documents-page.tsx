@@ -1,6 +1,6 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
 import { Segment } from "@heroui-pro/react";
-import { Button, buttonVariants, Checkbox, InputGroup, Kbd } from "@heroui/react";
+import { Button, buttonVariants, Checkbox, InputGroup, Kbd, Skeleton, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -16,8 +16,6 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Tabs, TabsCount, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { cn } from "@rezumi/utils/style";
 import { LinkApplicationDialog, TagsDialog, useBatchActions } from "./document-actions";
 import { DocumentCard, DocumentRow } from "./document-card";
@@ -128,21 +126,27 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 			<PageHeader title={<Trans>Documents</Trans>}>
 				{!failed && !firstRun && (
 					<>
-						<Tabs value={search.type} onValueChange={(type) => onSearchChange({ type: type as DocumentTypeFilter })}>
-							<TabsList variant="line" aria-label={t`Document type`}>
-								<TabsTrigger value="all">
-									<Trans>All</Trans>
-									<TabsCount>{counts.all}</TabsCount>
-								</TabsTrigger>
-								<TabsTrigger value="resume">
-									<Trans>Resumes</Trans>
-									<TabsCount>{counts.resume}</TabsCount>
-								</TabsTrigger>
-								<TabsTrigger value="letter">
-									<Trans>Letters</Trans>
-									<TabsCount>{counts.letter}</TabsCount>
-								</TabsTrigger>
-							</TabsList>
+						<Tabs
+							selectedKey={search.type}
+							onSelectionChange={(type) => onSearchChange({ type: String(type) as DocumentTypeFilter })}
+							variant="secondary"
+						>
+							<Tabs.ListContainer>
+								<Tabs.List aria-label={t`Document type`}>
+									<Tabs.Tab id="all">
+										<Trans>All</Trans> <span className="text-xs text-muted tabular-nums">{counts.all}</span>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									<Tabs.Tab id="resume">
+										<Trans>Resumes</Trans> <span className="text-xs text-muted tabular-nums">{counts.resume}</span>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									<Tabs.Tab id="letter">
+										<Trans>Letters</Trans> <span className="text-xs text-muted tabular-nums">{counts.letter}</span>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+								</Tabs.List>
+							</Tabs.ListContainer>
 						</Tabs>
 
 						<div className="ms-auto flex flex-wrap items-center gap-2 max-sm:ms-0 max-sm:w-full">

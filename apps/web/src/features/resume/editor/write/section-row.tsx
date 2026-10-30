@@ -3,14 +3,12 @@ import type { SectionType } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { buttonVariants } from "@heroui/react";
+import { buttonVariants, Chip, Disclosure } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
-import { Badge } from "@rezumi/ui/components/badge";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -130,14 +128,14 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 				</button>
 
 				{proposed > 0 && (
-					<Badge variant="accent" className="shrink-0">
+					<Chip size="sm" color="accent" variant="soft" className="shrink-0">
 						<Plural value={proposed} one="# proposed" other="# proposed" />
-					</Badge>
+					</Chip>
 				)}
 				{toCheck > 0 && (
-					<Badge variant="warn" className="shrink-0">
+					<Chip size="sm" color="warning" variant="soft" className="shrink-0">
 						<Plural value={toCheck} one="# to check" other="# to check" />
-					</Badge>
+					</Chip>
 				)}
 				{section.kind !== "summary" && (
 					<span className="px-1 font-mono text-xs text-ink-3">
@@ -165,11 +163,13 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 				{!locked && <SectionMenu section={section} title={title} onMove={onMove} />}
 			</div>
 
-			<Collapsible open={open}>
-				<CollapsibleContent>
-					<div className="grid gap-2 ps-[26px] pt-1 pb-3">{children}</div>
-				</CollapsibleContent>
-			</Collapsible>
+			<Disclosure isExpanded={open}>
+				<Disclosure.Content>
+					<Disclosure.Body>
+						<div className="grid gap-2 ps-[26px] pt-1 pb-3">{children}</div>
+					</Disclosure.Body>
+				</Disclosure.Content>
+			</Disclosure>
 		</div>
 	);
 }

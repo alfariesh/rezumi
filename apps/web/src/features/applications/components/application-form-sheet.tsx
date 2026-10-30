@@ -1,13 +1,12 @@
 import type { Application } from "../types";
 import type { FileAttachment } from "./file-attachment-field";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
-import { Button, Input, Label, TextArea } from "@heroui/react";
+import { Accordion, Button, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { STAGES } from "@rezumi/schema/applications/data";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@rezumi/ui/components/accordion";
 import { Icon } from "@rezumi/ui/components/icon";
 import {
 	Sheet,
@@ -140,52 +139,57 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 
 	return (
 		<Accordion className="rounded-lg border border-dashed border-line px-3">
-			<AccordionItem value="job-description">
-				<AccordionTrigger>
-					<span className="flex items-center gap-1.5">
-						<Icon name="sparkle" size={16} className="text-accent-text" />
-						<Trans>Job description</Trans>
-					</span>
-				</AccordionTrigger>
-				<AccordionContent className="flex flex-col gap-2">
-					<p className="text-xs text-ink-3">
-						<Trans>
-							Copy the entire job description from the posting and paste it below. We'll fill in the fields for you and
-							keep the text with this application for match scoring and tailoring.
-						</Trans>
-					</p>
-					<TextArea
-						fullWidth
-						// Fixed height: the accordion panel measures its content once, so a textarea that
-						// grew with the pasted text would overflow the clipped panel.
-						className="field-sizing-fixed h-40"
-						value={value}
-						rows={8}
-						maxLength={MAX_JOB_DESCRIPTION_CHARS}
-						placeholder={t`Paste the full job description here…`}
-						onChange={(event) => onChange(event.target.value)}
-						onPaste={(event) => runAutofill(event.clipboardData.getData("text"))}
-					/>
-					<div className="flex items-center justify-between gap-2">
-						<p className="text-[11px] text-ink-3">
-							{autofill.isPending ? (
-								<Trans>Reading the posting…</Trans>
-							) : (
-								<Trans>Pasting fills the fields automatically.</Trans>
-							)}
+			<Accordion.Item id="job-description">
+				<Accordion.Heading>
+					<Accordion.Trigger>
+						<span className="flex items-center gap-1.5">
+							<Icon name="sparkle" size={16} className="text-accent-text" />
+							<Trans>Job description</Trans>
+						</span>
+						<Accordion.Indicator />
+					</Accordion.Trigger>
+				</Accordion.Heading>
+				<Accordion.Panel>
+					<Accordion.Body className="flex flex-col gap-2">
+						<p className="text-xs text-ink-3">
+							<Trans>
+								Copy the entire job description from the posting and paste it below. We'll fill in the fields for you
+								and keep the text with this application for match scoring and tailoring.
+							</Trans>
 						</p>
-						<Button
-							size="sm"
-							variant="secondary"
-							isDisabled={value.trim().length < MIN_AUTOFILL_CHARS || autofill.isPending}
-							onPress={() => runAutofill(value)}
-						>
-							<Icon name="sparkle" size={16} />
-							<Trans>Fill fields</Trans>
-						</Button>
-					</div>
-				</AccordionContent>
-			</AccordionItem>
+						<TextArea
+							fullWidth
+							// Fixed height: the accordion panel measures its content once, so a textarea that
+							// grew with the pasted text would overflow the clipped panel.
+							className="field-sizing-fixed h-40"
+							value={value}
+							rows={8}
+							maxLength={MAX_JOB_DESCRIPTION_CHARS}
+							placeholder={t`Paste the full job description here…`}
+							onChange={(event) => onChange(event.target.value)}
+							onPaste={(event) => runAutofill(event.clipboardData.getData("text"))}
+						/>
+						<div className="flex items-center justify-between gap-2">
+							<p className="text-[11px] text-ink-3">
+								{autofill.isPending ? (
+									<Trans>Reading the posting…</Trans>
+								) : (
+									<Trans>Pasting fills the fields automatically.</Trans>
+								)}
+							</p>
+							<Button
+								size="sm"
+								variant="secondary"
+								isDisabled={value.trim().length < MIN_AUTOFILL_CHARS || autofill.isPending}
+								onPress={() => runAutofill(value)}
+							>
+								<Icon name="sparkle" size={16} />
+								<Trans>Fill fields</Trans>
+							</Button>
+						</div>
+					</Accordion.Body>
+				</Accordion.Panel>
+			</Accordion.Item>
 		</Accordion>
 	);
 }

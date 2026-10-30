@@ -2,15 +2,13 @@ import type { ExtractProgress } from "./extract-client";
 import type { AtsCheckResult } from "./run-ats-check";
 import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
 import type { CSSProperties } from "react";
-import { Button, Spinner, TextArea } from "@heroui/react";
+import { Button, Disclosure, Spinner, Tabs, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useId, useRef, useState } from "react";
 import { useIsClient } from "usehooks-ts";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { cn } from "@rezumi/utils/style";
 import { PdfPasswordRequiredError, PdfTooLargeError, PdfUnreadableError } from "./extract-client";
 import { getPdfCategoryDescription, getPdfCategoryLabel, getPdfFindingMessage } from "./messages";
@@ -466,11 +464,13 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 											)}
 										/>
 									</button>
-									<Collapsible open={expanded}>
-										<CollapsibleContent>
-											<div className="px-3.5 ps-11 pb-3.5 text-[13px] leading-[19px] text-ink-2">{row.body}</div>
-										</CollapsibleContent>
-									</Collapsible>
+									<Disclosure isExpanded={expanded}>
+										<Disclosure.Content>
+											<Disclosure.Body className="px-3.5 ps-11 pb-3.5 text-[13px] leading-[19px] text-ink-2">
+												{row.body}
+											</Disclosure.Body>
+										</Disclosure.Content>
+									</Disclosure>
 								</div>
 							);
 						})}
@@ -496,15 +496,19 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 
 			<section aria-label={t`Your file`} className="grid content-start bg-sunken">
 				<div className="flex justify-center p-4">
-					<Tabs value={lens} onValueChange={(value) => setLens(value as "page" | "text")}>
-						<TabsList aria-label={t`How to show the file`}>
-							<TabsTrigger value="page">
-								<Trans>Original page</Trans>
-							</TabsTrigger>
-							<TabsTrigger value="text">
-								<Trans>As software reads it</Trans>
-							</TabsTrigger>
-						</TabsList>
+					<Tabs selectedKey={lens} onSelectionChange={(key) => setLens(key === "text" ? "text" : "page")}>
+						<Tabs.ListContainer>
+							<Tabs.List aria-label={t`How to show the file`}>
+								<Tabs.Tab id="page">
+									<Trans>Original page</Trans>
+									<Tabs.Indicator />
+								</Tabs.Tab>
+								<Tabs.Tab id="text">
+									<Trans>As software reads it</Trans>
+									<Tabs.Indicator />
+								</Tabs.Tab>
+							</Tabs.List>
+						</Tabs.ListContainer>
 					</Tabs>
 				</div>
 				<div className="grid justify-items-center px-4 pb-10 sm:px-10">
