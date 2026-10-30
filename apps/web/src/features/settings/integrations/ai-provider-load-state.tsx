@@ -16,7 +16,7 @@ export function AiProviderLoadState({ state }: AiProviderLoadStateProps) {
 		);
 	if (!state.error) return null;
 	return (
-		<div role="alert" className="grid justify-items-start gap-2 rounded-lg border border-line p-3 text-sm text-muted">
+		<div role="alert" className="grid justify-items-start gap-2 rounded-xl bg-default p-3 text-sm text-muted">
 			<p>
 				<Trans>Couldn't load AI connections. Your saved connections haven't changed.</Trans>
 			</p>
