@@ -12,6 +12,7 @@ import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
+import { type LetterMode, useLetterMode } from "@/features/letters/use-letter-mode";
 import { DocumentMenuTrigger } from "@/features/resume/editor/chrome";
 import { DownloadButtons, EditorBarFrame } from "@/features/resume/editor/chrome/bar";
 import { useEditorStore } from "@/features/resume/editor/store";
@@ -35,6 +36,7 @@ export function LetterBar({ layout, pinnable }: LetterBarProps) {
 	// Below 1280 the bar is too narrow for Share's label next to everything else.
 	const wide = useBreakpoint() === "wide";
 	const download = useDownloadLetter();
+	const [mode, setMode] = useLetterMode();
 
 	return (
 		<EditorBarFrame
@@ -42,20 +44,23 @@ export function LetterBar({ layout, pinnable }: LetterBarProps) {
 			pinnable={pinnable}
 			menu={<LetterMenu />}
 			modes={
-				<Tabs.ListContainer>
-					<Tabs.List aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
-						<Tabs.Tab id="write" className="px-4">
-							<Icon name="pencil-simple" size={18} />
-							<Trans>Write</Trans>
-							<Tabs.Indicator />
-						</Tabs.Tab>
-						<Tabs.Tab id="design" className="px-4">
-							<Icon name="palette" size={18} />
-							<Trans>Design</Trans>
-							<Tabs.Indicator />
-						</Tabs.Tab>
-					</Tabs.List>
-				</Tabs.ListContainer>
+				// Only the list sits in Tabs: React Aria renders everything inside Tabs a second time to collect the tabs.
+				<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as LetterMode)}>
+					<Tabs.ListContainer>
+						<Tabs.List aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
+							<Tabs.Tab id="write" className="px-4">
+								<Icon name="pencil-simple" size={18} />
+								<Trans>Write</Trans>
+								<Tabs.Indicator />
+							</Tabs.Tab>
+							<Tabs.Tab id="design" className="px-4">
+								<Icon name="palette" size={18} />
+								<Trans>Design</Trans>
+								<Tabs.Indicator />
+							</Tabs.Tab>
+						</Tabs.List>
+					</Tabs.ListContainer>
+				</Tabs>
 			}
 		>
 			{layout === "desktop" && wide ? (

@@ -1,6 +1,5 @@
 import type { LetterMode } from "@/features/letters/use-letter-mode";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
-import { Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { getRouteApi } from "@tanstack/react-router";
@@ -46,21 +45,18 @@ export function LetterShell() {
 
 	return (
 		<>
-			<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as LetterMode)} className="contents">
-				<EditorFrame
-					editorLayout={editorLayout}
-					bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
-					mode={mode}
-					panelLabel={mode === "design" ? t`Design` : t`Letter details`}
-					panel={<ModePanel mode={mode} />}
-					page={<LetterPage />}
-					assistant={<LetterAssistant />}
-					mobile={<MobileBody mode={mode} onModeChange={setMode} />}
-				>
-					<LetterHotkeys onModeChange={setMode} />
-				</EditorFrame>
-			</Tabs>
-			{/* Outside Tabs: React Aria would collect the sheet's own tabs into the editor's mode tabs. */}
+			<EditorFrame
+				editorLayout={editorLayout}
+				bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
+				mode={mode}
+				panelLabel={mode === "design" ? t`Design` : t`Letter details`}
+				panel={<ModePanel mode={mode} />}
+				page={<LetterPage />}
+				assistant={<LetterAssistant />}
+				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
+			>
+				<LetterHotkeys onModeChange={setMode} />
+			</EditorFrame>
 			<LetterDownloadSheet />
 		</>
 	);
@@ -93,13 +89,9 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 					<LetterPage />
 				</main>
 				{view !== "page" && (
-					<Tabs.Panel
-						key={mode}
-						id={mode}
-						className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]"
-					>
+					<section key={mode} className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]">
 						<ModePanel mode={mode} />
-					</Tabs.Panel>
+					</section>
 				)}
 			</div>
 

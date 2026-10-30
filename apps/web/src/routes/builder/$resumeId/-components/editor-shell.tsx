@@ -1,5 +1,4 @@
 import type { EditorMode } from "@/features/resume/editor/store";
-import { Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { getRouteApi, Outlet } from "@tanstack/react-router";
@@ -47,21 +46,18 @@ export function EditorShell() {
 
 	return (
 		<>
-			<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as EditorMode)} className="contents">
-				<EditorFrame
-					editorLayout={editorLayout}
-					bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
-					mode={mode}
-					panelLabel={panelLabel(mode)}
-					panel={<ModePanel mode={mode} />}
-					page={<Outlet />}
-					assistant={<ResumeAssistant />}
-					mobile={<MobileBody mode={mode} onModeChange={setMode} />}
-				>
-					<EditorHotkeys onModeChange={setMode} />
-				</EditorFrame>
-			</Tabs>
-			{/* Outside Tabs: React Aria would collect the sheet's own tabs into the editor's mode tabs. */}
+			<EditorFrame
+				editorLayout={editorLayout}
+				bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
+				mode={mode}
+				panelLabel={panelLabel(mode)}
+				panel={<ModePanel mode={mode} />}
+				page={<Outlet />}
+				assistant={<ResumeAssistant />}
+				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
+			>
+				<EditorHotkeys onModeChange={setMode} />
+			</EditorFrame>
 			<DownloadSheet />
 		</>
 	);
@@ -155,13 +151,9 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 					</Suspense>
 				)}
 				{view !== "page" && view !== "design" && (
-					<Tabs.Panel
-						key={mode}
-						id={mode}
-						className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]"
-					>
+					<section key={mode} className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]">
 						<ModePanel mode={mode} />
-					</Tabs.Panel>
+					</section>
 				)}
 			</div>
 

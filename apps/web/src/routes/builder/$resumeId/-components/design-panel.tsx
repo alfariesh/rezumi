@@ -161,31 +161,34 @@ export function DesignSheet() {
 					</Tabs.List>
 				</Tabs.ListContainer>
 
-				<fieldset disabled={locked} className="m-0 min-h-0 min-w-0 flex-1 overflow-y-auto border-0 p-4">
-					<OfflineBanner className="mb-4" />
-					{tab === "template" && <TemplateGroup layout="strip" />}
-					{tab === "entries" && <EntriesGroup />}
-					{tab === "type" && (
-						<TypeGroup
-							onCustomFonts={() => {
-								// Advanced lives under Page, so from here it isn't mounted yet: switching mounts it, then it opens.
-								setTab("page");
-								jumpTo(TYPOGRAPHY_ID, { open: false, setOpen: setAdvancedOpen }, true);
-							}}
-						/>
-					)}
-					{tab === "color" && <ColorGroup />}
-					{tab === "page" && (
-						<div className="-mx-4 divide-y divide-line">
-							<div className="px-4 pb-5">
-								<PageGroup />
+				{/* In a Panel: React Aria renders whatever else sits inside Tabs a second time to collect the tabs. */}
+				<Tabs.Panel id={tab} className="flex min-h-0 flex-1 flex-col p-0">
+					<fieldset disabled={locked} className="m-0 min-h-0 min-w-0 flex-1 overflow-y-auto border-0 p-4">
+						<OfflineBanner className="mb-4" />
+						{tab === "template" && <TemplateGroup layout="strip" />}
+						{tab === "entries" && <EntriesGroup />}
+						{tab === "type" && (
+							<TypeGroup
+								onCustomFonts={() => {
+									// Advanced lives under Page, so from here it isn't mounted yet: switching mounts it, then it opens.
+									setTab("page");
+									jumpTo(TYPOGRAPHY_ID, { open: false, setOpen: setAdvancedOpen }, true);
+								}}
+							/>
+						)}
+						{tab === "color" && <ColorGroup />}
+						{tab === "page" && (
+							<div className="-mx-4 divide-y divide-line">
+								<div className="px-4 pb-5">
+									<PageGroup />
+								</div>
+								<AdvancedGroup open={advancedOpen} onOpenChange={setAdvancedOpen} />
 							</div>
-							<AdvancedGroup open={advancedOpen} onOpenChange={setAdvancedOpen} />
-						</div>
-					)}
-					{/* Lowered, the sheet's lower half is out of view: this keeps the end of the list scrollable into sight. */}
-					{!expanded && <div aria-hidden="true" className="h-[calc(50cqh-0.5rem)]" />}
-				</fieldset>
+						)}
+						{/* Lowered, the sheet's lower half is out of view: this keeps the end of the list scrollable into sight. */}
+						{!expanded && <div aria-hidden="true" className="h-[calc(50cqh-0.5rem)]" />}
+					</fieldset>
+				</Tabs.Panel>
 			</Tabs>
 		</section>
 	);
