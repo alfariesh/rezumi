@@ -65,8 +65,12 @@ type Draft = {
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
-// New interviews default to tomorrow at 09:00 in the timezone, or the next full hour if that has passed.
-function emptyDraft(timezone: string): Draft {
+/** A time picked on the calendar for a new interview. */
+export type InterviewSlot = { start: Date; durationMinutes: number };
+
+// New interviews default to tomorrow at 09:00 in the timezone, or the next full hour if that has passed; a slot picked
+// on the calendar wins.
+function emptyDraft(timezone: string, slot: InterviewSlot | null): Draft {
 	const now = new Date();
 	const tomorrow = new Date(now.getTime() + 86_400_000);
 	const day = `${tomorrow.getFullYear()}-${pad(tomorrow.getMonth() + 1)}-${pad(tomorrow.getDate())}`;
@@ -74,8 +78,8 @@ function emptyDraft(timezone: string): Draft {
 	if (at <= now) at = new Date(Math.ceil(now.getTime() / 3_600_000) * 3_600_000);
 	return {
 		kind: "screening",
-		...zonedParts(at, timezone),
-		durationMinutes: 60,
+		...zonedParts(slot?.start ?? at, timezone),
+		durationMinutes: slot?.durationMinutes ?? 60,
 		location: "",
 		notes: "",
 		audience: "other",
@@ -107,18 +111,20 @@ type InterviewSheetProps = {
 	application: ApplicationSummary;
 	/** The interview to edit, or null to schedule a new one. */
 	interview: InterviewTimelineEntry | null;
+	/** Prefills a new interview's time (a slot tapped on the calendar). */
+	slot?: InterviewSlot | null | undefined;
 	open: boolean;
 	onClose: () => void;
 };
 
 /** Schedule or edit an interview: type, wall-clock time in the interview's timezone, people, and a local reminder. */
-export function InterviewSheet({ application, interview, open, onClose }: InterviewSheetProps) {
-	return open ? <InterviewForm application={application} interview={interview} onClose={onClose} /> : null;
+export function InterviewSheet({ application, interview, slot = null, open, onClose }: InterviewSheetProps) {
+	return open ? <InterviewForm application={application} interview={interview} slot={slot} onClose={onClose} /> : null;
 }
 
 type InterviewFormProps = Omit<InterviewSheetProps, "open">;
 
-function InterviewForm({ application, interview, onClose }: InterviewFormProps) {
+function InterviewForm({ application, interview, slot = null, onClose }: InterviewFormProps) {
 	const { t } = useLingui();
 	const { space } = useTheme();
 	const queryClient = useQueryClient();
@@ -126,7 +132,7 @@ function InterviewForm({ application, interview, onClose }: InterviewFormProps) 
 	const mutations = useDetailMutations(application.id);
 	const invalidate = useInvalidateApplications();
 	const reminders = useReminders(application.id);
-	const [initial] = useState(() => (interview ? draftFrom(interview, userZone) : emptyDraft(userZone)));
+	const [initial] = useState(() => (interview ? draftFrom(interview, userZone) : emptyDraft(userZone, slot)));
 	const [draft, setDraft] = useState(initial);
 	const saving = useRef(false);
 	const [zonePicker, setZonePicker] = useState(false);

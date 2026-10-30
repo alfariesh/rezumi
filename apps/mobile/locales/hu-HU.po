@@ -346,6 +346,13 @@ msgstr "A(z) {0} a(z) {1} területén {2} az Ön időzónájában ({userZone})."
 msgid "{0} in {otherZone}"
 msgstr "{0} itt: {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} az első évben"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# oszlop} other {# oszlop}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# módosítás alkalmazása} other {# módosítás alkalmazása}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} h"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# interjú} other {# interjú}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {A csekken át kell tekinteni a # elemet. Még mind
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} interjú"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {# perc múlva kezdődik} other {# perc múlva kez
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} perc"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Nincs interjú} one {# interjú} other {# interjú}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Kérje meg az asszisztenst, hogy dolgozza fel"
 msgid "Ask the coach"
 msgstr "Kérdezd a coachot"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Kérdezd a közösséget. Közzététel előtt távolítsd el a személyes adatokat."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Kérje meg a kiszolgáló rendszergazdáját, hogy engedélyezze a hitelesítő adatok titkosítását vagy konfiguráljon egy megosztott kapcsolatot."
@@ -1925,6 +1941,10 @@ msgstr "készítette: <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Naptár"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "A szoftver be tudja olvasni az önéletrajzát?"
@@ -2000,6 +2020,7 @@ msgstr "Változás szakaszban"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Módosítsa a nyomon követést"
 
@@ -2807,11 +2828,14 @@ msgstr "Nem sikerült betölteni az időzónát."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Nem sikerült beadottként megjelölni. Próbáld újra."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Nem sikerült megnyitni a böngészőt. Próbáld újra."
 
@@ -3217,6 +3241,7 @@ msgstr "Adatmegosztás megszakítva. Semmi sem került elküldésre az AI-szolg�
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "A dátumok a jövőben kezdődnek"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "A dátumok nem lesznek olvasva"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Ne küldjön {0} álláshirdetést"
 msgid "Don't share"
 msgstr "Ne oszd meg"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Adományozás az Open Collective-en"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Bejegyzés szerkesztése"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Interjú szerkesztése"
 
@@ -4157,6 +4183,12 @@ msgstr "Érdeklődj újra"
 msgid "Follow up on {at}"
 msgstr "Kövesse nyomon a következőt: {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "A Visszajelzés kérése elküldi a kérdést, a válaszodat, ezt a hird
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Kapj új pozíciókat itt minden reggel"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Visszajelzés kérése az önéletrajzodra a Discordon"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Interjú törölve"
 msgid "Interview is in another timezone"
 msgstr "Az interjú másik időzónában van"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Interjúfelkészülés"
@@ -4868,10 +4904,6 @@ msgstr "Álláskeresési folyamat"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Állások"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Csatlakozz a Discordhoz"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Hossz"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Hossz · perc"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Hossz percben"
 
@@ -5394,6 +5428,10 @@ msgstr "A zárolt dokumentumokat kihagyták. Először oldja fel őket."
 msgid "Locked. Unlock to edit."
 msgstr "Bezárt. A szerkesztéshez oldja fel a zárolást."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Kijelöléshez tartsa hosszan lenyomva"
@@ -5628,6 +5666,10 @@ msgstr "A modelljavaslatok nem érhetők el. Továbbra is bármilyen modellazono
 msgid "Model: {label}"
 msgstr "Típus: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Többet"
@@ -5690,6 +5732,14 @@ msgstr "Többnyire olvasható"
 msgid "Move {title} to…"
 msgstr "{title} áthelyezése ide…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Helyezz minden tartalmat az oldal határain belülre, majd exportáld újra."
@@ -5707,6 +5757,10 @@ msgstr "Mozgás lefelé"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Mező mozgatása felfelé"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Új szakasz"
 msgid "New STARR story"
 msgstr "Új STARR történet"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Következő szám"
@@ -5958,6 +6016,10 @@ msgstr "Következő lépés: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Következő lépés: {note}. Emlékeztetőt ad hozzá a következőhöz: Ma."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Nincs fénykép. A legtöbb ATS figyelmen kívül hagyja a fényképeket
 msgid "No postings found. Try different keywords."
 msgstr "Nem található álláshirdetés. Próbáljon ki különböző kulcsszavakat."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Ezen a címen nem válaszolt a Rezumi szerver. Ellenőrizze a helyesírást, vagy kérdezze meg rendszergazdáját, hogy a szerver engedélyezi-e az alkalmazásbejelentkezést."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Ebben az álláshirdetésben nincsenek felismerhető kifejezések."
@@ -6123,6 +6181,10 @@ msgstr "Nincs eredmény"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Nincs önéletrajz"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Ezen a címen nem válaszolt a Rezumi szerver. Ellenőrizze a helyesírást, vagy kérdezze meg rendszergazdáját, hogy a szerver engedélyezi-e az alkalmazásbejelentkezést."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Weboldal előnézete"
 msgid "Previewing {0} · tap to apply"
 msgstr "A(z) {0} előnézete · érintse meg az alkalmazáshoz"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Előző szám"
@@ -7081,6 +7147,10 @@ msgstr "Előző oldal"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Előző PDF eredmény. Lehet, hogy nem egyezik a jelenlegi piszkozatoddal."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Exportáld újra beágyazott betűtípusokkal, és ellenőrizd, hogy a s
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Exportáld újra beágyazott betűtípusokkal, majd nyisd meg a fájlt, és ellenőrizd, hogy a szöveg tisztán másolható-e."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Elvárások"
 msgid "Requirements and your evidence"
 msgstr "Követelmények és a bizonyítékaid"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Tartsd fenn a nagybetűket rövid címsoroknak. Lassítják az olvasást, és megzavarhatják a kis- és nagybetűre érzékeny keresést."
@@ -7779,10 +7857,6 @@ msgstr "önéletrajz + levél"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "önéletrajz részletei"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Önéletrajz-visszajelzés, segítség a termékhez és közösségi ötletek."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Vonja vissza ezt az API-kulcsot"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Átírás elfogadva"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Olvasottak megjelenítése"
 msgid "Show section icons"
 msgstr "Szakaszikonok megjelenítése"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Mentett részletek megjelenítése. Nem tudták felfrissíteni."
@@ -9292,6 +9374,10 @@ msgstr "Fotózni"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "tamil"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Ez a történet nem érhető el, vagy kikapcsolt tényeket használ."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Ez az időpont nem létezik a kiválasztott időzónában. Válassz másik időpontot."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Ez az időpont nem létezik a te időzónádban. Válassz másik időpontot."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Tömörítés"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Időpont · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Időpont · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Az internetes keresések ezekben az országokban keresnek állást. Vál
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Weboldal"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

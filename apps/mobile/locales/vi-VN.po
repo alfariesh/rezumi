@@ -346,6 +346,13 @@ msgstr "{0} trong {1} là {2} trong múi giờ của bạn ({userZone})."
 msgid "{0} in {otherZone}"
 msgstr "{0} trong {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} cho năm đầu"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# cột} other {# cột}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {Áp dụng # thay đổi}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} h"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# cuộc phỏng vấn} other {# cuộc phỏng vấn}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Kiểm tra có thứ # để xem lại. Bạn vẫ
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "Phỏng vấn {kind}"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, other {Bắt đầu sau # phút}}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} phút"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Không có phỏng vấn} one {# cuộc phỏng vấn} other {# cuộc phỏng vấn}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Yêu cầu trợ lý làm việc đó"
 msgid "Ask the coach"
 msgstr "Hỏi cố vấn"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Hỏi cộng đồng. Hãy xóa thông tin cá nhân trước khi đăng."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Yêu cầu quản trị viên máy chủ của bạn bật mã hóa thông tin xác thực hoặc định cấu hình kết nối được chia sẻ."
@@ -1925,6 +1941,10 @@ msgstr "bởi <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Lịch"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Phần mềm có đọc được sơ yếu lý lịch của bạn không?"
@@ -2000,6 +2020,7 @@ msgstr "Thay đổi giai đoạn"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Đổi lịch liên hệ lại"
 
@@ -2807,11 +2828,14 @@ msgstr "Không thể tải múi giờ của bạn."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Không thể đánh dấu là đã ứng tuyển. Hãy thử lại."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Không thể mở trình duyệt. Hãy thử lại."
 
@@ -3217,6 +3241,7 @@ msgstr "Đã hủy chia sẻ dữ liệu. Không có gì được gửi đến n
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Ngày bắt đầu trong tương lai"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Ngày tháng sẽ không được đọc"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Không gửi tin tuyển dụng {0}"
 msgid "Don't share"
 msgstr "Đừng chia sẻ"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Quyên góp trên Open Collective"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Chỉnh sửa mục nhập"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Chỉnh sửa cuộc phỏng vấn"
 
@@ -4157,6 +4183,12 @@ msgstr "Liên hệ lại"
 msgid "Follow up on {at}"
 msgstr "Liên hệ lại vào {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "“Xin nhận xét” sẽ gửi câu hỏi, câu trả lời của bạ
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Nhận vị trí mới tại đây mỗi sáng"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Nhận góp ý về sơ yếu lý lịch trên Discord"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Đã xóa buổi phỏng vấn"
 msgid "Interview is in another timezone"
 msgstr "Buổi phỏng vấn ở múi giờ khác"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Chuẩn bị phỏng vấn"
@@ -4868,10 +4904,6 @@ msgstr "Quy trình tìm việc"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Việc làm"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Tham gia Discord"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Chiều dài"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Thời lượng · phút"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Thời lượng (phút)"
 
@@ -5394,6 +5428,10 @@ msgstr "Tài liệu bị khóa bị bỏ qua. Mở khóa chúng trước."
 msgid "Locked. Unlock to edit."
 msgstr "Đã khóa. Mở khóa để chỉnh sửa."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Nhấn giữ để chọn"
@@ -5628,6 +5666,10 @@ msgstr "Đề xuất mô hình không có sẵn. Bạn vẫn có thể nhập b�
 msgid "Model: {label}"
 msgstr "Mô hình: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Thêm"
@@ -5690,6 +5732,14 @@ msgstr "Hầu hết đều có thể đọc được"
 msgid "Move {title} to…"
 msgstr "Di chuyển {title} sang…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Di chuyển toàn bộ nội dung vào trong phạm vi trang rồi xuất lại."
@@ -5707,6 +5757,10 @@ msgstr "Di chuyển xuống"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Di chuyển trường lên"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Phần mới"
 msgid "New STARR story"
 msgstr "Câu chuyện STARR mới"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Số tiếp theo"
@@ -5958,6 +6016,10 @@ msgstr "Bước tiếp theo: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Bước tiếp theo: {note}. Thêm lời nhắc vào Hôm nay."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Không có ảnh. Hầu hết ATS đều bỏ qua ảnh; một số khu 
 msgid "No postings found. Try different keywords."
 msgstr "Không tìm thấy tin tuyển dụng nào Hãy thử các từ khóa khác nhau."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Không có máy chủ Rezumi nào trả lời tại địa chỉ này. Kiểm tra chính tả hoặc hỏi quản trị viên của bạn xem máy chủ có cho phép đăng nhập ứng dụng hay không."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Không có thuật ngữ nào nhận diện được trong tin tuyển dụng này."
@@ -6123,6 +6181,10 @@ msgstr "Không có kết quả"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Không có sơ yếu lý lịch"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Không có máy chủ Rezumi nào trả lời tại địa chỉ này. Kiểm tra chính tả hoặc hỏi quản trị viên của bạn xem máy chủ có cho phép đăng nhập ứng dụng hay không."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Xem trước trang web"
 msgid "Previewing {0} · tap to apply"
 msgstr "Xem trước {0} · nhấn để áp dụng"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Số trước"
@@ -7081,6 +7147,10 @@ msgstr "Trang trước"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Kết quả PDF trước đó. Nó có thể không khớp với bản nháp hiện tại của bạn."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Xuất lại với font đã nhúng, rồi kiểm tra xem văn bản có
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Xuất lại với font đã nhúng, sau đó mở tệp và kiểm tra xem văn bản có sao chép ra sạch sẽ không."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Yêu cầu"
 msgid "Requirements and your evidence"
 msgstr "Yêu cầu và bằng chứng của bạn"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Chỉ dùng chữ hoa cho các tiêu đề ngắn. Chữ hoa làm chậm việc đọc và có thể khiến tìm kiếm phân biệt hoa thường thất bại."
@@ -7779,10 +7857,6 @@ msgstr "sơ yếu lý lịch + thư"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "chi tiết sơ yếu lý lịch"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Góp ý sơ yếu lý lịch, trợ giúp sản phẩm và ý tưởng từ cộng đồng."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Thu hồi khóa API này"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Viết lại được chấp nhận"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Hiện mục đã đọc"
 msgid "Show section icons"
 msgstr "Hiển thị biểu tượng phần"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Hiển thị chi tiết đã lưu. Họ không thể được làm mới."
@@ -9292,6 +9374,10 @@ msgstr "Chụp ảnh"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "Tamil"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Câu chuyện này không khả dụng hoặc dùng dữ kiện đang bị tắt."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Thời điểm này không tồn tại trong múi giờ đã chọn. Hãy chọn thời điểm khác."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Thời điểm này không tồn tại trong múi giờ của bạn. Hãy chọn thời điểm khác."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Đang rút gọn"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Thời gian · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Thời gian · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Tìm kiếm trên web tìm kiếm việc làm ở các quốc gia này. 
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Trang web"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

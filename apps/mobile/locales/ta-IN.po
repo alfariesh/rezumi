@@ -346,6 +346,13 @@ msgstr "{1} இல் {0} உங்கள் நேர மண்டலத்த�
 msgid "{0} in {otherZone}"
 msgstr "{otherZone} இல் {0}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "முதல் ஆண்டுக்கு {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# நெடுவரிசை} other {# நெடுவரிசைகள்}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# மாற்றத்தைப் பயன்படுத்து} other {# மாற்றங்களைப் பயன்படுத்து}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} ம"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# நேர்காணல்} other {# நேர்காணல்கள்}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {மதிப்பாய்வு செய்ய 
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} நேர்காணல்"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {# நிமிடத்தில் தொடங�
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} நிமி"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {நேர்காணல்கள் இல்லை} one {# நேர்காணல்} other {# நேர்காணல்கள்}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "உதவியாளரிடம் வேலை செய்யச் 
 msgid "Ask the coach"
 msgstr "ஆலோசகரிடம் கேள்"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "சமூகத்திடம் கேளுங்கள். இடுகையிடும் முன் தனிப்பட்ட விவரங்களை நீக்கவும்."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "நற்சான்றிதழ் குறியாக்கத்தை இயக்க அல்லது பகிரப்பட்ட இணைப்பை உள்ளமைக்க உங்கள் சர்வர் நிர்வாகியிடம் கேளுங்கள்."
@@ -1925,6 +1941,10 @@ msgstr "<0>Salman Alfariesh</0> உருவாக்கியது"
 msgid "Calendar"
 msgstr "நாட்காட்டி"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "மென்பொருள் உங்கள் விண்ணப்பத்தை படிக்க முடியுமா?"
@@ -2000,6 +2020,7 @@ msgstr "நிலை மாற்றவும்"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "தொடர்தொடர்பை மாற்று"
 
@@ -2807,11 +2828,14 @@ msgstr "உங்கள் நேர மண்டலத்தை ஏற்ற �
 msgid "Couldn't mark it as applied. Try again."
 msgstr "விண்ணப்பித்ததாகக் குறிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "உலாவியைத் திறக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
@@ -3217,6 +3241,7 @@ msgstr "தரவுப் பகிர்வு ரத்துசெய்ய�
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "தேதிகள் எதிர்காலத்தில் தொ�
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "தேதிகள் படிக்கப்படாது"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "{0} வேலை இடுகையை அனுப்ப வேண்�
 msgid "Don't share"
 msgstr "பகிர வேண்டாம்"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Open Collective-இல் நன்கொடை அளியுங்கள்"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "உள்ளீட்டைத் திருத்து"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "நேர்காணலைத் திருத்தவும்"
 
@@ -4157,6 +4183,12 @@ msgstr "மீண்டும் தொடர்புகொள்ளுங்�
 msgid "Follow up on {at}"
 msgstr "{at} அன்று தொடர்புகொள்"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "‘கருத்து பெறு’ கேள்வி, உங்�
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "ஒவ்வொரு காலையும் புதிய பதவிகளை இங்கே பெறுங்கள்"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Discord-இல் ரெஸ்யூம் கருத்தைப் பெறுங்கள்"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "நேர்காணல் நீக்கப்பட்டது"
 msgid "Interview is in another timezone"
 msgstr "நேர்காணல் வேறு நேர மண்டலத்தில் உள்ளது"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "நேர்காணலுக்கான தயாரிப்பு"
@@ -4868,10 +4904,6 @@ msgstr "வேலை தேடல் நிலைவரிசை"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "வேலைகள்"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Discord-இல் சேருங்கள்"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "நீளம்"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "கால அளவு · நிமிடங்கள்"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "நிமிடங்களில் கால அளவு"
 
@@ -5394,6 +5428,10 @@ msgstr "பூட்டிய ஆவணங்கள் தவிர்க்க�
 msgid "Locked. Unlock to edit."
 msgstr "பூட்டப்பட்டது. திருத்த, திறக்கவும்."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "தேர்ந்தெடுக்க நீண்ட நேரம் அழுத்தவும்"
@@ -5628,6 +5666,10 @@ msgstr "மாதிரி பரிந்துரைகள் கிடைக�
 msgid "Model: {label}"
 msgstr "மாடல்: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "மேலும்"
@@ -5690,6 +5732,14 @@ msgstr "பெரும்பாலும் படிக்கக்கூட�
 msgid "Move {title} to…"
 msgstr "{title} ஐ நகர்த்தவும்…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "எல்லா உள்ளடக்கத்தையும் பக்க எல்லைக்குள் நகர்த்தி மீண்டும் ஏற்றுமதி செய்யவும்."
@@ -5707,6 +5757,10 @@ msgstr "கீழே நகர்த்தவும்"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "புலத்தை மேலே நகர்த்தவும்"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "புதிய பிரிவு"
 msgid "New STARR story"
 msgstr "புதிய STARR கதை"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "அடுத்த இதழ்"
@@ -5958,6 +6016,10 @@ msgstr "அடுத்த படி: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "அடுத்த படி: {note}. இன்றுக்கு நினைவூட்டலைச் சேர்க்கிறது."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "புகைப்படம் இல்லை. பெரும்பா
 msgid "No postings found. Try different keywords."
 msgstr "வேலை வாய்ப்புகள் இல்லை. வெவ்வேறு முக்கிய வார்த்தைகளை முயற்சிக்கவும்."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "இந்த முகவரியில் Rezumi சேவையகம் இல்லை. எழுத்துப்பிழையைச் சரிபார்க்கவும் அல்லது ஆப்ஸ் உள்நுழைவைச் சேவையகம் அனுமதிக்கிறதா என்று உங்கள் நிர்வாகியிடம் கேட்கவும்."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "இந்த இடுகையில் அடையாளம் காணக்கூடிய சொற்கள் இல்லை."
@@ -6123,6 +6181,10 @@ msgstr "முடிவுகள் இல்லை"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "ரெஸ்யூம் இல்லை"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "இந்த முகவரியில் Rezumi சேவையகம் இல்லை. எழுத்துப்பிழையைச் சரிபார்க்கவும் அல்லது ஆப்ஸ் உள்நுழைவைச் சேவையகம் அனுமதிக்கிறதா என்று உங்கள் நிர்வாகியிடம் கேட்கவும்."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "வலைப்பக்கத்தை முன்னோட்டம�
 msgid "Previewing {0} · tap to apply"
 msgstr "மாதிரிக்காட்சி {0} · விண்ணப்பிக்க தட்டவும்"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "முந்தைய இதழ்"
@@ -7081,6 +7147,10 @@ msgstr "முந்தைய பக்கம்"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "முந்தைய PDF முடிவு. இது உங்கள் தற்போதைய வரைவோடு பொருந்தாமல் இருக்கலாம்."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "எழுத்துருக்கள் உட்பொதிக்�
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "எழுத்துருக்கள் உட்பொதிக்கப்பட்ட நிலையில் மீண்டும் ஏற்றுமதி செய்து, கோப்பைத் திறந்து உரை சரியாக நகலெடுக்கப்படுகிறதா எனச் சரிபார்க்கவும்."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "தேவைகள்"
 msgid "Requirements and your evidence"
 msgstr "தேவைகளும் உங்கள் சான்றுகளும்"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "பெரிய எழுத்துக்களை குறுகிய தலைப்புகளுக்கு மட்டும் ஒதுக்கவும். அவை படிப்பதை மெதுவாக்குவதோடு, எழுத்து-உணர்திறன் தேடலைத் தோற்கடிக்கக்கூடும்."
@@ -7779,10 +7857,6 @@ msgstr "ரெஸ்யூம் + கடிதம்"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "ரெஸ்யூம் விவரங்கள்"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "ரெஸ்யூம் கருத்து, தயாரிப்பு உதவி மற்றும் சமூக யோசனைகள்."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "இந்த API விசையைத் திரும்பப் �
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "மீண்டும் எழுதுதல் ஏற்கப்பட்டது"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "படித்தவற்றைக் காட்டு"
 msgid "Show section icons"
 msgstr "பிரிவு ஐகான்களைக் காட்டு"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "சேமிக்கப்பட்ட விவரங்களைக் காட்டுகிறது. அவற்றைப் புதுப்பிக்க முடியவில்லை."
@@ -9292,6 +9374,10 @@ msgstr "புகைப்படம் எடு"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "தமிழ்"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "இந்தக் கதை கிடைக்கவில்லை, அல்லது அணைக்கப்பட்ட உண்மைகளைப் பயன்படுத்துகிறது."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "தேர்ந்தெடுத்த நேர மண்டலத்தில் இந்த நேரம் இல்லை. வேறு நேரத்தைத் தேர்ந்தெடுக்கவும்."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "உங்கள் நேர மண்டலத்தில் இந்த நேரம் இல்லை. வேறு நேரத்தைத் தேர்ந்தெடுக்கவும்."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "சுருக்குகிறது"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "நேரம் · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "நேரம் · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "வலைத் தேடல்கள் இந்த நாடுகள
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "இணையதளம்"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
