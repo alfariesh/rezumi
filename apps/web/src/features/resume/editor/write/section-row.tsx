@@ -2,8 +2,6 @@ import type { WriteSection } from "./model";
 import type { SectionType } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
 import type { Selection } from "react-aria-components";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
@@ -20,9 +18,9 @@ import { useEditorStore } from "../store";
 import { addEntryTo } from "./actions";
 import { countEntriesToCheck, getEntries, getSectionObject } from "./model";
 import { IconPicker } from "@/components/input/icon-picker";
+import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
 import { useCurrentBuilderResumeSelector, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { usePrompt } from "@/hooks/use-confirm";
-import { DRAG_SETTLE } from "@/libs/motion";
 import { getSectionTitle } from "@/libs/resume/section";
 
 /** The printed title: the one the user gave, else the section type's name. */
@@ -35,6 +33,8 @@ export function useSectionTitle(section: WriteSection) {
 
 type SectionRowProps = {
 	section: WriteSection;
+	/** Position among all sections in print order, across pages. */
+	index: number;
 	locked: boolean;
 	/** ⌥↑ / ⌥↓ on the focused title. Hidden sections keep their place, so they move like the rest. */
 	onMove?: ((direction: "up" | "down") => void) | undefined;
@@ -45,7 +45,7 @@ type SectionRowProps = {
  * An outline row: drag handle, title with its entry count (opens the section), the eye (hidden sections keep their
  * content and place but aren't printed), the chevron and the ⋯ menu. Open, it shows the section's entries.
  */
-export function SectionRow({ section, locked, onMove, children }: SectionRowProps) {
+export function SectionRow({ section, index, locked, onMove, children }: SectionRowProps) {
 	const title = useSectionTitle(section);
 	const hidden = useCurrentBuilderResumeSelector((resume) => getSectionObject(resume.data, section)?.hidden ?? false);
 	const count = useCurrentBuilderResumeSelector((resume) => getEntries(resume.data, section).length);
@@ -57,11 +57,7 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 	const open = useEditorStore((state) => state.openSections.includes(section.id));
 	const setOpen = useEditorStore((state) => state.setSectionOpen);
 	const updateResumeData = useUpdateResumeData();
-	const { setNodeRef, transform, transition, isDragging, attributes, listeners } = useSortable({
-		id: section.id,
-		disabled: locked,
-		transition: DRAG_SETTLE,
-	});
+	const sortable = useSortableItem({ id: section.id, list: "sections", index, label: title, isDisabled: locked });
 
 	const toggleHidden = () =>
 		updateResumeData(
@@ -80,30 +76,20 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 
 	return (
 		<div
-			ref={setNodeRef}
+			{...sortable.dropTargetProps}
 			id={`sidebar-${section.id}`}
 			data-section-id={section.id}
-			style={{ transform: CSS.Translate.toString(transform), transition: transition }}
-			className={cn(
-				"relative scroll-mt-[60px] rounded-xl transition-shadow duration-quick ease-enter",
-				isDragging && "z-10 bg-surface shadow-overlay",
-			)}
+			className={cn("relative scroll-mt-[60px] rounded-xl", sortable.isDragging && "opacity-50")}
 		>
+			<SortableEdge edge={sortable.edge} />
 			<div className="group/row flex h-11 items-center gap-0.5 rounded-xl pe-1 hover:bg-default">
-				{/* Raw buttons: dnd-kit's listeners and the ⌥↑ / ⌥↓ key handler need the native element. */}
-				<button
-					type="button"
-					aria-label={t`Reorder ${title}`}
-					disabled={locked}
-					className={cn(
-						"flex h-11 w-7 shrink-0 cursor-grab items-center justify-center rounded-md text-muted outline-none focus-visible:ring-2 focus-visible:ring-focus active:cursor-grabbing disabled:cursor-default",
-						hidden && "opacity-40",
-					)}
-					{...attributes}
-					{...listeners}
-				>
-					<Icon name="dots-six-vertical" size={18} />
-				</button>
+				<SortableHandle
+					item={sortable}
+					label={t`Reorder ${title}`}
+					className={cn("h-11 w-7", hidden && "opacity-40")}
+				/>
+
+				{/* A raw button: the ⌥↑ / ⌥↓ key handler needs the native element. */}
 
 				{/* The whole stretch up to the row's buttons opens the section; its count sits right after the title. The
 				    button is named by the title alone, and the count and flags describe it. */}

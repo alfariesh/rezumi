@@ -1,18 +1,9 @@
 @import "tailwindcss" source(none);
 @import "@heroui/styles";
 @import "@heroui-pro/react/css";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-/* The homepage keeps its own type (features/homepage/landing.css); the app uses HeroUI's system stack. */
-@import "@fontsource-variable/figtree/wght.css";
-@import "@fontsource-variable/figtree/wght-italic.css";
-@import "@fontsource/instrument-serif/400.css";
-@import "@fontsource/instrument-serif/400-italic.css";
-@import "@fontsource-variable/geist-mono/wght.css";
 /* Phosphor's web font draws the icons inside resumes (their names are stored in resume data). */
 @import "@phosphor-icons/web/regular/style.css";
 @import "./typeset.css";
-@import "./legacy-aliases.css";
 
 @source "../**/*.{ts,tsx}";
 @source "../../../../apps/**/*.{ts,tsx}";
@@ -77,10 +68,6 @@
 }
 
 @theme {
-	/* Only the homepage sets real families (landing.css); in the app both follow HeroUI's sans stack. */
-	--font-display: var(--font-sans);
-	--font-ui: var(--font-sans);
-
 	--aspect-page: 210 / 297;
 }
 
@@ -209,6 +196,41 @@
 			height: max(100%, 44px);
 			translate: -50% -50%;
 		}
+	}
+}
+
+/*
+ * A fade on the bottom edge of a scroller while more content lies below it (the chat transcript). The mask's end
+ * shrinks to nothing as the scroll position nears the bottom; browsers without scroll-driven animations keep it on.
+ */
+@property --scroll-fade-b {
+	syntax: "<length-percentage>";
+	inherits: false;
+	initial-value: 0px;
+}
+
+@keyframes scroll-fade-reveal-b {
+	from {
+		--scroll-fade-b: min(12%, calc(var(--spacing) * 10));
+	}
+	to {
+		--scroll-fade-b: 0px;
+	}
+}
+
+@utility scroll-fade-b {
+	--scroll-fade-mask: linear-gradient(to bottom, #000 0, #000 calc(100% - var(--scroll-fade-b, 0px)), transparent 100%);
+	mask-image: var(--scroll-fade-mask);
+	mask-repeat: no-repeat;
+
+	@supports (animation-timeline: scroll()) {
+		animation: scroll-fade-reveal-b 1ms ease-in-out both;
+		animation-timeline: scroll(self y);
+		animation-range: calc(100% - calc(var(--spacing) * 24)) 100%;
+	}
+
+	@supports not (animation-timeline: scroll()) {
+		--scroll-fade-b: min(12%, calc(var(--spacing) * 10));
 	}
 }
 

@@ -288,7 +288,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 const FLOW_COLORS = ["#a5b4fc", "#818cf8", "#22d3ee", "#fbbf24", "#34d399"];
 const FLOW_BG = "#0a0a0f";
 const FLOW_REJECTED = "#fb7185";
-const FLOW_FONT = "var(--font-ui)";
+const FLOW_FONT = "var(--font-sans)";
 // RxR mark ~18px wide in the 256-unit icon viewBox (the mark's glyphs span y ≈ 36–220).
 const ICON_SIZE = 20;
 
@@ -305,7 +305,7 @@ function toBase64(buffer: ArrayBuffer): string {
 // @font-face the export SVG can embed. Returns null on any failure so export still proceeds.
 async function uiFontFace(): Promise<string | null> {
 	const uiFamily = getComputedStyle(document.documentElement)
-		.getPropertyValue("--font-ui")
+		.getPropertyValue("--font-sans")
 		.split(",")[0]
 		?.trim()
 		.replace(/["']/g, "");

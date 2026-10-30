@@ -1,6 +1,6 @@
 # Web app migration to HeroUI
 
-Status: Phases 0–7 done (October 30, 2026); Phase 8 settings and auth done, command palette and dialogs next.
+Status: Phases 0–9 done (October 31, 2026). The reference notes under `.agents/docs/heroui/` were written against the old shadcn/Base UI components and are kept as API notes; the code no longer matches their "current" columns.
 Date: October 29, 2026.
 
 ## Decisions
@@ -167,6 +167,15 @@ Replace the hand-built sidebar, icon rail and phone tab bar in `routes/dashboard
 - Remove `@base-ui/react`, `cmdk`, `shadcn`, `@shadcn/react`, `class-variance-authority`, `tw-animate-css` (if unused), `@dnd-kit/*`, and `@phosphor-icons/react` (keep `@phosphor-icons/web` for resume icons). Run `pnpm knip`.
 - Rewrite `apps/web/DESIGN.md` for the HeroUI default system. Update the ownership row for `packages/ui` in `CLAUDE.md`/`AGENTS.md` ("HeroUI-based custom components"), and refresh screenshots in user guides.
 - Full checks: `pnpm build`, `pnpm test:e2e`, `pnpm check:cloudflare`.
+
+- Done (October 31, 2026):
+  - **Legacy tokens gone.** `legacy-aliases.css` is deleted. The last Desk & Paper utilities in app code (ATS checker and its report, command palette, interview dialog, stylesheet editor, locale options, page header, loading screen, two-step dialog, marketing header) moved to HeroUI tokens; `font-display` and `font-ui` left every app surface. The homepage keeps its own palette: `landing.css` now carries the Figtree, Instrument Serif and Geist Mono imports (the three font packages moved from `packages/ui` to `apps/web`), the `--font-display`/`--font-ui` theme entries, and the `@theme inline` names its utilities use (`bg-bg`, `text-ink`, `border-line`, `shadow-e1` to `shadow-e3` and the rest).
+  - **Dependencies removed.** `@dnd-kit/*`, `@phosphor-icons/react` (web and tooling), `shadcn`, `@shadcn/react`, `@shadcn/lint`, both `components.json` files, the `shadcn` script and the `react-doctor` shadcn overrides. Base UI, `cmdk` and `class-variance-authority` were already gone. `tw-animate-css` stays only as `@heroui/styles`' own dependency; the app's duplicate import and its two uses (`animate-in`, `fade-in`) are gone. `@phosphor-icons/web` stays for resume icons.
+  - **Owned replacements.** `MessageScroller` is now owned code in `packages/ui` (`message-scroller.tsx`, `-controller.ts`, `-logic.ts`, with tests), adapted from shadcn's MIT scroller and cut to what the assistant and coach use. `scroll-fade-b` is an owned utility in `globals.css`. Drag and drop is `components/input/sortable.tsx` on React Aria (`useDrag`, `useDrop`): a grip starts the drag by pointer, touch or keyboard, a line shows the landing spot, and the outline, entries, layout columns and keyword chips all use it; ⌥↑/⌥↓ and the Move menus stay as the non-drag routes. `tooling/icons/phosphor-pdf.ts` reads `@phosphor-icons/core` (the same upstream SVGs; the generated PDF icon data is byte-identical).
+  - **ATS checker.** The idle screen is a Pro `DropZone`, a ghost sample button, an `Alert` for failures and a `TextField`; results sit on a `surface-secondary` list.
+  - **Docs.** `apps/web/DESIGN.md` is rewritten for the HeroUI system (the homepage's Desk & Paper section is kept and scoped), `AGENTS.md` names `packages/ui` as HeroUI-based custom components, and the contributing guides no longer mention shadcn or Base UI. The formatter's Tailwind sort now reads `apps/web/src/index.css`.
+  - **Checked.** `pnpm build`, `pnpm check:cloudflare` (dry run), `pnpm typecheck`, `turbo boundaries`, knip, lint, format, and the web, UI and tooling suites pass. In the browser: the ATS checker (idle and result), the homepage, the coach thread, and drag in the outline, the layout columns and the keyword chips (drops by pointer and by dispatched drag events; the drop line by dispatched events). The `@rezumi/pdf` export-text tests need `pdftotext`, which this machine lacks.
+  - **Not done.** `pnpm test:e2e` was not run (it needs a disposable database). Keyboard drag (Enter on a grip, arrows, Enter) was not exercised in a browser; it is React Aria's own path. Guide screenshots: only the ATS checker's drop zone was retaken; its result and report screenshots still show the earlier layout.
 
 ## Custom components to build in HeroUI style
 

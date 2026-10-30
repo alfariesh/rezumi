@@ -391,7 +391,7 @@ export function InterviewDialog({
 						</div>
 
 						{draft.date && draft.time && !at && (
-							<p id={`${id}-time-error`} role="alert" className="text-xs text-danger-text">
+							<p id={`${id}-time-error`} role="alert" className="text-xs text-danger-soft-foreground">
 								<Trans>This time does not exist in the selected timezone. Choose another time.</Trans>
 							</p>
 						)}
@@ -408,7 +408,7 @@ export function InterviewDialog({
 									/>
 								</Field>
 								{at && draft.timezone !== preferredZone && (
-									<p className="text-xs text-ink-3">
+									<p className="text-xs text-muted">
 										<Trans>
 											{draft.time} in {draft.timezone} is {when(at)} in your timezone ({preferredZone}).
 										</Trans>
@@ -416,11 +416,11 @@ export function InterviewDialog({
 								)}
 							</div>
 						) : (
-							<p className="-mt-2 text-xs text-ink-3">
+							<p className="-mt-2 text-xs text-muted">
 								<Trans>Shown in your timezone.</Trans>{" "}
 								<button
 									type="button"
-									className="underline underline-offset-2 transition-colors duration-quick hover:text-ink-2"
+									className="underline underline-offset-2 transition-colors duration-quick hover:text-muted"
 									onClick={() => setOtherZone(true)}
 								>
 									<Trans>Interview is in another timezone</Trans>
@@ -440,7 +440,7 @@ export function InterviewDialog({
 						</Field>
 
 						<fieldset className="grid gap-2">
-							<legend className="mb-1.5 text-xs font-medium text-ink-2">
+							<legend className="mb-1.5 text-xs font-medium text-muted">
 								<Trans>Who you'll meet</Trans>
 							</legend>
 							{draft.participants.map((participant, index) => (
@@ -465,7 +465,7 @@ export function InterviewDialog({
 										icon="x"
 										iconSize={18}
 										label={t`Remove person ${index + 1}`}
-										className="h-9 w-8 text-ink-2"
+										className="h-9 w-8 text-muted"
 										onPress={() =>
 											set(
 												"participants",
@@ -486,14 +486,14 @@ export function InterviewDialog({
 								</div>
 							))}
 							{participantsInvalid && (
-								<p role="status" className="text-xs text-danger-text">
+								<p role="status" className="text-xs text-danger-soft-foreground">
 									<Trans>Profile links must be public HTTPS addresses.</Trans>
 								</p>
 							)}
 							<Button
 								size="sm"
 								variant="ghost"
-								className="w-fit text-ink-2"
+								className="w-fit text-muted"
 								isDisabled={draft.participants.length >= 20}
 								onPress={() =>
 									set("participants", [...draft.participants, { id: generateId(), name: "", role: "", profileUrl: "" }])
@@ -502,7 +502,7 @@ export function InterviewDialog({
 								<Icon name="user-plus" size={18} />
 								<Trans>Add a person</Trans>
 							</Button>
-							<p className="text-xs text-ink-3">
+							<p className="text-xs text-muted">
 								<Trans>Public profile links are optional and only used if Web research is on.</Trans>
 							</p>
 						</fieldset>
@@ -519,9 +519,14 @@ export function InterviewDialog({
 						</Field>
 					</Modal.Body>
 
-					<Modal.Footer className="flex items-center justify-start gap-2 border-t border-line px-6 py-3.5 pb-[max(14px,env(safe-area-inset-bottom))]">
+					<Modal.Footer className="flex items-center justify-start gap-2 border-t border-separator px-6 py-3.5 pb-[max(14px,env(safe-area-inset-bottom))]">
 						{editing && (
-							<Button variant="ghost" className="text-danger-text" isDisabled={pending} onPress={deleteInterview}>
+							<Button
+								variant="ghost"
+								className="text-danger-soft-foreground"
+								isDisabled={pending}
+								onPress={deleteInterview}
+							>
 								<Icon name="trash" size={18} />
 								<Trans>Delete</Trans>
 							</Button>

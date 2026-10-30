@@ -2,8 +2,6 @@ import type { PageSettings } from "./entries";
 import type { Entry, WriteSection } from "./model";
 import type { MessageDescriptor } from "@lingui/core";
 import type { KeyboardEvent, ReactNode } from "react";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { Button, Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
 import { msg, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -22,8 +20,9 @@ import { useEntry, useEntryWriter } from "./fields";
 import { createEntry, describeEntry, getEntries, getPrimaryField, isDraftEntry } from "./model";
 import { entryElementId, keepOpenedEntryInView } from "./reveal";
 import { useSectionTitle } from "./section-row";
+import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
 import { useCurrentResume, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
-import { D3, DRAG_SETTLE, EASE, EXIT } from "@/libs/motion";
+import { D3, EASE, EXIT } from "@/libs/motion";
 import { getCompatibleMoveTargets, getSourceSectionTitle, moveItem } from "@/libs/resume/move-item";
 
 const DRAFT_HINTS: Record<string, MessageDescriptor> = {
@@ -57,10 +56,13 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 	const write = useEntryWriter(section.id, entryId);
 	const open = useEditorStore((state) => state.selection?.kind === "item" && state.selection.itemId === entryId);
 	const autoFocus = useEditorStore((state) => state.focusEntryId === entryId);
-	const { setNodeRef, transform, transition, isDragging, attributes, listeners } = useSortable({
+	const described = entry ? describeEntry(section.type, entry) : null;
+	const sortable = useSortableItem({
 		id: entryId,
-		disabled: locked,
-		transition: DRAG_SETTLE,
+		list: section.id,
+		index,
+		label: described?.title || t`Untitled`,
+		isDisabled: locked,
 	});
 	const isPhone = useBreakpoint() === "mobile";
 
@@ -69,9 +71,9 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 		if (autoFocus) useEditorStore.setState({ focusEntryId: null });
 	}, [autoFocus]);
 
-	if (!entry) return null;
+	if (!entry || !described) return null;
 
-	const { title, meta } = describeEntry(section.type, entry);
+	const { title, meta } = described;
 	const draft = isDraftEntry(section.type, entry);
 	const primaryField = getPrimaryField(section.type);
 	const hint = draft && primaryField ? DRAFT_HINTS[primaryField] : undefined;
@@ -95,28 +97,25 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 
 	return (
 		<div
-			ref={setNodeRef}
+			{...sortable.dropTargetProps}
 			id={entryElementId(entryId)}
 			data-entry-id={entryId}
-			style={{ transform: CSS.Translate.toString(transform), transition: transition }}
 			className={cn(
-				"group/entry fields-on-card relative scroll-mt-[60px] rounded-xl bg-background transition-shadow duration-quick ease-enter",
-				isDragging && "z-10 bg-surface shadow-overlay",
+				"group/entry relative scroll-mt-[60px] rounded-xl bg-background fields-on-card",
+				sortable.isDragging && "opacity-50",
 			)}
 		>
+			<SortableEdge edge={sortable.edge} />
 			<div className="flex items-center gap-0.5 pe-1">
-				{/* Raw buttons: dnd-kit's listeners and the ⌥↑ / ⌥↓ key handler need the native element. */}
 				{!locked && (
-					<button
-						type="button"
-						aria-label={t`Reorder ${title || t`Untitled`}`}
-						className="flex h-10 w-5 shrink-0 cursor-grab items-center justify-center rounded-md text-muted opacity-0 transition-opacity duration-quick outline-none group-hover/entry:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-focus active:cursor-grabbing"
-						{...attributes}
-						{...listeners}
-					>
-						<Icon name="dots-six-vertical" size={16} />
-					</button>
+					<SortableHandle
+						item={sortable}
+						label={t`Reorder ${title || t`Untitled`}`}
+						iconSize={16}
+						className="h-10 w-5 opacity-0 transition-opacity duration-quick group-hover/entry:opacity-100 focus-visible:opacity-100"
+					/>
 				)}
+				{/* A raw button: the ⌥↑ / ⌥↓ key handler needs the native element. */}
 				<button
 					type="button"
 					aria-expanded={open}

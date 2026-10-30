@@ -167,7 +167,7 @@ export function Hero() {
 			className="relative h-[170vh] motion-reduce:h-svh min-[900px]:h-[220vh]"
 		>
 			{/* --pt is the page's centre. Below 900px it sits under the stacked headline (128px + three 10vw lines). */}
-			<div className="min-[900px]:short:[--pw:min(24vw,40vh)] sticky top-0 h-svh overflow-clip [--e2:clamp(0,(var(--p)-.16)/.6,1)] [--e:clamp(0,(var(--p)-.03)/.5,1)] [--pt:calc(144px+30vw+var(--pw)*.647)] [--pw:min(46vw,30vh)] motion-reduce:[--ld:1] min-[900px]:[--pt:50%] min-[900px]:[--pw:min(24vw,46vh)]">
+			<div className="sticky top-0 h-svh overflow-clip [--e2:clamp(0,(var(--p)-.16)/.6,1)] [--e:clamp(0,(var(--p)-.03)/.5,1)] [--pt:calc(144px+30vw+var(--pw)*.647)] [--pw:min(46vw,30vh)] motion-reduce:[--ld:1] min-[900px]:[--pt:50%] min-[900px]:[--pw:min(24vw,46vh)] min-[900px]:short:[--pw:min(24vw,40vh)]">
 				<svg aria-hidden="true" width="0" height="0" className="absolute">
 					<filter id="landing-pencil" x="-5%" y="-5%" width="110%" height="110%">
 						<feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves={2} seed={4} />
@@ -178,7 +178,7 @@ export function Hero() {
 				{/* Construction guides, drawn in pencil around where the page will land. */}
 				<div
 					aria-hidden="true"
-					className="text-graphite pointer-events-none absolute inset-0 min-[900px]:[filter:url(#landing-pencil)]"
+					className="pointer-events-none absolute inset-0 text-graphite min-[900px]:[filter:url(#landing-pencil)]"
 				>
 					<span className="absolute top-[7vh] bottom-[7vh] left-[calc(50%-var(--pw)/2)] w-px [transform:scaleY(var(--ld,0))] bg-current [transition:transform_1.6s_var(--ease)_.2s]" />
 					<span className="absolute top-[7vh] bottom-[7vh] left-[calc(50%+var(--pw)/2)] w-px [transform:scaleY(var(--ld,0))] bg-current [transition:transform_1.6s_var(--ease)_.35s]" />
@@ -190,7 +190,7 @@ export function Hero() {
 				{/* Outside the filtered layer: a filter makes the browser count this label as a screen-sized paint. */}
 				<span
 					aria-hidden="true"
-					className="font-martian text-graphite pointer-events-none absolute top-[calc(var(--pt)-var(--pw)*.647-20px)] left-[calc(50%+var(--pw)/2+10px)] text-[10.5px] leading-none tracking-[.06em] opacity-[var(--ld,0)] transition-opacity delay-[1.4s] duration-1000"
+					className="pointer-events-none absolute top-[calc(var(--pt)-var(--pw)*.647-20px)] left-[calc(50%+var(--pw)/2+10px)] font-martian text-[10.5px] leading-none tracking-[.06em] text-graphite opacity-[var(--ld,0)] transition-opacity delay-[1.4s] duration-1000"
 				>
 					{i18n.number(612)} × {i18n.number(792)}
 				</span>
@@ -225,7 +225,7 @@ export function Hero() {
 					))}
 				</div>
 
-				<div className="hero-page absolute top-(--pt) left-1/2 aspect-[612/792] w-(--pw) rounded-sm shadow-paper">
+				<div className="absolute top-(--pt) left-1/2 aspect-[612/792] w-(--pw) hero-page rounded-sm shadow-paper">
 					<Sheet />
 				</div>
 
@@ -242,9 +242,9 @@ export function Hero() {
 				    size; a translation too long for its side wraps instead of running off screen. */}
 				<div
 					aria-hidden="true"
-					className="hero-headline-start absolute end-[calc(50%+var(--pw)/2+2.6vw)] top-1/2 hidden max-w-[calc(50vw-var(--pw)/2-2.6vw-var(--gutter))] text-end text-[3.4vw] leading-none text-balance text-ink min-[900px]:block"
+					className="absolute end-[calc(50%+var(--pw)/2+2.6vw)] top-1/2 hidden max-w-[calc(50vw-var(--pw)/2-2.6vw-var(--gutter))] hero-headline-start text-end text-[3.4vw] leading-none text-balance text-ink min-[900px]:block"
 				>
-					<span className="font-anybody block font-light tracking-[-.025em] [font-stretch:calc(112%-var(--e)*12%)]">
+					<span className="block font-anybody font-light tracking-[-.025em] [font-stretch:calc(112%-var(--e)*12%)]">
 						{headline[0]}
 					</span>
 					<span className="block font-display tracking-[-.02em] text-accent-text italic">{headline[1]}</span>
@@ -253,7 +253,7 @@ export function Hero() {
 					aria-hidden="true"
 					className="absolute start-[calc(50%+var(--pw)/2+2.6vw)] top-1/2 hidden max-w-[calc(50vw-var(--pw)/2-2.6vw-var(--gutter))] [transform:translate(calc(var(--dir)*(1-var(--e))*6vw),-50%)] text-[3.4vw] leading-none text-balance opacity-[clamp(0,(var(--e)-.5)*3,1)] [transition:transform_.45s_var(--ease)] min-[900px]:block"
 				>
-					<span className="font-anybody block tracking-[-.025em] text-ink">{headline[2]}</span>
+					<span className="block font-anybody tracking-[-.025em] text-ink">{headline[2]}</span>
 					<span className="block font-display tracking-[-.02em] text-accent-text italic">{headline[3]}</span>
 				</div>
 

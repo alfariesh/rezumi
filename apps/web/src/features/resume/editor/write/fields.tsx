@@ -180,7 +180,7 @@ export function MoreOptions({ children }: MoreOptionsProps) {
 			</Disclosure.Heading>
 			<Disclosure.Content>
 				<Disclosure.Body>
-					<div className="fields-on-background grid gap-y-2.5 pt-3">{children}</div>
+					<div className="grid gap-y-2.5 pt-3 fields-on-background">{children}</div>
 				</Disclosure.Body>
 			</Disclosure.Content>
 		</Disclosure>

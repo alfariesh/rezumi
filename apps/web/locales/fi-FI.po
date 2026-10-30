@@ -2703,6 +2703,7 @@ msgstr "kiina (yksinkertaistettu)"
 msgid "Chinese (Traditional)"
 msgstr "kiina (perinteinen)"
 
+#: src/features/ats-checker/checker.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Choose a file"
 msgstr "Valitse tiedosto"
@@ -4646,10 +4647,6 @@ msgstr "Siirrä sijaintia vetämällä ja zoomaa liukusäätimellä ennen lataam
 msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag anything we're unsure of."
 msgstr "Pudota tiedosto tähän tai selaa. PDF, Word, Rezumi tai JSON Resume. Täytämme jokaisen osion ja merkitsemme kaiken, mistä olemme epävarmoja."
 
-#: src/features/ats-checker/checker.tsx
-msgid "Drop a PDF here or choose a file"
-msgstr "Pudota PDF tähän tai valitse tiedosto"
-
 #: src/features/documents/documents-page.tsx
 msgid "Drop a PDF, Word or JSON file"
 msgstr "Pudota PDF-, Word- tai JSON-tiedosto"
@@ -4661,6 +4658,10 @@ msgstr "Jätä pronominit pois ja aloita verbistä. Se on käytäntö useimmilla
 #: src/features/documents/documents-page.tsx
 msgid "Drop to import"
 msgstr "Pudota tuodaksesi"
+
+#: src/features/ats-checker/checker.tsx
+msgid "Drop your PDF here"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 #: src/features/documents/document-actions.tsx
@@ -9715,6 +9716,7 @@ msgid "Reorder {0}"
 msgstr "Tilaa uudelleen {0}"
 
 #: src/features/resume/editor/write/section-row.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
 msgstr "Tilaa uudelleen {title}"
 
@@ -11129,6 +11131,10 @@ msgstr "Järjestellä"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Sort by date"
 msgstr "Lajittele päivämäärän mukaan"
+
+#: src/components/input/chip-input.tsx
+msgid "sortable"
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/application-form-sheet.tsx

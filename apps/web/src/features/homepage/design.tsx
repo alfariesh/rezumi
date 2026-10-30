@@ -98,12 +98,12 @@ export function Design() {
 					<span
 						aria-hidden="true"
 						data-text={`${design}_`}
-						className="font-martian absolute inset-0 text-center text-[.66em] leading-[1.5] font-light tracking-[-.02em] uppercase opacity-[calc(clamp(0,(var(--w3)-.35)*3.4,1)*(1-clamp(0,(var(--w4)-.35)*3.4,1)))] before:content-[attr(data-text)]"
+						className="absolute inset-0 text-center font-martian text-[.66em] leading-[1.5] font-light tracking-[-.02em] uppercase opacity-[calc(clamp(0,(var(--w3)-.35)*3.4,1)*(1-clamp(0,(var(--w4)-.35)*3.4,1)))] before:content-[attr(data-text)]"
 					/>
 					<span
 						aria-hidden="true"
 						data-text={`${design}.`}
-						className="font-anybody absolute inset-0 text-center leading-none font-light tracking-[-.03em] uppercase font-stretch-[90%] opacity-[clamp(0,(var(--w4)-.35)*3.4,1)] before:content-[attr(data-text)]"
+						className="absolute inset-0 text-center font-anybody leading-none font-light tracking-[-.03em] uppercase font-stretch-[90%] opacity-[clamp(0,(var(--w4)-.35)*3.4,1)] before:content-[attr(data-text)]"
 					/>
 				</div>
 
@@ -162,7 +162,7 @@ export function Design() {
 									aria-hidden="true"
 									className="absolute -top-[6%] -bottom-[6%] left-0 -ml-px w-0.5 [transform:translateX(calc((1-var(--w))*var(--pw)))] bg-ink opacity-[calc(clamp(0,var(--w)*30,1)*clamp(0,(1-var(--w))*30,1))] will-change-[transform,opacity]"
 								>
-									<span className="font-martian absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full rounded-sm bg-ink px-[9px] py-[5px] text-[10.5px] leading-none font-medium tracking-[.06em] whitespace-nowrap text-bg">
+									<span className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full rounded-sm bg-ink px-[9px] py-[5px] font-martian text-[10.5px] leading-none font-medium tracking-[.06em] whitespace-nowrap text-bg">
 										{pageNumber(index + 1, templateNames[index] ?? "")}
 									</span>
 								</div>
@@ -187,7 +187,7 @@ export function Design() {
 					onSelectionChange={(key) => goToScene(SCENE.design, TEMPLATE_AT[key as number] ?? 0)}
 					inert={zoomed}
 					className={cn(
-						"blur-ok:backdrop-blur-[8px] absolute bottom-[5vh] left-1/2 flex h-auto max-w-[calc(100vw-2*var(--gutter))] -translate-x-1/2 scroll-px-1 [scrollbar-width:none] overflow-x-auto rounded-sm border border-line bg-[color-mix(in_oklch,var(--surface)_85%,transparent)] p-1 whitespace-nowrap opacity-[calc(1-var(--z)*2)] [--segment:var(--ink)] min-[900px]:bottom-[clamp(20px,5vh,44px)]",
+						"absolute bottom-[5vh] left-1/2 flex h-auto max-w-[calc(100vw-2*var(--gutter))] -translate-x-1/2 scroll-px-1 [scrollbar-width:none] overflow-x-auto rounded-sm border border-line bg-[color-mix(in_oklch,var(--surface)_85%,transparent)] p-1 whitespace-nowrap opacity-[calc(1-var(--z)*2)] [--segment:var(--ink)] min-[900px]:bottom-[clamp(20px,5vh,44px)] blur-ok:backdrop-blur-[8px]",
 						!active && "pointer-events-none",
 					)}
 				>
@@ -195,7 +195,7 @@ export function Design() {
 						<Segment.Item
 							key={name}
 							id={index}
-							className="h-8 w-auto flex-none rounded-sm px-3 font-ui duration-300 min-[900px]:px-[13px] data-selected:text-bg"
+							className="h-8 w-auto flex-none rounded-sm px-3 font-ui duration-300 data-selected:text-bg min-[900px]:px-[13px]"
 						>
 							{name}
 						</Segment.Item>
@@ -215,7 +215,7 @@ export function Design() {
 					className="pointer-events-none absolute inset-x-(--gutter) top-[12vh] bottom-[8vh] [transform:translateY(calc((1-var(--z))*30px))] text-center text-[8vw] leading-none font-normal text-balance opacity-(--z) will-change-[transform,opacity] min-[900px]:bottom-[5vh] min-[900px]:text-[clamp(36px,4vw,72px)]"
 				>
 					<Link to="/resume-templates" inert={!zoomed} className="flex h-full flex-col justify-between">
-						<span className="font-anybody pointer-events-auto font-light tracking-[-.02em] text-ink">
+						<span className="pointer-events-auto font-anybody font-light tracking-[-.02em] text-ink">
 							{t`${templateCount} free resume templates.`}
 						</span>
 						<span className="pointer-events-auto font-display tracking-[-.02em] text-accent-text italic">

@@ -96,7 +96,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 		);
 
 	return (
-		<div className="fields-on-card grid gap-3 rounded-xl bg-surface-secondary p-4">
+		<div className="grid gap-3 rounded-xl bg-surface-secondary p-4 fields-on-card">
 			<div className="flex items-center gap-2">
 				<Icon
 					name={domain.verified ? "check-circle" : "warning-circle"}

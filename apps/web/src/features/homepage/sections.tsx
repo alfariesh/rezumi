@@ -2,7 +2,6 @@ import type { CSSProperties } from "react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { AppleLogoIcon, GooglePlayLogoIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -128,11 +127,11 @@ export function Languages() {
 			</h2>
 			<div
 				aria-hidden="true"
-				className="font-anybody h-[1.25em] w-full overflow-hidden text-[clamp(48px,7.5vw,140px)] leading-[1.25] font-light tracking-[-.03em] text-ink"
+				className="h-[1.25em] w-full overflow-hidden font-anybody text-[clamp(48px,7.5vw,140px)] leading-[1.25] font-light tracking-[-.03em] text-ink"
 			>
 				<div
 					key={index}
-					className={cn(index > 0 && "motion-safe:animate-language-turn [transform:translateY(-1.25em)]")}
+					className={cn(index > 0 && "[transform:translateY(-1.25em)] motion-safe:animate-language-turn")}
 				>
 					{previous && (
 						<div lang={previous.lang} dir={previous.dir} className="h-[1.25em] whitespace-nowrap">
@@ -188,7 +187,7 @@ export function Closing() {
 				aria-hidden="true"
 				className="mb-4 w-[min(100%,560px)] rounded-lg border border-dashed border-line-2 px-3.5 py-3"
 			>
-				<div className="font-martian grid grid-cols-4 gap-2 text-xs leading-none font-medium text-ink-3">
+				<div className="grid grid-cols-4 gap-2 font-martian text-xs leading-none font-medium text-ink-3">
 					{stages.map((stage) => (
 						<span key={stage.label} className="flex min-w-0 items-center gap-[5px]">
 							<span className={cn("size-[7px] shrink-0 rounded-sm", stage.dot)} />
@@ -226,7 +225,7 @@ export function Closing() {
 						href="https://play.google.com/store/apps/details?id=app.rezumi"
 						className="inline-flex min-h-14 items-center gap-3 rounded-xl border border-line-2 bg-raised px-5 py-2.5 text-start font-ui text-ink transition-[background-color,transform] duration-[160ms] ease-out-strong hover:bg-hover motion-safe:active:scale-[.97]"
 					>
-						<GooglePlayLogoIcon aria-hidden="true" size={28} weight="fill" className="shrink-0" />
+						<Icon name="google-play-logo" size={28} />
 						<span className="flex flex-col gap-0.5">
 							<span className="text-xs leading-tight text-ink-2">{t`Get it on`}</span>
 							<span className="text-lg leading-tight font-semibold">Google Play</span>
@@ -237,7 +236,7 @@ export function Closing() {
 						disabled
 						className="inline-flex min-h-14 cursor-not-allowed items-center gap-3 rounded-xl border border-line px-5 py-2.5 text-start font-ui text-ink-3"
 					>
-						<AppleLogoIcon aria-hidden="true" size={28} weight="fill" className="shrink-0" />
+						<Icon name="apple-logo" size={28} />
 						<span className="flex flex-col gap-0.5">
 							<span className="text-xs leading-tight">{t`Coming soon`}</span>
 							<span className="text-lg leading-tight font-semibold">App Store</span>

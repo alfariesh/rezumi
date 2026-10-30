@@ -329,7 +329,7 @@ function PlanPanel() {
 				{rows.map((row, index) => (
 					<li key={row.title} className="flex items-start gap-[.8em] py-[.4em]">
 						<PencilTick tick={`--k${index + 1}`} />
-						<span className="font-martian w-[4.4em] shrink-0 pt-[.2em] text-[.76em] text-ink-3">
+						<span className="w-[4.4em] shrink-0 pt-[.2em] font-martian text-[.76em] text-ink-3">
 							{t`${i18n.number(row.minutes)} min`}
 						</span>
 						<span className="flex min-w-0 flex-1 flex-col gap-[.15em]">
@@ -454,13 +454,13 @@ function DebriefPanel() {
 			<div className="flex flex-col gap-[.6em] border-t border-line pt-[.8em]">
 				<b className="font-semibold text-ink">{t`Keep the evidence precise`}</b>
 				<p className="flex items-start gap-[.6em] text-ink opacity-(--db2)">
-					<span className="font-martian mt-[.1em] shrink-0 rounded-sm bg-accent-soft px-[.45em] py-[.15em] text-[.74em] text-accent-text">
+					<span className="mt-[.1em] shrink-0 rounded-sm bg-accent-soft px-[.45em] py-[.15em] font-martian text-[.74em] text-accent-text">
 						{t`Supported`}
 					</span>
 					{t`The 13-point activation lift. Knowledge has the before and after.`}
 				</p>
 				<p className="flex items-start gap-[.6em] text-ink opacity-(--db3)">
-					<span className="font-martian mt-[.1em] shrink-0 rounded-sm bg-warn-soft px-[.45em] py-[.15em] text-[.74em] text-warn-text">
+					<span className="mt-[.1em] shrink-0 rounded-sm bg-warn-soft px-[.45em] py-[.15em] font-martian text-[.74em] text-warn-text">
 						{t`Observation`}
 					</span>
 					{t`Fewer support tickets isn’t backed by a number yet. Say it as something you noticed.`}
@@ -563,13 +563,13 @@ export function Prepare() {
 				{/* The day's light through the window: high and cool in the morning, long and warm by late afternoon, gone at dusk. */}
 				<div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden dark:hidden">
 					<div className="absolute inset-0 opacity-[calc(1-clamp(0,(var(--p)-.8)/.14,1))] [background:radial-gradient(55%_60%_at_calc(84%-var(--p)*34%)_calc(8%+var(--p)*46%),color-mix(in_oklch,oklch(0.96_0.025_235/.7),oklch(0.92_0.1_68/.75)_calc(clamp(0,(var(--p)-.2)/.5,1)*100%)),transparent_70%)]" />
-					<div className="window-shadow absolute start-[28%] -top-[20%] h-[140%] w-[78%] [transform:skewX(calc(-6deg-var(--p)*30deg))_rotate(calc(-3deg-var(--p)*9deg))_translateX(calc(var(--p)*-12vw))]! opacity-[calc(1-clamp(0,(var(--p)-.78)/.14,1))]" />
+					<div className="absolute start-[28%] -top-[20%] h-[140%] w-[78%] window-shadow [transform:skewX(calc(-6deg-var(--p)*30deg))_rotate(calc(-3deg-var(--p)*9deg))_translateX(calc(var(--p)*-12vw))]! opacity-[calc(1-clamp(0,(var(--p)-.78)/.14,1))]" />
 					<div className="absolute inset-0 bg-[linear-gradient(to_bottom,oklch(0.6_0.06_280/.12),transparent_70%)] opacity-[clamp(0,(var(--p)-.8)/.14,1)]" />
 				</div>
 
 				<h2
 					id="prepare-title"
-					className="font-anybody absolute start-(--gutter) top-[10vh] text-[16vw] leading-[.9] font-light tracking-[-.03em] whitespace-nowrap text-ink min-[900px]:top-[11vh] min-[900px]:text-[clamp(72px,9vw,160px)]"
+					className="absolute start-(--gutter) top-[10vh] font-anybody text-[16vw] leading-[.9] font-light tracking-[-.03em] whitespace-nowrap text-ink min-[900px]:top-[11vh] min-[900px]:text-[clamp(72px,9vw,160px)]"
 				>
 					{prepare}
 					<span className="text-accent">.</span>
@@ -584,7 +584,7 @@ export function Prepare() {
 								key={mark.step}
 								aria-hidden="true"
 								className={cn(
-									"font-martian absolute hidden -translate-x-1/2 -translate-y-1/2 text-xs font-medium whitespace-nowrap transition-colors duration-300 min-[900px]:block",
+									"absolute hidden -translate-x-1/2 -translate-y-1/2 font-martian text-xs font-medium whitespace-nowrap transition-colors duration-300 min-[900px]:block",
 									mark.step === step ? "text-accent-text" : mark.step < step ? "text-ink-3" : "text-ink-3/60",
 								)}
 								style={{ left: `${50 + mark.x * 66}%`, top: `${50 + mark.y * 62}%` }}
@@ -605,7 +605,7 @@ export function Prepare() {
 				<SceneCaption
 					number="06"
 					title={prepare}
-					className="min-[900px]:short:hidden absolute start-(--gutter) bottom-[clamp(20px,5vh,44px)] hidden max-w-[min(25em,30vw)] opacity-(--in) min-[900px]:flex"
+					className="absolute start-(--gutter) bottom-[clamp(20px,5vh,44px)] hidden max-w-[min(25em,30vw)] opacity-(--in) min-[900px]:flex min-[900px]:short:hidden"
 				>
 					{t`Get a plan for the interview, built from the posting and your own stories. Practice out loud, then write down how it went.`}
 				</SceneCaption>
@@ -635,7 +635,7 @@ export function Prepare() {
 									</>
 								);
 								const tabClass = cn(
-									"font-martian flex h-[2.6em] shrink-0 items-center gap-[.5em] rounded-t-sm px-[1em] text-[.74em] font-medium whitespace-nowrap transition-[transform,background-color,color] duration-300",
+									"flex h-[2.6em] shrink-0 items-center gap-[.5em] rounded-t-sm px-[1em] font-martian text-[.74em] font-medium whitespace-nowrap transition-[transform,background-color,color] duration-300",
 									front
 										? "bg-[oklch(0.87_0.05_80)] text-[oklch(0.25_0.03_70)] dark:bg-[oklch(0.62_0.045_78)] dark:text-[oklch(0.16_0.02_70)]"
 										: "translate-y-[.4em] bg-[oklch(0.8_0.05_74)] text-[oklch(0.38_0.03_70)] dark:bg-[oklch(0.5_0.04_72)] dark:text-[oklch(0.14_0.02_70)]",
@@ -665,7 +665,7 @@ export function Prepare() {
 						</div>
 						{/* The folder's label: the same Fieldnote role Tailor applied to, its stage moving on when the change is applied. */}
 						<span className="me-[.6em] mb-[.45em] hidden shrink-0 -rotate-1 items-center gap-[.5em] rounded-sm bg-paper py-[.3em] ps-[.35em] pe-[.7em] text-[.8em] font-medium text-[oklch(0.3_0.01_95)] shadow-e1 @min-[640px]:flex">
-							<span className="font-anybody grid size-[1.6em] place-items-center rounded-sm bg-[oklch(0.22_0.01_95)] text-[1.05em] leading-none text-white">
+							<span className="grid size-[1.6em] place-items-center rounded-sm bg-[oklch(0.22_0.01_95)] font-anybody text-[1.05em] leading-none text-white">
 								F
 							</span>
 							{t`Fieldnote`}

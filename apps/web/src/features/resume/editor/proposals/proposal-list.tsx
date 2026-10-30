@@ -183,7 +183,7 @@ function ProposalItem(props: ProposalItemProps) {
 			tabIndex={focusable ? 0 : -1}
 			aria-labelledby={labelId}
 			onFocus={props.onFocus}
-			className="fields-on-card grid gap-3 rounded-xl bg-surface p-3 outline-none focus-visible:ring-2 focus-visible:ring-focus"
+			className="grid gap-3 rounded-xl bg-surface p-3 fields-on-card outline-none focus-visible:ring-2 focus-visible:ring-focus"
 		>
 			<div className="flex items-center gap-2">
 				{/* The number matches the marker on the page. */}

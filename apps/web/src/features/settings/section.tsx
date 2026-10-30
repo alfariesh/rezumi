@@ -103,7 +103,7 @@ export function SettingsRow({
 				(inline ? (
 					children
 				) : (
-					<div className="max-sm:ps-row-indent contents max-sm:block max-sm:basis-full">{children}</div>
+					<div className="contents max-sm:block max-sm:basis-full max-sm:ps-row-indent">{children}</div>
 				))}
 		</Root>
 	);

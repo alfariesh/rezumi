@@ -8,9 +8,9 @@ import { getPdfFindingMessage } from "../messages";
 import { RollingNumber } from "@/components/ui/rolling-number";
 
 function scoreTone(score: number) {
-	if (score >= 80) return { text: "text-accent-text", bar: "bg-accent" };
-	if (score >= 60) return { text: "text-warn-text", bar: "bg-warn" };
-	return { text: "text-danger-text", bar: "bg-danger" };
+	if (score >= 80) return { text: "text-accent-soft-foreground", bar: "bg-accent" };
+	if (score >= 60) return { text: "text-warning-soft-foreground", bar: "bg-warning" };
+	return { text: "text-danger-soft-foreground", bar: "bg-danger" };
 }
 
 type ScoreHeaderProps = {
@@ -27,13 +27,13 @@ export function ScoreHeader({ report }: ScoreHeaderProps) {
 				<span className={cn("text-4xl leading-none font-bold tabular-nums", tone.text)}>
 					<RollingNumber value={report.score} />
 				</span>
-				<span className="text-sm text-ink-3">
+				<span className="text-sm text-muted">
 					<Trans>out of 100</Trans>
 				</span>
 			</div>
 
 			{/* Fills from empty when the report first shows. The starting --fill needs !important to beat the inline one; it's derived through --fill so RTL still fills from the right. */}
-			<div className="h-1.5 overflow-hidden rounded-sm bg-sunken">
+			<div className="h-1.5 overflow-hidden rounded-sm bg-default">
 				<div
 					className={cn(
 						"h-full translate-x-(--fill) rounded-sm transition-[translate,background-color] duration-emphasized ease-enter rtl:-translate-x-(--fill) starting:[--fill:-100%]!",
@@ -43,7 +43,7 @@ export function ScoreHeader({ report }: ScoreHeaderProps) {
 				/>
 			</div>
 
-			<div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-3">
+			<div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
 				<span>
 					<Trans>
 						{report.passedChecks} of {report.applicableChecks} applicable checks passed
@@ -69,7 +69,7 @@ export function ScoreHeader({ report }: ScoreHeaderProps) {
 			</div>
 
 			{cap && (
-				<p className="rounded-md bg-sunken/60 p-2 text-xs leading-normal text-ink-3">
+				<p className="rounded-md bg-default/60 p-2 text-xs leading-normal text-muted">
 					<Trans>The score is capped because of a blocking problem: {getPdfFindingMessage(cap).title}</Trans>
 				</p>
 			)}

@@ -2703,6 +2703,7 @@ msgstr "kínai (egyszerűsített)"
 msgid "Chinese (Traditional)"
 msgstr "kínai (hagyományos)"
 
+#: src/features/ats-checker/checker.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Choose a file"
 msgstr "Válasszon egy fájlt"
@@ -4646,10 +4647,6 @@ msgstr "Húzd az áthelyezéshez, és használd a csúszkát a nagyításhoz a f
 msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag anything we're unsure of."
 msgstr "Dobjon ide egy fájlt, vagy böngésszen. PDF, Word, Rezumi vagy JSON Resume. Minden részt kitöltünk, és megjelölünk mindent, amiben nem vagyunk biztosak."
 
-#: src/features/ats-checker/checker.tsx
-msgid "Drop a PDF here or choose a file"
-msgstr "Dobjon ide egy PDF-t, vagy válasszon egy fájlt"
-
 #: src/features/documents/documents-page.tsx
 msgid "Drop a PDF, Word or JSON file"
 msgstr "Dobj egy PDF, Word vagy JSON fájlt"
@@ -4661,6 +4658,10 @@ msgstr "Hagyd el a névmásokat, és kezdj az igével. A legtöbb piacon ez a be
 #: src/features/documents/documents-page.tsx
 msgid "Drop to import"
 msgstr "Húzza le az importáláshoz"
+
+#: src/features/ats-checker/checker.tsx
+msgid "Drop your PDF here"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 #: src/features/documents/document-actions.tsx
@@ -9715,6 +9716,7 @@ msgid "Reorder {0}"
 msgstr "Rendelje újra a {0}-t"
 
 #: src/features/resume/editor/write/section-row.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
 msgstr "Rendelje újra a {title}-t"
 
@@ -11129,6 +11131,10 @@ msgstr "Fajta"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Sort by date"
 msgstr "Rendezés dátum szerint"
+
+#: src/components/input/chip-input.tsx
+msgid "sortable"
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/application-form-sheet.tsx

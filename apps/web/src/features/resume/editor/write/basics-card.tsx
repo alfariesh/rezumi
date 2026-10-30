@@ -72,7 +72,7 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 				<Disclosure.Content className="*:p-0">
 					{/* `pt-px`: room for the content's hairline under the header, which the panel's clip would cut. */}
 					<Disclosure.Body className="p-0 pt-px">
-						<Widget.Content className="fields-on-background @container mt-0">
+						<Widget.Content className="@container mt-0 fields-on-background">
 							<fieldset
 								disabled={locked}
 								className="m-0 grid min-w-0 grid-cols-1 gap-x-3 gap-y-4 border-0 p-0 @xs:grid-cols-2"
@@ -123,7 +123,7 @@ function PhotoRow({ locked }: { locked: boolean }) {
 	return (
 		<div
 			id="sidebar-picture"
-			className="fields-on-card col-span-full flex items-center gap-3 rounded-xl bg-background p-2.5"
+			className="col-span-full flex items-center gap-3 rounded-xl bg-background p-2.5 fields-on-card"
 		>
 			{hasPhoto ? (
 				<img src={picture.url} alt="" className="size-10 shrink-0 rounded-lg object-cover" />

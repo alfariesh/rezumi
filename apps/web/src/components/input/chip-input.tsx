@@ -1,33 +1,14 @@
-import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
-import {
-	closestCenter,
-	DndContext,
-	DragOverlay,
-	KeyboardSensor,
-	PointerSensor,
-	useSensor,
-	useSensors,
-} from "@dnd-kit/core";
-import {
-	arrayMove,
-	rectSortingStrategy,
-	SortableContext,
-	sortableKeyboardCoordinates,
-	useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { Chip, Input, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useReducedMotion } from "motion/react";
 import * as React from "react";
-import { createPortal } from "react-dom";
+import { mergeProps } from "react-aria";
 import { useFormControl } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { SortableEdge, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { useControlledState } from "@/hooks/use-controlled-state";
 import { isImeComposing } from "@/libs/keyboard";
-import { DRAG_SETTLE } from "@/libs/motion";
 
 const RETURN_KEY = "Enter";
 const COMMA_KEY = ",";
@@ -42,11 +23,7 @@ type ChipItemProps = {
 	onRemove: (index: number) => void;
 };
 
-type ChipDragPreviewProps = {
-	chip: string;
-};
-
-function ChipDragPreview({ chip }: ChipDragPreviewProps) {
+function ChipDragPreview({ chip }: { chip: string }) {
 	return (
 		<Chip
 			size="sm"
@@ -59,41 +36,23 @@ function ChipDragPreview({ chip }: ChipDragPreviewProps) {
 	);
 }
 
-type ChipDragOverlayProps = {
-	activeChip: string | null;
-};
-
-function ChipDragOverlay({ activeChip }: ChipDragOverlayProps) {
-	const reduceMotion = useReducedMotion();
-	const overlay = (
-		<DragOverlay dropAnimation={reduceMotion ? null : DRAG_SETTLE}>
-			{activeChip ? <ChipDragPreview chip={activeChip} /> : null}
-		</DragOverlay>
-	);
-
-	return createPortal(overlay, document.body);
-}
-
 function ChipItem({ id, chip, index, isEditing, onEdit, onRemove }: ChipItemProps) {
-	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-		id,
-		transition: DRAG_SETTLE,
-	});
-
-	const style = {
-		transition,
-		zIndex: isDragging ? 10 : undefined,
-		transform: CSS.Transform.toString(transform),
-	};
+	const sortable = useSortableItem({ id, list: "chips", index, label: chip, hasHandle: false });
 
 	return (
+		// The chip itself is the handle: Enter lifts it for the keyboard, then the arrow keys pick the slot.
 		<div
-			style={style}
-			ref={setNodeRef}
-			className={cn("group/chip relative touch-none", isDragging && "opacity-60")}
-			{...attributes}
-			{...listeners}
+			{...mergeProps(sortable.dropTargetProps, sortable.dragProps)}
+			role="button"
+			tabIndex={0}
+			aria-roledescription={t`sortable`}
+			aria-label={chip}
+			className={cn(
+				"group/chip relative rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-focus",
+				sortable.isDragging && "opacity-60",
+			)}
 		>
+			<SortableEdge edge={sortable.edge} orientation="horizontal" />
 			<Chip
 				size="sm"
 				color="accent"
@@ -104,7 +63,7 @@ function ChipItem({ id, chip, index, isEditing, onEdit, onRemove }: ChipItemProp
 				)}
 			>
 				<span className="max-w-32 truncate sm:max-w-44">{chip}</span>
-				{/* Raw buttons: tiny pointer shortcuts inside a dnd-kit sortable chip, out of the tab order (the chip itself takes
+				{/* Raw buttons: tiny pointer shortcuts inside the draggable chip, out of the tab order (the chip itself takes
 				    keyboard drag, the field edits by typing). */}
 				<div
 					className={cn(
@@ -182,9 +141,7 @@ export function ChipInput({
 
 	const [input, setInput] = React.useState("");
 	const [editingIndex, setEditingIndex] = React.useState<number | null>(null);
-	const [activeChip, setActiveChip] = React.useState<string | null>(null);
 	const inputRef = React.useRef<HTMLInputElement>(null);
-	const dndContextId = React.useId();
 	const isEditingKeyword = editingIndex !== null;
 	const hasChips = chips.length > 0;
 
@@ -230,25 +187,12 @@ export function ChipInput({
 		inputRef.current?.focus();
 	};
 
-	const sensors = useSensors(
-		useSensor(PointerSensor, {
-			activationConstraint: { distance: 3 },
-		}),
-		useSensor(KeyboardSensor, {
-			coordinateGetter: sortableKeyboardCoordinates,
-		}),
-	);
+	const moveChip = (id: string, to: number) => {
+		const from = chips.indexOf(id);
+		if (from === -1 || to < 0 || to >= chips.length || from === to) return;
 
-	const handleDragEnd = (event: DragEndEvent) => {
-		setActiveChip(null);
-
-		const { active, over } = event;
-		if (!over || active.id === over.id) return;
-		const oldIndex = chips.indexOf(active.id as string);
-		const newIndex = chips.indexOf(over.id as string);
-		if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
-
-		const newOrder = arrayMove(chips, oldIndex, newIndex);
+		const newOrder = [...chips];
+		newOrder.splice(to, 0, ...newOrder.splice(from, 1));
 		if (editingIndex !== null) {
 			const editingChip = chips[editingIndex];
 			const movedIndex = editingChip === undefined ? -1 : newOrder.indexOf(editingChip);
@@ -303,13 +247,9 @@ export function ChipInput({
 
 	return (
 		<div className={cn("space-y-1.5", className)} {...props}>
-			<DndContext
-				id={dndContextId}
-				sensors={sensors}
-				collisionDetection={closestCenter}
-				onDragStart={(event: DragStartEvent) => setActiveChip(event.active.id as string)}
-				onDragEnd={handleDragEnd}
-				onDragCancel={() => setActiveChip(null)}
+			<SortableProvider
+				onMove={(id, { index }) => moveChip(id, index)}
+				renderPreview={(label) => <ChipDragPreview chip={label} />}
 			>
 				<div
 					role="none"
@@ -322,21 +262,19 @@ export function ChipInput({
 				>
 					<div className="flex flex-col">
 						<div className={cn("max-h-24 overflow-y-auto px-2 pt-2 pb-1", !hasChips && "hidden")}>
-							<SortableContext items={chips} strategy={rectSortingStrategy}>
-								<div className="flex flex-wrap gap-1">
-									{chips.map((chip, idx) => (
-										<ChipItem
-											key={chip}
-											id={chip}
-											chip={chip}
-											index={idx}
-											isEditing={editingIndex === idx}
-											onEdit={handleEdit}
-											onRemove={removeChip}
-										/>
-									))}
-								</div>
-							</SortableContext>
+							<div className="flex flex-wrap gap-1">
+								{chips.map((chip, idx) => (
+									<ChipItem
+										key={chip}
+										id={chip}
+										chip={chip}
+										index={idx}
+										isEditing={editingIndex === idx}
+										onEdit={handleEdit}
+										onRemove={removeChip}
+									/>
+								))}
+							</div>
 						</div>
 						<div className="flex items-center gap-1.5 pe-1">
 							<Input
@@ -371,8 +309,7 @@ export function ChipInput({
 						</div>
 					</div>
 				</div>
-				<ChipDragOverlay activeChip={activeChip} />
-			</DndContext>
+			</SortableProvider>
 
 			<p className="text-xs text-muted">
 				{allowCommas ? (

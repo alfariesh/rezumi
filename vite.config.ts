@@ -15,7 +15,6 @@ const workspaceImportPatterns = [
 export default defineConfig({
 	lint: {
 		plugins: ["typescript", "unicorn", "oxc", "react", "jsx-a11y"],
-		jsPlugins: ["@shadcn/lint"],
 		categories: {
 			correctness: "error",
 		},
@@ -160,7 +159,7 @@ export default defineConfig({
 			],
 		},
 		sortTailwindcss: {
-			stylesheet: "./packages/ui/src/styles/globals.css",
+			stylesheet: "./apps/web/src/index.css",
 			functions: ["clsx", "cva", "cn"],
 		},
 		ignorePatterns: [

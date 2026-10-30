@@ -68,7 +68,7 @@ export function Write() {
 
 				<h2
 					id="write-title"
-					className="font-anybody absolute start-(--gutter) top-[10vh] max-w-[90vw] text-[10vw] leading-[.95] font-light tracking-[-.03em] text-balance text-ink min-[900px]:top-[11vh] min-[900px]:max-w-[34vw] min-[900px]:text-[clamp(48px,4.5vw,80px)]"
+					className="absolute start-(--gutter) top-[10vh] max-w-[90vw] font-anybody text-[10vw] leading-[.95] font-light tracking-[-.03em] text-balance text-ink min-[900px]:top-[11vh] min-[900px]:max-w-[34vw] min-[900px]:text-[clamp(48px,4.5vw,80px)]"
 				>
 					{t`Write your professional resume`}
 					<span className="text-accent">.</span>
@@ -96,7 +96,7 @@ export function Write() {
 					 */}
 					<div className="grid grid-cols-[minmax(0,1fr)] items-start gap-x-[3vw] gap-y-[.5em] [--row-off:calc(max(var(--oh,0px)+var(--nh,0px),var(--cmh-side,0px))-max(var(--wov)+var(--wnv),var(--cmh-side,0px))+var(--cmh-inline,0px)-var(--wcv))] [--wcv:min(var(--cmh-inline,0px),calc(var(--cm)*16em))] [--wnv:min(var(--nh,0px),calc(clamp(0,var(--ti)*40,1)*(1.6em+var(--ti)*6.4em)))] [--wov:min(var(--oh,0px),calc((1-var(--oc))*(1.6em+var(--ta)*6.4em)))] min-[1280px]:grid-cols-[minmax(0,1fr)_minmax(0,max(15vw,210px))]">
 						<div className="col-start-1 flex flex-col gap-[.25em]">
-							<span className="font-martian mb-[.8em] border-b border-[oklch(0.45_0.1_150/.35)] pb-[.6em] text-[.7em] leading-[1.4] text-[oklch(0.45_0.1_150)]">
+							<span className="mb-[.8em] border-b border-[oklch(0.45_0.1_150/.35)] pb-[.6em] font-martian text-[.7em] leading-[1.4] text-[oklch(0.45_0.1_150)]">
 								{t`Experience`}
 							</span>
 							<div className="flex items-baseline justify-between gap-[1em]">

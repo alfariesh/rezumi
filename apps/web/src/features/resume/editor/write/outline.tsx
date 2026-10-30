@@ -1,10 +1,8 @@
 import type { PageSettings } from "./entries";
 import type { OutlineRow, WriteSection } from "./model";
-import type { DragEndEvent } from "@dnd-kit/core";
+import type { SortableTarget } from "@/components/input/sortable";
 import type { MessageDescriptor } from "@lingui/core";
 import type { CustomSectionType } from "@rezumi/schema/resume/data";
-import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { Widget } from "@heroui-pro/react";
 import { Button } from "@heroui/react";
 import { msg } from "@lingui/core/macro";
@@ -18,6 +16,7 @@ import { EntryCard } from "./entry-card";
 import { getEntries, getOutlineRows, getSectionKind, getSectionType, moveSection } from "./model";
 import { SectionRow } from "./section-row";
 import { SummaryEditor } from "./summary-editor";
+import { SortableProvider } from "@/components/input/sortable";
 import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 const ADD_LABELS: Record<CustomSectionType, MessageDescriptor> = {
@@ -47,14 +46,6 @@ function parseRows(key: string): OutlineRow[] {
 	});
 }
 
-function useSortSensors() {
-	return useSensors(
-		// A small distance keeps clicks on the handle from starting a drag.
-		useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-		useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
-	);
-}
-
 type OutlineProps = { locked: boolean; page: PageSettings };
 
 /**
@@ -70,47 +61,43 @@ export function Outline({ locked, page }: OutlineProps) {
 	const rows = useMemo(() => parseRows(key), [key]);
 	const pages = useMemo(() => groupByPage(rows), [rows]);
 	const updateResumeData = useUpdateResumeData();
-	const sensors = useSortSensors();
 
 	const move = (id: string, target: OutlineRow | undefined, direction: "up" | "down") => {
 		if (!target) return;
 		updateResumeData((draft) => moveSection(draft, id, target, direction), { newStep: true });
 	};
 
-	const onDragEnd = ({ active, over }: DragEndEvent) => {
-		if (!over || active.id === over.id) return;
-		const from = rows.findIndex((row) => row.id === active.id);
-		const to = rows.findIndex((row) => row.id === over.id);
-		move(String(active.id), rows[to], from < to ? "down" : "up");
+	const onDrop = (id: string, { index }: SortableTarget) => {
+		const from = rows.findIndex((row) => row.id === id);
+		move(id, rows[index], from < index ? "down" : "up");
 	};
 
 	return (
-		<DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-			<SortableContext items={rows.map((row) => row.id)} strategy={verticalListSortingStrategy}>
-				{pages.map(({ page: pageIndex, rows: pageRows }, widgetIndex) => (
-					<PageWidget key={pageIndex} pageNumber={pageIndex + 1} hint={!locked && widgetIndex === 0}>
-						{pageRows.map((row, index) => {
-							const sidebarStarts = row.column === "sidebar" && pageRows[index - 1]?.column !== "sidebar";
-							const position = rows.indexOf(row);
+		<SortableProvider onMove={onDrop}>
+			{pages.map(({ page: pageIndex, rows: pageRows }, widgetIndex) => (
+				<PageWidget key={pageIndex} pageNumber={pageIndex + 1} hint={!locked && widgetIndex === 0}>
+					{pageRows.map((row, index) => {
+						const sidebarStarts = row.column === "sidebar" && pageRows[index - 1]?.column !== "sidebar";
+						const position = rows.indexOf(row);
 
-							return (
-								<Fragment key={row.id}>
-									{sidebarStarts && <SidebarLabel />}
-									<OutlineSection
-										sectionId={row.id}
-										locked={locked}
-										page={page}
-										onMove={(direction) =>
-											move(row.id, rows[direction === "up" ? position - 1 : position + 1], direction)
-										}
-									/>
-								</Fragment>
-							);
-						})}
-					</PageWidget>
-				))}
-			</SortableContext>
-		</DndContext>
+						return (
+							<Fragment key={row.id}>
+								{sidebarStarts && <SidebarLabel />}
+								<OutlineSection
+									sectionId={row.id}
+									index={position}
+									locked={locked}
+									page={page}
+									onMove={(direction) =>
+										move(row.id, rows[direction === "up" ? position - 1 : position + 1], direction)
+									}
+								/>
+							</Fragment>
+						);
+					})}
+				</PageWidget>
+			))}
+		</SortableProvider>
 	);
 }
 
@@ -161,12 +148,14 @@ function SidebarLabel() {
 
 type OutlineSectionProps = {
 	sectionId: string;
+	/** Position among all sections in print order, across pages. */
+	index: number;
 	locked: boolean;
 	page: PageSettings;
 	onMove?: ((direction: "up" | "down") => void) | undefined;
 };
 
-function OutlineSection({ sectionId, locked, page, onMove }: OutlineSectionProps) {
+function OutlineSection({ sectionId, index, locked, page, onMove }: OutlineSectionProps) {
 	const { i18n } = useLingui();
 	// Select the type (a string) rather than a new section object, so the row renders only when it changes.
 	const type = useCurrentBuilderResumeSelector((resume) => getSectionType(resume.data, sectionId) ?? null);
@@ -177,7 +166,7 @@ function OutlineSection({ sectionId, locked, page, onMove }: OutlineSectionProps
 	if (!stableSection) return null;
 
 	return (
-		<SectionRow section={stableSection} locked={locked} onMove={onMove}>
+		<SectionRow section={stableSection} index={index} locked={locked} onMove={onMove}>
 			{stableSection.kind === "summary" ? (
 				<SummaryEditor locked={locked} />
 			) : (
@@ -210,7 +199,6 @@ function EntryList({ section, locked, page }: EntryListProps) {
 	);
 	const entryIds = useMemo(() => (ids ? ids.split("\u0000") : []), [ids]);
 	const updateResumeData = useUpdateResumeData();
-	const sensors = useSortSensors();
 
 	const move = (entryId: string, to: number) => {
 		if (to < 0 || to >= entryIds.length) return;
@@ -225,27 +213,20 @@ function EntryList({ section, locked, page }: EntryListProps) {
 		);
 	};
 
-	const onDragEnd = ({ active, over }: DragEndEvent) => {
-		if (!over || active.id === over.id) return;
-		move(String(active.id), entryIds.indexOf(String(over.id)));
-	};
-
 	return (
-		<DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-			<SortableContext items={entryIds} strategy={verticalListSortingStrategy}>
-				{entryIds.map((entryId, index) => (
-					<EntryCard
-						key={entryId}
-						section={section}
-						entryId={entryId}
-						index={index}
-						count={entryIds.length}
-						page={page}
-						locked={locked}
-						onMove={(id, direction) => move(id, direction === "up" ? index - 1 : index + 1)}
-					/>
-				))}
-			</SortableContext>
-		</DndContext>
+		<SortableProvider onMove={(id, { index }) => move(id, index)}>
+			{entryIds.map((entryId, index) => (
+				<EntryCard
+					key={entryId}
+					section={section}
+					entryId={entryId}
+					index={index}
+					count={entryIds.length}
+					page={page}
+					locked={locked}
+					onMove={(id, direction) => move(id, direction === "up" ? index - 1 : index + 1)}
+				/>
+			))}
+		</SortableProvider>
 	);
 }

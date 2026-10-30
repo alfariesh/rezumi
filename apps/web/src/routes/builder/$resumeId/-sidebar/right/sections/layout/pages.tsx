@@ -1,23 +1,11 @@
-import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
+import type { SortableTarget } from "@/components/input/sortable";
 import type { Key } from "@heroui/react";
 import type { ResumeData, SectionType } from "@rezumi/schema/resume/data";
-import type { CSSProperties, HTMLAttributes, Ref } from "react";
-import {
-	closestCorners,
-	DndContext,
-	DragOverlay,
-	PointerSensor,
-	useDroppable,
-	useSensor,
-	useSensors,
-} from "@dnd-kit/core";
-import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { Button, Description, Dropdown, Label, Separator, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useReducedMotion } from "motion/react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+import { mergeProps } from "react-aria";
 import { match } from "ts-pattern";
 import { filterSections } from "@rezumi/pdf/filtering";
 import { templateLayouts } from "@rezumi/schema/templates";
@@ -25,8 +13,14 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { resolveLayoutSectionTitle } from "./title";
+import {
+	SortableEdge,
+	SortableHandle,
+	SortableProvider,
+	useSortableDropZone,
+	useSortableItem,
+} from "@/components/input/sortable";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
-import { DRAG_SETTLE } from "@/libs/motion";
 
 type ColumnId = "main" | "sidebar";
 
@@ -52,10 +46,7 @@ type PageLocation = {
 	columnId: ColumnId;
 };
 
-/**
- * Returns the page index and column that contains the given section id.
- * Format: "page-{index}-{columnId}" or "{sectionId}"
- */
+/** Reads a column's list id, "page-{index}-{columnId}", back into its page and column. */
 const parseDroppableId = (id: string): PageLocation | null => {
 	if (id.startsWith("page-")) {
 		const parts = id.split("-");
@@ -76,9 +67,6 @@ const createDroppableId = (pageIndex: number, columnId: ColumnId): string => {
 };
 
 export function LayoutPages() {
-	const [activeId, setActiveId] = useState<string | null>(null);
-	const reduceMotion = useReducedMotion();
-
 	const resume = useCurrentResume();
 	const template = resume.data.metadata.template;
 	const templateSidebarPosition = templateLayouts[template].sidebarSide ?? "none";
@@ -86,18 +74,11 @@ export function LayoutPages() {
 	const layout = resume.data.metadata.layout;
 	const updateResumeData = useUpdateResumeData();
 
-	const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
-
 	/**
 	 * Returns the page index and column that contains the given section id.
 	 */
 	const findContainer = useCallback(
 		(id: string): PageLocation | null => {
-			// Check if it's a droppable ID
-			const location = parseDroppableId(id);
-			if (location) return location;
-
-			// Search through all pages
 			for (const [pageIndex, page] of layout.pages.entries()) {
 				const mainSections = new Set(page.main);
 				const sidebarSections = new Set(page.sidebar);
@@ -110,37 +91,29 @@ export function LayoutPages() {
 		[layout.pages],
 	);
 
-	const handleDragStart = useCallback((event: DragStartEvent) => setActiveId(String(event.active.id)), []);
-
-	const handleDragEnd = useCallback(
-		({ active, over }: DragEndEvent) => {
-			setActiveId(null);
-			if (!over) return;
-
-			const activeIdStr = String(active.id);
-			const overIdStr = String(over.id);
-
-			if (activeIdStr === overIdStr) return;
-
-			const activeLocation = findContainer(activeIdStr);
-			const overLocation = parseDroppableId(overIdStr) ?? findContainer(overIdStr);
-
+	const handleMove = useCallback(
+		(id: string, target: SortableTarget) => {
+			const activeLocation = findContainer(id);
+			const overLocation = parseDroppableId(target.list);
 			if (!activeLocation || !overLocation) return;
+			const { overId } = target;
 
 			// Same location, reorder within column
 			if (activeLocation.pageIndex === overLocation.pageIndex && activeLocation.columnId === overLocation.columnId) {
 				const page = layout.pages[activeLocation.pageIndex];
 				if (!page) return;
 				const items = page[activeLocation.columnId];
-				const oldIdx = items.indexOf(activeIdStr);
-				let newIdx = items.indexOf(overIdStr);
+				const oldIdx = items.indexOf(id);
+				let newIdx = overId === null ? items.length - 1 : items.indexOf(overId);
 				if (oldIdx === -1 || oldIdx === newIdx) return;
 				if (newIdx === -1) newIdx = items.length - 1;
 
 				updateResumeData((draft) => {
 					const page = draft.metadata.layout.pages[activeLocation.pageIndex];
 					if (!page) return;
-					page[activeLocation.columnId] = arrayMove(page[activeLocation.columnId], oldIdx, newIdx);
+					const column = page[activeLocation.columnId];
+					const [moved] = column.splice(oldIdx, 1);
+					if (moved !== undefined) column.splice(newIdx, 0, moved);
 				});
 				return;
 			}
@@ -151,10 +124,10 @@ export function LayoutPages() {
 			if (!fromPage || !toPage) return;
 			const fromItems = fromPage[activeLocation.columnId];
 			const toItems = toPage[overLocation.columnId];
-			const fromIdx = fromItems.indexOf(activeIdStr);
+			const fromIdx = fromItems.indexOf(id);
 			if (fromIdx === -1) return;
 
-			let toIdx = toItems.indexOf(overIdStr);
+			let toIdx = overId === null ? -1 : toItems.indexOf(overId);
 			if (toIdx === -1) toIdx = toItems.length;
 
 			updateResumeData((draft) => {
@@ -165,7 +138,7 @@ export function LayoutPages() {
 				const to = toPageDraft[overLocation.columnId];
 
 				from.splice(fromIdx, 1);
-				to.splice(Math.min(toIdx, to.length), 0, activeIdStr);
+				to.splice(Math.min(toIdx, to.length), 0, id);
 			});
 		},
 		[findContainer, layout.pages, updateResumeData],
@@ -225,14 +198,7 @@ export function LayoutPages() {
 	}
 
 	return (
-		<DndContext
-			id="builder-layout"
-			sensors={sensors}
-			collisionDetection={closestCorners}
-			onDragStart={handleDragStart}
-			onDragEnd={handleDragEnd}
-			onDragCancel={() => setActiveId(null)}
-		>
+		<SortableProvider onMove={handleMove}>
 			<div className="flex flex-col gap-4">
 				{layout.pages.map((page, pageIndex) => (
 					<PageContainer
@@ -255,11 +221,7 @@ export function LayoutPages() {
 					<Trans>Add page</Trans>
 				</Button>
 			</div>
-
-			<DragOverlay dropAnimation={reduceMotion ? null : DRAG_SETTLE}>
-				{activeId ? <LayoutItemContent id={activeId} isOverlay /> : null}
-			</DragOverlay>
-		</DndContext>
+		</SortableProvider>
 	);
 }
 
@@ -360,62 +322,32 @@ function LayoutColumn({
 	className,
 }: LayoutColumnProps) {
 	const droppableId = createDroppableId(pageIndex, columnId);
-	const { setNodeRef, isOver } = useDroppable({ id: droppableId, disabled });
+	const zone = useSortableDropZone({ list: droppableId, length: items.length, isDisabled: disabled });
 
 	return (
-		<SortableContext id={droppableId} items={items} strategy={verticalListSortingStrategy}>
-			<div className={cn("space-y-1.5", disabled && "opacity-50", className)}>
-				{!hideLabel && (
-					<div className="ps-1 text-xs font-medium text-muted @md:row-start-1">{getColumnLabel(columnId)}</div>
+		<div className={cn("space-y-1.5", disabled && "opacity-50", className)}>
+			{!hideLabel && (
+				<div className="ps-1 text-xs font-medium text-muted @md:row-start-1">{getColumnLabel(columnId)}</div>
+			)}
+
+			<div
+				{...zone.dropTargetProps}
+				className={cn(
+					"space-y-2 rounded-lg border border-dashed p-2 pb-8 transition-colors",
+					zone.isOver && !disabled ? "border-accent bg-accent-soft" : "border-border",
 				)}
+			>
+				{items.map((id, index) => (
+					<LayoutItem key={id} id={id} list={droppableId} index={index} pageIndex={pageIndex} columnId={columnId} />
+				))}
 
-				<div
-					ref={setNodeRef}
-					className={cn(
-						"space-y-2 rounded-lg border border-dashed p-2 pb-8 transition-colors",
-						isOver && !disabled ? "border-accent bg-accent-soft" : "border-border",
-					)}
-				>
-					{items.map((id) => (
-						<SortableLayoutItem key={id} id={id} pageIndex={pageIndex} columnId={columnId} />
-					))}
-
-					{items.length === 0 && (
-						<div className="p-2 text-xs text-muted">
-							<Trans>Drag and drop sections here to move them between columns</Trans>
-						</div>
-					)}
-				</div>
+				{items.length === 0 && (
+					<div className="p-2 text-xs text-muted">
+						<Trans>Drag and drop sections here to move them between columns</Trans>
+					</div>
+				)}
 			</div>
-		</SortableContext>
-	);
-}
-
-type SortableLayoutItemProps = {
-	id: string;
-	pageIndex: number;
-	columnId: ColumnId;
-};
-
-function SortableLayoutItem({ id, pageIndex, columnId }: SortableLayoutItemProps) {
-	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-		id,
-		transition: DRAG_SETTLE,
-	});
-
-	const style: CSSProperties = { transform: CSS.Transform.toString(transform), transition };
-
-	return (
-		<LayoutItemContent
-			ref={setNodeRef}
-			id={id}
-			pageIndex={pageIndex}
-			columnId={columnId}
-			style={style}
-			isDragging={isDragging}
-			{...attributes}
-			{...listeners}
-		/>
+		</div>
 	);
 }
 
@@ -606,71 +538,57 @@ function SectionBreakItems({ id }: SectionBreakItemsProps) {
 	);
 }
 
-type LayoutItemContentProps = HTMLAttributes<HTMLDivElement> & {
+type LayoutItemProps = {
 	id: string;
-	ref?: Ref<HTMLDivElement>;
-	pageIndex?: number;
-	columnId?: ColumnId;
-	isDragging?: boolean;
-	isOverlay?: boolean;
+	list: string;
+	index: number;
+	pageIndex: number;
+	columnId: ColumnId;
 };
 
-function LayoutItemContent({
-	id,
-	ref,
-	pageIndex,
-	columnId,
-	isDragging,
-	isOverlay,
-	className,
-	style,
-	...rest
-}: LayoutItemContentProps) {
+/** A section in a page column: drag it by its grip or anywhere on the row, or use the menu to move it. */
+function LayoutItem({ id, list, index, pageIndex, columnId }: LayoutItemProps) {
 	const resume = useCurrentResume();
 	const title = resume ? resolveLayoutSectionTitle(resume.data, id) : id;
+	const sortable = useSortableItem({ id, list, index, label: title });
 
 	return (
 		<div
-			ref={ref}
-			style={style}
-			data-overlay={isOverlay ? "true" : undefined}
-			data-dragging={isDragging ? "true" : undefined}
+			{...mergeProps(sortable.dropTargetProps, sortable.dragProps)}
+			data-dragging={sortable.isDragging ? "true" : undefined}
 			className={cn(
-				"group/item flex cursor-grab touch-none items-center gap-x-2 rounded-lg bg-surface px-2 py-1.5 text-sm font-medium select-none",
+				"group/item relative flex cursor-grab items-center gap-x-2 rounded-lg bg-surface px-2 py-1.5 text-sm font-medium select-none",
 				"hover:bg-default active:cursor-grabbing active:bg-default",
-				"data-[overlay=true]:cursor-grabbing data-[overlay=true]:bg-overlay data-[overlay=true]:shadow-overlay",
-				"data-[dragging=true]:cursor-grabbing data-[dragging=true]:opacity-40",
-				className,
+				"data-[dragging=true]:opacity-40",
 			)}
-			{...rest}
 		>
-			<Icon
-				name="dots-six-vertical"
-				size={16}
-				className="text-muted opacity-60 transition-opacity group-hover/item:opacity-100"
+			<SortableEdge edge={sortable.edge} />
+			<SortableHandle
+				item={sortable}
+				dragSource={false}
+				label={t`Reorder ${title}`}
+				iconSize={16}
+				className="opacity-60 transition-opacity group-hover/item:opacity-100"
 			/>
 			<span className="min-w-0 flex-1 truncate">{title}</span>
 
-			{/* The drag overlay renders without a location; only real rows get the menu. */}
-			{!isOverlay && pageIndex !== undefined && columnId !== undefined && (
-				<Dropdown>
-					<IconButton
-						icon="dots-three-vertical"
-						iconSize={16}
-						size="sm"
-						label={t`Move section to another column or page`}
-						className="size-6 min-w-0 opacity-40 transition-opacity group-hover/item:opacity-100"
-					/>
+			<Dropdown>
+				<IconButton
+					icon="dots-three-vertical"
+					iconSize={16}
+					size="sm"
+					label={t`Move section to another column or page`}
+					className="size-6 min-w-0 opacity-40 transition-opacity group-hover/item:opacity-100"
+				/>
 
-					<Dropdown.Popover placement="bottom end">
-						<Dropdown.Menu>
-							<MoveToSubmenu id={id} pageIndex={pageIndex} columnId={columnId} />
-							<Separator />
-							<SectionBreakItems id={id} />
-						</Dropdown.Menu>
-					</Dropdown.Popover>
-				</Dropdown>
-			)}
+				<Dropdown.Popover placement="bottom end">
+					<Dropdown.Menu>
+						<MoveToSubmenu id={id} pageIndex={pageIndex} columnId={columnId} />
+						<Separator />
+						<SectionBreakItems id={id} />
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 		</div>
 	);
 }

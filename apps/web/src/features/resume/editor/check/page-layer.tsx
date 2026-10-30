@@ -179,7 +179,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 							/>
 							{stack === 0 && (
 								<div
-									className="wavy-underline absolute inset-x-0 -bottom-1 h-1"
+									className="absolute inset-x-0 -bottom-1 h-1 wavy-underline"
 									style={{ backgroundColor: tone.underline }}
 								/>
 							)}

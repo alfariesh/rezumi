@@ -3,6 +3,12 @@
  * section's progress as --p (0 to 1) and every motion below is derived from it with calc(), so React only re-renders
  * on coarse steps. Imported by index.css, not the route, so a server-prerendered page is styled at first paint.
  */
+@import "@fontsource-variable/figtree/wght.css";
+@import "@fontsource-variable/figtree/wght-italic.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource-variable/geist-mono/wght.css";
+
 /*
  * Write's lines and comment reveal by clip and translate instead of max-height (see write.tsx). Registered as lengths
  * so their em values resolve once, at the grid, and the comment's smaller text doesn't change the distances.
@@ -57,7 +63,9 @@
 }
 
 @theme {
-	/* Existing landing classes share the app's display and UI families. */
+	/* Instrument Serif has one weight (400 and italic): never set it semibold or bold. */
+	--font-display: "Instrument Serif", Georgia, serif;
+	--font-ui: "Figtree Variable", system-ui, sans-serif;
 	--font-anybody: var(--font-display);
 	--font-martian: var(--font-ui);
 	--font-receipt: "IBM Plex Mono", ui-monospace, monospace;
@@ -148,9 +156,27 @@
 	}
 }
 
+/* The Desk & Paper names the homepage's utilities use; their values are the `.landing` variables below. */
 @theme inline {
 	--shadow-paper: var(--paper-shadow);
 	--color-graphite: var(--graphite);
+
+	--color-bg: var(--bg);
+	--color-raised: var(--raised);
+	--color-line: var(--line);
+	--color-line-2: var(--line-2);
+	--color-ink: var(--ink);
+	--color-ink-2: var(--ink-2);
+	--color-ink-3: var(--ink-3);
+	--color-on-accent: var(--on-accent);
+	--color-accent-text: var(--accent-text);
+	--color-warn-soft: var(--warn-soft);
+	--color-warn-text: var(--warn-text);
+	--color-hover: var(--hover);
+
+	--shadow-e1: var(--shadow-1);
+	--shadow-e2: var(--shadow-2);
+	--shadow-e3: var(--shadow-3);
 }
 
 /*
@@ -189,9 +215,6 @@
 	--shadow-2: 0 1px 2px oklch(0.2 0.01 95 / 0.06), 0 10px 28px -8px oklch(0.2 0.01 95 / 0.18);
 	--shadow-3: 0 2px 6px oklch(0.2 0.01 95 / 0.08), 0 28px 64px -16px oklch(0.2 0.01 95 / 0.3);
 
-	/* Instrument Serif has one weight (400 and italic): never set it semibold or bold. */
-	--font-display: "Instrument Serif", Georgia, serif;
-	--font-ui: "Figtree Variable", system-ui, sans-serif;
 	--font-sans: var(--font-ui);
 	--font-mono: "Geist Mono Variable", ui-monospace, monospace;
 	--radius: 4px;

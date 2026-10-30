@@ -101,7 +101,7 @@ function FaqItem({ item, index }: FaqItemProps) {
 						<path data-stroke="circle" pathLength={1} d={circlePath} strokeWidth={2.6} />
 					</svg>
 				</span>
-				<h3 className="font-anybody flex-1 text-[clamp(21px,2vw,30px)] leading-[1.2] font-light tracking-[-.015em] text-pretty text-ink">
+				<h3 className="flex-1 font-anybody text-[clamp(21px,2vw,30px)] leading-[1.2] font-light tracking-[-.015em] text-pretty text-ink">
 					{/* Shrink-wrapped, so the underline runs under the words rather than the whole row. */}
 					<span className="relative inline-block pb-1.5">
 						{item.question}

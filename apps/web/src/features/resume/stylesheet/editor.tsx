@@ -59,16 +59,19 @@ type EditorCompartments = {
 	intelligence: Compartment;
 };
 
-/** CSS in the app's own inks, so it reads the same in light and dark. */
+/** CSS in HeroUI's semantic colours, so it reads the same in light and dark. */
 const highlightStyle = HighlightStyle.define([
-	{ tag: [tags.comment, tags.meta], color: "var(--ink-3)", fontStyle: "italic" },
-	{ tag: [tags.tagName, tags.className, tags.labelName], color: "var(--accent-text)" },
-	{ tag: [tags.propertyName, tags.attributeName], color: "var(--info-text)" },
-	{ tag: [tags.string, tags.number, tags.unit, tags.color, tags.atom], color: "var(--warn-text)" },
-	{ tag: [tags.keyword, tags.modifier, tags.definitionKeyword, tags.controlKeyword], color: "var(--danger-text)" },
-	{ tag: [tags.variableName, tags.function(tags.variableName)], color: "var(--ink)", fontWeight: "500" },
-	{ tag: [tags.punctuation, tags.operator, tags.bracket], color: "var(--ink-2)" },
-	{ tag: tags.invalid, color: "var(--danger-text)", textDecoration: "underline wavy" },
+	{ tag: [tags.comment, tags.meta], color: "var(--muted)", fontStyle: "italic" },
+	{ tag: [tags.tagName, tags.className, tags.labelName], color: "var(--accent-soft-foreground)" },
+	{ tag: [tags.propertyName, tags.attributeName], color: "var(--success-soft-foreground)" },
+	{ tag: [tags.string, tags.number, tags.unit, tags.color, tags.atom], color: "var(--warning-soft-foreground)" },
+	{
+		tag: [tags.keyword, tags.modifier, tags.definitionKeyword, tags.controlKeyword],
+		color: "var(--danger-soft-foreground)",
+	},
+	{ tag: [tags.variableName, tags.function(tags.variableName)], color: "var(--foreground)", fontWeight: "500" },
+	{ tag: [tags.punctuation, tags.operator, tags.bracket], color: "var(--muted)" },
+	{ tag: tags.invalid, color: "var(--danger-soft-foreground)", textDecoration: "underline wavy" },
 ]);
 
 const editorTheme = (dark: boolean): Extension =>
@@ -76,8 +79,8 @@ const editorTheme = (dark: boolean): Extension =>
 		{
 			"&": {
 				height: "100%",
-				backgroundColor: "var(--raised)",
-				color: "var(--ink)",
+				backgroundColor: "var(--overlay)",
+				color: "var(--foreground)",
 				direction: "ltr",
 			},
 			".cm-scroller": {
@@ -87,12 +90,12 @@ const editorTheme = (dark: boolean): Extension =>
 			},
 			".cm-content": { minHeight: "100%", padding: "0.75rem 0" },
 			".cm-gutters": {
-				backgroundColor: "var(--sunken)",
-				color: "var(--ink-3)",
-				borderRight: "1px solid var(--line)",
+				backgroundColor: "var(--default)",
+				color: "var(--muted)",
+				borderRight: "1px solid var(--separator)",
 			},
 			".cm-activeLine, .cm-activeLineGutter": {
-				backgroundColor: "var(--hover)",
+				backgroundColor: "var(--default)",
 			},
 			"&.cm-focused": { outline: "none" },
 		},
@@ -503,7 +506,7 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 				onFocusToggle={toggleFocus}
 			/>
 			{compiled?.source === source && compiled.diagnostics.length > 0 && (
-				<div role="alert" className="text-xs text-danger-text">
+				<div role="alert" className="text-xs text-danger-soft-foreground">
 					<p>
 						<Trans>Custom styles aren't applied. Fix these errors to apply them:</Trans>
 					</p>
@@ -514,26 +517,26 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 					</ul>
 				</div>
 			)}
-			<p className="text-xs text-ink-3">
+			<p className="text-xs text-muted">
 				<Trans>
 					PDF styles support a subset of CSS. Rotation, dashed and dotted borders, and some layout properties are
 					ignored.
 				</Trans>
 			</p>
 
-			<p className="flex items-center gap-1.5 text-xs text-ink-3">
+			<p className="flex items-center gap-1.5 text-xs text-muted">
 				<Icon name="highlighter" size={16} aria-hidden="true" className="shrink-0" />
 				<span>
 					<Trans>Click anything on the page to style it. The rule you're in is outlined on the page.</Trans>
 				</span>
 			</p>
 
-			<p className="flex items-center gap-1.5 text-xs text-ink-3">
+			<p className="flex items-center gap-1.5 text-xs text-muted">
 				<Icon name="book-open-text" size={16} aria-hidden="true" className="shrink-0" />
 				<span>
 					<Trans>Not sure what to write?</Trans>{" "}
 					<a
-						className="text-accent-text underline underline-offset-4"
+						className="text-accent-soft-foreground underline underline-offset-4"
 						href="https://docs.rezumi.app/applying-custom-styles"
 						target="_blank"
 						rel="noopener noreferrer"

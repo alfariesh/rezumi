@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { MotionGlobalConfig } from "motion/react";
 
 // Motion (JS) mirrors of the CSS motion tokens in packages/ui/src/styles/globals.css (--d1/--d2/--d3, --ease,
-// --ease-in-out-strong). Durations are in seconds, Motion's unit; multiply by 1000 for APIs that take ms (dnd-kit).
+// --ease-in-out-strong). Durations are in seconds, Motion's unit; multiply by 1000 for APIs that take ms.
 
 /** --ease / `ease-enter`: everything entering, exiting or changing state. */
 export const EASE = [0.2, 0.8, 0.2, 1] as const;
@@ -19,9 +19,6 @@ export const EXIT = 0.7;
 
 /** Springy, a little elastic: the mobile tab bar's marker hopping to the new tab (interruptible mid-flight). */
 export const TAB_SPRING = { type: "spring", duration: 0.4, bounce: 0.3 } as const;
-
-/** dnd-kit timing for things settling into place (sortable shuffles, drop animations): on-screen movement. */
-export const DRAG_SETTLE = { duration: D2 * 1000, easing: `cubic-bezier(${EASE_MOVE.join(", ")})` };
 
 /**
  * Hotkey mode switches land at once: the editor's mode-switch indicator skips its slide for this one change

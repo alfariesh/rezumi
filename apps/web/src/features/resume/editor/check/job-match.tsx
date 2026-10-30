@@ -211,7 +211,7 @@ export function JobMatchTab({ match }: JobMatchTabProps) {
 									<section
 										key={open.term}
 										aria-label={t`Add “${open.label}”`}
-										className={cn(ENTER_CLASS, "fields-on-card grid gap-3 rounded-xl bg-surface-secondary p-4")}
+										className={cn(ENTER_CLASS, "grid gap-3 rounded-xl bg-surface-secondary p-4 fields-on-card")}
 									>
 										<p className="text-sm text-muted">
 											<Plural

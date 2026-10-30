@@ -30,13 +30,13 @@ export function LandingHeader() {
 		<header
 			className={cn(
 				// The ink fades to light with Share's sky (--nt), so it never jumps against a half-dark background.
-				"night-ink fixed inset-x-0 top-0 z-70 flex h-16 items-center gap-7 ps-(--gutter) pe-[calc(var(--gutter)+30px)] whitespace-nowrap",
+				"fixed inset-x-0 top-0 z-70 flex h-16 items-center gap-7 ps-(--gutter) pe-[calc(var(--gutter)+30px)] whitespace-nowrap night-ink",
 			)}
 		>
 			<div
 				aria-hidden="true"
 				className={cn(
-					"header-taper pointer-events-none absolute inset-x-0 top-0 -z-1 h-28 transition-opacity duration-[.4s]",
+					"pointer-events-none absolute inset-x-0 top-0 -z-1 h-28 header-taper transition-opacity duration-[.4s]",
 					scrolled ? "opacity-[calc(1-var(--nt,0))]" : "opacity-0",
 				)}
 			/>
@@ -70,7 +70,7 @@ export function LandingHeader() {
 							aria-current={active ? "step" : undefined}
 							onClick={() => goToScene(scene, 0.04)}
 							className={cn(
-								"font-martian flex h-[34px] items-center gap-[7px] rounded-sm px-[11px] text-xs leading-none font-medium font-stretch-[87.5%] transition-opacity duration-300",
+								"flex h-[34px] items-center gap-[7px] rounded-sm px-[11px] font-martian text-xs leading-none font-medium font-stretch-[87.5%] transition-opacity duration-300",
 								!active && "opacity-65 hover:opacity-100",
 							)}
 						>
@@ -131,7 +131,7 @@ function GithubLink() {
 		<a
 			href={githubUrl}
 			aria-label={label}
-			className="font-martian hidden h-[38px] items-center gap-2 rounded-md px-2.5 text-[12px] leading-none font-medium font-stretch-[87.5%] tabular-nums transition-colors hover:bg-hover lg:flex"
+			className="hidden h-[38px] items-center gap-2 rounded-md px-2.5 font-martian text-[12px] leading-none font-medium font-stretch-[87.5%] tabular-nums transition-colors hover:bg-hover lg:flex"
 		>
 			<svg aria-hidden="true" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
 				<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
@@ -176,7 +176,7 @@ export function ThemeCord() {
 			aria-label={label}
 			title={label}
 			className={cn(
-				"night-ink fixed end-[clamp(8px,1.2vw,18px)] top-0 z-72 flex w-[30px] origin-top flex-col items-center [transition:height_.45s_cubic-bezier(.3,1.7,.5,1)]",
+				"fixed end-[clamp(8px,1.2vw,18px)] top-0 z-72 flex w-[30px] origin-top flex-col items-center night-ink [transition:height_.45s_cubic-bezier(.3,1.7,.5,1)]",
 				pulling ? "h-[124px]" : "h-[92px] hover:h-[112px]",
 				!pulledOnce && "motion-safe:animate-swing",
 			)}
@@ -187,7 +187,7 @@ export function ThemeCord() {
 					cx="15"
 					cy="22"
 					r="16"
-					className="dark:motion-safe:animate-flicker fill-[oklch(0.9_0.14_90)] opacity-0 blur-[6px] transition-opacity duration-500 dark:opacity-35"
+					className="fill-[oklch(0.9_0.14_90)] opacity-0 blur-[6px] transition-opacity duration-500 dark:opacity-35 dark:motion-safe:animate-flicker"
 				/>
 				<rect x="11.5" y="2" width="7" height="6" rx="1.2" fill="currentColor" opacity="0.75" />
 				<path d="M11.8 5h6.4M11.8 7h6.4" strokeWidth="0.8" opacity="0.6" className="stroke-bg" />
