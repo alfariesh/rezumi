@@ -27,7 +27,7 @@ function MessageScrollerViewport({ className, ...props }: ComponentProps<typeof 
 		<MessageScrollerPrimitive.Viewport
 			data-slot="message-scroller-viewport"
 			className={cn(
-				"size-full min-h-0 min-w-0 scroll-fade-b [scrollbar-width:thin] [scrollbar-gutter:stable] overflow-y-auto overscroll-contain focus-visible:outline-offset-[-2px] data-pending-scroll:invisible",
+				"size-full min-h-0 min-w-0 scroll-fade-b scrollbar [scrollbar-gutter:stable] overflow-y-auto overscroll-contain focus-visible:outline-offset-[-2px] data-pending-scroll:invisible",
 				className,
 			)}
 			{...props}

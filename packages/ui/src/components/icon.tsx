@@ -381,12 +381,15 @@ function Icon({ name, filled = false, size = 20, className, style, ...props }: I
 			className={cn("inline-block size-[1em] shrink-0", DIRECTIONAL_ICONS.has(name) && "rtl:-scale-x-100", className)}
 			style={{ fontSize: size, ...style }}
 		>
-			{/* Inline sizing, so the `size-4` rules buttons and menus give bare SVGs can't shrink the glyph. */}
+			{/*
+			 * Inline sizing and margin, so the rules buttons and menus give bare SVGs (`size-4`, and HeroUI's `-mx-0.5 my-0.5`
+			 * optical nudge) can't shrink the glyph or shift it off the centre of this box.
+			 */}
 			<HugeiconsIcon
 				icon={icons[name]}
 				size="100%"
 				strokeWidth={filled ? 2.25 : 1.5}
-				style={{ display: "block", width: "100%", height: "100%" }}
+				style={{ display: "block", width: "100%", height: "100%", margin: 0 }}
 			/>
 		</span>
 	);
