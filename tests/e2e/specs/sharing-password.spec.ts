@@ -7,7 +7,8 @@ test("password-protects a public resume and unlocks it as a visitor", async ({ b
 
 	const password = "e2e-secret-42";
 	const requirePassword = page.getByRole("switch", { name: "Require a password" });
-	await requirePassword.click();
+	// The switch's input is visually hidden inside its row; people press the row's label.
+	await page.getByText("Require a password", { exact: true }).click();
 	const dialog = page.getByRole("dialog", { name: "Protect your resume with a password" });
 	await dialog.getByLabel("Password", { exact: true }).fill(password);
 	await dialog.getByLabel("Confirm password", { exact: true }).fill("different-password");

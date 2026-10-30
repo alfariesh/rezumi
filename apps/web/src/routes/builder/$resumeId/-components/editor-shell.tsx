@@ -46,21 +46,24 @@ export function EditorShell() {
 	useResumeWebMcpTools(routeApi.useParams().resumeId);
 
 	return (
-		<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as EditorMode)} className="contents">
-			<EditorFrame
-				editorLayout={editorLayout}
-				bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
-				mode={mode}
-				panelLabel={panelLabel(mode)}
-				panel={<ModePanel mode={mode} />}
-				page={<Outlet />}
-				assistant={<ResumeAssistant />}
-				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
-			>
-				<DownloadSheet />
-				<EditorHotkeys onModeChange={setMode} />
-			</EditorFrame>
-		</Tabs>
+		<>
+			<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as EditorMode)} className="contents">
+				<EditorFrame
+					editorLayout={editorLayout}
+					bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
+					mode={mode}
+					panelLabel={panelLabel(mode)}
+					panel={<ModePanel mode={mode} />}
+					page={<Outlet />}
+					assistant={<ResumeAssistant />}
+					mobile={<MobileBody mode={mode} onModeChange={setMode} />}
+				>
+					<EditorHotkeys onModeChange={setMode} />
+				</EditorFrame>
+			</Tabs>
+			{/* Outside Tabs: React Aria would collect the sheet's own tabs into the editor's mode tabs. */}
+			<DownloadSheet />
+		</>
 	);
 }
 

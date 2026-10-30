@@ -45,21 +45,24 @@ export function LetterShell() {
 	useLetterWebMcpTools(routeApi.useParams().coverLetterId);
 
 	return (
-		<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as LetterMode)} className="contents">
-			<EditorFrame
-				editorLayout={editorLayout}
-				bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
-				mode={mode}
-				panelLabel={mode === "design" ? t`Design` : t`Letter details`}
-				panel={<ModePanel mode={mode} />}
-				page={<LetterPage />}
-				assistant={<LetterAssistant />}
-				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
-			>
-				<LetterDownloadSheet />
-				<LetterHotkeys onModeChange={setMode} />
-			</EditorFrame>
-		</Tabs>
+		<>
+			<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as LetterMode)} className="contents">
+				<EditorFrame
+					editorLayout={editorLayout}
+					bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
+					mode={mode}
+					panelLabel={mode === "design" ? t`Design` : t`Letter details`}
+					panel={<ModePanel mode={mode} />}
+					page={<LetterPage />}
+					assistant={<LetterAssistant />}
+					mobile={<MobileBody mode={mode} onModeChange={setMode} />}
+				>
+					<LetterHotkeys onModeChange={setMode} />
+				</EditorFrame>
+			</Tabs>
+			{/* Outside Tabs: React Aria would collect the sheet's own tabs into the editor's mode tabs. */}
+			<LetterDownloadSheet />
+		</>
 	);
 }
 

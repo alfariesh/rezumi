@@ -48,9 +48,8 @@ export function ProviderSetup() {
 									</Disclosure.Trigger>
 								</Disclosure.Heading>
 								<Disclosure.Content>
-									<Disclosure.Body>
-										<ConnectForm choice={choice} />
-									</Disclosure.Body>
+									{/* Closed sections keep no form, so each provider's fields exist only while it is open. */}
+									<Disclosure.Body>{expanded && <ConnectForm choice={choice} />}</Disclosure.Body>
 								</Disclosure.Content>
 							</Disclosure>
 						</li>
