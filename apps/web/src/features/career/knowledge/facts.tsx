@@ -468,7 +468,10 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 					</AnimatePresence>
 				</div>
 
-				<div className="flex w-28 flex-none flex-col items-end gap-1 max-sm:w-20">
+				<div className="flex flex-none items-center gap-2.5 max-sm:flex-col-reverse max-sm:items-end max-sm:gap-1">
+					<span className="text-end text-xs whitespace-nowrap text-muted">
+						{on ? t`Used in coaching` : t`Not used`}
+					</span>
 					<Switch
 						isSelected={on}
 						aria-label={t`Use in coaching: ${excerpt}`}
@@ -480,7 +483,6 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 							</Switch.Control>
 						</Switch.Content>
 					</Switch>
-					<span className="text-end text-xs text-muted">{on ? t`Used in coaching` : t`Not used`}</span>
 				</div>
 			</div>
 		</CollapseRow>
