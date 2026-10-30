@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -7,7 +7,6 @@ import { useState } from "react";
 import z from "zod";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { authClient } from "@/libs/auth/client";
@@ -93,6 +92,7 @@ export function ForgotPasswordPage() {
 							<FormControl
 								render={
 									<Input
+										fullWidth
 										type="email"
 										autoComplete="email"
 										placeholder="john.doe@example.com"

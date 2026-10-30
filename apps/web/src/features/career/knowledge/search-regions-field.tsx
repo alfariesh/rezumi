@@ -1,4 +1,5 @@
 import type { SearchRegionsAction } from "@rezumi/utils/region";
+import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -14,7 +15,6 @@ import {
 	useFilter,
 } from "@rezumi/ui/components/combobox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import {
 	countryName,
 	MAX_SEARCH_REGIONS,
@@ -115,10 +115,7 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 						<Trans>Add a country</Trans>
 					</ComboboxTrigger>
 					<ComboboxContent aria-label={t`Countries`}>
-						<ComboboxInput
-							placeholder={t`Search countries`}
-							render={<Input className="border-none focus-visible:border-none focus-visible:ring-0" />}
-						/>
+						<ComboboxInput placeholder={t`Search countries`} render={<Input fullWidth className="shadow-none" />} />
 						<ComboboxEmpty>
 							<Trans>No country matches.</Trans>
 						</ComboboxEmpty>

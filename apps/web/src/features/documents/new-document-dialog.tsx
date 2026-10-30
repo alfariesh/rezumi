@@ -1,6 +1,6 @@
 import type { ImportKind } from "@/features/resume/import/read-file";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -9,7 +9,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatFileSize } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -628,6 +627,7 @@ function CopyForJob({ initialSourceId, initialJobId, onBack, onCreated }: CopyFo
 					<Trans>Name</Trans>
 				</label>
 				<Input
+					fullWidth
 					id={nameId}
 					value={name ?? suggested}
 					maxLength={100}

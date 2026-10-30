@@ -1,4 +1,4 @@
-import { Button, buttonVariants, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Input, InputOTP, REGEXP_ONLY_DIGITS, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -8,8 +8,6 @@ import z from "zod";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { OTPField } from "@rezumi/ui/components/otp-field";
 import { toast } from "@rezumi/ui/components/toast";
 import { getAuthRedirectOptions, getOAuthSignInOptions, isOAuthRedirect } from "../redirect";
 import { authClient } from "@/libs/auth/client";
@@ -119,6 +117,7 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 								render={
 									backupCode ? (
 										<Input
+											fullWidth
 											type="text"
 											maxLength={11}
 											className="max-w-xs"
@@ -128,14 +127,25 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 											onChange={(event) => field.handleChange(event.target.value)}
 										/>
 									) : (
-										<OTPField
-											length={6}
-											autoSubmit
-											name={field.name}
-											value={field.state.value}
-											onBlur={field.handleBlur}
-											onValueChange={field.handleChange}
-										/>
+										(props) => (
+											<InputOTP
+												{...props}
+												isInvalid={Boolean(props["aria-invalid"])}
+												maxLength={6}
+												pattern={REGEXP_ONLY_DIGITS}
+												name={field.name}
+												value={field.state.value}
+												onBlur={field.handleBlur}
+												onChange={field.handleChange}
+												onComplete={() => void form.handleSubmit()}
+											>
+												<InputOTP.Group>
+													{Array.from({ length: 6 }, (_, index) => (
+														<InputOTP.Slot key={index} index={index} />
+													))}
+												</InputOTP.Group>
+											</InputOTP>
+										)
 									)
 								}
 							/>

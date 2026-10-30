@@ -1,6 +1,6 @@
 import type { ApplicationSummary } from "../types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -10,10 +10,7 @@ import { interviewDetailsSchema } from "@rezumi/schema/applications/data";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateId } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
@@ -348,6 +345,7 @@ export function InterviewDialog({
 					<div className="grid gap-2.5 sm:grid-cols-3">
 						<Field label={t`Date`} htmlFor={`${id}-date`}>
 							<Input
+								fullWidth
 								id={`${id}-date`}
 								type="date"
 								required
@@ -358,6 +356,7 @@ export function InterviewDialog({
 						</Field>
 						<Field label={t`Time · ${draft.timezone}`} htmlFor={`${id}-time`}>
 							<Input
+								fullWidth
 								id={`${id}-time`}
 								type="time"
 								required
@@ -417,6 +416,7 @@ export function InterviewDialog({
 
 					<Field label={t`Location`} htmlFor={`${id}-location`}>
 						<Input
+							fullWidth
 							id={`${id}-location`}
 							value={draft.location}
 							maxLength={500}
@@ -432,6 +432,7 @@ export function InterviewDialog({
 						{draft.participants.map((participant, index) => (
 							<div key={participant.id} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_32px] gap-2">
 								<Input
+									fullWidth
 									aria-label={t`Name of person ${index + 1}`}
 									placeholder={t`Name`}
 									value={participant.name}
@@ -439,6 +440,7 @@ export function InterviewDialog({
 									onChange={(event) => setParticipant(participant.id, { name: event.target.value })}
 								/>
 								<Input
+									fullWidth
 									aria-label={t`Role of person ${index + 1}`}
 									placeholder={t`Role`}
 									value={participant.role}
@@ -458,6 +460,7 @@ export function InterviewDialog({
 									}
 								/>
 								<Input
+									fullWidth
 									type="url"
 									aria-label={t`Profile link of person ${index + 1}`}
 									placeholder={t`Profile link (optional)`}
@@ -491,7 +494,8 @@ export function InterviewDialog({
 					</fieldset>
 
 					<Field label={t`What they asked you to prepare`} htmlFor={`${id}-notes`}>
-						<Textarea
+						<TextArea
+							fullWidth
 							id={`${id}-notes`}
 							rows={2}
 							value={draft.notes}
@@ -565,9 +569,7 @@ type FieldProps = { label: string; htmlFor?: string; children: React.ReactNode }
 function Field({ label, htmlFor, children }: FieldProps) {
 	return (
 		<div className="grid content-start gap-1.5">
-			<Label htmlFor={htmlFor} className="text-xs font-medium text-ink-2">
-				{label}
-			</Label>
+			<Label htmlFor={htmlFor}>{label}</Label>
 			{children}
 		</div>
 	);

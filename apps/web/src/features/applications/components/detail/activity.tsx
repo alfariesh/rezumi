@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
 import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -21,8 +21,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { interviewKindOf } from "../../interviews";
 import { getStageColor, getStageLabel } from "../../stages";
@@ -114,6 +112,7 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 				}}
 			>
 				<Input
+					fullWidth
 					aria-label={t`Add a note`}
 					placeholder={t`Add a note…`}
 					value={note}
@@ -232,7 +231,8 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 							}}
 						>
 							{shownEdit.entry.type === "note" && (
-								<Textarea
+								<TextArea
+									fullWidth
 									aria-label={t`Note`}
 									rows={3}
 									value={shownEdit.text}
@@ -243,6 +243,7 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 								/>
 							)}
 							<Input
+								fullWidth
 								type="date"
 								aria-label={t`Date`}
 								value={shownEdit.date}

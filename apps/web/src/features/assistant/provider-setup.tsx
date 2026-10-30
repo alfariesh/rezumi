@@ -1,5 +1,5 @@
 import type { AIProvider } from "@rezumi/ai/types";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,8 +7,6 @@ import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { cn } from "@rezumi/utils/style";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
@@ -131,6 +129,7 @@ function ConnectForm({ choice }: { choice: Choice }) {
 						<Trans>Base URL</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-url`}
 						value={baseURL}
 						placeholder="https://…/v1"
@@ -143,6 +142,7 @@ function ConnectForm({ choice }: { choice: Choice }) {
 					<Trans>API key</Trans>
 				</Label>
 				<Input
+					fullWidth
 					id={`${id}-key`}
 					type="password"
 					autoComplete="off"
@@ -154,7 +154,7 @@ function ConnectForm({ choice }: { choice: Choice }) {
 				<Label htmlFor={`${id}-model`}>
 					<Trans>Model</Trans>
 				</Label>
-				<Input id={`${id}-model`} value={model} onChange={(event) => setModel(event.target.value)} />
+				<Input fullWidth id={`${id}-model`} value={model} onChange={(event) => setModel(event.target.value)} />
 			</div>
 			{failure && (
 				<p role="alert" className="text-xs text-danger-text">

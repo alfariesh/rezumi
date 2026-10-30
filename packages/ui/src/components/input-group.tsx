@@ -4,7 +4,6 @@ import type * as React from "react";
 import { Button } from "@heroui/react";
 import { cva } from "class-variance-authority";
 import { useFormControl } from "@rezumi/ui/components/form";
-import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 
 function InputGroup({
@@ -149,13 +148,13 @@ function InputGroupInput({
 	const invalid = ariaInvalidProp ?? formControl["aria-invalid"];
 
 	return (
-		<Input
+		<input
 			data-slot="input-group-control"
 			id={controlId}
 			aria-describedby={describedBy}
 			aria-invalid={invalid}
 			className={cn(
-				"h-full flex-1 rounded-none border-0 bg-transparent shadow-none focus:shadow-none disabled:bg-transparent aria-invalid:focus:shadow-none",
+				"h-full min-w-0 flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-muted disabled:cursor-not-allowed",
 				className,
 			)}
 			{...props}

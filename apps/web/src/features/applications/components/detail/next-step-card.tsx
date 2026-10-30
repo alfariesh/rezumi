@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -21,8 +21,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -169,13 +167,20 @@ function FollowUpDialog({ application, open, onOpenChange }: FollowUpDialogProps
 						<Label htmlFor={`${id}-date`}>
 							<Trans>Date</Trans>
 						</Label>
-						<Input id={`${id}-date`} type="date" value={date} onChange={(event) => setDate(event.target.value)} />
+						<Input
+							fullWidth
+							id={`${id}-date`}
+							type="date"
+							value={date}
+							onChange={(event) => setDate(event.target.value)}
+						/>
 					</div>
 					<div className="grid gap-1.5">
 						<Label htmlFor={`${id}-note`}>
 							<Trans>What to do</Trans>
 						</Label>
 						<Input
+							fullWidth
 							id={`${id}-note`}
 							value={note}
 							placeholder={t`Email the recruiter`}

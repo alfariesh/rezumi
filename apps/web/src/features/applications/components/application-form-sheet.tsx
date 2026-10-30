@@ -1,7 +1,7 @@
 import type { Application } from "../types";
 import type { FileAttachment } from "./file-attachment-field";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
-import { Button } from "@heroui/react";
+import { Button, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,8 +9,6 @@ import { useId, useState } from "react";
 import { STAGES } from "@rezumi/schema/applications/data";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@rezumi/ui/components/accordion";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import {
 	Sheet,
 	SheetContent,
@@ -19,7 +17,6 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "@rezumi/ui/components/sheet";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryKey } from "../queries";
 import { FileAttachmentField } from "./file-attachment-field";
@@ -157,7 +154,8 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							keep the text with this application for match scoring and tailoring.
 						</Trans>
 					</p>
-					<Textarea
+					<TextArea
+						fullWidth
 						// Fixed height: the accordion panel measures its content once, so a textarea that
 						// grew with the pasted text would overflow the clipped panel.
 						className="field-sizing-fixed h-40"
@@ -300,7 +298,8 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 					{!aiEnabled && (
 						<Field label={t`Job description`}>
 							{(id) => (
-								<Textarea
+								<TextArea
+									fullWidth
 									id={id}
 									rows={6}
 									maxLength={MAX_JOB_DESCRIPTION_CHARS}
@@ -327,10 +326,14 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 					)}
 
 					<Field label={t`Company`} required>
-						{(id) => <Input id={id} value={form.company} onChange={(event) => set("company", event.target.value)} />}
+						{(id) => (
+							<Input fullWidth id={id} value={form.company} onChange={(event) => set("company", event.target.value)} />
+						)}
 					</Field>
 					<Field label={t`Role / title`} required>
-						{(id) => <Input id={id} value={form.role} onChange={(event) => set("role", event.target.value)} />}
+						{(id) => (
+							<Input fullWidth id={id} value={form.role} onChange={(event) => set("role", event.target.value)} />
+						)}
 					</Field>
 
 					<div className="grid grid-cols-2 gap-3">
@@ -338,6 +341,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							{(id) => (
 								<>
 									<Input
+										fullWidth
 										id={id}
 										value={form.location}
 										list="application-locations"
@@ -353,7 +357,9 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							)}
 						</Field>
 						<Field label={t`Salary range`}>
-							{(id) => <Input id={id} value={form.salary} onChange={(event) => set("salary", event.target.value)} />}
+							{(id) => (
+								<Input fullWidth id={id} value={form.salary} onChange={(event) => set("salary", event.target.value)} />
+							)}
 						</Field>
 					</div>
 
@@ -362,6 +368,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 							{(id) => (
 								<>
 									<Input
+										fullWidth
 										id={id}
 										value={form.source}
 										list="application-sources"
@@ -392,6 +399,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 					<Field label={t`Job posting link`}>
 						{(id) => (
 							<Input
+								fullWidth
 								id={id}
 								type="url"
 								value={form.sourceUrl}
@@ -405,6 +413,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 						<Field label={t`Stage date`}>
 							{(id) => (
 								<Input
+									fullWidth
 									id={id}
 									type="date"
 									value={form.stageEnteredAt}
@@ -461,6 +470,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 						<Field label={t`Follow-up date`}>
 							{(id) => (
 								<Input
+									fullWidth
 									id={id}
 									type="date"
 									value={form.followUpAt}
@@ -471,6 +481,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 						<Field label={t`Follow-up note`}>
 							{(id) => (
 								<Input
+									fullWidth
 									id={id}
 									value={form.followUpNote}
 									onChange={(event) => set("followUpNote", event.target.value)}
@@ -481,7 +492,8 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 
 					<Field label={t`Notes`}>
 						{(id) => (
-							<Textarea
+							<TextArea
+								fullWidth
 								id={id}
 								value={form.notes}
 								rows={3}
@@ -516,7 +528,7 @@ function Field({ label, required, children }: FieldProps) {
 	const id = useId();
 	return (
 		<div className="grid gap-1.5">
-			<Label htmlFor={id} className="text-xs text-ink-3">
+			<Label htmlFor={id}>
 				{label}
 				{required && <span className="text-danger-text"> *</span>}
 			</Label>
@@ -549,6 +561,7 @@ function TagsField({ id, value, suggestions, onChange }: TagsFieldProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			<Input
+				fullWidth
 				id={id}
 				value={draft}
 				list="application-tags"

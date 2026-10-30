@@ -2,7 +2,7 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,10 +10,7 @@ import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -175,6 +172,7 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 					<Trans>What did they ask?</Trans>
 				</Label>
 				<Input
+					fullWidth
 					id={`${id}-question`}
 					value={draft.question}
 					readOnly={readOnly}
@@ -186,13 +184,14 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 				<Label htmlFor={`${id}-answer`}>
 					<Trans>What did you say, as close as you remember?</Trans>
 				</Label>
-				<Textarea
+				<TextArea
+					fullWidth
 					id={`${id}-answer`}
 					value={draft.answer}
 					readOnly={readOnly}
 					maxLength={6000}
 					onChange={(event) => change({ answer: event.target.value })}
-					className="min-h-21 px-3 py-2.5 text-sm leading-[21px] pointer-coarse:text-base"
+					className="min-h-21"
 				/>
 			</div>
 			<div className="grid gap-1.5">

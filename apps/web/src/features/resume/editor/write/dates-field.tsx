@@ -1,11 +1,11 @@
 import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
+import { inputVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { formatYearMonth, getPresentLabel, toYearMonth } from "@rezumi/schema/resume/dates";
 import { readSingleDate } from "@rezumi/schema/resume/period";
 import { Icon } from "@rezumi/ui/components/icon";
-import { inputBaseClassName } from "@rezumi/ui/components/input";
 import { Switch } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 
@@ -63,7 +63,7 @@ function MonthYearInput({
 				disabled={disabled}
 				placeholder={t`Mar 2022`}
 				value={placeholderValue ?? typed ?? formatted}
-				className={cn(inputBaseClassName, "h-9 ps-9 disabled:bg-sunken disabled:text-ink-2 disabled:opacity-100")}
+				className={cn(inputVariants({ fullWidth: true }), "ps-9")}
 				onChange={(event) => {
 					setTyped(event.target.value);
 					const next = readTypedDate(event.target.value, locale);

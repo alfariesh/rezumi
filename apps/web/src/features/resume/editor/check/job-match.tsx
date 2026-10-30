@@ -1,7 +1,7 @@
 import type { JdTermMatch } from "@rezumi/resume/ats-pdf";
 import type { ResumeData, SkillItem } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
-import { Button } from "@heroui/react";
+import { Button, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -9,10 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useMemo, useState } from "react";
 import { buildMarkdown } from "@rezumi/resume/markdown";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
 import { generateId } from "@rezumi/utils/string";
@@ -441,7 +438,8 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 				<p className="text-[13px] leading-[19px] text-ink-2">
 					<Trans>This application has no posting saved yet. Paste it to match against it.</Trans>
 				</p>
-				<Textarea
+				<TextArea
+					fullWidth
 					aria-label={t`Job posting`}
 					rows={5}
 					maxLength={MAX_POSTING_CHARS}
@@ -478,7 +476,8 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 			<span className="text-center text-xs text-ink-3">
 				<Trans>or</Trans>
 			</span>
-			<Textarea
+			<TextArea
+				fullWidth
 				aria-label={t`Job posting`}
 				rows={4}
 				maxLength={MAX_POSTING_CHARS}
@@ -552,13 +551,25 @@ function SaveAsApplication() {
 					<Label htmlFor={companyId}>
 						<Trans>Company</Trans>
 					</Label>
-					<Input id={companyId} required value={company} onChange={(event) => setCompany(event.target.value)} />
+					<Input
+						fullWidth
+						id={companyId}
+						required
+						value={company}
+						onChange={(event) => setCompany(event.target.value)}
+					/>
 				</div>
 				<div className="grid gap-1">
 					<Label htmlFor={`${companyId}-role`}>
 						<Trans>Role</Trans>
 					</Label>
-					<Input id={`${companyId}-role`} required value={role} onChange={(event) => setRole(event.target.value)} />
+					<Input
+						fullWidth
+						id={`${companyId}-role`}
+						required
+						value={role}
+						onChange={(event) => setRole(event.target.value)}
+					/>
 				</div>
 			</div>
 			<div className="flex gap-1.5">

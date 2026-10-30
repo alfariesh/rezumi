@@ -1,11 +1,10 @@
 import type { CsvField } from "../csv";
-import { Button } from "@heroui/react";
+import { Button, Label, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import {
 	Sheet,
@@ -15,7 +14,6 @@ import {
 	SheetHeader,
 	SheetTitle,
 } from "@rezumi/ui/components/sheet";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { autoMapHeaders, CSV_FIELDS, mapCsvToApplications, parseCsv, rowsToCsv } from "../csv";
@@ -159,7 +157,8 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 						<Label htmlFor="import-csv-text">
 							<Trans>CSV data</Trans>
 						</Label>
-						<Textarea
+						<TextArea
+							fullWidth
 							id="import-csv-text"
 							value={text}
 							rows={6}

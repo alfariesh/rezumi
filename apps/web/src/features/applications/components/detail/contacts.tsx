@@ -1,11 +1,10 @@
 import type { Contact } from "@rezumi/schema/applications/data";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { contactSchema } from "@rezumi/schema/applications/data";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 
 const EMPTY_CONTACT = { name: "", role: "", type: "", email: "", phone: "" };
@@ -51,6 +50,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 
 	const field = (key: keyof typeof EMPTY_CONTACT, label: string, type = "text") => (
 		<Input
+			fullWidth
 			aria-label={label}
 			placeholder={label}
 			type={type}
@@ -113,6 +113,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 					<div className="grid grid-cols-2 gap-2">
 						{field("role", t`Role (optional)`)}
 						<Input
+							fullWidth
 							aria-label={t`Label`}
 							placeholder={t`Label, e.g. Recruiter`}
 							list={`${id}-types`}

@@ -1,6 +1,6 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -16,7 +16,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -391,10 +390,10 @@ function InlineFact({ label, value, onSave }: InlineFactProps) {
 					</button>
 				) : (
 					<Input
+						fullWidth
 						id={id}
 						autoFocus
 						value={draft}
-						className="h-8"
 						onChange={(event) => setDraft(event.target.value)}
 						onBlur={commit}
 						onKeyDown={(event) => {
@@ -454,7 +453,7 @@ function Tags({ application }: { application: Application }) {
 						aria-label={t`Add a tag`}
 						placeholder={t`Add a tag`}
 						value={tag}
-						className="h-7 w-28 text-xs"
+						className="w-28 text-xs"
 						onChange={(event) => setTag(event.target.value)}
 					/>
 				</form>
@@ -521,6 +520,7 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 							<Trans>Application date</Trans>
 						</label>
 						<Input
+							fullWidth
 							id={`${id}-date`}
 							type="date"
 							required

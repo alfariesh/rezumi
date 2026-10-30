@@ -1,5 +1,5 @@
 import type { DialogProps } from "../store";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -15,7 +15,6 @@ import {
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateRandomName } from "@rezumi/utils/slug";
 import { useDialogStore } from "../store";
@@ -133,6 +132,7 @@ export function ResumeDialog({ mode, data }: ResumeDialogProps) {
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											minLength={1}
 											maxLength={64}
 											name={field.name}

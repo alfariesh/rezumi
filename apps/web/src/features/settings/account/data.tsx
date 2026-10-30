@@ -1,4 +1,4 @@
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,7 +14,6 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@rezumi/ui/components/alert-dialog";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { SettingsRow, SettingsSection } from "../section";
@@ -122,10 +121,10 @@ function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogProps) {
 						</Trans>
 					</label>
 					<Input
+						fullWidth
 						id={id}
 						value={typed}
 						autoComplete="off"
-						className="focus-visible:border-danger focus-visible:shadow-[0_0_0_3px_var(--danger-soft)]"
 						onChange={(event) => setTyped(event.target.value)}
 					/>
 				</div>

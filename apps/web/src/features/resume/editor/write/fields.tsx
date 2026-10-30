@@ -1,13 +1,13 @@
 import type { Entry } from "./model";
 import type { Website } from "@rezumi/schema/resume/data";
 import type { ComponentProps, ReactNode } from "react";
+import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useCallback, useState } from "react";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@rezumi/ui/components/collapsible";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 import { findEntry } from "./model";
 import { URLInput } from "@/components/input/url-input";
@@ -67,7 +67,7 @@ const validateUrl: Validator = (value) => {
 	}
 };
 
-type TextFieldProps = Omit<ComponentProps<typeof Input>, "value" | "onChange"> & {
+type TextFieldProps = Omit<ComponentProps<"input">, "value" | "onChange"> & {
 	label: ReactNode;
 	value: string;
 	onChange: (value: string) => void;
@@ -98,14 +98,15 @@ export function TextField({
 			<FormControl
 				render={
 					<Input
+						fullWidth
 						value={value}
 						onChange={(event) => onChange(event.target.value)}
 						onBlur={(event) => {
 							setTouched(true);
 							onBlur?.(event);
 						}}
-						className={className}
-						{...props}
+						className={cn(className)}
+						{...(props as ComponentProps<typeof Input>)}
 					/>
 				}
 			/>

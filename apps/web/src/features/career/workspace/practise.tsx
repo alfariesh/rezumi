@@ -2,7 +2,7 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, Spinner, Tooltip } from "@heroui/react";
+import { Button, Label, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -13,11 +13,9 @@ import { z } from "zod";
 import { AI_VOICE_MODELS } from "@rezumi/ai/types";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useCoachKnowledge } from "../coach-thread";
@@ -405,14 +403,15 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 	const position = (index % questions.length) + 1;
 	const total = questions.length;
 	const answerField = (
-		<Textarea
+		<TextArea
+			fullWidth
 			id={`${id}-answer`}
 			aria-labelledby={`${id}-heading`}
 			value={answer}
 			maxLength={6000}
 			placeholder={t`About 90 seconds when spoken`}
 			onChange={(event) => setAnswer(event.target.value)}
-			className="min-h-28 px-3.5 py-3 text-[15px] leading-[23px] pointer-coarse:text-base"
+			className="min-h-28"
 		/>
 	);
 

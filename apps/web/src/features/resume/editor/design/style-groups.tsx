@@ -4,12 +4,11 @@ import type { WritableDraft } from "immer";
 import type { CSSProperties } from "react";
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createContext, useContext, useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Slider } from "@rezumi/ui/components/slider";
 import { SwitchRow } from "@rezumi/ui/components/switch";
@@ -216,6 +215,7 @@ export function ColorGroup() {
 				<span className="size-9 shrink-0 rounded-lg border border-line-2" style={{ backgroundColor: normalized }} />
 				<Input
 					aria-label={t`Custom color (hex)`}
+					fullWidth
 					value={hex}
 					spellCheck={false}
 					className="font-mono"

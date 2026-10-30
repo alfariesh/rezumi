@@ -3,7 +3,7 @@ import type { careerScheduleInputSchema } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type z from "zod";
-import { Button, buttonVariants, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Input, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -11,7 +11,6 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import { m } from "motion/react";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
@@ -294,6 +293,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									>
 										{(props) => (
 											<Input
+												fullWidth
 												{...props}
 												value={draft.query}
 												maxLength={500}
@@ -437,6 +437,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 										<Field label={dateLabel}>
 											{(props) => (
 												<Input
+													fullWidth
 													{...props}
 													type="date"
 													aria-invalid={Boolean(shownError("when")) || undefined}
@@ -450,6 +451,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 										<Field label={t`Time · ${timeZone}`}>
 											{(props) => (
 												<Input
+													fullWidth
 													{...props}
 													type="time"
 													aria-invalid={Boolean(shownError("when")) || undefined}

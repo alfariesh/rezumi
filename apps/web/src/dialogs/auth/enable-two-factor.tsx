@@ -1,5 +1,5 @@
 import type { DialogProps } from "../store";
-import { Button } from "@heroui/react";
+import { Button, Input, InputOTP, REGEXP_ONLY_DIGITS } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -18,8 +18,6 @@ import {
 } from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { OTPField } from "@rezumi/ui/components/otp-field";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { useDialogStore } from "../store";
@@ -232,7 +230,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 							{totpUri && secret && (
 								<>
 									<div className="flex items-center gap-x-2">
-										<Input readOnly value={secret} className="font-mono text-sm" />
+										<Input fullWidth readOnly value={secret} className="font-mono text-sm" />
 										<Button isIconOnly variant="ghost" onPress={() => handleCopySecret()}>
 											<span className="sr-only">
 												{t({
@@ -267,16 +265,25 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 												<Trans>Verification code</Trans>
 											</FormLabel>
 											<FormControl
-												render={
-													<OTPField
-														length={6}
-														autoSubmit
+												render={(props) => (
+													<InputOTP
+														{...props}
+														isInvalid={Boolean(props["aria-invalid"])}
+														maxLength={6}
+														pattern={REGEXP_ONLY_DIGITS}
 														name={field.name}
 														value={field.state.value}
 														onBlur={field.handleBlur}
-														onValueChange={field.handleChange}
-													/>
-												}
+														onChange={field.handleChange}
+														onComplete={() => void verifyForm.handleSubmit()}
+													>
+														<InputOTP.Group>
+															{Array.from({ length: 6 }, (_, index) => (
+																<InputOTP.Slot key={index} index={index} />
+															))}
+														</InputOTP.Group>
+													</InputOTP>
+												)}
 											/>
 											<FormMessage errors={field.state.meta.errors} />
 										</FormItem>

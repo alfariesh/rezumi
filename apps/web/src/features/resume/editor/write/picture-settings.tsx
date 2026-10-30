@@ -1,6 +1,6 @@
 import type { Area } from "react-easy-crop";
 import type z from "zod";
-import { Button, ButtonGroup } from "@heroui/react";
+import { Button, ButtonGroup, Input, InputGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -17,8 +17,6 @@ import {
 } from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@rezumi/ui/components/input-group";
 import { Slider } from "@rezumi/ui/components/slider";
 import { toast } from "@rezumi/ui/components/toast";
 import "react-easy-crop/react-easy-crop.css";
@@ -94,6 +92,7 @@ function PicturePreviewControls({
 							<FormControl
 								render={
 									<Input
+										fullWidth
 										name={field.name}
 										value={field.state.value}
 										onBlur={field.handleBlur}
@@ -178,7 +177,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						<FormLabel>
 							<Trans>Size</Trans>
 						</FormLabel>
-						<InputGroup>
+						<InputGroup fullWidth>
 							<FormControl
 								render={
 									<NumberInput
@@ -196,9 +195,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 								}
 							/>
 
-							<InputGroupAddon align="inline-end">
-								<InputGroupText>pt</InputGroupText>
-							</InputGroupAddon>
+							<InputGroup.Suffix>pt</InputGroup.Suffix>
 						</InputGroup>
 						<FormMessage errors={field.state.meta.errors} />
 					</FormItem>
@@ -211,7 +208,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						<FormLabel>
 							<Trans>Rotation</Trans>
 						</FormLabel>
-						<InputGroup>
+						<InputGroup fullWidth>
 							<FormControl
 								render={
 									<NumberInput
@@ -229,9 +226,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									/>
 								}
 							/>
-							<InputGroupAddon align="inline-end">
-								<InputGroupText>°</InputGroupText>
-							</InputGroupAddon>
+							<InputGroup.Suffix>°</InputGroup.Suffix>
 						</InputGroup>
 						<p className="text-xs text-ink-3">
 							<Trans>Rotation isn't supported by PDF rendering.</Trans>
@@ -247,7 +242,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Aspect ratio</Trans>
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<InputGroup>
+							<InputGroup fullWidth>
 								<FormControl
 									render={
 										<NumberInput
@@ -322,7 +317,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Border radius</Trans>
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<InputGroup>
+							<InputGroup fullWidth>
 								<FormControl
 									render={
 										<NumberInput
@@ -339,7 +334,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 										/>
 									}
 								/>
-								<InputGroupAddon align="inline-end">pt</InputGroupAddon>
+								<InputGroup.Suffix>pt</InputGroup.Suffix>
 							</InputGroup>
 
 							<ButtonGroup className="shrink-0">
@@ -644,7 +639,7 @@ function ColorWidthFields(props: ColorWidthFieldsProps) {
 				{(field) => (
 					<FormItem className="flex-1" hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 						<FormLabel>{widthLabel}</FormLabel>
-						<InputGroup>
+						<InputGroup fullWidth>
 							<FormControl
 								render={
 									<NumberInput
@@ -660,9 +655,7 @@ function ColorWidthFields(props: ColorWidthFieldsProps) {
 									/>
 								}
 							/>
-							<InputGroupAddon align="inline-end">
-								<InputGroupText>pt</InputGroupText>
-							</InputGroupAddon>
+							<InputGroup.Suffix>pt</InputGroup.Suffix>
 						</InputGroup>
 					</FormItem>
 				)}

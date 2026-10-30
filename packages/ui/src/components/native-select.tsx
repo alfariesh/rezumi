@@ -1,6 +1,6 @@
 import type * as React from "react";
+import { inputVariants } from "@heroui/react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { inputBaseClassName } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 
 /** The platform select, restyled like an input, with a 20px chevron at the end. */
@@ -9,7 +9,7 @@ function NativeSelect({ className, children, ...props }: React.ComponentProps<"s
 		<div data-slot="native-select" className="relative inline-flex w-full">
 			<select
 				className={cn(
-					inputBaseClassName,
+					inputVariants({ fullWidth: true }),
 					"h-9 cursor-pointer appearance-none ps-3 pe-9 pointer-coarse:h-11",
 					className,
 				)}

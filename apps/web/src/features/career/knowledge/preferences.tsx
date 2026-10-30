@@ -1,5 +1,6 @@
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { KeyboardEvent } from "react";
+import { TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -9,7 +10,6 @@ import { m } from "motion/react";
 import { useId, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { cn } from "@rezumi/utils/style";
 import { useDebouncedSave } from "../hooks";
 import { CareerLoadError, CareerLoading } from "../load-state";
@@ -151,13 +151,14 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 				<label htmlFor={`${id}-priorities`} className="text-xs font-medium text-ink-2">
 					<Trans>What matters to you</Trans>
 				</label>
-				<Textarea
+				<TextArea
+					fullWidth
 					id={`${id}-priorities`}
 					rows={3}
 					maxLength={4000}
 					value={draft.priorities}
 					onChange={(event) => change({ priorities: event.target.value })}
-					className="min-h-[84px] py-2.5 text-sm leading-[21px]"
+					className="min-h-[84px]"
 				/>
 			</div>
 

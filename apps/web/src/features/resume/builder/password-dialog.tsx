@@ -1,4 +1,4 @@
-import { Button } from "@heroui/react";
+import { Button, Input, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -11,8 +11,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 
 type ResumePasswordDialogProps = {
 	onSubmit: (password: string) => Promise<void>;
@@ -83,6 +81,7 @@ export function ResumePasswordDialog({ onSubmit, onClose }: ResumePasswordDialog
 							<Trans>Password</Trans>
 						</Label>
 						<Input
+							fullWidth
 							id={`${id}-password`}
 							type="password"
 							autoComplete="new-password"
@@ -104,6 +103,7 @@ export function ResumePasswordDialog({ onSubmit, onClose }: ResumePasswordDialog
 							<Trans>Confirm password</Trans>
 						</Label>
 						<Input
+							fullWidth
 							id={`${id}-confirmation`}
 							type="password"
 							autoComplete="new-password"

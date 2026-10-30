@@ -1,12 +1,11 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Editor } from "@tiptap/react";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 
@@ -121,6 +120,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 					}}
 				>
 					<Input
+						fullWidth
 						autoFocus
 						aria-label={t`What should change?`}
 						placeholder={t`What should change?`}

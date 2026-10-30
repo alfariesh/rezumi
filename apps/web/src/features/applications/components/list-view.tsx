@@ -1,6 +1,6 @@
 import type { ApplicationSummary } from "../types";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -16,7 +16,6 @@ import {
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Input } from "@rezumi/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -419,7 +418,13 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 							setTag("");
 						}}
 					>
-						<Input aria-label={t`Tag`} value={tag} onChange={(event) => setTag(event.target.value)} autoFocus />
+						<Input
+							fullWidth
+							aria-label={t`Tag`}
+							value={tag}
+							onChange={(event) => setTag(event.target.value)}
+							autoFocus
+						/>
 						<Button size="sm" type="submit" isDisabled={!tag.trim()}>
 							<Trans>Add</Trans>
 						</Button>

@@ -1,5 +1,5 @@
 import type { Fact, Story } from "../hooks";
-import { Button, Spinner, Tooltip } from "@heroui/react";
+import { Button, Input, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,8 +9,6 @@ import { memo, useState } from "react";
 import * as z from "zod";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
 import { CareerLoadError, CareerLoading } from "../load-state";
@@ -476,7 +474,8 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 		>
 			<div className="grid gap-2">
 				{/* A textarea so a long title wraps as it does in the reader; Enter doesn't add a line. */}
-				<Textarea
+				<TextArea
+					fullWidth
 					rows={1}
 					value={draft.title}
 					maxLength={200}
@@ -487,14 +486,14 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					onKeyDown={(event) => {
 						if (event.key === "Enter") event.preventDefault();
 					}}
-					className="min-h-0 resize-none py-1 font-display text-[22px] leading-7 font-medium"
+					className="min-h-0 resize-none font-display text-[22px] leading-7 font-medium"
 				/>
 				<Input
+					fullWidth
 					value={draft.tags}
 					placeholder={t`Tags, separated by commas`}
 					aria-label={t`Tags`}
 					onChange={(event) => setDraft({ ...draft, tags: event.target.value })}
-					className="h-8 text-[13px]"
 				/>
 			</div>
 
@@ -508,14 +507,15 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 							</span>
 							<span className="grid min-w-0 gap-1.5">
 								<span className="text-[13px] font-semibold text-ink-2">{part.label}</span>
-								<Textarea
+								<TextArea
+									fullWidth
 									rows={2}
 									value={text}
 									maxLength={part.key === "action" ? 6000 : 4000}
 									placeholder={part.placeholder}
 									aria-invalid={tried && REQUIRED.includes(part.key) && !text.trim() ? true : undefined}
 									onChange={(event) => setDraft({ ...draft, [part.key]: event.target.value })}
-									className="min-h-[60px] py-[9px] text-sm leading-[21px]"
+									className="min-h-[60px]"
 								/>
 							</span>
 						</label>

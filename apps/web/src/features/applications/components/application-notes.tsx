@@ -1,9 +1,9 @@
 import type { Application } from "../types";
+import { TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useId, useState } from "react";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { useInvalidateApplications } from "../use-application-actions";
 import { orpc } from "@/libs/orpc/client";
@@ -66,7 +66,8 @@ export function ApplicationNotes({ application }: ApplicationNotesProps) {
 			<label htmlFor={id} className="text-xs font-semibold text-ink-3">
 				<Trans>Notes</Trans>
 			</label>
-			<Textarea
+			<TextArea
+				fullWidth
 				id={id}
 				rows={3}
 				value={notes}

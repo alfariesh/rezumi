@@ -1,6 +1,6 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { AIProvider } from "@rezumi/ai/types";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -16,8 +16,6 @@ import {
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { Switch } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 import {
@@ -331,6 +329,7 @@ function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }
 					<Trans>API key</Trans>
 				</Label>
 				<Input
+					fullWidth
 					id={`${id}-key`}
 					type="password"
 					value={value.apiKey}
@@ -339,10 +338,10 @@ function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }
 							? t`Leave empty to keep the saved key`
 							: provider === "ollama"
 								? t`Optional for local Ollama`
-								: undefined
+								: ""
 					}
-					required={keyAgain && provider !== "ollama"}
-					aria-describedby={keyAgain ? `${id}-key-hint` : undefined}
+					required={Boolean(keyAgain) && provider !== "ollama"}
+					{...(keyAgain ? { "aria-describedby": `${id}-key-hint` } : {})}
 					onChange={(event) => set({ apiKey: event.target.value })}
 					{...secretInputProps}
 				/>
@@ -361,6 +360,7 @@ function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }
 					<Trans>Model</Trans>
 				</Label>
 				<Input
+					fullWidth
 					id={`${id}-model`}
 					list={`${id}-models`}
 					aria-describedby={`${id}-model-hint`}
@@ -406,6 +406,7 @@ function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }
 					<Trans>Name</Trans>
 				</Label>
 				<Input
+					fullWidth
 					id={`${id}-label`}
 					value={value.label}
 					placeholder={providerLabel(provider)}
@@ -417,6 +418,7 @@ function ProviderFieldsForm({ provider, value, onChange, keyOptional, keyAgain }
 					<Trans>Base URL</Trans>
 				</Label>
 				<Input
+					fullWidth
 					id={`${id}-url`}
 					type="url"
 					value={value.baseURL}

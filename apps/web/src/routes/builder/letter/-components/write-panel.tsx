@@ -2,7 +2,7 @@ import type { ApplicationSummary } from "@/features/applications/types";
 import type { LetterDraft } from "@/features/letters/store";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -19,11 +19,8 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SwitchRow } from "@rezumi/ui/components/switch";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { templates } from "@/dialogs/resume/template/data";
@@ -243,6 +240,7 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 						<Trans>Name or team</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-name`}
 						value={letter.recipientName}
 						maxLength={200}
@@ -256,6 +254,7 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 						<Trans>Company</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-company`}
 						value={letter.recipientCompany}
 						maxLength={200}
@@ -268,6 +267,7 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 						<Trans>Date</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-date`}
 						type="date"
 						value={letter.letterDate ?? ""}
@@ -447,7 +447,8 @@ function LetterFramingField({ letter, field, defaultValue, disabled }: LetterFra
 					</Button>
 				)}
 			</div>
-			<Textarea
+			<TextArea
+				fullWidth
 				id={id}
 				value={letter[field] ?? defaultValue}
 				maxLength={2_000}

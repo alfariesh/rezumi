@@ -2,7 +2,7 @@ import type { Fact } from "../hooks";
 import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Spinner, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +13,6 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Switch } from "@rezumi/ui/components/switch";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError, CareerLoading } from "../load-state";
 import { CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
@@ -485,7 +484,8 @@ function Correction({ text, onSave, onCancel }: CorrectionProps) {
 
 	return (
 		<div className="grid gap-2">
-			<Textarea
+			<TextArea
+				fullWidth
 				ref={(element) => {
 					// Focused with the cursor at the end, ready to fix the last few words.
 					if (!element || element === document.activeElement) return;
@@ -500,7 +500,6 @@ function Correction({ text, onSave, onCancel }: CorrectionProps) {
 				onKeyDown={(event) => {
 					if (event.key === "Escape") onCancel();
 				}}
-				className="border-accent px-3 py-2.5 text-sm leading-[21px] shadow-[0_0_0_3px_var(--accent-soft)]"
 			/>
 			<div className="flex flex-wrap items-center gap-1.5">
 				<Button variant="secondary" size="sm" isDisabled={!draft.trim()} onPress={save}>

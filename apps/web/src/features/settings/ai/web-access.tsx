@@ -1,11 +1,9 @@
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { cn } from "@rezumi/utils/style";
 import { useHasUsableAiProvider } from "../integrations/hooks/use-has-usable-ai-provider";
@@ -337,6 +335,7 @@ export function WebAccessSection() {
 										<Trans>API key</Trans>
 									</Label>
 									<Input
+										fullWidth
 										id={`${id}-key`}
 										type="password"
 										value={apiKey}

@@ -1,3 +1,4 @@
+import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import * as React from "react";
 import {
@@ -11,7 +12,6 @@ import {
 	AlertDialogTitle,
 } from "@rezumi/ui/components/alert-dialog";
 import { HoldButton } from "@rezumi/ui/components/hold-button";
-import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 import { isImeComposing } from "@/libs/keyboard";
 
@@ -69,6 +69,7 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
 
 					{state.withInput && (
 						<Input
+							fullWidth
 							value={value}
 							aria-label={state.title}
 							onChange={(event) => setValue(event.target.value)}

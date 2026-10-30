@@ -1,6 +1,6 @@
 import type { ComboboxTriggerState } from "@base-ui/react/combobox";
 import type { UseRenderRenderProp } from "@base-ui/react/use-render";
-import { buttonVariants } from "@heroui/react";
+import { buttonVariants, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import React from "react";
 import {
@@ -15,7 +15,6 @@ import {
 	ComboboxValue,
 	useFilter,
 } from "@rezumi/ui/components/combobox";
-import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 import { useControlledState } from "@/hooks/use-controlled-state";
 
@@ -190,7 +189,13 @@ function Combobox<TValue extends string | number = string>(props: ComboboxProps<
 			<ComboboxContent aria-label={placeholder ?? t`Options`}>
 				<ComboboxInput
 					placeholder={placeholder ?? t`Search...`}
-					render={<Input disabled={disabled} className="border-none focus-visible:border-none focus-visible:ring-0" />}
+					render={
+						<Input
+							fullWidth
+							disabled={disabled}
+							className="rounded-none border-none shadow-none focus-visible:ring-0"
+						/>
+					}
 				/>
 				<ComboboxEmpty>{emptyMessage ?? t`No results found.`}</ComboboxEmpty>
 				<ComboboxList>{listContent}</ComboboxList>

@@ -1,5 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -9,7 +9,6 @@ import { useEffect, useRef } from "react";
 import z from "zod";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { SocialAuth } from "../components/social-auth";
 import { getAuthRedirectOptions, getOAuthPasskeyOptions, getOAuthSignInOptions, isOAuthRedirect } from "../redirect";
@@ -193,6 +192,7 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											autoComplete="section-login username webauthn"
 											placeholder="john.doe@example.com"
 											className="lowercase"

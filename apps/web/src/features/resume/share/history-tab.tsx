@@ -1,6 +1,6 @@
 import type { VersionSummary } from "./format";
 import type { Resume } from "@/features/resume/builder/draft";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, Input, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -13,7 +13,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { formatVersionMoment, formatVersionTime, getVersionDetail, getVersionTitle } from "./format";
@@ -145,12 +144,12 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 				}}
 			>
 				<Input
+					fullWidth
 					value={name}
 					maxLength={80}
 					aria-label={t`Name this version`}
 					placeholder={t`Sent to Lumen`}
 					onChange={(event) => setName(event.target.value)}
-					className="h-9"
 				/>
 				<Button type="submit" variant="secondary" isDisabled={!name.trim() || busy}>
 					<Trans>Save</Trans>

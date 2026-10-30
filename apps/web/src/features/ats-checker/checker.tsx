@@ -2,7 +2,7 @@ import type { ExtractProgress } from "./extract-client";
 import type { AtsCheckResult } from "./run-ats-check";
 import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
 import type { CSSProperties } from "react";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Spinner, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useNavigate } from "@tanstack/react-router";
@@ -11,7 +11,6 @@ import { useIsClient } from "usehooks-ts";
 import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { cn } from "@rezumi/utils/style";
 import { PdfPasswordRequiredError, PdfTooLargeError, PdfUnreadableError } from "./extract-client";
 import { getPdfCategoryDescription, getPdfCategoryLabel, getPdfFindingMessage } from "./messages";
@@ -254,7 +253,8 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 						Job posting <span className="font-normal text-ink-3">· optional, adds a keyword match</span>
 					</Trans>
 				</label>
-				<Textarea
+				<TextArea
+					fullWidth
 					id={id}
 					rows={3}
 					maxLength={MAX_POSTING}

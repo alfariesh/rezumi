@@ -1,6 +1,6 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Spinner, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -9,7 +9,6 @@ import { useState } from "react";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import {
@@ -84,7 +83,8 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 				<label htmlFor={`${application.id}-message`} className="text-xs font-medium text-ink-2">
 					{t`Paste a message from ${application.company}`}
 				</label>
-				<Textarea
+				<TextArea
+					fullWidth
 					id={`${application.id}-message`}
 					value={message}
 					maxLength={20_000}
@@ -92,7 +92,7 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 					placeholder={t`Paste the email or message, without the signature.`}
 					onChange={(event) => setMessage(event.target.value)}
 					onBlur={flush}
-					className="min-h-[92px] px-3.5 py-3 text-sm leading-[22px] pointer-coarse:text-base"
+					className="min-h-[92px]"
 				/>
 			</div>
 			{!readOnly && (
@@ -158,13 +158,14 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 						<label htmlFor={`${reply.id}-reply`} className="text-xs font-medium text-ink-2">
 							<Trans>Suggested reply · edit before sending</Trans>
 						</label>
-						<Textarea
+						<TextArea
+							fullWidth
 							id={`${reply.id}-reply`}
 							value={text}
 							readOnly={readOnly}
 							maxLength={4000}
 							onChange={(event) => draft.setValue(event.target.value)}
-							className="min-h-[110px] px-3.5 py-3 text-sm leading-[22px] pointer-coarse:text-base"
+							className="min-h-[110px]"
 						/>
 					</div>
 					<div className="flex flex-wrap items-center gap-2">

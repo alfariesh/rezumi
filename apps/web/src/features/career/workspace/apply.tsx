@@ -1,7 +1,7 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
-import { Button, buttonVariants, Spinner, Tooltip } from "@heroui/react";
+import { Button, buttonVariants, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,7 +17,6 @@ import {
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -270,7 +269,8 @@ function AnswerCard({
 		<section className="grid gap-3 rounded-xl border border-line bg-surface p-4">
 			<div className="flex items-start gap-3">
 				{editingQuestion && !readOnly ? (
-					<Textarea
+					<TextArea
+						fullWidth
 						// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add a question or Edit question
 						autoFocus
 						ref={questionField}
@@ -293,7 +293,7 @@ function AnswerCard({
 							flushQuestion();
 							if (question.trim()) setEditingQuestion(false);
 						}}
-						className="field-sizing-content min-h-0 w-full min-w-0 flex-1 resize-none px-2.5 py-1.5 text-[15px] leading-[22px] font-semibold"
+						className="field-sizing-content min-h-0 w-full min-w-0 flex-1 resize-none text-[15px] leading-[22px] font-semibold"
 					/>
 				) : (
 					<h2 className="min-w-0 flex-1 text-[15px] leading-[22px] font-semibold">{question}</h2>
@@ -380,7 +380,8 @@ function AnswerCard({
 						{text}
 					</p>
 				) : (
-					<Textarea
+					<TextArea
+						fullWidth
 						value={text}
 						maxLength={6000}
 						disabled={disabled}
@@ -388,7 +389,7 @@ function AnswerCard({
 						placeholder={t`Write your answer, or draft one from your Knowledge.`}
 						onChange={(event) => setText(event.target.value)}
 						onBlur={flushAnswer}
-						className="min-h-[88px] px-3.5 py-3 text-sm leading-[22px] pointer-coarse:text-base"
+						className="min-h-[88px]"
 					/>
 				)}
 			</Swap>

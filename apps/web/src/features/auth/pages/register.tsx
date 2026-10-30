@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -9,7 +9,6 @@ import z from "zod";
 import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { SocialAuth } from "../components/social-auth";
@@ -142,6 +141,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											minLength={1}
 											maxLength={64}
 											autoComplete="section-register name"
@@ -170,6 +170,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											minLength={3}
 											maxLength={64}
 											autoComplete="section-register username"
@@ -199,6 +200,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											type="email"
 											autoComplete="section-register email"
 											placeholder="john.doe@example.com"

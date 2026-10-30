@@ -1,21 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vite-plus/test";
+import { InputGroup } from "@heroui/react";
 import { FormControl, FormItem, FormLabel, FormMessage } from "./form";
-import { InputGroup, InputGroupInput } from "./input-group";
 import { Slider } from "./slider";
 
 describe("FormControl", () => {
-	it("forwards the generated id to the real control inside an InputGroup wrapper", () => {
+	it("forwards the generated id to the input inside a HeroUI InputGroup", () => {
 		render(
 			<FormItem>
 				<FormLabel>Slug</FormLabel>
-				<FormControl
-					render={
-						<InputGroup data-testid="group">
-							<InputGroupInput data-testid="input" />
-						</InputGroup>
-					}
-				/>
+				<InputGroup data-testid="group">
+					<FormControl render={<InputGroup.Input data-testid="input" />} />
+				</InputGroup>
 			</FormItem>,
 		);
 

@@ -16,7 +16,7 @@ import {
 	useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Kbd } from "@heroui/react";
+import { Input, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
@@ -25,7 +25,6 @@ import { createPortal } from "react-dom";
 import { Badge } from "@rezumi/ui/components/badge";
 import { useFormControl } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 import { useControlledState } from "@/hooks/use-controlled-state";
 import { isImeComposing } from "@/libs/keyboard";
@@ -350,7 +349,7 @@ export function ChipInput({
 								placeholder={isEditingKeyword ? t`Editing keyword...` : t`Add a keyword...`}
 								onKeyDown={handleKeyDown}
 								onChange={handleInputChange}
-								className="h-9 flex-1 border-none p-0 focus-visible:border-none focus-visible:ring-0 dark:bg-transparent"
+								className="h-9 flex-1 border-none bg-transparent p-0 shadow-none focus-visible:ring-0"
 							/>
 							{chips.length > 0 && (
 								<span

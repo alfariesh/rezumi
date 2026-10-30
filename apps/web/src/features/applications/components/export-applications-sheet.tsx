@@ -1,11 +1,9 @@
 import type { ApplicationExportOptions } from "../csv";
 import type { Application } from "../types";
-import { Button } from "@heroui/react";
+import { Button, Input, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import {
 	Sheet,
 	SheetContent,
@@ -76,6 +74,7 @@ export function ExportApplicationsSheet({ open, onOpenChange, applications, filt
 									<Trans>Application date from</Trans>
 								</Label>
 								<Input
+									fullWidth
 									id={`${id}-from`}
 									type="date"
 									value={from}
@@ -88,6 +87,7 @@ export function ExportApplicationsSheet({ open, onOpenChange, applications, filt
 									<Trans>Application date to</Trans>
 								</Label>
 								<Input
+									fullWidth
 									id={`${id}-to`}
 									type="date"
 									value={to}

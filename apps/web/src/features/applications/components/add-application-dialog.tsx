@@ -1,5 +1,5 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button } from "@heroui/react";
+import { Button, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -13,10 +13,7 @@ import {
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useInvalidateApplications } from "../use-application-actions";
@@ -201,6 +198,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 					</Label>
 					<div className="flex gap-2">
 						<Input
+							fullWidth
 							id={`${id}-search`}
 							value={query}
 							maxLength={500}
@@ -286,7 +284,8 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				<Label htmlFor={`${id}-posting`}>
 					<Trans>Job link or posting text</Trans>
 				</Label>
-				<Textarea
+				<TextArea
+					fullWidth
 					id={`${id}-posting`}
 					rows={4}
 					value={input}
@@ -318,7 +317,8 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						<Label htmlFor={`${id}-recovery`}>
 							<Trans>Pasted description</Trans>
 						</Label>
-						<Textarea
+						<TextArea
+							fullWidth
 							id={`${id}-recovery`}
 							rows={5}
 							value={pastedText}
@@ -361,7 +361,8 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						<Label htmlFor={`${id}-description`}>
 							<Trans>Saved description</Trans>
 						</Label>
-						<Textarea
+						<TextArea
+							fullWidth
 							id={`${id}-description`}
 							rows={5}
 							maxLength={MAX_POSTING_CHARS}
@@ -397,13 +398,13 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 					<Label htmlFor={`${id}-role`}>
 						<Trans>Role</Trans>
 					</Label>
-					<Input id={`${id}-role`} value={role} onChange={(event) => setRole(event.target.value)} />
+					<Input fullWidth id={`${id}-role`} value={role} onChange={(event) => setRole(event.target.value)} />
 				</div>
 				<div className="grid gap-1.5">
 					<Label htmlFor={`${id}-company`}>
 						<Trans>Company</Trans>
 					</Label>
-					<Input id={`${id}-company`} value={company} onChange={(event) => setCompany(event.target.value)} />
+					<Input fullWidth id={`${id}-company`} value={company} onChange={(event) => setCompany(event.target.value)} />
 				</div>
 			</div>
 
@@ -440,13 +441,18 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 					<Label htmlFor={`${id}-location`}>
 						<Trans>Location</Trans>
 					</Label>
-					<Input id={`${id}-location`} value={location} onChange={(event) => setLocation(event.target.value)} />
+					<Input
+						fullWidth
+						id={`${id}-location`}
+						value={location}
+						onChange={(event) => setLocation(event.target.value)}
+					/>
 				</div>
 				<div className="grid gap-1.5">
 					<Label htmlFor={`${id}-salary`}>
 						<Trans>Salary</Trans>
 					</Label>
-					<Input id={`${id}-salary`} value={salary} onChange={(event) => setSalary(event.target.value)} />
+					<Input fullWidth id={`${id}-salary`} value={salary} onChange={(event) => setSalary(event.target.value)} />
 				</div>
 			</div>
 			{stage !== "saved" && (
@@ -455,6 +461,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						<Trans>Application date</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-date`}
 						type="date"
 						value={stageDate}

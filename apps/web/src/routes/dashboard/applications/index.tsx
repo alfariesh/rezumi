@@ -1,5 +1,5 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import { Button, buttonVariants } from "@heroui/react";
+import { Button, buttonVariants, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +13,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -274,6 +273,7 @@ function RouteComponent() {
 								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-ink-3"
 							/>
 							<Input
+								fullWidth
 								type="search"
 								aria-label={t`Search applications`}
 								placeholder={t`Search role, company or contact`}

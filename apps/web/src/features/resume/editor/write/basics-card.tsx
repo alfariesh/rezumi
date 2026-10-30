@@ -1,11 +1,10 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
-import { buttonVariants } from "@heroui/react";
+import { Input, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Input } from "@rezumi/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { generateId, getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
@@ -181,6 +180,7 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 						}
 					/>
 					<Input
+						fullWidth
 						disabled={locked}
 						aria-label={t`Field ${index + 1}`}
 						value={field.text}
@@ -211,6 +211,7 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 						</PopoverTrigger>
 						<PopoverContent align="end" className="w-72">
 							<Input
+								fullWidth
 								disabled={locked}
 								type="url"
 								aria-label={t`Link address`}

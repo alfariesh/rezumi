@@ -1,8 +1,8 @@
 import type z from "zod";
+import { InputGroup } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { pageSchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@rezumi/ui/components/input-group";
 import { Switch } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
@@ -66,7 +66,7 @@ function PageSectionForm() {
 					{(field) => (
 						<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 							<FormLabel>{label}</FormLabel>
-							<InputGroup>
+							<InputGroup fullWidth>
 								<FormControl
 									render={
 										<NumberInput
@@ -83,9 +83,7 @@ function PageSectionForm() {
 										/>
 									}
 								/>
-								<InputGroupAddon align="inline-end">
-									<InputGroupText>pt</InputGroupText>
-								</InputGroupAddon>
+								<InputGroup.Suffix>pt</InputGroup.Suffix>
 							</InputGroup>
 							<FormMessage errors={field.state.meta.errors} />
 						</FormItem>

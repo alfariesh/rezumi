@@ -1,9 +1,9 @@
 import type z from "zod";
+import { InputGroup } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import * as React from "react";
 import { metadataSchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@rezumi/ui/components/input-group";
 import { Slider } from "@rezumi/ui/components/slider";
 import { SectionBase } from "../../shared/section-base";
 import { LayoutPages } from "./pages";
@@ -69,9 +69,9 @@ function LayoutSectionForm() {
 								}}
 							/>
 
-							<FormControl
-								render={
-									<InputGroup className="w-auto shrink-0">
+							<InputGroup className="w-auto shrink-0">
+								<FormControl
+									render={
 										<NumberInput
 											name={field.name}
 											value={field.state.value}
@@ -84,12 +84,10 @@ function LayoutSectionForm() {
 												handleAutoSave();
 											}}
 										/>
-										<InputGroupAddon align="inline-end">
-											<InputGroupText>%</InputGroupText>
-										</InputGroupAddon>
-									</InputGroup>
-								}
-							/>
+									}
+								/>
+								<InputGroup.Suffix>%</InputGroup.Suffix>
+							</InputGroup>
 						</div>
 						<FormMessage errors={field.state.meta.errors} />
 					</FormItem>

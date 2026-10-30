@@ -1,17 +1,17 @@
-import { Button } from "@heroui/react";
+import type { InputProps } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useToggle } from "usehooks-ts";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 
-type PasswordInputProps = Omit<React.ComponentProps<"input">, "type">;
+type PasswordInputProps = Omit<InputProps, "type">;
 
 export function PasswordInput(props: PasswordInputProps) {
 	const [visible, toggleVisible] = useToggle(false);
 
 	return (
 		<div className="flex items-center gap-x-1.5">
-			<Input {...props} type={visible ? "text" : "password"} />
+			<Input fullWidth {...props} type={visible ? "text" : "password"} />
 
 			<Button
 				isIconOnly

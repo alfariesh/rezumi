@@ -1,5 +1,5 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
-import { Button, buttonVariants, Kbd } from "@heroui/react";
+import { Button, buttonVariants, InputGroup, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -15,7 +15,6 @@ import {
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@rezumi/ui/components/input-group";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
@@ -149,10 +148,10 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 
 						<div className="ms-auto flex flex-wrap items-center gap-2 max-sm:ms-0 max-sm:w-full">
 							<InputGroup className="w-60 max-sm:w-full">
-								<InputGroupAddon>
+								<InputGroup.Prefix>
 									<Icon name="magnifying-glass" size={18} />
-								</InputGroupAddon>
-								<InputGroupInput
+								</InputGroup.Prefix>
+								<InputGroup.Input
 									ref={searchRef}
 									type="search"
 									value={search.q}
@@ -160,9 +159,9 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 									placeholder={t`Search`}
 									onChange={(event) => onSearchChange({ q: event.target.value })}
 								/>
-								<InputGroupAddon align="inline-end" className="max-sm:hidden pointer-coarse:hidden">
+								<InputGroup.Suffix className="max-sm:hidden pointer-coarse:hidden">
 									<Kbd>/</Kbd>
-								</InputGroupAddon>
+								</InputGroup.Suffix>
 							</InputGroup>
 							<div className="w-[150px]">
 								<NativeSelect

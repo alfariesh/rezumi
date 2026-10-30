@@ -1,11 +1,10 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Input, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { CvDomainCard } from "./cv-domain-card";
 import { DnsRecordsDialog } from "./dns-records-dialog";
@@ -73,13 +72,14 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 					</label>
 					<div className="flex gap-1.5">
 						<Input
+							fullWidth
 							id={id}
 							value={hostname}
 							placeholder="resume.example.com"
 							spellCheck={false}
 							autoCapitalize="none"
 							onChange={(event) => setHostname(event.target.value)}
-							className="h-[38px] font-mono text-[13px] pointer-coarse:h-[38px]"
+							className="font-mono text-[13px]"
 						/>
 						<Button
 							type="submit"
