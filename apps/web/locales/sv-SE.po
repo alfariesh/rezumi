@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# redigering kunde inte placeras: dess text ändrades. 
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# post} other {# poster}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# faktum} other {# fakta}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Ansökningsdetaljer"
 msgid "Application options"
 msgstr "alternativ för jobbansökan"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "ansökningssammanfattningar"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Ansökningsflikar"
@@ -3099,13 +3093,13 @@ msgstr "Ansluten. Din domän öppnar ditt primära CV."
 msgid "Connecting your {providerName} account…"
 msgstr "Ansluter ditt {providerName}-konto…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Anslutningen har sparats"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Anslutning: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Varje svar du får feedback på sparas här, nyast först."
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Varje krav i annonsen kontrolleras mot fakta och berättelser i din Kunskap. Luckor visas som saknade belägg, aldrig som saknad förmåga."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "tidigare meddelanden i den här chatten"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Med vänlig hälsning,"
 msgid "Knowledge"
 msgstr "Kunskap"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Kunskap kunde inte laddas. Försök igen eller stäng av Kunskap innan du skickar."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Kunskap nämner inte mentorskap."
@@ -6924,10 +6910,6 @@ msgstr "Läser in konversationer..."
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Laddar intervjuer…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Laddar Kunskap innan du skickar…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Sök jobbannonser"
 msgid "Search role, company or contact"
 msgstr "Sök roll, företag eller kontakt"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Söktermer skickas till din webbsöktjänst."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Vad fungerar"
 msgid "When do they need your answer?"
 msgstr "När behöver de ditt svar?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "När du trycker på Skicka går {shared} till {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Varifrån kommer ansökningarna"
@@ -13925,10 +13899,6 @@ msgstr "Din plats har ändrats på cv:n. Brevet uppdaterades också."
 msgid "Your margins are very narrow."
 msgstr "Dina marginaler är mycket smala."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "ditt meddelande"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Ditt namn och kontaktuppgifter kommer från ett CV."
@@ -13976,10 +13946,6 @@ msgstr "Ditt telefonnummer har ändrats i CV:t. Brevet uppdaterades också."
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Ditt telefonnummer är skrivet i ett ovanligt format."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "dina önskemål"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Din kortlänk och din egen domän öppnar det här CV:t."
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Din kortlänk och din egen domän visar att det här CV:t inte delas förrän du publicerar det igen."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "dina berättelser"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

@@ -163,10 +163,8 @@ msgstr "{0, plural, one {Редактирование # не удалось ра
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# запись} few {# записи} many {# записей} other {# записи}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# факт} few {# факта} many {# фактов} other {# факта}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Сведения о заявке"
 msgid "Application options"
 msgstr "Действия с заявкой"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "сводки по заявкам"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Вкладки заявки"
@@ -3099,13 +3093,13 @@ msgstr "Подключено. Ваш домен открывает ваше ос
 msgid "Connecting your {providerName} account…"
 msgstr "Подключение учетной записи {providerName}…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Соединение сохранено"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Подключение: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Здесь хранится каждый ответ, по котором
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Каждое требование из вакансии сверяется с фактами и историями в ваших Знаниях. Пробелы отображаются как отсутствие подтверждений, а не отсутствие умений."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "предыдущие сообщения в этом чате"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "С уважением,"
 msgid "Knowledge"
 msgstr "Знания"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Не удалось загрузить Знания. Попробуйте еще раз или отключите Знания перед отправкой."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "В Знаниях не упоминается наставничество."
@@ -6924,10 +6910,6 @@ msgstr "Загрузка разговоров…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Загрузка собеседований…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Загружаем Знания перед отправкой…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Поиск объявлений о вакансиях"
 msgid "Search role, company or contact"
 msgstr "Поиск должности, компании или контакта"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Поисковые запросы отправляются в ваш сервис веб-поиска."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Что работает"
 msgid "When do they need your answer?"
 msgstr "Когда им нужен ваш ответ?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Когда вы нажмете «Отправить», {shared} уйдут в {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Откуда приходят заявки"
@@ -13925,10 +13899,6 @@ msgstr "Ваше местоположение в резюме изменилос
 msgid "Your margins are very narrow."
 msgstr "Ваши поля очень узкие."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "ваше сообщение"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Ваше имя и контактные данные взяты из резюме."
@@ -13976,10 +13946,6 @@ msgstr "В резюме изменился номер телефона. Пись
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Ваш номер телефона записан в необычном формате."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "ваши предпочтения"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Ваша короткая ссылка и собственный дом�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "По вашей короткой ссылке и на собственном домене будет указано, что доступ к этому резюме закрыт, пока вы снова его не опубликуете."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "ваши истории"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

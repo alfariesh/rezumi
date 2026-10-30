@@ -162,9 +162,13 @@ type CoachThreadProps = {
 	connection: string;
 	onChangeConnection: () => void;
 	header: (messages: readonly UIMessage[]) => ReactNode;
+	/** After the last message, once the reply is complete (the coach page's copy button). */
+	afterMessages?: (messages: readonly UIMessage[]) => ReactNode;
 	empty: (send: (text: string) => void) => ReactNode;
 	chips?: ReactNode;
-	privacy: ReactNode;
+	/** The connection picker, in the composer's toolbar. */
+	model?: ReactNode;
+	privacy?: ReactNode;
 	placeholder: string;
 	/** Keeps the unsent draft when the thread closes (the sheet). */
 	draftKey?: string;
@@ -335,7 +339,7 @@ function ThreadSession(props: SessionProps) {
 
 type Upload = ChatAttachment & { size: number };
 
-type ComposerProps = Pick<CoachThreadProps, "placeholder" | "chips" | "privacy" | "draftKey" | "variant"> & {
+type ComposerProps = Pick<CoachThreadProps, "placeholder" | "chips" | "model" | "privacy" | "draftKey" | "variant"> & {
 	streaming: boolean;
 	disabled: boolean;
 	ensureThread: () => Promise<string>;
@@ -418,6 +422,7 @@ export function Composer(props: ComposerProps) {
 						onRemove: () => setAttachments((current) => current.filter((item) => item.id !== attachment.id)),
 					}))}
 					context={props.chips}
+					toolbar={props.model}
 					attach={{
 						isDisabled: props.disabled || attachments.length >= MAX_ATTACHMENTS_PER_MESSAGE,
 						isPending: uploading,

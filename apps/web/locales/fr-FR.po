@@ -163,10 +163,8 @@ msgstr "{0, plural, one {La modification # n'a pas pu être placée : son texte
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# entrée} other {# entrées}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# fait} other {# faits}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Détails de la candidature"
 msgid "Application options"
 msgstr "options de candidature à un emploi"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "les résumés des candidatures"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Onglets de la candidature"
@@ -3099,13 +3093,13 @@ msgstr "Connecté. Votre domaine ouvre votre CV principal."
 msgid "Connecting your {providerName} account…"
 msgstr "Connexion de votre compte {providerName}…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Connexion enregistrée"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Connexion : {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Chaque réponse sur laquelle vous recevez un retour est conservée ici, 
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Chaque exigence de l'annonce est comparée aux faits et récits de vos Connaissances. Les manques apparaissent comme des preuves manquantes, jamais comme des compétences manquantes."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "les messages précédents de cette conversation"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Cordialement,"
 msgid "Knowledge"
 msgstr "Connaissances"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Impossible de charger Connaissances. Réessayez ou désactivez Connaissances avant d'envoyer."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Les Connaissances ne mentionnent pas de mentorat."
@@ -6924,10 +6910,6 @@ msgstr "Chargement des conversations…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Chargement des entretiens…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Chargement de Connaissances avant l'envoi…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Rechercher des offres d'emploi"
 msgid "Search role, company or contact"
 msgstr "Rechercher un rôle, une entreprise ou un contact"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Les termes de recherche sont envoyés à votre service de recherche web."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Qu'est-ce qui fonctionne"
 msgid "When do they need your answer?"
 msgstr "Quand ont-ils besoin de votre réponse ?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Quand vous appuyez sur Envoyer, {shared} sont envoyés à {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "D'où viennent les candidatures"
@@ -13925,10 +13899,6 @@ msgstr "Votre emplacement a changé sur le CV. La lettre a également été mise
 msgid "Your margins are very narrow."
 msgstr "Vos marges sont très étroites."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "votre message"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Votre nom et vos coordonnées proviennent d'un curriculum vitae."
@@ -13976,10 +13946,6 @@ msgstr "Votre numéro de téléphone a changé sur le CV. La lettre a également
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Votre numéro de téléphone est écrit dans un format inhabituel."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "vos préférences"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Votre lien court et votre domaine personnalisé ouvrent ce CV."
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Votre lien court et votre domaine personnalisé indiquent que ce CV n’est pas partagé tant que vous ne l’avez pas republié."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "vos récits"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

@@ -163,10 +163,8 @@ msgstr "{0, plural, one {Pengeditan # tidak dapat dilakukan: teksnya berubah. Mi
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# entri} other {# entri}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, other {# fakta}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Detail lamaran"
 msgid "Application options"
 msgstr "pilihan lamaran pekerjaan"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "ringkasan lamaran"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Tab lamaran"
@@ -3099,13 +3093,13 @@ msgstr "Terhubung. Domain Anda membuka CV utama Anda."
 msgid "Connecting your {providerName} account…"
 msgstr "Menghubungkan akun {providerName} Anda…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Koneksi disimpan"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Koneksi: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Setiap jawaban yang mendapat masukan disimpan di sini, yang terbaru di a
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Setiap persyaratan dalam lowongan diperiksa terhadap fakta dan cerita di Pengetahuan Anda. Kekurangan ditampilkan sebagai bukti yang belum ada, bukan kemampuan yang tidak ada."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "pesan sebelumnya di chat ini"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Salam hormat,"
 msgid "Knowledge"
 msgstr "Pengetahuan"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Pengetahuan tidak dapat dimuat. Coba lagi atau nonaktifkan Pengetahuan sebelum mengirim."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Pengetahuan tidak menyebutkan pembimbingan."
@@ -6924,10 +6910,6 @@ msgstr "Memuat percakapan…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Memuat wawancara…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Memuat Pengetahuan sebelum Anda mengirim…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Cari lowongan pekerjaan"
 msgid "Search role, company or contact"
 msgstr "Cari peran, perusahaan atau kontak"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Kata pencarian dikirim ke layanan pencarian web Anda."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Apa yang berhasil"
 msgid "When do they need your answer?"
 msgstr "Kapan mereka membutuhkan jawaban Anda?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Saat Anda menekan kirim, {shared} dikirim ke {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Dari mana lamaran berasal"
@@ -13925,10 +13899,6 @@ msgstr "Lokasi Anda berubah di resume. Surat itu juga diperbarui."
 msgid "Your margins are very narrow."
 msgstr "Margin Anda sangat sempit."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "pesan Anda"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Nama dan detail kontak Anda berasal dari resume."
@@ -13976,10 +13946,6 @@ msgstr "Nomor telepon Anda berubah di resume. Surat itu juga diperbarui."
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Nomor telepon Anda ditulis dalam bentuk yang tidak biasa."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "preferensi Anda"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Tautan pendek dan domain kustom Anda membuka CV ini."
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Tautan pendek dan domain kustom Anda menyatakan bahwa CV ini tidak dibagikan sampai Anda menerbitkannya lagi."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "cerita Anda"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

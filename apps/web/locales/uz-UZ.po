@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# tahririni joylab boʻlmadi: uning matni oʻzgartirild
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# ta yozuv} other {# ta yozuv}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# ta fakt} other {# ta fakt}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Ariza tafsilotlari"
 msgid "Application options"
 msgstr "ishga ariza berish imkoniyatlari"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "ariza xulosalari"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Ariza bo'limlari"
@@ -3099,13 +3093,13 @@ msgstr "Ulandi. Domeningiz asosiy rezyumengizni ochadi."
 msgid "Connecting your {providerName} account…"
 msgstr "{providerName} hisobingiz ulanmoqda…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Ulanish saqlandi"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Ulanish: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Fikr-mulohaza olgan har bir javobingiz shu yerda saqlanadi, eng yangisi 
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "E'londagi har bir talab Bilimlaringizdagi faktlar va hikoyalar bilan solishtiriladi. Bo'shliqlar qobiliyat yetishmasligi sifatida emas, balki dalil yetishmasligi sifatida ko'rsatiladi."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "ushbu chatdagi oldingi xabarlar"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Ezgu tilaklar ila,"
 msgid "Knowledge"
 msgstr "Bilimlar"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Bilimlar yuklanmadi. Qayta urinib ko'ring yoki yuborishdan oldin Bilimlarni o'chiring."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Bilimlarda mentorlik haqida hech narsa yo'q."
@@ -6924,10 +6910,6 @@ msgstr "Suhbatlar yuklanmoqda…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Intervyular yuklanmoqda…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Yuborishdan oldin Bilimlar yuklanmoqda…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Ish e'lonlarini qidirish"
 msgid "Search role, company or contact"
 msgstr "Rol, kompaniya yoki kontaktni qidiring"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Qidiruv so'rovlari veb-qidiruv xizmatingizga yuboriladi."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Nima ishlayapti"
 msgid "When do they need your answer?"
 msgstr "Javobingiz qachongacha kerak?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Yuborish tugmasini bosganingizda {shared} {connection}ga yuboriladi."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Arizalar qayerdan keladi"
@@ -13925,10 +13899,6 @@ msgstr "Sizning joylashuvingiz rezyumeda o'zgartirilgan. Xat ham yangilandi."
 msgid "Your margins are very narrow."
 msgstr "Chekka boʻshliqlaringiz juda tor."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "xabaringiz"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Ismingiz va aloqa ma'lumotlaringiz rezyumedan olingan."
@@ -13976,10 +13946,6 @@ msgstr "Sizning telefon raqamingiz rezyumeda o'zgartirilgan. Xat ham yangilandi.
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Telefon raqamingiz odatiy boʻlmagan shaklda yozilgan."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "afzalliklaringiz"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Qisqa havolangiz va shaxsiy domeningiz shu rezyumeni ochadi."
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Qisqa havolangiz va shaxsiy domeningiz siz uni qayta nashr qilmaguningizcha bu rezyume ulashilmaganini ko'rsatadi."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "hikoyalaringiz"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

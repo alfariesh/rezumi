@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# திருத்தத்தை வைக்க ம
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# பதிவு} other {# பதிவுகள்}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# உண்மை} other {# உண்மைகள்}}"
 
@@ -1917,10 +1915,6 @@ msgstr "விண்ணப்ப விவரங்கள்"
 msgid "Application options"
 msgstr "வேலை விண்ணப்ப விருப்பங்கள்"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "விண்ணப்பச் சுருக்கங்கள்"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "விண்ணப்பத் தாவல்கள்"
@@ -3099,13 +3093,13 @@ msgstr "இணைக்கப்பட்டது. உங்கள் டொம
 msgid "Connecting your {providerName} account…"
 msgstr "உங்கள் {providerName} கணக்கு இணைக்கப்படுகிறது…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "இணைப்பு சேமிக்கப்பட்டது"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "இணைப்பு: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "நீங்கள் கருத்து பெறும் ஒவ்
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "வேலை அறிவிப்பில் உள்ள ஒவ்வொரு தேவையும் உங்கள் அறிவுத் தளத்தில் உள்ள உண்மைகள் மற்றும் கதைகளுடன் சரிபார்க்கப்படும். இடைவெளிகள் சான்று இல்லாததாகவே காட்டப்படும், திறன் இல்லாததாக ஒருபோதும் அல்ல."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "இந்த அரட்டையின் முந்தைய செய்திகள்"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "அன்புடன்,"
 msgid "Knowledge"
 msgstr "அறிவுத் தளம்"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "அறிவுத் தளத்தை ஏற்ற முடியவில்லை. அனுப்பும் முன் மீண்டும் முயற்சிக்கவும் அல்லது அறிவுத் தளத்தை அணைக்கவும்."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "அறிவுத் தளத்தில் வழிகாட்டுதல் பற்றி எதுவும் இல்லை."
@@ -6924,10 +6910,6 @@ msgstr "உரையாடல்களை ஏற்றுகிறது…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "நேர்காணல்களை ஏற்றுகிறது…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "அனுப்பும் முன் அறிவுத் தளத்தை ஏற்றுகிறது…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "வேலை இடுகைகளைத் தேடுங்கள்"
 msgid "Search role, company or contact"
 msgstr "தேடல் பங்கு, நிறுவனம் அல்லது தொடர்பு"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "தேடல் சொற்கள் உங்கள் இணையத் தேடல் சேவைக்குச் செல்லும்."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "என்ன வேலை செய்கிறது"
 msgid "When do they need your answer?"
 msgstr "அவர்களுக்கு உங்கள் பதில் எப்போது தேவை?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "அனுப்பு என்பதை அழுத்தும்போது, {shared} ஆகியவை {connection}-க்குச் செல்லும்."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "விண்ணப்பங்கள் எங்கிருந்து வருகின்றன"
@@ -13925,10 +13899,6 @@ msgstr "ரெஸ்யூமில் உங்கள் இடம் மாற
 msgid "Your margins are very narrow."
 msgstr "உங்கள் ஓரங்கள் மிகவும் குறுகியவை."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "உங்கள் செய்தி"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "உங்கள் பெயர் மற்றும் தொடர்பு விவரங்கள் ரெஸ்யூமில் இருந்து வருகிறது."
@@ -13976,10 +13946,6 @@ msgstr "ரெஸ்யூமில் உங்கள் தொலைபேச�
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "உங்கள் தொலைபேசி எண் அசாதாரண வடிவத்தில் எழுதப்பட்டுள்ளது."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "உங்கள் விருப்பங்கள்"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "உங்கள் குறுகிய இணைப்பும் த
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "நீங்கள் மீண்டும் வெளியிடும் வரை, இந்த ரெஸ்யூம் பகிரப்படவில்லை என்று உங்கள் குறுகிய இணைப்பும் தனிப்பயன் டொமைனும் காட்டும்."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "உங்கள் கதைகள்"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

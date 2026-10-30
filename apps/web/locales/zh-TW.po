@@ -163,10 +163,8 @@ msgstr "{0, plural, one {無法放置 # 編輯：其文字已更改。再次要�
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, other {# 個條目}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, other {# 個事實}}"
 
@@ -1917,10 +1915,6 @@ msgstr "應徵詳細資料"
 msgid "Application options"
 msgstr "工作申請選項"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "應徵摘要"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "應徵紀錄分頁"
@@ -3099,13 +3093,13 @@ msgstr "已連結。您的網域會開啟您的主要履歷。"
 msgid "Connecting your {providerName} account…"
 msgstr "正在連結您的 {providerName} 帳戶…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "連線已儲存"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "連線：{text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "每個獲得回饋的回答都保存在這裡，最新的在前。"
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "職缺公告中的每項條件都會與您知識庫中的事實和故事對照。落差會顯示為缺少證據，而絕不是缺少能力。"
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "此聊天中較早的訊息"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "親切的問候，"
 msgid "Knowledge"
 msgstr "知識庫"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "知識庫無法載入。請重試，或在傳送前關閉知識庫。"
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "知識庫中沒有提到指導經驗。"
@@ -6924,10 +6910,6 @@ msgstr "正在加載對話..."
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "正在載入面試…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "傳送前正在載入知識庫…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "搜尋職位資訊"
 msgid "Search role, company or contact"
 msgstr "搜尋職位、公司或聯絡人"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "搜尋字詞會傳送到您的網路搜尋服務。"
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "什麼在起作用"
 msgid "When do they need your answer?"
 msgstr "對方何時需要您的答覆？"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "按下傳送後，{shared}會傳送給 {connection}。"
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "應徵來源"
@@ -13925,10 +13899,6 @@ msgstr "您的履歷上的工作地點發生了變化。這封信也更新了。
 msgid "Your margins are very narrow."
 msgstr "您的頁邊界非常窄。"
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "您的訊息"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "您的姓名和聯絡方式來自履歷。"
@@ -13976,10 +13946,6 @@ msgstr "您的履歷中的電話號碼發生了變化。這封信也更新了。
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "您的電話號碼寫法不太常見。"
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "您的偏好"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "您的短網址和自訂網域會開啟這份履歷。"
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "您的短網址和自訂網域會顯示這份履歷尚未分享，直到您再次發布。"
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "您的故事"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

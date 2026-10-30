@@ -3,9 +3,8 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import { ContextMenu, PromptSuggestion } from "@heroui-pro/react";
-import { Button, Description, Dropdown, Label, ScrollShadow, SearchField, Separator, Spinner } from "@heroui/react";
+import { Description, Dropdown, Label, ListBox, ScrollShadow, SearchField, Select, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
-import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +12,6 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import {
 	CoachThread,
@@ -25,7 +23,7 @@ import {
 	useConversationDate,
 } from "./coach-thread";
 import { CareerLoadError } from "./load-state";
-import { ContextChip, PrivacyLine } from "./shared";
+import { ContextChip } from "./shared";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -87,15 +85,14 @@ type CoachPageProps = { conversationId: string | undefined; offerIds: string[] }
 
 /** C7–C11: conversations about the whole search, with what each message shares chosen in the composer. */
 export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPageProps) {
-	const { i18n } = useLingui();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const providers = useHasUsableAiProvider();
 	const threads = useQuery(orpc.agent.threads.list.queryOptions());
 	const knowledge = useCoachKnowledge(null);
+	const [modelMenuOpen, setModelMenuOpen] = useState(false);
 	// Below lg the chat and the conversation list share the screen: one at a time, like a mail client.
 	const [view, setView] = useState<"chat" | "history">("chat");
-	const [modelMenuOpen, setModelMenuOpen] = useState(false);
 	const [providerId, setProviderId] = useState<string | null>(null);
 	const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
 	const created = useRef<ThreadSummary | null>(null);
@@ -227,34 +224,6 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 				}),
 		);
 
-	// The privacy line names exactly what goes. The chips choose what this message adds; earlier messages always go.
-	const parts = [
-		t`your message`,
-		t`earlier messages in this chat`,
-		...(chips.application ? [t`application summaries`] : []),
-		...(context.offerIds ? [plural(offerIds.length, { one: "# saved offer", other: "# saved offers" })] : []),
-		...(chips.memory
-			? [
-					t`your preferences`,
-					...(knowledge.active.length > 0
-						? [plural(knowledge.active.length, { one: "# fact", other: "# facts" })]
-						: []),
-					...(knowledge.stories.length > 0 ? [t`your stories`] : []),
-				]
-			: []),
-	];
-	const shared = formatList(i18n.locale, parts);
-	const privacy = (
-		<PrivacyLine>
-			{chips.memory && knowledge.isError
-				? t`Knowledge couldn't load. Try again or switch Knowledge off before sending.`
-				: chips.memory && knowledge.isPending
-					? t`Loading Knowledge before you send…`
-					: t`When you press send, ${shared} go to ${connection}.`}
-			{chips.web && ` ${t`Search terms go to your web search service.`}`}
-		</PrivacyLine>
-	);
-
 	const contextChips = (
 		<>
 			{chips.memory && knowledge.isError && <CareerLoadError onRetry={knowledge.retry} />}
@@ -288,12 +257,33 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 		</>
 	);
 
-	const header = (messages: readonly UIMessage[]) => (
-		<header className="mb-2 flex h-[52px] shrink-0 items-center gap-1 rounded-2xl bg-surface-secondary ps-4 pe-2">
-			<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
-			<h2 className="me-auto min-w-0 truncate ps-1 text-[15px] font-semibold">{titleFor(summary)}</h2>
+	// The copy button sits under the last message, at the start of the line.
+	const afterMessages = (messages: readonly UIMessage[]) => (
+		<IconButton
+			icon="copy"
+			label={t`Copy conversation`}
+			size="sm"
+			className="-ms-2 text-muted"
+			onPress={() =>
+				void copyToClipboard(
+					transcriptOf(messages, { user: t`You`, assistant: t`Coach`, sources: t`Sources` }),
+					t`Conversation copied`,
+				)
+			}
+		/>
+	);
+
+	const model = (
+		<>
+			<IconButton
+				icon="clock-counter-clockwise"
+				label={t`Conversations`}
+				size="sm"
+				className="text-muted lg:hidden"
+				onPress={() => setView("history")}
+			/>
 			{(usable.length > 0 || summary) && (
-				<ModelChip
+				<ModelSelect
 					open={modelMenuOpen}
 					onOpenChange={setModelMenuOpen}
 					providers={usable}
@@ -302,27 +292,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 					onChoose={(id) => void chooseProvider(id)}
 				/>
 			)}
-			<IconButton
-				icon="copy"
-				label={t`Copy conversation`}
-				size="sm"
-				className="text-muted"
-				isDisabled={messages.length === 0}
-				onPress={() =>
-					void copyToClipboard(
-						transcriptOf(messages, { user: t`You`, assistant: t`Coach`, sources: t`Sources` }),
-						t`Conversation copied`,
-					)
-				}
-			/>
-			<IconButton
-				icon="clock-counter-clockwise"
-				label={t`Conversations`}
-				size="sm"
-				className="text-muted lg:hidden"
-				onPress={() => setView("history")}
-			/>
-		</header>
+		</>
 	);
 
 	const notSetUp = threads.error instanceof ORPCError && threads.error.code === "PRECONDITION_FAILED";
@@ -340,7 +310,6 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			>
 				{notSetUp ? (
 					<>
-						{header([])}
 						<p className="m-4 rounded-xl bg-default p-4 text-sm text-muted">
 							<Trans>
 								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers
@@ -372,7 +341,6 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 					/>
 				) : noProvider && !threadId ? (
 					<>
-						{header([])}
 						<div className="min-h-0 flex-1 overflow-y-auto">
 							<div className="mx-auto max-w-[560px] py-6">
 								<ProviderSetup />
@@ -390,7 +358,8 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 						context={context}
 						connection={connection}
 						onChangeConnection={() => setModelMenuOpen(true)}
-						header={header}
+						header={() => null}
+						afterMessages={afterMessages}
 						empty={(send) => (
 							<EmptyState
 								disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
@@ -398,7 +367,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 							/>
 						)}
 						chips={contextChips}
-						privacy={privacy}
+						model={model}
 						placeholder={t`Ask about your next career step…`}
 						disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
 						variant="page"
@@ -466,7 +435,7 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	);
 }
 
-type ModelChipProps = {
+type ModelSelectProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	providers: readonly UsableProvider[];
@@ -475,49 +444,45 @@ type ModelChipProps = {
 	onChoose: (id: string) => void;
 };
 
-/** "Demo AI · gpt-4.1-mini": the connection this conversation uses; the menu switches it. */
-function ModelChip({ open, onOpenChange, providers, current, label, onChoose }: ModelChipProps) {
+/** The connection this conversation uses, picked in the composer's toolbar like HeroUI's model selector. */
+function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }: ModelSelectProps) {
 	const navigate = useNavigate();
-	const text = current ? `${current.label} · ${current.model}` : label;
 	return (
-		<Dropdown isOpen={open} onOpenChange={onOpenChange}>
-			<Button
-				variant="ghost"
-				size="sm"
-				aria-label={t`Connection: ${text}`}
-				className="h-7 min-h-0 max-w-[45%] min-w-0 justify-start gap-0.5 px-2 text-xs text-muted hover:text-foreground aria-expanded:text-foreground max-sm:max-w-[30%]"
-			>
-				<span className="truncate">{text}</span>
-			</Button>
-			<Dropdown.Popover placement="bottom end" className="w-64">
-				<Dropdown.Menu>
+		<Select
+			aria-label={t`Connection`}
+			placeholder={label}
+			isOpen={open}
+			onOpenChange={onOpenChange}
+			className="w-[140px] sm:w-[190px]"
+			value={current?.id ?? null}
+			onChange={(key) => {
+				if (key === "connect") void navigate({ to: "/dashboard/settings/ai" });
+				else if (typeof key === "string") onChoose(key);
+			}}
+		>
+			<Select.Trigger className="h-8 min-h-8 text-[13px]">
+				<Select.Value />
+				<Select.Indicator />
+			</Select.Trigger>
+			<Select.Popover>
+				<ListBox>
 					{providers.map((item) => (
-						<Dropdown.Item
-							key={item.id}
-							id={item.id}
-							textValue={`${item.label} ${item.model}`}
-							onAction={() => onChoose(item.id)}
-						>
-							<span className="grid min-w-0 flex-1">
+						<ListBox.Item key={item.id} id={item.id} textValue={`${item.label} ${item.model}`}>
+							<span className="grid min-w-0">
 								<Label className="truncate">{item.label}</Label>
-								<Description className="truncate font-mono">{item.model}</Description>
+								<Description className="truncate">{item.model}</Description>
 							</span>
-							{item.id === current?.id && <Icon name="check" size={16} />}
-						</Dropdown.Item>
+							<ListBox.ItemIndicator />
+						</ListBox.Item>
 					))}
-					{providers.length > 0 ? <Separator /> : null}
-					<Dropdown.Item
-						id="connect"
-						textValue={t`Connect another…`}
-						onAction={() => void navigate({ to: "/dashboard/settings/ai" })}
-					>
+					<ListBox.Item id="connect" textValue={t`Connect another…`}>
 						<Label>
 							<Trans>Connect another…</Trans>
 						</Label>
-					</Dropdown.Item>
-				</Dropdown.Menu>
-			</Dropdown.Popover>
-		</Dropdown>
+					</ListBox.Item>
+				</ListBox>
+			</Select.Popover>
+		</Select>
 	);
 }
 

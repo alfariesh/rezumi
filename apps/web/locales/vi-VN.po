@@ -163,10 +163,8 @@ msgstr "{0, plural, one {Không thể đặt bản chỉnh sửa #: văn bản c
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, other {# mục}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, other {# dữ kiện}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Chi tiết hồ sơ ứng tuyển"
 msgid "Application options"
 msgstr "lựa chọn xin việc"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "tóm tắt hồ sơ ứng tuyển"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Các thẻ của hồ sơ ứng tuyển"
@@ -3099,13 +3093,13 @@ msgstr "Đã kết nối. Tên miền của bạn mở sơ yếu lý lịch chí
 msgid "Connecting your {providerName} account…"
 msgstr "Đang kết nối tài khoản {providerName} của bạn…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Đã lưu kết nối"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Kết nối: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Mỗi câu trả lời bạn nhận được nhận xét đều được
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Mỗi yêu cầu trong tin tuyển dụng được đối chiếu với các dữ kiện và câu chuyện trong Kiến thức của bạn. Khoảng trống được hiển thị là thiếu bằng chứng, không bao giờ là thiếu năng lực."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "các tin nhắn trước trong cuộc trò chuyện này"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Trân trọng,"
 msgid "Knowledge"
 msgstr "Kiến thức"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Không thể tải Kiến thức. Hãy thử lại hoặc tắt Kiến thức trước khi gửi."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Kiến thức không đề cập đến việc kèm cặp."
@@ -6924,10 +6910,6 @@ msgstr "Đang tải cuộc trò chuyện…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Đang tải các buổi phỏng vấn…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Đang tải Kiến thức trước khi gửi…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Tìm kiếm tin tuyển dụng"
 msgid "Search role, company or contact"
 msgstr "Tìm kiếm vai trò, công ty hoặc liên hệ"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Từ khóa tìm kiếm được gửi tới dịch vụ tìm kiếm web của bạn."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Những gì đang hoạt động"
 msgid "When do they need your answer?"
 msgstr "Khi nào họ cần câu trả lời của bạn?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Khi bạn nhấn gửi, {shared} sẽ được gửi tới {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Hồ sơ ứng tuyển đến từ đâu"
@@ -13925,10 +13899,6 @@ msgstr "Vị trí của bạn đã thay đổi trên bản lý lịch. Bức th�
 msgid "Your margins are very narrow."
 msgstr "Lề trang của bạn rất hẹp."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "tin nhắn của bạn"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Tên và chi tiết liên lạc của bạn đến từ một bản lý lịch."
@@ -13976,10 +13946,6 @@ msgstr "Số điện thoại của bạn đã thay đổi trên bản lý lịch
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Số điện thoại của bạn được viết theo định dạng khác thường."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "mong muốn của bạn"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Liên kết ngắn và tên miền tùy chỉnh của bạn mở sơ y�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Liên kết ngắn và tên miền tùy chỉnh của bạn sẽ báo rằng sơ yếu lý lịch này chưa được chia sẻ cho đến khi bạn xuất bản lại."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "các câu chuyện của bạn"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

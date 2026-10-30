@@ -163,10 +163,8 @@ msgstr "{0, plural, one {لا يمكن وضع تحرير #: تم تغيير ال
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {إدخال واحد} two {إدخالان} few {# إدخالات} many {# إدخالًا} other {# إدخال}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, zero {لا حقائق} one {حقيقة واحدة} two {حقيقتان} few {# حقائق} many {# حقيقة} other {# حقيقة}}"
 
@@ -1917,10 +1915,6 @@ msgstr "تفاصيل الطلب"
 msgid "Application options"
 msgstr "خيارات التقدم للوظيفة"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "ملخصات الطلبات"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "علامات تبويب الطلب"
@@ -3099,13 +3093,13 @@ msgstr "متصل. يفتح نطاقك سيرتك الذاتية الأساسية
 msgid "Connecting your {providerName} account…"
 msgstr "جارٍ ربط حسابك على {providerName}…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "تم حفظ الاتصال"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "الاتصال: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "كل إجابة تحصل على ملاحظات بشأنها تُحفظ �
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "يُطابَق كل متطلب في إعلان الوظيفة مع الحقائق والقصص في معرفتك. تظهر الفجوات كدليل مفقود، وليست أبدًا كقدرة مفقودة."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "الرسائل السابقة في هذه المحادثة"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "أطيب التحيات،"
 msgid "Knowledge"
 msgstr "المعرفة"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "تعذّر تحميل المعرفة. حاول مرة أخرى أو أوقف المعرفة قبل الإرسال."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "لا تذكر المعرفة التوجيه."
@@ -6924,10 +6910,6 @@ msgstr "جارٍ تحميل المحادثات..."
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "جارٍ تحميل المقابلات…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "جارٍ تحميل المعرفة قبل الإرسال…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "البحث عن وظائف شاغرة"
 msgid "Search role, company or contact"
 msgstr "ابحث عن الدور أو الشركة أو جهة الاتصال"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "تذهب عبارات البحث إلى خدمة البحث على الويب لديك."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "ما العمل"
 msgid "When do they need your answer?"
 msgstr "متى يحتاجون إلى ردك؟"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "عند الضغط على إرسال، تذهب {shared} إلى {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "من أين تأتي الطلبات"
@@ -13925,10 +13899,6 @@ msgstr "لقد تغير موقعك في السيرة الذاتية. تم تحد
 msgid "Your margins are very narrow."
 msgstr "هوامشك ضيقة جدًا."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "رسالتك"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "اسمك وتفاصيل الاتصال الخاصة بك تأتي من السيرة الذاتية."
@@ -13976,10 +13946,6 @@ msgstr "لقد تغير رقم هاتفك في السيرة الذاتية. تم
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "رقم هاتفك مكتوب بصيغة غير معتادة."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "تفضيلاتك"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "يفتح رابطك المختصر ونطاقك المخصص هذه ال
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "يُظهر رابطك المختصر ونطاقك المخصص أن هذه السيرة الذاتية غير مُشارَكة حتى تنشرها مجددًا."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "قصصك"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

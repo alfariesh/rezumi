@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# አርትዖት ሊቀመጥ አልቻለም፡ ጽ�
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# ግቤት} other {# ግቤቶች}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# እውነታ} other {# እውነታዎች}}"
 
@@ -1917,10 +1915,6 @@ msgstr "የማመልከቻ ዝርዝሮች"
 msgid "Application options"
 msgstr "የሥራ ማመልከቻ አማራጮች"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "የማመልከቻ ማጠቃለያዎች"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "የማመልከቻ ትሮች"
@@ -3099,13 +3093,13 @@ msgstr "ተገናኝቷል። ጎራዎ ዋናውን የስራ ልምድ ማስ�
 msgid "Connecting your {providerName} account…"
 msgstr "የ{providerName} መለያዎን በማገናኘት ላይ…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "ግንኙነት ተቀምጧል"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "ግንኙነት: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "ግብረ መልስ ያገኙበት እያንዳንዱ መልስ እዚ�
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "በሥራ ማስታወቂያው ውስጥ ያለ እያንዳንዱ መስፈርት በእውቀትዎ ውስጥ ካሉ እውነታዎች እና ታሪኮች ጋር ይረጋገጣል። ክፍተቶች የሚታዩት እንደ ጎደለ ማስረጃ ነው እንጂ እንደ ጎደለ ችሎታ ፈጽሞ አይደለም።"
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "በዚህ ውይይት ውስጥ ያሉ የቀድሞ መልዕክቶች"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "ምልካም ምኞት፣"
 msgid "Knowledge"
 msgstr "እውቀት"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "እውቀት መጫን አልቻለም። ከመላክዎ በፊት እንደገና ይሞክሩ ወይም እውቀትን ያጥፉ።"
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "እውቀት ስለ ማሰልጠን አይጠቅስም።"
@@ -6924,10 +6910,6 @@ msgstr "ንግግሮችን በመጫን ላይ…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "ቃለ መጠይቆችን በመጫን ላይ…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "ከመላክዎ በፊት እውቀትን በመጫን ላይ…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "የስራ ማስታወቂያዎችን ይፈልጉ"
 msgid "Search role, company or contact"
 msgstr "ሚና ፣ ኩባንያ ወይም ግንኙነት ይፈልጉ"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "የፍለጋ ቃላት ወደ ድር ፍለጋ አገልግሎትዎ ይሄዳሉ።"
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "ምን እየሰራ ነው።"
 msgid "When do they need your answer?"
 msgstr "መልስዎን መቼ ይፈልጋሉ?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "ላክ ሲጫኑ፣ {shared} ወደ {connection} ይሄዳሉ።"
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "ማመልከቻዎች ከየት ይመጣሉ"
@@ -13925,10 +13899,6 @@ msgstr "በመመዝገቢያ ደብተር ላይ ያሉበት ቦታ ተቀይ�
 msgid "Your margins are very narrow."
 msgstr "ማርጂኖችዎ በጣም ጠባብ ናቸው።"
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "መልዕክትዎ"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "የእርስዎ ስም እና የእውቂያ ዝርዝሮች ከሪሱሜ የመጡ ናቸው።"
@@ -13976,10 +13946,6 @@ msgstr "ስልክ ቁጥርዎ በሪሱሜው ላይ ተቀይሯል። ደብ�
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "ስልክ ቁጥርዎ ባልተለመደ ቅርጽ ተጽፏል።"
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "ምርጫዎችዎ"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "አጭር አገናኝዎ እና የራስዎ ጎራ ይህን የስራ
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "አጭር አገናኝዎ እና የራስዎ ጎራ እንደገና ይፋ እስኪያደርጉት ድረስ ይህ የስራ ልምድ ማስረጃ እንዳልተጋራ ያሳያሉ።"
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "ታሪኮችዎ"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

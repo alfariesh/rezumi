@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# 편집을 배치할 수 없습니다. 텍스트가 �
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {항목 #개} other {항목 #개}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, other {사실 #개}}"
 
@@ -1917,10 +1915,6 @@ msgstr "지원 세부 정보"
 msgid "Application options"
 msgstr "취업 지원 옵션"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "지원 요약"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "지원 탭"
@@ -3099,13 +3093,13 @@ msgstr "연결되었습니다. 도메인에서 대표 이력서가 열립니다.
 msgid "Connecting your {providerName} account…"
 msgstr "{providerName} 계정을 연결하는 중…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "연결이 저장되었습니다."
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "연결: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "피드백을 받은 답변은 모두 최신순으로 여기에 보관됩
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "채용 공고의 각 요건을 지식에 있는 사실 및 스토리와 대조합니다. 빈 부분은 능력이 아니라 근거가 부족하다는 뜻으로만 표시됩니다."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "이 채팅의 이전 메시지"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "감사합니다."
 msgid "Knowledge"
 msgstr "지식"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "지식을 불러올 수 없습니다. 다시 시도하거나 보내기 전에 지식을 끄세요."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "지식에 멘토링에 관한 내용이 없습니다."
@@ -6924,10 +6910,6 @@ msgstr "대화 로드 중…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "면접 불러오는 중…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "보내기 전에 지식 불러오는 중…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "채용 공고 검색"
 msgid "Search role, company or contact"
 msgstr "역할, 회사 또는 연락처 검색"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "검색어는 웹 검색 서비스로 전송됩니다."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "무슨 일이 일어나고 있나요?"
 msgid "When do they need your answer?"
 msgstr "언제까지 답해야 하나요?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "보내기를 누르면 {connection}에 다음 내용이 전송됩니다: {shared}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "지원 유입 경로"
@@ -13925,10 +13899,6 @@ msgstr "이력서에서 귀하의 위치가 변경되었습니다. 편지도 업
 msgid "Your margins are very narrow."
 msgstr "여백이 매우 좁습니다."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "내 메시지"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "귀하의 이름과 연락처 정보는 이력서에서 나옵니다."
@@ -13976,10 +13946,6 @@ msgstr "이력서에 기재된 전화번호가 변경되었습니다. 편지도 
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "전화번호가 특이한 형식으로 작성되어 있습니다."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "내 선호 사항"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "짧은 링크와 사용자 지정 도메인에서 이 이력서가 열�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "다시 게시할 때까지 짧은 링크와 사용자 지정 도메인에는 이 이력서가 공유되지 않았다고 표시됩니다."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "내 스토리"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

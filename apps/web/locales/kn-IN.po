@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# ಸಂಪಾದನೆಯನ್ನು ಇರಿಸಲ�
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# ನಮೂದು} other {# ನಮೂದುಗಳು}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# ಸಂಗತಿ} other {# ಸಂಗತಿಗಳು}}"
 
@@ -1917,10 +1915,6 @@ msgstr "ಅರ್ಜಿಯ ವಿವರಗಳು"
 msgid "Application options"
 msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿ ಆಯ್ಕೆಗಳು"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "ಅರ್ಜಿಗಳ ಸಾರಾಂಶಗಳು"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "ಅರ್ಜಿಯ ಟ್ಯಾಬ್‌ಗಳು"
@@ -3099,13 +3093,13 @@ msgstr "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ಡೊಮೇ
 msgid "Connecting your {providerName} account…"
 msgstr "ನಿಮ್ಮ {providerName} ಖಾತೆಯನ್ನು ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "ಸಂಪರ್ಕವನ್ನು ಉಳಿಸಲಾಗಿದೆ"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "ಸಂಪರ್ಕ: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "ನೀವು ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆದ ಪ್ರತ
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತಿನ ಪ್ರತಿಯೊಂದು ಅವಶ್ಯಕತೆಯನ್ನು ನಿಮ್ಮ ಜ್ಞಾನದಲ್ಲಿರುವ ಸಂಗತಿಗಳು ಮತ್ತು ಕಥೆಗಳೊಂದಿಗೆ ಪರಿಶೀಲಿಸಲಾಗುತ್ತದೆ. ಕೊರತೆಗಳು ಪುರಾವೆಯ ಕೊರತೆಯಾಗಿ ತೋರುತ್ತವೆ, ಸಾಮರ್ಥ್ಯದ ಕೊರತೆಯಾಗಿ ಎಂದಿಗೂ ಅಲ್ಲ."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "ಈ ಚಾಟ್‌ನ ಹಿಂದಿನ ಸಂದೇಶಗಳು"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "ಆತ್ಮೀಯ ವಂದನೆಗಳು,"
 msgid "Knowledge"
 msgstr "ಜ್ಞಾನ"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "ಜ್ಞಾನವನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಕಳುಹಿಸುವ ಮೊದಲು ಜ್ಞಾನವನ್ನು ಆಫ್ ಮಾಡಿ."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "ಜ್ಞಾನದಲ್ಲಿ ಮಾರ್ಗದರ್ಶನದ ಬಗ್ಗೆ ಉಲ್ಲೇಖವಿಲ್ಲ."
@@ -6924,10 +6910,6 @@ msgstr "ಸಂಭಾಷಣೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗ�
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "ಸಂದರ್ಶನಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "ನೀವು ಕಳುಹಿಸುವ ಮೊದಲು ಜ್ಞಾನವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "ಉದ್ಯೋಗ ಪೋಸ್ಟಿಂಗ್‌ಗಳನ್ನು ಹ�
 msgid "Search role, company or contact"
 msgstr "ಹುಡುಕಾಟ ಪಾತ್ರ, ಕಂಪನಿ ಅಥವಾ ಸಂಪರ್ಕ"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "ಹುಡುಕಾಟ ಪದಗಳು ನಿಮ್ಮ ವೆಬ್ ಹುಡುಕಾಟ ಸೇವೆಗೆ ಹೋಗುತ್ತವೆ."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "ಏನು ಕೆಲಸ ಮಾಡುತ್ತಿದೆ"
 msgid "When do they need your answer?"
 msgstr "ಅವರಿಗೆ ನಿಮ್ಮ ಉತ್ತರ ಯಾವಾಗ ಬೇಕು?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "ನೀವು ಕಳುಹಿಸಿ ಒತ್ತಿದಾಗ, {shared} {connection} ಗೆ ಹೋಗುತ್ತವೆ."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "ಅರ್ಜಿಗಳು ಎಲ್ಲಿಂದ ಬರುತ್ತವೆ"
@@ -13925,10 +13899,6 @@ msgstr "ರೆಸ್ಯೂಮೆಯಲ್ಲಿ ನಿಮ್ಮ ಸ್ಥಳ ಬ
 msgid "Your margins are very narrow."
 msgstr "ನಿಮ್ಮ ಅಂಚುಗಳು ಬಹಳ ಕಿರಿದಾಗಿವೆ."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "ನಿಮ್ಮ ಸಂದೇಶ"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "ನಿಮ್ಮ ಹೆಸರು ಮತ್ತು ಸಂಪರ್ಕ ವಿವರಗಳು ರೆಸ್ಯೂಮೆಯಿಂದ ಬಂದಿವೆ."
@@ -13976,10 +13946,6 @@ msgstr "ರೆಸ್ಯೂಮೆಯಲ್ಲಿ ನಿಮ್ಮ ಫೋನ್ ಸ
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "ನಿಮ್ಮ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ಅಸಾಮಾನ್ಯ ರೂಪದಲ್ಲಿ ಬರೆಯಲಾಗಿದೆ."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "ನಿಮ್ಮ ಆದ್ಯತೆಗಳು"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "ನಿಮ್ಮ ಕಿರು ಲಿಂಕ್ ಮತ್ತು ಕಸ್�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "ನೀವು ಮತ್ತೆ ಪ್ರಕಟಿಸುವವರೆಗೆ ಈ ರೆಸ್ಯೂಮ್ ಹಂಚಿಕೊಂಡಿಲ್ಲ ಎಂದು ನಿಮ್ಮ ಕಿರು ಲಿಂಕ್ ಮತ್ತು ಕಸ್ಟಮ್ ಡೊಮೇನ್ ತಿಳಿಸುತ್ತವೆ."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "ನಿಮ್ಮ ಕಥೆಗಳು"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

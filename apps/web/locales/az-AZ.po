@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# redaktəsini yerləşdirmək mümkün olmadı: onun m
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# qeyd} other {# qeyd}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# fakt} other {# fakt}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Müraciət təfərrüatları"
 msgid "Application options"
 msgstr "Müraciət seçimləri"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "müraciət xülasələri"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Müraciət tabları"
@@ -3099,13 +3093,13 @@ msgstr "Qoşuldu. Domeniniz əsas CV-nizi açır."
 msgid "Connecting your {providerName} account…"
 msgstr "{providerName} hesabınız qoşulur…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Bağlantı yadda saxlanıldı"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Bağlantı: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Rəy aldığınız hər cavab burada saxlanılır, ən yenisi birinci."
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "İş elanındakı hər tələb Biliklərinizdəki fakt və hekayələrlə yoxlanılır. Boşluqlar çatışmayan bacarıq kimi deyil, həmişə çatışmayan sübut kimi göstərilir."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "bu söhbətdəki əvvəlki mesajlar"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Hörmətlə,"
 msgid "Knowledge"
 msgstr "Biliklər"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Biliklər yüklənmədi. Göndərməzdən əvvəl yenidən cəhd edin və ya Bilikləri söndürün."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Biliklərdə mentorluqdan bəhs edilmir."
@@ -6924,10 +6910,6 @@ msgstr "Söhbətlər yüklənir..."
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Müsahibələr yüklənir…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Göndərməzdən əvvəl Biliklər yüklənir…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "İş elanları axtarın"
 msgid "Search role, company or contact"
 msgstr "Rol, şirkət və ya əlaqə axtarın"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Axtarış sözləri veb axtarış xidmətinizə göndərilir."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Nə işləyir"
 msgid "When do they need your answer?"
 msgstr "Cavabınız onlara nə vaxt lazımdır?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Göndər düyməsini basdığınız zaman {shared} {connection} bağlantısına göndərilir."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Müraciətlər haradan gəlir"
@@ -13925,10 +13899,6 @@ msgstr "CV-də yeriniz dəyişdi. Məktub da yeniləndi."
 msgid "Your margins are very narrow."
 msgstr "Kənar boşluqlarınız çox dardır."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "mesajınız"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Adınız və əlaqə məlumatlarınız rezyumedən gəlir."
@@ -13976,10 +13946,6 @@ msgstr "CV-də telefon nömrəniz dəyişdirilib. Məktub da yeniləndi."
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Telefon nömrəniz qeyri-adi formada yazılıb."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "tərcihləriniz"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Qısa keçidiniz və fərdi domeniniz bu CV-ni açır."
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Siz yenidən dərc edənə qədər qısa keçidiniz və fərdi domeniniz bu CV-nin paylaşılmadığını göstərir."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "hekayələriniz"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

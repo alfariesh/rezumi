@@ -48,6 +48,8 @@ type PromptBoxProps = {
 	files?: readonly PromptFile[];
 	/** Controls above the text, before the chips (the coach's what-to-share switches). The toolbar can't wrap, so they live here. */
 	context?: ReactNode;
+	/** More controls in the toolbar after attach: the coach's connection picker. */
+	toolbar?: ReactNode;
 	/** Shows the attach button when set. */
 	attach?: { isDisabled: boolean; isPending: boolean; onFiles: (files: File[]) => void } | undefined;
 };
@@ -156,6 +158,7 @@ export function PromptBox(props: PromptBoxProps) {
 								/>
 							</>
 						)}
+						{props.toolbar}
 					</PromptInput.ToolbarStart>
 					<PromptInput.ToolbarEnd>
 						<PromptInput.Send aria-label={sendLabel} isDisabled={streaming ? false : props.disabled || !props.canSend}>

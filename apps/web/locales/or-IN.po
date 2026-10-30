@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# ସମ୍ପାଦନା ସ୍ଥାନିତ ହୋ
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# ଏଣ୍ଟ୍ରି} other {# ଏଣ୍ଟ୍ରି}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {#ଟି ତଥ୍ୟ} other {#ଟି ତଥ୍ୟ}}"
 
@@ -1917,10 +1915,6 @@ msgstr "ଆବେଦନ ବିବରଣୀ"
 msgid "Application options"
 msgstr "ଚାକିରି ଆବେଦନ ବିକଳ୍ପଗୁଡ଼ିକ |"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "ଆବେଦନ ସାରାଂଶ"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "ଆବେଦନ ଟ୍ୟାବ୍"
@@ -3099,13 +3093,13 @@ msgstr "ସଂଯୁକ୍ତ। ଆପଣଙ୍କ ଡୋମେନ୍ ଆପଣ
 msgid "Connecting your {providerName} account…"
 msgstr "ଆପଣଙ୍କ {providerName} ଆକାଉଣ୍ଟ ସଂଯୋଗ ହେଉଛି…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "ସଂଯୋଗ ସଞ୍ଚୟ ହୋଇଛି |"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "ସଂଯୋଗ: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "ଆପଣ ମତାମତ ପାଇଥିବା ପ୍ରତ୍ୟେକ
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "ଚାକିରି ବିଜ୍ଞାପନର ପ୍ରତ୍ୟେକ ଆବଶ୍ୟକତାକୁ ଆପଣଙ୍କ ଜ୍ଞାନରେ ଥିବା ତଥ୍ୟ ଓ କାହାଣୀ ସହ ଯାଞ୍ଚ କରାଯାଏ। ଅଭାବଗୁଡ଼ିକ ଅନୁପସ୍ଥିତ ପ୍ରମାଣ ଭାବେ ଦେଖାଯାଏ, କେବେ ବି ଅନୁପସ୍ଥିତ ଦକ୍ଷତା ଭାବେ ନୁହେଁ।"
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "ଏହି ଚାଟ୍‌ର ପୂର୍ବ ବାର୍ତ୍ତା"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6483,10 +6473,6 @@ msgstr "ଦୟାକରି,"
 msgid "Knowledge"
 msgstr "ଜ୍ଞାନ"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "ଜ୍ଞାନ ଲୋଡ୍ ହୋଇପାରିଲା ନାହିଁ। ପଠାଇବା ପୂର୍ବରୁ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ କିମ୍ବା ଜ୍ଞାନ ବନ୍ଦ କରନ୍ତୁ।"
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "ଜ୍ଞାନରେ ମେଣ୍ଟରିଂର ଉଲ୍ଲେଖ ନାହିଁ।"
@@ -6925,10 +6911,6 @@ msgstr "ବାର୍ତ୍ତାଳାପ ଲୋଡିଂ…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "ସାକ୍ଷାତକାର ଲୋଡ୍ ହେଉଛି…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "ପଠାଇବା ପୂର୍ବରୁ ଜ୍ଞାନ ଲୋଡ୍ ହେଉଛି…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10479,10 +10461,6 @@ msgstr "ଚାକିରି ପୋଷ୍ଟିଂ ଖୋଜ |"
 msgid "Search role, company or contact"
 msgstr "ସନ୍ଧାନ ଭୂମିକା, କମ୍ପାନୀ କିମ୍ବା ଯୋଗାଯୋଗ |"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "ସର୍ଚ୍ଚ ଶବ୍ଦଗୁଡ଼ିକ ଆପଣଙ୍କ ୱେବ୍ ସର୍ଚ୍ଚ ସେବାକୁ ଯାଏ।"
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13443,10 +13421,6 @@ msgstr "କ’ଣ କାମ କରୁଛି |"
 msgid "When do they need your answer?"
 msgstr "ସେମାନଙ୍କୁ ଆପଣଙ୍କ ଉତ୍ତର କେବେ ଦରକାର?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "ଆପଣ ପଠାନ୍ତୁ ଦବାଇଲେ, {shared} {connection}କୁ ଯାଏ।"
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "ଯେଉଁଠାରେ ଆବେଦନଗୁଡ଼ିକ ଆସେ |"
@@ -13928,10 +13902,6 @@ msgstr "ରେଜୁମେରେ ତୁମର ଅବସ୍ଥାନ ବଦଳି
 msgid "Your margins are very narrow."
 msgstr "ଆପଣଙ୍କ ମାର୍ଜିନ୍ ବହୁତ ସଂକୀର୍ଣ୍ଣ।"
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "ଆପଣଙ୍କ ବାର୍ତ୍ତା"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "ତୁମର ନାମ ଏବଂ ଯୋଗାଯୋଗ ବିବରଣୀ ଏକ ରେଜୁମାରୁ ଆସିଛି |"
@@ -13979,10 +13949,6 @@ msgstr "ରେଜୁମେରେ ତୁମର ଫୋନ୍ ନମ୍ବର ବ�
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "ଆପଣଙ୍କ ଫୋନ୍ ନମ୍ବର ଏକ ଅସାଧାରଣ ଆକାରରେ ଲେଖାଯାଇଛି।"
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "ଆପଣଙ୍କ ପସନ୍ଦ"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14041,10 +14007,6 @@ msgstr "ଆପଣଙ୍କ ଛୋଟ ଲିଙ୍କ୍ ଏବଂ କଷ୍ଟ�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "ଆପଣ ପୁଣି ପ୍ରକାଶ ନକରିବା ପର୍ଯ୍ୟନ୍ତ, ଆପଣଙ୍କ ଛୋଟ ଲିଙ୍କ୍ ଏବଂ କଷ୍ଟମ୍ ଡୋମେନ୍ ଦେଖାଏ ଯେ ଏହି ରେଜ୍ୟୁମେ ଅଂଶୀଦାର ହୋଇନାହିଁ।"
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "ଆପଣଙ୍କ କାହାଣୀ"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

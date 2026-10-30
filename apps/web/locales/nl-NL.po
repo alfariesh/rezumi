@@ -163,10 +163,8 @@ msgstr "{0, plural, one {#-bewerking kan niet worden geplaatst: de tekst is gewi
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# item} other {# items}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# feit} other {# feiten}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Sollicitatiegegevens"
 msgid "Application options"
 msgstr "sollicitatie mogelijkheden"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "samenvattingen van sollicitaties"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Sollicitatietabbladen"
@@ -3099,13 +3093,13 @@ msgstr "Verbonden. Je domein opent je primaire cv."
 msgid "Connecting your {providerName} account…"
 msgstr "Uw {providerName}-account wordt gekoppeld…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Verbinding opgeslagen"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Verbinding: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Elk antwoord waarop u feedback krijgt, wordt hier bewaard, nieuwste eers
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Elke eis in de vacature wordt getoetst aan de feiten en verhalen in uw Kennis. Hiaten worden getoond als ontbrekend bewijs, nooit als ontbrekend vermogen."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "eerdere berichten in deze chat"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Met vriendelijke groeten,"
 msgid "Knowledge"
 msgstr "Kennis"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Kennis kon niet worden geladen. Probeer het opnieuw of zet Kennis uit voordat u verstuurt."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Kennis vermeldt niets over mentorschap."
@@ -6924,10 +6910,6 @@ msgstr "Gesprekken laden…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Gesprekken laden…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Kennis laden voordat u verstuurt…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Zoek vacatures"
 msgid "Search role, company or contact"
 msgstr "Zoek rol, bedrijf of contactpersoon"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Zoektermen gaan naar uw webzoekdienst."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Wat werkt"
 msgid "When do they need your answer?"
 msgstr "Wanneer hebben ze uw antwoord nodig?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Wanneer u op verzenden drukt, gaan {shared} naar {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Waar sollicitaties vandaan komen"
@@ -13925,10 +13899,6 @@ msgstr "Uw locatie op het cv is gewijzigd. De brief is ook bijgewerkt."
 msgid "Your margins are very narrow."
 msgstr "Je marges zijn erg smal."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "uw bericht"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Uw naam en contactgegevens komen uit een CV."
@@ -13976,10 +13946,6 @@ msgstr "Uw telefoonnummer is gewijzigd op het cv. De brief is ook bijgewerkt."
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Je telefoonnummer is in een ongebruikelijke vorm geschreven."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "uw voorkeuren"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Je korte link en eigen domein openen dit cv."
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Je korte link en eigen domein melden dat dit cv niet gedeeld wordt totdat je het opnieuw publiceert."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "uw verhalen"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

@@ -237,6 +237,10 @@ export function ChatView(props: ChatViewProps) {
 										</div>
 									</MessageScrollerItem>
 								)}
+
+								{!streaming && messages.length > 0 && props.afterMessages && (
+									<MessageScrollerItem>{props.afterMessages(messages)}</MessageScrollerItem>
+								)}
 							</MessageScrollerContent>
 						</MessageScrollerViewport>
 						<MessageScrollerButton>

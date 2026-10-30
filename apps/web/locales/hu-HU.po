@@ -163,10 +163,8 @@ msgstr "{0, plural, one {A # szerkesztést nem sikerült elhelyezni: a szövege 
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# bejegyzés} other {# bejegyzés}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# tény} other {# tény}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Jelentkezés részletei"
 msgid "Application options"
 msgstr "álláspályázati lehetőségek"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "jelentkezési összefoglalók"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Jelentkezés lapjai"
@@ -3099,13 +3093,13 @@ msgstr "Csatlakoztatva. A domained az elsődleges önéletrajzodat nyitja meg."
 msgid "Connecting your {providerName} account…"
 msgstr "{providerName}-fiókod csatlakoztatása…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "A kapcsolat mentve"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Kapcsolat: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Minden válasz, amelyre visszajelzést kaptál, itt marad, a legújabb e
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "A hirdetés minden követelményét összevetjük a Tudástárad tényeivel és történeteivel. A hiányok hiányzó bizonyítékként jelennek meg, sosem hiányzó képességként."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "a csevegés korábbi üzenetei"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Üdvözlettel,"
 msgid "Knowledge"
 msgstr "Tudástár"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "A Tudástár nem töltődött be. Próbáld újra, vagy küldés előtt kapcsold ki a Tudástárat."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "A Tudástár nem említi a mentorálást."
@@ -6924,10 +6910,6 @@ msgstr "Beszélgetések betöltése…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Interjúk betöltése…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Tudástár betöltése küldés előtt…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Álláshirdetések keresése"
 msgid "Search role, company or contact"
 msgstr "Szerepkör, cég vagy kapcsolat keresése"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "A keresési kifejezések a webes keresőszolgáltatásodhoz kerülnek."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Mi működik"
 msgid "When do they need your answer?"
 msgstr "Mikorra kell nekik a válaszod?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Küldéskor {shared} jut el ide: {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Honnan érkeznek a jelentkezések"
@@ -13925,10 +13899,6 @@ msgstr "A tartózkodási helye megváltozott az önéletrajzon. A levél is fris
 msgid "Your margins are very narrow."
 msgstr "A margóid nagyon keskenyek."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "az üzeneted"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Az Ön neve és elérhetőségei egy önéletrajzból származnak."
@@ -13976,10 +13946,6 @@ msgstr "Az önéletrajzban megváltozott a telefonszámod. A levél is frissült
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "A telefonszámod szokatlan formában van megírva."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "a preferenciáid"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "A rövid linked és a saját domained ezt az önéletrajzot nyitja meg."
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "A rövid linked és a saját domained azt jelzi, hogy ez az önéletrajz nincs megosztva, amíg újra közzé nem teszed."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "a történeteid"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

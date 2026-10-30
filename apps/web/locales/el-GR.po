@@ -163,10 +163,8 @@ msgstr "{0, plural, one {Δεν ήταν δυνατή η πραγματοποί�
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# καταχώριση} other {# καταχωρίσεις}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# γεγονός} other {# γεγονότα}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Λεπτομέρειες αίτησης"
 msgid "Application options"
 msgstr "επιλογές αίτησης εργασίας"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "περιλήψεις αιτήσεων"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Καρτέλες αίτησης"
@@ -3099,13 +3093,13 @@ msgstr "Συνδέθηκε. Ο τομέας σας ανοίγει το κύρι�
 msgid "Connecting your {providerName} account…"
 msgstr "Σύνδεση του λογαριασμού σας {providerName}…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Η σύνδεση αποθηκεύτηκε"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Σύνδεση: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Κάθε απάντηση για την οποία λαμβάνετε α
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Κάθε απαίτηση της αγγελίας ελέγχεται με βάση τα γεγονότα και τις ιστορίες στη Γνώση σας. Τα κενά εμφανίζονται ως ελλιπή τεκμήρια, ποτέ ως έλλειψη ικανότητας."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "προηγούμενα μηνύματα σε αυτή τη συνομιλία"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Με εκτίμηση,"
 msgid "Knowledge"
 msgstr "Γνώση"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Η Γνώση δεν φορτώθηκε. Δοκιμάστε ξανά ή απενεργοποιήστε τη Γνώση πριν από την αποστολή."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Η Γνώση δεν αναφέρει καθοδήγηση."
@@ -6924,10 +6910,6 @@ msgstr "Φόρτωση συνομιλιών…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Φόρτωση συνεντεύξεων…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Φόρτωση της Γνώσης πριν από την αποστολή…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Αναζήτηση αγγελιών εργασίας"
 msgid "Search role, company or contact"
 msgstr "Αναζήτηση ρόλου, εταιρείας ή επαφής"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Οι όροι αναζήτησης αποστέλλονται στην υπηρεσία αναζήτησης ιστού σας."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Τι λειτουργεί"
 msgid "When do they need your answer?"
 msgstr "Πότε χρειάζονται την απάντησή σας;"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Όταν πατήσετε αποστολή, τα εξής πηγαίνουν στη {connection}: {shared}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Από πού προέρχονται οι αιτήσεις"
@@ -13925,10 +13899,6 @@ msgstr "Η τοποθεσία σας άλλαξε στο βιογραφικό. �
 msgid "Your margins are very narrow."
 msgstr "Τα περιθώριά σας είναι πολύ στενά."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "το μήνυμά σας"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Το όνομα και τα στοιχεία επικοινωνίας σας προέρχονται από ένα βιογραφικό."
@@ -13976,10 +13946,6 @@ msgstr "Ο αριθμός τηλεφώνου σας άλλαξε στο βιογ
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Ο αριθμός τηλεφώνου σας είναι γραμμένος σε ασυνήθιστη μορφή."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "οι προτιμήσεις σας"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Ο σύντομος σύνδεσμος και ο προσαρμοσμέ�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Ο σύντομος σύνδεσμος και ο προσαρμοσμένος τομέας σας δείχνουν ότι αυτό το βιογραφικό δεν είναι κοινόχρηστο μέχρι να το δημοσιεύσετε ξανά."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "οι ιστορίες σας"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

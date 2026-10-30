@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# redagavimo nepavyko įdėti: jo tekstas pasikeitė. P
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# įrašas} few {# įrašai} many {# įrašo} other {# įrašų}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# faktas} few {# faktai} many {# fakto} other {# faktų}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Paraiškos informacija"
 msgid "Application options"
 msgstr "paraiškos dėl darbo galimybės"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "paraiškų santraukos"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Paraiškos skirtukai"
@@ -3099,13 +3093,13 @@ msgstr "Prijungtas. Jūsų domenas atveria pagrindinį gyvenimo aprašymą."
 msgid "Connecting your {providerName} account…"
 msgstr "Jungiama jūsų {providerName} paskyra…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Ryšys išsaugotas"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Ryšys: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Kiekvienas atsakymas, už kurį gavote atsiliepimą, saugomas čia – n
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Kiekvienas skelbimo reikalavimas tikrinamas pagal faktus ir istorijas jūsų Žiniose. Spragos rodomos kaip trūkstami įrodymai, o ne trūkstami gebėjimai."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "ankstesnės šio pokalbio žinutės"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Pagarbiai"
 msgid "Knowledge"
 msgstr "Žinios"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Nepavyko įkelti Žinių. Bandykite dar kartą arba prieš siųsdami išjunkite Žinias."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Žiniose mentorystė neminima."
@@ -6924,10 +6910,6 @@ msgstr "Įkeliami pokalbiai…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Įkeliami pokalbiai…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Prieš siunčiant įkeliamos Žinios…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Ieškokite darbo skelbimų"
 msgid "Search role, company or contact"
 msgstr "Ieškokite vaidmens, įmonės ar kontakto"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Paieškos žodžiai siunčiami jūsų žiniatinklio paieškos paslaugai."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Kas veikia"
 msgid "When do they need your answer?"
 msgstr "Iki kada jiems reikia jūsų atsakymo?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Paspaudus „Siųsti“, ryšiui {connection} siunčiama: {shared}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "Iš kur ateina paraiškos"
@@ -13925,10 +13899,6 @@ msgstr "Jūsų vieta gyvenimo aprašyme pasikeitė. Laiškas taip pat atnaujinta
 msgid "Your margins are very narrow."
 msgstr "Jūsų paraštės labai siauros."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "jūsų žinutė"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Jūsų vardas ir kontaktiniai duomenys pateikti iš gyvenimo aprašymo."
@@ -13976,10 +13946,6 @@ msgstr "Gyvenimo aprašyme pasikeitė jūsų telefono numeris. Laiškas taip pat
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Jūsų telefono numeris užrašytas neįprasta forma."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "jūsų pageidavimai"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "Jūsų trumpoji nuoroda ir savas domenas atveria šį gyvenimo aprašym�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Jūsų trumpoji nuoroda ir savas domenas rodo, kad šis gyvenimo aprašymas nebendrinamas, kol vėl jo nepaskelbsite."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "jūsų istorijos"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

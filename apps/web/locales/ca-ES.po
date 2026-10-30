@@ -163,10 +163,8 @@ msgstr "{0, plural, one {No s'ha pogut fer l'edició de #: el seu text ha canvia
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# entrada} other {# entrades}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# fet} other {# fets}}"
 
@@ -1917,10 +1915,6 @@ msgstr "Detalls de la candidatura"
 msgid "Application options"
 msgstr "Opcions de la candidatura"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "resums de candidatures"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Pestanyes de la candidatura"
@@ -3099,13 +3093,13 @@ msgstr "Connectat. El vostre domini obre el vostre currículum principal."
 msgid "Connecting your {providerName} account…"
 msgstr "S'està connectant el vostre compte de {providerName}…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Connexió desada"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Connexió: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -4716,10 +4710,6 @@ msgstr "Cada resposta sobre la qual rebeu comentaris es conserva aquí, de la m�
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Cada requisit de l'anunci es contrasta amb els fets i les històries dels vostres Coneixements. Les mancances es mostren com a proves que falten, mai com a capacitats que falten."
-
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "missatges anteriors d'aquest xat"
 
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -6482,10 +6472,6 @@ msgstr "Salutacions cordials,"
 msgid "Knowledge"
 msgstr "Coneixements"
 
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "No s'han pogut carregar els Coneixements. Torneu-ho a provar o desactiveu Coneixements abans d'enviar."
-
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
 msgstr "Coneixements no esmenta la mentoria."
@@ -6924,10 +6910,6 @@ msgstr "S'estan carregant converses..."
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Carregant les entrevistes…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Carregant Coneixements abans d'enviar…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -10477,10 +10459,6 @@ msgstr "Cerca ofertes de feina"
 msgid "Search role, company or contact"
 msgstr "Cerca rol, empresa o contacte"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Els termes de cerca s'envien al vostre servei de cerca web."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -13440,10 +13418,6 @@ msgstr "Què funciona"
 msgid "When do they need your answer?"
 msgstr "Quan necessiten la vostra resposta?"
 
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Quan premeu Envia, {shared} s'envien a {connection}."
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "D'on provenen les sol·licituds"
@@ -13925,10 +13899,6 @@ msgstr "La teva ubicació ha canviat al currículum. La carta també s'ha actual
 msgid "Your margins are very narrow."
 msgstr "Els teus marges són molt estrets."
 
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "el vostre missatge"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "El vostre nom i dades de contacte provenen d'un currículum."
@@ -13976,10 +13946,6 @@ msgstr "El teu número de telèfon ha canviat al currículum. La carta també s'
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "El teu número de telèfon està escrit d'una forma inusual."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "les vostres preferències"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -14038,10 +14004,6 @@ msgstr "El vostre enllaç curt i el domini personalitzat obren aquest currículu
 #: src/features/resume/share/share-panel.tsx
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "El vostre enllaç curt i el domini personalitzat indiquen que aquest currículum no es comparteix fins que el torneu a publicar."
-
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "les vostres històries"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"
