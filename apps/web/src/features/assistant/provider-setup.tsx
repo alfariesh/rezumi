@@ -1,20 +1,22 @@
 import type { AIProvider } from "@rezumi/ai/types";
-import { Button, Disclosure, Input, Label, Spinner } from "@heroui/react";
+import type { IconName } from "@rezumi/ui/components/icon";
+import { Accordion, Alert, Button, Description, Input, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { useId, useState } from "react";
+import { useState } from "react";
+import { Icon } from "@rezumi/ui/components/icon";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
-type Choice = { provider: AIProvider; label: string; model: string; needsBaseURL?: boolean };
+type Choice = { provider: AIProvider; label: string; model: string; icon: IconName; needsBaseURL?: boolean };
 
 // Provider names are brands and stay untranslated.
 const CHOICES: Choice[] = [
-	{ provider: "openai", label: "OpenAI", model: "gpt-4.1" },
-	{ provider: "anthropic", label: "Anthropic", model: "claude-3-5-sonnet-latest" },
-	{ provider: "openai-compatible", label: "OpenAI-compatible", model: "", needsBaseURL: true },
+	{ provider: "openai", label: "OpenAI", model: "gpt-4.1", icon: "sparkle" },
+	{ provider: "anthropic", label: "Anthropic", model: "claude-3-5-sonnet-latest", icon: "brain" },
+	{ provider: "openai-compatible", label: "OpenAI-compatible", model: "", icon: "code", needsBaseURL: true },
 ];
 
 /**
@@ -25,39 +27,50 @@ export function ProviderSetup() {
 	const [open, setOpen] = useState<AIProvider | null>(null);
 
 	return (
-		<div className="grid gap-4 p-4">
+		<div className="grid gap-5 p-4">
 			<div className="grid gap-1">
-				<h3 className="text-[15px] font-semibold">
+				<h3 className="text-base font-semibold">
 					<Trans>Connect an AI provider</Trans>
 				</h3>
-				<p className="text-sm text-ink-2">
+				<p className="text-sm text-muted">
 					<Trans>The assistant uses your own key. Nothing is sent anywhere until you connect one.</Trans>
 				</p>
 			</div>
 
-			<ul className="divide-y divide-line overflow-hidden rounded-xl border border-line">
-				{CHOICES.map((choice) => {
-					const expanded = open === choice.provider;
-					return (
-						<li key={choice.provider}>
-							<Disclosure isExpanded={expanded} onExpandedChange={(next) => setOpen(next ? choice.provider : null)}>
-								<Disclosure.Heading>
-									<Disclosure.Trigger className="flex h-11 w-full items-center justify-between px-3 text-start text-sm transition-colors duration-quick hover:bg-hover">
+			<Accordion
+				expandedKeys={open ? [open] : []}
+				onExpandedChange={(keys) => {
+					const [key] = keys;
+					setOpen(CHOICES.find((choice) => choice.provider === key)?.provider ?? null);
+				}}
+			>
+				{CHOICES.map((choice) => (
+					<Accordion.Item key={choice.provider} id={choice.provider}>
+						<Accordion.Heading>
+							<Accordion.Trigger className="gap-3 py-3">
+								<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-default text-muted">
+									<Icon name={choice.icon} size={20} />
+								</span>
+								<span className="grid min-w-0 flex-1 text-start">
+									<span className="truncate text-sm font-medium">
 										{choice.provider === "openai-compatible" ? <Trans>Other · OpenAI-compatible</Trans> : choice.label}
-										<Disclosure.Indicator className="text-ink-3" />
-									</Disclosure.Trigger>
-								</Disclosure.Heading>
-								<Disclosure.Content>
-									{/* Closed sections keep no form, so each provider's fields exist only while it is open. */}
-									<Disclosure.Body>{expanded && <ConnectForm choice={choice} />}</Disclosure.Body>
-								</Disclosure.Content>
-							</Disclosure>
-						</li>
-					);
-				})}
-			</ul>
+									</span>
+									<span className="truncate text-xs font-normal text-muted">
+										{choice.model || <Trans>Your own endpoint</Trans>}
+									</span>
+								</span>
+								<Accordion.Indicator />
+							</Accordion.Trigger>
+						</Accordion.Heading>
+						<Accordion.Panel>
+							{/* Closed sections keep no form, so each provider's fields exist only while it is open. */}
+							<Accordion.Body>{open === choice.provider && <ConnectForm choice={choice} />}</Accordion.Body>
+						</Accordion.Panel>
+					</Accordion.Item>
+				))}
+			</Accordion>
 
-			<p className="text-xs text-ink-3">
+			<p className="text-xs text-muted">
 				<Trans>
 					More providers and options are in{" "}
 					<Link to="/dashboard/settings/ai" className="text-link underline-offset-4 hover:underline">
@@ -71,7 +84,6 @@ export function ProviderSetup() {
 }
 
 function ConnectForm({ choice }: { choice: Choice }) {
-	const id = useId();
 	const queryClient = useQueryClient();
 	const [apiKey, setApiKey] = useState("");
 	const [model, setModel] = useState(choice.model);
@@ -105,51 +117,46 @@ function ConnectForm({ choice }: { choice: Choice }) {
 
 	return (
 		<form
-			className="grid gap-3 border-t border-line bg-bg p-3"
+			className="grid gap-4 pt-1"
 			onSubmit={(event) => {
 				event.preventDefault();
 				if (ready) connect.mutate();
 			}}
 		>
 			{choice.needsBaseURL && (
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-url`}>
+				<TextField fullWidth value={baseURL} onChange={setBaseURL}>
+					<Label>
 						<Trans>Base URL</Trans>
 					</Label>
-					<Input
-						fullWidth
-						id={`${id}-url`}
-						value={baseURL}
-						placeholder="https://…/v1"
-						onChange={(event) => setBaseURL(event.target.value)}
-					/>
-				</div>
+					<Input variant="secondary" placeholder="https://…/v1" />
+				</TextField>
 			)}
-			<div className="grid gap-1.5">
-				<Label htmlFor={`${id}-key`}>
+			<TextField fullWidth value={apiKey} onChange={setApiKey}>
+				<Label>
 					<Trans>API key</Trans>
 				</Label>
-				<Input
-					fullWidth
-					id={`${id}-key`}
-					type="password"
-					autoComplete="off"
-					value={apiKey}
-					onChange={(event) => setApiKey(event.target.value)}
-				/>
-			</div>
-			<div className="grid gap-1.5">
-				<Label htmlFor={`${id}-model`}>
+				<Input variant="secondary" type="password" autoComplete="off" />
+				<Description>
+					<Trans>Stored encrypted and tested right away.</Trans>
+				</Description>
+			</TextField>
+			<TextField fullWidth value={model} onChange={setModel}>
+				<Label>
 					<Trans>Model</Trans>
 				</Label>
-				<Input fullWidth id={`${id}-model`} value={model} onChange={(event) => setModel(event.target.value)} />
-			</div>
+				<Input variant="secondary" />
+			</TextField>
 			{failure && (
-				<p role="alert" className="text-xs text-danger-text">
-					{failure}
-				</p>
+				<Alert status="danger">
+					<Alert.Indicator>
+						<Icon name="warning-circle" />
+					</Alert.Indicator>
+					<Alert.Content>
+						<Alert.Description>{failure}</Alert.Description>
+					</Alert.Content>
+				</Alert>
 			)}
-			<Button type="submit" size="sm" className="w-fit" isDisabled={!ready} isPending={connect.isPending}>
+			<Button type="submit" fullWidth isDisabled={!ready} isPending={connect.isPending}>
 				{connect.isPending && <Spinner size="sm" color="current" aria-hidden />}
 				{connect.isPending ? <Trans>Testing the connection…</Trans> : <Trans>Connect</Trans>}
 			</Button>
