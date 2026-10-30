@@ -289,6 +289,11 @@ msgstr "{0, plural, one {# دقیقه پیش شروع شد} other {# دقیقه 
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {برچسب‌های # سند} other {برچسب‌های # سند}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{0} در {1} برابر با {2} در منطقهٔ زمانی شما ({p
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "مصاحبه {0}"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "یک پیوند یک آدرس کامل نیست"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "یک لینک به جایی غیر از آدرسی که نشان می‌دهد اشاره می‌کند."
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "پیوست کردن نامهٔ پوششی (PDF)"
 msgid "Attach a cover letter file (PDF)"
 msgstr "ضمیمه فایل پوشش نامه (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "یک فایل پیوست کنید"
 
@@ -4679,10 +4698,6 @@ msgstr "هر پاسخی که برایش بازخورد می‌گیرید این�
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "هر الزام آگهی با واقعیت‌ها و داستان‌های دانسته‌های شما سنجیده می‌شود. کمبودها به‌عنوان نبودِ شاهد نشان داده می‌شوند، هرگز به‌عنوان نبودِ توانایی."
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "هر ارسال با این پیام و فایل‌های انتخابی تازه شروع می‌شود. سابقه مکالمه قبلی در اینجا باقی می ماند."
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "سایر · سازگار با OpenAI"
 msgid "Other benefits"
 msgstr "مزایای دیگر"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "شماره قبلی"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "پیام های قبلی، از جمله جزئیات سند، نیز ارسال می شود."
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "شیوه‌نامه CSS معنایی"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "ارسال کنید"
 
@@ -10594,33 +10609,9 @@ msgstr "آگهی، یادداشت‌ها و اسناد این درخواست ر�
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "آگهی، یادداشت‌ها و اسناد این درخواست را به‌همراه دانسته‌های روشن به این اتصال می‌فرستد. ممکن است ارائه‌دهندهٔ شما برای آن هزینه دریافت کند."
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "این نامه و آگهی استخدام را با کلید خود به {provider} ارسال می کند، فقط زمانی که ارسال را فشار دهید."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "این نامه را با کلید خود به {provider} ارسال می کند، فقط زمانی که ارسال را فشار دهید."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "این رزومه و آگهی شغلی را با کلید خود به {provider} ارسال می کند، فقط زمانی که ارسال را فشار دهید."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "این رزومه را با کلید خود به {provider} ارسال می کند، تنها زمانی که ارسال را فشار دهید."
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "این داستان و واقعیت‌های روشن را به اتصال هوش مصنوعی شما می‌فرستد. بدون اتصال، چیزی ارسال نمی‌شود."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "پیام شما و آگهی شغلی را با کلید خود به {provider} ارسال می کند، فقط زمانی که ارسال را فشار دهید."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "پیام شما را با کلید خود به {provider} ارسال می کند، فقط زمانی که ارسال را فشار دهید."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "به {0} ارسال شد"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "به Lumen ارسال شد"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "کد منبع"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "منابع"
@@ -11324,8 +11319,7 @@ msgstr "وضعیت"
 msgid "Stay here"
 msgstr "اینجا بمان"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "متوقف شد. هیچ ویرایشی پیشنهاد نشد."
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "این کدهای پشتیبان را در جای امنی نگه دارید. اگر دستگاه خود را گم کنید، هر کد یک بار شما را وارد می‌کند."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "در حال فکر کردن"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "فکر کردن…"
 
@@ -13896,6 +13895,10 @@ msgstr "شروع صحبت شما"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "شروع صحبت شما، داستان‌هایی که باید بیاورید و پرسش‌هایی که باید بپرسید. ۱۰ دقیقه پیش از تماس، به چک‌لیست شما تبدیل می‌شود."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

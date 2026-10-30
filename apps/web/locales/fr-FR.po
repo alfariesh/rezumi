@@ -289,6 +289,11 @@ msgstr "{0, plural, one {Commencé il y a # minute} other {Commencé il y a # mi
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {Mots-clés pour # document} other {Mots-clés pour # documents}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{0} ({1}) correspond à {2} dans votre fuseau horaire ({preferredZone}).
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "Entretien {0}"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "Un lien n'est pas une adresse complète"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Un lien pointe vers une adresse différente de celle qu'il affiche."
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "Joindre une lettre de motivation (PDF)"
 msgid "Attach a cover letter file (PDF)"
 msgstr "Joindre un fichier de lettre de motivation (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "Joindre un fichier"
 
@@ -4679,10 +4698,6 @@ msgstr "Chaque réponse sur laquelle vous recevez un retour est conservée ici, 
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Chaque exigence de l'annonce est comparée aux faits et récits de vos Connaissances. Les manques apparaissent comme des preuves manquantes, jamais comme des compétences manquantes."
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "Chaque envoi recommence avec ce message et les fichiers sélectionnés. L’historique des conversations précédentes reste ici."
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "Autre · Compatible OpenAI"
 msgid "Other benefits"
 msgstr "Autres avantages"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Numéro précédent"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "Les messages précédents, y compris les détails du document, sont également envoyés."
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "Feuille de style CSS sémantique"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "Envoyer"
 
@@ -10594,33 +10609,9 @@ msgstr "Envoie l'annonce, les notes et les documents de cette candidature, ainsi
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "Envoie l'annonce, les notes et les documents de cette candidature, ainsi que les Connaissances activées, à cette connexion. Votre fournisseur peut vous facturer."
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "Envoie cette lettre et l'offre d'emploi à {provider} avec votre clé, uniquement lorsque vous appuyez sur envoyer."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "Envoie cette lettre à {provider} avec votre clé, uniquement lorsque vous appuyez sur envoyer."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "Envoie ce curriculum vitae et l'offre d'emploi à {provider} avec votre clé, seulement lorsque vous appuyez sur envoyer."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "Envoie ce CV à {provider} avec votre clé, uniquement lorsque vous appuyez sur envoyer."
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "Envoie ce récit et les faits activés à votre connexion IA. Sans connexion, rien n'est envoyé."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "Envoie votre message et l'offre d'emploi à {provider} avec votre clé, uniquement lorsque vous appuyez sur envoyer."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "Envoie votre message à {provider} avec votre clé, uniquement lorsque vous appuyez sur envoyer."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "Envoyé à {0}"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "Envoyé à Lumen"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "Code source"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "Sources"
@@ -11324,8 +11319,7 @@ msgstr "Statut"
 msgid "Stay here"
 msgstr "Reste ici"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "Arrêté. Aucune modification n'a été proposée."
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Conservez ces codes de secours en lieu sûr. Chacun permet de vous connecter une fois si vous perdez votre appareil."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "Réflexion en cours"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "Pensée…"
 
@@ -13896,6 +13895,10 @@ msgstr "Votre accroche"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Votre accroche, les récits à apporter et les questions à poser. Il devient votre liste de vérification 10 minutes avant l'appel."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

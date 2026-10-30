@@ -4,7 +4,7 @@ import { MessageScroller as MessageScrollerPrimitive } from "@shadcn/react/messa
 import { cn } from "@rezumi/utils/style";
 
 /**
- * shadcn Message Scroller (behaviour from `@shadcn/react`): a chat transcript that follows a streaming reply only while
+ * Message scroller (behaviour from `@shadcn/react`, drawn with HeroUI tokens): a chat transcript that follows a streaming reply only while
  * the reader is at the live edge, settles each new turn near the top, reopens a saved thread on its last turn, and
  * offers a way back to the latest message. Wrap every direct child of the content in `MessageScrollerItem`.
  */
@@ -27,7 +27,7 @@ function MessageScrollerViewport({ className, ...props }: ComponentProps<typeof 
 		<MessageScrollerPrimitive.Viewport
 			data-slot="message-scroller-viewport"
 			className={cn(
-				"size-full min-h-0 min-w-0 scroll-fade-b scrollbar [scrollbar-gutter:stable] overflow-y-auto overscroll-contain focus-visible:outline-offset-[-2px] data-pending-scroll:invisible",
+				"size-full min-h-0 min-w-0 scroll-fade-b [scrollbar-width:none] overflow-y-auto overscroll-contain focus-visible:outline-offset-[-2px] data-pending-scroll:invisible [&::-webkit-scrollbar]:hidden",
 				className,
 			)}
 			{...props}
@@ -70,7 +70,7 @@ function MessageScrollerButton({ className, direction = "end", render, ...props 
 			data-direction={direction}
 			direction={direction}
 			className={cn(
-				"absolute inset-s-1/2 -translate-x-1/2 bg-raised transition-[translate,opacity] duration-standard ease-enter data-[active=false]:pointer-events-none data-[active=false]:opacity-0 data-[active=true]:translate-y-0 data-[active=true]:opacity-100 data-[direction=end]:bottom-3 data-[direction=end]:data-[active=false]:translate-y-2 data-[direction=start]:top-3 data-[direction=start]:data-[active=false]:-translate-y-2 rtl:translate-x-1/2",
+				"absolute inset-s-1/2 -translate-x-1/2 bg-overlay shadow-overlay transition-[translate,opacity] duration-standard ease-enter data-[active=false]:pointer-events-none data-[active=false]:opacity-0 data-[active=true]:translate-y-0 data-[active=true]:opacity-100 data-[direction=end]:bottom-3 data-[direction=end]:data-[active=false]:translate-y-2 data-[direction=start]:top-3 data-[direction=start]:data-[active=false]:-translate-y-2 rtl:translate-x-1/2",
 				className,
 			)}
 			render={render ?? <button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} />}

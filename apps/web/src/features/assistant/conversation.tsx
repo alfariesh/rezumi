@@ -1,19 +1,19 @@
 import type { ChatAttachment, MessageContext } from "./chat";
 import type { AssistantDocument } from "./document";
+import type { PromptChip, PromptFile } from "./prompt-box";
 import type { ProposeEditsOutput } from "@rezumi/ai/tools/agent-tool-contracts";
 import type { Proposal } from "@rezumi/resume/proposals";
-import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
-import { Button, Spinner } from "@heroui/react";
+import { ChainOfThought, ChatAttachment as FileAttachment, ChatAttachmentGroup, ChatMessage } from "@heroui-pro/react";
+import { Button, Input, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
-import { memo, useEffect, useEffectEvent, useId, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { agentWebSources, readPageOutputSchema } from "@rezumi/ai/tools/agent-tool-contracts";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import {
 	MessageScroller,
 	MessageScrollerButton,
@@ -23,17 +23,20 @@ import {
 	MessageScrollerViewport,
 } from "@rezumi/ui/components/message-scroller";
 import { toast } from "@rezumi/ui/components/toast";
-import { Trace, TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
+import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
+import { acceptUploads, MAX_ATTACHMENTS_PER_MESSAGE } from "./attachment-limits";
 import { attachmentPart, fileToBase64, transcriptOf } from "./chat";
 import { AssistantMarkdown } from "./markdown";
+import { MessageSources } from "./message-sources";
+import { PromptBox } from "./prompt-box";
 import { ToolApprovals } from "./tool-approvals";
 import { useAssistantChat } from "./use-assistant-chat";
+import { WaitingRow } from "./waiting-row";
 import { ChangeSet } from "@/features/resume/editor/proposals/proposal-list";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
-import { isImeComposing } from "@/libs/keyboard";
-import { ENTER_CLASS, POP_CLASS } from "@/libs/motion";
+import { ENTER_CLASS } from "@/libs/motion";
 import { client, orpc } from "@/libs/orpc/client";
 
 type EditStatus = Proposal["status"];
@@ -71,6 +74,8 @@ export function Conversation(props: ConversationProps) {
 	const [stopped, setStopped] = useState(false);
 	// Messages already in the thread when it opens are history; only new ones rise in.
 	const [initialIds] = useState(() => new Set(props.initialMessages.map((message) => message.id)));
+	// A first message already shown while the conversation opened doesn't rise in a second time.
+	const [fromPending] = useState(() => props.prompt !== null);
 
 	const refresh = () =>
 		void queryClient.invalidateQueries({
@@ -85,6 +90,19 @@ export function Conversation(props: ConversationProps) {
 			onFinish: refresh,
 		});
 	const streaming = status === "submitted" || status === "streaming";
+	// "streaming" starts with the reply's first chunk, which can come seconds before any text or tool call; the same
+	// gap opens after each tool result. Say the assistant is still working through all of it.
+	const newest = messages.at(-1);
+	const newestPart =
+		newest?.role === "assistant" ? newest.parts.findLast((part) => part.type !== "step-start") : undefined;
+	const waiting =
+		status === "submitted" ||
+		(status === "streaming" &&
+			newest?.role === "assistant" &&
+			(!newestPart ||
+				(newestPart.type.startsWith("tool-") &&
+					(newestPart as ToolPart).state !== "input-streaming" &&
+					(newestPart as ToolPart).state !== "input-available")));
 	const continuationBlocked =
 		(!context.document || !context.posting) &&
 		(messages.at(-1)?.metadata as { contextScope?: string } | undefined)?.contextScope !==
@@ -196,13 +214,13 @@ export function Conversation(props: ConversationProps) {
 					<MessageScroller>
 						<MessageScrollerViewport aria-label={t`Conversation`}>
 							{/* Announced when the answer is complete, not token by token. */}
-							<MessageScrollerContent aria-busy={streaming} className="gap-4 p-4">
+							<MessageScrollerContent aria-busy={streaming} className="gap-3 py-3">
 								{messages.map((message, index) => (
 									<MessageScrollerItem key={message.id} messageId={message.id} scrollAnchor={message.role === "user"}>
 										<MessageView
 											message={message}
 											streaming={streaming && index === messages.length - 1}
-											enter={!initialIds.has(message.id)}
+											enter={!initialIds.has(message.id) && !(fromPending && index === 0)}
 											readOnly={readOnly || continuationBlocked}
 											statuses={statuses}
 											document={document}
@@ -219,31 +237,25 @@ export function Conversation(props: ConversationProps) {
 									</MessageScrollerItem>
 								))}
 
-								{status === "submitted" && (
-									<MessageScrollerItem>
-										<TraceLine status="running" className={ENTER_CLASS}>
-											<TraceIcon>
-												<Spinner size="sm" color="current" aria-hidden />
-											</TraceIcon>
-											<TraceTitle>
-												<Trans>Thinking…</Trans>
-											</TraceTitle>
-										</TraceLine>
-									</MessageScrollerItem>
-								)}
+								<WaitingRow show={waiting} skipEnter={fromPending && messages.length <= 1}>
+									<TraceLine status="running">
+										<TraceIcon>
+											<Spinner size="sm" color="current" aria-hidden />
+										</TraceIcon>
+										<TraceTitle>
+											<Trans>Thinking…</Trans>
+										</TraceTitle>
+									</TraceLine>
+								</WaitingRow>
 
 								{stopped && !streaming && !proposedInLast && (
 									<MessageScrollerItem>
-										<p className="flex items-center gap-2 text-sm text-ink-2 transition-opacity duration-standard ease-enter starting:opacity-0">
-											<Icon name="stop-circle" size={18} className="text-ink-3" />
+										<p className="flex items-center gap-2 text-sm text-muted transition-opacity duration-standard ease-enter starting:opacity-0">
+											<Icon name="stop-circle" size={18} />
 											<Trans>Stopped. No edits were proposed.</Trans>
-											<button
-												type="button"
-												className="font-medium underline underline-offset-2"
-												onClick={() => send(t`Continue`)}
-											>
+											<Button size="sm" variant="ghost" onPress={() => send(t`Continue`)}>
 												<Trans>Continue</Trans>
-											</button>
+											</Button>
 										</p>
 									</MessageScrollerItem>
 								)}
@@ -252,7 +264,7 @@ export function Conversation(props: ConversationProps) {
 									<MessageScrollerItem>
 										<div
 											role="alert"
-											className="grid gap-2 rounded-xl bg-danger-soft p-3 text-[13px] text-danger-text transition-opacity duration-standard ease-enter starting:opacity-0"
+											className="grid gap-2 rounded-xl bg-danger-soft p-3 text-[13px] text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
 										>
 											<span className="flex gap-2">
 												<Icon name="warning-circle" size={18} className="shrink-0" />
@@ -282,7 +294,7 @@ export function Conversation(props: ConversationProps) {
 										<Button
 											size="sm"
 											variant="ghost"
-											className="text-ink-3"
+											className="text-muted"
 											onPress={() => void copyTranscript(messages)}
 										>
 											<Icon name="copy" size={16} />
@@ -367,69 +379,189 @@ const MessageView = memo(function MessageView({
 		const text = message.parts.flatMap((part) => (part.type === "text" ? [part.text] : [])).join("\n");
 		const files = message.parts.filter((part) => part.type === "file");
 		return (
-			<div className={cn("ms-8 grid justify-items-end gap-1", enter && ENTER_CLASS)}>
-				{text && <p className="rounded-lg bg-sunken px-3 py-2 text-sm whitespace-pre-wrap">{text}</p>}
-				{files.map((file) => (
-					<span key={file.url} className="flex items-center gap-1 rounded-md bg-sunken px-2 py-1 text-xs text-ink-2">
-						<Icon name="paperclip" size={14} />
-						{(file as { filename?: string }).filename ?? t`Attachment`}
-					</span>
-				))}
-			</div>
+			<ChatMessage.User className={cn("gap-1 ps-8", enter && ENTER_CLASS)}>
+				{text && (
+					<ChatMessage.Bubble className="max-w-full rounded-2xl rounded-ee-none bg-accent">
+						<ChatMessage.Content className="wrap-anywhere whitespace-pre-wrap text-accent-foreground">
+							{text}
+						</ChatMessage.Content>
+					</ChatMessage.Bubble>
+				)}
+				{files.length > 0 && (
+					<ChatAttachmentGroup>
+						{files.map((file) => (
+							<FileAttachment
+								key={file.url}
+								name={(file as { filename?: string }).filename ?? t`Attachment`}
+								mimeType={file.mediaType}
+							/>
+						))}
+					</ChatAttachmentGroup>
+				)}
+			</ChatMessage.User>
 		);
 	}
 
 	const sources = agentWebSources(message);
-	const lastTextIndex = message.parts.findLastIndex((part) => part.type === "text");
+
+	// The quiet steps of a turn (reading, searching) fold into one group; text and cards keep their place around it.
+	const blocks: Block[] = [];
+	message.parts.forEach((part, index) => {
+		if (part.type === "text") {
+			blocks.push({ kind: "text", text: part.text, index });
+			return;
+		}
+		if (!part.type.startsWith("tool-")) return;
+		const step = stepOf(part as ToolPart, streaming);
+		const last = blocks.at(-1);
+		if (step && last?.kind === "steps") last.steps.push(step);
+		else if (step) blocks.push({ kind: "steps", steps: [step], index });
+		else blocks.push({ kind: "tool", part: part as ToolPart, index });
+	});
 
 	return (
-		<div className={cn("grid gap-3 text-sm", enter && ENTER_CLASS)}>
-			{message.parts.map((part, index) => {
-				const key = `${message.id}-${index}`;
-				if (part.type === "text")
+		<ChatMessage.Assistant className="p-0">
+			<ChatMessage.Body className="gap-3 pe-0">
+				{blocks.map((block) => {
+					const key = `${message.id}-${block.index}`;
+					if (block.kind === "text")
+						return (
+							<ChatMessage.Content
+								key={key}
+								className={cn(
+									"w-fit! max-w-full min-w-0 rounded-2xl rounded-ss-none bg-surface px-4 py-2.5",
+									enter && ENTER_CLASS,
+								)}
+							>
+								<AssistantMarkdown text={block.text} />
+							</ChatMessage.Content>
+						);
+					if (block.kind === "steps")
+						return (
+							<StepGroup key={key} steps={block.steps} streaming={streaming} className={cn(enter && ENTER_CLASS)} />
+						);
 					return (
-						<div key={key}>
-							<AssistantMarkdown text={part.text} />
-							{streaming && index === lastTextIndex && (
-								<span aria-hidden="true" className="ms-0.5 inline-block h-4 w-2 translate-y-0.5 animate-pulse bg-ink" />
-							)}
-						</div>
+						<ToolPartView
+							key={key}
+							part={block.part}
+							streaming={streaming}
+							message={message}
+							readOnly={readOnly}
+							statuses={statuses}
+							document={document}
+							onAnswer={onAnswer}
+							onRecord={onRecord}
+						/>
 					);
-				return (
-					<ToolPartView
-						key={key}
-						part={part as ToolPart}
-						streaming={streaming}
-						message={message}
-						readOnly={readOnly}
-						statuses={statuses}
-						document={document}
-						onAnswer={onAnswer}
-						onRecord={onRecord}
-					/>
-				);
-			})}
-			{sources.length > 0 && (
-				<div className="grid gap-1 text-xs">
-					<span className="font-medium text-ink-3">
-						<Trans>Sources</Trans>
-					</span>
-					{sources.map((source) => (
-						<a
-							key={source.url}
-							href={source.url}
-							target="_blank"
-							rel="noreferrer"
-							className="truncate text-accent-text underline underline-offset-2"
-						>
-							{source.title?.trim() || source.url}
-						</a>
-					))}
-				</div>
-			)}
-		</div>
+				})}
+				{sources.length > 0 && <MessageSources sources={sources} />}
+			</ChatMessage.Body>
+		</ChatMessage.Assistant>
 	);
 });
+
+type Block =
+	| { kind: "text"; text: string; index: number }
+	| { kind: "steps"; steps: Step[]; index: number }
+	| { kind: "tool"; part: ToolPart; index: number };
+
+type Step = { label: ReactNode; working: boolean; note?: ReactNode };
+
+/** A quiet step the assistant took, or null when the part is a card, a failure or something to answer. */
+function stepOf(part: ToolPart, streaming: boolean): Step | null {
+	if (part.state === "approval-requested" || part.state === "approval-responded") return null;
+	const working = part.state === "input-streaming" || part.state === "input-available";
+	if (part.state === "output-denied") return { label: <Trans>Skipped</Trans>, working: false };
+
+	switch (part.type) {
+		case "tool-read_resume":
+		case "tool-read_letter":
+			return {
+				label: part.type === "tool-read_letter" ? <Trans>Read the letter</Trans> : <Trans>Read the resume</Trans>,
+				working,
+			};
+		case "tool-read_attachment":
+			return { label: <Trans>Read the attachment</Trans>, working };
+		case "tool-web_search":
+		case "tool-google_search":
+		case "tool-search_web":
+		case "tool-read_page": {
+			const reading = part.type === "tool-read_page";
+			// A search that never finished, or failed, is shown on its own line.
+			if ((working && !streaming) || part.state === "output-error") return null;
+			const page = reading ? readPageOutputSchema.safeParse(part.output) : null;
+			return {
+				label: reading ? (
+					working ? (
+						<Trans>Reading page…</Trans>
+					) : (
+						<Trans>Read the page</Trans>
+					)
+				) : working ? (
+					<Trans>Searching the web…</Trans>
+				) : (
+					<Trans>Searched the web</Trans>
+				),
+				working,
+				note: (
+					<>
+						{page?.success && (page.data.truncated || page.data.completeness === "incomplete") && (
+							<span className="block text-xs text-muted">
+								<Trans>This page is clipped or incomplete. Check the original before using it.</Trans>
+							</span>
+						)}
+						{page?.success && page.data.fallbackReason && (
+							<span className="block text-xs text-muted">
+								<Trans>Enhanced reading unavailable; used the built-in reader.</Trans>
+							</span>
+						)}
+					</>
+				),
+			};
+		}
+		case "tool-apply_resume_patch":
+			// Conversations from before the assistant only proposed edits.
+			return { label: <Trans>Changed the resume directly (an earlier conversation)</Trans>, working: false };
+		case "tool-propose_edits":
+			return part.state === "output-error" || part.state === "output-available"
+				? null
+				: { label: <Trans>Preparing edits…</Trans>, working: true };
+		default:
+			return null;
+	}
+}
+
+/** One collapsible line for a turn's steps: the current step (shimmering) while it works, a count once done. */
+function StepGroup({
+	steps,
+	streaming,
+	className,
+}: {
+	steps: Step[];
+	streaming: boolean;
+	className?: string | undefined;
+}) {
+	const running = streaming && steps.some((step) => step.working);
+	const current = steps.findLast((step) => step.working) ?? steps.at(-1);
+
+	return (
+		<ChainOfThought isStreaming={running} className={cn(className)}>
+			<ChainOfThought.Trigger>
+				{running ? current?.label : <Plural value={steps.length} one="Took # step" other="Took # steps" />}
+			</ChainOfThought.Trigger>
+			<ChainOfThought.Content>
+				<ChainOfThought.Steps>
+					{steps.map((step, index) => (
+						<ChainOfThought.Step key={index}>
+							{step.label}
+							{step.note}
+						</ChainOfThought.Step>
+					))}
+				</ChainOfThought.Steps>
+			</ChainOfThought.Content>
+		</ChainOfThought>
+	);
+}
 
 type ToolPartViewProps = Omit<MessageViewProps, "enter"> & { part: ToolPart };
 
@@ -444,28 +576,8 @@ function ToolPartView({
 	onRecord,
 }: ToolPartViewProps) {
 	const working = part.state === "input-streaming" || part.state === "input-available";
-	if (part.state === "approval-requested" || part.state === "approval-responded") return null;
-	if (part.state === "output-denied")
-		return (
-			<Status working={false}>
-				<Trans>Skipped</Trans>
-			</Status>
-		);
 
 	switch (part.type) {
-		case "tool-read_resume":
-		case "tool-read_letter":
-			return (
-				<Status working={working}>
-					{part.type === "tool-read_letter" ? <Trans>Read the letter</Trans> : <Trans>Read the resume</Trans>}
-				</Status>
-			);
-		case "tool-read_attachment":
-			return (
-				<Status working={working}>
-					<Trans>Read the attachment</Trans>
-				</Status>
-			);
 		case "tool-web_search":
 		case "tool-google_search":
 		case "tool-search_web":
@@ -497,42 +609,8 @@ function ToolPartView({
 						</TraceTitle>
 					</TraceLine>
 				);
-			const page = reading ? readPageOutputSchema.safeParse(part.output) : null;
-			return (
-				<Trace>
-					<Status working={working}>
-						{reading ? (
-							working ? (
-								<Trans>Reading page…</Trans>
-							) : (
-								<Trans>Read the page</Trans>
-							)
-						) : working ? (
-							<Trans>Searching the web…</Trans>
-						) : (
-							<Trans>Searched the web</Trans>
-						)}
-					</Status>
-					{page?.success && (page.data.truncated || page.data.completeness === "incomplete") && (
-						<p className="text-xs text-ink-3">
-							<Trans>This page is clipped or incomplete. Check the original before using it.</Trans>
-						</p>
-					)}
-					{page?.success && page.data.fallbackReason && (
-						<p className="text-xs text-ink-3">
-							<Trans>Enhanced reading unavailable; used the built-in reader.</Trans>
-						</p>
-					)}
-				</Trace>
-			);
+			return null;
 		}
-		case "tool-apply_resume_patch":
-			// Conversations from before the assistant only proposed edits.
-			return (
-				<Status working={false}>
-					<Trans>Changed the resume directly (an earlier conversation)</Trans>
-				</Status>
-			);
 		case "tool-ask_user_question":
 			return <QuestionCard part={part} readOnly={readOnly} onAnswer={onAnswer} />;
 		case "tool-propose_edits": {
@@ -547,12 +625,7 @@ function ToolPartView({
 						</TraceTitle>
 					</TraceLine>
 				);
-			if (part.state !== "output-available")
-				return (
-					<Status working>
-						<Trans>Preparing edits…</Trans>
-					</Status>
-				);
+			if (part.state !== "output-available") return null;
 			const output = part.output as ProposeEditsOutput;
 			const proposals = toProposals(part, statuses, document);
 			const states = proposals.map(document.stateOf);
@@ -582,7 +655,7 @@ function ToolPartView({
 						/>
 					)}
 					{output.skipped.length > 0 && (
-						<p className="text-xs text-ink-3">
+						<p className="text-xs text-muted">
 							<Plural
 								value={output.skipped.length}
 								one="# edit couldn't be placed: its text changed. Ask again to redo it."
@@ -598,22 +671,6 @@ function ToolPartView({
 	}
 }
 
-/** One step the assistant took: a spinner while it runs, a check once done. */
-function Status({ working, children }: { working: boolean; children: ReactNode }) {
-	return (
-		<TraceLine status={working ? "running" : undefined}>
-			<TraceIcon>
-				{working ? (
-					<Spinner size="sm" color="current" aria-hidden />
-				) : (
-					<Icon name="check" size={14} className={POP_CLASS} />
-				)}
-			</TraceIcon>
-			<TraceTitle>{children}</TraceTitle>
-		</TraceLine>
-	);
-}
-
 type QuestionCardProps = {
 	part: ToolPart;
 	readOnly: boolean;
@@ -622,7 +679,6 @@ type QuestionCardProps = {
 
 /** The assistant asks before writing anything the document doesn't say: an info-soft card with its choices. */
 function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
-	const id = useId();
 	const [other, setOther] = useState("");
 	const input = (part.input ?? {}) as { question?: unknown; choices?: unknown };
 	const question = typeof input.question === "string" ? input.question : "";
@@ -634,7 +690,7 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 	if (!question) return null;
 
 	return (
-		<div className="grid gap-2.5 rounded-xl bg-info-soft p-3 text-info-text">
+		<div className="grid gap-2.5 rounded-xl bg-accent-soft p-3 text-accent-soft-foreground">
 			<p className="text-sm font-medium">{question}</p>
 			{answer !== null ? (
 				<p className="text-[13px] opacity-80">
@@ -645,7 +701,13 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 					{choices.length > 0 && (
 						<div className="flex flex-wrap gap-1.5">
 							{choices.map((choice) => (
-								<Button key={choice} size="sm" variant="secondary" onPress={() => onAnswer(toolCallId, choice)}>
+								<Button
+									key={choice}
+									size="sm"
+									variant="secondary"
+									className="bg-surface"
+									onPress={() => onAnswer(toolCallId, choice)}
+								>
 									{choice}
 								</Button>
 							))}
@@ -658,16 +720,15 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 							if (other.trim()) onAnswer(toolCallId, other.trim());
 						}}
 					>
-						<label htmlFor={id} className="sr-only">
-							<Trans>Answer in your own words</Trans>
-						</label>
-						<input
-							id={id}
+						<TextField
+							fullWidth
+							aria-label={t`Answer in your own words`}
 							value={other}
-							onChange={(event) => setOther(event.target.value)}
-							placeholder={t`Or in your own words…`}
-							className="h-8 min-w-0 flex-1 rounded-md border border-line-2 bg-raised px-2 text-sm text-ink transition-[border-color,box-shadow] outline-none focus:border-accent"
-						/>
+							onChange={setOther}
+							className="min-w-0 flex-1"
+						>
+							<Input placeholder={t`Or in your own words…`} />
+						</TextField>
 						<Button type="submit" size="sm" isDisabled={!other.trim()}>
 							<Trans>Send</Trans>
 						</Button>
@@ -696,16 +757,14 @@ type ComposerProps = {
 };
 
 /**
- * Context chips (removing one leaves it out of what's sent), a two-row text box, Send (Stop while a reply streams)
- * and the line saying what's sent where.
+ * Context chips (removing one leaves it out of what's sent), the message box (Send, Stop while a reply streams) and
+ * the line saying what's sent where.
  */
 export function Composer(props: ComposerProps) {
 	const { document, context, onContextChange, streaming, disabled } = props;
-	const id = useId();
 	const [text, setText] = useState(props.initialText ?? "");
 	const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
 	const [uploading, setUploading] = useState(false);
-	const fileInput = useRef<HTMLInputElement>(null);
 	const hasText = text.trim().length > 0;
 
 	const submit = () => {
@@ -715,14 +774,15 @@ export function Composer(props: ComposerProps) {
 		setAttachments([]);
 	};
 
-	const upload = async (files: FileList | null) => {
-		if (!files?.length) return;
+	const upload = async (chosen: File[]) => {
+		const files = acceptUploads(chosen, attachments.length);
+		if (files.length === 0) return;
 		setUploading(true);
 		try {
 			const threadId = props.threadId ?? (await props.ensureThread?.());
 			if (!threadId) return;
 			const uploaded = await Promise.all(
-				Array.from(files).map(async (file) => {
+				files.map(async (file) => {
 					const attachment = await client.agent.attachments.create({
 						threadId,
 						filename: file.name,
@@ -741,11 +801,10 @@ export function Composer(props: ComposerProps) {
 			toastError(error, t`Couldn't attach the file. Try again.`);
 		} finally {
 			setUploading(false);
-			if (fileInput.current) fileInput.current.value = "";
 		}
 	};
 
-	const chips = [
+	const chips: PromptChip[] = [
 		{
 			key: "document" as const,
 			icon: document.kind === "letter" ? ("envelope-simple" as const) : ("file-text" as const),
@@ -760,142 +819,48 @@ export function Composer(props: ComposerProps) {
 					},
 				]
 			: []),
-	].filter((chip) => context[chip.key]);
-
-	const provider = props.providerLabel;
-	const sharesPosting = context.posting && document.posting;
-	const disclosure = context.document
-		? document.kind === "letter"
-			? sharesPosting
-				? t`Sends this letter and the posting to ${provider} with your key, only when you press send.`
-				: t`Sends this letter to ${provider} with your key, only when you press send.`
-			: sharesPosting
-				? t`Sends this resume and the posting to ${provider} with your key, only when you press send.`
-				: t`Sends this resume to ${provider} with your key, only when you press send.`
-		: sharesPosting
-			? t`Sends your message and the posting to ${provider} with your key, only when you press send.`
-			: t`Sends your message to ${provider} with your key, only when you press send.`;
+	]
+		.filter((chip) => context[chip.key])
+		.map((chip) => ({
+			...chip,
+			removeLabel: t`Don't send ${chip.label}`,
+			onRemove: () => onContextChange({ ...context, [chip.key]: false }),
+		}));
+	const files: PromptFile[] = attachments.map((attachment) => ({
+		key: attachment.id,
+		name: attachment.filename,
+		mimeType: attachment.mediaType,
+		removeLabel: t`Remove ${attachment.filename}`,
+		onRemove: () => setAttachments((current) => current.filter((item) => item.id !== attachment.id)),
+	}));
 
 	return (
-		<div className="grid gap-2 border-t border-line bg-surface px-3 pt-2.5 pb-3">
-			{(chips.length > 0 || attachments.length > 0) && (
-				<div className="flex flex-wrap gap-1.5">
-					{chips.map((chip) => (
-						<RemovableChip
-							key={chip.key}
-							icon={chip.icon}
-							label={chip.label}
-							maxWidth="max-w-[160px]"
-							removeLabel={t`Don't send ${chip.label}`}
-							onRemove={() => onContextChange({ ...context, [chip.key]: false })}
-						/>
-					))}
-					{attachments.map((attachment) => (
-						<RemovableChip
-							key={attachment.id}
-							icon="paperclip"
-							label={attachment.filename}
-							maxWidth="max-w-[140px]"
-							removeLabel={t`Remove ${attachment.filename}`}
-							onRemove={() => setAttachments((current) => current.filter((item) => item.id !== attachment.id))}
-						/>
-					))}
-				</div>
-			)}
-
-			<div className="flex items-end gap-1.5 rounded-xl border border-line-2 bg-raised p-1.5 transition-[border-color,box-shadow] focus-within:border-accent focus-within:ring-3 focus-within:ring-accent-soft">
-				<label htmlFor={id} className="sr-only">
-					<Trans>Message the assistant</Trans>
-				</label>
-				<textarea
-					id={id}
-					rows={2}
-					value={text}
-					disabled={disabled}
-					placeholder={t`Ask, or describe a change…`}
-					onChange={(event) => setText(event.target.value)}
-					onKeyDown={(event) => {
-						if (event.key === "Enter" && !event.shiftKey && !isImeComposing(event)) {
-							event.preventDefault();
-							submit();
-						}
-						if (event.key === "Escape" && streaming) {
-							event.preventDefault();
-							props.onStop();
-						}
-					}}
-					className="field-sizing-content max-h-40 min-h-[44px] flex-1 resize-none bg-transparent px-1.5 py-1 text-sm outline-none placeholder:text-ink-3"
-				/>
-				{(props.threadId || props.ensureThread) && (
-					<>
-						<IconButton
-							icon="paperclip"
-							label={t`Attach a file`}
-							size="sm"
-							isDisabled={disabled || uploading}
-							className="text-ink-2"
-							onPress={() => fileInput.current?.click()}
-						/>
-						<input
-							ref={fileInput}
-							type="file"
-							multiple
-							className="hidden"
-							onChange={(event) => void upload(event.target.files)}
-						/>
-					</>
-				)}
-				<button
-					type="button"
-					aria-label={streaming ? t`Stop` : t`Send`}
-					disabled={!streaming && (!hasText || disabled || uploading)}
-					onClick={streaming ? props.onStop : submit}
-					className={cn(
-						"grid size-[34px] shrink-0 place-items-center rounded-lg transition-[background-color,color,scale] duration-quick ease-enter enabled:active:scale-[0.97]",
-						streaming ? "bg-ink text-bg" : hasText ? "bg-accent text-on-accent" : "bg-sunken text-ink-3",
-					)}
-				>
-					<Icon name={streaming ? "stop" : "arrow-up"} size={20} />
-				</button>
-			</div>
-
-			<p className="text-xs leading-4 text-ink-3">
-				{disclosure}{" "}
-				{!context.document || !context.posting ? (
-					<Trans>
-						Each send starts fresh with this message and selected files. Previous conversation history stays here.
-					</Trans>
-				) : (
-					<Trans>Previous messages, including document details, are also sent.</Trans>
-				)}
-			</p>
+		<div className="pt-2">
+			<PromptBox
+				value={text}
+				onValueChange={setText}
+				onSubmit={submit}
+				onStop={props.onStop}
+				streaming={streaming}
+				disabled={disabled}
+				canSend={hasText && !uploading}
+				placeholder={t`Ask, or describe a change…`}
+				label={t`Message the assistant`}
+				maxHeight={160}
+				variant="primary"
+				chips={chips}
+				files={files}
+				attach={
+					props.threadId || props.ensureThread
+						? {
+								isDisabled: disabled || attachments.length >= MAX_ATTACHMENTS_PER_MESSAGE,
+								isPending: uploading,
+								onFiles: (files) => void upload(files),
+							}
+						: undefined
+				}
+			/>
 		</div>
-	);
-}
-
-type RemovableChipProps = {
-	icon: IconName;
-	label: string;
-	/** The label's max-width class (Tailwind needs the whole class name in the source). */
-	maxWidth: string;
-	removeLabel: string;
-	onRemove: () => void;
-};
-
-function RemovableChip({ icon, label, maxWidth, removeLabel, onRemove }: RemovableChipProps) {
-	return (
-		<span className="flex h-[26px] items-center gap-1 rounded-md bg-sunken ps-2 text-xs text-ink-2">
-			<Icon name={icon} size={15} />
-			<span className={cn(maxWidth, "truncate")}>{label}</span>
-			<button
-				type="button"
-				aria-label={removeLabel}
-				onClick={onRemove}
-				className="grid size-5 place-items-center rounded text-ink-3 transition-colors hover:bg-hover hover:text-ink"
-			>
-				<Icon name="x" size={14} />
-			</button>
-		</span>
 	);
 }
 

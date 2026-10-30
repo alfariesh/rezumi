@@ -3,23 +3,23 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { QueryClient } from "@tanstack/react-query";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
-import { Button, Spinner, Tooltip } from "@heroui/react";
+import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { lazy, Suspense, useEffect, useId, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import z from "zod";
-import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatFileSize } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "./hooks";
 import { useCareerTime, useNow, withUndo } from "./shared";
+import { acceptUploads, MAX_ATTACHMENTS_PER_MESSAGE } from "@/features/assistant/attachment-limits";
 import { fileToBase64 } from "@/features/assistant/chat";
+import { PendingTurn } from "@/features/assistant/pending-turn";
+import { PromptBox } from "@/features/assistant/prompt-box";
 import { toastError } from "@/libs/error-message";
-import { isImeComposing } from "@/libs/keyboard";
 import { client, orpc } from "@/libs/orpc/client";
 
 // The open conversation (AI SDK, Markdown) loads once the coach is on screen, so pages that only use the helpers
@@ -178,6 +178,8 @@ export function CoachThread(props: CoachThreadProps) {
 	useEffect(() => void loadChatView(), []);
 	const [prompt, setPrompt] = useState<Prompt | null>(null);
 	const [starting, setStarting] = useState(false);
+	// The message being started, shown at once while the conversation is created.
+	const [startingText, setStartingText] = useState<string | null>(null);
 	const draft = useRef<string | null>(null);
 	const creating = useRef<Promise<string> | null>(null);
 
@@ -201,6 +203,7 @@ export function CoachThread(props: CoachThreadProps) {
 	const start = async (text: string, attachments: ChatAttachment[] = []) => {
 		if (starting || props.disabled) return false;
 		setStarting(true);
+		setStartingText(text);
 		try {
 			const id = await ensureThread();
 			setPrompt({ text, attachments, used: usedFor(knowledge, props.context) });
@@ -212,6 +215,7 @@ export function CoachThread(props: CoachThreadProps) {
 			return false;
 		} finally {
 			setStarting(false);
+			setStartingText(null);
 		}
 	};
 
@@ -221,7 +225,11 @@ export function CoachThread(props: CoachThreadProps) {
 				{props.header([])}
 				<div className="min-h-0 flex-1 overflow-y-auto">
 					<div className={contentClass[props.variant]}>
-						<Empty render={props.empty} send={(text) => void start(text)} />
+						{startingText ? (
+							<PendingTurn text={startingText} />
+						) : (
+							<Empty render={props.empty} send={(text) => void start(text)} />
+						)}
 					</div>
 				</div>
 				<Composer
@@ -275,23 +283,33 @@ function ThreadSession(props: SessionProps) {
 		refetchOnWindowFocus: false,
 	});
 
+	const pending = props.prompt && !thread.error ? props.prompt.text : null;
 	const loading = (
 		<div className="flex min-h-0 flex-1 flex-col">
 			{props.header([])}
-			<div className="grid flex-1 place-items-center p-6 text-sm text-ink-2">
-				{thread.error ? (
-					<p role="alert">
-						<Trans>This conversation couldn't be opened. Refresh the page to try again.</Trans>
-					</p>
-				) : (
-					// Hidden for the first 150ms, so a quick read never flashes a spinner.
-					<Spinner
-						size="md"
-						color="current"
-						className="transition-opacity delay-150 duration-standard ease-enter starting:opacity-0"
-					/>
-				)}
-			</div>
+			{pending ? (
+				// A first message is already on its way: show it instead of an empty wait.
+				<div className="min-h-0 flex-1 overflow-y-auto">
+					<div className={contentClass[props.variant]}>
+						<PendingTurn text={pending} />
+					</div>
+				</div>
+			) : (
+				<div className="grid flex-1 place-items-center p-6 text-sm text-muted">
+					{thread.error ? (
+						<p role="alert">
+							<Trans>This conversation couldn't be opened. Refresh the page to try again.</Trans>
+						</p>
+					) : (
+						// Hidden for the first 150ms, so a quick read never flashes a spinner.
+						<Spinner
+							size="md"
+							color="current"
+							className="transition-opacity delay-150 duration-standard ease-enter starting:opacity-0"
+						/>
+					)}
+				</div>
+			)}
 		</div>
 	);
 
@@ -328,10 +346,9 @@ type ComposerProps = Pick<CoachThreadProps, "placeholder" | "chips" | "privacy" 
 	onStop: () => void;
 };
 
-/** A two-row box that grows to eight, with the context chips, attach and send (stop while writing). */
+/** The message box with the context chips, attach and send (stop while writing). */
 export function Composer(props: ComposerProps) {
 	const { i18n } = useLingui();
-	const id = useId();
 	const draft = useSessionDraft(props.draftKey ? `coach:${props.draftKey}` : null, "", (value) =>
 		typeof value === "string" ? value : undefined,
 	);
@@ -339,7 +356,6 @@ export function Composer(props: ComposerProps) {
 	const setText = draft.setValue;
 	const [attachments, setAttachments] = useState<Upload[]>([]);
 	const [uploading, setUploading] = useState(false);
-	const fileInput = useRef<HTMLInputElement>(null);
 
 	const submit = async () => {
 		const value = text.trim();
@@ -354,13 +370,14 @@ export function Composer(props: ComposerProps) {
 		setAttachments([]);
 	};
 
-	const upload = async (files: FileList | null) => {
-		if (!files?.length) return;
+	const upload = async (chosen: File[]) => {
+		const files = acceptUploads(chosen, attachments.length);
+		if (files.length === 0) return;
 		setUploading(true);
 		try {
 			const threadId = await props.ensureThread();
 			const uploaded = await Promise.all(
-				Array.from(files).map(async (file) => {
+				files.map(async (file) => {
 					const attachment = await client.agent.attachments.create({
 						threadId,
 						filename: file.name,
@@ -375,104 +392,54 @@ export function Composer(props: ComposerProps) {
 			toastError(error, t`Couldn't attach the file. Try again.`);
 		} finally {
 			setUploading(false);
-			if (fileInput.current) fileInput.current.value = "";
 		}
 	};
 
 	const page = props.variant === "page";
-	const sendLabel = props.streaming ? t`Stop` : t`Send`;
 
 	return (
-		<div className={page ? "border-t border-line px-6 py-3" : "px-3.5 pt-2 pb-3.5"}>
+		<div className={page ? "border-t border-separator px-6 py-3" : "px-3.5 pt-2 pb-3.5"}>
 			<div className={cn("grid gap-2", page && "mx-auto w-full max-w-[720px]")}>
-				<div className="grid rounded-xl border border-line-2 bg-raised transition-colors duration-quick focus-within:border-accent">
-					<label htmlFor={id} className="sr-only">
-						<Trans>Message the coach</Trans>
-					</label>
-					<textarea
-						id={id}
-						value={text}
-						disabled={props.disabled}
-						placeholder={props.placeholder}
-						onChange={(event) => setText(event.target.value)}
-						onKeyDown={(event) => {
-							if (event.key === "Enter" && !event.shiftKey && !isImeComposing(event)) {
-								event.preventDefault();
-								void submit();
-							}
-							if (event.key === "Escape" && props.streaming) {
-								event.preventDefault();
-								props.onStop();
-							}
-						}}
-						className="field-sizing-content max-h-[200px] min-h-[68px] w-full resize-none bg-transparent px-4 pt-3 pb-1.5 text-base leading-[22px] outline-none placeholder:text-ink-3 disabled:opacity-60 md:text-[15px]"
-					/>
-					<div className="flex items-end gap-1.5 px-3 pb-2.5">
-						<div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
-							{props.chips}
-							{attachments.map((attachment) => (
-								<span
-									key={attachment.id}
-									className="inline-flex h-7 max-w-full items-center gap-1 rounded-sm border border-line-2 bg-sunken ps-2 text-xs font-medium"
-								>
-									<Icon name="paperclip" size={16} />
-									<span className="truncate">
-										{attachment.filename} · {formatFileSize(attachment.size, i18n.locale)}
-									</span>
-									<button
-										type="button"
-										aria-label={t`Remove ${attachment.filename}`}
-										onClick={() => setAttachments((current) => current.filter((item) => item.id !== attachment.id))}
-										className="grid size-6 place-items-center rounded-sm text-ink-3 transition-colors duration-quick hover:bg-hover hover:text-ink"
-									>
-										<Icon name="x" size={14} />
-									</button>
-								</span>
-							))}
-						</div>
-						<IconButton
-							icon="paperclip"
-							label={t`Attach a file`}
-							size="sm"
-							isDisabled={props.disabled || uploading}
-							isPending={uploading}
-							className="text-ink-2"
-							onPress={() => fileInput.current?.click()}
-						/>
-						<input
-							ref={fileInput}
-							type="file"
-							multiple
-							className="hidden"
-							onChange={(event) => void upload(event.target.files)}
-						/>
-						<Tooltip>
-							<Button
-								isIconOnly
-								size="sm"
-								aria-label={sendLabel}
-								isDisabled={!props.streaming && (props.disabled || uploading)}
-								onPress={props.streaming ? props.onStop : () => void submit()}
-								className="rounded-lg"
-							>
-								{/* Stop is the one filled glyph: a solid square. */}
-								<Icon name={props.streaming ? "stop" : "arrow-up"} filled={props.streaming} size={18} />
-							</Button>
-							<Tooltip.Content>{sendLabel}</Tooltip.Content>
-						</Tooltip>
-					</div>
-				</div>
+				<PromptBox
+					value={text}
+					onValueChange={setText}
+					onSubmit={() => void submit()}
+					onStop={props.onStop}
+					streaming={props.streaming}
+					disabled={props.disabled}
+					canSend={text.trim().length > 0 && !uploading}
+					placeholder={props.placeholder}
+					label={t`Message the coach`}
+					maxHeight={200}
+					files={attachments.map((attachment) => ({
+						key: attachment.id,
+						name: attachment.filename,
+						mimeType: attachment.mediaType,
+						sizeLabel: formatFileSize(attachment.size, i18n.locale),
+						removeLabel: t`Remove ${attachment.filename}`,
+						onRemove: () => setAttachments((current) => current.filter((item) => item.id !== attachment.id)),
+					}))}
+					context={props.chips}
+					attach={{
+						isDisabled: props.disabled || attachments.length >= MAX_ATTACHMENTS_PER_MESSAGE,
+						isPending: uploading,
+						onFiles: (files) => void upload(files),
+					}}
+				/>
 				{props.privacy}
 			</div>
 		</div>
 	);
 }
 
+/** True when the text reached the clipboard. */
 export async function copyToClipboard(text: string, done: string) {
 	try {
 		await navigator.clipboard.writeText(text);
 		toast.add({ description: done });
+		return true;
 	} catch {
 		toast.add({ type: "error", description: t`Couldn't copy to the clipboard. Try again.` });
+		return false;
 	}
 }

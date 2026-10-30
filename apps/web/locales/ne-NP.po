@@ -289,6 +289,11 @@ msgstr "{0, plural, one {# मिनेट अघि सुरु भयो} oth
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {# कागजातका ट्यागहरू} other {# कागजातहरूका ट्यागहरू}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{1} मा {0} भनेको तपाईंको समय क्ष
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "{0} अन्तर्वार्ता"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "लिङ्क पूर्ण ठेगाना होइन"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "लिङ्कले देखाइएको ठेगानाभन्दा फरक ठाउँतिर देखाउँछ।"
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "एउटा आवरण पत्र संलग्न गर्न�
 msgid "Attach a cover letter file (PDF)"
 msgstr "कभर लेटर फाइल संलग्न गर्नुहोस् (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "फाइल संलग्न गर्नुहोस्"
 
@@ -4679,10 +4698,6 @@ msgstr "तपाईंले प्रतिक्रिया पाएका 
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "जागिर पोस्टिङका हरेक आवश्यकतालाई तपाईंको ज्ञानभण्डारका तथ्य र कथाहरूसँग जाँचिन्छ। कमीहरू प्रमाणको अभावको रूपमा देखिन्छन्, क्षमताको अभावको रूपमा कहिल्यै होइन।"
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "प्रत्येक पठाउने यो सन्देश र चयन गरिएका फाइलहरूसँग ताजा सुरु हुन्छ। अघिल्लो कुराकानीको इतिहास यहाँ रहन्छ।"
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "अन्य · OpenAI- संगत"
 msgid "Other benefits"
 msgstr "अन्य सुविधाहरू"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "अघिल्लो मुद्दा"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "कागजात विवरण सहित अघिल्लो सन्देशहरू पनि पठाइन्छ।"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "अर्थपूर्ण CSS शैली पाना"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "पठाउनुहोस्"
 
@@ -10594,33 +10609,9 @@ msgstr "यो आवेदनको जागिर पोस्टिङ, न�
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "यो आवेदनको जागिर पोस्टिङ, नोट र कागजातहरू, साथै खुला गरिएको ज्ञानभण्डार, यो जडानमा पठाउँछ। तपाईंको प्रदायकले यसका लागि शुल्क लिन सक्छ।"
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "यो पत्र र तपाईंको कुञ्जीले {provider} मा काम पोस्टिङ पठाउँछ, तपाईंले पठाउनुहोस् थिच्दा मात्र।"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "यो पत्र {provider} लाई तपाईको कुञ्जीले पठाउँदछ, तपाईले पठाउनुहोस् थिच्दा मात्र।"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "तपाईंले पठाउनुहोस् थिच्दा मात्र यो रिजुमे र तपाईंको कुञ्जीले {provider} मा जागिरको पोस्टिङ पठाउनुहोस्।"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "यो रिज्युमे {provider} मा तपाईको कुञ्जीले पठाउँदछ, तपाईले पठाउनुहोस् थिच्दा मात्र।"
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "यो कथा र खुला गरिएका तथ्यहरू तपाईंको AI जडानमा पठाउँछ। जडान नभए, केही पनि पठाइँदैन।"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "तपाईंले पठाउनुहोस् थिच्दा मात्र तपाईंको सन्देश र तपाईंको कुञ्जीले {provider} मा काम पोस्टिङ पठाउँछ।"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "तपाइँको सन्देश तपाइँको कुञ्जीले {provider} मा पठाउँदछ, जब तपाइँ पठाउनुहोस् थिच्नुहुन्छ।"
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "{0} मा पठाइयो"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "Lumen लाई पठाइयो"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "स्रोत कोड"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "स्रोतहरू"
@@ -11324,8 +11319,7 @@ msgstr "अवस्था"
 msgid "Stay here"
 msgstr "यहाँ बस्नुहोस्"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "रोकियो। कुनै सम्पादन प्रस्
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "यी ब्याकअप कोडहरू कतै सुरक्षित ठाउँमा राख्नुहोस्। यदि तपाईंको उपकरण हरायो भने, प्रत्येक कोडले तपाईंलाई एक पटक साइन इन गराउँछ।"
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "सोच्दै"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "सोच्दै…"
 
@@ -13896,6 +13895,10 @@ msgstr "तपाईंको सुरुवात"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "तपाईंको सुरुवात, ल्याउनुपर्ने कथाहरू र सोध्नुपर्ने प्रश्नहरू। कलभन्दा 10 मिनेट अघि यो तपाईंको चेकलिस्ट बन्छ।"
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

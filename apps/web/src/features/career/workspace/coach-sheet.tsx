@@ -67,7 +67,7 @@ export function CoachSheet({ application, tab, conversation, onConversationChang
 			placement="right"
 		>
 			<Sheet.Backdrop>
-				<Sheet.Content className="w-full border-s border-line sm:max-w-none md:max-w-[420px]">
+				<Sheet.Content className="w-full border-s border-separator sm:max-w-none md:max-w-[420px]">
 					<Sheet.Dialog className="gap-0 p-0">
 						<Sheet.CloseTrigger aria-label={t`Close`} />
 						<CoachSheetBody
@@ -147,13 +147,13 @@ function CoachSheetBody({
 	};
 
 	const header = (
-		<header className="flex h-14 shrink-0 items-center gap-1 border-b border-line ps-4 pe-14">
-			<Icon name="sparkle" size={20} className="me-1.5 shrink-0 text-accent-text" />
+		<header className="flex h-14 shrink-0 items-center gap-1 border-b border-separator ps-4 pe-14">
+			<Icon name="sparkle" size={20} className="me-1.5 shrink-0 text-accent" />
 			<div className="grid min-w-0 flex-1">
 				<Sheet.Heading className="font-sans text-[15px] leading-5 font-semibold">
 					<Trans>Coach</Trans>
 				</Sheet.Heading>
-				<p className="truncate text-xs text-ink-3">
+				<p className="truncate text-xs text-muted">
 					{application.company} · {tabLabel(tab)}
 				</p>
 			</div>
@@ -163,7 +163,7 @@ function CoachSheetBody({
 				label={t`New conversation`}
 				size="sm"
 				iconSize={20}
-				className="text-ink-2"
+				className="text-muted"
 				isDisabled={threadId === null}
 				onPress={() => open("new")}
 			/>
@@ -216,7 +216,7 @@ function CoachSheetBody({
 				onChangeConnection={() => void navigate({ to: "/dashboard/settings/ai" })}
 				header={() => null}
 				empty={() => (
-					<p className="text-sm text-ink-2">
+					<p className="text-sm text-muted">
 						<Trans>
 							Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're
 							on {tabName}.
@@ -255,7 +255,7 @@ function ConversationMenu({ threads, currentId, onOpen, onDelete }: Conversation
 				iconSize={20}
 				size="sm"
 				label={t`Conversations`}
-				className="text-ink-2"
+				className="text-muted"
 			/>
 			<Dropdown.Popover placement="bottom end" className="w-72">
 				<Dropdown.Menu>

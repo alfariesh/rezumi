@@ -72,7 +72,7 @@ export function AssistantColumn({ children }: AssistantColumnProps) {
 						initial="hidden"
 						animate="shown"
 						exit="hidden"
-						className="h-full w-full min-w-[calc(var(--editor-side)-3rem)] overflow-hidden rounded-2xl bg-surface shadow-surface"
+						className="h-full w-full min-w-[calc(var(--editor-side)-3rem)] overflow-hidden"
 					>
 						{children}
 					</m.div>
@@ -165,8 +165,8 @@ export function AssistantOverlay({ place, children }: AssistantOverlayProps) {
 					exit="hidden"
 					className={
 						place === "drawer"
-							? "fixed end-2 top-(--editor-bar) bottom-2 z-40 flex w-[400px] max-w-[calc(100%-1rem)] flex-col overflow-hidden rounded-2xl bg-overlay shadow-overlay"
-							: "fixed inset-0 z-40 flex flex-col bg-surface pb-[env(safe-area-inset-bottom)]"
+							? "fixed end-2 top-(--editor-bar) bottom-2 z-40 flex w-[400px] max-w-[calc(100%-1rem)] flex-col overflow-hidden rounded-2xl bg-overlay p-3 shadow-overlay"
+							: "fixed inset-0 z-40 flex flex-col bg-background p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
 					}
 				>
 					{children}

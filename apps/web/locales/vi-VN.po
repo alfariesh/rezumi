@@ -289,6 +289,11 @@ msgstr "{0, plural, other {Đã bắt đầu # phút trước}}"
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, other {Thẻ cho # tài liệu}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{0} tại {1} là {2} theo múi giờ của bạn ({preferredZone})."
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "Phỏng vấn {0}"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "Liên kết không phải là địa chỉ đầy đủ"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Một liên kết trỏ đến nơi khác với địa chỉ mà nó hiển thị."
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "Đính kèm thư xin việc (PDF)"
 msgid "Attach a cover letter file (PDF)"
 msgstr "Đính kèm tệp thư xin việc (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "Đính kèm tập tin"
 
@@ -4679,10 +4698,6 @@ msgstr "Mỗi câu trả lời bạn nhận được nhận xét đều được
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Mỗi yêu cầu trong tin tuyển dụng được đối chiếu với các dữ kiện và câu chuyện trong Kiến thức của bạn. Khoảng trống được hiển thị là thiếu bằng chứng, không bao giờ là thiếu năng lực."
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "Mỗi lần gửi sẽ bắt đầu mới với tin nhắn này và các tệp đã chọn. Lịch sử cuộc trò chuyện trước đó vẫn ở đây."
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "Khác · Tương thích với OpenAI"
 msgid "Other benefits"
 msgstr "Phúc lợi khác"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Số trước"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "Các tin nhắn trước đó, bao gồm cả chi tiết tài liệu, cũng được gửi đi."
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "Bảng định kiểu CSS ngữ nghĩa"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "Gửi"
 
@@ -10594,33 +10609,9 @@ msgstr "Gửi tin tuyển dụng, ghi chú và tài liệu của hồ sơ ứng 
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "Gửi tin tuyển dụng, ghi chú và tài liệu của hồ sơ ứng tuyển này, cùng Kiến thức đang bật, tới kết nối này. Nhà cung cấp có thể tính phí."
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "Gửi thư này và tin tuyển dụng tới {provider} bằng chìa khóa của bạn, chỉ khi bạn nhấn gửi."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "Gửi thư này tới {provider} bằng chìa khóa của bạn, chỉ khi bạn nhấn gửi."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "Gửi bản lý lịch này và tin tuyển dụng tới {provider} bằng chìa khóa của bạn, chỉ khi bạn nhấn gửi."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "Gửi bản lý lịch này tới {provider} bằng chìa khóa của bạn, chỉ khi bạn nhấn gửi."
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "Gửi câu chuyện này và các dữ kiện đang bật tới kết nối AI của bạn. Nếu không có kết nối, không có gì được gửi."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "Gửi tin nhắn và tin tuyển dụng tới {provider} bằng chìa khóa của bạn, chỉ khi bạn nhấn gửi."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "Gửi tin nhắn của bạn đến {provider} bằng phím của bạn, chỉ khi bạn nhấn gửi."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "Đã gửi tới {0}"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "Đã gửi cho Lumen"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "Mã nguồn"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "Nguồn"
@@ -11324,8 +11319,7 @@ msgstr "Trạng thái"
 msgid "Stay here"
 msgstr "Ở lại đây"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "Đã dừng lại. Không có chỉnh sửa nào được đề xuất."
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Hãy lưu các mã dự phòng này ở nơi an toàn. Nếu bạn mất thiết bị, mỗi mã cho phép đăng nhập một lần."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "Đang suy nghĩ"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "Đang suy nghĩ…"
 
@@ -13896,6 +13895,10 @@ msgstr "Phần mở đầu của bạn"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Phần mở đầu của bạn, các câu chuyện nên mang theo và câu hỏi nên đặt. Nó trở thành danh sách kiểm tra của bạn 10 phút trước cuộc gọi."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
