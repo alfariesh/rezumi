@@ -3,7 +3,18 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import { ContextMenu, PromptSuggestion } from "@heroui-pro/react";
-import { Description, Dropdown, Label, ListBox, ScrollShadow, SearchField, Select, Spinner } from "@heroui/react";
+import {
+	Description,
+	Dropdown,
+	Header,
+	Label,
+	ListBox,
+	ScrollShadow,
+	SearchField,
+	Select,
+	Separator,
+	Spinner,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -20,10 +31,9 @@ import {
 	deleteConversation,
 	titleFor,
 	useCoachKnowledge,
-	useConversationDate,
 } from "./coach-thread";
 import { CareerLoadError } from "./load-state";
-import { ContextChip } from "./shared";
+import { ContextChip, useNow } from "./shared";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -300,11 +310,20 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 
 	return (
 		// The page fills what is left under the navbar; the chat and the list scroll inside it.
-		<div className="flex h-[calc(100svh-3rem)] min-h-[480px] flex-col overflow-hidden lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)]">
+		<div className="flex h-[calc(100svh-3rem)] min-h-[480px] flex-col overflow-hidden lg:grid lg:grid-cols-[minmax(280px,320px)_minmax(0,1fr)]">
+			<ConversationList
+				className={view === "history" ? "flex flex-1" : "hidden lg:flex"}
+				threads={conversations}
+				currentId={threadId}
+				onClose={() => setView("chat")}
+				onNavigate={() => setView("chat")}
+				onRename={(thread, title) => void rename(thread, title)}
+				onDelete={remove}
+			/>
 			<section
 				aria-label={t`Coach`}
 				className={cn(
-					"min-h-0 min-w-0 flex-col px-3 pt-3 pb-3 lg:ps-4",
+					"min-h-0 min-w-0 flex-col px-3 pt-3 pb-3 lg:ps-1 lg:pe-4",
 					view === "history" ? "hidden lg:flex" : "flex flex-1",
 				)}
 			>
@@ -374,16 +393,6 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 					/>
 				)}
 			</section>
-
-			<ConversationList
-				className={view === "history" ? "flex flex-1" : "hidden lg:flex"}
-				threads={conversations}
-				currentId={threadId}
-				onClose={() => setView("chat")}
-				onNavigate={() => setView("chat")}
-				onRename={(thread, title) => void rename(thread, title)}
-				onDelete={remove}
-			/>
 		</div>
 	);
 }
@@ -499,9 +508,13 @@ type ConversationListProps = {
 	onDelete: (thread: ThreadSummary) => void;
 };
 
+type Activity = "all" | "today" | "week" | "month";
+type SortBy = "activity" | "title";
+
 /**
- * Past conversations, on the right of the chat (a mail client's list). Below lg it replaces the chat until one is
- * chosen. Search matches titles; a conversation renames in place and deletes with Undo.
+ * Past conversations, on the left of the chat (a mail client's list): a title each. Search matches titles; the
+ * filter menu narrows by last activity and sorts. Below lg it replaces the chat until one is chosen. A conversation
+ * renames in place and deletes with Undo.
  */
 function ConversationList({
 	threads,
@@ -512,17 +525,50 @@ function ConversationList({
 	onRename,
 	onDelete,
 }: ConversationListProps) {
-	const when = useConversationDate();
 	const navigate = useNavigate();
 	const [renaming, setRenaming] = useState<string | null>(null);
 	const [query, setQuery] = useState("");
+	const [activity, setActivity] = useState<Activity>("all");
+	const [sortBy, setSortBy] = useState<SortBy>("activity");
+	const now = useNow();
 	const needle = query.trim().toLocaleLowerCase();
-	const shown = needle ? threads.filter((thread) => titleFor(thread).toLocaleLowerCase().includes(needle)) : threads;
+	const days = { all: Infinity, today: 1, week: 7, month: 30 }[activity];
+	const filtered = activity !== "all" || sortBy !== "activity";
+	const shown = threads
+		.filter(
+			(thread) =>
+				(!needle || titleFor(thread).toLocaleLowerCase().includes(needle)) &&
+				now.getTime() - new Date(thread.lastMessageAt).getTime() < days * 86_400_000,
+		)
+		.sort((a, b) =>
+			sortBy === "title"
+				? titleFor(a).localeCompare(titleFor(b))
+				: new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime(),
+		);
+	const options = <T extends string>(title: string, value: T, onChange: (next: T) => void, items: [T, string][]) => (
+		<Dropdown.Section
+			selectionMode="single"
+			disallowEmptySelection
+			selectedKeys={new Set([value])}
+			onSelectionChange={(keys) => {
+				const [next] = keys === "all" ? [] : keys;
+				if (typeof next === "string") onChange(next as T);
+			}}
+		>
+			<Header>{title}</Header>
+			{items.map(([id, label]) => (
+				<Dropdown.Item key={id} id={id} textValue={label}>
+					<Label>{label}</Label>
+					<Dropdown.ItemIndicator />
+				</Dropdown.Item>
+			))}
+		</Dropdown.Section>
+	);
 
 	return (
 		<nav
 			aria-label={t`Conversations`}
-			className={cn("min-h-0 flex-col gap-3 px-3 pt-3 pb-3 lg:ps-1 lg:pe-4", className)}
+			className={cn("min-h-0 flex-col gap-3 px-3 pt-3 pb-3 lg:ps-4 lg:pe-1", className)}
 		>
 			<div className="flex items-center gap-2">
 				<IconButton icon="arrow-left" label={t`Back to the chat`} size="sm" className="lg:hidden" onPress={onClose} />
@@ -543,19 +589,41 @@ function ConversationList({
 				/>
 			</div>
 
+			<div className="flex items-center justify-between ps-3">
+				<h2 className="text-xs font-semibold text-muted">
+					<Trans>Recents</Trans>
+				</h2>
+				<Dropdown>
+					<IconButton
+						icon="sliders-horizontal"
+						label={t`Filter conversations`}
+						size="sm"
+						iconSize={16}
+						className={cn("text-muted", filtered && "bg-default text-foreground")}
+					/>
+					<Dropdown.Popover placement="bottom end" className="w-56">
+						<Dropdown.Menu>
+							{options<Activity>(t`Last activity`, activity, setActivity, [
+								["all", t`All`],
+								["today", t`Today`],
+								["week", t`Past 7 days`],
+								["month", t`Past 30 days`],
+							])}
+							<Separator />
+							{options<SortBy>(t`Sort by`, sortBy, setSortBy, [
+								["activity", t`Last activity`],
+								["title", t`Title`],
+							])}
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
+			</div>
+
 			<ScrollShadow hideScrollBar className="min-h-0 flex-1 overflow-y-auto">
 				<ul className="grid content-start gap-0.5">
 					{currentId === null && !needle && (
-						<li aria-current="page" className="flex items-start gap-3 rounded-2xl bg-surface p-3 shadow-surface">
-							<ConversationAvatar />
-							<span className="grid min-w-0 flex-1 gap-0.5">
-								<span className="text-sm leading-tight font-medium">
-									<Trans>New conversation</Trans>
-								</span>
-								<span className="text-xs leading-tight text-muted">
-									<Trans>Now</Trans>
-								</span>
-							</span>
+						<li aria-current="page" className="rounded-xl bg-default px-3 py-2 text-sm leading-5 font-medium">
+							<Trans>New conversation</Trans>
 						</li>
 					)}
 					{shown.map((thread) => (
@@ -563,7 +631,6 @@ function ConversationList({
 							key={thread.id}
 							thread={thread}
 							current={thread.id === currentId}
-							date={when(new Date(thread.lastMessageAt))}
 							renaming={renaming === thread.id}
 							onRenameStart={() => setRenaming(thread.id)}
 							onRenameEnd={(title) => {
@@ -576,36 +643,23 @@ function ConversationList({
 					))}
 				</ul>
 				{threads.length > 0 && shown.length === 0 && (
-					<p className="px-6 py-10 text-center text-sm text-muted">
+					<p className="px-3 py-10 text-center text-sm text-muted">
 						<Trans>No conversations match.</Trans>
 					</p>
 				)}
 				{threads.length === 0 && currentId !== null && (
-					<p className="px-6 py-10 text-center text-sm text-muted">
+					<p className="px-3 py-10 text-center text-sm text-muted">
 						<Trans>Your conversations appear here.</Trans>
 					</p>
 				)}
 			</ScrollShadow>
-
-			<p className="px-3 text-xs leading-[17px] text-muted">
-				<Trans>Conversations about one job live in its workspace.</Trans>
-			</p>
 		</nav>
-	);
-}
-
-function ConversationAvatar() {
-	return (
-		<span aria-hidden="true" className="grid size-9 shrink-0 place-items-center rounded-full bg-default text-accent">
-			<Icon name="sparkle" size={18} />
-		</span>
 	);
 }
 
 type ConversationItemProps = {
 	thread: ThreadSummary;
 	current: boolean;
-	date: string;
 	renaming: boolean;
 	onRenameStart: () => void;
 	/** The new title, or null when renaming was cancelled. */
@@ -614,11 +668,10 @@ type ConversationItemProps = {
 	onNavigate: () => void;
 };
 
-/** A conversation: open it; the hover ⋯ or a right-click renames (in place) or deletes it (with Undo). */
+/** A conversation's title: open it; the hover ⋯ or a right-click renames (in place) or deletes it (with Undo). */
 function ConversationItem({
 	thread,
 	current,
-	date,
 	renaming,
 	onRenameStart,
 	onRenameEnd,
@@ -654,7 +707,7 @@ function ConversationItem({
 							onRenameEnd(cancelled.current ? null : event.currentTarget.value);
 							cancelled.current = false;
 						}}
-						className="h-[60px] w-full rounded-2xl border border-accent bg-overlay px-3 text-base font-medium outline-none md:text-sm"
+						className="h-9 w-full rounded-xl border border-accent bg-overlay px-3 text-base outline-none md:text-sm"
 					/>
 				) : (
 					<Link
@@ -663,30 +716,19 @@ function ConversationItem({
 						aria-current={current ? "page" : undefined}
 						onClick={onNavigate}
 						className={cn(
-							"relative flex items-start gap-3 rounded-2xl p-3 transition-colors duration-quick",
-							current ? "bg-surface shadow-surface" : "hover:bg-default/60",
+							"flex items-center gap-2 rounded-xl py-2 ps-3 pe-9 text-sm leading-5",
+							current ? "bg-default font-medium" : "hover:bg-default/60",
 						)}
 					>
-						<ConversationAvatar />
-						<span className="grid min-w-0 flex-1 gap-0.5">
-							<span className="flex items-center justify-between gap-2">
-								<span className="truncate text-sm leading-tight font-medium">{title}</span>
-								<span className="flex shrink-0 items-center gap-1.5 text-xs leading-tight whitespace-nowrap text-muted">
-									{thread.activeRunId && (
-										<>
-											<span aria-hidden="true" className="size-1.5 rounded-full bg-accent" />
-											<span className="sr-only">
-												<Trans>Writing</Trans>
-											</span>
-										</>
-									)}
-									{date}
+						<span className="truncate">{title}</span>
+						{thread.activeRunId && (
+							<>
+								<span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-accent" />
+								<span className="sr-only">
+									<Trans>Writing</Trans>
 								</span>
-							</span>
-							<Description className="truncate text-xs leading-tight text-muted">
-								{thread.providerLabel ?? <Trans>Your AI</Trans>}
-							</Description>
-						</span>
+							</>
+						)}
 					</Link>
 				)}
 				{!renaming && (
@@ -696,7 +738,7 @@ function ConversationItem({
 							iconSize={18}
 							size="sm"
 							label={t`More for ${title}`}
-							className="absolute inset-e-1.5 bottom-1.5 size-7 min-w-0 text-muted opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
+							className="absolute inset-e-1 top-1 size-7 min-w-0 text-muted opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
 						/>
 						<Dropdown.Popover placement="bottom end">
 							<Dropdown.Menu>
