@@ -1,16 +1,15 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { Button, Kbd, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useMatchRoute } from "@tanstack/react-router";
+import { cloneElement } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Kbd } from "@rezumi/ui/components/kbd";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
@@ -163,14 +162,15 @@ function Sidebar() {
 				<Button
 					aria-label={t`New`}
 					aria-keyshortcuts="N"
-					className="h-9 justify-between"
-					onClick={() => openDialog("document.new", undefined)}
+					fullWidth
+					className="justify-between"
+					onPress={() => openDialog("document.new", undefined)}
 				>
 					<span className="flex items-center gap-1.5">
 						<Icon name="plus" />
 						<Trans>New</Trans>
 					</span>
-					<Kbd className="bg-on-accent/15 text-on-accent">N</Kbd>
+					<Kbd className="bg-accent-foreground/15 text-accent-foreground">N</Kbd>
 				</Button>
 				<UserDropdownMenu>
 					{({ session }) => (
@@ -262,7 +262,7 @@ function Rail() {
 					</RailTip>
 				)}
 				<RailTip label={t`New`} icon="plus">
-					<Button size="icon" aria-label={t`New`} onClick={() => openDialog("document.new", undefined)} />
+					<Button isIconOnly aria-label={t`New`} onPress={() => openDialog("document.new", undefined)} />
 				</RailTip>
 				<UserDropdownMenu>
 					{({ session }) => (
@@ -293,10 +293,8 @@ function RailTip({
 }) {
 	return (
 		<Tooltip>
-			<TooltipTrigger render={children}>
-				<Icon name={icon} filled={filled} />
-			</TooltipTrigger>
-			<TooltipContent side="right">{label}</TooltipContent>
+			<Tooltip.Trigger>{cloneElement(children, undefined, <Icon name={icon} filled={filled} />)}</Tooltip.Trigger>
+			<Tooltip.Content placement="right">{label}</Tooltip.Content>
 		</Tooltip>
 	);
 }

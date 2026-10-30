@@ -1,17 +1,16 @@
 import type { GenerateTask, WorkspaceTab } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
+import { Button, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useRouteContext } from "@tanstack/react-router";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { cn } from "@rezumi/utils/style";
 import { D2, EASE, EXIT } from "@/libs/motion";
 
@@ -315,23 +314,17 @@ type ContextChipProps = {
 export function ContextChip({ pressed, onPressedChange, label, tooltip, offIcon = "plus" }: ContextChipProps) {
 	return (
 		<Tooltip>
-			<TooltipTrigger
-				render={
-					<button
-						type="button"
-						aria-pressed={pressed}
-						onClick={() => onPressedChange(!pressed)}
-						className={cn(
-							"touch-target inline-flex h-7 items-center gap-1 rounded-sm border px-[9px] text-xs font-medium transition-[background-color,border-color,color] duration-quick",
-							pressed ? "border-line-2 bg-sunken text-ink" : "border-line text-ink-3 hover:text-ink-2",
-						)}
-					/>
-				}
+			<Button
+				size="sm"
+				variant={pressed ? "secondary" : "outline"}
+				aria-pressed={pressed}
+				onPress={() => onPressedChange(!pressed)}
+				className="touch-target gap-1"
 			>
 				<Icon name={pressed ? "check" : offIcon} size={16} />
 				{label}
-			</TooltipTrigger>
-			<TooltipContent>{tooltip}</TooltipContent>
+			</Button>
+			<Tooltip.Content>{tooltip}</Tooltip.Content>
 		</Tooltip>
 	);
 }
@@ -445,13 +438,14 @@ export function MemoryProposal(props: MemoryProposalProps) {
 						<Button
 							size="sm"
 							variant="secondary"
-							loading={props.busy ?? false}
-							disabled={selected.length === 0}
-							onClick={() => props.onRemember(selected)}
+							isPending={props.busy ?? false}
+							isDisabled={selected.length === 0}
+							onPress={() => props.onRemember(selected)}
 						>
+							{props.busy && <Spinner size="sm" color="current" aria-hidden />}
 							<Trans>Remember</Trans>
 						</Button>
-						<Button size="sm" variant="ghost" onClick={props.onDismiss}>
+						<Button size="sm" variant="ghost" onPress={props.onDismiss}>
 							<Trans>Not now</Trans>
 						</Button>
 					</div>

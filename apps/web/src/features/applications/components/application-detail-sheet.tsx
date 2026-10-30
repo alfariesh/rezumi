@@ -1,12 +1,12 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import {
 	DropdownMenu,
@@ -83,7 +83,7 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 							{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
 						</SheetDescription>
 						{isError && (
-							<Button variant="secondary" disabled={isFetching || isPending} onClick={() => void refetch()}>
+							<Button variant="secondary" isDisabled={isFetching || isPending} onPress={() => void refetch()}>
 								<Trans>Try again</Trans>
 							</Button>
 						)}
@@ -169,7 +169,11 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 						<DropdownMenu>
 							<DropdownMenuTrigger
 								render={
-									<Button size="icon-sm" variant="ghost" aria-label={t`Application options`} className="text-ink-3" />
+									<button
+										type="button"
+										aria-label={t`Application options`}
+										className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
+									/>
 								}
 							>
 								<Icon name="dots-three" />
@@ -242,7 +246,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 								<Button
 									size="sm"
 									variant="secondary"
-									onClick={() => (application.status === "saved" ? setApplying(true) : moveTo(application, next))}
+									onPress={() => (application.status === "saved" ? setApplying(true) : moveTo(application, next))}
 								>
 									{application.status === "saved" ? (
 										<Trans>Mark as applied</Trans>
@@ -272,24 +276,24 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 			<footer className="flex shrink-0 flex-wrap items-center gap-2 border-t border-line bg-surface px-5 py-3">
 				{!closed ? (
 					<>
-						<Button variant="secondary" onClick={() => setClosing(true)}>
+						<Button variant="secondary" onPress={() => setClosing(true)}>
 							<Trans>Close application…</Trans>
 						</Button>
 						{application.sourceUrl && (
-							<Button
-								variant="ghost"
-								nativeButton={false}
-								className="text-ink-2"
-								render={<a href={application.sourceUrl} target="_blank" rel="noreferrer" />}
+							<a
+								href={application.sourceUrl}
+								target="_blank"
+								rel="noreferrer"
+								className={buttonVariants({ variant: "ghost" })}
 							>
 								<Trans>Posting</Trans>
 								<Icon name="arrow-square-out" size={16} />
-							</Button>
+							</a>
 						)}
 						<OpenWorkspaceButton application={application} />
 					</>
 				) : (
-					<Button variant="secondary" onClick={() => moveTo(application, "applied")}>
+					<Button variant="secondary" onPress={() => moveTo(application, "applied")}>
 						<Trans>Reopen</Trans>
 					</Button>
 				)}
@@ -589,7 +593,7 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 							{getOrpcErrorMessage(update.error, { fallback: t`Couldn't record submission. Try again.` })}
 						</p>
 					)}
-					<Button type="submit" disabled={!date || update.isPending}>
+					<Button type="submit" isDisabled={!date || update.isPending}>
 						<Trans>Confirm applied</Trans>
 					</Button>
 				</form>
@@ -666,8 +670,8 @@ function OpenWorkspaceButton({ application }: { application: Application }) {
 	const navigate = useNavigate();
 	return (
 		<Button
-			className="ms-auto bg-accent-soft text-accent-text hover:bg-accent-soft hover:brightness-95"
-			onClick={() =>
+			className="ms-auto"
+			onPress={() =>
 				void navigate({
 					to: "/dashboard/applications/$applicationId/{-$tab}",
 					params: { applicationId: application.id },

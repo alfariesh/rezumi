@@ -1,8 +1,8 @@
+import { Button, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useEffect, useRef, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
 import { toast } from "@rezumi/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { cn } from "@rezumi/utils/style";
 
 const COPIED_MS = 1600;
@@ -29,24 +29,17 @@ export function CopyText({ value, className }: CopyTextProps) {
 	};
 
 	return (
-		<Tooltip open={hovered || copied} onOpenChange={setHovered}>
-			<TooltipTrigger
-				closeOnClick={false}
-				render={
-					<button
-						type="button"
-						aria-label={t`Copy ${value}`}
-						onClick={() => void copy()}
-						className={cn(
-							"-mx-1 rounded-sm px-1 text-start break-all transition-colors duration-quick hover:bg-hover active:bg-press",
-							className,
-						)}
-					/>
-				}
+		<Tooltip isOpen={hovered || copied} onOpenChange={setHovered}>
+			<Button
+				variant="ghost"
+				size="sm"
+				aria-label={t`Copy ${value}`}
+				onPress={() => void copy()}
+				className={cn("-mx-1 h-auto min-h-0 px-1 py-0 text-start font-normal break-all whitespace-normal", className)}
 			>
 				{value}
-			</TooltipTrigger>
-			<TooltipContent>{copied ? t`Copied` : t`Copy`}</TooltipContent>
+			</Button>
+			<Tooltip.Content>{copied ? t`Copied` : t`Copy`}</Tooltip.Content>
 			<span className="sr-only" aria-live="polite">
 				{copied ? t`Copied` : ""}
 			</span>

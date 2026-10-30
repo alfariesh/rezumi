@@ -3,19 +3,18 @@ import type { careerScheduleInputSchema } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type z from "zod";
+import { Button, buttonVariants, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { m } from "motion/react";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -260,14 +259,17 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 					<SheetTitle className="flex-1">
 						{form?.existing ? <Trans>Edit schedule</Trans> : <Trans>New schedule</Trans>}
 					</SheetTitle>
-					<SheetClose aria-label={t`Close`} render={<Button variant="ghost" size="icon" className="text-ink-2" />}>
+					<SheetClose
+						aria-label={t`Close`}
+						render={<button type="button" className={buttonVariants({ variant: "ghost", isIconOnly: true })} />}
+					>
 						<Icon name="x" />
 					</SheetClose>
 				</div>
 
 				{!form || !draft ? (
 					<div className="grid min-h-40 flex-1 place-items-center">
-						<Spinner />
+						<Spinner size="md" color="current" aria-label={t`Loading`} />
 					</div>
 				) : (
 					<div className="flex min-h-0 flex-1 flex-col gap-[18px] overflow-y-auto px-[22px] py-5">
@@ -370,14 +372,12 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 											providerState.isUnavailable ? (
 												<AiProviderLoadState state={providerState} />
 											) : providers.length === 0 ? (
-												<Button
-													variant="link"
-													nativeButton={false}
-													className="w-fit"
-													render={<Link to="/dashboard/settings/ai" />}
+												<Link
+													to="/dashboard/settings/ai"
+													className="w-fit text-link underline-offset-4 hover:underline"
 												>
 													<Trans>Connect an AI provider in Settings</Trans>
-												</Button>
+												</Link>
 											) : (
 												<NativeSelect
 													{...props}
@@ -501,11 +501,11 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 								</p>
 								<Button
 									variant="secondary"
-									onClick={() => setForm((current) => current && { ...current, discarding: false })}
+									onPress={() => setForm((current) => current && { ...current, discarding: false })}
 								>
 									<Trans>Keep editing</Trans>
 								</Button>
-								<Button variant="danger" onClick={close}>
+								<Button variant="danger" onPress={close}>
 									<Trans>Discard</Trans>
 								</Button>
 							</>
@@ -514,8 +514,8 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 								{form?.existing && (
 									<Button
 										variant="ghost"
-										className="text-danger-text"
-										onClick={() => {
+										className="text-danger"
+										onPress={() => {
 											if (form.existing) onDelete(form.existing.id);
 											close();
 										}}
@@ -524,15 +524,16 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									</Button>
 								)}
 								<span className="flex-1" />
-								<Button variant="secondary" onClick={requestClose}>
+								<Button variant="secondary" onPress={requestClose}>
 									<Trans>Cancel</Trans>
 								</Button>
 								{needsWebSearch ? (
-									<Button variant="secondary" nativeButton={false} render={<Link to="/dashboard/settings/ai" />}>
+									<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "secondary" })}>
 										<Trans>Set up web search in Settings</Trans>
-									</Button>
+									</Link>
 								) : (
-									<Button disabled={!form || blocked} loading={save.isPending} onClick={onSave}>
+									<Button isDisabled={!form || blocked} isPending={save.isPending} onPress={onSave}>
+										{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
 										<Trans>Save schedule</Trans>
 									</Button>
 								)}

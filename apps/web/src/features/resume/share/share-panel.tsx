@@ -1,3 +1,4 @@
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -6,7 +7,6 @@ import { useRouteContext } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { formatTimeSince, publicResumeUrl, summarizeViews } from "@rezumi/resume/sharing";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { Separator } from "@rezumi/ui/components/separator";
@@ -75,7 +75,7 @@ export function SharePanel() {
 							<Trans>Publish it to share a link that opens on any screen. Only you can see it until then.</Trans>
 						</p>
 					</div>
-					<Button className="w-fit" disabled={isPending || resume.isLocked} onClick={() => void setPublic(true)}>
+					<Button className="w-fit" isDisabled={isPending || resume.isLocked} onPress={() => void setPublic(true)}>
 						<Icon name="globe-hemisphere-west" size={18} />
 						<Trans>Publish</Trans>
 					</Button>
@@ -369,12 +369,12 @@ function QrCodeButton({ url }: { url: string }) {
 		<Popover>
 			<PopoverTrigger
 				render={
-					<Button variant="ghost" size="sm" className="gap-1.5">
-						<Icon name="qr-code" size={18} />
-						<Trans>QR code</Trans>
-					</Button>
+					<button type="button" className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-1.5" })} />
 				}
-			/>
+			>
+				<Icon name="qr-code" size={18} />
+				<Trans>QR code</Trans>
+			</PopoverTrigger>
 			<PopoverContent className="w-auto p-4">
 				<QRCodeSVG value={url} size={176} marginSize={2} title={t`QR code for ${url}`} />
 			</PopoverContent>

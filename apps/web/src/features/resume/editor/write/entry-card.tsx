@@ -5,6 +5,7 @@ import type { KeyboardEvent, ReactNode } from "react";
 import { useDirection } from "@base-ui/react/direction-provider";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { buttonVariants } from "@heroui/react";
 import { msg, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -161,9 +162,9 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 					<IconButton
 						icon="trash"
 						label={t`Delete entry`}
-						size="icon-sm"
+						size="sm"
 						className="text-ink-2 hover:bg-danger-soft hover:text-danger-text"
-						onClick={() => deleteEntry(section, entryId)}
+						onPress={() => deleteEntry(section, entryId)}
 					/>
 				)}
 				{!locked && <EntryMenu section={section} entry={entry} />}
@@ -234,7 +235,7 @@ function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }
 					{sectionTitle}
 				</button>
 				<span className="min-w-0 flex-1" />
-				{!locked && <IconButton icon="trash" label={t`Delete entry`} className="text-danger-text" onClick={onDelete} />}
+				{!locked && <IconButton icon="trash" label={t`Delete entry`} className="text-danger-text" onPress={onDelete} />}
 			</div>
 			<fieldset
 				disabled={locked}
@@ -305,8 +306,16 @@ function EntryMenu({ section, entry }: EntryMenuProps) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger
-				render={<IconButton icon="dots-three" label={t`Entry options`} size="icon-sm" className="text-ink-2" />}
-			/>
+				render={
+					<button
+						type="button"
+						aria-label={t`Entry options`}
+						className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
+					/>
+				}
+			>
+				<Icon name="dots-three" />
+			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-56">
 				<DropdownMenuItem onClick={toggleHidden}>
 					<Icon name={entry.hidden ? "eye" : "eye-slash"} />

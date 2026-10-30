@@ -3,11 +3,11 @@ import type { PreviewPageSize } from "./preview.shared.utils";
 import type { PageMap } from "@rezumi/pdf/page-map";
 import type { Template } from "@rezumi/schema/templates";
 import type { MotionStyle } from "motion/react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
@@ -252,7 +252,7 @@ export function ResumePreviewClient({
 										<Button
 											variant="secondary"
 											size="sm"
-											onClick={() => {
+											onPress={() => {
 												setFailure(null);
 												setAttempt((count) => count + 1);
 											}}

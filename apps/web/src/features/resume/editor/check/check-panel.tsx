@@ -4,15 +4,14 @@ import type { CheckResult } from "./use-check";
 import type { AtsCategory, AtsReport } from "@rezumi/resume/ats";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { ATS_CATEGORIES } from "@rezumi/resume/ats";
-import { Button } from "@rezumi/ui/components/button";
 import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -222,9 +221,8 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 				<Button
 					size="sm"
 					variant={applies ? "primary" : "secondary"}
-					disabled={locked && applies}
-					onClick={(event) => {
-						event.stopPropagation();
+					isDisabled={locked && applies}
+					onPress={() => {
 						fix(issue);
 					}}
 				>
@@ -239,8 +237,7 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 					<Button
 						size="sm"
 						variant="ghost"
-						onClick={(event) => {
-							event.stopPropagation();
+						onPress={() => {
 							showOnPage(issue);
 						}}
 					>
@@ -250,9 +247,8 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 				<Button
 					size="sm"
 					variant="ghost"
-					disabled={locked}
-					onClick={(event) => {
-						event.stopPropagation();
+					isDisabled={locked}
+					onPress={() => {
 						ignore(issue);
 					}}
 				>
@@ -369,8 +365,8 @@ function DeepCheck({ data }: { data: ResumeData }) {
 
 	return (
 		<>
-			<Button variant="ghost" size="sm" className="w-fit text-ink-2" disabled={running} onClick={() => void run()}>
-				{running ? <Spinner /> : <Icon name="file-pdf" size={18} />}
+			<Button variant="ghost" size="sm" className="w-fit" isDisabled={running} onPress={() => void run()}>
+				{running ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="file-pdf" size={18} />}
 				{running ? <Trans>Checking the exported PDF…</Trans> : <Trans>Also check the exported PDF</Trans>}
 			</Button>
 

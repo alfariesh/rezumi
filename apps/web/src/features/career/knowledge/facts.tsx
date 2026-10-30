@@ -2,13 +2,13 @@ import type { Fact } from "../hooks";
 import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
+import { Button, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, m } from "motion/react";
 import { memo, useDeferredValue, useEffect, useId, useRef, useState } from "react";
 import { factCategorySchema } from "@rezumi/schema/career";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
@@ -166,7 +166,12 @@ export function FactsPage({ highlight }: FactsPageProps) {
 								{facts.length === 0 ? t`No facts yet. Add one above.` : t`No facts match. Try another word or type.`}
 							</p>
 							{type !== null && (
-								<Button variant="link" size="sm" onClick={() => setType(null)}>
+								<Button
+									variant="ghost"
+									size="sm"
+									className="h-auto px-0 text-link underline-offset-4 hover:underline"
+									onPress={() => setType(null)}
+								>
 									<Trans>Show all types</Trans>
 								</Button>
 							)}
@@ -293,11 +298,12 @@ function AddFact({ onAdded }: AddFactProps) {
 				<Button
 					variant="secondary"
 					size="sm"
-					onClick={add}
-					loading={save.isPending}
+					onPress={add}
+					isPending={save.isPending}
 					aria-disabled={!ready}
-					className={cn("h-8 px-3", !ready && "text-ink-3")}
+					className={cn(!ready && "text-muted")}
 				>
+					{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Add</Trans>
 				</Button>
 			</div>
@@ -497,10 +503,10 @@ function Correction({ text, onSave, onCancel }: CorrectionProps) {
 				className="border-accent px-3 py-2.5 text-sm leading-[21px] shadow-[0_0_0_3px_var(--accent-soft)]"
 			/>
 			<div className="flex flex-wrap items-center gap-1.5">
-				<Button variant="secondary" size="sm" className="h-[30px] px-3" disabled={!draft.trim()} onClick={save}>
+				<Button variant="secondary" size="sm" isDisabled={!draft.trim()} onPress={save}>
 					<Trans>Save correction</Trans>
 				</Button>
-				<Button variant="ghost" size="sm" className="h-[30px] text-ink-2" onClick={onCancel}>
+				<Button variant="ghost" size="sm" onPress={onCancel}>
 					<Trans>Cancel</Trans>
 				</Button>
 				<span className="text-xs text-ink-3">

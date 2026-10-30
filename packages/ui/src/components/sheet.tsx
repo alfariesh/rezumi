@@ -1,6 +1,6 @@
 import type * as React from "react";
 import { Drawer as SheetPrimitive } from "@base-ui/react/drawer";
-import { Button } from "@rezumi/ui/components/button";
+import { buttonVariants } from "@heroui/react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
@@ -80,7 +80,16 @@ function SheetContent({
 				<SheetPrimitive.Close
 					data-slot="sheet-close"
 					aria-label={closeLabel}
-					render={<Button variant="ghost" className="absolute inset-e-3 top-3 text-ink-2" size="icon" />}
+					render={
+						<button
+							type="button"
+							className={buttonVariants({
+								variant: "ghost",
+								isIconOnly: true,
+								className: "absolute inset-e-3 top-3 text-muted",
+							})}
+						/>
+					}
 				>
 					<Icon name="x" />
 				</SheetPrimitive.Close>

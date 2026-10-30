@@ -19,7 +19,7 @@ export function AssistantButton() {
 			className={cn("text-ink-2", open && "bg-accent-soft text-accent-text hover:bg-accent-soft")}
 			onPointerEnter={() => void loadAssistantPanel()}
 			onFocus={() => void loadAssistantPanel()}
-			onClick={() => setOpen(!open)}
+			onPress={() => setOpen(!open)}
 		/>
 	);
 }

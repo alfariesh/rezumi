@@ -16,6 +16,7 @@ import {
 	useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
@@ -25,7 +26,6 @@ import { Badge } from "@rezumi/ui/components/badge";
 import { useFormControl } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
-import { Kbd } from "@rezumi/ui/components/kbd";
 import { cn } from "@rezumi/utils/style";
 import { useControlledState } from "@/hooks/use-controlled-state";
 import { isImeComposing } from "@/libs/keyboard";

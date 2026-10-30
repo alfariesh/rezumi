@@ -187,11 +187,11 @@ export function EntriesGroup() {
 						icon="arrows-down-up"
 						iconSize={16}
 						variant="secondary"
-						size="icon-sm"
-						tooltipSide="top"
+						size="sm"
+						tooltipPlacement="top"
 						className="rounded-full"
 						label={entry.lead === "role" ? t`Swap rows: lead with company` : t`Swap rows: lead with position`}
-						onClick={() => set({ lead: entry.lead === "role" ? "organization" : "role" })}
+						onPress={() => set({ lead: entry.lead === "role" ? "organization" : "role" })}
 					/>
 				</div>
 				<span className="text-xs text-ink-3">

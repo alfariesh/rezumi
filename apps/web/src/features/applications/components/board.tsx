@@ -12,11 +12,11 @@ import {
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { cn } from "@rezumi/utils/style";
 import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, PIPELINE } from "../stages";
@@ -114,7 +114,7 @@ export function ApplicationBoard({ applications, showClosed, onOpen }: BoardProp
 							<Button
 								key={reason}
 								variant="secondary"
-								onClick={() => {
+								onPress={() => {
 									if (!closing) return;
 									setPendingMove({ id: closing.id, from: closing.status, to: "closed" });
 									close(closing, reason);

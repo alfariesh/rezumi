@@ -1,3 +1,4 @@
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +14,6 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@rezumi/ui/components/alert-dialog";
-import { Button } from "@rezumi/ui/components/button";
 import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
@@ -50,7 +50,8 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 				title={<Trans>Export everything</Trans>}
 				description={<Trans>All documents and applications as JSON, in one zip</Trans>}
 			>
-				<Button size="sm" variant="secondary" loading={exportAll.isPending} onClick={() => exportAll.mutate()}>
+				<Button size="sm" variant="secondary" isPending={exportAll.isPending} onPress={() => exportAll.mutate()}>
+					{exportAll.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Export</Trans>
 				</Button>
 			</SettingsRow>
@@ -62,7 +63,7 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 					size="sm"
 					variant="ghost"
 					className="border border-danger font-semibold text-danger-text hover:bg-danger-soft"
-					onClick={() => setDeleting(true)}
+					onPress={() => setDeleting(true)}
 				>
 					<Trans>Delete…</Trans>
 				</Button>
@@ -134,10 +135,11 @@ function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogProps) {
 					</AlertDialogCancel>
 					<AlertDialogAction
 						variant="danger"
-						disabled={typed.trim().toLowerCase() !== CONFIRMATION}
-						loading={remove.isPending}
-						onClick={() => remove.mutate()}
+						isDisabled={typed.trim().toLowerCase() !== CONFIRMATION}
+						isPending={remove.isPending}
+						onPress={() => remove.mutate()}
 					>
+						{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
 						<Trans>Delete account</Trans>
 					</AlertDialogAction>
 				</AlertDialogFooter>

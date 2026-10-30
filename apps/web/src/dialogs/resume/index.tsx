@@ -1,10 +1,10 @@
 import type { DialogProps } from "../store";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DialogContent,
 	DialogDescription,
@@ -14,6 +14,7 @@ import {
 } from "@rezumi/ui/components/dialog";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateRandomName } from "@rezumi/utils/slug";
@@ -142,14 +143,12 @@ export function ResumeDialog({ mode, data }: ResumeDialogProps) {
 									}
 								/>
 
-								<Button
-									size="icon"
+								<IconButton
+									icon="magic-wand"
 									variant="secondary"
-									title={t`Generate a random name`}
-									onClick={() => form.setFieldValue("name", generateRandomName())}
-								>
-									<Icon name="magic-wand" size={16} />
-								</Button>
+									label={t`Generate a random name`}
+									onPress={() => form.setFieldValue("name", generateRandomName())}
+								/>
 							</div>
 							<FormMessage errors={field.state.meta.errors} />
 							<FormDescription>
@@ -184,7 +183,7 @@ export function ResumeDialog({ mode, data }: ResumeDialogProps) {
 				</form.Field>
 
 				<DialogFooter>
-					<Button type="submit" disabled={update.isPending || duplicate.isPending}>
+					<Button type="submit" isDisabled={update.isPending || duplicate.isPending}>
 						{isUpdate ? <Trans>Save changes</Trans> : <Trans>Duplicate</Trans>}
 					</Button>
 				</DialogFooter>

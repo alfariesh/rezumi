@@ -1,10 +1,10 @@
 import type { DateFormat } from "@rezumi/schema/resume/dates";
 import type { ReactNode } from "react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { Button } from "@rezumi/ui/components/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
@@ -286,7 +286,7 @@ function AdvancedGroup({ open, onOpenChange }: AdvancedGroupProps) {
 						</section>
 					))}
 
-					<Button variant="secondary" className="w-fit" onClick={reset}>
+					<Button variant="secondary" className="w-fit" onPress={() => reset()}>
 						<Icon name="arrow-counter-clockwise" size={18} />
 						<Trans>Reset design defaults</Trans>
 					</Button>

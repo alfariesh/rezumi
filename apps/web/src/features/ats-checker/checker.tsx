@@ -2,15 +2,14 @@ import type { ExtractProgress } from "./extract-client";
 import type { AtsCheckResult } from "./run-ats-check";
 import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
 import type { CSSProperties } from "react";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useId, useRef, useState } from "react";
 import { useIsClient } from "usehooks-ts";
-import { Button } from "@rezumi/ui/components/button";
 import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { Textarea } from "@rezumi/ui/components/textarea";
 import { cn } from "@rezumi/utils/style";
@@ -132,7 +131,7 @@ export function AtsChecker({ signedIn, importPending }: AtsCheckerProps) {
 		>
 			{state.name === "importing" ? (
 				<p role="status" className="flex items-center justify-center gap-2 py-24 text-ink-2">
-					<Spinner decorative className="size-4" />
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Importing it into your new resume…</Trans>
 				</p>
 			) : state.name === "busy" ? (
@@ -225,7 +224,7 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 				<span className="text-sm text-ink-3">
 					<Trans>Up to 25 MB · checked in your browser, never uploaded</Trans>
 				</span>
-				<Button className="mt-1.5" onClick={() => void sample()}>
+				<Button className="mt-1.5" onPress={() => void sample()}>
 					<Trans>Check a sample file</Trans>
 				</Button>
 				<input
@@ -310,7 +309,7 @@ function Progress({ file, step }: { file: File; step: number }) {
 							{index < step ? (
 								<Icon name="check" size={20} className={cn(POP_CLASS, "text-accent-text")} />
 							) : index === step ? (
-								<Spinner decorative className={cn(POP_CLASS, "size-4")} />
+								<Spinner size="sm" color="current" className={POP_CLASS} aria-hidden />
 							) : (
 								<span aria-hidden className="size-3 rounded-sm border-[1.5px] border-current" />
 							)}
@@ -485,7 +484,7 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 					<span className="text-[13px] leading-[19px] text-ink-2 max-lg:hidden">
 						<Trans>Import this file into a free Rezumi. Every issue is waiting for you in Check.</Trans>
 					</span>
-					<Button className="h-10" onClick={onFix}>
+					<Button className="h-10" onPress={onFix}>
 						<Trans>Fix these in the editor</Trans>
 					</Button>
 				</div>
@@ -519,7 +518,7 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 							lens !== "page" && "h-0 overflow-hidden opacity-0 shadow-none",
 						)}
 					>
-						<Suspense fallback={<Spinner className="mx-auto my-24 size-5" />}>
+						<Suspense fallback={<Spinner size="md" color="current" className="mx-auto my-24" />}>
 							<PdfViewer file={file} className="block w-full" />
 						</Suspense>
 					</div>

@@ -1,9 +1,9 @@
 import type { PDFDocumentLoadingTask, PDFDocumentProxy } from "pdfjs-dist/legacy/build/pdf.mjs";
+import { Spinner } from "@heroui/react";
 // pdf.mjs must load before pdf_viewer.mjs, which reads `globalThis.pdfjsLib` as it loads.
 import { AnnotationMode } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { EventBus, LinkTarget, PDFLinkService, PDFViewer } from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
 import { useEffect, useReducer, useRef } from "react";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { getDocument, getPdfWorker } from "@/features/resume/preview/pdfjs";
 import "pdfjs-dist/legacy/web/pdf_viewer.css";
@@ -203,7 +203,7 @@ export function PdfViewer({ className, file }: PdfViewerProps) {
 						isReady ? "invisible opacity-0 duration-[calc(var(--d2)*0.7)]" : "duration-standard",
 					)}
 				>
-					<Spinner className="size-6" />
+					<Spinner size="md" color="current" />
 				</div>
 			)}
 		</div>

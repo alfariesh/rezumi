@@ -2,6 +2,7 @@ import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { WorkspaceTab } from "@rezumi/schema/career";
+import { buttonVariants, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,7 +18,6 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { CoachThread, connectionName, deleteConversation, titleFor, useConversationDate } from "../coach-thread";
 import { PrivacyLine, tabLabel } from "../shared";
 import { useConversationConnection } from "@/features/assistant/chat";
@@ -163,11 +163,11 @@ function CoachSheetBody({
 			<IconButton
 				icon="note-pencil"
 				label={t`New conversation`}
-				size="icon-sm"
+				size="sm"
 				iconSize={20}
 				className="text-ink-2"
-				disabled={threadId === null}
-				onClick={() => open("new")}
+				isDisabled={threadId === null}
+				onPress={() => open("new")}
 			/>
 		</header>
 	);
@@ -189,7 +189,7 @@ function CoachSheetBody({
 			<>
 				{header}
 				<div className="grid flex-1 place-items-center">
-					<Spinner />
+					<Spinner size="md" color="current" aria-label={t`Loading`} />
 				</div>
 			</>
 		);
@@ -254,13 +254,13 @@ function ConversationMenu({ threads, currentId, onOpen, onDelete }: Conversation
 		<DropdownMenu>
 			<DropdownMenuTrigger
 				render={
-					<IconButton
-						icon="clock-counter-clockwise"
-						label={t`Conversations`}
-						size="icon-sm"
-						iconSize={20}
-						className="text-ink-2"
-					/>
+					<button
+						type="button"
+						aria-label={t`Conversations`}
+						className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true, className: "text-ink-2" })}
+					>
+						<Icon name="clock-counter-clockwise" size={20} />
+					</button>
 				}
 			/>
 			<DropdownMenuContent align="end" className="w-72">

@@ -168,7 +168,6 @@ function LevelSectionForm() {
 							<FormControl
 								render={
 									<IconPicker
-										size="icon"
 										value={field.state.value}
 										onChange={(value) => {
 											field.handleChange(value);

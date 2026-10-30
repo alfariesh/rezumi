@@ -2,6 +2,7 @@ import type { ApplicationSummary } from "@/features/applications/types";
 import type { LetterDraft } from "@/features/letters/store";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -10,7 +11,6 @@ import { Link } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
 import { useId, useRef, useState } from "react";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -185,19 +185,22 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 						</span>
 					</span>
 					{menu(
-						<Button size="sm" variant="secondary">
+						<button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })}>
 							<Trans>Change</Trans>
-						</Button>,
+						</button>,
 					)}
 				</div>
 			) : (
 				<>
 					{menu(
-						<Button variant="secondary" className="w-full justify-start gap-2">
+						<button
+							type="button"
+							className={buttonVariants({ variant: "secondary", fullWidth: true, className: "justify-start gap-2" })}
+						>
 							<Icon name="briefcase" />
 							<Trans>Link an application</Trans>
 							<Icon name="caret-down" className="ms-auto text-ink-3" />
-						</Button>,
+						</button>,
 					)}
 					<p className="text-xs text-ink-3">
 						<Trans>Without one, you fill in the recipient yourself and drafting uses only your resume.</Trans>
@@ -439,7 +442,7 @@ function LetterFramingField({ letter, field, defaultValue, disabled }: LetterFra
 			<div className="flex items-center justify-between gap-2">
 				<Label htmlFor={id}>{field === "greeting" ? <Trans>Greeting</Trans> : <Trans>Sign-off</Trans>}</Label>
 				{letter[field] !== null && (
-					<Button variant="ghost" size="sm" disabled={disabled} onClick={() => edit({ [field]: null })}>
+					<Button variant="ghost" size="sm" isDisabled={disabled} onPress={() => edit({ [field]: null })}>
 						<Trans>Use default</Trans>
 					</Button>
 				)}
@@ -486,15 +489,15 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 				{canDraft && hasUsableProvider && (
 					<Button
 						size="sm"
-						disabled={disabled}
+						isDisabled={disabled}
 						className="bg-accent-soft text-accent-text hover:bg-accent-soft hover:brightness-95"
-						onClick={() => void startLetterDraft("draft")}
+						onPress={() => void startLetterDraft("draft")}
 					>
 						<Icon name="sparkle" size={16} />
 						{application ? <Trans>Draft from the posting</Trans> : <Trans>Draft from your resume</Trans>}
 					</Button>
 				)}
-				<Button size="sm" variant="ghost" disabled={disabled} onClick={onWrite}>
+				<Button size="sm" variant="ghost" isDisabled={disabled} onPress={() => onWrite()}>
 					<Trans>Write it myself</Trans>
 				</Button>
 			</div>
@@ -502,7 +505,7 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 			{canDraft && !providerState.isUnavailable && !hasUsableProvider && (
 				<p className="text-xs text-ink-3">
 					<Trans>Drafting needs an AI provider.</Trans>{" "}
-					<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "link", size: "sm" })}>
+					<Link to="/dashboard/settings/ai" className="text-link underline-offset-4 hover:underline">
 						<Trans>Open AI settings</Trans>
 					</Link>
 				</p>
@@ -541,10 +544,10 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 					)}
 				</span>
 				<div className="flex gap-1.5">
-					<Button size="sm" variant="secondary" onClick={() => run(last.current.variant, last.current.previous)}>
+					<Button size="sm" variant="secondary" onPress={() => run(last.current.variant, last.current.previous)}>
 						<Trans>Try again</Trans>
 					</Button>
-					<Button size="sm" variant="ghost" onClick={discardLetterDraft}>
+					<Button size="sm" variant="ghost" onPress={() => discardLetterDraft()}>
 						<Trans>Dismiss</Trans>
 					</Button>
 				</div>
@@ -580,7 +583,7 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 				)}
 			</div>
 			{streaming && (
-				<Button size="sm" variant="ghost" className="w-fit" onClick={discardLetterDraft}>
+				<Button size="sm" variant="ghost" className="w-fit" onPress={() => discardLetterDraft()}>
 					<Trans>Stop</Trans>
 				</Button>
 			)}

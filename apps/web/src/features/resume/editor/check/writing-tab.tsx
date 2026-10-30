@@ -1,6 +1,7 @@
 import type { WritingNote } from "../store";
 import type { CheckIssue } from "./issues";
 import type { ResumeData } from "@rezumi/schema/resume/data";
+import { Button, Spinner, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -8,9 +9,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { buildMarkdown } from "@rezumi/resume/markdown";
 import { collectPassages } from "@rezumi/resume/proposals";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { ProposalList } from "../proposals/proposal-list";
@@ -109,7 +108,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 	if (isPending) {
 		return (
 			<div aria-busy="true" className="flex items-center gap-2.5 rounded-xl border border-line p-4 text-sm text-ink-2">
-				<Spinner />
+				<Spinner size="sm" color="current" aria-hidden />
 				<Plural
 					value={passages.length}
 					one="Reading # passage of your resume…"
@@ -139,7 +138,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 					</span>
 				</div>
 				<div className="flex gap-1.5">
-					<Button size="sm" onClick={run}>
+					<Button size="sm" onPress={run}>
 						<Trans>Retry</Trans>
 					</Button>
 					<Link to="/dashboard/settings/ai" className={buttonVariants({ size: "sm", variant: "secondary" })}>
@@ -191,7 +190,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 						}}
 					/>
 				)}
-				<Button size="sm" variant="secondary" className="w-fit" disabled={passages.length === 0} onClick={run}>
+				<Button size="sm" variant="secondary" className="w-fit" isDisabled={passages.length === 0} onPress={run}>
 					<Icon name="sparkle" size={16} />
 					<Trans>Review writing</Trans>
 				</Button>
@@ -266,7 +265,7 @@ function WritingNoteCard({ note }: { note: WritingNote }) {
 				{note.quote && <i className="text-ink-2">“{note.quote}”</i>} {note.note}
 			</p>
 			{note.target && (
-				<Button size="sm" variant="secondary" className="w-fit" onClick={showOnPage}>
+				<Button size="sm" variant="secondary" className="w-fit" onPress={showOnPage}>
 					<Trans>Show on page</Trans>
 				</Button>
 			)}

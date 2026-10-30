@@ -2,12 +2,12 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Button, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
@@ -213,7 +213,8 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 			</div>
 			{!readOnly && (
 				<div className="grid justify-items-start gap-2.5">
-					<Button disabled={!ready || !provider} loading={generate.isPending} onClick={submit}>
+					<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={submit}>
+						{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
 						{generate.isPending ? <Working steps={workingSteps("debrief")} /> : <Trans>Review my answer</Trans>}
 					</Button>
 					{connection.isUnavailable ? (
@@ -458,7 +459,7 @@ function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 				})}
 			</ul>
 			{rows.length > 0 && (
-				<Button size="sm" variant="secondary" className="h-8 w-fit" onClick={addToCalendar}>
+				<Button size="sm" variant="secondary" className="w-fit" onPress={addToCalendar}>
 					<Icon name="calendar-plus" size={16} />
 					<Trans>Add to calendar</Trans>
 				</Button>

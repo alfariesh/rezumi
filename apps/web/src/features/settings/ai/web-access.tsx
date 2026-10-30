@@ -1,13 +1,12 @@
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { Label } from "@rezumi/ui/components/label";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { useHasUsableAiProvider } from "../integrations/hooks/use-has-usable-ai-provider";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -144,11 +143,11 @@ export function WebAccessSection() {
 				)}
 				{isLoading ? (
 					<p role="status" className="flex min-h-10 items-center gap-2 text-sm text-ink-3">
-						<Spinner decorative className="size-3.5" />
+						<Spinner size="sm" color="current" className="text-muted" aria-hidden />
 						<Trans>Loading connection…</Trans>
 					</p>
 				) : !status ? (
-					<Button variant="secondary" className="w-fit" onClick={() => void refetch()}>
+					<Button variant="secondary" className="w-fit" onPress={() => void refetch()}>
 						<Trans>Try again</Trans>
 					</Button>
 				) : (
@@ -165,10 +164,11 @@ export function WebAccessSection() {
 									variant="secondary"
 									size="sm"
 									className="w-fit"
-									disabled={pending}
-									loading={test.isPending}
-									onClick={() => test.mutate()}
+									isDisabled={pending}
+									isPending={test.isPending}
+									onPress={() => test.mutate()}
 								>
+									{test.isPending && <Spinner size="sm" color="current" aria-hidden />}
 									<Trans>Test connection</Trans>
 								</Button>
 							</div>
@@ -192,25 +192,27 @@ export function WebAccessSection() {
 									<Button
 										variant="secondary"
 										size="sm"
-										disabled={pending}
-										loading={test.isPending}
-										onClick={() => test.mutate()}
+										isDisabled={pending}
+										isPending={test.isPending}
+										onPress={() => test.mutate()}
 									>
+										{test.isPending && <Spinner size="sm" color="current" aria-hidden />}
 										<Trans>Test connection</Trans>
 									</Button>
 									{status.canSave && (
 										<>
-											<Button variant="ghost" size="sm" disabled={pending} onClick={openEditor}>
+											<Button variant="ghost" size="sm" isDisabled={pending} onPress={openEditor}>
 												<Trans>Change connection</Trans>
 											</Button>
 											<Button
 												variant="ghost"
 												size="sm"
 												className="text-danger-text hover:bg-danger-soft"
-												disabled={pending}
-												loading={remove.isPending}
-												onClick={() => remove.mutate()}
+												isDisabled={pending}
+												isPending={remove.isPending}
+												onPress={() => remove.mutate()}
 											>
+												{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
 												<Trans>Remove connection</Trans>
 											</Button>
 										</>
@@ -223,10 +225,11 @@ export function WebAccessSection() {
 								variant="secondary"
 								size="sm"
 								className="ms-8 w-fit max-sm:ms-0"
-								disabled={pending}
-								loading={test.isPending}
-								onClick={() => test.mutate()}
+								isDisabled={pending}
+								isPending={test.isPending}
+								onPress={() => test.mutate()}
 							>
+								{test.isPending && <Spinner size="sm" color="current" aria-hidden />}
 								<Trans>Test search</Trans>
 							</Button>
 						)}
@@ -290,7 +293,7 @@ export function WebAccessSection() {
 							</p>
 						)}
 						{status.canSave && !status.configured && !editing && (
-							<Button variant="secondary" className="ms-8 w-fit max-sm:ms-0" onClick={openEditor}>
+							<Button variant="secondary" className="ms-8 w-fit max-sm:ms-0" onPress={openEditor}>
 								<Icon name="link-simple-horizontal" size={18} />
 								<Trans>Connect a service</Trans>
 							</Button>
@@ -369,10 +372,9 @@ export function WebAccessSection() {
 									</p>
 									<div className="ms-auto flex gap-1">
 										<Button
-											type="button"
 											variant="ghost"
-											disabled={pending}
-											onClick={() => {
+											isDisabled={pending}
+											onPress={() => {
 												setEditing(false);
 												setApiKey("");
 												save.reset();
@@ -380,7 +382,8 @@ export function WebAccessSection() {
 										>
 											<Trans>Cancel</Trans>
 										</Button>
-										<Button type="submit" disabled={pending || !apiKey.trim()} loading={save.isPending}>
+										<Button type="submit" isDisabled={pending || !apiKey.trim()} isPending={save.isPending}>
+											{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
 											<Trans>Save connection</Trans>
 										</Button>
 									</div>

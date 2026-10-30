@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
+import { buttonVariants } from "@heroui/react";
 import { MessageScroller as MessageScrollerPrimitive } from "@shadcn/react/message-scroller";
-import { Button } from "@rezumi/ui/components/button";
 import { cn } from "@rezumi/utils/style";
 
 /**
@@ -73,7 +73,7 @@ function MessageScrollerButton({ className, direction = "end", render, ...props 
 				"absolute inset-s-1/2 -translate-x-1/2 bg-raised transition-[translate,opacity] duration-standard ease-enter data-[active=false]:pointer-events-none data-[active=false]:opacity-0 data-[active=true]:translate-y-0 data-[active=true]:opacity-100 data-[direction=end]:bottom-3 data-[direction=end]:data-[active=false]:translate-y-2 data-[direction=start]:top-3 data-[direction=start]:data-[active=false]:-translate-y-2 rtl:translate-x-1/2",
 				className,
 			)}
-			render={render ?? <Button variant="secondary" size="sm" />}
+			render={render ?? <button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} />}
 			{...props}
 		/>
 	);

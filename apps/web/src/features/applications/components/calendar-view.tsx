@@ -1,12 +1,12 @@
 import type { ScheduledInterview } from "../interviews";
 import type { ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { INTERVIEW_KINDS } from "@rezumi/schema/applications/data";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { cn } from "@rezumi/utils/style";
@@ -94,21 +94,21 @@ export function ApplicationCalendar({ applications, allApplications, onOpen }: A
 					</div>
 
 					<div className="ms-auto flex items-center gap-1">
-						<Button size="icon-sm" variant="ghost" title={t`Previous month`} onClick={() => shiftMonth(-1)}>
+						<Button isIconOnly size="sm" variant="ghost" aria-label={t`Previous month`} onPress={() => shiftMonth(-1)}>
 							<Icon name="caret-left" size={16} />
 						</Button>
 						<Button
 							size="sm"
 							variant="secondary"
-							disabled={isCurrentMonth}
-							onClick={() => goToMonth(new Date(today.getFullYear(), today.getMonth(), 1))}
+							isDisabled={isCurrentMonth}
+							onPress={() => goToMonth(new Date(today.getFullYear(), today.getMonth(), 1))}
 						>
 							<Trans>This month</Trans>
 						</Button>
-						<Button size="icon-sm" variant="ghost" title={t`Next month`} onClick={() => shiftMonth(1)}>
+						<Button isIconOnly size="sm" variant="ghost" aria-label={t`Next month`} onPress={() => shiftMonth(1)}>
 							<Icon name="caret-right" size={16} />
 						</Button>
-						<Button size="sm" className="ms-2" onClick={() => schedule()}>
+						<Button size="sm" className="ms-2" onPress={() => schedule()}>
 							<Icon name="calendar-plus" size={16} />
 							<Trans>Schedule interview</Trans>
 						</Button>
@@ -241,7 +241,7 @@ export function ApplicationCalendar({ applications, allApplications, onOpen }: A
 								<Trans>Add screening calls and technical interviews to see them here and on the calendar.</Trans>
 							</p>
 						</div>
-						<Button size="sm" variant="secondary" onClick={() => schedule()}>
+						<Button size="sm" variant="secondary" onPress={() => schedule()}>
 							<Icon name="calendar-plus" size={16} />
 							<Trans>Schedule interview</Trans>
 						</Button>

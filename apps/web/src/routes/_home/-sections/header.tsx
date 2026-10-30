@@ -1,10 +1,10 @@
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { ArrowRightIcon, TranslateIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
-import { Button } from "@rezumi/ui/components/button";
 import { GithubStarsButton } from "@/components/input/github-stars-button";
 import { LocaleCombobox } from "@/features/locale/combobox";
 import { ThemeToggleButton } from "@/features/theme/toggle-button";
@@ -30,9 +30,13 @@ export function Header() {
 				<div className="ml-auto flex items-center gap-x-2">
 					<LocaleCombobox
 						render={
-							<Button size="icon" variant="ghost" aria-label={t`Change language`}>
+							<button
+								type="button"
+								className={buttonVariants({ variant: "ghost", isIconOnly: true })}
+								aria-label={t`Change language`}
+							>
 								<TranslateIcon />
-							</Button>
+							</button>
 						}
 					/>
 
@@ -41,16 +45,9 @@ export function Header() {
 					<div className="hidden items-center gap-x-4 sm:flex">
 						<GithubStarsButton />
 
-						<Button
-							size="icon"
-							nativeButton={false}
-							aria-label={t`Go to dashboard`}
-							render={
-								<Link to="/dashboard">
-									<ArrowRightIcon aria-hidden="true" />
-								</Link>
-							}
-						/>
+						<Link to="/dashboard" aria-label={t`Go to dashboard`} className={buttonVariants({ isIconOnly: true })}>
+							<ArrowRightIcon aria-hidden="true" />
+						</Link>
 					</div>
 				</div>
 			</nav>

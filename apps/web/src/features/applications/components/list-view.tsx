@@ -1,12 +1,12 @@
 import type { ApplicationSummary } from "../types";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
+import { Button, buttonVariants } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, m } from "motion/react";
 import { memo, useMemo, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
@@ -388,7 +388,9 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 			</span>
 
 			<DropdownMenu>
-				<DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
+				<DropdownMenuTrigger
+					render={<button type="button" className={buttonVariants({ variant: "ghost", size: "sm" })} />}
+				>
 					<Icon name="arrow-right" />
 					<Trans>Move to…</Trans>
 				</DropdownMenuTrigger>
@@ -403,7 +405,7 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 			</DropdownMenu>
 
 			<Popover>
-				<PopoverTrigger render={<Button size="sm" variant="ghost" />}>
+				<PopoverTrigger render={<button type="button" className={buttonVariants({ variant: "ghost", size: "sm" })} />}>
 					<Icon name="tag" />
 					<Trans>Add tag</Trans>
 				</PopoverTrigger>
@@ -418,7 +420,7 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 						}}
 					>
 						<Input aria-label={t`Tag`} value={tag} onChange={(event) => setTag(event.target.value)} autoFocus />
-						<Button size="sm" type="submit" disabled={!tag.trim()}>
+						<Button size="sm" type="submit" isDisabled={!tag.trim()}>
 							<Trans>Add</Trans>
 						</Button>
 					</form>
@@ -426,7 +428,9 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 			</Popover>
 
 			<DropdownMenu>
-				<DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
+				<DropdownMenuTrigger
+					render={<button type="button" className={buttonVariants({ variant: "ghost", size: "sm" })} />}
+				>
 					<Trans>Close…</Trans>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="start">
@@ -445,7 +449,7 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 				size="sm"
 				variant="ghost"
 				className="text-danger-text hover:bg-danger-soft"
-				onClick={async () => {
+				onPress={async () => {
 					const confirmed = await confirm(
 						plural(ids.length, { one: "Delete # application?", other: "Delete # applications?" }),
 						{
@@ -460,7 +464,7 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 				<Trans>Delete…</Trans>
 			</Button>
 
-			<IconButton icon="x" size="icon-sm" label={t`Clear selection`} className="text-ink-2" onClick={onDone} />
+			<IconButton icon="x" size="sm" label={t`Clear selection`} className="text-ink-2" onPress={onDone} />
 		</div>
 	);
 }

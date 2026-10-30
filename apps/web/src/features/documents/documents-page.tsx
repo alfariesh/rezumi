@@ -1,10 +1,10 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
+import { Button, buttonVariants, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
@@ -16,7 +16,6 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@rezumi/ui/components/input-group";
-import { Kbd } from "@rezumi/ui/components/kbd";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
@@ -229,7 +228,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 								<Button
 									variant="secondary"
 									className="mt-2"
-									onClick={() => onSearchChange({ q: "", tags: [], type: "all", public: false })}
+									onPress={() => onSearchChange({ q: "", tags: [], type: "all", public: false })}
 								>
 									<Trans>Clear search and filters</Trans>
 								</Button>
@@ -357,24 +356,26 @@ function FirstRun({ onChooseFile }: { onChooseFile: () => void }) {
 				<span className="flex-1 text-sm text-ink-2">
 					<Trans>Drop a PDF, Word or JSON file</Trans>
 				</span>
-				<Button onClick={onChooseFile}>
+				<Button onPress={onChooseFile}>
 					<Trans>Choose a file</Trans>
 				</Button>
 			</div>
 			<div className="flex flex-wrap gap-4 text-sm">
 				<Button
-					variant="link"
-					disabled={creating}
-					className="text-ink-2 underline underline-offset-2 hover:text-ink pointer-coarse:min-h-11"
-					onClick={() => void startBlank()}
+					variant="ghost"
+					size="sm"
+					isDisabled={creating}
+					className="h-auto px-0 text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
+					onPress={() => void startBlank()}
 				>
 					<Trans>Start blank</Trans>
 				</Button>
 				<Button
-					variant="link"
-					disabled={creating}
-					className="text-ink-2 underline underline-offset-2 hover:text-ink pointer-coarse:min-h-11"
-					onClick={() => void trySample()}
+					variant="ghost"
+					size="sm"
+					isDisabled={creating}
+					className="h-auto px-0 text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
+					onPress={() => void trySample()}
 				>
 					<Trans>Try a sample</Trans>
 				</Button>
@@ -472,11 +473,11 @@ function SelectionBar({ selection, allSelected, onSelectAll, onClear, onTags }: 
 				<Trans>{count} selected</Trans>
 			</span>
 			{!allSelected && (
-				<Button variant="ghost" size="sm" onClick={onSelectAll} className="max-sm:hidden">
+				<Button variant="ghost" size="sm" onPress={onSelectAll} className="max-sm:hidden">
 					<Trans>Select all</Trans>
 				</Button>
 			)}
-			<Button variant="ghost" size="sm" disabled={busy} onClick={onTags}>
+			<Button variant="ghost" size="sm" isDisabled={busy} onPress={onTags}>
 				<Icon name="tag" />
 				<span className="max-sm:sr-only">
 					<Trans>Tags</Trans>
@@ -485,13 +486,13 @@ function SelectionBar({ selection, allSelected, onSelectAll, onClear, onTags }: 
 			<DropdownMenu>
 				<DropdownMenuTrigger
 					render={
-						<Button variant="ghost" size="sm" disabled={busy}>
+						<button type="button" disabled={busy} className={buttonVariants({ variant: "ghost", size: "sm" })}>
 							<Icon name="globe" />
 							<span className="max-sm:sr-only">
 								<Trans>Sharing</Trans>
 							</span>
 							<Icon name="caret-down" size={14} />
-						</Button>
+						</button>
 					}
 				/>
 				<DropdownMenuContent side="top" align="center" className="w-48">
@@ -517,16 +518,16 @@ function SelectionBar({ selection, allSelected, onSelectAll, onClear, onTags }: 
 			<Button
 				variant="ghost"
 				size="sm"
-				disabled={busy}
+				isDisabled={busy}
 				className="text-danger-text hover:bg-danger-soft"
-				onClick={() => void run(() => batch.trash(selection), { clear: true })}
+				onPress={() => void run(() => batch.trash(selection), { clear: true })}
 			>
 				<Icon name="trash" />
 				<span className="max-sm:sr-only">
 					<Trans>Move to Trash</Trans>
 				</span>
 			</Button>
-			<IconButton icon="x" size="icon-sm" label={t`Clear selection`} className="text-ink-2" onClick={onClear} />
+			<IconButton icon="x" size="sm" label={t`Clear selection`} className="text-ink-2" onPress={onClear} />
 		</div>
 	);
 }

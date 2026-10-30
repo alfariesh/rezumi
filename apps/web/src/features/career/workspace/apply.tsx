@@ -1,13 +1,13 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
+import { Button, buttonVariants, Spinner, Tooltip } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { careerWorkspaceSchema } from "@rezumi/schema/career";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
@@ -16,11 +16,9 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDebouncedSave, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
@@ -128,7 +126,7 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 						<Button
 							size="sm"
 							variant="secondary"
-							onClick={() =>
+							onPress={() =>
 								workspace.save({
 									answers: stored.answers.map((answer) => ({
 										...answer,
@@ -302,32 +300,30 @@ function AnswerCard({
 				)}
 				{/* Forms limit words or characters; the count switches between them, for every question at once. */}
 				<Tooltip>
-					<TooltipTrigger
-						render={
-							<button
-								type="button"
-								onClick={onToggleUnit}
-								className="shrink-0 rounded-sm font-mono text-xs leading-[22px] font-medium text-ink-2 transition-colors duration-quick hover:text-ink"
-							/>
-						}
-					>
+					<Button variant="ghost" size="sm" onPress={onToggleUnit} className="shrink-0 font-mono text-xs">
 						{unit === "words"
 							? plural(words, { one: "# word", other: "# words" })
 							: plural(characters, { one: "# character", other: "# characters" })}
-					</TooltipTrigger>
-					<TooltipContent>{unit === "words" ? t`Count characters` : t`Count words`}</TooltipContent>
+					</Button>
+					<Tooltip.Content>{unit === "words" ? t`Count characters` : t`Count words`}</Tooltip.Content>
 				</Tooltip>
 				{!readOnly && (
 					<DropdownMenu>
 						<DropdownMenuTrigger
 							render={
-								<IconButton
-									icon="dots-three"
-									label={t`Question options`}
+								<button
+									type="button"
+									aria-label={t`Question options`}
 									disabled={disabled}
-									size="icon-sm"
-									className="-my-1 -me-1.5 shrink-0 text-ink-2"
-								/>
+									className={buttonVariants({
+										variant: "ghost",
+										size: "sm",
+										isIconOnly: true,
+										className: "-my-1 -me-1.5 shrink-0 text-ink-2",
+									})}
+								>
+									<Icon name="dots-three" />
+								</button>
 							}
 						/>
 						<DropdownMenuContent align="end" finalFocus={questionField}>
@@ -364,8 +360,8 @@ function AnswerCard({
 							<Button
 								size="sm"
 								variant="secondary"
-								disabled={disabled}
-								onClick={() => {
+								isDisabled={disabled}
+								onPress={() => {
 									setText(proposal.text);
 									onSave({ answer: proposal.text, factIds: proposal.factIds });
 									setProposal(null);
@@ -374,7 +370,7 @@ function AnswerCard({
 								<Icon name="check" size={16} />
 								<Trans>Accept</Trans>
 							</Button>
-							<Button size="sm" variant="ghost" onClick={() => setProposal(null)}>
+							<Button size="sm" variant="ghost" onPress={() => setProposal(null)}>
 								<Trans>Skip</Trans>
 							</Button>
 						</div>
@@ -405,15 +401,13 @@ function AnswerCard({
 						</span>
 						{backing.map((fact) => (
 							<Tooltip key={fact.id}>
-								<TooltipTrigger
-									render={
-										<span className="inline-flex h-6 items-center gap-1 rounded-sm border border-line px-2 text-xs text-ink-2" />
-									}
-								>
-									<Icon name="link-simple-horizontal" size={14} />
-									{shortLabel(fact.text)}
-								</TooltipTrigger>
-								<TooltipContent>{fact.text}</TooltipContent>
+								<Tooltip.Trigger aria-label={fact.text}>
+									<span className="inline-flex h-6 items-center gap-1 rounded-sm border border-line px-2 text-xs text-ink-2">
+										<Icon name="link-simple-horizontal" size={14} />
+										{shortLabel(fact.text)}
+									</span>
+								</Tooltip.Trigger>
+								<Tooltip.Content>{fact.text}</Tooltip.Content>
 							</Tooltip>
 						))}
 					</div>
@@ -423,11 +417,11 @@ function AnswerCard({
 						size="sm"
 						variant="ghost"
 						className="ms-auto shrink-0"
-						loading={generate.isPending}
-						disabled={disabled || !question.trim()}
-						onClick={() => void ask()}
+						isPending={generate.isPending}
+						isDisabled={disabled || !question.trim()}
+						onPress={() => void ask()}
 					>
-						{!generate.isPending && <Icon name="sparkle" size={16} />}
+						{generate.isPending ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="sparkle" size={16} />}
 						{generate.isPending ? (
 							<Working steps={workingSteps(empty ? "answer" : "tighten")} />
 						) : empty ? (
@@ -598,7 +592,8 @@ function Checklist({
 				{items.map((label, index) =>
 					!submitted && !readOnly && index === items.length - 1 ? (
 						<li key={label}>
-							<Button className="w-full" disabled={!canSubmit} loading={submitting} onClick={() => void markApplied()}>
+							<Button fullWidth isDisabled={!canSubmit} isPending={submitting} onPress={() => void markApplied()}>
+								{submitting && <Spinner size="sm" color="current" aria-hidden />}
 								<Trans>Mark as applied</Trans>
 							</Button>
 						</li>
@@ -629,12 +624,20 @@ function Checklist({
 				</p>
 			)}
 			<div className="flex flex-wrap gap-1.5 border-t border-line pt-3.5">
-				<Button variant="secondary" size="sm" disabled={written.length === 0} onClick={() => void copy()}>
+				<Button variant="secondary" size="sm" isDisabled={written.length === 0} onPress={() => void copy()}>
 					<Icon name="copy" size={16} />
 					<Trans>Copy answers</Trans>
 				</Button>
 				<DropdownMenu>
-					<DropdownMenuTrigger render={<Button variant="ghost" size="sm" disabled={written.length === 0} />}>
+					<DropdownMenuTrigger
+						render={
+							<button
+								type="button"
+								disabled={written.length === 0}
+								className={buttonVariants({ variant: "ghost", size: "sm" })}
+							/>
+						}
+					>
 						<Icon name="download-simple" size={16} />
 						<Trans>Download</Trans>
 					</DropdownMenuTrigger>

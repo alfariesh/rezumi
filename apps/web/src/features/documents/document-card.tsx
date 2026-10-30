@@ -1,4 +1,5 @@
 import type { DocumentSummary } from "./filter";
+import { buttonVariants } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -8,7 +9,6 @@ import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { ContextMenu, ContextMenuTrigger } from "@rezumi/ui/components/context-menu";
 import { DropdownMenu, DropdownMenuTrigger } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { DocumentMenuContent, useDocumentActions } from "./document-actions";
 import { daysLeftInTrash } from "./filter";
@@ -228,12 +228,13 @@ export function DocumentCard({
 					<DropdownMenu>
 						<DropdownMenuTrigger
 							render={
-								<IconButton
-									icon="dots-three"
-									size="icon-sm"
-									label={t`Options for ${document.name}`}
-									className="text-ink-2"
-								/>
+								<button
+									type="button"
+									aria-label={t`Options for ${document.name}`}
+									className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
+								>
+									<Icon name="dots-three" />
+								</button>
 							}
 						/>
 						<DocumentMenuContent {...menuProps} />
@@ -330,12 +331,13 @@ export function DocumentRow({
 					<DropdownMenu>
 						<DropdownMenuTrigger
 							render={
-								<IconButton
-									icon="dots-three"
-									size="icon-sm"
-									label={t`Options for ${document.name}`}
-									className="text-ink-2"
-								/>
+								<button
+									type="button"
+									aria-label={t`Options for ${document.name}`}
+									className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
+								>
+									<Icon name="dots-three" />
+								</button>
 							}
 						/>
 						<DocumentMenuContent {...menuProps} />

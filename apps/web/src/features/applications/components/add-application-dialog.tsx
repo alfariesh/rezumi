@@ -1,9 +1,9 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useId, useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -217,10 +217,9 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							}}
 						/>
 						<Button
-							type="button"
 							variant="secondary"
-							disabled={query.trim().length < 2 || search.isPending || create.isPending}
-							onClick={() => search.mutate({ query })}
+							isDisabled={query.trim().length < 2 || search.isPending || create.isPending}
+							onPress={() => search.mutate({ query })}
 						>
 							<Trans>Search</Trans>
 						</Button>
@@ -258,11 +257,10 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 											<Trans>View posting</Trans>
 										</a>
 										<Button
-											type="button"
 											size="sm"
 											variant="secondary"
-											disabled={read.isPending || create.isPending}
-											onClick={() => {
+											isDisabled={read.isPending || create.isPending}
+											onPress={() => {
 												setInput(result.url);
 												setPasteOpen(false);
 												setDescription(null);
@@ -304,10 +302,9 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				/>
 				{sourceLink && (
 					<Button
-						type="button"
 						variant="ghost"
 						size="sm"
-						onClick={() => {
+						onPress={() => {
 							setPasteOpen(true);
 							setDescription(null);
 							resetRead();
@@ -338,7 +335,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 					</div>
 				)}
 				{readable && (
-					<Button type="button" variant="secondary" size="sm" disabled={read.isPending} onClick={readPosting}>
+					<Button variant="secondary" size="sm" isDisabled={read.isPending} onPress={readPosting}>
 						<Trans>Read posting</Trans>
 					</Button>
 				)}
@@ -509,10 +506,10 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				</div>
 			)}
 			<DialogFooter>
-				<Button type="button" variant="secondary" disabled={!ready} onClick={() => void add(false)}>
+				<Button variant="secondary" isDisabled={!ready} onPress={() => void add(false)}>
 					{stage === "saved" ? <Trans>Save job</Trans> : <Trans>Record application</Trans>}
 				</Button>
-				<Button type="button" disabled={!ready} onClick={() => void add(true)}>
+				<Button isDisabled={!ready} onPress={() => void add(true)}>
 					<Trans>Save and prepare resume</Trans>
 				</Button>
 			</DialogFooter>

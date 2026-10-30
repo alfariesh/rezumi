@@ -1,9 +1,9 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
+import { Button, buttonVariants } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 
 export function ErrorScreen({ reset }: ErrorComponentProps) {
@@ -22,7 +22,7 @@ export function ErrorScreen({ reset }: ErrorComponentProps) {
 			</Alert>
 
 			<div className="flex items-center gap-x-2">
-				<Button onClick={reset}>
+				<Button onPress={() => reset()}>
 					<Icon name="arrow-clockwise" size={16} />
 					<Trans>Try again</Trans>
 				</Button>

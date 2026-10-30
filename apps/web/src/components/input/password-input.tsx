@@ -1,6 +1,6 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useToggle } from "usehooks-ts";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 
@@ -14,10 +14,9 @@ export function PasswordInput(props: PasswordInputProps) {
 			<Input {...props} type={visible ? "text" : "password"} />
 
 			<Button
-				size="icon"
+				isIconOnly
 				variant="ghost"
-				type="button"
-				onClick={toggleVisible}
+				onPress={() => toggleVisible()}
 				aria-pressed={visible}
 				aria-label={
 					visible

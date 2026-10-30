@@ -1,9 +1,9 @@
 import type { ApplicationExportOptions } from "../csv";
 import type { Application } from "../types";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Input } from "@rezumi/ui/components/input";
 import { Label } from "@rezumi/ui/components/label";
 import {
@@ -106,10 +106,10 @@ export function ExportApplicationsSheet({ open, onOpenChange, applications, filt
 						</p>
 					</div>
 					<SheetFooter className="flex-row justify-end gap-2">
-						<Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+						<Button variant="secondary" onPress={() => onOpenChange(false)}>
 							<Trans>Cancel</Trans>
 						</Button>
-						<Button type="submit" disabled={!validRange || selected.length === 0}>
+						<Button type="submit" isDisabled={!validRange || selected.length === 0}>
 							<Trans>Download CSV</Trans>
 						</Button>
 					</SheetFooter>

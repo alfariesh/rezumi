@@ -2,12 +2,12 @@ import type { SavedData, SavedItem } from "./hooks";
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { Button, buttonVariants } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -123,12 +123,12 @@ export function OffersPage({ a, b }: OffersPageProps) {
 					</Trans>
 				</p>
 				<div className="flex gap-2">
-					<Button variant="secondary" disabled={!left || !right} onClick={() => setPair({ a: b, b: a })}>
+					<Button variant="secondary" isDisabled={!left || !right} onPress={() => setPair({ a: b, b: a })}>
 						<Icon name="arrows-left-right" size={18} />
 						<Trans>Swap</Trans>
 					</Button>
 					<Button
-						onClick={() =>
+						onPress={() =>
 							void navigate({
 								to: "/dashboard/career/coach/{-$conversationId}",
 								params: { conversationId: undefined },
@@ -339,7 +339,10 @@ function OfferHeader({ offer, offers, otherId, onChoose }: OfferHeaderProps) {
 							className="flex w-full items-center gap-3 px-[18px] py-4 text-start transition-colors duration-quick hover:bg-hover aria-expanded:bg-hover"
 						/>
 					) : (
-						<Button variant="secondary" size="sm" className="mt-2 w-fit" />
+						<button
+							type="button"
+							className={buttonVariants({ variant: "secondary", size: "sm", className: "mt-2 w-fit" })}
+						/>
 					)
 				}
 			>
@@ -594,7 +597,7 @@ function OpenQuestions({ offers }: OpenQuestionsProps) {
 							</li>
 						))}
 					</ol>
-					<Button variant="secondary" size="sm" className="w-fit" onClick={() => void copy()}>
+					<Button variant="secondary" size="sm" className="w-fit" onPress={() => void copy()}>
 						<Icon name="copy" size={16} />
 						<Trans>Copy questions</Trans>
 					</Button>

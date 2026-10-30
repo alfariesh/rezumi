@@ -1,8 +1,8 @@
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
-import { Button } from "@rezumi/ui/components/button";
 import { templates } from "@/dialogs/resume/template/data";
 
 export function TemplateGallery() {
@@ -20,9 +20,9 @@ export function TemplateGallery() {
 						{t`Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark.`}
 					</p>
 					<div className="mt-6 flex flex-wrap items-center gap-4">
-						<Button nativeButton={false} render={<Link to="/auth/register" />}>
+						<Link to="/auth/register" className={buttonVariants()}>
 							{t`Build your resume`}
-						</Button>
+						</Link>
 						<a
 							href="https://docs.rezumi.app/guides/choosing-a-template"
 							className="text-accent-text underline underline-offset-4"
@@ -93,11 +93,9 @@ export function TemplateGallery() {
 				<section className="mt-16 border-t border-line pt-8" aria-labelledby="make-it-yours">
 					<h2 id="make-it-yours" className="font-display text-3xl">{t`Make it yours, then take it with you.`}</h2>
 					<p className="mt-3 max-w-2xl leading-relaxed text-ink-2">{t`Adjust fonts, colors, spacing and sections in the resume builder. Export your finished resume to PDF or Word, or share a link. The PDFs above are examples to help you compare designs.`}</p>
-					<Button
-						className="mt-5"
-						nativeButton={false}
-						render={<Link to="/auth/register" />}
-					>{t`Build your resume`}</Button>
+					<Link to="/auth/register" className={buttonVariants({ className: "mt-5" })}>
+						{t`Build your resume`}
+					</Link>
 				</section>
 			</div>
 		</main>

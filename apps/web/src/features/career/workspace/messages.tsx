@@ -1,11 +1,11 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
+import { Button, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
@@ -101,11 +101,15 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 					{provider && (
 						<Button
 							variant="secondary"
-							loading={generate.isPending}
-							disabled={!message.trim()}
-							onClick={() => void generate.run({ task: "reply", message: message.trim() }).catch(() => undefined)}
+							isPending={generate.isPending}
+							isDisabled={!message.trim()}
+							onPress={() => void generate.run({ task: "reply", message: message.trim() }).catch(() => undefined)}
 						>
-							{!generate.isPending && <Icon name="sparkle" size={18} />}
+							{generate.isPending ? (
+								<Spinner size="sm" color="current" aria-hidden />
+							) : (
+								<Icon name="sparkle" size={18} />
+							)}
 							{generate.isPending ? <Working steps={workingSteps("reply")} /> : <Trans>Read it for me</Trans>}
 						</Button>
 					)}
@@ -164,7 +168,7 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 						/>
 					</div>
 					<div className="flex flex-wrap items-center gap-2">
-						<Button variant="secondary" size="sm" onClick={() => void copy()}>
+						<Button variant="secondary" size="sm" onPress={() => void copy()}>
 							<Icon name="copy" size={16} />
 							<Trans>Copy reply</Trans>
 						</Button>
@@ -344,7 +348,7 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 								: t`Applied. The application is updated.`}
 						</p>
 					) : (
-						<Button className="h-10 w-full" disabled={count === 0} onClick={onApply}>
+						<Button fullWidth isDisabled={count === 0} onPress={onApply}>
 							{count === 0 ? t`Nothing to apply` : plural(count, { one: "Apply # change", other: "Apply # changes" })}
 						</Button>
 					)}

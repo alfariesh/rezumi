@@ -4,6 +4,7 @@ import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
+import { Button, buttonVariants, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -12,9 +13,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { m } from "motion/react";
 import { useState } from "react";
 import { WORKSPACE_TABS } from "@rezumi/schema/career";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { downloadWithAnchor } from "@rezumi/utils/file";
@@ -122,7 +121,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 	if (query.isPending)
 		return (
 			<div className="grid min-h-svh place-items-center">
-				<Spinner />
+				<Spinner size="lg" color="current" aria-label={t`Loading`} />
 			</div>
 		);
 	if (!application)
@@ -259,7 +258,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 										<div className="grid justify-items-start gap-3 rounded-xl border border-line p-5">
 											{waiting ? (
 												<p role="status" className="flex items-center gap-2 text-sm text-ink-2">
-													<Spinner decorative />
+													<Spinner size="sm" color="current" aria-hidden />
 													{archived ? <Trans>Loading saved version…</Trans> : <Trans>Loading workspace…</Trans>}
 												</p>
 											) : (
@@ -282,7 +281,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 													<Button
 														size="sm"
 														variant="secondary"
-														onClick={() => {
+														onPress={() => {
 															void saved.refetch();
 															if (!archived) void workspace.refetch();
 														}}
@@ -291,7 +290,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 													</Button>
 												)}
 												{archived && (
-													<Button size="sm" variant="secondary" onClick={() => setSearch({ version: undefined })}>
+													<Button size="sm" variant="secondary" onPress={() => setSearch({ version: undefined })}>
 														<Trans>Back to current</Trans>
 													</Button>
 												)}
@@ -305,7 +304,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 													<span className="flex-1">
 														<Trans>You're looking at a saved version. It can't be edited.</Trans>
 													</span>
-													<Button size="sm" variant="secondary" onClick={() => setSearch({ version: undefined })}>
+													<Button size="sm" variant="secondary" onPress={() => setSearch({ version: undefined })}>
 														<Trans>Back to current</Trans>
 													</Button>
 												</div>
@@ -441,10 +440,7 @@ function WorkspaceHeader({ application, onAskCoach }: WorkspaceHeaderProps) {
 							<Trans>Compare offers</Trans>
 						</Link>
 					)}
-					<Button
-						className="bg-accent-soft text-accent-text hover:bg-accent-soft hover:brightness-95"
-						onClick={onAskCoach}
-					>
+					<Button variant="secondary" onPress={onAskCoach}>
 						<Icon name="sparkle" size={18} />
 						<Trans>Ask the coach</Trans>
 					</Button>
@@ -533,11 +529,11 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 					</div>
 					{upcoming && <CountdownChip at={new Date(upcoming.at)} now={now} />}
 					<div className="flex flex-wrap gap-1.5">
-						<Button size="sm" variant="secondary" onClick={onEdit}>
+						<Button size="sm" variant="secondary" onPress={onEdit}>
 							{upcoming ? <Trans>Edit</Trans> : <Trans>Add an interview</Trans>}
 						</Button>
 						{upcoming && (
-							<Button size="sm" variant="ghost" onClick={addToCalendar}>
+							<Button size="sm" variant="ghost" onPress={addToCalendar}>
 								<Icon name="calendar-plus" size={16} />
 								<Trans>Add to calendar</Trans>
 							</Button>
@@ -596,7 +592,7 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 							<Button
 								size="sm"
 								variant="ghost"
-								onClick={() => {
+								onPress={() => {
 									void documents.refetch();
 									if (hasSentVersion) void trashed.refetch();
 								}}

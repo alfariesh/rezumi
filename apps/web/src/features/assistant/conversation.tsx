@@ -5,13 +5,13 @@ import type { Proposal } from "@rezumi/resume/proposals";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { lastAssistantMessageIsCompleteWithApprovalResponses, lastAssistantMessageIsCompleteWithToolCalls } from "ai";
 import { memo, useEffect, useEffectEvent, useId, useMemo, useRef, useState } from "react";
 import { agentWebSources, readPageOutputSchema } from "@rezumi/ai/tools/agent-tool-contracts";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import {
@@ -22,7 +22,6 @@ import {
 	MessageScrollerProvider,
 	MessageScrollerViewport,
 } from "@rezumi/ui/components/message-scroller";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { toast } from "@rezumi/ui/components/toast";
 import { Trace, TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
@@ -224,7 +223,7 @@ export function Conversation(props: ConversationProps) {
 									<MessageScrollerItem>
 										<TraceLine status="running" className={ENTER_CLASS}>
 											<TraceIcon>
-												<Spinner decorative className="size-3" />
+												<Spinner size="sm" color="current" aria-hidden />
 											</TraceIcon>
 											<TraceTitle>
 												<Trans>Thinking…</Trans>
@@ -267,10 +266,10 @@ export function Conversation(props: ConversationProps) {
 												</Trans>
 											</span>
 											<span className="flex gap-1.5">
-												<Button size="sm" variant="secondary" onClick={retry}>
+												<Button size="sm" variant="secondary" onPress={() => retry()}>
 													<Trans>Retry</Trans>
 												</Button>
-												<Button size="sm" variant="ghost" onClick={props.onSwitchModel}>
+												<Button size="sm" variant="ghost" onPress={() => props.onSwitchModel()}>
 													<Trans>Switch model</Trans>
 												</Button>
 											</span>
@@ -284,7 +283,7 @@ export function Conversation(props: ConversationProps) {
 											size="sm"
 											variant="ghost"
 											className="text-ink-3"
-											onClick={() => void copyTranscript(messages)}
+											onPress={() => void copyTranscript(messages)}
 										>
 											<Icon name="copy" size={16} />
 											<Trans>Copy transcript</Trans>
@@ -604,7 +603,11 @@ function Status({ working, children }: { working: boolean; children: ReactNode }
 	return (
 		<TraceLine status={working ? "running" : undefined}>
 			<TraceIcon>
-				{working ? <Spinner decorative className="size-3" /> : <Icon name="check" size={14} className={POP_CLASS} />}
+				{working ? (
+					<Spinner size="sm" color="current" aria-hidden />
+				) : (
+					<Icon name="check" size={14} className={POP_CLASS} />
+				)}
 			</TraceIcon>
 			<TraceTitle>{children}</TraceTitle>
 		</TraceLine>
@@ -642,7 +645,7 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 					{choices.length > 0 && (
 						<div className="flex flex-wrap gap-1.5">
 							{choices.map((choice) => (
-								<Button key={choice} size="sm" variant="secondary" onClick={() => onAnswer(toolCallId, choice)}>
+								<Button key={choice} size="sm" variant="secondary" onPress={() => onAnswer(toolCallId, choice)}>
 									{choice}
 								</Button>
 							))}
@@ -665,7 +668,7 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 							placeholder={t`Or in your own words…`}
 							className="h-8 min-w-0 flex-1 rounded-md border border-line-2 bg-raised px-2 text-sm text-ink transition-[border-color,box-shadow] outline-none focus:border-accent"
 						/>
-						<Button type="submit" size="sm" disabled={!other.trim()}>
+						<Button type="submit" size="sm" isDisabled={!other.trim()}>
 							<Trans>Send</Trans>
 						</Button>
 					</form>
@@ -828,10 +831,10 @@ export function Composer(props: ComposerProps) {
 						<IconButton
 							icon="paperclip"
 							label={t`Attach a file`}
-							size="icon-sm"
-							disabled={disabled || uploading}
+							size="sm"
+							isDisabled={disabled || uploading}
 							className="text-ink-2"
-							onClick={() => fileInput.current?.click()}
+							onPress={() => fileInput.current?.click()}
 						/>
 						<input
 							ref={fileInput}

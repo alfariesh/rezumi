@@ -3,10 +3,10 @@ import type { Entry } from "./model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import type { ReactNode } from "react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
-import { Button } from "@rezumi/ui/components/button";
 import { FormControl, FormDescription, FormItem, FormLabel } from "@rezumi/ui/components/form";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { PopoverTrigger } from "@rezumi/ui/components/popover";
@@ -218,26 +218,26 @@ function Roles({ entry, write, page }: FieldSetProps) {
 							<IconButton
 								icon="arrow-up"
 								label={t`Move role up`}
-								size="icon-sm"
-								disabled={index === 0}
-								onClick={() =>
+								size="sm"
+								isDisabled={index === 0}
+								onPress={() =>
 									writeRoles(`move-${role.id}`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))
 								}
 							/>
 							<IconButton
 								icon="arrow-down"
 								label={t`Move role down`}
-								size="icon-sm"
-								disabled={index === roles.length - 1}
-								onClick={() =>
+								size="sm"
+								isDisabled={index === roles.length - 1}
+								onPress={() =>
 									writeRoles(`move-${role.id}`, (list) => list.splice(index + 1, 0, ...list.splice(index, 1)))
 								}
 							/>
 							<IconButton
 								icon="trash"
 								label={t`Remove role`}
-								size="icon-sm"
-								onClick={() => writeRoles(`remove-${role.id}`, (list) => list.splice(index, 1))}
+								size="sm"
+								onPress={() => writeRoles(`remove-${role.id}`, (list) => list.splice(index, 1))}
 							/>
 						</div>
 					</div>
@@ -286,7 +286,7 @@ function Roles({ entry, write, page }: FieldSetProps) {
 				variant="secondary"
 				size="sm"
 				className="w-fit"
-				onClick={() =>
+				onPress={() =>
 					writeRoles("add", (list) => {
 						list.push({
 							id: generateId(),

@@ -4,14 +4,13 @@ import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
@@ -182,7 +181,7 @@ export function DownloadActions({ state, label, onDownload, onDownloadPdf }: Dow
 						<Trans>The {label} file couldn't be generated. Try again, or download PDF instead.</Trans>
 					</span>
 					{onDownloadPdf && (
-						<Button size="sm" variant="secondary" onClick={onDownloadPdf}>
+						<Button size="sm" variant="secondary" onPress={onDownloadPdf}>
 							<Trans>Download PDF instead</Trans>
 						</Button>
 					)}
@@ -192,12 +191,12 @@ export function DownloadActions({ state, label, onDownload, onDownloadPdf }: Dow
 			<Button
 				className="h-11 gap-2 text-[15px]"
 				aria-busy={state === "busy"}
-				disabled={state === "busy"}
-				onClick={onDownload}
+				isDisabled={state === "busy"}
+				onPress={onDownload}
 			>
 				{state === "busy" ? (
 					<>
-						<Spinner decorative className="size-4" />
+						<Spinner size="sm" color="current" aria-hidden />
 						<Trans>Preparing {label} file…</Trans>
 					</>
 				) : state === "error" ? (

@@ -1,8 +1,8 @@
 import type { ApplicationClosedReason } from "@rezumi/schema/applications/data";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -55,11 +55,11 @@ export function CloseDialog({ open, onOpenChange, onClose }: CloseDialogProps) {
 					))}
 				</RadioGroup>
 				<DialogFooter>
-					<Button variant="secondary" onClick={() => onOpenChange(false)}>
+					<Button variant="secondary" onPress={() => onOpenChange(false)}>
 						<Trans>Cancel</Trans>
 					</Button>
 					<Button
-						onClick={() => {
+						onPress={() => {
 							onClose(reason);
 							onOpenChange(false);
 						}}

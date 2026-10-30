@@ -4,10 +4,10 @@ import type { WritableDraft } from "immer";
 import type { CSSProperties } from "react";
 import { Radio } from "@base-ui/react/radio";
 import { RadioGroup } from "@base-ui/react/radio-group";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createContext, useContext, useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
@@ -240,7 +240,7 @@ export function ColorGroup() {
 						size="sm"
 						variant="secondary"
 						className="w-fit"
-						onClick={() => {
+						onPress={() => {
 							setTyped(null);
 							setAccent(darkenForWhite(normalized));
 						}}

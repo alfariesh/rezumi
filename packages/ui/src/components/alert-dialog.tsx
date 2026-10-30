@@ -1,6 +1,7 @@
+import type { ButtonProps, ButtonVariants } from "@heroui/react";
 import type * as React from "react";
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog";
-import { Button } from "@rezumi/ui/components/button";
+import { Button, buttonVariants } from "@heroui/react";
 import { cn } from "@rezumi/utils/style";
 
 function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
@@ -116,21 +117,21 @@ function AlertDialogDescription({
 	);
 }
 
-function AlertDialogAction({ className, ...props }: React.ComponentProps<typeof Button>) {
+function AlertDialogAction({ className, ...props }: ButtonProps) {
 	return <Button data-slot="alert-dialog-action" className={cn(className)} {...props} />;
 }
 
 function AlertDialogCancel({
 	className,
 	variant = "secondary",
-	size = "default",
+	size = "md",
 	...props
-}: AlertDialogPrimitive.Close.Props & Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
+}: AlertDialogPrimitive.Close.Props & Pick<ButtonVariants, "variant" | "size">) {
 	return (
 		<AlertDialogPrimitive.Close
 			data-slot="alert-dialog-cancel"
 			className={cn(className)}
-			render={<Button variant={variant} size={size} />}
+			render={<button type="button" className={buttonVariants({ variant, size })} />}
 			{...props}
 		/>
 	);

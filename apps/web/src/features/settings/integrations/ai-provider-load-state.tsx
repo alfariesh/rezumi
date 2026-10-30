@@ -1,6 +1,5 @@
+import { Button, Spinner } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@rezumi/ui/components/button";
-import { Spinner } from "@rezumi/ui/components/spinner";
 
 type AiProviderLoadStateProps = {
 	state: { isLoading: boolean; error: unknown; retry: () => void };
@@ -11,7 +10,7 @@ export function AiProviderLoadState({ state }: AiProviderLoadStateProps) {
 	if (state.isLoading)
 		return (
 			<p role="status" className="flex items-center gap-2 p-3 text-sm text-ink-2">
-				<Spinner decorative className="size-4" />
+				<Spinner size="sm" color="current" className="text-muted" aria-hidden />
 				<Trans>Loading AI connections…</Trans>
 			</p>
 		);
@@ -21,7 +20,7 @@ export function AiProviderLoadState({ state }: AiProviderLoadStateProps) {
 			<p>
 				<Trans>Couldn't load AI connections. Your saved connections haven't changed.</Trans>
 			</p>
-			<Button size="sm" variant="secondary" onClick={state.retry}>
+			<Button size="sm" variant="secondary" onPress={state.retry}>
 				<Trans>Try again</Trans>
 			</Button>
 		</div>

@@ -3,12 +3,12 @@ import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { ReactNode } from "react";
+import { Button, buttonVariants, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useId, useRef, useState } from "react";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -39,7 +39,7 @@ export function PrepareTab({ application, version, interview, now, go }: Workspa
 				<p className="max-w-[340px] text-sm text-ink-2">
 					<Trans>Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask.</Trans>
 				</p>
-				<Button variant="secondary" onClick={() => go("prepare", { edit: "interview" })}>
+				<Button variant="secondary" onPress={() => go("prepare", { edit: "interview" })}>
 					<Icon name="calendar-dot" size={18} />
 					<Trans>Add an interview</Trans>
 				</Button>
@@ -59,7 +59,7 @@ export function PrepareTab({ application, version, interview, now, go }: Workspa
 							Write down what they asked while it's fresh. The coach compares your answers with your stories.
 						</Trans>
 					</p>
-					<Button onClick={() => go("debrief")}>
+					<Button onPress={() => go("debrief")}>
 						<Trans>Start a debrief</Trans>
 					</Button>
 				</Notice>
@@ -105,10 +105,11 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 			) : provider ? (
 				<>
 					<Button
-						loading={generate.isPending}
-						disabled={!provider}
-						onClick={() => void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => {})}
+						isPending={generate.isPending}
+						isDisabled={!provider}
+						onPress={() => void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => {})}
 					>
+						{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
 						{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan my preparation</Trans>}
 					</Button>
 					<PrivacyLine className="max-w-[360px] text-start">
@@ -175,13 +176,13 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 				);
 			case "questions":
 				return (
-					<Button size="sm" variant="secondary" onClick={() => flash(questionsRef.current)}>
+					<Button size="sm" variant="secondary" onPress={() => flash(questionsRef.current)}>
 						<Trans>See below</Trans>
 					</Button>
 				);
 			case "practise":
 				return (
-					<Button size="sm" variant="secondary" onClick={() => go("practise", { speak: true })}>
+					<Button size="sm" variant="secondary" onPress={() => go("practise", { speak: true })}>
 						<Trans context="Button: rehearse interview answers">Practice</Trans>
 					</Button>
 				);
@@ -205,11 +206,11 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 						{/* The interview, posting or Knowledge changed since it was planned: plan again on request. */}
 						{briefing.outdated && !readOnly && provider && interview && (
 							<Button
-								variant="link"
+								variant="ghost"
 								size="sm"
-								className="font-sans text-[13px] tracking-normal normal-case"
-								loading={generate.isPending}
-								onClick={() =>
+								className="h-auto px-0 font-sans text-[13px] tracking-normal text-link normal-case underline-offset-4 hover:underline"
+								isPending={generate.isPending}
+								onPress={() =>
 									void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => undefined)
 								}
 							>
@@ -300,7 +301,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 							call.
 						</Trans>
 					</p>
-					<Button size="sm" variant="secondary" className="w-fit" onClick={() => setReading(true)}>
+					<Button size="sm" variant="secondary" className="w-fit" onPress={() => setReading(true)}>
 						<Trans>Read briefing</Trans>
 					</Button>
 				</div>
@@ -575,11 +576,11 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 				{/* The workspace is full screen on phones (no app tab bar), so the bar pads for the safe area itself. */}
 				<div className="sticky bottom-0 -mx-4 mt-3 -mb-6 flex gap-2 border-t border-line bg-surface px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
 					{briefing && (
-						<Button variant="secondary" className="h-12 flex-1 rounded-lg text-[15px]" onClick={() => setReading(true)}>
+						<Button variant="secondary" className="h-12 flex-1 rounded-lg text-[15px]" onPress={() => setReading(true)}>
 							<Trans>Briefing</Trans>
 						</Button>
 					)}
-					<Button className="h-12 flex-[1.4] rounded-lg text-[15px]" onClick={rehearse}>
+					<Button className="h-12 flex-[1.4] rounded-lg text-[15px]" onPress={rehearse}>
 						<Icon name="microphone" size={22} />
 						<Trans>Rehearse aloud</Trans>
 					</Button>
@@ -650,7 +651,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 					})}
 				</div>
 
-				<Button className="h-10 w-fit px-4" onClick={rehearse}>
+				<Button className="w-fit" onPress={rehearse}>
 					<Icon name="microphone" size={20} />
 					<Trans>Rehearse one answer aloud</Trans>
 				</Button>

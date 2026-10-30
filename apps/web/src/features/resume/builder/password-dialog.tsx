@@ -1,8 +1,8 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useId, useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -123,10 +123,10 @@ export function ResumePasswordDialog({ onSubmit, onClose }: ResumePasswordDialog
 						</p>
 					)}
 					<DialogFooter>
-						<Button type="button" variant="secondary" disabled={isPending} onClick={onClose}>
+						<Button type="button" variant="secondary" isDisabled={isPending} onPress={onClose}>
 							<Trans>Cancel</Trans>
 						</Button>
-						<Button type="submit" disabled={isPending}>
+						<Button type="submit" isDisabled={isPending}>
 							<Trans>Set password</Trans>
 						</Button>
 					</DialogFooter>

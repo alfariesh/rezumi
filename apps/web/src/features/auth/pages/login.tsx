@@ -1,4 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -6,7 +7,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
@@ -162,19 +162,14 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 					<div className="text-ink-3">
 						<Trans>
 							Don't have an account?{" "}
-							<Button
-								variant="link"
-								nativeButton={false}
-								className="h-auto gap-1.5 px-1! py-0"
-								render={
-									<Link to="/auth/register" search={{ callbackURL, reauthenticate }}>
-										<Trans comment="Call-to-action link from login page to account registration page">
-											Create one now
-										</Trans>{" "}
-										<Icon name="arrow-right" size={16} />
-									</Link>
-								}
-							/>
+							<Link
+								to="/auth/register"
+								search={{ callbackURL, reauthenticate }}
+								className="inline-flex items-center gap-1.5 px-1 text-link underline-offset-4 hover:underline"
+							>
+								<Trans comment="Call-to-action link from login page to account registration page">Create one now</Trans>{" "}
+								<Icon name="arrow-right" size={16} />
+							</Link>
 						</Trans>
 					</div>
 				)}
@@ -224,17 +219,13 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 										<Trans comment="Label for password input on login form">Password</Trans>
 									</FormLabel>
 
-									<Button
+									<Link
+										to="/auth/forgot-password"
 										tabIndex={-1}
-										variant="link"
-										nativeButton={false}
-										className="h-auto p-0 text-xs leading-none"
-										render={
-											<Link to="/auth/forgot-password">
-												<Trans comment="Link label to password reset page from login form">Forgot password?</Trans>
-											</Link>
-										}
-									/>
+										className="text-xs leading-none text-link underline-offset-4 hover:underline"
+									>
+										<Trans comment="Link label to password reset page from login form">Forgot password?</Trans>
+									</Link>
 								</div>
 								<FormControl
 									render={
@@ -254,7 +245,8 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 						)}
 					</form.Field>
 
-					<Button type="submit" className="w-full" disabled={isSubmitting}>
+					<Button type="submit" fullWidth isDisabled={isSubmitting}>
+						{isSubmitting && <Spinner size="sm" color="current" aria-hidden />}
 						<Trans comment="Primary action button label on login form">Sign in</Trans>
 					</Button>
 				</form>
@@ -263,13 +255,8 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 			<SocialAuth />
 
 			{allowGuestLogin && (
-				<Button
-					type="button"
-					variant="secondary"
-					className="w-full"
-					loading={guestSignIn.isPending}
-					onClick={() => guestSignIn.mutate()}
-				>
+				<Button variant="secondary" fullWidth isPending={guestSignIn.isPending} onPress={() => guestSignIn.mutate()}>
+					{guestSignIn.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Continue as guest</Trans>
 				</Button>
 			)}

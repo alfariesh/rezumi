@@ -1,7 +1,7 @@
 import type { UIMessage } from "ai";
+import { Button } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { agentApprovalRequests } from "@rezumi/ai/tools/agent-tool-contracts";
-import { Button } from "@rezumi/ui/components/button";
 
 type ToolApprovalsProps = {
 	message: UIMessage;
@@ -21,10 +21,10 @@ export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsPr
 			</p>
 			<p className="text-sm wrap-anywhere whitespace-pre-wrap">{text}</p>
 			<div className="flex gap-2">
-				<Button size="sm" disabled={disabled} onClick={() => onDecision({ id, approved: true })}>
+				<Button size="sm" isDisabled={disabled} onPress={() => onDecision({ id, approved: true })}>
 					{kind === "search" ? <Trans>Search the web</Trans> : <Trans>Save story</Trans>}
 				</Button>
-				<Button size="sm" variant="secondary" disabled={disabled} onClick={() => onDecision({ id, approved: false })}>
+				<Button size="sm" variant="secondary" isDisabled={disabled} onPress={() => onDecision({ id, approved: false })}>
 					<Trans>Skip</Trans>
 				</Button>
 			</div>

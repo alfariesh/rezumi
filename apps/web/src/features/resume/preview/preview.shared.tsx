@@ -1,7 +1,7 @@
 import type { PageMap } from "@rezumi/pdf/page-map";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties, ReactNode } from "react";
-import { Spinner } from "@rezumi/ui/components/spinner";
+import { Spinner } from "@heroui/react";
 import { cn } from "@rezumi/utils/style";
 import { DEFAULT_PDF_PAGE_SIZE, getResumePreviewGapValue, getScaledPreviewPageSize } from "./preview.shared.utils";
 
@@ -75,7 +75,7 @@ export function ResumePreviewLoader({
 								pageClassName,
 							)}
 						>
-							{failure ? pageNumber === 1 && failure : <Spinner className="size-10" />}
+							{failure ? pageNumber === 1 && failure : <Spinner size="lg" color="current" />}
 						</div>
 					</figure>
 				);

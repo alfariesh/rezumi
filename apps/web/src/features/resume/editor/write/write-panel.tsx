@@ -1,9 +1,9 @@
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { Alert, AlertDescription } from "@rezumi/ui/components/alert";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useEditorStore } from "../store";
@@ -138,7 +138,8 @@ function LockedNote() {
 				<span>
 					<Trans>Locked. Unlock to edit.</Trans>
 				</span>
-				<Button size="sm" variant="secondary" loading={isPending} onClick={unlock} aria-label={t`Unlock editing`}>
+				<Button size="sm" variant="secondary" isPending={isPending} onPress={unlock} aria-label={t`Unlock editing`}>
+					{isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Unlock</Trans>
 				</Button>
 			</AlertDescription>

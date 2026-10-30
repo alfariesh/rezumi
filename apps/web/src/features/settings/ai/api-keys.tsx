@@ -1,9 +1,9 @@
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -89,7 +89,7 @@ export function ApiKeysSection() {
 				<Trans>For scripts, extensions and MCP clients. Keys act as you and can read and edit your documents.</Trans>
 			}
 			action={
-				<Button size="sm" variant="secondary" onClick={() => setCreating(true)}>
+				<Button size="sm" variant="secondary" onPress={() => setCreating(true)}>
 					<Icon name="plus" size={18} />
 					<Trans>New key</Trans>
 				</Button>
@@ -160,7 +160,7 @@ export function ApiKeysSection() {
 										variant="ghost"
 										className="text-danger-text hover:bg-danger-soft"
 										aria-label={t`Revoke ${key.name || key.start || t`unnamed key`}`}
-										onClick={() => void revoke(key)}
+										onPress={() => void revoke(key)}
 									>
 										<Trans>Revoke</Trans>
 									</Button>
@@ -249,7 +249,7 @@ function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 							<Button
 								size="sm"
 								variant="secondary"
-								onClick={async () => {
+								onPress={async () => {
 									await copy(key);
 									setCopied(true);
 									setTimeout(() => setCopied(false), 2000);
@@ -273,7 +273,7 @@ function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 							</Button>
 						</div>
 						<DialogFooter>
-							<Button onClick={() => onOpenChange(false)}>
+							<Button onPress={() => onOpenChange(false)}>
 								<Trans>Done</Trans>
 							</Button>
 						</DialogFooter>
@@ -343,10 +343,11 @@ function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 							</p>
 						)}
 						<DialogFooter>
-							<Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
+							<Button variant="secondary" onPress={() => onOpenChange(false)}>
 								<Trans>Cancel</Trans>
 							</Button>
-							<Button type="submit" disabled={!name.trim() || creating} loading={creating}>
+							<Button type="submit" isDisabled={!name.trim() || creating} isPending={creating}>
+								{creating && <Spinner size="sm" color="current" aria-hidden />}
 								<Trans>Create key</Trans>
 							</Button>
 						</DialogFooter>

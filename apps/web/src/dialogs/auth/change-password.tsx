@@ -1,10 +1,10 @@
 import type { DialogProps } from "../store";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DialogContent,
@@ -169,7 +169,7 @@ export function ChangePasswordDialog(_: DialogProps<"auth.change-password">) {
 				</form.Field>
 
 				<DialogFooter>
-					<Button type="submit" disabled={isSubmitting}>
+					<Button type="submit" isDisabled={isSubmitting}>
 						<Trans comment="Primary action button to submit changed password">Change password</Trans>
 					</Button>
 				</DialogFooter>

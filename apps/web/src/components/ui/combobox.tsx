@@ -1,8 +1,8 @@
 import type { ComboboxTriggerState } from "@base-ui/react/combobox";
 import type { UseRenderRenderProp } from "@base-ui/react/use-render";
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import React from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	ComboboxClear,
 	ComboboxContent,
@@ -144,9 +144,12 @@ function Combobox<TValue extends string | number = string>(props: ComboboxProps<
 			disabled={disabled}
 			render={
 				render ?? (
-					<Button
-						variant="secondary"
-						className={cn("justify-start text-left font-normal hover:bg-sunken/20", className)}
+					<button
+						type="button"
+						className={buttonVariants({
+							variant: "secondary",
+							className: cn("justify-start text-left font-normal", className),
+						})}
 					/>
 				)
 			}

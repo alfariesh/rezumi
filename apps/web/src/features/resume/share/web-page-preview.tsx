@@ -1,4 +1,5 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
+import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useState } from "react";
@@ -8,7 +9,6 @@ import { renderWebPageDocument, webPageMessages } from "@rezumi/pdf/web-page-doc
 import { removeContactDetails } from "@rezumi/resume/contact-details";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { useCurrentResume, useResumeData } from "@/features/resume/builder/draft";
 // The page's own text, declared for translators; see the module.
@@ -100,7 +100,7 @@ export function WebPagePreview() {
 					/>
 				) : (
 					<div className="grid size-full place-items-center">
-						<Spinner className="size-6" />
+						<Spinner size="md" color="current" />
 					</div>
 				)}
 			</div>

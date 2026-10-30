@@ -20,7 +20,6 @@ import { LazyMotion, MotionConfig } from "motion/react";
 import { useEffect } from "react";
 import { I18nProvider as AriaI18nProvider, RouterProvider as AriaRouterProvider } from "react-aria-components";
 import { Toaster } from "@rezumi/ui/components/toast";
-import { TooltipProvider } from "@rezumi/ui/components/tooltip";
 import { isAppSectionPath } from "@rezumi/utils/app-paths";
 import { isRTL } from "@rezumi/utils/locale";
 import { BreakpointIndicator } from "@/components/layout/breakpoint-indicator";
@@ -95,32 +94,30 @@ function RootComponent() {
 										<ThemeProvider theme={theme}>
 											<HotkeysProvider>
 												<DirectionProvider direction={dir}>
-													<TooltipProvider>
-														<ConfirmDialogProvider>
-															<Outlet />
+													<ConfirmDialogProvider>
+														<Outlet />
 
-															<DialogManager />
-															<CommandPalette />
-															<LocalizedToaster />
+														<DialogManager />
+														<CommandPalette />
+														<LocalizedToaster />
 
-															{import.meta.env.DEV && <BreakpointIndicator />}
-															{import.meta.env.DEV && (
-																<TanStackDevtools
-																	config={{ position: "bottom-left" }}
-																	plugins={[
-																		{
-																			name: "TanStack Query",
-																			render: <ReactQueryDevtoolsPanel />,
-																		},
-																		{
-																			name: "TanStack Router",
-																			render: <TanStackRouterDevtoolsPanel />,
-																		},
-																	]}
-																/>
-															)}
-														</ConfirmDialogProvider>
-													</TooltipProvider>
+														{import.meta.env.DEV && <BreakpointIndicator />}
+														{import.meta.env.DEV && (
+															<TanStackDevtools
+																config={{ position: "bottom-left" }}
+																plugins={[
+																	{
+																		name: "TanStack Query",
+																		render: <ReactQueryDevtoolsPanel />,
+																	},
+																	{
+																		name: "TanStack Router",
+																		render: <TanStackRouterDevtoolsPanel />,
+																	},
+																]}
+															/>
+														)}
+													</ConfirmDialogProvider>
 												</DirectionProvider>
 											</HotkeysProvider>
 										</ThemeProvider>

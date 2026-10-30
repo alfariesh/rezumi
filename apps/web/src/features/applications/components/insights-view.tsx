@@ -1,9 +1,9 @@
 import type { ApplicationSummary } from "../types";
+import { Button } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { toast } from "@rezumi/ui/components/toast";
@@ -316,7 +316,7 @@ function PipelineFlow({ insights }: { insights: ReturnType<typeof computeInsight
 				<h3 className="text-sm font-semibold">
 					<Trans>Where your applications went</Trans>
 				</h3>
-				<Button size="sm" variant="secondary" onClick={() => void exportPng()}>
+				<Button size="sm" variant="secondary" onPress={() => void exportPng()}>
 					<Icon name="download-simple" size={16} />
 					<Trans>Export PNG</Trans>
 				</Button>

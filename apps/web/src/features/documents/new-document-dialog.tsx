@@ -1,16 +1,15 @@
 import type { ImportKind } from "@/features/resume/import/read-file";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
+import { Button, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatFileSize } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -345,7 +344,7 @@ function ImportStep({ step, creating, onCancel, onStartBlank, onChooseFile, onCl
 					<span className="text-xs text-ink-3">{formatFileSize(step.file.size, i18n.locale)}</span>
 				</span>
 				{step.name === "importing" && (
-					<Button variant="ghost" size="sm" onClick={onCancel}>
+					<Button variant="ghost" size="sm" onPress={onCancel}>
 						<Trans>Cancel</Trans>
 					</Button>
 				)}
@@ -380,10 +379,10 @@ function ImportStep({ step, creating, onCancel, onStartBlank, onChooseFile, onCl
 						<span>{step.message}</span>
 					</div>
 					<div className={cn(ENTER_CLASS, "flex flex-wrap justify-end gap-2")}>
-						<Button variant="secondary" onClick={onStartBlank} disabled={creating}>
+						<Button variant="secondary" onPress={onStartBlank} isDisabled={creating}>
 							<Trans>Start blank</Trans>
 						</Button>
-						<Button onClick={onChooseFile}>
+						<Button onPress={onChooseFile}>
 							<Trans>Choose another file</Trans>
 						</Button>
 					</div>
@@ -413,10 +412,10 @@ function ImportStep({ step, creating, onCancel, onStartBlank, onChooseFile, onCl
 						</span>
 					</p>
 					<div className={cn(ENTER_CLASS, "flex flex-wrap justify-end gap-2")}>
-						<Button variant="secondary" onClick={onClose}>
+						<Button variant="secondary" onPress={onClose}>
 							<Trans>Stay here</Trans>
 						</Button>
-						<Button onClick={() => onOpen(step.resumeId, step.file.name)}>
+						<Button onPress={() => onOpen(step.resumeId, step.file.name)}>
 							<Trans>Open in editor</Trans>
 						</Button>
 					</div>
@@ -469,7 +468,7 @@ function ImportProgress({ stage, notes }: { stage: number; notes: string[] }) {
 							{done ? (
 								<Icon name="check-circle" size={18} className={cn(POP_CLASS, "text-accent-text")} />
 							) : current ? (
-								<Spinner decorative className={cn(POP_CLASS, "size-[18px]")} />
+								<Spinner size="sm" color="current" className={POP_CLASS} aria-hidden />
 							) : (
 								<span className="size-[18px] rounded-full border-[1.5px] border-line-2" />
 							)}
@@ -640,10 +639,10 @@ function CopyForJob({ initialSourceId, initialJobId, onBack, onCreated }: CopyFo
 			</div>
 
 			<div className="flex flex-wrap justify-end gap-2">
-				<Button variant="ghost" onClick={onBack}>
+				<Button variant="ghost" onPress={onBack}>
 					{documents && resumes.length === 0 ? <Trans>Import or create a resume</Trans> : <Trans>Back</Trans>}
 				</Button>
-				<Button disabled={!source || !finalName || isPending} onClick={() => void create()}>
+				<Button isDisabled={!source || !finalName || isPending} onPress={() => void create()}>
 					<Trans>Create and open</Trans>
 				</Button>
 			</div>

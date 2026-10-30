@@ -1,14 +1,13 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
+import { buttonVariants, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore, ZOOM_MAX, ZOOM_MIN, ZOOM_STEP } from "./store";
@@ -103,18 +102,16 @@ export function BackLink() {
 
 	return (
 		<Tooltip>
-			<TooltipTrigger
-				render={
-					<Link
-						to="/dashboard"
-						aria-label={label}
-						className={buttonVariants({ variant: "ghost", size: "icon", className: "text-ink-2" })}
-					/>
-				}
-			>
-				<Icon name="arrow-left" />
-			</TooltipTrigger>
-			<TooltipContent side="bottom">{label}</TooltipContent>
+			<Tooltip.Trigger>
+				<Link
+					to="/dashboard"
+					aria-label={label}
+					className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
+				>
+					<Icon name="arrow-left" />
+				</Link>
+			</Tooltip.Trigger>
+			<Tooltip.Content placement="bottom">{label}</Tooltip.Content>
 		</Tooltip>
 	);
 }
@@ -132,7 +129,7 @@ export function DrawerControls({ pinnable }: { pinnable: boolean }) {
 					label={open ? t`Hide panel` : t`Show panel`}
 					aria-expanded={open}
 					className="text-ink-2"
-					onClick={() => useEditorStore.setState({ drawerOpen: !open })}
+					onPress={() => useEditorStore.setState({ drawerOpen: !open })}
 				/>
 			)}
 			{pinnable && (open || pinned) && (
@@ -141,7 +138,7 @@ export function DrawerControls({ pinnable }: { pinnable: boolean }) {
 					label={t`Keep the panel beside the page`}
 					aria-pressed={pinned}
 					className={cn("text-ink-2", pinned && "bg-accent-soft text-accent-text")}
-					onClick={() => {
+					onPress={() => {
 						// Unpinning leaves the drawer open over the page.
 						useEditorStore.setState({ drawerPinned: !pinned, drawerOpen: true });
 					}}

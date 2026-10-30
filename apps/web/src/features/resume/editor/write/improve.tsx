@@ -1,10 +1,10 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Editor } from "@tiptap/react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { getOrpcErrorMessage } from "@/libs/error-message";
@@ -98,11 +98,11 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 					)}
 					<div className="flex gap-1.5">
 						{!changed && (
-							<Button size="sm" onClick={() => replace(improve.data.text)}>
+							<Button size="sm" onPress={() => replace(improve.data.text)}>
 								<Trans>Replace</Trans>
 							</Button>
 						)}
-						<Button size="sm" variant="secondary" onClick={close}>
+						<Button size="sm" variant="secondary" onPress={close}>
 							<Trans>Keep mine</Trans>
 						</Button>
 					</div>
@@ -128,7 +128,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 						maxLength={500}
 						onChange={(event) => setRequest(event.target.value)}
 					/>
-					<Button type="submit" size="sm" disabled={!request.trim()}>
+					<Button type="submit" size="sm" isDisabled={!request.trim()}>
 						<Trans>Ask</Trans>
 					</Button>
 				</form>
@@ -163,7 +163,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 					<p role="alert" className="text-xs text-danger-text">
 						{getOrpcErrorMessage(improve.error, { fallback: t`Couldn't get a suggestion. Nothing changed.` })}
 					</p>
-					<Button size="sm" variant="secondary" className="w-fit" onClick={() => improve.reset()}>
+					<Button size="sm" variant="secondary" className="w-fit" onPress={() => improve.reset()}>
 						<Trans>Try again</Trans>
 					</Button>
 				</div>

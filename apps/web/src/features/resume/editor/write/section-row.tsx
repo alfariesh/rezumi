@@ -3,6 +3,7 @@ import type { SectionType } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { buttonVariants } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -149,17 +150,17 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 					icon={hidden ? "eye-slash" : "eye"}
 					label={hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
 					aria-pressed={hidden}
-					size="icon-sm"
-					disabled={locked}
+					size="sm"
+					isDisabled={locked}
 					className="text-ink-2"
-					onClick={toggleHidden}
+					onPress={toggleHidden}
 				/>
 				<IconButton
 					icon="caret-down"
 					label={open ? t`Close ${title}` : t`Open ${title}`}
-					size="icon-sm"
+					size="sm"
 					className={cn("text-ink-2 transition-transform duration-standard ease-enter", open && "rotate-180")}
-					onClick={() => setOpen(section.id, !open)}
+					onPress={() => setOpen(section.id, !open)}
 				/>
 				{!locked && <SectionMenu section={section} title={title} onMove={onMove} />}
 			</div>
@@ -267,9 +268,15 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 			<DropdownMenu>
 				<DropdownMenuTrigger
 					render={
-						<IconButton icon="dots-three" label={t`Options for ${title}`} size="icon-sm" className="text-ink-2" />
+						<button
+							type="button"
+							aria-label={t`Options for ${title}`}
+							className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
+						/>
 					}
-				/>
+				>
+					<Icon name="dots-three" />
+				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" className="w-60">
 					{section.kind !== "summary" && (
 						<DropdownMenuItem onClick={() => addEntryTo(section)}>

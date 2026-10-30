@@ -1,6 +1,6 @@
 import type * as React from "react";
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
-import { Button } from "@rezumi/ui/components/button";
+import { buttonVariants } from "@heroui/react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
@@ -67,7 +67,16 @@ function DialogContent({
 					<DialogPrimitive.Close
 						data-slot="dialog-close"
 						aria-label={closeLabel}
-						render={<Button variant="ghost" className="absolute inset-e-3 top-3 text-ink-2" size="icon" />}
+						render={
+							<button
+								type="button"
+								className={buttonVariants({
+									variant: "ghost",
+									isIconOnly: true,
+									className: "absolute inset-e-3 top-3 text-muted",
+								})}
+							/>
+						}
 					>
 						<Icon name="x" />
 					</DialogPrimitive.Close>
@@ -99,7 +108,9 @@ function DialogFooter({
 		>
 			{children}
 			{showCloseButton && (
-				<DialogPrimitive.Close render={<Button variant="secondary" />}>{closeLabel}</DialogPrimitive.Close>
+				<DialogPrimitive.Close render={<button type="button" className={buttonVariants({ variant: "secondary" })} />}>
+					{closeLabel}
+				</DialogPrimitive.Close>
 			)}
 		</div>
 	);

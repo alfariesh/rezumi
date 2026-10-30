@@ -1,11 +1,11 @@
 import type { Application } from "../../types";
 import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -120,7 +120,7 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 					disabled={addNote.isPending}
 					onChange={(event) => setNote(event.target.value)}
 				/>
-				<Button type="submit" variant="secondary" disabled={!note.trim() || addNote.isPending}>
+				<Button type="submit" variant="secondary" isDisabled={!note.trim() || addNote.isPending}>
 					<Trans>Add</Trans>
 				</Button>
 			</form>
@@ -149,11 +149,16 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 							<DropdownMenu>
 								<DropdownMenuTrigger
 									render={
-										<Button
-											size="icon-xs"
-											variant="ghost"
+										<button
+											type="button"
 											aria-label={t`Options for this entry`}
-											className="-my-1 text-ink-3 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 data-[popup-open]:opacity-100"
+											className={buttonVariants({
+												variant: "ghost",
+												size: "sm",
+												isIconOnly: true,
+												className:
+													"-my-1 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 data-[popup-open]:opacity-100",
+											})}
 										/>
 									}
 								>
@@ -249,10 +254,10 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 						</form>
 					)}
 					<DialogFooter>
-						<Button variant="secondary" onClick={() => setEditing(null)}>
+						<Button variant="secondary" onPress={() => setEditing(null)}>
 							<Trans>Cancel</Trans>
 						</Button>
-						<Button type="submit" form="timeline-entry-form" disabled={!shownEdit?.date || updateEntry.isPending}>
+						<Button type="submit" form="timeline-entry-form" isDisabled={!shownEdit?.date || updateEntry.isPending}>
 							<Trans>Save</Trans>
 						</Button>
 					</DialogFooter>

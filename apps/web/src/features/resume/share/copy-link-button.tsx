@@ -1,8 +1,8 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useRef, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Swap } from "@rezumi/ui/components/swap";
 import { toast } from "@rezumi/ui/components/toast";
@@ -35,10 +35,10 @@ export function CopyLinkButton({ url, disabled, className }: CopyLinkButtonProps
 	return (
 		<Button
 			variant="secondary"
-			className={className}
-			disabled={disabled}
+			className={className ?? ""}
+			isDisabled={disabled ?? false}
 			aria-live="polite"
-			onClick={() => void copy()}
+			onPress={() => void copy()}
 		>
 			<Swap
 				swapped={copied}

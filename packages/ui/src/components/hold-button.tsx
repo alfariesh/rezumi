@@ -1,13 +1,17 @@
-import type { ButtonProps } from "@rezumi/ui/components/button";
+import type { ButtonVariants } from "@heroui/react";
 import type * as React from "react";
+import { buttonVariants, Spinner } from "@heroui/react";
 import { useEffect, useRef } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { cn } from "@rezumi/utils/style";
 
-type HoldButtonProps = Omit<ButtonProps, "onClick"> & {
-	/** Runs once the button has been held for `HOLD_DURATION`. */
-	onConfirm: () => void;
-};
+type HoldButtonProps = Omit<React.ComponentProps<"button">, "onClick" | "disabled"> &
+	Pick<ButtonVariants, "variant" | "size" | "fullWidth"> & {
+		/** Runs once the button has been held for `HOLD_DURATION`. */
+		onConfirm: () => void;
+		isDisabled?: boolean | undefined;
+		/** Shows a spinner and blocks activation. */
+		isPending?: boolean | undefined;
+	};
 
 /** How long to hold, in ms. */
 const HOLD_DURATION = 1200;
@@ -17,8 +21,21 @@ const HOLD_DURATION = 1200;
  * stays down, and snaps back if let go early. The fill is driven by the clock, not a CSS animation, so it still shows
  * real progress under reduced motion. A click with no hold behind it (assistive technology activating the button)
  * confirms at once: the dialog around it already asked.
+ *
+ * HeroUI has no hold-to-confirm button, and React Aria's press handling owns the keys this needs, so it is a native
+ * button styled with HeroUI's button classes.
  */
-function HoldButton({ onConfirm, className, children, disabled, loading = false, ...props }: HoldButtonProps) {
+function HoldButton({
+	onConfirm,
+	className,
+	children,
+	variant,
+	size,
+	fullWidth,
+	isDisabled = false,
+	isPending = false,
+	...props
+}: HoldButtonProps) {
 	const ref = useRef<HTMLButtonElement>(null);
 	const frame = useRef(0);
 	const handled = useRef(false);
@@ -33,7 +50,7 @@ function HoldButton({ onConfirm, className, children, disabled, loading = false,
 	};
 
 	const start = () => {
-		if (frame.current || disabled || loading) return;
+		if (frame.current || isDisabled || isPending) return;
 		const startedAt = performance.now();
 		ref.current?.setAttribute("data-holding", "");
 		const tick = (now: number) => {
@@ -55,11 +72,17 @@ function HoldButton({ onConfirm, className, children, disabled, loading = false,
 	const isHoldKey = (event: React.KeyboardEvent) => event.key === " " || event.key === "Enter";
 
 	return (
-		<Button
+		<button
 			ref={ref}
-			disabled={disabled}
-			loading={loading}
-			className={cn("group/hold isolate touch-none overflow-hidden", className)}
+			type="button"
+			disabled={isDisabled}
+			aria-busy={isPending || undefined}
+			data-pending={isPending || undefined}
+			className={cn(
+				buttonVariants({ variant, size, fullWidth }),
+				"group/hold relative isolate touch-none overflow-hidden",
+				className,
+			)}
 			onPointerDown={(event) => {
 				if (event.button !== 0) return;
 				handled.current = true;
@@ -84,7 +107,7 @@ function HoldButton({ onConfirm, className, children, disabled, loading = false,
 			onBlur={stop}
 			onContextMenu={(event) => event.preventDefault()}
 			onClick={() => {
-				if (!handled.current && !disabled && !loading) onConfirm();
+				if (!handled.current && !isDisabled && !isPending) onConfirm();
 				handled.current = false;
 			}}
 			{...props}
@@ -93,8 +116,9 @@ function HoldButton({ onConfirm, className, children, disabled, loading = false,
 				aria-hidden="true"
 				className="absolute inset-0 -z-1 [scale:var(--hold,0)_1] bg-current opacity-20 transition-[scale] duration-standard ease-enter group-data-holding/hold:transition-none ltr:origin-left rtl:origin-right"
 			/>
+			{isPending && <Spinner size="sm" color="current" aria-hidden />}
 			{children}
-		</Button>
+		</button>
 	);
 }
 

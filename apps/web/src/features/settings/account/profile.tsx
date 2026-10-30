@@ -1,4 +1,5 @@
 import type { AuthSession } from "@rezumi/auth/types";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -6,7 +7,6 @@ import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useId, useRef, useState } from "react";
 import z from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
-import { Button } from "@rezumi/ui/components/button";
 import { Input } from "@rezumi/ui/components/input";
 import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@rezumi/ui/components/input-group";
 import { toast } from "@rezumi/ui/components/toast";
@@ -270,11 +270,12 @@ function ProfilePhoto({ name, image, onChange }: ProfilePhotoProps) {
 				aria-hidden
 				onChange={(event) => choose(event.target.files?.[0])}
 			/>
-			<Button size="sm" variant="secondary" loading={upload.isPending} onClick={() => input.current?.click()}>
+			<Button size="sm" variant="secondary" isPending={upload.isPending} onPress={() => input.current?.click()}>
+				{upload.isPending && <Spinner size="sm" color="current" aria-hidden />}
 				<Trans>Change photo</Trans>
 			</Button>
 			{image && (
-				<Button size="sm" variant="ghost" onClick={() => void onChange(null)}>
+				<Button size="sm" variant="ghost" onPress={() => void onChange(null)}>
 					<Trans>Remove photo</Trans>
 				</Button>
 			)}

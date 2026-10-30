@@ -1,4 +1,5 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
@@ -6,7 +7,6 @@ import { useNavigate, useRouteContext } from "@tanstack/react-router";
 import { CommandLoading } from "cmdk";
 import { CommandItem, CommandShortcut } from "@rezumi/ui/components/command";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Kbd } from "@rezumi/ui/components/kbd";
 import { useCommandPaletteStore } from "../store";
 import { BaseCommandGroup } from "./base";
 import { useDialogStore } from "@/dialogs/store";

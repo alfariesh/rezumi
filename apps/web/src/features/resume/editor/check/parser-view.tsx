@@ -1,10 +1,10 @@
 import type { CheckIssue } from "./issues";
 import type { AtsRuleCode } from "@rezumi/resume/ats";
 import type { ExtractedDocument, ResumeSemantics } from "@rezumi/resume/ats-pdf";
+import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { useCheck } from "./use-check";
@@ -84,7 +84,7 @@ export function ParserView() {
 				</p>
 			) : !data ? (
 				<p className="flex items-center gap-2 font-sans text-sm text-ink-2">
-					<Spinner />
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Reading the PDF…</Trans>
 				</p>
 			) : (

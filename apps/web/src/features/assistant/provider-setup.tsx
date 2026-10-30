@@ -1,10 +1,10 @@
 import type { AIProvider } from "@rezumi/ai/types";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
@@ -74,7 +74,7 @@ export function ProviderSetup() {
 			<p className="text-xs text-ink-3">
 				<Trans>
 					More providers and options are in{" "}
-					<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "link", size: "sm" })}>
+					<Link to="/dashboard/settings/ai" className="text-link underline-offset-4 hover:underline">
 						Settings
 					</Link>
 					. The rest of the app works fully without AI.
@@ -161,13 +161,8 @@ function ConnectForm({ choice }: { choice: Choice }) {
 					{failure}
 				</p>
 			)}
-			<Button
-				type="submit"
-				size="sm"
-				className="w-fit"
-				disabled={!ready || connect.isPending}
-				loading={connect.isPending}
-			>
+			<Button type="submit" size="sm" className="w-fit" isDisabled={!ready} isPending={connect.isPending}>
+				{connect.isPending && <Spinner size="sm" color="current" aria-hidden />}
 				{connect.isPending ? <Trans>Testing the connection…</Trans> : <Trans>Connect</Trans>}
 			</Button>
 		</form>

@@ -1,8 +1,8 @@
 import type { PdfAtsReport } from "@rezumi/resume/ats-pdf";
 import type { CSSProperties } from "react";
+import { Tooltip } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { cn } from "@rezumi/utils/style";
 import { getPdfFindingMessage } from "../messages";
 import { RollingNumber } from "@/components/ui/rolling-number";
@@ -52,20 +52,18 @@ export function ScoreHeader({ report }: ScoreHeaderProps) {
 
 				{report.skippedChecks > 0 && (
 					<Tooltip>
-						<TooltipTrigger
-							render={
-								<span className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2">
-									<Trans>{report.skippedChecks} skipped</Trans>
-									<Icon name="info" size={12} />
-								</span>
-							}
-						/>
-						<TooltipContent side="bottom" className="max-w-64">
+						<Tooltip.Trigger>
+							<span className="inline-flex cursor-help items-center gap-1 underline decoration-dotted underline-offset-2">
+								<Trans>{report.skippedChecks} skipped</Trans>
+								<Icon name="info" size={12} />
+							</span>
+						</Tooltip.Trigger>
+						<Tooltip.Content placement="bottom" className="max-w-64">
 							<Trans>
 								Some checks need information this file does not carry: page contents that could not be inspected, or
 								text in a language these checks do not cover. They count as neither a pass nor a fail.
 							</Trans>
-						</TooltipContent>
+						</Tooltip.Content>
 					</Tooltip>
 				)}
 			</div>

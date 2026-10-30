@@ -1,12 +1,12 @@
 import type { Application } from "../../types";
 import type { IconName } from "@rezumi/ui/components/icon";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { PIPELINE } from "../../stages";
 import { useInvalidateApplications } from "../../use-application-actions";
@@ -148,8 +148,8 @@ export function SentDocuments({ application, disabled }: SentDocumentsProps) {
 					{!application.resumeId && (
 						<Button
 							size="sm"
-							disabled={disabled}
-							onClick={() => openDialog("document.new", { step: "copy", applicationId: application.id })}
+							isDisabled={disabled}
+							onPress={() => openDialog("document.new", { step: "copy", applicationId: application.id })}
 						>
 							<Icon name="copy" size={16} />
 							<Trans>Prepare a resume</Trans>
@@ -159,8 +159,8 @@ export function SentDocuments({ application, disabled }: SentDocumentsProps) {
 						<Button
 							size="sm"
 							variant="secondary"
-							disabled={disabled || createLetter.isPending}
-							onClick={() => void writeLetter()}
+							isDisabled={disabled || createLetter.isPending}
+							onPress={() => void writeLetter()}
 						>
 							<Icon name="envelope-simple" size={16} />
 							<Trans>Write a letter</Trans>

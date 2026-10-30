@@ -1,11 +1,11 @@
 import type { DialogProps } from "../store";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DialogContent,
 	DialogDescription,
@@ -125,7 +125,7 @@ export function DisableTwoFactorDialog(_: DialogProps<"auth.two-factor.disable">
 				</form.Field>
 
 				<DialogFooter>
-					<Button type="submit" variant="danger" disabled={isSubmitting}>
+					<Button type="submit" variant="danger" isDisabled={isSubmitting}>
 						<Trans comment="Destructive action button to turn off two-factor authentication">
 							Turn off two-step verification
 						</Trans>

@@ -1,9 +1,9 @@
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,7 +13,6 @@ import {
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -64,12 +63,12 @@ export function LetterBar({ layout, pinnable }: LetterBarProps) {
 			}
 		>
 			{layout === "desktop" && wide ? (
-				<Button variant="secondary" className="gap-1.5" onClick={() => setSheetTab("download")}>
+				<Button variant="secondary" className="gap-1.5" onPress={() => setSheetTab("download")}>
 					<Icon name="export" />
 					<Trans>Share</Trans>
 				</Button>
 			) : (
-				<IconButton icon="export" label={t`Share`} onClick={() => setSheetTab("download")} />
+				<IconButton icon="export" label={t`Share`} onPress={() => setSheetTab("download")} />
 			)}
 			<DownloadButtons
 				busy={download.busy}
@@ -221,7 +220,7 @@ function LetterSaveStatus() {
 		<span role="status" aria-live="polite" className="flex min-w-0 items-center gap-1.5 text-xs leading-4 text-ink-3">
 			{status === "saving" && (
 				<>
-					<Spinner decorative className="size-3" />
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Saving…</Trans>
 				</>
 			)}

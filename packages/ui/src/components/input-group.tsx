@@ -1,7 +1,8 @@
+import type { ButtonProps } from "@heroui/react";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
+import { Button } from "@heroui/react";
 import { cva } from "class-variance-authority";
-import { Button } from "@rezumi/ui/components/button";
 import { useFormControl } from "@rezumi/ui/components/form";
 import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
@@ -106,7 +107,7 @@ function InputGroupButton({
 	variant = "ghost",
 	size = "xs",
 	...props
-}: Omit<React.ComponentProps<typeof Button>, "size" | "type"> &
+}: Omit<ButtonProps, "size" | "type" | "isIconOnly"> &
 	VariantProps<typeof inputGroupButtonVariants> & {
 		type?: "button" | "submit" | "reset";
 	}) {
@@ -115,6 +116,8 @@ function InputGroupButton({
 			type={type}
 			data-size={size}
 			variant={variant}
+			size="sm"
+			isIconOnly={size === "icon-xs" || size === "icon-sm"}
 			className={cn(inputGroupButtonVariants({ size }), className)}
 			{...props}
 		/>

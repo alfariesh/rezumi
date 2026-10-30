@@ -1,13 +1,13 @@
 import type { Application } from "../types";
 import type { FileAttachment } from "./file-attachment-field";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { STAGES } from "@rezumi/schema/applications/data";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@rezumi/ui/components/accordion";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { Label } from "@rezumi/ui/components/label";
@@ -177,11 +177,10 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							)}
 						</p>
 						<Button
-							type="button"
 							size="sm"
 							variant="secondary"
-							disabled={value.trim().length < MIN_AUTOFILL_CHARS || autofill.isPending}
-							onClick={() => runAutofill(value)}
+							isDisabled={value.trim().length < MIN_AUTOFILL_CHARS || autofill.isPending}
+							onPress={() => runAutofill(value)}
 						>
 							<Icon name="sparkle" size={16} />
 							<Trans>Fill fields</Trans>
@@ -494,10 +493,10 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 				</div>
 
 				<SheetFooter className="flex-row justify-end gap-2">
-					<Button type="button" variant="secondary" disabled={pending} onClick={() => onOpenChange(false)}>
+					<Button variant="secondary" isDisabled={pending} onPress={() => onOpenChange(false)}>
 						<Trans>Cancel</Trans>
 					</Button>
-					<Button type="button" disabled={!form.company.trim() || !form.role.trim() || pending} onClick={submit}>
+					<Button isDisabled={!form.company.trim() || !form.role.trim() || pending} onPress={submit}>
 						{isEditing ? <Trans>Save changes</Trans> : <Trans>Add to pipeline</Trans>}
 					</Button>
 				</SheetFooter>

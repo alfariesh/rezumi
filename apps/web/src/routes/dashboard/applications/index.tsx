@@ -1,11 +1,11 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -208,7 +208,13 @@ function RouteComponent() {
 					<>
 						<DropdownMenu>
 							<DropdownMenuTrigger
-								render={<Button size="icon" variant="secondary" aria-label={t`Import or export CSV`} />}
+								render={
+									<button
+										type="button"
+										className={buttonVariants({ variant: "secondary", isIconOnly: true })}
+										aria-label={t`Import or export CSV`}
+									/>
+								}
 							>
 								<Icon name="arrows-down-up" />
 							</DropdownMenuTrigger>
@@ -221,7 +227,7 @@ function RouteComponent() {
 								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
-						<Button onClick={() => setAdding(true)}>
+						<Button onPress={() => setAdding(true)}>
 							<Icon name="plus" />
 							<Trans>Save job</Trans>
 						</Button>
@@ -281,7 +287,7 @@ function RouteComponent() {
 							<Button
 								variant="secondary"
 								aria-pressed={closed}
-								onClick={() => setSearch({ closed: !closed })}
+								onPress={() => setSearch({ closed: !closed })}
 								className={cn(closed && "bg-sunken")}
 							>
 								<Icon name={closed ? "check-square" : "square"} size={18} />
@@ -302,7 +308,7 @@ function RouteComponent() {
 					<p className="text-sm text-danger-text">
 						<Trans>Couldn't load applications. Try again.</Trans>
 					</p>
-					<Button variant="secondary" disabled={isFetching} onClick={() => void refetch()}>
+					<Button variant="secondary" isDisabled={isFetching} onPress={() => void refetch()}>
 						<Trans>Retry</Trans>
 					</Button>
 				</div>
@@ -319,7 +325,7 @@ function RouteComponent() {
 							<p className="text-sm font-medium">
 								<Trans>No applications match “{query.trim()}”.</Trans>
 							</p>
-							<Button size="sm" variant="secondary" onClick={() => setQuery("")}>
+							<Button size="sm" variant="secondary" onPress={() => setQuery("")}>
 								<Trans>Clear search</Trans>
 							</Button>
 						</div>
@@ -444,10 +450,17 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 					other={`${company}: no reply for # days. A short follow-up is usually fine now.`}
 				/>
 			</span>
-			<Button size="sm" variant="secondary" data-application-open onClick={() => onOpen(waiting.application.id)}>
+			<Button size="sm" variant="secondary" data-application-open onPress={() => onOpen(waiting.application.id)}>
 				<Trans>Open</Trans>
 			</Button>
-			<Button size="icon-sm" variant="ghost" aria-label={t`Dismiss`} onClick={dismiss} className="text-warn-text">
+			<Button
+				isIconOnly
+				size="sm"
+				variant="ghost"
+				aria-label={t`Dismiss`}
+				onPress={() => dismiss()}
+				className="text-warn-text"
+			>
 				<Icon name="x" size={18} />
 			</Button>
 		</div>
@@ -467,11 +480,11 @@ function EmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => vo
 				<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
 			</p>
 			<div className="flex gap-2">
-				<Button onClick={onAdd}>
+				<Button onPress={() => onAdd()}>
 					<Icon name="plus" />
 					<Trans>Save job</Trans>
 				</Button>
-				<Button variant="secondary" onClick={onImport}>
+				<Button variant="secondary" onPress={() => onImport()}>
 					<Trans>Import from CSV</Trans>
 				</Button>
 			</div>

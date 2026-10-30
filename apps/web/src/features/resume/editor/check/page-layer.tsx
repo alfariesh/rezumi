@@ -2,10 +2,10 @@ import type { CheckIssue } from "./issues";
 import type { PageMap, PageMapNode, PageMapTarget } from "@rezumi/pdf/page-map";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { getProposalState } from "@rezumi/resume/proposals";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
@@ -312,7 +312,7 @@ export function IssueStepper() {
 			>
 				<strong className="text-[15px] font-semibold">{issue.title}</strong>
 				<p className="text-[13px] leading-[19px] text-ink-2">{issue.body}</p>
-				<Button size="sm" className="h-10 w-fit px-3.5 text-sm" onClick={() => fix(issue)}>
+				<Button size="sm" className="h-10 w-fit px-3.5 text-sm" onPress={() => fix(issue)}>
 					{issue.fix.kind === "apply" ? (
 						<Icon name={issue.fix.icon} size={18} />
 					) : (

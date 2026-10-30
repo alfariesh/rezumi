@@ -12,6 +12,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
@@ -19,7 +20,6 @@ import { useCallback, useId, useState } from "react";
 import { match } from "ts-pattern";
 import { filterSections } from "@rezumi/pdf/filtering";
 import { templateLayouts } from "@rezumi/schema/templates";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuCheckboxItem,
@@ -260,7 +260,7 @@ export function LayoutPages() {
 					/>
 				))}
 
-				<Button variant="secondary" className="self-end" onClick={handleAddPage}>
+				<Button variant="secondary" className="self-end" onPress={() => handleAddPage()}>
 					<Icon name="plus" size={16} />
 					<Trans>Add page</Trans>
 				</Button>
@@ -318,7 +318,7 @@ function PageContainer({
 					{canDelete && (
 						<Button
 							variant="ghost"
-							onClick={() => onDelete(pageIndex)}
+							onPress={() => onDelete(pageIndex)}
 							className="size-auto gap-x-2.5 justify-self-end p-0!"
 						>
 							<Icon name="trash" size={16} />

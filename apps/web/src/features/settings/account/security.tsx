@@ -1,9 +1,9 @@
 import type { AuthProvider } from "@rezumi/auth/types";
+import { Button, buttonVariants, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Switch } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { SettingsRow, SettingsSection } from "../section";
@@ -41,7 +41,7 @@ export function SecuritySection() {
 				}
 			>
 				{password ? (
-					<Button size="sm" variant="secondary" onClick={() => openDialog("auth.change-password", undefined)}>
+					<Button size="sm" variant="secondary" onPress={() => openDialog("auth.change-password", undefined)}>
 						<Trans>Change</Trans>
 					</Button>
 				) : (
@@ -80,11 +80,11 @@ export function SecuritySection() {
 						description={hasAccount(provider) ? <Trans>Connected</Trans> : <Trans>Not connected</Trans>}
 					>
 						{account ? (
-							<Button size="sm" variant="ghost" onClick={() => void unlink(provider, account.id)}>
+							<Button size="sm" variant="ghost" onPress={() => void unlink(provider, account.id)}>
 								<Trans>Disconnect</Trans>
 							</Button>
 						) : (
-							<Button size="sm" variant="secondary" onClick={() => void link(provider)}>
+							<Button size="sm" variant="secondary" onPress={() => void link(provider)}>
 								<Trans>Connect</Trans>
 							</Button>
 						)}
@@ -159,7 +159,8 @@ function Passkeys() {
 				title={<Trans>Passkeys</Trans>}
 				description={<Trans>Sign in with your fingerprint, face or device PIN</Trans>}
 			>
-				<Button size="sm" variant="secondary" loading={add.isPending} onClick={() => add.mutate()}>
+				<Button size="sm" variant="secondary" isPending={add.isPending} onPress={() => add.mutate()}>
+					{add.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Add passkey</Trans>
 				</Button>
 			</SettingsRow>
@@ -168,15 +169,15 @@ function Passkeys() {
 					{passkeys.map((passkey) => (
 						<li key={passkey.id} className="flex items-center gap-3 py-1.5 text-sm">
 							<span className="min-w-0 flex-1 truncate">{passkey.name || t`Unnamed passkey`}</span>
-							<Button size="sm" variant="ghost" disabled={rename.isPending} onClick={() => rename.mutate(passkey)}>
+							<Button size="sm" variant="ghost" isDisabled={rename.isPending} onPress={() => rename.mutate(passkey)}>
 								<Trans>Rename</Trans>
 							</Button>
 							<Button
 								size="sm"
 								variant="ghost"
-								disabled={remove.isPending}
+								isDisabled={remove.isPending}
 								aria-label={t`Remove ${passkey.name || t`Unnamed passkey`}`}
-								onClick={() => remove.mutate(passkey)}
+								onPress={() => remove.mutate(passkey)}
 							>
 								<Trans>Remove</Trans>
 							</Button>

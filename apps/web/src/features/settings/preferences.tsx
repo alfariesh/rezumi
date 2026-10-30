@@ -1,12 +1,12 @@
 import type { Theme } from "@/libs/theme";
 import type { IconName } from "@rezumi/ui/components/icon";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -105,7 +105,12 @@ function TimezoneSetting({ id }: { id: string }) {
 			<p className="flex flex-wrap items-center gap-x-1 text-xs text-ink-3">
 				<Trans>Interview times, reminders and schedules in Career use it.</Trans>
 				{device && device !== value && (
-					<Button variant="link" className="h-auto p-0 text-xs text-ink-2 underline" onClick={() => void save(device)}>
+					<Button
+						variant="ghost"
+						size="sm"
+						className="h-auto px-0 text-xs text-link underline underline-offset-4"
+						onPress={() => void save(device)}
+					>
 						<Trans>Use this device's timezone ({device})</Trans>
 					</Button>
 				)}

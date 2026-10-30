@@ -1,6 +1,6 @@
+import { Button, Spinner } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 
 type LibraryErrorProps = {
@@ -19,7 +19,8 @@ export function LibraryError({ retrying, onRetry }: LibraryErrorProps) {
 				<p>
 					<Trans>Check your connection and try again.</Trans>
 				</p>
-				<Button variant="secondary" className="mt-2" loading={retrying} onClick={onRetry}>
+				<Button variant="secondary" className="mt-2" isPending={retrying} onPress={onRetry}>
+					{retrying && <Spinner size="sm" color="current" aria-hidden />}
 					{retrying ? <Trans>Retrying…</Trans> : <Trans>Try again</Trans>}
 				</Button>
 			</AlertDescription>

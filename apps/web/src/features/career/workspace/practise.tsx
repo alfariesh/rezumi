@@ -2,6 +2,7 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { Button, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -10,17 +11,14 @@ import { AnimatePresence, m } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { z } from "zod";
 import { AI_VOICE_MODELS } from "@rezumi/ai/types";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { cn } from "@rezumi/utils/style";
 import { useCoachKnowledge } from "../coach-thread";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useSessionDraft } from "../hooks";
@@ -87,7 +85,7 @@ export function PractiseTab({ application, version, interview, speak, story, now
 				<span>
 					<Trans>Your story couldn't be loaded.</Trans>
 				</span>
-				<Button onClick={() => knowledge.retry()}>
+				<Button onPress={() => knowledge.retry()}>
 					<Trans>Try again</Trans>
 				</Button>
 			</Notice>
@@ -99,7 +97,7 @@ export function PractiseTab({ application, version, interview, speak, story, now
 				<span>
 					<Trans>This story is unavailable or uses facts that are switched off.</Trans>
 				</span>
-				<Button variant="secondary" onClick={() => go("practise")}>
+				<Button variant="secondary" onPress={() => go("practise")}>
 					<Trans>Practice another question</Trans>
 				</Button>
 			</Notice>
@@ -483,13 +481,13 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						</p>
 						{answerField}
 						<div className="-mt-1 flex flex-wrap gap-2">
-							<Button size="sm" variant="secondary" onClick={() => setAnswer(writeNumbersAsDigits(answer))}>
+							<Button size="sm" variant="secondary" onPress={() => setAnswer(writeNumbersAsDigits(answer))}>
 								<Trans>Write numbers as digits</Trans>
 							</Button>
 							<Button
 								size="sm"
 								variant="ghost"
-								onClick={() => {
+								onPress={() => {
 									setSpoken(null);
 									void startRecording();
 								}}
@@ -500,7 +498,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 					</>
 				) : step.name === "transcribing" ? (
 					<p role="status" className="flex items-center gap-2.5 rounded-lg bg-sunken px-3.5 py-3 text-sm text-ink-2">
-						<Spinner decorative className="text-accent" />
+						<Spinner size="sm" color="current" className="text-accent" aria-hidden />
 						<Trans>Transcribing with {model}…</Trans>
 					</p>
 				) : step.name === "error" ? (
@@ -509,10 +507,10 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 							<Trans>Couldn't transcribe. Your recording is still here.</Trans>
 						</span>
 						<span className="flex gap-1">
-							<Button size="sm" variant="secondary" onClick={() => audio && void transcribe(audio)}>
+							<Button size="sm" variant="secondary" onPress={() => audio && void transcribe(audio)}>
 								<Trans>Try again</Trans>
 							</Button>
-							<Button size="sm" variant="ghost" onClick={() => chooseMode("typed")}>
+							<Button size="sm" variant="ghost" onPress={() => chooseMode("typed")}>
 								<Trans>Type instead</Trans>
 							</Button>
 						</span>
@@ -609,7 +607,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 								<span className="min-w-0 flex-1">
 									<Trans>Microphone blocked. Allow it in your browser settings, or type your answer.</Trans>
 								</span>
-								<Button size="sm" variant="secondary" onClick={() => chooseMode("typed")}>
+								<Button size="sm" variant="secondary" onPress={() => chooseMode("typed")}>
 									<Icon name="keyboard" size={16} />
 									<Trans>Type instead</Trans>
 								</Button>
@@ -633,7 +631,8 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 
 				<div className="grid gap-2.5">
 					<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-						<Button disabled={!ready || !provider} loading={generate.isPending} onClick={getFeedback}>
+						<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={getFeedback}>
+							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
 							{generate.isPending ? <Working steps={workingSteps("practice")} /> : <Trans>Get feedback</Trans>}
 						</Button>
 						<p className="text-xs text-ink-2">
@@ -668,7 +667,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						<Button
 							size="sm"
 							variant="secondary"
-							onClick={() => {
+							onPress={() => {
 								chooseMode("typed");
 								setSpoken(null);
 								setAnswer(feedback.data.opening);
@@ -676,7 +675,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						>
 							<Trans>Try again with this</Trans>
 						</Button>
-						<Button size="sm" variant="ghost" onClick={nextQuestion}>
+						<Button size="sm" variant="ghost" onPress={nextQuestion}>
 							<Trans>Next question</Trans>
 							<Icon name="arrow-right" size={16} />
 						</Button>
@@ -789,15 +788,15 @@ function HearIt({ text, voice }: { text: string; voice: VoiceSettings }) {
 	};
 	return (
 		<Tooltip>
-			<TooltipTrigger render={<Button size="sm" variant="ghost" onClick={() => void play()} />}>
+			<Button size="sm" variant="ghost" onPress={() => void play()}>
 				<Icon name={playing || busy ? "stop" : "speaker-high"} size={16} />
 				{playing || busy ? <Trans>Stop audio</Trans> : <Trans>Hear it</Trans>}
-			</TooltipTrigger>
-			<TooltipContent>
+			</Button>
+			<Tooltip.Content>
 				{reader.providerId === BROWSER
 					? t`Read aloud by your browser's voice.`
 					: t`Read aloud by ${reader.label}, which may use tokens on that account.`}
-			</TooltipContent>
+			</Tooltip.Content>
 		</Tooltip>
 	);
 }

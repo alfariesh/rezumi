@@ -1,11 +1,11 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -85,7 +85,9 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 					</div>
 					{step.kind !== "closed" && (
 						<DropdownMenu>
-							<DropdownMenuTrigger render={<Button size="sm" variant="secondary" />}>
+							<DropdownMenuTrigger
+								render={<button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} />}
+							>
 								<Trans>Edit</Trans>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
@@ -105,7 +107,7 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 					)}
 				</div>
 				{(step.kind === "interview" || step.kind === "follow-up") && (
-					<Button size="sm" variant="ghost" className="ms-7 w-fit" onClick={addToCalendar}>
+					<Button size="sm" variant="ghost" className="ms-7 w-fit" onPress={addToCalendar}>
 						<Icon name="calendar-dots" size={16} />
 						<Trans>Add to calendar</Trans>
 					</Button>
@@ -186,12 +188,12 @@ function FollowUpDialog({ application, open, onOpenChange }: FollowUpDialogProps
 						<Button
 							variant="ghost"
 							className="me-auto"
-							onClick={() => update.mutate({ id: application.id, followUpAt: null, followUpNote: null })}
+							onPress={() => update.mutate({ id: application.id, followUpAt: null, followUpNote: null })}
 						>
 							<Trans>Clear</Trans>
 						</Button>
 					)}
-					<Button type="submit" form={`${id}-form`} disabled={!date || update.isPending}>
+					<Button type="submit" form={`${id}-form`} isDisabled={!date || update.isPending}>
 						<Trans>Save</Trans>
 					</Button>
 				</DialogFooter>

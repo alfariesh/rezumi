@@ -1,12 +1,12 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { AIProvider } from "@rezumi/ai/types";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { AI_PROVIDER_DEFAULT_BASE_URLS } from "@rezumi/ai/types";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -18,7 +18,6 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { Label } from "@rezumi/ui/components/label";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { Switch } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 import {
@@ -95,7 +94,7 @@ export function ProvidersSection() {
 					</p>
 				) : isLoading ? (
 					<p className="flex items-center gap-2 text-sm text-ink-3">
-						<Spinner decorative className="size-3.5" />
+						<Spinner size="sm" color="current" className="text-muted" aria-hidden />
 						<Trans>Loading providers…</Trans>
 					</p>
 				) : (
@@ -259,7 +258,8 @@ function ProviderRow({ provider, isDefault, onMakeDefault, makingDefault, onEdit
 				</span>
 				<div className="col-start-2 flex flex-wrap items-center gap-2 sm:ms-auto">
 					{onMakeDefault && (
-						<Button size="sm" variant="ghost" loading={makingDefault} onClick={onMakeDefault}>
+						<Button size="sm" variant="ghost" isPending={makingDefault} onPress={onMakeDefault}>
+							{makingDefault && <Spinner size="sm" color="current" aria-hidden />}
 							<Trans>Make default</Trans>
 						</Button>
 					)}
@@ -267,20 +267,20 @@ function ProviderRow({ provider, isDefault, onMakeDefault, makingDefault, onEdit
 						size="sm"
 						variant="secondary"
 						aria-live="polite"
-						disabled={test.isPending}
+						isDisabled={test.isPending}
 						className={cn(test.result?.ok && "text-accent-text", test.result && !test.result.ok && "text-danger-text")}
-						onClick={() => void test.run(provider.id)}
+						onPress={() => void test.run(provider.id)}
 					>
 						{test.isPending ? (
 							<>
-								<Spinner decorative className="size-3.5" />
+								<Spinner size="sm" color="current" className="text-muted" aria-hidden />
 								<Trans>Testing…</Trans>
 							</>
 						) : (
 							(test.result?.label ?? <Trans>Test</Trans>)
 						)}
 					</Button>
-					<Button size="sm" variant="ghost" onClick={onEdit}>
+					<Button size="sm" variant="ghost" onPress={onEdit}>
 						<Trans>Edit</Trans>
 					</Button>
 				</div>
@@ -540,7 +540,8 @@ function AddProviderDialog({ open, onOpenChange }: AddProviderDialogProps) {
 						</p>
 					)}
 					<DialogFooter>
-						<Button type="submit" disabled={!ready || pending} loading={pending}>
+						<Button type="submit" isDisabled={!ready || pending} isPending={pending}>
+							{pending && <Spinner size="sm" color="current" aria-hidden />}
 							{test.isPending ? <Trans>Testing the connection…</Trans> : <Trans>Save and test</Trans>}
 						</Button>
 					</DialogFooter>
@@ -673,11 +674,10 @@ function EditProviderForm({ provider, onClose }: EditProviderFormProps) {
 				)}
 				<DialogFooter className="sm:justify-between">
 					<Button
-						type="button"
 						variant="ghost"
 						className="text-danger-text hover:bg-danger-soft"
-						loading={remove.isPending}
-						onClick={async () => {
+						isPending={remove.isPending}
+						onPress={async () => {
 							if (
 								!(await confirm(t`Delete “${provider.label}”?`, {
 									description: t`Its saved key is deleted. Conversations using it need another provider.`,
@@ -698,13 +698,15 @@ function EditProviderForm({ provider, onClose }: EditProviderFormProps) {
 							);
 						}}
 					>
+						{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
 						<Trans>Delete provider</Trans>
 					</Button>
 					<Button
 						type="submit"
-						disabled={!changed || keyMissing || update.isPending || test.isPending}
-						loading={update.isPending || test.isPending}
+						isDisabled={!changed || keyMissing || update.isPending || test.isPending}
+						isPending={update.isPending || test.isPending}
 					>
+						{(update.isPending || test.isPending) && <Spinner size="sm" color="current" aria-hidden />}
 						<Trans>Save and test</Trans>
 					</Button>
 				</DialogFooter>

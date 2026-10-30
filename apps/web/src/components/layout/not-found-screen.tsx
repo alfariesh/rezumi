@@ -1,8 +1,8 @@
+import { buttonVariants } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
 import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
-import { buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 
 export function NotFoundScreen() {

@@ -1,10 +1,10 @@
+import { Button, buttonVariants, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -158,23 +158,21 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 				</form.Field>
 
 				<div className="flex gap-x-2">
-					<Button
-						variant="secondary"
-						className="flex-1"
-						nativeButton={false}
-						render={
-							<Link to={backupCode ? "/auth/verify-2fa" : "/auth/login"} search={{ callbackURL, reauthenticate }}>
-								<Icon name="arrow-left" size={16} />
-								{backupCode ? (
-									<Trans comment="Secondary navigation button on backup-code verification screen">Go back</Trans>
-								) : (
-									<Trans comment="Secondary navigation button on 2FA verification screen">Back to sign in</Trans>
-								)}
-							</Link>
-						}
-					/>
+					<Link
+						to={backupCode ? "/auth/verify-2fa" : "/auth/login"}
+						search={{ callbackURL, reauthenticate }}
+						className={buttonVariants({ variant: "secondary", className: "flex-1" })}
+					>
+						<Icon name="arrow-left" size={16} />
+						{backupCode ? (
+							<Trans comment="Secondary navigation button on backup-code verification screen">Go back</Trans>
+						) : (
+							<Trans comment="Secondary navigation button on 2FA verification screen">Back to sign in</Trans>
+						)}
+					</Link>
 
-					<Button type="submit" className="flex-1" disabled={isSubmitting}>
+					<Button type="submit" className="flex-1" isPending={isSubmitting}>
+						{isSubmitting && <Spinner size="sm" color="current" aria-hidden />}
 						<Icon name="check" size={16} />
 						{backupCode ? (
 							<Trans comment="Primary action button to submit backup code">Verify</Trans>
@@ -186,18 +184,15 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 			</form>
 
 			{!backupCode && (
-				<Button
-					variant="link"
-					nativeButton={false}
-					className="h-auto justify-self-center p-0 text-sm"
-					render={
-						<Link to="/auth/verify-2fa-backup" search={{ callbackURL, reauthenticate }}>
-							<Trans comment="Link to backup-code verification flow when authenticator app is unavailable">
-								Lost access to your authenticator?
-							</Trans>
-						</Link>
-					}
-				/>
+				<Link
+					to="/auth/verify-2fa-backup"
+					search={{ callbackURL, reauthenticate }}
+					className="justify-self-center text-sm text-link underline-offset-4 hover:underline"
+				>
+					<Trans comment="Link to backup-code verification flow when authenticator app is unavailable">
+						Lost access to your authenticator?
+					</Trans>
+				</Link>
 			)}
 		</>
 	);

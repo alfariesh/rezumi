@@ -1,9 +1,9 @@
 import type { CsvField } from "../csv";
+import { Button } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
@@ -126,11 +126,11 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 
 				<div className="-mt-1 flex flex-1 flex-col gap-4 overflow-y-auto px-4 pt-1 pb-4">
 					<div className="flex items-center gap-2">
-						<Button size="sm" variant="secondary" onClick={() => fileRef.current?.click()}>
+						<Button size="sm" variant="secondary" onPress={() => fileRef.current?.click()}>
 							<Icon name="file-arrow-up" size={16} />
 							<Trans>Upload .csv</Trans>
 						</Button>
-						<Button size="sm" variant="ghost" onClick={() => setText(SAMPLE)}>
+						<Button size="sm" variant="ghost" onPress={() => setText(SAMPLE)}>
 							<Trans>Use sample</Trans>
 						</Button>
 						<input
@@ -270,12 +270,12 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 				</div>
 
 				<SheetFooter className="flex-row justify-end gap-2">
-					<Button variant="secondary" onClick={() => onOpenChange(false)}>
+					<Button variant="secondary" onPress={() => onOpenChange(false)}>
 						<Trans>Cancel</Trans>
 					</Button>
 					<Button
-						disabled={importable.length === 0 || (result?.invalidValues.length ?? 0) > 0 || importMutation.isPending}
-						onClick={() => {
+						isDisabled={importable.length === 0 || (result?.invalidValues.length ?? 0) > 0 || importMutation.isPending}
+						onPress={() => {
 							if (!result?.invalidValues.length) importMutation.mutate({ items: importable });
 						}}
 					>

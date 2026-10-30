@@ -1,12 +1,12 @@
 import type { DocumentSummary } from "./filter";
 import type { IconName } from "@rezumi/ui/components/icon";
+import { Button } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
-import { Button } from "@rezumi/ui/components/button";
 import { ContextMenuContent, ContextMenuItem, ContextMenuSeparator } from "@rezumi/ui/components/context-menu";
 import {
 	Dialog,
@@ -391,7 +391,7 @@ export function TagsDialog({ documents: requested, onClose }: TagsDialogProps) {
 				</DialogHeader>
 				<ChipInput value={tags ?? shared} onChange={setTags} />
 				<DialogFooter>
-					<Button onClick={() => void save()} disabled={setDocumentTags.isPending}>
+					<Button onPress={() => void save()} isDisabled={setDocumentTags.isPending}>
 						<Trans>Save tags</Trans>
 					</Button>
 				</DialogFooter>
@@ -447,8 +447,8 @@ export function LinkApplicationDialog({ document: requested, onClose }: LinkAppl
 							key={application.id}
 							variant={document?.application?.id === application.id ? "secondary" : "ghost"}
 							className="h-auto justify-start py-2 text-start"
-							disabled={link.isPending}
-							onClick={() => void choose(application.id)}
+							isDisabled={link.isPending}
+							onPress={() => void choose(application.id)}
 						>
 							<Icon name="briefcase" className="text-ink-2" />
 							<span className="grid min-w-0">
@@ -465,7 +465,7 @@ export function LinkApplicationDialog({ document: requested, onClose }: LinkAppl
 				</div>
 				{document?.application && (
 					<DialogFooter>
-						<Button variant="ghost" disabled={link.isPending} onClick={() => void choose(null)}>
+						<Button variant="ghost" isDisabled={link.isPending} onPress={() => void choose(null)}>
 							<Trans>Unlink</Trans>
 						</Button>
 					</DialogFooter>

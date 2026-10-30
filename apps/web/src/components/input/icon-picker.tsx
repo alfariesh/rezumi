@@ -1,7 +1,7 @@
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { lazyRouteComponent } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { cn } from "@rezumi/utils/style";
 
@@ -9,7 +9,7 @@ import { cn } from "@rezumi/utils/style";
 const IconPickerGrid = lazyRouteComponent(() => import("./icon-picker-grid"), "IconPickerGrid");
 const preloadGrid = () => void IconPickerGrid.preload?.();
 
-type IconPickerProps = Omit<React.ComponentProps<typeof Button>, "value" | "onChange"> & {
+type IconPickerProps = Omit<React.ComponentProps<"button">, "value" | "onChange"> & {
 	value: string;
 	onChange: (icon: string) => void;
 	popoverProps?: React.ComponentProps<typeof Popover>;
@@ -22,16 +22,16 @@ export function IconPicker({ value, onChange, popoverProps, ...props }: IconPick
 		<Popover {...popoverProps}>
 			<PopoverTrigger
 				render={
-					<Button
-						size="icon"
-						variant="secondary"
+					<button
+						type="button"
+						className={buttonVariants({ variant: "secondary", isIconOnly: true })}
 						aria-label={t`Pick an icon`}
 						onPointerEnter={preloadGrid}
 						onFocus={preloadGrid}
 						{...props}
 					>
 						<i className={cn("ph size-4 text-base", `ph-${value}`)} />
-					</Button>
+					</button>
 				}
 			/>
 

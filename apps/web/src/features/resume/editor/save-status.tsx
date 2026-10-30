@@ -1,8 +1,8 @@
+import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Alert, AlertDescription } from "@rezumi/ui/components/alert";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { useResumeStore } from "@/features/resume/builder/draft";
 import { ENTER_CLASS } from "@/libs/motion";
@@ -16,7 +16,7 @@ export function SaveStatus() {
 		<span role="status" aria-live="polite" className="flex min-w-0 items-center gap-1.5 text-xs leading-4 text-ink-3">
 			{status === "saving" && (
 				<>
-					<Spinner decorative className="size-3" />
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Saving…</Trans>
 				</>
 			)}

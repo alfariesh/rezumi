@@ -1,9 +1,9 @@
 import type { Contact } from "@rezumi/schema/applications/data";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { contactSchema } from "@rezumi/schema/applications/data";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
@@ -89,11 +89,12 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 						)}
 					</div>
 					<Button
-						size="icon-xs"
+						isIconOnly
+						size="sm"
 						variant="ghost"
-						disabled={disabled}
+						isDisabled={disabled}
 						aria-label={t`Remove ${contact.name}`}
-						onClick={() => onChange(contacts.filter((_, i) => i !== index))}
+						onPress={() => onChange(contacts.filter((_, i) => i !== index))}
 					>
 						<Icon name="x" size={16} />
 					</Button>
@@ -131,16 +132,16 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 					</datalist>
 					{error && <p className="text-xs text-danger-text">{error}</p>}
 					<div className="flex justify-end gap-1.5">
-						<Button type="button" size="sm" variant="ghost" onClick={() => setAdding(false)}>
+						<Button size="sm" variant="ghost" onPress={() => setAdding(false)}>
 							<Trans>Cancel</Trans>
 						</Button>
-						<Button type="submit" size="sm" disabled={!draft.name.trim() || disabled}>
+						<Button type="submit" size="sm" isDisabled={!draft.name.trim() || disabled}>
 							<Trans>Add</Trans>
 						</Button>
 					</div>
 				</form>
 			) : (
-				<Button size="sm" variant="ghost" className="w-fit" disabled={disabled} onClick={() => setAdding(true)}>
+				<Button size="sm" variant="ghost" className="w-fit" isDisabled={disabled} onPress={() => setAdding(true)}>
 					<Icon name="plus" size={16} />
 					<Trans>Add contact</Trans>
 				</Button>

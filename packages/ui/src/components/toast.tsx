@@ -1,6 +1,6 @@
 import { Toast as ToastPrimitive } from "@base-ui/react/toast";
+import { Spinner } from "@heroui/react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 
 /**
  * One toast at a time, bottom center, ink on the desk color. A new toast replaces the current one,
@@ -11,7 +11,7 @@ const toast = ToastPrimitive.createToastManager();
 const DEFAULT_TIMEOUT = 6000;
 
 function ToastIcon({ type }: { type: string | undefined }) {
-	if (type === "loading") return <Spinner decorative />;
+	if (type === "loading") return <Spinner size="sm" color="current" aria-hidden />;
 	if (type === "success") return <Icon name="check-circle" />;
 	if (type === "info") return <Icon name="info" />;
 	if (type === "warning") return <Icon name="warning" />;

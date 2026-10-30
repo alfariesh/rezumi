@@ -1,7 +1,7 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@rezumi/ui/components/button";
 import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -144,11 +144,11 @@ function PhotoRow({ locked }: { locked: boolean }) {
 			<Popover>
 				<PopoverTrigger
 					render={
-						<Button variant="secondary" size="sm" disabled={locked}>
-							{hasPhoto ? <Trans>Edit</Trans> : <Trans>Add</Trans>}
-						</Button>
+						<button type="button" disabled={locked} className={buttonVariants({ variant: "secondary", size: "sm" })} />
 					}
-				/>
+				>
+					{hasPhoto ? <Trans>Edit</Trans> : <Trans>Add</Trans>}
+				</PopoverTrigger>
 				<PopoverContent align="end" className="max-h-[70svh] w-[360px] overflow-y-auto p-4">
 					<PictureSettings />
 				</PopoverContent>
@@ -194,14 +194,21 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 					<Popover>
 						<PopoverTrigger
 							render={
-								<IconButton
+								<button
+									type="button"
 									disabled={locked}
-									icon={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"}
-									label={field.link ? t`Edit link` : t`Add a link`}
-									className={field.link ? "text-accent-text" : "text-ink-3"}
+									aria-label={field.link ? t`Edit link` : t`Add a link`}
+									className={buttonVariants({
+										variant: "ghost",
+										size: "sm",
+										isIconOnly: true,
+										className: field.link ? "text-accent-text" : "text-muted",
+									})}
 								/>
 							}
-						/>
+						>
+							<Icon name={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"} />
+						</PopoverTrigger>
 						<PopoverContent align="end" className="w-72">
 							<Input
 								disabled={locked}
@@ -221,16 +228,16 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 					<IconButton
 						icon="arrow-up"
 						label={t`Move field up`}
-						size="icon-sm"
-						disabled={locked || index === 0}
-						onClick={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
+						size="sm"
+						isDisabled={locked || index === 0}
+						onPress={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
 					/>
 					<IconButton
 						icon="x"
 						label={t`Remove field`}
-						disabled={locked}
-						size="icon-sm"
-						onClick={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
+						isDisabled={locked}
+						size="sm"
+						onPress={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
 					/>
 				</div>
 			))}

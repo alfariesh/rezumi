@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
+import { Button, ButtonGroup, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@rezumi/ui/components/button";
-import { ButtonGroup } from "@rezumi/ui/components/button-group";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { AssistantButton } from "@/features/assistant/assistant-button";
@@ -45,7 +44,7 @@ export function EditorBarFrame({ layout, pinnable, menu, modes, children }: Edit
 						icon="clock-counter-clockwise"
 						label={t`History`}
 						className="text-ink-2"
-						onClick={() => setSheetTab("history")}
+						onPress={() => setSheetTab("history")}
 					/>
 				)}
 				{/* Every layout opens the assistant from the ✦: a column, a drawer, or full screen on phones. */}
@@ -87,8 +86,8 @@ export function DownloadButtons({
 				icon="download-simple"
 				label={t`Download PDF`}
 				shortcut="⌘P"
-				disabled={disabled || busy}
-				onClick={onDownload}
+				isDisabled={disabled || busy}
+				onPress={onDownload}
 			/>
 		);
 	}
@@ -96,24 +95,24 @@ export function DownloadButtons({
 	return (
 		<ButtonGroup aria-label={t`Download`}>
 			<Button
-				loading={busy}
-				disabled={disabled}
-				size={iconOnly ? "icon" : "default"}
-				aria-label={iconOnly ? t`Download PDF` : undefined}
+				isPending={busy}
+				isDisabled={disabled}
+				isIconOnly={iconOnly}
+				{...(iconOnly ? { "aria-label": t`Download PDF` } : {})}
 				className="gap-1.5"
-				onClick={onDownload}
+				onPress={onDownload}
 			>
-				{!busy && <Icon name="download-simple" />}
+				{busy ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="download-simple" />}
 				{iconOnly ? null : busy ? <Trans>Preparing…</Trans> : <Trans>Download PDF</Trans>}
 			</Button>
 			<Button
-				size="icon"
-				disabled={disabled || busy}
+				isIconOnly
+				isDisabled={disabled || busy}
 				aria-label={t`More download formats`}
 				className="w-8 border-s border-s-[oklch(1_0_0/0.25)]"
-				onPointerEnter={onPreload}
-				onFocus={onPreload}
-				onClick={() => setSheetTab("download")}
+				onHoverStart={() => onPreload?.()}
+				onFocus={() => onPreload?.()}
+				onPress={() => setSheetTab("download")}
 			>
 				<Icon name="caret-down" />
 			</Button>

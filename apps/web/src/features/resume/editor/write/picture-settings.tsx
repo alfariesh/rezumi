@@ -1,13 +1,12 @@
 import type { Area } from "react-easy-crop";
 import type z from "zod";
+import { Button, ButtonGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import Cropper from "react-easy-crop";
 import { pictureSchema } from "@rezumi/schema/resume/data";
-import { Button } from "@rezumi/ui/components/button";
-import { ButtonGroup } from "@rezumi/ui/components/button-group";
 import {
 	Dialog,
 	DialogContent,
@@ -107,10 +106,10 @@ function PicturePreviewControls({
 							/>
 
 							<Button
-								size="icon"
+								isIconOnly
 								variant="ghost"
 								aria-label={picture.hidden ? t`Show photo` : t`Hide photo`}
-								onClick={() => {
+								onPress={() => {
 									form.setFieldValue("hidden", !picture.hidden);
 									onAutoSave();
 								}}
@@ -144,7 +143,7 @@ function PictureFitField({ form, onAutoSave }: PictureFieldProps) {
 							variant={field.state.value === "cover" ? "primary" : "secondary"}
 							aria-pressed={field.state.value === "cover"}
 							className="flex-1"
-							onClick={() => {
+							onPress={() => {
 								field.handleChange("cover");
 								onAutoSave();
 							}}
@@ -156,7 +155,7 @@ function PictureFitField({ form, onAutoSave }: PictureFieldProps) {
 							variant={field.state.value === "contain" ? "primary" : "secondary"}
 							aria-pressed={field.state.value === "contain"}
 							className="flex-1"
-							onClick={() => {
+							onPress={() => {
 								field.handleChange("contain");
 								onAutoSave();
 							}}
@@ -269,13 +268,13 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 
 							<ButtonGroup className="shrink-0">
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title={t({
+									aria-label={t({
 										comment: "Preset button for setting picture aspect ratio to square",
 										message: "Square",
 									})}
-									onClick={() => {
+									onPress={() => {
 										field.handleChange(1);
 										onAutoSave();
 									}}
@@ -283,13 +282,13 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="aspect-square min-h-3 min-w-3 border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title={t({
+									aria-label={t({
 										comment: "Preset button for setting picture aspect ratio to landscape orientation",
 										message: "Landscape",
 									})}
-									onClick={() => {
+									onPress={() => {
 										field.handleChange(1.5);
 										onAutoSave();
 									}}
@@ -297,13 +296,13 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="aspect-1.5/1 min-h-3 min-w-3 border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title={t({
+									aria-label={t({
 										comment: "Preset button for setting picture aspect ratio to portrait orientation",
 										message: "Portrait",
 									})}
-									onClick={() => {
+									onPress={() => {
 										field.handleChange(0.5);
 										onAutoSave();
 									}}
@@ -345,10 +344,10 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 
 							<ButtonGroup className="shrink-0">
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title="0pt"
-									onClick={() => {
+									aria-label="0pt"
+									onPress={() => {
 										field.handleChange(0);
 										onAutoSave();
 									}}
@@ -356,10 +355,10 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="size-3 rounded-none border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title="10pt"
-									onClick={() => {
+									aria-label="10pt"
+									onPress={() => {
 										field.handleChange(10);
 										onAutoSave();
 									}}
@@ -367,10 +366,10 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="size-3 rounded-sm border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title="100pt"
-									onClick={() => {
+									aria-label="100pt"
+									onPress={() => {
 										field.handleChange(100);
 										onAutoSave();
 									}}
@@ -578,13 +577,13 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 				</div>
 
 				<DialogFooter className="flex-row flex-wrap justify-between">
-					<Button variant="secondary" onClick={onClose}>
+					<Button variant="secondary" onPress={onClose}>
 						<Trans>Cancel</Trans>
 					</Button>
 					<div className="flex flex-wrap gap-2">
 						<Button
 							variant="secondary"
-							onClick={() => {
+							onPress={() => {
 								if (!cropState) return;
 								onUpload(cropState.file);
 								onClose();
@@ -593,7 +592,7 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 							<Trans>Skip and upload</Trans>
 						</Button>
 						<Button
-							onClick={() => {
+							onPress={() => {
 								void onConfirmCrop();
 							}}
 						>

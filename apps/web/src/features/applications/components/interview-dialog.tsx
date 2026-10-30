@@ -1,12 +1,12 @@
 import type { ApplicationSummary } from "../types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { m } from "motion/react";
 import { useId, useMemo, useState } from "react";
 import { interviewDetailsSchema } from "@rezumi/schema/applications/data";
-import { Button } from "@rezumi/ui/components/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -450,7 +450,7 @@ export function InterviewDialog({
 									iconSize={18}
 									label={t`Remove person ${index + 1}`}
 									className="h-9 w-8 text-ink-2"
-									onClick={() =>
+									onPress={() =>
 										set(
 											"participants",
 											draft.participants.filter((item) => item.id !== participant.id),
@@ -477,8 +477,8 @@ export function InterviewDialog({
 							size="sm"
 							variant="ghost"
 							className="w-fit text-ink-2"
-							disabled={draft.participants.length >= 20}
-							onClick={() =>
+							isDisabled={draft.participants.length >= 20}
+							onPress={() =>
 								set("participants", [...draft.participants, { id: generateId(), name: "", role: "", profileUrl: "" }])
 							}
 						>
@@ -503,16 +503,17 @@ export function InterviewDialog({
 
 				<div className="flex items-center gap-2 border-t border-line px-6 py-3.5 pb-[max(14px,env(safe-area-inset-bottom))]">
 					{editing && (
-						<Button variant="ghost" className="text-danger-text" disabled={pending} onClick={deleteInterview}>
+						<Button variant="ghost" className="text-danger-text" isDisabled={pending} onPress={deleteInterview}>
 							<Icon name="trash" size={18} />
 							<Trans>Delete</Trans>
 						</Button>
 					)}
 					<span className="flex-1" />
-					<Button variant="secondary" onClick={() => onOpenChange(false)}>
+					<Button variant="secondary" onPress={() => onOpenChange(false)}>
 						<Trans>Cancel</Trans>
 					</Button>
-					<Button loading={pending} disabled={!canSave} onClick={() => void save()}>
+					<Button isPending={pending} isDisabled={!canSave} onPress={() => void save()}>
+						{pending && <Spinner size="sm" color="current" aria-hidden />}
 						<Trans>Save interview</Trans>
 					</Button>
 				</div>

@@ -1,7 +1,7 @@
+import { buttonVariants } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { DocumentRow } from "./document-card";
 import { LibraryError } from "./library-error";

@@ -3,6 +3,7 @@ import type { AssistantDocument } from "./document";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -19,7 +20,6 @@ import {
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { useConversationConnection } from "./chat";
 import { Composer, Conversation } from "./conversation";
@@ -162,7 +162,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 					icon="note-pencil"
 					label={t`New conversation`}
 					className="text-ink-2"
-					onClick={() => {
+					onPress={() => {
 						draftThread.current = null;
 						creatingThread.current = null;
 						setDraftKey((key) => key + 1);
@@ -177,9 +177,9 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 					label={t`Past conversations`}
 					aria-pressed={view === "history"}
 					className={cn("text-ink-2", view === "history" && "bg-accent-soft text-accent-text")}
-					onClick={() => setView(view === "history" ? "thread" : "history")}
+					onPress={() => setView(view === "history" ? "thread" : "history")}
 				/>
-				<IconButton icon="x" label={t`Close the assistant`} shortcut="⌘J" className="text-ink-2" onClick={onClose} />
+				<IconButton icon="x" label={t`Close the assistant`} shortcut="⌘J" className="text-ink-2" onPress={onClose} />
 			</header>
 
 			{notSetUp ? (
@@ -201,7 +201,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 				/>
 			) : providers.isLoading || threads.isPending ? (
 				<div className="grid flex-1 place-items-center">
-					<Spinner />
+					<Spinner size="md" color="current" className="text-muted" aria-hidden />
 				</div>
 			) : !providers.hasUsableProvider ? (
 				<div className="min-h-0 flex-1 overflow-y-auto">
@@ -285,7 +285,7 @@ function ConversationLoader({ threadId, document, ...props }: ConversationLoader
 		return (
 			// Hidden for the first 150ms, so a quick refetch never flashes a spinner.
 			<div className="grid flex-1 place-items-center transition-opacity delay-150 duration-standard ease-enter starting:opacity-0">
-				<Spinner />
+				<Spinner size="md" color="current" className="text-muted" aria-hidden />
 			</div>
 		);
 
@@ -584,9 +584,9 @@ function ConversationRow({ thread, current, detail, index, onOpen, onDelete }: C
 			<IconButton
 				icon="x"
 				label={t`Delete ${thread.title}`}
-				size="icon-sm"
+				size="sm"
 				className="me-1 text-ink-3 opacity-0 transition-[opacity,background-color,border-color,color,filter,scale] group-hover/row:opacity-100 focus-visible:opacity-100"
-				onClick={onDelete}
+				onPress={onDelete}
 			/>
 		</li>
 	);

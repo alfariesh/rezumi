@@ -1,8 +1,8 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { formatTimeSince } from "@rezumi/resume/sharing";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	Dialog,
 	DialogContent,
@@ -92,7 +92,8 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 							<Trans>Last checked {lastChecked} ago</Trans>
 						</p>
 					)}
-					<Button loading={checking} onClick={onCheck}>
+					<Button isPending={checking} onPress={onCheck}>
+						{checking && <Spinner size="sm" color="current" aria-hidden />}
 						<Trans>Check DNS</Trans>
 					</Button>
 				</DialogFooter>

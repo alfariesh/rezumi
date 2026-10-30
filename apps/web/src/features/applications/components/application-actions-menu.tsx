@@ -1,7 +1,7 @@
 import type { ApplicationSummary } from "../types";
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -42,13 +42,12 @@ export function ApplicationActionsMenu({ application, className }: ApplicationAc
 			<DropdownMenu>
 				<DropdownMenuTrigger
 					render={
-						<Button
-							size="icon-xs"
-							variant="ghost"
+						<button
+							type="button"
 							aria-label={t`Options for ${application.role} at ${application.company}`}
 							onClick={stop}
 							onPointerDown={stop}
-							className="text-ink-3"
+							className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
 						/>
 					}
 				>

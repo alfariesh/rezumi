@@ -1,5 +1,5 @@
+import { Button } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@rezumi/ui/components/button";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 
 type CareerLoadErrorProps = { onRetry: () => void };
@@ -10,7 +10,7 @@ export function CareerLoadError({ onRetry }: CareerLoadErrorProps) {
 			<p>
 				<Trans>Couldn't load this. Your saved data hasn't changed.</Trans>
 			</p>
-			<Button variant="secondary" size="sm" onClick={onRetry}>
+			<Button variant="secondary" size="sm" onPress={onRetry}>
 				<Trans>Try again</Trans>
 			</Button>
 		</div>

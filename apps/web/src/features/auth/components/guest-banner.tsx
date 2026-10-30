@@ -1,7 +1,7 @@
+import { buttonVariants } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 
 /** Guests lose their work when the session ends, so the app says so and offers a way to keep it. */
@@ -24,12 +24,12 @@ export function GuestBanner() {
 						</Trans>
 					</p>
 					<div className="mt-2 flex flex-wrap gap-2">
-						<Button variant="secondary" size="sm" nativeButton={false} render={<Link to="/auth/register" />}>
+						<Link to="/auth/register" className={buttonVariants({ variant: "secondary", size: "sm" })}>
 							<Trans>Create account</Trans>
-						</Button>
-						<Button variant="ghost" size="sm" nativeButton={false} render={<Link to="/auth/login" />}>
+						</Link>
+						<Link to="/auth/login" className={buttonVariants({ variant: "ghost", size: "sm" })}>
 							<Trans>Sign in</Trans>
-						</Button>
+						</Link>
 					</div>
 				</AlertDescription>
 			</Alert>

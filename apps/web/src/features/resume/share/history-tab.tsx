@@ -1,11 +1,11 @@
 import type { VersionSummary } from "./format";
 import type { Resume } from "@/features/resume/builder/draft";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,7 +13,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -153,7 +152,7 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 					onChange={(event) => setName(event.target.value)}
 					className="h-9"
 				/>
-				<Button type="submit" variant="secondary" disabled={!name.trim() || busy}>
+				<Button type="submit" variant="secondary" isDisabled={!name.trim() || busy}>
 					<Trans>Save</Trans>
 				</Button>
 			</form>
@@ -167,14 +166,14 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 						</Trans>
 					</span>
 					<span className="flex flex-wrap gap-2">
-						<Button size="sm" disabled={source.locked || busy} onClick={() => restore(selected)}>
+						<Button size="sm" isDisabled={source.locked || busy} onPress={() => restore(selected)}>
 							<Trans>Restore this version</Trans>
 						</Button>
 						<Button
 							size="sm"
 							variant="ghost"
 							className="text-bg underline underline-offset-[3px] hover:bg-transparent hover:text-bg"
-							onClick={() => useEditorStore.setState({ historyVersionId: null })}
+							onPress={() => useEditorStore.setState({ historyVersionId: null })}
 						>
 							<Trans>Back to now</Trans>
 						</Button>
@@ -301,14 +300,21 @@ function NamedVersionMenu({ version, source }: { version: HistoryVersion; source
 		<DropdownMenu>
 			<DropdownMenuTrigger
 				render={
-					<IconButton
-						icon="dots-three"
-						label={t`Options for ${title}`}
-						size="icon-sm"
-						className="text-ink-2 opacity-0 group-hover/version:opacity-100 focus-visible:opacity-100 data-popup-open:opacity-100"
+					<button
+						type="button"
+						aria-label={t`Options for ${title}`}
+						className={buttonVariants({
+							variant: "ghost",
+							size: "sm",
+							isIconOnly: true,
+							className:
+								"opacity-0 group-hover/version:opacity-100 focus-visible:opacity-100 data-popup-open:opacity-100",
+						})}
 					/>
 				}
-			/>
+			>
+				<Icon name="dots-three" />
+			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="w-44">
 				<DropdownMenuItem onClick={() => void rename()}>
 					<Icon name="pencil-simple" />

@@ -1,4 +1,5 @@
 import type { DialogProps } from "../store";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -8,7 +9,6 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { match } from "ts-pattern";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import {
 	DialogContent,
 	DialogDescription,
@@ -219,7 +219,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 						</enableForm.Field>
 
 						<DialogFooter>
-							<Button type="submit" disabled={enableIsSubmitting}>
+							<Button type="submit" isDisabled={enableIsSubmitting}>
 								<Trans>Continue</Trans>
 							</Button>
 						</DialogFooter>
@@ -233,7 +233,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 								<>
 									<div className="flex items-center gap-x-2">
 										<Input readOnly value={secret} className="font-mono text-sm" />
-										<Button size="icon" variant="ghost" type="button" onClick={handleCopySecret}>
+										<Button isIconOnly variant="ghost" onPress={() => handleCopySecret()}>
 											<span className="sr-only">
 												{t({
 													comment: "Accessible label for the button that copies the two-factor secret key",
@@ -284,10 +284,10 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 								</verifyForm.Field>
 
 								<DialogFooter className="gap-x-2">
-									<Button type="button" variant="secondary" onClick={requestClose}>
+									<Button variant="secondary" onPress={() => requestClose()}>
 										<Trans comment="Secondary action button to close two-factor setup dialog">Cancel</Trans>
 									</Button>
-									<Button type="submit" disabled={verifyIsSubmitting}>
+									<Button type="submit" isDisabled={verifyIsSubmitting}>
 										<Trans comment="Primary action button to proceed to next step in two-factor setup">Continue</Trans>
 									</Button>
 								</DialogFooter>
@@ -308,13 +308,13 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 								</div>
 
 								<div className="flex items-center gap-x-2">
-									<Button type="button" variant="secondary" onClick={handleDownloadBackupCodes} className="flex-1">
+									<Button variant="secondary" onPress={() => handleDownloadBackupCodes()} className="flex-1">
 										<Icon name="arrow-down" size={16} className="me-2" />
 										<Trans comment="Action button to download two-factor backup codes as a text file">
 											Download codes
 										</Trans>
 									</Button>
-									<Button type="button" variant="ghost" onClick={handleCopyBackupCodes} className="flex-1">
+									<Button variant="ghost" onPress={() => handleCopyBackupCodes()} className="flex-1">
 										<Icon name="copy" size={16} className="me-2" />
 										<Trans comment="Action button to copy two-factor backup codes to clipboard">Copy codes</Trans>
 									</Button>
@@ -323,7 +323,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 						)}
 
 						<DialogFooter>
-							<Button type="button" onClick={onConfirmBackup}>
+							<Button onPress={() => onConfirmBackup()}>
 								<Trans comment="Final action button after saving backup codes">Continue</Trans>
 							</Button>
 						</DialogFooter>

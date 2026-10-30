@@ -1,7 +1,7 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button } from "@rezumi/ui/components/button";
 import { SettingsSection } from "../section";
 import { authClient } from "@/libs/auth/client";
 
@@ -61,8 +61,8 @@ export function ConnectedAppsSection() {
 							<Button
 								variant="secondary"
 								size="sm"
-								disabled={revoke.isPending}
-								onClick={() => revoke.mutate(connection.id)}
+								isDisabled={revoke.isPending}
+								onPress={() => revoke.mutate(connection.id)}
 							>
 								<Trans>Revoke access</Trans>
 							</Button>

@@ -1,15 +1,10 @@
 import type { Website } from "@rezumi/schema/resume/data";
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupButton,
-	InputGroupInput,
-	InputGroupText,
-} from "@rezumi/ui/components/input-group";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@rezumi/ui/components/input-group";
 import { Label } from "@rezumi/ui/components/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { cn } from "@rezumi/utils/style";
@@ -65,15 +60,16 @@ export function URLInput<TValue extends Website>({ value, onChange, hideLabelBut
 					<Popover>
 						<PopoverTrigger
 							render={
-								<InputGroupButton
-									size="icon-sm"
-									title={t({
+								<button
+									type="button"
+									className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
+									aria-label={t({
 										comment: "Tooltip for action button that opens URL label editor",
 										message: "Add a label to the URL",
 									})}
 								>
 									<Icon name="tag" size={16} />
-								</InputGroupButton>
+								</button>
 							}
 						/>
 

@@ -2,6 +2,7 @@ import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
+import { buttonVariants, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -9,7 +10,6 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { buttonVariants } from "@rezumi/ui/components/button";
 import {
 	ContextMenu,
 	ContextMenuContent,
@@ -26,7 +26,6 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Sheet, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
@@ -310,9 +309,9 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 				<IconButton
 					icon="clock-counter-clockwise"
 					label={t`Conversations`}
-					size="icon-sm"
+					size="sm"
 					className="-ms-2 text-ink-2"
-					onClick={() => setRailOpen(true)}
+					onPress={() => setRailOpen(true)}
 				/>
 			)}
 			<Icon name="sparkle" size={20} className="shrink-0 text-accent-text" />
@@ -330,10 +329,10 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			<IconButton
 				icon="copy"
 				label={t`Copy conversation`}
-				size="icon-sm"
+				size="sm"
 				className="text-ink-2"
-				disabled={messages.length === 0}
-				onClick={() =>
+				isDisabled={messages.length === 0}
+				onPress={() =>
 					void copyToClipboard(
 						transcriptOf(messages, { user: t`You`, assistant: t`Coach`, sources: t`Sources` }),
 						t`Conversation copied`,
@@ -400,7 +399,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 						/>
 					) : providers.isLoading || threads.isPending ? (
 						<div className="grid flex-1 place-items-center">
-							<Spinner />
+							<Spinner size="md" color="current" aria-label={t`Loading`} />
 						</div>
 					) : threads.isError && !threads.data ? (
 						<CareerLoadError

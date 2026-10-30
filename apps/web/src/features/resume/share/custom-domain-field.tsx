@@ -1,9 +1,9 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
@@ -85,9 +85,10 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 							type="submit"
 							variant="secondary"
 							className="h-[38px]"
-							loading={set.isPending}
-							disabled={!hostname.trim()}
+							isPending={set.isPending}
+							isDisabled={!hostname.trim()}
 						>
+							{set.isPending && <Spinner size="sm" color="current" aria-hidden />}
 							<Trans>Connect</Trans>
 						</Button>
 					</div>
@@ -116,9 +117,10 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 				<Button
 					variant="ghost"
 					size="sm"
-					loading={remove.isPending}
-					onClick={() => remove.mutate(undefined, { onError })}
+					isPending={remove.isPending}
+					onPress={() => remove.mutate(undefined, { onError })}
 				>
+					{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Remove</Trans>
 				</Button>
 			</div>
@@ -132,10 +134,11 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 						<Trans>Not connected yet. Add its DNS records where you manage the domain, then check.</Trans>
 					</p>
 					<div className="flex flex-wrap gap-2">
-						<Button variant="secondary" size="sm" onClick={() => setRecordsOpen(true)}>
+						<Button variant="secondary" size="sm" onPress={() => setRecordsOpen(true)}>
 							<Trans>Show DNS records</Trans>
 						</Button>
-						<Button variant="ghost" size="sm" loading={verify.isPending} onClick={check}>
+						<Button variant="ghost" size="sm" isPending={verify.isPending} onPress={check}>
+							{verify.isPending && <Spinner size="sm" color="current" aria-hidden />}
 							<Trans>Check DNS</Trans>
 						</Button>
 					</div>
