@@ -171,9 +171,8 @@ function DesktopBody({ assistant, column, replace, page, ...panel }: DesktopBody
 			<AssistantReplace
 				replaced={replace && assistantOpen}
 				assistant={
-					// The assistant is a conversation, not a list of widgets: it keeps a surface of its own.
 					<div className="min-h-0 ps-3 pb-3">
-						<div className="h-full overflow-hidden rounded-2xl bg-surface shadow-surface">{assistant}</div>
+						<div className="h-full overflow-hidden">{assistant}</div>
 					</div>
 				}
 			>

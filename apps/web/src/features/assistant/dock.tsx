@@ -52,8 +52,8 @@ const columnContent: Variants = {
 type AssistantColumnProps = { children: ReactNode };
 
 /**
- * ≥1280: the assistant's column, as wide as the panel's while it's open (`--editor-side`): a card 12px in from both
- * edges, with the same scrollbar gutter as the panel, so the two match. Its content keeps (nearly) the open column's
+ * ≥1280: the assistant's column, as wide as the panel's while it's open (`--editor-side`): 12px in from both edges, with
+ * no card of its own (it floats like the panel's widgets). Its content keeps (nearly) the open column's
  * width from the start, so it travels in with the column's edge instead of re-wrapping every frame, and it stays
  * mounted until it has faded out.
  */
@@ -72,7 +72,7 @@ export function AssistantColumn({ children }: AssistantColumnProps) {
 						initial="hidden"
 						animate="shown"
 						exit="hidden"
-						className="h-full w-full min-w-[calc(var(--editor-side)-3rem)] overflow-hidden rounded-2xl bg-surface shadow-surface"
+						className="h-full w-full min-w-[calc(var(--editor-side)-3rem)] overflow-hidden"
 					>
 						{children}
 					</m.div>
@@ -165,8 +165,8 @@ export function AssistantOverlay({ place, children }: AssistantOverlayProps) {
 					exit="hidden"
 					className={
 						place === "drawer"
-							? "fixed end-2 top-(--editor-bar) bottom-2 z-40 flex w-[400px] max-w-[calc(100%-1rem)] flex-col overflow-hidden rounded-2xl bg-overlay shadow-overlay"
-							: "fixed inset-0 z-40 flex flex-col bg-surface pb-[env(safe-area-inset-bottom)]"
+							? "fixed end-2 top-(--editor-bar) bottom-2 z-40 flex w-[400px] max-w-[calc(100%-1rem)] flex-col overflow-hidden rounded-2xl bg-overlay p-3 shadow-overlay"
+							: "fixed inset-0 z-40 flex flex-col bg-background p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
 					}
 				>
 					{children}

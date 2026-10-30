@@ -3,6 +3,12 @@ import type { ChatAttachment } from "@/features/assistant/chat";
 import type { FactCategory } from "@rezumi/schema/career";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
+import {
+	ChatAttachment as FileAttachment,
+	ChatAttachmentGroup,
+	ChatMessage,
+	ChatMessageActions,
+} from "@heroui-pro/react";
 import { Button, Popover, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -28,8 +34,10 @@ import { Composer, contentClass, copyToClipboard, usedFor, usedSchema } from "./
 import { Eyebrow, MemoryProposal, Working, workingSteps } from "./shared";
 import { attachmentPart } from "@/features/assistant/chat";
 import { AssistantMarkdown } from "@/features/assistant/markdown";
+import { MessageSources } from "@/features/assistant/message-sources";
 import { ToolApprovals } from "@/features/assistant/tool-approvals";
 import { useAssistantChat } from "@/features/assistant/use-assistant-chat";
+import { WaitingRow } from "@/features/assistant/waiting-row";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
 import { client, orpc } from "@/libs/orpc/client";
@@ -69,6 +77,8 @@ export function ChatView(props: ChatViewProps) {
 	const [stopped, setStopped] = useState(false);
 	// Messages already in the thread when it opens are history; only new ones rise in.
 	const [initialIds] = useState(() => new Set(props.initialMessages.map((message) => message.id)));
+	// A first message already shown while the conversation opened doesn't rise in a second time.
+	const [fromPending] = useState(() => props.prompt !== null);
 
 	const refresh = () => {
 		void queryClient.invalidateQueries({ queryKey: orpc.agent.threads.list.key() });
@@ -154,7 +164,7 @@ export function ChatView(props: ChatViewProps) {
 											message={message}
 											question={questionBefore(messages, index)}
 											streaming={streaming && index === messages.length - 1}
-											enter={!initialIds.has(message.id)}
+											enter={!initialIds.has(message.id) && !(fromPending && index === 0)}
 											knowledge={knowledge}
 											company={props.company}
 											scoped={props.applicationId !== null}
@@ -169,25 +179,23 @@ export function ChatView(props: ChatViewProps) {
 									</MessageScrollerItem>
 								))}
 
-								{streaming && (
-									<MessageScrollerItem>
-										<TraceLine status="running" className={cn("text-[13px]", ENTER_CLASS)}>
-											<TraceIcon>
-												<Spinner size="sm" color="current" aria-hidden />
-											</TraceIcon>
-											<TraceTitle>
-												{/* Until the first words arrive, say what's happening; then the answer itself shows progress. */}
-												{answering ? (
-													<Trans>Writing an answer…</Trans>
-												) : (
-													<Working
-														steps={[...workingSteps("chat"), ...(props.context.web ? [t`Searching the web`] : [])]}
-													/>
-												)}
-											</TraceTitle>
-										</TraceLine>
-									</MessageScrollerItem>
-								)}
+								<WaitingRow show={streaming} skipEnter={fromPending && messages.length <= 1}>
+									<TraceLine status="running" className="text-[13px]">
+										<TraceIcon>
+											<Spinner size="sm" color="current" aria-hidden />
+										</TraceIcon>
+										<TraceTitle>
+											{/* Until the first words arrive, say what's happening; then the answer itself shows progress. */}
+											{answering ? (
+												<Trans>Writing an answer…</Trans>
+											) : (
+												<Working
+													steps={[...workingSteps("chat"), ...(props.context.web ? [t`Searching the web`] : [])]}
+												/>
+											)}
+										</TraceTitle>
+									</TraceLine>
+								</WaitingRow>
 
 								{stopped && !streaming && (
 									<MessageScrollerItem>
@@ -206,7 +214,7 @@ export function ChatView(props: ChatViewProps) {
 									<MessageScrollerItem>
 										<div
 											role="alert"
-											className="grid gap-2.5 rounded-xl bg-danger-soft p-3.5 text-[13px] text-danger-text transition-opacity duration-standard ease-enter starting:opacity-0"
+											className="grid gap-2.5 rounded-xl bg-danger-soft p-3.5 text-[13px] text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
 										>
 											<span className="flex gap-2">
 												<Icon name="warning-circle" size={18} className="shrink-0" />
@@ -282,21 +290,30 @@ const MessageView = memo(function MessageView({
 	const text = textOf(message);
 
 	if (message.role === "user") {
-		const files = partsOf(message).filter((part) => part.type === "file") as Array<Part & { filename?: string }>;
+		const files = partsOf(message).filter((part) => part.type === "file") as Array<
+			Part & { filename?: string; mediaType?: string }
+		>;
 		return (
-			<div className={cn("grid justify-items-end gap-1", enter && ENTER_CLASS)}>
+			<ChatMessage.User className={cn("gap-1", enter && ENTER_CLASS)}>
 				{text && (
-					<p className="max-w-[80%] rounded-lg bg-sunken px-3.5 py-2.5 text-sm leading-[21px] whitespace-pre-wrap">
-						{text}
-					</p>
+					<ChatMessage.Bubble className="max-w-[80%] rounded-2xl rounded-ee-none bg-accent">
+						<ChatMessage.Content className="wrap-anywhere whitespace-pre-wrap text-accent-foreground">
+							{text}
+						</ChatMessage.Content>
+					</ChatMessage.Bubble>
 				)}
-				{files.map((file, index) => (
-					<span key={index} className="flex items-center gap-1 rounded-sm bg-sunken px-2 py-1 text-xs text-ink-2">
-						<Icon name="paperclip" size={14} />
-						{file.filename ?? t`Attachment`}
-					</span>
-				))}
-			</div>
+				{files.length > 0 && (
+					<ChatAttachmentGroup>
+						{files.map((file, index) => (
+							<FileAttachment
+								key={index}
+								name={file.filename ?? t`Attachment`}
+								{...(file.mediaType ? { mimeType: file.mediaType } : {})}
+							/>
+						))}
+					</ChatAttachmentGroup>
+				)}
+			</ChatMessage.User>
 		);
 	}
 
@@ -313,62 +330,74 @@ const MessageView = memo(function MessageView({
 	});
 
 	return (
-		<div className={cn("grid min-w-0 gap-3", enter && ENTER_CLASS)}>
-			{text && (
-				// min-w-0 lets a wide table scroll inside its own box instead of stretching the column.
-				<div className="min-w-0 text-[15px] text-ink">
-					<AssistantMarkdown text={text} />
-				</div>
-			)}
-
-			{sources.length > 0 && (
-				<div className="grid gap-1 text-xs">
-					<span className="font-medium text-ink-3">
-						<Trans>Sources</Trans>
-					</span>
-					{sources.map((source) => (
-						<a
-							key={source.url}
-							href={source.url}
-							target="_blank"
-							rel="noreferrer"
-							className="truncate text-accent-text underline underline-offset-2"
-						>
-							{source.title?.trim() || source.url}
-						</a>
-					))}
-				</div>
-			)}
-
-			{!streaming && used && <UsedChips used={used} applications={scoped ? [] : applications} knowledge={knowledge} />}
-
-			{stories.map((story) => (
-				<p key={story.id} className="flex flex-wrap items-center gap-1.5 text-sm text-accent-text">
-					<Icon name="check-circle" size={18} />
-					<Trans>Saved a story: {story.data.title}</Trans>
-					<Link
-						to="/dashboard/career/knowledge/stories/{-$storyId}"
-						params={{ storyId: story.id }}
-						className="underline underline-offset-2"
+		<ChatMessage.Assistant className="p-0">
+			<ChatMessage.Body className="gap-3 pe-0">
+				{text && (
+					// min-w-0 lets a wide table scroll inside its own box instead of stretching the column.
+					<ChatMessage.Content
+						className={cn(
+							"w-fit! max-w-full min-w-0 rounded-2xl rounded-ss-none bg-default px-4 py-2.5 text-[15px]",
+							enter && ENTER_CLASS,
+						)}
 					>
-						<Trans>View</Trans>
-					</Link>
-				</p>
-			))}
+						<AssistantMarkdown text={text} />
+					</ChatMessage.Content>
+				)}
 
-			{!streaming && <MemoryNotes message={message} knowledge={knowledge} company={company} />}
+				{sources.length > 0 && <MessageSources sources={sources} />}
 
-			{!streaming && text && (
-				<div className="flex gap-1">
-					<Button size="sm" variant="ghost" onPress={() => void copyToClipboard(text, t`Answer copied`)}>
-						<Icon name="copy" size={16} />
-						<Trans>Copy</Trans>
-					</Button>
-				</div>
-			)}
-		</div>
+				{!streaming && used && (
+					<UsedChips used={used} applications={scoped ? [] : applications} knowledge={knowledge} />
+				)}
+
+				{stories.map((story) => (
+					<p key={story.id} className="flex flex-wrap items-center gap-1.5 text-sm text-accent">
+						<Icon name="check-circle" size={18} />
+						<Trans>Saved a story: {story.data.title}</Trans>
+						<Link
+							to="/dashboard/career/knowledge/stories/{-$storyId}"
+							params={{ storyId: story.id }}
+							className="underline underline-offset-2"
+						>
+							<Trans>View</Trans>
+						</Link>
+					</p>
+				))}
+
+				{!streaming && <MemoryNotes message={message} knowledge={knowledge} company={company} />}
+
+				{!streaming && text && <CopyAnswer text={text} />}
+			</ChatMessage.Body>
+		</ChatMessage.Assistant>
 	);
 });
+
+/** Copies one answer; the icon says it worked for a moment. */
+function CopyAnswer({ text }: { text: string }) {
+	const [copied, setCopied] = useState(false);
+	const reset = useRef<number | undefined>(undefined);
+	useEffect(() => () => window.clearTimeout(reset.current), []);
+
+	return (
+		<ChatMessageActions>
+			<ChatMessageActions.Copy
+				aria-label={t`Copy`}
+				tooltip={t`Copy`}
+				isCopied={copied}
+				onPress={() =>
+					void copyToClipboard(text, t`Answer copied`).then((done) => {
+						if (!done) return;
+						setCopied(true);
+						window.clearTimeout(reset.current);
+						reset.current = window.setTimeout(() => setCopied(false), 2000);
+					})
+				}
+			>
+				<Icon name={copied ? "check" : "copy"} size={16} />
+			</ChatMessageActions.Copy>
+		</ChatMessageActions>
+	);
+}
 
 // ---- "Used": what was shared for this answer, each group opening the exact items ----
 
@@ -380,7 +409,7 @@ type UsedChipsProps = {
 
 function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 	const chips: ReactNode[] = [];
-	const linkClass = "text-[13px] leading-[19px] text-ink hover:underline underline-offset-2";
+	const linkClass = "text-[13px] leading-[19px] text-foreground hover:underline underline-offset-2";
 
 	if (used.facts.length > 0)
 		chips.push(
@@ -394,7 +423,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 									{fact.text}
 								</Link>
 							) : (
-								<span className="text-[13px] text-ink-3">
+								<span className="text-[13px] text-muted">
 									<Trans>A fact you've since forgotten</Trans>
 								</span>
 							)}
@@ -423,7 +452,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 									{story.data.title}
 								</Link>
 							) : (
-								<span className="text-[13px] text-ink-3">
+								<span className="text-[13px] text-muted">
 									<Trans>A story you've since deleted</Trans>
 								</span>
 							)}
@@ -482,7 +511,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 	if (chips.length === 0) return null;
 	return (
 		<div className="flex flex-wrap items-center gap-1.5">
-			<span className="me-0.5 text-xs text-ink-3">
+			<span className="me-0.5 text-xs text-muted">
 				<Trans>Used</Trans>
 			</span>
 			{chips}
@@ -495,7 +524,7 @@ type UsedChipProps = { label: string; title: string; children: ReactNode };
 function UsedChip({ label, title, children }: UsedChipProps) {
 	return (
 		<Popover>
-			<Popover.Trigger className="inline-flex h-6 items-center rounded-sm border border-line-2 px-2 text-xs font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink aria-expanded:bg-hover">
+			<Popover.Trigger className="inline-flex h-6 items-center rounded-sm border border-border px-2 text-xs font-medium text-muted transition-colors duration-quick hover:bg-default hover:text-foreground aria-expanded:bg-default">
 				{label}
 			</Popover.Trigger>
 			<Popover.Content placement="bottom start" className="w-80 max-w-[calc(100vw-2rem)]">
@@ -525,14 +554,14 @@ function PreferencesList() {
 		<>
 			{rows.map((row) => (
 				<li key={row.label} className="grid gap-0.5 text-[13px] leading-[19px]">
-					<span className="text-xs text-ink-3">{row.label}</span>
+					<span className="text-xs text-muted">{row.label}</span>
 					<span className="line-clamp-3">{row.value}</span>
 				</li>
 			))}
 			<li>
 				<Link
 					to="/dashboard/career/knowledge/preferences"
-					className="text-[13px] text-accent-text underline underline-offset-2"
+					className="text-[13px] text-accent underline underline-offset-2"
 				>
 					<Trans>Open preferences</Trans>
 				</Link>
@@ -654,7 +683,7 @@ function Proposal({ items, knowledge, company }: ProposalProps) {
 	const first = remembered?.ids[0];
 	if (forgotten)
 		return (
-			<p className="flex items-center gap-1.5 text-sm text-ink-3">
+			<p className="flex items-center gap-1.5 text-sm text-muted">
 				<Icon name="info" size={18} />
 				<Trans>Not saved — this fact was forgotten before.</Trans>
 			</p>
@@ -718,11 +747,15 @@ function AutoRemembered({ id, text, knowledge }: AutoRememberedProps) {
 	};
 
 	return (
-		<p className="flex flex-wrap items-center gap-1.5 text-sm text-ink-2">
-			<Icon name="check-circle" size={18} className="text-accent-text" />
+		<p className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
+			<Icon name="check-circle" size={18} className="text-accent" />
 			<Trans>Remembered: “{text}”</Trans>
 			<span aria-hidden="true">·</span>
-			<button type="button" className="font-medium text-ink underline underline-offset-2" onClick={() => void undo()}>
+			<button
+				type="button"
+				className="font-medium text-foreground underline underline-offset-2"
+				onClick={() => void undo()}
+			>
 				<Trans>Undo</Trans>
 			</button>
 		</p>

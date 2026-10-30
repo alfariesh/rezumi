@@ -289,6 +289,11 @@ msgstr "{0, plural, one {ከ# ደቂቃ በፊት ተጀምሯል} other {ከ# �
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {የ# ሰነድ መለያዎች} other {የ# ሰነዶች መለያዎች}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{0} በ{1} በእርስዎ የሰዓት ሰቅ ({preferredZone}) {2} ነ
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "{0} ቃለ መጠይቅ"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "አገናኝ ሙሉ አድራሻ አይደለም።"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "አገናኝ ከሚያሳየው አድራሻ ውጭ ወዳለ ሌላ ቦታ ይመራል።"
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "የሽፋን ደብዳቤ (ፒዲኤፍ) ያያይዙ"
 msgid "Attach a cover letter file (PDF)"
 msgstr "የሽፋን ደብዳቤ ፋይል (PDF) አያይዝ"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "ፋይል ያያይዙ"
 
@@ -4679,10 +4698,6 @@ msgstr "ግብረ መልስ ያገኙበት እያንዳንዱ መልስ እዚ�
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "በሥራ ማስታወቂያው ውስጥ ያለ እያንዳንዱ መስፈርት በእውቀትዎ ውስጥ ካሉ እውነታዎች እና ታሪኮች ጋር ይረጋገጣል። ክፍተቶች የሚታዩት እንደ ጎደለ ማስረጃ ነው እንጂ እንደ ጎደለ ችሎታ ፈጽሞ አይደለም።"
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "እያንዳንዱ መላክ የሚጀምረው በዚህ መልእክት እና በተመረጡ ፋይሎች ነው። የቀድሞ የውይይት ታሪክ እዚህ ይቆያል።"
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "ሌላ · OpenAI-ተኳሃኝ"
 msgid "Other benefits"
 msgstr "ሌሎች ጥቅማ ጥቅሞች"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "ያለፈው እትም።"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "የሰነድ ዝርዝሮችን ጨምሮ የቀደሙ መልዕክቶችም ተልከዋል።"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "የትርጓሜ CSS የቅጥ ሉህ"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "ላክ"
 
@@ -10594,33 +10609,9 @@ msgstr "የዚህን ማመልከቻ የሥራ ማስታወቂያ፣ ማስታ�
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "የዚህን ማመልከቻ የሥራ ማስታወቂያ፣ ማስታወሻዎች እና ሰነዶች፣ እንዲሁም የበራውን እውቀት ወደዚህ ግንኙነት ይልካል። አቅራቢዎ ሊያስከፍልዎ ይችላል።"
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "ይህንን ደብዳቤ እና የሥራ ማስታወቂያውን ላክን ሲጫኑ ብቻ በቁልፍዎ ወደ {provider} ይልካል።"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "ይህን ደብዳቤ ወደ {provider} በቁልፍዎ ይልካል፣ ላክን ሲጫኑ ብቻ።"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "ይህን የሥራ ልምድ ማስረጃ እና የሥራ ማስታወቂያውን ላክን ሲጫኑ ብቻ በቁልፍዎ ወደ {provider} ይልካል።"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "ይህን መመዘኛ ወደ {provider} በቁልፍዎ ይልካል፣ ላክን ሲጫኑ ብቻ።"
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "ይህን ታሪክ እና የበሩትን እውነታዎች ወደ AI ግንኙነትዎ ይልካል። ግንኙነት ከሌለ ምንም ነገር አይላክም።"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "መልእክትዎን እና የሥራ ማስታወቂያውን ላክን ሲጫኑ ብቻ በቁልፍዎ ወደ {provider} ይልካል።"
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "መልእክትዎን ወደ {provider} በቁልፍዎ ይልካል፣ ላክን ሲጫኑ ብቻ።"
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "ወደ {0} ተልኳል።"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "ወደ Lumen ተልኳል"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "ምንጭ ኮድ"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "ምንጮች"
@@ -11324,8 +11319,7 @@ msgstr "ሁኔታ"
 msgid "Stay here"
 msgstr "እዚህ ይቆዩ"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "ቆሟል። ምንም አርትዖቶች አልቀረቡም።"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "እነዚህን የመከላከያ ኮዶች ደህንነቱ በተጠበቀ ቦታ ያስቀምጡ። መሣሪያዎ ከጠፋ እያንዳንዱ አንድ ጊዜ ያስገባዎታል።"
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "በማሰብ ላይ"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "በማሰብ…"
 
@@ -13896,6 +13895,10 @@ msgstr "የእርስዎ መክፈቻ"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "የእርስዎ መክፈቻ፣ የሚያመጧቸው ታሪኮች እና የሚጠይቋቸው ጥያቄዎች። ከጥሪው 10 ደቂቃ በፊት የማረጋገጫ ዝርዝርዎ ይሆናል።"
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

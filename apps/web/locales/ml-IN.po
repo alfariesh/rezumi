@@ -289,6 +289,11 @@ msgstr "{0, plural, one {# മിനിറ്റ് മുമ്പ് തുട
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {# പ്രമാണത്തിനുള്ള ടാഗുകൾ} other {# പ്രമാണങ്ങൾക്കുള്ള ടാഗുകൾ}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{1}-ലെ {0} എന്നത് നിങ്ങളുടെ സമയ�
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "{0} അഭിമുഖം"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "ഒരു ലിങ്ക് ഒരു പൂർണ്ണ വിലാ�
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "ഒരു ലിങ്ക് കാണിക്കുന്ന വിലാസത്തിലല്ലാതെ മറ്റെവിടേക്കോ പോകുന്നു."
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "ഒരു കവർ ലെറ്റർ അറ്റാച്ചുചെ
 msgid "Attach a cover letter file (PDF)"
 msgstr "ഒരു കവർ ലെറ്റർ ഫയൽ അറ്റാച്ചുചെയ്യുക (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "ഒരു ഫയൽ അറ്റാച്ചുചെയ്യുക"
 
@@ -4679,10 +4698,6 @@ msgstr "ഫീഡ്‌ബാക്ക് ലഭിച്ച ഓരോ ഉത്
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "പോസ്റ്റിംഗിലെ ഓരോ ആവശ്യകതയും നിങ്ങളുടെ അറിവിലെ വസ്തുതകളുമായും കഥകളുമായും ഒത്തുനോക്കുന്നു. വിടവുകൾ തെളിവിന്റെ അഭാവമായാണ് കാണിക്കുന്നത്, ഒരിക്കലും കഴിവിന്റെ അഭാവമായല്ല."
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "ഈ സന്ദേശവും തിരഞ്ഞെടുത്ത ഫയലുകളും ഉപയോഗിച്ച് ഓരോ അയക്കലും പുതുതായി ആരംഭിക്കുന്നു. മുമ്പത്തെ സംഭാഷണ ചരിത്രം ഇവിടെ നിലനിൽക്കും."
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "മറ്റുള്ളവ · OpenAI-അനുയോജ്യമാണ�
 msgid "Other benefits"
 msgstr "മറ്റ് ആനുകൂല്യങ്ങൾ"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "മുൻ പ്രശ്നം"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "ഡോക്യുമെൻ്റ് വിശദാംശങ്ങൾ ഉൾപ്പെടെയുള്ള മുൻ സന്ദേശങ്ങളും അയച്ചിട്ടുണ്ട്."
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "സെമാന്റിക് CSS സ്റ്റൈൽഷീറ്റ്"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "അയക്കുക"
 
@@ -10594,33 +10609,9 @@ msgstr "ഈ അപേക്ഷയുടെ പോസ്റ്റിംഗ്, �
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "ഈ അപേക്ഷയുടെ പോസ്റ്റിംഗ്, കുറിപ്പുകൾ, പ്രമാണങ്ങൾ എന്നിവയും ഓണാക്കിയ അറിവും ഈ കണക്ഷനിലേക്ക് അയയ്ക്കുന്നു. നിങ്ങളുടെ ദാതാവ് ഇതിന് നിരക്ക് ഈടാക്കിയേക്കാം."
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "ഈ കത്തും ജോലി പോസ്റ്റിംഗും നിങ്ങളുടെ കീ ഉപയോഗിച്ച് {provider}-ലേക്ക് അയയ്ക്കുന്നു, നിങ്ങൾ അയയ്ക്കുക അമർത്തുമ്പോൾ മാത്രം."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "ഈ കത്ത് നിങ്ങളുടെ കീ ഉപയോഗിച്ച് {provider}-ലേക്ക് അയയ്ക്കുന്നു, നിങ്ങൾ അയയ്ക്കുക അമർത്തുമ്പോൾ മാത്രം."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "ഈ റെസ്യൂമെയും ജോലി പോസ്റ്റിംഗും നിങ്ങളുടെ കീ ഉപയോഗിച്ച് {provider}-ലേക്ക് അയയ്ക്കുന്നു, നിങ്ങൾ അയയ്ക്കുക അമർത്തുമ്പോൾ മാത്രം."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "ഈ റെസ്യൂമെ നിങ്ങളുടെ കീ ഉപയോഗിച്ച് {provider}-ലേക്ക് അയയ്ക്കുന്നു, നിങ്ങൾ അയയ്ക്കുക അമർത്തുമ്പോൾ മാത്രം."
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "ഈ കഥയും ഓണാക്കിയ വസ്തുതകളും നിങ്ങളുടെ AI കണക്ഷനിലേക്ക് അയയ്ക്കുന്നു. കണക്ഷൻ ഇല്ലെങ്കിൽ ഒന്നും അയയ്ക്കില്ല."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "നിങ്ങളുടെ കീ ഉപയോഗിച്ച് {provider} എന്നതിലേക്ക് നിങ്ങളുടെ സന്ദേശവും ജോലി പോസ്റ്റിംഗും അയയ്ക്കുന്നു, നിങ്ങൾ അയയ്ക്കുക അമർത്തുമ്പോൾ മാത്രം."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "നിങ്ങളുടെ കീ ഉപയോഗിച്ച് {provider} ലേക്ക് നിങ്ങളുടെ സന്ദേശം അയയ്‌ക്കുന്നു, നിങ്ങൾ അയയ്ക്കുക അമർത്തുമ്പോൾ മാത്രം."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "{0}-ലേക്ക് അയച്ചു"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "Lumen-ന് അയച്ചു"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "ഉറവിട കോഡ്"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "ഉറവിടങ്ങൾ"
@@ -11324,8 +11319,7 @@ msgstr "സ്റ്റാറ്റസ്"
 msgid "Stay here"
 msgstr "ഇവിടെ നിൽക്കൂ"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "നിർത്തി. തിരുത്തലുകളൊന്നു�
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "ഈ ബാക്കപ്പ് കോഡുകൾ സുരക്ഷിതമായ എവിടെയെങ്കിലും സൂക്ഷിക്കുക. ഉപകരണം നഷ്ടപ്പെട്ടാൽ ഓരോന്നും ഒരു തവണ സൈൻ ഇൻ ചെയ്യാൻ ഉപയോഗിക്കാം."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "ചിന്തിക്കുന്നു"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "ചിന്തിക്കുന്നു..."
 
@@ -13896,6 +13895,10 @@ msgstr "നിങ്ങളുടെ ആമുഖം"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "നിങ്ങളുടെ ആമുഖം, കൊണ്ടുവരേണ്ട കഥകൾ, ചോദിക്കേണ്ട ചോദ്യങ്ങൾ. കോളിന് 10 മിനിറ്റ് മുമ്പ് ഇത് നിങ്ങളുടെ ചെക്ക്‌ലിസ്റ്റ് ആകും."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

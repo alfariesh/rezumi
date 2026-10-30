@@ -2,7 +2,7 @@ import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
-import { ContextMenu, Sheet } from "@heroui-pro/react";
+import { ContextMenu, PromptSuggestion, Sheet } from "@heroui-pro/react";
 import { Button, buttonVariants, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -291,17 +291,17 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 	);
 
 	const header = (messages: readonly UIMessage[]) => (
-		<header className="flex h-12 shrink-0 items-center gap-2 border-b border-line ps-4 pe-2">
+		<header className="flex h-12 shrink-0 items-center gap-2 border-b border-separator ps-4 pe-2">
 			{!wide && (
 				<IconButton
 					icon="clock-counter-clockwise"
 					label={t`Conversations`}
 					size="sm"
-					className="-ms-2 text-ink-2"
+					className="-ms-2 text-muted"
 					onPress={() => setRailOpen(true)}
 				/>
 			)}
-			<Icon name="sparkle" size={20} className="shrink-0 text-accent-text" />
+			<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
 			<h2 className="me-auto min-w-0 truncate text-sm font-semibold">{titleFor(summary)}</h2>
 			{(usable.length > 0 || summary) && (
 				<ModelChip
@@ -317,7 +317,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 				icon="copy"
 				label={t`Copy conversation`}
 				size="sm"
-				className="text-ink-2"
+				className="text-muted"
 				isDisabled={messages.length === 0}
 				onPress={() =>
 					void copyToClipboard(
@@ -368,12 +368,12 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 
 				<section
 					aria-label={t`Coach`}
-					className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xl border border-line bg-surface"
+					className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xl border border-separator bg-surface"
 				>
 					{notSetUp ? (
 						<>
 							{header([])}
-							<p className="m-6 rounded-xl bg-sunken p-4 text-sm text-ink-2">
+							<p className="m-6 rounded-xl bg-default p-4 text-sm text-muted">
 								<Trans>
 									The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge,
 									Offers and your applications work without it.
@@ -456,30 +456,26 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	return (
 		<div className="grid gap-6 pt-[clamp(0px,6vh,48px)]">
 			<div className="grid gap-3">
-				<h3 className="font-display text-[30px] leading-9 font-medium">
+				<h3 className="text-3xl leading-9 font-semibold">
 					<Trans>What are you working on?</Trans>
 				</h3>
-				<p className="text-[15px] leading-[23px] text-ink-2">
+				<p className="text-[15px] leading-[23px] text-muted">
 					<Trans>
 						Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on
 						below and say what they relied on.
 					</Trans>
 				</p>
 			</div>
-			<div className="grid gap-2.5 sm:grid-cols-3">
-				{starters.map((starter) => (
-					<button
-						key={starter.icon}
-						type="button"
-						disabled={disabled}
-						onClick={() => onPick(starter.text)}
-						className="flex min-h-[112px] flex-col items-start gap-3 rounded-xl border border-line bg-raised p-3.5 text-start text-sm leading-5 shadow-e1 transition-[box-shadow,scale] duration-quick ease-enter hover:shadow-e2 enabled:active:scale-[0.98] disabled:opacity-60"
-					>
-						<Icon name={starter.icon} size={22} className="text-accent-text" />
-						{starter.text}
-					</button>
-				))}
-			</div>
+			<PromptSuggestion variant="card" className="@container">
+				<PromptSuggestion.Items className="grid-cols-1 @xl:grid-cols-3">
+					{starters.map((starter) => (
+						<PromptSuggestion.Item key={starter.icon} isDisabled={disabled} onPress={() => onPick(starter.text)}>
+							<Icon name={starter.icon} size={22} className="text-accent" />
+							<PromptSuggestion.ItemTitle>{starter.text}</PromptSuggestion.ItemTitle>
+						</PromptSuggestion.Item>
+					))}
+				</PromptSuggestion.Items>
+			</PromptSuggestion>
 		</div>
 	);
 }
@@ -503,7 +499,7 @@ function ModelChip({ open, onOpenChange, providers, current, label, onChoose }: 
 				variant="secondary"
 				size="sm"
 				aria-label={t`Connection: ${text}`}
-				className="h-7 min-h-0 max-w-[50%] min-w-0 justify-start rounded-sm bg-sunken px-2 font-mono text-xs text-ink-2 transition-colors duration-quick hover:text-ink aria-expanded:text-ink"
+				className="h-7 min-h-0 max-w-[50%] min-w-0 justify-start rounded-sm bg-default px-2 font-mono text-xs text-muted transition-colors duration-quick hover:text-foreground aria-expanded:text-foreground"
 			>
 				<span className="truncate">{text}</span>
 			</Button>
@@ -571,11 +567,11 @@ function ConversationRail({ threads, currentId, onNavigate, onRename, onDelete }
 				</Eyebrow>
 				<ul className="-mx-1 grid min-h-0 flex-1 content-start gap-0.5 overflow-y-auto px-1">
 					{currentId === null && (
-						<li aria-current="page" className="grid gap-0.5 rounded-lg bg-sunken px-2.5 py-2">
+						<li aria-current="page" className="grid gap-0.5 rounded-lg bg-default px-2.5 py-2">
 							<span className="text-[13px] leading-[18px] font-medium">
 								<Trans>New conversation</Trans>
 							</span>
-							<span className="text-xs text-ink-3">
+							<span className="text-xs text-muted">
 								<Trans>Now</Trans>
 							</span>
 						</li>
@@ -599,7 +595,7 @@ function ConversationRail({ threads, currentId, onNavigate, onRename, onDelete }
 				</ul>
 			</div>
 
-			<p className="px-2.5 text-xs leading-[17px] text-ink-3">
+			<p className="px-2.5 text-xs leading-[17px] text-muted">
 				<Trans>Conversations about one job live in its workspace.</Trans>
 			</p>
 		</nav>
@@ -658,7 +654,7 @@ function RailItem({
 							onRenameEnd(cancelled.current ? null : event.currentTarget.value);
 							cancelled.current = false;
 						}}
-						className="h-[54px] w-full rounded-lg border border-accent bg-raised px-2.5 text-base font-medium outline-none md:text-[13px]"
+						className="h-[54px] w-full rounded-lg border border-accent bg-overlay px-2.5 text-base font-medium outline-none md:text-[13px]"
 					/>
 				) : (
 					<Link
@@ -668,11 +664,11 @@ function RailItem({
 						onClick={onNavigate}
 						className={cn(
 							"grid gap-0.5 rounded-lg py-2 ps-2.5 pe-9 transition-colors duration-quick",
-							current ? "bg-sunken" : "hover:bg-hover",
+							current ? "bg-default" : "hover:bg-default",
 						)}
 					>
 						<span className="line-clamp-2 text-[13px] leading-[18px] font-medium">{title}</span>
-						<span className="text-xs text-ink-3">{date}</span>
+						<span className="text-xs text-muted">{date}</span>
 					</Link>
 				)}
 				{!renaming && (
@@ -682,7 +678,7 @@ function RailItem({
 							iconSize={18}
 							size="sm"
 							label={t`More for ${title}`}
-							className="absolute inset-e-1 top-1.5 size-7 min-w-0 text-ink-3 opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
+							className="absolute inset-e-1 top-1.5 size-7 min-w-0 text-muted opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
 						/>
 						<Dropdown.Popover placement="bottom end">
 							<Dropdown.Menu>

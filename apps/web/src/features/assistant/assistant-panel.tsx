@@ -3,6 +3,7 @@ import type { AssistantDocument } from "./document";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { ChatListView, PromptSuggestion } from "@heroui-pro/react";
 import { Button, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -16,6 +17,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { useConversationConnection } from "./chat";
 import { Composer, Conversation } from "./conversation";
+import { PendingTurn } from "./pending-turn";
 import { ProviderSetup } from "./provider-setup";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { formatVersionTime } from "@/features/resume/share/format";
@@ -53,7 +55,9 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 	const [view, setView] = useState<"thread" | "history">("thread");
 	const [providerId, setProviderId] = useState<string | null>(null);
 	const [modelMenuOpen, setModelMenuOpen] = useState(false);
-	const [starting, setStarting] = useState(false);
+	// The message being started, shown at once while the conversation is created.
+	const [startingText, setStartingText] = useState<string | null>(null);
+	const starting = startingText !== null;
 	const [context, setContext] = useState<MessageContext>({ document: true, posting: true });
 	const [promptAttachments, setPromptAttachments] = useState<ChatAttachment[]>([]);
 	const [draftKey, setDraftKey] = useState(0);
@@ -94,7 +98,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 
 	const start = async (text: string, attachments: ChatAttachment[] = []) => {
 		if (starting) return;
-		setStarting(true);
+		setStartingText(text);
 		try {
 			const id = await ensureThread();
 			useEditorStore.setState({ assistantPrompt: text, assistantDraft: null });
@@ -107,7 +111,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		} catch (error) {
 			toastError(error, t`Couldn't start the conversation. Try again.`);
 		}
-		setStarting(false);
+		setStartingText(null);
 	};
 
 	// A question from ⌘K or Job match starts a conversation as soon as the assistant can. A link's draft never does.
@@ -133,9 +137,9 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 	const notSetUp = threads.error instanceof ORPCError && threads.error.code === "PRECONDITION_FAILED";
 
 	return (
-		<section aria-label={t`Assistant`} className="flex h-full min-h-0 flex-col bg-surface">
-			<header className="flex h-[52px] shrink-0 items-center gap-1 border-b border-line ps-4 pe-2">
-				<Icon name="sparkle" size={20} className="text-accent-text" />
+		<section aria-label={t`Assistant`} className="flex h-full min-h-0 flex-col">
+			<header className="flex h-[52px] shrink-0 items-center gap-1 rounded-2xl bg-surface-secondary ps-4 pe-2">
+				<Icon name="sparkle" size={20} className="text-accent" />
 				<h2 className="me-auto text-[15px] font-semibold">
 					<Trans>Assistant</Trans>
 				</h2>
@@ -154,7 +158,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 				<IconButton
 					icon="note-pencil"
 					label={t`New conversation`}
-					className="text-ink-2"
+					className="text-muted"
 					onPress={() => {
 						draftThread.current = null;
 						creatingThread.current = null;
@@ -169,10 +173,10 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 					icon="clock-counter-clockwise"
 					label={t`Past conversations`}
 					aria-pressed={view === "history"}
-					className={cn("text-ink-2", view === "history" && "bg-accent-soft text-accent-text")}
+					className={cn("text-muted", view === "history" && "bg-accent-soft text-accent-soft-foreground")}
 					onPress={() => setView(view === "history" ? "thread" : "history")}
 				/>
-				<IconButton icon="x" label={t`Close the assistant`} shortcut="⌘J" className="text-ink-2" onPress={onClose} />
+				<IconButton icon="x" label={t`Close the assistant`} shortcut="⌘J" className="text-muted" onPress={onClose} />
 			</header>
 
 			{notSetUp ? (
@@ -227,7 +231,15 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 				/>
 			) : (
 				<>
-					<EmptyState document={document} disabled={document.locked || starting} onPick={(text) => void start(text)} />
+					{startingText ? (
+						<PendingTurn text={startingText} className="min-h-0 flex-1 overflow-y-auto py-3" />
+					) : (
+						<EmptyState
+							document={document}
+							disabled={document.locked || starting}
+							onPick={(text) => void start(text)}
+						/>
+					)}
 					<Composer
 						// A draft arriving while the box is open replaces what's in it.
 						key={`${draftKey}:${draft ?? ""}`}
@@ -235,7 +247,6 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 						document={document}
 						context={context}
 						onContextChange={setContext}
-						providerLabel={providerLabel}
 						streaming={starting}
 						disabled={document.locked}
 						threadId={null}
@@ -275,7 +286,10 @@ function ConversationLoader({ threadId, document, ...props }: ConversationLoader
 			</Notice>
 		);
 	if (!thread.data || !thread.isFetchedAfterMount)
-		return (
+		// A first message is already on its way: show it instead of an empty wait.
+		return props.prompt ? (
+			<PendingTurn text={props.prompt} className="min-h-0 flex-1 overflow-y-auto py-3" />
+		) : (
 			// Hidden for the first 150ms, so a quick refetch never flashes a spinner.
 			<div className="grid flex-1 place-items-center transition-opacity delay-150 duration-standard ease-enter starting:opacity-0">
 				<Spinner size="md" color="current" className="text-muted" aria-hidden />
@@ -312,7 +326,7 @@ function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: 
 				variant="ghost"
 				size="sm"
 				aria-label={t`Model: ${label}`}
-				className="h-7 max-w-[140px] gap-0.5 px-2 text-xs text-ink-2"
+				className="h-7 max-w-[140px] gap-0.5 px-2 text-xs text-muted"
 			>
 				<span className="truncate">{current?.model ?? label}</span>
 				<Icon name="caret-down" size={16} />
@@ -355,7 +369,7 @@ function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: 
 }
 
 function Notice({ children }: { children: ReactNode }) {
-	return <p className="m-4 rounded-xl bg-sunken p-4 text-sm text-ink-2">{children}</p>;
+	return <p className="m-4 rounded-xl bg-default p-4 text-sm text-muted">{children}</p>;
 }
 
 type Suggestion = { icon: IconName; label: string; hint: string };
@@ -413,10 +427,10 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 	return (
 		<div className="grid min-h-0 flex-1 content-start gap-4 overflow-y-auto p-4">
 			<div className="grid gap-1.5">
-				<h3 className="font-display text-[22px] leading-7 font-medium">
+				<h3 className="text-xl leading-7 font-semibold">
 					<Trans>What should we work on?</Trans>
 				</h3>
-				<p className="text-sm text-ink-2">
+				<p className="text-sm text-muted">
 					{document.posting ? (
 						<Trans>
 							I can see this {kind} and the {document.posting.company} posting. Suggestions come back as edits you can
@@ -427,29 +441,33 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 					)}
 				</p>
 				{document.locked && (
-					<p className="text-xs text-warn-text">
+					<p className="text-xs text-warning-soft-foreground">
 						<Trans>This document is locked. Unlock it to get suggestions.</Trans>
 					</p>
 				)}
 			</div>
-			<ul className="grid gap-1">
-				{suggestionsFor(document, prepare).map((suggestion, index) => (
-					<li key={suggestion.label} style={stagger(index)} className={ENTER_CLASS}>
-						<button
-							type="button"
-							disabled={disabled}
-							onClick={() => onPick(suggestion.label)}
-							className="flex min-h-11 w-full items-center gap-3 rounded-lg border border-line px-3 py-2 text-start transition-[background-color,scale] duration-quick ease-enter hover:bg-hover enabled:active:scale-[0.98] disabled:opacity-60"
+			<PromptSuggestion>
+				<PromptSuggestion.Items className="grid-cols-1">
+					{suggestionsFor(document, prepare).map((suggestion, index) => (
+						<PromptSuggestion.Item
+							key={suggestion.label}
+							isDisabled={disabled}
+							showEndIcon={false}
+							style={stagger(index)}
+							className={ENTER_CLASS}
+							onPress={() => onPick(suggestion.label)}
 						>
-							<Icon name={suggestion.icon} size={20} className="shrink-0 text-ink-2" />
-							<span className="grid min-w-0">
-								<span className="truncate text-sm font-medium">{suggestion.label}</span>
-								<span className="truncate text-xs text-ink-3">{suggestion.hint}</span>
+							<Icon name={suggestion.icon} size={20} className="shrink-0 text-muted" />
+							<span className="grid min-w-0 flex-1">
+								<PromptSuggestion.ItemTitle className="truncate">{suggestion.label}</PromptSuggestion.ItemTitle>
+								<PromptSuggestion.ItemDescription className="truncate">
+									{suggestion.hint}
+								</PromptSuggestion.ItemDescription>
 							</span>
-						</button>
-					</li>
-				))}
-			</ul>
+						</PromptSuggestion.Item>
+					))}
+				</PromptSuggestion.Items>
+			</PromptSuggestion>
 		</div>
 	);
 }
@@ -507,95 +525,66 @@ function PastConversations({ threads, document, currentId, onOpen }: PastConvers
 		}
 	};
 
+	const list = (items: readonly ThreadSummary[], label: string, detailOf: (thread: ThreadSummary) => string) => (
+		<ChatListView aria-label={label} items={items}>
+			{(thread) => (
+				<ChatListView.Item
+					id={thread.id}
+					textValue={thread.title}
+					className={cn(thread.id === currentId && "bg-default")}
+					onAction={() => open(thread)}
+				>
+					<ChatListView.ItemContent>
+						<ChatListView.Text>
+							<ChatListView.Title>{thread.title}</ChatListView.Title>
+							<ChatListView.Preview>{detailOf(thread)}</ChatListView.Preview>
+						</ChatListView.Text>
+						<ChatListView.Meta>
+							<IconButton
+								icon="x"
+								label={t`Delete ${thread.title}`}
+								size="sm"
+								className="text-muted"
+								onPress={() => void remove(thread)}
+							/>
+						</ChatListView.Meta>
+					</ChatListView.ItemContent>
+				</ChatListView.Item>
+			)}
+		</ChatListView>
+	);
+
 	return (
-		<div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-3">
+		<div className="min-h-0 flex-1 space-y-5 overflow-y-auto py-3">
 			<section aria-labelledby="assistant-this-document" className="grid gap-1">
-				<h3 id="assistant-this-document" className="px-3 text-xs font-semibold text-ink-3">
+				<h3 id="assistant-this-document" className="px-3 text-xs font-semibold text-muted">
 					<Trans>This document</Trans>
 				</h3>
 				{mine.length > 0 ? (
-					<ul className="grid">
-						{mine.map((thread, index) => (
-							<ConversationRow
-								key={thread.id}
-								index={index}
-								thread={thread}
-								current={thread.id === currentId}
-								detail={`${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)}`}
-								onOpen={() => open(thread)}
-								onDelete={() => void remove(thread)}
-							/>
-						))}
-					</ul>
+					list(
+						mine,
+						t`This document`,
+						(thread) => `${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)}`,
+					)
 				) : (
-					<p className="px-3 text-sm text-ink-2">
+					<p className="px-3 text-sm text-muted">
 						<Trans>No conversations about this document yet.</Trans>
 					</p>
 				)}
 			</section>
 			{others.length > 0 && (
 				<section aria-labelledby="assistant-other-documents" className="grid gap-1">
-					<h3 id="assistant-other-documents" className="px-3 text-xs font-semibold text-ink-3">
+					<h3 id="assistant-other-documents" className="px-3 text-xs font-semibold text-muted">
 						<Trans>Other documents · {others.length}</Trans>
 					</h3>
-					<ul className="grid">
-						{others.map((thread, index) => (
-							<ConversationRow
-								key={thread.id}
-								index={mine.length + index}
-								thread={thread}
-								current={false}
-								detail={`${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)} · ${thread.coverLetterName ?? thread.resumeName ?? ""}`}
-								onOpen={() => open(thread)}
-								onDelete={() => void remove(thread)}
-							/>
-						))}
-					</ul>
+					{list(
+						others,
+						t`Other documents`,
+						(thread) =>
+							`${formatVersionTime(new Date(thread.lastMessageAt), i18n.locale)} · ${outcome(thread)} · ${thread.coverLetterName ?? thread.resumeName ?? ""}`,
+					)}
 				</section>
 			)}
 		</div>
-	);
-}
-
-type ConversationRowProps = {
-	thread: ThreadSummary;
-	current: boolean;
-	detail: string;
-	index: number;
-	onOpen: () => void;
-	onDelete: () => void;
-};
-
-function ConversationRow({ thread, current, detail, index, onOpen, onDelete }: ConversationRowProps) {
-	return (
-		<li
-			style={stagger(index)}
-			// cn keeps the last transition list, so the hover colour is named again after ENTER_CLASS's.
-			className={cn(
-				"group/row flex items-center gap-1 rounded-lg hover:bg-hover",
-				ENTER_CLASS,
-				"transition-[opacity,translate,background-color]",
-			)}
-		>
-			<button
-				type="button"
-				aria-current={current ? "true" : undefined}
-				onClick={onOpen}
-				className={cn(
-					"grid min-w-0 flex-1 rounded-lg px-3 py-2 text-start transition-colors duration-quick ease-enter active:bg-press",
-					current && "bg-sunken",
-				)}
-			>
-				<span className="truncate text-sm font-medium">{thread.title}</span>
-				<span className="truncate text-xs text-ink-3">{detail}</span>
-			</button>
-			<IconButton
-				icon="x"
-				label={t`Delete ${thread.title}`}
-				size="sm"
-				className="me-1 text-ink-3 opacity-0 transition-[opacity,background-color,border-color,color,filter,scale] group-hover/row:opacity-100 focus-visible:opacity-100"
-				onPress={onDelete}
-			/>
-		</li>
 	);
 }

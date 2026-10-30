@@ -71,7 +71,7 @@ export type ChatViewProps = {
 type Prompt = { threadId: string; text: string; attachments: ChatAttachment[] };
 
 const MAX_FILES = 10;
-const MAX_FILE_BYTES = 25 * 1024 * 1024;
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 100 * 1024 * 1024;
 
 /** One conversation (or a new one), its change sets and questions, and the composer. */
@@ -691,7 +691,7 @@ function Composer(props: ComposerProps) {
 	const attach = async () => {
 		const picked = await DocumentPicker.getDocumentAsync({ multiple: true, copyToCacheDirectory: true });
 		if (picked.canceled) return;
-		// Sizes are checked before any file is read: 25 MB a file and 100 MB in all, the server's limits.
+		// Sizes are checked before any file is read: 5 MB a file (the app's limit; the server takes 25) and 100 MB in all.
 		let budget = MAX_TOTAL_BYTES - attachments.reduce((total, item) => total + item.size, 0);
 		let room = MAX_FILES - attachments.length;
 		const files: { asset: DocumentPicker.DocumentPickerAsset; key: string; size: number }[] = [];
@@ -708,7 +708,7 @@ function Composer(props: ComposerProps) {
 			}
 		}
 		if (skipped.count > 0) showToast({ message: t`Attach up to 10 files to a message.` });
-		if (skipped.big) showToast({ message: t`Files can be up to 25 MB each.` });
+		if (skipped.big) showToast({ message: t`Files can be up to 5 MB each.` });
 		if (skipped.total) showToast({ message: t`Attachments can be up to 100 MB in all.` });
 		if (files.length === 0) return;
 		setAttachments((current) => [

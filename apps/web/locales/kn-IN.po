@@ -289,6 +289,11 @@ msgstr "{0, plural, one {# ನಿಮಿಷದ ಹಿಂದೆ ಪ್ರಾರಂ
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {# ದಾಖಲೆಗೆ ಟ್ಯಾಗ್‌ಗಳು} other {# ದಾಖಲೆಗಳಿಗೆ ಟ್ಯಾಗ್‌ಗಳು}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{1} ನಲ್ಲಿನ {0} ನಿಮ್ಮ ಸಮಯ ವಲಯದಲ್�
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "{0} ಸಂದರ್ಶನ"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "ಲಿಂಕ್ ಪೂರ್ಣ ವಿಳಾಸವಲ್ಲ"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "ಲಿಂಕ್ ಅದು ತೋರಿಸುವ ವಿಳಾಸಕ್ಕಿಂತ ಬೇರೆ ಕಡೆಗೆ ಸೂಚಿಸುತ್ತದೆ."
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "ಕವರ್ ಲೆಟರ್ ಲಗತ್ತಿಸಿ (PDF)"
 msgid "Attach a cover letter file (PDF)"
 msgstr "ಕವರ್ ಲೆಟರ್ ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ"
 
@@ -4679,10 +4698,6 @@ msgstr "ನೀವು ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆದ ಪ್ರತ
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತಿನ ಪ್ರತಿಯೊಂದು ಅವಶ್ಯಕತೆಯನ್ನು ನಿಮ್ಮ ಜ್ಞಾನದಲ್ಲಿರುವ ಸಂಗತಿಗಳು ಮತ್ತು ಕಥೆಗಳೊಂದಿಗೆ ಪರಿಶೀಲಿಸಲಾಗುತ್ತದೆ. ಕೊರತೆಗಳು ಪುರಾವೆಯ ಕೊರತೆಯಾಗಿ ತೋರುತ್ತವೆ, ಸಾಮರ್ಥ್ಯದ ಕೊರತೆಯಾಗಿ ಎಂದಿಗೂ ಅಲ್ಲ."
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "ಪ್ರತಿ ಕಳುಹಿಸುವಿಕೆಯು ಈ ಸಂದೇಶ ಮತ್ತು ಆಯ್ಕೆಮಾಡಿದ ಫೈಲ್‌ಗಳೊಂದಿಗೆ ಹೊಸದಾಗಿ ಪ್ರಾರಂಭವಾಗುತ್ತದೆ. ಹಿಂದಿನ ಸಂಭಾಷಣೆಯ ಇತಿಹಾಸವು ಇಲ್ಲಿಯೇ ಇರುತ್ತದೆ."
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "ಇತರೆ · OpenAI-ಹೊಂದಾಣಿಕೆ"
 msgid "Other benefits"
 msgstr "ಇತರ ಸೌಲಭ್ಯಗಳು"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "ಹಿಂದಿನ ಸಂಚಿಕೆ"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "ದಾಖಲೆ ವಿವರಗಳನ್ನು ಒಳಗೊಂಡಂತೆ ಹಿಂದಿನ ಸಂದೇಶಗಳನ್ನು ಸಹ ಕಳುಹಿಸಲಾಗಿದೆ."
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "ಲಾಕ್ಷಣಿಕ CSS ಶೈಲಿ ಹಾಳೆ"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "ಕಳುಹಿಸು"
 
@@ -10594,33 +10609,9 @@ msgstr "ಈ ಅರ್ಜಿಯ ಉದ್ಯೋಗ ಜಾಹೀರಾತು, ಟ�
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "ಈ ಅರ್ಜಿಯ ಉದ್ಯೋಗ ಜಾಹೀರಾತು, ಟಿಪ್ಪಣಿಗಳು ಮತ್ತು ಡಾಕ್ಯುಮೆಂಟ್‌ಗಳನ್ನು, ಜೊತೆಗೆ ಆನ್ ಮಾಡಿರುವ ಜ್ಞಾನವನ್ನು ಈ ಸಂಪರ್ಕಕ್ಕೆ ಕಳುಹಿಸುತ್ತದೆ. ನಿಮ್ಮ ಪೂರೈಕೆದಾರರು ಇದಕ್ಕೆ ಶುಲ್ಕ ವಿಧಿಸಬಹುದು."
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "ನೀವು ಕಳುಹಿಸು ಒತ್ತಿದಾಗ ಮಾತ್ರ ಈ ಪತ್ರ ಮತ್ತು ಕೆಲಸವನ್ನು ಪೋಸ್ಟ್ ಮಾಡುವ ಕೆಲಸವನ್ನು ನಿಮ್ಮ ಕೀಲಿಯೊಂದಿಗೆ {provider} ಗೆ ಕಳುಹಿಸುತ್ತದೆ."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "ನೀವು ಕಳುಹಿಸು ಒತ್ತಿದಾಗ ಮಾತ್ರ ಈ ಪತ್ರವನ್ನು ನಿಮ್ಮ ಕೀಲಿಯೊಂದಿಗೆ {provider} ಗೆ ಕಳುಹಿಸುತ್ತದೆ."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "ನೀವು ಕಳುಹಿಸು ಒತ್ತಿದಾಗ ಮಾತ್ರ ಈ ರೆಸ್ಯೂಮೆ ಮತ್ತು ಪೋಸ್ಟ್ ಮಾಡುವ ಕೆಲಸವನ್ನು ನಿಮ್ಮ ಕೀಲಿಯೊಂದಿಗೆ {provider} ಗೆ ಕಳುಹಿಸುತ್ತದೆ."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "ನೀವು ಕಳುಹಿಸು ಒತ್ತಿದಾಗ ಮಾತ್ರ ಈ ರೆಸ್ಯೂಮೆಯನ್ನು ನಿಮ್ಮ ಕೀಲಿಯೊಂದಿಗೆ {provider} ಗೆ ಕಳುಹಿಸುತ್ತದೆ."
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "ಈ ಕಥೆ ಮತ್ತು ಆನ್ ಮಾಡಿರುವ ಸಂಗತಿಗಳನ್ನು ನಿಮ್ಮ AI ಸಂಪರ್ಕಕ್ಕೆ ಕಳುಹಿಸುತ್ತದೆ. ಸಂಪರ್ಕವಿಲ್ಲದಿದ್ದರೆ, ಏನನ್ನೂ ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "ನಿಮ್ಮ ಕೀಲಿಯೊಂದಿಗೆ {provider} ಗೆ ನಿಮ್ಮ ಸಂದೇಶ ಮತ್ತು ಪೋಸ್ಟ್ ಮಾಡುವ ಕೆಲಸವನ್ನು ಕಳುಹಿಸುತ್ತದೆ, ನೀವು ಕಳುಹಿಸು ಒತ್ತಿದಾಗ ಮಾತ್ರ."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "ನೀವು ಕಳುಹಿಸು ಒತ್ತಿದಾಗ ಮಾತ್ರ ನಿಮ್ಮ ಕೀಲಿಯೊಂದಿಗೆ ನಿಮ್ಮ ಸಂದೇಶವನ್ನು {provider} ಗೆ ಕಳುಹಿಸುತ್ತದೆ."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "{0} ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "Lumen ಗೆ ಕಳುಹಿಸಲಾಗಿದೆ"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "ಮೂಲ ಕೋಡ್"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "ಮೂಲಗಳು"
@@ -11324,8 +11319,7 @@ msgstr "ಸ್ಥಿತಿ"
 msgid "Stay here"
 msgstr "ಇಲ್ಲೇ ಇರು"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "ನಿಲ್ಲಿಸಿದೆ. ಯಾವುದೇ ಸಂಪಾದನೆ
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "ಈ ಬ್ಯಾಕಪ್ ಕೋಡ್‌ಗಳನ್ನು ಸುರಕ್ಷಿತ ಸ್ಥಳದಲ್ಲಿ ಇರಿಸಿ. ನೀವು ನಿಮ್ಮ ಸಾಧನವನ್ನು ಕಳೆದುಕೊಂಡರೆ, ಪ್ರತಿಯೊಂದು ಕೋಡ್ ನಿಮ್ಮನ್ನು ಒಮ್ಮೆ ಸೈನ್ ಇನ್ ಮಾಡುತ್ತದೆ."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "ಯೋಚಿಸಲಾಗುತ್ತಿದೆ"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "ಯೋಚಿಸುತ್ತಿದೆ..."
 
@@ -13896,6 +13895,10 @@ msgstr "ನಿಮ್ಮ ಆರಂಭಿಕ ಮಾತು"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "ನಿಮ್ಮ ಆರಂಭಿಕ ಮಾತು, ತರಬೇಕಾದ ಕಥೆಗಳು ಮತ್ತು ಕೇಳಬೇಕಾದ ಪ್ರಶ್ನೆಗಳು. ಕರೆಗೆ 10 ನಿಮಿಷ ಮೊದಲು ಇದು ನಿಮ್ಮ ಪರಿಶೀಲನಾಪಟ್ಟಿಯಾಗುತ್ತದೆ."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

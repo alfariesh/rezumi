@@ -16,7 +16,7 @@ export function AssistantButton() {
 			shortcut="⌘J"
 			aria-pressed={open}
 			data-assistant-toggle=""
-			className={cn("text-ink-2", open && "bg-accent-soft text-accent-text hover:bg-accent-soft")}
+			className={cn("text-muted", open && "bg-accent-soft text-accent-soft-foreground hover:bg-accent-soft")}
 			onPointerEnter={() => void loadAssistantPanel()}
 			onFocus={() => void loadAssistantPanel()}
 			onPress={() => setOpen(!open)}

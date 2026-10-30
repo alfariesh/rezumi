@@ -289,6 +289,11 @@ msgstr "{0, plural, one {Alkoi # minuutti sitten} other {Alkoi # minuuttia sitte
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {Tunnisteet # asiakirjalle} other {Tunnisteet # asiakirjalle}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{0} aikavyöhykkeellä {1} on {2} omalla aikavyöhykkeelläsi ({preferre
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "{0} haastattelu"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "Linkki ei ole täydellinen osoite"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Linkki osoittaa muualle kuin sen näyttämään osoitteeseen."
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "Liitä saatekirje (PDF)"
 msgid "Attach a cover letter file (PDF)"
 msgstr "Liitä saatekirjetiedosto (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "Liitä tiedosto"
 
@@ -4679,10 +4698,6 @@ msgstr "Jokainen vastaus, josta saat palautetta, säilytetään tässä uusin en
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Ilmoituksen jokaista vaatimusta verrataan tietopankkisi faktoihin ja tarinoihin. Aukot näkyvät puuttuvana näyttönä, ei koskaan puuttuvana osaamisena."
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "Jokainen lähetys alkaa alusta tästä viestistä ja valituista tiedostoista. Aiempi keskusteluhistoria säilyy täällä."
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "Muu · OpenAI-yhteensopiva"
 msgid "Other benefits"
 msgstr "Muut edut"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Edellinen numero"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "Myös aiemmat viestit, mukaan lukien asiakirjan tiedot, lähetetään."
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "Semanttinen CSS-tyylitiedosto"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "Lähetä"
 
@@ -10594,33 +10609,9 @@ msgstr "Lähettää tämän hakemuksen ilmoituksen, muistiinpanot ja asiakirjat 
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "Lähettää tämän hakemuksen ilmoituksen, muistiinpanot ja asiakirjat sekä käyttöön otetun tietopankin sisällön tähän yhteyteen. Palveluntarjoajasi voi veloittaa siitä."
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "Lähettää tämän kirjeen ja työpaikkailmoituksen osoitteeseen {provider} avaimesi kanssa vain, kun painat lähetä."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "Lähettää tämän kirjeen numeroon {provider} avaimesi kanssa vain, kun painat lähetä."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "Lähettää tämän ansioluettelon ja työpaikkailmoituksen osoitteeseen {provider} avaimesi kanssa vain, kun painat lähetä."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "Lähettää tämän ansioluettelon numeroon {provider} avaimesi kanssa vain, kun painat lähetä."
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "Lähettää tämän tarinan ja käyttöön otetut faktat tekoälyyhteydellesi. Ilman yhteyttä mitään ei lähetetä."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "Lähettää viestisi ja työpaikkailmoituksen osoitteeseen {provider} avaimellasi vain, kun painat lähetä."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "Lähettää viestisi numeroon {provider} avaimellasi vain, kun painat lähetä."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "Lähetetty numeroon {0}"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "Lähetetty Lumenille"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "Lähdekoodi"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "Lähteet"
@@ -11324,8 +11319,7 @@ msgstr "Tila"
 msgid "Stay here"
 msgstr "Pysy täällä"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "Pysähtynyt. Muokkauksia ei ehdotettu."
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Säilytä nämä varmuuskoodit turvallisessa paikassa. Kullakin voi kirjautua sisään kerran, jos kadotat laitteesi."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "Mietitään"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "Ajattelu…"
 
@@ -13896,6 +13895,10 @@ msgstr "Avauksesi"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Avauksesi, mukaan otettavat tarinat ja esitettävät kysymykset. Siitä tulee tarkistuslistasi 10 minuuttia ennen puhelua."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

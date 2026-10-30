@@ -289,6 +289,11 @@ msgstr "{0, plural, one {Filloi para # minute} other {Filloi para # minutash}}"
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {Etiketat për # dokument} other {Etiketat për # dokumente}}"
 
+#. placeholder {0}: steps.length
+#: src/features/assistant/conversation.tsx
+msgid "{0, plural, one {Took # step} other {Took # steps}}"
+msgstr ""
+
 #. placeholder {0}: fact.usedBy.savedItems
 #: src/features/career/knowledge/facts.tsx
 msgid "{0, plural, one {used in # saved item} other {used in # saved items}}"
@@ -353,6 +358,17 @@ msgstr "{0} në {1} është {2} në zonën tuaj kohore ({preferredZone})."
 #: src/features/career/workspace/shell.tsx
 msgid "{0} interview"
 msgstr "Intervistë {0}"
+
+#. placeholder {0}: file.name
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is empty."
+msgstr ""
+
+#. placeholder {0}: file.name
+#. placeholder {1}: new Intl.NumberFormat(i18n.locale, { style: "unit", unit: "megabyte" }).format(MAX_ATTACHMENT_BYTES / (1024 * 1024))
+#: src/features/assistant/attachment-limits.ts
+msgid "{0} is larger than {1}."
+msgstr ""
 
 #. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
@@ -988,6 +1004,10 @@ msgstr "Një lidhje nuk është një adresë e plotë"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Një lidhje çon diku tjetër nga adresa që tregon."
+
+#: src/features/assistant/attachment-limits.ts
+msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "A model's opinion, not a verdict. It can be wrong."
@@ -2111,8 +2131,7 @@ msgstr "Bashkangjit një letër motivuese (PDF)"
 msgid "Attach a cover letter file (PDF)"
 msgstr "Bashkangjit një skedar letre motivuese (PDF)"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "Bashkangjit një skedar"
 
@@ -4679,10 +4698,6 @@ msgstr "Çdo përgjigje për të cilën merrni komente ruhet këtu, nga më e re
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Çdo kërkesë në shpallje kontrollohet kundrejt fakteve dhe historive në Njohuritë tuaja. Mangësitë shfaqen si prova që mungojnë, kurrë si aftësi që mungon."
-
-#: src/features/assistant/conversation.tsx
-msgid "Each send starts fresh with this message and selected files. Previous conversation history stays here."
-msgstr "Çdo dërgim fillon i ri me këtë mesazh dhe skedarët e zgjedhur. Historiku i bisedave të mëparshme qëndron këtu."
 
 #: src/features/career/coach.tsx
 msgid "earlier messages in this chat"
@@ -8391,6 +8406,10 @@ msgstr "Të tjera · OpenAI-kompatibël"
 msgid "Other benefits"
 msgstr "Përfitime të tjera"
 
+#: src/features/assistant/assistant-panel.tsx
+msgid "Other documents"
+msgstr ""
+
 #. placeholder {0}: others.length
 #: src/features/assistant/assistant-panel.tsx
 msgid "Other documents · {0}"
@@ -8929,10 +8948,6 @@ msgstr ""
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Çështja e mëparshme"
-
-#: src/features/assistant/conversation.tsx
-msgid "Previous messages, including document details, are also sent."
-msgstr "Mesazhet e mëparshme, duke përfshirë detajet e dokumentit, dërgohen gjithashtu."
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
@@ -10556,7 +10571,7 @@ msgid "Semantic CSS stylesheet"
 msgstr "Fletë stili semantike CSS"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "Dërgo"
 
@@ -10594,33 +10609,9 @@ msgstr "Dërgon shpalljen, shënimet dhe dokumentet e këtij aplikimi, si dhe Nj
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "Dërgon shpalljen, shënimet dhe dokumentet e këtij aplikimi, si dhe Njohuritë e aktivizuara, te kjo lidhje. Ofruesi juaj mund t’ju faturojë për këtë."
 
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter and the posting to {provider} with your key, only when you press send."
-msgstr "Dërgoni këtë letër dhe njoftimin e punës në {provider} me çelësin tuaj, vetëm kur shtypni dërgoni."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this letter to {provider} with your key, only when you press send."
-msgstr "Dërgon këtë letër në {provider} me çelësin tuaj, vetëm kur shtypni dërgo."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume and the posting to {provider} with your key, only when you press send."
-msgstr "E dërgon këtë CV dhe postimin e punës në {provider} me çelësin tuaj, vetëm kur shtypni dërgo."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends this resume to {provider} with your key, only when you press send."
-msgstr "E dërgon këtë rezyme në {provider} me çelësin tuaj, vetëm kur shtypni dërgo."
-
 #: src/features/homepage/remember.tsx
 msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
 msgstr "Dërgon këtë histori dhe faktet e aktivizuara te lidhja juaj AI. Pa të, asgjë nuk dërgohet."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message and the posting to {provider} with your key, only when you press send."
-msgstr "Dërgon mesazhin tuaj dhe postimin e punës në {provider} me çelësin tuaj, vetëm kur shtypni dërgo."
-
-#: src/features/assistant/conversation.tsx
-msgid "Sends your message to {provider} with your key, only when you press send."
-msgstr "Dërgon mesazhin tuaj në {provider} me çelësin tuaj, vetëm kur shtypni dërgo."
 
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
@@ -10651,6 +10642,10 @@ msgstr "Dërguar në {0}"
 #: src/features/resume/share/history-tab.tsx
 msgid "Sent to Lumen"
 msgstr "U dërgua te Lumen"
+
+#: src/features/assistant/prompt-box.tsx
+msgid "Sent with your message"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Serbian"
@@ -11136,7 +11131,7 @@ msgid "Source code"
 msgstr "Kodi burimor"
 
 #: src/features/assistant/conversation.tsx
-#: src/features/career/coach-chat.tsx
+#: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
 msgid "Sources"
 msgstr "Burimet"
@@ -11324,8 +11319,7 @@ msgstr "Statusi"
 msgid "Stay here"
 msgstr "Qëndro këtu"
 
-#: src/features/assistant/conversation.tsx
-#: src/features/career/coach-thread.tsx
+#: src/features/assistant/prompt-box.tsx
 #: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
@@ -11359,6 +11353,10 @@ msgstr "Ndaloi. Asnjë modifikim nuk u propozua."
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Store these backup codes somewhere safe. Each one signs you in once if you lose your device."
 msgstr "Ruajini këto kode rezervë diku të sigurt. Secili ju lejon të hyni një herë nëse humbni pajisjen."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Stored encrypted and tested right away."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -12104,6 +12102,7 @@ msgid "Thinking"
 msgstr "Po mendohet"
 
 #: src/features/assistant/conversation.tsx
+#: src/features/assistant/pending-turn.tsx
 msgid "Thinking…"
 msgstr "Duke menduar…"
 
@@ -13896,6 +13895,10 @@ msgstr "Hyrja juaj"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Hyrja juaj, historitë që do të sillni dhe pyetjet për të bërë. 10 minuta para telefonatës bëhet lista juaj e kontrollit."
+
+#: src/features/assistant/provider-setup.tsx
+msgid "Your own endpoint"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
