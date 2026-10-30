@@ -178,7 +178,7 @@ export function ResumeThumbnail({ resume }: ResumeThumbnailProps) {
 					style={{ backgroundImage: `url(${thumbnail.url})` }}
 				/>
 			) : thumbnail.status === "error" ? (
-				<div className="absolute inset-0 flex items-center justify-center text-ink-3">
+				<div className="absolute inset-0 flex items-center justify-center text-muted">
 					<Icon name="file-text" size={24} />
 				</div>
 			) : (

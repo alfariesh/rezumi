@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# सम्पर्कमा अमान्य इमेल वा कुनै नाम छैन; यसको रोजगार आवेदन अझै आयात गर्दछ।} other {# सम्पर्कहरूको अमान्य इमेल वा कुनै नाम छैन; तिनीहरूको रोजगारीका आवेदनहरू अझै आयात हुन्छन्।}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# दिन बाँकी} other {# दिन बाँकी}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# प्रविष्टि} other {# प्र�
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# खुला समस्या} other {# खुला समस्याहरू}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# परिवर्तन लागू गर्नुहोस्} other {# परिवर्तनहरू लागू गर्नुहोस्}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} नि:शुल्क CV टेम्प्लेटहरू। तपाईंको लागि सही टेम्प्लेट छान्नुहोस्।"
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} चयन गरिएको"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "आवेदक ट्र्याकिङ प्रणालीहर�
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "आवेदन"
 
@@ -4237,7 +4236,7 @@ msgstr "मेटाइएको आवेदन"
 msgid "Deleted from Saved"
 msgstr "\"सुरक्षित गरिएका\" बाट मेटाइयो"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "मा मेटाइयो"
 
@@ -4756,7 +4755,7 @@ msgstr "यो अन्तर्वार्ता सम्पादन गर
 msgid "Edit…"
 msgstr "सम्पादन गर्नुहोस्..."
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "सम्पादन गरियो"
 
@@ -6587,6 +6586,7 @@ msgstr "पत्र"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "पत्र"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "सम्पादन लक गर्नुहोस्"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "ताला लगाइएको"
 
@@ -7354,9 +7355,9 @@ msgstr "मेरो काम सपोर्टको काम नबढा�
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "स्थानीय Ollama को लागि वैकल्पिक"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "विकल्पहरू"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} का लागि विकल्पहरू"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "प्रदाता (Provider)"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "पुन: सुरु"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "बायोडाटा"
@@ -10439,6 +10442,7 @@ msgstr "तल हेर्नुहोस्"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "चयन गर्नुहोस्"
 
@@ -10453,6 +10457,7 @@ msgstr "{0} चयन गर्नुहोस्"
 msgid "Select {0} at {1}"
 msgstr "{1} मा {0} चयन गर्नुहोस्"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "सबै चयन गर्नुहोस्"
@@ -12528,8 +12533,7 @@ msgstr "दुई-चरण प्रमाणिकरण सक्रिय �
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {#-kontakten har en ugyldig e-mail eller intet navn; dens jobansøgning importerer stadig.} other {#-kontakter har en ugyldig e-mail eller intet navn; deres jobansøgninger importerer stadig.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# dag tilbage} other {# dage tilbage}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# indgang} other {# poster}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# åbent problem} other {# åbne problemer}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Anvend # ændring} other {Anvend # ændringer}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} gratis CV-skabeloner. Vælg den rigtige skabelon til dig."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} valgt"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "Ansøgerens sporingssystemer gør din PDF til almindelig tekst, før nog
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Ansøgning"
 
@@ -4237,7 +4236,7 @@ msgstr "Slettet ansøgning"
 msgid "Deleted from Saved"
 msgstr "Slettet fra Gemt"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Slettet i"
 
@@ -4756,7 +4755,7 @@ msgstr "Rediger dette interview..."
 msgid "Edit…"
 msgstr "Redigere…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Redigeret"
 
@@ -6587,6 +6586,7 @@ msgstr "brev"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Brev"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Lås redigering"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Låst"
 
@@ -7354,9 +7355,9 @@ msgstr "Min opgave var at finde ud af hvorfor uden at skabe mere supportarbejde.
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Valgfrit til lokale Ollama"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Valgmuligheder"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "Muligheder for {0}"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "Udbyder"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "CV"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "CV"
@@ -10439,6 +10442,7 @@ msgstr "Se nedenfor"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Vælg"
 
@@ -10453,6 +10457,7 @@ msgstr "Vælg {0}"
 msgid "Select {0} at {1}"
 msgstr "Vælg {0} på {1}"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Vælg alle"
@@ -12528,8 +12533,7 @@ msgstr "To-trins verifikation slået til"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

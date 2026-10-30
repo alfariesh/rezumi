@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# contacte té un correu electrònic no vàlid o no té nom; la seva candidatura s'importa igualment.} other {# contactes tenen un correu electrònic no vàlid o no tenen nom; les seves candidatures s'importen igualment.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {queda # dia} other {queden # dies}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {Entrada #} other {# entrades}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# problema obert} other {# problemes oberts}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Aplica # canvi} other {Aplica # canvis}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} plantilles de CV gratuïtes. Trieu la plantilla adequada per a vosaltres."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} seleccionats"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "Els sistemes de seguiment de sol·licitants converteixen el vostre PDF e
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Candidatura"
 
@@ -4237,7 +4236,7 @@ msgstr "Candidatura suprimida"
 msgid "Deleted from Saved"
 msgstr "S'ha suprimit de Desats"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "S'ha suprimit a"
 
@@ -4756,7 +4755,7 @@ msgstr "Edita aquesta entrevista..."
 msgid "Edit…"
 msgstr "Edita..."
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Editat"
 
@@ -6587,6 +6586,7 @@ msgstr "carta"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Carta"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Bloquejar l'edició"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Bloquejat"
 
@@ -7354,9 +7355,9 @@ msgstr "La meva feina era esbrinar-ne el motiu sense afegir feina de suport."
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Opcional per a Ollama local"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Opcions"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "Opcions per a {0}"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "Proveïdor"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "currículum"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Currículum vitae"
@@ -10439,6 +10442,7 @@ msgstr "Vegeu a sota"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Seleccioneu"
 
@@ -10453,6 +10457,7 @@ msgstr "Selecciona {0}"
 msgid "Select {0} at {1}"
 msgstr "Seleccioneu {0} a {1}"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Selecciona-ho tot"
@@ -12528,8 +12533,7 @@ msgstr "S'ha activat la verificació en dos passos"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

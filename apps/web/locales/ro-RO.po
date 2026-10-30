@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# contact are un e-mail nevalid sau nu are nume; candidatura sa se importă totuși.} few {# contacte au un e-mail nevalid sau nu au nume; candidaturile lor se importă totuși.} other {# de contacte au un e-mail nevalid sau nu au nume; candidaturile lor se importă totuși.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# zi rămasă} few {# zile rămase} other {# de zile rămase}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# intrare} other {# intrări}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# problemă nerezolvată} few {# probleme nerezolvate} other {# de probleme nerezolvate}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Aplicați # modificare} few {Aplicați # modificări} other {Aplicați # de modificări}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} șabloane de CV gratuite. Alege șablonul potrivit pentru tine."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} selectate"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "Sistemele de urmărire a solicitanților transformă PDF în text simplu
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Candidatură"
 
@@ -4237,7 +4236,7 @@ msgstr "Candidatură ștearsă"
 msgid "Deleted from Saved"
 msgstr "Șters din Salvat"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Șters în"
 
@@ -4756,7 +4755,7 @@ msgstr "Editează acest interviu..."
 msgid "Edit…"
 msgstr "Edita…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Editat"
 
@@ -6587,6 +6586,7 @@ msgstr "scrisoare"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Scrisoare"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Blocați editarea"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Blocat"
 
@@ -7354,9 +7355,9 @@ msgstr "Sarcina mea era să aflu de ce, fără a adăuga muncă pentru suport."
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Opțional pentru Ollama local"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Opțiuni"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "Opțiuni pentru {0}"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "Furnizor"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "relua"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "CV"
@@ -10439,6 +10442,7 @@ msgstr "Vedeți mai jos"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Selectați"
 
@@ -10453,6 +10457,7 @@ msgstr "Selectați {0}"
 msgid "Select {0} at {1}"
 msgstr "Selectați {0} la {1}"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Selectați tot"
@@ -12528,8 +12533,7 @@ msgstr "Verificarea în doi pași a fost activată"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

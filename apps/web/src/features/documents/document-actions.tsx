@@ -468,15 +468,15 @@ export function LinkApplicationDialog({ document: requested, onClose }: LinkAppl
 									isDisabled={link.isPending}
 									onPress={() => void choose(application.id)}
 								>
-									<Icon name="briefcase" className="text-ink-2" />
+									<Icon name="briefcase" className="text-muted" />
 									<span className="grid min-w-0">
 										<span className="truncate font-medium">{application.role}</span>
-										<span className="truncate text-xs text-ink-3">{application.company}</span>
+										<span className="truncate text-xs text-muted">{application.company}</span>
 									</span>
 								</Button>
 							))}
 							{jobs.length === 0 && (
-								<p className="text-sm text-ink-2">
+								<p className="text-sm text-muted">
 									<Trans>No applications yet. Add one in Applications first.</Trans>
 								</p>
 							)}

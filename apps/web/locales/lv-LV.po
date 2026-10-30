@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# kontaktpersonai ir nederīgs e-pasts vai nav vārda; tā darba pieteikums joprojām tiek importēts.} other {# kontaktpersonām ir nederīgs e-pasts vai nav vārda; viņu darba pieteikumi joprojām tiek importēti.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, zero {Atlikušas # dienas} one {Atlikusi # diena} other {Atlikušas # dienas}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# ieraksts} other {# ieraksti}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, zero {# atvērtas problēmas} one {# atvērta problēma} other {# atvērtas problēmas}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, zero {Piemērot # izmaiņas} one {Piemērot # izmaiņu} other {Piemērot # izmaiņas}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} bezmaksas CV veidnes. Izvēlieties sev piemērotāko veidni."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "Atlasīti: {count}"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "Pretendentu izsekošanas sistēmas pārvērš jūsu PDF vienkāršā tek
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Pieteikums"
 
@@ -4237,7 +4236,7 @@ msgstr "Dzēsts pieteikums"
 msgid "Deleted from Saved"
 msgstr "Izdzēsts no sadaļas “Saglabāts”"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Izdzēsts"
 
@@ -4756,7 +4755,7 @@ msgstr "Rediģēt šo interviju…"
 msgid "Edit…"
 msgstr "Rediģēt…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Rediģēts"
 
@@ -6587,6 +6586,7 @@ msgstr "vēstule"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Vēstule"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Bloķēt rediģēšanu"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Bloķēts"
 
@@ -7354,9 +7355,9 @@ msgstr "Mans uzdevums bija noskaidrot iemeslu, nepalielinot atbalsta darba apjom
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Pēc izvēles vietējam Ollama"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Iespējas"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} opcijas"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "Pakalpojumu sniedzējs"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "CV"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "CV"
@@ -10439,6 +10442,7 @@ msgstr "Skatīt zemāk"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Izvēlieties"
 
@@ -10453,6 +10457,7 @@ msgstr "Atlasīt {0}"
 msgid "Select {0} at {1}"
 msgstr "Izvēlieties {0} pie {1}"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Atlasīt visu"
@@ -12528,8 +12533,7 @@ msgstr "Divpakāpju verifikācija ieslēgta"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

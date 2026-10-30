@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# పరిచయం చెల్లని ఇమెయిల్ లేదా పేరు లేదు; దాని జాబ్ అప్లికేషన్ ఇప్పటికీ దిగుమతి అవుతుంది.} other {# పరిచయాలకు చెల్లని ఇమెయిల్ లేదా పేరు లేదు; వారి ఉద్యోగ దరఖాస్తులు ఇప్పటికీ దిగుమతి అవుతున్నాయి.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# రోజు మిగిలి ఉంది} other {# రోజులు మిగిలి ఉన్నాయి}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# ఎంట్రీ} other {# ఎంట్రీ�
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# పరిష్కరించని సమస్య} other {# పరిష్కరించని సమస్యలు}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# మార్పును వర్తింపజేయి} other {# మార్పులను వర్తింపజేయి}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} ఉచిత CV టెంప్లేట్‌లు. మీ కోసం సరైన టెంప్లేట్‌ని ఎంచుకోండి."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} ఎంచుకోబడ్డాయి"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "దరఖాస్తుదారు ట్రాకింగ్ సి�
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "దరఖాస్తు"
 
@@ -4237,7 +4236,7 @@ msgstr "తొలగించిన దరఖాస్తు"
 msgid "Deleted from Saved"
 msgstr "‘సేవ్ చేయబడింది’ నుండి తొలగించబడింది"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "లో తొలగించబడింది"
 
@@ -4756,7 +4755,7 @@ msgstr "ఈ ఇంటర్వ్యూని సవరించండి..."
 msgid "Edit…"
 msgstr "సవరించు..."
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "సవరించబడింది"
 
@@ -6587,6 +6586,7 @@ msgstr "లేఖ"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "లేఖ"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "లాక్ సవరణ"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "లాక్ చేయబడింది"
 
@@ -7354,9 +7355,9 @@ msgstr "సపోర్ట్ పనిని పెంచకుండా, క�
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "స్థానిక Ollama కోసం ఐచ్ఛికం"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "ఎంపికలు"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} కోసం ఎంపికలు"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "ప్రొవైడర్"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "పునఃప్రారంభం"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "రెజ్యూమ్"
@@ -10439,6 +10442,7 @@ msgstr "కింద చూడండి"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "ఎంచుకోండి"
 
@@ -10453,6 +10457,7 @@ msgstr "{0}ని ఎంచుకోండి"
 msgid "Select {0} at {1}"
 msgstr "{1} వద్ద {0}ని ఎంచుకోండి"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "అన్నీ ఎంచుకోండి"
@@ -12528,8 +12533,7 @@ msgstr "రెండు-దశల ధృవీకరణ ఆన్ చేయబ�
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

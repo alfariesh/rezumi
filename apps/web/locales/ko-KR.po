@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# 연락처의 이메일이 잘못되었거나 이름이 없습니다. 해당 작업 지원서는 여전히 가져옵니다.} other {# 연락처에 잘못된 이메일이 있거나 이름이 없습니다. 그들의 입사 지원서는 여전히 가져옵니다.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {#일 남음} other {#일 남음}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# 항목} other {# 항목}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {미해결 문제 #개} other {미해결 문제 #개}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {변경 사항 #개 적용}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count}개의 무료 이력서 템플릿. 귀하에게 적합한 템플릿을 선택하세요."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count}개 선택됨"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "지원자 추적 시스템은 누군가가 읽기 전에 PDF를 일반 �
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "지원 내역"
 
@@ -4237,7 +4236,7 @@ msgstr "삭제된 지원 내역"
 msgid "Deleted from Saved"
 msgstr "저장됨에서 삭제됨"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "다음 날짜에 삭제됨"
 
@@ -4756,7 +4755,7 @@ msgstr "이 인터뷰를 편집하세요…"
 msgid "Edit…"
 msgstr "편집하다…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "편집됨"
 
@@ -6587,6 +6586,7 @@ msgstr "편지"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "레터"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "편집 잠금"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "잠김"
 
@@ -7354,9 +7355,9 @@ msgstr "제 역할은 고객 지원 업무를 늘리지 않고 원인을 찾는 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "로컬 Ollama의 경우 선택 사항"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "옵션"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} 옵션"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "제공자"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "재개하다"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "이력서"
@@ -10439,6 +10442,7 @@ msgstr "아래 참조"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "선택"
 
@@ -10453,6 +10457,7 @@ msgstr "{0} 선택"
 msgid "Select {0} at {1}"
 msgstr "{1}에서 {0}를 선택하세요."
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "모두 선택"
@@ -12528,8 +12533,7 @@ msgstr "2단계 인증이 켜졌습니다"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

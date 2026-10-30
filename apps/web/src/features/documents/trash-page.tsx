@@ -1,9 +1,11 @@
+import { EmptyState } from "@heroui-pro/react";
 import { buttonVariants } from "@heroui/react";
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
-import { DocumentRow } from "./document-card";
+import { DocumentList } from "./document-list";
 import { LibraryError } from "./library-error";
 import { PageHeader } from "@/components/layout/page-header";
 import { orpc } from "@/libs/orpc/client";
@@ -26,7 +28,7 @@ export function TrashPage() {
 				back={
 					<Link
 						to="/dashboard"
-						className={buttonVariants({ variant: "ghost", size: "sm", className: "-ms-2.5 w-fit gap-1.5 text-ink-2" })}
+						className={buttonVariants({ variant: "ghost", size: "sm", className: "-ms-2.5 w-fit gap-1.5 text-muted" })}
 					>
 						<Icon name="arrow-left" size={18} />
 						<Trans>Back to documents</Trans>
@@ -39,47 +41,21 @@ export function TrashPage() {
 			{isError && <LibraryError retrying={isFetching} onRetry={() => void refetch()} />}
 
 			{isError && !documents ? null : !isPending && documents?.length === 0 ? (
-				<div className="grid justify-items-center gap-2 py-16 text-center">
-					<Icon name="trash" size={28} className="text-ink-3" />
-					<p className="font-semibold">
-						<Trans>Trash is empty</Trans>
-					</p>
-					<p className="text-sm text-ink-2">
-						<Trans>Documents you move here stay for 30 days.</Trans>
-					</p>
-				</div>
+				<EmptyState className="py-16">
+					<EmptyState.Header>
+						<EmptyState.Media variant="icon">
+							<Icon name="trash" size={22} />
+						</EmptyState.Media>
+						<EmptyState.Title>
+							<Trans>Trash is empty</Trans>
+						</EmptyState.Title>
+						<EmptyState.Description className="max-w-xs text-pretty">
+							<Trans>Documents you move here stay for 30 days.</Trans>
+						</EmptyState.Description>
+					</EmptyState.Header>
+				</EmptyState>
 			) : (
-				<table className="w-full table-fixed border-collapse">
-					<caption className="sr-only">
-						<Trans>Trash</Trans>
-					</caption>
-					<thead>
-						<tr className="border-b border-line text-xs font-medium text-ink-3">
-							<th className="h-10 ps-3 text-start font-medium">
-								<Trans>Name</Trans>
-							</th>
-							<th className="w-24 px-2 text-start font-medium max-sm:hidden">
-								<Trans>Type</Trans>
-							</th>
-							<th className="w-1/4 px-2 text-start font-medium max-sm:hidden">
-								<Trans>Application</Trans>
-							</th>
-							<th className="w-28 px-2 text-start font-medium max-sm:w-24">
-								<Trans>Deleted in</Trans>
-							</th>
-							<th className="w-12">
-								<span className="sr-only">
-									<Trans>Options</Trans>
-								</span>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{documents?.map((document) => (
-							<DocumentRow key={`${document.type}:${document.id}`} document={document} onTags={noop} onLink={noop} />
-						))}
-					</tbody>
-				</table>
+				<DocumentList documents={documents ?? []} label={t`Trash`} inTrash onTags={noop} onLink={noop} />
 			)}
 		</div>
 	);

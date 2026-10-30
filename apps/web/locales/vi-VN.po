@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {Liên hệ # có email không hợp lệ hoặc không có tên; Đơn xin việc của nó vẫn được nhập khẩu.} other {Danh bạ # có email không hợp lệ hoặc không có tên; đơn xin việc của họ vẫn được nhập khẩu.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, other {Còn # ngày}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {Mục nhập #} other {Các mục #}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, other {# vấn đề chưa xử lý}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {Áp dụng # thay đổi}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} mẫu CV miễn phí. Chọn mẫu phù hợp với bạn."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "Đã chọn {count}"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "Hệ thống theo dõi người nộp đơn biến PDF của bạn thàn
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Hồ sơ ứng tuyển"
 
@@ -4237,7 +4236,7 @@ msgstr "Hồ sơ ứng tuyển đã xóa"
 msgid "Deleted from Saved"
 msgstr "Đã xóa khỏi Đã lưu"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Đã xóa trong"
 
@@ -4756,7 +4755,7 @@ msgstr "Chỉnh sửa cuộc phỏng vấn này…"
 msgid "Edit…"
 msgstr "Biên tập…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Đã chỉnh sửa"
 
@@ -6587,6 +6586,7 @@ msgstr "thư"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Thư"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Khóa chỉnh sửa"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Đã khóa"
 
@@ -7354,9 +7355,9 @@ msgstr "Nhiệm vụ của tôi là tìm ra nguyên nhân mà không làm tăng 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Tùy chọn cho Ollama cục bộ"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Tùy chọn"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "Tùy chọn cho {0}"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "Nhà cung cấp"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "bản tóm tắt"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Sơ yếu lý lịch"
@@ -10439,6 +10442,7 @@ msgstr "Xem bên dưới"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Lựa chọn"
 
@@ -10453,6 +10457,7 @@ msgstr "Chọn {0}"
 msgid "Select {0} at {1}"
 msgstr "Chọn {0} tại {1}"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Chọn tất cả"
@@ -12528,8 +12533,7 @@ msgstr "Đã bật xác minh hai bước"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

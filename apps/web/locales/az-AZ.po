@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# kontaktında etibarsız e-poçt var və ya adı yoxdur; onun iş müraciəti hələ də idxal olunur.} other {# kontaktlarının etibarsız e-poçtu var və ya adı yoxdur; onların iş müraciətləri hələ də idxal olunur.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# gün qalıb} other {# gün qalıb}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# girişi} other {# girişləri}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# açıq problem} other {# açıq problem}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# dəyişikliyi tətbiq et} other {# dəyişikliyi tətbiq et}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} pulsuz CV şablonu. Sizin üçün düzgün şablonu seçin."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} seçildi"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "Ərizəçi izləmə sistemləri PDF-nu hər kəs oxumazdan əvvəl düz 
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Ərizə"
 
@@ -4237,7 +4236,7 @@ msgstr "Silinmiş müraciət"
 msgid "Deleted from Saved"
 msgstr "Saxlanılanlardan silindi"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Silindi"
 
@@ -4756,7 +4755,7 @@ msgstr "Bu müsahibəni redaktə edin..."
 msgid "Edit…"
 msgstr "Redaktə et..."
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Redaktə edilib"
 
@@ -6587,6 +6586,7 @@ msgstr "məktub"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Məktub"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Redaktəni kilidləyin"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Kilidlənib"
 
@@ -7354,9 +7355,9 @@ msgstr "Mənim vəzifəm dəstək işini artırmadan səbəbini tapmaq idi."
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Yerli Ollama üçün isteğe bağlıdır"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Seçimlər"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} üçün seçimlər"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "Provayder"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "rezyume"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "CV"
@@ -10439,6 +10442,7 @@ msgstr "Aşağıya baxın"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Seçin"
 
@@ -10453,6 +10457,7 @@ msgstr "{0} seçin"
 msgid "Select {0} at {1}"
 msgstr "{1}-da {0} seçin"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Hamısını seçin"
@@ -12528,8 +12533,7 @@ msgstr "İki addımlı doğrulama yandırıldı"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {Kontakt # ma nieprawidłowy adres e-mail lub nie ma nazwy; jego podanie o pracę nadal importuje.} other {Kontakty # mają nieprawidłowy adres e-mail lub nie mają nazwy; ich podania o pracę nadal importują.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {Pozostał # dzień} few {Pozostały # dni} many {Pozostało # dni} other {Pozostało # dnia}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {Wpis #} other {Wpisy #}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# otwarty problem} few {# otwarte problemy} many {# otwartych problemów} other {# otwartego problemu}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Zastosuj # zmianę} few {Zastosuj # zmiany} many {Zastosuj # zmian} other {Zastosuj # zmiany}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "Liczba darmowych szablonów CV: {count}. Wybierz odpowiedni szablon dla siebie."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "Zaznaczono: {count}"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "Systemy śledzenia kandydatów przekształcają PDF w zwykły tekst, zan
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Podanie o pracę"
 
@@ -4237,7 +4236,7 @@ msgstr "Usunięta aplikacja"
 msgid "Deleted from Saved"
 msgstr "Usunięto z zakładki Zapisano"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Usunięto w"
 
@@ -4756,7 +4755,7 @@ msgstr "Edytuj ten wywiad…"
 msgid "Edit…"
 msgstr "Redagować…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Edytowane"
 
@@ -6587,6 +6586,7 @@ msgstr "list"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "List"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Zablokuj edycję"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Zablokowany"
 
@@ -7354,9 +7355,9 @@ msgstr "Moim zadaniem było ustalić przyczynę, nie dokładając pracy działow
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Opcjonalnie dla lokalnego Ollama"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Opcje"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "Opcje dla {0}"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "Dostawca"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "wznawiać"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "CV"
@@ -10439,6 +10442,7 @@ msgstr "Zobacz poniżej"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Zaznacz"
 
@@ -10453,6 +10457,7 @@ msgstr "Zaznacz {0}"
 msgid "Select {0} at {1}"
 msgstr "Wybierz {0} i {1}"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Zaznacz wszystko"
@@ -12528,8 +12533,7 @@ msgstr "Weryfikacja dwuetapowa włączona"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

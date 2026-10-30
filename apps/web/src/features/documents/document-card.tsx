@@ -1,9 +1,9 @@
 import type { DocumentSummary } from "./filter";
 import { ContextMenu } from "@heroui-pro/react";
-import { Checkbox, Dropdown } from "@heroui/react";
+import { cardVariants, Checkbox, Chip, Dropdown, Input } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
-import { Plural, Trans } from "@lingui/react/macro";
+import { Trans } from "@lingui/react/macro";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -39,6 +39,10 @@ function useDocumentMeta(document: DocumentSummary) {
 	return t`${type} · Edited ${formatRelativeTime(document.updatedAt, i18n.locale)}`;
 }
 
+/** The editor address: resumes and letters share the editor shell. */
+export const documentHref = (document: DocumentSummary) =>
+	document.type === "resume" ? `/builder/${document.id}` : `/builder/letter/${document.id}`;
+
 /** Opens the document in its editor: resumes and letters share the editor shell. */
 function OpenLink({
 	document,
@@ -73,34 +77,41 @@ function OpenLink({
 	);
 }
 
-/** Enter commits, Esc cancels, and leaving the field commits. */
-function RenameInput({ document, onDone }: { document: DocumentSummary; onDone: () => void }) {
+type RenameInputProps = { document: DocumentSummary; onDone: () => void };
+
+/**
+ * Enter commits, Esc cancels, and leaving the field commits. Keys and clicks stay in the field, so a list row
+ * neither toggles its selection nor jumps by typeahead while the name is typed.
+ */
+export function RenameInput({ document, onDone }: RenameInputProps) {
 	const actions = useDocumentActions();
 	const [value, setValue] = useState(document.name);
 	const commit = () => {
 		actions.rename(document, value);
 		onDone();
 	};
+	const stop = (event: React.SyntheticEvent) => event.stopPropagation();
 
 	return (
-		<input
+		<Input
 			// oxlint-disable-next-line jsx-a11y/no-autofocus -- renaming starts from the menu, so focus goes straight to the field.
 			autoFocus
+			fullWidth
 			value={value}
 			maxLength={100}
 			aria-label={t`Name`}
 			onChange={(event) => setValue(event.target.value)}
 			onFocus={(event) => event.target.select()}
 			onBlur={commit}
+			onPointerDown={stop}
+			onClick={stop}
 			onKeyDown={(event) => {
+				event.stopPropagation();
 				if (isImeComposing(event)) return;
 				if (event.key === "Enter") commit();
-				if (event.key === "Escape") {
-					event.stopPropagation();
-					onDone();
-				}
+				if (event.key === "Escape") onDone();
 			}}
-			className="h-7 w-full min-w-0 rounded-md border border-accent bg-raised px-1.5 text-sm font-semibold ring-3 ring-accent-soft outline-none"
+			className="h-7 min-w-0 px-1.5 text-sm font-semibold"
 		/>
 	);
 }
@@ -131,7 +142,16 @@ function PaperBadge({ icon, label }: { icon: "globe" | "lock"; label: string }) 
 	);
 }
 
-/** A 204px card: the real first page, title with ⋯, "Resume · Edited 2h ago" and the linked application. */
+/** "New" on a document created or imported in this session, until it is opened. */
+export function NewChip() {
+	return (
+		<Chip size="sm" color="accent" variant="primary" className="shrink-0">
+			<Trans>New</Trans>
+		</Chip>
+	);
+}
+
+/** A card: the real first page, title with ⋯, "Resume · Edited 2h ago" and the linked application. */
 export function DocumentCard({
 	document,
 	onTags,
@@ -159,12 +179,15 @@ export function DocumentCard({
 			<ContextMenu.Trigger<"article">
 				render={(props) => <article {...props} />}
 				style={introIndex === undefined ? undefined : stagger(introIndex)}
-				className={cn(
-					"group/card grid gap-2",
-					introIndex !== undefined && ENTER_CLASS,
-					isNew && "animate-arrive",
-					document.trashedAt && "opacity-70",
-				)}
+				className={cardVariants({ variant: "default" }).base({
+					className: cn(
+						"group/card gap-2.5 p-2 ring-0 ring-accent transition-[box-shadow,translate] duration-quick ease-enter hover:-translate-y-0.5 hover:shadow-overlay",
+						(isNew || selected) && "ring-2",
+						introIndex !== undefined && ENTER_CLASS,
+						isNew && "animate-arrive",
+						document.trashedAt && "opacity-70",
+					),
+				})}
 			>
 				<div className="relative">
 					<OpenLink
@@ -172,9 +195,7 @@ export function DocumentCard({
 						label={document.name}
 						onSelect={selecting && onSelectedChange ? () => onSelectedChange(!selected) : undefined}
 						className={cn(
-							"relative block aspect-page overflow-hidden rounded-md shadow-[0_0_0_1px_var(--line),var(--shadow-1)] transition-[translate,scale,box-shadow] duration-quick ease-enter hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_var(--line),var(--shadow-2)] active:scale-[0.98]",
-							(isNew || selected) &&
-								"shadow-[0_0_0_2px_var(--accent),var(--shadow-1)] hover:shadow-[0_0_0_2px_var(--accent),var(--shadow-2)] starting:shadow-[0_0_0_2px_transparent,var(--shadow-1)]",
+							"relative block aspect-page overflow-hidden rounded-xl bg-white ring-1 ring-separator transition-[scale] duration-quick ease-enter active:scale-[0.98]",
 							document.trashedAt && "pointer-events-none",
 						)}
 					>
@@ -184,11 +205,7 @@ export function DocumentCard({
 							<LetterThumbnail name={document.name} />
 						)}
 						<span className="absolute start-2 top-2 flex gap-1">
-							{isNew && (
-								<span className="rounded bg-accent px-1.5 text-[11px] leading-[18px] font-semibold text-on-accent">
-									<Trans>New</Trans>
-								</span>
-							)}
+							{isNew && <NewChip />}
 							{document.isPublic && <PaperBadge icon="globe" label={t`Public`} />}
 							{document.isLocked && <PaperBadge icon="lock" label={t`Locked`} />}
 						</span>
@@ -212,16 +229,16 @@ export function DocumentCard({
 					)}
 				</div>
 
-				<div className="flex items-start gap-1">
+				<div className="flex items-start gap-1 ps-1">
 					<div className="grid min-w-0 flex-1 gap-0.5">
 						{renaming ? (
 							<RenameInput document={document} onDone={() => setRenaming(false)} />
 						) : (
-							<h3 className="truncate text-sm leading-5 font-semibold">{document.name}</h3>
+							<h3 className="truncate text-sm leading-5 font-medium text-foreground">{document.name}</h3>
 						)}
-						<span className="truncate text-xs text-ink-3">{meta}</span>
+						<span className="truncate text-xs text-muted">{meta}</span>
 						{document.application && (
-							<span className="flex min-w-0 items-center gap-1 text-xs text-ink-2">
+							<span className="flex min-w-0 items-center gap-1 text-xs text-muted">
 								<Icon name="briefcase" size={14} />
 								<span className="truncate">{document.application.company}</span>
 							</span>
@@ -238,104 +255,8 @@ export function DocumentCard({
 	);
 }
 
-/** The list view's row: Name, Type, Application, Edited, ⋯. */
-export function DocumentRow({
-	document,
-	onTags,
-	onLink,
-	introIndex,
-	selected = false,
-	onSelectedChange,
-}: DocumentItemProps) {
-	const { i18n } = useLingui();
-	const openDocument = useOpenDocument();
-	const [renaming, setRenaming] = useState(false);
-	const isNew = useNewDocumentsStore((state) => state.ids.includes(document.id)) && !document.trashedAt;
-	const menuProps = {
-		document,
-		onOpen: () => openDocument(document),
-		onRename: () => setRenaming(true),
-		onTags: () => onTags(document),
-		onLink: () => onLink(document),
-	};
-
-	return (
-		<ContextMenu>
-			<ContextMenu.Trigger<"tr">
-				render={(props) => <tr {...props} />}
-				style={introIndex === undefined ? undefined : stagger(introIndex)}
-				className={cn(
-					"border-b border-line transition-colors duration-quick hover:bg-hover",
-					selected && "bg-accent-soft hover:bg-accent-soft",
-					introIndex !== undefined && ENTER_CLASS,
-					document.trashedAt && "opacity-70",
-				)}
-			>
-				{onSelectedChange && (
-					<td className="w-10 ps-3">
-						<Checkbox isSelected={selected} onChange={onSelectedChange} aria-label={t`Select ${document.name}`}>
-							<Checkbox.Content>
-								<Checkbox.Control>
-									<Checkbox.Indicator />
-								</Checkbox.Control>
-							</Checkbox.Content>
-						</Checkbox>
-					</td>
-				)}
-				<td className="py-3 ps-3 pe-2">
-					<span className="flex min-w-0 items-center gap-2.5">
-						<Icon name={document.type === "resume" ? "file-text" : "envelope-simple"} className="shrink-0 text-ink-2" />
-						{renaming ? (
-							<RenameInput document={document} onDone={() => setRenaming(false)} />
-						) : (
-							<OpenLink
-								document={document}
-								className="min-w-0 truncate text-start text-sm font-semibold hover:underline"
-							>
-								{document.name}
-							</OpenLink>
-						)}
-						{isNew && (
-							<span className="rounded bg-accent px-1.5 text-[11px] leading-[18px] font-semibold text-on-accent">
-								<Trans>New</Trans>
-							</span>
-						)}
-						{document.isPublic && (
-							<span title={t`Public`} className="shrink-0 text-ink-3">
-								<Icon name="globe" size={16} />
-								<span className="sr-only">
-									<Trans>Public</Trans>
-								</span>
-							</span>
-						)}
-						{document.isLocked && <Icon name="lock" size={16} className="shrink-0 text-ink-3" />}
-					</span>
-				</td>
-				<td className="px-2 text-sm text-ink-2 max-sm:hidden">
-					{document.type === "resume" ? <Trans>Resume</Trans> : <Trans>Letter</Trans>}
-				</td>
-				<td className="truncate px-2 text-sm text-ink-2 max-sm:hidden">{document.application?.company ?? "—"}</td>
-				<td className="px-2 text-sm whitespace-nowrap text-ink-3">
-					{document.trashedAt ? (
-						<Plural value={daysLeftInTrash(document.trashedAt)} one="# day left" other="# days left" />
-					) : (
-						formatRelativeTime(document.updatedAt, i18n.locale)
-					)}
-				</td>
-				<td className="w-10 pe-2 text-end">
-					<Dropdown>
-						<IconButton icon="dots-three" label={t`Options for ${document.name}`} size="sm" />
-						<DocumentMenuContent {...menuProps} />
-					</Dropdown>
-				</td>
-			</ContextMenu.Trigger>
-			<DocumentMenuContent {...menuProps} variant="context" />
-		</ContextMenu>
-	);
-}
-
 /** Open from a menu: resumes in the editor, letters in the letter editor. */
-function useOpenDocument() {
+export function useOpenDocument() {
 	const navigate = useNavigate();
 	return (document: DocumentSummary) => {
 		useNewDocumentsStore.getState().markOpened(document.id);

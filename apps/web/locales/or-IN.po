@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {#ଟି ଯୋଗାଯୋଗର ଇମେଲ୍ ଅବୈଧ କିମ୍ବା ନାମ ନାହିଁ; ତଥାପି ଏହାର ଆବେଦନ ଆମଦାନି ହେବ।} other {#ଟି ଯୋଗାଯୋଗର ଇମେଲ୍ ଅବୈଧ କିମ୍ବା ନାମ ନାହିଁ; ତଥାପି ସେମାନଙ୍କ ଆବେଦନ ଆମଦାନି ହେବ।}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# ଦିନ ବାକି} other {# ଦିନ ବାକି}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# ପ୍ରବେଶ} other {# ଭରଣଗୁଡ�
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# ଖୋଲା ସମସ୍ୟା} other {# ଖୋଲା ସମସ୍ୟା}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {#ଟି ପରିବର୍ତ୍ତନ ପ୍ରୟୋଗ କରନ୍ତୁ} other {#ଟି ପରିବର୍ତ୍ତନ ପ୍ରୟୋଗ କରନ୍ତୁ}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} ମାଗଣା CV ଟେମ୍ପଲେଟ୍ | ଆପଣଙ୍କ ପାଇଁ ସଠିକ୍ ଟେମ୍ପଲେଟ୍ ବାଛନ୍ତୁ |"
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count}ଟି ଚୟନ କରାଯାଇଛି"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "ଆବେଦନକାରୀ ଟ୍ରାକିଂ ସିଷ୍ଟମଗ�
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "ଆବେଦନ"
 
@@ -4237,7 +4236,7 @@ msgstr "ବିଲୋପ ହୋଇଥିବା ଆବେଦନ"
 msgid "Deleted from Saved"
 msgstr "“ସେଭ୍‍ କରାଯାଇଛି”ରୁ ବିଲୋପ ହେଲା"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "ବିଲୋପ ହୋଇଛି"
 
@@ -4756,7 +4755,7 @@ msgstr "ଏହି ସାକ୍ଷାତକାରକୁ ସମ୍ପାଦନ କ
 msgid "Edit…"
 msgstr "ସଂପାଦନା…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "ସମ୍ପାଦିତ |"
 
@@ -6588,6 +6587,7 @@ msgstr "ଚିଠି"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "ଚିଠି"
@@ -6907,6 +6907,7 @@ msgid "Lock editing"
 msgstr "ଏଡିଟିଂ ଲକ୍ କରନ୍ତୁ"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "ତାଲା ପଡିଛି"
 
@@ -7355,9 +7356,9 @@ msgstr "ମୋ କାମ ଥିଲା ସପୋର୍ଟ କାମ ନ ବଢ଼
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8273,13 +8274,13 @@ msgid "Optional for local Ollama"
 msgstr "ସ୍ଥାନୀୟ Ollama ପାଇଁ ବ tion କଳ୍ପିକ |"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "ବିକଳ୍ପଗୁଡ଼ିକ"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} ପାଇଁ ବିକଳ୍ପଗୁଡ଼ିକ |"
 
@@ -9005,6 +9006,7 @@ msgid "Provider"
 msgstr "ପ୍ରଦାନକାରୀ"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9752,6 +9754,7 @@ msgstr "ରେଜୁମ୍"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "ରେଜ୍ୟୁମେ"
@@ -10441,6 +10444,7 @@ msgstr "ତଳେ ଦେଖନ୍ତୁ"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "ଚୟନ କରନ୍ତୁ"
 
@@ -10455,6 +10459,7 @@ msgstr "{0} ଚୟନ କରନ୍ତୁ"
 msgid "Select {0} at {1}"
 msgstr "{1} ରେ {0} ଚୟନ କରନ୍ତୁ |"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "ସବୁ ଚୟନ କରନ୍ତୁ"
@@ -12531,8 +12536,7 @@ msgstr "ଦୁଇ ସୋପାନ ଯାଞ୍ଚ ଚାଲୁ ହେଲା"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

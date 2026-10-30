@@ -1,6 +1,6 @@
 # Web app migration to HeroUI
 
-Status: Phases 0–3 done (October 30, 2026); Phase 4 (documents) next.
+Status: Phases 0–4 done (October 30, 2026); Phase 5 (builder and letters) next.
 Date: October 29, 2026.
 
 ## Decisions
@@ -91,6 +91,7 @@ Replace the hand-built sidebar, icon rail and phone tab bar in `routes/dashboard
 ## Phase 4: Documents, trash and templates
 
 - Documents and Trash lists → Pro `DataGrid` (sorting, selection) or `ItemCardGroup` on phones; row menus move to a ⋯ cell, since DataGrid has no row context menu. Bulk actions → `ActionBar`. Empty states → `EmptyState`. New-document flow → `Modal`.
+- Done: `document-list.tsx` is the list view and Trash, on `DataGrid`. A row click opens the document until something is selected, then toggles the row (React Aria checkbox selection with `onRowAction`). The selection column is our own `Checkbox slot="selection"` column, because `showSelectionCheckboxes` hard-codes English labels. Column `width` only applies to resizable columns, so widths are `headerClassName` classes on a `table-fixed` table. Name and Edited headers set the URL sort (one direction per key, as the Sort select). Phones drop Type, Application and Edited and show the date under the name. List rows lose the right-click menu and the intro stagger; cards keep both, now on `cardVariants`. Tag filters and the copy-for-a-job picker are `TagGroup`s.
 
 ## Phase 5: Builder and letters
 

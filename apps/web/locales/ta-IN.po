@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# தொடர்பில் தவறான மின்னஞ்சல் உள்ளது அல்லது பெயர் இல்லை; அதன் வேலை விண்ணப்பம் இன்னும் இறக்குமதி செய்யப்படுகிறது.} other {# தொடர்புகள் தவறான மின்னஞ்சல் அல்லது பெயர் இல்லை; அவர்களின் வேலை விண்ணப்பங்கள் இன்னும் இறக்குமதி செய்யப்படுகின்றன.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# நாள் மீதமுள்ளது} other {# நாட்கள் மீதமுள்ளன}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# நுழைவு} other {# உள்ளீட�
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# திறந்த சிக்கல்} other {# திறந்த சிக்கல்கள்}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# மாற்றத்தைப் பயன்படுத்து} other {# மாற்றங்களைப் பயன்படுத்து}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} இலவச CV டெம்ப்ளேட்டுகள். உங்களுக்கான சரியான டெம்ப்ளேட்டைத் தேர்ந்தெடுக்கவும்."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} தேர்ந்தெடுக்கப்பட்டன"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "விண்ணப்பதாரர் கண்காணிப்ப�
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "விண்ணப்பம்"
 
@@ -4237,7 +4236,7 @@ msgstr "நீக்கப்பட்ட விண்ணப்பம்"
 msgid "Deleted from Saved"
 msgstr "‘சேமிக்கப்பட்டது’ தாவலிலிருந்து நீக்கப்பட்டது"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "இல் நீக்கப்பட்டது"
 
@@ -4756,7 +4755,7 @@ msgstr "இந்த நேர்காணலை திருத்தவும�
 msgid "Edit…"
 msgstr "திருத்து…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "திருத்தப்பட்டது"
 
@@ -6587,6 +6586,7 @@ msgstr "கடிதம்"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "கடிதம்"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "பூட்டு எடிட்டிங்"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "பூட்டப்பட்டது"
 
@@ -7354,9 +7355,9 @@ msgstr "ஆதரவுப் பணியைக் கூட்டாமல்,
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "உள்ளூர் Ollama சேவைக்கு விருப்பத்தேர்வு"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "விருப்பங்கள்"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} க்கான விருப்பங்கள்"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "வழங்குபவர்"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "ரெஸ்யூம்"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "ரெஸ்யூம்"
@@ -10439,6 +10442,7 @@ msgstr "கீழே பார்க்கவும்"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "தேர்ந்தெடு"
 
@@ -10453,6 +10457,7 @@ msgstr "{0} ஐத் தேர்ந்தெடு"
 msgid "Select {0} at {1}"
 msgstr "{1} இல் {0}ஐத் தேர்ந்தெடுக்கவும்"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "அனைத்தையும் தேர்ந்தெடு"
@@ -12528,8 +12533,7 @@ msgstr "இரண்டு-படி சரிபார்ப்பு இயக
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

@@ -144,7 +144,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {#টি পরিচিতির ইমেল অবৈধ বা নাম নেই; তবুও তার আবেদন আমদানি হবে।} other {#টি পরিচিতির ইমেল অবৈধ বা নাম নেই; তবুও তাদের আবেদন আমদানি হবে।}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# দিন বাকি} other {# দিন বাকি}}"
 
@@ -504,6 +504,10 @@ msgstr "{count, plural, one {# এন্ট্রি} other {# এন্ট্�
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {#টি অমীমাংসিত সমস্যা} other {#টি অমীমাংসিত সমস্যা}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {#টি পরিবর্তন প্রয়োগ করুন} other {#টি পরিবর্তন প্রয়োগ করুন}}"
@@ -515,10 +519,6 @@ msgstr ""
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} বিনামূল্যের সিভি টেমপ্লেট। আপনার জন্য সঠিক টেমপ্লেট চয়ন করুন."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count}টি নির্বাচিত"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -1843,8 +1843,7 @@ msgstr "আবেদনকারী ট্র্যাকিং সিস্ট�
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "আবেদন"
 
@@ -4237,7 +4236,7 @@ msgstr "মুছে ফেলা আবেদন"
 msgid "Deleted from Saved"
 msgstr "সংরক্ষিত থেকে মুছে ফেলা হয়েছে"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "মুছে ফেলা হয়েছে"
 
@@ -4756,7 +4755,7 @@ msgstr "এই সাক্ষাৎকারটি সম্পাদনা ক
 msgid "Edit…"
 msgstr "সম্পাদনা করুন..."
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "সম্পাদিত"
 
@@ -6587,6 +6586,7 @@ msgstr "চিঠি"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "লেটার"
@@ -6906,6 +6906,7 @@ msgid "Lock editing"
 msgstr "সম্পাদনা লক করুন"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "তালাবদ্ধ"
 
@@ -7354,9 +7355,9 @@ msgstr "আমার কাজ ছিল সাপোর্টের কাজ �
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8271,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "স্থানীয় Ollama এর জন্য ঐচ্ছিক"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "অপশন"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} এর জন্য বিকল্প"
 
@@ -9003,6 +9004,7 @@ msgid "Provider"
 msgstr "প্রদানকারী"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9750,6 +9752,7 @@ msgstr "জীবনবৃত্তান্ত"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "জীবনবৃত্তান্ত"
@@ -10439,6 +10442,7 @@ msgstr "নিচে দেখুন"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "নির্বাচন করুন"
 
@@ -10453,6 +10457,7 @@ msgstr "{0} নির্বাচন করুন"
 msgid "Select {0} at {1}"
 msgstr "{1} এ {0} নির্বাচন করুন"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "সব নির্বাচন করুন"
@@ -12528,8 +12533,7 @@ msgstr "দ্বি-পদক্ষেপ যাচাইকরণ চালু
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx

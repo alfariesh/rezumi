@@ -42,5 +42,5 @@ it("explains a missing source resume and offers import or creation when copying 
 	expect(screen.getByRole("button", { name: /^Start blank/ })).toBeEnabled();
 
 	fireEvent.click(screen.getByRole("button", { name: /^Copy a resume for a job/ }));
-	expect(screen.getByRole("button", { name: "ABOUT YOU" })).toHaveAttribute("aria-pressed", "true");
+	expect(screen.getByRole("row", { name: "ABOUT YOU" })).toHaveAttribute("aria-selected", "true");
 });

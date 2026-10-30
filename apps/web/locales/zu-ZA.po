@@ -139,7 +139,7 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr ""
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr ""
 
@@ -499,6 +499,10 @@ msgstr ""
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr ""
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr ""
@@ -509,10 +513,6 @@ msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
-msgstr ""
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
 msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
@@ -1838,8 +1838,7 @@ msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr ""
 
@@ -4232,7 +4231,7 @@ msgstr ""
 msgid "Deleted from Saved"
 msgstr ""
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr ""
 
@@ -4751,7 +4750,7 @@ msgstr ""
 msgid "Edit…"
 msgstr ""
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr ""
 
@@ -6582,6 +6581,7 @@ msgstr ""
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr ""
@@ -6901,6 +6901,7 @@ msgid "Lock editing"
 msgstr ""
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr ""
 
@@ -7349,9 +7350,9 @@ msgstr ""
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8266,13 +8267,13 @@ msgid "Optional for local Ollama"
 msgstr ""
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr ""
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr ""
 
@@ -8998,6 +8999,7 @@ msgid "Provider"
 msgstr ""
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9745,6 +9747,7 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr ""
@@ -10434,6 +10437,7 @@ msgstr ""
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr ""
 
@@ -10448,6 +10452,7 @@ msgstr ""
 msgid "Select {0} at {1}"
 msgstr ""
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr ""
@@ -12523,8 +12528,7 @@ msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
