@@ -2,7 +2,7 @@ import type { Application } from "../types";
 import type { FileAttachment } from "./file-attachment-field";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
 import { Sheet } from "@heroui-pro/react";
-import { Accordion, Button, Input, Label, TextArea } from "@heroui/react";
+import { Accordion, Button, Chip, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -131,12 +131,12 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 	};
 
 	return (
-		<Accordion className="rounded-lg border border-dashed border-line px-3">
+		<Accordion className="rounded-2xl border border-dashed border-border px-3">
 			<Accordion.Item id="job-description">
 				<Accordion.Heading>
 					<Accordion.Trigger>
 						<span className="flex items-center gap-1.5">
-							<Icon name="sparkle" size={16} className="text-accent-text" />
+							<Icon name="sparkle" size={16} className="text-accent-soft-foreground" />
 							<Trans>Job description</Trans>
 						</span>
 						<Accordion.Indicator />
@@ -144,7 +144,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 				</Accordion.Heading>
 				<Accordion.Panel>
 					<Accordion.Body className="flex flex-col gap-2">
-						<p className="text-xs text-ink-3">
+						<p className="text-xs text-muted">
 							<Trans>
 								Copy the entire job description from the posting and paste it below. We'll fill in the fields for you
 								and keep the text with this application for match scoring and tailoring.
@@ -163,7 +163,7 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							onPaste={(event) => runAutofill(event.clipboardData.getData("text"))}
 						/>
 						<div className="flex items-center justify-between gap-2">
-							<p className="text-[11px] text-ink-3">
+							<p className="text-[11px] text-muted">
 								{autofill.isPending ? (
 									<Trans>Reading the posting…</Trans>
 								) : (
@@ -456,7 +456,7 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 											attachLabel={t`Or upload a resume PDF`}
 											onChange={(value) => set("resumeFile", value)}
 										/>
-										<p className="text-[11px] text-ink-3">
+										<p className="text-[11px] text-muted">
 											<Trans>Link a Rezumi to use AI match scoring and tailoring.</Trans>
 										</p>
 									</div>
@@ -551,7 +551,7 @@ function Field({ label, required, children }: FieldProps) {
 		<div className="grid gap-1.5">
 			<Label htmlFor={id}>
 				{label}
-				{required && <span className="text-danger-text"> *</span>}
+				{required && <span className="text-danger-soft-foreground"> *</span>}
 			</Label>
 			{children(id)}
 		</div>
@@ -605,20 +605,17 @@ function TagsField({ id, value, suggestions, onChange }: TagsFieldProps) {
 			{value.length > 0 && (
 				<div className="flex flex-wrap gap-1.5">
 					{value.map((tag) => (
-						<span
-							key={tag}
-							className="inline-flex items-center gap-1 rounded-sm bg-sunken px-2 py-0.5 text-xs text-ink-3"
-						>
+						<Chip key={tag} size="md" variant="soft" className="gap-1">
 							{tag}
 							<button
 								type="button"
 								title={t`Remove tag`}
-								className="hover:text-danger-text"
+								className="hover:text-danger-soft-foreground"
 								onClick={() => onChange(value.filter((t) => t !== tag))}
 							>
 								<Icon name="x" size={12} />
 							</button>
-						</span>
+						</Chip>
 					))}
 				</div>
 			)}

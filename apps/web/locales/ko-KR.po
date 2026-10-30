@@ -148,11 +148,6 @@ msgstr "{0, plural, one {# 연락처의 이메일이 잘못되었거나 이름�
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {#일 남음} other {#일 남음}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# 데이} other {#일}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}. 이 지원 내역과 지식을 전송하며, 제
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0}(복사본)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, one {미해결 문제 #개} other {미해결 문제 #개
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {변경 사항 #개 적용}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ 월"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ 년"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} 더보기"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "지원 탭"
 msgid "Application updated"
 msgstr "지원 내역이 업데이트되었습니다"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "커뮤니티에 의해, 커뮤니티를 위해."
 msgid "Calendar"
 msgstr "달력"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "내가 직접 호스팅할 수 있나요?"
@@ -2833,6 +2839,10 @@ msgstr "닫다…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "닫은"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "읽음으로 표시할 수 없습니다. 다시 시도해 보세요."
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "서류를 휴지통으로 이동할 수 없습니다. 다시 시도해 보세요."
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "이력서를 인쇄용으로 준비할 수 없습니다. 다시 시도해 보세요."
@@ -4059,6 +4073,10 @@ msgstr "날짜는 하나의 형식을 사용합니다."
 msgid "Dates won't be read"
 msgstr "날짜를 읽을 수 없습니다."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "친애하는 {name}님,"
@@ -4563,9 +4581,19 @@ msgstr "제도…"
 msgid "drag · ⌥↑↓"
 msgstr "드래그 · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "섹션을 이곳으로 끌어다 놓아 열 사이에서 이동하세요"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "항목 수정"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "인터뷰 편집"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "듣기"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "답장을 들었다"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "{duration} 후 면접"
 msgid "Interview is in another timezone"
 msgstr "면접이 다른 시간대에서 진행됩니다"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "면접 노트"
@@ -6024,6 +6061,10 @@ msgstr "면접 노트"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "지금 면접"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "MCP 서버"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "첫 번째 응답의 중앙값"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "모델: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "단핵증"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "새로운 섹션"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind의 신규 팀들이 설정 단계에서 멈췄고, 대부분 끝까지 가지 못했습니다."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "다음호"
@@ -7500,13 +7549,25 @@ msgstr "다음 단계: {0}. 오늘에 알림을 추가합니다."
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "다음에는 첫 프로토타입 전에 성공 측정 방법부터 합의하겠습니다."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "활성 입사 지원서가 없습니다."
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "입사지원서 없음"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "새 직무가 없습니다. 탐색은 내일 {clock}에 다시 실행됩
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "아직 비교할 오퍼가 없습니다"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "미리보기 크기"
 msgid "Previewing {0} · click to apply"
 msgstr "{0} 미리보기 · 클릭하여 적용"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "이전 호"
@@ -8815,6 +8884,10 @@ msgstr "문서 세부정보를 포함한 이전 메시지도 전송됩니다."
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "지난달"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "폰트를 임베드하여 다시 내보낸 뒤 파일을 열어 텍스�
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: 시니어 프로덕트 디자이너"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "인증 앱으로 QR 코드를 스캔하거나, 비밀 키를 복사하�
 msgid "Schedule an interview"
 msgstr "인터뷰 예약"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "{date}에서 인터뷰 예약"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "인터뷰 예약…"
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "단계"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "이 편지는 수신인을 서면 그대로 유지합니다."
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "이것은 소프트웨어가 이 파일의 텍스트를 얼마나 정확하게 추출할 수 있는지를 측정합니다. 지원서가 탈락할지 예측하지 않으며, 그렇게 할 수 있는 도구도 없습니다. 파일은 이 브라우저에서 읽혔을 뿐 업로드되지 않았습니다."
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "이번 달"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "이 페이지를 불러오지 못했습니다"
@@ -12502,6 +12575,7 @@ msgstr "밑줄"
 msgid "Underline links"
 msgstr "링크에 밑줄을 긋습니다"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "웹 검색을 통해 해당 국가의 일자리를 찾아보세요. 최�
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "웹사이트"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

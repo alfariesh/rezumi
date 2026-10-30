@@ -215,34 +215,34 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							</Button>
 						</div>
 						{search.isPending && (
-							<p className="text-xs text-ink-3" role="status">
+							<p className="text-xs text-muted" role="status">
 								<Trans>Searching job postings…</Trans>
 							</p>
 						)}
 						{search.error && (
-							<p className="text-xs text-danger-text" role="alert">
+							<p className="text-xs text-danger-soft-foreground" role="alert">
 								{getOrpcErrorMessage(search.error, {
 									fallback: t`Job search failed. Try again or paste a posting link.`,
 								})}
 							</p>
 						)}
 						{search.data?.length === 0 && (
-							<p className="text-xs text-ink-3" role="status">
+							<p className="text-xs text-muted" role="status">
 								<Trans>No postings found. Try different keywords.</Trans>
 							</p>
 						)}
 						{search.data && search.data.length > 0 && (
 							<ul className="grid gap-2">
 								{search.data.map((result) => (
-									<li key={result.url} className="rounded-lg border border-line p-3">
+									<li key={result.url} className="rounded-xl border border-separator p-3">
 										<strong className="text-sm font-medium">{result.title}</strong>
-										<p className="line-clamp-2 text-xs text-ink-3">{result.description}</p>
+										<p className="line-clamp-2 text-xs text-muted">{result.description}</p>
 										<div className="mt-2 flex items-center gap-3">
 											<a
 												href={result.url}
 												target="_blank"
 												rel="noreferrer"
-												className="text-xs text-accent-text hover:underline"
+												className="text-xs text-accent-soft-foreground hover:underline"
 											>
 												<Trans>View posting</Trans>
 											</a>
@@ -321,7 +321,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 									resetRead();
 								}}
 							/>
-							<p className="text-xs text-ink-3">
+							<p className="text-xs text-muted">
 								<Trans>The original link stays with this job.</Trans>
 							</p>
 						</div>
@@ -332,19 +332,19 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						</Button>
 					)}
 					{(clipped || parsed?.postingSource.completeness === "incomplete") && (
-						<p className="text-xs text-warn-text" role="alert">
+						<p className="text-xs text-warning-soft-foreground" role="alert">
 							<Trans>
 								This description is clipped or incomplete. Review it or paste the full description before preparing.
 							</Trans>
 						</p>
 					)}
 					{parsed?.enrichmentWarning && (
-						<p className="text-xs text-warn-text" role="status">
+						<p className="text-xs text-warning-soft-foreground" role="status">
 							<Trans>AI couldn't fill the details. The posting is retained; complete the fields manually.</Trans>
 						</p>
 					)}
 					{parsed?.postingSource.fallbackReason && (
-						<p className="text-xs text-warn-text" role="status">
+						<p className="text-xs text-warning-soft-foreground" role="status">
 							<Trans>Enhanced reading was unavailable. The built-in reader retrieved this posting.</Trans>
 						</p>
 					)}
@@ -362,7 +362,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 								onChange={(event) => setDescription(event.target.value)}
 							/>
 							{parsed.postingSource.retrievedAt && (
-								<p className="text-xs text-ink-3">
+								<p className="text-xs text-muted">
 									<Trans>
 										Retrieved {parsed.postingSource.retrievedAt}. Origin freshness is unknown unless reported.
 									</Trans>
@@ -475,7 +475,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						id={`${id}-resume`}
 						value={resumeId}
 						onChange={(event) => setResumeId(event.target.value)}
-						className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
+						className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
 					>
 						<option value="">{t`None`}</option>
 						{documents
@@ -496,7 +496,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							id={`${id}-letter`}
 							value={coverLetterId}
 							onChange={(event) => setCoverLetterId(event.target.value)}
-							className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
+							className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
 						>
 							<option value="">{t`None`}</option>
 							{documents
@@ -538,21 +538,21 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 
 	if (!text) {
 		return (
-			<p className={cn(base, "text-ink-3")}>
+			<p className={cn(base, "text-muted")}>
 				<Trans>We read the page and save the posting for Check, the assistant and your letter.</Trans>
 			</p>
 		);
 	}
 	if (pending) {
 		return (
-			<p className={cn(base, "text-ink-2")} role="status">
+			<p className={cn(base, "text-muted")} role="status">
 				{link ? <Trans>Reading the link…</Trans> : <Trans>Reading the posting…</Trans>}
 			</p>
 		);
 	}
 	if (error) {
 		return (
-			<p className={cn(base, "text-warn-text")} role="alert">
+			<p className={cn(base, "text-warning-soft-foreground")} role="alert">
 				<Icon name="warning-circle" size={16} className="shrink-0" />
 				{getOrpcErrorMessage(error, {
 					byCode: { POSTING_UNREADABLE: t`That link couldn't be read. Paste the posting text instead.` },
@@ -563,7 +563,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 	if (parsed && (!parsed.role.trim() || !parsed.company.trim())) {
 		return (
-			<p className={cn(base, "text-warn-text")} role="status">
+			<p className={cn(base, "text-warning-soft-foreground")} role="status">
 				<Icon name="warning-circle" size={16} className="shrink-0" />
 				<Trans>Some job details couldn't be read. Fill in the role and company, or paste one job's posting text.</Trans>
 			</p>
@@ -571,7 +571,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 	if (parsed?.filledBy === "ai") {
 		return (
-			<p className={cn(base, "text-accent-text")} role="status">
+			<p className={cn(base, "text-accent-soft-foreground")} role="status">
 				<Icon name="check-circle" size={16} className="shrink-0" />
 				<Plural
 					value={parsed.requirements.length}
@@ -583,7 +583,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 	if (parsed?.filledBy === "page") {
 		return (
-			<p className={cn(base, "text-accent-text")} role="status">
+			<p className={cn(base, "text-accent-soft-foreground")} role="status">
 				<Icon name="check-circle" size={16} className="shrink-0" />
 				<Trans>Found the role and company on the page. Review the details before saving.</Trans>
 			</p>
@@ -591,7 +591,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 
 	return (
-		<p className={cn(base, "text-ink-3")}>
+		<p className={cn(base, "text-muted")}>
 			{link && readable ? (
 				<Trans>The page had no job details to read. Fill in the role and company.</Trans>
 			) : ai ? (

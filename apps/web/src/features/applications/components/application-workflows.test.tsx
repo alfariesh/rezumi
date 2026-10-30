@@ -6,6 +6,10 @@ import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MotionGlobalConfig } from "motion/react";
+
+// happy-dom rejects cancelled Web Animations, which motion (the bulk ActionBar) leaves unhandled.
+MotionGlobalConfig.skipAnimations = true;
 
 const api = vi.hoisted(() => ({
 	bulkDelete: vi.fn(),
@@ -121,21 +125,23 @@ it("removes hidden closed applications from bulk selection before deleting visib
 	await waitFor(() => expect(api.bulkDelete.mock.calls[0]?.[0]).toEqual({ ids: ["open"] }));
 });
 
-it("offers one board-card open control and a separate options control without a dead draggable tab stop", async () => {
+it("opens a board card on click or Enter, keeps its options menu separate, and offers a keyboard drag handle", async () => {
 	const row = application("open", "saved");
 	const onOpen = vi.fn();
 	const view = mount(<ApplicationBoard applications={[row]} showClosed={false} onOpen={onOpen} />);
-	const open = screen.getByRole("button", { name: "Engineer Open Co" });
+	expect(screen.queryByRole("grid", { name: "Closed" })).toBeNull();
+	const card = screen.getByRole("row", { name: "Engineer at Open Co" });
 	const options = screen.getByRole("button", { name: "Options for Engineer at Open Co" });
+	expect(screen.getByRole("button", { name: "Drag Engineer at Open Co" })).toBeTruthy();
 	expect(view.container.querySelector("button button, [role=button] button")).toBeNull();
-	for (let parent = open.parentElement; parent && parent !== view.container; parent = parent.parentElement) {
-		expect(parent.tabIndex).toBeLessThan(0);
-	}
-	fireEvent.click(open);
+	fireEvent.click(card);
 	expect(onOpen).toHaveBeenCalledExactlyOnceWith(row);
+	fireEvent.keyDown(card, { key: "Enter" });
+	fireEvent.keyUp(card, { key: "Enter" });
+	expect(onOpen).toHaveBeenCalledTimes(2);
 	fireEvent.click(options);
 	await screen.findByRole("menu");
-	expect(onOpen).toHaveBeenCalledTimes(1);
+	expect(onOpen).toHaveBeenCalledTimes(2);
 });
 
 it.each(["ai", "page"])(

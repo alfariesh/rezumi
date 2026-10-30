@@ -1,6 +1,6 @@
 # Web app migration to HeroUI
 
-Status: Phases 0 and 1 done (October 30, 2026); Phase 2 (app shell) next.
+Status: Phases 0–3 done (October 30, 2026); Phase 4 (documents) next.
 Date: October 29, 2026.
 
 ## Decisions
@@ -140,8 +140,8 @@ Replace the hand-built sidebar, icon rail and phone tab bar in `routes/dashboard
 
 ## Open decisions
 
-1. **Agenda day and week views.** Agenda brings day and week views and drag-to-reschedule, which the native calendar (`apps/mobile/app/(tabs)/applications/calendar.tsx`) lacks. Either add them on mobile in the same release, or record an owner exception. Recommendation: add the native counterparts as follow-up work before release.
-2. **Phone navigation.** HeroUI's phone pattern is a menu sheet, not a bottom tab bar. Recommendation: follow the HeroUI default.
+1. **Agenda day and week views.** Decided October 30, 2026: the web calendar ships month, week and day views with drag to move, resize and create (pointer devices only). The native calendar (`apps/mobile/app/(tabs)/applications/calendar.tsx`) needs matching week and day views and rescheduling before the next release; tracked as follow-up work.
+2. **Phone navigation.** Decided October 30, 2026: follow the HeroUI default, a menu sheet from the navbar instead of a bottom tab bar (done in Phase 2).
 3. **Uncommitted work.** The working tree holds unrelated edits (new logo assets, `insights-view.tsx`, `packages/pdf/src/html/document.ts`). Commit or set them aside before the migration branch starts.
 
 ## Risks

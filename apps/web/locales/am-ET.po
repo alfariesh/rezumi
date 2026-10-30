@@ -148,11 +148,6 @@ msgstr "{0, plural, one {# እውቂያ ልክ ያልሆነ ኢሜይል አለ�
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# ቀን ቀርቷል} other {# ቀናት ቀርተዋል}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# ቀን} other {# ቀናት}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}። ይህን ማመልከቻ እና እውቀት�
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (ቅጂ)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, one {# ያልተፈታ ችግር} other {# ያልተፈ�
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# ለውጥ ተግብር} other {# ለውጦችን ተግብር}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ ወር"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ ዓመት"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} ተጨማሪ"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "የማመልከቻ ትሮች"
 msgid "Application updated"
 msgstr "ማመልከቻው ተዘምኗል"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "በማህበረሰቡ፣ ለማህበረሰቡ።"
 msgid "Calendar"
 msgstr "የቀን መቁጠሪያ"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "እኔ ራሴ ማስተናገድ እችላለሁ?"
@@ -2833,6 +2839,10 @@ msgstr "ገጠመ…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "ዝግ"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "ይህን እንደተነበበ ምልክት ማድረግ አልተቻ�
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "ሰነዱን ወደ መጣያ ማዛወር አልተቻለም። እንደገና ይሞክሩ።"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "የስራ ልምድ ማስረጃውን ለህትመት ማዘጋጀት አልተቻለም። እንደገና ይሞክሩ።"
@@ -4059,6 +4073,10 @@ msgstr "ቀኖች አንድ ቅርጸት ይጠቀማሉ"
 msgid "Dates won't be read"
 msgstr "ቀኖች አይነበቡም።"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "ውድ {name}"
@@ -4563,9 +4581,19 @@ msgstr "በማዘጋጀት ላይ…"
 msgid "drag · ⌥↑↓"
 msgstr "ጎትት · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "ክፍሎችን ከአንዱ አምድ ወደ ሌላ ለማንቀሳቀስ እዚህ ጎትቱ እና ጥልቀቁ ያድርጉአቸው"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "ግቤትን ያርትዑ"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "ቃለ መጠይቅ ያርትዑ"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "አድምጠው"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "ተመልሶ ሰምቷል"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "ቃለ መጠይቁ በ{duration} ውስጥ"
 msgid "Interview is in another timezone"
 msgstr "ቃለ መጠይቁ በሌላ የሰዓት ሰቅ ውስጥ ነው"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "የቃለ መጠይቅ ማስታወሻዎች"
@@ -6024,6 +6061,10 @@ msgstr "የቃለ መጠይቅ ማስታወሻዎች"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "ቃለ መጠይቁ አሁን ነው"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "MCP አገልጋይ"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "መጀመሪያ መልስ ለመስጠት መካከለኛ"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "ሞዴል: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "ሞኖ"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "አዲስ ክፍል"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "በNorthwind አዲስ ቡድኖች በማዋቀር ላይ ይቆሙ ነበር፤ አብዛኞቹ አልጨረሱም።"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "ቀጣይ እትም።"
@@ -7500,13 +7549,25 @@ msgstr "ቀጣይ እርምጃ፦ {0}። በዛሬ ውስጥ አስታዋሽ ያ
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "በሚቀጥለው ጊዜ፣ ከመጀመሪያው ፕሮቶታይፕ በፊት ስኬትን እንዴት እንደምንለካ እስማማለሁ።"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "ምንም ንቁ የሥራ ማመልከቻዎች የሉም።"
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "ምንም የሥራ ማመልከቻ የለም"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "አዲስ የሥራ መደቦች የሉም። ፍለጋው ነገ በ{cl
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "ለማነጻጸር እስካሁን ቅናሾች የሉም"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "የቅድመ እይታ መጠን"
 msgid "Previewing {0} · click to apply"
 msgstr "{0} ቅድመ እይታ · ለመተግበር ጠቅ ያድርጉ"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "ያለፈው እትም።"
@@ -8815,6 +8884,10 @@ msgstr "የሰነድ ዝርዝሮችን ጨምሮ የቀደሙ መልዕክቶ�
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "ያለፈው ወር"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "ፊደሎች ተካትተው እንደገና ወደ ውጭ ይላኩ፣ 
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: ከፍተኛ የምርት ዲዛይነር"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "QR ኮዱን በማረጋገጫ መተግበሪያዎ ይቃኙ፣ ወ�
 msgid "Schedule an interview"
 msgstr "ቃለ መጠይቅ ያውጡ"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "በ{date} ላይ ቃለ መጠይቅ ያቅዱ"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "ቃለ መጠይቅ ያቅዱ…"
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "ደረጃ"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "ይህ ደብዳቤ ተቀባዩን እንደ ተጻፈ ያስቀምጣ�
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "ይህ ሶፍትዌር የዚህን ፋይል ጽሑፍ ምን ያህል በታማኝነት ማውጣት እንደሚችል ይለካል። ማመልከቻ ውድቅ ይደረግ እንደሆነ አይተነብይም፤ ማንኛውም መሣሪያም ይህን ማድረግ አይችልም። ፋይልዎ በዚህ አሳሽ ውስጥ ተነቧል፤ ፈጽሞም አልተሰቀለም።"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "በዚህ ወር"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "ይህ ገጽ አልተጫነም"
@@ -12502,6 +12575,7 @@ msgstr "ከስር አስምር"
 msgid "Underline links"
 msgstr "አገናኞችን አስምር"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "የድር ፍለጋዎች በእነዚህ አገሮች ውስጥ ሥራ�
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "ድር ገጽ"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

@@ -148,11 +148,6 @@ msgstr "{0, plural, other {# 位聯絡人的電子郵件無效或沒有姓名；
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, other {剩餘 # 天}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {#日} other {#天}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}。將傳送這筆應徵和您的知識庫；您�
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0}（副本）"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, other {# 個待解決問題}}"
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {套用 # 項變更}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ 月"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ 年"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} 更多"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "應徵紀錄分頁"
 msgid "Application updated"
 msgstr "應徵紀錄已更新"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "來自社區，服務社區。"
 msgid "Calendar"
 msgstr "日曆"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "我可以自己主持嗎？"
@@ -2833,6 +2839,10 @@ msgstr "關閉…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "關閉"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "無法標記為已讀。請再試一次。"
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "無法將文件移至垃圾箱。請再試一次。"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "無法準備列印履歷。請再試一次。"
@@ -4059,6 +4073,10 @@ msgstr "日期使用一種格式"
 msgid "Dates won't be read"
 msgstr "日期不會被讀取"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "親愛的{name}，"
@@ -4563,9 +4581,19 @@ msgstr "起草…"
 msgid "drag · ⌥↑↓"
 msgstr "拖動·⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "將段落拖曳到這裡，以在不同欄之間移動它們"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "編輯條目"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "編輯採訪"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "收聽"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "收到回音"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "{duration} 後面試"
 msgid "Interview is in another timezone"
 msgstr "面試位於其他時區"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "面試備註"
@@ -6024,6 +6061,10 @@ msgstr "面試備註"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "正在面試"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "MCP伺服器"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "第一個回覆的中位數"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "型號：{label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "單核白血球增多症"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "新版塊"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind 的新團隊常卡在設定階段，多數沒能完成。"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "下一期"
@@ -7500,13 +7549,25 @@ msgstr "下一步：{0}。會在「今天」中新增提醒。"
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "下次，我會在第一個原型之前就先講定如何衡量成功。"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "沒有有效的工作申請。"
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "沒有工作申請"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "沒有新職缺。職缺探索將於明天 {clock} 再次執行。"
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "尚無可比較的錄取通知"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "預覽大小"
 msgid "Previewing {0} · click to apply"
 msgstr "預覽 {0} · 點擊套用"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "上一期"
@@ -8815,6 +8884,10 @@ msgstr "之前的訊息（包括文件詳細資訊）也會發送。"
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "上個月"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "重新匯出並嵌入字體，然後開啟檔案檢查文字複製出來
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: 高級產品設計師"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "使用您的驗證器應用程式掃描 QR Code，或複製金鑰並貼�
 msgid "Schedule an interview"
 msgstr "安排面試"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "在 {date} 上安排採訪"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "安排面試..."
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "階段"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "這封信將保留其收件者所寫的內容。"
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "這項指標衡量的是軟體能多忠實地擷取這個檔案中的文字。它不預測應徵是否會被拒絕，也沒有任何工具做得到。您的檔案是在這個瀏覽器中讀取的，從未上傳。"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "本月"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "此頁面未能載入"
@@ -12502,6 +12575,7 @@ msgstr "底線"
 msgid "Underline links"
 msgstr "底線連結"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "網路搜尋尋找這些國家的工作機會。最多選擇三個國家
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "個人網站"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

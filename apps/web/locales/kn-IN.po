@@ -148,11 +148,6 @@ msgstr "{0, plural, one {# ಸಂಪರ್ಕವು ಅಮಾನ್ಯವಾದ 
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# ದಿನ ಉಳಿದಿದೆ} other {# ದಿನಗಳು ಉಳಿದಿವೆ}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# ದಿನ} other {# ದಿನಗಳು}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}. ಈ ಅರ್ಜಿ ಮತ್ತು ನಿಮ್
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (ನಕಲು)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, one {# ಬಾಕಿ ಸಮಸ್ಯೆ} other {# ಬಾ�
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# ಬದಲಾವಣೆಯನ್ನು ಅನ್ವಯಿಸಿ} other {# ಬದಲಾವಣೆಗಳನ್ನು ಅನ್ವಯಿಸಿ}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ ತಿಂಗಳು"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ ವರ್ಷ"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} ಹೆಚ್ಚು"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "ಅರ್ಜಿಯ ಟ್ಯಾಬ್‌ಗಳು"
 msgid "Application updated"
 msgstr "ಅರ್ಜಿಯನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "ಸಮುದಾಯದಿಂದ, ಸಮುದಾಯಕ್ಕಾಗಿ."
 msgid "Calendar"
 msgstr "ಕ್ಯಾಲೆಂಡರ್"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "ನಾನೇ ಅದನ್ನು ಹೋಸ್ಟ್ ಮಾಡಬಹುದೇ?"
@@ -2833,6 +2839,10 @@ msgstr "ಮುಚ್ಚಿ..."
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "ಮುಚ್ಚಲಾಗಿದೆ"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "ಇದನ್ನು ಓದಲಾಗಿದೆ ಎಂದು ಗುರುತ
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "ದಾಖಲೆಯನ್ನು ಅನುಪಯುಕ್ತಕ್ಕೆ ಸರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "ಮುದ್ರಣಕ್ಕಾಗಿ ರೆಸ್ಯೂಮ್ ಸಿದ್ಧಪಡಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -4059,6 +4073,10 @@ msgstr "ದಿನಾಂಕಗಳು ಒಂದು ಸ್ವರೂಪವನ್ನ�
 msgid "Dates won't be read"
 msgstr "ದಿನಾಂಕಗಳನ್ನು ಓದಲಾಗುವುದಿಲ್ಲ"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "ಆತ್ಮೀಯ {name},"
@@ -4563,9 +4581,19 @@ msgstr "ಡ್ರಾಫ್ಟಿಂಗ್..."
 msgid "drag · ⌥↑↓"
 msgstr "ಎಳೆಯಿರಿ · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "ಕಾಲಮ್‌ಗಳ ನಡುವೆ ಸ್ಥಳಾಂತರಿಸಲು ವಿಭಾಗಗಳನ್ನು ಇಲ್ಲಿ ಎಳೆದು ಬಿಟ್ಟು ಬಿಡಿ"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "ನಮೂದನ್ನು ಸಂಪಾದಿಸಿ"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "ಸಂದರ್ಶನವನ್ನು ಸಂಪಾದಿಸಿ"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "ಆಲಿಸಿ"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "ಮತ್ತೆ ಕೇಳಿದ"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "{duration} ನಲ್ಲಿ ಸಂದರ್ಶನ"
 msgid "Interview is in another timezone"
 msgstr "ಸಂದರ್ಶನ ಬೇರೆ ಸಮಯ ವಲಯದಲ್ಲಿದೆ"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "ಸಂದರ್ಶನದ ಟಿಪ್ಪಣಿಗಳು"
@@ -6024,6 +6061,10 @@ msgstr "ಸಂದರ್ಶನದ ಟಿಪ್ಪಣಿಗಳು"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "ಈಗ ಸಂದರ್ಶನ"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "MCP ಸರ್ವರ್"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "ಮೊದಲ ಪ್ರತ್ಯುತ್ತರಕ್ಕೆ ಸರಾಸರಿ"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "ಮಾದರಿ: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "ಮೊನೊ"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "ಹೊಸ ವಿಭಾಗ"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind ನಲ್ಲಿ ಹೊಸ ತಂಡಗಳು ಸೆಟಪ್‌ನಲ್ಲಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತಿದ್ದವು; ಹೆಚ್ಚಿನವು ಅದನ್ನು ಪೂರ್ಣಗೊಳಿಸಲೇ ಇಲ್ಲ."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "ಮುಂದಿನ ಸಂಚಿಕೆ"
@@ -7500,13 +7549,25 @@ msgstr "ಮುಂದಿನ ಹೆಜ್ಜೆ: {0}. “ಇಂದು” ಗೆ �
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "ಮುಂದಿನ ಬಾರಿ, ಮೊದಲ ಮೂಲಮಾದರಿಯ ಮೊದಲೇ ಯಶಸ್ಸನ್ನು ಹೇಗೆ ಅಳೆಯುವುದು ಎಂದು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇನೆ."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "ಯಾವುದೇ ಸಕ್ರಿಯ ಉದ್ಯೋಗ ಅರ್ಜಿಗಳಿಲ್ಲ."
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿ ಇಲ್ಲ"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "ಹೊಸ ಹುದ್ದೆಗಳಿಲ್ಲ. ಅವಕಾಶಗಳ �
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "ಹೋಲಿಸಲು ಇನ್ನೂ ಆಫರ್‌ಗಳಿಲ್ಲ"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "ಪೂರ್ವವೀಕ್ಷಣೆ ಗಾತ್ರ"
 msgid "Previewing {0} · click to apply"
 msgstr "ಪೂರ್ವವೀಕ್ಷಣೆ {0} · ಅನ್ವಯಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "ಹಿಂದಿನ ಸಂಚಿಕೆ"
@@ -8815,6 +8884,10 @@ msgstr "ದಾಖಲೆ ವಿವರಗಳನ್ನು ಒಳಗೊಂಡಂತ�
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "ಹಿಂದಿನ ತಿಂಗಳು"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "ಫಾಂಟ್‌ಗಳನ್ನು ಎಂಬೆಡ್ ಮಾಡಿ ಮ
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: Senior Product Designer"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "ನಿಮ್ಮ ದೃಢೀಕರಣ ಅಪ್ಲಿಕೇಶನ್‌�
 msgid "Schedule an interview"
 msgstr "ಸಂದರ್ಶನವನ್ನು ನಿಗದಿಪಡಿಸಿ"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "{date} ನಲ್ಲಿ ಸಂದರ್ಶನವನ್ನು ನಿಗದಿಪಡಿಸಿ"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "ಸಂದರ್ಶನವನ್ನು ನಿಗದಿಪಡಿಸಿ..."
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "ಹಂತ"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "ಈ ಪತ್ರವು ಅದರ ಸ್ವೀಕರಿಸುವವರನ
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "ಈ ಫೈಲ್‌ನ ಪಠ್ಯವನ್ನು ತಂತ್ರಾಂಶ ಎಷ್ಟು ನಿಷ್ಠೆಯಿಂದ ಹೊರತೆಗೆಯಬಲ್ಲದು ಎಂಬುದನ್ನು ಇದು ಅಳೆಯುತ್ತದೆ. ಒಂದು ಅರ್ಜಿ ತಿರಸ್ಕೃತವಾಗುತ್ತದೆಯೇ ಎಂಬುದನ್ನು ಇದು ಊಹಿಸಿ ಹೇಳುವುದಿಲ್ಲ, ಯಾವ ಸಾಧನಕ್ಕೂ ಅದು ಸಾಧ್ಯವಿಲ್ಲ. ನಿಮ್ಮ ಫೈಲ್ ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿಯೇ ಓದಲ್ಪಟ್ಟಿತು, ಎಂದಿಗೂ ಅಪ್‌ಲೋಡ್ ಆಗಲಿಲ್ಲ."
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "ಈ ತಿಂಗಳು"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "ಈ ಪುಟ ಲೋಡ್ ಆಗಲಿಲ್ಲ"
@@ -12502,6 +12575,7 @@ msgstr "ಅಡಿಗೆರೆ"
 msgid "Underline links"
 msgstr "ಲಿಂಕ್‌ಗಳನ್ನು ಅಂಡರ್‌ಲೈನ್ ಮಾಡಿ"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "ವೆಬ್ ಹುಡುಕಾಟಗಳು ಈ ದೇಶಗಳಲ್ಲ
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "ಜಾಲತಾಣ"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

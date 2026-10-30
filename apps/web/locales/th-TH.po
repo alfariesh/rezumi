@@ -148,11 +148,6 @@ msgstr "{0, plural, one {ผู้ติดต่อ # มีอีเมลท�
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, other {เหลืออีก # วัน}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# วัน} other {# วัน}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel} ส่งใบสมัครนี้และ�
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (สำเนา)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, other {ปัญหาที่ยังไม่แก�
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {ปรับใช้ # การเปลี่ยนแปลง}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ เดือน"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ ปี"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} เพิ่มเติม"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "แท็บใบสมัคร"
 msgid "Application updated"
 msgstr "อัปเดตใบสมัครแล้ว"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "โดยชุมชน เพื่อชุมชน"
 msgid "Calendar"
 msgstr "ปฏิทิน"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "ฉันสามารถโฮสต์มันเองได้หรือไม่?"
@@ -2833,6 +2839,10 @@ msgstr "ปิด…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "ปิด"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "ทำเครื่องหมายว่าอ่านแล้ว
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "ย้ายเอกสารไปที่ถังขยะไม่ได้ ลองอีกครั้ง"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "เตรียมประวัติย่อสำหรับพิมพ์ไม่ได้ ลองอีกครั้ง"
@@ -4059,6 +4073,10 @@ msgstr "วันที่ใช้รูปแบบเดียว"
 msgid "Dates won't be read"
 msgstr "วันที่จะไม่ถูกอ่าน"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "เรียนคุณ {name}"
@@ -4563,9 +4581,19 @@ msgstr "กำลังร่าง…"
 msgid "drag · ⌥↑↓"
 msgstr "ลาก · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "ลากและวางส่วนต่าง ๆ ที่นี่เพื่อย้ายระหว่างคอลัมน์"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "แก้ไขรายการ"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "แก้ไขบทสัมภาษณ์"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "ฟัง"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "ได้ยินกลับมา"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "สัมภาษณ์ในอีก {duration}"
 msgid "Interview is in another timezone"
 msgstr "การสัมภาษณ์อยู่ในเขตเวลาอื่น"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "โน้ตการสัมภาษณ์"
@@ -6024,6 +6061,10 @@ msgstr "โน้ตการสัมภาษณ์"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "สัมภาษณ์ตอนนี้"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "เซิร์ฟเวอร์ MCP"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "มัธยฐานในการตอบกลับครั้งแรก"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "รุ่น: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "โมโน"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "ส่วนใหม่"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "ทีมใหม่ที่ Northwind ติดค้างในขั้นตั้งค่า ส่วนใหญ่ไปไม่ถึงปลายทาง"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "ฉบับต่อไป"
@@ -7500,13 +7549,25 @@ msgstr "ขั้นตอนถัดไป: {0} เพิ่มการแจ
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "ครั้งหน้า ฉันจะตกลงวิธีวัดความสำเร็จก่อนทำต้นแบบแรก"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "ไม่มีการสมัครงานที่กำลังดำเนินอยู่"
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "ไม่มีการสมัครงาน"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "ไม่มีตำแหน่งงานใหม่ การค�
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "ยังไม่มีข้อเสนอให้เปรียบเทียบ"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "ขนาดตัวอย่าง"
 msgid "Previewing {0} · click to apply"
 msgstr "ดูตัวอย่าง {0} · คลิกเพื่อนำไปใช้"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "ฉบับที่แล้ว"
@@ -8815,6 +8884,10 @@ msgstr "ข้อความก่อนหน้ารวมทั้งรา
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "เดือนที่แล้ว"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "ส่งออกใหม่พร้อมฝังฟอนต์ �
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: Senior Product Designer"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "สแกนรหัส QR ด้วยแอปยืนยันต�
 msgid "Schedule an interview"
 msgstr "กำหนดเวลาการสัมภาษณ์"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "นัดสัมภาษณ์ที่ {date}"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "นัดสัมภาษณ์..."
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "ขั้นตอน"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "จดหมายฉบับนี้ทำให้ผู้รับ
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "ค่านี้วัดว่าซอฟต์แวร์ดึงข้อความจากไฟล์นี้ได้ตรงเพียงใด ไม่ได้ทำนายว่าใบสมัครจะถูกปฏิเสธหรือไม่ และไม่มีเครื่องมือใดทำได้ ไฟล์ของคุณถูกอ่านในเบราว์เซอร์นี้และไม่เคยถูกอัปโหลด"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "เดือนนี้"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "หน้านี้โหลดไม่สำเร็จ"
@@ -12502,6 +12575,7 @@ msgstr "ขีดเส้นใต้"
 msgid "Underline links"
 msgstr "ขีดเส้นใต้ลิงก์"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "การค้นหาเว็บหางานในประเท
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "เว็บไซต์"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

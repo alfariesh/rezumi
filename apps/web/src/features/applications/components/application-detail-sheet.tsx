@@ -1,7 +1,7 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { Sheet } from "@heroui-pro/react";
-import { Button, buttonVariants, Dropdown, Input, Label, Modal, Separator } from "@heroui/react";
+import { Button, buttonVariants, Chip, Dropdown, Input, Label, Modal, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -128,17 +128,17 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 	return (
 		<>
 			<Sheet.Body className="min-h-0 flex-1 p-0">
-				<header className="grid gap-4 border-b border-line px-5 pt-5 pb-4">
+				<header className="grid gap-4 border-b border-separator px-5 pt-5 pb-4">
 					<div className="flex items-start gap-3 pe-8">
 						<span
 							aria-hidden="true"
-							className="grid size-10 shrink-0 place-items-center rounded-lg bg-sunken font-semibold text-ink-2"
+							className="grid size-10 shrink-0 place-items-center rounded-xl bg-default font-semibold text-muted"
 						>
 							{application.company.slice(0, 1).toUpperCase()}
 						</span>
 						<div className="grid min-w-0 flex-1 gap-0.5">
 							<Sheet.Heading>{application.role}</Sheet.Heading>
-							<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-ink-2">
+							<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-muted">
 								<span>{[application.company, application.location].filter(Boolean).join(" · ")}</span>
 								{(application.sourceUrl || application.jobDescription) && (
 									<>
@@ -148,7 +148,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 												href={application.sourceUrl}
 												target="_blank"
 												rel="noreferrer"
-												className="font-medium text-accent-text hover:underline"
+												className="font-medium text-accent-soft-foreground hover:underline"
 											>
 												<Trans>View posting</Trans>
 											</a>
@@ -156,7 +156,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 											<button
 												type="button"
 												onClick={() => setPostingOpen(true)}
-												className="font-medium text-accent-text hover:underline"
+												className="font-medium text-accent-soft-foreground hover:underline"
 											>
 												<Trans>View posting</Trans>
 											</button>
@@ -204,13 +204,13 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 										<span
 											className="h-1.5 rounded-sm transition-colors duration-standard"
 											style={{
-												background: !closed && index <= reached ? getStageColor(stage) : "var(--line)",
+												background: !closed && index <= reached ? getStageColor(stage) : "var(--separator)",
 											}}
 										/>
 										<span
 											className={cn(
 												"truncate text-[11px]",
-												stage === application.status ? "font-semibold text-ink" : "text-ink-3",
+												stage === application.status ? "font-semibold text-foreground" : "text-muted",
 											)}
 										>
 											{getStageLabel(stage)}
@@ -227,7 +227,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 									style={{ background: getStageColor(application.status) }}
 								/>
 								<strong className="font-semibold">{getStageLabel(application.status)}</strong>
-								<span className="text-ink-3">
+								<span className="text-muted">
 									{closed && application.closedReason ? (
 										<>· {getClosedReasonLabel(application.closedReason)}</>
 									) : (
@@ -268,7 +268,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 				</div>
 			</Sheet.Body>
 
-			<footer className="flex shrink-0 flex-wrap items-center gap-2 border-t border-line bg-surface px-5 py-3">
+			<footer className="flex shrink-0 flex-wrap items-center gap-2 border-t border-separator bg-surface px-5 py-3">
 				{!closed ? (
 					<>
 						<Button variant="secondary" onPress={() => setClosing(true)}>
@@ -334,13 +334,13 @@ function Facts({ application, locale }: { application: Application; locale: stri
 				onSave={(source) => update.mutate({ id: application.id, source })}
 			/>
 			<div className="grid gap-0.5">
-				<dt className="text-xs font-semibold text-ink-3">
+				<dt className="text-xs font-semibold text-muted">
 					<Trans>Applied</Trans>
 				</dt>
 				<dd className="text-sm font-medium">{application.status === "saved" ? "—" : applied}</dd>
 			</div>
 			<div className="grid gap-0.5">
-				<dt className="text-xs font-semibold text-ink-3">
+				<dt className="text-xs font-semibold text-muted">
 					<Trans>Contact</Trans>
 				</dt>
 				<dd className="min-w-0">
@@ -371,7 +371,7 @@ function InlineFact({ label, value, onSave }: InlineFactProps) {
 
 	return (
 		<div className="grid gap-0.5">
-			<dt className="text-xs font-semibold text-ink-3">
+			<dt className="text-xs font-semibold text-muted">
 				<label htmlFor={id}>{label}</label>
 			</dt>
 			<dd>
@@ -380,7 +380,7 @@ function InlineFact({ label, value, onSave }: InlineFactProps) {
 						id={id}
 						type="button"
 						onClick={() => setDraft(value ?? "")}
-						className="w-full truncate rounded-md text-start text-sm font-medium hover:bg-hover"
+						className="w-full truncate rounded-lg text-start text-sm font-medium hover:bg-default"
 					>
 						{value || "—"}
 					</button>
@@ -419,22 +419,22 @@ function Tags({ application }: { application: Application }) {
 
 	return (
 		<section aria-labelledby="application-tags" className="grid gap-2">
-			<h3 id="application-tags" className="text-xs font-semibold text-ink-3">
+			<h3 id="application-tags" className="text-xs font-semibold text-muted">
 				<Trans>Tags</Trans>
 			</h3>
 			<div className="flex flex-wrap items-center gap-1.5">
 				{application.tags.map((value) => (
-					<span key={value} className="flex h-7 items-center gap-1 rounded-md bg-sunken ps-2 text-xs">
+					<Chip key={value} size="lg" variant="soft" className="gap-0.5 pe-0.5">
 						{value}
 						<button
 							type="button"
 							aria-label={t`Remove ${value}`}
 							onClick={() => save(application.tags.filter((item) => item !== value))}
-							className="grid size-6 place-items-center rounded text-ink-3 hover:text-ink"
+							className="grid size-6 place-items-center rounded-full text-muted hover:text-foreground"
 						>
 							<Icon name="x" size={14} />
 						</button>
-					</span>
+					</Chip>
 				))}
 				<form
 					onSubmit={(event) => {
@@ -535,7 +535,7 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 									id={`${id}-resume`}
 									value={resumeId}
 									onChange={(event) => setResumeId(event.target.value)}
-									className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
+									className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
 								>
 									<option value="">{t`None`}</option>
 									{documents
@@ -555,7 +555,7 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 									id={`${id}-letter`}
 									value={coverLetterId}
 									onChange={(event) => setCoverLetterId(event.target.value)}
-									className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
+									className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
 								>
 									<option value="">{t`None`}</option>
 									{documents
@@ -588,7 +588,7 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 								</label>
 							)}
 							{update.error && (
-								<p role="alert" className="text-sm text-danger-text">
+								<p role="alert" className="text-sm text-danger-soft-foreground">
 									{getOrpcErrorMessage(update.error, { fallback: t`Couldn't record submission. Try again.` })}
 								</p>
 							)}
@@ -623,7 +623,7 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 									href={application.sourceUrl}
 									target="_blank"
 									rel="noreferrer"
-									className="text-accent-text hover:underline"
+									className="text-accent-soft-foreground hover:underline"
 								>
 									{application.sourceUrl}
 								</a>
@@ -634,7 +634,7 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 					</Modal.Header>
 					<Modal.Body className="grid gap-4 p-1">
 						{application.postingSource && (
-							<p className="text-xs text-ink-3">
+							<p className="text-xs text-muted">
 								{application.postingSource.method === "paste" ? (
 									<Trans>Pasted description</Trans>
 								) : (
@@ -646,26 +646,28 @@ function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) 
 							</p>
 						)}
 						{(application.postingSource?.truncated || application.postingSource?.completeness === "incomplete") && (
-							<p className="text-xs text-warn-text" role="alert">
+							<p className="text-xs text-warning-soft-foreground" role="alert">
 								<Trans>This saved description is clipped or incomplete. Review before preparing documents.</Trans>
 							</p>
 						)}
 						{application.requirements.length > 0 && (
 							<section aria-labelledby="posting-requirements" className="grid gap-2">
-								<h3 id="posting-requirements" className="text-xs font-semibold text-ink-3">
+								<h3 id="posting-requirements" className="text-xs font-semibold text-muted">
 									<Trans>What it asks for</Trans>
 								</h3>
 								<ul className="flex flex-wrap gap-1.5">
 									{application.requirements.map((requirement) => (
-										<li key={requirement} className="rounded-md bg-sunken px-2 py-1 text-xs">
-											{requirement}
+										<li key={requirement}>
+											<Chip size="sm" variant="soft">
+												{requirement}
+											</Chip>
 										</li>
 									))}
 								</ul>
 							</section>
 						)}
 						{application.jobDescription && (
-							<p className="text-sm leading-6 whitespace-pre-wrap text-ink-2">{application.jobDescription}</p>
+							<p className="text-sm leading-6 whitespace-pre-wrap text-muted">{application.jobDescription}</p>
 						)}
 					</Modal.Body>
 				</Modal.Dialog>

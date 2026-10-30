@@ -6,7 +6,11 @@ import { expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MotionGlobalConfig } from "motion/react";
 import { ApplicationList } from "./list-view";
+
+// happy-dom rejects cancelled Web Animations, which motion (the bulk ActionBar) leaves unhandled.
+MotionGlobalConfig.skipAnimations = true;
 
 const mocks = vi.hoisted(() => ({ breakpoint: "desktop", invalidate: vi.fn() }));
 vi.mock("@/libs/orpc/client", () => ({

@@ -180,7 +180,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 												className="grid grid-cols-[minmax(0,1fr)_16px_minmax(0,1fr)] items-center gap-2 text-sm"
 											>
 												<span className="truncate font-mono text-xs">{header || t`(no header)`}</span>
-												<Icon name="arrow-right" size={16} className="text-ink-3" />
+												<Icon name="arrow-right" size={16} className="text-muted" />
 												<NativeSelect
 													aria-label={t`Column ${header} goes to`}
 													value={mapping[index] ?? ""}
@@ -202,9 +202,9 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 										))}
 									</ul>
 
-									<div className="grid gap-1 rounded-lg border border-line p-3 text-sm">
+									<div className="grid gap-1 rounded-xl border border-separator p-3 text-sm">
 										{result.invalidValues.length > 0 && (
-											<div role="alert" className="grid gap-1 text-warn-text">
+											<div role="alert" className="grid gap-1 text-warning-soft-foreground">
 												<p>
 													<Trans>Fix these values in the CSV, or leave their columns out, before importing.</Trans>
 												</p>
@@ -220,7 +220,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											</div>
 										)}
 										<p className="flex items-center gap-1.5 font-medium">
-											<Icon name="check-circle" size={18} className="text-accent-text" />
+											<Icon name="check-circle" size={18} className="text-accent-soft-foreground" />
 											<Plural
 												value={importable.length}
 												one="# application ready to import"
@@ -228,7 +228,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											/>
 										</p>
 										{result.skipped > 0 && (
-											<p className="text-xs text-ink-2">
+											<p className="text-xs text-muted">
 												<Plural
 													value={result.skipped}
 													one="# row has no company or role and will be skipped."
@@ -244,7 +244,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											</p>
 										)}
 										{result.contactsSkipped > 0 && (
-											<p className="text-xs text-ink-3">
+											<p className="text-xs text-muted">
 												<Plural
 													value={result.contactsSkipped}
 													one="# contact has an invalid email or no name; its application still imports."
@@ -253,7 +253,7 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 											</p>
 										)}
 										{overflow > 0 && (
-											<p className="text-xs text-warn-text">
+											<p className="text-xs text-warning-soft-foreground">
 												<Trans>
 													Only the first {MAX_IMPORT} rows import at once, leaving out {overflow}. Split the file to
 													import the rest.

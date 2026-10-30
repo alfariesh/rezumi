@@ -63,7 +63,7 @@ export function ApplicationNotes({ application }: ApplicationNotesProps) {
 
 	return (
 		<section className="grid gap-2">
-			<label htmlFor={id} className="text-xs font-semibold text-ink-3">
+			<label htmlFor={id} className="text-xs font-semibold text-muted">
 				<Trans>Notes</Trans>
 			</label>
 			<TextArea

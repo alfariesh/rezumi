@@ -93,11 +93,11 @@ export function ExportApplicationsSheet({ open, onOpenChange, applications, filt
 									</div>
 								</div>
 								{!validRange && (
-									<p role="alert" className="text-sm text-danger-text">
+									<p role="alert" className="text-sm text-danger-soft-foreground">
 										<Trans>Start date must be on or before end date.</Trans>
 									</p>
 								)}
-								<p className="text-sm text-ink-3">
+								<p className="text-sm text-muted">
 									<Plural value={selected.length} one="# application to export" other="# applications to export" />
 								</p>
 							</Sheet.Body>

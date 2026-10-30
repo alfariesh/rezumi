@@ -148,11 +148,6 @@ msgstr "{0, plural, one {# संपर्काला अवैध ईमेल
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# दिवस बाकी} other {# दिवस बाकी}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# दिवस} other {# दिवस}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}. हा अर्ज आणि तुमचा �
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (कॉपी)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, one {# खुली समस्या} other {# खु�
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# बदल लागू करा} other {# बदल लागू करा}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ महिना"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ वर्ष"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} अधिक"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "अर्जाचे टॅब"
 msgid "Application updated"
 msgstr "अर्ज अपडेट केला"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "समुदायाकडून, समुदायासाठी."
 msgid "Calendar"
 msgstr "कॅलेंडर"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "मी ते स्वतः होस्ट करू शकतो का?"
@@ -2833,6 +2839,10 @@ msgstr "बंद करा…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "बंद"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "हे वाचले म्हणून चिन्हांकित
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "दस्तऐवज कचऱ्यात हलवता आला नाही. पुन्हा प्रयत्न करा."
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "रेझ्युमे छपाईसाठी तयार करता आला नाही. पुन्हा प्रयत्न करा."
@@ -4059,6 +4073,10 @@ msgstr "तारखा एक स्वरूप वापरतात"
 msgid "Dates won't be read"
 msgstr "तारखा वाचल्या जाणार नाहीत"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "प्रिय {name},"
@@ -4563,9 +4581,19 @@ msgstr "मसुदा तयार करत आहे…"
 msgid "drag · ⌥↑↓"
 msgstr "ड्रॅग करा · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "विभागांना एका स्तंभातून दुसऱ्या स्तंभात हलवण्यासाठी त्यांना येथे ड्रॅग आणि ड्रॉप करा"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "एंट्री संपादित करा"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "मुलाखत संपादित करा"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "ऐका"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "परत ऐकले"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "{duration} मध्ये मुलाखत"
 msgid "Interview is in another timezone"
 msgstr "मुलाखत दुसऱ्या टाइमझोनमध्ये आहे"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "मुलाखतीच्या टिपा"
@@ -6024,6 +6061,10 @@ msgstr "मुलाखतीच्या टिपा"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "आता मुलाखत"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "MCP सर्व्हर"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "पहिल्या प्रत्युत्तरासाठी मध्यक"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "मॉडेल: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "मोनो"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "नवीन विभाग"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind मधील नवीन टीम्स सेटअपमध्ये अडकत होत्या; बहुतेक पुढे गेल्याच नाहीत."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "पुढील अंक"
@@ -7500,13 +7549,25 @@ msgstr "पुढील पाऊल: {0}. “आज” मध्ये स्�
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "पुढच्या वेळी, पहिल्या प्रोटोटाइपआधीच यश कसे मोजायचे यावर सहमती करेन."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "कोणतेही सक्रिय नोकरी अर्ज नाहीत."
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "नोकरीसाठी अर्ज नाही"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "नवीन भूमिका नाहीत. शोध उद्य�
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "तुलना करण्यासाठी अद्याप ऑफर्स नाहीत"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "पूर्वावलोकन आकार"
 msgid "Previewing {0} · click to apply"
 msgstr "{0} पूर्वावलोकन करत आहे · लागू करण्यासाठी क्लिक करा"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "मागील समस्या"
@@ -8815,6 +8884,10 @@ msgstr "दस्तऐवज तपशीलांसह मागील सं
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "मागील महिना"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "फाँट्स एम्बेड करून पुन्हा �
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: सीनियर प्रॉडक्ट डिझायनर"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "तुमच्या ऑथेंटिकेटर अॅपने QR 
 msgid "Schedule an interview"
 msgstr "मुलाखतीचे वेळापत्रक करा"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "{date} वर मुलाखत शेड्यूल करा"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "मुलाखतीचे वेळापत्रक करा..."
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "स्टेज"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "हे पत्र त्याचा प्राप्तकर्त
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "सॉफ्टवेअर या फाइलमधील मजकूर किती अचूकपणे काढू शकते हे यातून मोजले जाते. एखादा अर्ज नाकारला जाईल का याचे भाकीत यातून होत नाही, आणि कोणतेही साधन ते करू शकत नाही. तुमची फाइल याच ब्राउझरमध्ये वाचली गेली आणि कधीही अपलोड झाली नाही."
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "या महिन्यात"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "हे पान लोड झाले नाही"
@@ -12502,6 +12575,7 @@ msgstr "अधोरेखित"
 msgid "Underline links"
 msgstr "दुवे अधोरेखित करा"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "वेब शोध या देशांमध्ये नोकऱ�
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "संकेतस्थळ"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

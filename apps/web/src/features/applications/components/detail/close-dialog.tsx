@@ -40,7 +40,7 @@ export function CloseDialog({ open, onOpenChange, onClose }: CloseDialogProps) {
 								<Radio
 									key={value}
 									value={value}
-									className="flex h-10 items-center rounded-lg px-2 transition-colors hover:bg-hover"
+									className="flex h-10 items-center rounded-lg px-2 transition-colors hover:bg-default"
 								>
 									<Radio.Content className="flex-1 text-sm">
 										<Radio.Control>

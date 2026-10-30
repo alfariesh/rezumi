@@ -79,8 +79,12 @@ type Draft = {
 	participants: { id: string; name: string; role: string; profileUrl: string }[];
 };
 
-// New interviews default to the given day (or tomorrow) at 09:00 in the timezone, or the next full hour if that's past.
-function emptyDraft(applicationId: string, timezone: string, day?: Date | null): Draft {
+/** A start and length picked on the calendar (a range dragged in the week or day view). */
+export type InterviewSlot = { start: Date; durationMinutes: number };
+
+// New interviews default to the picked slot, else the given day (or tomorrow) at 09:00 in the timezone, or the next
+// full hour if that's past.
+function emptyDraft(applicationId: string, timezone: string, day?: Date | null, slot?: InterviewSlot | null): Draft {
 	const now = new Date();
 	const date = dayKey(day ?? new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
 	let at = fromZonedDateTime(date, "09:00", timezone) ?? now;
@@ -88,8 +92,8 @@ function emptyDraft(applicationId: string, timezone: string, day?: Date | null):
 	return {
 		applicationId,
 		kind: "screening",
-		...zonedParts(at, timezone),
-		durationMinutes: 60,
+		...zonedParts(slot?.start ?? at, timezone),
+		durationMinutes: slot?.durationMinutes ?? 60,
 		location: "",
 		notes: "",
 		audience: "other",
@@ -130,6 +134,8 @@ type InterviewDialogProps = {
 	interview?: InterviewTimelineEntry | null;
 	// Pre-selects this day when scheduling (e.g. a day clicked on the calendar).
 	day?: Date | null;
+	// Pre-fills the start and length when scheduling; wins over `day`.
+	slot?: InterviewSlot | null;
 };
 
 const FULL_SCREEN_ON_PHONES =
@@ -143,6 +149,7 @@ export function InterviewDialog({
 	applications = [],
 	interview,
 	day,
+	slot,
 }: InterviewDialogProps) {
 	const queryClient = useQueryClient();
 	const { when, timeZone: preferredZone } = useCareerTime();
@@ -158,7 +165,7 @@ export function InterviewDialog({
 	const [draft, setDraft] = useState<Draft>(() =>
 		interview
 			? draftFrom(application?.id ?? "", interview, preferredZone)
-			: emptyDraft(application?.id ?? "", preferredZone, day),
+			: emptyDraft(application?.id ?? "", preferredZone, day, slot),
 	);
 	const [otherZone, setOtherZone] = useState(false);
 
@@ -169,7 +176,9 @@ export function InterviewDialog({
 		if (open) {
 			const applicationId = application?.id ?? "";
 			setDraft(
-				interview ? draftFrom(applicationId, interview, preferredZone) : emptyDraft(applicationId, preferredZone, day),
+				interview
+					? draftFrom(applicationId, interview, preferredZone)
+					: emptyDraft(applicationId, preferredZone, day, slot),
 			);
 			setOtherZone(false);
 		}

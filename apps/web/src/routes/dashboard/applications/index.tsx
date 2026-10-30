@@ -1,4 +1,5 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
+import { EmptyState } from "@heroui-pro/react";
 import { Button, Dropdown, Input, Label, Skeleton, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -270,7 +271,7 @@ function RouteComponent() {
 							<Icon
 								name="magnifying-glass"
 								size={18}
-								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-ink-3"
+								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
 							/>
 							<Input
 								fullWidth
@@ -288,7 +289,7 @@ function RouteComponent() {
 								variant="secondary"
 								aria-pressed={closed}
 								onPress={() => setSearch({ closed: !closed })}
-								className={cn(closed && "bg-sunken")}
+								className={cn(closed && "bg-default")}
 							>
 								<Icon name={closed ? "check-square" : "square"} size={18} />
 								<Trans>Show closed</Trans>
@@ -303,9 +304,9 @@ function RouteComponent() {
 			{isError && (
 				<div
 					role="alert"
-					className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line p-4"
+					className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-separator p-4"
 				>
-					<p className="text-sm text-danger-text">
+					<p className="text-sm text-danger-soft-foreground">
 						<Trans>Couldn't load applications. Try again.</Trans>
 					</p>
 					<Button variant="secondary" isDisabled={isFetching} onPress={() => void refetch()}>
@@ -315,20 +316,27 @@ function RouteComponent() {
 			)}
 
 			{isError && !applications ? null : empty ? (
-				<EmptyState onAdd={() => setAdding(true)} onImport={() => setImporting(true)} />
+				<FirstJobEmptyState onAdd={() => setAdding(true)} onImport={() => setImporting(true)} />
 			) : (
 				<>
 					{isPending ? (
 						<ViewSkeleton view={shown} />
 					) : noMatches ? (
-						<div className="grid justify-items-center gap-2 py-16 text-center">
-							<p className="text-sm font-medium">
-								<Trans>No applications match “{query.trim()}”.</Trans>
-							</p>
-							<Button size="sm" variant="secondary" onPress={() => setQuery("")}>
-								<Trans>Clear search</Trans>
-							</Button>
-						</div>
+						<EmptyState className="py-16">
+							<EmptyState.Header>
+								<EmptyState.Media variant="icon">
+									<Icon name="magnifying-glass" size={22} />
+								</EmptyState.Media>
+								<EmptyState.Title>
+									<Trans>No applications match “{query.trim()}”.</Trans>
+								</EmptyState.Title>
+							</EmptyState.Header>
+							<EmptyState.Content>
+								<Button size="sm" variant="secondary" onPress={() => setQuery("")}>
+									<Trans>Clear search</Trans>
+								</Button>
+							</EmptyState.Content>
+						</EmptyState>
 					) : (
 						<div
 							key={shown}
@@ -439,7 +447,7 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 			role="status"
 			className={cn(
 				ENTER_CLASS,
-				"flex flex-wrap items-center gap-2 rounded-xl bg-warn-soft px-3 py-2 text-sm text-warn-text",
+				"flex flex-wrap items-center gap-2 rounded-2xl bg-warning-soft px-3 py-2 text-sm text-warning-soft-foreground",
 			)}
 		>
 			<Icon name="clock" size={20} />
@@ -459,7 +467,7 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 				variant="ghost"
 				aria-label={t`Dismiss`}
 				onPress={() => dismiss()}
-				className="text-warn-text"
+				className="text-warning-soft-foreground"
 			>
 				<Icon name="x" size={18} />
 			</Button>
@@ -467,19 +475,24 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 	);
 }
 
-function EmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => void }) {
+function FirstJobEmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => void }) {
 	return (
-		<div className="grid justify-items-center gap-3 py-20 text-center transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0">
-			<span className="grid size-12 place-items-center rounded-xl bg-sunken text-ink-2">
-				<Icon name="briefcase" size={26} />
-			</span>
-			<h2 className="text-lg font-semibold">
-				<Trans>Track your first job</Trans>
-			</h2>
-			<p className="max-w-sm text-sm text-ink-2">
-				<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
-			</p>
-			<div className="flex gap-2">
+		<EmptyState
+			size="lg"
+			className="py-16 transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0"
+		>
+			<EmptyState.Header>
+				<EmptyState.Media variant="icon">
+					<Icon name="briefcase" size={26} />
+				</EmptyState.Media>
+				<EmptyState.Title>
+					<Trans>Track your first job</Trans>
+				</EmptyState.Title>
+				<EmptyState.Description className="max-w-sm text-pretty">
+					<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
+				</EmptyState.Description>
+			</EmptyState.Header>
+			<EmptyState.Content className="flex-row gap-2">
 				<Button onPress={() => onAdd()}>
 					<Icon name="plus" />
 					<Trans>Save job</Trans>
@@ -487,8 +500,8 @@ function EmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => vo
 				<Button variant="secondary" onPress={() => onImport()}>
 					<Trans>Import from CSV</Trans>
 				</Button>
-			</div>
-		</div>
+			</EmptyState.Content>
+		</EmptyState>
 	);
 }
 
@@ -503,5 +516,5 @@ function ViewSkeleton({ view }: { view: View }) {
 				))}
 			</div>
 		);
-	return <Skeleton className="h-[calc(100svh-230px)] min-h-96 rounded-xl" />;
+	return <Skeleton className="h-[calc(100svh-230px)] min-h-96 rounded-2xl" />;
 }

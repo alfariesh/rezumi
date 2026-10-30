@@ -1,11 +1,13 @@
 import type { Application } from "../../types";
 import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { EmptyState, Timeline } from "@heroui-pro/react";
 import { Button, Dropdown, Input, Label, Modal, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { interviewKindOf } from "../../interviews";
@@ -81,9 +83,9 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 	const describe = (entry: ApplicationTimelineEntry) => {
 		if (entry.type === "stage")
 			return { dot: getStageColor(entry.stage), text: t`Moved to ${getStageLabel(entry.stage)}` };
-		if (entry.type === "note") return { dot: "var(--ink-3)", text: entry.text };
+		if (entry.type === "note") return { dot: "var(--muted)", text: entry.text };
 		const kind = interviewKindOf(entry.kind);
-		return { dot: kind?.color ?? "var(--ink-3)", text: t`${kind?.label ?? entry.kind} interview` };
+		return { dot: kind?.color ?? "var(--muted)", text: t`${kind?.label ?? entry.kind} interview` };
 	};
 
 	const submit = () => {
@@ -94,7 +96,7 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 
 	return (
 		<section aria-labelledby="application-activity" className="grid gap-2">
-			<h3 id="application-activity" className="text-xs font-semibold text-ink-3">
+			<h3 id="application-activity" className="text-xs font-semibold text-muted">
 				<Trans>Activity</Trans>
 			</h3>
 			<form
@@ -117,88 +119,110 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 				</Button>
 			</form>
 
-			<ol className="grid">
+			{sorted.length === 0 && (
+				<EmptyState size="sm" className="rounded-2xl border border-dashed border-border py-4">
+					<EmptyState.Header>
+						<EmptyState.Media variant="icon">
+							<Icon name="clock" size={18} />
+						</EmptyState.Media>
+						<EmptyState.Title>
+							<Trans>No activity yet</Trans>
+						</EmptyState.Title>
+						<EmptyState.Description>
+							<Trans>Stage changes, notes and interviews appear here.</Trans>
+						</EmptyState.Description>
+					</EmptyState.Header>
+				</EmptyState>
+			)}
+
+			<Timeline size="sm" density="compact" aria-label={t`Activity`}>
 				{sorted.map((entry) => {
 					const { dot, text } = describe(entry);
 					return (
-						<li key={entry.id} className="group flex items-start gap-2.5 py-1.5 text-sm">
-							<span aria-hidden="true" className="mt-1.5 size-2 shrink-0 rounded-sm" style={{ background: dot }} />
-							{entry.type === "interview" ? (
-								<button
-									type="button"
-									onClick={() => onOpenInterview(entry)}
-									className="min-w-0 flex-1 text-start hover:underline"
-								>
-									{text}
-									{entry.location ? <span className="text-ink-3"> · {entry.location}</span> : null}
-								</button>
-							) : (
-								<span className="min-w-0 flex-1 break-words whitespace-pre-wrap">{text}</span>
-							)}
-							<span className="shrink-0 text-xs leading-5 text-ink-3">
-								{formatDate(entry.at, entry.type === "interview")}
-							</span>
-							<Dropdown>
-								<IconButton
-									icon="dots-three"
-									iconSize={16}
-									size="sm"
-									label={t`Options for this entry`}
-									className="-my-1 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
-								/>
-								<Dropdown.Popover placement="bottom end">
-									<Dropdown.Menu>
-										{entry.type === "interview" ? (
-											<Dropdown.Item
-												id="edit-interview"
-												textValue={t`Edit interview…`}
-												onAction={() => onOpenInterview(entry)}
-											>
-												<Label>
-													<Trans>Edit interview…</Trans>
-												</Label>
-											</Dropdown.Item>
-										) : (
-											<Dropdown.Item
-												id="edit"
-												textValue={t`Edit…`}
-												onAction={() =>
-													setEditing({
-														entry,
-														date: dateInputValue(entry.at),
-														text: entry.type === "note" ? entry.text : "",
-													})
-												}
-											>
-												<Label>
-													<Trans>Edit…</Trans>
-												</Label>
-											</Dropdown.Item>
-										)}
-										<Dropdown.Item
-											id="delete"
-											textValue={t`Delete…`}
-											variant="danger"
-											isDisabled={entry.id === anchorId}
-											onAction={async () => {
-												const confirmed = await confirm(t`Delete this entry?`, {
-													description: t`It's removed from the timeline for good.`,
-													confirmText: t`Delete entry`,
-												});
-												if (confirmed) deleteEntry.mutate({ id: application.id, entryId: entry.id });
-											}}
+						<Timeline.Item key={entry.id} align="start" status={entry.id === anchorId ? "current" : "default"}>
+							<Timeline.Marker aria-hidden="true">
+								<span className="size-2 rounded-full" style={{ background: dot }} />
+							</Timeline.Marker>
+							<Timeline.Content>
+								<div className="group flex min-w-0 items-start gap-2 text-sm">
+									{entry.type === "interview" ? (
+										<button
+											type="button"
+											onClick={() => onOpenInterview(entry)}
+											className="min-w-0 flex-1 text-start hover:underline"
 										>
-											<Label>
-												<Trans>Delete…</Trans>
-											</Label>
-										</Dropdown.Item>
-									</Dropdown.Menu>
-								</Dropdown.Popover>
-							</Dropdown>
-						</li>
+											{text}
+											{entry.location ? <span className="text-muted"> · {entry.location}</span> : null}
+										</button>
+									) : (
+										<span className="min-w-0 flex-1 break-words whitespace-pre-wrap">{text}</span>
+									)}
+									<time className="shrink-0 text-xs leading-5 text-muted">
+										{formatDate(entry.at, entry.type === "interview")}
+									</time>
+									<Dropdown>
+										<IconButton
+											icon="dots-three"
+											iconSize={16}
+											size="sm"
+											label={t`Options for this entry`}
+											className="-my-1 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
+										/>
+										<Dropdown.Popover placement="bottom end">
+											<Dropdown.Menu>
+												{entry.type === "interview" ? (
+													<Dropdown.Item
+														id="edit-interview"
+														textValue={t`Edit interview…`}
+														onAction={() => onOpenInterview(entry)}
+													>
+														<Label>
+															<Trans>Edit interview…</Trans>
+														</Label>
+													</Dropdown.Item>
+												) : (
+													<Dropdown.Item
+														id="edit"
+														textValue={t`Edit…`}
+														onAction={() =>
+															setEditing({
+																entry,
+																date: dateInputValue(entry.at),
+																text: entry.type === "note" ? entry.text : "",
+															})
+														}
+													>
+														<Label>
+															<Trans>Edit…</Trans>
+														</Label>
+													</Dropdown.Item>
+												)}
+												<Dropdown.Item
+													id="delete"
+													textValue={t`Delete…`}
+													variant="danger"
+													isDisabled={entry.id === anchorId}
+													onAction={async () => {
+														const confirmed = await confirm(t`Delete this entry?`, {
+															description: t`It's removed from the timeline for good.`,
+															confirmText: t`Delete entry`,
+														});
+														if (confirmed) deleteEntry.mutate({ id: application.id, entryId: entry.id });
+													}}
+												>
+													<Label>
+														<Trans>Delete…</Trans>
+													</Label>
+												</Dropdown.Item>
+											</Dropdown.Menu>
+										</Dropdown.Popover>
+									</Dropdown>
+								</div>
+							</Timeline.Content>
+						</Timeline.Item>
 					);
 				})}
-			</ol>
+			</Timeline>
 
 			<Modal.Backdrop isOpen={editOpen} onOpenChange={(open) => !open && setEditing(null)}>
 				<Modal.Container size="sm">

@@ -148,11 +148,6 @@ msgstr "{0, plural, one {Liên hệ # có email không hợp lệ hoặc không 
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, other {Còn # ngày}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# ngày} other {# ngày}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}. Gửi hồ sơ ứng tuyển này và Kiến th�
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (bản sao)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, other {# vấn đề chưa xử lý}}"
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {Áp dụng # thay đổi}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ tháng"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ năm"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} thêm"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "Các thẻ của hồ sơ ứng tuyển"
 msgid "Application updated"
 msgstr "Đã cập nhật hồ sơ ứng tuyển"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "Bởi cộng đồng, vì cộng đồng."
 msgid "Calendar"
 msgstr "Lịch"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "Tôi có thể tự tổ chức nó được không?"
@@ -2833,6 +2839,10 @@ msgstr "Đóng…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "Đã đóng"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "Không thể đánh dấu là đã đọc. Hãy thử lại."
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "Không thể chuyển tài liệu vào Thùng rác. Hãy thử lại."
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "Không thể chuẩn bị sơ yếu lý lịch để in. Hãy thử lại."
@@ -4059,6 +4073,10 @@ msgstr "Ngày sử dụng một định dạng"
 msgid "Dates won't be read"
 msgstr "Ngày tháng sẽ không được đọc"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "Kính gửi {name},"
@@ -4563,9 +4581,19 @@ msgstr "Đang soạn thảo…"
 msgid "drag · ⌥↑↓"
 msgstr "kéo · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "Kéo và thả các mục ở đây để di chuyển giữa các cột"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "Chỉnh sửa mục nhập"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "Chỉnh sửa cuộc phỏng vấn"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "Nghe"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "nghe lại"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "Phỏng vấn sau {duration}"
 msgid "Interview is in another timezone"
 msgstr "Buổi phỏng vấn ở múi giờ khác"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "Ghi chú phỏng vấn"
@@ -6024,6 +6061,10 @@ msgstr "Ghi chú phỏng vấn"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "Phỏng vấn ngay bây giờ"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "Máy chủ MCP"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "trung bình đến câu trả lời đầu tiên"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "Mô hình: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "Bệnh tăng bạch cầu đơn nhân"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "Phần mới"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Các nhóm mới tại Northwind bị kẹt ở bước thiết lập; hầu hết không vượt qua được."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "Số tiếp theo"
@@ -7500,13 +7549,25 @@ msgstr "Bước tiếp theo: {0}. Thêm lời nhắc vào Hôm nay."
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "Lần sau, tôi sẽ thống nhất cách đo thành công trước nguyên mẫu đầu tiên."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "Không có đơn xin việc đang hoạt động."
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "Không có đơn xin việc"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "Không có vị trí mới. Lần khám phá tiếp theo vào ngày mai 
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "Chưa có lời đề nghị nào để so sánh"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "Kích thước xem trước"
 msgid "Previewing {0} · click to apply"
 msgstr "Đang xem trước {0} · nhấp để áp dụng"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Số trước"
@@ -8815,6 +8884,10 @@ msgstr "Các tin nhắn trước đó, bao gồm cả chi tiết tài liệu, c�
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "Tháng trước"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "Xuất lại với font đã nhúng, sau đó mở tệp và kiểm tra 
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: Nhà thiết kế sản phẩm cao cấp"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "Quét mã QR bằng ứng dụng xác thực của bạn, hoặc sao ch�
 msgid "Schedule an interview"
 msgstr "Lên lịch phỏng vấn"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "Lên lịch phỏng vấn trên {date}"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "Đặt lịch phỏng vấn…"
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "Giai đoạn"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "Bức thư này giữ nguyên người nhận như đã viết."
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Chỉ số này đo mức độ trung thực mà phần mềm trích xuất được văn bản của tệp này. Nó không dự đoán việc một đơn ứng tuyển có bị từ chối hay không, và không công cụ nào làm được. Tệp của bạn được đọc trong trình duyệt này và không bao giờ được tải lên."
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "Tháng này"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "Trang này không tải được"
@@ -12502,6 +12575,7 @@ msgstr "Gạch chân"
 msgid "Underline links"
 msgstr "Gạch chân các liên kết"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "Tìm kiếm trên web tìm kiếm việc làm ở các quốc gia này. 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "Trang web"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

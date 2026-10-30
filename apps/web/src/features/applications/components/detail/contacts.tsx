@@ -16,9 +16,9 @@ export function Contacts({ contacts, disabled, onChange }: ContactsProps) {
 
 	return (
 		<Popover>
-			<Popover.Trigger className="grid min-w-0 rounded-md text-start hover:underline">
+			<Popover.Trigger className="grid min-w-0 rounded-lg text-start hover:underline">
 				<span className="truncate text-sm font-medium">{primary ? primary.name : "—"}</span>
-				{others.length > 0 && <span className="text-xs text-ink-3">{t`and ${others.length} more`}</span>}
+				{others.length > 0 && <span className="text-xs text-muted">{t`and ${others.length} more`}</span>}
 			</Popover.Trigger>
 			<Popover.Content placement="bottom start" className="w-80">
 				<Popover.Dialog className="grid gap-3 p-1">
@@ -66,7 +66,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 	return (
 		<div className="grid gap-2">
 			{contacts.length === 0 && !adding && (
-				<p className="text-sm text-ink-3">
+				<p className="text-sm text-muted">
 					<Trans>No contacts yet.</Trans>
 				</p>
 			)}
@@ -75,16 +75,19 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 					<div className="grid min-w-0 flex-1">
 						<span className="truncate font-medium">
 							{contact.name}
-							{contact.type && <span className="font-normal text-ink-3"> · {contact.type}</span>}
+							{contact.type && <span className="font-normal text-muted"> · {contact.type}</span>}
 						</span>
-						{contact.role && <span className="truncate text-xs text-ink-3">{contact.role}</span>}
+						{contact.role && <span className="truncate text-xs text-muted">{contact.role}</span>}
 						{contact.email && (
-							<a href={`mailto:${contact.email}`} className="truncate text-xs text-accent-text hover:underline">
+							<a
+								href={`mailto:${contact.email}`}
+								className="truncate text-xs text-accent-soft-foreground hover:underline"
+							>
 								{contact.email}
 							</a>
 						)}
 						{contact.phone && (
-							<a href={`tel:${contact.phone}`} className="truncate text-xs text-accent-text hover:underline">
+							<a href={`tel:${contact.phone}`} className="truncate text-xs text-accent-soft-foreground hover:underline">
 								{contact.phone}
 							</a>
 						)}
@@ -104,7 +107,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 
 			{adding ? (
 				<form
-					className="grid gap-2 rounded-lg border border-line p-2.5"
+					className="grid gap-2 rounded-xl border border-separator p-2.5"
 					onSubmit={(event) => {
 						event.preventDefault();
 						add();
@@ -132,7 +135,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 						<option value={t`Referral`} />
 						<option value={t`Interviewer`} />
 					</datalist>
-					{error && <p className="text-xs text-danger-text">{error}</p>}
+					{error && <p className="text-xs text-danger-soft-foreground">{error}</p>}
 					<div className="flex justify-end gap-1.5">
 						<Button size="sm" variant="ghost" onPress={() => setAdding(false)}>
 							<Trans>Cancel</Trans>

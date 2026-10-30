@@ -148,11 +148,6 @@ msgstr "{0, plural, one {# kontakt má neplatný e-mail nebo nemá jméno; jeho 
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {zbývá # den} few {zbývají # dny} other {zbývá # dní}}"
 
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# den} other {# dní}}"
-
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
 msgid "{0, plural, one {# document moved to Trash} other {# documents moved to Trash}}"
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}. Odešle tuto žádost a vaše Znalosti; váš po
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (kopie)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -506,6 +507,10 @@ msgstr "{count, plural, one {# otevřený problém} few {# otevřené problémy}
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Použít # změnu} few {Použít # změny} many {Použít # změny} other {Použít # změn}}"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
@@ -808,10 +813,6 @@ msgstr "/ měsíc"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ rok"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} další"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1897,6 +1898,7 @@ msgstr "Karty žádosti"
 msgid "Application updated"
 msgstr "Žádost aktualizována"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2398,6 +2400,10 @@ msgstr "Vytvořeno komunitou pro komunitu."
 msgid "Calendar"
 msgstr "Kalendář"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "Mohu to hostit sám?"
@@ -2833,6 +2839,10 @@ msgstr "Blízko…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "ZAVŘENO"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3494,6 +3504,10 @@ msgstr "Nepodařilo se označit jako přečtené. Zkuste to znovu."
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "Dokument se nepodařilo přesunout do koše. Zkuste to znovu."
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "Životopis se nepodařilo připravit k tisku. Zkuste to znovu."
@@ -4059,6 +4073,10 @@ msgstr "Data používají jeden formát"
 msgid "Dates won't be read"
 msgstr "Data nebudou čtena"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
 msgstr "Vážený {name},"
@@ -4563,9 +4581,19 @@ msgstr "Probíhá kreslení…"
 msgid "drag · ⌥↑↓"
 msgstr "přetáhnout · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "Přetažením sekce sem je přesunete mezi sloupci"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4682,6 +4710,11 @@ msgstr "Upravit záznam"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Edit interview"
 msgstr "Upravit rozhovor"
+
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
@@ -5625,8 +5658,8 @@ msgid "Hear it"
 msgstr "Poslechnout"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "slyšet zpět"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6017,6 +6050,10 @@ msgstr "Pohovor za {duration}"
 msgid "Interview is in another timezone"
 msgstr "Pohovor je v jiném časovém pásmu"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "Poznámky z pohovoru"
@@ -6024,6 +6061,10 @@ msgstr "Poznámky z pohovoru"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "Pohovor právě teď"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -7074,8 +7115,8 @@ msgid "MCP server"
 msgstr "Server MCP"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "medián k první odpovědi"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7151,6 +7192,10 @@ msgstr "Model: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "Mono"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7468,6 +7513,10 @@ msgstr "Nová sekce"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Nové týmy v Northwind uvízly u nastavení; většina ho nikdy nedokončila."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "Další číslo"
@@ -7500,13 +7549,25 @@ msgstr "Další krok: {0}. Přidá připomínku do sekce Dnes."
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "Příště se před prvním prototypem nejdřív dohodnout, jak měřit úspěch."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "Žádné aktivní žádosti o zaměstnání."
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "Žádná žádost o zaměstnání"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7633,6 +7694,10 @@ msgstr "Žádné nové pozice. Hledání znovu proběhne zítra v {clock}."
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "Zatím žádné nabídky k porovnání"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8804,6 +8869,10 @@ msgstr "Velikost náhledu"
 msgid "Previewing {0} · click to apply"
 msgstr "Náhled {0} · kliknutím použijte"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Předchozí vydání"
@@ -8815,6 +8884,10 @@ msgstr "Odesílají se také předchozí zprávy, včetně podrobností o dokume
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "Předchozí měsíc"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -9074,6 +9147,10 @@ msgstr "Znovu exportujte s vloženými písmy, poté soubor otevřete a ověřte
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: Senior Product Designer"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -10172,10 +10249,6 @@ msgstr "Naskenujte QR kód ověřovací aplikací, nebo zkopírujte tajný klí�
 msgid "Schedule an interview"
 msgstr "Naplánujte si pohovor"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "Naplánujte si rozhovor na {date}"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "Naplánujte si pohovor…"
@@ -11033,6 +11106,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "Fáze"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -12058,10 +12135,6 @@ msgstr "Tento dopis si zachovává svého příjemce tak, jak byl napsán."
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Měří se, jak věrně dokáže software z tohoto souboru vytáhnout text. Nepředpovídá to, zda bude žádost odmítnuta, a nedokáže to žádný nástroj. Váš soubor byl přečten v tomto prohlížeči a nikdy nebyl nahrán."
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "Tento měsíc"
-
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "Tato stránka se nenačetla"
@@ -12502,6 +12575,7 @@ msgstr "Podtržení"
 msgid "Underline links"
 msgstr "Podtrhněte odkazy"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13053,6 +13127,10 @@ msgstr "Vyhledávání na webu hledá práci v těchto zemích. Vyberte až tři
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "Web"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"

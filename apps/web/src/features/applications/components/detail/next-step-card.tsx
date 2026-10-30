@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Dropdown, Input, Label, Modal } from "@heroui/react";
+import { Button, Card, Dropdown, Input, Label, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -49,23 +49,21 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 
 	return (
 		<section aria-labelledby="application-next-step" className="grid gap-2">
-			<h3 id="application-next-step" className="text-xs font-semibold text-ink-3">
+			<h3 id="application-next-step" className="text-xs font-semibold text-muted">
 				<Trans>Next step</Trans>
 			</h3>
-			<div
-				className={cn(
-					"grid gap-2 rounded-xl border p-3",
-					text.tone === "warn" ? "border-warn bg-warn-soft" : "border-line",
-				)}
+			<Card
+				variant={text.tone === "warn" ? "transparent" : "secondary"}
+				className={cn("gap-2 rounded-2xl p-3", text.tone === "warn" && "border border-warning bg-warning-soft")}
 			>
 				<div className="flex items-start gap-2.5">
 					<Icon
 						name={text.icon}
-						className={cn("mt-0.5 shrink-0", text.tone === "warn" ? "text-warn-text" : "text-ink-2")}
+						className={cn("mt-0.5 shrink-0", text.tone === "warn" ? "text-warning-soft-foreground" : "text-muted")}
 					/>
 					<div className="grid min-w-0 flex-1">
 						<strong className="text-sm font-semibold">{text.title}</strong>
-						{text.sub && <span className="text-xs leading-[17px] text-ink-2">{text.sub}</span>}
+						{text.sub && <span className="text-xs leading-[17px] text-muted">{text.sub}</span>}
 					</div>
 					{step.kind !== "closed" && (
 						<Dropdown>
@@ -114,7 +112,7 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 						<Trans>Add to calendar</Trans>
 					</Button>
 				)}
-			</div>
+			</Card>
 
 			<FollowUpDialog application={application} open={followUpOpen} onOpenChange={setFollowUpOpen} />
 		</section>

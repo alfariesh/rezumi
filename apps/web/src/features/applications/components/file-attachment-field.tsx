@@ -32,8 +32,8 @@ export function FileAttachmentField({ value, onChange, attachLabel, disabled }: 
 	return (
 		<>
 			{value ? (
-				<div className="flex items-center gap-3 rounded-lg border border-line p-2.5">
-					<span className="flex size-8 items-center justify-center rounded-md bg-accent/10 text-accent-text">
+				<div className="flex items-center gap-3 rounded-xl border border-separator p-2.5">
+					<span className="flex size-8 items-center justify-center rounded-lg bg-accent/10 text-accent-soft-foreground">
 						<Icon name="file-pdf" size={16} />
 					</span>
 					{value instanceof File ? (
@@ -52,7 +52,7 @@ export function FileAttachmentField({ value, onChange, attachLabel, disabled }: 
 						type="button"
 						title={t`Remove file`}
 						disabled={disabled}
-						className="text-ink-3 hover:text-danger-text disabled:opacity-40"
+						className="text-muted hover:text-danger-soft-foreground disabled:opacity-40"
 						onClick={() => onChange(null)}
 					>
 						<Icon name="x" size={16} />
@@ -63,7 +63,7 @@ export function FileAttachmentField({ value, onChange, attachLabel, disabled }: 
 					type="button"
 					disabled={disabled}
 					onClick={() => inputRef.current?.click()}
-					className="flex w-full items-center gap-2 rounded-lg border border-dashed border-line p-2.5 text-sm text-ink-3 transition-[background-color,opacity] hover:bg-sunken/50 disabled:opacity-60"
+					className="flex w-full items-center gap-2 rounded-xl border border-dashed border-border p-2.5 text-sm text-muted transition-[background-color,opacity] hover:bg-default/50 disabled:opacity-60"
 				>
 					<Icon name="upload-simple" size={16} />
 					{attachLabel}
