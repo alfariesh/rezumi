@@ -264,7 +264,7 @@ function Empty({ render, send }: EmptyProps) {
 }
 
 export const contentClass = {
-	page: "mx-auto grid w-full max-w-[720px] content-start gap-6 px-1 py-6",
+	page: "mx-auto grid w-full max-w-[720px] content-start gap-6 px-1 pt-6 pb-3",
 	sheet: "grid content-start gap-4 p-[18px]",
 };
 
@@ -400,7 +400,7 @@ export function Composer(props: ComposerProps) {
 	const page = props.variant === "page";
 
 	return (
-		<div className={page ? "pt-2" : "px-3.5 pt-2 pb-3.5"}>
+		<div className={page ? "" : "px-3.5 pt-2 pb-3.5"}>
 			<div className={cn("grid gap-2", page && "mx-auto w-full max-w-[720px]")}>
 				<PromptBox
 					variant={page ? "primary" : "secondary"}
