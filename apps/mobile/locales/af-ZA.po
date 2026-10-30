@@ -346,6 +346,13 @@ msgstr "{0} in {1} is {2} in jou tydsone ({userZone})."
 msgid "{0} in {otherZone}"
 msgstr "{0} in {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} die eerste jaar"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# kolom} other {# kolomme}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Pas # verandering toe} other {Pas # veranderinge toe}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} u"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# onderhoud} other {# onderhoude}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Check het # ding om te hersien. Jy kan steeds afla
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} onderhoud"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {Begin oor # minuut} other {Begin oor # minute}}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} min"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Geen onderhoude} one {# onderhoud} other {# onderhoude}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Vra die assistent om dit in te werk"
 msgid "Ask the coach"
 msgstr "Vra die afrigter"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Vra die gemeenskap. Verwyder persoonlike besonderhede voordat jy plaas."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Vra jou bedieneradministrateur om geloofsbriewe enkripsie te aktiveer of 'n gedeelde verbinding op te stel."
@@ -1925,6 +1941,10 @@ msgstr "deur <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Kalender"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Kan sagteware jou CV lees?"
@@ -2000,6 +2020,7 @@ msgstr "Verander stadium"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Verander die opvolg"
 
@@ -2807,11 +2828,14 @@ msgstr "Kon nie jou tydsone laai nie."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Kon dit nie as aansoek gedoen merk nie. Probeer weer."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Kon nie die blaaier oopmaak nie. Probeer weer."
 
@@ -3217,6 +3241,7 @@ msgstr "Datadeling is gekanselleer. Niks is na die KI-verskaffer gestuur nie."
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Datums begin in die toekoms"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Datums sal nie gelees word nie"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Moenie {0} posplasing stuur nie"
 msgid "Don't share"
 msgstr "Moenie deel nie"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Skenk op Open Collective"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Wysig inskrywing"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Wysig onderhoud"
 
@@ -4157,6 +4183,12 @@ msgstr "Volg op"
 msgid "Follow up on {at}"
 msgstr "Volg op op {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "Kry terugvoer stuur die vraag, jou antwoord, hierdie plasing en jou stor
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Kry elke oggend nuwe poste hier"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Kry CV-terugvoer op Discord"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Onderhoud uitgevee"
 msgid "Interview is in another timezone"
 msgstr "Onderhoud is in 'n ander tydsone"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Onderhoudvoorbereiding"
@@ -4868,10 +4904,6 @@ msgstr "Werksoekpyplyn"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Werkgeleenthede"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Sluit by die Discord aan"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Lengte"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Lengte · minute"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Lengte in minute"
 
@@ -5394,6 +5428,10 @@ msgstr "Geslote dokumente is oorgeslaan. Ontsluit hulle eers."
 msgid "Locked. Unlock to edit."
 msgstr "Gesluit. Ontsluit om te wysig."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Druk lank om te kies"
@@ -5628,6 +5666,10 @@ msgstr "Modelvoorstelle is nie beskikbaar nie. Jy kan steeds enige model-ID invo
 msgid "Model: {label}"
 msgstr "Model: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Meer"
@@ -5690,6 +5732,14 @@ msgstr "Meestal leesbaar"
 msgid "Move {title} to…"
 msgstr "Skuif {title} na …"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Skuif alle inhoud binne die bladsygrense in en voer weer uit."
@@ -5707,6 +5757,10 @@ msgstr "Beweeg af"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Beweeg veld op"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Nuwe afdeling"
 msgid "New STARR story"
 msgstr "Nuwe STARR storie"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Volgende uitgawe"
@@ -5958,6 +6016,10 @@ msgstr "Volgende stap: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Volgende stap: {note}. Voeg 'n herinnering by Vandag."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Geen foto nie. Die meeste ATS ignoreer foto's; sommige streke verwag een
 msgid "No postings found. Try different keywords."
 msgstr "Geen posplasings gevind nie. Probeer verskillende sleutelwoorde."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Geen Rezumi-bediener het by hierdie adres geantwoord nie. Kontroleer die spelling, of vra jou administrateur of die bediener programaanmelding toelaat."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Geen herkenbare terme in hierdie posplasing nie."
@@ -6123,6 +6181,10 @@ msgstr "Geen resultate nie"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Geen CV nie"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Geen Rezumi-bediener het by hierdie adres geantwoord nie. Kontroleer die spelling, of vra jou administrateur of die bediener programaanmelding toelaat."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Voorskou webblad"
 msgid "Previewing {0} · tap to apply"
 msgstr "Voorbeskou tans {0} · tik om toe te pas"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Vorige uitgawe"
@@ -7081,6 +7147,10 @@ msgstr "Vorige bladsy"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Vorige PDF resultaat. Dit pas dalk nie by jou huidige konsep nie."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Voer weer uit met ingebedde lettertipes, en kontroleer dat die teks skoo
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Voer weer uit met ingebedde lettertipes, maak dan die lêer oop en kontroleer dat die teks skoon uitkopieer."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Vereistes"
 msgid "Requirements and your evidence"
 msgstr "Vereistes en jou bewyse"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Bespaar hoofletters vir kort opskrifte. Dit vertraag lees en kan hoofletter-sensitiewe soektogte verongeluk."
@@ -7779,10 +7857,6 @@ msgstr "CV + brief"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "CV besonderhede"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "CV-terugvoer, produkhulp en gemeenskapsidees."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Herroep hierdie API-sleutel"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Herskryf aanvaar"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Wys geleesde items"
 msgid "Show section icons"
 msgstr "Wys afdelingsikone"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Wys tans gestoorde besonderhede. Hulle kon nie verfris word nie."
@@ -9292,6 +9374,10 @@ msgstr "Neem foto"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "Tamil"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Hierdie storie is nie beskikbaar nie of gebruik feite wat afgeskakel is."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Hierdie tyd bestaan nie in die gekose tydsone nie. Kies 'n ander tyd."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Hierdie tyd bestaan nie in jou tydsone nie. Kies 'n ander tyd."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Maak bondiger"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Tyd · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Tyd · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Websoektogte soek werk in hierdie lande. Kies tot drie lande."
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Webwerf"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

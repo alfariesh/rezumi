@@ -346,6 +346,13 @@ msgstr "{1}中的{0}在您的時區中是{2}({userZone})。"
 msgid "{0} in {otherZone}"
 msgstr "{0}於{otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "首年 {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# 欄} other {# 欄}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {套用 # 項變更}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} 小時"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# 場面試} other {# 場面試}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {檢查有 # 的東西要審查。您仍然可以�
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind}採訪"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, other {# 分鐘後開始}}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} 分鐘"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {沒有面試} one {# 場面試} other {# 場面試}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "請助理幫忙處理"
 msgid "Ask the coach"
 msgstr "詢問教練"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "向社群提問。發佈前請移除個人資料。"
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "請您的伺服器管理員啟用憑證加密或設定共用連線。"
@@ -1925,6 +1941,10 @@ msgstr "作者：<0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "日曆"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "軟體可以讀取您的履歷嗎？"
@@ -2000,6 +2020,7 @@ msgstr "改變階段"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "變更後續聯繫"
 
@@ -2807,11 +2828,14 @@ msgstr "無法載入您的時區。"
 msgid "Couldn't mark it as applied. Try again."
 msgstr "無法標記為已申請。請再試一次。"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "無法開啟瀏覽器。再試一次。"
 
@@ -3217,6 +3241,7 @@ msgstr "資料共享已取消。沒有向 AI 提供者傳送任何內容。"
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "日期從未來開始"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "日期不會被讀取"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "不發送 {0} 職缺說明"
 msgid "Don't share"
 msgstr "不要分享"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "透過 Open Collective 捐款"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "編輯條目"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "編輯採訪"
 
@@ -4157,6 +4183,12 @@ msgstr "追蹤進度"
 msgid "Follow up on {at}"
 msgstr "於 {at} 後續聯繫"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "「取得回饋」會將問題、您的回答、此職缺公告和您的
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "每天早上在這裡取得新職缺"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "在 Discord 上取得履歷回饋"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "已刪除面試"
 msgid "Interview is in another timezone"
 msgstr "面試位於其他時區"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "面試準備"
@@ -4868,10 +4904,6 @@ msgstr "求職流程"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "工作機會"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "加入 Discord"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "長度"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "時長 · 分鐘"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "時長（分鐘）"
 
@@ -5394,6 +5428,10 @@ msgstr "鎖定的文件被跳過。首先將它們解鎖。"
 msgid "Locked. Unlock to edit."
 msgstr "鎖定。解鎖即可編輯。"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "長按選取"
@@ -5628,6 +5666,10 @@ msgstr "模型建議不可用。您仍然可以輸入任何型號 ID。"
 msgid "Model: {label}"
 msgstr "型號：{label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "更多"
@@ -5690,6 +5732,14 @@ msgstr "大部分可讀"
 msgid "Move {title} to…"
 msgstr "將 {title} 移至…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "把所有內容移到頁面邊界之內，然後重新匯出。"
@@ -5707,6 +5757,10 @@ msgstr "下移"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "向上移動字段"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "新版塊"
 msgid "New STARR story"
 msgstr "新的STARR故事"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "下一期"
@@ -5958,6 +6016,10 @@ msgstr "下一步：{note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "下一步：{note}。新增今日提醒。"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "沒有照片。大多數ATS忽略照片；有些地區預計會出現這
 msgid "No postings found. Try different keywords."
 msgstr "沒有找到招聘資訊。嘗試不同的關鍵字。"
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "沒有Rezumi伺服器在此位址應答。檢查拼寫，或詢問管理員伺服器是否允許應用程式登入。"
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "此職缺公告中沒有可識別的術語。"
@@ -6123,6 +6181,10 @@ msgstr "無結果"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "沒有履歷"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "沒有Rezumi伺服器在此位址應答。檢查拼寫，或詢問管理員伺服器是否允許應用程式登入。"
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "預覽網頁"
 msgid "Previewing {0} · tap to apply"
 msgstr "正在預覽 {0} · 點一下套用"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "上一期"
@@ -7081,6 +7147,10 @@ msgstr "上一頁"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "上次的 PDF 結果，可能與目前草稿不同。"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "重新匯出並嵌入字體，然後檢查文字複製出來是否乾淨
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "重新匯出並嵌入字體，然後開啟檔案檢查文字複製出來是否乾淨無誤。"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "條件"
 msgid "Requirements and your evidence"
 msgstr "條件與您的證據"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "全大寫只用於簡短的標題。它會拖慢閱讀速度，還可能讓區分大小寫的搜尋失效。"
@@ -7779,10 +7857,6 @@ msgstr "履歷+信件"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "履歷詳情"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "履歷回饋、產品協助與社群點子。"
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "撤銷此 API 金鑰"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "已接受改寫"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "顯示已讀"
 msgid "Show section icons"
 msgstr "顯示區塊圖示"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "顯示已儲存的資料，無法重新整理。"
@@ -9292,6 +9374,10 @@ msgstr "拍照"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "泰米爾語"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "此故事無法使用，或使用了已關閉的事實。"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "所選時區中不存在此時間。請選擇其他時間。"
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "您的時區中不存在此時間。請選擇其他時間。"
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "正在精簡"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "時間 · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "時間 · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "網路搜尋尋找這些國家的工作機會。最多選擇三個國家
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "個人網站"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

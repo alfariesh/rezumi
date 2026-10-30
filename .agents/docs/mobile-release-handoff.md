@@ -57,6 +57,15 @@ Android binaries; this integration cannot reach existing binaries through OTA al
 Before release, verify keyboard avoidance, nested sheets, dirty-form dismissal, pending
 saves, screen readers, reduced motion, and long-list scrolling on both platforms.
 
+Interview calendar week and day views with rescheduling (2026-10-30, parity with the web
+HeroUI Agenda) are JavaScript only: they use the already-bundled gesture handler,
+Reanimated and Worklets and add no native dependency, permission or config, so they ship
+as an EAS Update. Before publishing, check on both platforms: long press and drag an
+interview to another time and day, hold its bottom edge to resize, tap empty time to
+schedule, Undo in the toast, the Reschedule sheet, and VoiceOver/TalkBack actions
+(Reschedule…, Move 15 minutes earlier/later) on a grid interview. A moved interview's
+device reminder follows it.
+
 For local visual review, `pnpm --filter mobile preview:web` opens the development UI
 gallery with the app's shared primitives, light/dark themes, and a 300-item list. This
 gallery excludes native PDF and authenticated routes. Browser checks supplement native

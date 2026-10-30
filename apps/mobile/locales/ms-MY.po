@@ -346,6 +346,13 @@ msgstr "{0} dalam {1} ialah {2} dalam zon waktu anda ({userZone})."
 msgid "{0} in {otherZone}"
 msgstr "{0} dalam {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} untuk tahun pertama"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# lajur} other {# lajur}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {Gunakan # perubahan}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} j"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# temu duga} other {# temu duga}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Cek mempunyai perkara # untuk disemak. Anda masih 
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "Temu bual {kind}"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, other {Bermula dalam # minit}}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} min"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Tiada temu duga} one {# temu duga} other {# temu duga}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Minta pembantu untuk mengerjakannya"
 msgid "Ask the coach"
 msgstr "Tanya jurulatih"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Tanya komuniti. Buang butiran peribadi sebelum menyiarkan."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Minta pentadbir pelayan anda untuk mendayakan penyulitan kelayakan atau mengkonfigurasi sambungan kongsi."
@@ -1925,6 +1941,10 @@ msgstr "oleh <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Kalendar"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Bolehkah perisian membaca resume anda?"
@@ -2000,6 +2020,7 @@ msgstr "Tukar peringkat"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Tukar susulan"
 
@@ -2807,11 +2828,14 @@ msgstr "Tidak dapat memuatkan zon waktu anda."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Tidak dapat menandakannya sebagai dimohon. Cuba lagi."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Tidak dapat membuka penyemak imbas. Cuba lagi."
 
@@ -3217,6 +3241,7 @@ msgstr "Perkongsian data dibatalkan. Tiada apa-apa dihantar kepada pembekal AI."
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Tarikh bermula pada masa hadapan"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Tarikh tidak akan dibaca"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Jangan hantar iklan kerja {0}"
 msgid "Don't share"
 msgstr "Jangan kongsi"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Derma di Open Collective"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Edit entri"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Edit wawancara"
 
@@ -4157,6 +4183,12 @@ msgstr "Hubungi semula"
 msgid "Follow up on {at}"
 msgstr "Susulan pada {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "Dapatkan maklum balas menghantar soalan, jawapan anda, siaran kerja ini 
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Dapatkan peranan baharu di sini setiap pagi"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Dapatkan maklum balas resume di Discord"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Temu duga dipadam"
 msgid "Interview is in another timezone"
 msgstr "Temu duga dalam zon waktu lain"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Persediaan temu duga"
@@ -4868,10 +4904,6 @@ msgstr "Pipeline carian kerja"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Pekerjaan"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Sertai Discord"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Panjang"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Tempoh · minit"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Tempoh dalam minit"
 
@@ -5394,6 +5428,10 @@ msgstr "Dokumen berkunci telah dilangkau. Buka kuncinya dahulu."
 msgid "Locked. Unlock to edit."
 msgstr "Terkunci. Buka kunci untuk mengedit."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Tekan lama untuk memilih"
@@ -5628,6 +5666,10 @@ msgstr "Cadangan model tidak tersedia. Anda masih boleh memasukkan sebarang ID m
 msgid "Model: {label}"
 msgstr "Model: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Lagi"
@@ -5690,6 +5732,14 @@ msgstr "Kebanyakannya boleh dibaca"
 msgid "Move {title} to…"
 msgstr "Alihkan {title} ke…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Alihkan semua kandungan ke dalam sempadan halaman dan eksport semula."
@@ -5707,6 +5757,10 @@ msgstr "Bergerak ke bawah"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Gerakkan medan ke atas"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Bahagian baharu"
 msgid "New STARR story"
 msgstr "Cerita STARR baharu"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Keluaran seterusnya"
@@ -5958,6 +6016,10 @@ msgstr "Langkah seterusnya: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Langkah seterusnya: {note}. Menambah peringatan pada Hari ini."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Tiada foto. Kebanyakan ATS mengabaikan foto; sesetengah wilayah menghara
 msgid "No postings found. Try different keywords."
 msgstr "Tiada siaran pekerjaan ditemui. Cuba kata kunci yang berbeza."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Tiada pelayan Rezumi menjawab di alamat ini. Sahkan ejaan atau tanya pentadbir anda sama ada pelayan membenarkan log masuk apl."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Tiada istilah yang dikenali dalam siaran kerja ini."
@@ -6123,6 +6181,10 @@ msgstr "Tiada hasil"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Tiada resume"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Tiada pelayan Rezumi menjawab di alamat ini. Sahkan ejaan atau tanya pentadbir anda sama ada pelayan membenarkan log masuk apl."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Pratonton halaman web"
 msgid "Previewing {0} · tap to apply"
 msgstr "Mempratonton {0} · ketik untuk memohon"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Isu sebelumnya"
@@ -7081,6 +7147,10 @@ msgstr "Halaman sebelumnya"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Hasil PDF sebelumnya. Ia mungkin tidak sepadan dengan draf semasa anda."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Eksport semula dengan fon dibenamkan, dan semak teks disalin keluar deng
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Eksport semula dengan fon dibenamkan, kemudian buka fail dan semak teks disalin keluar dengan bersih."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Keperluan"
 msgid "Requirements and your evidence"
 msgstr "Keperluan dan bukti anda"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Simpan huruf besar untuk tajuk pendek sahaja. Ia melambatkan pembacaan dan boleh menggagalkan carian sensitif huruf besar/kecil."
@@ -7779,10 +7857,6 @@ msgstr "resume + surat"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "butiran resume"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Maklum balas resume, bantuan produk dan idea komuniti."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Batalkan kunci API ini"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Tulis semula diterima"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Tunjukkan item yang dibaca"
 msgid "Show section icons"
 msgstr "Tunjukkan ikon seksyen"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Menunjukkan butiran yang disimpan. Mereka tidak dapat disegarkan semula."
@@ -9292,6 +9374,10 @@ msgstr "Ambil gambar"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "Tamil"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Cerita ini tidak tersedia atau menggunakan fakta yang dimatikan."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Masa ini tidak wujud dalam zon waktu yang dipilih. Pilih masa lain."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Masa ini tidak wujud dalam zon waktu anda. Pilih masa lain."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Meringkaskan"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Masa · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Masa · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Carian web mencari pekerjaan di negara ini. Pilih sehingga tiga negara."
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Laman web"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

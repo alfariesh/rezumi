@@ -346,6 +346,13 @@ msgstr "{0} v {1} je {2} v vašem časovnem pasu ({userZone})."
 msgid "{0} in {otherZone}"
 msgstr "{0} v {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} za prvo leto"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# stolpec} two {# stolpca} few {# stolpci} other {# stolpcev}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Uveljavi # spremembo} two {Uveljavi # spremembi} few {Uveljavi # spremembe} other {Uveljavi # sprememb}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} h"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# razgovor} two {# razgovora} few {# razgovori} other {# razgovorov}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Ček ima # stvar za pregled. Še vedno lahko prene
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} intervju"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {Začne se čez # minuto} two {Začne se čez # mi
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} min"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Ni razgovorov} one {# razgovor} two {# razgovora} few {# razgovori} other {# razgovorov}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Prosite pomočnika, naj ga obdela"
 msgid "Ask the coach"
 msgstr "Vprašajte svetovalca"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Vprašajte skupnost. Pred objavo odstranite osebne podatke."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Prosite skrbnika strežnika, da omogoči šifriranje poverilnic ali konfigurira skupno povezavo."
@@ -1925,6 +1941,10 @@ msgstr "avtor: <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Koledar"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Ali lahko programska oprema prebere vaš življenjepis?"
@@ -2000,6 +2020,7 @@ msgstr "Spremenite stopnjo"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Spremeni ponovni stik"
 
@@ -2807,11 +2828,14 @@ msgstr "Vašega časovnega pasu ni bilo mogoče naložiti."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Tega ni bilo mogoče označiti kot prijavljeno. Poskusite znova."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Ni bilo mogoče odpreti brskalnika. Poskusite znova."
 
@@ -3217,6 +3241,7 @@ msgstr "Skupna raba podatkov preklicana. Ponudniku AI ni bilo poslano nič."
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Datumi se začnejo v prihodnosti"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Datumi ne bodo prebrani"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Ne pošiljajte delovnih mest {0}"
 msgid "Don't share"
 msgstr "Ne delite"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Donirajte prek Open Collective"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Uredi vnos"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Uredi intervju"
 
@@ -4157,6 +4183,12 @@ msgstr "Ponovno stopite v stik"
 msgid "Follow up on {at}"
 msgstr "Ponovni stik ob {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "»Pridobi povratne informacije« pošlje vprašanje, vaš odgovor, ta og
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Vsako jutro prejmite nove vloge tukaj"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Pridobite povratne informacije o življenjepisu na Discordu"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Intervju izbrisan"
 msgid "Interview is in another timezone"
 msgstr "Intervju je v drugem časovnem pasu"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Priprava na intervju"
@@ -4868,10 +4904,6 @@ msgstr "Potek iskanja zaposlitve"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Zaposlitve"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Pridružite se Discordu"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Dolžina"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Trajanje · minute"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Trajanje v minutah"
 
@@ -5394,6 +5428,10 @@ msgstr "Zaklenjeni dokumenti so bili preskočeni. Najprej jih odkleni."
 msgid "Locked. Unlock to edit."
 msgstr "Zaklenjeno. Odklenite za urejanje."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Za izbiro pritisnite in pridržite"
@@ -5628,6 +5666,10 @@ msgstr "Predlogi modelov niso na voljo. Še vedno lahko vnesete poljuben ID mode
 msgid "Model: {label}"
 msgstr "Model: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Več"
@@ -5690,6 +5732,14 @@ msgstr "Večinoma berljivo"
 msgid "Move {title} to…"
 msgstr "Premakni {title} v …"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Premaknite vso vsebino znotraj meja strani in izvozite znova."
@@ -5707,6 +5757,10 @@ msgstr "Premakni se navzdol"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Premakni polje navzgor"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Nova rubrika"
 msgid "New STARR story"
 msgstr "Nova zgodba STARR"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Naslednja številka"
@@ -5958,6 +6016,10 @@ msgstr "Naslednji korak: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Naslednji korak: {note}. Doda opomnik v Danes."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Brez fotografije. Večina ATS ignorira fotografije; nekatere regije ga p
 msgid "No postings found. Try different keywords."
 msgstr "Ni oglasov za delo. Poskusite z različnimi ključnimi besedami."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Na tem naslovu ni odgovoril noben strežnik Rezumi. Preverite črkovanje ali vprašajte skrbnika, ali strežnik dovoljuje prijavo v aplikacijo."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "V tej objavi ni prepoznavnih izrazov."
@@ -6123,6 +6181,10 @@ msgstr "Ni rezultatov"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Brez življenjepisa"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Na tem naslovu ni odgovoril noben strežnik Rezumi. Preverite črkovanje ali vprašajte skrbnika, ali strežnik dovoljuje prijavo v aplikacijo."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Prikaži predogled spletne strani"
 msgid "Previewing {0} · tap to apply"
 msgstr "Predogled {0} · tapnite za uporabo"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Prejšnja številka"
@@ -7081,6 +7147,10 @@ msgstr "Prejšnja stran"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Prejšnji rezultat PDF. Morda se ne ujema z vašim trenutnim osnutkom."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Izvozite znova z vdelanimi pisavami in preverite, da se besedilo kopira 
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Izvozite znova z vdelanimi pisavami, nato odprite datoteko in preverite, da se besedilo kopira brez napak."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Zahteve"
 msgid "Requirements and your evidence"
 msgstr "Zahteve in vaši dokazi"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Velike črke pridržite za kratke naslove. Upočasnjujejo branje in lahko onemogočijo iskanje, občutljivo na velikost črk."
@@ -7779,10 +7857,6 @@ msgstr "življenjepis + pismo"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "podrobnosti življenjepisa"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Povratne informacije o življenjepisu, pomoč pri izdelku in ideje skupnosti."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Prekliči ta ključ API"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Prepis sprejet"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Pokaži prebrano"
 msgid "Show section icons"
 msgstr "Prikaži ikone razdelkov"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Prikaz shranjenih podrobnosti. Ni jih bilo mogoče osvežiti."
@@ -9292,6 +9374,10 @@ msgstr "Posnemi fotografijo"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "tamilščina"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Ta zgodba ni na voljo ali uporablja izklopljena dejstva."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Ta čas v izbranem časovnem pasu ne obstaja. Izberite drug čas."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Ta čas v vašem časovnem pasu ne obstaja. Izberite drug čas."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Zgoščevanje"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Čas · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Čas · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Spletno iskanje išče službe v teh državah. Izberite do tri države."
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Spletna stran"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"
