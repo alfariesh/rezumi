@@ -1,6 +1,6 @@
 import type { SearchRegionsAction } from "@rezumi/utils/region";
 import type { Key } from "react";
-import { ComboBox, Input, ListBox } from "@heroui/react";
+import { Button, ComboBox, Input, Label, ListBox } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -13,6 +13,7 @@ import {
 	SEARCH_REGION_CODES,
 	shownSearchRegions,
 } from "@rezumi/utils/region";
+import { Token, TokenFrame } from "./token-field";
 
 export type SearchRegionsFieldProps = {
 	value: string[] | null | undefined;
@@ -59,37 +60,26 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 
 	return (
 		<div role="group" aria-labelledby={labelId} className="grid content-start gap-1.5">
-			<span id={labelId} className="text-xs font-medium text-ink-2">
+			<Label id={labelId}>
 				<Trans>Where you're looking for work</Trans>
-			</span>
-			<div className="flex min-h-10 flex-wrap items-center gap-[5px] rounded-md border border-line-2 bg-raised p-[5px]">
+			</Label>
+			<TokenFrame>
 				{shown.codes.map((code) => {
 					const country = name(code);
 					return (
-						<span
-							key={code}
-							className="flex h-7 items-center gap-1 rounded-sm bg-sunken ps-2.5 pe-1 text-[13px] font-medium"
-						>
+						<Token key={code} removeLabel={t`Remove ${country}`} onRemove={() => apply({ type: "remove", code })}>
 							<span>{country}</span>
 							{shown.automatic && (
-								<span className="flex items-center gap-0.5 text-xs font-normal text-ink-3">
+								<span className="flex items-center gap-0.5 text-xs font-normal opacity-70">
 									<Icon name="clock" size={14} />
 									<Trans>From your timezone</Trans>
 								</span>
 							)}
-							<button
-								type="button"
-								aria-label={t`Remove ${country}`}
-								onClick={() => apply({ type: "remove", code })}
-								className="touch-target relative flex size-[22px] items-center justify-center rounded-md text-ink-3 transition-colors duration-quick hover:bg-hover hover:text-ink"
-							>
-								<Icon name="x" size={16} />
-							</button>
-						</span>
+						</Token>
 					);
 				})}
 				{shown.codes.length === 0 && (
-					<span className="px-1.5 text-[13px] text-ink-3">
+					<span className="px-2 text-sm text-muted">
 						<Trans>Anywhere</Trans>
 					</span>
 				)}
@@ -124,17 +114,18 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 						</ListBox>
 					</ComboBox.Popover>
 				</ComboBox>
-			</div>
-			<p className="flex flex-wrap items-center gap-x-1 text-xs text-ink-3">
+			</TokenFrame>
+			<p className="flex flex-wrap items-center gap-x-1 text-xs text-muted">
 				<Trans>Web searches look for work here, up to three countries.</Trans>
 				{!shown.automatic && (
-					<button
-						type="button"
-						onClick={() => apply({ type: "automatic" })}
-						className="text-ink-2 underline underline-offset-2 hover:text-ink"
+					<Button
+						variant="ghost"
+						size="sm"
+						className="h-auto min-h-0 px-1 py-0 text-xs underline underline-offset-2"
+						onPress={() => apply({ type: "automatic" })}
 					>
 						<Trans>Use my timezone</Trans>
-					</button>
+					</Button>
 				)}
 			</p>
 		</div>

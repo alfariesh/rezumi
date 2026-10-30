@@ -650,6 +650,10 @@ msgstr "{minutes, plural, other {あと#分で開始}}"
 msgid "{minutes} min"
 msgstr "{minutes}分"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {面接なし} one {# 件の面接} other {# 件の面接}}"
@@ -711,6 +715,10 @@ msgstr "{pages, plural, one {9 pt でもまだ # ページです。セクショ�
 msgid "{pairing} type"
 msgstr "{pairing}型"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed}/{total}"
@@ -760,8 +768,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}。キャリア → オファーで開きます。"
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "裏付けあり {supported} · 一部 {partial} · 不足 {missing}"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +851,6 @@ msgstr "<0>修正する必要はありません。</0> すべてのチェック�
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>{0}に送信済み。</0>送信したバージョンは「保存済み」に保管されています。ここで編集しても、{1}が受け取った内容は変わりません。"
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>合計はあえて算出していません。</0>ボーナスと株式報酬は条件次第で、株式の価値はどちらも不確実です。合計を比べる前に、元のオファー書類を確認してください。"
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1372,10 @@ msgstr "キーワードの追加"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "言語を追加する"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2324,6 +2332,10 @@ msgstr "太字"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "ボーナス"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -4778,6 +4790,10 @@ msgstr "質問を編集"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "スケジュールを編集"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -7568,6 +7584,10 @@ msgstr "新しいスケジュール"
 msgid "New section"
 msgstr "新しいセクション"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwindの新規チームはセットアップで行き詰まり、ほとんどが完了できませんでした。"
@@ -7706,16 +7726,16 @@ msgid "No evidence yet"
 msgstr "まだ根拠なし"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "一致する事実がありません。別の語句または種類をお試しください。"
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "リンクできる事実がまだありません。「事実」で追加してください。"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "まだ事実がありません。上で追加してください。"
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8104,6 +8124,10 @@ msgstr "オフ。手紙にはあなたの詳細のコピーが保存されます
 #: src/features/homepage/tailor.tsx
 msgid "Offer"
 msgstr "内定"
+
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
@@ -9156,6 +9180,10 @@ msgstr "{url}のQRコード"
 msgid "QR code for two-step verification"
 msgstr "二段階認証用の QR コード"
 
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
 msgstr "質問 {position}/{total}"
@@ -9750,6 +9778,7 @@ msgid "Requirement"
 msgstr "要件"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "条件"
 
@@ -11368,6 +11397,7 @@ msgstr "ストーリー"
 msgid "Stories to bring"
 msgstr "持っていくストーリー"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "話"
@@ -12364,6 +12394,10 @@ msgstr "時刻 · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "時間、リンク、面接相手、送信した内容"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "時刻は{timeZone}で表示されます。"
@@ -12421,6 +12455,10 @@ msgstr "リクエストが多すぎます。後でもう一度試してくださ
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12543,10 @@ msgstr "もう一度やり直してください"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "これでもう一度試す"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13824,6 +13866,10 @@ msgstr "コーチングツールや予定された面接準備を使うと、有
 msgid "Your evidence"
 msgstr "あなたの根拠"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "あなたのファイル"
@@ -13973,6 +14019,10 @@ msgstr "再度公開するまで、ショートリンクとカスタムドメイ
 #: src/features/career/coach.tsx
 msgid "your stories"
 msgstr "あなたのストーリー"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

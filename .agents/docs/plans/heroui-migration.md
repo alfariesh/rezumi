@@ -1,6 +1,6 @@
 # Web app migration to HeroUI
 
-Status: Phases 0–6 done (October 30, 2026); Phase 7 (career workspace) next.
+Status: Phases 0–7 done (October 30, 2026); Phase 8 (settings, auth, command palette and dialogs) next.
 Date: October 29, 2026.
 
 ## Decisions
@@ -125,6 +125,16 @@ Replace the hand-built sidebar, icon rail and phone tab bar in `routes/dashboard
 ## Phase 7: Career workspace
 
 - Workspace steps → Pro `Stepper` where the flow is sequential; today and schedules → `ItemCardGroup`, `Widget`; schedule sheet → Pro `Sheet`; facts, stories and preferences forms → Phase 1 fields. Update the mapped user guides and fictional screenshots, as `docs/contributing/career-platform.mdx` requires.
+
+- Done:
+  - **One shell for every group.** `CareerWidget` (`features/career/shared.tsx`) wraps Pro `Widget`: a title (heading level 2), an optional icon, a count `Chip` and a trailing slot, over a white content area. Nested blocks use `rounded-xl bg-surface-secondary` with no border; rows in a list are split by `Separator`. The chips, `PrivacyLine` (an `Alert` for the cost callout), `CountdownChip` and `MemoryProposal` moved to HeroUI tokens. No Desk & Paper utility is left under `features/career` or `routes/dashboard/career`.
+  - **Today.** Needs you, New roles, Coming up and Schedules are widgets. Notifications and roles are separated rows (no cards in cards), empty states are Pro `EmptyState`, schedules are `ItemCard` rows with the `Switch` at the end (inside `CollapseRow`, so the delete animation stays; `ItemCardGroup` would drop it).
+  - **Workspace** (forks A and B): the context column is three widgets (Next step, What you sent as `ItemCard` link rows, Notes); Fit, Apply, Prepare, Practise, Debrief, Messages and Saved are widgets with `Chip` verdicts, `ProgressBar`s, `Segment` for "How did it land?", `Alert` callouts and `EmptyState`. Phones use `Disclosure` for the context column, and the tab list now scrolls instead of squashing at 375px.
+  - **Knowledge and Offers** (fork C): the sub-navigation is a segmented row below 2xl and a left rail from 2xl up; facts, stories and preferences are widgets with secondary-variant fields (`token-field.tsx` holds the chip fields); the Offers comparison is a real table with row separators, a sticky first column and success `Chip`s for the better value; the schedule panel is a Pro `Sheet` with `Header/Body/Footer`.
+  - **Stepper was not adopted.** The workspace tabs are not a linear flow, and the Prepare plan and Debrief week plan are independent ticks, which do not fit `Stepper`'s complete/active/inactive status model. The 6-segment stage bar stays as a compact display.
+  - **Found on the way.** The coach's starter cards were dead: in the `card` variant `PromptSuggestion.Item` renders a `Card` (a `div`), so `onPress` and `isDisabled` reached the DOM and nothing happened. Each card now holds a stretched `button`. `Tooltip.Trigger` renders a `div`, so Saved no longer wraps it in a `p`. `Segment` cannot be unselected, so "How did it land?" no longer clears on a second press.
+  - **Screenshots.** `pnpm seed:career` builds the fictional search the guides describe, and all 21 career screenshots were retaken at 1280px in the dark theme from it (the CSV import screenshot belongs to Applications and was left). Guide wording changed where the layout did: Fit is a requirements list, not a table, and the Apply checklist sits below the answers.
+  - **Checked.** Light, dark, 375px and an RTL locale (ar-SA) in the browser; no horizontal page scroll; no React console warnings on the career routes.
 
 ## Phase 8: Settings, auth, command palette and dialogs
 

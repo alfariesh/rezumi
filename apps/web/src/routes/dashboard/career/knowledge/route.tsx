@@ -1,12 +1,11 @@
 import type { IconName } from "@rezumi/ui/components/icon";
+import { Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link, Outlet, useMatchRoute } from "@tanstack/react-router";
-import { m } from "motion/react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { D2, EASE } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
 
 export const Route = createFileRoute("/dashboard/career/knowledge")({
@@ -24,7 +23,7 @@ type Section = {
 	count?: number | undefined;
 };
 
-/** Knowledge: facts, stories and preferences. A sticky subnav at md and up, a segmented row above on phones. */
+/** Knowledge: facts, stories and preferences. A sticky list at md and up, a segmented row above on phones. */
 function KnowledgeLayout() {
 	const matchRoute = useMatchRoute();
 	const facts = useQuery(orpc.career.facts.queryOptions({ input: { applicationId: null, all: true } }));
@@ -56,11 +55,11 @@ function KnowledgeLayout() {
 	];
 
 	return (
-		<div className="grid min-w-0 items-start gap-5 md:grid-cols-[200px_minmax(0,1fr)] md:gap-7">
-			<aside className="grid gap-5 [view-transition-name:knowledge-nav] md:sticky md:top-6">
+		<div className="grid min-w-0 items-start gap-5 2xl:grid-cols-[200px_minmax(0,1fr)] 2xl:gap-8">
+			<aside className="grid gap-3 [view-transition-name:knowledge-nav] 2xl:sticky 2xl:top-6 2xl:gap-4">
 				<nav
 					aria-label={t`Knowledge`}
-					className="flex gap-0.5 rounded-lg bg-sunken p-[3px] md:grid md:bg-transparent md:p-0"
+					className="flex w-fit gap-1 rounded-2xl bg-default p-1 max-sm:w-full 2xl:grid 2xl:w-auto 2xl:gap-0.5 2xl:bg-transparent 2xl:p-0"
 				>
 					{sections.map((section) => {
 						const selected = Boolean(matchRoute({ to: section.match, fuzzy: true }));
@@ -70,27 +69,24 @@ function KnowledgeLayout() {
 								to={section.to}
 								aria-current={selected ? "page" : undefined}
 								className={cn(
-									"touch-target relative flex h-[30px] flex-1 items-center justify-center gap-2.5 rounded-sm px-3 text-[13px] font-medium transition-colors duration-quick md:h-9 md:justify-start md:rounded-lg md:text-sm",
-									selected ? "text-ink" : "text-ink-2 hover:bg-hover hover:text-ink",
+									"touch-target flex h-9 flex-1 items-center justify-center gap-2 rounded-xl px-3 text-sm font-medium sm:flex-none sm:px-4 2xl:justify-start 2xl:px-3",
+									selected
+										? "bg-surface text-foreground shadow-surface"
+										: "text-muted hover:text-foreground 2xl:hover:bg-default",
 								)}
 							>
-								{selected && (
-									<m.span
-										layoutId="knowledge-section"
-										transition={{ duration: D2, ease: EASE }}
-										className="absolute inset-0 rounded-sm bg-raised shadow-e1 md:rounded-lg md:bg-sunken md:shadow-none"
-									/>
-								)}
-								<Icon name={section.icon} size={18} className="relative hidden md:block" />
-								<span className="relative md:flex-1">{section.label}</span>
+								<Icon name={section.icon} size={18} className="hidden sm:block" />
+								<span className="2xl:flex-1">{section.label}</span>
 								{section.count !== undefined && (
-									<span className="relative hidden font-mono text-xs text-ink-3 md:inline">{section.count}</span>
+									<Chip size="sm" variant="soft" className="hidden tabular-nums sm:inline-flex">
+										{section.count}
+									</Chip>
 								)}
 							</Link>
 						);
 					})}
 				</nav>
-				<p className="hidden px-2.5 text-xs leading-[17px] text-ink-3 md:block">
+				<p className="hidden max-w-prose px-1 text-xs leading-[17px] text-muted sm:block 2xl:px-3">
 					<Trans>
 						Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or
 						scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message.

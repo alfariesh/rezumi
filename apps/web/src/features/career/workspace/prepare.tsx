@@ -2,8 +2,10 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, buttonVariants, Checkbox, Modal, Spinner, Skeleton } from "@heroui/react";
+import { EmptyState } from "@heroui-pro/react";
+import { Alert, Button, buttonVariants, Checkbox, Chip, Modal, Separator, Skeleton, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,7 +18,16 @@ import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useTicks, useWorkspace } from "../hooks";
-import { Eyebrow, flash, minutesUntil, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
+import {
+	CareerWidget,
+	Eyebrow,
+	flash,
+	minutesUntil,
+	PrivacyLine,
+	useCareerTime,
+	Working,
+	workingSteps,
+} from "../shared";
 import { interviewTypeLabel } from "@/features/applications/components/interview-dialog";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
@@ -32,12 +43,14 @@ export function PrepareTab({ application, version, interview, now, go }: Workspa
 
 	if (!interview && !isBriefing(version))
 		return (
-			<Notice title={t`Add an interview to plan for it`}>
-				<p className="max-w-[340px] text-sm text-ink-2">
+			<Notice
+				icon="calendar-dot"
+				title={t`Add an interview to plan for it`}
+				description={
 					<Trans>Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask.</Trans>
-				</p>
+				}
+			>
 				<Button variant="secondary" onPress={() => go("prepare", { edit: "interview" })}>
-					<Icon name="calendar-dot" size={18} />
 					<Trans>Add an interview</Trans>
 				</Button>
 			</Notice>
@@ -50,12 +63,15 @@ export function PrepareTab({ application, version, interview, now, go }: Workspa
 		const end = start + interview.durationMinutes * 60_000;
 		if (now.getTime() > end)
 			return (
-				<Notice title={t`How did it go?`}>
-					<p className="max-w-[340px] text-sm text-ink-2">
+				<Notice
+					icon="clipboard-text"
+					title={t`How did it go?`}
+					description={
 						<Trans>
 							Write down what they asked while it's fresh. The coach compares your answers with your stories.
 						</Trans>
-					</p>
+					}
+				>
 					<Button onPress={() => go("debrief")}>
 						<Trans>Start a debrief</Trans>
 					</Button>
@@ -66,19 +82,28 @@ export function PrepareTab({ application, version, interview, now, go }: Workspa
 	}
 
 	if (!briefing) {
-		if (saved.isPending) return <Skeleton className="h-64 rounded-xl" />;
+		if (saved.isPending) return <Skeleton className="h-64 rounded-2xl" />;
 		return interview ? <PlanEmpty application={application} interview={interview} /> : null;
 	}
 
 	return <Plan application={application} interview={interview} briefing={briefing} readOnly={!!version} go={go} />;
 }
 
-function Notice({ title, children }: { title: string; children: ReactNode }) {
+type NoticeProps = { icon: IconName; title: string; description: ReactNode; children: ReactNode };
+
+/** An empty or in-between state: what to do next, in one centered block. */
+function Notice({ icon, title, description, children }: NoticeProps) {
 	return (
-		<div className="grid justify-items-center gap-3 rounded-xl border border-dashed border-line-2 p-7 text-center">
-			<h2 className="font-display text-[22px] leading-7 font-medium">{title}</h2>
-			{children}
-		</div>
+		<EmptyState className="rounded-2xl bg-surface-secondary py-12">
+			<EmptyState.Header>
+				<EmptyState.Media variant="icon">
+					<Icon name={icon} size={20} />
+				</EmptyState.Media>
+				<EmptyState.Title>{title}</EmptyState.Title>
+				<EmptyState.Description className="max-w-sm">{description}</EmptyState.Description>
+			</EmptyState.Header>
+			<EmptyState.Content className="items-center gap-3">{children}</EmptyState.Content>
+		</EmptyState>
 	);
 }
 
@@ -90,13 +115,16 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 	const generate = useGenerate(application.id);
 	const label = provider?.label ?? "";
 	return (
-		<Notice title={t`A focused plan for this round`}>
-			<p className="max-w-[340px] text-sm text-ink-2">
+		<Notice
+			icon="sparkle"
+			title={t`A focused plan for this round`}
+			description={
 				<Trans>
 					A timed plan, your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes
 					before the call.
 				</Trans>
-			</p>
+			}
+		>
 			{connection.isUnavailable ? (
 				<AiProviderLoadState state={connection} />
 			) : provider ? (
@@ -109,7 +137,7 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 						{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
 						{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan my preparation</Trans>}
 					</Button>
-					<PrivacyLine className="max-w-[360px] text-start">
+					<PrivacyLine className="max-w-sm text-start">
 						<Trans>
 							Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}.
 						</Trans>
@@ -139,7 +167,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 	const ticks = useTicks(application.id, `plan:${briefing.id}`);
 	const workspace = useWorkspace(application.id);
 	const [reading, setReading] = useState(false);
-	const questionsRef = useRef<HTMLDivElement>(null);
+	const questionsRef = useRef<HTMLOListElement>(null);
 	const done = (index: number) => ticks.ticked.includes(String(index));
 	const total = data.plan.reduce((sum, row) => sum + row.minutes, 0);
 	const doneMinutes = data.plan.reduce((sum, row, index) => sum + (done(index) ? row.minutes : 0), 0);
@@ -189,116 +217,121 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 	};
 
 	return (
-		<div className="grid items-start gap-5 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_340px]">
-			<div className="grid gap-3.5">
-				<div className="flex flex-wrap items-end gap-x-4 gap-y-2">
-					<div className="grid min-w-0 flex-1 basis-64 gap-1">
-						<h2 className="font-display text-[22px] leading-7 font-medium">{data.headline}</h2>
-						<p className="text-sm text-ink-2">{data.summary}</p>
-					</div>
-					<span className="flex flex-wrap items-baseline gap-x-2 font-mono text-xs font-medium text-ink-3">
-						<Trans>
-							{doneMinutes} of {total} min
-						</Trans>
-						{/* The interview, posting or Knowledge changed since it was planned: plan again on request. */}
-						{briefing.outdated && !readOnly && provider && interview && (
-							<Button
-								variant="ghost"
-								size="sm"
-								className="h-auto px-0 font-sans text-[13px] tracking-normal text-link normal-case underline-offset-4 hover:underline"
-								isPending={generate.isPending}
-								onPress={() =>
-									void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => undefined)
-								}
-							>
-								{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan again</Trans>}
-							</Button>
-						)}
-					</span>
-				</div>
-				<div aria-hidden="true" className="flex h-1.5 gap-0.5 overflow-hidden rounded-md">
-					{data.plan.map((row, index) => (
-						<span
-							key={`${row.title}-${index}`}
-							style={{ flexGrow: row.minutes }}
-							className={cn(
-								"h-full basis-0 transition-[background-color,flex-grow] duration-standard ease-enter",
-								done(index) ? "bg-accent" : "bg-sunken",
-							)}
-						/>
-					))}
+		<div className="grid items-start gap-6 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_340px]">
+			<div className="grid gap-6">
+				<div className="grid min-w-0 gap-1">
+					<h2 className="text-xl leading-7 font-semibold">{data.headline}</h2>
+					<p className="text-sm text-muted">{data.summary}</p>
 				</div>
 
-				<div className="overflow-hidden rounded-xl border border-line bg-surface">
-					{data.plan.map((row, index) => (
-						<div
-							key={`${row.title}-${index}`}
-							className="grid grid-cols-[28px_minmax(0,1fr)] items-start gap-x-3 gap-y-1.5 border-b border-line px-4 py-3.5 last:border-b-0 sm:grid-cols-[28px_64px_minmax(0,1fr)_auto]"
-						>
-							<Checkbox
-								className="mt-px"
-								aria-label={row.title}
-								isDisabled={readOnly}
-								isSelected={done(index)}
-								onChange={(checked) => ticks.toggle(String(index), checked)}
-							>
-								<Checkbox.Content>
-									<Checkbox.Control>
-										<Checkbox.Indicator />
-									</Checkbox.Control>
-								</Checkbox.Content>
-							</Checkbox>
-							<span className="font-mono text-xs leading-5 font-medium text-ink-3">
-								<Trans>{row.minutes} min</Trans>
-							</span>
-							<div className="col-start-2 grid gap-0.5 sm:col-start-auto">
-								<p
-									className={cn(
-										"text-sm font-semibold transition-colors duration-quick",
-										done(index) ? "text-ink-2 line-through" : "text-ink",
-									)}
+				<CareerWidget
+					title={t`Timed plan`}
+					icon="timer"
+					trailing={
+						<span className="flex items-center gap-2">
+							<Chip size="sm" variant="soft" className="tabular-nums">
+								<Trans>
+									{doneMinutes} of {total} min
+								</Trans>
+							</Chip>
+							{/* The interview, posting or Knowledge changed since it was planned: plan again on request. */}
+							{briefing.outdated && !readOnly && provider && interview && (
+								<Button
+									variant="ghost"
+									size="sm"
+									isPending={generate.isPending}
+									onPress={() =>
+										void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => undefined)
+									}
 								>
-									{row.title}
-								</p>
-								<p className="text-[13px] leading-[19px] text-ink-2">{row.detail}</p>
+									{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan again</Trans>}
+								</Button>
+							)}
+						</span>
+					}
+				>
+					<div aria-hidden="true" className="flex h-1.5 gap-0.5 overflow-hidden rounded-full">
+						{data.plan.map((row, index) => (
+							<span
+								key={`${row.title}-${index}`}
+								style={{ flexGrow: row.minutes }}
+								className={cn(
+									"h-full basis-0 transition-[background-color,flex-grow] duration-standard ease-enter",
+									done(index) ? "bg-accent" : "bg-default",
+								)}
+							/>
+						))}
+					</div>
+
+					<div>
+						{data.plan.map((row, index) => (
+							<div key={`${row.title}-${index}`}>
+								{index > 0 && <Separator />}
+								<div className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-3 gap-y-2 py-3.5 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
+									<Checkbox
+										className="mt-px"
+										aria-label={row.title}
+										isDisabled={readOnly}
+										isSelected={done(index)}
+										onChange={(checked) => ticks.toggle(String(index), checked)}
+									>
+										<Checkbox.Content>
+											<Checkbox.Control className="bg-default">
+												<Checkbox.Indicator />
+											</Checkbox.Control>
+										</Checkbox.Content>
+									</Checkbox>
+									<div className="grid gap-0.5">
+										<p className="flex flex-wrap items-baseline gap-x-2">
+											<span
+												className={cn(
+													"text-sm font-semibold transition-colors duration-quick",
+													done(index) && "text-muted line-through",
+												)}
+											>
+												{row.title}
+											</span>
+											<span className="text-xs text-muted tabular-nums">
+												<Trans>{row.minutes} min</Trans>
+											</span>
+										</p>
+										<p className="text-sm text-muted">{row.detail}</p>
+									</div>
+									<div className="col-start-2 sm:col-start-auto">{action(row)}</div>
+								</div>
 							</div>
-							<div className="col-start-2 sm:col-start-auto">{action(row)}</div>
-						</div>
-					))}
-				</div>
+						))}
+					</div>
+				</CareerWidget>
 
 				{questions.length > 0 && (
-					<div ref={questionsRef} className="grid gap-2.5 rounded-xl border border-line bg-surface p-4">
-						<h3 className="text-sm font-semibold">
-							<Trans>Questions to ask</Trans>
-						</h3>
-						<ol className="grid gap-2">
+					<CareerWidget title={t`Questions to ask`} icon="question" count={questions.length}>
+						<ol ref={questionsRef} className="-m-2 grid gap-1 rounded-xl p-2">
 							{questions.map((question, index) => (
-								<li key={`${question.text}-${index}`} className="flex gap-2.5 text-sm leading-5">
-									<span className="w-4 shrink-0 font-mono text-xs leading-5 font-medium text-accent-text">
+								<li key={`${question.text}-${index}`} className="flex gap-3 py-1.5 text-sm leading-5">
+									<span className="w-4 shrink-0 text-xs leading-5 font-medium text-muted tabular-nums">
 										{index + 1}
 									</span>
 									<span className="min-w-0 flex-1">{question.text}</span>
-									<span className="shrink-0 text-xs leading-5 text-ink-3">{question.origin}</span>
+									<span className="shrink-0 text-xs leading-5 text-muted">{question.origin}</span>
 								</li>
 							))}
 						</ol>
-					</div>
+					</CareerWidget>
 				)}
 			</div>
 
-			<div className="grid gap-3.5">
-				<div className="grid gap-2.5 rounded-xl border border-line bg-surface p-4">
-					<div className="flex items-center gap-2">
-						<Icon name="clipboard-text" size={20} className="text-accent-text" />
-						<h3 className="flex-1 text-sm font-semibold">
-							<Trans>10-minute briefing</Trans>
-						</h3>
-						<span className="text-xs text-ink-3">
+			<div className="grid gap-6">
+				<CareerWidget
+					title={t`10-minute briefing`}
+					icon="clipboard-text"
+					trailing={
+						<Chip size="sm" variant="soft" color="success">
 							<Trans>Ready</Trans>
-						</span>
-					</div>
-					<p className="text-[13px] leading-[19px] text-ink-2">
+						</Chip>
+					}
+				>
+					<p className="text-sm text-muted">
 						<Trans>
 							Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the
 							call.
@@ -307,8 +340,13 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 					<Button size="sm" variant="secondary" className="w-fit" onPress={() => setReading(true)}>
 						<Trans>Read briefing</Trans>
 					</Button>
-				</div>
-				{interview && !readOnly && <RefreshSwitch application={application} interview={interview} />}
+					{interview && !readOnly && (
+						<>
+							<Separator />
+							<RefreshSwitch application={application} interview={interview} />
+						</>
+					)}
+				</CareerWidget>
 				<StoriesToBring application={application} briefing={briefing} />
 			</div>
 			<BriefingDialog briefing={briefing} open={reading} onOpenChange={setReading} />
@@ -368,7 +406,7 @@ function RefreshSwitch({ application, interview }: RefreshSwitchProps) {
 					: t`${when(runAt)} · ${providerLabel}. Sends this application and your Knowledge; your provider may charge.`;
 
 	return (
-		<div className="rounded-xl border border-line bg-surface px-4 py-2">
+		<div className="-my-2">
 			<AiProviderLoadState state={connection} />
 			<SwitchRow
 				label={<span className="font-semibold">{label}</span>}
@@ -404,28 +442,25 @@ function StoriesToBring({ application, briefing }: StoriesToBringProps) {
 	const bring = briefing.data.storyIds.flatMap((id) => stories?.find((story) => story.id === id) ?? []);
 	if (!stories || (bring.length === 0 && !briefing.data.missingStory)) return null;
 	return (
-		<div className="grid gap-2 rounded-xl border border-line bg-surface p-4">
-			<h3 className="text-sm font-semibold">
-				<Trans>Stories to bring</Trans>
-			</h3>
+		<CareerWidget title={t`Stories to bring`} icon="book-open" count={bring.length}>
 			{bring.map((story) => (
 				<Link
 					key={story.id}
 					to="/dashboard/career/knowledge/stories/{-$storyId}"
 					params={{ storyId: story.id }}
-					className="flex items-start gap-2 text-[13px] leading-[19px] text-ink hover:underline"
+					className="flex items-start gap-2 text-sm leading-5 hover:underline"
 				>
-					<Icon name="book-open" size={18} className="shrink-0 text-ink-2" />
+					<Icon name="book-open" size={18} className="shrink-0 text-muted" />
 					{story.data.title}
 				</Link>
 			))}
 			{briefing.data.missingStory && (
-				<p className="flex items-center gap-1.5 text-xs text-warn-text">
+				<p className="flex items-start gap-1.5 text-xs leading-4 text-warning-soft-foreground">
 					<Icon name="question" size={16} className="shrink-0" />
 					{briefing.data.missingStory}
 				</p>
 			)}
-		</div>
+		</CareerWidget>
 	);
 }
 
@@ -439,12 +474,12 @@ function BriefingNotes({ briefing }: { briefing: Briefing }) {
 		{ label: t`Keep it honest`, text: data.honesty },
 	];
 	return (
-		<dl className="grid gap-3.5">
+		<dl className="grid gap-4">
 			{items
 				.filter((item) => item.text)
 				.map((item) => (
 					<div key={item.label} className="grid gap-1">
-						<dt className="text-[13px] font-semibold text-ink-2">{item.label}</dt>
+						<dt className="text-sm font-semibold text-muted">{item.label}</dt>
 						<dd className={cn("text-sm leading-[21px] whitespace-pre-line", item.italic && "italic")}>{item.text}</dd>
 					</div>
 				))}
@@ -531,21 +566,23 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 
 	if (mobile)
 		return (
-			<div className="grid gap-2">
-				<div className="flex items-center gap-3 rounded-lg bg-warn-soft px-4 py-3.5">
-					<Icon name="timer" size={28} className="shrink-0 text-warn-text" />
-					<div className="grid min-w-0">
-						<p className="font-display text-[22px] leading-7 font-medium">{heading}</p>
-						<p className="text-[13px] text-ink-2">
+			<div className="grid gap-3">
+				<Alert status="warning">
+					<Alert.Indicator>
+						<Icon name="timer" size={20} />
+					</Alert.Indicator>
+					<Alert.Content>
+						<Alert.Title>{heading}</Alert.Title>
+						<Alert.Description>
 							{[
 								interviewTypeLabel(interview.kind),
 								names.length > 0 && list(names.map((name) => name.split(" ")[0] ?? name)),
 							]
 								.filter(Boolean)
 								.join(" · ")}
-						</p>
-					</div>
-				</div>
+						</Alert.Description>
+					</Alert.Content>
+				</Alert>
 				{rows.map((row, index) => {
 					const on = ticks.ticked.includes(String(index));
 					return (
@@ -553,40 +590,44 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 							key={row.title}
 							isSelected={on}
 							onChange={(checked) => ticks.toggle(String(index), checked)}
-							className={cn(
-								"flex min-h-14 cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 transition-colors duration-quick",
-								on ? "border-transparent bg-accent-soft" : "border-line bg-surface",
-							)}
+							className="flex min-h-14 cursor-pointer items-start gap-3 rounded-2xl bg-default px-4 py-3.5"
 						>
 							<Checkbox.Content className="items-start gap-3">
-								<Checkbox.Control>
+								<Checkbox.Control className="bg-surface">
 									<Checkbox.Indicator />
 								</Checkbox.Control>
 								<span className="grid gap-0.5">
-									<span className={cn("text-[15px] font-semibold", on && "text-accent-text")}>{row.title}</span>
-									<span className="text-[13px] leading-[19px] text-ink-2">{row.short}</span>
+									<span
+										className={cn(
+											"text-[15px] font-semibold transition-colors duration-quick",
+											on && "text-muted line-through",
+										)}
+									>
+										{row.title}
+									</span>
+									<span className="text-sm text-muted">{row.short}</span>
 								</span>
 							</Checkbox.Content>
 						</Checkbox>
 					);
 				})}
 				{briefing?.data.opening && (
-					<div className="mt-1 grid gap-1 rounded-xl bg-sunken p-3.5">
+					<div className="grid gap-1.5 rounded-2xl bg-default p-4">
 						<Eyebrow>
 							<Trans>Your opening</Trans>
 						</Eyebrow>
-						<p className="font-display text-base leading-6">“{briefing.data.opening}”</p>
+						<p className="text-base leading-6">“{briefing.data.opening}”</p>
 					</div>
 				)}
 				{/* The workspace is full screen on phones (no app tab bar), so the bar pads for the safe area itself. */}
-				<div className="sticky bottom-0 -mx-4 mt-3 -mb-6 flex gap-2 border-t border-line bg-surface px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
+				<div className="sticky bottom-0 -mx-4 mt-3 -mb-6 flex gap-2 border-t border-separator bg-background px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
 					{briefing && (
-						<Button variant="secondary" className="h-12 flex-1 rounded-lg text-[15px]" onPress={() => setReading(true)}>
+						<Button variant="secondary" size="lg" className="flex-1" onPress={() => setReading(true)}>
 							<Trans>Briefing</Trans>
 						</Button>
 					)}
-					<Button className="h-12 flex-[1.4] rounded-lg text-[15px]" onPress={rehearse}>
-						<Icon name="microphone" size={22} />
+					<Button size="lg" className="flex-[1.4]" onPress={rehearse}>
+						<Icon name="microphone" size={20} />
 						<Trans>Rehearse aloud</Trans>
 					</Button>
 				</div>
@@ -595,13 +636,15 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 		);
 
 	return (
-		<div className="grid items-start gap-5 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_340px]">
-			<div className="grid gap-4">
-				<div className="flex items-center gap-3.5 rounded-xl border border-warn bg-warn-soft px-5 py-[18px]">
-					<Icon name="timer" size={28} className="shrink-0 text-warn-text" />
-					<div className="grid min-w-0 gap-0.5">
-						<p className="font-display text-[22px] leading-7 font-medium">{heading}</p>
-						<p className="text-[13px] text-ink-2">
+		<div className="grid items-start gap-6 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_340px]">
+			<div className="grid gap-6">
+				<Alert status="warning">
+					<Alert.Indicator>
+						<Icon name="timer" size={20} />
+					</Alert.Indicator>
+					<Alert.Content>
+						<Alert.Title className="text-base">{heading}</Alert.Title>
+						<Alert.Description>
 							{[
 								interviewTypeLabel(interview.kind),
 								time(interview.at),
@@ -610,19 +653,19 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 							]
 								.filter(Boolean)
 								.join(" · ")}
-						</p>
-					</div>
-				</div>
+						</Alert.Description>
+					</Alert.Content>
+				</Alert>
 
-				<div className="grid gap-3 rounded-xl border border-line bg-surface px-[18px] py-4">
-					<div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-						<h2 className="flex-1 text-[15px] font-semibold">
-							<Trans>Right now</Trans>
-						</h2>
-						<span className="text-xs text-ink-3">
+				<CareerWidget
+					title={t`Right now`}
+					icon="clock"
+					trailing={
+						<span className="text-xs text-muted">
 							<Trans>Works without AI or new research</Trans>
 						</span>
-					</div>
+					}
+				>
 					{rows.map((row, index) => {
 						const on = ticks.ticked.includes(String(index));
 						return (
@@ -630,31 +673,31 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 								key={row.title}
 								isSelected={on}
 								onChange={(checked) => ticks.toggle(String(index), checked)}
-								className={cn(
-									"flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-quick",
-									on ? "bg-accent-soft" : "bg-bg",
-								)}
+								className="flex cursor-pointer items-start gap-3 rounded-xl bg-default px-4 py-3"
 							>
 								<Checkbox.Content className="w-full items-start gap-3">
-									<Checkbox.Control className="mt-px">
+									<Checkbox.Control className="mt-px bg-surface">
 										<Checkbox.Indicator />
 									</Checkbox.Control>
 									<span className="grid min-w-0 flex-1 gap-0.5">
 										<span
-											className={cn("text-sm font-semibold transition-colors duration-quick", on && "text-accent-text")}
+											className={cn(
+												"text-sm font-semibold transition-colors duration-quick",
+												on && "text-muted line-through",
+											)}
 										>
 											{row.title}
 										</span>
-										<span className="text-[13px] leading-[19px] text-ink-2">{row.detail}</span>
+										<span className="text-sm text-muted">{row.detail}</span>
 									</span>
-									<span className="ms-auto font-mono text-xs font-medium whitespace-nowrap text-ink-3">
+									<span className="ms-auto text-xs whitespace-nowrap text-muted tabular-nums">
 										<Trans>{row.minutes} min</Trans>
 									</span>
 								</Checkbox.Content>
 							</Checkbox>
 						);
 					})}
-				</div>
+				</CareerWidget>
 
 				<Button className="w-fit" onPress={rehearse}>
 					<Icon name="microphone" size={20} />
@@ -663,12 +706,9 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 			</div>
 
 			{briefing && (
-				<div className="grid gap-3.5 rounded-xl border border-line bg-surface px-[18px] py-4">
-					<Eyebrow>
-						<Trans>Your briefing</Trans>
-					</Eyebrow>
+				<CareerWidget title={t`Your briefing`} icon="clipboard-text">
 					<BriefingNotes briefing={briefing} />
-				</div>
+				</CareerWidget>
 			)}
 		</div>
 	);

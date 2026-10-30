@@ -1,6 +1,6 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
-import { Button, Checkbox, Spinner, TextArea, Skeleton } from "@heroui/react";
+import { Button, Checkbox, Chip, Spinner, TextArea, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -19,7 +19,7 @@ import {
 	useWorkspace,
 } from "../hooks";
 import { formatMoney } from "../offer-compare";
-import { Swap, useCareerTime, withUndo, Working, workingSteps } from "../shared";
+import { CareerWidget, Swap, useCareerTime, withUndo, Working, workingSteps } from "../shared";
 import { AiNotice } from "./fit";
 import { describeNextStep, getNextStep } from "@/features/applications/next-step";
 import { getStageLabel } from "@/features/applications/stages";
@@ -43,7 +43,7 @@ export function MessagesTab({ application, version, now }: WorkspaceTabProps) {
 		);
 
 	return (
-		<div className="grid items-start gap-5 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_360px]">
+		<div className="grid items-start gap-6 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_360px]">
 			<div className="grid gap-4">
 				<PasteBox
 					key={`paste-${version?.id ?? "live"}`}
@@ -76,25 +76,22 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 	const flush = useDebouncedSave(message, initial, onSave);
 
 	return (
-		<div className="grid gap-3">
-			<div className="grid gap-1.5">
-				<label htmlFor={`${application.id}-message`} className="text-xs font-medium text-ink-2">
-					{t`Paste a message from ${application.company}`}
-				</label>
-				<TextArea
-					fullWidth
-					id={`${application.id}-message`}
-					value={message}
-					maxLength={20_000}
-					readOnly={readOnly}
-					placeholder={t`Paste the email or message, without the signature.`}
-					onChange={(event) => setMessage(event.target.value)}
-					onBlur={flush}
-					className="min-h-[92px]"
-				/>
-			</div>
+		<CareerWidget title={t`Paste a message from ${application.company}`}>
+			<TextArea
+				fullWidth
+				variant="secondary"
+				id={`${application.id}-message`}
+				value={message}
+				maxLength={20_000}
+				readOnly={readOnly}
+				aria-label={t`Paste a message from ${application.company}`}
+				placeholder={t`Paste the email or message, without the signature.`}
+				onChange={(event) => setMessage(event.target.value)}
+				onBlur={flush}
+				className="min-h-[92px]"
+			/>
 			{!readOnly && (
-				<div className="grid justify-items-start gap-2">
+				<div className="grid justify-items-start gap-2.5">
 					<AiNotice />
 					{provider && (
 						<Button
@@ -113,7 +110,7 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 					)}
 				</div>
 			)}
-		</div>
+		</CareerWidget>
 	);
 }
 
@@ -132,19 +129,18 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 	};
 
 	return (
-		<section className="grid gap-3 rounded-xl border border-line bg-surface p-4 md:p-[18px]">
-			<h2 className="text-base font-semibold">{reply.data.title}</h2>
+		<CareerWidget title={reply.data.title}>
 			{(reply.data.asks.length > 0 || reply.data.unconfirmed.length > 0) && (
-				<ul className="grid gap-1.5">
+				<ul className="grid gap-2">
 					{reply.data.asks.map((ask) => (
-						<li key={ask} className="flex gap-2 text-sm leading-[21px]">
-							<Icon name="check" size={17} className="mt-0.5 shrink-0 text-accent-text" />
+						<li key={ask} className="flex gap-2 text-sm leading-5">
+							<Icon name="check" size={17} className="mt-0.5 shrink-0 text-success" />
 							{ask}
 						</li>
 					))}
 					{reply.data.unconfirmed.map((open) => (
-						<li key={open} className="flex gap-2 text-sm leading-[21px]">
-							<Icon name="question" size={17} className="mt-0.5 shrink-0 text-warn-text" />
+						<li key={open} className="flex gap-2 text-sm leading-5">
+							<Icon name="question" size={17} className="mt-0.5 shrink-0 text-warning" />
 							{open}
 						</li>
 					))}
@@ -153,11 +149,12 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 			{reply.data.reply && (
 				<>
 					<div className="grid gap-1.5">
-						<label htmlFor={`${reply.id}-reply`} className="text-xs font-medium text-ink-2">
+						<label htmlFor={`${reply.id}-reply`} className="text-xs font-medium text-muted">
 							<Trans>Suggested reply · edit before sending</Trans>
 						</label>
 						<TextArea
 							fullWidth
+							variant="secondary"
 							id={`${reply.id}-reply`}
 							value={text}
 							readOnly={readOnly}
@@ -166,18 +163,18 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 							className="min-h-[110px]"
 						/>
 					</div>
-					<div className="flex flex-wrap items-center gap-2">
+					<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
 						<Button variant="secondary" size="sm" onPress={() => void copy()}>
 							<Icon name="copy" size={16} />
 							<Trans>Copy reply</Trans>
 						</Button>
-						<span className="text-xs text-ink-3">
+						<span className="text-xs text-muted">
 							<Trans>You send it from your own email.</Trans>
 						</span>
 					</div>
 				</>
 			)}
-		</section>
+		</CareerWidget>
 	);
 }
 
@@ -283,34 +280,28 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 	};
 
 	return (
-		<aside
-			className={cn(
-				"grid gap-3 rounded-xl border bg-surface p-4 shadow-e1 transition-colors duration-standard",
-				applied || readOnly ? "border-line" : "border-info-text",
-			)}
-		>
-			<div className="flex items-center gap-2">
-				<Icon name="list-checks" size={18} className="text-info-text" />
-				<h2 className="flex-1 text-sm font-semibold">
-					<Trans>Proposed changes</Trans>
-				</h2>
-				<span className="text-xs text-ink-3">
+		<CareerWidget
+			title={<Trans>Proposed changes</Trans>}
+			icon="list-checks"
+			trailing={
+				<Chip size="sm" variant="soft" color={applied ? "success" : readOnly ? "default" : "accent"}>
 					{applied
 						? t({ message: "Applied", context: "A proposed change has been applied" })
 						: readOnly
 							? t`Not applied`
 							: t`Waiting for you`}
-				</span>
-			</div>
-
+				</Chip>
+			}
+		>
 			<ul className="grid gap-2">
 				{changes.map((change, index) => {
 					const { title, detail } = describe(change);
 					const isFixed = fixed(index);
 					const id = `${reply.id}-change-${index}`;
 					return (
-						<li key={id} className={cn("flex gap-2.5 rounded-lg bg-bg px-3 py-2.5", isFixed && "opacity-70")}>
+						<li key={id} className={cn("flex gap-2.5 rounded-xl bg-default px-3 py-2.5", isFixed && "opacity-70")}>
 							<Checkbox
+								variant="secondary"
 								id={id}
 								isSelected={isFixed || selected.includes(index)}
 								isDisabled={isFixed || applied !== null || readOnly}
@@ -322,9 +313,9 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 									<Checkbox.Control className="mt-px">
 										<Checkbox.Indicator />
 									</Checkbox.Control>
-									<span className="grid gap-0.5 text-[13px] leading-[19px]">
+									<span className="grid gap-0.5 text-sm leading-5">
 										<span className="font-semibold">{title}</span>
-										<span className="text-ink-2">{detail}</span>
+										<span className="text-muted">{detail}</span>
 									</span>
 								</Checkbox.Content>
 							</Checkbox>
@@ -335,7 +326,7 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 
 			{/* Only a message about scheduling can tempt adding an interview from an unconfirmed time. */}
 			{reply.data.unconfirmed.length > 0 && !reply.data.changes.some((change) => change.type === "offer") && (
-				<p className="text-xs text-ink-3">
+				<p className="text-xs text-muted">
 					{contact
 						? t`Confirm the time with ${contact} before adding a new interview.`
 						: t`Confirm the time before adding a new interview.`}
@@ -345,7 +336,7 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 			{!readOnly && (
 				<Swap id={applied ? "applied" : "pending"}>
 					{applied ? (
-						<p className="flex items-center gap-1.5 text-[13px] text-accent-text">
+						<p className="flex items-center gap-1.5 text-sm text-success">
 							<Icon name="check-circle" size={17} />
 							{followUp?.type === "follow-up" && followUp.at
 								? t`Applied. Follow-up set for ${day(followUp.at)}.`
@@ -358,6 +349,6 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 					)}
 				</Swap>
 			)}
-		</aside>
+		</CareerWidget>
 	);
 }

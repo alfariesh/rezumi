@@ -650,6 +650,10 @@ msgstr "{minutes, plural, one {Začne se čez # minuto} two {Začne se čez # mi
 msgid "{minutes} min"
 msgstr "{minutes} min"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Ni razgovorov} one {# razgovor} two {# razgovora} few {# razgovori} other {# razgovorov}}"
@@ -711,6 +715,10 @@ msgstr "{pages, plural, one {Pri 9 pt še vedno # stran. Skrijte razdelek ali sk
 msgid "{pairing} type"
 msgstr "Vrsta {pairing}"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} od {total}"
@@ -760,8 +768,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Odpre se v Kariera → Ponudbe."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "Podprto: {supported} · delno: {partial} · manjka: {missing}"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +851,6 @@ msgstr "<0>Nič za popraviti.</0> Vsako preverjanje je uspešno."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Oddano {0}.</0> Poslane različice so shranjene v zavihku Shranjeno. Spremembe tukaj ne spremenijo tega, kar je prejelo podjetje {1}."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Skupni zneski namenoma niso sešteti.</0> Bonus in lastniški delež sta odvisna od pogojev, vrednost deleža pa je pri obeh negotova. Pred primerjavo skupnih zneskov preberite izvirne dokumente ponudb."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1372,10 @@ msgstr "Dodajte ključno besedo"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Dodajte jezik"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2324,6 +2332,10 @@ msgstr "Krepko"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Bonus"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -4778,6 +4790,10 @@ msgstr "Uredi vprašanje"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Uredi urnik"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -7568,6 +7584,10 @@ msgstr "Nov urnik"
 msgid "New section"
 msgstr "Nova rubrika"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Nove ekipe v podjetju Northwind so obtičale pri nastavitvi; večina je ni nikoli dokončala."
@@ -7706,16 +7726,16 @@ msgid "No evidence yet"
 msgstr "Še brez dokazov"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Nobeno dejstvo se ne ujema. Poskusite z drugo besedo ali vrsto."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Še ni dejstev za povezavo. Dodajte jih v Dejstvih."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Še ni dejstev. Dodajte eno zgoraj."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8104,6 +8124,10 @@ msgstr "Izključeno. Pismo hrani lastno kopijo vaših podatkov."
 #: src/features/homepage/tailor.tsx
 msgid "Offer"
 msgstr "Ponudba"
+
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
@@ -9156,6 +9180,10 @@ msgstr "QR koda za {url}"
 msgid "QR code for two-step verification"
 msgstr "QR-koda za preverjanje v dveh korakih"
 
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
 msgstr "Vprašanje {position} od {total}"
@@ -9750,6 +9778,7 @@ msgid "Requirement"
 msgstr "Zahteva"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Zahteve"
 
@@ -11368,6 +11397,7 @@ msgstr "Zgodbe"
 msgid "Stories to bring"
 msgstr "Zgodbe, ki jih pripravite"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Zgodba"
@@ -12364,6 +12394,10 @@ msgstr "Čas · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Čas, povezava, kdo, kaj ste poslali"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Časi so prikazani v časovnem pasu {timeZone}."
@@ -12421,6 +12455,10 @@ msgstr "Preveč zahtev. Poskusite znova pozneje."
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12543,10 @@ msgstr "Poskusi znova"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Poskusi znova s tem"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13824,6 +13866,10 @@ msgstr "Vaša vklopljena dejstva, zgodbe in želje se lahko pošljejo vaši pove
 msgid "Your evidence"
 msgstr "Vaši dokazi"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Vaša datoteka"
@@ -13973,6 +14019,10 @@ msgstr "Vaša kratka povezava in lastna domena prikazujeta, da ta življenjepis 
 #: src/features/career/coach.tsx
 msgid "your stories"
 msgstr "vaše zgodbe"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

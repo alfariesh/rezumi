@@ -2,19 +2,21 @@ import type { SavedData, SavedItem } from "./hooks";
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, Dropdown, Header, Label, Skeleton } from "@heroui/react";
+import { EmptyState } from "@heroui-pro/react";
+import { Alert, Avatar, Button, Chip, Dropdown, Header, Label, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError } from "./load-state";
 import { defaultPair, formatMoney, matchingPlace, meetsMinimum, moneyDifference, sameTerms } from "./offer-compare";
-import { useCareerTime, useNow } from "./shared";
+import { CareerWidget, useCareerTime, useNow } from "./shared";
 import { orpc } from "@/libs/orpc/client";
 
 type Offer = SavedItem & { data: SavedData<"offer"> };
@@ -84,21 +86,25 @@ export function OffersPage({ a, b }: OffersPageProps) {
 	if (query.isPending || profileQuery.isPending)
 		return (
 			<div className="grid gap-4">
-				<Skeleton className="h-9 w-2/3" />
-				<Skeleton className="h-[520px] rounded-xl" />
+				<Skeleton className="h-[520px] rounded-2xl" />
 			</div>
 		);
 
 	if (!offers?.length)
 		return (
-			<div className="grid justify-items-center gap-2 rounded-xl border border-dashed border-line-2 p-7 text-center">
-				<h2 className="font-display text-[22px] leading-7 font-medium">
-					<Trans>No offers to compare yet</Trans>
-				</h2>
-				<p className="max-w-[340px] text-sm text-ink-2">
-					<Trans>Paste an offer into an application's Messages tab.</Trans>
-				</p>
-			</div>
+			<EmptyState className="rounded-2xl bg-surface-secondary">
+				<EmptyState.Header>
+					<EmptyState.Media variant="icon">
+						<Icon name="scales" size={20} />
+					</EmptyState.Media>
+					<EmptyState.Title>
+						<Trans>No offers to compare yet</Trans>
+					</EmptyState.Title>
+					<EmptyState.Description>
+						<Trans>Paste an offer into an application's Messages tab.</Trans>
+					</EmptyState.Description>
+				</EmptyState.Header>
+			</EmptyState>
 		);
 
 	const left = offers.find((offer) => offer.id === a);
@@ -106,52 +112,63 @@ export function OffersPage({ a, b }: OffersPageProps) {
 	const pair = [left, right].filter((offer): offer is Offer => offer !== undefined);
 
 	return (
-		<div className="grid gap-5">
-			<div className="flex flex-wrap items-center justify-between gap-3">
-				<p className="text-sm text-ink-2">
+		<div className="grid gap-4">
+			<CareerWidget
+				title={<Trans>Offer comparison</Trans>}
+				trailing={
+					<div className="flex items-center gap-1.5">
+						<IconButton
+							icon="arrows-left-right"
+							label={t`Swap`}
+							variant="ghost"
+							isDisabled={!left || !right}
+							onPress={() => setPair({ a: b, b: a })}
+						/>
+						<Button
+							size="sm"
+							onPress={() =>
+								void navigate({
+									to: "/dashboard/career/coach/{-$conversationId}",
+									params: { conversationId: undefined },
+									search: { offers: pair.map((offer) => offer.id) },
+								})
+							}
+						>
+							<Trans>Plan what to ask</Trans>
+						</Button>
+					</div>
+				}
+				contentClassName="gap-0 p-0"
+			>
+				<p className="px-5 pt-4 pb-3 text-sm text-muted">
 					<Trans>
 						Compared in their original currency and pay period. Comparing doesn't share anything with the coach.
 					</Trans>
 				</p>
-				<div className="flex gap-2">
-					<Button variant="secondary" isDisabled={!left || !right} onPress={() => setPair({ a: b, b: a })}>
-						<Icon name="arrows-left-right" size={18} />
-						<Trans>Swap</Trans>
-					</Button>
-					<Button
-						onPress={() =>
-							void navigate({
-								to: "/dashboard/career/coach/{-$conversationId}",
-								params: { conversationId: undefined },
-								search: { offers: pair.map((offer) => offer.id) },
-							})
-						}
-					>
-						<Icon name="sparkle" size={18} />
-						<Trans>Plan what to ask</Trans>
-					</Button>
-				</div>
-			</div>
+				<ComparisonTable
+					offers={offers}
+					left={left}
+					right={right}
+					onChoose={(side, id) => setPair(side === "a" ? { a: id, b } : { a, b: id })}
+				/>
+			</CareerWidget>
 
-			<ComparisonTable
-				offers={offers}
-				left={left}
-				right={right}
-				onChoose={(side, id) => setPair(side === "a" ? { a: id, b } : { a, b: id })}
-			/>
-
-			<div className="grid items-start gap-5 md:grid-cols-2">
+			<div className="grid gap-4">
+				<Alert status="warning">
+					<Alert.Indicator className="shrink-0" />
+					<Alert.Content>
+						<Alert.Title>
+							<Trans>Totals aren't added up on purpose.</Trans>
+						</Alert.Title>
+						<Alert.Description>
+							<Trans>
+								Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer
+								documents before comparing totals.
+							</Trans>
+						</Alert.Description>
+					</Alert.Content>
+				</Alert>
 				<OpenQuestions offers={pair} />
-				<p className="flex gap-3 rounded-xl bg-warn-soft p-4 text-[13px] leading-[19px] text-warn-text">
-					<Icon name="info" size={18} className="mt-px shrink-0" />
-					<span>
-						<Trans>
-							<strong className="font-semibold">Totals aren't added up on purpose.</strong> Bonus and equity depend on
-							conditions, and equity value is uncertain for both. Read the original offer documents before comparing
-							totals.
-						</Trans>
-					</span>
-				</p>
 			</div>
 		</div>
 	);
@@ -161,11 +178,6 @@ type Note = { icon: IconName; tone: "better" | "warn" | "muted"; text: string };
 type Cell = { value: ReactNode; strong?: boolean; notes: Note[] };
 type Requirement = { met: boolean | null; text: string };
 
-const rowGrid =
-	"grid md:grid-cols-[140px_minmax(0,1fr)_minmax(0,1fr)] md:border-t md:border-line md:first:border-t-0 lg:grid-cols-[200px_minmax(0,1fr)_minmax(0,1fr)]";
-/** On phones each term is its own card with both offers stacked. */
-const phoneCard = "max-md:rounded-xl max-md:border max-md:border-line max-md:bg-surface";
-
 type ComparisonTableProps = {
 	offers: Offer[];
 	left: Offer | undefined;
@@ -173,6 +185,7 @@ type ComparisonTableProps = {
 	onChoose: (side: Side, id: string) => void;
 };
 
+/** A real table: the offers are its columns and each term a row. Narrow screens scroll it inside its own box. */
 function ComparisonTable({ offers, left, right, onChoose }: ComparisonTableProps) {
 	const cells = useCells();
 	const { data: profile } = useQuery(orpc.career.profile.queryOptions());
@@ -190,116 +203,130 @@ function ComparisonTable({ offers, left, right, onChoose }: ComparisonTableProps
 	const { locale } = useCareerTime();
 	const requirements = [left, right].map((offer) => (offer && profile ? requirementsFor(offer, profile, locale) : []));
 	const hasRequirements = requirements.some((list) => list.length > 0);
+	const label = "sticky start-0 z-[1] w-40 px-5 py-3.5 text-start text-sm font-normal text-muted md:w-48";
 
 	return (
-		<div className="grid gap-3 md:gap-0 md:overflow-hidden md:rounded-xl md:border md:border-line md:bg-surface">
-			<div className={cn(rowGrid, phoneCard, "max-md:overflow-hidden")}>
-				<div className="hidden md:block" />
-				{(["a", "b"] as const).map((side) => {
-					const offer = side === "a" ? left : right;
-					const other = side === "a" ? right : left;
-					return (
-						<div key={side} className="border-line max-md:not-first:border-t md:border-s">
-							{offer || side === "a" ? (
-								<OfferHeader offer={offer} offers={offers} otherId={other?.id} onChoose={(id) => onChoose(side, id)} />
-							) : (
-								<div className="m-3 grid gap-1 rounded-lg border border-dashed border-line-2 p-4">
-									<p className="text-sm font-semibold">
-										<Trans>Save another offer to compare</Trans>
-									</p>
-									<p className="text-[13px] text-ink-3">
-										<Trans>Paste an offer into an application's Messages tab.</Trans>
-									</p>
-									{offers.length > 1 && (
+		<div className="overflow-x-auto">
+			<table className="w-full min-w-[640px] table-fixed border-collapse">
+				<thead>
+					<tr>
+						<td className="sticky start-0 z-[1] w-40 bg-surface md:w-48" />
+						{(["a", "b"] as const).map((side) => {
+							const offer = side === "a" ? left : right;
+							const other = side === "a" ? right : left;
+							return (
+								<th key={side} scope="col" className="p-2 text-start align-top font-normal">
+									{offer || side === "a" ? (
 										<OfferHeader
-											offer={undefined}
+											offer={offer}
 											offers={offers}
 											otherId={other?.id}
 											onChoose={(id) => onChoose(side, id)}
 										/>
+									) : (
+										<div className="grid gap-1 rounded-xl bg-default p-4">
+											<p className="text-sm font-semibold">
+												<Trans>Save another offer to compare</Trans>
+											</p>
+											<p className="text-sm font-normal text-muted">
+												<Trans>Paste an offer into an application's Messages tab.</Trans>
+											</p>
+											{offers.length > 1 && (
+												<OfferHeader
+													offer={undefined}
+													offers={offers}
+													otherId={other?.id}
+													onChoose={(id) => onChoose(side, id)}
+												/>
+											)}
+										</div>
 									)}
-								</div>
-							)}
-						</div>
-					);
-				})}
-			</div>
-
-			{rows.map((row) => (
-				<div key={row.key} className={cn(rowGrid, phoneCard)}>
-					<div className="px-[18px] pt-3 text-[13px] text-ink-2 max-md:font-semibold max-md:text-ink md:py-3">
-						{row.label}
-					</div>
-					{columns.map((column, index) => {
-						const offer = index === 0 ? left : right;
-						const cell = column?.[row.key];
-						return (
-							<div key={index} className={cn("border-line px-[18px] py-3 md:border-s", !offer && "max-md:hidden")}>
-								{offer && cell && (
-									<>
-										<p className="text-xs text-ink-3 md:hidden">{companyOf(offer)}</p>
-										<p className={cn("text-sm leading-[21px]", cell.strong && "font-semibold")}>{cell.value}</p>
-										{cell.notes.map((note) => (
-											<p
-												key={note.text}
+								</th>
+							);
+						})}
+					</tr>
+				</thead>
+				<tbody>
+					{rows.map((row) => (
+						<tr key={row.key} className="border-t border-separator align-top">
+							<th scope="row" className={cn(label, "bg-surface")}>
+								{row.label}
+							</th>
+							{columns.map((column, index) => {
+								const offer = index === 0 ? left : right;
+								const cell = column?.[row.key];
+								return (
+									<td key={index} className="px-5 py-3.5">
+										{offer && cell && (
+											<>
+												<p className={cn("text-sm leading-[21px] tabular-nums", cell.strong && "font-semibold")}>
+													{cell.value}
+												</p>
+												{cell.notes.map((note) =>
+													note.tone === "better" ? (
+														<Chip
+															key={note.text}
+															size="sm"
+															variant="soft"
+															color="success"
+															className="mt-1.5 w-fit gap-1"
+														>
+															<Icon name={note.icon} size={14} />
+															<Chip.Label>{note.text}</Chip.Label>
+														</Chip>
+													) : (
+														<p
+															key={note.text}
+															className={cn(
+																"mt-1.5 flex items-start gap-1 text-xs",
+																note.tone === "warn" ? "text-warning-soft-foreground" : "text-muted",
+															)}
+														>
+															<Icon name={note.icon} size={14} className="mt-px shrink-0" />
+															{note.text}
+														</p>
+													),
+												)}
+											</>
+										)}
+									</td>
+								);
+							})}
+						</tr>
+					))}
+					{hasRequirements && (
+						<tr className="border-t border-separator bg-surface-secondary align-top">
+							<th scope="row" className={cn(label, "bg-surface-secondary font-semibold text-foreground")}>
+								<Trans>Your requirements</Trans>
+							</th>
+							{requirements.map((list, index) => (
+								<td key={index} className="px-5 py-3.5">
+									<ul className="grid gap-1.5">
+										{list.map((item) => (
+											<li
+												key={item.text}
 												className={cn(
-													"mt-1 flex items-center gap-1 text-xs",
-													note.tone === "better" && "text-accent-text",
-													note.tone === "warn" && "text-warn-text",
-													note.tone === "muted" && "text-ink-3",
+													"flex items-center gap-1.5 text-sm",
+													item.met === true && "text-success-soft-foreground",
+													item.met === false && "text-danger",
+													item.met === null && "text-warning-soft-foreground",
 												)}
 											>
-												<Icon name={note.icon} size={14} className="shrink-0" />
-												{note.text}
-											</p>
+												<Icon
+													name={item.met === true ? "check-circle" : item.met === false ? "x-circle" : "question"}
+													size={16}
+													className="shrink-0"
+												/>
+												{item.text}
+											</li>
 										))}
-									</>
-								)}
-							</div>
-						);
-					})}
-				</div>
-			))}
-
-			{hasRequirements && (
-				<div className={cn(rowGrid, phoneCard, "bg-bg")}>
-					<div className="px-[18px] pt-3 text-[13px] font-semibold md:py-3">
-						<Trans>Your requirements</Trans>
-					</div>
-					{requirements.map((list, index) => {
-						const offer = index === 0 ? left : right;
-						return (
-							<ul
-								key={index}
-								className={cn(
-									"grid content-start gap-1.5 border-line px-[18px] py-3 md:border-s",
-									!offer && "max-md:hidden",
-								)}
-							>
-								{offer && <li className="text-xs text-ink-3 md:hidden">{companyOf(offer)}</li>}
-								{list.map((item) => (
-									<li
-										key={item.text}
-										className={cn(
-											"flex items-center gap-1.5 text-[13px]",
-											item.met === true && "text-accent-text",
-											item.met === false && "text-danger-text",
-											item.met === null && "text-warn-text",
-										)}
-									>
-										<Icon
-											name={item.met === true ? "check-circle" : item.met === false ? "x-circle" : "question"}
-											size={15}
-											className="shrink-0"
-										/>
-										{item.text}
-									</li>
-								))}
-							</ul>
-						);
-					})}
-				</div>
-			)}
+									</ul>
+								</td>
+							))}
+						</tr>
+					)}
+				</tbody>
+			</table>
 		</div>
 	);
 }
@@ -325,21 +352,19 @@ function OfferHeader({ offer, offers, otherId, onChoose }: OfferHeaderProps) {
 			{offer ? (
 				<Button
 					variant="ghost"
-					className="h-auto min-h-0 w-full justify-start gap-3 rounded-none px-[18px] py-4 text-start font-normal transition-colors duration-quick hover:bg-hover aria-expanded:bg-hover"
+					className="h-auto min-h-0 w-full justify-start gap-3 rounded-xl px-3 py-3 text-start font-normal"
 				>
-					<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-sunken text-sm font-semibold">
-						{companyOf(offer).charAt(0).toLocaleUpperCase()}
-					</span>
+					<Avatar size="md" className="shrink-0">
+						<Avatar.Fallback>{companyOf(offer).charAt(0).toLocaleUpperCase()}</Avatar.Fallback>
+					</Avatar>
 					<span className="grid min-w-0 flex-1">
 						<span className="truncate text-[15px] font-semibold">{companyOf(offer)}</span>
-						{offer.application?.role && (
-							<span className="truncate text-[13px] text-ink-2">{offer.application.role}</span>
-						)}
-						<span className="text-xs text-ink-3">
+						{offer.application?.role && <span className="truncate text-sm text-muted">{offer.application.role}</span>}
+						<span className="text-xs text-muted">
 							{versionLabel(offer)} · {t`saved ${when(offer.createdAt)}`}
 						</span>
 					</span>
-					<Icon name="caret-down" size={18} className="shrink-0 text-ink-3" />
+					<Icon name="caret-down" size={18} className="shrink-0 text-muted" />
 				</Button>
 			) : (
 				<Button variant="secondary" size="sm" className="mt-2 w-fit">
@@ -389,7 +414,7 @@ function useCells() {
 		const terms = offer.data;
 		const company = companyOf(offer);
 		const unknown: Cell = {
-			value: <span className="text-ink-3">{t`Unknown`}</span>,
+			value: <span className="text-muted">{t`Unknown`}</span>,
 			notes: [{ icon: "question", tone: "warn", text: t`Not in the offer · ask ${company}` }],
 		};
 		const money = (amount: number) => {
@@ -558,39 +583,35 @@ function OpenQuestions({ offers }: OpenQuestionsProps) {
 	};
 
 	return (
-		<section className="grid gap-3 rounded-xl border border-line bg-surface p-4">
-			<h2 className="text-sm font-semibold">
-				<Trans>Not in either offer yet</Trans>
-			</h2>
+		<CareerWidget title={<Trans>Not in either offer yet</Trans>} contentClassName="gap-3 p-4">
 			{questions.length === 0 ? (
-				<p className="text-[13px] text-ink-2">
+				<p className="text-sm text-muted">
 					<Trans>Both offers cover everything compared here.</Trans>
 				</p>
 			) : (
 				<>
-					<p className="text-[13px] leading-[19px] text-ink-2">
+					<p className="text-sm leading-[21px] text-muted">
 						{said
 							? offers.length > 1
 								? t`You said: “${said}” Ask both companies before deciding.`
 								: t`You said: “${said}” Ask before deciding.`
 							: t`Ask before deciding.`}
 					</p>
-					<ol className="grid gap-2">
+					<ol className="grid gap-2.5">
 						{questions.map((item, index) => (
-							<li key={item.question} className="grid grid-cols-[20px_minmax(0,1fr)] text-sm leading-[21px]">
-								<span className="font-mono text-xs leading-[21px] text-ink-3">{index + 1}.</span>
+							<li key={item.question} className="grid grid-cols-[24px_minmax(0,1fr)] text-sm leading-[21px]">
+								<span className="text-muted tabular-nums">{index + 1}.</span>
 								<span>
-									{item.question} <span className="text-xs text-ink-3">· {item.ask}</span>
+									{item.question} <span className="text-xs text-muted">· {item.ask}</span>
 								</span>
 							</li>
 						))}
 					</ol>
 					<Button variant="secondary" size="sm" className="w-fit" onPress={() => void copy()}>
-						<Icon name="copy" size={16} />
 						<Trans>Copy questions</Trans>
 					</Button>
 				</>
 			)}
-		</section>
+		</CareerWidget>
 	);
 }

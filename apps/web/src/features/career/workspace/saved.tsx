@@ -2,7 +2,8 @@ import type { SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { SavedItemKind, WorkspaceTab } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { Button, buttonVariants, Tooltip, Skeleton } from "@heroui/react";
+import { EmptyState, Widget } from "@heroui-pro/react";
+import { Button, buttonVariants, Separator, Tooltip, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -61,17 +62,22 @@ export function SavedTab({ application, go }: WorkspaceTabProps) {
 
 	if (items.length === 0)
 		return (
-			<div className="grid justify-items-center gap-2 rounded-xl border border-dashed border-line-2 p-7 text-center">
-				<h2 className="font-display text-[22px] leading-7 font-medium">
-					<Trans>Nothing saved yet</Trans>
-				</h2>
-				<p className="max-w-[340px] text-sm text-ink-2">
-					<Trans>
-						Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create
-						them.
-					</Trans>
-				</p>
-			</div>
+			<EmptyState className="rounded-2xl bg-surface-secondary py-12">
+				<EmptyState.Header>
+					<EmptyState.Media variant="icon">
+						<Icon name="clock-counter-clockwise" size={20} />
+					</EmptyState.Media>
+					<EmptyState.Title>
+						<Trans>Nothing saved yet</Trans>
+					</EmptyState.Title>
+					<EmptyState.Description className="max-w-[340px]">
+						<Trans>
+							Fit checks, briefings, practice feedback, debriefs, answers and replies land here as the other tabs create
+							them.
+						</Trans>
+					</EmptyState.Description>
+				</EmptyState.Header>
+			</EmptyState>
 		);
 
 	const onDelete = (item: SavedItem) => {
@@ -90,7 +96,7 @@ export function SavedTab({ application, go }: WorkspaceTabProps) {
 
 	return (
 		<div className="grid gap-4">
-			<div className="flex flex-wrap items-center justify-between gap-3">
+			<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
 				<div className="flex flex-wrap gap-1.5">
 					<FilterChip pressed={filter === null} onClick={() => setFilter(null)}>
 						<Trans>All</Trans>
@@ -101,25 +107,30 @@ export function SavedTab({ application, go }: WorkspaceTabProps) {
 						</FilterChip>
 					))}
 				</div>
-				<p className="text-xs text-ink-3">{t`Everything the coach wrote for ${application.company}, newest first.`}</p>
+				<p className="text-xs text-muted">{t`Everything the coach wrote for ${application.company}, newest first.`}</p>
 			</div>
 
-			<div role="list" className="overflow-hidden rounded-xl border border-line bg-surface">
-				<AnimatePresence initial={false}>
-					{shown.map((item) => (
-						<CollapseRow key={item.id} role="listitem" className="border-t border-line first:border-t-0">
-							<SavedRow
-								item={item}
-								applicationId={application.id}
-								expanded={expanded === item.id}
-								onToggle={() => setExpanded((current) => (current === item.id ? null : item.id))}
-								onOpen={(tab) => go(tab, { version: item.id })}
-								onDelete={() => onDelete(item)}
-							/>
-						</CollapseRow>
-					))}
-				</AnimatePresence>
-			</div>
+			<Widget>
+				<Widget.Content className="p-0">
+					<div role="list">
+						<AnimatePresence initial={false}>
+							{shown.map((item, index) => (
+								<CollapseRow key={item.id} role="listitem">
+									{index > 0 && <Separator />}
+									<SavedRow
+										item={item}
+										applicationId={application.id}
+										expanded={expanded === item.id}
+										onToggle={() => setExpanded((current) => (current === item.id ? null : item.id))}
+										onOpen={(tab) => go(tab, { version: item.id })}
+										onDelete={() => onDelete(item)}
+									/>
+								</CollapseRow>
+							))}
+						</AnimatePresence>
+					</div>
+				</Widget.Content>
+			</Widget>
 		</div>
 	);
 }
@@ -143,9 +154,9 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 	const summaryId = `${item.id}-summary`;
 
 	return (
-		<div className="grid grid-cols-[34px_minmax(0,1fr)] items-start gap-x-3 px-4 py-3.5 sm:grid-cols-[34px_minmax(0,1fr)_auto]">
-			<span className="grid size-[34px] place-items-center rounded-lg bg-sunken text-ink-2">
-				<Icon name={meta?.icon ?? "file-text"} size={19} />
+		<div className="grid grid-cols-[36px_minmax(0,1fr)] items-start gap-x-3 px-4 py-3.5 sm:grid-cols-[36px_minmax(0,1fr)_auto]">
+			<span className="grid size-9 place-items-center rounded-xl bg-default text-muted">
+				<Icon name={meta?.icon ?? "file-text"} size={18} />
 			</span>
 			<div className="grid min-w-0 gap-0.5">
 				<button
@@ -157,7 +168,7 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 				>
 					{item.title}
 				</button>
-				<p className="text-xs text-ink-3">
+				<div className="text-xs text-muted">
 					{kindLabel(item.data.kind)} · {when(item.createdAt)}
 					{used && (
 						<>
@@ -178,7 +189,7 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 							)}
 						</>
 					)}
-				</p>
+				</div>
 			</div>
 			<div className="col-start-2 mt-2 flex items-center gap-1 sm:col-start-3 sm:row-start-1 sm:mt-0">
 				{meta?.tab ? (
@@ -194,12 +205,14 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 						<Trans>Open in Offers</Trans>
 					</Link>
 				)}
-				<IconButton icon="trash" label={t`Delete`} size="sm" iconSize={18} className="text-ink-2" onPress={onDelete} />
+				<IconButton icon="trash" label={t`Delete`} size="sm" iconSize={18} className="text-muted" onPress={onDelete} />
 			</div>
 			<AnimatePresence initial={false}>
 				{expanded && (
-					<CollapseRow id={summaryId} className="col-span-full sm:ps-[46px]">
-						<p className="pt-2.5 text-sm leading-[21px] text-ink-2">{summaryOf(item, i18n.locale)}</p>
+					<CollapseRow id={summaryId} className="col-span-full sm:ps-12">
+						<p className="mt-3 rounded-xl bg-default px-3.5 py-3 text-sm leading-5 text-muted">
+							{summaryOf(item, i18n.locale)}
+						</p>
 					</CollapseRow>
 				)}
 			</AnimatePresence>

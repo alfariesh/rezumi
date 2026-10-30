@@ -3,15 +3,14 @@ import type { careerScheduleInputSchema } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type z from "zod";
-import { Segment, Sheet } from "@heroui-pro/react";
-import { Button, buttonVariants, Input, Spinner } from "@heroui/react";
+import { NativeSelect, Segment, Sheet } from "@heroui-pro/react";
+import { Alert, Button, buttonVariants, Input, Label, Link as HeroLink, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -248,26 +247,22 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 			}}
 		>
 			<Sheet.Backdrop>
-				<Sheet.Content className={phone ? "" : "w-full border-s border-line sm:max-w-[480px]"}>
-					<Sheet.Dialog className="gap-0 p-0">
+				<Sheet.Content className={phone ? "" : "w-full sm:max-w-[480px]"}>
+					<Sheet.Dialog>
 						{phone && <Sheet.Handle />}
-						<div className="flex items-center gap-3 border-b border-line ps-[22px] pe-3 pt-[18px] pb-3.5">
-							<Sheet.Heading className="flex-1">
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						<Sheet.Header>
+							<Sheet.Heading>
 								{form?.existing ? <Trans>Edit schedule</Trans> : <Trans>New schedule</Trans>}
 							</Sheet.Heading>
-							<Sheet.Close>
-								<Button aria-label={t`Close`} variant="ghost" isIconOnly>
-									<Icon name="x" />
-								</Button>
-							</Sheet.Close>
-						</div>
+						</Sheet.Header>
 
 						{!form || !draft ? (
-							<div className="grid min-h-40 flex-1 place-items-center">
+							<Sheet.Body className="grid min-h-40 place-items-center">
 								<Spinner size="md" color="current" aria-label={t`Loading`} />
-							</div>
+							</Sheet.Body>
 						) : (
-							<div className="flex min-h-0 flex-1 flex-col gap-[18px] overflow-y-auto px-[22px] py-5">
+							<Sheet.Body className="flex flex-col gap-5">
 								<Segments
 									label={t`What should run`}
 									value={draft.kind}
@@ -279,7 +274,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									]}
 								/>
 
-								<Swap id={draft.kind} className="flex flex-col gap-[18px]">
+								<Swap id={draft.kind} className="flex flex-col gap-5">
 									{draft.kind === "discovery" && (
 										<>
 											<Field
@@ -290,6 +285,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 												{(props) => (
 													<Input
 														fullWidth
+														variant="secondary"
 														{...props}
 														value={draft.query}
 														maxLength={500}
@@ -309,13 +305,19 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 													{ value: "7", label: t`Every week` },
 												]}
 											/>
-											<p className="flex gap-2.5 rounded-lg bg-info-soft px-3 py-2.5 text-[13px] leading-[19px] text-ink">
-												<Icon name="globe-simple" size={18} className="mt-px shrink-0 text-info-text" />
-												<Trans>
-													Uses the web search service set up in Settings. Results wait in Today for your review;
-													applications and documents are never created for you.
-												</Trans>
-											</p>
+											<Alert status="accent">
+												<Alert.Indicator className="shrink-0">
+													<Icon name="globe-simple" size={18} />
+												</Alert.Indicator>
+												<Alert.Content>
+													<Alert.Description>
+														<Trans>
+															Uses the web search service set up in Settings. Results wait in Today for your review;
+															applications and documents are never created for you.
+														</Trans>
+													</Alert.Description>
+												</Alert.Content>
+											</Alert>
 										</>
 									)}
 
@@ -334,22 +336,25 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 												}
 											>
 												{(props) => (
-													<NativeSelect
-														{...props}
-														disabled={choices.length === 0}
-														value={draft.interviewId}
-														onChange={(event) => set({ interviewId: event.target.value })}
-														className="pointer-coarse:text-base"
-													>
-														{choices.map((item) => (
-															<option key={item.interview.id} value={item.interview.id}>
-																{[
-																	item.application.company,
-																	interviewKindOf(item.interview.kind)?.label ?? item.interview.kind,
-																	when(item.start),
-																].join(" · ")}
-															</option>
-														))}
+													<NativeSelect variant="secondary" fullWidth>
+														<NativeSelect.Trigger
+															{...props}
+															disabled={choices.length === 0}
+															value={draft.interviewId}
+															onChange={(event) => set({ interviewId: event.target.value })}
+															className="pointer-coarse:min-h-11 pointer-coarse:text-base"
+														>
+															{choices.map((item) => (
+																<option key={item.interview.id} value={item.interview.id}>
+																	{[
+																		item.application.company,
+																		interviewKindOf(item.interview.kind)?.label ?? item.interview.kind,
+																		when(item.start),
+																	].join(" · ")}
+																</option>
+															))}
+															<NativeSelect.Indicator />
+														</NativeSelect.Trigger>
 													</NativeSelect>
 												)}
 											</Field>
@@ -368,24 +373,24 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 													providerState.isUnavailable ? (
 														<AiProviderLoadState state={providerState} />
 													) : providers.length === 0 ? (
-														<Link
-															to="/dashboard/settings/ai"
-															className="w-fit text-link underline-offset-4 hover:underline"
-														>
+														<HeroLink href="/dashboard/settings/ai" className="w-fit">
 															<Trans>Connect an AI provider in Settings</Trans>
-														</Link>
+														</HeroLink>
 													) : (
-														<NativeSelect
-															{...props}
-															value={draft.aiProviderId}
-															onChange={(event) => set({ aiProviderId: event.target.value })}
-															className="pointer-coarse:text-base"
-														>
-															{providers.map((provider) => (
-																<option key={provider.id} value={provider.id}>
-																	{provider.label}
-																</option>
-															))}
+														<NativeSelect variant="secondary" fullWidth>
+															<NativeSelect.Trigger
+																{...props}
+																value={draft.aiProviderId}
+																onChange={(event) => set({ aiProviderId: event.target.value })}
+																className="pointer-coarse:min-h-11 pointer-coarse:text-base"
+															>
+																{providers.map((provider) => (
+																	<option key={provider.id} value={provider.id}>
+																		{provider.label}
+																	</option>
+																))}
+																<NativeSelect.Indicator />
+															</NativeSelect.Trigger>
 														</NativeSelect>
 													)
 												}
@@ -394,7 +399,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 											{form?.existing?.kind === "prepare" &&
 												providers.length > 0 &&
 												!providers.some((provider) => provider.id === form.existing?.aiProviderId) && (
-													<p className="-mt-2 text-xs text-warn-text">
+													<p className="-mt-3 text-xs text-warning-soft-foreground">
 														{t`Its connection was switched off or removed, so it runs on ${providers[0]?.label ?? ""} until you choose another.`}
 													</p>
 												)}
@@ -410,18 +415,21 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									{draft.kind === "follow-up" && (
 										<Field label={t`Application`} hint={open.length === 0 ? t`Add an application first` : undefined}>
 											{(props) => (
-												<NativeSelect
-													{...props}
-													disabled={open.length === 0}
-													value={draft.applicationId}
-													onChange={(event) => set({ applicationId: event.target.value })}
-													className="pointer-coarse:text-base"
-												>
-													{open.map((application) => (
-														<option key={application.id} value={application.id}>
-															{`${application.company} · ${application.role}`}
-														</option>
-													))}
+												<NativeSelect variant="secondary" fullWidth>
+													<NativeSelect.Trigger
+														{...props}
+														disabled={open.length === 0}
+														value={draft.applicationId}
+														onChange={(event) => set({ applicationId: event.target.value })}
+														className="pointer-coarse:min-h-11 pointer-coarse:text-base"
+													>
+														{open.map((application) => (
+															<option key={application.id} value={application.id}>
+																{`${application.company} · ${application.role}`}
+															</option>
+														))}
+														<NativeSelect.Indicator />
+													</NativeSelect.Trigger>
 												</NativeSelect>
 											)}
 										</Field>
@@ -434,6 +442,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 													{(props) => (
 														<Input
 															fullWidth
+															variant="secondary"
 															{...props}
 															type="date"
 															aria-invalid={Boolean(shownError("when")) || undefined}
@@ -448,6 +457,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 													{(props) => (
 														<Input
 															fullWidth
+															variant="secondary"
 															{...props}
 															type="time"
 															aria-invalid={Boolean(shownError("when")) || undefined}
@@ -464,34 +474,38 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									)}
 								</Swap>
 
-								<div className="flex flex-col border-t border-line">
+								<div className="flex flex-col">
+									<Separator />
 									<SwitchRow
 										isSelected={draft.enabled}
 										onChange={(enabled) => set({ enabled })}
 										label={<span className="font-semibold">{t`Turn this schedule on`}</span>}
 										description={t`Paused schedules keep their settings.`}
-										className="rounded-none border-b border-line py-3.5"
+										className="py-3.5"
 									/>
 									{smtp && (
-										<SwitchRow
-											isSelected={verified && draft.email}
-											isDisabled={!verified}
-											onChange={(email) => set({ email })}
-											label={<span className="font-semibold">{t`Also email ${user?.email ?? ""}`}</span>}
-											description={
-												verified
-													? t`You'll always see it in Today. Email depends on your server's mail setup.`
-													: t`Verify your email in Settings first`
-											}
-											className="rounded-none border-b border-line py-3.5"
-										/>
+										<>
+											<Separator />
+											<SwitchRow
+												isSelected={verified && draft.email}
+												isDisabled={!verified}
+												onChange={(email) => set({ email })}
+												label={<span className="font-semibold">{t`Also email ${user?.email ?? ""}`}</span>}
+												description={
+													verified
+														? t`You'll always see it in Today. Email depends on your server's mail setup.`
+														: t`Verify your email in Settings first`
+												}
+												className="py-3.5"
+											/>
+										</>
 									)}
 								</div>
-							</div>
+							</Sheet.Body>
 						)}
 
-						<div className="relative border-t border-line px-[22px] py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
-							<Swap id={form?.discarding ? "discard" : "actions"} className="flex flex-wrap items-center gap-2">
+						<Sheet.Footer className="pb-[max(12px,env(safe-area-inset-bottom))]">
+							<Swap id={form?.discarding ? "discard" : "actions"} className="flex w-full flex-wrap items-center gap-2">
 								{form?.discarding ? (
 									<>
 										<p role="status" className="me-auto text-sm font-semibold">
@@ -503,7 +517,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 										>
 											<Trans>Keep editing</Trans>
 										</Button>
-										<Button variant="danger" onPress={close}>
+										<Button variant="danger-soft" onPress={close}>
 											<Trans>Discard</Trans>
 										</Button>
 									</>
@@ -511,8 +525,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									<>
 										{form?.existing && (
 											<Button
-												variant="ghost"
-												className="text-danger"
+												variant="danger-soft"
 												onPress={() => {
 													if (form.existing) onDelete(form.existing.id);
 													close();
@@ -538,7 +551,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 									</>
 								)}
 							</Swap>
-						</div>
+						</Sheet.Footer>
 					</Sheet.Dialog>
 				</Sheet.Content>
 			</Sheet.Backdrop>
@@ -557,15 +570,13 @@ type FieldProps = {
 	children: (props: FieldControlProps) => ReactNode;
 };
 
-/** Label 12/500 ink-2 6px above the control; a hint below, replaced by the error once there is one. */
+/** The label above the control; a hint below, replaced by the error once there is one. */
 function Field({ label, hint, error, children }: FieldProps) {
 	const id = useId();
 	const note = error ?? hint;
 	return (
 		<div className="grid gap-1.5">
-			<label htmlFor={id} className="text-xs font-medium text-ink-2">
-				{label}
-			</label>
+			<Label htmlFor={id}>{label}</Label>
 			{children({
 				id,
 				...(note ? { "aria-describedby": `${id}-note` } : {}),
@@ -575,7 +586,7 @@ function Field({ label, hint, error, children }: FieldProps) {
 				<FieldError id={`${id}-note`}>{error}</FieldError>
 			) : (
 				hint && (
-					<p id={`${id}-note`} className="text-xs text-ink-3">
+					<p id={`${id}-note`} className="text-xs text-muted">
 						{hint}
 					</p>
 				)
@@ -587,7 +598,7 @@ function Field({ label, hint, error, children }: FieldProps) {
 function FieldError({ id, children }: { id?: string; children: string | null }) {
 	if (!children) return null;
 	return (
-		<p id={id} className="flex items-center gap-1 text-xs text-danger-text">
+		<p id={id} className="flex items-center gap-1 text-xs text-danger">
 			<Icon name="warning-circle" size={15} className="shrink-0" />
 			{children}
 		</p>
@@ -606,7 +617,7 @@ function Segments({ label, value, options, onChange }: SegmentsProps) {
 	const id = useId();
 	return (
 		<div className="grid gap-1.5">
-			<span id={id} className="text-xs font-medium text-ink-2">
+			<span id={id} className="text-sm font-medium">
 				{label}
 			</span>
 			<Segment

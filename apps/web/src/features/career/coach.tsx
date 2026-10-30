@@ -469,9 +469,18 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 			<PromptSuggestion variant="card" className="@container">
 				<PromptSuggestion.Items className="grid-cols-1 @xl:grid-cols-3">
 					{starters.map((starter) => (
-						<PromptSuggestion.Item key={starter.icon} isDisabled={disabled} onPress={() => onPick(starter.text)}>
+						// In the card variant the item is a plain Card (a div): it takes no onPress or isDisabled, so a button
+						// stretched over the card carries the press, focus and disabled state.
+						<PromptSuggestion.Item key={starter.icon} className="relative cursor-[var(--cursor-interactive)]">
 							<Icon name={starter.icon} size={22} className="text-accent" />
 							<PromptSuggestion.ItemTitle>{starter.text}</PromptSuggestion.ItemTitle>
+							<button
+								type="button"
+								aria-label={starter.text}
+								disabled={disabled}
+								onClick={() => onPick(starter.text)}
+								className="absolute inset-0 rounded-[inherit] focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none disabled:cursor-not-allowed"
+							/>
 						</PromptSuggestion.Item>
 					))}
 				</PromptSuggestion.Items>

@@ -64,7 +64,7 @@ function CareerLayout() {
 					<Tabs.ListContainer>
 						<Tabs.List aria-label={t`Career`}>
 							{places.map((place) => (
-								<Tabs.Tab key={place.to} id={place.to} href={place.href}>
+								<Tabs.Tab key={place.to} id={place.to} href={place.href} className="gap-1.5">
 									<Icon name={place.icon} size={18} />
 									{place.label}
 									<Tabs.Indicator />

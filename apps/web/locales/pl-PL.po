@@ -650,6 +650,10 @@ msgstr "{minutes, plural, one {Zaczyna się za # minutę} few {Zaczyna się za #
 msgid "{minutes} min"
 msgstr "{minutes} min"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Brak rozmów kwalifikacyjnych} one {# rozmowa kwalifikacyjna} few {# rozmowy kwalifikacyjne} many {# rozmów kwalifikacyjnych} other {# rozmowy kwalifikacyjnej}}"
@@ -711,6 +715,10 @@ msgstr "{pages, plural, one {Nadal # strona przy 9 pt. Ukryj sekcję lub skróć
 msgid "{pairing} type"
 msgstr "Typ {pairing}"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} lub {total}"
@@ -760,8 +768,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Otwiera się w Kariera → Oferty."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} potwierdzone · {partial} częściowo · {missing} brak"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +851,6 @@ msgstr "<0>Nie ma nic do naprawienia.</0> Każda kontrola przechodzi pomyślnie.
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Wysłano {0}.</0> Wysłane wersje są przechowywane w zakładce Zapisano. Zmiany tutaj nie wpływają na to, co otrzymała firma {1}."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Sumy celowo nie są zliczane.</0> Premia i udziały zależą od warunków, a wartość udziałów jest niepewna w obu przypadkach. Przed porównaniem sum przeczytaj oryginalne dokumenty ofert."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1372,10 @@ msgstr "Proszę dodać słowo kluczowe"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Dodaj język"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2324,6 +2332,10 @@ msgstr "Pogrubienie"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Premia"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -4778,6 +4790,10 @@ msgstr "Edytuj pytanie"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Edytuj harmonogram"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -7568,6 +7584,10 @@ msgstr "Nowy harmonogram"
 msgid "New section"
 msgstr "Nowa sekcja"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Nowe zespoły w Northwind utykały na konfiguracji; większość nigdy jej nie ukończyła."
@@ -7706,16 +7726,16 @@ msgid "No evidence yet"
 msgstr "Jeszcze brak dowodów"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Brak pasujących faktów. Spróbuj innego słowa lub typu."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Brak faktów do powiązania. Dodaj je w sekcji Fakty."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Brak faktów. Dodaj pierwszy powyżej."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8104,6 +8124,10 @@ msgstr "Wyłączony. W liście znajduje się osobna kopia Twoich danych."
 #: src/features/homepage/tailor.tsx
 msgid "Offer"
 msgstr "Oferta"
+
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
@@ -9156,6 +9180,10 @@ msgstr "Kod QR dla {url}"
 msgid "QR code for two-step verification"
 msgstr "Kod QR do weryfikacji dwuetapowej"
 
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
 msgstr "Pytanie {position} z {total}"
@@ -9750,6 +9778,7 @@ msgid "Requirement"
 msgstr "Wymaganie"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Wymagania"
 
@@ -11368,6 +11397,7 @@ msgstr "Historie"
 msgid "Stories to bring"
 msgstr "Historie do opowiedzenia"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Historia"
@@ -12364,6 +12394,10 @@ msgstr "Godzina · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Godzina, link, kto, co wysłano"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Godziny są wyświetlane w strefie {timeZone}."
@@ -12421,6 +12455,10 @@ msgstr "Zbyt wiele żądań. Spróbuj ponownie później."
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12543,10 @@ msgstr "Spróbuj ponownie"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Spróbuj ponownie z tym"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13824,6 +13866,10 @@ msgstr "Włączone fakty, historie i preferencje mogą być wysyłane do Twojego
 msgid "Your evidence"
 msgstr "Twoje dowody"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Twój plik"
@@ -13973,6 +14019,10 @@ msgstr "Twój krótki link i własna domena informują, że to CV nie jest udost
 #: src/features/career/coach.tsx
 msgid "your stories"
 msgstr "Twoje historie"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

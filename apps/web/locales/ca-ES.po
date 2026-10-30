@@ -650,6 +650,10 @@ msgstr "{minutes, plural, one {Comença d'aquí a # minut} other {Comença d'aqu
 msgid "{minutes} min"
 msgstr "{minutes} min"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Cap entrevista} one {# entrevista} other {# entrevistes}}"
@@ -711,6 +715,10 @@ msgstr "{pages, plural, one {Encara # pàgina a 9 pt. Amagueu una secció o escu
 msgid "{pairing} type"
 msgstr "Tipus {pairing}"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} de {total}"
@@ -760,8 +768,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. S'obre a Carrera → Ofertes."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} avalats · {partial} en part · {missing} que falten"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +851,6 @@ msgstr "<0>Res a corregir.</0> Totes les comprovacions se superen."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Enviada el {0}.</0> Les versions que vau enviar es conserven a Desats. Els canvis que feu aquí no modifiquen el que va rebre {1}."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Els totals no se sumen expressament.</0> La prima i les accions depenen de condicions, i el valor de les accions és incert en totes dues ofertes. Llegiu els documents originals de les ofertes abans de comparar totals."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1372,10 @@ msgstr "Afegeix paraula clau"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Afegeix un idioma"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2324,6 +2332,10 @@ msgstr "Negreta"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Prima"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -4778,6 +4790,10 @@ msgstr "Edita la pregunta"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Edita la programació"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -7568,6 +7584,10 @@ msgstr "Programació nova"
 msgid "New section"
 msgstr "Nova secció"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Els equips nous de Northwind s'encallaven en la configuració; la majoria no l'acabaven mai."
@@ -7706,16 +7726,16 @@ msgid "No evidence yet"
 msgstr "Encara sense proves"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Cap fet coincideix. Proveu una altra paraula o un altre tipus."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Encara no hi ha fets per enllaçar. Afegiu-los a Fets."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Encara no hi ha fets. Afegiu-ne un a dalt."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8104,6 +8124,10 @@ msgstr "Apagat. La carta conserva la seva pròpia còpia de les vostres dades."
 #: src/features/homepage/tailor.tsx
 msgid "Offer"
 msgstr "Oferta"
+
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
@@ -9156,6 +9180,10 @@ msgstr "Codi QR per a {url}"
 msgid "QR code for two-step verification"
 msgstr "Codi QR per a la verificació en dos passos"
 
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
 msgstr "Pregunta {position} de {total}"
@@ -9750,6 +9778,7 @@ msgid "Requirement"
 msgstr "Requisit"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Requisits"
 
@@ -11368,6 +11397,7 @@ msgstr "Històries"
 msgid "Stories to bring"
 msgstr "Històries que cal portar"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Història"
@@ -12364,6 +12394,10 @@ msgstr "Hora · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Hora, enllaç, participants, què heu enviat"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Les hores es mostren en {timeZone}."
@@ -12421,6 +12455,10 @@ msgstr "Massa peticions. Torna-ho a provar més tard."
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12543,10 @@ msgstr "Torna-ho a intentar"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Torna-ho a provar amb això"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13824,6 +13866,10 @@ msgstr "Els fets, històries i preferències activats es poden enviar a la vostr
 msgid "Your evidence"
 msgstr "Les vostres proves"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "El teu fitxer"
@@ -13973,6 +14019,10 @@ msgstr "El vostre enllaç curt i el domini personalitzat indiquen que aquest cur
 #: src/features/career/coach.tsx
 msgid "your stories"
 msgstr "les vostres històries"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

@@ -650,6 +650,10 @@ msgstr "{minutes, plural, one {Fillon pas # minute} other {Fillon pas # minutash
 msgid "{minutes} min"
 msgstr "{minutes} min"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Asnjë intervistë} one {# intervistë} other {# intervista}}"
@@ -711,6 +715,10 @@ msgstr "{pages, plural, one {Ende # faqe me 9 pt. Fshihni një seksion ose shkur
 msgid "{pairing} type"
 msgstr "Lloji {pairing}"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} e {total}"
@@ -760,8 +768,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Hapet te Karriera → Ofertat."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} të mbështetura · {partial} pjesërisht · {missing} mungojnë"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +851,6 @@ msgstr "<0>Asgjë për të rregulluar.</0> Çdo kontroll kalon."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Dërguar më {0}.</0> Versionet që dërguat ruhen te skeda Ruajtur. Ndryshimet këtu nuk ndryshojnë atë që mori {1}."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Totalet nuk mblidhen qëllimisht.</0> Bonusi dhe aksionet varen nga kushtet, dhe vlera e aksioneve është e pasigurt për të dyja. Lexoni dokumentet origjinale të ofertave para se të krahasoni totalet."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1372,10 @@ msgstr "Shto fjalë kyçe"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Shto gjuhën"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2324,6 +2332,10 @@ msgstr "Të trasha"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Bonus"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -4778,6 +4790,10 @@ msgstr "Modifiko pyetjen"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Modifiko orarin"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -7568,6 +7584,10 @@ msgstr "Orar i ri"
 msgid "New section"
 msgstr "Seksion i ri"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Ekipet e reja në Northwind ngecnin në konfigurim; shumica nuk e përfundonin kurrë."
@@ -7706,16 +7726,16 @@ msgid "No evidence yet"
 msgstr "Ende pa prova"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Asnjë fakt nuk përputhet. Provoni një fjalë ose lloj tjetër."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Ende nuk ka fakte për t’u lidhur. Shtojini te Faktet."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Ende nuk ka fakte. Shtoni një më sipër."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8104,6 +8124,10 @@ msgstr "Joaktiv. Letra ruan kopjen e saj të të dhënave tuaja."
 #: src/features/homepage/tailor.tsx
 msgid "Offer"
 msgstr "Ofertë"
+
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
@@ -9156,6 +9180,10 @@ msgstr "Kodi QR për {url}"
 msgid "QR code for two-step verification"
 msgstr "Kodi QR për verifikimin me dy hapa"
 
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
 msgstr "Pyetja {position} nga {total}"
@@ -9750,6 +9778,7 @@ msgid "Requirement"
 msgstr "Kërkesa"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Kërkesat"
 
@@ -11368,6 +11397,7 @@ msgstr "Historitë"
 msgid "Stories to bring"
 msgstr "Historitë që do të sillni"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Histori"
@@ -12364,6 +12394,10 @@ msgstr "Ora · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Ora, lidhja, kush, çfarë dërguat"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Oraret shfaqen në {timeZone}."
@@ -12421,6 +12455,10 @@ msgstr "Shumë kërkesa. Provo sërish më vonë."
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12543,10 @@ msgstr "Provo përsëri"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Provo përsëri me këtë"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13824,6 +13866,10 @@ msgstr "Faktet, historitë dhe preferencat tuaja të aktivizuara mund t’i dër
 msgid "Your evidence"
 msgstr "Provat tuaja"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Dosja juaj"
@@ -13973,6 +14019,10 @@ msgstr "Lidhja juaj e shkurtër dhe domeni i personalizuar tregojnë se kjo CV n
 #: src/features/career/coach.tsx
 msgid "your stories"
 msgstr "historitë tuaja"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

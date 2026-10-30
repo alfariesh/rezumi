@@ -650,6 +650,10 @@ msgstr "{minutes, plural, one {# dakika içinde başlıyor} other {# dakika içi
 msgid "{minutes} min"
 msgstr "{minutes} dk"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Görüşme yok} one {# görüşme} other {# görüşme}}"
@@ -711,6 +715,10 @@ msgstr "{pages, plural, one {9 pt'de hâlâ # sayfa. Bir bölümü gizleyin veya
 msgid "{pairing} type"
 msgstr "{pairing} tipi"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} veya {total}"
@@ -760,8 +768,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Kariyer → Teklifler'de açılır."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} kanıtlı · {partial} kısmen · {missing} eksik"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +851,6 @@ msgstr "<0>Düzeltilecek bir şey yok.</0> Her denetim başarılı."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>{0} tarihinde gönderildi.</0> Gönderdiğiniz sürümler “Kaydedilenler” sekmesinde saklanır. Burada yaptığınız düzenlemeler {1} şirketine ulaşanı değiştirmez."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Toplamlar bilerek hesaplanmadı.</0> Prim ve hisse koşullara bağlıdır, hisse değeri ise iki teklif için de belirsizdir. Toplamları karşılaştırmadan önce orijinal teklif belgelerini okuyun."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1372,10 @@ msgstr "Anahtar kelime ekle"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Dil ekle"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2324,6 +2332,10 @@ msgstr "Kalın"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Prim"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -4778,6 +4790,10 @@ msgstr "Soruyu düzenle"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Zamanlamayı düzenle"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -7568,6 +7584,10 @@ msgstr "Yeni zamanlama"
 msgid "New section"
 msgstr "Yeni bölüm"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind'de yeni ekipler kurulumda takılıyordu; çoğu sonuna kadar gidemiyordu."
@@ -7706,16 +7726,16 @@ msgid "No evidence yet"
 msgstr "Henüz kanıt yok"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Eşleşen bilgi yok. Başka bir kelime veya tür deneyin."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Bağlanacak bilgi yok. Bilgiler bölümünden ekleyin."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Henüz bilgi yok. Yukarıdan bir tane ekleyin."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8104,6 +8124,10 @@ msgstr "Kapalı. Mektup, bilgilerinizin kendi kopyasını saklar."
 #: src/features/homepage/tailor.tsx
 msgid "Offer"
 msgstr "Teklif"
+
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
@@ -9156,6 +9180,10 @@ msgstr "{url} için QR kodu"
 msgid "QR code for two-step verification"
 msgstr "İki adımlı doğrulama için QR kodu"
 
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
 msgstr "Soru {position} / {total}"
@@ -9750,6 +9778,7 @@ msgid "Requirement"
 msgstr "Gereksinim"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Gereksinimler"
 
@@ -11368,6 +11397,7 @@ msgstr "Hikayeler"
 msgid "Stories to bring"
 msgstr "Götürülecek hikayeler"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Hikaye"
@@ -12364,6 +12394,10 @@ msgstr "Saat · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Saat, bağlantı, kimlerle, ne gönderdiniz"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Saatler {timeZone} saat diliminde gösterilir."
@@ -12421,6 +12455,10 @@ msgstr "Çok fazla istek var. Daha sonra tekrar deneyin."
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12543,10 @@ msgstr "Tekrar deneyin"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Bununla tekrar dene"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13824,6 +13866,10 @@ msgstr "Koçluk araçlarını veya zamanlanmış görüşme hazırlığını kul
 msgid "Your evidence"
 msgstr "Kanıtınız"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Dosyanız"
@@ -13973,6 +14019,10 @@ msgstr "Kısa bağlantınız ve özel alan adınız, siz yeniden yayınlayana ka
 #: src/features/career/coach.tsx
 msgid "your stories"
 msgstr "hikayeleriniz"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

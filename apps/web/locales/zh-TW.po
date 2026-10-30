@@ -650,6 +650,10 @@ msgstr "{minutes, plural, other {# 分鐘後開始}}"
 msgid "{minutes} min"
 msgstr "{minutes} 分鐘"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {沒有面試} other {# 場面試}}"
@@ -711,6 +715,10 @@ msgstr "{pages, plural, other {在 9 pt 下仍有 # 頁。請隱藏一個區塊�
 msgid "{pairing} type"
 msgstr "{pairing}型"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} {total}"
@@ -760,8 +768,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}。在「職涯 → 錄取通知」中開啟。"
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} 項有證據 · {partial} 項部分 · {missing} 項缺少"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +851,6 @@ msgstr "<0>無需修復。 </0> 每項檢查均通過。"
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>已於 {0} 送出。</0>您寄出的版本保存在「已儲存」中。在此編輯不會改變 {1} 收到的內容。"
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>總額特意未加總。</0>獎金和股權取決於條件，且兩份錄取通知的股權價值都不確定。比較總額前，請先閱讀原始錄取文件。"
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1372,10 @@ msgstr "新增關鍵字"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "新增語言"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -2324,6 +2332,10 @@ msgstr "粗體"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "獎金"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -4778,6 +4790,10 @@ msgstr "編輯問題"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "編輯排程"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -7568,6 +7584,10 @@ msgstr "新增排程"
 msgid "New section"
 msgstr "新版塊"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind 的新團隊常卡在設定階段，多數沒能完成。"
@@ -7706,16 +7726,16 @@ msgid "No evidence yet"
 msgstr "尚無證據"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "沒有符合的事實。請嘗試其他關鍵字或類型。"
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "尚無可連結的事實。請在「事實」中新增。"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "尚無事實。請在上方新增一個。"
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8104,6 +8124,10 @@ msgstr "離開。這封信保留了您的詳細資料的單獨副本。"
 #: src/features/homepage/tailor.tsx
 msgid "Offer"
 msgstr "錄取"
+
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
@@ -9156,6 +9180,10 @@ msgstr "{url} 的二維碼"
 msgid "QR code for two-step verification"
 msgstr "兩步驟驗證 QR Code"
 
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
 msgstr "第 {position} 題，共 {total} 題"
@@ -9750,6 +9778,7 @@ msgid "Requirement"
 msgstr "條件"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "條件"
 
@@ -11368,6 +11397,7 @@ msgstr "故事"
 msgid "Stories to bring"
 msgstr "要準備的故事"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "故事"
@@ -12364,6 +12394,10 @@ msgstr "時間 · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "時間、連結、面試官、您寄出的內容"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "時間依 {timeZone} 顯示。"
@@ -12421,6 +12455,10 @@ msgstr "請求太多。稍後再試。"
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12543,10 @@ msgstr "再試一次"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "用這個再試一次"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13824,6 +13866,10 @@ msgstr "當您使用輔導工具或排程的面試準備時，已開啟的事實
 msgid "Your evidence"
 msgstr "您的證據"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "你的文件"
@@ -13973,6 +14019,10 @@ msgstr "您的短網址和自訂網域會顯示這份履歷尚未分享，直到
 #: src/features/career/coach.tsx
 msgid "your stories"
 msgstr "您的故事"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."
