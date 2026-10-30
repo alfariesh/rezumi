@@ -3,18 +3,7 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import { ContextMenu, PromptSuggestion } from "@heroui-pro/react";
-import {
-	Description,
-	Dropdown,
-	Header,
-	Label,
-	ListBox,
-	ScrollShadow,
-	SearchField,
-	Select,
-	Separator,
-	Spinner,
-} from "@heroui/react";
+import { Description, Dropdown, Label, ListBox, ScrollShadow, SearchField, Select, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -33,7 +22,7 @@ import {
 	useCoachKnowledge,
 } from "./coach-thread";
 import { CareerLoadError } from "./load-state";
-import { ContextChip, useNow } from "./shared";
+import { ContextChip, useCareerTime, useNow } from "./shared";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -508,13 +497,12 @@ type ConversationListProps = {
 	onDelete: (thread: ThreadSummary) => void;
 };
 
-type Activity = "all" | "today" | "week" | "month";
-type SortBy = "activity" | "title";
+type Group = "today" | "yesterday" | "week" | "older";
 
 /**
- * Past conversations, on the left of the chat (a mail client's list): a title each. Search matches titles; the
- * filter menu narrows by last activity and sorts. Below lg it replaces the chat until one is chosen. A conversation
- * renames in place and deletes with Undo.
+ * Past conversations, on the left of the chat (a mail client's list): a title each, grouped by when they last
+ * moved. Search matches titles. Below lg it replaces the chat until one is chosen. A conversation renames in
+ * place and deletes with Undo.
  */
 function ConversationList({
 	threads,
@@ -526,44 +514,35 @@ function ConversationList({
 	onDelete,
 }: ConversationListProps) {
 	const navigate = useNavigate();
+	const { format } = useCareerTime();
 	const [renaming, setRenaming] = useState<string | null>(null);
 	const [query, setQuery] = useState("");
-	const [activity, setActivity] = useState<Activity>("all");
-	const [sortBy, setSortBy] = useState<SortBy>("activity");
 	const now = useNow();
 	const needle = query.trim().toLocaleLowerCase();
-	const days = { all: Infinity, today: 1, week: 7, month: 30 }[activity];
-	const filtered = activity !== "all" || sortBy !== "activity";
+
+	// Days are the person's own: today and yesterday follow their time zone, the rest are counted back from now.
+	const dayKey = (value: Date) => format(value, { year: "numeric", month: "numeric", day: "numeric" });
+	const today = dayKey(now);
+	const yesterday = dayKey(new Date(now.getTime() - 86_400_000));
+	const groupOf = (thread: ThreadSummary): Group => {
+		const at = new Date(thread.lastMessageAt);
+		const key = dayKey(at);
+		if (key === today) return "today";
+		if (key === yesterday) return "yesterday";
+		return now.getTime() - at.getTime() < 7 * 86_400_000 ? "week" : "older";
+	};
+	const labels: Record<Group, string> = {
+		today: t`Today`,
+		yesterday: t`Yesterday`,
+		week: t`Previous 7 days`,
+		older: t`Older`,
+	};
 	const shown = threads
-		.filter(
-			(thread) =>
-				(!needle || titleFor(thread).toLocaleLowerCase().includes(needle)) &&
-				now.getTime() - new Date(thread.lastMessageAt).getTime() < days * 86_400_000,
-		)
-		.sort((a, b) =>
-			sortBy === "title"
-				? titleFor(a).localeCompare(titleFor(b))
-				: new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime(),
-		);
-	const options = <T extends string>(title: string, value: T, onChange: (next: T) => void, items: [T, string][]) => (
-		<Dropdown.Section
-			selectionMode="single"
-			disallowEmptySelection
-			selectedKeys={new Set([value])}
-			onSelectionChange={(keys) => {
-				const [next] = keys === "all" ? [] : keys;
-				if (typeof next === "string") onChange(next as T);
-			}}
-		>
-			<Header>{title}</Header>
-			{items.map(([id, label]) => (
-				<Dropdown.Item key={id} id={id} textValue={label}>
-					<Label>{label}</Label>
-					<Dropdown.ItemIndicator />
-				</Dropdown.Item>
-			))}
-		</Dropdown.Section>
-	);
+		.filter((thread) => !needle || titleFor(thread).toLocaleLowerCase().includes(needle))
+		.sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime());
+	const groups = (["today", "yesterday", "week", "older"] as const)
+		.map((group) => ({ group, items: shown.filter((thread) => groupOf(thread) === group) }))
+		.filter(({ items }) => items.length > 0);
 
 	return (
 		<nav
@@ -589,59 +568,36 @@ function ConversationList({
 				/>
 			</div>
 
-			<div className="flex items-center justify-between ps-3">
-				<h2 className="text-xs font-semibold text-muted">
-					<Trans>Recents</Trans>
-				</h2>
-				<Dropdown>
-					<IconButton
-						icon="sliders-horizontal"
-						label={t`Filter conversations`}
-						size="sm"
-						iconSize={16}
-						className={cn("text-muted", filtered && "bg-default text-foreground")}
-					/>
-					<Dropdown.Popover placement="bottom end" className="w-56">
-						<Dropdown.Menu>
-							{options<Activity>(t`Last activity`, activity, setActivity, [
-								["all", t`All`],
-								["today", t`Today`],
-								["week", t`Past 7 days`],
-								["month", t`Past 30 days`],
-							])}
-							<Separator />
-							{options<SortBy>(t`Sort by`, sortBy, setSortBy, [
-								["activity", t`Last activity`],
-								["title", t`Title`],
-							])}
-						</Dropdown.Menu>
-					</Dropdown.Popover>
-				</Dropdown>
-			</div>
-
 			<ScrollShadow hideScrollBar className="min-h-0 flex-1 overflow-y-auto">
-				<ul className="grid content-start gap-0.5">
-					{currentId === null && !needle && (
+				{currentId === null && !needle && (
+					<ul className="mb-3">
 						<li aria-current="page" className="rounded-xl bg-default px-3 py-2 text-sm leading-5 font-medium">
 							<Trans>New conversation</Trans>
 						</li>
-					)}
-					{shown.map((thread) => (
-						<ConversationItem
-							key={thread.id}
-							thread={thread}
-							current={thread.id === currentId}
-							renaming={renaming === thread.id}
-							onRenameStart={() => setRenaming(thread.id)}
-							onRenameEnd={(title) => {
-								setRenaming(null);
-								if (title !== null) onRename(thread, title);
-							}}
-							onDelete={() => onDelete(thread)}
-							onNavigate={onNavigate}
-						/>
-					))}
-				</ul>
+					</ul>
+				)}
+				{groups.map(({ group, items }) => (
+					<section key={group} aria-label={labels[group]} className="mb-3 grid gap-0.5">
+						<h2 className="px-3 pb-1 text-xs font-semibold text-muted">{labels[group]}</h2>
+						<ul className="grid content-start gap-0.5">
+							{items.map((thread) => (
+								<ConversationItem
+									key={thread.id}
+									thread={thread}
+									current={thread.id === currentId}
+									renaming={renaming === thread.id}
+									onRenameStart={() => setRenaming(thread.id)}
+									onRenameEnd={(title) => {
+										setRenaming(null);
+										if (title !== null) onRename(thread, title);
+									}}
+									onDelete={() => onDelete(thread)}
+									onNavigate={onNavigate}
+								/>
+							))}
+						</ul>
+					</section>
+				))}
 				{threads.length > 0 && shown.length === 0 && (
 					<p className="px-3 py-10 text-center text-sm text-muted">
 						<Trans>No conversations match.</Trans>
