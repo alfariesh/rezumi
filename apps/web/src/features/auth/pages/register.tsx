@@ -1,3 +1,4 @@
+import { Button, buttonVariants, Input, Alert } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -5,11 +6,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Link, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import z from "zod";
-import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
-import { Button } from "@rezumi/ui/components/button";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { SocialAuth } from "../components/social-auth";
@@ -112,17 +110,14 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 				<div className="text-ink-3">
 					<Trans>
 						Already have an account?{" "}
-						<Button
-							variant="link"
-							nativeButton={false}
-							className="h-auto gap-1.5 px-1! py-0"
-							render={
-								<Link to="/auth/login" search={{ callbackURL, reauthenticate }}>
-									<Trans comment="Call-to-action link from registration page to login page">Sign in now</Trans>{" "}
-									<Icon name="arrow-right" size={16} />
-								</Link>
-							}
-						/>
+						<Link
+							to="/auth/login"
+							search={{ callbackURL, reauthenticate }}
+							className="inline-flex items-center gap-1.5 px-1 text-link underline-offset-4 hover:underline"
+						>
+							<Trans comment="Call-to-action link from registration page to login page">Sign in now</Trans>{" "}
+							<Icon name="arrow-right" size={16} />
+						</Link>
 					</Trans>
 				</div>
 			</div>
@@ -145,6 +140,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											minLength={1}
 											maxLength={64}
 											autoComplete="section-register name"
@@ -173,6 +169,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											minLength={3}
 											maxLength={64}
 											autoComplete="section-register username"
@@ -202,6 +199,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 								<FormControl
 									render={
 										<Input
+											fullWidth
 											type="email"
 											autoComplete="section-register email"
 											placeholder="john.doe@example.com"
@@ -242,7 +240,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 						)}
 					</form.Field>
 
-					<Button type="submit" className="w-full" disabled={isSubmitting}>
+					<Button type="submit" fullWidth isDisabled={isSubmitting}>
 						<Trans comment="Primary action button label on registration form">Sign up</Trans>
 					</Button>
 				</form>
@@ -268,24 +266,27 @@ function PostSignupScreen() {
 				</p>
 			</div>
 
-			<Alert>
-				<AlertTitle>
-					<Trans>This step is optional, but recommended.</Trans>
-				</AlertTitle>
-				<AlertDescription>
-					<Trans>Verifying your email confirms that you own this address.</Trans>
-				</AlertDescription>
+			<Alert status="default">
+				<Alert.Indicator />
+				<Alert.Content>
+					<Alert.Title>
+						<Trans>This step is optional, but recommended.</Trans>
+					</Alert.Title>
+					<Alert.Description>
+						<Trans>Verifying your email confirms that you own this address.</Trans>
+					</Alert.Description>
+				</Alert.Content>
 			</Alert>
 
-			<Button
-				nativeButton={false}
-				render={
-					<Link to={redirectOptions.href} reloadDocument={redirectOptions.reloadDocument} replace>
-						<Trans comment="Button label to continue to dashboard after successful registration">Continue</Trans>{" "}
-						<Icon name="arrow-right" size={16} />
-					</Link>
-				}
-			/>
+			<Link
+				to={redirectOptions.href}
+				reloadDocument={redirectOptions.reloadDocument}
+				replace
+				className={buttonVariants()}
+			>
+				<Trans comment="Button label to continue to dashboard after successful registration">Continue</Trans>{" "}
+				<Icon name="arrow-right" size={16} />
+			</Link>
 		</div>
 	);
 }

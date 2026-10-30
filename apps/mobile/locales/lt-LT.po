@@ -346,6 +346,13 @@ msgstr "{0} {1} yra {2} jūsų laiko juostoje ({userZone})."
 msgid "{0} in {otherZone}"
 msgstr "{0} {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} pirmiesiems metams"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# stulpelis} few {# stulpeliai} many {# stulpelio} other {# stulpelių}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Pritaikyti # pakeitimą} few {Pritaikyti # pakeitimus} many {Pritaikyti # pakeitimo} other {Pritaikyti # pakeitimų}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} val."
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# darbo pokalbis} few {# darbo pokalbiai} other {# darbo pokalbių}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Čekis turi # dalyką, kurį reikia peržiūrėti.
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} interviu"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {Prasideda po # minutės} few {Prasideda po # minu
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} min."
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Darbo pokalbių nėra} one {# darbo pokalbis} few {# darbo pokalbiai} other {# darbo pokalbių}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Paprašykite asistento tai padaryti"
 msgid "Ask the coach"
 msgstr "Klausti konsultanto"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Klauskite bendruomenės. Prieš skelbdami pašalinkite asmeninę informaciją."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Paprašykite serverio administratoriaus įjungti kredencialų šifravimą arba sukonfigūruoti bendrinamą ryšį."
@@ -1925,6 +1941,10 @@ msgstr "sukūrė <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Kalendorius"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Ar programinė įranga gali nuskaityti jūsų gyvenimo aprašymą?"
@@ -2000,6 +2020,7 @@ msgstr "Keisti etapą"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Keisti priminimą susisiekti"
 
@@ -2807,11 +2828,14 @@ msgstr "Nepavyko įkelti laiko juostos."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Nepavyko pažymėti kaip pateiktos. Bandykite dar kartą."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Nepavyko atidaryti naršyklės. Bandykite dar kartą."
 
@@ -3217,6 +3241,7 @@ msgstr "Duomenų bendrinimas atšauktas. AI teikėjui nieko nebuvo išsiųsta."
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Pasimatymai prasideda ateityje"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Datos nebus skaitomos"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Nesiųskite {0} darbo skelbimo"
 msgid "Don't share"
 msgstr "Nesidalinkite"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Paremkite per „Open Collective“"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Redaguoti įrašą"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Redaguoti interviu"
 
@@ -4157,6 +4183,12 @@ msgstr "Susisiekti dar kartą"
 msgid "Follow up on {at}"
 msgstr "Susisiekti dar kartą {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "Paspaudus „Gauti atsiliepimą“, {providerName} gaus klausimą, jūs�
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Gaukite naujas pozicijas čia kiekvieną rytą"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Gaukite atsiliepimų apie gyvenimo aprašymą „Discord“"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Pokalbis ištrintas"
 msgid "Interview is in another timezone"
 msgstr "Pokalbis vyksta kitoje laiko juostoje"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Pasiruošimas pokalbiui"
@@ -4868,10 +4904,6 @@ msgstr "Darbo paieškos eiga"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Darbai"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Prisijunkite prie „Discord“"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Ilgis"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Trukmė · minutės"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Trukmė minutėmis"
 
@@ -5394,6 +5428,10 @@ msgstr "Užrakinti dokumentai buvo praleisti. Pirmiausia juos atrakinkite."
 msgid "Locked. Unlock to edit."
 msgstr "Užrakinta. Atrakinkite, kad galėtumėte redaguoti."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Paspauskite ir palaikykite, kad pasirinktumėte"
@@ -5628,6 +5666,10 @@ msgstr "Modelių pasiūlymai nepasiekiami. Vis tiek galite įvesti bet kokį mod
 msgid "Model: {label}"
 msgstr "Modelis: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Daugiau"
@@ -5690,6 +5732,14 @@ msgstr "Dažniausiai skaitomas"
 msgid "Move {title} to…"
 msgstr "Perkelti {title} į…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Perkelkite visą turinį į puslapio ribas ir eksportuokite iš naujo."
@@ -5707,6 +5757,10 @@ msgstr "Judėti žemyn"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Perkelti lauką aukštyn"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Nauja skiltis"
 msgid "New STARR story"
 msgstr "Nauja STARR istorija"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Kitas numeris"
@@ -5958,6 +6016,10 @@ msgstr "Kitas veiksmas: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Kitas veiksmas: {note}. Prideda priminimą prie Šiandien."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Nėra nuotraukos. Dauguma ATS ignoruoja nuotraukas; kai kurie regionai t
 msgid "No postings found. Try different keywords."
 msgstr "Darbo skelbimų nerasta. Išbandykite skirtingus raktinius žodžius."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Šiuo adresu neatsiliepė joks Rezumi serveris. Patikrinkite rašybą arba paklauskite administratoriaus, ar serveris leidžia prisijungti prie programos."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Šiame darbo skelbime nėra atpažįstamų terminų."
@@ -6123,6 +6181,10 @@ msgstr "Jokių rezultatų"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Nėra gyvenimo aprašymo"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Šiuo adresu neatsiliepė joks Rezumi serveris. Patikrinkite rašybą arba paklauskite administratoriaus, ar serveris leidžia prisijungti prie programos."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Peržiūrėti tinklalapį"
 msgid "Previewing {0} · tap to apply"
 msgstr "Peržiūra {0} · Palieskite, kad pritaikytumėte"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Ankstesnis numeris"
@@ -7081,6 +7147,10 @@ msgstr "Ankstesnis puslapis"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Ankstesnis PDF rezultatas. Jis gali neatitikti dabartinio juodraščio."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Eksportuokite iš naujo su įterptais šriftais ir patikrinkite, ar teks
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Eksportuokite iš naujo su įterptais šriftais, tada atidarykite failą ir patikrinkite, ar tekstą galima švariai nukopijuoti."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Reikalavimai"
 msgid "Requirements and your evidence"
 msgstr "Reikalavimai ir jūsų įrodymai"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Didžiąsias raides naudokite tik trumpoms antraštėms. Jos lėtina skaitymą ir gali sutrikdyti raidžių dydį skiriančią paiešką."
@@ -7779,10 +7857,6 @@ msgstr "gyvenimo aprašymas + laiškas"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "gyvenimo aprašymo detalės"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Atsiliepimai apie gyvenimo aprašymą, pagalba dėl produkto ir bendruomenės idėjos."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Atšaukti šį API raktą"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Perrašymas priimtas"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Rodyti perskaitytus"
 msgid "Show section icons"
 msgstr "Rodyti skyrių piktogramas"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Rodoma išsaugota informacija. Jų nepavyko atnaujinti."
@@ -9292,6 +9374,10 @@ msgstr "Fotografuoti"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "Tamilų"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Ši istorija nepasiekiama arba naudoja išjungtus faktus."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Pasirinktoje laiko juostoje šio laiko nėra. Pasirinkite kitą laiką."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Jūsų laiko juostoje šio laiko nėra. Pasirinkite kitą laiką."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Trumpinama"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Laikas · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Laikas · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Interneto paieškos ieško darbo šiose šalyse. Pasirinkite iki trijų 
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Tinklalapis"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

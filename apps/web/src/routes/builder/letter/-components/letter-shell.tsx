@@ -4,7 +4,6 @@ import { t } from "@lingui/core/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { getRouteApi } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Tabs, TabsContent } from "@rezumi/ui/components/tabs";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { LetterDesignPanel } from "./design-panel";
@@ -45,7 +44,7 @@ export function LetterShell() {
 	useLetterWebMcpTools(routeApi.useParams().coverLetterId);
 
 	return (
-		<Tabs value={mode} onValueChange={(value) => setMode(value as LetterMode)} className="contents">
+		<>
 			<EditorFrame
 				editorLayout={editorLayout}
 				bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
@@ -56,10 +55,10 @@ export function LetterShell() {
 				assistant={<LetterAssistant />}
 				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
 			>
-				<LetterDownloadSheet />
 				<LetterHotkeys onModeChange={setMode} />
 			</EditorFrame>
-		</Tabs>
+			<LetterDownloadSheet />
+		</>
 	);
 }
 
@@ -90,13 +89,9 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 					<LetterPage />
 				</main>
 				{view !== "page" && (
-					<TabsContent
-						key={mode}
-						value={mode}
-						className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]"
-					>
+					<section key={mode} className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]">
 						<ModePanel mode={mode} />
-					</TabsContent>
+					</section>
 				)}
 			</div>
 

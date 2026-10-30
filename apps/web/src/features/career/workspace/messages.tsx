@@ -1,15 +1,12 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
+import { Button, Checkbox, Spinner, TextArea, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import {
@@ -84,7 +81,8 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 				<label htmlFor={`${application.id}-message`} className="text-xs font-medium text-ink-2">
 					{t`Paste a message from ${application.company}`}
 				</label>
-				<Textarea
+				<TextArea
+					fullWidth
 					id={`${application.id}-message`}
 					value={message}
 					maxLength={20_000}
@@ -92,7 +90,7 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 					placeholder={t`Paste the email or message, without the signature.`}
 					onChange={(event) => setMessage(event.target.value)}
 					onBlur={flush}
-					className="min-h-[92px] px-3.5 py-3 text-sm leading-[22px] pointer-coarse:text-base"
+					className="min-h-[92px]"
 				/>
 			</div>
 			{!readOnly && (
@@ -101,11 +99,15 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 					{provider && (
 						<Button
 							variant="secondary"
-							loading={generate.isPending}
-							disabled={!message.trim()}
-							onClick={() => void generate.run({ task: "reply", message: message.trim() }).catch(() => undefined)}
+							isPending={generate.isPending}
+							isDisabled={!message.trim()}
+							onPress={() => void generate.run({ task: "reply", message: message.trim() }).catch(() => undefined)}
 						>
-							{!generate.isPending && <Icon name="sparkle" size={18} />}
+							{generate.isPending ? (
+								<Spinner size="sm" color="current" aria-hidden />
+							) : (
+								<Icon name="sparkle" size={18} />
+							)}
 							{generate.isPending ? <Working steps={workingSteps("reply")} /> : <Trans>Read it for me</Trans>}
 						</Button>
 					)}
@@ -154,17 +156,18 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 						<label htmlFor={`${reply.id}-reply`} className="text-xs font-medium text-ink-2">
 							<Trans>Suggested reply · edit before sending</Trans>
 						</label>
-						<Textarea
+						<TextArea
+							fullWidth
 							id={`${reply.id}-reply`}
 							value={text}
 							readOnly={readOnly}
 							maxLength={4000}
 							onChange={(event) => draft.setValue(event.target.value)}
-							className="min-h-[110px] px-3.5 py-3 text-sm leading-[22px] pointer-coarse:text-base"
+							className="min-h-[110px]"
 						/>
 					</div>
 					<div className="flex flex-wrap items-center gap-2">
-						<Button variant="secondary" size="sm" onClick={() => void copy()}>
+						<Button variant="secondary" size="sm" onPress={() => void copy()}>
 							<Icon name="copy" size={16} />
 							<Trans>Copy reply</Trans>
 						</Button>
@@ -309,17 +312,22 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 						<li key={id} className={cn("flex gap-2.5 rounded-lg bg-bg px-3 py-2.5", isFixed && "opacity-70")}>
 							<Checkbox
 								id={id}
-								className="mt-px"
-								checked={isFixed || selected.includes(index)}
-								disabled={isFixed || applied !== null || readOnly}
-								onCheckedChange={(checked) =>
+								isSelected={isFixed || selected.includes(index)}
+								isDisabled={isFixed || applied !== null || readOnly}
+								onChange={(checked) =>
 									setTicked((rows) => (checked ? [...rows, index] : rows.filter((row) => row !== index)))
 								}
-							/>
-							<label htmlFor={id} className="grid gap-0.5 text-[13px] leading-[19px]">
-								<span className="font-semibold">{title}</span>
-								<span className="text-ink-2">{detail}</span>
-							</label>
+							>
+								<Checkbox.Content className="items-start">
+									<Checkbox.Control className="mt-px">
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span className="grid gap-0.5 text-[13px] leading-[19px]">
+										<span className="font-semibold">{title}</span>
+										<span className="text-ink-2">{detail}</span>
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
 						</li>
 					);
 				})}
@@ -344,7 +352,7 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 								: t`Applied. The application is updated.`}
 						</p>
 					) : (
-						<Button className="h-10 w-full" disabled={count === 0} onClick={onApply}>
+						<Button fullWidth isDisabled={count === 0} onPress={onApply}>
 							{count === 0 ? t`Nothing to apply` : plural(count, { one: "Apply # change", other: "Apply # changes" })}
 						</Button>
 					)}

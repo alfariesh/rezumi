@@ -1,5 +1,6 @@
 import type { DesignSource } from "@/features/resume/editor/design/style-groups";
 import type { Template } from "@rezumi/schema/templates";
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +8,6 @@ import { Link } from "@tanstack/react-router";
 import { produce } from "immer";
 import { useEffect, useMemo } from "react";
 import { templateSchema } from "@rezumi/schema/templates";
-import { buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
@@ -95,9 +95,9 @@ export function LetterDesignPanel() {
 									? t`Template, type and colors follow the resume, so the pair always matches.`
 									: t`The letter keeps a design of its own.`
 							}
-							checked={letter.designLinked}
-							disabled={disabled}
-							onCheckedChange={setLinked}
+							isSelected={letter.designLinked}
+							isDisabled={disabled}
+							onChange={setLinked}
 						/>
 						{letter.designLinked && (
 							<Link

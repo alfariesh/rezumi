@@ -1,7 +1,7 @@
+import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useRouter } from "@tanstack/react-router";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 
 export function LoadingScreen() {
@@ -18,7 +18,7 @@ export function LoadingScreen() {
 			)}
 		>
 			<BrandIcon variant="icon" className="size-12" />
-			<Spinner aria-label={t`Loading`} className="size-6" />
+			<Spinner size="md" color="current" aria-label={t`Loading`} />
 		</div>
 	);
 }

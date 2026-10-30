@@ -346,6 +346,13 @@ msgstr "{0} у {1} је {2} у вашој временској зони ({userZo
 msgid "{0} in {otherZone}"
 msgstr "{0} у {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} за прву годину"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# колона} few {# колоне} other {# колона}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Примени # измену} few {Примени # измене} other {Примени # измена}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} х"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# интервју} few {# интервјуа} other {# интервјуа}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Чек има # ствар за преглед. Ј
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} интервју"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {Почиње за # минут} few {Почиње
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} мин"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Нема интервјуа} one {# интервју} few {# интервјуа} other {# интервјуа}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Замолите асистента да то уради"
 msgid "Ask the coach"
 msgstr "Питајте саветника"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Питајте заједницу. Уклоните личне податке пре објављивања."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Замолите администратора сервера да омогући шифровање акредитива или да конфигурише заједничку везу."
@@ -1925,6 +1941,10 @@ msgstr "аутор: <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Календар"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Може ли софтвер да прочита ваш резиме?"
@@ -2000,6 +2020,7 @@ msgstr "Промени сцену"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Промените праћење"
 
@@ -2807,11 +2828,14 @@ msgstr "Није могуће учитати вашу временску зон�
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Није могуће означити као пријављено. Покушајте поново."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Није могуће отворити прегледач. Покушајте поново."
 
@@ -3217,6 +3241,7 @@ msgstr "Дељење података је отказано. Ништа није
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Датуми почињу у будућности"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Датуми се неће читати"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Не шаљите {0} оглас за посао"
 msgid "Don't share"
 msgstr "Не делите"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Донирајте на Open Collective-у"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Уреди унос"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Уреди интервју"
 
@@ -4157,6 +4183,12 @@ msgstr "Јавите се поново"
 msgid "Follow up on {at}"
 msgstr "Пратите {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "„Добиј повратне информације“ шаље пит
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Добијајте нове улоге овде сваког јутра"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Добијте повратне информације о резимеу на Discord-у"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Интервју обрисан"
 msgid "Interview is in another timezone"
 msgstr "Интервју је у другој временској зони"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Припрема за интервју"
@@ -4868,10 +4904,6 @@ msgstr "Процес тражења посла"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Послови"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Придружите се Discord-у"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Дужина"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Трајање · минути"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Трајање у минутима"
 
@@ -5394,6 +5428,10 @@ msgstr "Закључани документи су прескочени. Прв�
 msgid "Locked. Unlock to edit."
 msgstr "Закључано. Откључајте за уређивање."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Притисните и задржите за избор"
@@ -5628,6 +5666,10 @@ msgstr "Предлози модела нису доступни. И даље м�
 msgid "Model: {label}"
 msgstr "Модел: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Више"
@@ -5690,6 +5732,14 @@ msgstr "Углавном читљиво"
 msgid "Move {title} to…"
 msgstr "Премести {title} у…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Преместите сав садржај унутар граница странице и поново извезите."
@@ -5707,6 +5757,10 @@ msgstr "Помери се доле"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Помери поље горе"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Нова секција"
 msgid "New STARR story"
 msgstr "Нова STARR прича"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Следеће издање"
@@ -5958,6 +6016,10 @@ msgstr "Следећи корак: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Следећи корак: {note}. Додаје подсетник на данас."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Нема фотографије. Већина ATS игнорише фо�
 msgid "No postings found. Try different keywords."
 msgstr "Није пронађен ниједан оглас за посао. Пробајте различите кључне речи."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Ниједан Rezumi сервер није одговорио на овој адреси. Проверите правопис или питајте свог администратора да ли сервер дозвољава пријављивање у апликацију."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "У овом огласу нема препознатљивих термина."
@@ -6123,6 +6181,10 @@ msgstr "Нема резултата"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Без резимеа"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Ниједан Rezumi сервер није одговорио на овој адреси. Проверите правопис или питајте свог администратора да ли сервер дозвољава пријављивање у апликацију."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Прегледај веб-страницу"
 msgid "Previewing {0} · tap to apply"
 msgstr "Преглед {0} · додирните да бисте применили"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Претходно издање"
@@ -7081,6 +7147,10 @@ msgstr "Претходна страница"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Претходни PDF резултат. Можда се не подудара са вашом тренутном нацртом."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Поново извезите са уграђеним фонтовима
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Поново извезите са уграђеним фонтовима, затим отворите датотеку и проверите да ли се текст чисто копира."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Захтеви"
 msgid "Requirements and your evidence"
 msgstr "Захтеви и ваши докази"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Резервишите велика слова за кратке наслове. Она успоравају читање и могу да омету претрагу осетљиву на велика и мала слова."
@@ -7779,10 +7857,6 @@ msgstr "резиме + писмо"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "детаљи резимеа"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Повратне информације о резимеу, помоћ за производ и идеје заједнице."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Опозовите овај API кључ"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Преписивање је прихваћено"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Прикажи прочитано"
 msgid "Show section icons"
 msgstr "Прикажи иконе одељака"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Приказ сачуваних детаља. Нису могли да се освеже."
@@ -9292,6 +9374,10 @@ msgstr "Снимите фотографију"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "Тамилски"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Ова прича није доступна или користи чињенице које су искључене."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Ово време не постоји у изабраној временској зони. Изаберите друго време."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Ово време не постоји у вашој временској зони. Изаберите друго време."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Сажимање"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Време · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Време · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Веб претраге траже послове у овим земља
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Веб-сајт"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

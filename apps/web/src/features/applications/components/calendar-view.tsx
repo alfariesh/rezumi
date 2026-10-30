@@ -1,31 +1,62 @@
 import type { ScheduledInterview } from "../interviews";
 import type { ApplicationSummary } from "../types";
+import type { InterviewSlot } from "./interview-dialog";
+import type { AgendaEventType, AgendaView } from "@heroui-pro/react";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { t } from "@lingui/core/macro";
+import { Agenda, EmptyState, ItemCard, ItemCardGroup, Segment, useAgenda } from "@heroui-pro/react";
+import { Button, Separator, Tooltip } from "@heroui/react";
+import { fromDate, getLocalTimeZone, toCalendarDateTime } from "@internationalized/date";
+import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
-import { useState } from "react";
+import { Fragment, useState, useSyncExternalStore } from "react";
 import { INTERVIEW_KINDS } from "@rezumi/schema/applications/data";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
-import { cn } from "@rezumi/utils/style";
+import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import {
 	collectInterviews,
 	dayKey,
 	formatDuration,
 	groupByDay,
 	interviewKindOf,
-	monthGrid,
 	upcomingInterviews,
 } from "../interviews";
-import { InterviewDialog } from "./interview-dialog";
+import { useRescheduleInterview } from "../use-reschedule-interview";
+import { InterviewDialog, interviewTypeLabel } from "./interview-dialog";
 
-const MAX_CHIPS_PER_DAY = 3;
+// Kind labels up to this length prefix an event's title ("Technical · Engineer · Acme").
+const MAX_PREFIX_LENGTH = 12;
 
 type DialogState =
 	| { open: false }
-	| { open: true; application: ApplicationSummary | null; interview: InterviewTimelineEntry | null; day: Date | null };
+	| {
+			open: true;
+			application: ApplicationSummary | null;
+			interview: InterviewTimelineEntry | null;
+			slot: InterviewSlot | null;
+	  };
+
+// ---- Dragging needs a mouse or trackpad; on touch screens the calendar only opens interviews. ----
+
+const FINE_POINTER = "(pointer: fine)";
+
+function subscribeFinePointer(onChange: () => void) {
+	if (typeof window === "undefined" || typeof window.matchMedia !== "function") return () => {};
+	const list = window.matchMedia(FINE_POINTER);
+	list.addEventListener("change", onChange);
+	return () => list.removeEventListener("change", onChange);
+}
+
+const readFinePointer = () =>
+	typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia(FINE_POINTER).matches;
+
+const useFinePointer = () => useSyncExternalStore(subscribeFinePointer, readFinePointer, () => true);
+
+const eventTitle = (item: ScheduledInterview) => {
+	const kind = interviewTypeLabel(item.interview.kind);
+	const title = `${item.application.role} · ${item.application.company}`;
+	return kind.length <= MAX_PREFIX_LENGTH ? `${kind} · ${title}` : title;
+};
 
 type ApplicationCalendarProps = {
 	// Applications matching the page filters; their interviews are shown.
@@ -38,42 +69,75 @@ type ApplicationCalendarProps = {
 export function ApplicationCalendar({ applications, allApplications, onOpen }: ApplicationCalendarProps) {
 	const { i18n } = useLingui();
 	const locale = i18n.locale;
-	const [month, setMonth] = useState(() => {
-		const now = new Date();
-		return new Date(now.getFullYear(), now.getMonth(), 1);
-	});
-	// Which way the last month change went: the new month's days slide in from that side. 0 = no change yet.
-	const [direction, setDirection] = useState<-1 | 0 | 1>(0);
+	const breakpoint = useBreakpoint();
+	const finePointer = useFinePointer();
+	const phone = breakpoint === "mobile";
+	const canDrag = finePointer && !phone;
 	const [dialog, setDialog] = useState<DialogState>({ open: false });
+	const reschedule = useRescheduleInterview();
+
+	// The calendar shows the viewer's local time, like the rest of the page.
+	const timeZone = getLocalTimeZone();
+	const toCalendar = (date: Date) => toCalendarDateTime(fromDate(date, timeZone));
 
 	const interviews = collectInterviews(applications);
-	const byDay = groupByDay(interviews);
+	const byId = new Map(interviews.map((item) => [item.interview.id, item]));
 	const upcoming = upcomingInterviews(interviews);
 	const upcomingByDay = [...groupByDay(upcoming).values()];
-	const days = monthGrid(month);
+	const events = interviews.map((item): AgendaEventType => {
+		const color = interviewKindOf(item.interview.kind)?.color;
+		return {
+			id: item.interview.id,
+			title: eventTitle(item),
+			start: toCalendar(item.start),
+			end: toCalendar(item.end),
+			...(color ? { color } : {}),
+		};
+	});
+
+	const schedule = (slot: InterviewSlot | null = null) =>
+		setDialog({ open: true, application: null, interview: null, slot });
+	const edit = (item: ScheduledInterview) =>
+		setDialog({ open: true, application: item.application, interview: item.interview, slot: null });
+	const move = (id: string, start: AgendaEventType["start"], end: AgendaEventType["end"]) => {
+		const item = byId.get(id);
+		if (item) reschedule(item, start.toDate(timeZone), end.toDate(timeZone));
+	};
+
+	const agenda = useAgenda({
+		events,
+		defaultView: "month",
+		weekDays: phone ? 3 : 7,
+		// Always "nothing selected", so pressing the same interview again reopens it.
+		selectedEventId: null,
+		onEventSelect: (id) => {
+			const item = id ? byId.get(id) : undefined;
+			if (item) edit(item);
+		},
+		// Touch and phone widths get no drag callbacks, which turns dragging off (Agenda's own advice).
+		...(canDrag
+			? {
+					onEventCreate: ({ start, end }: Pick<AgendaEventType, "start" | "end">) => {
+						const from = start.toDate(timeZone);
+						const durationMinutes = Math.round((end.toDate(timeZone).getTime() - from.getTime()) / 60_000);
+						schedule({ start: from, durationMinutes });
+					},
+					onEventMove: move,
+					onEventResize: move,
+				}
+			: {}),
+	});
 
 	// oxlint-disable-next-line react/purity -- Read today on each render so an open calendar updates after midnight when navigated.
 	const today = new Date();
 	const todayKey = dayKey(today);
 	const tomorrowKey = dayKey(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1));
-	const isCurrentMonth = month.getFullYear() === today.getFullYear() && month.getMonth() === today.getMonth();
 	const monthCount = interviews.filter(
-		(item) => item.start.getFullYear() === month.getFullYear() && item.start.getMonth() === month.getMonth(),
+		(item) => item.start.getFullYear() === agenda.date.year && item.start.getMonth() + 1 === agenda.date.month,
 	).length;
 
-	const weekdayFormat = new Intl.DateTimeFormat(locale, { weekday: "short" });
-	const monthFormat = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" });
 	const timeFormat = new Intl.DateTimeFormat(locale, { hour: "numeric", minute: "2-digit" });
 	const dayHeadingFormat = new Intl.DateTimeFormat(locale, { weekday: "long", month: "long", day: "numeric" });
-
-	const goToMonth = (next: Date) => {
-		setDirection(next > month ? 1 : -1);
-		setMonth(next);
-	};
-	const shiftMonth = (delta: number) => goToMonth(new Date(month.getFullYear(), month.getMonth() + delta, 1));
-	const schedule = (day: Date | null = null) => setDialog({ open: true, application: null, interview: null, day });
-	const edit = (item: ScheduledInterview) =>
-		setDialog({ open: true, application: item.application, interview: item.interview, day: null });
 
 	const dayHeading = (date: Date) => {
 		const key = dayKey(date);
@@ -82,144 +146,135 @@ export function ApplicationCalendar({ applications, allApplications, onOpen }: A
 		return dayHeadingFormat.format(date);
 	};
 
+	const previousLabel = { day: t`Previous day`, week: t`Previous week`, month: t`Previous month` }[agenda.view];
+	const nextLabel = { day: t`Next day`, week: t`Next week`, month: t`Next month` }[agenda.view];
+	const views: { id: AgendaView; label: string }[] = [
+		{ id: "day", label: t`Day` },
+		{ id: "week", label: t`Week` },
+		{ id: "month", label: t`Month` },
+	];
+
+	const eventLabel = (event: AgendaEventType) => {
+		const start = event.start.toDate(timeZone);
+		const end = event.end.toDate(timeZone);
+		const range = `${dayHeadingFormat.format(start)}, ${timeFormat.format(start)} – ${timeFormat.format(end)}`;
+		return t`Edit interview: ${event.title}, ${range}`;
+	};
+
 	return (
 		<div className="flex min-h-0 flex-1 gap-6 max-lg:flex-col max-lg:overflow-y-auto">
-			<section className="flex min-h-0 flex-1 flex-col gap-3 lg:overflow-y-auto" data-testid="interview-calendar">
-				<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-					<div className="flex items-baseline gap-2">
-						<h2 className="text-lg font-semibold capitalize">{monthFormat.format(month)}</h2>
-						<span className="text-sm text-ink-3">
-							<Plural value={monthCount} _0="No interviews" one="# interview" other="# interviews" />
-						</span>
-					</div>
-
-					<div className="ms-auto flex items-center gap-1">
-						<Button size="icon-sm" variant="ghost" title={t`Previous month`} onClick={() => shiftMonth(-1)}>
-							<Icon name="caret-left" size={16} />
-						</Button>
-						<Button
-							size="sm"
-							variant="secondary"
-							disabled={isCurrentMonth}
-							onClick={() => goToMonth(new Date(today.getFullYear(), today.getMonth(), 1))}
-						>
-							<Trans>This month</Trans>
-						</Button>
-						<Button size="icon-sm" variant="ghost" title={t`Next month`} onClick={() => shiftMonth(1)}>
-							<Icon name="caret-right" size={16} />
-						</Button>
-						<Button size="sm" className="ms-2" onClick={() => schedule()}>
-							<Icon name="calendar-plus" size={16} />
-							<Trans>Schedule interview</Trans>
-						</Button>
-					</div>
-				</div>
-
-				<div className="shrink-0 overflow-hidden rounded-xl border border-line bg-surface">
-					<div className="grid grid-cols-7">
-						{days.slice(0, 7).map((day) => (
-							<div
-								key={`weekday-${day.getDay()}`}
-								className="border-b border-line p-2 text-center text-xs font-medium text-ink-3"
-							>
-								{weekdayFormat.format(day)}
+			<section className="flex min-h-0 flex-1 flex-col gap-3" data-testid="interview-calendar">
+				<div className="relative min-h-[34rem] flex-1 overflow-hidden rounded-2xl border border-separator bg-surface">
+					<Agenda {...agenda} className="absolute inset-0">
+						{/* A plain row, not Agenda.Header: its narrow layout is a fixed grid for its own three parts. */}
+						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 px-3 pt-3 pb-1">
+							<div className="flex flex-auto items-baseline gap-2 whitespace-nowrap">
+								<Agenda.Heading className="flex-none capitalize" />
+								<span className="text-sm text-muted">
+									<Plural value={monthCount} _0="No interviews" one="# interview" other="# interviews" />
+								</span>
 							</div>
-						))}
-					</div>
-					<div
-						key={`${month.getFullYear()}-${month.getMonth()}`}
-						className={cn(
-							"grid grid-cols-7",
-							direction !== 0 && "transition-[opacity,translate] duration-standard ease-enter starting:opacity-0",
-							direction === 1 && "starting:translate-x-2 rtl:starting:-translate-x-2",
-							direction === -1 && "starting:-translate-x-2 rtl:starting:translate-x-2",
-						)}
-					>
-						{days.map((day, i) => {
-							const key = dayKey(day);
-							const items = byDay.get(key) ?? [];
-							const inMonth = day.getMonth() === month.getMonth();
-							const isToday = key === todayKey;
-							const extra = items.length - MAX_CHIPS_PER_DAY;
-							const date = dayHeadingFormat.format(day);
-							const scheduleLabel = t`Schedule an interview on ${date}`;
-							return (
-								<div
-									key={key}
-									data-day={key}
-									className={cn(
-										"group/day relative flex min-h-16 flex-col gap-1 border-line p-1 sm:min-h-24 sm:p-1.5",
-										i % 7 !== 6 && "border-e",
-										i < 35 && "border-b",
-										!inMonth && "bg-sunken/30",
-									)}
-								>
-									<div className="flex items-center justify-between">
-										<button
-											type="button"
-											title={scheduleLabel}
-											aria-label={scheduleLabel}
-											className="flex size-6 items-center justify-center rounded-md text-ink-3 opacity-0 transition-opacity group-hover/day:opacity-100 hover:bg-sunken hover:text-ink focus-visible:opacity-100 max-sm:hidden"
-											onClick={() => schedule(day)}
-										>
-											<Icon name="plus" size={14} />
-										</button>
-										<span
-											className={cn(
-												"flex size-6 items-center justify-center rounded-sm text-xs",
-												!inMonth && "text-ink-3",
-												isToday && "bg-accent font-semibold text-on-accent",
-											)}
-										>
-											{day.getDate()}
-										</span>
-									</div>
-									{items.slice(0, MAX_CHIPS_PER_DAY).map((item) => (
-										<InterviewChip
-											key={item.interview.id}
-											item={item}
-											time={timeFormat.format(item.start)}
-											onOpen={() => edit(item)}
-										/>
+							<Segment
+								size="sm"
+								aria-label={t`Calendar view`}
+								selectedKey={agenda.view}
+								onSelectionChange={(key) => agenda.setView(key as AgendaView)}
+							>
+								{views.map((view) => (
+									<Segment.Item key={view.id} id={view.id}>
+										{view.label}
+									</Segment.Item>
+								))}
+							</Segment>
+							<Agenda.Navigation>
+								<Button isIconOnly size="sm" variant="ghost" aria-label={previousLabel} onPress={agenda.goToPrevious}>
+									<Icon name="caret-left" size={16} className="rtl:rotate-180" />
+								</Button>
+								<Agenda.TodayButton>
+									<Trans>Today</Trans>
+								</Agenda.TodayButton>
+								<Button isIconOnly size="sm" variant="ghost" aria-label={nextLabel} onPress={agenda.goToNext}>
+									<Icon name="caret-right" size={16} className="rtl:rotate-180" />
+								</Button>
+							</Agenda.Navigation>
+							<Button size="sm" onPress={() => schedule()}>
+								<Icon name="calendar-plus" size={16} />
+								<Trans>Schedule interview</Trans>
+							</Button>
+						</div>
+
+						<Agenda.Body>
+							{agenda.view === "month" ? (
+								<Agenda.MonthGrid>
+									{agenda.visibleWeeks.map((week) => (
+										<Agenda.MonthRow key={week[0]?.toString()}>
+											{week.map((day) => (
+												<Agenda.MonthCell
+													key={day.toString()}
+													date={day}
+													maxEvents={phone ? 1 : 2}
+													moreLabel={(count) => plural(count, { other: "# more" })}
+												>
+													{agenda.getPerCellEvents(day, week).map((event) => {
+														const label = eventLabel(event);
+														return (
+															<Agenda.MonthEvent key={event.id} event={event}>
+																<button
+																	type="button"
+																	title={label}
+																	aria-label={label}
+																	className="block w-full cursor-[inherit] truncate text-start outline-none focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-focus"
+																>
+																	{event.title}
+																</button>
+															</Agenda.MonthEvent>
+														);
+													})}
+												</Agenda.MonthCell>
+											))}
+										</Agenda.MonthRow>
 									))}
-									{extra > 0 && (
-										<Popover>
-											<PopoverTrigger
-												render={
-													<button
-														type="button"
-														className="self-start rounded-md px-1.5 py-0.5 text-[11px] text-ink-3 transition-colors hover:bg-sunken hover:text-ink"
-													/>
-												}
-											>
-												<Trans>+{extra} more</Trans>
-											</PopoverTrigger>
-											<PopoverContent align="start" className="flex w-60 flex-col gap-1 p-2">
-												<p className="px-1 pb-1 text-xs font-medium">{dayHeading(day)}</p>
-												{items.map((item) => (
-													<InterviewChip
-														key={item.interview.id}
-														item={item}
-														time={timeFormat.format(item.start)}
-														onOpen={() => edit(item)}
-													/>
+								</Agenda.MonthGrid>
+							) : (
+								<>
+									<Agenda.WeekHeader />
+									<Agenda.TimeGrid>
+										<Agenda.CurrentTimeIndicator />
+										{agenda.visibleDays.map((day) => (
+											<Agenda.DayColumn key={day.toString()} date={day}>
+												{agenda.getEventsForDay(day).map((event) => (
+													<Agenda.Event key={event.id} event={event}>
+														<button
+															type="button"
+															aria-label={eventLabel(event)}
+															className="flex size-full min-w-0 cursor-[inherit] flex-col text-start outline-none focus-visible:rounded-sm focus-visible:ring-2 focus-visible:ring-focus"
+														>
+															<Agenda.EventTitle>{event.title}</Agenda.EventTitle>
+															<Agenda.EventTime event={event} />
+														</button>
+													</Agenda.Event>
 												))}
-											</PopoverContent>
-										</Popover>
-									)}
-								</div>
-							);
-						})}
-					</div>
+											</Agenda.DayColumn>
+										))}
+									</Agenda.TimeGrid>
+								</>
+							)}
+						</Agenda.Body>
+					</Agenda>
 				</div>
 
-				<div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-3">
+				<div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
 					{INTERVIEW_KINDS.map((kind) => (
 						<span key={kind.value} className="flex items-center gap-1.5">
-							<span className="size-2 rounded-sm" style={{ background: kind.color }} />
-							{kind.label}
+							<span className="size-2 rounded-full" style={{ background: kind.color }} />
+							{interviewTypeLabel(kind.value)}
 						</span>
 					))}
+					{canDrag && (
+						<span className="ms-auto">
+							<Trans>Drag to move or resize an interview, or across empty hours to schedule one.</Trans>
+						</span>
+					)}
 				</div>
 			</section>
 
@@ -229,40 +284,46 @@ export function ApplicationCalendar({ applications, allApplications, onOpen }: A
 				</h3>
 
 				{upcoming.length === 0 ? (
-					<div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-line px-4 py-8 text-center">
-						<div className="flex size-10 items-center justify-center rounded-sm bg-sunken">
-							<Icon name="calendar-blank" size={20} className="text-ink-3" />
-						</div>
-						<div className="space-y-1">
-							<p className="text-sm font-medium">
+					<EmptyState size="sm" className="rounded-2xl border border-dashed border-border">
+						<EmptyState.Header>
+							<EmptyState.Media variant="icon">
+								<Icon name="calendar-blank" size={20} />
+							</EmptyState.Media>
+							<EmptyState.Title>
 								<Trans>Nothing scheduled yet</Trans>
-							</p>
-							<p className="text-xs text-ink-3">
+							</EmptyState.Title>
+							<EmptyState.Description className="max-w-xs text-pretty">
 								<Trans>Add screening calls and technical interviews to see them here and on the calendar.</Trans>
-							</p>
-						</div>
-						<Button size="sm" variant="secondary" onClick={() => schedule()}>
-							<Icon name="calendar-plus" size={16} />
-							<Trans>Schedule interview</Trans>
-						</Button>
-					</div>
+							</EmptyState.Description>
+						</EmptyState.Header>
+						<EmptyState.Content>
+							<Button size="sm" variant="secondary" onPress={() => schedule()}>
+								<Icon name="calendar-plus" size={16} />
+								<Trans>Schedule interview</Trans>
+							</Button>
+						</EmptyState.Content>
+					</EmptyState>
 				) : (
 					upcomingByDay.map((group) => {
 						const first = group[0];
 						if (!first) return null;
 						return (
 							<div key={dayKey(first.start)} className="flex flex-col gap-2">
-								<h4 className="text-xs font-medium text-ink-3">{dayHeading(first.start)}</h4>
-								{group.map((item) => (
-									<UpcomingCard
-										key={item.interview.id}
-										item={item}
-										timeRange={`${timeFormat.format(item.start)} – ${timeFormat.format(item.end)}`}
-										locale={locale}
-										onEdit={() => edit(item)}
-										onOpenApplication={() => onOpen(item.application)}
-									/>
-								))}
+								<h4 className="text-xs font-medium text-muted">{dayHeading(first.start)}</h4>
+								<ItemCardGroup variant="outline">
+									{group.map((item, index) => (
+										<Fragment key={item.interview.id}>
+											{index > 0 && <Separator />}
+											<UpcomingCard
+												item={item}
+												timeRange={`${timeFormat.format(item.start)} – ${timeFormat.format(item.end)}`}
+												locale={locale}
+												onEdit={() => edit(item)}
+												onOpenApplication={() => onOpen(item.application)}
+											/>
+										</Fragment>
+									))}
+								</ItemCardGroup>
 							</div>
 						);
 					})
@@ -275,7 +336,7 @@ export function ApplicationCalendar({ applications, allApplications, onOpen }: A
 				application={dialog.open ? dialog.application : null}
 				applications={allApplications}
 				interview={dialog.open ? dialog.interview : null}
-				day={dialog.open ? dialog.day : null}
+				slot={dialog.open ? dialog.slot : null}
 			/>
 		</div>
 	);
@@ -290,63 +351,60 @@ type UpcomingCardProps = {
 };
 
 function UpcomingCard({ item, timeRange, locale, onEdit, onOpenApplication }: UpcomingCardProps) {
-	const kind = interviewKindOf(item.interview.kind);
+	const color = interviewKindOf(item.interview.kind)?.color;
+	const viewLabel = t`View application`;
 	return (
-		<div
+		<ItemCard
+			variant="transparent"
+			className="relative items-start"
 			data-upcoming-interview={item.interview.id}
 			data-application-id={item.application.id}
-			className="relative overflow-hidden rounded-xl border border-line bg-surface ps-4 text-sm"
 		>
-			<span className="absolute inset-y-0 start-0 w-1" style={{ background: kind?.color }} />
-			<button type="button" className="block w-full py-3 pe-3 text-start hover:opacity-80" onClick={onEdit}>
-				<span className="flex items-center justify-between gap-2 text-xs">
-					<span className="font-medium">{timeRange}</span>
-					<span className="text-ink-3">{formatDuration(item.interview.durationMinutes, locale)}</span>
-				</span>
-				<span className="mt-1 block truncate font-semibold">{item.application.company}</span>
-				<span className="block truncate text-xs text-ink-3">
-					{kind?.label ?? item.interview.kind} · {item.application.role}
-				</span>
-				{item.interview.location && (
-					<span className="mt-1.5 flex items-center gap-1 text-xs text-ink-3">
-						<Icon name="map-pin" size={16} className="shrink-0" />
-						<span className="truncate">{item.interview.location}</span>
-					</span>
-				)}
-			</button>
-			<button
-				type="button"
-				data-application-open
-				className="mb-2 text-xs text-accent-text hover:underline"
-				onClick={onOpenApplication}
+			<ItemCard.Icon
+				aria-hidden
+				style={color ? { color, backgroundColor: `color-mix(in oklab, ${color} 15%, transparent)` } : undefined}
 			>
-				<Trans>View application</Trans>
-			</button>
-		</div>
-	);
-}
-
-type InterviewChipProps = {
-	item: ScheduledInterview;
-	time: string;
-	onOpen: () => void;
-};
-
-function InterviewChip({ item, time, onOpen }: InterviewChipProps) {
-	const kind = interviewKindOf(item.interview.kind);
-	return (
-		<button
-			type="button"
-			title={`${time} · ${kind?.label ?? item.interview.kind} · ${item.application.company} — ${item.application.role}`}
-			className="flex min-w-0 items-center gap-1.5 rounded-md border-s-2 bg-sunken/60 px-1.5 py-0.5 text-start text-[11px] leading-tight transition-colors hover:bg-sunken max-sm:justify-center max-sm:border-s-0 max-sm:bg-transparent"
-			style={{ borderInlineStartColor: kind?.color }}
-			onClick={onOpen}
-		>
-			<span className="size-2 shrink-0 rounded-sm sm:hidden" style={{ background: kind?.color }} />
-			<span className="flex min-w-0 items-baseline gap-1.5 max-sm:hidden">
-				<span className="shrink-0 text-ink-3 tabular-nums">{time}</span>
-				<span className="truncate font-medium">{item.application.company}</span>
-			</span>
-		</button>
+				<Icon name="calendar-dots" size={16} />
+			</ItemCard.Icon>
+			<ItemCard.Content>
+				<ItemCard.Title>
+					{/* Covers the whole card, so pressing anywhere but "View application" edits the interview. */}
+					<button
+						type="button"
+						className="outline-none after:absolute after:inset-0 after:rounded-2xl focus-visible:after:ring-2 focus-visible:after:ring-focus"
+						onClick={onEdit}
+					>
+						{item.application.company}
+					</button>
+				</ItemCard.Title>
+				<ItemCard.Description>
+					{interviewTypeLabel(item.interview.kind)} · {item.application.role}
+				</ItemCard.Description>
+				<ItemCard.Description className="tabular-nums">
+					{timeRange} · {formatDuration(item.interview.durationMinutes, locale)}
+				</ItemCard.Description>
+				{item.interview.location && (
+					<ItemCard.Description className="flex items-center gap-1">
+						<Icon name="map-pin" size={14} className="shrink-0" />
+						<span className="truncate">{item.interview.location}</span>
+					</ItemCard.Description>
+				)}
+			</ItemCard.Content>
+			<ItemCard.Action className="relative">
+				<Tooltip>
+					<Button
+						isIconOnly
+						size="sm"
+						variant="ghost"
+						aria-label={viewLabel}
+						data-application-open
+						onPress={onOpenApplication}
+					>
+						<Icon name="arrow-square-out" size={16} />
+					</Button>
+					<Tooltip.Content>{viewLabel}</Tooltip.Content>
+				</Tooltip>
+			</ItemCard.Action>
+		</ItemCard>
 	);
 }

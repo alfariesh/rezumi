@@ -144,14 +144,9 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# kapcsolattartó e-mail-címe érvénytelen, vagy nincs neve; a jelentkezése ettől még importálódik.} other {# kapcsolattartó e-mail-címe érvénytelen, vagy nincs neve; a jelentkezéseik ettől még importálódnak.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {# nap van hátra} other {# nap van hátra}}"
-
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# nap} other {# nap}}"
 
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}. Elküldi ezt a jelentkezést és a Tudástárada
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (másolat)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -503,17 +504,21 @@ msgstr "{count, plural, one {# bejegyzés} other {# bejegyzések}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# megoldatlan probléma} other {# megoldatlan probléma}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# módosítás alkalmazása} other {# módosítás alkalmazása}}"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} ingyenes önéletrajz sablon. Válassza ki az Önnek megfelelő sablont."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} kiválasztva"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -808,10 +813,6 @@ msgstr "/ hó"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ év"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} több"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1653,8 +1654,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "Már lefedve · válasszon egyet, hogy megtalálja az oldalon"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "Már van fiókja? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -1842,8 +1843,7 @@ msgstr "A kérelmező nyomkövető rendszerek egyszerű szöveggé alakítják a
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Jelentkezés"
 
@@ -1897,6 +1897,7 @@ msgstr "Jelentkezés lapjai"
 msgid "Application updated"
 msgstr "Jelentkezés frissítve"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2023,6 +2024,10 @@ msgstr "Előbb rákérdez"
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask for something else…"
 msgstr "Kérj még valamit…"
+
+#: src/features/command-palette/pages/ask.tsx
+msgid "Ask the assistant"
+msgstr ""
 
 #: src/features/command-palette/pages/ask.tsx
 msgid "Ask the assistant “{question}”"
@@ -2394,6 +2399,10 @@ msgstr "A közösség által, a közösségért."
 msgid "Calendar"
 msgstr "Naptár"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "Hozhatom magam?"
@@ -2495,10 +2504,6 @@ msgstr "Módosítsa az önéletrajz kialakítását"
 #: src/features/command-palette/pages/preferences/index.tsx
 msgid "Change theme to…"
 msgstr "Téma módosítása erre:…"
-
-#: src/features/applications/components/detail/activity.tsx
-msgid "Change this timeline entry."
-msgstr "Módosítsa ezt az idővonal bejegyzést."
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Change timezone"
@@ -2769,18 +2774,33 @@ msgstr "Ügyfél-azonosító"
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/resume/index.tsx
+#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/board.tsx
+#: src/features/applications/components/detail/activity.tsx
+#: src/features/applications/components/detail/close-dialog.tsx
+#: src/features/applications/components/detail/next-step-card.tsx
+#: src/features/applications/components/export-applications-sheet.tsx
+#: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/builder/password-dialog.tsx
+#: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
+#: src/features/resume/stylesheet/editor.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
+#: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Close"
 msgstr "Bezárás"
 
@@ -2818,6 +2838,10 @@ msgstr "Közeli…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "Zárt"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -2857,7 +2881,6 @@ msgstr "Hamarosan"
 
 #. Accessible label for command list region inside command palette
 #. Accessible label for the command palette dialog
-#. Screen-reader dialog title for the command palette
 #: src/features/command-palette/content.tsx
 msgid "Command palette"
 msgstr "Parancspaletta"
@@ -3480,6 +3503,10 @@ msgstr "Nem sikerült olvasottként megjelölni. Próbáld újra."
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "Nem sikerült a Kukába helyezni a dokumentumot. Próbáld újra."
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "Nem sikerült előkészíteni az önéletrajzot nyomtatásra. Próbáld újra."
@@ -3898,11 +3925,6 @@ msgstr "Hozzon létre és nyissa meg"
 msgid "Create key"
 msgstr "Kulcs létrehozása"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "Hozzon létre egyet most"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -3999,6 +4021,7 @@ msgid "Danish"
 msgstr "dán"
 
 #. Appearance theme option for dark mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
@@ -4048,6 +4071,10 @@ msgstr "A dátumok egy formátumot használnak"
 #: src/features/resume/editor/check/issues.ts
 msgid "Dates won't be read"
 msgstr "A dátumok nem lesznek olvasva"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
@@ -4209,7 +4236,7 @@ msgstr "Törölt jelentkezés"
 msgid "Deleted from Saved"
 msgstr "Törölve a Mentett lapról"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Törölve"
 
@@ -4377,8 +4404,8 @@ msgid "Domain connected"
 msgstr "Domain csatlakoztatva"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "Nincs fiókja? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -4553,9 +4580,19 @@ msgstr "Tervezés…"
 msgid "drag · ⌥↑↓"
 msgstr "húzza · ⌥↑↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "Húzd ide a szekciókat, hogy áthelyezd őket az oszlopok között"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4673,6 +4710,11 @@ msgstr "Bejegyzés szerkesztése"
 msgid "Edit interview"
 msgstr "Interjú szerkesztése"
 
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "Interjú szerkesztése…"
@@ -4713,7 +4755,7 @@ msgstr "Szerkessze ezt az interjút…"
 msgid "Edit…"
 msgstr "Szerkesztés…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Szerkesztette"
 
@@ -5615,8 +5657,8 @@ msgid "Hear it"
 msgstr "Meghallgatás"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "hallotta vissza"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6007,6 +6049,10 @@ msgstr "Interjú {duration} múlva"
 msgid "Interview is in another timezone"
 msgstr "Az interjú másik időzónában van"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "Interjújegyzetek"
@@ -6014,6 +6060,10 @@ msgstr "Interjújegyzetek"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "Interjú most"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -6381,6 +6431,7 @@ msgstr "Fekvő"
 
 #. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -6535,6 +6586,7 @@ msgstr "levél"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Levél"
@@ -6593,6 +6645,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "A ligatúrák betűket ejthetnek ki az olyan szavakból, mint a \"workflow\"."
 
 #. Appearance theme option for light mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
@@ -6751,6 +6804,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "Élő összesítés, 6 óránként frissül."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "Betöltés"
 
@@ -6821,6 +6879,7 @@ msgstr "Munkatér betöltése…"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
+#: src/features/command-palette/pages/resumes.tsx
 msgid "Loading…"
 msgstr "Betöltés…"
 
@@ -6847,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Szerkesztés zárolása"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Zárolva"
 
@@ -7056,8 +7116,8 @@ msgid "MCP server"
 msgstr "MCP szerver"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "medián az első válaszhoz"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7133,6 +7193,10 @@ msgstr "Típus: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "Monó"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7291,9 +7355,9 @@ msgstr "Az volt a feladatom, hogy kiderítsem, miért, anélkül hogy több ügy
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -7450,6 +7514,10 @@ msgstr "Új szakasz"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "A Northwindnél az új csapatok elakadtak a beállításban; a legtöbben sosem jutottak túl rajta."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "Következő szám"
@@ -7482,13 +7550,25 @@ msgstr "Következő lépés: {0}. Emlékeztetőt tesz a Ma nézetbe."
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "Legközelebb már az első prototípus előtt megegyeznék abban, hogyan mérjük a sikert."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "Nincsenek aktív álláspályázatok."
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "Nincs álláspályázat"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7615,6 +7695,10 @@ msgstr "Nincsenek új pozíciók. A felfedezés holnap {clock}-kor fut újra."
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "Még nincs összehasonlítható ajánlat"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8121,6 +8205,10 @@ msgstr "Nyissa meg a szerkesztőt"
 msgid "Open in Offers"
 msgstr "Megnyitás az Ajánlatokban"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Open navigation"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Open preferences"
 msgstr "Beállítások megnyitása"
@@ -8184,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Opcionális a helyi Ollama számára"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Opciók"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "{0} opciók"
 
@@ -8395,10 +8483,6 @@ msgstr "Jelszó beállítva"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Past conversations"
 msgstr "Korábbi beszélgetések"
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Paste a job link or posting, then check the role and company."
-msgstr "Illesszen be egy álláshivatkozást vagy álláshirdetést, majd ellenőrizze a szerepkört és a céget."
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Paste a job link. We'll save the posting so Check, the assistant and your letter can use it."
@@ -8786,6 +8870,10 @@ msgstr "Előnézet mérete"
 msgid "Previewing {0} · click to apply"
 msgstr "A {0} előnézete · Kattintson az alkalmazásához"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Előző szám"
@@ -8797,6 +8885,10 @@ msgstr "A rendszer elküldi a korábbi üzeneteket is, beleértve a dokumentum r
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "Előző hónap"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -8912,6 +9004,7 @@ msgid "Provider"
 msgstr "Szolgáltató"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9056,6 +9149,10 @@ msgstr "Exportáld újra beágyazott betűtípusokkal, majd nyisd meg a fájlt, 
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "Re: Senior termékdizájner"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -9380,8 +9477,8 @@ msgid "Remember this for future coaching?"
 msgstr "Emlékezzen rá a jövőbeli coachingnál?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "Emlékszik a jelszavára? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -9655,6 +9752,7 @@ msgstr "önéletrajz"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Önéletrajz"
@@ -10154,10 +10252,6 @@ msgstr "Olvasd be a QR-kódot a hitelesítő alkalmazással, vagy másold ki a t
 msgid "Schedule an interview"
 msgstr "Időpont egyeztetés"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "Ütemezzen egy interjút a {date}-n"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "Időpont egyeztetés egy interjúra…"
@@ -10213,10 +10307,6 @@ msgstr "Állásjelentkezések keresése"
 #: src/features/command-palette/content.tsx
 msgid "Search commands"
 msgstr "Keresési parancsok"
-
-#: src/features/career/knowledge/search-regions-field.tsx
-msgid "Search countries"
-msgstr "Országok keresése"
 
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -10352,6 +10442,7 @@ msgstr "Lásd lent"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Válassza ki"
 
@@ -10366,6 +10457,7 @@ msgstr "{0} kiválasztása"
 msgid "Select {0} at {1}"
 msgstr "Válassza a {0}-t a {1}-nál"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Az összes kiválasztása"
@@ -10728,13 +10820,6 @@ msgstr "Az oldalsávokat gyakran utoljára olvassák be, vagy keverik a fő oszl
 msgid "Sign in"
 msgstr "Bejelentkezés"
 
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "Jelentkezzen be most"
-
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
 msgid "Sign in to your account"
@@ -11026,6 +11111,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "Szakasz"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -11883,6 +11972,7 @@ msgstr "Az első oldal teteje nem néz ki névnek."
 
 #. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
 #: src/features/settings/preferences.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -12049,10 +12139,6 @@ msgstr "Ez a levél megőrzi a címzettjét, ahogy írva van."
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Ez azt méri, mennyire hűen tudja a szoftver kinyerni a fájl szövegét. Nem jelzi előre, hogy egy jelentkezést elutasítanak-e, és erre egyetlen eszköz sem képes. A fájlt ebben a böngészőben olvastuk be, és soha nem került feltöltésre."
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "Ebben a hónapban"
 
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
@@ -12230,6 +12316,10 @@ msgstr "Ma {time}"
 msgid "Today, {hour}"
 msgstr "Ma, {hour}"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toggle sidebar"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Tomorrow"
 msgstr "Holnap"
@@ -12241,6 +12331,10 @@ msgstr "Túl világos a fehér címsorokhoz. Lehet, hogy nehéz olvasni és halv
 #: src/features/settings/ai/web-access.tsx
 msgid "Too many requests. Try again later."
 msgstr "Túl sok kérés. Próbálja újra később."
+
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toolbar"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Track a job you're applying to and link the resume you sent."
@@ -12439,8 +12533,7 @@ msgstr "Kétlépcsős ellenőrzés bekapcsolva"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
@@ -12457,7 +12550,6 @@ msgid "Type <0>{CONFIRMATION}</0> to confirm"
 msgstr "A megerősítéshez írja be a következőt: <0>{CONFIRMATION}</0>"
 
 #. Placeholder in command palette input on root page
-#. Screen-reader dialog description instructing users how to use the command palette
 #: src/features/command-palette/content.tsx
 msgid "Type a command or search…"
 msgstr "Írjon be egy parancsot, vagy keressen rá…"
@@ -12487,6 +12579,7 @@ msgstr "Aláhúzás"
 msgid "Underline links"
 msgstr "A hivatkozások aláhúzása"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13039,6 +13132,10 @@ msgstr "Az internetes keresések ezekben az országokban keresnek állást. Vál
 msgid "Website"
 msgstr "Weboldal"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"
 msgstr "Hetente {clock}-kor · következő: {next}"
@@ -13303,6 +13400,10 @@ msgstr "A szavak összefolynak, amikor a szöveg kinyerésre kerül."
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "AI és új kutatás nélkül is működik"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

@@ -1,11 +1,11 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { Avatar } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
 import { Icon } from "@rezumi/ui/components/icon";
 import { getInitials } from "@rezumi/utils/string";
 import { SignOutButton } from "./account/page";
@@ -49,10 +49,10 @@ export function SettingsRoot() {
 			<PageHeader title={<Trans>Settings</Trans>} />
 			<div className="flex items-center gap-3">
 				<Avatar className="size-12">
-					<AvatarImage src={session.user.image ?? undefined} alt="" />
-					<AvatarFallback className="bg-accent-soft font-semibold text-accent-text">
+					{session.user.image && <Avatar.Image src={session.user.image} alt="" />}
+					<Avatar.Fallback className="bg-accent-soft font-semibold text-accent-text">
 						{getInitials(session.user.name)}
-					</AvatarFallback>
+					</Avatar.Fallback>
 				</Avatar>
 				<span className="grid min-w-0">
 					<b className="truncate text-lg font-semibold">{session.user.name}</b>

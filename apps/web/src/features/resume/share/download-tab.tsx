@@ -2,16 +2,12 @@ import type { Resume } from "@/features/resume/builder/draft";
 import type { ExportFormat } from "@/features/resume/export/use-resume-export";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Radio } from "@base-ui/react/radio";
-import { RadioGroup } from "@base-ui/react/radio-group";
+import { Button, Checkbox, Chip, Radio, RadioGroup, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
@@ -87,40 +83,35 @@ export function FormatRadioGroup<Id extends string>({ formats, value, onChange }
 		<RadioGroup
 			aria-label={t`Format`}
 			value={value}
-			onValueChange={(next) => onChange(next as Id)}
+			onChange={(next) => onChange(next as Id)}
 			// Picking a format usually comes next: start loading the DOCX and ODT builders.
 			onPointerEnter={preloadDocumentExport}
 			onFocus={preloadDocumentExport}
 			className="grid gap-1.5"
 		>
 			{formats.map((option) => (
-				<Radio.Root
-					key={option.id}
-					value={option.id}
-					disabled={option.disabled}
-					className="group/format flex cursor-pointer items-start gap-3 rounded-lg border border-line p-3 text-start transition-colors duration-quick hover:border-line-2 data-checked:border-accent data-checked:bg-accent-soft data-disabled:cursor-not-allowed data-disabled:opacity-45"
-				>
-					<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-sunken text-ink-2">
-						<Icon name={option.icon} size={22} />
-					</span>
-					<span className="grid min-w-0 flex-1 gap-0.5">
-						<span className="flex flex-wrap items-center gap-2">
-							<span className="text-sm font-semibold">{option.label}</span>
-							<span className="font-mono text-[11px] font-medium text-ink-3 group-data-checked/format:text-ink-2">
-								{option.extension}
-							</span>
-							{option.id === "pdf" && (
-								<span className="rounded bg-accent-soft px-1.5 text-[11px] leading-[18px] font-semibold text-accent-text">
-									<Trans>Best for applying</Trans>
-								</span>
-							)}
+				<Radio key={option.id} value={option.id} isDisabled={Boolean(option.disabled)} className="mt-0!">
+					<Radio.Content className="group/format flex w-full cursor-pointer items-start gap-3 rounded-2xl border border-border p-3 text-start transition-colors data-[selected=true]:border-accent data-[selected=true]:bg-accent-soft">
+						<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-default text-muted">
+							<Icon name={option.icon} size={22} />
 						</span>
-						<span className="text-[13px] leading-[18px] text-ink-2">{option.description}</span>
-					</span>
-					<span className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full border-[1.5px] border-line-2 group-data-checked/format:border-accent">
-						<span className="size-2 rounded-full bg-accent opacity-0 group-data-checked/format:opacity-100" />
-					</span>
-				</Radio.Root>
+						<span className="grid min-w-0 flex-1 gap-0.5">
+							<span className="flex flex-wrap items-center gap-2">
+								<span className="text-sm font-semibold">{option.label}</span>
+								<span className="font-mono text-[11px] font-medium text-muted">{option.extension}</span>
+								{option.id === "pdf" && (
+									<Chip size="sm" color="accent" variant="soft">
+										<Trans>Best for applying</Trans>
+									</Chip>
+								)}
+							</span>
+							<span className="text-[13px] leading-[18px] text-muted">{option.description}</span>
+						</span>
+						<Radio.Control className="mt-0.5">
+							<Radio.Indicator />
+						</Radio.Control>
+					</Radio.Content>
+				</Radio>
 			))}
 		</RadioGroup>
 	);
@@ -182,7 +173,7 @@ export function DownloadActions({ state, label, onDownload, onDownloadPdf }: Dow
 						<Trans>The {label} file couldn't be generated. Try again, or download PDF instead.</Trans>
 					</span>
 					{onDownloadPdf && (
-						<Button size="sm" variant="secondary" onClick={onDownloadPdf}>
+						<Button size="sm" variant="secondary" onPress={onDownloadPdf}>
 							<Trans>Download PDF instead</Trans>
 						</Button>
 					)}
@@ -192,12 +183,12 @@ export function DownloadActions({ state, label, onDownload, onDownloadPdf }: Dow
 			<Button
 				className="h-11 gap-2 text-[15px]"
 				aria-busy={state === "busy"}
-				disabled={state === "busy"}
-				onClick={onDownload}
+				isDisabled={state === "busy"}
+				onPress={onDownload}
 			>
 				{state === "busy" ? (
 					<>
-						<Spinner decorative className="size-4" />
+						<Spinner size="sm" color="current" aria-hidden />
 						<Trans>Preparing {label} file…</Trans>
 					</>
 				) : state === "error" ? (
@@ -239,7 +230,6 @@ export function DownloadTab({ onReview }: DownloadTabProps) {
 	const resume = useCurrentResume();
 	const issues = useOpenIssueCount();
 	const linkedLetter = useLinkedLetter(resume);
-	const headerId = useId();
 	const [format, setFormat] = useState<ExportFormat>("pdf");
 	const [withLetter, setWithLetter] = useState(false);
 	const [fileName, setFileName] = useState<string | null>(null);
@@ -290,15 +280,15 @@ export function DownloadTab({ onReview }: DownloadTabProps) {
 			/>
 
 			{linkedLetter && (
-				<div className="flex items-center gap-2.5 text-sm">
-					<Checkbox
-						id={`${headerId}-letter`}
-						checked={withLetter}
-						onCheckedChange={(checked) => setWithLetter(checked === true)}
-					/>
-					<label htmlFor={`${headerId}-letter`} className="cursor-pointer">
-						<Trans>Also download the {linkedLetter.company} cover letter</Trans>
-					</label>
+				<div className="text-sm">
+					<Checkbox isSelected={withLetter} onChange={setWithLetter}>
+						<Checkbox.Content>
+							<Checkbox.Control>
+								<Checkbox.Indicator />
+							</Checkbox.Control>
+							<Trans>Also download the {linkedLetter.company} cover letter</Trans>
+						</Checkbox.Content>
+					</Checkbox>
 				</div>
 			)}
 

@@ -1,13 +1,12 @@
+import { Button, buttonVariants, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { authClient } from "@/libs/auth/client";
@@ -65,17 +64,13 @@ export function ForgotPasswordPage() {
 				<div className="text-ink-3">
 					<Trans>
 						Remember your password?{" "}
-						<Button
-							variant="link"
-							className="h-auto gap-1.5 px-1! py-0"
-							nativeButton={false}
-							render={
-								<Link to="/auth/login">
-									<Trans comment="Call-to-action link from forgot-password page to login page">Sign in now</Trans>{" "}
-									<Icon name="arrow-right" size={16} />
-								</Link>
-							}
-						/>
+						<Link
+							to="/auth/login"
+							className="inline-flex items-center gap-1.5 px-1 text-link underline-offset-4 hover:underline"
+						>
+							<Trans comment="Call-to-action link from forgot-password page to login page">Sign in now</Trans>{" "}
+							<Icon name="arrow-right" size={16} />
+						</Link>
 					</Trans>
 				</div>
 			</div>
@@ -97,6 +92,7 @@ export function ForgotPasswordPage() {
 							<FormControl
 								render={
 									<Input
+										fullWidth
 										type="email"
 										autoComplete="email"
 										placeholder="john.doe@example.com"
@@ -112,7 +108,7 @@ export function ForgotPasswordPage() {
 					)}
 				</form.Field>
 
-				<Button type="submit" className="w-full" disabled={isSubmitting}>
+				<Button type="submit" fullWidth isDisabled={isSubmitting}>
 					<Trans comment="Primary action button label on forgot-password form">Send reset link</Trans>
 				</Button>
 			</form>
@@ -133,14 +129,9 @@ function PostForgotPasswordScreen() {
 				</p>
 			</div>
 
-			<Button
-				nativeButton={false}
-				render={
-					<a href="mailto:">
-						<Trans comment="Button label to open the user's default email app">Open email app</Trans>
-					</a>
-				}
-			/>
+			<a href="mailto:" className={buttonVariants()}>
+				<Trans comment="Button label to open the user's default email app">Open email app</Trans>
+			</a>
 		</div>
 	);
 }

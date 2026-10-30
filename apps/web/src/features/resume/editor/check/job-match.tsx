@@ -1,18 +1,15 @@
 import type { JdTermMatch } from "@rezumi/resume/ats-pdf";
 import type { ResumeData, SkillItem } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
+import { Button, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useMemo, useState } from "react";
 import { buildMarkdown } from "@rezumi/resume/markdown";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
 import { generateId } from "@rezumi/utils/string";
@@ -212,15 +209,15 @@ export function JobMatchTab({ match }: JobMatchTabProps) {
 										<Trans>If it's part of your experience, add it where it belongs.</Trans>
 									</p>
 									<div className="grid justify-items-start gap-1">
-										<Button size="sm" disabled={locked} onClick={() => addToSkills(open)}>
+										<Button size="sm" isDisabled={locked} onPress={() => addToSkills(open)}>
 											<Icon name="plus" size={16} />
 											<Trans>Add to Skills</Trans>
 										</Button>
-										<Button size="sm" variant="secondary" disabled={locked} onClick={() => askAssistant(open.label)}>
+										<Button size="sm" variant="secondary" isDisabled={locked} onPress={() => askAssistant(open.label)}>
 											<Icon name="sparkle" size={16} />
 											<Trans>Ask the assistant to work it in</Trans>
 										</Button>
-										<Button size="sm" variant="ghost" disabled={locked} onClick={() => hideTerm(open)}>
+										<Button size="sm" variant="ghost" isDisabled={locked} onPress={() => hideTerm(open)}>
 											<Trans>Not true for me, hide it</Trans>
 										</Button>
 									</div>
@@ -333,7 +330,7 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 							<Trans>For this visit only</Trans>
 						</span>
 					</span>
-					<Button size="sm" variant="secondary" onClick={() => useEditorStore.setState({ pastedPosting: "" })}>
+					<Button size="sm" variant="secondary" onPress={() => useEditorStore.setState({ pastedPosting: "" })}>
 						<Trans>Clear</Trans>
 					</Button>
 				</div>
@@ -356,7 +353,7 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 						<Trans>Posting from the linked application</Trans>
 					</span>
 				</span>
-				<Button size="sm" variant="secondary" aria-expanded={changing} onClick={() => setChanging(!changing)}>
+				<Button size="sm" variant="secondary" aria-expanded={changing} onPress={() => setChanging(!changing)}>
 					<Trans>Change</Trans>
 				</Button>
 			</div>
@@ -373,7 +370,7 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 						size="sm"
 						variant="ghost"
 						className="w-fit"
-						onClick={() => {
+						onPress={() => {
 							setChanging(false);
 							void link(null);
 						}}
@@ -441,7 +438,8 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 				<p className="text-[13px] leading-[19px] text-ink-2">
 					<Trans>This application has no posting saved yet. Paste it to match against it.</Trans>
 				</p>
-				<Textarea
+				<TextArea
+					fullWidth
 					aria-label={t`Job posting`}
 					rows={5}
 					maxLength={MAX_POSTING_CHARS}
@@ -452,8 +450,8 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 				<Button
 					size="sm"
 					className="w-fit"
-					disabled={!draft.trim() || saving}
-					onClick={() => savePosting({ id: application.id, jobDescription: draft.trim() })}
+					isDisabled={!draft.trim() || saving}
+					onPress={() => savePosting({ id: application.id, jobDescription: draft.trim() })}
 				>
 					<Trans>Save to the application</Trans>
 				</Button>
@@ -478,7 +476,8 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 			<span className="text-center text-xs text-ink-3">
 				<Trans>or</Trans>
 			</span>
-			<Textarea
+			<TextArea
+				fullWidth
 				aria-label={t`Job posting`}
 				rows={4}
 				maxLength={MAX_POSTING_CHARS}
@@ -489,8 +488,8 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 			<Button
 				size="sm"
 				className="w-fit"
-				disabled={!draft.trim()}
-				onClick={() => useEditorStore.setState({ pastedPosting: draft })}
+				isDisabled={!draft.trim()}
+				onPress={() => useEditorStore.setState({ pastedPosting: draft })}
 			>
 				<Trans>Match this posting</Trans>
 			</Button>
@@ -515,7 +514,7 @@ function SaveAsApplication() {
 
 	if (!open) {
 		return (
-			<Button size="sm" variant="ghost" className="w-fit" onClick={() => setOpen(true)}>
+			<Button size="sm" variant="ghost" className="w-fit" onPress={() => setOpen(true)}>
 				<Icon name="briefcase" size={16} />
 				<Trans>Save as application…</Trans>
 			</Button>
@@ -552,20 +551,32 @@ function SaveAsApplication() {
 					<Label htmlFor={companyId}>
 						<Trans>Company</Trans>
 					</Label>
-					<Input id={companyId} required value={company} onChange={(event) => setCompany(event.target.value)} />
+					<Input
+						fullWidth
+						id={companyId}
+						required
+						value={company}
+						onChange={(event) => setCompany(event.target.value)}
+					/>
 				</div>
 				<div className="grid gap-1">
 					<Label htmlFor={`${companyId}-role`}>
 						<Trans>Role</Trans>
 					</Label>
-					<Input id={`${companyId}-role`} required value={role} onChange={(event) => setRole(event.target.value)} />
+					<Input
+						fullWidth
+						id={`${companyId}-role`}
+						required
+						value={role}
+						onChange={(event) => setRole(event.target.value)}
+					/>
 				</div>
 			</div>
 			<div className="flex gap-1.5">
-				<Button size="sm" type="submit" disabled={!company.trim() || !role.trim() || isPending}>
+				<Button size="sm" type="submit" isDisabled={!company.trim() || !role.trim() || isPending}>
 					<Trans>Save and link</Trans>
 				</Button>
-				<Button size="sm" variant="ghost" onClick={() => setOpen(false)}>
+				<Button size="sm" variant="ghost" onPress={() => setOpen(false)}>
 					<Trans>Cancel</Trans>
 				</Button>
 			</div>

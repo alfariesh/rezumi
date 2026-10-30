@@ -2,22 +2,15 @@ import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { WorkspaceTab } from "@rezumi/schema/career";
+import { Sheet } from "@heroui-pro/react";
+import { Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { CoachThread, connectionName, deleteConversation, titleFor, useConversationDate } from "../coach-thread";
 import { PrivacyLine, tabLabel } from "../shared";
 import { useConversationConnection } from "@/features/assistant/chat";
@@ -68,21 +61,26 @@ export function CoachSheet({ application, tab, conversation, onConversationChang
 		);
 
 	return (
-		<Sheet open={conversation !== undefined} onOpenChange={(open) => onConversationChange(open ? true : undefined)}>
-			<SheetContent
-				side="right"
-				closeLabel={t`Close`}
-				className="gap-0 border-s border-line data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-[420px]"
-			>
-				<CoachSheetBody
-					application={application}
-					tab={tab}
-					conversation={shown}
-					hidden={hidden}
-					onConversationChange={onConversationChange}
-					onDelete={remove}
-				/>
-			</SheetContent>
+		<Sheet
+			isOpen={conversation !== undefined}
+			onOpenChange={(open) => onConversationChange(open ? true : undefined)}
+			placement="right"
+		>
+			<Sheet.Backdrop>
+				<Sheet.Content className="w-full border-s border-line sm:max-w-none md:max-w-[420px]">
+					<Sheet.Dialog className="gap-0 p-0">
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						<CoachSheetBody
+							application={application}
+							tab={tab}
+							conversation={shown}
+							hidden={hidden}
+							onConversationChange={onConversationChange}
+							onDelete={remove}
+						/>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
 		</Sheet>
 	);
 }
@@ -152,22 +150,22 @@ function CoachSheetBody({
 		<header className="flex h-14 shrink-0 items-center gap-1 border-b border-line ps-4 pe-14">
 			<Icon name="sparkle" size={20} className="me-1.5 shrink-0 text-accent-text" />
 			<div className="grid min-w-0 flex-1">
-				<SheetTitle className="font-sans text-[15px] leading-5 font-semibold">
+				<Sheet.Heading className="font-sans text-[15px] leading-5 font-semibold">
 					<Trans>Coach</Trans>
-				</SheetTitle>
-				<SheetDescription className="truncate text-xs text-ink-3">
+				</Sheet.Heading>
+				<p className="truncate text-xs text-ink-3">
 					{application.company} · {tabLabel(tab)}
-				</SheetDescription>
+				</p>
 			</div>
 			{list.length > 0 && <ConversationMenu threads={list} currentId={threadId} onOpen={open} onDelete={remove} />}
 			<IconButton
 				icon="note-pencil"
 				label={t`New conversation`}
-				size="icon-sm"
+				size="sm"
 				iconSize={20}
 				className="text-ink-2"
-				disabled={threadId === null}
-				onClick={() => open("new")}
+				isDisabled={threadId === null}
+				onPress={() => open("new")}
 			/>
 		</header>
 	);
@@ -189,7 +187,7 @@ function CoachSheetBody({
 			<>
 				{header}
 				<div className="grid flex-1 place-items-center">
-					<Spinner />
+					<Spinner size="md" color="current" aria-label={t`Loading`} />
 				</div>
 			</>
 		);
@@ -251,38 +249,46 @@ function ConversationMenu({ threads, currentId, onOpen, onDelete }: Conversation
 	const when = useConversationDate();
 	const current = threads.find((thread) => thread.id === currentId);
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					<IconButton
-						icon="clock-counter-clockwise"
-						label={t`Conversations`}
-						size="icon-sm"
-						iconSize={20}
-						className="text-ink-2"
-					/>
-				}
+		<Dropdown>
+			<IconButton
+				icon="clock-counter-clockwise"
+				iconSize={20}
+				size="sm"
+				label={t`Conversations`}
+				className="text-ink-2"
 			/>
-			<DropdownMenuContent align="end" className="w-72">
-				{threads.map((thread) => (
-					<DropdownMenuItem key={thread.id} onClick={() => onOpen(thread.id)}>
-						<span className="grid min-w-0 flex-1">
-							<span className="truncate">{titleFor(thread)}</span>
-							<span className="text-xs text-ink-3">{when(new Date(thread.lastMessageAt))}</span>
-						</span>
-						{thread.id === currentId && <Icon name="check" size={16} />}
-					</DropdownMenuItem>
-				))}
-				{current && (
-					<>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem variant="destructive" onClick={() => onDelete(current)}>
+			<Dropdown.Popover placement="bottom end" className="w-72">
+				<Dropdown.Menu>
+					{threads.map((thread) => (
+						<Dropdown.Item
+							key={thread.id}
+							id={thread.id}
+							textValue={titleFor(thread)}
+							onAction={() => onOpen(thread.id)}
+						>
+							<span className="grid min-w-0 flex-1">
+								<Label className="truncate">{titleFor(thread)}</Label>
+								<Description>{when(new Date(thread.lastMessageAt))}</Description>
+							</span>
+							{thread.id === currentId && <Icon name="check" size={16} />}
+						</Dropdown.Item>
+					))}
+					{current ? <Separator /> : null}
+					{current ? (
+						<Dropdown.Item
+							id="delete-current"
+							textValue={t`Delete this conversation`}
+							variant="danger"
+							onAction={() => onDelete(current)}
+						>
 							<Icon name="trash" size={18} />
-							<Trans>Delete this conversation</Trans>
-						</DropdownMenuItem>
-					</>
-				)}
-			</DropdownMenuContent>
-		</DropdownMenu>
+							<Label>
+								<Trans>Delete this conversation</Trans>
+							</Label>
+						</Dropdown.Item>
+					) : null}
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }

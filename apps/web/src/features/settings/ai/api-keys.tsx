@@ -1,21 +1,10 @@
+import { Button, Input, Label, Modal, Spinner, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { Swap } from "@rezumi/ui/components/swap";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -89,7 +78,7 @@ export function ApiKeysSection() {
 				<Trans>For scripts, extensions and MCP clients. Keys act as you and can read and edit your documents.</Trans>
 			}
 			action={
-				<Button size="sm" variant="secondary" onClick={() => setCreating(true)}>
+				<Button size="sm" variant="secondary" onPress={() => setCreating(true)}>
 					<Icon name="plus" size={18} />
 					<Trans>New key</Trans>
 				</Button>
@@ -160,7 +149,7 @@ export function ApiKeysSection() {
 										variant="ghost"
 										className="text-danger-text hover:bg-danger-soft"
 										aria-label={t`Revoke ${key.name || key.start || t`unnamed key`}`}
-										onClick={() => void revoke(key)}
+										onPress={() => void revoke(key)}
 									>
 										<Trans>Revoke</Trans>
 									</Button>
@@ -189,6 +178,7 @@ type NewKeyDialogProps = { open: boolean; onOpenChange: (open: boolean) => void;
 /** Name and expiry, then the key, shown once with Copy. */
 function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 	const id = useId();
+	const descriptionId = useId();
 	const [name, setName] = useState("");
 	const [expiry, setExpiry] = useState(0);
 	const [access, setAccess] = useState<"read" | "full">("full");
@@ -227,132 +217,147 @@ function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange} onOpenChangeComplete={(next) => !next && reset()}>
-			<DialogContent closeLabel={t`Close`} className="sm:max-w-[500px]">
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>New API key</Trans>
-					</DialogTitle>
-					<DialogDescription className={cn(key && "sr-only")}>
-						<Trans>Keys act as you and can read and edit your documents.</Trans>
-					</DialogDescription>
-				</DialogHeader>
-
-				{key ? (
-					<div className={cn(ENTER_CLASS, "grid gap-3")}>
-						<p role="status" className="flex gap-2.5 rounded-lg bg-warn-soft px-3 py-2.5 text-[13px] text-warn-text">
-							<Icon name="key" size={20} />
-							<Trans>Copy it now. For your security, it won't be shown again.</Trans>
+		<Modal.Backdrop
+			isOpen={open}
+			onOpenChange={(next) => {
+				onOpenChange(next);
+				if (!next) setTimeout(reset, 300);
+			}}
+		>
+			<Modal.Container size="md">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>New API key</Trans>
+						</Modal.Heading>
+						<p id={descriptionId} className={cn("text-sm text-muted", key && "sr-only")}>
+							<Trans>Keys act as you and can read and edit your documents.</Trans>
 						</p>
-						<div className="flex h-[42px] items-center gap-2 rounded-lg border border-line-2 bg-bg ps-3 pe-1.5 font-mono text-[13px]">
-							<span className="min-w-0 flex-1 truncate">{key}</span>
-							<Button
-								size="sm"
-								variant="secondary"
-								onClick={async () => {
-									await copy(key);
-									setCopied(true);
-									setTimeout(() => setCopied(false), 2000);
+					</Modal.Header>
+					<Modal.Body>
+						{key ? (
+							<div className={cn(ENTER_CLASS, "grid gap-3")}>
+								<p
+									role="status"
+									className="flex gap-2.5 rounded-lg bg-warn-soft px-3 py-2.5 text-[13px] text-warn-text"
+								>
+									<Icon name="key" size={20} />
+									<Trans>Copy it now. For your security, it won't be shown again.</Trans>
+								</p>
+								<div className="flex h-[42px] items-center gap-2 rounded-lg border border-line-2 bg-bg ps-3 pe-1.5 font-mono text-[13px]">
+									<span className="min-w-0 flex-1 truncate">{key}</span>
+									<Button
+										size="sm"
+										variant="secondary"
+										onPress={async () => {
+											await copy(key);
+											setCopied(true);
+											setTimeout(() => setCopied(false), 2000);
+										}}
+									>
+										<Swap
+											swapped={copied}
+											from={
+												<>
+													<Icon name="copy" size={16} />
+													<Trans>Copy</Trans>
+												</>
+											}
+											to={
+												<>
+													<Icon name="check" size={16} />
+													<Trans>Copied</Trans>
+												</>
+											}
+										/>
+									</Button>
+								</div>
+								<Modal.Footer className="p-0">
+									<Button onPress={() => onOpenChange(false)}>
+										<Trans>Done</Trans>
+									</Button>
+								</Modal.Footer>
+							</div>
+						) : (
+							<form
+								className="grid gap-4"
+								onSubmit={(event) => {
+									event.preventDefault();
+									if (name.trim()) void create();
 								}}
 							>
-								<Swap
-									swapped={copied}
-									from={
-										<>
-											<Icon name="copy" size={16} />
-											<Trans>Copy</Trans>
-										</>
-									}
-									to={
-										<>
-											<Icon name="check" size={16} />
-											<Trans>Copied</Trans>
-										</>
-									}
-								/>
-							</Button>
-						</div>
-						<DialogFooter>
-							<Button onClick={() => onOpenChange(false)}>
-								<Trans>Done</Trans>
-							</Button>
-						</DialogFooter>
-					</div>
-				) : (
-					<form
-						className="grid gap-4"
-						onSubmit={(event) => {
-							event.preventDefault();
-							if (name.trim()) void create();
-						}}
-					>
-						<div className="grid gap-1.5">
-							<Label htmlFor={`${id}-name`}>
-								<Trans>What's it for?</Trans>
-							</Label>
-							<Input
-								id={`${id}-name`}
-								value={name}
-								maxLength={64}
-								placeholder={t`Claude Desktop`}
-								onChange={(event) => setName(event.target.value)}
-							/>
-						</div>
-						<div className="grid gap-1.5">
-							<Label htmlFor={`${id}-access`}>
-								<Trans>Access</Trans>
-							</Label>
-							<select
-								id={`${id}-access`}
-								value={access}
-								onChange={(event) => setAccess(event.target.value === "read" ? "read" : "full")}
-								className="h-9 rounded-lg border border-line-2 bg-bg px-3 text-sm"
-							>
-								<option value="read">{t`Read only`}</option>
-								<option value="full">{t`Read, write and delete`}</option>
-							</select>
-						</div>
-						<fieldset className="grid gap-1.5">
-							<legend className="mb-1.5 text-sm font-medium">
-								<Trans>Expires</Trans>
-							</legend>
-							<div className="grid grid-cols-3 gap-2">
-								{EXPIRIES.map((option, index) => (
-									<label
-										key={option.label()}
-										className={cn(
-											"flex h-9 cursor-pointer items-center justify-center rounded-lg border border-line-2 text-sm font-medium transition-colors duration-quick hover:bg-hover has-focus-visible:outline-2 has-focus-visible:outline-accent",
-											expiry === index && "border-accent bg-accent-soft text-accent-text",
-										)}
+								<div className="grid gap-1.5">
+									<Label htmlFor={`${id}-name`}>
+										<Trans>What's it for?</Trans>
+									</Label>
+									<Input
+										fullWidth
+										id={`${id}-name`}
+										value={name}
+										maxLength={64}
+										placeholder={t`Claude Desktop`}
+										onChange={(event) => setName(event.target.value)}
+									/>
+								</div>
+								<div className="grid gap-1.5">
+									<Label htmlFor={`${id}-access`}>
+										<Trans>Access</Trans>
+									</Label>
+									<select
+										id={`${id}-access`}
+										value={access}
+										onChange={(event) => setAccess(event.target.value === "read" ? "read" : "full")}
+										className="h-9 rounded-lg border border-line-2 bg-bg px-3 text-sm"
 									>
-										<input
-											type="radio"
-											name={`${id}-expiry`}
-											className="sr-only"
-											checked={expiry === index}
-											onChange={() => setExpiry(index)}
-										/>
-										{option.label()}
-									</label>
-								))}
-							</div>
-						</fieldset>
-						{failure && (
-							<p role="alert" className="text-sm text-danger-text">
-								{failure}
-							</p>
+										<option value="read">{t`Read only`}</option>
+										<option value="full">{t`Read, write and delete`}</option>
+									</select>
+								</div>
+								<fieldset className="grid gap-1.5">
+									<legend className="mb-1.5 text-sm font-medium">
+										<Trans>Expires</Trans>
+									</legend>
+									<div className="grid grid-cols-3 gap-2">
+										{EXPIRIES.map((option, index) => (
+											<label
+												key={option.label()}
+												className={cn(
+													"flex h-9 cursor-pointer items-center justify-center rounded-lg border border-line-2 text-sm font-medium transition-colors duration-quick hover:bg-hover has-focus-visible:outline-2 has-focus-visible:outline-accent",
+													expiry === index && "border-accent bg-accent-soft text-accent-text",
+												)}
+											>
+												<input
+													type="radio"
+													name={`${id}-expiry`}
+													className="sr-only"
+													checked={expiry === index}
+													onChange={() => setExpiry(index)}
+												/>
+												{option.label()}
+											</label>
+										))}
+									</div>
+								</fieldset>
+								{failure && (
+									<p role="alert" className="text-sm text-danger-text">
+										{failure}
+									</p>
+								)}
+								<Modal.Footer className="p-0">
+									<Button variant="secondary" onPress={() => onOpenChange(false)}>
+										<Trans>Cancel</Trans>
+									</Button>
+									<Button type="submit" isDisabled={!name.trim() || creating} isPending={creating}>
+										{creating && <Spinner size="sm" color="current" aria-hidden />}
+										<Trans>Create key</Trans>
+									</Button>
+								</Modal.Footer>
+							</form>
 						)}
-						<DialogFooter>
-							<Button type="button" variant="secondary" onClick={() => onOpenChange(false)}>
-								<Trans>Cancel</Trans>
-							</Button>
-							<Button type="submit" disabled={!name.trim() || creating} loading={creating}>
-								<Trans>Create key</Trans>
-							</Button>
-						</DialogFooter>
-					</form>
-				)}
-			</DialogContent>
-		</Dialog>
+					</Modal.Body>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }

@@ -1,4 +1,5 @@
 import type { Fact, Story } from "../hooks";
+import { Button, Checkbox, Input, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -6,12 +7,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { memo, useState } from "react";
 import * as z from "zod";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Textarea } from "@rezumi/ui/components/textarea";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
 import { CareerLoadError, CareerLoading } from "../load-state";
@@ -142,7 +138,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 					<p className="text-sm text-ink-2">
 						<Trans>It may have been deleted. Choose another story or add a new one.</Trans>
 					</p>
-					<Button variant="secondary" onClick={() => open(undefined)}>
+					<Button variant="secondary" onPress={() => open(undefined)}>
 						<Trans>Back to stories</Trans>
 					</Button>
 				</div>
@@ -256,7 +252,7 @@ function StoryReader({ story, facts, onEdit }: StoryReaderProps) {
 				</div>
 				<div className="flex gap-1.5">
 					<PractiseButton storyId={story.id} />
-					<Button variant="secondary" className="h-8 px-3 text-[13px]" onClick={onEdit}>
+					<Button variant="secondary" size="sm" onPress={onEdit}>
 						<Icon name="pencil-simple" size={18} />
 						<Trans>Edit</Trans>
 					</Button>
@@ -329,14 +325,14 @@ function PractiseButton({ storyId }: PractiseButtonProps) {
 	if (isError)
 		return (
 			<div role="alert">
-				<Button variant="secondary" size="sm" onClick={() => void refetch()}>
+				<Button variant="secondary" size="sm" onPress={() => void refetch()}>
 					<Trans>Couldn't load interviews. Retry</Trans>
 				</Button>
 			</div>
 		);
 	if (isPending)
 		return (
-			<Button variant="ghost" size="sm" disabled>
+			<Button variant="ghost" size="sm" isDisabled>
 				<Trans>Loading interviews…</Trans>
 			</Button>
 		);
@@ -345,29 +341,20 @@ function PractiseButton({ storyId }: PractiseButtonProps) {
 		return (
 			<Tooltip>
 				{/* Focusable while disabled (aria-disabled), so hover and keyboard still reach the tooltip. */}
-				<TooltipTrigger
-					render={
-						<Button
-							variant="ghost"
-							disabled
-							focusableWhenDisabled
-							className="h-8 px-2.5 text-[13px] aria-disabled:cursor-not-allowed aria-disabled:text-ink-3 aria-disabled:hover:bg-transparent"
-						/>
-					}
-				>
+				<Button variant="ghost" size="sm" aria-disabled className="cursor-not-allowed text-muted hover:bg-transparent">
 					{label}
-				</TooltipTrigger>
-				<TooltipContent>
+				</Button>
+				<Tooltip.Content>
 					<Trans>Add an interview first</Trans>
-				</TooltipContent>
+				</Tooltip.Content>
 			</Tooltip>
 		);
 
 	return (
 		<Button
 			variant="ghost"
-			className="h-8 px-2.5 text-[13px] text-ink-2"
-			onClick={() =>
+			size="sm"
+			onPress={() =>
 				void navigate({
 					to: "/dashboard/applications/$applicationId/{-$tab}",
 					params: { applicationId: next.application.id, tab: "practise" },
@@ -486,7 +473,8 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 		>
 			<div className="grid gap-2">
 				{/* A textarea so a long title wraps as it does in the reader; Enter doesn't add a line. */}
-				<Textarea
+				<TextArea
+					fullWidth
 					rows={1}
 					value={draft.title}
 					maxLength={200}
@@ -497,14 +485,14 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					onKeyDown={(event) => {
 						if (event.key === "Enter") event.preventDefault();
 					}}
-					className="min-h-0 resize-none py-1 font-display text-[22px] leading-7 font-medium"
+					className="min-h-0 resize-none font-display text-[22px] leading-7 font-medium"
 				/>
 				<Input
+					fullWidth
 					value={draft.tags}
 					placeholder={t`Tags, separated by commas`}
 					aria-label={t`Tags`}
 					onChange={(event) => setDraft({ ...draft, tags: event.target.value })}
-					className="h-8 text-[13px]"
 				/>
 			</div>
 
@@ -518,14 +506,15 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 							</span>
 							<span className="grid min-w-0 gap-1.5">
 								<span className="text-[13px] font-semibold text-ink-2">{part.label}</span>
-								<Textarea
+								<TextArea
+									fullWidth
 									rows={2}
 									value={text}
 									maxLength={part.key === "action" ? 6000 : 4000}
 									placeholder={part.placeholder}
 									aria-invalid={tried && REQUIRED.includes(part.key) && !text.trim() ? true : undefined}
 									onChange={(event) => setDraft({ ...draft, [part.key]: event.target.value })}
-									className="min-h-[60px] py-[9px] text-sm leading-[21px]"
+									className="min-h-[60px]"
 								/>
 							</span>
 						</label>
@@ -541,29 +530,31 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					const disabled = fact.status !== "active";
 					const checked = draft.factIds.includes(fact.id) && !disabled;
 					return (
-						<label
+						<Checkbox
 							key={fact.id}
+							isSelected={checked}
+							isDisabled={disabled}
+							onChange={(value) => toggleFact(fact.id, value)}
 							className={cn(
 								"flex items-start gap-2.5 rounded-md px-2.5 py-2 text-[13px] leading-[19px] transition-colors duration-quick",
 								checked ? "bg-accent-soft" : "bg-bg",
 								disabled ? "cursor-not-allowed text-ink-3" : "cursor-pointer",
 							)}
 						>
-							<Checkbox
-								checked={checked}
-								disabled={disabled}
-								onCheckedChange={(value) => toggleFact(fact.id, value)}
-								className="mt-px"
-							/>
-							<span className="min-w-0 flex-1">
-								{fact.text}
-								{disabled && (
-									<span className="block text-xs text-ink-3">
-										<Trans>Not used in coaching, so it can't back a story.</Trans>
-									</span>
-								)}
-							</span>
-						</label>
+							<Checkbox.Content className="items-start">
+								<Checkbox.Control className="mt-px">
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+								<span className="min-w-0 flex-1">
+									{fact.text}
+									{disabled && (
+										<span className="block text-xs text-ink-3">
+											<Trans>Not used in coaching, so it can't back a story.</Trans>
+										</span>
+									)}
+								</span>
+							</Checkbox.Content>
+						</Checkbox>
 					);
 				})}
 				{shared.length === 0 && (
@@ -584,8 +575,8 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					{onDelete && (
 						<Button
 							variant="ghost"
-							className="me-auto text-danger-text"
-							onClick={() => {
+							className="me-auto text-danger"
+							onPress={() => {
 								clear();
 								onDelete();
 							}}
@@ -597,15 +588,15 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					<div className="ms-auto flex gap-2">
 						<Button
 							variant="ghost"
-							className="text-ink-2"
-							onClick={() => {
+							onPress={() => {
 								clear();
 								onCancel();
 							}}
 						>
 							<Trans>Cancel</Trans>
 						</Button>
-						<Button type="submit" loading={save.isPending}>
+						<Button type="submit" isPending={save.isPending}>
+							{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
 							<Trans>Save story</Trans>
 						</Button>
 					</div>

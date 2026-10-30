@@ -1,12 +1,12 @@
 // The searchable grid behind ./icon-picker.tsx, loaded when the picker first opens.
 import type { IconName } from "@rezumi/schema/icons";
 import type { CellComponentProps } from "react-window";
+import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { ProhibitIcon } from "@phosphor-icons/react";
 import Fuse from "fuse.js";
 import { Grid } from "react-window";
 import { icons } from "@rezumi/schema/icons";
-import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 
 const columnCount = 8;
@@ -69,7 +69,8 @@ export function IconPickerGrid({ search, onSearchChange, onChange }: IconPickerG
 					message: "Search for an icon",
 				})}
 				onChange={(e) => onSearchChange(e.currentTarget.value)}
-				className="rounded-none border-0 focus-visible:ring-0"
+				fullWidth
+				className="rounded-none shadow-none"
 			/>
 
 			<div className="size-[290px]">

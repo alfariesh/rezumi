@@ -1,8 +1,8 @@
-import type { ComponentProps } from "react";
+import type { InputGroupInputProps } from "@heroui/react";
+import { InputGroup } from "@heroui/react";
 import { useState } from "react";
-import { InputGroupInput } from "@rezumi/ui/components/input-group";
 
-type NumberInputProps = Omit<ComponentProps<"input">, "value" | "onChange" | "min" | "max" | "type"> & {
+type NumberInputProps = Omit<InputGroupInputProps, "value" | "onChange" | "min" | "max" | "type"> & {
 	value: number;
 	min?: number | undefined;
 	max?: number | undefined;
@@ -14,7 +14,7 @@ export function NumberInput({ value, min, max, onValueChange, onBlur, ...props }
 	const [draft, setDraft] = useState<{ text: string; value: number } | null>(null);
 
 	return (
-		<InputGroupInput
+		<InputGroup.Input
 			{...props}
 			data-slot="input-group-control"
 			type="number"

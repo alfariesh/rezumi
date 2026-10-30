@@ -1,22 +1,12 @@
 import type { AuthSession } from "@rezumi/auth/types";
+import type { Selection } from "react-aria-components";
+import { Dropdown, Label, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
+import { Pressable } from "react-aria-components/Pressable";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useTheme } from "@/features/theme/provider";
@@ -27,7 +17,7 @@ import { changeLocale, localeMap } from "@/libs/locale";
 import { isTheme } from "@/libs/theme";
 
 type Props = {
-	children: ({ session }: { session: AuthSession }) => React.ComponentProps<typeof DropdownMenuTrigger>["render"];
+	children: ({ session }: { session: AuthSession }) => React.ComponentProps<typeof Pressable>["children"];
 };
 
 export function UserDropdownMenu({ children }: Props) {
@@ -37,9 +27,14 @@ export function UserDropdownMenu({ children }: Props) {
 	const { theme, setTheme } = useTheme();
 	const { data: session } = authClient.useSession();
 
-	const handleThemeChange = (value: string) => {
-		if (!isTheme(value)) return;
-		setTheme(value);
+	const handleLocaleChange = (keys: Selection) => {
+		const [key] = keys === "all" ? [] : [...keys];
+		if (typeof key === "string") changeLocale(key);
+	};
+
+	const handleThemeChange = (keys: Selection) => {
+		const [key] = keys === "all" ? [] : [...keys];
+		if (typeof key === "string" && isTheme(key)) setTheme(key);
 	};
 
 	const handleLogout = async () => {
@@ -72,60 +67,94 @@ export function UserDropdownMenu({ children }: Props) {
 	if (!session?.user) return null;
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger render={children({ session: session as AuthSession })} />
+		<Dropdown>
+			<Pressable>{children({ session: session as AuthSession })}</Pressable>
 
-			<DropdownMenuContent align="start" side="top">
-				<DropdownMenuItem onClick={() => void router.navigate({ to: "/dashboard/settings" })}>
-					<Icon name="gear-six" />
-					<Trans>Settings</Trans>
-				</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<DropdownMenuGroup>
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
+			<Dropdown.Popover placement="top start" className="min-w-52">
+				<Dropdown.Menu>
+					<Dropdown.Item
+						id="settings"
+						textValue={t`Settings`}
+						onAction={() => void router.navigate({ to: "/dashboard/settings" })}
+					>
+						<Icon name="gear-six" />
+						<Label>
+							<Trans>Settings</Trans>
+						</Label>
+					</Dropdown.Item>
+					<Separator />
+					<Dropdown.SubmenuTrigger>
+						<Dropdown.Item id="language" textValue={t`Language`}>
 							<Icon name="translate" size={16} />
-							<Trans comment="Menu item that opens language selection submenu">Language</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent className="max-h-[400px] overflow-y-auto">
-							<DropdownMenuRadioGroup value={i18n.locale} onValueChange={changeLocale}>
+							<Label>
+								<Trans comment="Menu item that opens language selection submenu">Language</Trans>
+							</Label>
+							<Dropdown.SubmenuIndicator />
+						</Dropdown.Item>
+						<Dropdown.Popover className="max-h-[400px] overflow-y-auto">
+							<Dropdown.Menu
+								selectionMode="single"
+								disallowEmptySelection
+								selectedKeys={new Set([i18n.locale])}
+								onSelectionChange={handleLocaleChange}
+							>
 								{Object.entries(localeMap).map(([value, label]) => (
-									<DropdownMenuRadioItem key={value} value={value}>
-										{i18n.t(label)}
-									</DropdownMenuRadioItem>
+									<Dropdown.Item key={value} id={value} textValue={i18n.t(label)}>
+										<Label>{i18n.t(label)}</Label>
+										<Dropdown.ItemIndicator type="dot" />
+									</Dropdown.Item>
 								))}
-							</DropdownMenuRadioGroup>
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
+							</Dropdown.Menu>
+						</Dropdown.Popover>
+					</Dropdown.SubmenuTrigger>
 
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
+					<Dropdown.SubmenuTrigger>
+						<Dropdown.Item id="theme" textValue={t`Theme`}>
 							<Icon name="palette" size={16} />
-							<Trans comment="Menu item that opens appearance theme selection submenu">Theme</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent>
-							<DropdownMenuRadioGroup value={theme} onValueChange={handleThemeChange}>
-								<DropdownMenuRadioItem value="light">
-									<Trans comment="Appearance theme option for light mode">Light</Trans>
-								</DropdownMenuRadioItem>
-								<DropdownMenuRadioItem value="dark">
-									<Trans comment="Appearance theme option for dark mode">Dark</Trans>
-								</DropdownMenuRadioItem>
-								<DropdownMenuRadioItem value="system">
-									<Trans comment="Appearance theme option that follows the operating system">System</Trans>
-								</DropdownMenuRadioItem>
-							</DropdownMenuRadioGroup>
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
-				</DropdownMenuGroup>
+							<Label>
+								<Trans comment="Menu item that opens appearance theme selection submenu">Theme</Trans>
+							</Label>
+							<Dropdown.SubmenuIndicator />
+						</Dropdown.Item>
+						<Dropdown.Popover>
+							<Dropdown.Menu
+								selectionMode="single"
+								disallowEmptySelection
+								selectedKeys={new Set([theme])}
+								onSelectionChange={handleThemeChange}
+							>
+								<Dropdown.Item id="light" textValue={t`Light`}>
+									<Label>
+										<Trans comment="Appearance theme option for light mode">Light</Trans>
+									</Label>
+									<Dropdown.ItemIndicator type="dot" />
+								</Dropdown.Item>
+								<Dropdown.Item id="dark" textValue={t`Dark`}>
+									<Label>
+										<Trans comment="Appearance theme option for dark mode">Dark</Trans>
+									</Label>
+									<Dropdown.ItemIndicator type="dot" />
+								</Dropdown.Item>
+								<Dropdown.Item id="system" textValue={t`System`}>
+									<Label>
+										<Trans comment="Appearance theme option that follows the operating system">System</Trans>
+									</Label>
+									<Dropdown.ItemIndicator type="dot" />
+								</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown.Popover>
+					</Dropdown.SubmenuTrigger>
 
-				<DropdownMenuSeparator />
+					<Separator />
 
-				<DropdownMenuItem onClick={handleLogout}>
-					<Icon name="sign-out" size={16} />
-					<Trans comment="User menu action to sign out of current account">Sign out</Trans>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+					<Dropdown.Item id="sign-out" textValue={t`Sign out`} onAction={handleLogout}>
+						<Icon name="sign-out" size={16} />
+						<Label>
+							<Trans comment="User menu action to sign out of current account">Sign out</Trans>
+						</Label>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }

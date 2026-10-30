@@ -1,12 +1,11 @@
 import type { ReactNode } from "react";
 import type z from "zod";
+import { Input, Separator } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { colorDesignSchema, levelDesignSchema } from "@rezumi/schema/resume/data";
 import { resolveLevelDisplaySizes } from "@rezumi/schema/resume/level-display-sizes";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { Input } from "@rezumi/ui/components/input";
-import { Separator } from "@rezumi/ui/components/separator";
 import { SectionBase } from "../shared/section-base";
 import { ColorPicker } from "@/components/input/color-picker";
 import { IconPicker } from "@/components/input/icon-picker";
@@ -89,6 +88,7 @@ function ColorFormField({ form, name, label, controlled }: ColorFormFieldProps) 
 						<FormControl
 							render={
 								<Input
+									fullWidth
 									name={field.name}
 									value={field.state.value}
 									onBlur={field.handleBlur}
@@ -168,7 +168,6 @@ function LevelSectionForm() {
 							<FormControl
 								render={
 									<IconPicker
-										size="icon"
 										value={field.state.value}
 										onChange={(value) => {
 											field.handleChange(value);

@@ -1,23 +1,15 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Sheet } from "@heroui-pro/react";
+import { Button, buttonVariants, Chip, Dropdown, Input, Label, Modal, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
@@ -63,33 +55,40 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 	const current = data;
 
 	return (
-		<Sheet open={Boolean(application)} onOpenChange={onOpenChange} onOpenChangeComplete={onOpenChangeComplete}>
-			<SheetContent
-				side={phone ? "bottom" : "right"}
-				closeLabel={t`Close`}
-				className={cn("gap-0", phone ? "h-svh" : "data-[side=right]:sm:max-w-[480px]")}
-			>
-				{current ? (
-					<Detail
-						key={current.id}
-						application={current}
-						onEditDetails={onEditDetails}
-						onDeleted={() => onOpenChange(false)}
-					/>
-				) : (
-					<div className="grid gap-2 p-5">
-						<SheetTitle>{shown?.role}</SheetTitle>
-						<SheetDescription aria-live="polite">
-							{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
-						</SheetDescription>
-						{isError && (
-							<Button variant="secondary" disabled={isFetching || isPending} onClick={() => void refetch()}>
-								<Trans>Try again</Trans>
-							</Button>
+		<Sheet
+			isOpen={Boolean(application)}
+			onOpenChange={onOpenChange}
+			onAnimationEnd={onOpenChangeComplete}
+			placement={phone ? "bottom" : "right"}
+		>
+			<Sheet.Backdrop>
+				<Sheet.Content className={phone ? "h-svh" : "w-full sm:max-w-[480px]"}>
+					<Sheet.Dialog>
+						{phone && <Sheet.Handle />}
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						{current ? (
+							<Detail
+								key={current.id}
+								application={current}
+								onEditDetails={onEditDetails}
+								onDeleted={() => onOpenChange(false)}
+							/>
+						) : (
+							<div className="grid gap-2 p-5">
+								<Sheet.Heading>{shown?.role}</Sheet.Heading>
+								<p className="text-sm text-muted" aria-live="polite">
+									{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
+								</p>
+								{isError && (
+									<Button variant="secondary" isDisabled={isFetching || isPending} onPress={() => void refetch()}>
+										<Trans>Try again</Trans>
+									</Button>
+								)}
+							</div>
 						)}
-					</div>
-				)}
-			</SheetContent>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
 		</Sheet>
 	);
 }
@@ -128,18 +127,18 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 
 	return (
 		<>
-			<div className="min-h-0 flex-1 overflow-y-auto">
-				<header className="grid gap-4 border-b border-line px-5 pt-5 pb-4">
+			<Sheet.Body className="min-h-0 flex-1 p-0">
+				<header className="grid gap-4 border-b border-separator px-5 pt-5 pb-4">
 					<div className="flex items-start gap-3 pe-8">
 						<span
 							aria-hidden="true"
-							className="grid size-10 shrink-0 place-items-center rounded-lg bg-sunken font-semibold text-ink-2"
+							className="grid size-10 shrink-0 place-items-center rounded-xl bg-default font-semibold text-muted"
 						>
 							{application.company.slice(0, 1).toUpperCase()}
 						</span>
 						<div className="grid min-w-0 flex-1 gap-0.5">
-							<SheetTitle className="font-display text-[22px] leading-7 font-medium">{application.role}</SheetTitle>
-							<SheetDescription className="flex flex-wrap items-center gap-x-1.5 text-sm text-ink-2">
+							<Sheet.Heading>{application.role}</Sheet.Heading>
+							<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-muted">
 								<span>{[application.company, application.location].filter(Boolean).join(" · ")}</span>
 								{(application.sourceUrl || application.jobDescription) && (
 									<>
@@ -149,7 +148,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 												href={application.sourceUrl}
 												target="_blank"
 												rel="noreferrer"
-												className="font-medium text-accent-text hover:underline"
+												className="font-medium text-accent-soft-foreground hover:underline"
 											>
 												<Trans>View posting</Trans>
 											</a>
@@ -157,35 +156,35 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 											<button
 												type="button"
 												onClick={() => setPostingOpen(true)}
-												className="font-medium text-accent-text hover:underline"
+												className="font-medium text-accent-soft-foreground hover:underline"
 											>
 												<Trans>View posting</Trans>
 											</button>
 										)}
 									</>
 								)}
-							</SheetDescription>
+							</div>
 						</div>
-						<DropdownMenu>
-							<DropdownMenuTrigger
-								render={
-									<Button size="icon-sm" variant="ghost" aria-label={t`Application options`} className="text-ink-3" />
-								}
-							>
-								<Icon name="dots-three" />
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuItem onClick={() => onEditDetails(application)}>
-									<Icon name="pencil-simple" size={18} />
-									<Trans>Edit details…</Trans>
-								</DropdownMenuItem>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem variant="destructive" onClick={onDelete}>
-									<Icon name="trash" size={18} />
-									<Trans>Delete…</Trans>
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<Dropdown>
+							<IconButton icon="dots-three" size="sm" label={t`Application options`} />
+							<Dropdown.Popover placement="bottom end">
+								<Dropdown.Menu>
+									<Dropdown.Item id="edit" textValue={t`Edit details…`} onAction={() => onEditDetails(application)}>
+										<Icon name="pencil-simple" size={18} />
+										<Label>
+											<Trans>Edit details…</Trans>
+										</Label>
+									</Dropdown.Item>
+									<Separator />
+									<Dropdown.Item id="delete" textValue={t`Delete…`} variant="danger" onAction={onDelete}>
+										<Icon name="trash" size={18} />
+										<Label>
+											<Trans>Delete…</Trans>
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
 					</div>
 
 					<div className="grid gap-2.5">
@@ -205,13 +204,13 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 										<span
 											className="h-1.5 rounded-sm transition-colors duration-standard"
 											style={{
-												background: !closed && index <= reached ? getStageColor(stage) : "var(--line)",
+												background: !closed && index <= reached ? getStageColor(stage) : "var(--separator)",
 											}}
 										/>
 										<span
 											className={cn(
 												"truncate text-[11px]",
-												stage === application.status ? "font-semibold text-ink" : "text-ink-3",
+												stage === application.status ? "font-semibold text-foreground" : "text-muted",
 											)}
 										>
 											{getStageLabel(stage)}
@@ -228,7 +227,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 									style={{ background: getStageColor(application.status) }}
 								/>
 								<strong className="font-semibold">{getStageLabel(application.status)}</strong>
-								<span className="text-ink-3">
+								<span className="text-muted">
 									{closed && application.closedReason ? (
 										<>· {getClosedReasonLabel(application.closedReason)}</>
 									) : (
@@ -242,7 +241,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 								<Button
 									size="sm"
 									variant="secondary"
-									onClick={() => (application.status === "saved" ? setApplying(true) : moveTo(application, next))}
+									onPress={() => (application.status === "saved" ? setApplying(true) : moveTo(application, next))}
 								>
 									{application.status === "saved" ? (
 										<Trans>Mark as applied</Trans>
@@ -267,29 +266,29 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 					<ApplicationNotes application={application} />
 					<Activity application={application} onOpenInterview={(entry) => setInterview({ open: true, entry })} />
 				</div>
-			</div>
+			</Sheet.Body>
 
-			<footer className="flex shrink-0 flex-wrap items-center gap-2 border-t border-line bg-surface px-5 py-3">
+			<footer className="flex shrink-0 flex-wrap items-center gap-2 border-t border-separator bg-surface px-5 py-3">
 				{!closed ? (
 					<>
-						<Button variant="secondary" onClick={() => setClosing(true)}>
+						<Button variant="secondary" onPress={() => setClosing(true)}>
 							<Trans>Close application…</Trans>
 						</Button>
 						{application.sourceUrl && (
-							<Button
-								variant="ghost"
-								nativeButton={false}
-								className="text-ink-2"
-								render={<a href={application.sourceUrl} target="_blank" rel="noreferrer" />}
+							<a
+								href={application.sourceUrl}
+								target="_blank"
+								rel="noreferrer"
+								className={buttonVariants({ variant: "ghost" })}
 							>
 								<Trans>Posting</Trans>
 								<Icon name="arrow-square-out" size={16} />
-							</Button>
+							</a>
 						)}
 						<OpenWorkspaceButton application={application} />
 					</>
 				) : (
-					<Button variant="secondary" onClick={() => moveTo(application, "applied")}>
+					<Button variant="secondary" onPress={() => moveTo(application, "applied")}>
 						<Trans>Reopen</Trans>
 					</Button>
 				)}
@@ -335,13 +334,13 @@ function Facts({ application, locale }: { application: Application; locale: stri
 				onSave={(source) => update.mutate({ id: application.id, source })}
 			/>
 			<div className="grid gap-0.5">
-				<dt className="text-xs font-semibold text-ink-3">
+				<dt className="text-xs font-semibold text-muted">
 					<Trans>Applied</Trans>
 				</dt>
 				<dd className="text-sm font-medium">{application.status === "saved" ? "—" : applied}</dd>
 			</div>
 			<div className="grid gap-0.5">
-				<dt className="text-xs font-semibold text-ink-3">
+				<dt className="text-xs font-semibold text-muted">
 					<Trans>Contact</Trans>
 				</dt>
 				<dd className="min-w-0">
@@ -372,7 +371,7 @@ function InlineFact({ label, value, onSave }: InlineFactProps) {
 
 	return (
 		<div className="grid gap-0.5">
-			<dt className="text-xs font-semibold text-ink-3">
+			<dt className="text-xs font-semibold text-muted">
 				<label htmlFor={id}>{label}</label>
 			</dt>
 			<dd>
@@ -381,16 +380,16 @@ function InlineFact({ label, value, onSave }: InlineFactProps) {
 						id={id}
 						type="button"
 						onClick={() => setDraft(value ?? "")}
-						className="w-full truncate rounded-md text-start text-sm font-medium hover:bg-hover"
+						className="w-full truncate rounded-lg text-start text-sm font-medium hover:bg-default"
 					>
 						{value || "—"}
 					</button>
 				) : (
 					<Input
+						fullWidth
 						id={id}
 						autoFocus
 						value={draft}
-						className="h-8"
 						onChange={(event) => setDraft(event.target.value)}
 						onBlur={commit}
 						onKeyDown={(event) => {
@@ -420,22 +419,22 @@ function Tags({ application }: { application: Application }) {
 
 	return (
 		<section aria-labelledby="application-tags" className="grid gap-2">
-			<h3 id="application-tags" className="text-xs font-semibold text-ink-3">
+			<h3 id="application-tags" className="text-xs font-semibold text-muted">
 				<Trans>Tags</Trans>
 			</h3>
 			<div className="flex flex-wrap items-center gap-1.5">
 				{application.tags.map((value) => (
-					<span key={value} className="flex h-7 items-center gap-1 rounded-md bg-sunken ps-2 text-xs">
+					<Chip key={value} size="lg" variant="soft" className="gap-0.5 pe-0.5">
 						{value}
 						<button
 							type="button"
 							aria-label={t`Remove ${value}`}
 							onClick={() => save(application.tags.filter((item) => item !== value))}
-							className="grid size-6 place-items-center rounded text-ink-3 hover:text-ink"
+							className="grid size-6 place-items-center rounded-full text-muted hover:text-foreground"
 						>
 							<Icon name="x" size={14} />
 						</button>
-					</span>
+					</Chip>
 				))}
 				<form
 					onSubmit={(event) => {
@@ -450,7 +449,7 @@ function Tags({ application }: { application: Application }) {
 						aria-label={t`Add a tag`}
 						placeholder={t`Add a tag`}
 						value={tag}
-						className="h-7 w-28 text-xs"
+						className="w-28 text-xs"
 						onChange={(event) => setTag(event.target.value)}
 					/>
 				</form>
@@ -480,184 +479,200 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 		},
 	});
 	return (
-		<Dialog
-			open
+		<Modal.Backdrop
+			isOpen
 			onOpenChange={(open) => {
 				if (!open) onClose();
 			}}
 		>
-			<DialogContent>
-				<form
-					className="grid gap-4"
-					onSubmit={(event) => {
-						event.preventDefault();
-						update.mutate({
-							id: application.id,
-							status: "applied",
-							stageEnteredAt: date,
-							resumeId: resumeId || null,
-							coverLetterId: coverLetterId || null,
-							...(!resumeFileSent ? { resumeFileUrl: null, resumeFileName: null } : {}),
-							...(!letterFileSent ? { coverLetterUrl: null, coverLetterName: null } : {}),
-						});
-					}}
-				>
-					<DialogHeader>
-						<DialogTitle>
-							<Trans>Mark as applied</Trans>
-						</DialogTitle>
-						<DialogDescription>
-							<Trans>
-								Confirm submission and choose the documents you actually sent. Their current versions will be saved.
-							</Trans>
-						</DialogDescription>
-					</DialogHeader>
-					<div className="grid gap-1.5">
-						<label htmlFor={`${id}-date`}>
-							<Trans>Application date</Trans>
-						</label>
-						<Input
-							id={`${id}-date`}
-							type="date"
-							required
-							value={date}
-							onChange={(event) => setDate(event.target.value)}
-						/>
-					</div>
-					<div className="grid gap-1.5">
-						<label htmlFor={`${id}-resume`}>
-							<Trans>Resume submitted (optional)</Trans>
-						</label>
-						<select
-							id={`${id}-resume`}
-							value={resumeId}
-							onChange={(event) => setResumeId(event.target.value)}
-							className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
-						>
-							<option value="">{t`None`}</option>
-							{documents
-								?.filter((document) => document.type === "resume")
-								.map((document) => (
-									<option key={document.id} value={document.id}>
-										{document.name}
-									</option>
-								))}
-						</select>
-					</div>
-					<div className="grid gap-1.5">
-						<label htmlFor={`${id}-letter`}>
-							<Trans>Cover letter submitted (optional)</Trans>
-						</label>
-						<select
-							id={`${id}-letter`}
-							value={coverLetterId}
-							onChange={(event) => setCoverLetterId(event.target.value)}
-							className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
-						>
-							<option value="">{t`None`}</option>
-							{documents
-								?.filter((document) => document.type === "letter")
-								.map((document) => (
-									<option key={document.id} value={document.id}>
-										{document.name}
-									</option>
-								))}
-						</select>
-					</div>
-					{application.resumeFileUrl && (
-						<label className="flex items-center gap-2 text-sm">
-							<input
-								type="checkbox"
-								checked={resumeFileSent}
-								onChange={(event) => setResumeFileSent(event.target.checked)}
-							/>
-							<Trans>Submitted attached resume: {application.resumeFileName ?? "PDF"}</Trans>
-						</label>
-					)}
-					{application.coverLetterUrl && (
-						<label className="flex items-center gap-2 text-sm">
-							<input
-								type="checkbox"
-								checked={letterFileSent}
-								onChange={(event) => setLetterFileSent(event.target.checked)}
-							/>
-							<Trans>Submitted attached cover letter: {application.coverLetterName ?? "PDF"}</Trans>
-						</label>
-					)}
-					{update.error && (
-						<p role="alert" className="text-sm text-danger-text">
-							{getOrpcErrorMessage(update.error, { fallback: t`Couldn't record submission. Try again.` })}
-						</p>
-					)}
-					<Button type="submit" disabled={!date || update.isPending}>
-						<Trans>Confirm applied</Trans>
-					</Button>
-				</form>
-			</DialogContent>
-		</Dialog>
+			<Modal.Container size="md">
+				<Modal.Dialog aria-describedby={`${id}-description`}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<form
+						className="contents"
+						onSubmit={(event) => {
+							event.preventDefault();
+							update.mutate({
+								id: application.id,
+								status: "applied",
+								stageEnteredAt: date,
+								resumeId: resumeId || null,
+								coverLetterId: coverLetterId || null,
+								...(!resumeFileSent ? { resumeFileUrl: null, resumeFileName: null } : {}),
+								...(!letterFileSent ? { coverLetterUrl: null, coverLetterName: null } : {}),
+							});
+						}}
+					>
+						<Modal.Header>
+							<Modal.Heading>
+								<Trans>Mark as applied</Trans>
+							</Modal.Heading>
+							<p id={`${id}-description`} className="text-sm text-muted">
+								<Trans>
+									Confirm submission and choose the documents you actually sent. Their current versions will be saved.
+								</Trans>
+							</p>
+						</Modal.Header>
+						<Modal.Body className="grid gap-4 p-1">
+							<div className="grid gap-1.5">
+								<label htmlFor={`${id}-date`}>
+									<Trans>Application date</Trans>
+								</label>
+								<Input
+									fullWidth
+									id={`${id}-date`}
+									type="date"
+									required
+									value={date}
+									onChange={(event) => setDate(event.target.value)}
+								/>
+							</div>
+							<div className="grid gap-1.5">
+								<label htmlFor={`${id}-resume`}>
+									<Trans>Resume submitted (optional)</Trans>
+								</label>
+								<select
+									id={`${id}-resume`}
+									value={resumeId}
+									onChange={(event) => setResumeId(event.target.value)}
+									className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
+								>
+									<option value="">{t`None`}</option>
+									{documents
+										?.filter((document) => document.type === "resume")
+										.map((document) => (
+											<option key={document.id} value={document.id}>
+												{document.name}
+											</option>
+										))}
+								</select>
+							</div>
+							<div className="grid gap-1.5">
+								<label htmlFor={`${id}-letter`}>
+									<Trans>Cover letter submitted (optional)</Trans>
+								</label>
+								<select
+									id={`${id}-letter`}
+									value={coverLetterId}
+									onChange={(event) => setCoverLetterId(event.target.value)}
+									className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
+								>
+									<option value="">{t`None`}</option>
+									{documents
+										?.filter((document) => document.type === "letter")
+										.map((document) => (
+											<option key={document.id} value={document.id}>
+												{document.name}
+											</option>
+										))}
+								</select>
+							</div>
+							{application.resumeFileUrl && (
+								<label className="flex items-center gap-2 text-sm">
+									<input
+										type="checkbox"
+										checked={resumeFileSent}
+										onChange={(event) => setResumeFileSent(event.target.checked)}
+									/>
+									<Trans>Submitted attached resume: {application.resumeFileName ?? "PDF"}</Trans>
+								</label>
+							)}
+							{application.coverLetterUrl && (
+								<label className="flex items-center gap-2 text-sm">
+									<input
+										type="checkbox"
+										checked={letterFileSent}
+										onChange={(event) => setLetterFileSent(event.target.checked)}
+									/>
+									<Trans>Submitted attached cover letter: {application.coverLetterName ?? "PDF"}</Trans>
+								</label>
+							)}
+							{update.error && (
+								<p role="alert" className="text-sm text-danger-soft-foreground">
+									{getOrpcErrorMessage(update.error, { fallback: t`Couldn't record submission. Try again.` })}
+								</p>
+							)}
+						</Modal.Body>
+						<Modal.Footer>
+							<Button type="submit" isDisabled={!date || update.isPending}>
+								<Trans>Confirm applied</Trans>
+							</Button>
+						</Modal.Footer>
+					</form>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
 /** The saved posting: its link, what it asks for, and its text. */
 function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) {
+	const descriptionId = useId();
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-h-[85svh] overflow-y-auto sm:max-w-xl">
-				<DialogHeader>
-					<DialogTitle>
-						{application.role} · {application.company}
-					</DialogTitle>
-					<DialogDescription>
-						{application.sourceUrl ? (
-							<a
-								href={application.sourceUrl}
-								target="_blank"
-								rel="noreferrer"
-								className="text-accent-text hover:underline"
-							>
-								{application.sourceUrl}
-							</a>
-						) : (
-							<Trans>The posting saved with this application.</Trans>
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size="lg">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							{application.role} · {application.company}
+						</Modal.Heading>
+						<div id={descriptionId} className="text-sm text-muted">
+							{application.sourceUrl ? (
+								<a
+									href={application.sourceUrl}
+									target="_blank"
+									rel="noreferrer"
+									className="text-accent-soft-foreground hover:underline"
+								>
+									{application.sourceUrl}
+								</a>
+							) : (
+								<Trans>The posting saved with this application.</Trans>
+							)}
+						</div>
+					</Modal.Header>
+					<Modal.Body className="grid gap-4 p-1">
+						{application.postingSource && (
+							<p className="text-xs text-muted">
+								{application.postingSource.method === "paste" ? (
+									<Trans>Pasted description</Trans>
+								) : (
+									<Trans>
+										Retrieved {application.postingSource.retrievedAt} using {application.postingSource.method}.
+										Retrieval time does not establish origin freshness.
+									</Trans>
+								)}
+							</p>
 						)}
-					</DialogDescription>
-				</DialogHeader>
-				{application.postingSource && (
-					<p className="text-xs text-ink-3">
-						{application.postingSource.method === "paste" ? (
-							<Trans>Pasted description</Trans>
-						) : (
-							<Trans>
-								Retrieved {application.postingSource.retrievedAt} using {application.postingSource.method}. Retrieval
-								time does not establish origin freshness.
-							</Trans>
+						{(application.postingSource?.truncated || application.postingSource?.completeness === "incomplete") && (
+							<p className="text-xs text-warning-soft-foreground" role="alert">
+								<Trans>This saved description is clipped or incomplete. Review before preparing documents.</Trans>
+							</p>
 						)}
-					</p>
-				)}
-				{(application.postingSource?.truncated || application.postingSource?.completeness === "incomplete") && (
-					<p className="text-xs text-warn-text" role="alert">
-						<Trans>This saved description is clipped or incomplete. Review before preparing documents.</Trans>
-					</p>
-				)}
-				{application.requirements.length > 0 && (
-					<section aria-labelledby="posting-requirements" className="grid gap-2">
-						<h3 id="posting-requirements" className="text-xs font-semibold text-ink-3">
-							<Trans>What it asks for</Trans>
-						</h3>
-						<ul className="flex flex-wrap gap-1.5">
-							{application.requirements.map((requirement) => (
-								<li key={requirement} className="rounded-md bg-sunken px-2 py-1 text-xs">
-									{requirement}
-								</li>
-							))}
-						</ul>
-					</section>
-				)}
-				{application.jobDescription && (
-					<p className="text-sm leading-6 whitespace-pre-wrap text-ink-2">{application.jobDescription}</p>
-				)}
-			</DialogContent>
-		</Dialog>
+						{application.requirements.length > 0 && (
+							<section aria-labelledby="posting-requirements" className="grid gap-2">
+								<h3 id="posting-requirements" className="text-xs font-semibold text-muted">
+									<Trans>What it asks for</Trans>
+								</h3>
+								<ul className="flex flex-wrap gap-1.5">
+									{application.requirements.map((requirement) => (
+										<li key={requirement}>
+											<Chip size="sm" variant="soft">
+												{requirement}
+											</Chip>
+										</li>
+									))}
+								</ul>
+							</section>
+						)}
+						{application.jobDescription && (
+							<p className="text-sm leading-6 whitespace-pre-wrap text-muted">{application.jobDescription}</p>
+						)}
+					</Modal.Body>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
@@ -666,8 +681,8 @@ function OpenWorkspaceButton({ application }: { application: Application }) {
 	const navigate = useNavigate();
 	return (
 		<Button
-			className="ms-auto bg-accent-soft text-accent-text hover:bg-accent-soft hover:brightness-95"
-			onClick={() =>
+			className="ms-auto"
+			onPress={() =>
 				void navigate({
 					to: "/dashboard/applications/$applicationId/{-$tab}",
 					params: { applicationId: application.id },

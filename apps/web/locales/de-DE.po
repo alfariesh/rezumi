@@ -144,14 +144,9 @@ msgid "{0, plural, one {# contact has an invalid email or no name; its applicati
 msgstr "{0, plural, one {# Kontakt hat eine ungültige E-Mail-Adresse oder keinen Namen; die Bewerbung wird trotzdem importiert.} other {# Kontakte haben eine ungültige E-Mail-Adresse oder keinen Namen; ihre Bewerbungen werden trotzdem importiert.}}"
 
 #. placeholder {0}: daysLeftInTrash(document.trashedAt)
-#: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "{0, plural, one {# day left} other {# days left}}"
 msgstr "{0, plural, one {noch # Tag} other {noch # Tage}}"
-
-#. placeholder {0}: outcomes.medianDaysToReply
-#: src/features/applications/components/insights-view.tsx
-msgid "{0, plural, one {# day} other {# days}}"
-msgstr "{0, plural, one {# Tag} other {# Tage}}"
 
 #. placeholder {0}: done.length
 #: src/features/documents/document-actions.tsx
@@ -313,6 +308,12 @@ msgstr "{0} · {providerLabel}. Sendet diese Bewerbung und Ihr Wissen; Ihr Anbie
 #: src/features/documents/document-actions.tsx
 msgid "{0} (copy)"
 msgstr "{0} (Kopie)"
+
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/board.tsx
+msgid "{0} at {1}"
+msgstr ""
 
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
@@ -503,17 +504,21 @@ msgstr "{count, plural, one {#-Eintrag} other {#-Einträge}}"
 msgid "{count, plural, one {# open issue} other {# open issues}}"
 msgstr "{count, plural, one {# offenes Problem} other {# offene Probleme}}"
 
+#: src/features/documents/documents-page.tsx
+msgid "{count, plural, one {# selected} other {# selected}}"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {# Änderung übernehmen} other {# Änderungen übernehmen}}"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "{count, plural, other {# more}}"
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "{count} free resume templates. Find your fit."
 msgstr "{count} kostenlose Lebenslaufvorlagen. Finden Sie die passende für sich."
-
-#: src/features/documents/documents-page.tsx
-msgid "{count} selected"
-msgstr "{count} ausgewählt"
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "{days, plural, one {{company}: no reply for # day. A short follow-up is usually fine now.} other {{company}: no reply for # days. A short follow-up is usually fine now.}}"
@@ -808,10 +813,6 @@ msgstr "/ Monat"
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ Jahr"
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "+{extra} more"
-msgstr "+{extra} mehr"
 
 #: src/features/homepage/hero.tsx
 msgid "+13 pts activation"
@@ -1653,8 +1654,8 @@ msgid "Already covered · pick one to find it on the page"
 msgstr "Bereits behandelt. Wählen Sie eines aus, um es auf der Seite zu finden"
 
 #: src/features/auth/pages/register.tsx
-msgid "Already have an account? <0/>"
-msgstr "Sie haben bereits ein Konto? <0/>"
+msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Already interviewing"
@@ -1842,8 +1843,7 @@ msgstr "Bewerber-Tracking-Systeme verwandeln Ihren PDF in Klartext, bevor ihn je
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Application"
 msgstr "Bewerbung"
 
@@ -1897,6 +1897,7 @@ msgstr "Bewerbungs-Tabs"
 msgid "Application updated"
 msgstr "Bewerbung aktualisiert"
 
+#: src/features/applications/components/insights-view.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
@@ -2023,6 +2024,10 @@ msgstr "Erst fragen"
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask for something else…"
 msgstr "Fragen Sie nach etwas anderem ..."
+
+#: src/features/command-palette/pages/ask.tsx
+msgid "Ask the assistant"
+msgstr ""
 
 #: src/features/command-palette/pages/ask.tsx
 msgid "Ask the assistant “{question}”"
@@ -2394,6 +2399,10 @@ msgstr "Von der Gemeinschaft, für die Gemeinschaft."
 msgid "Calendar"
 msgstr "Kalender"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Can I host it myself?"
 msgstr "Kann ich es selbst hosten?"
@@ -2495,10 +2504,6 @@ msgstr "Ändern Sie das Design des Lebenslaufs"
 #: src/features/command-palette/pages/preferences/index.tsx
 msgid "Change theme to…"
 msgstr "Ändern Sie das Design auf…"
-
-#: src/features/applications/components/detail/activity.tsx
-msgid "Change this timeline entry."
-msgstr "Ändern Sie diesen Timeline-Eintrag."
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Change timezone"
@@ -2769,18 +2774,33 @@ msgstr "Client-ID"
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/resume/index.tsx
+#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/board.tsx
+#: src/features/applications/components/detail/activity.tsx
+#: src/features/applications/components/detail/close-dialog.tsx
+#: src/features/applications/components/detail/next-step-card.tsx
+#: src/features/applications/components/export-applications-sheet.tsx
+#: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/builder/password-dialog.tsx
+#: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
+#: src/features/resume/stylesheet/editor.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
+#: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Close"
 msgstr "Schließen"
 
@@ -2818,6 +2838,10 @@ msgstr "Schließen…"
 #: src/features/applications/stages.ts
 msgid "Closed"
 msgstr "Geschlossen"
+
+#: src/features/applications/components/list-view.tsx
+msgid "Closed applications are hidden. Turn on Show closed to see them."
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -2857,7 +2881,6 @@ msgstr "Demnächst"
 
 #. Accessible label for command list region inside command palette
 #. Accessible label for the command palette dialog
-#. Screen-reader dialog title for the command palette
 #: src/features/command-palette/content.tsx
 msgid "Command palette"
 msgstr "Befehlspalette"
@@ -3480,6 +3503,10 @@ msgstr "Konnte nicht als gelesen markiert werden. Versuchen Sie es erneut."
 msgid "Couldn't move the document to Trash. Try again."
 msgstr "Das Dokument konnte nicht in den Papierkorb verschoben werden. Versuchen Sie es erneut."
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: src/features/resume/export/use-resume-export.ts
 msgid "Couldn't prepare the resume for printing. Try again."
 msgstr "Der Lebenslauf konnte nicht zum Drucken vorbereitet werden. Versuchen Sie es erneut."
@@ -3898,11 +3925,6 @@ msgstr "Erstellen und öffnen"
 msgid "Create key"
 msgstr "Schlüssel erstellen"
 
-#. Call-to-action link from login page to account registration page
-#: src/features/auth/pages/login.tsx
-msgid "Create one now"
-msgstr "Jetzt einen erstellen"
-
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -3999,6 +4021,7 @@ msgid "Danish"
 msgstr "Dänisch"
 
 #. Appearance theme option for dark mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
@@ -4048,6 +4071,10 @@ msgstr "Datumsangaben verwenden ein Format"
 #: src/features/resume/editor/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Termine werden nicht gelesen"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/letters/compose.ts
 msgid "Dear {name},"
@@ -4209,7 +4236,7 @@ msgstr "Gelöschte Bewerbung"
 msgid "Deleted from Saved"
 msgstr "Aus „Gespeichert“ gelöscht"
 
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Deleted in"
 msgstr "Gelöscht in"
 
@@ -4377,8 +4404,8 @@ msgid "Domain connected"
 msgstr "Domain verbunden"
 
 #: src/features/auth/pages/login.tsx
-msgid "Don't have an account? <0/>"
-msgstr "Sie haben noch kein Konto? <0/>"
+msgid "Don't have an account? <0>Create one now <1/></0>"
+msgstr ""
 
 #. placeholder {0}: chip.label
 #: src/features/assistant/conversation.tsx
@@ -4553,9 +4580,19 @@ msgstr "Abfassung…"
 msgid "drag · ⌥↑↓"
 msgstr "ziehen · ⌥ ↑ ↓"
 
+#. placeholder {0}: application.role
+#. placeholder {1}: application.company
+#: src/features/applications/components/application-card.tsx
+msgid "Drag {0} at {1}"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Drag and drop sections here to move them between columns"
 msgstr "Ziehen Sie Abschnitte hierher, um sie zwischen Spalten zu verschieben"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Drag to move or resize an interview, or across empty hours to schedule one."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Drag to reposition and use the slider to zoom before uploading."
@@ -4673,6 +4710,11 @@ msgstr "Eintrag bearbeiten"
 msgid "Edit interview"
 msgstr "Interview bearbeiten"
 
+#. placeholder {0}: event.title
+#: src/features/applications/components/calendar-view.tsx
+msgid "Edit interview: {0}, {range}"
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Edit interview…"
 msgstr "Interview bearbeiten…"
@@ -4713,7 +4755,7 @@ msgstr "Bearbeiten Sie dieses Interview…"
 msgid "Edit…"
 msgstr "Bearbeiten…"
 
-#: src/features/documents/documents-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Edited"
 msgstr "Bearbeitet"
 
@@ -5615,8 +5657,8 @@ msgid "Hear it"
 msgstr "Anhören"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "heard back"
-msgstr "zurück gehört"
+msgid "Heard back"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hebrew"
@@ -6007,6 +6049,10 @@ msgstr "Interview in {duration}"
 msgid "Interview is in another timezone"
 msgstr "Das Interview ist in einer anderen Zeitzone"
 
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Interview notes"
 msgstr "Interviewnotizen"
@@ -6014,6 +6060,10 @@ msgstr "Interviewnotizen"
 #: src/features/homepage/prepare.tsx
 msgid "Interview now"
 msgstr "Interview läuft"
+
+#: src/features/applications/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "Interview opening"
@@ -6381,6 +6431,7 @@ msgstr "Querformat"
 
 #. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -6535,6 +6586,7 @@ msgstr "Brief"
 
 #: src/features/assistant/document.ts
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Letter"
 msgstr "Brief"
@@ -6593,6 +6645,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligaturen können Buchstaben aus Wörtern wie \"workflow\" herausfallen lassen."
 
 #. Appearance theme option for light mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
@@ -6751,6 +6804,11 @@ msgid "Live totals, refreshed every 6 hours."
 msgstr "Aktuelle Gesamtzahlen, alle 6 Stunden aktualisiert."
 
 #: src/components/layout/loading-screen.tsx
+#: src/features/career/coach-chat.tsx
+#: src/features/career/coach.tsx
+#: src/features/career/schedule-sheet.tsx
+#: src/features/career/workspace/coach-sheet.tsx
+#: src/features/career/workspace/shell.tsx
 msgid "Loading"
 msgstr "Laden"
 
@@ -6821,6 +6879,7 @@ msgstr "Arbeitsbereich wird geladen…"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
+#: src/features/command-palette/pages/resumes.tsx
 msgid "Loading…"
 msgstr "Laden…"
 
@@ -6847,6 +6906,7 @@ msgid "Lock editing"
 msgstr "Bearbeitung sperren"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Locked"
 msgstr "Gesperrt"
 
@@ -7056,8 +7116,8 @@ msgid "MCP server"
 msgstr "MCP-Server"
 
 #: src/features/applications/components/insights-view.tsx
-msgid "median to first reply"
-msgstr "Median der ersten Antwort"
+msgid "Median to first reply"
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Medium"
@@ -7133,6 +7193,10 @@ msgstr "Modell: {label}"
 #: src/features/homepage/sheet.tsx
 msgid "Mono"
 msgstr "Mono"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Month"
+msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -7291,9 +7355,9 @@ msgstr "Meine Aufgabe war herauszufinden, warum, ohne zusätzlichen Supportaufwa
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
-#: src/features/documents/trash-page.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -7450,6 +7514,10 @@ msgstr "Neuer Abschnitt"
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Neue Teams bei Northwind blieben bei der Einrichtung hängen; die meisten kamen nie durch."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Next issue"
 msgstr "Nächste Ausgabe"
@@ -7482,13 +7550,25 @@ msgstr "Nächster Schritt: {0}. Fügt unter „Heute“ eine Erinnerung hinzu."
 msgid "Next time, I’d agree how to measure success before the first prototype."
 msgstr "Nächstes Mal würde ich vor dem ersten Prototyp vereinbaren, wie Erfolg gemessen wird."
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Next week"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "No active applications."
 msgstr "Keine aktiven Bewerbungen."
 
+#: src/features/applications/components/detail/activity.tsx
+msgid "No activity yet"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No application"
 msgstr "Keine Bewerbung"
+
+#: src/features/applications/components/board.tsx
+msgid "No applications"
+msgstr ""
 
 #. placeholder {0}: query.trim()
 #: src/routes/dashboard/applications/index.tsx
@@ -7615,6 +7695,10 @@ msgstr "Keine neuen Stellen. Die Stellensuche läuft morgen wieder um {clock}."
 #: src/features/career/offers.tsx
 msgid "No offers to compare yet"
 msgstr "Noch keine Angebote zum Vergleichen"
+
+#: src/features/applications/components/list-view.tsx
+msgid "No open applications"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
@@ -8121,6 +8205,10 @@ msgstr "Öffnen Sie den In-Editor"
 msgid "Open in Offers"
 msgstr "In „Angebote“ öffnen"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Open navigation"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Open preferences"
 msgstr "Präferenzen öffnen"
@@ -8184,13 +8272,13 @@ msgid "Optional for local Ollama"
 msgstr "Optional für lokales Ollama"
 
 #: src/components/ui/combobox.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Optionen"
 
 #. placeholder {0}: document.name
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 msgid "Options for {0}"
 msgstr "Optionen für {0}"
 
@@ -8395,10 +8483,6 @@ msgstr "Passwort festgelegt"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Past conversations"
 msgstr "Vergangene Gespräche"
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Paste a job link or posting, then check the role and company."
-msgstr "Fügen Sie einen Stellenlink oder eine Stellenausschreibung ein und überprüfen Sie dann die Rolle und das Unternehmen."
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Paste a job link. We'll save the posting so Check, the assistant and your letter can use it."
@@ -8786,6 +8870,10 @@ msgstr "Vorschaugröße"
 msgid "Previewing {0} · click to apply"
 msgstr "Vorschau {0} · Klicken Sie zum Übernehmen"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "Previous issue"
 msgstr "Vorherige Ausgabe"
@@ -8797,6 +8885,10 @@ msgstr "Frühere Nachrichten, einschließlich Dokumentdetails, werden ebenfalls 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous month"
 msgstr "Vorheriger Monat"
+
+#: src/features/applications/components/calendar-view.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
@@ -8912,6 +9004,7 @@ msgid "Provider"
 msgstr "Anbieter"
 
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
@@ -9056,6 +9149,10 @@ msgstr "Exportieren Sie erneut mit eingebetteten Schriftarten, öffnen Sie dann 
 #: src/features/homepage/prepare.tsx
 msgid "Re: Senior Product Designer"
 msgstr "AW: Senior Product Designer"
+
+#: src/features/applications/components/insights-view.tsx
+msgid "Reached"
+msgstr ""
 
 #. placeholder {0}: reader.label
 #: src/features/career/workspace/practise.tsx
@@ -9380,8 +9477,8 @@ msgid "Remember this for future coaching?"
 msgstr "Für künftiges Coaching merken?"
 
 #: src/features/auth/pages/forgot-password.tsx
-msgid "Remember your password? <0/>"
-msgstr "Passwort noch parat? <0/>"
+msgid "Remember your password? <0>Sign in now <1/></0>"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Remembered: “{text}”"
@@ -9655,6 +9752,7 @@ msgstr "Lebenslauf"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Lebenslauf"
@@ -10154,10 +10252,6 @@ msgstr "Scannen Sie den QR-Code mit Ihrer Authenticator-App oder kopieren Sie da
 msgid "Schedule an interview"
 msgstr "Vereinbaren Sie ein Vorstellungsgespräch"
 
-#: src/features/applications/components/calendar-view.tsx
-msgid "Schedule an interview on {date}"
-msgstr "Vereinbaren Sie ein Vorstellungsgespräch auf {date}"
-
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Schedule an interview…"
 msgstr "Vereinbaren Sie ein Vorstellungsgespräch…"
@@ -10213,10 +10307,6 @@ msgstr "Stellenbewerbungen durchsuchen"
 #: src/features/command-palette/content.tsx
 msgid "Search commands"
 msgstr "Befehle suchen"
-
-#: src/features/career/knowledge/search-regions-field.tsx
-msgid "Search countries"
-msgstr "Länder suchen"
 
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
@@ -10352,6 +10442,7 @@ msgstr "Siehe unten"
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/documents/document-list.tsx
 msgid "Select"
 msgstr "Auswählen"
 
@@ -10366,6 +10457,7 @@ msgstr "{0} auswählen"
 msgid "Select {0} at {1}"
 msgstr "Wählen Sie {0} unter {1} aus"
 
+#: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Select all"
 msgstr "Alle auswählen"
@@ -10728,13 +10820,6 @@ msgstr "Seitenleisten werden oft zuletzt gelesen oder in die Hauptspalte eingef�
 msgid "Sign in"
 msgstr "Anmelden"
 
-#. Call-to-action link from forgot-password page to login page
-#. Call-to-action link from registration page to login page
-#: src/features/auth/pages/forgot-password.tsx
-#: src/features/auth/pages/register.tsx
-msgid "Sign in now"
-msgstr "Jetzt anmelden"
-
 #. Title on the login page
 #: src/features/auth/pages/login.tsx
 msgid "Sign in to your account"
@@ -11026,6 +11111,10 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 msgid "Stage"
 msgstr "Phase"
+
+#: src/features/applications/components/detail/activity.tsx
+msgid "Stage changes, notes and interviews appear here."
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -11883,6 +11972,7 @@ msgstr "Der Anfang der ersten Seite sieht nicht wie ein Name aus."
 
 #. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
 #: src/features/settings/preferences.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -12049,10 +12139,6 @@ msgstr "Dieser Brief behält seinen Empfänger so, wie er geschrieben wurde."
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Dies misst, wie originalgetreu Software den Text dieser Datei extrahieren kann. Es sagt nicht voraus, ob eine Bewerbung abgelehnt wird, und kein Werkzeug kann das. Ihre Datei wurde in diesem Browser gelesen und nie hochgeladen."
-
-#: src/features/applications/components/calendar-view.tsx
-msgid "This month"
-msgstr "Diesen Monat"
 
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
@@ -12230,6 +12316,10 @@ msgstr "Heute {time}"
 msgid "Today, {hour}"
 msgstr "Heute, {hour}"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toggle sidebar"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Tomorrow"
 msgstr "Morgen"
@@ -12241,6 +12331,10 @@ msgstr "Zu hell für Überschriften auf Weiß. Es kann schwierig sein, es zu les
 #: src/features/settings/ai/web-access.tsx
 msgid "Too many requests. Try again later."
 msgstr "Zu viele Anfragen. Versuchen Sie es später noch einmal."
+
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toolbar"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Track a job you're applying to and link the resume you sent."
@@ -12439,8 +12533,7 @@ msgstr "Zweistufige Verifizierung aktiviert"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/practise.tsx
-#: src/features/documents/documents-page.tsx
-#: src/features/documents/trash-page.tsx
+#: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 #: src/routes/builder/letter/-components/design-panel.tsx
@@ -12457,7 +12550,6 @@ msgid "Type <0>{CONFIRMATION}</0> to confirm"
 msgstr "Geben Sie zur Bestätigung <0>{CONFIRMATION}</0> ein"
 
 #. Placeholder in command palette input on root page
-#. Screen-reader dialog description instructing users how to use the command palette
 #: src/features/command-palette/content.tsx
 msgid "Type a command or search…"
 msgstr "Geben Sie einen Befehl ein oder suchen Sie…"
@@ -12487,6 +12579,7 @@ msgstr "Unterstrichen"
 msgid "Underline links"
 msgstr "Unterstreichen Sie Links"
 
+#: src/features/applications/use-reschedule-interview.ts
 #: src/features/assistant/document.ts
 #: src/features/career/coach-chat.tsx
 #: src/features/career/shared.tsx
@@ -13039,6 +13132,10 @@ msgstr "Die Websuche sucht in diesen Ländern nach Stellen. Wählen Sie bis zu d
 msgid "Website"
 msgstr "Webseite"
 
+#: src/features/applications/components/calendar-view.tsx
+msgid "Week"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Weekly at {clock} · next {next}"
 msgstr "Wöchentlich um {clock} · nächster Lauf {next}"
@@ -13303,6 +13400,10 @@ msgstr "Wörter laufen beim Extrahieren des Texts zusammen."
 #: src/features/career/workspace/prepare.tsx
 msgid "Works without AI or new research"
 msgstr "Funktioniert ohne KI oder neue Recherche"
+
+#: src/features/career/workspace/shell.tsx
+msgid "Workspace sections"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Worth asking"

@@ -1,23 +1,13 @@
 import type { ApplicationSummary } from "../types";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
+import { ActionBar, EmptyState } from "@heroui-pro/react";
+import { Button, Checkbox, Chip, Dropdown, Input, Label, Popover, Separator } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
-import { AnimatePresence, m } from "motion/react";
 import { memo, useMemo, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Input } from "@rezumi/ui/components/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
@@ -26,7 +16,6 @@ import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, LIS
 import { useInvalidateApplications } from "../use-application-actions";
 import { useConfirm } from "@/hooks/use-confirm";
 import { formatRelativeTime } from "@/libs/locale";
-import { D2, EASE, EXIT } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
 
 type SortKey = "role" | "next" | "updated";
@@ -127,7 +116,7 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 			<button
 				type="button"
 				onClick={() => sortBy(key)}
-				className="inline-flex h-9 items-center gap-1 rounded-md transition-colors hover:text-ink"
+				className="inline-flex h-9 items-center gap-1 rounded-lg transition-colors hover:text-foreground"
 			>
 				{label}
 				{sort.key === key && <Icon name={sort.direction === "asc" ? "arrow-up" : "arrow-down"} size={14} />}
@@ -135,12 +124,29 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 		</th>
 	);
 
+	if (groups.length === 0)
+		return (
+			<EmptyState size="sm" className="rounded-2xl border border-dashed border-border py-6">
+				<EmptyState.Header>
+					<EmptyState.Media variant="icon">
+						<Icon name="rows" size={20} />
+					</EmptyState.Media>
+					<EmptyState.Title>
+						<Trans>No open applications</Trans>
+					</EmptyState.Title>
+					<EmptyState.Description className="max-w-sm text-pretty">
+						<Trans>Closed applications are hidden. Turn on Show closed to see them.</Trans>
+					</EmptyState.Description>
+				</EmptyState.Header>
+			</EmptyState>
+		);
+
 	return (
 		<div className="grid min-w-0 content-start gap-3">
 			<table className={cn("w-full border-collapse text-sm", !phone && "table-fixed")}>
 				{!phone && (
 					<thead>
-						<tr className="border-b border-line text-xs text-ink-3">
+						<tr className="border-b border-separator text-xs text-muted">
 							<th scope="col" className="w-10 ps-3">
 								<span className="sr-only">
 									<Trans>Select</Trans>
@@ -175,12 +181,12 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 										id={groupId}
 										aria-expanded={open}
 										onClick={() => toggleGroup(status)}
-										className="flex h-9 items-center gap-2 rounded-md px-1.5 text-sm font-semibold transition-colors hover:bg-hover"
+										className="flex h-9 items-center gap-2 rounded-lg px-1.5 text-sm font-semibold transition-colors hover:bg-default"
 									>
 										<Icon
 											name="caret-right"
 											size={18}
-											className={cn("text-ink-3 transition-transform duration-standard", open && "rotate-90")}
+											className={cn("text-muted transition-transform duration-standard", open && "rotate-90")}
 										/>
 										<span
 											aria-hidden="true"
@@ -188,7 +194,7 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 											style={{ background: getStageColor(status) }}
 										/>
 										{getStageLabel(status)}
-										<span className="font-mono text-xs font-normal text-ink-3">{rows.length}</span>
+										<span className="text-xs font-normal text-muted tabular-nums">{rows.length}</span>
 									</button>
 								</th>
 							</tr>
@@ -209,21 +215,7 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 				})}
 			</table>
 
-			{/* The bulk bar rises from the bottom edge and floats over the list, so the rows never move. */}
-			<AnimatePresence>
-				{checkedIds.length > 0 && (
-					<m.div
-						key="bulk-bar"
-						initial={{ opacity: 0, transform: "translateY(100%)" }}
-						animate={{ opacity: 1, transform: "translateY(0%)" }}
-						exit={{ opacity: 0, transform: "translateY(100%)", transition: { duration: D2 * EXIT, ease: EASE } }}
-						transition={{ duration: D2, ease: EASE }}
-						className="fixed inset-x-0 bottom-6 z-30 mx-auto w-fit max-w-[calc(100vw-32px)] max-sm:bottom-[calc(69px+env(safe-area-inset-bottom))]"
-					>
-						<BulkBar ids={checkedIds} onDone={() => setChecked(new Set())} />
-					</m.div>
-				)}
-			</AnimatePresence>
+			<BulkBar ids={checkedIds} onDone={() => setChecked(new Set())} />
 		</div>
 	);
 }
@@ -249,12 +241,12 @@ const ApplicationRow = memo(function ApplicationRow({
 	const { i18n } = useLingui();
 	const next = describeNextStep(getNextStep(application), application, i18n.locale);
 	const sent = application.status !== "saved";
-	const tone = next.tone === "warn" ? "text-warn-text" : next.tone === "muted" ? "text-ink-3" : "text-ink-2";
+	const tone = next.tone === "warn" ? "text-warning-soft-foreground" : "text-muted";
 
 	const initial = (
 		<span
 			aria-hidden="true"
-			className="grid size-8 shrink-0 place-items-center rounded-lg bg-sunken text-[13px] font-semibold text-ink-2"
+			className="grid size-8 shrink-0 place-items-center rounded-xl bg-default text-[13px] font-semibold text-muted"
 		>
 			{application.company.slice(0, 1).toUpperCase()}
 		</span>
@@ -263,7 +255,7 @@ const ApplicationRow = memo(function ApplicationRow({
 	const openButton = (
 		<button type="button" data-application-open className="grid min-w-0 cursor-pointer text-start">
 			<span className="truncate font-medium">{application.role}</span>
-			<span className="truncate text-xs text-ink-3">
+			<span className="truncate text-xs text-muted">
 				{phone
 					? `${application.company} · ${next.title}`
 					: [application.company, application.location].filter(Boolean).join(" · ")}
@@ -276,13 +268,13 @@ const ApplicationRow = memo(function ApplicationRow({
 			<tr
 				data-application-id={application.id}
 				onClick={() => onOpen(application)}
-				className={cn("cursor-pointer border-b border-line", selected && "bg-accent-soft/50")}
+				className={cn("cursor-pointer border-b border-separator", selected && "bg-accent-soft")}
 			>
 				<td className="py-2.5 ps-1">
 					<div className="flex items-center gap-3">
 						{initial}
 						{openButton}
-						<Icon name="caret-right" size={20} className="ms-auto shrink-0 text-ink-3" />
+						<Icon name="caret-right" size={20} className="ms-auto shrink-0 text-muted" />
 					</div>
 				</td>
 			</tr>
@@ -294,16 +286,22 @@ const ApplicationRow = memo(function ApplicationRow({
 			data-application-id={application.id}
 			onClick={() => onOpen(application)}
 			className={cn(
-				"cursor-pointer border-b border-line transition-colors duration-quick hover:bg-hover",
-				selected && "bg-accent-soft/50",
+				"cursor-pointer border-b border-separator transition-colors duration-quick hover:bg-default",
+				selected && "bg-accent-soft",
 			)}
 		>
 			<td onClick={(event) => event.stopPropagation()} className="w-10 cursor-default ps-3">
 				<Checkbox
-					checked={checked}
-					onCheckedChange={() => onCheck(application.id)}
+					isSelected={checked}
+					onChange={() => onCheck(application.id)}
 					aria-label={t`Select ${application.role} at ${application.company}`}
-				/>
+				>
+					<Checkbox.Content>
+						<Checkbox.Control>
+							<Checkbox.Indicator />
+						</Checkbox.Control>
+					</Checkbox.Content>
+				</Checkbox>
 			</td>
 			<td className="py-2 pe-2">
 				<div className="flex items-center gap-3">
@@ -318,28 +316,28 @@ const ApplicationRow = memo(function ApplicationRow({
 				</span>
 			</td>
 			<td className="px-2 max-xl:hidden">
-				<span className="flex items-center gap-1.5 text-ink-2">
+				<Chip size="sm" variant="soft" className="gap-1.5">
 					<span
 						aria-hidden="true"
-						className="size-2 rounded-sm"
+						className="size-2 rounded-full"
 						style={{ background: getStageColor(application.status) }}
 					/>
 					{getStageLabel(application.status)}
-				</span>
+				</Chip>
 			</td>
 			<td className="px-2">
 				{application.resumeId || application.coverLetterId ? (
-					<span className="flex items-center gap-1 text-ink-2">
+					<span className="flex items-center gap-1 text-muted">
 						{application.resumeId && <Icon name="file-text" size={18} aria-label={t`Resume`} />}
 						{application.coverLetterId && <Icon name="envelope-simple" size={18} aria-label={t`Cover letter`} />}
 					</span>
 				) : (
-					<span className={cn("text-xs", sent ? "text-warn-text" : "text-ink-3")}>
+					<span className={cn("text-xs", sent ? "text-warning-soft-foreground" : "text-muted")}>
 						<Trans>None</Trans>
 					</span>
 				)}
 			</td>
-			<td className="px-2 text-xs whitespace-nowrap text-ink-3 max-lg:hidden">
+			<td className="px-2 text-xs whitespace-nowrap text-muted max-lg:hidden">
 				{formatRelativeTime(application.updatedAt, i18n.locale)}
 			</td>
 		</tr>
@@ -378,89 +376,127 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 	});
 
 	return (
-		<div
-			role="toolbar"
-			aria-label={t`Applications`}
-			className="flex flex-wrap items-center gap-1 rounded-xl border border-line bg-raised p-1.5 text-ink shadow-e3"
-		>
-			<span className="px-2 text-sm font-semibold whitespace-nowrap" aria-live="polite">
-				<Plural value={ids.length} one="# selected" other="# selected" />
-			</span>
+		<ActionBar aria-label={t`Applications`} isOpen={ids.length > 0}>
+			<ActionBar.Prefix>
+				<Chip size="sm" variant="soft" className="whitespace-nowrap tabular-nums" aria-live="polite">
+					<Plural value={ids.length} one="# selected" other="# selected" />
+				</Chip>
+			</ActionBar.Prefix>
+			<Separator orientation="vertical" className="h-5" />
 
-			<DropdownMenu>
-				<DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
-					<Icon name="arrow-right" />
-					<Trans>Move to…</Trans>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="start">
-					{PIPELINE.map((status) => (
-						<DropdownMenuItem key={status} onClick={() => bulkUpdate.mutate({ ids, status })}>
-							<span aria-hidden="true" className="size-2 rounded-sm" style={{ background: getStageColor(status) }} />
-							{getStageLabel(status)}
-						</DropdownMenuItem>
-					))}
-				</DropdownMenuContent>
-			</DropdownMenu>
+			<ActionBar.Content>
+				<Dropdown>
+					<Button variant="ghost" size="sm">
+						<Icon name="arrow-right" />
+						<span className="action-bar__label">
+							<Trans>Move to…</Trans>
+						</span>
+					</Button>
+					<Dropdown.Popover placement="top start">
+						<Dropdown.Menu>
+							{PIPELINE.map((status) => (
+								<Dropdown.Item
+									key={status}
+									id={status}
+									textValue={getStageLabel(status)}
+									onAction={() => bulkUpdate.mutate({ ids, status })}
+								>
+									<span
+										aria-hidden="true"
+										className="size-2 rounded-full"
+										style={{ background: getStageColor(status) }}
+									/>
+									<Label>{getStageLabel(status)}</Label>
+								</Dropdown.Item>
+							))}
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
 
-			<Popover>
-				<PopoverTrigger render={<Button size="sm" variant="ghost" />}>
-					<Icon name="tag" />
-					<Trans>Add tag</Trans>
-				</PopoverTrigger>
-				<PopoverContent align="start" className="w-60 p-2">
-					<form
-						className="flex gap-1.5"
-						onSubmit={(event) => {
-							event.preventDefault();
-							if (!tag.trim()) return;
-							bulkUpdate.mutate({ ids, addTags: [tag.trim()] });
-							setTag("");
-						}}
-					>
-						<Input aria-label={t`Tag`} value={tag} onChange={(event) => setTag(event.target.value)} autoFocus />
-						<Button size="sm" type="submit" disabled={!tag.trim()}>
-							<Trans>Add</Trans>
-						</Button>
-					</form>
-				</PopoverContent>
-			</Popover>
+				<Popover>
+					<Button variant="ghost" size="sm">
+						<Icon name="tag" />
+						<span className="action-bar__label">
+							<Trans>Add tag</Trans>
+						</span>
+					</Button>
+					<Popover.Content placement="top start" className="w-60">
+						<Popover.Dialog className="p-1">
+							<form
+								className="flex gap-1.5"
+								onSubmit={(event) => {
+									event.preventDefault();
+									if (!tag.trim()) return;
+									bulkUpdate.mutate({ ids, addTags: [tag.trim()] });
+									setTag("");
+								}}
+							>
+								<Input
+									fullWidth
+									aria-label={t`Tag`}
+									value={tag}
+									onChange={(event) => setTag(event.target.value)}
+									autoFocus
+								/>
+								<Button size="sm" type="submit" isDisabled={!tag.trim()}>
+									<Trans>Add</Trans>
+								</Button>
+							</form>
+						</Popover.Dialog>
+					</Popover.Content>
+				</Popover>
 
-			<DropdownMenu>
-				<DropdownMenuTrigger render={<Button size="sm" variant="ghost" />}>
-					<Trans>Close…</Trans>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="start">
-					{CLOSED_REASONS.map((reason) => (
-						<DropdownMenuItem
-							key={reason}
-							onClick={() => bulkUpdate.mutate({ ids, status: "closed", closedReason: reason })}
-						>
-							{getClosedReasonLabel(reason)}
-						</DropdownMenuItem>
-					))}
-				</DropdownMenuContent>
-			</DropdownMenu>
+				<Dropdown>
+					<Button variant="ghost" size="sm">
+						<Icon name="x-circle" />
+						<span className="action-bar__label">
+							<Trans>Close…</Trans>
+						</span>
+					</Button>
+					<Dropdown.Popover placement="top start">
+						<Dropdown.Menu>
+							{CLOSED_REASONS.map((reason) => (
+								<Dropdown.Item
+									key={reason}
+									id={reason}
+									textValue={getClosedReasonLabel(reason)}
+									onAction={() => bulkUpdate.mutate({ ids, status: "closed", closedReason: reason })}
+								>
+									<Label>{getClosedReasonLabel(reason)}</Label>
+								</Dropdown.Item>
+							))}
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
 
-			<Button
-				size="sm"
-				variant="ghost"
-				className="text-danger-text hover:bg-danger-soft"
-				onClick={async () => {
-					const confirmed = await confirm(
-						plural(ids.length, { one: "Delete # application?", other: "Delete # applications?" }),
-						{
-							description: t`They and their timelines are deleted permanently. This can't be undone.`,
-							confirmText: plural(ids.length, { one: "Delete # application", other: "Delete # applications" }),
-						},
-					);
-					if (confirmed) bulkDelete.mutate({ ids });
-				}}
-			>
-				<Icon name="trash" />
-				<Trans>Delete…</Trans>
-			</Button>
+				<Button
+					size="sm"
+					variant="ghost"
+					className="text-danger"
+					onPress={async () => {
+						const confirmed = await confirm(
+							plural(ids.length, { one: "Delete # application?", other: "Delete # applications?" }),
+							{
+								description: t`They and their timelines are deleted permanently. This can't be undone.`,
+								confirmText: plural(ids.length, { one: "Delete # application", other: "Delete # applications" }),
+							},
+						);
+						if (confirmed) bulkDelete.mutate({ ids });
+					}}
+				>
+					<Icon name="trash" />
+					<span className="action-bar__label">
+						<Trans>Delete…</Trans>
+					</span>
+				</Button>
+			</ActionBar.Content>
 
-			<IconButton icon="x" size="icon-sm" label={t`Clear selection`} className="text-ink-2" onClick={onDone} />
-		</div>
+			<Separator orientation="vertical" className="h-5" />
+			<ActionBar.Suffix>
+				<Button isIconOnly size="sm" variant="ghost" aria-label={t`Clear selection`} onPress={onDone}>
+					<Icon name="x" />
+				</Button>
+			</ActionBar.Suffix>
+		</ActionBar>
 	);
 }

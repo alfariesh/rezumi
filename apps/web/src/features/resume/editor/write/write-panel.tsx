@@ -1,9 +1,8 @@
+import { Alert, Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useSearch } from "@tanstack/react-router";
-import { Alert, AlertDescription } from "@rezumi/ui/components/alert";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useEditorStore } from "../store";
@@ -88,9 +87,11 @@ function ImportedNote() {
 		});
 
 	return (
-		<Alert variant="success" className="items-start">
-			<Icon name="check-circle" size={20} />
-			<AlertDescription className="flex items-start justify-between gap-3">
+		<Alert status="success" className="items-start">
+			<Alert.Indicator>
+				<Icon name="check-circle" size={20} />
+			</Alert.Indicator>
+			<Alert.Content className="flex flex-row items-start justify-between gap-3">
 				<span role="status">
 					<Trans>Imported from {imported}.</Trans> <Plural value={sections} one="# section" other="# sections" />,{" "}
 					<Plural value={entries} one="# entry" other="# entries" />.{" "}
@@ -100,15 +101,17 @@ function ImportedNote() {
 						<Trans>Review each section before using this resume.</Trans>
 					)}
 				</span>
-				<button
-					type="button"
+				<Button
+					isIconOnly
+					size="sm"
+					variant="ghost"
 					aria-label={t`Dismiss`}
-					onClick={dismiss}
-					className="-m-1.5 flex size-8 shrink-0 items-center justify-center rounded-md hover:bg-hover"
+					onPress={dismiss}
+					className="-m-1.5 shrink-0"
 				>
 					<Icon name="x" size={18} />
-				</button>
-			</AlertDescription>
+				</Button>
+			</Alert.Content>
 		</Alert>
 	);
 }
@@ -132,16 +135,19 @@ function LockedNote() {
 		);
 
 	return (
-		<Alert variant="info" className="items-center">
-			<Icon name="lock" size={20} />
-			<AlertDescription className="flex items-center justify-between gap-3">
+		<Alert status="accent" className="items-center">
+			<Alert.Indicator>
+				<Icon name="lock" size={20} />
+			</Alert.Indicator>
+			<Alert.Content className="flex flex-row items-center justify-between gap-3">
 				<span>
 					<Trans>Locked. Unlock to edit.</Trans>
 				</span>
-				<Button size="sm" variant="secondary" loading={isPending} onClick={unlock} aria-label={t`Unlock editing`}>
+				<Button size="sm" variant="secondary" isPending={isPending} onPress={unlock} aria-label={t`Unlock editing`}>
+					{isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Unlock</Trans>
 				</Button>
-			</AlertDescription>
+			</Alert.Content>
 		</Alert>
 	);
 }

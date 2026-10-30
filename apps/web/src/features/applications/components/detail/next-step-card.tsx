@@ -1,28 +1,12 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Button, Card, Dropdown, Input, Label, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -65,52 +49,70 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 
 	return (
 		<section aria-labelledby="application-next-step" className="grid gap-2">
-			<h3 id="application-next-step" className="text-xs font-semibold text-ink-3">
+			<h3 id="application-next-step" className="text-xs font-semibold text-muted">
 				<Trans>Next step</Trans>
 			</h3>
-			<div
-				className={cn(
-					"grid gap-2 rounded-xl border p-3",
-					text.tone === "warn" ? "border-warn bg-warn-soft" : "border-line",
-				)}
+			<Card
+				variant={text.tone === "warn" ? "transparent" : "secondary"}
+				className={cn("gap-2 rounded-2xl p-3", text.tone === "warn" && "border border-warning bg-warning-soft")}
 			>
 				<div className="flex items-start gap-2.5">
 					<Icon
 						name={text.icon}
-						className={cn("mt-0.5 shrink-0", text.tone === "warn" ? "text-warn-text" : "text-ink-2")}
+						className={cn("mt-0.5 shrink-0", text.tone === "warn" ? "text-warning-soft-foreground" : "text-muted")}
 					/>
 					<div className="grid min-w-0 flex-1">
 						<strong className="text-sm font-semibold">{text.title}</strong>
-						{text.sub && <span className="text-xs leading-[17px] text-ink-2">{text.sub}</span>}
+						{text.sub && <span className="text-xs leading-[17px] text-muted">{text.sub}</span>}
 					</div>
 					{step.kind !== "closed" && (
-						<DropdownMenu>
-							<DropdownMenuTrigger render={<Button size="sm" variant="secondary" />}>
+						<Dropdown>
+							<Button variant="secondary" size="sm">
 								<Trans>Edit</Trans>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								{step.kind === "interview" && (
-									<DropdownMenuItem onClick={() => onScheduleInterview(step.interview)}>
-										<Trans>Edit this interview…</Trans>
-									</DropdownMenuItem>
-								)}
-								<DropdownMenuItem onClick={() => onScheduleInterview(null)}>
-									<Trans>Schedule an interview…</Trans>
-								</DropdownMenuItem>
-								<DropdownMenuItem onClick={() => setFollowUpOpen(true)}>
-									{application.followUpAt ? <Trans>Change the follow-up…</Trans> : <Trans>Set a follow-up…</Trans>}
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+							</Button>
+							<Dropdown.Popover placement="bottom end">
+								<Dropdown.Menu>
+									{step.kind === "interview" ? (
+										<Dropdown.Item
+											id="edit-interview"
+											textValue={t`Edit this interview…`}
+											onAction={() => onScheduleInterview(step.interview)}
+										>
+											<Label>
+												<Trans>Edit this interview…</Trans>
+											</Label>
+										</Dropdown.Item>
+									) : null}
+									<Dropdown.Item
+										id="schedule"
+										textValue={t`Schedule an interview…`}
+										onAction={() => onScheduleInterview(null)}
+									>
+										<Label>
+											<Trans>Schedule an interview…</Trans>
+										</Label>
+									</Dropdown.Item>
+									<Dropdown.Item
+										id="follow-up"
+										textValue={application.followUpAt ? t`Change the follow-up…` : t`Set a follow-up…`}
+										onAction={() => setFollowUpOpen(true)}
+									>
+										<Label>
+											{application.followUpAt ? <Trans>Change the follow-up…</Trans> : <Trans>Set a follow-up…</Trans>}
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
 					)}
 				</div>
 				{(step.kind === "interview" || step.kind === "follow-up") && (
-					<Button size="sm" variant="ghost" className="ms-7 w-fit" onClick={addToCalendar}>
+					<Button size="sm" variant="ghost" className="ms-7 w-fit" onPress={addToCalendar}>
 						<Icon name="calendar-dots" size={16} />
 						<Trans>Add to calendar</Trans>
 					</Button>
 				)}
-			</div>
+			</Card>
 
 			<FollowUpDialog application={application} open={followUpOpen} onOpenChange={setFollowUpOpen} />
 		</section>
@@ -143,59 +145,71 @@ function FollowUpDialog({ application, open, onOpenChange }: FollowUpDialogProps
 	});
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-sm">
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Follow-up</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>A reminder to check in, shown as the next step until you do.</Trans>
-					</DialogDescription>
-				</DialogHeader>
-				<form
-					id={`${id}-form`}
-					className="grid gap-3"
-					onSubmit={(event) => {
-						event.preventDefault();
-						// A date at 9:00 local time, so it reads as that day everywhere.
-						const at = date ? new Date(`${date}T09:00`) : null;
-						update.mutate({ id: application.id, followUpAt: at, followUpNote: note.trim() || null });
-					}}
-				>
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-date`}>
-							<Trans>Date</Trans>
-						</Label>
-						<Input id={`${id}-date`} type="date" value={date} onChange={(event) => setDate(event.target.value)} />
-					</div>
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-note`}>
-							<Trans>What to do</Trans>
-						</Label>
-						<Input
-							id={`${id}-note`}
-							value={note}
-							placeholder={t`Email the recruiter`}
-							onChange={(event) => setNote(event.target.value)}
-						/>
-					</div>
-				</form>
-				<DialogFooter>
-					{application.followUpAt && (
-						<Button
-							variant="ghost"
-							className="me-auto"
-							onClick={() => update.mutate({ id: application.id, followUpAt: null, followUpNote: null })}
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size="sm">
+				<Modal.Dialog aria-describedby={`${id}-description`}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Follow-up</Trans>
+						</Modal.Heading>
+						<p id={`${id}-description`} className="text-sm text-muted">
+							<Trans>A reminder to check in, shown as the next step until you do.</Trans>
+						</p>
+					</Modal.Header>
+					<Modal.Body className="p-1">
+						<form
+							id={`${id}-form`}
+							className="grid gap-3"
+							onSubmit={(event) => {
+								event.preventDefault();
+								// A date at 9:00 local time, so it reads as that day everywhere.
+								const at = date ? new Date(`${date}T09:00`) : null;
+								update.mutate({ id: application.id, followUpAt: at, followUpNote: note.trim() || null });
+							}}
 						>
-							<Trans>Clear</Trans>
+							<div className="grid gap-1.5">
+								<Label htmlFor={`${id}-date`}>
+									<Trans>Date</Trans>
+								</Label>
+								<Input
+									fullWidth
+									id={`${id}-date`}
+									type="date"
+									value={date}
+									onChange={(event) => setDate(event.target.value)}
+								/>
+							</div>
+							<div className="grid gap-1.5">
+								<Label htmlFor={`${id}-note`}>
+									<Trans>What to do</Trans>
+								</Label>
+								<Input
+									fullWidth
+									id={`${id}-note`}
+									value={note}
+									placeholder={t`Email the recruiter`}
+									onChange={(event) => setNote(event.target.value)}
+								/>
+							</div>
+						</form>
+					</Modal.Body>
+					<Modal.Footer>
+						{application.followUpAt && (
+							<Button
+								variant="ghost"
+								className="me-auto"
+								onPress={() => update.mutate({ id: application.id, followUpAt: null, followUpNote: null })}
+							>
+								<Trans>Clear</Trans>
+							</Button>
+						)}
+						<Button type="submit" form={`${id}-form`} isDisabled={!date || update.isPending}>
+							<Trans>Save</Trans>
 						</Button>
-					)}
-					<Button type="submit" form={`${id}-form`} disabled={!date || update.isPending}>
-						<Trans>Save</Trans>
-					</Button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+					</Modal.Footer>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }

@@ -1,20 +1,9 @@
+import { AlertDialog, Button, Input, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@rezumi/ui/components/alert-dialog";
-import { Button } from "@rezumi/ui/components/button";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { SettingsRow, SettingsSection } from "../section";
@@ -50,7 +39,8 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 				title={<Trans>Export everything</Trans>}
 				description={<Trans>All documents and applications as JSON, in one zip</Trans>}
 			>
-				<Button size="sm" variant="secondary" loading={exportAll.isPending} onClick={() => exportAll.mutate()}>
+				<Button size="sm" variant="secondary" isPending={exportAll.isPending} onPress={() => exportAll.mutate()}>
+					{exportAll.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Export</Trans>
 				</Button>
 			</SettingsRow>
@@ -62,7 +52,7 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 					size="sm"
 					variant="ghost"
 					className="border border-danger font-semibold text-danger-text hover:bg-danger-soft"
-					onClick={() => setDeleting(true)}
+					onPress={() => setDeleting(true)}
 				>
 					<Trans>Delete…</Trans>
 				</Button>
@@ -97,51 +87,60 @@ function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogProps) {
 	});
 
 	return (
-		<AlertDialog
-			open={open}
-			onOpenChange={onOpenChange}
-			// The typed confirmation clears once the dialog has faded out.
-			onOpenChangeComplete={(next) => !next && setTyped("")}
+		<AlertDialog.Backdrop
+			isOpen={open}
+			// The typed confirmation clears with the dialog.
+			onOpenChange={(next) => {
+				if (!next) setTyped("");
+				onOpenChange(next);
+			}}
+			isKeyboardDismissDisabled={false}
 		>
-			<AlertDialogContent>
-				<AlertDialogHeader>
-					<AlertDialogTitle>
-						<Trans>Delete your account?</Trans>
-					</AlertDialogTitle>
-					<AlertDialogDescription>
-						<Trans>
-							All your documents, applications, API keys and public links are deleted for good. This can't be undone.
-						</Trans>
-					</AlertDialogDescription>
-				</AlertDialogHeader>
-				<div className="grid gap-1.5">
-					<label htmlFor={id} className="text-[13px] font-medium">
-						<Trans>
-							Type <b className="font-mono font-medium">{CONFIRMATION}</b> to confirm
-						</Trans>
-					</label>
-					<Input
-						id={id}
-						value={typed}
-						autoComplete="off"
-						className="focus-visible:border-danger focus-visible:shadow-[0_0_0_3px_var(--danger-soft)]"
-						onChange={(event) => setTyped(event.target.value)}
-					/>
-				</div>
-				<AlertDialogFooter>
-					<AlertDialogCancel>
-						<Trans>Keep account</Trans>
-					</AlertDialogCancel>
-					<AlertDialogAction
-						variant="danger"
-						disabled={typed.trim().toLowerCase() !== CONFIRMATION}
-						loading={remove.isPending}
-						onClick={() => remove.mutate()}
-					>
-						<Trans>Delete account</Trans>
-					</AlertDialogAction>
-				</AlertDialogFooter>
-			</AlertDialogContent>
-		</AlertDialog>
+			<AlertDialog.Container size="sm">
+				<AlertDialog.Dialog>
+					<AlertDialog.Header>
+						<AlertDialog.Icon status="danger" />
+						<AlertDialog.Heading>
+							<Trans>Delete your account?</Trans>
+						</AlertDialog.Heading>
+					</AlertDialog.Header>
+					<AlertDialog.Body>
+						<p>
+							<Trans>
+								All your documents, applications, API keys and public links are deleted for good. This can't be undone.
+							</Trans>
+						</p>
+						<div className="mt-4 grid gap-1.5">
+							<label htmlFor={id} className="text-[13px] font-medium">
+								<Trans>
+									Type <b className="font-mono font-medium">{CONFIRMATION}</b> to confirm
+								</Trans>
+							</label>
+							<Input
+								fullWidth
+								id={id}
+								value={typed}
+								autoComplete="off"
+								onChange={(event) => setTyped(event.target.value)}
+							/>
+						</div>
+					</AlertDialog.Body>
+					<AlertDialog.Footer>
+						<Button slot="close" variant="tertiary">
+							<Trans>Keep account</Trans>
+						</Button>
+						<Button
+							variant="danger"
+							isDisabled={typed.trim().toLowerCase() !== CONFIRMATION}
+							isPending={remove.isPending}
+							onPress={() => remove.mutate()}
+						>
+							{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
+							<Trans>Delete account</Trans>
+						</Button>
+					</AlertDialog.Footer>
+				</AlertDialog.Dialog>
+			</AlertDialog.Container>
+		</AlertDialog.Backdrop>
 	);
 }

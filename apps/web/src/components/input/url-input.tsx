@@ -1,17 +1,9 @@
+import type { InputGroupInputProps } from "@heroui/react";
 import type { Website } from "@rezumi/schema/resume/data";
+import { Input, InputGroup, Label, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupButton,
-	InputGroupInput,
-	InputGroupText,
-} from "@rezumi/ui/components/input-group";
-import { Label } from "@rezumi/ui/components/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 
 const DEFAULT_PREFIX = "https://";
@@ -26,7 +18,7 @@ function ensurePrefix(url: string, prefix: string) {
 	return HTTP_PREFIX.test(url) ? url : prefix + url;
 }
 
-type Props<TValue extends Website = Website> = Omit<React.ComponentProps<"input">, "value" | "onChange"> & {
+type Props<TValue extends Website = Website> = Omit<InputGroupInputProps, "value" | "onChange"> & {
 	value: TValue;
 	onChange: (value: TValue) => void;
 	hideLabelButton?: boolean;
@@ -48,46 +40,41 @@ export function URLInput<TValue extends Website>({ value, onChange, hideLabelBut
 	const urlValue = stripPrefix(value.url);
 
 	return (
-		<InputGroup>
-			<InputGroupAddon align="inline-start">
-				<InputGroupText>{prefix}</InputGroupText>
-			</InputGroupAddon>
+		<InputGroup fullWidth>
+			<InputGroup.Prefix>
+				<span>{prefix}</span>
+			</InputGroup.Prefix>
 
-			<InputGroupInput
+			<InputGroup.Input
 				value={urlValue}
-				className={cn(props.className, "ps-0!")}
+				className={cn(props.className, "ps-0")}
 				onChange={handleUrlChange}
 				{...props}
 			/>
 
 			{!hideLabelButton && (
-				<InputGroupAddon align="inline-end">
+				<InputGroup.Suffix className="pe-0">
 					<Popover>
-						<PopoverTrigger
-							render={
-								<InputGroupButton
-									size="icon-sm"
-									title={t({
-										comment: "Tooltip for action button that opens URL label editor",
-										message: "Add a label to the URL",
-									})}
-								>
-									<Icon name="tag" size={16} />
-								</InputGroupButton>
-							}
+						<IconButton
+							icon="tag"
+							iconSize={16}
+							size="sm"
+							label={t({
+								comment: "Tooltip for action button that opens URL label editor",
+								message: "Add a label to the URL",
+							})}
 						/>
 
-						<PopoverContent className="pt-3">
-							{/** oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- for stopPropagation */}
-							<div role="presentation" className="grid gap-2" onMouseDown={(e) => e.stopPropagation()}>
+						<Popover.Content placement="bottom end">
+							<Popover.Dialog className="grid gap-2 outline-hidden">
 								<Label htmlFor="url-label">
 									<Trans comment="Short field label for custom display text associated with a URL">Label</Trans>
 								</Label>
-								<Input id="url-label" name="url-label" value={value.label} onChange={handleLabelChange} />
-							</div>
-						</PopoverContent>
+								<Input fullWidth id="url-label" name="url-label" value={value.label} onChange={handleLabelChange} />
+							</Popover.Dialog>
+						</Popover.Content>
 					</Popover>
-				</InputGroupAddon>
+				</InputGroup.Suffix>
 			)}
 		</InputGroup>
 	);

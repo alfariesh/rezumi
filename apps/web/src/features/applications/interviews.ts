@@ -66,16 +66,6 @@ export function fromDateTimeLocal(value: string) {
 	return Number.isNaN(date.getTime()) ? null : date.toISOString();
 }
 
-// Six full weeks (42 days) covering the month, starting on `weekStartsOn` (0 = Sunday).
-export function monthGrid(month: Date, weekStartsOn = 0): Date[] {
-	const first = new Date(month.getFullYear(), month.getMonth(), 1);
-	const offset = (first.getDay() - weekStartsOn + 7) % 7;
-	return Array.from(
-		{ length: 42 },
-		(_, i) => new Date(first.getFullYear(), first.getMonth(), first.getDate() - offset + i),
-	);
-}
-
 export function groupByDay(interviews: ScheduledInterview[]) {
 	const map = new Map<string, ScheduledInterview[]>();
 	for (const item of interviews) {

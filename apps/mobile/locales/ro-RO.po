@@ -346,6 +346,13 @@ msgstr "{0} în {1} este {2} în fusul dvs. orar ({userZone})."
 msgid "{0} in {otherZone}"
 msgstr "{0} în {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} în primul an"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# coloană} few {# coloane} other {# de coloane}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Aplicați # modificare} few {Aplicați # modificări} other {Aplicați # de modificări}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} h"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# interviu} few {# interviuri} other {# de interviuri}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Cecul are de revizuit #. Încă puteți descărca.
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} interviu"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {Începe în # minut} few {Începe în # minute} o
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} min"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Niciun interviu} one {# interviu} few {# interviuri} other {# de interviuri}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Cereți asistentului să o lucreze"
 msgid "Ask the coach"
 msgstr "Întrebați coach-ul"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Întrebați comunitatea. Eliminați datele personale înainte de a posta."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Solicitați administratorului serverului să activeze criptarea acreditărilor sau să configureze o conexiune partajată."
@@ -1925,6 +1941,10 @@ msgstr "de <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Calendaristic"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Poate software-ul să vă citească CV-ul?"
@@ -2000,6 +2020,7 @@ msgstr "Schimba etapa"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Schimbă contactarea ulterioară"
 
@@ -2807,11 +2828,14 @@ msgstr "Nu s-a putut încărca fusul orar."
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Nu s-a putut marca drept trimisă. Încearcă din nou."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Nu s-a putut deschide browserul. Încearcă din nou."
 
@@ -3217,6 +3241,7 @@ msgstr "Partajarea datelor a fost anulată. Nu a fost trimis nimic furnizorului 
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Datele încep în viitor"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Datele nu vor fi citite"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Nu trimiteți {0} postare de locuri de muncă"
 msgid "Don't share"
 msgstr "Nu împărtăși"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Donați pe Open Collective"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Editați intrarea"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Editați interviul"
 
@@ -4157,6 +4183,12 @@ msgstr "Contactează din nou"
 msgid "Follow up on {at}"
 msgstr "Contactează din nou la {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "„Obțineți feedback” trimite întrebarea, răspunsul dvs., acest an
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Primiți aici posturi noi în fiecare dimineață"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Primiți feedback la CV pe Discord"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Interviu șters"
 msgid "Interview is in another timezone"
 msgstr "Interviul este în alt fus orar"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Pregătirea interviului"
@@ -4868,10 +4904,6 @@ msgstr "Fluxul căutării de joburi"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Locuri de muncă"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Alăturați-vă pe Discord"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Lungime"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Durată · minute"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Durata în minute"
 
@@ -5394,6 +5428,10 @@ msgstr "Documentele blocate au fost omise. Deblochează-le mai întâi."
 msgid "Locked. Unlock to edit."
 msgstr "Blocat. Deblocați pentru a edita."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Apasă lung pentru a selecta"
@@ -5628,6 +5666,10 @@ msgstr "Sugestiile de modele nu sunt disponibile. Puteți introduce în continua
 msgid "Model: {label}"
 msgstr "Model: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Mai mult"
@@ -5690,6 +5732,14 @@ msgstr "În mare parte lizibil"
 msgid "Move {title} to…"
 msgstr "Mutați {title} în..."
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Mutați tot conținutul în interiorul marginilor paginii și exportați din nou."
@@ -5707,6 +5757,10 @@ msgstr "Deplasați-vă în jos"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Mutați câmpul în sus"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Secțiune nouă"
 msgid "New STARR story"
 msgstr "Noua poveste STARR"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Următorul număr"
@@ -5958,6 +6016,10 @@ msgstr "Pasul următor: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Următorul pas: {note}. Adaugă un memento la Astăzi."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Nicio fotografie. Majoritatea ATS ignoră fotografiile; unele regiuni se
 msgid "No postings found. Try different keywords."
 msgstr "Nu au fost găsite locuri de muncă. Încercați diferite cuvinte cheie."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Niciun server Rezumi nu a răspuns la această adresă. Verificați ortografia sau întrebați administratorul dacă serverul permite conectarea la aplicație."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Nu există termeni recunoscuți în acest anunț de angajare."
@@ -6123,6 +6181,10 @@ msgstr "Niciun rezultat"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Fără CV"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Niciun server Rezumi nu a răspuns la această adresă. Verificați ortografia sau întrebați administratorul dacă serverul permite conectarea la aplicație."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Previzualizează pagina web"
 msgid "Previewing {0} · tap to apply"
 msgstr "Previzualizarea {0} · atingeți pentru a aplica"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Problema anterioară"
@@ -7081,6 +7147,10 @@ msgstr "Pagina anterioară"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Rezultatul anterior PDF. Este posibil să nu se potrivească cu schița actuală."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Exportați din nou cu fonturile încorporate și verificați dacă textu
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Exportați din nou cu fonturile încorporate, apoi deschideți fișierul și verificați dacă textul se copiază corect."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Cerințe"
 msgid "Requirements and your evidence"
 msgstr "Cerințele și dovezile dvs."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Rezervați majusculele pentru titluri scurte. Acestea încetinesc citirea și pot afecta căutările sensibile la majuscule și minuscule."
@@ -7779,10 +7857,6 @@ msgstr "CV + scrisoare"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "detalii CV-ul"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Feedback la CV, ajutor pentru produs și idei din comunitate."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Revocați această cheie API"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Rescrie acceptată"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Arată elementele citite"
 msgid "Show section icons"
 msgstr "Afișează pictogramele secțiunilor"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Se afișează detaliile salvate. Nu au putut fi reîmprospătați."
@@ -9292,6 +9374,10 @@ msgstr "Faceți o fotografie"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "Tamilă"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Această poveste nu este disponibilă sau folosește fapte dezactivate."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Această oră nu există în fusul orar selectat. Alegeți altă oră."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Această oră nu există în fusul dvs. orar. Alegeți altă oră."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Se condensează"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Ora · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Ora · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Căutările pe web caută locuri de muncă în aceste țări. Alegeți p
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Website"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

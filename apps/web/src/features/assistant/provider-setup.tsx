@@ -1,15 +1,10 @@
 import type { AIProvider } from "@rezumi/ai/types";
+import { Button, Disclosure, Input, Label, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
-import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
-import { cn } from "@rezumi/utils/style";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
@@ -45,27 +40,18 @@ export function ProviderSetup() {
 					const expanded = open === choice.provider;
 					return (
 						<li key={choice.provider}>
-							<button
-								type="button"
-								aria-expanded={expanded}
-								onClick={() => setOpen(expanded ? null : choice.provider)}
-								className="flex h-11 w-full items-center justify-between px-3 text-start text-sm transition-colors duration-quick hover:bg-hover"
-							>
-								{choice.provider === "openai-compatible" ? <Trans>Other · OpenAI-compatible</Trans> : choice.label}
-								<Icon
-									name="caret-right"
-									size={18}
-									className={cn(
-										"text-ink-3 transition-transform duration-standard ease-enter",
-										expanded && "rotate-90",
-									)}
-								/>
-							</button>
-							<Collapsible open={expanded}>
-								<CollapsibleContent>
-									<ConnectForm choice={choice} />
-								</CollapsibleContent>
-							</Collapsible>
+							<Disclosure isExpanded={expanded} onExpandedChange={(next) => setOpen(next ? choice.provider : null)}>
+								<Disclosure.Heading>
+									<Disclosure.Trigger className="flex h-11 w-full items-center justify-between px-3 text-start text-sm transition-colors duration-quick hover:bg-hover">
+										{choice.provider === "openai-compatible" ? <Trans>Other · OpenAI-compatible</Trans> : choice.label}
+										<Disclosure.Indicator className="text-ink-3" />
+									</Disclosure.Trigger>
+								</Disclosure.Heading>
+								<Disclosure.Content>
+									{/* Closed sections keep no form, so each provider's fields exist only while it is open. */}
+									<Disclosure.Body>{expanded && <ConnectForm choice={choice} />}</Disclosure.Body>
+								</Disclosure.Content>
+							</Disclosure>
 						</li>
 					);
 				})}
@@ -74,7 +60,7 @@ export function ProviderSetup() {
 			<p className="text-xs text-ink-3">
 				<Trans>
 					More providers and options are in{" "}
-					<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "link", size: "sm" })}>
+					<Link to="/dashboard/settings/ai" className="text-link underline-offset-4 hover:underline">
 						Settings
 					</Link>
 					. The rest of the app works fully without AI.
@@ -131,6 +117,7 @@ function ConnectForm({ choice }: { choice: Choice }) {
 						<Trans>Base URL</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-url`}
 						value={baseURL}
 						placeholder="https://…/v1"
@@ -143,6 +130,7 @@ function ConnectForm({ choice }: { choice: Choice }) {
 					<Trans>API key</Trans>
 				</Label>
 				<Input
+					fullWidth
 					id={`${id}-key`}
 					type="password"
 					autoComplete="off"
@@ -154,20 +142,15 @@ function ConnectForm({ choice }: { choice: Choice }) {
 				<Label htmlFor={`${id}-model`}>
 					<Trans>Model</Trans>
 				</Label>
-				<Input id={`${id}-model`} value={model} onChange={(event) => setModel(event.target.value)} />
+				<Input fullWidth id={`${id}-model`} value={model} onChange={(event) => setModel(event.target.value)} />
 			</div>
 			{failure && (
 				<p role="alert" className="text-xs text-danger-text">
 					{failure}
 				</p>
 			)}
-			<Button
-				type="submit"
-				size="sm"
-				className="w-fit"
-				disabled={!ready || connect.isPending}
-				loading={connect.isPending}
-			>
+			<Button type="submit" size="sm" className="w-fit" isDisabled={!ready} isPending={connect.isPending}>
+				{connect.isPending && <Spinner size="sm" color="current" aria-hidden />}
 				{connect.isPending ? <Trans>Testing the connection…</Trans> : <Trans>Connect</Trans>}
 			</Button>
 		</form>

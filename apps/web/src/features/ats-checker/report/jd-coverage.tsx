@@ -1,6 +1,6 @@
 import type { JdMatchReport } from "@rezumi/resume/ats-pdf";
+import { Chip } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
-import { Badge } from "@rezumi/ui/components/badge";
 
 type JdCoverageProps = {
 	jd: JdMatchReport;
@@ -48,9 +48,9 @@ export function JdCoverage({ jd }: JdCoverageProps) {
 					</p>
 					<div className="flex flex-wrap gap-1.5">
 						{missing.map((term) => (
-							<Badge key={term.term} variant="outline" className="font-normal">
+							<Chip key={term.term} size="sm" variant="secondary" className="font-normal">
 								{term.term}
-							</Badge>
+							</Chip>
 						))}
 					</div>
 				</div>
@@ -63,9 +63,9 @@ export function JdCoverage({ jd }: JdCoverageProps) {
 					</p>
 					<div className="flex flex-wrap gap-1.5">
 						{matched.map((term) => (
-							<Badge key={term.term} variant="neutral" className="font-normal">
+							<Chip key={term.term} size="sm" variant="soft" className="font-normal">
 								{term.term}
-							</Badge>
+							</Chip>
 						))}
 					</div>
 				</div>

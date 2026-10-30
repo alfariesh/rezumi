@@ -1,21 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vite-plus/test";
+import { InputGroup } from "@heroui/react";
 import { FormControl, FormItem, FormLabel, FormMessage } from "./form";
-import { InputGroup, InputGroupInput } from "./input-group";
-import { Slider } from "./slider";
 
 describe("FormControl", () => {
-	it("forwards the generated id to the real control inside an InputGroup wrapper", () => {
+	it("forwards the generated id to the input inside a HeroUI InputGroup", () => {
 		render(
 			<FormItem>
 				<FormLabel>Slug</FormLabel>
-				<FormControl
-					render={
-						<InputGroup data-testid="group">
-							<InputGroupInput data-testid="input" />
-						</InputGroup>
-					}
-				/>
+				<InputGroup data-testid="group">
+					<FormControl render={<InputGroup.Input data-testid="input" />} />
+				</InputGroup>
 			</FormItem>,
 		);
 
@@ -27,24 +22,6 @@ describe("FormControl", () => {
 		expect(input.getAttribute("id")).toMatch(/-form-item$/);
 		expect(label).toHaveAttribute("for", input.id);
 		expect(group).not.toHaveAttribute("id", input.id);
-	});
-
-	it("forwards the generated id to the Base UI Slider control", () => {
-		render(
-			<FormItem>
-				<FormLabel>Sidebar Width</FormLabel>
-				<FormControl render={<Slider defaultValue={[30]} />} />
-			</FormItem>,
-		);
-
-		const label = screen.getByText("Sidebar Width");
-		const labelId = label.id;
-		const htmlFor = label.getAttribute("for");
-		const sliderInput = document.querySelector('input[type="range"]') as HTMLInputElement;
-
-		expect(sliderInput).toBeInTheDocument();
-		expect(sliderInput.id).toBe(htmlFor);
-		expect(sliderInput.getAttribute("aria-labelledby")).toBe(labelId);
 	});
 
 	it("includes message in aria-describedby when hasError=true", () => {

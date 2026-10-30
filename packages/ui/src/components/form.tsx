@@ -1,8 +1,13 @@
-import { useRender } from "@base-ui/react";
+import { Description, ErrorMessage, Label } from "@heroui/react";
 import * as React from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Label } from "@rezumi/ui/components/label";
 import { cn } from "@rezumi/utils/style";
+
+/*
+ * Wires a TanStack Form field to its label, description and error for any control: a HeroUI Input or TextArea, a
+ * Switch, a Slider, a picker. HeroUI's own TextField does this only for text fields, so this keeps one pattern for
+ * every control while the visuals come from HeroUI's Label, Description and ErrorMessage.
+ */
 
 type FormItemContextValue = {
 	id: string;
@@ -49,8 +54,8 @@ function FormLabel({ className, ...props }: React.ComponentProps<typeof Label>) 
 		<Label
 			id={`${id}-form-item-label`}
 			data-slot="form-label"
-			data-error={hasError}
-			className={cn("data-[error=true]:text-danger-text", className)}
+			isInvalid={hasError}
+			className={className}
 			htmlFor={`${id}-form-item`}
 			{...props}
 		/>
@@ -104,7 +109,15 @@ function useFormControlWarning(controlId: string) {
 	}, [controlId]);
 }
 
-function FormControl({ render, ...props }: useRender.ComponentProps<"div">) {
+type FormControlProps = Omit<React.ComponentProps<"div">, "children"> & {
+	/**
+	 * The control. It receives the field's `id`, `aria-describedby` and `aria-invalid`; a function gets them as props.
+	 * Inside a HeroUI InputGroup, wrap the `InputGroup.Input`, not the group.
+	 */
+	render: React.ReactElement<Record<string, unknown>> | ((props: Record<string, unknown>) => React.ReactElement);
+};
+
+function FormControl({ render, ...props }: FormControlProps) {
 	const { id, hasError } = useFormItem();
 	const controlId = `${id}-form-item`;
 	const labelId = `${id}-form-item-label`;
@@ -123,36 +136,30 @@ function FormControl({ render, ...props }: useRender.ComponentProps<"div">) {
 
 	useFormControlWarning(controlId);
 
-	const element = useRender({
-		defaultTagName: "div",
-		render,
-		state: { slot: "form-control" },
-		props: {
-			id: controlId,
-			"data-slot": "form-control",
-			"aria-describedby": describedBy,
-			"aria-invalid": hasError,
-			...props,
-		},
-	});
+	const controlProps: Record<string, unknown> = {
+		id: controlId,
+		"data-slot": "form-control",
+		"aria-describedby": describedBy,
+		"aria-invalid": hasError,
+		...props,
+	};
+	const element =
+		typeof render === "function"
+			? render(controlProps)
+			: React.cloneElement(render, { ...controlProps, ...render.props });
 
 	return <FormControlContext.Provider value={contextValue}>{element}</FormControlContext.Provider>;
 }
 
-function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
+function FormDescription({ className, ...props }: React.ComponentProps<typeof Description>) {
 	const { id } = useFormItem();
 
 	return (
-		<p
-			data-slot="form-description"
-			id={`${id}-form-item-description`}
-			className={cn("text-[13px] leading-[18px] text-ink-3", className)}
-			{...props}
-		/>
+		<Description data-slot="form-description" id={`${id}-form-item-description`} className={className} {...props} />
 	);
 }
 
-type FormMessageProps = Omit<React.ComponentProps<"p">, "children"> & {
+type FormMessageProps = Omit<React.ComponentProps<typeof ErrorMessage>, "children"> & {
 	errors?: ReadonlyArray<unknown>;
 };
 
@@ -176,21 +183,24 @@ function FormMessage({ className, errors, ...props }: FormMessageProps) {
 
 	if (!body) return null;
 
+	if (!hasError) {
+		return (
+			<Description id={`${id}-form-item-message`} data-slot="form-message" className={className}>
+				{body}
+			</Description>
+		);
+	}
+
 	return (
-		<p
+		<ErrorMessage
 			id={`${id}-form-item-message`}
-			data-error={hasError}
 			data-slot="form-message"
-			className={cn(
-				"flex items-start gap-1 text-xs leading-4 transition-opacity duration-quick ease-enter starting:opacity-0",
-				hasError ? "text-danger-text" : "text-ink-3",
-				className,
-			)}
+			className={cn("flex items-start gap-1", className)}
 			{...props}
 		>
-			{hasError && <Icon name="warning-circle" size={16} className="shrink-0" />}
+			<Icon name="warning-circle" size={16} className="shrink-0" />
 			<span>{body}</span>
-		</p>
+		</ErrorMessage>
 	);
 }
 

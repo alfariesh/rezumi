@@ -1,60 +1,53 @@
 import type { ApplicationSummary } from "../types";
+import { Kanban } from "@heroui-pro/react";
+import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { describeNextStep, getNextStep } from "../next-step";
 import { ApplicationActionsMenu } from "./application-actions-menu";
 
-type ApplicationCardProps = {
-	application: ApplicationSummary;
-	onClick?: () => void;
-	/** The ⋯ menu (Move to…, Close…, Delete); cards dragged in the overlay go without. */
-	withMenu?: boolean;
-	dragging?: boolean;
-};
+type ApplicationCardProps = { application: ApplicationSummary };
 
-/** A board card: the company's initial, role and company, and the next step (warn when it's overdue). */
-export function ApplicationCard({ application, onClick, withMenu = false, dragging = false }: ApplicationCardProps) {
+/**
+ * A board card's content, rendered inside `Kanban.Card` (which gives the surface): the company's initial, role and
+ * company, the keyboard drag handle, the ⋯ menu, and the next step (warning tone when it's overdue).
+ */
+export function ApplicationCard({ application }: ApplicationCardProps) {
 	const { i18n } = useLingui();
 	const next = describeNextStep(getNextStep(application), application, i18n.locale);
 
 	return (
-		<div
-			data-application-id={application.id}
-			className={cn(
-				"group relative grid gap-2 rounded-lg border border-line bg-surface p-3 shadow-e1 transition-[border-color,scale] duration-quick ease-enter hover:border-line-2 active:not-has-[[data-slot=button]:active]:scale-[0.98]",
-				// The overlay card lifts as it's picked up and settles flat again while the drop animation flies it home.
-				dragging &&
-					"scale-[1.02] rotate-1 cursor-grabbing shadow-e3 transition-[rotate,scale,box-shadow] duration-quick ease-enter **:cursor-grabbing in-[.is-dropping]:scale-100 in-[.is-dropping]:rotate-0 in-[.is-dropping]:shadow-e1 starting:scale-100 starting:rotate-0 starting:shadow-e1",
-			)}
-		>
+		<>
 			<div className="flex items-start gap-2.5">
 				<span
 					aria-hidden="true"
-					className="grid size-7 shrink-0 place-items-center rounded-lg bg-sunken text-xs font-semibold text-ink-2"
+					className="grid size-7 shrink-0 place-items-center rounded-lg bg-default text-xs font-semibold text-muted"
 				>
 					{application.company.slice(0, 1).toUpperCase()}
 				</span>
-				<button
-					type="button"
-					data-application-open
-					onClick={onClick}
-					className="grid min-w-0 flex-1 text-start after:absolute after:inset-0 after:rounded-lg"
+				<div className="grid min-w-0 flex-1">
+					<span className="truncate font-semibold text-foreground">{application.role}</span>
+					<span className="truncate text-xs text-muted">{application.company}</span>
+				</div>
+				{/* Screen-reader only until the card has keyboard focus; Enter on it starts a keyboard drag. */}
+				<Kanban.DragHandle
+					aria-label={t`Drag ${application.role} at ${application.company}`}
+					className="mt-1 rounded-md"
 				>
-					<span className="truncate text-sm font-semibold">{application.role}</span>
-					<span className="truncate text-xs text-ink-3">{application.company}</span>
-				</button>
-				{withMenu && <ApplicationActionsMenu application={application} className="relative z-10 -me-1.5 -mt-1.5" />}
+					<Icon name="dots-six-vertical" size={16} />
+				</Kanban.DragHandle>
+				<ApplicationActionsMenu application={application} className="-me-1.5 -mt-1.5" />
 			</div>
 			<span
 				className={cn(
 					"flex items-center gap-1.5 text-xs",
-					next.tone === "warn" ? "text-warn-text" : next.tone === "muted" ? "text-ink-3" : "text-ink-2",
+					next.tone === "warn" ? "text-warning-soft-foreground" : "text-muted",
 				)}
 			>
 				<Icon name={next.icon} size={15} className="shrink-0" />
 				<span className="truncate">{next.title}</span>
 			</span>
-		</div>
+		</>
 	);
 }

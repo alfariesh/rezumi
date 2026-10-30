@@ -1,8 +1,8 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext, useRouter, useSearch } from "@tanstack/react-router";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { DataSection } from "./data";
@@ -37,7 +37,7 @@ export function SignOutButton() {
 	return (
 		<Button
 			variant="secondary"
-			onClick={async () => {
+			onPress={async () => {
 				try {
 					const result = await authClient.signOut();
 					if (result.error) throw result.error;

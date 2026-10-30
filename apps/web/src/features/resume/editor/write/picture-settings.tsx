@@ -1,26 +1,14 @@
 import type { Area } from "react-easy-crop";
 import type z from "zod";
+import { Button, ButtonGroup, Input, InputGroup, Modal, Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Cropper from "react-easy-crop";
 import { pictureSchema } from "@rezumi/schema/resume/data";
-import { Button } from "@rezumi/ui/components/button";
-import { ButtonGroup } from "@rezumi/ui/components/button-group";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { InputGroup, InputGroupAddon, InputGroupText } from "@rezumi/ui/components/input-group";
-import { Slider } from "@rezumi/ui/components/slider";
 import { toast } from "@rezumi/ui/components/toast";
 import "react-easy-crop/react-easy-crop.css";
 import { ColorPicker } from "@/components/input/color-picker";
@@ -95,6 +83,7 @@ function PicturePreviewControls({
 							<FormControl
 								render={
 									<Input
+										fullWidth
 										name={field.name}
 										value={field.state.value}
 										onBlur={field.handleBlur}
@@ -107,10 +96,10 @@ function PicturePreviewControls({
 							/>
 
 							<Button
-								size="icon"
+								isIconOnly
 								variant="ghost"
 								aria-label={picture.hidden ? t`Show photo` : t`Hide photo`}
-								onClick={() => {
+								onPress={() => {
 									form.setFieldValue("hidden", !picture.hidden);
 									onAutoSave();
 								}}
@@ -144,7 +133,7 @@ function PictureFitField({ form, onAutoSave }: PictureFieldProps) {
 							variant={field.state.value === "cover" ? "primary" : "secondary"}
 							aria-pressed={field.state.value === "cover"}
 							className="flex-1"
-							onClick={() => {
+							onPress={() => {
 								field.handleChange("cover");
 								onAutoSave();
 							}}
@@ -156,7 +145,7 @@ function PictureFitField({ form, onAutoSave }: PictureFieldProps) {
 							variant={field.state.value === "contain" ? "primary" : "secondary"}
 							aria-pressed={field.state.value === "contain"}
 							className="flex-1"
-							onClick={() => {
+							onPress={() => {
 								field.handleChange("contain");
 								onAutoSave();
 							}}
@@ -179,7 +168,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						<FormLabel>
 							<Trans>Size</Trans>
 						</FormLabel>
-						<InputGroup>
+						<InputGroup fullWidth>
 							<FormControl
 								render={
 									<NumberInput
@@ -197,9 +186,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 								}
 							/>
 
-							<InputGroupAddon align="inline-end">
-								<InputGroupText>pt</InputGroupText>
-							</InputGroupAddon>
+							<InputGroup.Suffix>pt</InputGroup.Suffix>
 						</InputGroup>
 						<FormMessage errors={field.state.meta.errors} />
 					</FormItem>
@@ -212,7 +199,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						<FormLabel>
 							<Trans>Rotation</Trans>
 						</FormLabel>
-						<InputGroup>
+						<InputGroup fullWidth>
 							<FormControl
 								render={
 									<NumberInput
@@ -230,9 +217,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									/>
 								}
 							/>
-							<InputGroupAddon align="inline-end">
-								<InputGroupText>°</InputGroupText>
-							</InputGroupAddon>
+							<InputGroup.Suffix>°</InputGroup.Suffix>
 						</InputGroup>
 						<p className="text-xs text-ink-3">
 							<Trans>Rotation isn't supported by PDF rendering.</Trans>
@@ -248,7 +233,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Aspect ratio</Trans>
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<InputGroup>
+							<InputGroup fullWidth>
 								<FormControl
 									render={
 										<NumberInput
@@ -269,13 +254,13 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 
 							<ButtonGroup className="shrink-0">
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title={t({
+									aria-label={t({
 										comment: "Preset button for setting picture aspect ratio to square",
 										message: "Square",
 									})}
-									onClick={() => {
+									onPress={() => {
 										field.handleChange(1);
 										onAutoSave();
 									}}
@@ -283,13 +268,13 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="aspect-square min-h-3 min-w-3 border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title={t({
+									aria-label={t({
 										comment: "Preset button for setting picture aspect ratio to landscape orientation",
 										message: "Landscape",
 									})}
-									onClick={() => {
+									onPress={() => {
 										field.handleChange(1.5);
 										onAutoSave();
 									}}
@@ -297,13 +282,13 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="aspect-1.5/1 min-h-3 min-w-3 border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title={t({
+									aria-label={t({
 										comment: "Preset button for setting picture aspect ratio to portrait orientation",
 										message: "Portrait",
 									})}
-									onClick={() => {
+									onPress={() => {
 										field.handleChange(0.5);
 										onAutoSave();
 									}}
@@ -323,7 +308,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Border radius</Trans>
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<InputGroup>
+							<InputGroup fullWidth>
 								<FormControl
 									render={
 										<NumberInput
@@ -340,15 +325,15 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 										/>
 									}
 								/>
-								<InputGroupAddon align="inline-end">pt</InputGroupAddon>
+								<InputGroup.Suffix>pt</InputGroup.Suffix>
 							</InputGroup>
 
 							<ButtonGroup className="shrink-0">
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title="0pt"
-									onClick={() => {
+									aria-label="0pt"
+									onPress={() => {
 										field.handleChange(0);
 										onAutoSave();
 									}}
@@ -356,10 +341,10 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="size-3 rounded-none border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title="10pt"
-									onClick={() => {
+									aria-label="10pt"
+									onPress={() => {
 										field.handleChange(10);
 										onAutoSave();
 									}}
@@ -367,10 +352,10 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 									<div className="size-3 rounded-sm border border-accent" />
 								</Button>
 								<Button
-									size="icon"
+									isIconOnly
 									variant="secondary"
-									title="100pt"
-									onClick={() => {
+									aria-label="100pt"
+									onPress={() => {
 										field.handleChange(100);
 										onAutoSave();
 									}}
@@ -485,12 +470,38 @@ type PictureCropDialogProps = {
 	onUpload: (file: File) => void;
 };
 
+/** Runs `done(false)` once the Modal's exit fade (~300ms) has finished; Modal has no animation-complete callback. */
+function useAfterExit(open: boolean, done: (open: boolean) => void) {
+	const doneRef = useRef(done);
+	useEffect(() => {
+		doneRef.current = done;
+	});
+	useEffect(() => {
+		if (open) return;
+		const timer = setTimeout(() => doneRef.current(false), 300);
+		return () => clearTimeout(timer);
+	}, [open]);
+}
+
 function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCropDialogProps) {
 	// Closing keeps the picture in the cropper until the dialog has faded out.
 	const [shownCrop, onCropOpenChangeComplete] = useClosingValue(cropState);
+	const descriptionId = useId();
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
 	const [zoom, setZoom] = useState(1);
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+
+	// HeroUI's Modal has no animation-complete callback: wait out the exit fade before cleaning up.
+	useAfterExit(cropState !== null, (open) => {
+		if (!open) {
+			// The object URL is freed only once the cropper has gone; the next picture starts unzoomed.
+			if (shownCrop) URL.revokeObjectURL(shownCrop.imageSrc);
+			setCrop({ x: 0, y: 0 });
+			setZoom(1);
+			setCroppedAreaPixels(null);
+		}
+		onCropOpenChangeComplete(open);
+	});
 
 	const onConfirmCrop = async () => {
 		if (!cropState) return;
@@ -511,98 +522,96 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 	};
 
 	return (
-		<Dialog
-			open={cropState !== null}
+		<Modal.Backdrop
+			isOpen={cropState !== null}
 			onOpenChange={(open) => {
 				if (!open) onClose();
 			}}
-			onOpenChangeComplete={(open) => {
-				if (!open) {
-					// The object URL is freed only once the cropper has gone; the next picture starts unzoomed.
-					if (shownCrop) URL.revokeObjectURL(shownCrop.imageSrc);
-					setCrop({ x: 0, y: 0 });
-					setZoom(1);
-					setCroppedAreaPixels(null);
-				}
-				onCropOpenChangeComplete(open);
-			}}
 		>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Crop photo</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>Drag to reposition and use the slider to zoom before uploading.</Trans>
-					</DialogDescription>
-				</DialogHeader>
+			<Modal.Container size="sm">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Crop photo</Trans>
+						</Modal.Heading>
+						<p id={descriptionId} className="text-sm text-muted">
+							<Trans>Drag to reposition and use the slider to zoom before uploading.</Trans>
+						</p>
+					</Modal.Header>
+					<Modal.Body className="space-y-4">
+						{shownCrop && (
+							<div className="relative h-64 w-full overflow-hidden rounded-md bg-sunken ring-1 ring-line ring-inset">
+								<Cropper
+									image={shownCrop.imageSrc}
+									crop={crop}
+									zoom={zoom}
+									aspect={aspect}
+									onCropChange={setCrop}
+									onZoomChange={setZoom}
+									onCropComplete={(_, areaPixels) => {
+										setCroppedAreaPixels(areaPixels);
+									}}
+								/>
+							</div>
+						)}
 
-				{shownCrop && (
-					<div className="relative h-64 w-full overflow-hidden rounded-md bg-sunken ring-1 ring-line ring-inset">
-						<Cropper
-							image={shownCrop.imageSrc}
-							crop={crop}
-							zoom={zoom}
-							aspect={aspect}
-							onCropChange={setCrop}
-							onZoomChange={setZoom}
-							onCropComplete={(_, areaPixels) => {
-								setCroppedAreaPixels(areaPixels);
-							}}
-						/>
-					</div>
-				)}
-
-				<div className="space-y-2.5">
-					<div className="flex items-center justify-between">
-						<FormLabel className="mb-0">
-							<Trans>Zoom</Trans>
-						</FormLabel>
-						<span className="text-xs text-ink-3 tabular-nums">{zoom.toFixed(1)}×</span>
-					</div>
-					<div className="flex items-center gap-x-3">
-						<Icon name="magnifying-glass-minus" size={16} className="shrink-0 text-ink-3" />
-						<Slider
-							min={1}
-							max={3}
-							step={0.01}
-							value={[zoom]}
-							aria-label={t`Zoom`}
-							className="flex-1"
-							onValueChange={(value) => {
-								setZoom(Array.isArray(value) ? value[0] : value);
-							}}
-						/>
-						<Icon name="magnifying-glass-plus" size={16} className="shrink-0 text-ink-3" />
-					</div>
-				</div>
-
-				<DialogFooter className="flex-row flex-wrap justify-between">
-					<Button variant="secondary" onClick={onClose}>
-						<Trans>Cancel</Trans>
-					</Button>
-					<div className="flex flex-wrap gap-2">
-						<Button
-							variant="secondary"
-							onClick={() => {
-								if (!cropState) return;
-								onUpload(cropState.file);
-								onClose();
-							}}
-						>
-							<Trans>Skip and upload</Trans>
+						<div className="space-y-2.5">
+							<div className="flex items-center justify-between">
+								<FormLabel className="mb-0">
+									<Trans>Zoom</Trans>
+								</FormLabel>
+								<span className="text-xs text-ink-3 tabular-nums">{zoom.toFixed(1)}×</span>
+							</div>
+							<div className="flex items-center gap-x-3">
+								<Icon name="magnifying-glass-minus" size={16} className="shrink-0 text-ink-3" />
+								<Slider
+									minValue={1}
+									maxValue={3}
+									step={0.01}
+									value={zoom}
+									aria-label={t`Zoom`}
+									className="flex-1"
+									onChange={(value) => {
+										if (typeof value === "number") setZoom(value);
+									}}
+								>
+									<Slider.Track>
+										<Slider.Fill />
+										<Slider.Thumb />
+									</Slider.Track>
+								</Slider>
+								<Icon name="magnifying-glass-plus" size={16} className="shrink-0 text-ink-3" />
+							</div>
+						</div>
+					</Modal.Body>
+					<Modal.Footer className="flex-row flex-wrap justify-between">
+						<Button variant="secondary" onPress={onClose}>
+							<Trans>Cancel</Trans>
 						</Button>
-						<Button
-							onClick={() => {
-								void onConfirmCrop();
-							}}
-						>
-							<Trans>Crop and upload</Trans>
-						</Button>
-					</div>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+						<div className="flex flex-wrap gap-2">
+							<Button
+								variant="secondary"
+								onPress={() => {
+									if (!cropState) return;
+									onUpload(cropState.file);
+									onClose();
+								}}
+							>
+								<Trans>Skip and upload</Trans>
+							</Button>
+							<Button
+								onPress={() => {
+									void onConfirmCrop();
+								}}
+							>
+								<Trans>Crop and upload</Trans>
+							</Button>
+						</div>
+					</Modal.Footer>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
@@ -645,7 +654,7 @@ function ColorWidthFields(props: ColorWidthFieldsProps) {
 				{(field) => (
 					<FormItem className="flex-1" hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 						<FormLabel>{widthLabel}</FormLabel>
-						<InputGroup>
+						<InputGroup fullWidth>
 							<FormControl
 								render={
 									<NumberInput
@@ -661,9 +670,7 @@ function ColorWidthFields(props: ColorWidthFieldsProps) {
 									/>
 								}
 							/>
-							<InputGroupAddon align="inline-end">
-								<InputGroupText>pt</InputGroupText>
-							</InputGroupAddon>
+							<InputGroup.Suffix>pt</InputGroup.Suffix>
 						</InputGroup>
 					</FormItem>
 				)}

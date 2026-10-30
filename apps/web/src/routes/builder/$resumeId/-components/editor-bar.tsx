@@ -1,12 +1,13 @@
 import type { EditorMode } from "@/features/resume/editor/store";
+import { Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
-import { TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { DocumentMenu } from "./document-menu";
 import { useCurrentBuilderResumeSelector, useCurrentResume, useResumeStore } from "@/features/resume/builder/draft";
 import { useOpenIssueCount } from "@/features/resume/editor/check/use-check";
 import { DownloadButtons, EditorBarFrame } from "@/features/resume/editor/chrome/bar";
+import { useEditorMode } from "@/features/resume/editor/use-editor-mode";
 import { preloadDocumentExport, useResumeExport } from "@/features/resume/export/use-resume-export";
 
 type EditorBarProps = {
@@ -47,23 +48,30 @@ const MODE_ICONS = {
 } as const;
 
 function ModeTabs() {
+	const [current, setMode] = useEditorMode();
 	const issueCount = useOpenIssueCount();
 	const isPublic = useCurrentBuilderResumeSelector((resume) => resume.isPublic ?? false);
 	const labels: Record<EditorMode, string> = { write: t`Write`, design: t`Design`, check: t`Check`, share: t`Share` };
 
+	// Only the list sits in Tabs: React Aria renders everything inside Tabs a second time to collect the tabs.
 	return (
-		<TabsList aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
-			{(Object.keys(MODE_ICONS) as EditorMode[]).map((mode) => (
-				<TabsTrigger key={mode} value={mode} className="px-4">
-					<Icon name={MODE_ICONS[mode]} size={18} />
-					{labels[mode]}
-					{mode === "check" && <CheckBadge count={issueCount} />}
-					{mode === "share" && isPublic && (
-						<span className="size-1.5 rounded-full bg-accent" aria-hidden="true" title={t`Public`} />
-					)}
-				</TabsTrigger>
-			))}
-		</TabsList>
+		<Tabs selectedKey={current} onSelectionChange={(key) => setMode(String(key) as EditorMode)}>
+			<Tabs.ListContainer>
+				<Tabs.List aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
+					{(Object.keys(MODE_ICONS) as EditorMode[]).map((mode) => (
+						<Tabs.Tab key={mode} id={mode} className="px-4">
+							<Icon name={MODE_ICONS[mode]} size={18} />
+							{labels[mode]}
+							{mode === "check" && <CheckBadge count={issueCount} />}
+							{mode === "share" && isPublic && (
+								<span className="size-1.5 rounded-full bg-accent" aria-hidden="true" title={t`Public`} />
+							)}
+							<Tabs.Indicator />
+						</Tabs.Tab>
+					))}
+				</Tabs.List>
+			</Tabs.ListContainer>
+		</Tabs>
 	);
 }
 

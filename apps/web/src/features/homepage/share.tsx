@@ -1,9 +1,9 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { CSSProperties } from "react";
+import { Segment } from "@heroui-pro/react";
 import { t } from "@lingui/core/macro";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { cn } from "@rezumi/utils/style";
 import { SCENE, useLanding } from "./scroll";
 import { Sheet } from "./sheet";
@@ -175,24 +175,23 @@ export function Share() {
 							!active && "pointer-events-none",
 						)}
 					>
-						<SegmentedControl
+						<Segment
 							aria-label={t`Visibility`}
-							value={visibility}
-							onValueChange={(value) => setVisibility(value as number)}
-							className="h-auto rounded-sm border border-(--night-line) bg-(--night-fill) p-1"
+							selectedKey={visibility}
+							onSelectionChange={(key) => setVisibility(key as number)}
+							className="h-auto rounded-sm border border-(--night-line) bg-(--night-fill) p-1 [--segment:var(--night-ink)]"
 						>
 							{[t`Public`, t`Password`, t`Private`].map((label, index) => (
-								<label key={label} className="contents">
-									<SegmentedControlItem
-										value={index}
-										className="h-[34px] flex-none rounded-sm px-3.5 font-ui text-(--night-ink-2) duration-300 not-data-checked:hover:text-(--night-ink) data-checked:bg-(--night-ink) data-checked:text-(--night-on-ink) data-checked:shadow-none"
-									>
-										<Icon name={visibilityIcons[index] ?? "globe-hemisphere-west"} size={17} />
-										{label}
-									</SegmentedControlItem>
-								</label>
+								<Segment.Item
+									key={label}
+									id={index}
+									className="h-[34px] w-auto flex-none rounded-sm px-3.5 font-ui text-(--night-ink-2) duration-300 not-data-selected:hover:text-(--night-ink) data-selected:text-(--night-on-ink)"
+								>
+									<Icon name={visibilityIcons[index] ?? "globe-hemisphere-west"} size={17} />
+									{label}
+								</Segment.Item>
 							))}
-						</SegmentedControl>
+						</Segment>
 						<button
 							type="button"
 							onClick={copy}

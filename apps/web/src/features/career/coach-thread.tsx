@@ -3,18 +3,16 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { QueryClient } from "@tanstack/react-query";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
+import { Button, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { lazy, Suspense, useEffect, useId, useRef, useState } from "react";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { toast } from "@rezumi/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { formatFileSize } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "./hooks";
@@ -287,7 +285,11 @@ function ThreadSession(props: SessionProps) {
 					</p>
 				) : (
 					// Hidden for the first 150ms, so a quick read never flashes a spinner.
-					<Spinner className="transition-opacity delay-150 duration-standard ease-enter starting:opacity-0" />
+					<Spinner
+						size="md"
+						color="current"
+						className="transition-opacity delay-150 duration-standard ease-enter starting:opacity-0"
+					/>
 				)}
 			</div>
 		</div>
@@ -431,11 +433,11 @@ export function Composer(props: ComposerProps) {
 						<IconButton
 							icon="paperclip"
 							label={t`Attach a file`}
-							size="icon-sm"
-							disabled={props.disabled || uploading}
-							loading={uploading}
+							size="sm"
+							isDisabled={props.disabled || uploading}
+							isPending={uploading}
 							className="text-ink-2"
-							onClick={() => fileInput.current?.click()}
+							onPress={() => fileInput.current?.click()}
 						/>
 						<input
 							ref={fileInput}
@@ -445,21 +447,18 @@ export function Composer(props: ComposerProps) {
 							onChange={(event) => void upload(event.target.files)}
 						/>
 						<Tooltip>
-							<TooltipTrigger
-								render={
-									<Button
-										size="icon-sm"
-										aria-label={sendLabel}
-										disabled={!props.streaming && (props.disabled || uploading)}
-										onClick={props.streaming ? props.onStop : () => void submit()}
-										className="rounded-lg"
-									/>
-								}
+							<Button
+								isIconOnly
+								size="sm"
+								aria-label={sendLabel}
+								isDisabled={!props.streaming && (props.disabled || uploading)}
+								onPress={props.streaming ? props.onStop : () => void submit()}
+								className="rounded-lg"
 							>
 								{/* Stop is the one filled glyph: a solid square. */}
 								<Icon name={props.streaming ? "stop" : "arrow-up"} filled={props.streaming} size={18} />
-							</TooltipTrigger>
-							<TooltipContent>{sendLabel}</TooltipContent>
+							</Button>
+							<Tooltip.Content>{sendLabel}</Tooltip.Content>
 						</Tooltip>
 					</div>
 				</div>

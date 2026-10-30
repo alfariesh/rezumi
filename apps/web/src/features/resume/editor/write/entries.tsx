@@ -3,14 +3,12 @@ import type { Entry } from "./model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import type { ReactNode } from "react";
+import { Button, Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
-import { Button } from "@rezumi/ui/components/button";
 import { FormControl, FormDescription, FormItem, FormLabel } from "@rezumi/ui/components/form";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { PopoverTrigger } from "@rezumi/ui/components/popover";
-import { Slider } from "@rezumi/ui/components/slider";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
 import { MoreOptions, TextField, WebsiteField } from "./fields";
@@ -140,21 +138,24 @@ function Level({ entry, write }: FieldSetProps) {
 			<FormLabel>
 				<Trans>Level</Trans>
 			</FormLabel>
-			<FormControl
-				render={
-					<Slider
-						min={0}
-						max={5}
-						step={1}
-						value={[level]}
-						onValueChange={(value) =>
-							write("level", (target) => {
-								target.level = Array.isArray(value) ? value[0] : value;
-							})
-						}
-					/>
-				}
-			/>
+			<Slider
+				aria-label={t`Level`}
+				minValue={0}
+				maxValue={5}
+				step={1}
+				value={level}
+				onChange={(value) => {
+					if (typeof value !== "number") return;
+					write("level", (target) => {
+						target.level = value;
+					});
+				}}
+			>
+				<Slider.Track>
+					<Slider.Fill />
+					<Slider.Thumb />
+				</Slider.Track>
+			</Slider>
 			<FormDescription>{level === 0 ? t`Hidden` : `${level} / 5`}</FormDescription>
 		</FormItem>
 	);
@@ -182,16 +183,13 @@ function IconAndColor({ entry, write }: FieldSetProps) {
 					})
 				}
 				trigger={
-					<PopoverTrigger
-						aria-label={t`Icon color`}
-						className="flex h-9 items-center gap-2 rounded-lg border border-line-2 bg-raised px-2.5 text-sm"
-					>
+					<Button variant="secondary" size="sm">
 						<span
 							className="size-4 rounded-sm border border-line-2"
 							style={{ backgroundColor: str(values.iconColor) || "currentColor" }}
 						/>
 						<Trans>Icon color</Trans>
-					</PopoverTrigger>
+					</Button>
 				}
 			/>
 		</div>
@@ -218,26 +216,26 @@ function Roles({ entry, write, page }: FieldSetProps) {
 							<IconButton
 								icon="arrow-up"
 								label={t`Move role up`}
-								size="icon-sm"
-								disabled={index === 0}
-								onClick={() =>
+								size="sm"
+								isDisabled={index === 0}
+								onPress={() =>
 									writeRoles(`move-${role.id}`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))
 								}
 							/>
 							<IconButton
 								icon="arrow-down"
 								label={t`Move role down`}
-								size="icon-sm"
-								disabled={index === roles.length - 1}
-								onClick={() =>
+								size="sm"
+								isDisabled={index === roles.length - 1}
+								onPress={() =>
 									writeRoles(`move-${role.id}`, (list) => list.splice(index + 1, 0, ...list.splice(index, 1)))
 								}
 							/>
 							<IconButton
 								icon="trash"
 								label={t`Remove role`}
-								size="icon-sm"
-								onClick={() => writeRoles(`remove-${role.id}`, (list) => list.splice(index, 1))}
+								size="sm"
+								onPress={() => writeRoles(`remove-${role.id}`, (list) => list.splice(index, 1))}
 							/>
 						</div>
 					</div>
@@ -286,7 +284,7 @@ function Roles({ entry, write, page }: FieldSetProps) {
 				variant="secondary"
 				size="sm"
 				className="w-fit"
-				onClick={() =>
+				onPress={() =>
 					writeRoles("add", (list) => {
 						list.push({
 							id: generateId(),

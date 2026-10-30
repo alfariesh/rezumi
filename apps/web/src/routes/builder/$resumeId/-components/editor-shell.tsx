@@ -4,7 +4,6 @@ import { Trans } from "@lingui/react/macro";
 import { getRouteApi, Outlet } from "@tanstack/react-router";
 import { Suspense, useEffect } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Tabs, TabsContent } from "@rezumi/ui/components/tabs";
 import { cn } from "@rezumi/utils/style";
 import { DownloadSheet } from "./download-sheet";
 import { EditorBar } from "./editor-bar";
@@ -46,7 +45,7 @@ export function EditorShell() {
 	useResumeWebMcpTools(routeApi.useParams().resumeId);
 
 	return (
-		<Tabs value={mode} onValueChange={(value) => setMode(value as EditorMode)} className="contents">
+		<>
 			<EditorFrame
 				editorLayout={editorLayout}
 				bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
@@ -57,10 +56,10 @@ export function EditorShell() {
 				assistant={<ResumeAssistant />}
 				mobile={<MobileBody mode={mode} onModeChange={setMode} />}
 			>
-				<DownloadSheet />
 				<EditorHotkeys onModeChange={setMode} />
 			</EditorFrame>
-		</Tabs>
+			<DownloadSheet />
+		</>
 	);
 }
 
@@ -152,13 +151,9 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 					</Suspense>
 				)}
 				{view !== "page" && view !== "design" && (
-					<TabsContent
-						key={mode}
-						value={mode}
-						className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]"
-					>
+					<section key={mode} className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]">
 						<ModePanel mode={mode} />
-					</TabsContent>
+					</section>
 				)}
 			</div>
 

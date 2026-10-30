@@ -1,8 +1,7 @@
+import { Alert, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Alert, AlertDescription } from "@rezumi/ui/components/alert";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { useResumeStore } from "@/features/resume/builder/draft";
 import { ENTER_CLASS } from "@/libs/motion";
@@ -16,7 +15,7 @@ export function SaveStatus() {
 		<span role="status" aria-live="polite" className="flex min-w-0 items-center gap-1.5 text-xs leading-4 text-ink-3">
 			{status === "saving" && (
 				<>
-					<Spinner decorative className="size-3" />
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Saving…</Trans>
 				</>
 			)}
@@ -59,11 +58,17 @@ export function OfflineBanner({ className }: { className?: string }) {
 	if (!offline) return null;
 
 	return (
-		<Alert variant="warn" role="status" className={cn(ENTER_CLASS, className)}>
-			<Icon name="wifi-slash" size={20} />
-			<AlertDescription>
-				<Trans>You can keep editing. Changes sync when you're back online. Download and Share need a connection.</Trans>
-			</AlertDescription>
+		<Alert status="warning" role="status" className={cn(ENTER_CLASS, className)}>
+			<Alert.Indicator>
+				<Icon name="wifi-slash" size={20} />
+			</Alert.Indicator>
+			<Alert.Content>
+				<Alert.Description>
+					<Trans>
+						You can keep editing. Changes sync when you're back online. Download and Share need a connection.
+					</Trans>
+				</Alert.Description>
+			</Alert.Content>
 		</Alert>
 	);
 }

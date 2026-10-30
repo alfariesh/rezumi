@@ -1,10 +1,10 @@
 import type { CSSProperties } from "react";
+import { Segment } from "@heroui-pro/react";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { templateSchema } from "@rezumi/schema/templates";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { cn } from "@rezumi/utils/style";
 import { goToScene, SCENE, useLanding } from "./scroll";
 import { Sheet, sheetTemplates } from "./sheet";
@@ -56,7 +56,7 @@ export function Design() {
 	// On narrow screens the tab rail scrolls; keep the current look in view.
 	useEffect(() => {
 		const rail = railRef.current;
-		const checked = rail?.querySelector<HTMLElement>("[data-checked]");
+		const checked = rail?.querySelector<HTMLElement>("[data-selected=true]");
 		if (!rail || !checked || rail.scrollWidth <= rail.clientWidth) return;
 		rail.scrollTo({ left: checked.offsetLeft - rail.clientWidth / 2 + checked.offsetWidth / 2, behavior: "smooth" });
 	}, [step]);
@@ -180,28 +180,27 @@ export function Design() {
 					</span>
 				</div>
 
-				<SegmentedControl
+				<Segment
 					ref={railRef}
 					aria-label={t`Templates`}
-					value={step}
-					onValueChange={(value) => goToScene(SCENE.design, TEMPLATE_AT[value as number] ?? 0)}
+					selectedKey={step}
+					onSelectionChange={(key) => goToScene(SCENE.design, TEMPLATE_AT[key as number] ?? 0)}
 					inert={zoomed}
 					className={cn(
-						"blur-ok:backdrop-blur-[8px] absolute bottom-[5vh] left-1/2 flex h-auto max-w-[calc(100vw-2*var(--gutter))] -translate-x-1/2 scroll-px-1 [scrollbar-width:none] overflow-x-auto rounded-sm border border-line bg-[color-mix(in_oklch,var(--surface)_85%,transparent)] p-1 whitespace-nowrap opacity-[calc(1-var(--z)*2)] min-[900px]:bottom-[clamp(20px,5vh,44px)]",
+						"blur-ok:backdrop-blur-[8px] absolute bottom-[5vh] left-1/2 flex h-auto max-w-[calc(100vw-2*var(--gutter))] -translate-x-1/2 scroll-px-1 [scrollbar-width:none] overflow-x-auto rounded-sm border border-line bg-[color-mix(in_oklch,var(--surface)_85%,transparent)] p-1 whitespace-nowrap opacity-[calc(1-var(--z)*2)] [--segment:var(--ink)] min-[900px]:bottom-[clamp(20px,5vh,44px)]",
 						!active && "pointer-events-none",
 					)}
 				>
 					{templateNames.map((name, index) => (
-						<label key={name} className="contents">
-							<SegmentedControlItem
-								value={index}
-								className="h-8 flex-none rounded-sm px-3 font-ui duration-300 min-[900px]:px-[13px] data-checked:bg-ink data-checked:text-bg data-checked:shadow-none"
-							>
-								{name}
-							</SegmentedControlItem>
-						</label>
+						<Segment.Item
+							key={name}
+							id={index}
+							className="h-8 w-auto flex-none rounded-sm px-3 font-ui duration-300 min-[900px]:px-[13px] data-selected:text-bg"
+						>
+							{name}
+						</Segment.Item>
 					))}
-				</SegmentedControl>
+				</Segment>
 
 				<SceneCaption
 					number="02"

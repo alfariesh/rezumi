@@ -3,16 +3,13 @@ import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { ReactNode } from "react";
+import { Button, buttonVariants, Checkbox, Modal, Spinner, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { useId, useRef, useState } from "react";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
+import { useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -39,7 +36,7 @@ export function PrepareTab({ application, version, interview, now, go }: Workspa
 				<p className="max-w-[340px] text-sm text-ink-2">
 					<Trans>Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask.</Trans>
 				</p>
-				<Button variant="secondary" onClick={() => go("prepare", { edit: "interview" })}>
+				<Button variant="secondary" onPress={() => go("prepare", { edit: "interview" })}>
 					<Icon name="calendar-dot" size={18} />
 					<Trans>Add an interview</Trans>
 				</Button>
@@ -59,7 +56,7 @@ export function PrepareTab({ application, version, interview, now, go }: Workspa
 							Write down what they asked while it's fresh. The coach compares your answers with your stories.
 						</Trans>
 					</p>
-					<Button onClick={() => go("debrief")}>
+					<Button onPress={() => go("debrief")}>
 						<Trans>Start a debrief</Trans>
 					</Button>
 				</Notice>
@@ -105,10 +102,11 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 			) : provider ? (
 				<>
 					<Button
-						loading={generate.isPending}
-						disabled={!provider}
-						onClick={() => void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => {})}
+						isPending={generate.isPending}
+						isDisabled={!provider}
+						onPress={() => void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => {})}
 					>
+						{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
 						{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan my preparation</Trans>}
 					</Button>
 					<PrivacyLine className="max-w-[360px] text-start">
@@ -175,13 +173,13 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 				);
 			case "questions":
 				return (
-					<Button size="sm" variant="secondary" onClick={() => flash(questionsRef.current)}>
+					<Button size="sm" variant="secondary" onPress={() => flash(questionsRef.current)}>
 						<Trans>See below</Trans>
 					</Button>
 				);
 			case "practise":
 				return (
-					<Button size="sm" variant="secondary" onClick={() => go("practise", { speak: true })}>
+					<Button size="sm" variant="secondary" onPress={() => go("practise", { speak: true })}>
 						<Trans context="Button: rehearse interview answers">Practice</Trans>
 					</Button>
 				);
@@ -205,11 +203,11 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 						{/* The interview, posting or Knowledge changed since it was planned: plan again on request. */}
 						{briefing.outdated && !readOnly && provider && interview && (
 							<Button
-								variant="link"
+								variant="ghost"
 								size="sm"
-								className="font-sans text-[13px] tracking-normal normal-case"
-								loading={generate.isPending}
-								onClick={() =>
+								className="h-auto px-0 font-sans text-[13px] tracking-normal text-link normal-case underline-offset-4 hover:underline"
+								isPending={generate.isPending}
+								onPress={() =>
 									void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => undefined)
 								}
 							>
@@ -240,10 +238,16 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 							<Checkbox
 								className="mt-px"
 								aria-label={row.title}
-								disabled={readOnly}
-								checked={done(index)}
-								onCheckedChange={(checked) => ticks.toggle(String(index), checked)}
-							/>
+								isDisabled={readOnly}
+								isSelected={done(index)}
+								onChange={(checked) => ticks.toggle(String(index), checked)}
+							>
+								<Checkbox.Content>
+									<Checkbox.Control>
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+								</Checkbox.Content>
+							</Checkbox>
 							<span className="font-mono text-xs leading-5 font-medium text-ink-3">
 								<Trans>{row.minutes} min</Trans>
 							</span>
@@ -300,7 +304,7 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 							call.
 						</Trans>
 					</p>
-					<Button size="sm" variant="secondary" className="w-fit" onClick={() => setReading(true)}>
+					<Button size="sm" variant="secondary" className="w-fit" onPress={() => setReading(true)}>
 						<Trans>Read briefing</Trans>
 					</Button>
 				</div>
@@ -369,9 +373,9 @@ function RefreshSwitch({ application, interview }: RefreshSwitchProps) {
 			<SwitchRow
 				label={<span className="font-semibold">{label}</span>}
 				description={description}
-				checked={enabled}
-				disabled={save.isPending || (!available && !enabled)}
-				onCheckedChange={(checked) =>
+				isSelected={Boolean(enabled)}
+				isDisabled={save.isPending || (!available && !enabled)}
+				onChange={(checked) =>
 					save.mutate({
 						...(schedule ? { id: schedule.id } : {}),
 						kind: "prepare",
@@ -448,23 +452,26 @@ function BriefingNotes({ briefing }: { briefing: Briefing }) {
 	);
 }
 
-const FULL_SCREEN_ON_PHONES =
-	"max-sm:inset-s-0 max-sm:top-0 max-sm:h-dvh max-sm:max-h-none max-sm:max-w-none max-sm:translate-x-0 max-sm:translate-y-0 max-sm:rounded-none";
-
 type BriefingDialogProps = { briefing: Briefing; open: boolean; onOpenChange: (open: boolean) => void };
 
 function BriefingDialog({ briefing, open, onOpenChange }: BriefingDialogProps) {
+	const mobile = useBreakpoint() === "mobile";
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent closeLabel={t`Close`} className={cn("content-start sm:max-w-[560px]", FULL_SCREEN_ON_PHONES)}>
-				<DialogHeader>
-					<DialogTitle className="text-2xl leading-8">
-						<Trans>10-minute briefing</Trans>
-					</DialogTitle>
-				</DialogHeader>
-				<BriefingNotes briefing={briefing} />
-			</DialogContent>
-		</Dialog>
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size={mobile ? "full" : "md"}>
+				<Modal.Dialog className="sm:max-w-[560px]">
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>10-minute briefing</Trans>
+						</Modal.Heading>
+					</Modal.Header>
+					<Modal.Body>
+						<BriefingNotes briefing={briefing} />
+					</Modal.Body>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
@@ -521,7 +528,6 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 				: plural(-minutes, { one: "Started # minute ago", other: "Started # minutes ago" });
 	const rehearse = () => go("practise", { speak: true });
 	const rows = steps();
-	const id = useId();
 
 	if (mobile)
 		return (
@@ -543,25 +549,25 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 				{rows.map((row, index) => {
 					const on = ticks.ticked.includes(String(index));
 					return (
-						<label
+						<Checkbox
 							key={row.title}
-							htmlFor={`${id}-${index}`}
+							isSelected={on}
+							onChange={(checked) => ticks.toggle(String(index), checked)}
 							className={cn(
 								"flex min-h-14 cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 transition-colors duration-quick",
 								on ? "border-transparent bg-accent-soft" : "border-line bg-surface",
 							)}
 						>
-							<Checkbox
-								id={`${id}-${index}`}
-								className="size-[22px]"
-								checked={on}
-								onCheckedChange={(checked) => ticks.toggle(String(index), checked)}
-							/>
-							<span className="grid gap-0.5">
-								<span className={cn("text-[15px] font-semibold", on && "text-accent-text")}>{row.title}</span>
-								<span className="text-[13px] leading-[19px] text-ink-2">{row.short}</span>
-							</span>
-						</label>
+							<Checkbox.Content className="items-start gap-3">
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+								<span className="grid gap-0.5">
+									<span className={cn("text-[15px] font-semibold", on && "text-accent-text")}>{row.title}</span>
+									<span className="text-[13px] leading-[19px] text-ink-2">{row.short}</span>
+								</span>
+							</Checkbox.Content>
+						</Checkbox>
 					);
 				})}
 				{briefing?.data.opening && (
@@ -575,11 +581,11 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 				{/* The workspace is full screen on phones (no app tab bar), so the bar pads for the safe area itself. */}
 				<div className="sticky bottom-0 -mx-4 mt-3 -mb-6 flex gap-2 border-t border-line bg-surface px-4 pt-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
 					{briefing && (
-						<Button variant="secondary" className="h-12 flex-1 rounded-lg text-[15px]" onClick={() => setReading(true)}>
+						<Button variant="secondary" className="h-12 flex-1 rounded-lg text-[15px]" onPress={() => setReading(true)}>
 							<Trans>Briefing</Trans>
 						</Button>
 					)}
-					<Button className="h-12 flex-[1.4] rounded-lg text-[15px]" onClick={rehearse}>
+					<Button className="h-12 flex-[1.4] rounded-lg text-[15px]" onPress={rehearse}>
 						<Icon name="microphone" size={22} />
 						<Trans>Rehearse aloud</Trans>
 					</Button>
@@ -620,37 +626,37 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 					{rows.map((row, index) => {
 						const on = ticks.ticked.includes(String(index));
 						return (
-							<label
+							<Checkbox
 								key={row.title}
-								htmlFor={`${id}-${index}`}
+								isSelected={on}
+								onChange={(checked) => ticks.toggle(String(index), checked)}
 								className={cn(
 									"flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-quick",
 									on ? "bg-accent-soft" : "bg-bg",
 								)}
 							>
-								<Checkbox
-									id={`${id}-${index}`}
-									className="mt-px"
-									checked={on}
-									onCheckedChange={(checked) => ticks.toggle(String(index), checked)}
-								/>
-								<span className="grid min-w-0 flex-1 gap-0.5">
-									<span
-										className={cn("text-sm font-semibold transition-colors duration-quick", on && "text-accent-text")}
-									>
-										{row.title}
+								<Checkbox.Content className="w-full items-start gap-3">
+									<Checkbox.Control className="mt-px">
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span className="grid min-w-0 flex-1 gap-0.5">
+										<span
+											className={cn("text-sm font-semibold transition-colors duration-quick", on && "text-accent-text")}
+										>
+											{row.title}
+										</span>
+										<span className="text-[13px] leading-[19px] text-ink-2">{row.detail}</span>
 									</span>
-									<span className="text-[13px] leading-[19px] text-ink-2">{row.detail}</span>
-								</span>
-								<span className="ms-auto font-mono text-xs font-medium whitespace-nowrap text-ink-3">
-									<Trans>{row.minutes} min</Trans>
-								</span>
-							</label>
+									<span className="ms-auto font-mono text-xs font-medium whitespace-nowrap text-ink-3">
+										<Trans>{row.minutes} min</Trans>
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
 						);
 					})}
 				</div>
 
-				<Button className="h-10 w-fit px-4" onClick={rehearse}>
+				<Button className="w-fit" onPress={rehearse}>
 					<Icon name="microphone" size={20} />
 					<Trans>Rehearse one answer aloud</Trans>
 				</Button>

@@ -1,12 +1,12 @@
 import type { Application } from "../../types";
 import type { IconName } from "@rezumi/ui/components/icon";
+import { Button, buttonVariants, Card } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { PIPELINE } from "../../stages";
 import { useInvalidateApplications } from "../../use-application-actions";
@@ -33,14 +33,14 @@ type SentDocumentRowProps = {
 
 function SentDocumentRow({ icon, name, status, children }: SentDocumentRowProps) {
 	return (
-		<div className="flex items-center gap-2.5 rounded-xl border border-line p-3">
-			<Icon name={icon} className="shrink-0 text-ink-2" />
+		<Card variant="secondary" className="flex-row items-center gap-2.5 rounded-2xl p-3">
+			<Icon name={icon} className="shrink-0 text-muted" />
 			<div className="grid min-w-0 flex-1">
 				<span className="truncate text-sm font-medium">{name}</span>
-				<span className="text-xs text-ink-3">{status}</span>
+				<span className="text-xs text-muted">{status}</span>
 			</div>
 			{children}
-		</div>
+		</Card>
 	);
 }
 
@@ -87,7 +87,7 @@ export function SentDocuments({ application, disabled }: SentDocumentsProps) {
 
 	return (
 		<section aria-labelledby="application-sent" className="grid gap-2">
-			<h3 id="application-sent" className="text-xs font-semibold text-ink-3">
+			<h3 id="application-sent" className="text-xs font-semibold text-muted">
 				{application.status === "saved" ? <Trans>Documents for this job</Trans> : <Trans>What you sent</Trans>}
 			</h3>
 
@@ -148,8 +148,8 @@ export function SentDocuments({ application, disabled }: SentDocumentsProps) {
 					{!application.resumeId && (
 						<Button
 							size="sm"
-							disabled={disabled}
-							onClick={() => openDialog("document.new", { step: "copy", applicationId: application.id })}
+							isDisabled={disabled}
+							onPress={() => openDialog("document.new", { step: "copy", applicationId: application.id })}
 						>
 							<Icon name="copy" size={16} />
 							<Trans>Prepare a resume</Trans>
@@ -159,8 +159,8 @@ export function SentDocuments({ application, disabled }: SentDocumentsProps) {
 						<Button
 							size="sm"
 							variant="secondary"
-							disabled={disabled || createLetter.isPending}
-							onClick={() => void writeLetter()}
+							isDisabled={disabled || createLetter.isPending}
+							onPress={() => void writeLetter()}
 						>
 							<Icon name="envelope-simple" size={16} />
 							<Trans>Write a letter</Trans>
@@ -206,7 +206,7 @@ export function SentDocuments({ application, disabled }: SentDocumentsProps) {
 				<button
 					type="button"
 					onClick={() => setAttaching(true)}
-					className="w-fit text-xs text-ink-3 underline underline-offset-2 hover:text-ink-2"
+					className="w-fit text-xs text-muted underline underline-offset-2 hover:text-muted"
 				>
 					<Trans>Attach a file instead</Trans>
 				</button>

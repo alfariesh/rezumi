@@ -1,8 +1,7 @@
 import type { PdfAtsReport, PdfCategory, PdfCategoryScore } from "@rezumi/resume/ats-pdf";
+import { Accordion, Chip } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMemo } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@rezumi/ui/components/accordion";
-import { Badge } from "@rezumi/ui/components/badge";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { getPdfCategoryDescription, getPdfCategoryLabel } from "../messages";
@@ -50,7 +49,7 @@ export function AtsPdfReportView({ report, className }: ReportViewProps) {
 				</p>
 			)}
 
-			<Accordion defaultValue={openCategories} className="rounded-md border px-3">
+			<Accordion allowsMultipleExpanded defaultExpandedKeys={openCategories} className="rounded-md border px-3">
 				{report.categories.map((category) => (
 					<CategorySection
 						key={category.category}
@@ -81,45 +80,50 @@ type CategorySectionProps = {
 
 function CategorySection({ category, findings }: CategorySectionProps) {
 	return (
-		<AccordionItem value={category.category}>
-			<AccordionTrigger>
-				<span className="flex min-w-0 flex-1 items-center gap-2 pe-2">
-					<span className="min-w-0 truncate">{getPdfCategoryLabel(category.category)}</span>
-					<Badge variant="neutral" className="shrink-0 tabular-nums">
-						<span className={categoryTone(category.score)}>{category.score}</span>
-					</Badge>
-					{findings.length > 0 && (
-						<span className="shrink-0 text-xs font-normal text-ink-3">
-							<Trans>{findings.length} to fix</Trans>
-						</span>
+		<Accordion.Item id={category.category}>
+			<Accordion.Heading>
+				<Accordion.Trigger>
+					<span className="flex min-w-0 flex-1 items-center gap-2 pe-2">
+						<span className="min-w-0 truncate">{getPdfCategoryLabel(category.category)}</span>
+						<Chip size="sm" variant="soft" className="shrink-0 tabular-nums">
+							<span className={categoryTone(category.score)}>{category.score}</span>
+						</Chip>
+						{findings.length > 0 && (
+							<span className="shrink-0 text-xs font-normal text-ink-3">
+								<Trans>{findings.length} to fix</Trans>
+							</span>
+						)}
+					</span>
+					<Accordion.Indicator />
+				</Accordion.Trigger>
+			</Accordion.Heading>
+
+			<Accordion.Panel>
+				<Accordion.Body className="space-y-3">
+					<p className="text-xs leading-normal text-ink-3">
+						{getPdfCategoryDescription(category.category)}{" "}
+						<Trans>
+							{category.passedChecks} of {category.applicableChecks} applicable checks passed.
+						</Trans>
+					</p>
+
+					{findings.length === 0 ? (
+						<div className="flex items-center gap-2 rounded-md border border-dashed p-2.5">
+							<Icon name="check-circle" size={16} className="shrink-0 text-accent-text" />
+							<span className="text-xs leading-normal text-ink-3">
+								<Trans>Nothing to fix here.</Trans>
+							</span>
+						</div>
+					) : (
+						<ul className="space-y-2">
+							{findings.map((finding) => (
+								<FindingRow key={finding.code} finding={finding} />
+							))}
+						</ul>
 					)}
-				</span>
-			</AccordionTrigger>
-
-			<AccordionContent className="space-y-3">
-				<p className="text-xs leading-normal text-ink-3">
-					{getPdfCategoryDescription(category.category)}{" "}
-					<Trans>
-						{category.passedChecks} of {category.applicableChecks} applicable checks passed.
-					</Trans>
-				</p>
-
-				{findings.length === 0 ? (
-					<div className="flex items-center gap-2 rounded-md border border-dashed p-2.5">
-						<Icon name="check-circle" size={16} className="shrink-0 text-accent-text" />
-						<span className="text-xs leading-normal text-ink-3">
-							<Trans>Nothing to fix here.</Trans>
-						</span>
-					</div>
-				) : (
-					<ul className="space-y-2">
-						{findings.map((finding) => (
-							<FindingRow key={finding.code} finding={finding} />
-						))}
-					</ul>
-				)}
-			</AccordionContent>
-		</AccordionItem>
+				</Accordion.Body>
+			</Accordion.Panel>
+		</Accordion.Item>
 	);
 }
 
@@ -130,34 +134,39 @@ type WritingSectionProps = {
 /** Unscored advice, kept visually separate so nobody reads it as part of the number above. */
 function WritingSection({ tips }: WritingSectionProps) {
 	return (
-		<AccordionItem value="content">
-			<AccordionTrigger>
-				<span className="flex min-w-0 flex-1 items-center gap-2 pe-2">
-					<span className="min-w-0 truncate">{getPdfCategoryLabel("content")}</span>
-					<Badge variant="outline" className="shrink-0 font-normal">
-						<Trans>Not scored</Trans>
-					</Badge>
-				</span>
-			</AccordionTrigger>
+		<Accordion.Item id="content">
+			<Accordion.Heading>
+				<Accordion.Trigger>
+					<span className="flex min-w-0 flex-1 items-center gap-2 pe-2">
+						<span className="min-w-0 truncate">{getPdfCategoryLabel("content")}</span>
+						<Chip size="sm" variant="secondary" className="shrink-0 font-normal">
+							<Trans>Not scored</Trans>
+						</Chip>
+					</span>
+					<Accordion.Indicator />
+				</Accordion.Trigger>
+			</Accordion.Heading>
 
-			<AccordionContent className="space-y-3">
-				<p className="text-xs leading-normal text-ink-3">{getPdfCategoryDescription("content")}</p>
+			<Accordion.Panel>
+				<Accordion.Body className="space-y-3">
+					<p className="text-xs leading-normal text-ink-3">{getPdfCategoryDescription("content")}</p>
 
-				{tips.length === 0 ? (
-					<div className="flex items-center gap-2 rounded-md border border-dashed p-2.5">
-						<Icon name="check-circle" size={16} className="shrink-0 text-accent-text" />
-						<span className="text-xs leading-normal text-ink-3">
-							<Trans>Nothing to suggest.</Trans>
-						</span>
-					</div>
-				) : (
-					<ul className="space-y-2">
-						{tips.map((tip) => (
-							<FindingRow key={tip.code} finding={tip} />
-						))}
-					</ul>
-				)}
-			</AccordionContent>
-		</AccordionItem>
+					{tips.length === 0 ? (
+						<div className="flex items-center gap-2 rounded-md border border-dashed p-2.5">
+							<Icon name="check-circle" size={16} className="shrink-0 text-accent-text" />
+							<span className="text-xs leading-normal text-ink-3">
+								<Trans>Nothing to suggest.</Trans>
+							</span>
+						</div>
+					) : (
+						<ul className="space-y-2">
+							{tips.map((tip) => (
+								<FindingRow key={tip.code} finding={tip} />
+							))}
+						</ul>
+					)}
+				</Accordion.Body>
+			</Accordion.Panel>
+		</Accordion.Item>
 	);
 }

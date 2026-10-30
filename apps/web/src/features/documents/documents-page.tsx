@@ -1,29 +1,29 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
+import { ActionBar, EmptyState, Segment } from "@heroui-pro/react";
+import {
+	Button,
+	Chip,
+	Dropdown,
+	InputGroup,
+	Kbd,
+	Label,
+	Separator,
+	Skeleton,
+	Tabs,
+	Tag,
+	TagGroup,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
+import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@rezumi/ui/components/input-group";
-import { Kbd } from "@rezumi/ui/components/kbd";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Tabs, TabsCount, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { cn } from "@rezumi/utils/style";
 import { LinkApplicationDialog, TagsDialog, useBatchActions } from "./document-actions";
-import { DocumentCard, DocumentRow } from "./document-card";
+import { DocumentCard } from "./document-card";
+import { DocumentList, documentKey } from "./document-list";
 import { collectTags, filterDocuments } from "./filter";
 import { LibraryError } from "./library-error";
 import { useStartDocument } from "./use-start-document";
@@ -105,6 +105,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 	const selection = shown.filter((document) => selected.has(documentKey(document)));
 	const selecting = selection.length > 0;
 	const allSelected = selecting && selection.length === shown.length;
+	const selectedShown = new Set(selection.map(documentKey));
 	const setSelectedFor = (document: DocumentSummary, on: boolean) =>
 		setSelected((current) => {
 			const next = new Set(current);
@@ -131,29 +132,35 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 			<PageHeader title={<Trans>Documents</Trans>}>
 				{!failed && !firstRun && (
 					<>
-						<Tabs value={search.type} onValueChange={(type) => onSearchChange({ type: type as DocumentTypeFilter })}>
-							<TabsList variant="line" aria-label={t`Document type`}>
-								<TabsTrigger value="all">
-									<Trans>All</Trans>
-									<TabsCount>{counts.all}</TabsCount>
-								</TabsTrigger>
-								<TabsTrigger value="resume">
-									<Trans>Resumes</Trans>
-									<TabsCount>{counts.resume}</TabsCount>
-								</TabsTrigger>
-								<TabsTrigger value="letter">
-									<Trans>Letters</Trans>
-									<TabsCount>{counts.letter}</TabsCount>
-								</TabsTrigger>
-							</TabsList>
+						<Tabs
+							selectedKey={search.type}
+							onSelectionChange={(type) => onSearchChange({ type: String(type) as DocumentTypeFilter })}
+							variant="secondary"
+						>
+							<Tabs.ListContainer>
+								<Tabs.List aria-label={t`Document type`}>
+									<Tabs.Tab id="all">
+										<Trans>All</Trans> <span className="text-xs text-muted tabular-nums">{counts.all}</span>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									<Tabs.Tab id="resume">
+										<Trans>Resumes</Trans> <span className="text-xs text-muted tabular-nums">{counts.resume}</span>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									<Tabs.Tab id="letter">
+										<Trans>Letters</Trans> <span className="text-xs text-muted tabular-nums">{counts.letter}</span>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+								</Tabs.List>
+							</Tabs.ListContainer>
 						</Tabs>
 
 						<div className="ms-auto flex flex-wrap items-center gap-2 max-sm:ms-0 max-sm:w-full">
 							<InputGroup className="w-60 max-sm:w-full">
-								<InputGroupAddon>
+								<InputGroup.Prefix>
 									<Icon name="magnifying-glass" size={18} />
-								</InputGroupAddon>
-								<InputGroupInput
+								</InputGroup.Prefix>
+								<InputGroup.Input
 									ref={searchRef}
 									type="search"
 									value={search.q}
@@ -161,9 +168,9 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 									placeholder={t`Search`}
 									onChange={(event) => onSearchChange({ q: event.target.value })}
 								/>
-								<InputGroupAddon align="inline-end" className="max-sm:hidden pointer-coarse:hidden">
+								<InputGroup.Suffix className="max-sm:hidden pointer-coarse:hidden">
 									<Kbd>/</Kbd>
-								</InputGroupAddon>
+								</InputGroup.Suffix>
 							</InputGroup>
 							<div className="w-[150px]">
 								<NativeSelect
@@ -176,18 +183,18 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 									<option value="created">{t`Created`}</option>
 								</NativeSelect>
 							</div>
-							<SegmentedControl
+							<Segment
 								aria-label={t`View`}
-								value={view}
-								onValueChange={(next) => setView(next as "grid" | "list")}
+								selectedKey={view}
+								onSelectionChange={(next) => setView(next as "grid" | "list")}
 							>
-								<SegmentedControlItem value="grid" aria-label={t`Grid`}>
+								<Segment.Item id="grid" aria-label={t`Grid`}>
 									<Icon name="squares-four" size={18} />
-								</SegmentedControlItem>
-								<SegmentedControlItem value="list" aria-label={t`List`}>
+								</Segment.Item>
+								<Segment.Item id="list" aria-label={t`List`}>
 									<Icon name="list-dashes" size={18} />
-								</SegmentedControlItem>
-							</SegmentedControl>
+								</Segment.Item>
+							</Segment>
 						</div>
 					</>
 				)}
@@ -213,80 +220,48 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 					{isPending ? (
 						<LibrarySkeleton view={view} />
 					) : shown.length === 0 ? (
-						<div className="grid justify-items-center gap-2 py-16 text-center">
-							<Icon name="magnifying-glass" size={28} className="text-ink-3" />
-							<p className="font-semibold">
-								{search.q.trim() ? (
-									<Trans>Nothing matches “{search.q.trim()}”</Trans>
-								) : (
-									<Trans>Nothing matches these filters</Trans>
-								)}
-							</p>
-							<p className="text-sm text-ink-2">
-								<Trans>Search covers titles, tags and linked applications.</Trans>
-							</p>
+						<EmptyState className="py-16">
+							<EmptyState.Header>
+								<EmptyState.Media variant="icon">
+									<Icon name="magnifying-glass" size={22} />
+								</EmptyState.Media>
+								<EmptyState.Title>
+									{search.q.trim() ? (
+										<Trans>Nothing matches “{search.q.trim()}”</Trans>
+									) : (
+										<Trans>Nothing matches these filters</Trans>
+									)}
+								</EmptyState.Title>
+								<EmptyState.Description className="max-w-xs text-pretty">
+									<Trans>Search covers titles, tags and linked applications.</Trans>
+								</EmptyState.Description>
+							</EmptyState.Header>
 							{filtered && (
-								<Button
-									variant="secondary"
-									className="mt-2"
-									onClick={() => onSearchChange({ q: "", tags: [], type: "all", public: false })}
-								>
-									<Trans>Clear search and filters</Trans>
-								</Button>
+								<EmptyState.Content>
+									<Button
+										size="sm"
+										variant="secondary"
+										onPress={() => onSearchChange({ q: "", tags: [], type: "all", public: false })}
+									>
+										<Trans>Clear search and filters</Trans>
+									</Button>
+								</EmptyState.Content>
 							)}
-						</div>
+						</EmptyState>
 					) : view === "list" ? (
-						<table className={cn("w-full table-fixed border-collapse", viewEnter)}>
-							<caption className="sr-only">
-								<Trans>Documents</Trans>
-							</caption>
-							<thead>
-								<tr className="border-b border-line text-start text-xs font-medium text-ink-3">
-									<th className="w-10 ps-3">
-										<Checkbox
-											checked={allSelected}
-											indeterminate={selecting && !allSelected}
-											onCheckedChange={(on) => selectAll(on)}
-											aria-label={t`Select all`}
-										/>
-									</th>
-									<th className="h-10 ps-3 text-start font-medium">
-										<Trans>Name</Trans>
-									</th>
-									<th className="w-24 px-2 text-start font-medium max-sm:hidden">
-										<Trans>Type</Trans>
-									</th>
-									<th className="w-1/4 px-2 text-start font-medium max-sm:hidden">
-										<Trans>Application</Trans>
-									</th>
-									<th className="w-28 px-2 text-start font-medium max-sm:w-24">
-										<Trans>Edited</Trans>
-									</th>
-									<th className="w-12">
-										<span className="sr-only">
-											<Trans>Options</Trans>
-										</span>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{shown.map((document, index) => (
-									<DocumentRow
-										key={documentKey(document)}
-										document={document}
-										introIndex={intro ? index : undefined}
-										{...itemProps(document)}
-									/>
-								))}
-							</tbody>
-						</table>
+						<DocumentList
+							documents={shown}
+							label={t`Documents`}
+							className={viewEnter || undefined}
+							onTags={(document) => setTagsFor([document])}
+							onLink={setLinkFor}
+							selected={selectedShown}
+							onSelectedChange={(keys) => setSelected(keys)}
+							sort={search.sort}
+							onSortChange={(sort) => onSearchChange({ sort })}
+						/>
 					) : (
-						<div
-							className={cn(
-								"grid grid-cols-[repeat(auto-fill,minmax(180px,204px))] gap-x-7 gap-y-[22px] max-sm:grid-cols-2 max-sm:gap-4",
-								viewEnter,
-							)}
-						>
+						<div className={cn(GRID_CLASS, viewEnter)}>
 							{shown.map((document, index) => (
 								<DocumentCard
 									key={documentKey(document)}
@@ -314,9 +289,8 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 	);
 }
 
-const documentKey = (document: DocumentSummary) => `${document.type}:${document.id}`;
-
 const VIEW_KEY = "documents-view";
+const GRID_CLASS = "grid grid-cols-[repeat(auto-fill,minmax(184px,1fr))] gap-4 max-sm:grid-cols-2 max-sm:gap-3";
 // Longest stagger (150ms) plus the D2 entrance (200ms), with room to spare: then the intro classes come off.
 const INTRO_MS = 400;
 
@@ -343,38 +317,40 @@ function FirstRun({ onChooseFile }: { onChooseFile: () => void }) {
 
 	return (
 		<section className="grid max-w-xl gap-4 pt-4 transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0">
-			<h2 className="font-display text-[26px] leading-8 font-medium">
+			<h2 className="text-2xl font-semibold text-foreground">
 				<Trans>Let's start with what you have</Trans>
 			</h2>
-			<p className="leading-6 text-ink-2">
+			<p className="leading-6 text-muted">
 				<Trans>
 					Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your
 					name. Build from there.
 				</Trans>
 			</p>
-			<div className="flex flex-wrap items-center gap-3 rounded-xl border-[1.5px] border-dashed border-line-2 p-5">
-				<Icon name="file-arrow-up" size={24} className="text-ink-2" />
-				<span className="flex-1 text-sm text-ink-2">
+			<div className="flex flex-wrap items-center gap-3 rounded-2xl border border-dashed border-border p-5">
+				<Icon name="file-arrow-up" size={24} className="text-muted" />
+				<span className="flex-1 text-sm text-muted">
 					<Trans>Drop a PDF, Word or JSON file</Trans>
 				</span>
-				<Button onClick={onChooseFile}>
+				<Button onPress={onChooseFile}>
 					<Trans>Choose a file</Trans>
 				</Button>
 			</div>
 			<div className="flex flex-wrap gap-4 text-sm">
 				<Button
-					variant="link"
-					disabled={creating}
-					className="text-ink-2 underline underline-offset-2 hover:text-ink pointer-coarse:min-h-11"
-					onClick={() => void startBlank()}
+					variant="ghost"
+					size="sm"
+					isDisabled={creating}
+					className="h-auto px-0 text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
+					onPress={() => void startBlank()}
 				>
 					<Trans>Start blank</Trans>
 				</Button>
 				<Button
-					variant="link"
-					disabled={creating}
-					className="text-ink-2 underline underline-offset-2 hover:text-ink pointer-coarse:min-h-11"
-					onClick={() => void trySample()}
+					variant="ghost"
+					size="sm"
+					isDisabled={creating}
+					className="h-auto px-0 text-link underline-offset-4 hover:underline pointer-coarse:min-h-11"
+					onPress={() => void trySample()}
 				>
 					<Trans>Try a sample</Trans>
 				</Button>
@@ -393,44 +369,39 @@ type TagFilterProps = {
 	onPublicChange: (publicOnly: boolean) => void;
 };
 
-const chipClassName = (isActive: boolean) =>
-	cn(
-		"min-h-7 rounded-sm border px-3 text-[13px] transition-[background-color,border-color,color,scale] duration-quick ease-enter active:scale-[0.97] pointer-coarse:min-h-11",
-		isActive ? "border-accent bg-accent-soft text-accent-text" : "border-line-2 text-ink-2 hover:bg-hover",
-	);
+// Public shares the chip row with the tags; its key can't clash with a tag's.
+const PUBLIC_KEY = "public:";
+const tagKey = (tag: string) => `tag:${tag}`;
 
 function TagFilter({ tags, active, onChange, showPublic, publicOnly, onPublicChange }: TagFilterProps) {
+	const selectedKeys = new Set([...(publicOnly ? [PUBLIC_KEY] : []), ...active.map(tagKey)]);
+
 	return (
-		<fieldset className="m-0 flex flex-wrap gap-1.5 border-0 p-0">
-			<legend className="sr-only">
-				<Trans>Filter by tag</Trans>
-			</legend>
-			{showPublic && (
-				<button
-					type="button"
-					aria-pressed={publicOnly}
-					onClick={() => onPublicChange(!publicOnly)}
-					className={cn(chipClassName(publicOnly), "inline-flex items-center gap-1")}
-				>
-					<Icon name="globe" size={14} />
-					<Trans>Public</Trans>
-				</button>
-			)}
-			{tags.map((tag) => {
-				const isActive = active.includes(tag);
-				return (
-					<button
-						key={tag}
-						type="button"
-						aria-pressed={isActive}
-						onClick={() => onChange(isActive ? active.filter((known) => known !== tag) : [...active, tag])}
-						className={chipClassName(isActive)}
-					>
+		<TagGroup
+			aria-label={t`Filter by tag`}
+			selectionMode="multiple"
+			selectedKeys={selectedKeys}
+			onSelectionChange={(keys) => {
+				const next = keys === "all" ? new Set([PUBLIC_KEY, ...tags.map(tagKey)]) : new Set([...keys].map(String));
+				if (next.has(PUBLIC_KEY) !== publicOnly) onPublicChange(!publicOnly);
+				const nextTags = tags.filter((tag) => next.has(tagKey(tag)));
+				if (nextTags.length !== active.length || nextTags.some((tag) => !active.includes(tag))) onChange(nextTags);
+			}}
+		>
+			<TagGroup.List className="flex-wrap">
+				{showPublic && (
+					<Tag id={PUBLIC_KEY} textValue={t`Public`}>
+						<Icon name="globe" size={14} />
+						<Trans>Public</Trans>
+					</Tag>
+				)}
+				{tags.map((tag) => (
+					<Tag key={tag} id={tagKey(tag)} textValue={tag}>
 						#{tag}
-					</button>
-				);
-			})}
-		</fieldset>
+					</Tag>
+				))}
+			</TagGroup.List>
+		</TagGroup>
 	);
 }
 
@@ -458,76 +429,101 @@ function SelectionBar({ selection, allSelected, onSelectAll, onClear, onTags }: 
 	};
 
 	return (
-		<div
-			role="toolbar"
-			aria-label={t`Selected documents`}
-			aria-hidden={count === 0}
-			inert={count === 0}
-			className={cn(
-				"fixed inset-x-0 bottom-6 z-30 mx-auto flex w-fit max-w-[calc(100vw-32px)] items-center gap-1 rounded-xl border border-line bg-raised p-1.5 shadow-e3 transition-[opacity,translate] duration-standard ease-enter max-sm:bottom-4",
-				count === 0 && "pointer-events-none translate-y-2 opacity-0",
-			)}
-		>
-			<span className="px-2 text-sm font-semibold whitespace-nowrap" aria-live="polite">
-				<Trans>{count} selected</Trans>
-			</span>
-			{!allSelected && (
-				<Button variant="ghost" size="sm" onClick={onSelectAll} className="max-sm:hidden">
-					<Trans>Select all</Trans>
+		<ActionBar aria-label={t`Selected documents`} isOpen={count > 0}>
+			<ActionBar.Prefix>
+				<Chip size="sm" variant="soft" className="whitespace-nowrap tabular-nums" aria-live="polite">
+					<Plural value={count} one="# selected" other="# selected" />
+				</Chip>
+				{!allSelected && (
+					<Button variant="ghost" size="sm" onPress={onSelectAll} className="max-sm:hidden">
+						<Trans>Select all</Trans>
+					</Button>
+				)}
+			</ActionBar.Prefix>
+			<Separator orientation="vertical" className="h-5" />
+
+			<ActionBar.Content>
+				<Button variant="ghost" size="sm" isDisabled={busy} aria-label={t`Tags`} onPress={onTags}>
+					<Icon name="tag" />
+					<span className="action-bar__label">
+						<Trans>Tags</Trans>
+					</span>
 				</Button>
-			)}
-			<Button variant="ghost" size="sm" disabled={busy} onClick={onTags}>
-				<Icon name="tag" />
-				<span className="max-sm:sr-only">
-					<Trans>Tags</Trans>
-				</span>
-			</Button>
-			<DropdownMenu>
-				<DropdownMenuTrigger
-					render={
-						<Button variant="ghost" size="sm" disabled={busy}>
-							<Icon name="globe" />
-							<span className="max-sm:sr-only">
-								<Trans>Sharing</Trans>
-							</span>
-							<Icon name="caret-down" size={14} />
-						</Button>
-					}
-				/>
-				<DropdownMenuContent side="top" align="center" className="w-48">
-					<DropdownMenuItem onClick={() => void run(() => batch.setPublic(selection, true))}>
+				<Dropdown>
+					<Button variant="ghost" size="sm" isDisabled={busy} aria-label={t`Sharing`}>
 						<Icon name="globe" />
-						<Trans>Make public</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void run(() => batch.setPublic(selection, false))}>
-						<Icon name="eye-slash" />
-						<Trans>Make private</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={() => void run(() => batch.setLocked(selection, true))}>
-						<Icon name="lock" />
-						<Trans>Lock editing</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void run(() => batch.setLocked(selection, false))}>
-						<Icon name="lock-open" />
-						<Trans>Unlock</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
-			<Button
-				variant="ghost"
-				size="sm"
-				disabled={busy}
-				className="text-danger-text hover:bg-danger-soft"
-				onClick={() => void run(() => batch.trash(selection), { clear: true })}
-			>
-				<Icon name="trash" />
-				<span className="max-sm:sr-only">
-					<Trans>Move to Trash</Trans>
-				</span>
-			</Button>
-			<IconButton icon="x" size="icon-sm" label={t`Clear selection`} className="text-ink-2" onClick={onClear} />
-		</div>
+						<span className="action-bar__label">
+							<Trans>Sharing</Trans>
+						</span>
+						<Icon name="caret-down" size={14} />
+					</Button>
+					<Dropdown.Popover placement="top" className="w-48">
+						<Dropdown.Menu>
+							<Dropdown.Item
+								id="public"
+								textValue={t`Make public`}
+								onAction={() => void run(() => batch.setPublic(selection, true))}
+							>
+								<Icon name="globe" className="text-muted" />
+								<Label>
+									<Trans>Make public</Trans>
+								</Label>
+							</Dropdown.Item>
+							<Dropdown.Item
+								id="private"
+								textValue={t`Make private`}
+								onAction={() => void run(() => batch.setPublic(selection, false))}
+							>
+								<Icon name="eye-slash" className="text-muted" />
+								<Label>
+									<Trans>Make private</Trans>
+								</Label>
+							</Dropdown.Item>
+							<Separator />
+							<Dropdown.Item
+								id="lock"
+								textValue={t`Lock editing`}
+								onAction={() => void run(() => batch.setLocked(selection, true))}
+							>
+								<Icon name="lock" className="text-muted" />
+								<Label>
+									<Trans>Lock editing</Trans>
+								</Label>
+							</Dropdown.Item>
+							<Dropdown.Item
+								id="unlock"
+								textValue={t`Unlock`}
+								onAction={() => void run(() => batch.setLocked(selection, false))}
+							>
+								<Icon name="lock-open" className="text-muted" />
+								<Label>
+									<Trans>Unlock</Trans>
+								</Label>
+							</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
+				<Button
+					variant="danger-soft"
+					size="sm"
+					isDisabled={busy}
+					aria-label={t`Move to Trash`}
+					onPress={() => void run(() => batch.trash(selection), { clear: true })}
+				>
+					<Icon name="trash" />
+					<span className="action-bar__label">
+						<Trans>Move to Trash</Trans>
+					</span>
+				</Button>
+			</ActionBar.Content>
+
+			<Separator orientation="vertical" className="h-5" />
+			<ActionBar.Suffix>
+				<Button isIconOnly size="sm" variant="ghost" aria-label={t`Clear selection`} onPress={onClear}>
+					<Icon name="x" />
+				</Button>
+			</ActionBar.Suffix>
+		</ActionBar>
 	);
 }
 
@@ -535,9 +531,9 @@ function LibrarySkeleton({ view }: { view: "grid" | "list" }) {
 	if (view === "list") {
 		return (
 			<div className="grid">
-				<div className="h-10 border-b border-line" />
+				<div className="h-9 border-b border-separator" />
 				{Array.from({ length: 6 }, (_, index) => (
-					<div key={index} className="flex h-[45px] items-center border-b border-line ps-3">
+					<div key={index} className="flex h-[45px] items-center border-b border-separator ps-3">
 						<Skeleton className="h-4 w-1/3" />
 					</div>
 				))}
@@ -545,11 +541,11 @@ function LibrarySkeleton({ view }: { view: "grid" | "list" }) {
 		);
 	}
 	return (
-		<div className="grid grid-cols-[repeat(auto-fill,minmax(180px,204px))] gap-x-7 gap-y-[22px] max-sm:grid-cols-2 max-sm:gap-4">
+		<div className={GRID_CLASS}>
 			{Array.from({ length: 6 }, (_, index) => (
 				<div key={index} className="grid gap-2">
-					<Skeleton className="aspect-page rounded-md" />
-					<Skeleton className="h-4 w-3/4 rounded" />
+					<Skeleton className="aspect-page rounded-3xl" />
+					<Skeleton className="h-4 w-3/4 rounded-lg" />
 				</div>
 			))}
 		</div>
@@ -608,11 +604,11 @@ function DropToImport() {
 			)}
 		>
 			<div className="grid justify-items-center gap-2 text-center">
-				<Icon name="download-simple" size={32} className="text-accent-text" />
+				<Icon name="download-simple" size={32} className="text-accent-soft-foreground" />
 				<p className="text-lg font-semibold">
 					<Trans>Drop to import</Trans>
 				</p>
-				<p className="text-sm text-ink-2">
+				<p className="text-sm text-muted">
 					<Trans>PDF, Word or JSON. We'll build a resume from it.</Trans>
 				</p>
 			</div>

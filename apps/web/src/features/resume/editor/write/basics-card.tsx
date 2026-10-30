@@ -1,12 +1,9 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
+import { Button, Disclosure, Input, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Button } from "@rezumi/ui/components/button";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Input } from "@rezumi/ui/components/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { generateId, getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
@@ -50,71 +47,67 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 				selected && "border-accent",
 			)}
 		>
-			<button
-				type="button"
-				aria-expanded={open}
-				onClick={() => useEditorStore.setState({ basicsOpen: !open })}
-				className="flex w-full items-center gap-3 rounded-xl p-3 text-start"
-			>
-				<span
-					aria-hidden="true"
-					className="grid size-10 shrink-0 place-items-center rounded-sm bg-accent-soft text-sm font-semibold text-accent-text"
-				>
-					{getInitials(basics.name || "?")}
-				</span>
-				<span className="min-w-0 flex-1">
-					<span className={cn("block truncate text-sm font-semibold", !basics.name && "text-ink-3")}>
-						{basics.name || <Trans>Your name</Trans>}
-					</span>
-					<span className="block truncate text-xs text-ink-3">
-						{[basics.headline, basics.location].filter((part) => part.trim()).join(" · ")}
-					</span>
-				</span>
-				<Icon
-					name="caret-down"
-					className={cn("text-ink-2 transition-transform duration-standard ease-enter", open && "rotate-180")}
-				/>
-			</button>
+			<Disclosure isExpanded={open} onExpandedChange={(next) => useEditorStore.setState({ basicsOpen: next })}>
+				<Disclosure.Heading>
+					<Disclosure.Trigger className="flex w-full items-center gap-3 rounded-xl p-3 text-start">
+						<span
+							aria-hidden="true"
+							className="grid size-10 shrink-0 place-items-center rounded-sm bg-accent-soft text-sm font-semibold text-accent-text"
+						>
+							{getInitials(basics.name || "?")}
+						</span>
+						<span className="min-w-0 flex-1">
+							<span className={cn("block truncate text-sm font-semibold", !basics.name && "text-ink-3")}>
+								{basics.name || <Trans>Your name</Trans>}
+							</span>
+							<span className="block truncate text-xs text-ink-3">
+								{[basics.headline, basics.location].filter((part) => part.trim()).join(" · ")}
+							</span>
+						</span>
+						<Disclosure.Indicator className="text-ink-2" />
+					</Disclosure.Trigger>
+				</Disclosure.Heading>
 
-			<Collapsible open={open}>
-				<CollapsibleContent>
-					<fieldset
-						disabled={locked}
-						className="m-0 grid min-w-0 grid-cols-2 gap-x-3 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
-					>
-						<PhotoRow locked={locked} />
-						<TextField
-							label={<Trans>Full name</Trans>}
-							wide
-							autoComplete="name"
-							// A blank resume opens straight into the name field.
-							autoFocus={!locked && !basics.name}
-							{...text("name")}
-						/>
-						<TextField label={<Trans>Headline</Trans>} wide {...text("headline")} />
-						<TextField
-							label={<Trans>Email</Trans>}
-							type="email"
-							autoComplete="email"
-							validate={validateEmail}
-							{...text("email")}
-						/>
-						<TextField label={<Trans>Phone</Trans>} type="tel" autoComplete="tel" {...text("phone")} />
-						<TextField label={<Trans>Location</Trans>} wide {...text("location")} />
-						<WebsiteField
-							label={<Trans>Website</Trans>}
-							value={basics.website}
-							allowInlineLink={false}
-							onChange={(website) =>
-								write("website", (target) => {
-									target.website = { url: website.url, label: website.label };
-								})
-							}
-						/>
-						<CustomFields fields={basics.customFields} locked={locked} />
-					</fieldset>
-				</CollapsibleContent>
-			</Collapsible>
+				<Disclosure.Content>
+					<Disclosure.Body>
+						<fieldset
+							disabled={locked}
+							className="m-0 grid min-w-0 grid-cols-2 gap-x-3 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
+						>
+							<PhotoRow locked={locked} />
+							<TextField
+								label={<Trans>Full name</Trans>}
+								wide
+								autoComplete="name"
+								// A blank resume opens straight into the name field.
+								autoFocus={!locked && !basics.name}
+								{...text("name")}
+							/>
+							<TextField label={<Trans>Headline</Trans>} wide {...text("headline")} />
+							<TextField
+								label={<Trans>Email</Trans>}
+								type="email"
+								autoComplete="email"
+								validate={validateEmail}
+								{...text("email")}
+							/>
+							<TextField label={<Trans>Phone</Trans>} type="tel" autoComplete="tel" {...text("phone")} />
+							<TextField label={<Trans>Location</Trans>} wide {...text("location")} />
+							<WebsiteField
+								label={<Trans>Website</Trans>}
+								value={basics.website}
+								allowInlineLink={false}
+								onChange={(website) =>
+									write("website", (target) => {
+										target.website = { url: website.url, label: website.label };
+									})
+								}
+							/>
+							<CustomFields fields={basics.customFields} locked={locked} />
+						</fieldset>
+					</Disclosure.Body>
+				</Disclosure.Content>
+			</Disclosure>
 		</section>
 	);
 }
@@ -142,16 +135,14 @@ function PhotoRow({ locked }: { locked: boolean }) {
 				)}
 			</p>
 			<Popover>
-				<PopoverTrigger
-					render={
-						<Button variant="secondary" size="sm" disabled={locked}>
-							{hasPhoto ? <Trans>Edit</Trans> : <Trans>Add</Trans>}
-						</Button>
-					}
-				/>
-				<PopoverContent align="end" className="max-h-[70svh] w-[360px] overflow-y-auto p-4">
-					<PictureSettings />
-				</PopoverContent>
+				<Button variant="secondary" size="sm" isDisabled={locked}>
+					{hasPhoto ? <Trans>Edit</Trans> : <Trans>Add</Trans>}
+				</Button>
+				<Popover.Content placement="bottom end" className="max-h-[70svh] w-[360px] overflow-y-auto">
+					<Popover.Dialog className="p-4">
+						<PictureSettings />
+					</Popover.Dialog>
+				</Popover.Content>
 			</Popover>
 		</div>
 	);
@@ -170,7 +161,7 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 			{fields.map((field, index) => (
 				<div key={field.id} className="flex items-center gap-1.5">
 					<IconPicker
-						disabled={locked}
+						isDisabled={locked}
 						value={field.icon}
 						popoverProps={{ modal: true }}
 						onChange={(icon) =>
@@ -181,6 +172,7 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 						}
 					/>
 					<Input
+						fullWidth
 						disabled={locked}
 						aria-label={t`Field ${index + 1}`}
 						value={field.text}
@@ -192,45 +184,45 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 						}
 					/>
 					<Popover>
-						<PopoverTrigger
-							render={
-								<IconButton
-									disabled={locked}
-									icon={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"}
-									label={field.link ? t`Edit link` : t`Add a link`}
-									className={field.link ? "text-accent-text" : "text-ink-3"}
-								/>
-							}
+						<IconButton
+							icon={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"}
+							label={field.link ? t`Edit link` : t`Add a link`}
+							size="sm"
+							isDisabled={locked}
+							className={field.link ? "text-accent-text" : "text-muted"}
 						/>
-						<PopoverContent align="end" className="w-72">
-							<Input
-								disabled={locked}
-								type="url"
-								aria-label={t`Link address`}
-								placeholder="https://"
-								value={field.link}
-								onChange={(event) =>
-									edit(`${field.id}.link`, (list) => {
-										const target = list[index];
-										if (target) target.link = event.target.value;
-									})
-								}
-							/>
-						</PopoverContent>
+						<Popover.Content placement="bottom end" className="w-72">
+							<Popover.Dialog>
+								<Input
+									fullWidth
+									disabled={locked}
+									type="url"
+									aria-label={t`Link address`}
+									placeholder="https://"
+									value={field.link}
+									onChange={(event) =>
+										edit(`${field.id}.link`, (list) => {
+											const target = list[index];
+											if (target) target.link = event.target.value;
+										})
+									}
+								/>
+							</Popover.Dialog>
+						</Popover.Content>
 					</Popover>
 					<IconButton
 						icon="arrow-up"
 						label={t`Move field up`}
-						size="icon-sm"
-						disabled={locked || index === 0}
-						onClick={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
+						size="sm"
+						isDisabled={locked || index === 0}
+						onPress={() => edit(`${field.id}.move`, (list) => list.splice(index - 1, 0, ...list.splice(index, 1)))}
 					/>
 					<IconButton
 						icon="x"
 						label={t`Remove field`}
-						disabled={locked}
-						size="icon-sm"
-						onClick={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
+						isDisabled={locked}
+						size="sm"
+						onPress={() => edit(`${field.id}.remove`, (list) => list.splice(index, 1))}
 					/>
 				</div>
 			))}

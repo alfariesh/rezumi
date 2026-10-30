@@ -5,7 +5,6 @@ import type { FeatureFlags } from "@rezumi/api/features/flags";
 import type { AuthSession } from "@rezumi/auth/types";
 import type { Locale } from "@rezumi/utils/locale";
 import type { QueryClient } from "@tanstack/react-query";
-import { DirectionProvider } from "@base-ui/react/direction-provider";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { I18nProvider, useLingui } from "@lingui/react";
@@ -14,12 +13,12 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { HotkeysProvider } from "@tanstack/react-hotkeys";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRouteWithContext, HeadContent, Outlet, redirect } from "@tanstack/react-router";
+import { createRootRouteWithContext, HeadContent, Outlet, redirect, useRouter } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { LazyMotion, MotionConfig } from "motion/react";
 import { useEffect } from "react";
+import { I18nProvider as AriaI18nProvider, RouterProvider as AriaRouterProvider } from "react-aria-components";
 import { Toaster } from "@rezumi/ui/components/toast";
-import { TooltipProvider } from "@rezumi/ui/components/tooltip";
 import { isAppSectionPath } from "@rezumi/utils/app-paths";
 import { isRTL } from "@rezumi/utils/locale";
 import { BreakpointIndicator } from "@/components/layout/breakpoint-indicator";
@@ -67,6 +66,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 
 function RootComponent() {
 	const { theme, locale, queryClient, session } = Route.useRouteContext();
+	const router = useRouter();
 	const dir = isRTL(locale) ? "rtl" : "ltr";
 
 	// WebMCP: browser agents can list and open the signed-in user's documents from any page.
@@ -86,11 +86,12 @@ function RootComponent() {
 				<MotionConfig reducedMotion="user">
 					<LazyMotion features={loadMotionFeatures}>
 						<I18nProvider i18n={i18n}>
-							<IconContext.Provider value={iconContextValue}>
-								<ThemeProvider theme={theme}>
-									<HotkeysProvider>
-										<DirectionProvider direction={dir}>
-											<TooltipProvider>
+							{/* HeroUI is built on React Aria: its formats and direction follow the app locale, and its `href`s use the router. */}
+							<AriaI18nProvider locale={locale}>
+								<AriaRouterProvider navigate={(href) => router.navigate({ href })} useHref={(href) => href}>
+									<IconContext.Provider value={iconContextValue}>
+										<ThemeProvider theme={theme}>
+											<HotkeysProvider>
 												<ConfirmDialogProvider>
 													<Outlet />
 
@@ -115,11 +116,11 @@ function RootComponent() {
 														/>
 													)}
 												</ConfirmDialogProvider>
-											</TooltipProvider>
-										</DirectionProvider>
-									</HotkeysProvider>
-								</ThemeProvider>
-							</IconContext.Provider>
+											</HotkeysProvider>
+										</ThemeProvider>
+									</IconContext.Provider>
+								</AriaRouterProvider>
+							</AriaI18nProvider>
 						</I18nProvider>
 					</LazyMotion>
 				</MotionConfig>

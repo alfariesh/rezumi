@@ -1,8 +1,8 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { cn } from "@rezumi/utils/style";
 import { isOAuthRedirect } from "../redirect";
 import { authClient } from "@/libs/auth/client";
@@ -166,10 +166,10 @@ export function OAuthConsentPage({ oauthQuery, email }: OAuthConsentPageProps) {
 						</p>
 					)}
 					<div className="flex gap-2">
-						<Button className="flex-1" variant="secondary" disabled={pending} onClick={() => void submit(false)}>
+						<Button className="flex-1" variant="secondary" isDisabled={pending} onPress={() => void submit(false)}>
 							<Trans>Deny access</Trans>
 						</Button>
-						<Button className="flex-1" disabled={pending} onClick={() => void submit(true)}>
+						<Button className="flex-1" isDisabled={pending} onPress={() => void submit(true)}>
 							<Trans>Allow access</Trans>
 						</Button>
 					</div>

@@ -1,20 +1,14 @@
 import type { DialogProps } from "../store";
+import { Button, Input, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
+import { useId } from "react";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateRandomName } from "@rezumi/utils/slug";
 import { useDialogStore } from "../store";
@@ -37,6 +31,7 @@ type ResumeDialogProps = {
 };
 
 export function ResumeDialog({ mode, data }: ResumeDialogProps) {
+	const descriptionId = useId();
 	const isUpdate = mode === "update";
 	const navigate = useNavigate();
 	const closeDialog = useDialogStore((state) => state.closeDialog);
@@ -99,96 +94,100 @@ export function ResumeDialog({ mode, data }: ResumeDialogProps) {
 	useFormBlocker(form);
 
 	return (
-		<DialogContent>
-			<DialogHeader>
-				<DialogTitle className="flex items-center gap-x-2">
-					<Icon name="pencil-simple" size={16} />
-					{isUpdate ? <Trans>Update resume</Trans> : <Trans>Duplicate resume</Trans>}
-				</DialogTitle>
-				<DialogDescription>
-					{isUpdate ? (
-						<Trans>Changed your mind? Rename your resume to something more descriptive.</Trans>
-					) : (
-						<Trans>Duplicate your resume to create a new one, just like the original.</Trans>
-					)}
-				</DialogDescription>
-			</DialogHeader>
+		<Modal.Container size="sm">
+			<Modal.Dialog aria-describedby={descriptionId}>
+				<Modal.CloseTrigger aria-label={t`Close`} />
+				<Modal.Header>
+					<Modal.Heading className="flex items-center gap-x-2">
+						<Icon name="pencil-simple" size={16} />
+						{isUpdate ? <Trans>Update resume</Trans> : <Trans>Duplicate resume</Trans>}
+					</Modal.Heading>
+					<p id={descriptionId} className="text-sm text-muted">
+						{isUpdate ? (
+							<Trans>Changed your mind? Rename your resume to something more descriptive.</Trans>
+						) : (
+							<Trans>Duplicate your resume to create a new one, just like the original.</Trans>
+						)}
+					</p>
+				</Modal.Header>
 
-			<form
-				className="space-y-4"
-				onSubmit={(event) => {
-					event.preventDefault();
-					event.stopPropagation();
-					void form.handleSubmit();
-				}}
-			>
-				<form.Field name="name">
-					{(field) => (
-						<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
-							<FormLabel>
-								<Trans>Name</Trans>
-							</FormLabel>
-							<div className="flex items-center gap-x-2">
-								<FormControl
-									render={
-										<Input
-											minLength={1}
-											maxLength={64}
-											name={field.name}
-											value={field.state.value}
-											onBlur={field.handleBlur}
-											onChange={(event) => field.handleChange(event.target.value)}
+				<Modal.Body>
+					<form
+						className="space-y-4"
+						onSubmit={(event) => {
+							event.preventDefault();
+							event.stopPropagation();
+							void form.handleSubmit();
+						}}
+					>
+						<form.Field name="name">
+							{(field) => (
+								<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
+									<FormLabel>
+										<Trans>Name</Trans>
+									</FormLabel>
+									<div className="flex items-center gap-x-2">
+										<FormControl
+											render={
+												<Input
+													fullWidth
+													minLength={1}
+													maxLength={64}
+													name={field.name}
+													value={field.state.value}
+													onBlur={field.handleBlur}
+													onChange={(event) => field.handleChange(event.target.value)}
+												/>
+											}
 										/>
-									}
-								/>
 
-								<Button
-									size="icon"
-									variant="secondary"
-									title={t`Generate a random name`}
-									onClick={() => form.setFieldValue("name", generateRandomName())}
-								>
-									<Icon name="magic-wand" size={16} />
-								</Button>
-							</div>
-							<FormMessage errors={field.state.meta.errors} />
-							<FormDescription>
-								<Trans>Name the resume after the position you are applying for.</Trans>
-							</FormDescription>
-						</FormItem>
-					)}
-				</form.Field>
+										<IconButton
+											icon="magic-wand"
+											variant="secondary"
+											label={t`Generate a random name`}
+											onPress={() => form.setFieldValue("name", generateRandomName())}
+										/>
+									</div>
+									<FormMessage errors={field.state.meta.errors} />
+									<FormDescription>
+										<Trans>Name the resume after the position you are applying for.</Trans>
+									</FormDescription>
+								</FormItem>
+							)}
+						</form.Field>
 
-				<form.Field name="tags">
-					{(field) => (
-						<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
-							<FormLabel>
-								<Trans>Tags</Trans>
-							</FormLabel>
-							<FormControl
-								render={
-									<ChipInput
-										value={field.state.value}
-										onChange={(value) => {
-											field.handleChange(value);
-										}}
+						<form.Field name="tags">
+							{(field) => (
+								<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
+									<FormLabel>
+										<Trans>Tags</Trans>
+									</FormLabel>
+									<FormControl
+										render={
+											<ChipInput
+												value={field.state.value}
+												onChange={(value) => {
+													field.handleChange(value);
+												}}
+											/>
+										}
 									/>
-								}
-							/>
-							<FormMessage errors={field.state.meta.errors} />
-							<FormDescription>
-								<Trans>Tags can be used to categorize your resume by keywords.</Trans>
-							</FormDescription>
-						</FormItem>
-					)}
-				</form.Field>
+									<FormMessage errors={field.state.meta.errors} />
+									<FormDescription>
+										<Trans>Tags can be used to categorize your resume by keywords.</Trans>
+									</FormDescription>
+								</FormItem>
+							)}
+						</form.Field>
 
-				<DialogFooter>
-					<Button type="submit" disabled={update.isPending || duplicate.isPending}>
-						{isUpdate ? <Trans>Save changes</Trans> : <Trans>Duplicate</Trans>}
-					</Button>
-				</DialogFooter>
-			</form>
-		</DialogContent>
+						<Modal.Footer className="p-0">
+							<Button type="submit" isDisabled={update.isPending || duplicate.isPending}>
+								{isUpdate ? <Trans>Save changes</Trans> : <Trans>Duplicate</Trans>}
+							</Button>
+						</Modal.Footer>
+					</form>
+				</Modal.Body>
+			</Modal.Dialog>
+		</Modal.Container>
 	);
 }

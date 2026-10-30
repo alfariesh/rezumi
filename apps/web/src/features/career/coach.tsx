@@ -2,6 +2,8 @@ import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
+import { ContextMenu, Sheet } from "@heroui-pro/react";
+import { Button, buttonVariants, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -9,24 +11,8 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { buttonVariants } from "@rezumi/ui/components/button";
-import {
-	ContextMenu,
-	ContextMenuContent,
-	ContextMenuItem,
-	ContextMenuTrigger,
-} from "@rezumi/ui/components/context-menu";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Sheet, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
@@ -310,9 +296,9 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 				<IconButton
 					icon="clock-counter-clockwise"
 					label={t`Conversations`}
-					size="icon-sm"
+					size="sm"
 					className="-ms-2 text-ink-2"
-					onClick={() => setRailOpen(true)}
+					onPress={() => setRailOpen(true)}
 				/>
 			)}
 			<Icon name="sparkle" size={20} className="shrink-0 text-accent-text" />
@@ -330,10 +316,10 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			<IconButton
 				icon="copy"
 				label={t`Copy conversation`}
-				size="icon-sm"
+				size="sm"
 				className="text-ink-2"
-				disabled={messages.length === 0}
-				onClick={() =>
+				isDisabled={messages.length === 0}
+				onPress={() =>
 					void copyToClipboard(
 						transcriptOf(messages, { user: t`You`, assistant: t`Coach`, sources: t`Sources` }),
 						t`Conversation copied`,
@@ -363,13 +349,20 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 				{wide ? (
 					rail
 				) : (
-					<Sheet open={railOpen} onOpenChange={setRailOpen}>
-						<SheetContent side="left" closeLabel={t`Close`} className="p-4 pt-5 data-[side=left]:sm:max-w-[320px]">
-							<SheetTitle>
-								<Trans>Conversations</Trans>
-							</SheetTitle>
-							{rail}
-						</SheetContent>
+					<Sheet isOpen={railOpen} onOpenChange={setRailOpen} placement="left">
+						<Sheet.Backdrop>
+							<Sheet.Content className="w-full sm:max-w-[320px]">
+								<Sheet.Dialog>
+									<Sheet.CloseTrigger aria-label={t`Close`} />
+									<Sheet.Header>
+										<Sheet.Heading>
+											<Trans>Conversations</Trans>
+										</Sheet.Heading>
+									</Sheet.Header>
+									<Sheet.Body>{rail}</Sheet.Body>
+								</Sheet.Dialog>
+							</Sheet.Content>
+						</Sheet.Backdrop>
 					</Sheet>
 				)}
 
@@ -400,7 +393,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 						/>
 					) : providers.isLoading || threads.isPending ? (
 						<div className="grid flex-1 place-items-center">
-							<Spinner />
+							<Spinner size="md" color="current" aria-label={t`Loading`} />
 						</div>
 					) : threads.isError && !threads.data ? (
 						<CareerLoadError
@@ -505,34 +498,44 @@ function ModelChip({ open, onOpenChange, providers, current, label, onChoose }: 
 	const navigate = useNavigate();
 	const text = current ? `${current.label} · ${current.model}` : label;
 	return (
-		<DropdownMenu open={open} onOpenChange={onOpenChange}>
-			<DropdownMenuTrigger
-				render={
-					<button
-						type="button"
-						aria-label={t`Connection: ${text}`}
-						className="flex h-7 max-w-[50%] min-w-0 items-center rounded-sm bg-sunken px-2 font-mono text-xs text-ink-2 transition-colors duration-quick hover:text-ink aria-expanded:text-ink"
-					/>
-				}
+		<Dropdown isOpen={open} onOpenChange={onOpenChange}>
+			<Button
+				variant="secondary"
+				size="sm"
+				aria-label={t`Connection: ${text}`}
+				className="h-7 min-h-0 max-w-[50%] min-w-0 justify-start rounded-sm bg-sunken px-2 font-mono text-xs text-ink-2 transition-colors duration-quick hover:text-ink aria-expanded:text-ink"
 			>
 				<span className="truncate">{text}</span>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-64">
-				{providers.map((item) => (
-					<DropdownMenuItem key={item.id} onClick={() => onChoose(item.id)}>
-						<span className="grid min-w-0 flex-1">
-							<span className="truncate">{item.label}</span>
-							<span className="truncate font-mono text-xs text-ink-3">{item.model}</span>
-						</span>
-						{item.id === current?.id && <Icon name="check" size={16} />}
-					</DropdownMenuItem>
-				))}
-				{providers.length > 0 && <DropdownMenuSeparator />}
-				<DropdownMenuItem onClick={() => void navigate({ to: "/dashboard/settings/ai" })}>
-					<Trans>Connect another…</Trans>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+			</Button>
+			<Dropdown.Popover placement="bottom end" className="w-64">
+				<Dropdown.Menu>
+					{providers.map((item) => (
+						<Dropdown.Item
+							key={item.id}
+							id={item.id}
+							textValue={`${item.label} ${item.model}`}
+							onAction={() => onChoose(item.id)}
+						>
+							<span className="grid min-w-0 flex-1">
+								<Label className="truncate">{item.label}</Label>
+								<Description className="truncate font-mono">{item.model}</Description>
+							</span>
+							{item.id === current?.id && <Icon name="check" size={16} />}
+						</Dropdown.Item>
+					))}
+					{providers.length > 0 ? <Separator /> : null}
+					<Dropdown.Item
+						id="connect"
+						textValue={t`Connect another…`}
+						onAction={() => void navigate({ to: "/dashboard/settings/ai" })}
+					>
+						<Label>
+							<Trans>Connect another…</Trans>
+						</Label>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }
 
@@ -631,7 +634,7 @@ function RailItem({
 
 	return (
 		<ContextMenu>
-			<ContextMenuTrigger render={<li className="group/row relative" />}>
+			<ContextMenu.Trigger<"li"> render={(props) => <li {...props} />} className="group/row relative">
 				{renaming ? (
 					<input
 						// oxlint-disable-next-line jsx-a11y/no-autofocus -- Rename was just chosen; typing goes straight into the name
@@ -673,41 +676,49 @@ function RailItem({
 					</Link>
 				)}
 				{!renaming && (
-					<DropdownMenu>
-						<DropdownMenuTrigger
-							render={
-								<button
-									type="button"
-									aria-label={t`More for ${title}`}
-									className="absolute inset-e-1 top-1.5 grid size-7 place-items-center rounded-sm text-ink-3 opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 hover:bg-hover hover:text-ink focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
-								/>
-							}
-						>
-							<Icon name="dots-three" size={18} />
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end" finalFocus={false}>
-							<DropdownMenuItem onClick={onRenameStart}>
-								<Icon name="pencil-simple" size={18} />
-								<Trans>Rename</Trans>
-							</DropdownMenuItem>
-							<DropdownMenuItem variant="destructive" onClick={onDelete}>
-								<Icon name="trash" size={18} />
-								<Trans>Delete</Trans>
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+					<Dropdown>
+						<IconButton
+							icon="dots-three"
+							iconSize={18}
+							size="sm"
+							label={t`More for ${title}`}
+							className="absolute inset-e-1 top-1.5 size-7 min-w-0 text-ink-3 opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
+						/>
+						<Dropdown.Popover placement="bottom end">
+							<Dropdown.Menu>
+								<Dropdown.Item id="rename" textValue={t`Rename`} onAction={onRenameStart}>
+									<Icon name="pencil-simple" size={18} />
+									<Label>
+										<Trans>Rename</Trans>
+									</Label>
+								</Dropdown.Item>
+								<Dropdown.Item id="delete" textValue={t`Delete`} variant="danger" onAction={onDelete}>
+									<Icon name="trash" size={18} />
+									<Label>
+										<Trans>Delete</Trans>
+									</Label>
+								</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown.Popover>
+					</Dropdown>
 				)}
-			</ContextMenuTrigger>
-			<ContextMenuContent finalFocus={false}>
-				<ContextMenuItem onClick={onRenameStart}>
-					<Icon name="pencil-simple" size={18} />
-					<Trans>Rename</Trans>
-				</ContextMenuItem>
-				<ContextMenuItem variant="destructive" onClick={onDelete}>
-					<Icon name="trash" size={18} />
-					<Trans>Delete</Trans>
-				</ContextMenuItem>
-			</ContextMenuContent>
+			</ContextMenu.Trigger>
+			<ContextMenu.Popover>
+				<ContextMenu.Menu>
+					<ContextMenu.Item id="rename" textValue={t`Rename`} onAction={onRenameStart}>
+						<Icon name="pencil-simple" size={18} />
+						<Label>
+							<Trans>Rename</Trans>
+						</Label>
+					</ContextMenu.Item>
+					<ContextMenu.Item id="delete" textValue={t`Delete`} variant="danger" onAction={onDelete}>
+						<Icon name="trash" size={18} />
+						<Label>
+							<Trans>Delete</Trans>
+						</Label>
+					</ContextMenu.Item>
+				</ContextMenu.Menu>
+			</ContextMenu.Popover>
 		</ContextMenu>
 	);
 }

@@ -1,10 +1,10 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { isValidSlug, MAX_SLUG_LENGTH, normalizeSlug } from "@rezumi/resume/sharing";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { CopyLinkButton } from "./copy-link-button";
@@ -146,7 +146,7 @@ export function AddressField({ url, username, update }: AddressFieldProps) {
 				<Button
 					variant="secondary"
 					className="w-fit gap-1.5 pointer-fine:hidden"
-					onClick={() => void navigator.share({ title: resume.name, url }).catch(() => undefined)}
+					onPress={() => void navigator.share({ title: resume.name, url }).catch(() => undefined)}
 				>
 					<Icon name="export" size={18} />
 					<Trans>Share via…</Trans>

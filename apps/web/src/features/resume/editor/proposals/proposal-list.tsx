@@ -1,11 +1,11 @@
 import type { Proposal, ProposalState } from "@rezumi/resume/proposals";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { getProposalState } from "@rezumi/resume/proposals";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
@@ -107,7 +107,7 @@ export function ChangeSet({ proposals, states, locked, onAccept, onReject, onSug
 					{title ?? <Plural value={proposals.length} one="# proposed edit" other="# proposed edits" />}
 				</h3>
 				{pending.length > 1 && (
-					<Button size="sm" disabled={locked} onClick={() => onAccept(pending)}>
+					<Button size="sm" isDisabled={locked} onPress={() => onAccept(pending)}>
 						<Trans>Accept all</Trans>
 					</Button>
 				)}
@@ -187,10 +187,10 @@ function ProposalItem(props: ProposalItemProps) {
 
 			{state === "pending" ? (
 				<div className="flex gap-1.5">
-					<Button size="sm" disabled={locked} onClick={props.onAccept}>
+					<Button size="sm" isDisabled={locked} onPress={props.onAccept}>
 						<Trans>Accept</Trans>
 					</Button>
-					<Button size="sm" variant="secondary" onClick={props.onReject}>
+					<Button size="sm" variant="secondary" onPress={props.onReject}>
 						<Trans>Reject</Trans>
 					</Button>
 				</div>

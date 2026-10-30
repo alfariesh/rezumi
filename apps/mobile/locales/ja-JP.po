@@ -346,6 +346,13 @@ msgstr "{1} の {0} は、あなたのタイムゾーン ({userZone}) では {2}
 msgid "{0} in {otherZone}"
 msgstr "{otherZone}での時刻：{0}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "初年度 {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {#列} other {#列}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, other {#件の変更を適用}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} 時間"
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {面接#件} other {面接#件}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {# の項目を確認してください。まだダ
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "{kind} インタビュー"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, other {あと#分で開始}}"
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes}分"
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {面接なし} one {面接#件} other {面接#件}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "アシスタントに作業を依頼してください"
 msgid "Ask the coach"
 msgstr "コーチに聞く"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "コミュニティに質問しましょう。投稿前に個人情報を削除してください。"
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "サーバー管理者に、資格情報の暗号化を有効にするか、共有接続を構成するように依頼してください。"
@@ -1925,6 +1941,10 @@ msgstr "開発者：<0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "カレンダー"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "ソフトウェアはあなたの履歴書を読み取ることができますか?"
@@ -2000,6 +2020,7 @@ msgstr "ステージ変更"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "フォローアップを変更する"
 
@@ -2807,11 +2828,14 @@ msgstr "タイムゾーンを読み込めませんでした。"
 msgid "Couldn't mark it as applied. Try again."
 msgstr "応募済みにできませんでした。もう一度お試しください。"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "ブラウザを開けませんでした。もう一度やり直してください。"
 
@@ -3217,6 +3241,7 @@ msgstr "データ共有をキャンセルしました。AI プロバイダーに
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "日付は将来から始まります"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "日付は読み取られません"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "{0}の求人情報を送信しない"
 msgid "Don't share"
 msgstr "共有しない"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Open Collectiveで寄付する"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "エントリーの編集"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "インタビューを編集する"
 
@@ -4157,6 +4183,12 @@ msgstr "再度連絡する"
 msgid "Follow up on {at}"
 msgstr "{at} のフォローアップ"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "「フィードバックをもらう」を押すと、質問、あなた
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "毎朝ここで新しい求人を受け取る"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Discordで履歴書のフィードバックをもらう"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "面接を削除しました"
 msgid "Interview is in another timezone"
 msgstr "面接は別のタイムゾーンです"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "面接準備"
@@ -4868,10 +4904,6 @@ msgstr "求人応募パイプライン"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "求人情報"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Discordに参加"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "長さ"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "長さ · 分"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "時間（分）"
 
@@ -5394,6 +5428,10 @@ msgstr "Locked documents were skipped.まずロックを解除してください
 msgid "Locked. Unlock to edit."
 msgstr "ロックされています。編集するにはロックを解除してください。"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "長押しして選択"
@@ -5628,6 +5666,10 @@ msgstr "モデルの提案は利用できません。任意のモデル ID を�
 msgid "Model: {label}"
 msgstr "モデル: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "もっと見る"
@@ -5690,6 +5732,14 @@ msgstr "ほとんど読みやすい"
 msgid "Move {title} to…"
 msgstr "{title} を…に移動します"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "すべてのコンテンツをページの境界内に収めてから、再エクスポートしてください。"
@@ -5707,6 +5757,10 @@ msgstr "下に移動"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "フィールドを上に移動"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "新しいセクション"
 msgid "New STARR story"
 msgstr "新しい STARR のストーリー"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "次号"
@@ -5958,6 +6016,10 @@ msgstr "次のステップ: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "次のステップ: {note}。 今日 にリマインダーを追加します。"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "写真はありません。ほとんどの ATS は写真を無視しま�
 msgid "No postings found. Try different keywords."
 msgstr "求人情報は見つかりませんでした。別のキーワードを試してください。"
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "このアドレスでは Rezumi サーバーが応答しませんでした。スペルを確認するか、サーバーがアプリのサインインを許可しているかどうか管理者に問い合わせてください。"
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "この求人情報には認識可能な用語がありません。"
@@ -6123,6 +6181,10 @@ msgstr "結果はありません"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "履歴書なし"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "このアドレスでは Rezumi サーバーが応答しませんでした。スペルを確認するか、サーバーがアプリのサインインを許可しているかどうか管理者に問い合わせてください。"
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Web ページをプレビュー"
 msgid "Previewing {0} · tap to apply"
 msgstr "{0} をプレビュー中 · タップして適用します"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "前号"
@@ -7081,6 +7147,10 @@ msgstr "前のページへ"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "前回の PDF の結果。現在のドラフトと一致しない可能性があります。"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "フォントを埋め込んで再エクスポートし、テキストが
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "フォントを埋め込んで再エクスポートしてからファイルを開き、テキストが正しくコピーできるか確認してください。"
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "条件"
 msgid "Requirements and your evidence"
 msgstr "要件とあなたの根拠"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "大文字は短い見出しにのみ使用してください。読む速度が落ち、大文字小文字を区別する検索が機能しなくなることがあります。"
@@ -7779,10 +7857,6 @@ msgstr "履歴書+手紙"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "履歴書の詳細"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "履歴書へのフィードバック、製品のヘルプ、コミュニティのアイデア。"
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "この API キーを取り消します"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "書き換えを受け付けました"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "既読アイテムを表示"
 msgid "Show section icons"
 msgstr "セクションアイコンを表示"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "保存済みの詳細を表示しています。更新できませんでした。"
@@ -9292,6 +9374,10 @@ msgstr "写真を撮る"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "タミル語"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "このストーリーは利用できないか、オフになっている事実を使用しています。"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "この時刻は選択したタイムゾーンに存在しません。別の時刻を選んでください。"
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "この時刻はあなたのタイムゾーンに存在しません。別の時刻を選んでください。"
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "簡潔にしています"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "時刻 · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "時刻 · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "ウェブ検索でこれらの国での仕事を探します。最大 3 
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Webサイト"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

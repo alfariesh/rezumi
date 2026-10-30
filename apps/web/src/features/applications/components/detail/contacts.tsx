@@ -1,12 +1,10 @@
 import type { Contact } from "@rezumi/schema/applications/data";
+import { Button, Input, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { contactSchema } from "@rezumi/schema/applications/data";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 
 const EMPTY_CONTACT = { name: "", role: "", type: "", email: "", phone: "" };
 
@@ -18,16 +16,18 @@ export function Contacts({ contacts, disabled, onChange }: ContactsProps) {
 
 	return (
 		<Popover>
-			<PopoverTrigger className="grid min-w-0 rounded-md text-start hover:underline">
+			<Popover.Trigger className="grid min-w-0 rounded-lg text-start hover:underline">
 				<span className="truncate text-sm font-medium">{primary ? primary.name : "—"}</span>
-				{others.length > 0 && <span className="text-xs text-ink-3">{t`and ${others.length} more`}</span>}
-			</PopoverTrigger>
-			<PopoverContent align="start" className="grid w-80 gap-3 p-3">
-				<h3 className="text-sm font-semibold">
-					<Trans>Contacts</Trans>
-				</h3>
-				<ContactList contacts={contacts} disabled={disabled} onChange={onChange} />
-			</PopoverContent>
+				{others.length > 0 && <span className="text-xs text-muted">{t`and ${others.length} more`}</span>}
+			</Popover.Trigger>
+			<Popover.Content placement="bottom start" className="w-80">
+				<Popover.Dialog className="grid gap-3 p-1">
+					<Popover.Heading className="text-sm font-semibold">
+						<Trans>Contacts</Trans>
+					</Popover.Heading>
+					<ContactList contacts={contacts} disabled={disabled} onChange={onChange} />
+				</Popover.Dialog>
+			</Popover.Content>
 		</Popover>
 	);
 }
@@ -51,6 +51,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 
 	const field = (key: keyof typeof EMPTY_CONTACT, label: string, type = "text") => (
 		<Input
+			fullWidth
 			aria-label={label}
 			placeholder={label}
 			type={type}
@@ -65,7 +66,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 	return (
 		<div className="grid gap-2">
 			{contacts.length === 0 && !adding && (
-				<p className="text-sm text-ink-3">
+				<p className="text-sm text-muted">
 					<Trans>No contacts yet.</Trans>
 				</p>
 			)}
@@ -74,26 +75,30 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 					<div className="grid min-w-0 flex-1">
 						<span className="truncate font-medium">
 							{contact.name}
-							{contact.type && <span className="font-normal text-ink-3"> · {contact.type}</span>}
+							{contact.type && <span className="font-normal text-muted"> · {contact.type}</span>}
 						</span>
-						{contact.role && <span className="truncate text-xs text-ink-3">{contact.role}</span>}
+						{contact.role && <span className="truncate text-xs text-muted">{contact.role}</span>}
 						{contact.email && (
-							<a href={`mailto:${contact.email}`} className="truncate text-xs text-accent-text hover:underline">
+							<a
+								href={`mailto:${contact.email}`}
+								className="truncate text-xs text-accent-soft-foreground hover:underline"
+							>
 								{contact.email}
 							</a>
 						)}
 						{contact.phone && (
-							<a href={`tel:${contact.phone}`} className="truncate text-xs text-accent-text hover:underline">
+							<a href={`tel:${contact.phone}`} className="truncate text-xs text-accent-soft-foreground hover:underline">
 								{contact.phone}
 							</a>
 						)}
 					</div>
 					<Button
-						size="icon-xs"
+						isIconOnly
+						size="sm"
 						variant="ghost"
-						disabled={disabled}
+						isDisabled={disabled}
 						aria-label={t`Remove ${contact.name}`}
-						onClick={() => onChange(contacts.filter((_, i) => i !== index))}
+						onPress={() => onChange(contacts.filter((_, i) => i !== index))}
 					>
 						<Icon name="x" size={16} />
 					</Button>
@@ -102,7 +107,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 
 			{adding ? (
 				<form
-					className="grid gap-2 rounded-lg border border-line p-2.5"
+					className="grid gap-2 rounded-xl border border-separator p-2.5"
 					onSubmit={(event) => {
 						event.preventDefault();
 						add();
@@ -112,6 +117,7 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 					<div className="grid grid-cols-2 gap-2">
 						{field("role", t`Role (optional)`)}
 						<Input
+							fullWidth
 							aria-label={t`Label`}
 							placeholder={t`Label, e.g. Recruiter`}
 							list={`${id}-types`}
@@ -129,18 +135,18 @@ function ContactList({ contacts, disabled, onChange }: ContactsProps) {
 						<option value={t`Referral`} />
 						<option value={t`Interviewer`} />
 					</datalist>
-					{error && <p className="text-xs text-danger-text">{error}</p>}
+					{error && <p className="text-xs text-danger-soft-foreground">{error}</p>}
 					<div className="flex justify-end gap-1.5">
-						<Button type="button" size="sm" variant="ghost" onClick={() => setAdding(false)}>
+						<Button size="sm" variant="ghost" onPress={() => setAdding(false)}>
 							<Trans>Cancel</Trans>
 						</Button>
-						<Button type="submit" size="sm" disabled={!draft.name.trim() || disabled}>
+						<Button type="submit" size="sm" isDisabled={!draft.name.trim() || disabled}>
 							<Trans>Add</Trans>
 						</Button>
 					</div>
 				</form>
 			) : (
-				<Button size="sm" variant="ghost" className="w-fit" disabled={disabled} onClick={() => setAdding(true)}>
+				<Button size="sm" variant="ghost" className="w-fit" isDisabled={disabled} onPress={() => setAdding(true)}>
 					<Icon name="plus" size={16} />
 					<Trans>Add contact</Trans>
 				</Button>

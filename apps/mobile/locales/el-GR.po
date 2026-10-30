@@ -346,6 +346,13 @@ msgstr "Το {0} στο {1} είναι το {2} στη ζώνη ώρας σας 
 msgid "{0} in {otherZone}"
 msgstr "{0} σε {otherZone}"
 
+#. placeholder {0}: draft.time
+#. placeholder {1}: userTime.when(at)
+#. placeholder {2}: userTime.timeZone
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "{0} in {timeZone} is {1} in your timezone ({2})."
+msgstr ""
+
 #. placeholder {0}: interviewTypeLabel(entry.kind)
 #: src/features/application-detail/sections.tsx
 msgid "{0} interview"
@@ -472,6 +479,10 @@ msgstr "{cost} τον πρώτο χρόνο"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# στήλη} other {# στήλες}}"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "{count, plural, one {# interview} other {# interviews}}"
+msgstr ""
+
 #: src/features/workspace/tabs/messages.tsx
 msgid "{count, plural, one {Apply # change} other {Apply # changes}}"
 msgstr "{count, plural, one {Εφαρμογή # αλλαγής} other {Εφαρμογή # αλλαγών}}"
@@ -521,6 +532,10 @@ msgid "{hours} h"
 msgstr "{hours} ώρ."
 
 #: src/features/applications-board/calendar-screen.tsx
+msgid "{interviewCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
+msgstr ""
+
+#: src/features/applications-board/calendar-screen.tsx
 msgid "{interviews, plural, one {# interview} other {# interviews}}"
 msgstr "{interviews, plural, one {# συνέντευξη} other {# συνεντεύξεις}}"
 
@@ -535,6 +550,15 @@ msgstr "{issues, plural, one {Η επιταγή έχει κάτι για έλε�
 #: src/features/applications/next-step.ts
 msgid "{kind} interview"
 msgstr "Συνέντευξη {kind}"
+
+#. placeholder {0}: event.application.company
+#. placeholder {1}: event.application.role
+#. placeholder {2}: userTime.day(event.start)
+#. placeholder {3}: userTime.time(event.start)
+#. placeholder {4}: userTime.time(end)
+#: src/features/applications-board/time-grid.tsx
+msgid "{kind} interview, {0}, {1}, {2}, {3} – {4}"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
@@ -553,10 +577,6 @@ msgstr "{minutes, plural, one {Ξεκινά σε # λεπτό} other {Ξεκιν
 #: src/features/workspace/tabs/prepare.tsx
 msgid "{minutes} min"
 msgstr "{minutes} λεπ."
-
-#: src/features/applications-board/calendar-screen.tsx
-msgid "{monthInterviews, plural, =0 {No interviews} one {# interview} other {# interviews}}"
-msgstr "{monthInterviews, plural, =0 {Καμία συνέντευξη} one {# συνέντευξη} other {# συνεντεύξεις}}"
 
 #: src/features/check/issues.ts
 msgid "{name} added to page 1"
@@ -1608,10 +1628,6 @@ msgstr "Ζητήστε από τον βοηθό να το δουλέψει"
 msgid "Ask the coach"
 msgstr "Ρωτήστε τον σύμβουλο"
 
-#: src/features/share/download.tsx
-msgid "Ask the community. Remove personal details before posting."
-msgstr "Ρωτήστε την κοινότητα. Αφαιρέστε τα προσωπικά στοιχεία πριν από τη δημοσίευση."
-
 #: src/features/ai/error.ts
 msgid "Ask your server administrator to enable credential encryption or configure a shared connection."
 msgstr "Ζητήστε από τον διαχειριστή του διακομιστή σας να ενεργοποιήσει την κρυπτογράφηση διαπιστευτηρίων ή να διαμορφώσει μια κοινόχρηστη σύνδεση."
@@ -1925,6 +1941,10 @@ msgstr "από τον <0>Salman Alfariesh</0>"
 msgid "Calendar"
 msgstr "Ημερολόγιο"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Calendar view"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
 msgstr "Μπορεί το λογισμικό να διαβάσει το βιογραφικό σας;"
@@ -2000,6 +2020,7 @@ msgstr "Αλλαγή σταδίου"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Change the follow-up"
 msgstr "Αλλαγή επανεπικοινωνίας"
 
@@ -2807,11 +2828,14 @@ msgstr "Δεν ήταν δυνατή η φόρτωση της ζώνης ώρα�
 msgid "Couldn't mark it as applied. Try again."
 msgstr "Δεν ήταν δυνατή η σήμανση ως υποβληθείσα. Προσπαθήστε ξανά."
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Couldn't move the interview. Try again."
+msgstr ""
+
 #: app/(tabs)/settings/account.tsx
 #: app/(tabs)/settings/index.tsx
 #: src/auth/auth-header.tsx
 #: src/features/settings/api-keys.tsx
-#: src/features/share/download.tsx
 msgid "Couldn't open the browser. Try again."
 msgstr "Δεν ήταν δυνατό το άνοιγμα του προγράμματος περιήγησης. Προσπαθήστε ξανά."
 
@@ -3217,6 +3241,7 @@ msgstr "Η κοινή χρήση δεδομένων ακυρώθηκε. Δεν �
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sheets.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 #: src/features/design/style-groups.tsx
 #: src/features/letters/write.tsx
 #: src/features/write/date-field.tsx
@@ -3254,6 +3279,10 @@ msgstr "Οι ημερομηνίες ξεκινούν στο μέλλον"
 #: src/features/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Οι ημερομηνίες δεν θα διαβαστούν"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Day"
+msgstr ""
 
 #: src/features/share/letter.ts
 msgid "Dear {name},"
@@ -3554,10 +3583,6 @@ msgstr "Μην στέλνετε αγγελία εργασίας {0}"
 msgid "Don't share"
 msgstr "Μην μοιράζεσαι"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Donate on Open Collective"
-msgstr "Κάντε δωρεά στο Open Collective"
-
 #: app/(tabs)/settings/preferences.tsx
 #: src/features/applications/list-screen.tsx
 #: src/features/career/today.tsx
@@ -3766,6 +3791,7 @@ msgstr "Επεξεργασία καταχώρισης"
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/application-detail/sections.tsx
 #: src/features/applications-board/calendar-screen.tsx
+#: src/features/applications-board/time-grid.tsx
 msgid "Edit interview"
 msgstr "Επεξεργασία συνέντευξης"
 
@@ -4157,6 +4183,12 @@ msgstr "Επικοινωνήστε ξανά"
 msgid "Follow up on {at}"
 msgstr "Επανεπικοινωνία στις {at}"
 
+#. placeholder {0}: event.application.company
+#. placeholder {1}: fullDay.format(dateOfKey(day))
+#: src/features/applications-board/time-grid.tsx
+msgid "Follow up: {0}, {1}"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Follow-up"
@@ -4307,10 +4339,6 @@ msgstr "Η \"Λήψη ανατροφοδότησης\" στέλνει την ε�
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Λαμβάνετε νέες θέσεις εδώ κάθε πρωί"
-
-#: src/features/share/download.tsx
-msgid "Get resume feedback on Discord"
-msgstr "Λάβετε σχόλια για το βιογραφικό σας στο Discord"
 
 #: src/features/letters/write.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -4735,6 +4763,14 @@ msgstr "Η συνέντευξη διαγράφηκε"
 msgid "Interview is in another timezone"
 msgstr "Η συνέντευξη είναι σε άλλη ζώνη ώρας"
 
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview moved to {when}"
+msgstr ""
+
+#: src/features/applications-board/use-reschedule-interview.ts
+msgid "Interview now ends at {endTime}"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Interview preparation"
 msgstr "Προετοιμασία συνέντευξης"
@@ -4868,10 +4904,6 @@ msgstr "Ροή αναζήτησης εργασίας"
 #: src/features/search/search-screen.tsx
 msgid "Jobs"
 msgstr "Θέσεις εργασίας"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Join the Discord"
-msgstr "Γίνετε μέλος του Discord"
 
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
@@ -5094,10 +5126,12 @@ msgid "Length"
 msgstr "Μήκος"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length · minutes"
 msgstr "Διάρκεια · λεπτά"
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "Length in minutes"
 msgstr "Διάρκεια σε λεπτά"
 
@@ -5394,6 +5428,10 @@ msgstr "Παραβλέφθηκαν τα κλειδωμένα έγγραφα. Ξ�
 msgid "Locked. Unlock to edit."
 msgstr "Κλειδωμένο. Ξεκλείδωμα για επεξεργασία."
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Long press to select"
 msgstr "Πατήστε παρατεταμένα για επιλογή"
@@ -5628,6 +5666,10 @@ msgstr "Οι προτάσεις μοντέλων δεν είναι διαθέσ�
 msgid "Model: {label}"
 msgstr "Μοντέλο: {label}"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Month"
+msgstr ""
+
 #: src/features/write/pickers.tsx
 msgid "More"
 msgstr "Περισσότερα"
@@ -5690,6 +5732,14 @@ msgstr "Κυρίως ευανάγνωστο"
 msgid "Move {title} to…"
 msgstr "Μετακίνηση {title} σε…"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes earlier"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Move 15 minutes later"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
 msgstr "Μετακινήστε όλο το περιεχόμενο εντός των ορίων της σελίδας και επανεξαγάγετε."
@@ -5707,6 +5757,10 @@ msgstr "Μετακίνηση προς τα κάτω"
 #: src/features/write/basics-screen.tsx
 msgid "Move field up"
 msgstr "Μετακίνηση πεδίου προς τα πάνω"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Move interview"
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "Move it to the main column"
@@ -5930,6 +5984,10 @@ msgstr "Νέα ενότητα"
 msgid "New STARR story"
 msgstr "Νέα ιστορία STARR"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Next issue"
 msgstr "Επόμενο τεύχος"
@@ -5958,6 +6016,10 @@ msgstr "Επόμενο βήμα: {note}"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Next step: {note}. Adds a reminder to Today."
 msgstr "Επόμενο βήμα: {note}. Προσθέτει μια υπενθύμιση στο Σήμερα."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Next week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Next workspace tabs"
@@ -6100,10 +6162,6 @@ msgstr "Καμία φωτογραφία. Οι περισσότεροι ATS αγ�
 msgid "No postings found. Try different keywords."
 msgstr "Δεν βρέθηκαν αγγελίες εργασίας. Δοκιμάστε διαφορετικές λέξεις-κλειδιά."
 
-#: src/auth/messages.ts
-msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
-msgstr "Δεν απαντήθηκε διακομιστής Rezumi σε αυτή τη διεύθυνση. Ελέγξτε την ορθογραφία ή ρωτήστε τον διαχειριστή σας εάν ο διακομιστής επιτρέπει τη σύνδεση στην εφαρμογή."
-
 #: src/features/check/job-match.tsx
 msgid "No recognizable terms in this posting."
 msgstr "Δεν υπάρχουν αναγνωρίσιμοι όροι σε αυτήν την αγγελία εργασίας."
@@ -6123,6 +6181,10 @@ msgstr "Κανένα αποτέλεσμα"
 #: src/features/letters/write.tsx
 msgid "No resume"
 msgstr "Χωρίς βιογραφικό"
+
+#: src/auth/messages.ts
+msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr "Δεν απαντήθηκε διακομιστής Rezumi σε αυτή τη διεύθυνση. Ελέγξτε την ορθογραφία ή ρωτήστε τον διαχειριστή σας εάν ο διακομιστής επιτρέπει τη σύνδεση στην εφαρμογή."
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7066,6 +7128,10 @@ msgstr "Προεπισκόπηση ιστοσελίδας"
 msgid "Previewing {0} · tap to apply"
 msgstr "Προεπισκόπηση {0} · πατήστε για εφαρμογή"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous day"
+msgstr ""
+
 #: src/features/check/page.tsx
 msgid "Previous issue"
 msgstr "Προηγούμενο θέμα"
@@ -7081,6 +7147,10 @@ msgstr "Προηγούμενη σελίδα"
 #: src/features/check/parser.tsx
 msgid "Previous PDF result. It may not match your current draft."
 msgstr "Προηγούμενο αποτέλεσμα PDF. Μπορεί να μην ταιριάζει με το τρέχον πρόχειρό σας."
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Previous week"
+msgstr ""
 
 #: src/shell/workspace-chrome.tsx
 msgid "Previous workspace tabs"
@@ -7276,10 +7346,6 @@ msgstr "Επανεξαγάγετε με ενσωματωμένες γραμμα�
 #: src/features/ats-checker/messages.ts
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Επανεξαγάγετε με ενσωματωμένες γραμματοσειρές, έπειτα ανοίξτε το αρχείο και ελέγξτε ότι το κείμενο αντιγράφεται καθαρά."
-
-#: src/auth/auth-header.tsx
-msgid "Rezumi"
-msgstr "Rezumi"
 
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Read briefing"
@@ -7715,6 +7781,18 @@ msgstr "Απαιτήσεις"
 msgid "Requirements and your evidence"
 msgstr "Απαιτήσεις και τα τεκμήριά σας"
 
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Reschedule"
+msgstr ""
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Reschedule interview"
+msgstr ""
+
+#: src/features/applications-board/time-grid.tsx
+msgid "Reschedule…"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Χρησιμοποιήστε τα κεφαλαία μόνο για σύντομες επικεφαλίδες. Επιβραδύνουν την ανάγνωση και μπορούν να ματαιώσουν αναζητήσεις με διάκριση πεζών-κεφαλαίων."
@@ -7779,10 +7857,6 @@ msgstr "βιογραφικό + επιστολή"
 #: src/features/document-menu/index.tsx
 msgid "Resume details"
 msgstr "λεπτομέρειες βιογραφικού"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Resume feedback, product help, and community ideas."
-msgstr "Σχόλια για βιογραφικά, βοήθεια για το προϊόν και ιδέες της κοινότητας."
 
 #: src/features/application-detail/sections.tsx
 msgid "Resume file"
@@ -7955,6 +8029,10 @@ msgstr "Ανάκληση αυτού του κλειδιού API"
 #: src/features/check/writing.tsx
 msgid "Rewrite accepted"
 msgstr "Αποδεκτή επανεγγραφή"
+
+#: src/auth/auth-header.tsx
+msgid "Rezumi"
+msgstr "Rezumi"
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8690,6 +8768,10 @@ msgstr "Εμφάνιση διαβασμένων"
 msgid "Show section icons"
 msgstr "Εμφάνιση εικονιδίων ενότητας"
 
+#: src/features/applications-board/time-grid.tsx
+msgid "Show this day"
+msgstr ""
+
 #: src/features/application-detail/detail-screen.tsx
 msgid "Showing saved details. They couldn't be refreshed."
 msgstr "Εμφάνιση αποθηκευμένων στοιχείων. Δεν μπορούσαν να ανανεωθούν."
@@ -9292,6 +9374,10 @@ msgstr "Λήψη φωτογραφίας"
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "Ταμίλ"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Tap empty time to schedule. Long press an interview to drag it, or hold its bottom edge to change its length."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Target roles"
@@ -9978,8 +10064,13 @@ msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Αυτή η ιστορία δεν είναι διαθέσιμη ή χρησιμοποιεί γεγονότα που είναι απενεργοποιημένα."
 
 #: src/features/application-detail/interview-sheet.tsx
+#: src/features/applications-board/reschedule-sheet.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Αυτή η ώρα δεν υπάρχει στην επιλεγμένη ζώνη ώρας. Επιλέξτε άλλη ώρα."
+
+#: src/features/applications-board/time-grid.tsx
+msgid "This time does not exist in your timezone. Choose another time."
+msgstr "Αυτή η ώρα δεν υπάρχει στη ζώνη ώρας σας. Επιλέξτε άλλη ώρα."
 
 #: src/features/settings/profile.tsx
 msgid "This username is already taken."
@@ -10013,6 +10104,10 @@ msgstr "Σύμπτυξη κειμένου"
 #: src/features/application-detail/interview-sheet.tsx
 msgid "Time · {0}"
 msgstr "Ώρα · {0}"
+
+#: src/features/applications-board/reschedule-sheet.tsx
+msgid "Time · {timeZone}"
+msgstr "Ώρα · {timeZone}"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Time (HH:mm)"
@@ -10731,6 +10826,10 @@ msgstr "Οι αναζητήσεις στον Ιστό αναζητούν θέσ�
 #: src/features/write/basics-screen.tsx
 msgid "Website"
 msgstr "Ιστότοπος"
+
+#: src/features/applications-board/calendar-screen.tsx
+msgid "Week"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Weighing each requirement"

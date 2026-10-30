@@ -1,26 +1,18 @@
+import { Button, Dropdown, Label, Separator, Spinner, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Spinner } from "@rezumi/ui/components/spinner";
-import { TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
+import { type LetterMode, useLetterMode } from "@/features/letters/use-letter-mode";
 import { DocumentMenuTrigger } from "@/features/resume/editor/chrome";
 import { DownloadButtons, EditorBarFrame } from "@/features/resume/editor/chrome/bar";
 import { useEditorStore } from "@/features/resume/editor/store";
@@ -44,6 +36,7 @@ export function LetterBar({ layout, pinnable }: LetterBarProps) {
 	// Below 1280 the bar is too narrow for Share's label next to everything else.
 	const wide = useBreakpoint() === "wide";
 	const download = useDownloadLetter();
+	const [mode, setMode] = useLetterMode();
 
 	return (
 		<EditorBarFrame
@@ -51,25 +44,32 @@ export function LetterBar({ layout, pinnable }: LetterBarProps) {
 			pinnable={pinnable}
 			menu={<LetterMenu />}
 			modes={
-				<TabsList aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
-					<TabsTrigger value="write" className="px-4">
-						<Icon name="pencil-simple" size={18} />
-						<Trans>Write</Trans>
-					</TabsTrigger>
-					<TabsTrigger value="design" className="px-4">
-						<Icon name="palette" size={18} />
-						<Trans>Design</Trans>
-					</TabsTrigger>
-				</TabsList>
+				// Only the list sits in Tabs: React Aria renders everything inside Tabs a second time to collect the tabs.
+				<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as LetterMode)}>
+					<Tabs.ListContainer>
+						<Tabs.List aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
+							<Tabs.Tab id="write" className="px-4">
+								<Icon name="pencil-simple" size={18} />
+								<Trans>Write</Trans>
+								<Tabs.Indicator />
+							</Tabs.Tab>
+							<Tabs.Tab id="design" className="px-4">
+								<Icon name="palette" size={18} />
+								<Trans>Design</Trans>
+								<Tabs.Indicator />
+							</Tabs.Tab>
+						</Tabs.List>
+					</Tabs.ListContainer>
+				</Tabs>
 			}
 		>
 			{layout === "desktop" && wide ? (
-				<Button variant="secondary" className="gap-1.5" onClick={() => setSheetTab("download")}>
+				<Button variant="secondary" className="gap-1.5" onPress={() => setSheetTab("download")}>
 					<Icon name="export" />
 					<Trans>Share</Trans>
 				</Button>
 			) : (
-				<IconButton icon="export" label={t`Share`} onClick={() => setSheetTab("download")} />
+				<IconButton icon="export" label={t`Share`} onPress={() => setSheetTab("download")} />
 			)}
 			<DownloadButtons
 				busy={download.busy}
@@ -177,28 +177,46 @@ function LetterMenu() {
 
 	return (
 		<>
-			<DropdownMenu>
-				<DropdownMenuTrigger render={<DocumentMenuTrigger name={name} isLocked={isLocked} />} />
-				<DropdownMenuContent align="start" className="w-60">
-					<DropdownMenuItem disabled={isLocked} onClick={() => void rename()}>
-						<Icon name="pencil-simple" />
-						<Trans>Rename…</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void duplicate()}>
-						<Icon name="copy" />
-						<Trans>Duplicate</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void setLocked(!isLocked)}>
-						<Icon name={isLocked ? "lock-open" : "lock"} />
-						{isLocked ? <Trans>Unlock editing</Trans> : <Trans>Lock editing</Trans>}
-					</DropdownMenuItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem variant="destructive" disabled={isLocked} onClick={() => void trash()}>
-						<Icon name="trash" />
-						<Trans>Move to Trash</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+			<Dropdown>
+				<DocumentMenuTrigger name={name} isLocked={isLocked} />
+				<Dropdown.Popover placement="bottom start" className="w-60">
+					<Dropdown.Menu>
+						<Dropdown.Item id="rename" textValue={t`Rename…`} isDisabled={isLocked} onAction={() => void rename()}>
+							<Icon name="pencil-simple" />
+							<Label>
+								<Trans>Rename…</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item id="duplicate" textValue={t`Duplicate`} onAction={() => void duplicate()}>
+							<Icon name="copy" />
+							<Label>
+								<Trans>Duplicate</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item
+							id="lock"
+							textValue={isLocked ? t`Unlock editing` : t`Lock editing`}
+							onAction={() => void setLocked(!isLocked)}
+						>
+							<Icon name={isLocked ? "lock-open" : "lock"} />
+							<Label>{isLocked ? <Trans>Unlock editing</Trans> : <Trans>Lock editing</Trans>}</Label>
+						</Dropdown.Item>
+						<Separator />
+						<Dropdown.Item
+							id="trash"
+							textValue={t`Move to Trash`}
+							variant="danger"
+							isDisabled={isLocked}
+							onAction={() => void trash()}
+						>
+							<Icon name="trash" />
+							<Label>
+								<Trans>Move to Trash</Trans>
+							</Label>
+						</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 			<LetterSaveStatus />
 		</>
 	);
@@ -221,7 +239,7 @@ function LetterSaveStatus() {
 		<span role="status" aria-live="polite" className="flex min-w-0 items-center gap-1.5 text-xs leading-4 text-ink-3">
 			{status === "saving" && (
 				<>
-					<Spinner decorative className="size-3" />
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Saving…</Trans>
 				</>
 			)}

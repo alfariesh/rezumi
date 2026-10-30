@@ -1,143 +1,96 @@
+import { Command } from "@heroui-pro/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useHotkeys } from "@tanstack/react-hotkeys";
-import { useEffect, useRef, useState } from "react";
-import { Command, CommandEmpty, CommandInput, CommandList } from "@rezumi/ui/components/command";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
+import { Icon } from "@rezumi/ui/components/icon";
 import { AskCommandGroup } from "./pages/ask";
 import { NavigationCommandGroup } from "./pages/navigation";
 import { PreferencesCommandGroup } from "./pages/preferences";
 import { ResumesCommandGroup } from "./pages/resumes";
 import { useCommandPaletteStore } from "./store";
 
+/** Substring match on the item's `textValue`. The query is trimmed so "ask <query>" rows stay visible. */
+const filterItems = (textValue: string, inputValue: string) =>
+	textValue.toLowerCase().includes(inputValue.trim().toLowerCase());
+
 export default function CommandPaletteContent() {
-	const inputRef = useRef<HTMLInputElement>(null);
-	const commandRef = useRef<HTMLDivElement>(null);
-	const [selectedValue, setSelectedValue] = useState("");
 	const { open, search, pages, setOpen, setSearch, goBack } = useCommandPaletteStore();
 
 	const isFirstPage = pages.length === 0;
 	const currentPage = pages[pages.length - 1];
-	const commandListPage = currentPage ?? "root";
-
-	useHotkeys([
-		{
-			hotkey: "Backspace",
-			options: { ignoreInputs: false, preventDefault: false, stopPropagation: false },
-			callback: (event) => {
-				// Only handle if the command palette is open
-				if (!open) return;
-
-				const input = inputRef.current;
-				if (!input) return;
-
-				// Only handle if input is focused
-				if (document.activeElement !== input) return;
-
-				// If input has text, let the default behavior handle it (delete character)
-				if (search.length > 0) return;
-
-				// If input is empty, prevent default and go back
-				event.preventDefault();
-				goBack();
-			},
-		},
-	]);
-
-	const handleOpenChange = (newOpen: boolean) => {
-		setOpen(newOpen);
-	};
-
-	const handleSearchChange = (value: string) => {
-		setSearch(value);
-	};
-
-	useEffect(() => {
-		if (!open) return;
-
-		const firstItem = commandRef.current?.querySelector<HTMLElement>(
-			`[data-command-page="${commandListPage}"] [cmdk-item]:not([aria-disabled="true"])`,
-		);
-		const value = firstItem?.getAttribute("data-value");
-
-		if (value) setSelectedValue(value);
-		inputRef.current?.focus();
-	}, [open, commandListPage]);
 
 	return (
-		<Dialog open={open} onOpenChange={handleOpenChange}>
-			<DialogHeader className="sr-only print:hidden">
-				<DialogTitle>
-					<Trans comment="Screen-reader dialog title for the command palette">Command palette</Trans>
-				</DialogTitle>
-				<DialogDescription>
-					<Trans comment="Screen-reader dialog description instructing users how to use the command palette">
-						Type a command or search…
-					</Trans>
-				</DialogDescription>
-			</DialogHeader>
-
-			<DialogContent
-				instant
-				className="overflow-hidden p-0"
-				aria-label={
-					isFirstPage
-						? t({
-								comment: "Accessible label for the command palette dialog",
-								message: "Command palette",
-							})
-						: t({
-								comment: "Accessible label for command palette dialog when browsing a nested command page",
-								message: `Command palette: ${currentPage}`,
-							})
-				}
-			>
-				<Command
-					ref={commandRef}
-					loop
-					value={selectedValue}
-					onValueChange={setSelectedValue}
-					aria-label={t({
-						comment: "Accessible label for command list region inside command palette",
-						message: "Command palette",
-					})}
-					className="[&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5 **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-ink-3 **:[[cmdk-group]]:px-2 **:[[cmdk-input]]:h-12 **:[[cmdk-item]]:px-2 **:[[cmdk-item]]:py-3"
-				>
-					<CommandInput
-						ref={inputRef}
-						value={search}
-						onValueChange={handleSearchChange}
-						placeholder={
+		<Command>
+			<Command.Backdrop isOpen={open} onOpenChange={setOpen}>
+				<Command.Container>
+					<Command.Dialog
+						inputValue={search}
+						onInputChange={setSearch}
+						filter={filterItems}
+						aria-label={
 							isFirstPage
 								? t({
-										comment: "Placeholder in command palette input on root page",
-										message: "Type a command or search…",
+										comment: "Accessible label for the command palette dialog",
+										message: "Command palette",
 									})
 								: t({
-										comment: "Placeholder in command palette input on nested pages",
-										message: "Search…",
+										comment: "Accessible label for command palette dialog when browsing a nested command page",
+										message: `Command palette: ${currentPage}`,
 									})
 						}
-						aria-label={t({
-							comment: "Accessible label for command palette search input",
-							message: "Search commands",
-						})}
-					/>
+					>
+						<Command.InputGroup
+							aria-label={t({
+								comment: "Accessible label for command palette search input",
+								message: "Search commands",
+							})}
+						>
+							<Command.InputGroup.Prefix>
+								<Icon name="magnifying-glass" size={20} />
+							</Command.InputGroup.Prefix>
+							<Command.InputGroup.Input
+								placeholder={
+									isFirstPage
+										? t({
+												comment: "Placeholder in command palette input on root page",
+												message: "Type a command or search…",
+											})
+										: t({
+												comment: "Placeholder in command palette input on nested pages",
+												message: "Search…",
+											})
+								}
+								onKeyDown={(event) => {
+									// Empty input: Backspace steps back a page (or closes from the root page).
+									if (event.key !== "Backspace" || search.length > 0) return;
+									event.preventDefault();
+									goBack();
+								}}
+							/>
+							<Command.InputGroup.ClearButton />
+						</Command.InputGroup>
 
-					<CommandList key={commandListPage} data-command-page={commandListPage}>
-						<CommandEmpty>
-							<Trans comment="Empty-state message when no command palette results match the search query">
-								No commands match that search.
-							</Trans>
-						</CommandEmpty>
-
-						<ResumesCommandGroup />
-						<PreferencesCommandGroup />
-						<NavigationCommandGroup />
-						<AskCommandGroup />
-					</CommandList>
-				</Command>
-			</DialogContent>
-		</Dialog>
+						<Command.List
+							key={currentPage ?? "root"}
+							aria-label={t({
+								comment: "Accessible label for command list region inside command palette",
+								message: "Command palette",
+							})}
+							renderEmptyState={() => (
+								<div className="py-8 text-center text-sm text-ink-3">
+									<Trans comment="Empty-state message when no command palette results match the search query">
+										No commands match that search.
+									</Trans>
+								</div>
+							)}
+						>
+							<ResumesCommandGroup />
+							<PreferencesCommandGroup />
+							<NavigationCommandGroup />
+							<AskCommandGroup />
+						</Command.List>
+					</Command.Dialog>
+				</Command.Container>
+			</Command.Backdrop>
+		</Command>
 	);
 }

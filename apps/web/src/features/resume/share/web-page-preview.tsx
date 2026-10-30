@@ -1,4 +1,6 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
+import { Segment } from "@heroui-pro/react";
+import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useEffect, useState } from "react";
@@ -7,8 +9,6 @@ import { renderResumeWebPage, webPageImageUrl } from "@rezumi/pdf/web-page";
 import { renderWebPageDocument, webPageMessages } from "@rezumi/pdf/web-page-document";
 import { removeContactDetails } from "@rezumi/resume/contact-details";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { cn } from "@rezumi/utils/style";
 import { useCurrentResume, useResumeData } from "@/features/resume/builder/draft";
 // The page's own text, declared for translators; see the module.
@@ -69,21 +69,21 @@ export function WebPagePreview() {
 
 	return (
 		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-sunken p-4">
-			<SegmentedControl
+			<Segment
 				aria-label={t`Preview size`}
-				value={device}
-				onValueChange={(value) => setDevice(value as Device)}
+				selectedKey={device}
+				onSelectionChange={(key) => setDevice(key as Device)}
 				className="shrink-0"
 			>
-				<SegmentedControlItem value="desktop">
+				<Segment.Item id="desktop">
 					<Icon name="desktop" size={16} />
 					<Trans>Computer</Trans>
-				</SegmentedControlItem>
-				<SegmentedControlItem value="phone">
+				</Segment.Item>
+				<Segment.Item id="phone">
 					<Icon name="device-mobile" size={16} />
 					<Trans>Phone</Trans>
-				</SegmentedControlItem>
-			</SegmentedControl>
+				</Segment.Item>
+			</Segment>
 			<div
 				className={cn(
 					"relative min-h-0 w-full flex-1 overflow-hidden rounded-lg border border-line bg-bg shadow-e1 transition-[max-width] duration-standard ease-enter",
@@ -100,7 +100,7 @@ export function WebPagePreview() {
 					/>
 				) : (
 					<div className="grid size-full place-items-center">
-						<Spinner className="size-6" />
+						<Spinner size="md" color="current" />
 					</div>
 				)}
 			</div>

@@ -1,8 +1,7 @@
+import { buttonVariants, Alert } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
-import { buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 
 function getErrorMessage(code: string | undefined): string {
@@ -67,19 +66,23 @@ export function AuthErrorPage({ code, description }: AuthErrorPageProps) {
 				</h1>
 			</div>
 
-			<Alert>
-				<Icon name="warning" size={16} />
-				<AlertTitle>{getErrorMessage(code)}</AlertTitle>
-				{description && (
-					<AlertDescription>
-						<span className="mb-1 block text-xs">
-							<Trans comment="Label above the raw error text forwarded by the identity provider">
-								Details from the provider:
-							</Trans>
-						</span>
-						<span className="block font-mono text-xs break-words">{description}</span>
-					</AlertDescription>
-				)}
+			<Alert status="danger" role="alert">
+				<Alert.Indicator>
+					<Icon name="warning" size={16} />
+				</Alert.Indicator>
+				<Alert.Content>
+					<Alert.Title>{getErrorMessage(code)}</Alert.Title>
+					{description && (
+						<Alert.Description>
+							<span className="mb-1 block text-xs">
+								<Trans comment="Label above the raw error text forwarded by the identity provider">
+									Details from the provider:
+								</Trans>
+							</span>
+							<span className="block font-mono text-xs break-words">{description}</span>
+						</Alert.Description>
+					)}
+				</Alert.Content>
 			</Alert>
 
 			{returnsToSettings ? (

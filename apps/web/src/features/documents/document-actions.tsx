@@ -1,22 +1,13 @@
 import type { DocumentSummary } from "./filter";
 import type { IconName } from "@rezumi/ui/components/icon";
+import { ContextMenu } from "@heroui-pro/react";
+import { Button, Description, Dropdown, Label, Modal, Separator } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
-import { Button } from "@rezumi/ui/components/button";
-import { ContextMenuContent, ContextMenuItem, ContextMenuSeparator } from "@rezumi/ui/components/context-menu";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useNewDocumentsStore } from "./new-documents";
@@ -29,6 +20,19 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { authClient } from "@/libs/auth/client";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
+
+/** HeroUI's Modal has no animation-complete callback: run `done(false)` once the exit fade (~300ms) has had time to finish. */
+function useAfterExit(open: boolean, done: (open: boolean) => void) {
+	const doneRef = useRef(done);
+	useEffect(() => {
+		doneRef.current = done;
+	});
+	useEffect(() => {
+		if (open) return;
+		const timer = setTimeout(() => doneRef.current(false), 300);
+		return () => clearTimeout(timer);
+	}, [open]);
+}
 
 type Ref = { type: DocumentSummary["type"]; id: string };
 const ref = (document: DocumentSummary): Ref => ({ type: document.type, id: document.id });
@@ -292,27 +296,37 @@ export function DocumentMenuContent({
 	];
 	const entries = document.trashedAt ? trashEntries : liveEntries;
 
-	const Content = variant === "context" ? ContextMenuContent : DropdownMenuContent;
-	const Item = variant === "context" ? ContextMenuItem : DropdownMenuItem;
-	const Separator = variant === "context" ? ContextMenuSeparator : DropdownMenuSeparator;
+	const Item = variant === "context" ? ContextMenu.Item : Dropdown.Item;
+	const items = entries.map((entry) => (
+		<Item
+			key={entry.label}
+			id={entry.label}
+			textValue={entry.label}
+			variant={entry.danger ? "danger" : "default"}
+			isDisabled={Boolean(entry.disabled)}
+			onAction={entry.onSelect}
+		>
+			<Icon name={entry.icon} className={entry.danger ? undefined : "text-muted"} />
+			<Label>{entry.label}</Label>
+			{entry.disabled && document.isLocked && <Description>{t`Unlock it first`}</Description>}
+		</Item>
+	));
+	// The dangerous entry sits apart from the rest.
+	const dangerIndex = entries.findIndex((entry) => entry.danger);
+	const Divider = variant === "context" ? ContextMenu.Separator : Separator;
+	const children =
+		dangerIndex < 0
+			? items
+			: [...items.slice(0, dangerIndex), <Divider key="danger-separator" />, ...items.slice(dangerIndex)];
 
-	return (
-		<Content align="end" className="w-60">
-			{entries.map((entry) => (
-				<div key={entry.label} className="contents">
-					{entry.danger && <Separator />}
-					<Item
-						variant={entry.danger ? "destructive" : "default"}
-						disabled={entry.disabled}
-						onClick={entry.onSelect}
-						title={entry.disabled ? t`Unlock it first` : undefined}
-					>
-						<Icon name={entry.icon} />
-						{entry.label}
-					</Item>
-				</div>
-			))}
-		</Content>
+	return variant === "context" ? (
+		<ContextMenu.Popover placement="bottom start" className="w-60">
+			<ContextMenu.Menu>{children}</ContextMenu.Menu>
+		</ContextMenu.Popover>
+	) : (
+		<Dropdown.Popover placement="bottom end" className="w-60">
+			<Dropdown.Menu>{children}</Dropdown.Menu>
+		</Dropdown.Popover>
 	);
 }
 
@@ -331,6 +345,12 @@ export function TagsDialog({ documents: requested, onClose }: TagsDialogProps) {
 	// Closing keeps the documents' tags on screen until the dialog has faded out.
 	const [documents, onDocumentsOpenChangeComplete] = useClosingValue(requested);
 	const [tags, setTags] = useState<string[] | null>(null);
+	const descriptionId = useId();
+	// Unsaved edits are dropped once the dialog has closed, so the chips don't change while it fades.
+	useAfterExit(requested !== null, (open) => {
+		onDocumentsOpenChangeComplete(open);
+		setTags(null);
+	});
 	const setDocumentTags = useMutation(orpc.documents.setTags.mutationOptions());
 	const shared = documents ? sharedTags(documents) : [];
 
@@ -360,43 +380,40 @@ export function TagsDialog({ documents: requested, onClose }: TagsDialogProps) {
 	};
 
 	return (
-		<Dialog
-			open={requested !== null}
-			onOpenChange={(open) => !open && onClose()}
-			onOpenChangeComplete={(open) => {
-				onDocumentsOpenChangeComplete(open);
-				// Unsaved edits are dropped once the dialog has closed, so the chips don't change while it fades.
-				if (!open) setTags(null);
-			}}
-		>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>
-						{documents && documents.length > 1 ? (
-							<Plural value={documents.length} one="Tags for # document" other="Tags for # documents" />
-						) : (
-							<Trans>Tags</Trans>
-						)}
-					</DialogTitle>
-					<DialogDescription>
-						{documents && documents.length > 1 ? (
-							<Trans>
-								Shows the tags they all share. Tags you add go on every document; tags you remove come off every one.
-								Locked documents are left as they are.
-							</Trans>
-						) : (
-							<Trans>Tags group documents in the library; pick one above the grid to filter by it.</Trans>
-						)}
-					</DialogDescription>
-				</DialogHeader>
-				<ChipInput value={tags ?? shared} onChange={setTags} />
-				<DialogFooter>
-					<Button onClick={() => void save()} disabled={setDocumentTags.isPending}>
-						<Trans>Save tags</Trans>
-					</Button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+		<Modal.Backdrop isOpen={requested !== null} onOpenChange={(open) => !open && onClose()}>
+			<Modal.Container size="sm">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							{documents && documents.length > 1 ? (
+								<Plural value={documents.length} one="Tags for # document" other="Tags for # documents" />
+							) : (
+								<Trans>Tags</Trans>
+							)}
+						</Modal.Heading>
+						<p id={descriptionId} className="text-sm text-muted">
+							{documents && documents.length > 1 ? (
+								<Trans>
+									Shows the tags they all share. Tags you add go on every document; tags you remove come off every one.
+									Locked documents are left as they are.
+								</Trans>
+							) : (
+								<Trans>Tags group documents in the library; pick one above the grid to filter by it.</Trans>
+							)}
+						</p>
+					</Modal.Header>
+					<Modal.Body>
+						<ChipInput value={tags ?? shared} onChange={setTags} />
+					</Modal.Body>
+					<Modal.Footer>
+						<Button onPress={() => void save()} isDisabled={setDocumentTags.isPending}>
+							<Trans>Save tags</Trans>
+						</Button>
+					</Modal.Footer>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
@@ -407,6 +424,8 @@ export function LinkApplicationDialog({ document: requested, onClose }: LinkAppl
 	const queryClient = useQueryClient();
 	// Closing keeps the list, its highlight and Unlink on screen until the dialog has faded out.
 	const [document, onOpenChangeComplete] = useClosingValue(requested);
+	useAfterExit(requested !== null, onOpenChangeComplete);
+	const descriptionId = useId();
 	const { data: applications } = useQuery({ ...applicationsListQueryOptions(), enabled: requested !== null });
 	const link = useMutation(orpc.documents.linkApplication.mutationOptions());
 
@@ -427,50 +446,51 @@ export function LinkApplicationDialog({ document: requested, onClose }: LinkAppl
 	const jobs = (applications ?? []).filter((application) => application.status !== "closed");
 
 	return (
-		<Dialog
-			open={requested !== null}
-			onOpenChange={(open) => !open && onClose()}
-			onOpenChangeComplete={onOpenChangeComplete}
-		>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Link to application</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>The application this letter is for.</Trans>
-					</DialogDescription>
-				</DialogHeader>
-				<div className="grid max-h-72 gap-1 overflow-y-auto">
-					{jobs.map((application) => (
-						<Button
-							key={application.id}
-							variant={document?.application?.id === application.id ? "secondary" : "ghost"}
-							className="h-auto justify-start py-2 text-start"
-							disabled={link.isPending}
-							onClick={() => void choose(application.id)}
-						>
-							<Icon name="briefcase" className="text-ink-2" />
-							<span className="grid min-w-0">
-								<span className="truncate font-medium">{application.role}</span>
-								<span className="truncate text-xs text-ink-3">{application.company}</span>
-							</span>
-						</Button>
-					))}
-					{jobs.length === 0 && (
-						<p className="text-sm text-ink-2">
-							<Trans>No applications yet. Add one in Applications first.</Trans>
+		<Modal.Backdrop isOpen={requested !== null} onOpenChange={(open) => !open && onClose()}>
+			<Modal.Container size="sm">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Link to application</Trans>
+						</Modal.Heading>
+						<p id={descriptionId} className="text-sm text-muted">
+							<Trans>The application this letter is for.</Trans>
 						</p>
+					</Modal.Header>
+					<Modal.Body>
+						<div className="grid max-h-72 gap-1 overflow-y-auto">
+							{jobs.map((application) => (
+								<Button
+									key={application.id}
+									variant={document?.application?.id === application.id ? "secondary" : "ghost"}
+									className="h-auto justify-start py-2 text-start"
+									isDisabled={link.isPending}
+									onPress={() => void choose(application.id)}
+								>
+									<Icon name="briefcase" className="text-muted" />
+									<span className="grid min-w-0">
+										<span className="truncate font-medium">{application.role}</span>
+										<span className="truncate text-xs text-muted">{application.company}</span>
+									</span>
+								</Button>
+							))}
+							{jobs.length === 0 && (
+								<p className="text-sm text-muted">
+									<Trans>No applications yet. Add one in Applications first.</Trans>
+								</p>
+							)}
+						</div>
+					</Modal.Body>
+					{document?.application && (
+						<Modal.Footer>
+							<Button variant="ghost" isDisabled={link.isPending} onPress={() => void choose(null)}>
+								<Trans>Unlink</Trans>
+							</Button>
+						</Modal.Footer>
 					)}
-				</div>
-				{document?.application && (
-					<DialogFooter>
-						<Button variant="ghost" disabled={link.isPending} onClick={() => void choose(null)}>
-							<Trans>Unlink</Trans>
-						</Button>
-					</DialogFooter>
-				)}
-			</DialogContent>
-		</Dialog>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }

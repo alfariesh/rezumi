@@ -4,6 +4,7 @@ import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
+import { Button, buttonVariants, Spinner, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -12,10 +13,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { m } from "motion/react";
 import { useState } from "react";
 import { WORKSPACE_TABS } from "@rezumi/schema/career";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { getInitials } from "@rezumi/utils/string";
@@ -122,7 +120,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 	if (query.isPending)
 		return (
 			<div className="grid min-h-svh place-items-center">
-				<Spinner />
+				<Spinner size="lg" color="current" aria-label={t`Loading`} />
 			</div>
 		);
 	if (!application)
@@ -227,28 +225,36 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 						</div>
 					</details>
 				)}
-				<Tabs value={tab} onValueChange={(value) => go(value as WorkspaceTab)} className="min-w-0 gap-0">
-					<TabsList
-						variant="line"
-						className="h-[46px] w-full [scrollbar-width:none] justify-start gap-0 overflow-x-auto px-4 md:px-6 [&_[data-slot=tabs-indicator]]:bg-accent"
-					>
-						{WORKSPACE_TABS.map((value) => (
-							<TabsTrigger key={value} value={value} className="gap-1.5 px-3 data-active:font-semibold">
-								{tabLabel(value)}
-								{value === "prepare" && minutes !== null && minutes > 0 && minutes < 7 * 24 * 60 && (
-									<TabBadge tone={minutes <= 60 ? "warn" : "accent"}>
-										{minutes <= 60 ? t`${minutes} min` : t`${Math.round(minutes / 60)} h`}
-									</TabBadge>
-								)}
-								{value === "messages" && unreadMessages > 0 && <TabBadge tone="info">{unreadMessages}</TabBadge>}
-								{value === "saved" && (saved.data?.length ?? 0) > 0 && (
-									<TabBadge tone="plain">{saved.data?.length}</TabBadge>
-								)}
-							</TabsTrigger>
-						))}
-					</TabsList>
+				<Tabs
+					selectedKey={tab}
+					onSelectionChange={(key) => go(String(key) as WorkspaceTab)}
+					variant="secondary"
+					className="min-w-0 gap-0"
+				>
+					<Tabs.ListContainer>
+						<Tabs.List
+							aria-label={t`Workspace sections`}
+							className="h-[46px] w-full [scrollbar-width:none] justify-start gap-0 overflow-x-auto px-4 md:px-6"
+						>
+							{WORKSPACE_TABS.map((value) => (
+								<Tabs.Tab key={value} id={value} className="gap-1.5 px-3 data-[selected=true]:font-semibold">
+									{tabLabel(value)}
+									{value === "prepare" && minutes !== null && minutes > 0 && minutes < 7 * 24 * 60 && (
+										<TabBadge tone={minutes <= 60 ? "warn" : "accent"}>
+											{minutes <= 60 ? t`${minutes} min` : t`${Math.round(minutes / 60)} h`}
+										</TabBadge>
+									)}
+									{value === "messages" && unreadMessages > 0 && <TabBadge tone="info">{unreadMessages}</TabBadge>}
+									{value === "saved" && (saved.data?.length ?? 0) > 0 && (
+										<TabBadge tone="plain">{saved.data?.length}</TabBadge>
+									)}
+									<Tabs.Indicator />
+								</Tabs.Tab>
+							))}
+						</Tabs.List>
+					</Tabs.ListContainer>
 					{WORKSPACE_TABS.map((value) => (
-						<TabsContent key={value} value={value} className="@container min-w-0 px-4 py-6 md:px-7">
+						<Tabs.Panel key={value} id={value} className="@container min-w-0 px-4 py-6 md:px-7">
 							{value === tab && (
 								<m.div
 									initial={{ opacity: 0, transform: "translateY(4px)" }}
@@ -259,7 +265,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 										<div className="grid justify-items-start gap-3 rounded-xl border border-line p-5">
 											{waiting ? (
 												<p role="status" className="flex items-center gap-2 text-sm text-ink-2">
-													<Spinner decorative />
+													<Spinner size="sm" color="current" aria-hidden />
 													{archived ? <Trans>Loading saved version…</Trans> : <Trans>Loading workspace…</Trans>}
 												</p>
 											) : (
@@ -282,7 +288,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 													<Button
 														size="sm"
 														variant="secondary"
-														onClick={() => {
+														onPress={() => {
 															void saved.refetch();
 															if (!archived) void workspace.refetch();
 														}}
@@ -291,7 +297,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 													</Button>
 												)}
 												{archived && (
-													<Button size="sm" variant="secondary" onClick={() => setSearch({ version: undefined })}>
+													<Button size="sm" variant="secondary" onPress={() => setSearch({ version: undefined })}>
 														<Trans>Back to current</Trans>
 													</Button>
 												)}
@@ -305,7 +311,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 													<span className="flex-1">
 														<Trans>You're looking at a saved version. It can't be edited.</Trans>
 													</span>
-													<Button size="sm" variant="secondary" onClick={() => setSearch({ version: undefined })}>
+													<Button size="sm" variant="secondary" onPress={() => setSearch({ version: undefined })}>
 														<Trans>Back to current</Trans>
 													</Button>
 												</div>
@@ -315,7 +321,7 @@ export function Workspace({ applicationId, tab: requested, search }: WorkspacePr
 									)}
 								</m.div>
 							)}
-						</TabsContent>
+						</Tabs.Panel>
 					))}
 				</Tabs>
 			</div>
@@ -441,10 +447,7 @@ function WorkspaceHeader({ application, onAskCoach }: WorkspaceHeaderProps) {
 							<Trans>Compare offers</Trans>
 						</Link>
 					)}
-					<Button
-						className="bg-accent-soft text-accent-text hover:bg-accent-soft hover:brightness-95"
-						onClick={onAskCoach}
-					>
+					<Button variant="secondary" onPress={onAskCoach}>
 						<Icon name="sparkle" size={18} />
 						<Trans>Ask the coach</Trans>
 					</Button>
@@ -533,11 +536,11 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 					</div>
 					{upcoming && <CountdownChip at={new Date(upcoming.at)} now={now} />}
 					<div className="flex flex-wrap gap-1.5">
-						<Button size="sm" variant="secondary" onClick={onEdit}>
+						<Button size="sm" variant="secondary" onPress={onEdit}>
 							{upcoming ? <Trans>Edit</Trans> : <Trans>Add an interview</Trans>}
 						</Button>
 						{upcoming && (
-							<Button size="sm" variant="ghost" onClick={addToCalendar}>
+							<Button size="sm" variant="ghost" onPress={addToCalendar}>
 								<Icon name="calendar-plus" size={16} />
 								<Trans>Add to calendar</Trans>
 							</Button>
@@ -596,7 +599,7 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 							<Button
 								size="sm"
 								variant="ghost"
-								onClick={() => {
+								onPress={() => {
 									void documents.refetch();
 									if (hasSentVersion) void trashed.refetch();
 								}}

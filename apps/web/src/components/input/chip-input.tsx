@@ -16,16 +16,14 @@ import {
 	useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Chip, Input, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { Badge } from "@rezumi/ui/components/badge";
 import { useFormControl } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Kbd } from "@rezumi/ui/components/kbd";
 import { cn } from "@rezumi/utils/style";
 import { useControlledState } from "@/hooks/use-controlled-state";
 import { isImeComposing } from "@/libs/keyboard";
@@ -50,12 +48,13 @@ type ChipDragPreviewProps = {
 
 function ChipDragPreview({ chip }: ChipDragPreviewProps) {
 	return (
-		<Badge
-			variant="outline"
+		<Chip
+			size="sm"
+			variant="secondary"
 			className="h-6 max-w-44 cursor-grabbing justify-start rounded-md border-accent bg-sunken px-2 text-xs font-medium text-ink shadow-lg ring-2 ring-accent/25 select-none sm:max-w-52"
 		>
 			<span className="truncate">{chip}</span>
-		</Badge>
+		</Chip>
 	);
 }
 
@@ -94,8 +93,9 @@ function ChipItem({ id, chip, index, isEditing, onEdit, onRemove }: ChipItemProp
 			{...attributes}
 			{...listeners}
 		>
-			<Badge
-				variant="outline"
+			<Chip
+				size="sm"
+				variant="secondary"
 				className={cn(
 					"h-6 max-w-full cursor-grab justify-start gap-0 rounded-md border-line bg-sunken/55 px-2 text-xs font-medium text-ink transition-colors select-none hover:border-ink/20 hover:bg-sunken active:cursor-grabbing",
 					isEditing && "border-accent bg-accent/10 ring-1 ring-accent/40",
@@ -142,7 +142,7 @@ function ChipItem({ id, chip, index, isEditing, onEdit, onRemove }: ChipItemProp
 						<Icon name="x" size={14} />
 					</button>
 				</div>
-			</Badge>
+			</Chip>
 		</div>
 	);
 }
@@ -350,7 +350,7 @@ export function ChipInput({
 								placeholder={isEditingKeyword ? t`Editing keyword...` : t`Add a keyword...`}
 								onKeyDown={handleKeyDown}
 								onChange={handleInputChange}
-								className="h-9 flex-1 border-none p-0 focus-visible:border-none focus-visible:ring-0 dark:bg-transparent"
+								className="h-9 flex-1 border-none bg-transparent p-0 shadow-none focus-visible:ring-0"
 							/>
 							{chips.length > 0 && (
 								<span

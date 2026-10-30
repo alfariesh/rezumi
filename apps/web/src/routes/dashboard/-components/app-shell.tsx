@@ -1,20 +1,17 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { AppLayout, Navbar, Sidebar, useSidebar } from "@heroui-pro/react";
+import { Avatar, Button, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useMatchRoute } from "@tanstack/react-router";
-import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
+import Cookies from "js-cookie";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Kbd } from "@rezumi/ui/components/kbd";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
-import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { getInitials } from "@rezumi/utils/string";
-import { cn } from "@rezumi/utils/style";
-import { MobileTabIndicator } from "@/components/layout/mobile-tab-indicator";
 import { useDialogStore } from "@/dialogs/store";
 import { GuestBanner } from "@/features/auth/components/guest-banner";
 import { useCommandPaletteStore } from "@/features/command-palette/store";
@@ -71,19 +68,22 @@ function useIsCurrent() {
 	return (to: NavItem["to"]) => Boolean(matchRoute({ to, fuzzy: to !== "/dashboard" }));
 }
 
+/** The sidebar state HeroUI's AppLayout saves on every toggle; collapsed to icons by default below 1024px. */
+function initialSidebarOpen() {
+	const saved = Cookies.get("sidebar_state");
+	if (saved !== undefined) return saved !== "false";
+	return typeof window === "undefined" || window.matchMedia("(min-width: 1024px)").matches;
+}
+
 /**
- * The app shell for Documents, Trash, Applications and Settings: a 240px sidebar at ≥1024, an icon rail at
- * 640–1023 and a bottom tab bar below 640. An application's workspace is full screen on phones, with its own back
- * link and action bar, so it has no tab bar. N opens New anywhere outside a field.
+ * The app shell for Documents, Trash, Applications, Career and Settings: HeroUI Pro's AppLayout with a 240px sidebar
+ * that collapses to icons (⌘B), and a sheet opened from the navbar's menu button on phones. N opens New anywhere
+ * outside a field.
  */
 type AppShellProps = { children: ReactNode };
 
 export function AppShell({ children }: AppShellProps) {
-	const breakpoint = useBreakpoint();
 	const openDialog = useDialogStore((state) => state.openDialog);
-	const matchRoute = useMatchRoute();
-	const tabs =
-		breakpoint === "mobile" && !matchRoute({ to: "/dashboard/applications/$applicationId/{-$tab}", fuzzy: true });
 
 	useHotkey("N", () => {
 		if (isEditableElementFocused() || useDialogStore.getState().open) return;
@@ -91,264 +91,159 @@ export function AppShell({ children }: AppShellProps) {
 	});
 
 	return (
-		<div
-			className={cn(
-				"grid min-h-svh bg-bg",
-				breakpoint === "mobile"
-					? tabs
-						? "grid-rows-[minmax(0,1fr)_auto]"
-						: ""
-					: breakpoint === "tablet"
-						? "grid-cols-[64px_minmax(0,1fr)]"
-						: "grid-cols-[240px_minmax(0,1fr)]",
-			)}
+		<AppLayout
+			defaultSidebarOpen={initialSidebarOpen()}
+			sidebarCollapsible="icon"
+			sidebar={
+				<>
+					<Sidebar aria-label={t`App navigation`} className="[view-transition-name:app-nav]">
+						<NavigationContent />
+						<Sidebar.Rail />
+					</Sidebar>
+					<Sidebar.Mobile>
+						<NavigationContent />
+					</Sidebar.Mobile>
+				</>
+			}
+			navbar={<AppNavbar />}
 		>
 			<a
 				href="#main-content"
-				className="sr-only rounded-md bg-raised px-4 py-2 text-sm focus:not-sr-only focus:absolute focus:inset-s-2 focus:top-2 focus:z-[100]"
+				className="sr-only rounded-md bg-overlay px-4 py-2 text-sm focus:not-sr-only focus:absolute focus:inset-s-2 focus:top-2 focus:z-[100]"
 			>
 				<Trans>Skip to main content</Trans>
 			</a>
-			{breakpoint !== "mobile" && (breakpoint === "tablet" ? <Rail /> : <Sidebar />)}
-			<main id="main-content" className="min-w-0">
+			<div id="main-content" tabIndex={-1} className="min-w-0 outline-none">
 				<GuestBanner />
 				{children}
-			</main>
-			{tabs && <MobileTabs />}
-		</div>
+			</div>
+		</AppLayout>
 	);
 }
 
-function Sidebar() {
-	const { items, settings, trash } = useNavItems();
-	const isCurrent = useIsCurrent();
+/** The bar above every page: the phone menu button, the sidebar toggle, and on phones search and New. */
+function AppNavbar() {
 	const openPalette = useCommandPaletteStore((state) => state.setOpen);
 	const openDialog = useDialogStore((state) => state.openDialog);
 
 	return (
-		<aside
-			aria-label={t`App navigation`}
-			className="sticky top-0 flex h-svh flex-col gap-3 border-e border-line bg-surface p-3 [view-transition-name:app-nav]"
-		>
-			<Link to="/" className="flex h-9 items-center gap-2.5 px-1.5">
-				<BrandIcon variant="icon" alt="" className="size-6 shrink-0" />
-				<span className="text-sm font-semibold">Rezumi</span>
-			</Link>
+		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`}>
+			<Navbar.Header>
+				<AppLayout.MenuToggle aria-label={t`Open navigation`} />
+				<Sidebar.Trigger aria-label={t`Toggle sidebar`} />
+				<Link to="/" aria-label="Rezumi" className="md:hidden">
+					<BrandIcon variant="icon" alt="" className="size-6" />
+				</Link>
+				<Navbar.Spacer />
+				<Navbar.Content className="md:hidden">
+					<IconButton icon="magnifying-glass" label={t`Search or run…`} size="sm" onPress={() => openPalette(true)} />
+					<IconButton
+						icon="plus"
+						label={t`New`}
+						size="sm"
+						variant="primary"
+						onPress={() => openDialog("document.new", undefined)}
+					/>
+				</Navbar.Content>
+			</Navbar.Header>
+		</Navbar>
+	);
+}
 
-			<button
-				type="button"
-				aria-label={t`Search or run…`}
-				aria-keyshortcuts="Meta+K"
-				onClick={() => openPalette(true)}
-				className="flex h-[34px] items-center gap-2 rounded-lg border border-line bg-bg px-2.5 text-sm text-ink-3 transition-colors duration-quick hover:text-ink-2"
-			>
-				<Icon name="magnifying-glass" size={18} />
-				<span className="flex-1 text-start">
-					<Trans>Search or run…</Trans>
-				</span>
-				<Kbd>⌘K</Kbd>
-			</button>
+/** Brand, search, destinations, New and the account menu; shared by the desktop sidebar and the phone sheet. */
+function NavigationContent() {
+	const { items, settings, trash } = useNavItems();
+	const isCurrent = useIsCurrent();
+	const openPalette = useCommandPaletteStore((state) => state.setOpen);
+	const openDialog = useDialogStore((state) => state.openDialog);
+	const { isOpen, isMobile } = useSidebar();
+	const expanded = isOpen || isMobile;
 
-			<nav aria-label={t`App`} className="grid gap-0.5">
-				{items.map((item) => (
-					<NavLink key={item.to} item={item} current={isCurrent(item.to)} />
-				))}
-				<div className="mt-2 border-t border-line pt-2">
-					<NavLink item={settings} current={isCurrent(settings.to)} />
-				</div>
-			</nav>
+	const link = (item: NavItem) => (
+		<Sidebar.MenuItem key={item.to} id={item.to} href={item.to} isCurrent={isCurrent(item.to)} textValue={item.label}>
+			<Sidebar.MenuIcon>
+				<Icon name={item.icon} size={18} />
+			</Sidebar.MenuIcon>
+			<Sidebar.MenuLabel>{item.label}</Sidebar.MenuLabel>
+			{item.count ? <Sidebar.MenuChip>{item.count}</Sidebar.MenuChip> : null}
+		</Sidebar.MenuItem>
+	);
 
-			<div className="mt-auto grid gap-2">
-				{trash && <NavLink item={trash} current={isCurrent(trash.to)} />}
-				<Button
-					aria-label={t`New`}
-					aria-keyshortcuts="N"
-					className="h-9 justify-between"
-					onClick={() => openDialog("document.new", undefined)}
-				>
-					<span className="flex items-center gap-1.5">
-						<Icon name="plus" />
-						<Trans>New</Trans>
+	return (
+		<>
+			<Sidebar.Header>
+				<Link to="/" className="flex h-9 items-center gap-2.5 px-1.5">
+					<BrandIcon variant="icon" alt="" className="size-6 shrink-0" />
+					<span className="text-sm font-semibold" data-sidebar="label">
+						Rezumi
 					</span>
-					<Kbd className="bg-on-accent/15 text-on-accent">N</Kbd>
-				</Button>
+				</Link>
+				<Sidebar.Menu aria-label={t`Search`}>
+					<Sidebar.MenuItem id="search" textValue={t`Search or run…`} onAction={() => openPalette(true)}>
+						<Sidebar.MenuIcon>
+							<Icon name="magnifying-glass" size={18} />
+						</Sidebar.MenuIcon>
+						<Sidebar.MenuLabel>
+							<Trans>Search or run…</Trans>
+						</Sidebar.MenuLabel>
+						<Sidebar.MenuChip>
+							<Kbd>⌘K</Kbd>
+						</Sidebar.MenuChip>
+					</Sidebar.MenuItem>
+				</Sidebar.Menu>
+			</Sidebar.Header>
+
+			<Sidebar.Content>
+				<Sidebar.Group>
+					<Sidebar.Menu aria-label={t`App`}>{items.map(link)}</Sidebar.Menu>
+				</Sidebar.Group>
+				<Sidebar.Separator />
+				<Sidebar.Group>
+					<Sidebar.Menu aria-label={t`Account`}>{link(settings)}</Sidebar.Menu>
+				</Sidebar.Group>
+			</Sidebar.Content>
+
+			<Sidebar.Footer className="gap-2">
+				{trash && <Sidebar.Menu aria-label={t`Trash`}>{link(trash)}</Sidebar.Menu>}
+				<Sidebar.Tooltip content={t`New`}>
+					<Button
+						aria-label={t`New`}
+						aria-keyshortcuts="N"
+						fullWidth={expanded}
+						isIconOnly={!expanded}
+						className={expanded ? "justify-between" : ""}
+						onPress={() => openDialog("document.new", undefined)}
+					>
+						<span className="flex items-center gap-1.5">
+							<Icon name="plus" size={18} />
+							{expanded && <Trans>New</Trans>}
+						</span>
+						{expanded && <Kbd className="bg-accent-foreground/15 text-accent-foreground">N</Kbd>}
+					</Button>
+				</Sidebar.Tooltip>
 				<UserDropdownMenu>
 					{({ session }) => (
 						<button
 							type="button"
-							className="flex h-11 items-center gap-2.5 rounded-lg px-1.5 text-start transition-colors duration-quick hover:bg-hover"
+							aria-label={expanded ? undefined : t`Account`}
+							className="flex h-11 items-center gap-2.5 rounded-2xl px-1.5 text-start transition-colors hover:bg-default"
 						>
-							<Avatar className="size-7">
-								<AvatarImage src={session.user.image ?? undefined} />
-								<AvatarFallback className="text-[11px]">{getInitials(session.user.name)}</AvatarFallback>
+							<Avatar size="sm" className="size-7 shrink-0">
+								{session.user.image && <Avatar.Image src={session.user.image} alt="" />}
+								<Avatar.Fallback className="text-[11px]">{getInitials(session.user.name)}</Avatar.Fallback>
 							</Avatar>
-							<span className="grid min-w-0">
-								<span className="truncate text-sm font-medium">{session.user.name}</span>
-								<span className="text-xs text-ink-3">
-									<Trans>Account</Trans>
+							{expanded && (
+								<span className="grid min-w-0">
+									<span className="truncate text-sm font-medium">{session.user.name}</span>
+									<span className="text-xs text-muted">
+										<Trans>Account</Trans>
+									</span>
 								</span>
-							</span>
-						</button>
-					)}
-				</UserDropdownMenu>
-			</div>
-		</aside>
-	);
-}
-
-function NavLink({ item, current }: { item: NavItem; current: boolean }) {
-	return (
-		<Link
-			to={item.to}
-			aria-current={current ? "page" : undefined}
-			className={cn(
-				"flex h-[34px] items-center gap-2.5 rounded-lg px-2.5 text-sm transition-[background-color,color,scale] duration-quick ease-enter active:scale-[0.97]",
-				current ? "bg-sunken font-medium text-ink" : "text-ink-2 hover:bg-hover hover:text-ink",
-			)}
-		>
-			<Icon name={item.icon} filled={current} />
-			<span className="flex-1">{item.label}</span>
-			{item.count ? <span className="font-mono text-xs text-ink-3">{item.count}</span> : null}
-		</Link>
-	);
-}
-
-/** Tablets: the same destinations as icons, with their names in tooltips. */
-function Rail() {
-	const { items, settings, trash } = useNavItems();
-	const isCurrent = useIsCurrent();
-	const openPalette = useCommandPaletteStore((state) => state.setOpen);
-	const openDialog = useDialogStore((state) => state.openDialog);
-
-	return (
-		<aside
-			aria-label={t`App navigation`}
-			className="sticky top-0 flex h-svh flex-col items-center gap-2 border-e border-line bg-surface py-3 [view-transition-name:app-nav]"
-		>
-			<Link to="/" aria-label="Rezumi" className="mb-1 grid size-8 place-items-center rounded-md">
-				<BrandIcon variant="icon" alt="" className="size-6" />
-			</Link>
-			<RailTip label={t`Search`} icon="magnifying-glass">
-				<button
-					type="button"
-					aria-label={t`Search or run…`}
-					onClick={() => openPalette(true)}
-					className="grid size-10 place-items-center rounded-lg text-ink-2 transition-[background-color,scale] duration-quick ease-enter hover:bg-hover active:scale-[0.97]"
-				/>
-			</RailTip>
-			<nav aria-label={t`App`} className="grid gap-1">
-				{[...items, settings].map((item) => (
-					<RailTip key={item.to} label={item.label} icon={item.icon} filled={isCurrent(item.to)}>
-						<Link
-							to={item.to}
-							aria-label={item.label}
-							aria-current={isCurrent(item.to) ? "page" : undefined}
-							className={cn(
-								"grid size-10 place-items-center rounded-lg transition-[background-color,color,scale] duration-quick ease-enter active:scale-[0.97]",
-								isCurrent(item.to) ? "bg-sunken text-ink" : "text-ink-2 hover:bg-hover",
 							)}
-						/>
-					</RailTip>
-				))}
-			</nav>
-			<div className="mt-auto grid justify-items-center gap-2">
-				{trash && (
-					<RailTip label={trash.label} icon={trash.icon}>
-						<Link
-							to={trash.to}
-							aria-label={t`Trash`}
-							className="grid size-10 place-items-center rounded-lg text-ink-2 transition-[background-color,scale] duration-quick ease-enter hover:bg-hover active:scale-[0.97]"
-						/>
-					</RailTip>
-				)}
-				<RailTip label={t`New`} icon="plus">
-					<Button size="icon" aria-label={t`New`} onClick={() => openDialog("document.new", undefined)} />
-				</RailTip>
-				<UserDropdownMenu>
-					{({ session }) => (
-						<button type="button" aria-label={t`Account`} className="rounded-sm">
-							<Avatar className="size-8">
-								<AvatarImage src={session.user.image ?? undefined} />
-								<AvatarFallback className="text-[11px]">{getInitials(session.user.name)}</AvatarFallback>
-							</Avatar>
 						</button>
 					)}
 				</UserDropdownMenu>
-			</div>
-		</aside>
-	);
-}
-
-/** A rail button: its icon inside the given trigger, and its name in a tooltip. */
-function RailTip({
-	label,
-	icon,
-	filled = false,
-	children,
-}: {
-	label: string;
-	icon: IconName;
-	filled?: boolean;
-	children: React.ReactElement;
-}) {
-	return (
-		<Tooltip>
-			<TooltipTrigger render={children}>
-				<Icon name={icon} filled={filled} />
-			</TooltipTrigger>
-			<TooltipContent side="right">{label}</TooltipContent>
-		</Tooltip>
-	);
-}
-
-/** Phones: Documents · Applications · New · Career · Settings, with New as an accent pill in the middle. */
-function MobileTabs() {
-	const isCurrent = useIsCurrent();
-	const openDialog = useDialogStore((state) => state.openDialog);
-	const tabs: Pick<NavItem, "to" | "icon" | "label">[] = [
-		{ to: "/dashboard", icon: "file-text", label: t`Documents` },
-		{ to: "/dashboard/applications", icon: "briefcase", label: t`Applications` },
-		{ to: "/dashboard/career", icon: "compass", label: t`Career` },
-		{ to: "/dashboard/settings", icon: "gear-six", label: t`Settings` },
-	];
-
-	const link = ({ to, icon, label }: (typeof tabs)[number]) => {
-		const current = isCurrent(to);
-
-		return (
-			<Link
-				key={to}
-				to={to}
-				aria-current={current ? "page" : undefined}
-				viewTransition={false}
-				className="relative flex min-h-[52px] flex-col items-center justify-center gap-0.5 transition-[scale] duration-quick ease-enter active:scale-[0.97]"
-			>
-				{current && <MobileTabIndicator />}
-				<Icon name={icon} size={24} filled={current} />
-				<span className={cn("text-[11px]", current ? "font-semibold text-ink" : "text-ink-2")}>{label}</span>
-			</Link>
-		);
-	};
-
-	return (
-		<nav
-			aria-label={t`App`}
-			className="sticky bottom-0 z-30 grid grid-cols-5 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] [view-transition-name:app-nav]"
-		>
-			{tabs.slice(0, 2).map(link)}
-			<button
-				type="button"
-				onClick={() => openDialog("document.new", undefined)}
-				className="flex min-h-[52px] flex-col items-center justify-center gap-0.5 transition-[scale] duration-quick ease-enter active:scale-[0.97]"
-			>
-				<span className="grid h-[26px] w-[34px] place-items-center rounded-sm bg-accent text-on-accent">
-					<Icon name="plus" size={20} />
-				</span>
-				<span className="text-[11px] text-ink-2">
-					<Trans>New</Trans>
-				</span>
-			</button>
-			{tabs.slice(2).map(link)}
-		</nav>
+			</Sidebar.Footer>
+		</>
 	);
 }

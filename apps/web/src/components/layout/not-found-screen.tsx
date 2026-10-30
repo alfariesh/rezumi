@@ -1,8 +1,7 @@
+import { buttonVariants, Alert } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
-import { Alert, AlertDescription, AlertTitle } from "@rezumi/ui/components/alert";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
-import { buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 
 export function NotFoundScreen() {
@@ -10,14 +9,18 @@ export function NotFoundScreen() {
 		<div className="mx-auto flex h-svh max-w-md flex-col items-center justify-center gap-y-4">
 			<BrandIcon variant="logo" className="size-12" />
 
-			<Alert>
-				<Icon name="warning" size={16} />
-				<AlertTitle>
-					<Trans>Page not found</Trans>
-				</AlertTitle>
-				<AlertDescription>
-					<Trans>The page you're looking for may have been moved or no longer exists.</Trans>
-				</AlertDescription>
+			<Alert status="default">
+				<Alert.Indicator>
+					<Icon name="warning" size={16} />
+				</Alert.Indicator>
+				<Alert.Content>
+					<Alert.Title>
+						<Trans>Page not found</Trans>
+					</Alert.Title>
+					<Alert.Description>
+						<Trans>The page you're looking for may have been moved or no longer exists.</Trans>
+					</Alert.Description>
+				</Alert.Content>
 			</Alert>
 
 			<div className="flex items-center gap-x-2">

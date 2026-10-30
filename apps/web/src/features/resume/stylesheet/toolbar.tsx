@@ -1,7 +1,6 @@
+import { Button, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { copySourceToClipboard } from "./editor-extensions";
 
 type ToolbarButtonProps = {
@@ -14,14 +13,10 @@ type ToolbarButtonProps = {
 function ToolbarButton({ label, disabled, onClick, children }: ToolbarButtonProps) {
 	return (
 		<Tooltip>
-			<TooltipTrigger
-				render={
-					<Button type="button" size="icon-sm" variant="ghost" aria-label={label} disabled={disabled} onClick={onClick}>
-						{children}
-					</Button>
-				}
-			/>
-			<TooltipContent>{label}</TooltipContent>
+			<Button isIconOnly size="sm" variant="ghost" aria-label={label} isDisabled={disabled ?? false} onPress={onClick}>
+				{children}
+			</Button>
+			<Tooltip.Content>{label}</Tooltip.Content>
 		</Tooltip>
 	);
 }

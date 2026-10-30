@@ -1,6 +1,6 @@
 import type { DialogSchema } from "./schemas";
+import { Modal } from "@heroui/react";
 import { Fragment, lazy, Suspense } from "react";
-import { Dialog } from "@rezumi/ui/components/dialog";
 import { useDialogStore } from "./store";
 
 // The dialogs pull in forms, importers and editors; load them on first open so they stay out of every page's bundle.
@@ -13,7 +13,7 @@ export function DialogManager() {
 	const { open, activeDialog, openCount, onOpenChange } = useDialogStore();
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
+		<Modal.Backdrop isOpen={open} onOpenChange={(isOpen) => onOpenChange(isOpen)}>
 			<Fragment key={openCount}>
 				{activeDialog && (
 					<Suspense>
@@ -21,6 +21,6 @@ export function DialogManager() {
 					</Suspense>
 				)}
 			</Fragment>
-		</Dialog>
+		</Modal.Backdrop>
 	);
 }

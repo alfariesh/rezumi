@@ -1,28 +1,14 @@
 import type { Application } from "../../types";
 import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { EmptyState, Timeline } from "@heroui-pro/react";
+import { Button, Dropdown, Input, Label, Modal, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
+import { useEffect, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Textarea } from "@rezumi/ui/components/textarea";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { interviewKindOf } from "../../interviews";
 import { getStageColor, getStageLabel } from "../../stages";
@@ -56,6 +42,13 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 	const [editing, setEditing] = useState<{ entry: ApplicationTimelineEntry; date: string; text: string } | null>(null);
 	// Closing keeps the entry's title and fields on screen until the dialog has faded out.
 	const [shownEdit, onEditOpenChangeComplete] = useClosingValue(editing);
+	// Modal has no "closed" callback, so release the held entry once the exit animation has had time to finish.
+	const editOpen = editing !== null;
+	useEffect(() => {
+		if (editOpen) return;
+		const timer = setTimeout(() => onEditOpenChangeComplete(false), 400);
+		return () => clearTimeout(timer);
+	}, [editOpen, onEditOpenChangeComplete]);
 
 	const onError = () => toast.add({ type: "error", description: t`Couldn't update the timeline. Try again.` });
 	const addNote = useMutation({
@@ -90,9 +83,9 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 	const describe = (entry: ApplicationTimelineEntry) => {
 		if (entry.type === "stage")
 			return { dot: getStageColor(entry.stage), text: t`Moved to ${getStageLabel(entry.stage)}` };
-		if (entry.type === "note") return { dot: "var(--ink-3)", text: entry.text };
+		if (entry.type === "note") return { dot: "var(--muted)", text: entry.text };
 		const kind = interviewKindOf(entry.kind);
-		return { dot: kind?.color ?? "var(--ink-3)", text: t`${kind?.label ?? entry.kind} interview` };
+		return { dot: kind?.color ?? "var(--muted)", text: t`${kind?.label ?? entry.kind} interview` };
 	};
 
 	const submit = () => {
@@ -103,7 +96,7 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 
 	return (
 		<section aria-labelledby="application-activity" className="grid gap-2">
-			<h3 id="application-activity" className="text-xs font-semibold text-ink-3">
+			<h3 id="application-activity" className="text-xs font-semibold text-muted">
 				<Trans>Activity</Trans>
 			</h3>
 			<form
@@ -114,150 +107,184 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 				}}
 			>
 				<Input
+					fullWidth
 					aria-label={t`Add a note`}
 					placeholder={t`Add a note…`}
 					value={note}
 					disabled={addNote.isPending}
 					onChange={(event) => setNote(event.target.value)}
 				/>
-				<Button type="submit" variant="secondary" disabled={!note.trim() || addNote.isPending}>
+				<Button type="submit" variant="secondary" isDisabled={!note.trim() || addNote.isPending}>
 					<Trans>Add</Trans>
 				</Button>
 			</form>
 
-			<ol className="grid">
+			{sorted.length === 0 && (
+				<EmptyState size="sm" className="rounded-2xl border border-dashed border-border py-4">
+					<EmptyState.Header>
+						<EmptyState.Media variant="icon">
+							<Icon name="clock" size={18} />
+						</EmptyState.Media>
+						<EmptyState.Title>
+							<Trans>No activity yet</Trans>
+						</EmptyState.Title>
+						<EmptyState.Description>
+							<Trans>Stage changes, notes and interviews appear here.</Trans>
+						</EmptyState.Description>
+					</EmptyState.Header>
+				</EmptyState>
+			)}
+
+			<Timeline size="sm" density="compact" aria-label={t`Activity`}>
 				{sorted.map((entry) => {
 					const { dot, text } = describe(entry);
 					return (
-						<li key={entry.id} className="group flex items-start gap-2.5 py-1.5 text-sm">
-							<span aria-hidden="true" className="mt-1.5 size-2 shrink-0 rounded-sm" style={{ background: dot }} />
-							{entry.type === "interview" ? (
-								<button
-									type="button"
-									onClick={() => onOpenInterview(entry)}
-									className="min-w-0 flex-1 text-start hover:underline"
-								>
-									{text}
-									{entry.location ? <span className="text-ink-3"> · {entry.location}</span> : null}
-								</button>
-							) : (
-								<span className="min-w-0 flex-1 break-words whitespace-pre-wrap">{text}</span>
-							)}
-							<span className="shrink-0 text-xs leading-5 text-ink-3">
-								{formatDate(entry.at, entry.type === "interview")}
-							</span>
-							<DropdownMenu>
-								<DropdownMenuTrigger
-									render={
-										<Button
-											size="icon-xs"
-											variant="ghost"
-											aria-label={t`Options for this entry`}
-											className="-my-1 text-ink-3 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 data-[popup-open]:opacity-100"
-										/>
-									}
-								>
-									<Icon name="dots-three" size={16} />
-								</DropdownMenuTrigger>
-								<DropdownMenuContent align="end">
+						<Timeline.Item key={entry.id} align="start" status={entry.id === anchorId ? "current" : "default"}>
+							<Timeline.Marker aria-hidden="true">
+								<span className="size-2 rounded-full" style={{ background: dot }} />
+							</Timeline.Marker>
+							<Timeline.Content>
+								<div className="group flex min-w-0 items-start gap-2 text-sm">
 									{entry.type === "interview" ? (
-										<DropdownMenuItem onClick={() => onOpenInterview(entry)}>
-											<Trans>Edit interview…</Trans>
-										</DropdownMenuItem>
-									) : (
-										<DropdownMenuItem
-											onClick={() =>
-												setEditing({
-													entry,
-													date: dateInputValue(entry.at),
-													text: entry.type === "note" ? entry.text : "",
-												})
-											}
+										<button
+											type="button"
+											onClick={() => onOpenInterview(entry)}
+											className="min-w-0 flex-1 text-start hover:underline"
 										>
-											<Trans>Edit…</Trans>
-										</DropdownMenuItem>
+											{text}
+											{entry.location ? <span className="text-muted"> · {entry.location}</span> : null}
+										</button>
+									) : (
+										<span className="min-w-0 flex-1 break-words whitespace-pre-wrap">{text}</span>
 									)}
-									<DropdownMenuItem
-										variant="destructive"
-										disabled={entry.id === anchorId}
-										onClick={async () => {
-											const confirmed = await confirm(t`Delete this entry?`, {
-												description: t`It's removed from the timeline for good.`,
-												confirmText: t`Delete entry`,
-											});
-											if (confirmed) deleteEntry.mutate({ id: application.id, entryId: entry.id });
-										}}
-									>
-										<Trans>Delete…</Trans>
-									</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
-						</li>
+									<time className="shrink-0 text-xs leading-5 text-muted">
+										{formatDate(entry.at, entry.type === "interview")}
+									</time>
+									<Dropdown>
+										<IconButton
+											icon="dots-three"
+											iconSize={16}
+											size="sm"
+											label={t`Options for this entry`}
+											className="-my-1 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
+										/>
+										<Dropdown.Popover placement="bottom end">
+											<Dropdown.Menu>
+												{entry.type === "interview" ? (
+													<Dropdown.Item
+														id="edit-interview"
+														textValue={t`Edit interview…`}
+														onAction={() => onOpenInterview(entry)}
+													>
+														<Label>
+															<Trans>Edit interview…</Trans>
+														</Label>
+													</Dropdown.Item>
+												) : (
+													<Dropdown.Item
+														id="edit"
+														textValue={t`Edit…`}
+														onAction={() =>
+															setEditing({
+																entry,
+																date: dateInputValue(entry.at),
+																text: entry.type === "note" ? entry.text : "",
+															})
+														}
+													>
+														<Label>
+															<Trans>Edit…</Trans>
+														</Label>
+													</Dropdown.Item>
+												)}
+												<Dropdown.Item
+													id="delete"
+													textValue={t`Delete…`}
+													variant="danger"
+													isDisabled={entry.id === anchorId}
+													onAction={async () => {
+														const confirmed = await confirm(t`Delete this entry?`, {
+															description: t`It's removed from the timeline for good.`,
+															confirmText: t`Delete entry`,
+														});
+														if (confirmed) deleteEntry.mutate({ id: application.id, entryId: entry.id });
+													}}
+												>
+													<Label>
+														<Trans>Delete…</Trans>
+													</Label>
+												</Dropdown.Item>
+											</Dropdown.Menu>
+										</Dropdown.Popover>
+									</Dropdown>
+								</div>
+							</Timeline.Content>
+						</Timeline.Item>
 					);
 				})}
-			</ol>
+			</Timeline>
 
-			<Dialog
-				open={editing !== null}
-				onOpenChange={(open) => !open && setEditing(null)}
-				onOpenChangeComplete={onEditOpenChangeComplete}
-			>
-				<DialogContent className="sm:max-w-sm">
-					<DialogHeader>
-						<DialogTitle>
-							{shownEdit?.entry.type === "note" ? <Trans>Edit note</Trans> : <Trans>Edit date</Trans>}
-						</DialogTitle>
-						<DialogDescription className="sr-only">
-							<Trans>Change this timeline entry.</Trans>
-						</DialogDescription>
-					</DialogHeader>
-					{shownEdit && (
-						<form
-							id="timeline-entry-form"
-							className="grid gap-3"
-							onSubmit={(event) => {
-								event.preventDefault();
-								if (!editing) return;
-								updateEntry.mutate({
-									id: application.id,
-									entryId: editing.entry.id,
-									date: editing.date,
-									...(editing.entry.type === "note" && editing.text.trim() ? { text: editing.text.trim() } : {}),
-								});
-							}}
-						>
-							{shownEdit.entry.type === "note" && (
-								<Textarea
-									aria-label={t`Note`}
-									rows={3}
-									value={shownEdit.text}
-									onChange={(event) => {
-										const text = event.target.value;
-										setEditing((current) => current && { ...current, text });
+			<Modal.Backdrop isOpen={editOpen} onOpenChange={(open) => !open && setEditing(null)}>
+				<Modal.Container size="sm">
+					<Modal.Dialog>
+						<Modal.CloseTrigger aria-label={t`Close`} />
+						<Modal.Header>
+							<Modal.Heading>
+								{shownEdit?.entry.type === "note" ? <Trans>Edit note</Trans> : <Trans>Edit date</Trans>}
+							</Modal.Heading>
+						</Modal.Header>
+						<Modal.Body className="p-1">
+							{shownEdit && (
+								<form
+									id="timeline-entry-form"
+									className="grid gap-3"
+									onSubmit={(event) => {
+										event.preventDefault();
+										if (!editing) return;
+										updateEntry.mutate({
+											id: application.id,
+											entryId: editing.entry.id,
+											date: editing.date,
+											...(editing.entry.type === "note" && editing.text.trim() ? { text: editing.text.trim() } : {}),
+										});
 									}}
-								/>
+								>
+									{shownEdit.entry.type === "note" && (
+										<TextArea
+											fullWidth
+											aria-label={t`Note`}
+											rows={3}
+											value={shownEdit.text}
+											onChange={(event) => {
+												const text = event.target.value;
+												setEditing((current) => current && { ...current, text });
+											}}
+										/>
+									)}
+									<Input
+										fullWidth
+										type="date"
+										aria-label={t`Date`}
+										value={shownEdit.date}
+										onChange={(event) => {
+											const date = event.target.value;
+											setEditing((current) => current && { ...current, date });
+										}}
+									/>
+								</form>
 							)}
-							<Input
-								type="date"
-								aria-label={t`Date`}
-								value={shownEdit.date}
-								onChange={(event) => {
-									const date = event.target.value;
-									setEditing((current) => current && { ...current, date });
-								}}
-							/>
-						</form>
-					)}
-					<DialogFooter>
-						<Button variant="secondary" onClick={() => setEditing(null)}>
-							<Trans>Cancel</Trans>
-						</Button>
-						<Button type="submit" form="timeline-entry-form" disabled={!shownEdit?.date || updateEntry.isPending}>
-							<Trans>Save</Trans>
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button variant="secondary" onPress={() => setEditing(null)}>
+								<Trans>Cancel</Trans>
+							</Button>
+							<Button type="submit" form="timeline-entry-form" isDisabled={!shownEdit?.date || updateEntry.isPending}>
+								<Trans>Save</Trans>
+							</Button>
+						</Modal.Footer>
+					</Modal.Dialog>
+				</Modal.Container>
+			</Modal.Backdrop>
 		</section>
 	);
 }

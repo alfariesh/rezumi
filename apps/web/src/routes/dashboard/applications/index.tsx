@@ -1,21 +1,14 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
+import { EmptyState } from "@heroui-pro/react";
+import { Button, Dropdown, Input, Label, Skeleton, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Tabs, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { PageHeader } from "@/components/layout/page-header";
@@ -206,22 +199,29 @@ function RouteComponent() {
 				title={<Trans>Applications</Trans>}
 				actions={
 					<>
-						<DropdownMenu>
-							<DropdownMenuTrigger
-								render={<Button size="icon" variant="secondary" aria-label={t`Import or export CSV`} />}
-							>
-								<Icon name="arrows-down-up" />
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuItem onClick={() => setImporting(true)}>
-									<Trans>Import from CSV…</Trans>
-								</DropdownMenuItem>
-								<DropdownMenuItem disabled={empty || !applications || exportLoading} onClick={() => void openExport()}>
-									<Trans>Export to CSV…</Trans>
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
-						<Button onClick={() => setAdding(true)}>
+						<Dropdown>
+							<IconButton icon="arrows-down-up" variant="secondary" label={t`Import or export CSV`} />
+							<Dropdown.Popover placement="bottom end">
+								<Dropdown.Menu>
+									<Dropdown.Item id="import" textValue={t`Import from CSV…`} onAction={() => setImporting(true)}>
+										<Label>
+											<Trans>Import from CSV…</Trans>
+										</Label>
+									</Dropdown.Item>
+									<Dropdown.Item
+										id="export"
+										textValue={t`Export to CSV…`}
+										isDisabled={empty || !applications || exportLoading}
+										onAction={() => void openExport()}
+									>
+										<Label>
+											<Trans>Export to CSV…</Trans>
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
+						<Button onPress={() => setAdding(true)}>
 							<Icon name="plus" />
 							<Trans>Save job</Trans>
 						</Button>
@@ -231,43 +231,50 @@ function RouteComponent() {
 				{!(isError && !applications) && !empty && (
 					<>
 						<Tabs
-							value={shown}
-							onValueChange={(value) => {
+							selectedKey={shown}
+							onSelectionChange={(key) => {
 								setViewSwitched(true);
-								setSearch({ view: value as View });
+								setSearch({ view: String(key) as View });
 							}}
 						>
-							<TabsList aria-label={t`View`}>
-								<TabsTrigger value="list">
-									<Icon name="rows" size={18} />
-									<Trans>List</Trans>
-								</TabsTrigger>
-								{!phone && (
-									<TabsTrigger value="board">
-										<Icon name="kanban" size={18} />
-										<Trans>Board</Trans>
-									</TabsTrigger>
-								)}
-								<TabsTrigger value="insights">
-									<Icon name="chart-line-up" size={18} />
-									<Trans>Insights</Trans>
-								</TabsTrigger>
-								{!phone && (
-									<TabsTrigger value="calendar">
-										<Icon name="calendar-dots" size={18} />
-										<Trans>Calendar</Trans>
-									</TabsTrigger>
-								)}
-							</TabsList>
+							<Tabs.ListContainer>
+								<Tabs.List aria-label={t`View`}>
+									<Tabs.Tab id="list">
+										<Icon name="rows" size={18} />
+										<Trans>List</Trans>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									{!phone && (
+										<Tabs.Tab id="board">
+											<Icon name="kanban" size={18} />
+											<Trans>Board</Trans>
+											<Tabs.Indicator />
+										</Tabs.Tab>
+									)}
+									<Tabs.Tab id="insights">
+										<Icon name="chart-line-up" size={18} />
+										<Trans>Insights</Trans>
+										<Tabs.Indicator />
+									</Tabs.Tab>
+									{!phone && (
+										<Tabs.Tab id="calendar">
+											<Icon name="calendar-dots" size={18} />
+											<Trans>Calendar</Trans>
+											<Tabs.Indicator />
+										</Tabs.Tab>
+									)}
+								</Tabs.List>
+							</Tabs.ListContainer>
 						</Tabs>
 
 						<div className="relative max-w-72 min-w-40 flex-1">
 							<Icon
 								name="magnifying-glass"
 								size={18}
-								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-ink-3"
+								className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-muted"
 							/>
 							<Input
+								fullWidth
 								type="search"
 								aria-label={t`Search applications`}
 								placeholder={t`Search role, company or contact`}
@@ -281,8 +288,8 @@ function RouteComponent() {
 							<Button
 								variant="secondary"
 								aria-pressed={closed}
-								onClick={() => setSearch({ closed: !closed })}
-								className={cn(closed && "bg-sunken")}
+								onPress={() => setSearch({ closed: !closed })}
+								className={cn(closed && "bg-default")}
 							>
 								<Icon name={closed ? "check-square" : "square"} size={18} />
 								<Trans>Show closed</Trans>
@@ -297,32 +304,39 @@ function RouteComponent() {
 			{isError && (
 				<div
 					role="alert"
-					className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line p-4"
+					className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-separator p-4"
 				>
-					<p className="text-sm text-danger-text">
+					<p className="text-sm text-danger-soft-foreground">
 						<Trans>Couldn't load applications. Try again.</Trans>
 					</p>
-					<Button variant="secondary" disabled={isFetching} onClick={() => void refetch()}>
+					<Button variant="secondary" isDisabled={isFetching} onPress={() => void refetch()}>
 						<Trans>Retry</Trans>
 					</Button>
 				</div>
 			)}
 
 			{isError && !applications ? null : empty ? (
-				<EmptyState onAdd={() => setAdding(true)} onImport={() => setImporting(true)} />
+				<FirstJobEmptyState onAdd={() => setAdding(true)} onImport={() => setImporting(true)} />
 			) : (
 				<>
 					{isPending ? (
 						<ViewSkeleton view={shown} />
 					) : noMatches ? (
-						<div className="grid justify-items-center gap-2 py-16 text-center">
-							<p className="text-sm font-medium">
-								<Trans>No applications match “{query.trim()}”.</Trans>
-							</p>
-							<Button size="sm" variant="secondary" onClick={() => setQuery("")}>
-								<Trans>Clear search</Trans>
-							</Button>
-						</div>
+						<EmptyState className="py-16">
+							<EmptyState.Header>
+								<EmptyState.Media variant="icon">
+									<Icon name="magnifying-glass" size={22} />
+								</EmptyState.Media>
+								<EmptyState.Title>
+									<Trans>No applications match “{query.trim()}”.</Trans>
+								</EmptyState.Title>
+							</EmptyState.Header>
+							<EmptyState.Content>
+								<Button size="sm" variant="secondary" onPress={() => setQuery("")}>
+									<Trans>Clear search</Trans>
+								</Button>
+							</EmptyState.Content>
+						</EmptyState>
 					) : (
 						<div
 							key={shown}
@@ -433,7 +447,7 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 			role="status"
 			className={cn(
 				ENTER_CLASS,
-				"flex flex-wrap items-center gap-2 rounded-xl bg-warn-soft px-3 py-2 text-sm text-warn-text",
+				"flex flex-wrap items-center gap-2 rounded-2xl bg-warning-soft px-3 py-2 text-sm text-warning-soft-foreground",
 			)}
 		>
 			<Icon name="clock" size={20} />
@@ -444,38 +458,50 @@ function FollowUpNudge({ applications, onOpen }: FollowUpNudgeProps) {
 					other={`${company}: no reply for # days. A short follow-up is usually fine now.`}
 				/>
 			</span>
-			<Button size="sm" variant="secondary" data-application-open onClick={() => onOpen(waiting.application.id)}>
+			<Button size="sm" variant="secondary" data-application-open onPress={() => onOpen(waiting.application.id)}>
 				<Trans>Open</Trans>
 			</Button>
-			<Button size="icon-sm" variant="ghost" aria-label={t`Dismiss`} onClick={dismiss} className="text-warn-text">
+			<Button
+				isIconOnly
+				size="sm"
+				variant="ghost"
+				aria-label={t`Dismiss`}
+				onPress={() => dismiss()}
+				className="text-warning-soft-foreground"
+			>
 				<Icon name="x" size={18} />
 			</Button>
 		</div>
 	);
 }
 
-function EmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => void }) {
+function FirstJobEmptyState({ onAdd, onImport }: { onAdd: () => void; onImport: () => void }) {
 	return (
-		<div className="grid justify-items-center gap-3 py-20 text-center transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0">
-			<span className="grid size-12 place-items-center rounded-xl bg-sunken text-ink-2">
-				<Icon name="briefcase" size={26} />
-			</span>
-			<h2 className="text-lg font-semibold">
-				<Trans>Track your first job</Trans>
-			</h2>
-			<p className="max-w-sm text-sm text-ink-2">
-				<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
-			</p>
-			<div className="flex gap-2">
-				<Button onClick={onAdd}>
+		<EmptyState
+			size="lg"
+			className="py-16 transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0"
+		>
+			<EmptyState.Header>
+				<EmptyState.Media variant="icon">
+					<Icon name="briefcase" size={26} />
+				</EmptyState.Media>
+				<EmptyState.Title>
+					<Trans>Track your first job</Trans>
+				</EmptyState.Title>
+				<EmptyState.Description className="max-w-sm text-pretty">
+					<Trans>Paste a job link. We'll save the posting so Check, the assistant and your letter can use it.</Trans>
+				</EmptyState.Description>
+			</EmptyState.Header>
+			<EmptyState.Content className="flex-row gap-2">
+				<Button onPress={() => onAdd()}>
 					<Icon name="plus" />
 					<Trans>Save job</Trans>
 				</Button>
-				<Button variant="secondary" onClick={onImport}>
+				<Button variant="secondary" onPress={() => onImport()}>
 					<Trans>Import from CSV</Trans>
 				</Button>
-			</div>
-		</div>
+			</EmptyState.Content>
+		</EmptyState>
 	);
 }
 
@@ -490,5 +516,5 @@ function ViewSkeleton({ view }: { view: View }) {
 				))}
 			</div>
 		);
-	return <Skeleton className="h-[calc(100svh-230px)] min-h-96 rounded-xl" />;
+	return <Skeleton className="h-[calc(100svh-230px)] min-h-96 rounded-2xl" />;
 }

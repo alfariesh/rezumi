@@ -1,3 +1,4 @@
+import { Button, buttonVariants, Popover, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -6,10 +7,7 @@ import { useRouteContext } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { formatTimeSince, publicResumeUrl, summarizeViews } from "@rezumi/resume/sharing";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
-import { Separator } from "@rezumi/ui/components/separator";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -58,12 +56,12 @@ export function SharePanel() {
 		<div className="grid gap-[18px] p-4">
 			{isPublic ? (
 				<SwitchRow
-					checked
-					disabled={isPending || resume.isLocked}
-					onCheckedChange={(checked) => void setPublic(checked)}
+					isSelected
+					isDisabled={isPending || resume.isLocked}
+					onChange={(checked) => void setPublic(checked)}
 					label={<span className="font-semibold">{t`Public link`}</span>}
 					description={t`On. Anyone with the link can see your web page.`}
-					className="items-start rounded-xl border border-line p-3.5 transition-colors duration-standard data-checked:border-accent data-checked:bg-accent-soft"
+					className="items-start rounded-xl border border-line p-3.5 transition-colors duration-standard data-selected:border-accent data-selected:bg-accent-soft"
 				/>
 			) : (
 				<div className="grid gap-3 rounded-xl border border-line p-3.5">
@@ -75,7 +73,7 @@ export function SharePanel() {
 							<Trans>Publish it to share a link that opens on any screen. Only you can see it until then.</Trans>
 						</p>
 					</div>
-					<Button className="w-fit" disabled={isPending || resume.isLocked} onClick={() => void setPublic(true)}>
+					<Button className="w-fit" isDisabled={isPending || resume.isLocked} onPress={() => void setPublic(true)}>
 						<Icon name="globe-hemisphere-west" size={18} />
 						<Trans>Publish</Trans>
 					</Button>
@@ -208,9 +206,9 @@ function PrimaryRow({ setting: { update, isPending } }: ShareSettingProps) {
 
 	return (
 		<SwitchRow
-			checked={resume.isPrimary ?? false}
-			disabled={isPending || resume.isLocked || (!isPublic && !resume.isPrimary)}
-			onCheckedChange={(checked) => void setPrimary(checked)}
+			isSelected={resume.isPrimary ?? false}
+			isDisabled={isPending || resume.isLocked || (!isPublic && !resume.isPrimary)}
+			onChange={(checked) => void setPrimary(checked)}
 			label={t`Primary resume`}
 			description={
 				resume.isPrimary
@@ -246,9 +244,9 @@ function WebPageSettings() {
 				</p>
 			</div>
 			<SwitchRow
-				checked={data?.metadata.web?.showCredit !== false}
-				disabled={locked}
-				onCheckedChange={(checked) =>
+				isSelected={data?.metadata.web?.showCredit !== false}
+				isDisabled={locked}
+				onChange={(checked) =>
 					updateResumeData((draft) => {
 						draft.metadata.web = { ...draft.metadata.web, showCredit: checked };
 					})
@@ -274,17 +272,17 @@ function PrivacySettings({ setting: { update, isPending } }: ShareSettingProps) 
 			</h3>
 			<PasswordRow />
 			<SwitchRow
-				checked={resume.hideContactDetails ?? false}
-				disabled={disabled}
-				onCheckedChange={(checked) => void update({ hideContactDetails: checked })}
+				isSelected={resume.hideContactDetails ?? false}
+				isDisabled={disabled}
+				onChange={(checked) => void update({ hideContactDetails: checked })}
 				label={t`Hide contact details`}
 				description={t`Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results.`}
 				className="items-start py-0"
 			/>
 			<SwitchRow
-				checked={(resume.showInSearchEngines ?? false) && !searchBlocked}
-				disabled={disabled || searchBlocked}
-				onCheckedChange={(checked) => void update({ showInSearchEngines: checked })}
+				isSelected={(resume.showInSearchEngines ?? false) && !searchBlocked}
+				isDisabled={disabled || searchBlocked}
+				onChange={(checked) => void update({ showInSearchEngines: checked })}
 				label={t`Show in search engines`}
 				description={
 					searchBlocked
@@ -298,9 +296,9 @@ function PrivacySettings({ setting: { update, isPending } }: ShareSettingProps) 
 				className="items-start py-0"
 			/>
 			<SwitchRow
-				checked={resume.showDownloadButtons !== false}
-				disabled={disabled}
-				onCheckedChange={(checked) => void update({ showDownloadButtons: checked })}
+				isSelected={resume.showDownloadButtons !== false}
+				isDisabled={disabled}
+				onChange={(checked) => void update({ showDownloadButtons: checked })}
 				label={t`Visitors can download the PDF`}
 				className="py-0"
 			/>
@@ -337,9 +335,9 @@ function PasswordRow() {
 	return (
 		<>
 			<SwitchRow
-				checked={resume.hasPassword ?? false}
-				disabled={resume.isLocked}
-				onCheckedChange={(checked) => (checked ? setDialogOpen(true) : void turnOff())}
+				isSelected={resume.hasPassword ?? false}
+				isDisabled={resume.isLocked}
+				onChange={(checked) => (checked ? setDialogOpen(true) : void turnOff())}
 				label={t`Require a password`}
 				description={
 					resume.hasPassword
@@ -367,17 +365,15 @@ function PasswordRow() {
 function QrCodeButton({ url }: { url: string }) {
 	return (
 		<Popover>
-			<PopoverTrigger
-				render={
-					<Button variant="ghost" size="sm" className="gap-1.5">
-						<Icon name="qr-code" size={18} />
-						<Trans>QR code</Trans>
-					</Button>
-				}
-			/>
-			<PopoverContent className="w-auto p-4">
-				<QRCodeSVG value={url} size={176} marginSize={2} title={t`QR code for ${url}`} />
-			</PopoverContent>
+			<Button variant="ghost" size="sm" className="gap-1.5">
+				<Icon name="qr-code" size={18} />
+				<Trans>QR code</Trans>
+			</Button>
+			<Popover.Content placement="bottom start" className="w-auto">
+				<Popover.Dialog className="p-4">
+					<QRCodeSVG value={url} size={176} marginSize={2} title={t`QR code for ${url}`} />
+				</Popover.Dialog>
+			</Popover.Content>
 		</Popover>
 	);
 }

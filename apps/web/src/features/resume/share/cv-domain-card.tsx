@@ -1,8 +1,8 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Button, Spinner, buttonVariants } from "@heroui/react";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { cvDomainRegistrationUrl } from "@rezumi/resume/sharing";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { CopyText } from "./copy-text";
 
@@ -67,7 +67,8 @@ export function CvDomainCard({ suggestion: { domain, checked, price }, connectin
 					<Icon name="arrow-up-right" size={14} />
 				</a>
 				{visited && (
-					<Button variant="ghost" size="sm" loading={connecting} onClick={onConnect}>
+					<Button variant="ghost" size="sm" isPending={connecting} onPress={onConnect}>
+						{connecting && <Spinner size="sm" color="current" aria-hidden />}
 						<Trans>Connect {domain}</Trans>
 					</Button>
 				)}

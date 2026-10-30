@@ -3,6 +3,7 @@ import type { ChatAttachment } from "@/features/assistant/chat";
 import type { FactCategory } from "@rezumi/schema/career";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
+import { Button, Popover, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,7 +13,6 @@ import { memo, useEffect, useEffectEvent, useRef, useState } from "react";
 import z from "zod";
 import { agentWebSources } from "@rezumi/ai/tools/agent-tool-contracts";
 import { careerSourceSchema, factCategorySchema } from "@rezumi/schema/career";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import {
 	MessageScroller,
@@ -22,8 +22,6 @@ import {
 	MessageScrollerProvider,
 	MessageScrollerViewport,
 } from "@rezumi/ui/components/message-scroller";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
-import { Spinner } from "@rezumi/ui/components/spinner";
 import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
 import { Composer, contentClass, copyToClipboard, usedFor, usedSchema } from "./coach-thread";
@@ -175,7 +173,7 @@ export function ChatView(props: ChatViewProps) {
 									<MessageScrollerItem>
 										<TraceLine status="running" className={cn("text-[13px]", ENTER_CLASS)}>
 											<TraceIcon>
-												<Spinner decorative className="size-3" />
+												<Spinner size="sm" color="current" aria-hidden />
 											</TraceIcon>
 											<TraceTitle>
 												{/* Until the first words arrive, say what's happening; then the answer itself shows progress. */}
@@ -221,10 +219,10 @@ export function ChatView(props: ChatViewProps) {
 												</span>
 											</span>
 											<span className="flex flex-wrap gap-1.5">
-												<Button size="sm" variant="secondary" onClick={retry}>
+												<Button size="sm" variant="secondary" onPress={retry}>
 													<Trans>Try again</Trans>
 												</Button>
-												<Button size="sm" variant="ghost" onClick={props.onChangeConnection}>
+												<Button size="sm" variant="ghost" onPress={props.onChangeConnection}>
 													<Trans>Change connection</Trans>
 												</Button>
 											</span>
@@ -362,12 +360,7 @@ const MessageView = memo(function MessageView({
 
 			{!streaming && text && (
 				<div className="flex gap-1">
-					<Button
-						size="sm"
-						variant="ghost"
-						className="text-ink-2"
-						onClick={() => void copyToClipboard(text, t`Answer copied`)}
-					>
+					<Button size="sm" variant="ghost" onPress={() => void copyToClipboard(text, t`Answer copied`)}>
 						<Icon name="copy" size={16} />
 						<Trans>Copy</Trans>
 					</Button>
@@ -502,20 +495,15 @@ type UsedChipProps = { label: string; title: string; children: ReactNode };
 function UsedChip({ label, title, children }: UsedChipProps) {
 	return (
 		<Popover>
-			<PopoverTrigger
-				render={
-					<button
-						type="button"
-						className="inline-flex h-6 items-center rounded-sm border border-line-2 px-2 text-xs font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink aria-expanded:bg-hover"
-					/>
-				}
-			>
+			<Popover.Trigger className="inline-flex h-6 items-center rounded-sm border border-line-2 px-2 text-xs font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink aria-expanded:bg-hover">
 				{label}
-			</PopoverTrigger>
-			<PopoverContent align="start" className="w-80 max-w-[calc(100vw-2rem)]">
-				<Eyebrow>{title}</Eyebrow>
-				<ul className="grid max-h-72 gap-2 overflow-y-auto">{children}</ul>
-			</PopoverContent>
+			</Popover.Trigger>
+			<Popover.Content placement="bottom start" className="w-80 max-w-[calc(100vw-2rem)]">
+				<Popover.Dialog aria-label={title} className="grid gap-2 p-1">
+					<Eyebrow>{title}</Eyebrow>
+					<ul className="grid max-h-72 gap-2 overflow-y-auto">{children}</ul>
+				</Popover.Dialog>
+			</Popover.Content>
 		</Popover>
 	);
 }
@@ -525,7 +513,7 @@ function PreferencesList() {
 	if (!profile)
 		return (
 			<li>
-				<Spinner />
+				<Spinner size="sm" color="current" aria-label={t`Loading`} />
 			</li>
 		);
 	const rows = [
@@ -558,7 +546,7 @@ function OffersList({ ids, className }: { ids: string[]; className: string }) {
 	if (!data)
 		return (
 			<li>
-				<Spinner />
+				<Spinner size="sm" color="current" aria-label={t`Loading`} />
 			</li>
 		);
 	return (

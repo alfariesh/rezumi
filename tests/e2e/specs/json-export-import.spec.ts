@@ -8,7 +8,8 @@ test("round-trips a JSON backup and splits a legacy embedded letter on import", 
 	await createSampleResumeFromDashboard(page, testInfo);
 
 	const sheet = await openDownloadDialog(page);
-	await sheet.getByRole("radio", { name: /^JSON/ }).click();
+	// The radio input is visually hidden inside its format card; people press the card.
+	await sheet.locator("label", { has: page.getByRole("radio", { name: /^JSON/ }) }).click();
 	const downloadPromise = page.waitForEvent("download");
 	await sheet.getByRole("button", { name: "Download JSON" }).click();
 	const download = await downloadPromise;

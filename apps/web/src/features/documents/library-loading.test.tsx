@@ -23,7 +23,8 @@ vi.mock("./document-actions", () => ({
 	LinkApplicationDialog: () => null,
 	useBatchActions: () => ({}),
 }));
-vi.mock("./document-card", () => ({ DocumentCard: () => null, DocumentRow: () => null }));
+vi.mock("./document-card", () => ({ DocumentCard: () => null }));
+vi.mock("./document-list", () => ({ DocumentList: () => null, documentKey: () => "" }));
 vi.mock("./use-start-document", () => ({
 	useStartDocument: () => ({ startBlank: vi.fn(), trySample: vi.fn(), creating: false }),
 }));

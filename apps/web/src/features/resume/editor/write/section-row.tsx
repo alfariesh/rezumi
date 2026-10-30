@@ -1,28 +1,15 @@
 import type { WriteSection } from "./model";
 import type { SectionType } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
+import type { Selection } from "react-aria-components";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
-import { Badge } from "@rezumi/ui/components/badge";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
@@ -129,14 +116,14 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 				</button>
 
 				{proposed > 0 && (
-					<Badge variant="accent" className="shrink-0">
+					<Chip size="sm" color="accent" variant="soft" className="shrink-0">
 						<Plural value={proposed} one="# proposed" other="# proposed" />
-					</Badge>
+					</Chip>
 				)}
 				{toCheck > 0 && (
-					<Badge variant="warn" className="shrink-0">
+					<Chip size="sm" color="warning" variant="soft" className="shrink-0">
 						<Plural value={toCheck} one="# to check" other="# to check" />
-					</Badge>
+					</Chip>
 				)}
 				{section.kind !== "summary" && (
 					<span className="px-1 font-mono text-xs text-ink-3">
@@ -149,26 +136,28 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 					icon={hidden ? "eye-slash" : "eye"}
 					label={hidden ? t`Show ${title} on the page` : t`Hide ${title} from the page`}
 					aria-pressed={hidden}
-					size="icon-sm"
-					disabled={locked}
+					size="sm"
+					isDisabled={locked}
 					className="text-ink-2"
-					onClick={toggleHidden}
+					onPress={toggleHidden}
 				/>
 				<IconButton
 					icon="caret-down"
 					label={open ? t`Close ${title}` : t`Open ${title}`}
-					size="icon-sm"
+					size="sm"
 					className={cn("text-ink-2 transition-transform duration-standard ease-enter", open && "rotate-180")}
-					onClick={() => setOpen(section.id, !open)}
+					onPress={() => setOpen(section.id, !open)}
 				/>
 				{!locked && <SectionMenu section={section} title={title} onMove={onMove} />}
 			</div>
 
-			<Collapsible open={open}>
-				<CollapsibleContent>
-					<div className="grid gap-2 ps-[26px] pt-1 pb-3">{children}</div>
-				</CollapsibleContent>
-			</Collapsible>
+			<Disclosure isExpanded={open}>
+				<Disclosure.Content>
+					<Disclosure.Body>
+						<div className="grid gap-2 ps-[26px] pt-1 pb-3">{children}</div>
+					</Disclosure.Body>
+				</Disclosure.Content>
+			</Disclosure>
 		</div>
 	);
 }
@@ -264,137 +253,199 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 
 	return (
 		<span className="relative">
-			<DropdownMenu>
-				<DropdownMenuTrigger
-					render={
-						<IconButton icon="dots-three" label={t`Options for ${title}`} size="icon-sm" className="text-ink-2" />
-					}
-				/>
-				<DropdownMenuContent align="end" className="w-60">
-					{section.kind !== "summary" && (
-						<DropdownMenuItem onClick={() => addEntryTo(section)}>
-							<Icon name="plus" />
-							<Trans>Add entry</Trans>
-						</DropdownMenuItem>
-					)}
-					{canSort && (
-						<DropdownMenuItem onClick={sortByDate}>
-							<Icon name="arrow-down" />
-							<Trans>Sort by date</Trans>
-						</DropdownMenuItem>
-					)}
-					{onMove && (
-						<>
-							<DropdownMenuItem onClick={() => onMove("up")}>
-								<Icon name="arrow-up" />
-								<Trans>Move up</Trans>
-							</DropdownMenuItem>
-							<DropdownMenuItem onClick={() => onMove("down")}>
-								<Icon name="arrow-down" />
-								<Trans>Move down</Trans>
-							</DropdownMenuItem>
-						</>
-					)}
-					<DropdownMenuItem onClick={rename}>
-						<Icon name="pencil-simple" />
-						<Trans>Rename…</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => setIconPickerOpen(true)}>
-						<Icon name="bookmark-simple" />
-						<Trans>Icon…</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuCheckboxItem
-						checked={settings.showHeading !== false}
-						onCheckedChange={(checked) =>
-							edit((target) => {
-								target.showHeading = checked;
-							})
-						}
-					>
-						<Trans>Show heading</Trans>
-					</DropdownMenuCheckboxItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
-							<Icon name="squares-four" />
-							<Trans>Columns</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent>
-							<DropdownMenuRadioGroup
-								value={columns}
-								onValueChange={(value) =>
-									edit((target) => {
-										const skills = target as { layout?: string };
-										if (isSkills) skills.layout = value === "inline" ? "inline" : "default";
-										target.columns = value === "inline" ? 1 : Number(value);
-									})
-								}
-							>
-								{[1, 2, 3, 4, 5, 6].map((column) => (
-									<DropdownMenuRadioItem key={column} value={String(column)}>
-										<Plural value={column} one="# column" other="# columns" />
-									</DropdownMenuRadioItem>
-								))}
-								{isSkills && (
-									<DropdownMenuRadioItem value="inline">
-										<Trans>1 column, inline</Trans>
-									</DropdownMenuRadioItem>
-								)}
-							</DropdownMenuRadioGroup>
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
-					{isSkills && (
-						<DropdownMenuSub>
-							<DropdownMenuSubTrigger>
-								<Icon name="list-bullets" />
-								<Trans>Keyword layout</Trans>
-							</DropdownMenuSubTrigger>
-							<DropdownMenuSubContent>
-								<DropdownMenuRadioGroup
-									value={(settings as { keywordLayout?: string }).keywordLayout ?? "inline"}
-									onValueChange={(value) =>
+			<Dropdown>
+				<IconButton icon="dots-three" label={t`Options for ${title}`} size="sm" />
+				<Dropdown.Popover placement="bottom end" className="w-60">
+					<Dropdown.Menu>
+						{section.kind !== "summary" && (
+							<Dropdown.Item id="add" textValue={t`Add entry`} onAction={() => addEntryTo(section)}>
+								<Icon name="plus" className="text-muted" />
+								<Label>
+									<Trans>Add entry</Trans>
+								</Label>
+							</Dropdown.Item>
+						)}
+						{canSort && (
+							<Dropdown.Item id="sort" textValue={t`Sort by date`} onAction={sortByDate}>
+								<Icon name="arrow-down" className="text-muted" />
+								<Label>
+									<Trans>Sort by date</Trans>
+								</Label>
+							</Dropdown.Item>
+						)}
+						{onMove && (
+							<Dropdown.Item id="up" textValue={t`Move up`} onAction={() => onMove("up")}>
+								<Icon name="arrow-up" className="text-muted" />
+								<Label>
+									<Trans>Move up</Trans>
+								</Label>
+							</Dropdown.Item>
+						)}
+						{onMove && (
+							<Dropdown.Item id="down" textValue={t`Move down`} onAction={() => onMove("down")}>
+								<Icon name="arrow-down" className="text-muted" />
+								<Label>
+									<Trans>Move down</Trans>
+								</Label>
+							</Dropdown.Item>
+						)}
+						<Dropdown.Item id="rename" textValue={t`Rename…`} onAction={() => void rename()}>
+							<Icon name="pencil-simple" className="text-muted" />
+							<Label>
+								<Trans>Rename…</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item id="icon" textValue={t`Icon…`} onAction={() => setIconPickerOpen(true)}>
+							<Icon name="bookmark-simple" className="text-muted" />
+							<Label>
+								<Trans>Icon…</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Section
+							selectionMode="multiple"
+							selectedKeys={new Set(settings.showHeading !== false ? ["heading"] : [])}
+							onSelectionChange={(keys) => {
+								const showHeading = has(keys, "heading");
+								edit((target) => {
+									target.showHeading = showHeading;
+								});
+							}}
+						>
+							<Dropdown.Item id="heading" textValue={t`Show heading`}>
+								<Label>
+									<Trans>Show heading</Trans>
+								</Label>
+								<Dropdown.ItemIndicator />
+							</Dropdown.Item>
+						</Dropdown.Section>
+						<Separator />
+						<Dropdown.SubmenuTrigger>
+							<Dropdown.Item id="columns" textValue={t`Columns`}>
+								<Icon name="squares-four" className="text-muted" />
+								<Label>
+									<Trans>Columns</Trans>
+								</Label>
+								<Dropdown.SubmenuIndicator />
+							</Dropdown.Item>
+							<Dropdown.Popover>
+								<Dropdown.Menu
+									selectionMode="single"
+									disallowEmptySelection
+									selectedKeys={new Set([columns])}
+									onSelectionChange={(keys) => {
+										const value = first(keys);
+										if (value === undefined) return;
 										edit((target) => {
-											(target as { keywordLayout?: string }).keywordLayout = value;
-										})
-									}
+											const skills = target as { layout?: string };
+											if (isSkills) skills.layout = value === "inline" ? "inline" : "default";
+											target.columns = value === "inline" ? 1 : Number(value);
+										});
+									}}
 								>
-									<DropdownMenuRadioItem value="inline">
-										<Trans>Inline</Trans>
-									</DropdownMenuRadioItem>
-									<DropdownMenuRadioItem value="list">
-										<Trans>Bulleted list</Trans>
-									</DropdownMenuRadioItem>
-								</DropdownMenuRadioGroup>
-							</DropdownMenuSubContent>
-						</DropdownMenuSub>
-					)}
-					<DropdownMenuCheckboxItem
-						checked={settings.keepTogether}
-						onCheckedChange={(checked) =>
-							edit((target) => {
-								target.keepTogether = checked;
-							})
-						}
-					>
-						<Trans>Keep on one page</Trans>
-					</DropdownMenuCheckboxItem>
-					<DropdownMenuCheckboxItem
-						checked={settings.startOnNewPage}
-						onCheckedChange={(checked) =>
-							edit((target) => {
-								target.startOnNewPage = checked;
-							})
-						}
-					>
-						<Trans>Start on a new page</Trans>
-					</DropdownMenuCheckboxItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem variant="destructive" onClick={section.kind === "custom" ? remove : reset}>
-						<Icon name="trash" />
-						{section.kind === "custom" ? <Trans>Delete section</Trans> : <Trans>Clear section</Trans>}
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+									{[1, 2, 3, 4, 5, 6].map((column) => (
+										<Dropdown.Item
+											key={column}
+											id={String(column)}
+											textValue={plural(column, { one: "# column", other: "# columns" })}
+										>
+											<Label>
+												<Plural value={column} one="# column" other="# columns" />
+											</Label>
+											<Dropdown.ItemIndicator type="dot" />
+										</Dropdown.Item>
+									))}
+									{isSkills && (
+										<Dropdown.Item id="inline" textValue={t`1 column, inline`}>
+											<Label>
+												<Trans>1 column, inline</Trans>
+											</Label>
+											<Dropdown.ItemIndicator type="dot" />
+										</Dropdown.Item>
+									)}
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown.SubmenuTrigger>
+						{isSkills && (
+							<Dropdown.SubmenuTrigger>
+								<Dropdown.Item id="keywords" textValue={t`Keyword layout`}>
+									<Icon name="list-bullets" className="text-muted" />
+									<Label>
+										<Trans>Keyword layout</Trans>
+									</Label>
+									<Dropdown.SubmenuIndicator />
+								</Dropdown.Item>
+								<Dropdown.Popover>
+									<Dropdown.Menu
+										selectionMode="single"
+										disallowEmptySelection
+										selectedKeys={new Set([(settings as { keywordLayout?: string }).keywordLayout ?? "inline"])}
+										onSelectionChange={(keys) => {
+											const value = first(keys);
+											if (value === undefined) return;
+											edit((target) => {
+												(target as { keywordLayout?: string }).keywordLayout = value;
+											});
+										}}
+									>
+										<Dropdown.Item id="inline" textValue={t`Inline`}>
+											<Label>
+												<Trans>Inline</Trans>
+											</Label>
+											<Dropdown.ItemIndicator type="dot" />
+										</Dropdown.Item>
+										<Dropdown.Item id="list" textValue={t`Bulleted list`}>
+											<Label>
+												<Trans>Bulleted list</Trans>
+											</Label>
+											<Dropdown.ItemIndicator type="dot" />
+										</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown.Popover>
+							</Dropdown.SubmenuTrigger>
+						)}
+						<Dropdown.Section
+							selectionMode="multiple"
+							selectedKeys={
+								new Set([
+									...(settings.keepTogether ? ["together"] : []),
+									...(settings.startOnNewPage ? ["newPage"] : []),
+								])
+							}
+							onSelectionChange={(keys) => {
+								const keepTogether = has(keys, "together");
+								const startOnNewPage = has(keys, "newPage");
+								edit((target) => {
+									target.keepTogether = keepTogether;
+									target.startOnNewPage = startOnNewPage;
+								});
+							}}
+						>
+							<Dropdown.Item id="together" textValue={t`Keep on one page`}>
+								<Label>
+									<Trans>Keep on one page</Trans>
+								</Label>
+								<Dropdown.ItemIndicator />
+							</Dropdown.Item>
+							<Dropdown.Item id="newPage" textValue={t`Start on a new page`}>
+								<Label>
+									<Trans>Start on a new page</Trans>
+								</Label>
+								<Dropdown.ItemIndicator />
+							</Dropdown.Item>
+						</Dropdown.Section>
+						<Separator />
+						<Dropdown.Item
+							id="danger"
+							textValue={section.kind === "custom" ? t`Delete section` : t`Clear section`}
+							variant="danger"
+							onAction={section.kind === "custom" ? remove : reset}
+						>
+							<Icon name="trash" />
+							<Label>{section.kind === "custom" ? <Trans>Delete section</Trans> : <Trans>Clear section</Trans>}</Label>
+						</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 
 			{/* The icon grid opens from the ⋯ button: an invisible trigger laid over it anchors the popover. */}
 			<IconPicker
@@ -413,6 +464,12 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 		</span>
 	);
 }
+
+const has = (keys: Selection, key: string) => keys === "all" || keys.has(key);
+const first = (keys: Selection) => {
+	const [key] = keys === "all" ? [] : keys;
+	return typeof key === "string" ? key : undefined;
+};
 
 const NONE: readonly never[] = [];
 

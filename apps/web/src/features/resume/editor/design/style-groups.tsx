@@ -2,16 +2,12 @@ import type { DensityId, FontPairingId, MarginId } from "./presets";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import type { CSSProperties } from "react";
-import { Radio } from "@base-ui/react/radio";
-import { RadioGroup } from "@base-ui/react/radio-group";
+import { Segment } from "@heroui-pro/react";
+import { Button, Input, Radio, RadioGroup, Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createContext, useContext, useId, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Slider } from "@rezumi/ui/components/slider";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { contrastOnWhite } from "@rezumi/utils/color";
 import { cn } from "@rezumi/utils/style";
@@ -86,19 +82,17 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 				<RadioGroup
 					aria-label={t`Font pairing`}
 					value={pairing ?? null}
-					onValueChange={(value) => write("pairing", (draft) => applyFontPairing(draft, value as FontPairingId), true)}
+					onChange={(value) => write("pairing", (draft) => applyFontPairing(draft, value as FontPairingId), true)}
 					className="grid gap-1"
 				>
 					{FONT_PAIRINGS.map((option) => (
-						<Radio.Root
-							key={option.id}
-							value={option.id}
-							className="flex h-12 cursor-pointer items-center gap-3 rounded-lg border border-line px-3 text-start transition-colors duration-quick hover:bg-hover data-checked:border-accent data-checked:bg-accent-soft data-checked:hover:bg-accent-soft"
-						>
-							<span className="text-sm font-medium">{option.label}</span>
-							<span className="truncate text-xs text-ink-3">{familiesLabel(option.heading, option.body)}</span>
-							{pairing === option.id && <Icon name="check" size={18} className="ms-auto text-accent-text" />}
-						</Radio.Root>
+						<Radio key={option.id} value={option.id} className="mt-0! w-full">
+							<Radio.Content className="flex h-12 w-full cursor-pointer items-center gap-3 rounded-lg border border-line px-3 text-start font-normal transition-colors duration-quick hover:bg-hover data-selected:border-accent data-selected:bg-accent-soft data-selected:hover:bg-accent-soft">
+								<span className="text-sm font-medium">{option.label}</span>
+								<span className="truncate text-xs text-ink-3">{familiesLabel(option.heading, option.body)}</span>
+								{pairing === option.id && <Icon name="check" size={18} className="ms-auto text-accent-text" />}
+							</Radio.Content>
+						</Radio>
 					))}
 				</RadioGroup>
 
@@ -128,14 +122,19 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 				</div>
 				<Slider
 					aria-labelledby={sizeLabelId}
-					min={TEXT_SIZE.min}
-					max={TEXT_SIZE.max}
+					minValue={TEXT_SIZE.min}
+					maxValue={TEXT_SIZE.max}
 					step={TEXT_SIZE.step}
-					value={[Math.min(TEXT_SIZE.max, Math.max(TEXT_SIZE.min, size))]}
-					onValueChange={(value) =>
+					value={Math.min(TEXT_SIZE.max, Math.max(TEXT_SIZE.min, size))}
+					onChange={(value) =>
 						write("size", (draft) => applyTextSize(draft, Array.isArray(value) ? (value[0] ?? size) : value))
 					}
-				/>
+				>
+					<Slider.Track>
+						<Slider.Fill />
+						<Slider.Thumb />
+					</Slider.Track>
+				</Slider>
 				<span className="text-xs text-ink-3">
 					<Trans>10–11 recommended</Trans>
 				</span>
@@ -145,22 +144,22 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 				<span className="text-[13px] font-medium">
 					<Trans>Density</Trans>
 				</span>
-				<SegmentedControl
+				<Segment
 					aria-label={t`Density`}
-					value={density ?? ""}
-					onValueChange={(value) => write("density", (draft) => applyDensity(draft, value as DensityId), true)}
+					selectedKey={density ?? ""}
+					onSelectionChange={(key) => write("density", (draft) => applyDensity(draft, key as DensityId), true)}
 					className="w-full"
 				>
-					<SegmentedControlItem value="compact">
+					<Segment.Item id="compact" className="flex-1">
 						<Trans>Compact</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="normal">
+					</Segment.Item>
+					<Segment.Item id="normal" className="flex-1">
 						<Trans>Normal</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="roomy">
+					</Segment.Item>
+					<Segment.Item id="roomy" className="flex-1">
 						<Trans>Roomy</Trans>
-					</SegmentedControlItem>
-				</SegmentedControl>
+					</Segment.Item>
+				</Segment>
 			</div>
 		</div>
 	);
@@ -193,22 +192,21 @@ export function ColorGroup() {
 			<RadioGroup
 				aria-label={t`Accent color`}
 				value={ACCENTS.some((accent) => accent.hex === current) ? current : null}
-				onValueChange={(value) => {
+				onChange={(value) => {
 					setTyped(null);
-					setAccent(value as string);
+					setAccent(value);
 				}}
 				// Touch: 48px swatches, four to a row.
 				className="grid grid-cols-8 gap-1.5 pointer-coarse:grid-cols-[repeat(4,3rem)] pointer-coarse:justify-between pointer-coarse:gap-y-3"
 			>
 				{ACCENTS.map((accent) => (
-					<Radio.Root
-						key={accent.hex}
-						value={accent.hex}
-						aria-label={accent.label}
-						title={accent.label}
-						className="aspect-square cursor-pointer rounded-sm transition-[box-shadow,scale] duration-quick ease-enter active:scale-[0.97] data-checked:shadow-[0_0_0_2px_var(--surface),0_0_0_4px_var(--swatch)]"
-						style={{ backgroundColor: accent.hex, "--swatch": accent.hex } as CSSProperties}
-					/>
+					<Radio key={accent.hex} value={accent.hex} className="mt-0! w-full" aria-label={accent.label}>
+						<Radio.Content
+							aria-label={accent.label}
+							className="block aspect-square w-full cursor-pointer rounded-sm transition-[box-shadow,scale] duration-quick ease-enter active:scale-[0.97] data-selected:shadow-[0_0_0_2px_var(--surface),0_0_0_4px_var(--swatch)]"
+							style={{ backgroundColor: accent.hex, "--swatch": accent.hex } as CSSProperties}
+						/>
+					</Radio>
 				))}
 			</RadioGroup>
 
@@ -216,6 +214,7 @@ export function ColorGroup() {
 				<span className="size-9 shrink-0 rounded-lg border border-line-2" style={{ backgroundColor: normalized }} />
 				<Input
 					aria-label={t`Custom color (hex)`}
+					fullWidth
 					value={hex}
 					spellCheck={false}
 					className="font-mono"
@@ -240,7 +239,7 @@ export function ColorGroup() {
 						size="sm"
 						variant="secondary"
 						className="w-fit"
-						onClick={() => {
+						onPress={() => {
 							setTyped(null);
 							setAccent(darkenForWhite(normalized));
 						}}
@@ -274,28 +273,30 @@ export function PageGroup() {
 				<span className="text-[13px] font-medium">
 					<Trans>Paper</Trans>
 				</span>
-				<SegmentedControl
+				<Segment
 					aria-label={t`Paper`}
-					value={page.format}
-					onValueChange={(value) =>
+					selectedKey={page.format}
+					onSelectionChange={(key) =>
 						write(
 							"format",
 							(draft) => {
-								draft.page.format = value as typeof page.format;
+								draft.page.format = key as typeof page.format;
 							},
 							true,
 						)
 					}
 					className="w-full"
 				>
-					<SegmentedControlItem value="letter">
+					<Segment.Item id="letter" className="flex-1">
 						<Trans context="US Letter paper size (8.5 × 11 in), shown beside A4">Letter</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="a4">A4</SegmentedControlItem>
-					<SegmentedControlItem value="free-form">
+					</Segment.Item>
+					<Segment.Item id="a4" className="flex-1">
+						A4
+					</Segment.Item>
+					<Segment.Item id="free-form" className="flex-1">
 						<Trans>Free-form</Trans>
-					</SegmentedControlItem>
-				</SegmentedControl>
+					</Segment.Item>
+				</Segment>
 			</div>
 
 			<div className="grid gap-2">
@@ -325,30 +326,30 @@ export function PageGroup() {
 				<span className="text-[13px] font-medium">
 					<Trans>Margins</Trans>
 				</span>
-				<SegmentedControl
+				<Segment
 					aria-label={t`Margins`}
-					value={margins ?? ""}
-					onValueChange={(value) => write("margins", (draft) => applyMargins(draft, value as MarginId), true)}
+					selectedKey={margins ?? ""}
+					onSelectionChange={(key) => write("margins", (draft) => applyMargins(draft, key as MarginId), true)}
 					className="w-full"
 				>
-					<SegmentedControlItem value="narrow">
+					<Segment.Item id="narrow" className="flex-1">
 						<Trans>Narrow</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="normal">
+					</Segment.Item>
+					<Segment.Item id="normal" className="flex-1">
 						<Trans>Normal</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="wide">
+					</Segment.Item>
+					<Segment.Item id="wide" className="flex-1">
 						<Trans>Wide</Trans>
-					</SegmentedControlItem>
-				</SegmentedControl>
+					</Segment.Item>
+				</Segment>
 			</div>
 
 			<div className="grid">
 				<SwitchRow
 					label={t`Icons in contact line`}
 					description={t`Also shows the icons on skills, profiles and interests.`}
-					checked={!page.hideIcons}
-					onCheckedChange={(checked) =>
+					isSelected={!page.hideIcons}
+					onChange={(checked) =>
 						write(
 							"icons",
 							(draft) => {
@@ -360,8 +361,8 @@ export function PageGroup() {
 				/>
 				<SwitchRow
 					label={t`Underline links`}
-					checked={!page.hideLinkUnderline}
-					onCheckedChange={(checked) =>
+					isSelected={!page.hideLinkUnderline}
+					onChange={(checked) =>
 						write(
 							"underline",
 							(draft) => {

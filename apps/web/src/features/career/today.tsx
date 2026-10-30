@@ -2,17 +2,15 @@ import type { Kind, Lead, Schedule } from "./schedule-sheet";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Ref } from "react";
+import { Button, buttonVariants, Spinner, Switch, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouter } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Switch } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
@@ -238,7 +236,7 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 														<p className="mt-0.5 text-xs text-ink-3">{meta(row)}</p>
 													</div>
 													{actionable && (
-														<Button variant="secondary" className="h-8 px-3 text-[13px]" onClick={() => act(row)}>
+														<Button variant="secondary" size="sm" onPress={() => act(row)}>
 															{kind.action}
 														</Button>
 													)}
@@ -247,10 +245,10 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 													<IconButton
 														icon="check"
 														label={t`Mark as read`}
-														size="icon-sm"
+														size="sm"
 														iconSize={20}
 														className="text-ink-2"
-														onClick={() => dismiss(row)}
+														onPress={() => dismiss(row)}
 													/>
 												)}
 											</div>
@@ -271,8 +269,8 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 								<Button
 									variant="ghost"
 									size="sm"
-									className="text-ink-2 underline underline-offset-3"
-									onClick={() => setShowRead(true)}
+									className="underline underline-offset-3"
+									onPress={() => setShowRead(true)}
 								>
 									<Trans>Show {read.length} read</Trans>
 								</Button>
@@ -378,9 +376,10 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 				<p className="flex flex-wrap items-center gap-x-1 px-0.5 py-1.5 text-[13px] text-ink-3">
 					<Trans>No new roles. Discovery is paused.</Trans>
 					<Button
-						variant="link"
-						className="text-[13px] text-ink-2 underline underline-offset-3"
-						onClick={() => onOpenSchedule(active.id)}
+						variant="ghost"
+						size="sm"
+						className="h-auto px-0 text-link underline-offset-4 hover:underline"
+						onPress={() => onOpenSchedule(active.id)}
 					>
 						<Trans>Open the schedule</Trans>
 					</Button>
@@ -424,11 +423,7 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 						<p className="text-sm text-ink-2">
 							<Trans>Get new roles here every morning</Trans>
 						</p>
-						<Button
-							variant="secondary"
-							className="h-8 px-3 text-[13px]"
-							onClick={() => onOpenSchedule("new:discovery")}
-						>
+						<Button variant="secondary" size="sm" onPress={() => onOpenSchedule("new:discovery")}>
 							<Icon name="globe-simple" size={18} />
 							<Trans>Set up discovery</Trans>
 						</Button>
@@ -461,7 +456,7 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 						})}
 					</AnimatePresence>
 					{visible.length > shown.length && (
-						<Button variant="ghost" size="sm" className="text-ink-2" onClick={() => setExpanded(true)}>
+						<Button variant="ghost" size="sm" onPress={() => setExpanded(true)}>
 							<Trans>Show {visible.length - shown.length} more</Trans>
 						</Button>
 					)}
@@ -533,8 +528,8 @@ function RoleCard({ row, found, tracked, pending, onTrack, onUndo, onDismiss }: 
 							<Button
 								variant="ghost"
 								size="sm"
-								className="text-ink-2 underline underline-offset-3"
-								onClick={() => onUndo(tracked.applicationId)}
+								className="underline underline-offset-3"
+								onPress={() => onUndo(tracked.applicationId)}
 							>
 								<Trans>Undo</Trans>
 							</Button>
@@ -542,24 +537,20 @@ function RoleCard({ row, found, tracked, pending, onTrack, onUndo, onDismiss }: 
 					</p>
 				) : (
 					<div className="flex flex-wrap items-center gap-2">
-						<Button variant="secondary" className="h-8 px-3 text-[13px]" loading={pending} onClick={() => onTrack(row)}>
-							{!pending && <Icon name="bookmark-simple" size={18} />}
+						<Button variant="secondary" size="sm" isPending={pending} onPress={() => onTrack(row)}>
+							{pending ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="bookmark-simple" size={18} />}
 							<Trans>Track in Applications</Trans>
 						</Button>
-						<Button
-							variant="ghost"
-							nativeButton={false}
-							className="h-8 px-2.5 text-[13px] text-ink-2"
-							render={<a href={row.url} target="_blank" rel="noopener noreferrer" />}
+						<a
+							href={row.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							className={buttonVariants({ variant: "ghost", size: "sm" })}
 						>
 							<Trans>Read posting</Trans>
 							<Icon name="arrow-square-out" size={16} />
-						</Button>
-						<Button
-							variant="ghost"
-							className="ms-auto h-8 px-2.5 text-[13px] text-ink-2"
-							onClick={() => onDismiss(row)}
-						>
+						</a>
+						<Button variant="ghost" size="sm" className="ms-auto" onPress={() => onDismiss(row)}>
 							<Trans>Not for me</Trans>
 						</Button>
 					</div>
@@ -633,20 +624,14 @@ function ComingUp({ now, className }: ComingUpProps) {
 					</p>
 				</div>
 			</div>
-			<Button
-				variant="secondary"
-				nativeButton={false}
-				className="h-8 w-full text-[13px]"
-				render={
-					<Link
-						to="/dashboard/applications/$applicationId/{-$tab}"
-						params={{ applicationId: application.id, tab: "prepare" }}
-					/>
-				}
+			<Link
+				to="/dashboard/applications/$applicationId/{-$tab}"
+				params={{ applicationId: application.id, tab: "prepare" }}
+				className={buttonVariants({ variant: "secondary", size: "sm", fullWidth: true })}
 			>
 				<Trans>Open workspace</Trans>
 				<Icon name="arrow-right" size={18} className="rtl:-scale-x-100" />
-			</Button>
+			</Link>
 		</section>
 	);
 }
@@ -769,7 +754,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 						<Trans>Schedules</Trans>
 					</span>
 				</Eyebrow>
-				<Button variant="ghost" size="sm" className="text-ink-2" onClick={() => onOpenSchedule("new")}>
+				<Button variant="ghost" size="sm" onPress={() => onOpenSchedule("new")}>
 					<Icon name="plus" size={18} />
 					<Trans>Add</Trans>
 				</Button>
@@ -811,10 +796,16 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 									</button>
 									<Switch
 										aria-label={[title, describe(row)].filter(Boolean).join(" · ")}
-										checked={row.enabled}
-										onCheckedChange={(enabled) => toggle(row, enabled)}
+										isSelected={row.enabled}
+										onChange={(enabled) => toggle(row, enabled)}
 										className="mt-0.5"
-									/>
+									>
+										<Switch.Content>
+											<Switch.Control>
+												<Switch.Thumb />
+											</Switch.Control>
+										</Switch.Content>
+									</Switch>
 								</div>
 							</CollapseRow>
 						);

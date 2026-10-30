@@ -1,13 +1,12 @@
 import type { EntryHeader } from "@rezumi/schema/resume/data";
 import type { ReactNode } from "react";
-import { Radio } from "@base-ui/react/radio";
-import { RadioGroup } from "@base-ui/react/radio-group";
+import { Segment } from "@heroui-pro/react";
+import { Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { m } from "motion/react";
 import { entryHeaderOf } from "@rezumi/schema/resume/data";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { cn } from "@rezumi/utils/style";
 import { useDesign } from "./style-groups";
 import { D2, EASE_MOVE } from "@/libs/motion";
@@ -143,22 +142,20 @@ export function EntriesGroup() {
 				<RadioGroup
 					aria-label={t`Header layout`}
 					value={entry.layout}
-					onValueChange={(value) => set({ layout: value as EntryHeader["layout"] })}
+					onChange={(value) => set({ layout: value as EntryHeader["layout"] })}
 					className="grid grid-cols-3 gap-1.5"
 				>
 					{LAYOUTS.map((option) => (
-						<Radio.Root
-							key={option.id}
-							value={option.id}
-							className="group/layout grid cursor-pointer content-start gap-1.5 rounded-md border border-line bg-bg px-1.5 pt-1.5 pb-1 transition-colors duration-quick hover:bg-hover data-checked:border-accent data-checked:ring-1 data-checked:ring-accent"
-						>
-							<span aria-hidden="true" className="flex h-7.5 flex-col justify-center gap-1 px-0.5">
-								{option.wireframe}
-							</span>
-							<span className="text-center text-xs leading-4 text-ink-2 group-data-checked/layout:font-semibold group-data-checked/layout:text-ink">
-								{option.label()}
-							</span>
-						</Radio.Root>
+						<Radio key={option.id} value={option.id} className="mt-0! w-full">
+							<Radio.Content className="group/layout grid w-full cursor-pointer content-start items-stretch gap-1.5 rounded-md border border-line bg-bg px-1.5 pt-1.5 pb-1 text-start font-normal transition-colors duration-quick hover:bg-hover data-selected:border-accent data-selected:ring-1 data-selected:ring-accent">
+								<span aria-hidden="true" className="flex h-7.5 flex-col justify-center gap-1 px-0.5">
+									{option.wireframe}
+								</span>
+								<span className="text-center text-xs leading-4 text-ink-2 group-data-selected/layout:font-semibold group-data-selected/layout:text-ink">
+									{option.label()}
+								</span>
+							</Radio.Content>
+						</Radio>
 					))}
 				</RadioGroup>
 			</div>
@@ -187,11 +184,11 @@ export function EntriesGroup() {
 						icon="arrows-down-up"
 						iconSize={16}
 						variant="secondary"
-						size="icon-sm"
-						tooltipSide="top"
+						size="sm"
+						tooltipPlacement="top"
 						className="rounded-full"
 						label={entry.lead === "role" ? t`Swap rows: lead with company` : t`Swap rows: lead with position`}
-						onClick={() => set({ lead: entry.lead === "role" ? "organization" : "role" })}
+						onPress={() => set({ lead: entry.lead === "role" ? "organization" : "role" })}
 					/>
 				</div>
 				<span className="text-xs text-ink-3">
@@ -203,25 +200,25 @@ export function EntriesGroup() {
 				<span className="text-[13px] font-medium">
 					<Trans>Accent</Trans>
 				</span>
-				<SegmentedControl
+				<Segment
 					aria-label={t`Accent`}
-					value={entry.accent}
-					onValueChange={(value) => set({ accent: value as EntryHeader["accent"] })}
+					selectedKey={entry.accent}
+					onSelectionChange={(key) => set({ accent: key as EntryHeader["accent"] })}
 					className="w-full"
 				>
-					<SegmentedControlItem value="none">
+					<Segment.Item id="none" className="flex-1">
 						<Trans context="Entry header accent">None</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="rule">
+					</Segment.Item>
+					<Segment.Item id="rule" className="flex-1">
 						<Trans context="Entry header accent: a line under the header">Rule</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="bar">
+					</Segment.Item>
+					<Segment.Item id="bar" className="flex-1">
 						<Trans context="Entry header accent: a bar beside the header">Bar</Trans>
-					</SegmentedControlItem>
-					<SegmentedControlItem value="band">
+					</Segment.Item>
+					<Segment.Item id="band" className="flex-1">
 						<Trans context="Entry header accent: a tinted background behind the header">Band</Trans>
-					</SegmentedControlItem>
-				</SegmentedControl>
+					</Segment.Item>
+				</Segment>
 			</div>
 		</div>
 	);

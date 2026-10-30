@@ -2,25 +2,19 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
+import { Segment } from "@heroui-pro/react";
+import { Button, Checkbox, Label, Spinner, TextArea, Tooltip, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, m } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { z } from "zod";
 import { AI_VOICE_MODELS } from "@rezumi/ai/types";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Spinner } from "@rezumi/ui/components/spinner";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { cn } from "@rezumi/utils/style";
 import { useCoachKnowledge } from "../coach-thread";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useSessionDraft } from "../hooks";
@@ -40,7 +34,7 @@ import {
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { toastError } from "@/libs/error-message";
-import { D2, EASE, ENTER_CLASS } from "@/libs/motion";
+import { ENTER_CLASS } from "@/libs/motion";
 import { client } from "@/libs/orpc/client";
 
 type Practice = SavedData<"practice">;
@@ -87,7 +81,7 @@ export function PractiseTab({ application, version, interview, speak, story, now
 				<span>
 					<Trans>Your story couldn't be loaded.</Trans>
 				</span>
-				<Button onClick={() => knowledge.retry()}>
+				<Button onPress={() => knowledge.retry()}>
 					<Trans>Try again</Trans>
 				</Button>
 			</Notice>
@@ -99,7 +93,7 @@ export function PractiseTab({ application, version, interview, speak, story, now
 				<span>
 					<Trans>This story is unavailable or uses facts that are switched off.</Trans>
 				</span>
-				<Button variant="secondary" onClick={() => go("practise")}>
+				<Button variant="secondary" onPress={() => go("practise")}>
 					<Trans>Practice another question</Trans>
 				</Button>
 			</Notice>
@@ -407,14 +401,15 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 	const position = (index % questions.length) + 1;
 	const total = questions.length;
 	const answerField = (
-		<Textarea
+		<TextArea
+			fullWidth
 			id={`${id}-answer`}
 			aria-labelledby={`${id}-heading`}
 			value={answer}
 			maxLength={6000}
 			placeholder={t`About 90 seconds when spoken`}
 			onChange={(event) => setAnswer(event.target.value)}
-			className="min-h-28 px-3.5 py-3 text-[15px] leading-[23px] pointer-coarse:text-base"
+			className="min-h-28"
 		/>
 	);
 
@@ -483,13 +478,13 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						</p>
 						{answerField}
 						<div className="-mt-1 flex flex-wrap gap-2">
-							<Button size="sm" variant="secondary" onClick={() => setAnswer(writeNumbersAsDigits(answer))}>
+							<Button size="sm" variant="secondary" onPress={() => setAnswer(writeNumbersAsDigits(answer))}>
 								<Trans>Write numbers as digits</Trans>
 							</Button>
 							<Button
 								size="sm"
 								variant="ghost"
-								onClick={() => {
+								onPress={() => {
 									setSpoken(null);
 									void startRecording();
 								}}
@@ -500,7 +495,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 					</>
 				) : step.name === "transcribing" ? (
 					<p role="status" className="flex items-center gap-2.5 rounded-lg bg-sunken px-3.5 py-3 text-sm text-ink-2">
-						<Spinner decorative className="text-accent" />
+						<Spinner size="sm" color="current" className="text-accent" aria-hidden />
 						<Trans>Transcribing with {model}…</Trans>
 					</p>
 				) : step.name === "error" ? (
@@ -509,10 +504,10 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 							<Trans>Couldn't transcribe. Your recording is still here.</Trans>
 						</span>
 						<span className="flex gap-1">
-							<Button size="sm" variant="secondary" onClick={() => audio && void transcribe(audio)}>
+							<Button size="sm" variant="secondary" onPress={() => audio && void transcribe(audio)}>
 								<Trans>Try again</Trans>
 							</Button>
-							<Button size="sm" variant="ghost" onClick={() => chooseMode("typed")}>
+							<Button size="sm" variant="ghost" onPress={() => chooseMode("typed")}>
 								<Trans>Type instead</Trans>
 							</Button>
 						</span>
@@ -609,7 +604,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 								<span className="min-w-0 flex-1">
 									<Trans>Microphone blocked. Allow it in your browser settings, or type your answer.</Trans>
 								</span>
-								<Button size="sm" variant="secondary" onClick={() => chooseMode("typed")}>
+								<Button size="sm" variant="secondary" onPress={() => chooseMode("typed")}>
 									<Icon name="keyboard" size={16} />
 									<Trans>Type instead</Trans>
 								</Button>
@@ -633,7 +628,8 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 
 				<div className="grid gap-2.5">
 					<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-						<Button disabled={!ready || !provider} loading={generate.isPending} onClick={getFeedback}>
+						<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={getFeedback}>
+							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
 							{generate.isPending ? <Working steps={workingSteps("practice")} /> : <Trans>Get feedback</Trans>}
 						</Button>
 						<p className="text-xs text-ink-2">
@@ -668,7 +664,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						<Button
 							size="sm"
 							variant="secondary"
-							onClick={() => {
+							onPress={() => {
 								chooseMode("typed");
 								setSpoken(null);
 								setAnswer(feedback.data.opening);
@@ -676,7 +672,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						>
 							<Trans>Try again with this</Trans>
 						</Button>
-						<Button size="sm" variant="ghost" onClick={nextQuestion}>
+						<Button size="sm" variant="ghost" onPress={nextQuestion}>
 							<Trans>Next question</Trans>
 							<Icon name="arrow-right" size={16} />
 						</Button>
@@ -704,31 +700,19 @@ function Notice({ icon, children }: { icon: IconName; children: ReactNode }) {
 }
 
 function ModeSwitch({ value, onChange }: { value: Mode; onChange: (mode: Mode) => void }) {
-	const id = useId();
 	const options = [
 		{ value: "typed", label: t`Type`, icon: "keyboard" },
 		{ value: "spoken", label: t`Speak`, icon: "microphone" },
 	] as const;
 	return (
-		<SegmentedControl aria-label={t`Answer by`} value={value} onValueChange={(next) => onChange(next as Mode)}>
+		<Segment aria-label={t`Answer by`} selectedKey={value} onSelectionChange={(next) => onChange(String(next) as Mode)}>
 			{options.map((option) => (
-				<SegmentedControlItem
-					key={option.value}
-					value={option.value}
-					className="relative data-checked:bg-transparent data-checked:shadow-none"
-				>
-					{value === option.value && (
-						<m.span
-							layoutId={`${id}-thumb`}
-							transition={{ duration: D2, ease: EASE }}
-							className="absolute inset-0 rounded-sm bg-raised shadow-e1"
-						/>
-					)}
-					<Icon name={option.icon} size={16} className="relative" />
-					<span className="relative">{option.label}</span>
-				</SegmentedControlItem>
+				<Segment.Item key={option.value} id={option.value}>
+					<Icon name={option.icon} size={16} />
+					{option.label}
+				</Segment.Item>
 			))}
-		</SegmentedControl>
+		</Segment>
 	);
 }
 
@@ -789,15 +773,15 @@ function HearIt({ text, voice }: { text: string; voice: VoiceSettings }) {
 	};
 	return (
 		<Tooltip>
-			<TooltipTrigger render={<Button size="sm" variant="ghost" onClick={() => void play()} />}>
+			<Button size="sm" variant="ghost" onPress={() => void play()}>
 				<Icon name={playing || busy ? "stop" : "speaker-high"} size={16} />
 				{playing || busy ? <Trans>Stop audio</Trans> : <Trans>Hear it</Trans>}
-			</TooltipTrigger>
-			<TooltipContent>
+			</Button>
+			<Tooltip.Content>
 				{reader.providerId === BROWSER
 					? t`Read aloud by your browser's voice.`
 					: t`Read aloud by ${reader.label}, which may use tokens on that account.`}
-			</TooltipContent>
+			</Tooltip.Content>
 		</Tooltip>
 	);
 }
@@ -922,10 +906,14 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 							</div>
 							{!browserTranscribes && (
 								<div className="flex flex-wrap items-center justify-between gap-2">
-									<label htmlFor={`${id}-keep`} className="flex items-center gap-2.5 text-[13px]">
-										<Checkbox id={`${id}-keep`} checked={settings.keep} onCheckedChange={(keep) => update({ keep })} />
-										<Trans>Keep the recording in this browser so I can download it</Trans>
-									</label>
+									<Checkbox isSelected={settings.keep} onChange={(keep) => update({ keep })} className="text-[13px]">
+										<Checkbox.Content>
+											<Checkbox.Control>
+												<Checkbox.Indicator />
+											</Checkbox.Control>
+											<Trans>Keep the recording in this browser so I can download it</Trans>
+										</Checkbox.Content>
+									</Checkbox>
 									{settings.keep && audio && (
 										<a
 											href={audio.url}

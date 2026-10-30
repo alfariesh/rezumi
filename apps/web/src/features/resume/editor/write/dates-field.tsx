@@ -1,12 +1,11 @@
 import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
+import { inputVariants, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { formatYearMonth, getPresentLabel, toYearMonth } from "@rezumi/schema/resume/dates";
 import { readSingleDate } from "@rezumi/schema/resume/period";
 import { Icon } from "@rezumi/ui/components/icon";
-import { inputBaseClassName } from "@rezumi/ui/components/input";
-import { Switch } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 
 type DateSettings = { locale: string; format?: DateFormat | undefined };
@@ -63,7 +62,7 @@ function MonthYearInput({
 				disabled={disabled}
 				placeholder={t`Mar 2022`}
 				value={placeholderValue ?? typed ?? formatted}
-				className={cn(inputBaseClassName, "h-9 ps-9 disabled:bg-sunken disabled:text-ink-2 disabled:opacity-100")}
+				className={cn(inputVariants({ fullWidth: true }), "ps-9")}
 				onChange={(event) => {
 					setTyped(event.target.value);
 					const next = readTypedDate(event.target.value, locale);
@@ -141,14 +140,18 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 
 			{!single && (
 				<>
-					{/* oxlint-disable-next-line jsx-a11y/label-has-associated-control -- Base UI's Switch is the control; wrapping it in a label is its documented pattern. */}
-					<label className="flex w-fit cursor-pointer items-center gap-2 p-1 text-sm">
-						<Switch
-							checked={dates.present}
-							onCheckedChange={(present) => onChange({ ...current, present, end: present ? null : dates.end })}
-						/>
-						<Trans>Present</Trans>
-					</label>
+					<Switch
+						isSelected={dates.present}
+						onChange={(present) => onChange({ ...current, present, end: present ? null : dates.end })}
+						className="w-fit p-1 text-sm"
+					>
+						<Switch.Content>
+							<Switch.Control>
+								<Switch.Thumb />
+							</Switch.Control>
+							<Trans>Present</Trans>
+						</Switch.Content>
+					</Switch>
 				</>
 			)}
 

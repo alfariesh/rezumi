@@ -8,7 +8,7 @@
 @layer components {
 	.typeset {
 		--typeset-font-body: inherit;
-		--typeset-font-heading: var(--font-display);
+		--typeset-font-heading: var(--font-sans);
 		--typeset-font-mono: var(--font-mono);
 		--typeset-size: 1em;
 		--typeset-leading: 1.75;
@@ -21,7 +21,7 @@
 		font-family: var(--typeset-font-body);
 		font-size: calc(var(--typeset-size) * 1.125);
 		line-height: var(--typeset-leading);
-		color: var(--ink, currentColor);
+		color: var(--foreground, currentColor);
 		overflow-wrap: break-word;
 		margin-trim: block-start;
 
@@ -29,8 +29,8 @@
 			font-size: var(--typeset-size);
 		}
 
-		--typeset-muted: var(--ink-3, color-mix(in oklab, currentColor 60%, transparent));
-		--typeset-rule: var(--line, color-mix(in oklab, currentColor 20%, transparent));
+		--typeset-muted: var(--muted, color-mix(in oklab, currentColor 60%, transparent));
+		--typeset-rule: var(--separator, color-mix(in oklab, currentColor 20%, transparent));
 	}
 
 	.typeset
@@ -52,7 +52,7 @@
 
 		/* Headings. */
 		&:where(h1, h2, h3, h4, h5, h6) {
-			color: var(--ink, currentColor);
+			color: var(--foreground, currentColor);
 			font-family: var(--typeset-font-heading);
 			font-weight: var(--typeset-heading-weight, 600);
 			margin-block-end: 0;
@@ -115,7 +115,7 @@
 			text-decoration-color: currentColor;
 		}
 		&:where(a:focus-visible) {
-			outline: 2px solid var(--accent, currentColor);
+			outline: 2px solid var(--focus, currentColor);
 			outline-offset: 2px;
 			border-radius: 0.125em;
 		}
@@ -212,7 +212,7 @@
 
 		/* Inline code. */
 		&:where(:not(pre) > code) {
-			background-color: var(--sunken, color-mix(in oklab, currentColor 8%, transparent));
+			background-color: var(--default, color-mix(in oklab, currentColor 8%, transparent));
 			font-family: var(--typeset-font-mono);
 			font-size: 0.85em;
 			border-radius: min(calc(var(--radius, 0.5em) * 0.6), 0.35em);
@@ -221,7 +221,7 @@
 
 		/* Code blocks. */
 		&:where(pre) {
-			background-color: var(--sunken, color-mix(in oklab, currentColor 8%, transparent));
+			background-color: var(--default, color-mix(in oklab, currentColor 8%, transparent));
 			font-family: var(--typeset-font-mono);
 			font-size: 0.875em;
 			line-height: 1.5;
@@ -371,14 +371,14 @@
 @layer components {
 	/* Chat replies (assistant, career coach): tight blocks inside a bubble that follows the surrounding size. */
 	.typeset-chat {
-		--typeset-font-heading: var(--font-ui);
+		--typeset-font-heading: var(--font-sans);
 		--typeset-leading: 1.6;
 		--typeset-flow: 0.75em;
 	}
 
 	/* Editable fields (resume summaries, descriptions): compact, the same rhythm the PDF uses between blocks. */
 	.typeset-field {
-		--typeset-font-heading: var(--font-ui);
+		--typeset-font-heading: var(--font-sans);
 		--typeset-size: 0.875rem;
 		--typeset-leading: 1.6;
 		--typeset-flow: 0.75em;

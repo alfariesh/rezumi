@@ -1,7 +1,7 @@
+import { buttonVariants } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { GithubLogoIcon, StarIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@rezumi/ui/components/button";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { orpc } from "@/libs/orpc/client";
 
@@ -17,16 +17,16 @@ export function GithubStarsButton() {
 			: t`Star us on GitHub (opens in new tab)`;
 
 	return (
-		<Button
-			variant="secondary"
-			nativeButton={false}
-			render={
-				<a target="_blank" href="https://github.com/alfariesh/rezumi" aria-label={ariaLabel} rel="noopener noreferrer">
-					<GithubLogoIcon aria-hidden="true" />
-					{starCount != null ? <RollingNumber value={starCount} className="font-bold" /> : null}
-					<StarIcon aria-hidden="true" />
-				</a>
-			}
-		/>
+		<a
+			target="_blank"
+			href="https://github.com/alfariesh/rezumi"
+			aria-label={ariaLabel}
+			rel="noopener noreferrer"
+			className={buttonVariants({ variant: "secondary" })}
+		>
+			<GithubLogoIcon aria-hidden="true" />
+			{starCount != null ? <RollingNumber value={starCount} className="font-bold" /> : null}
+			<StarIcon aria-hidden="true" />
+		</a>
 	);
 }

@@ -1,26 +1,16 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
+import { Button, Checkbox, Dropdown, Label, Spinner, TextArea, Tooltip, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { careerWorkspaceSchema } from "@rezumi/schema/career";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDebouncedSave, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
@@ -128,7 +118,7 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 						<Button
 							size="sm"
 							variant="secondary"
-							onClick={() =>
+							onPress={() =>
 								workspace.save({
 									answers: stored.answers.map((answer) => ({
 										...answer,
@@ -246,8 +236,6 @@ function AnswerCard({
 		[answer, question, text, registerDraft],
 	);
 	const [editingQuestion, setEditingQuestion] = useState(answer.question === "");
-	// Edit question focuses the field as its menu closes; the menu would otherwise take focus back and end the edit.
-	const questionField = useRef<HTMLTextAreaElement>(null);
 	const [proposal, setProposal] = useState<{ text: string; factIds: string[] } | null>(null);
 	const generate = useGenerate(applicationId);
 	const { provider } = useDefaultProvider();
@@ -272,10 +260,10 @@ function AnswerCard({
 		<section className="grid gap-3 rounded-xl border border-line bg-surface p-4">
 			<div className="flex items-start gap-3">
 				{editingQuestion && !readOnly ? (
-					<Textarea
+					<TextArea
+						fullWidth
 						// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add a question or Edit question
 						autoFocus
-						ref={questionField}
 						rows={1}
 						value={question}
 						maxLength={2000}
@@ -295,52 +283,46 @@ function AnswerCard({
 							flushQuestion();
 							if (question.trim()) setEditingQuestion(false);
 						}}
-						className="field-sizing-content min-h-0 w-full min-w-0 flex-1 resize-none px-2.5 py-1.5 text-[15px] leading-[22px] font-semibold"
+						className="field-sizing-content min-h-0 w-full min-w-0 flex-1 resize-none text-[15px] leading-[22px] font-semibold"
 					/>
 				) : (
 					<h2 className="min-w-0 flex-1 text-[15px] leading-[22px] font-semibold">{question}</h2>
 				)}
 				{/* Forms limit words or characters; the count switches between them, for every question at once. */}
 				<Tooltip>
-					<TooltipTrigger
-						render={
-							<button
-								type="button"
-								onClick={onToggleUnit}
-								className="shrink-0 rounded-sm font-mono text-xs leading-[22px] font-medium text-ink-2 transition-colors duration-quick hover:text-ink"
-							/>
-						}
-					>
+					<Button variant="ghost" size="sm" onPress={onToggleUnit} className="shrink-0 font-mono text-xs">
 						{unit === "words"
 							? plural(words, { one: "# word", other: "# words" })
 							: plural(characters, { one: "# character", other: "# characters" })}
-					</TooltipTrigger>
-					<TooltipContent>{unit === "words" ? t`Count characters` : t`Count words`}</TooltipContent>
+					</Button>
+					<Tooltip.Content>{unit === "words" ? t`Count characters` : t`Count words`}</Tooltip.Content>
 				</Tooltip>
 				{!readOnly && (
-					<DropdownMenu>
-						<DropdownMenuTrigger
-							render={
-								<IconButton
-									icon="dots-three"
-									label={t`Question options`}
-									disabled={disabled}
-									size="icon-sm"
-									className="-my-1 -me-1.5 shrink-0 text-ink-2"
-								/>
-							}
+					<Dropdown>
+						<IconButton
+							icon="dots-three"
+							size="sm"
+							label={t`Question options`}
+							isDisabled={Boolean(disabled)}
+							className="-my-1 -me-1.5 shrink-0 text-ink-2"
 						/>
-						<DropdownMenuContent align="end" finalFocus={questionField}>
-							<DropdownMenuItem onClick={() => setEditingQuestion(true)}>
-								<Icon name="pencil-simple" size={18} />
-								<Trans>Edit question</Trans>
-							</DropdownMenuItem>
-							<DropdownMenuItem variant="destructive" onClick={onRemove}>
-								<Icon name="trash" size={18} />
-								<Trans>Remove question</Trans>
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+						<Dropdown.Popover placement="bottom end">
+							<Dropdown.Menu>
+								<Dropdown.Item id="edit" textValue={t`Edit question`} onAction={() => setEditingQuestion(true)}>
+									<Icon name="pencil-simple" size={18} />
+									<Label>
+										<Trans>Edit question</Trans>
+									</Label>
+								</Dropdown.Item>
+								<Dropdown.Item id="remove" textValue={t`Remove question`} variant="danger" onAction={onRemove}>
+									<Icon name="trash" size={18} />
+									<Label>
+										<Trans>Remove question</Trans>
+									</Label>
+								</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown.Popover>
+					</Dropdown>
 				)}
 			</div>
 
@@ -364,8 +346,8 @@ function AnswerCard({
 							<Button
 								size="sm"
 								variant="secondary"
-								disabled={disabled}
-								onClick={() => {
+								isDisabled={disabled}
+								onPress={() => {
 									setText(proposal.text);
 									onSave({ answer: proposal.text, factIds: proposal.factIds });
 									setProposal(null);
@@ -374,7 +356,7 @@ function AnswerCard({
 								<Icon name="check" size={16} />
 								<Trans>Accept</Trans>
 							</Button>
-							<Button size="sm" variant="ghost" onClick={() => setProposal(null)}>
+							<Button size="sm" variant="ghost" onPress={() => setProposal(null)}>
 								<Trans>Skip</Trans>
 							</Button>
 						</div>
@@ -384,7 +366,8 @@ function AnswerCard({
 						{text}
 					</p>
 				) : (
-					<Textarea
+					<TextArea
+						fullWidth
 						value={text}
 						maxLength={6000}
 						disabled={disabled}
@@ -392,7 +375,7 @@ function AnswerCard({
 						placeholder={t`Write your answer, or draft one from your Knowledge.`}
 						onChange={(event) => setText(event.target.value)}
 						onBlur={flushAnswer}
-						className="min-h-[88px] px-3.5 py-3 text-sm leading-[22px] pointer-coarse:text-base"
+						className="min-h-[88px]"
 					/>
 				)}
 			</Swap>
@@ -405,15 +388,13 @@ function AnswerCard({
 						</span>
 						{backing.map((fact) => (
 							<Tooltip key={fact.id}>
-								<TooltipTrigger
-									render={
-										<span className="inline-flex h-6 items-center gap-1 rounded-sm border border-line px-2 text-xs text-ink-2" />
-									}
-								>
-									<Icon name="link-simple-horizontal" size={14} />
-									{shortLabel(fact.text)}
-								</TooltipTrigger>
-								<TooltipContent>{fact.text}</TooltipContent>
+								<Tooltip.Trigger aria-label={fact.text}>
+									<span className="inline-flex h-6 items-center gap-1 rounded-sm border border-line px-2 text-xs text-ink-2">
+										<Icon name="link-simple-horizontal" size={14} />
+										{shortLabel(fact.text)}
+									</span>
+								</Tooltip.Trigger>
+								<Tooltip.Content>{fact.text}</Tooltip.Content>
 							</Tooltip>
 						))}
 					</div>
@@ -423,11 +404,11 @@ function AnswerCard({
 						size="sm"
 						variant="ghost"
 						className="ms-auto shrink-0"
-						loading={generate.isPending}
-						disabled={disabled || !question.trim()}
-						onClick={() => void ask()}
+						isPending={generate.isPending}
+						isDisabled={disabled || !question.trim()}
+						onPress={() => void ask()}
 					>
-						{!generate.isPending && <Icon name="sparkle" size={16} />}
+						{generate.isPending ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="sparkle" size={16} />}
 						{generate.isPending ? (
 							<Working steps={workingSteps(empty ? "answer" : "tighten")} />
 						) : empty ? (
@@ -598,25 +579,33 @@ function Checklist({
 				{items.map((label, index) =>
 					!submitted && !readOnly && index === items.length - 1 ? (
 						<li key={label}>
-							<Button className="w-full" disabled={!canSubmit} loading={submitting} onClick={() => void markApplied()}>
+							<Button fullWidth isDisabled={!canSubmit} isPending={submitting} onPress={() => void markApplied()}>
+								{submitting && <Spinner size="sm" color="current" aria-hidden />}
 								<Trans>Mark as applied</Trans>
 							</Button>
 						</li>
 					) : (
 						<li key={label}>
-							<label className="flex cursor-pointer gap-2.5 text-[13px] leading-[19px]">
-								<Checkbox
-									className="mt-px"
-									checked={ticked.includes(index)}
-									disabled={readOnly || submitting}
-									onCheckedChange={(checked) => toggle(index, checked)}
-								/>
-								<span
-									className={cn("transition-colors duration-quick", ticked.includes(index) ? "text-ink-2" : "text-ink")}
-								>
-									{label}
-								</span>
-							</label>
+							<Checkbox
+								className="text-[13px] leading-[19px]"
+								isSelected={ticked.includes(index)}
+								isDisabled={readOnly || submitting}
+								onChange={(checked) => toggle(index, checked)}
+							>
+								<Checkbox.Content className="items-start">
+									<Checkbox.Control className="mt-px">
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span
+										className={cn(
+											"transition-colors duration-quick",
+											ticked.includes(index) ? "text-ink-2" : "text-ink",
+										)}
+									>
+										{label}
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
 						</li>
 					),
 				)}
@@ -629,24 +618,30 @@ function Checklist({
 				</p>
 			)}
 			<div className="flex flex-wrap gap-1.5 border-t border-line pt-3.5">
-				<Button variant="secondary" size="sm" disabled={written.length === 0} onClick={() => void copy()}>
+				<Button variant="secondary" size="sm" isDisabled={written.length === 0} onPress={() => void copy()}>
 					<Icon name="copy" size={16} />
 					<Trans>Copy answers</Trans>
 				</Button>
-				<DropdownMenu>
-					<DropdownMenuTrigger render={<Button variant="ghost" size="sm" disabled={written.length === 0} />}>
+				<Dropdown>
+					<Button variant="ghost" size="sm" isDisabled={written.length === 0}>
 						<Icon name="download-simple" size={16} />
 						<Trans>Download</Trans>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent>
-						<DropdownMenuItem onClick={() => download("md")}>
-							<Trans>Markdown (.md)</Trans>
-						</DropdownMenuItem>
-						<DropdownMenuItem onClick={() => download("txt")}>
-							<Trans>Plain text (.txt)</Trans>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+					</Button>
+					<Dropdown.Popover>
+						<Dropdown.Menu>
+							<Dropdown.Item id="md" textValue={t`Markdown (.md)`} onAction={() => download("md")}>
+								<Label>
+									<Trans>Markdown (.md)</Trans>
+								</Label>
+							</Dropdown.Item>
+							<Dropdown.Item id="txt" textValue={t`Plain text (.txt)`} onAction={() => download("txt")}>
+								<Label>
+									<Trans>Plain text (.txt)</Trans>
+								</Label>
+							</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
 			</div>
 			<p className="text-xs leading-[17px] text-ink-3">
 				<Trans>You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent.</Trans>

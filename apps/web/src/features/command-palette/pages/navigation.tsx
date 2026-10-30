@@ -1,10 +1,9 @@
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
-import { CommandItem } from "@rezumi/ui/components/command";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../store";
-import { BaseCommandGroup } from "./base";
+import { BaseCommandGroup, PaletteItem, searchText } from "./base";
 import { useDialogStore } from "@/dialogs/store";
 
 export function NavigationCommandGroup() {
@@ -21,90 +20,91 @@ export function NavigationCommandGroup() {
 	return (
 		<>
 			<BaseCommandGroup heading={<Trans>Go to…</Trans>}>
-				<CommandItem keywords={[t`Home`]} value="navigation.home" onSelect={() => onNavigate("/")}>
+				<PaletteItem id="navigation.home" textValue={searchText(t`Home`, [t`Home`])} onAction={() => onNavigate("/")}>
 					<Icon name="house" size={16} />
 					<Trans>Home</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					disabled={!session}
-					keywords={[t`Documents`, t`Resumes`, t`Cover letters`]}
-					value="navigation.documents"
-					onSelect={() => onNavigate("/dashboard")}
+				<PaletteItem
+					id="navigation.documents"
+					textValue={searchText(t`Documents`, [t`Documents`, t`Resumes`, t`Cover letters`])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard")}
 				>
 					<Icon name="file-text" size={16} />
 					<Trans>Documents</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					disabled={!session}
-					keywords={[t`New document`, t`Create`, t`Import`]}
-					value="navigation.documents.new"
-					onSelect={() => {
+				<PaletteItem
+					id="navigation.documents.new"
+					textValue={searchText(t`New document`, [t`New document`, t`Create`, t`Import`])}
+					isDisabled={!session}
+					onAction={() => {
 						reset();
 						useDialogStore.getState().openDialog("document.new", undefined);
 					}}
 				>
 					<Icon name="plus" size={16} />
 					<Trans>New document</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					disabled={!session}
-					keywords={[t`Trash`, t`Deleted`]}
-					value="navigation.trash"
-					onSelect={() => onNavigate("/dashboard/trash")}
+				<PaletteItem
+					id="navigation.trash"
+					textValue={searchText(t`Trash`, [t`Trash`, t`Deleted`])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/trash")}
 				>
 					<Icon name="trash" size={16} />
 					<Trans>Trash</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					keywords={[t`ATS checker`, t`Check a PDF`]}
-					value="navigation.ats-checker"
-					onSelect={() => onNavigate("/ats-checker")}
+				<PaletteItem
+					id="navigation.ats-checker"
+					textValue={searchText(t`ATS checker`, [t`ATS checker`, t`Check a PDF`])}
+					onAction={() => onNavigate("/ats-checker")}
 				>
 					<Icon name="seal-check" size={16} />
 					<Trans>ATS checker</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					disabled={!session}
-					keywords={[t`Applications`, t`Jobs`]}
-					value="navigation.applications"
-					onSelect={() => onNavigate("/dashboard/applications")}
+				<PaletteItem
+					id="navigation.applications"
+					textValue={searchText(t`Applications`, [t`Applications`, t`Jobs`])}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/applications")}
 				>
 					<Icon name="briefcase" size={16} />
 					<Trans>Applications</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					disabled={!session}
-					keywords={[t`New application`, t`Add application`, t`Job`]}
-					value="navigation.applications.new"
-					onSelect={async () => {
+				<PaletteItem
+					id="navigation.applications.new"
+					textValue={searchText(t`New application`, [t`New application`, t`Add application`, t`Job`])}
+					isDisabled={!session}
+					onAction={async () => {
 						await navigate({ to: "/dashboard/applications", search: { create: true } });
 						reset();
 					}}
 				>
 					<Icon name="plus" size={16} />
 					<Trans>New application</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					disabled={!session}
-					keywords={[t`Settings`]}
-					value="navigation.settings"
-					onSelect={() => pushPage("settings")}
+				<PaletteItem
+					id="navigation.settings"
+					textValue={searchText(t`Settings`, [t`Settings`])}
+					isDisabled={!session}
+					onAction={() => pushPage("settings")}
 				>
 					<Icon name="gear-six" size={16} />
 					<Trans>Settings</Trans>
-				</CommandItem>
+				</PaletteItem>
 			</BaseCommandGroup>
 
 			<BaseCommandGroup page="settings" heading={<Trans>Settings</Trans>}>
-				<CommandItem
-					keywords={[
+				<PaletteItem
+					id="navigation.settings.account"
+					textValue={searchText(t`Account`, [
 						t`Account`,
 						t`Profile`,
 						t`Password`,
@@ -112,31 +112,36 @@ export function NavigationCommandGroup() {
 						t`Passkeys`,
 						t`Export data`,
 						t`Delete account`,
-					]}
-					value="navigation.settings.account"
-					onSelect={() => onNavigate("/dashboard/settings/account")}
+					])}
+					onAction={() => onNavigate("/dashboard/settings/account")}
 				>
 					<Icon name="user-circle" size={16} />
 					<Trans>Account</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					keywords={[t`Preferences`, t`Theme`, t`Language`]}
-					value="navigation.settings.preferences"
-					onSelect={() => onNavigate("/dashboard/settings/preferences")}
+				<PaletteItem
+					id="navigation.settings.preferences"
+					textValue={searchText(t`Preferences`, [t`Preferences`, t`Theme`, t`Language`])}
+					onAction={() => onNavigate("/dashboard/settings/preferences")}
 				>
 					<Icon name="gear-six" size={16} />
 					<Trans>Preferences</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					keywords={[t`AI & developer`, t`AI providers`, t`API keys`, t`MCP`, t`Integrations`]}
-					value="navigation.settings.ai"
-					onSelect={() => onNavigate("/dashboard/settings/ai")}
+				<PaletteItem
+					id="navigation.settings.ai"
+					textValue={searchText(t`AI & developer`, [
+						t`AI & developer`,
+						t`AI providers`,
+						t`API keys`,
+						t`MCP`,
+						t`Integrations`,
+					])}
+					onAction={() => onNavigate("/dashboard/settings/ai")}
 				>
 					<Icon name="key" size={16} />
 					<Trans>AI & developer</Trans>
-				</CommandItem>
+				</PaletteItem>
 			</BaseCommandGroup>
 		</>
 	);

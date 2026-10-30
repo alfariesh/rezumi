@@ -1,22 +1,11 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Segment } from "@heroui-pro/react";
+import { Button, Input, Label, Modal, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useId, useRef, useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useInvalidateApplications } from "../use-application-actions";
@@ -55,11 +44,14 @@ export function AddApplicationDialog({ open, onOpenChange, onAdded }: AddApplica
 	}
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-h-[85svh] overflow-y-auto sm:max-w-[560px]">
-				<AddApplicationForm key={instance} onClose={() => onOpenChange(false)} onAdded={onAdded} />
-			</DialogContent>
-		</Dialog>
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size="md">
+				<Modal.Dialog className="sm:max-w-[560px]">
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<AddApplicationForm key={instance} onClose={() => onOpenChange(false)} onAdded={onAdded} />
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
@@ -179,327 +171,315 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 
 	return (
 		<form
-			className="grid gap-4"
+			className="contents"
 			onSubmit={(event) => {
 				event.preventDefault();
 				void add(false);
 			}}
 		>
-			<DialogHeader>
-				<DialogTitle>
+			<Modal.Header>
+				<Modal.Heading>
 					<Trans>Save a job</Trans>
-				</DialogTitle>
-				<DialogDescription className="sr-only">
-					<Trans>Paste a job link or posting, then check the role and company.</Trans>
-				</DialogDescription>
-			</DialogHeader>
+				</Modal.Heading>
+			</Modal.Header>
+			<Modal.Body className="grid gap-4 p-1">
+				{webAccess?.search && (
+					<section className="grid gap-2" aria-labelledby={`${id}-search-label`}>
+						<Label id={`${id}-search-label`} htmlFor={`${id}-search`}>
+							<Trans>Search job postings</Trans>
+						</Label>
+						<div className="flex gap-2">
+							<Input
+								fullWidth
+								id={`${id}-search`}
+								value={query}
+								maxLength={500}
+								placeholder={t`Role, company or location`}
+								onChange={(event) => {
+									setQuery(event.target.value);
+									search.reset();
+								}}
+								onKeyDown={(event) => {
+									if (event.key === "Enter" && !event.nativeEvent.isComposing) {
+										event.preventDefault();
+										if (query.trim().length >= 2 && !search.isPending) search.mutate({ query });
+									}
+								}}
+							/>
+							<Button
+								variant="secondary"
+								isDisabled={query.trim().length < 2 || search.isPending || create.isPending}
+								onPress={() => search.mutate({ query })}
+							>
+								<Trans>Search</Trans>
+							</Button>
+						</div>
+						{search.isPending && (
+							<p className="text-xs text-muted" role="status">
+								<Trans>Searching job postings…</Trans>
+							</p>
+						)}
+						{search.error && (
+							<p className="text-xs text-danger-soft-foreground" role="alert">
+								{getOrpcErrorMessage(search.error, {
+									fallback: t`Job search failed. Try again or paste a posting link.`,
+								})}
+							</p>
+						)}
+						{search.data?.length === 0 && (
+							<p className="text-xs text-muted" role="status">
+								<Trans>No postings found. Try different keywords.</Trans>
+							</p>
+						)}
+						{search.data && search.data.length > 0 && (
+							<ul className="grid gap-2">
+								{search.data.map((result) => (
+									<li key={result.url} className="rounded-xl border border-separator p-3">
+										<strong className="text-sm font-medium">{result.title}</strong>
+										<p className="line-clamp-2 text-xs text-muted">{result.description}</p>
+										<div className="mt-2 flex items-center gap-3">
+											<a
+												href={result.url}
+												target="_blank"
+												rel="noreferrer"
+												className="text-xs text-accent-soft-foreground hover:underline"
+											>
+												<Trans>View posting</Trans>
+											</a>
+											<Button
+												size="sm"
+												variant="secondary"
+												isDisabled={read.isPending || create.isPending}
+												onPress={() => {
+													setInput(result.url);
+													setPasteOpen(false);
+													setDescription(null);
+													resetRead();
+													setRole("");
+													setCompany("");
+													setLocation("");
+													setSalary("");
+													search.reset();
+												}}
+											>
+												<Trans>Use posting</Trans>
+											</Button>
+										</div>
+									</li>
+								))}
+							</ul>
+						)}
+					</section>
+				)}
 
-			{webAccess?.search && (
-				<section className="grid gap-2" aria-labelledby={`${id}-search-label`}>
-					<Label id={`${id}-search-label`} htmlFor={`${id}-search`}>
-						<Trans>Search job postings</Trans>
+				<div className="grid gap-1.5">
+					<Label htmlFor={`${id}-posting`}>
+						<Trans>Job link or posting text</Trans>
 					</Label>
-					<div className="flex gap-2">
-						<Input
-							id={`${id}-search`}
-							value={query}
-							maxLength={500}
-							placeholder={t`Role, company or location`}
-							onChange={(event) => {
-								setQuery(event.target.value);
-								search.reset();
-							}}
-							onKeyDown={(event) => {
-								if (event.key === "Enter" && !event.nativeEvent.isComposing) {
-									event.preventDefault();
-									if (query.trim().length >= 2 && !search.isPending) search.mutate({ query });
-								}
-							}}
-						/>
-						<Button
-							type="button"
-							variant="secondary"
-							disabled={query.trim().length < 2 || search.isPending || create.isPending}
-							onClick={() => search.mutate({ query })}
-						>
-							<Trans>Search</Trans>
-						</Button>
-					</div>
-					{search.isPending && (
-						<p className="text-xs text-ink-3" role="status">
-							<Trans>Searching job postings…</Trans>
-						</p>
-					)}
-					{search.error && (
-						<p className="text-xs text-danger-text" role="alert">
-							{getOrpcErrorMessage(search.error, {
-								fallback: t`Job search failed. Try again or paste a posting link.`,
-							})}
-						</p>
-					)}
-					{search.data?.length === 0 && (
-						<p className="text-xs text-ink-3" role="status">
-							<Trans>No postings found. Try different keywords.</Trans>
-						</p>
-					)}
-					{search.data && search.data.length > 0 && (
-						<ul className="grid gap-2">
-							{search.data.map((result) => (
-								<li key={result.url} className="rounded-lg border border-line p-3">
-									<strong className="text-sm font-medium">{result.title}</strong>
-									<p className="line-clamp-2 text-xs text-ink-3">{result.description}</p>
-									<div className="mt-2 flex items-center gap-3">
-										<a
-											href={result.url}
-											target="_blank"
-											rel="noreferrer"
-											className="text-xs text-accent-text hover:underline"
-										>
-											<Trans>View posting</Trans>
-										</a>
-										<Button
-											type="button"
-											size="sm"
-											variant="secondary"
-											disabled={read.isPending || create.isPending}
-											onClick={() => {
-												setInput(result.url);
-												setPasteOpen(false);
-												setDescription(null);
-												resetRead();
-												setRole("");
-												setCompany("");
-												setLocation("");
-												setSalary("");
-												search.reset();
-											}}
-										>
-											<Trans>Use posting</Trans>
-										</Button>
-									</div>
-								</li>
-							))}
-						</ul>
-					)}
-				</section>
-			)}
-
-			<div className="grid gap-1.5">
-				<Label htmlFor={`${id}-posting`}>
-					<Trans>Job link or posting text</Trans>
-				</Label>
-				<Textarea
-					id={`${id}-posting`}
-					rows={4}
-					value={input}
-					maxLength={100_000}
-					placeholder="https://…"
-					onChange={(event) => {
-						setInput(event.target.value);
-						setDescription(null);
-						setPasteOpen(false);
-						resetRead();
-					}}
-					autoFocus
-				/>
-				{sourceLink && (
-					<Button
-						type="button"
-						variant="ghost"
-						size="sm"
-						onClick={() => {
-							setPasteOpen(true);
+					<TextArea
+						fullWidth
+						id={`${id}-posting`}
+						rows={4}
+						value={input}
+						maxLength={100_000}
+						placeholder="https://…"
+						onChange={(event) => {
+							setInput(event.target.value);
 							setDescription(null);
+							setPasteOpen(false);
 							resetRead();
 						}}
-					>
-						<Trans>Paste description instead</Trans>
-					</Button>
-				)}
-				{pasteOpen && (
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-recovery`}>
-							<Trans>Pasted description</Trans>
-						</Label>
-						<Textarea
-							id={`${id}-recovery`}
-							rows={5}
-							value={pastedText}
-							maxLength={100_000}
-							onChange={(event) => {
-								setPastedText(event.target.value);
+						autoFocus
+					/>
+					{sourceLink && (
+						<Button
+							variant="ghost"
+							size="sm"
+							onPress={() => {
+								setPasteOpen(true);
 								setDescription(null);
 								resetRead();
 							}}
-						/>
-						<p className="text-xs text-ink-3">
-							<Trans>The original link stays with this job.</Trans>
-						</p>
-					</div>
-				)}
-				{readable && (
-					<Button type="button" variant="secondary" size="sm" disabled={read.isPending} onClick={readPosting}>
-						<Trans>Read posting</Trans>
-					</Button>
-				)}
-				{(clipped || parsed?.postingSource.completeness === "incomplete") && (
-					<p className="text-xs text-warn-text" role="alert">
-						<Trans>
-							This description is clipped or incomplete. Review it or paste the full description before preparing.
-						</Trans>
-					</p>
-				)}
-				{parsed?.enrichmentWarning && (
-					<p className="text-xs text-warn-text" role="status">
-						<Trans>AI couldn't fill the details. The posting is retained; complete the fields manually.</Trans>
-					</p>
-				)}
-				{parsed?.postingSource.fallbackReason && (
-					<p className="text-xs text-warn-text" role="status">
-						<Trans>Enhanced reading was unavailable. The built-in reader retrieved this posting.</Trans>
-					</p>
-				)}
-				{parsed && description !== null && (
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-description`}>
-							<Trans>Saved description</Trans>
-						</Label>
-						<Textarea
-							id={`${id}-description`}
-							rows={5}
-							maxLength={MAX_POSTING_CHARS}
-							value={description}
-							onChange={(event) => setDescription(event.target.value)}
-						/>
-						{parsed.postingSource.retrievedAt && (
-							<p className="text-xs text-ink-3">
-								<Trans>
-									Retrieved {parsed.postingSource.retrievedAt}. Origin freshness is unknown unless reported.
-								</Trans>
-							</p>
-						)}
-					</div>
-				)}
-				{providerState.isUnavailable && !link ? (
-					<AiProviderLoadState state={providerState} />
-				) : (
-					<ReadStatus
-						text={text}
-						link={link}
-						readable={readable}
-						pending={read.isPending}
-						error={read.error}
-						parsed={parsed}
-						ai={hasUsableProvider}
-					/>
-				)}
-			</div>
-
-			<div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-role`}>
-						<Trans>Role</Trans>
-					</Label>
-					<Input id={`${id}-role`} value={role} onChange={(event) => setRole(event.target.value)} />
-				</div>
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-company`}>
-						<Trans>Company</Trans>
-					</Label>
-					<Input id={`${id}-company`} value={company} onChange={(event) => setCompany(event.target.value)} />
-				</div>
-			</div>
-
-			<div className="grid gap-1.5">
-				<span id={`${id}-stage`} className="text-sm font-medium">
-					<Trans>Stage</Trans>
-				</span>
-				<SegmentedControl
-					aria-labelledby={`${id}-stage`}
-					value={stage}
-					onValueChange={(value) => setStage(value as Stage)}
-					className="h-auto w-fit max-w-full flex-wrap"
-				>
-					{STAGES.map((value) => (
-						<SegmentedControlItem
-							key={value}
-							value={value}
-							className="min-h-7 max-w-full flex-auto [overflow-wrap:anywhere] whitespace-normal"
 						>
-							{value === "saved" ? (
-								<Trans>Saved</Trans>
-							) : value === "applied" ? (
-								<Trans>Already applied</Trans>
-							) : (
-								<Trans>Already interviewing</Trans>
+							<Trans>Paste description instead</Trans>
+						</Button>
+					)}
+					{pasteOpen && (
+						<div className="grid gap-1.5">
+							<Label htmlFor={`${id}-recovery`}>
+								<Trans>Pasted description</Trans>
+							</Label>
+							<TextArea
+								fullWidth
+								id={`${id}-recovery`}
+								rows={5}
+								value={pastedText}
+								maxLength={100_000}
+								onChange={(event) => {
+									setPastedText(event.target.value);
+									setDescription(null);
+									resetRead();
+								}}
+							/>
+							<p className="text-xs text-muted">
+								<Trans>The original link stays with this job.</Trans>
+							</p>
+						</div>
+					)}
+					{readable && (
+						<Button variant="secondary" size="sm" isDisabled={read.isPending} onPress={readPosting}>
+							<Trans>Read posting</Trans>
+						</Button>
+					)}
+					{(clipped || parsed?.postingSource.completeness === "incomplete") && (
+						<p className="text-xs text-warning-soft-foreground" role="alert">
+							<Trans>
+								This description is clipped or incomplete. Review it or paste the full description before preparing.
+							</Trans>
+						</p>
+					)}
+					{parsed?.enrichmentWarning && (
+						<p className="text-xs text-warning-soft-foreground" role="status">
+							<Trans>AI couldn't fill the details. The posting is retained; complete the fields manually.</Trans>
+						</p>
+					)}
+					{parsed?.postingSource.fallbackReason && (
+						<p className="text-xs text-warning-soft-foreground" role="status">
+							<Trans>Enhanced reading was unavailable. The built-in reader retrieved this posting.</Trans>
+						</p>
+					)}
+					{parsed && description !== null && (
+						<div className="grid gap-1.5">
+							<Label htmlFor={`${id}-description`}>
+								<Trans>Saved description</Trans>
+							</Label>
+							<TextArea
+								fullWidth
+								id={`${id}-description`}
+								rows={5}
+								maxLength={MAX_POSTING_CHARS}
+								value={description}
+								onChange={(event) => setDescription(event.target.value)}
+							/>
+							{parsed.postingSource.retrievedAt && (
+								<p className="text-xs text-muted">
+									<Trans>
+										Retrieved {parsed.postingSource.retrievedAt}. Origin freshness is unknown unless reported.
+									</Trans>
+								</p>
 							)}
-						</SegmentedControlItem>
-					))}
-				</SegmentedControl>
-			</div>
+						</div>
+					)}
+					{providerState.isUnavailable && !link ? (
+						<AiProviderLoadState state={providerState} />
+					) : (
+						<ReadStatus
+							text={text}
+							link={link}
+							readable={readable}
+							pending={read.isPending}
+							error={read.error}
+							parsed={parsed}
+							ai={hasUsableProvider}
+						/>
+					)}
+				</div>
 
-			<div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-location`}>
-						<Trans>Location</Trans>
-					</Label>
-					<Input id={`${id}-location`} value={location} onChange={(event) => setLocation(event.target.value)} />
+				<div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+					<div className="grid gap-1.5">
+						<Label htmlFor={`${id}-role`}>
+							<Trans>Role</Trans>
+						</Label>
+						<Input fullWidth id={`${id}-role`} value={role} onChange={(event) => setRole(event.target.value)} />
+					</div>
+					<div className="grid gap-1.5">
+						<Label htmlFor={`${id}-company`}>
+							<Trans>Company</Trans>
+						</Label>
+						<Input
+							fullWidth
+							id={`${id}-company`}
+							value={company}
+							onChange={(event) => setCompany(event.target.value)}
+						/>
+					</div>
 				</div>
+
 				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-salary`}>
-						<Trans>Salary</Trans>
-					</Label>
-					<Input id={`${id}-salary`} value={salary} onChange={(event) => setSalary(event.target.value)} />
-				</div>
-			</div>
-			{stage !== "saved" && (
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-date`}>
-						<Trans>Application date</Trans>
-					</Label>
-					<Input
-						id={`${id}-date`}
-						type="date"
-						value={stageDate}
-						required
-						onChange={(event) => setStageDate(event.target.value)}
-					/>
-				</div>
-			)}
-			<div className="grid gap-1.5">
-				<Label htmlFor={`${id}-resume`}>
-					{stage === "saved" ? <Trans>Resume (optional)</Trans> : <Trans>Resume submitted (optional)</Trans>}
-				</Label>
-				<select
-					id={`${id}-resume`}
-					value={resumeId}
-					onChange={(event) => setResumeId(event.target.value)}
-					className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
-				>
-					<option value="">{t`None`}</option>
-					{documents
-						?.filter((document) => document.type === "resume")
-						.map((document) => (
-							<option key={document.id} value={document.id}>
-								{document.name}
-							</option>
+					<span id={`${id}-stage`} className="text-sm font-medium">
+						<Trans>Stage</Trans>
+					</span>
+					<Segment
+						aria-labelledby={`${id}-stage`}
+						selectedKey={stage}
+						onSelectionChange={(key) => setStage(String(key) as Stage)}
+						className="h-auto w-fit max-w-full flex-wrap"
+					>
+						{STAGES.map((value) => (
+							<Segment.Item
+								key={value}
+								id={value}
+								className="min-h-7 max-w-full flex-auto [overflow-wrap:anywhere] whitespace-normal"
+							>
+								{value === "saved" ? (
+									<Trans>Saved</Trans>
+								) : value === "applied" ? (
+									<Trans>Already applied</Trans>
+								) : (
+									<Trans>Already interviewing</Trans>
+								)}
+							</Segment.Item>
 						))}
-				</select>
-			</div>
-			{stage !== "saved" && (
+					</Segment>
+				</div>
+
+				<div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+					<div className="grid gap-1.5">
+						<Label htmlFor={`${id}-location`}>
+							<Trans>Location</Trans>
+						</Label>
+						<Input
+							fullWidth
+							id={`${id}-location`}
+							value={location}
+							onChange={(event) => setLocation(event.target.value)}
+						/>
+					</div>
+					<div className="grid gap-1.5">
+						<Label htmlFor={`${id}-salary`}>
+							<Trans>Salary</Trans>
+						</Label>
+						<Input fullWidth id={`${id}-salary`} value={salary} onChange={(event) => setSalary(event.target.value)} />
+					</div>
+				</div>
+				{stage !== "saved" && (
+					<div className="grid gap-1.5">
+						<Label htmlFor={`${id}-date`}>
+							<Trans>Application date</Trans>
+						</Label>
+						<Input
+							fullWidth
+							id={`${id}-date`}
+							type="date"
+							value={stageDate}
+							required
+							onChange={(event) => setStageDate(event.target.value)}
+						/>
+					</div>
+				)}
 				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-letter`}>
-						<Trans>Cover letter submitted (optional)</Trans>
+					<Label htmlFor={`${id}-resume`}>
+						{stage === "saved" ? <Trans>Resume (optional)</Trans> : <Trans>Resume submitted (optional)</Trans>}
 					</Label>
 					<select
-						id={`${id}-letter`}
-						value={coverLetterId}
-						onChange={(event) => setCoverLetterId(event.target.value)}
-						className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
+						id={`${id}-resume`}
+						value={resumeId}
+						onChange={(event) => setResumeId(event.target.value)}
+						className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
 					>
 						<option value="">{t`None`}</option>
 						{documents
-							?.filter((document) => document.type === "letter")
+							?.filter((document) => document.type === "resume")
 							.map((document) => (
 								<option key={document.id} value={document.id}>
 									{document.name}
@@ -507,15 +487,37 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							))}
 					</select>
 				</div>
-			)}
-			<DialogFooter>
-				<Button type="button" variant="secondary" disabled={!ready} onClick={() => void add(false)}>
+				{stage !== "saved" && (
+					<div className="grid gap-1.5">
+						<Label htmlFor={`${id}-letter`}>
+							<Trans>Cover letter submitted (optional)</Trans>
+						</Label>
+						<select
+							id={`${id}-letter`}
+							value={coverLetterId}
+							onChange={(event) => setCoverLetterId(event.target.value)}
+							className="h-9 rounded-xl border border-border bg-surface px-2 text-sm"
+						>
+							<option value="">{t`None`}</option>
+							{documents
+								?.filter((document) => document.type === "letter")
+								.map((document) => (
+									<option key={document.id} value={document.id}>
+										{document.name}
+									</option>
+								))}
+						</select>
+					</div>
+				)}
+			</Modal.Body>
+			<Modal.Footer>
+				<Button variant="secondary" isDisabled={!ready} onPress={() => void add(false)}>
 					{stage === "saved" ? <Trans>Save job</Trans> : <Trans>Record application</Trans>}
 				</Button>
-				<Button type="button" disabled={!ready} onClick={() => void add(true)}>
+				<Button isDisabled={!ready} onPress={() => void add(true)}>
 					<Trans>Save and prepare resume</Trans>
 				</Button>
-			</DialogFooter>
+			</Modal.Footer>
 		</form>
 	);
 }
@@ -536,21 +538,21 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 
 	if (!text) {
 		return (
-			<p className={cn(base, "text-ink-3")}>
+			<p className={cn(base, "text-muted")}>
 				<Trans>We read the page and save the posting for Check, the assistant and your letter.</Trans>
 			</p>
 		);
 	}
 	if (pending) {
 		return (
-			<p className={cn(base, "text-ink-2")} role="status">
+			<p className={cn(base, "text-muted")} role="status">
 				{link ? <Trans>Reading the link…</Trans> : <Trans>Reading the posting…</Trans>}
 			</p>
 		);
 	}
 	if (error) {
 		return (
-			<p className={cn(base, "text-warn-text")} role="alert">
+			<p className={cn(base, "text-warning-soft-foreground")} role="alert">
 				<Icon name="warning-circle" size={16} className="shrink-0" />
 				{getOrpcErrorMessage(error, {
 					byCode: { POSTING_UNREADABLE: t`That link couldn't be read. Paste the posting text instead.` },
@@ -561,7 +563,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 	if (parsed && (!parsed.role.trim() || !parsed.company.trim())) {
 		return (
-			<p className={cn(base, "text-warn-text")} role="status">
+			<p className={cn(base, "text-warning-soft-foreground")} role="status">
 				<Icon name="warning-circle" size={16} className="shrink-0" />
 				<Trans>Some job details couldn't be read. Fill in the role and company, or paste one job's posting text.</Trans>
 			</p>
@@ -569,7 +571,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 	if (parsed?.filledBy === "ai") {
 		return (
-			<p className={cn(base, "text-accent-text")} role="status">
+			<p className={cn(base, "text-accent-soft-foreground")} role="status">
 				<Icon name="check-circle" size={16} className="shrink-0" />
 				<Plural
 					value={parsed.requirements.length}
@@ -581,7 +583,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 	if (parsed?.filledBy === "page") {
 		return (
-			<p className={cn(base, "text-accent-text")} role="status">
+			<p className={cn(base, "text-accent-soft-foreground")} role="status">
 				<Icon name="check-circle" size={16} className="shrink-0" />
 				<Trans>Found the role and company on the page. Review the details before saving.</Trans>
 			</p>
@@ -589,7 +591,7 @@ function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadSt
 	}
 
 	return (
-		<p className={cn(base, "text-ink-3")}>
+		<p className={cn(base, "text-muted")}>
 			{link && readable ? (
 				<Trans>The page had no job details to read. Fill in the role and company.</Trans>
 			) : ai ? (

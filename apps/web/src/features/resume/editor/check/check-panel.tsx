@@ -4,16 +4,12 @@ import type { CheckResult } from "./use-check";
 import type { AtsCategory, AtsReport } from "@rezumi/resume/ats";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
+import { Button, Disclosure, Modal, Spinner, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ATS_CATEGORIES } from "@rezumi/resume/ats";
-import { Button } from "@rezumi/ui/components/button";
-import { Collapsible, CollapsibleContent } from "@rezumi/ui/components/collapsible";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Spinner } from "@rezumi/ui/components/spinner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
@@ -44,37 +40,42 @@ export function CheckPanel() {
 			<ScoreSummary report={check.report} />
 
 			<Tabs
-				value={tab}
-				onValueChange={(value) => useEditorStore.setState({ checkTab: value as CheckTab })}
+				selectedKey={tab}
+				onSelectionChange={(key) => useEditorStore.setState({ checkTab: String(key) as CheckTab })}
 				className="gap-3.5"
 			>
-				<TabsList aria-label={t`Check views`} className="h-[38px] w-full">
-					<TabsTrigger value="issues" className="gap-1.5">
-						<Trans>Issues</Trans>
-						<span className="font-mono text-xs text-ink-3">{check.issues.length}</span>
-					</TabsTrigger>
-					<TabsTrigger value="match" className="gap-1.5">
-						<Trans>Job match</Trans>
-						{match.result && (
-							<span className="font-mono text-xs text-ink-3">
-								{match.result.found.length}/{match.result.total}
-							</span>
-						)}
-					</TabsTrigger>
-					<TabsTrigger value="writing">
-						<Trans>Writing</Trans>
-					</TabsTrigger>
-				</TabsList>
+				<Tabs.ListContainer>
+					<Tabs.List aria-label={t`Check views`} className="w-full">
+						<Tabs.Tab id="issues" className="gap-1.5">
+							<Trans>Issues</Trans>
+							<span className="font-mono text-xs text-ink-3">{check.issues.length}</span>
+							<Tabs.Indicator />
+						</Tabs.Tab>
+						<Tabs.Tab id="match" className="gap-1.5">
+							<Trans>Job match</Trans>
+							{match.result && (
+								<span className="font-mono text-xs text-ink-3">
+									{match.result.found.length}/{match.result.total}
+								</span>
+							)}
+							<Tabs.Indicator />
+						</Tabs.Tab>
+						<Tabs.Tab id="writing">
+							<Trans>Writing</Trans>
+							<Tabs.Indicator />
+						</Tabs.Tab>
+					</Tabs.List>
+				</Tabs.ListContainer>
 
-				<TabsContent value="issues">
+				<Tabs.Panel id="issues">
 					<IssuesTab check={check} />
-				</TabsContent>
-				<TabsContent value="match">
+				</Tabs.Panel>
+				<Tabs.Panel id="match">
 					<JobMatchTab match={match} data={check.data} />
-				</TabsContent>
-				<TabsContent value="writing">
+				</Tabs.Panel>
+				<Tabs.Panel id="writing">
 					<WritingTab data={check.data} issues={check.issues} />
-				</TabsContent>
+				</Tabs.Panel>
 			</Tabs>
 		</div>
 	);
@@ -222,9 +223,8 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 				<Button
 					size="sm"
 					variant={applies ? "primary" : "secondary"}
-					disabled={locked && applies}
-					onClick={(event) => {
-						event.stopPropagation();
+					isDisabled={locked && applies}
+					onPress={() => {
 						fix(issue);
 					}}
 				>
@@ -239,8 +239,7 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 					<Button
 						size="sm"
 						variant="ghost"
-						onClick={(event) => {
-							event.stopPropagation();
+						onPress={() => {
 							showOnPage(issue);
 						}}
 					>
@@ -250,9 +249,8 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 				<Button
 					size="sm"
 					variant="ghost"
-					disabled={locked}
-					onClick={(event) => {
-						event.stopPropagation();
+					isDisabled={locked}
+					onPress={() => {
 						ignore(issue);
 					}}
 				>
@@ -278,47 +276,41 @@ function CategoryRows({ report }: { report: AtsReport }) {
 					const { total, passed } = report.categories[category];
 					const failing = total - passed;
 					const open = toggled[category] ?? failing > 0;
-					const descriptionId = `check-category-${category}`;
 
 					return (
-						<div key={category} className={cn(index > 0 && "border-t border-line")}>
-							<button
-								type="button"
-								aria-expanded={open}
-								aria-controls={descriptionId}
-								onClick={() => setToggled((current) => ({ ...current, [category]: !open }))}
-								className="flex h-12 w-full items-center gap-2.5 px-3 text-start text-sm font-medium transition-colors duration-quick hover:bg-hover"
-							>
-								<Icon
-									name={failing > 0 ? "warning-circle" : "check-circle"}
-									className={failing > 0 ? "text-warn-text" : "text-accent-text"}
-								/>
-								{getCategoryName(category)}
-								<span className={cn("text-xs font-normal", failing > 0 ? "text-warn-text" : "text-ink-3")}>
-									{failing > 0 ? (
-										<Plural value={failing} one="# to review" other="# to review" />
-									) : (
-										<Trans>
-											{passed} of {total}
-										</Trans>
-									)}
-								</span>
-								<Icon
-									name="caret-down"
-									className={cn(
-										"ms-auto text-ink-3 transition-transform duration-standard ease-enter",
-										open && "rotate-180",
-									)}
-								/>
-							</button>
-							<Collapsible open={open}>
-								<CollapsibleContent id={descriptionId} keepMounted>
+						<Disclosure
+							key={category}
+							isExpanded={open}
+							onExpandedChange={(next) => setToggled((current) => ({ ...current, [category]: next }))}
+							className={cn(index > 0 && "border-t border-line")}
+						>
+							<Disclosure.Heading>
+								<Disclosure.Trigger className="flex h-12 w-full items-center gap-2.5 px-3 text-start text-sm font-medium transition-colors duration-quick hover:bg-hover">
+									<Icon
+										name={failing > 0 ? "warning-circle" : "check-circle"}
+										className={failing > 0 ? "text-warn-text" : "text-accent-text"}
+									/>
+									{getCategoryName(category)}
+									<span className={cn("text-xs font-normal", failing > 0 ? "text-warn-text" : "text-ink-3")}>
+										{failing > 0 ? (
+											<Plural value={failing} one="# to review" other="# to review" />
+										) : (
+											<Trans>
+												{passed} of {total}
+											</Trans>
+										)}
+									</span>
+									<Disclosure.Indicator className="ms-auto text-ink-3" />
+								</Disclosure.Trigger>
+							</Disclosure.Heading>
+							<Disclosure.Content>
+								<Disclosure.Body>
 									<p className="px-3 ps-[42px] pb-3 text-[13px] leading-[19px] text-ink-2">
 										{getCategoryDescription(category)}
 									</p>
-								</CollapsibleContent>
-							</Collapsible>
-						</div>
+								</Disclosure.Body>
+							</Disclosure.Content>
+						</Disclosure>
 					);
 				})}
 			</div>
@@ -342,6 +334,7 @@ async function checkExportedPdf(data: ResumeData) {
  */
 function DeepCheck({ data }: { data: ResumeData }) {
 	const [running, setRunning] = useState(false);
+	const reportDescriptionId = useId();
 	const report = useEditorStore((state) => state.exportCheck?.report ?? null);
 	const reportOpen = useEditorStore((state) => state.exportReportOpen);
 
@@ -369,29 +362,32 @@ function DeepCheck({ data }: { data: ResumeData }) {
 
 	return (
 		<>
-			<Button variant="ghost" size="sm" className="w-fit text-ink-2" disabled={running} onClick={() => void run()}>
-				{running ? <Spinner /> : <Icon name="file-pdf" size={18} />}
+			<Button variant="ghost" size="sm" className="w-fit" isDisabled={running} onPress={() => void run()}>
+				{running ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="file-pdf" size={18} />}
 				{running ? <Trans>Checking the exported PDF…</Trans> : <Trans>Also check the exported PDF</Trans>}
 			</Button>
 
-			<Dialog
-				open={reportOpen && report !== null}
+			<Modal.Backdrop
+				isOpen={reportOpen && report !== null}
 				onOpenChange={(open) => useEditorStore.setState({ exportReportOpen: open })}
 			>
-				<DialogContent className="max-h-[85svh] overflow-y-auto sm:max-w-2xl">
-					<DialogHeader>
-						<DialogTitle>
-							<Trans>The exported PDF</Trans>
-						</DialogTitle>
-						<DialogDescription>
-							<Trans>
-								What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded.
-							</Trans>
-						</DialogDescription>
-					</DialogHeader>
-					{report && <AtsPdfReportView report={report} />}
-				</DialogContent>
-			</Dialog>
+				<Modal.Container size="lg">
+					<Modal.Dialog aria-describedby={reportDescriptionId}>
+						<Modal.CloseTrigger aria-label={t`Close`} />
+						<Modal.Header>
+							<Modal.Heading>
+								<Trans>The exported PDF</Trans>
+							</Modal.Heading>
+							<p id={reportDescriptionId} className="text-sm text-muted">
+								<Trans>
+									What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded.
+								</Trans>
+							</p>
+						</Modal.Header>
+						<Modal.Body>{report && <AtsPdfReportView report={report} />}</Modal.Body>
+					</Modal.Dialog>
+				</Modal.Container>
+			</Modal.Backdrop>
 		</>
 	);
 }

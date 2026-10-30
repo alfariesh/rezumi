@@ -1,9 +1,9 @@
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { toast } from "@rezumi/ui/components/toast";
 import { PasswordInput } from "@/components/input/password-input";
@@ -102,7 +102,7 @@ export function ResetPasswordPage({ token }: Props) {
 					)}
 				</form.Field>
 
-				<Button type="submit" className="w-full" disabled={isSubmitting}>
+				<Button type="submit" fullWidth isDisabled={isSubmitting}>
 					<Trans comment="Primary action button label on reset-password form">Reset password</Trans>
 				</Button>
 			</form>

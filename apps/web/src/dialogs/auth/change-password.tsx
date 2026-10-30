@@ -1,18 +1,11 @@
 import type { DialogProps } from "../store";
+import { Button, Checkbox, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
+import { useId } from "react";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
-import {
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -41,6 +34,7 @@ const formSchema = z
 	});
 
 export function ChangePasswordDialog(_: DialogProps<"auth.change-password">) {
+	const descriptionId = useId();
 	const queryClient = useQueryClient();
 	const closeDialog = useDialogStore((state) => state.closeDialog);
 
@@ -88,92 +82,97 @@ export function ChangePasswordDialog(_: DialogProps<"auth.change-password">) {
 	useFormBlocker(form);
 
 	return (
-		<DialogContent closeLabel={t`Close`}>
-			<DialogHeader>
-				<DialogTitle className="flex items-center gap-x-2">
-					<Icon name="password" size={16} />
-					<Trans>Change your password</Trans>
-				</DialogTitle>
-				<DialogDescription>
-					<Trans>Enter your current password, then choose a new one.</Trans>
-				</DialogDescription>
-			</DialogHeader>
+		<Modal.Container size="sm">
+			<Modal.Dialog aria-describedby={descriptionId}>
+				<Modal.CloseTrigger aria-label={t`Close`} />
+				<Modal.Header>
+					<Modal.Heading className="flex items-center gap-x-2">
+						<Icon name="password" size={16} />
+						<Trans>Change your password</Trans>
+					</Modal.Heading>
+					<p id={descriptionId} className="text-sm text-muted">
+						<Trans>Enter your current password, then choose a new one.</Trans>
+					</p>
+				</Modal.Header>
 
-			<form
-				className="space-y-4"
-				onSubmit={(event) => {
-					event.preventDefault();
-					event.stopPropagation();
-					void form.handleSubmit();
-				}}
-			>
-				<form.Field name="currentPassword">
-					{(field) => (
-						<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
-							<FormLabel>
-								<Trans>Current password</Trans>
-							</FormLabel>
-							<FormControl
-								render={
-									<PasswordInput
-										minLength={6}
-										maxLength={64}
-										autoComplete="current-password"
-										name={field.name}
-										value={field.state.value}
-										onBlur={field.handleBlur}
-										onChange={(event) => field.handleChange(event.target.value)}
+				<Modal.Body>
+					<form
+						className="space-y-4"
+						onSubmit={(event) => {
+							event.preventDefault();
+							event.stopPropagation();
+							void form.handleSubmit();
+						}}
+					>
+						<form.Field name="currentPassword">
+							{(field) => (
+								<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
+									<FormLabel>
+										<Trans>Current password</Trans>
+									</FormLabel>
+									<FormControl
+										render={
+											<PasswordInput
+												minLength={6}
+												maxLength={64}
+												autoComplete="current-password"
+												name={field.name}
+												value={field.state.value}
+												onBlur={field.handleBlur}
+												onChange={(event) => field.handleChange(event.target.value)}
+											/>
+										}
 									/>
-								}
-							/>
-							<FormMessage errors={field.state.meta.errors} />
-						</FormItem>
-					)}
-				</form.Field>
+									<FormMessage errors={field.state.meta.errors} />
+								</FormItem>
+							)}
+						</form.Field>
 
-				<form.Field name="newPassword">
-					{(field) => (
-						<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
-							<FormLabel>
-								<Trans>New password</Trans>
-							</FormLabel>
-							<FormControl
-								render={
-									<PasswordInput
-										minLength={8}
-										maxLength={64}
-										autoComplete="new-password"
-										name={field.name}
-										value={field.state.value}
-										onBlur={field.handleBlur}
-										onChange={(event) => field.handleChange(event.target.value)}
+						<form.Field name="newPassword">
+							{(field) => (
+								<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
+									<FormLabel>
+										<Trans>New password</Trans>
+									</FormLabel>
+									<FormControl
+										render={
+											<PasswordInput
+												minLength={8}
+												maxLength={64}
+												autoComplete="new-password"
+												name={field.name}
+												value={field.state.value}
+												onBlur={field.handleBlur}
+												onChange={(event) => field.handleChange(event.target.value)}
+											/>
+										}
 									/>
-								}
-							/>
-							<FormMessage errors={field.state.meta.errors} />
-						</FormItem>
-					)}
-				</form.Field>
+									<FormMessage errors={field.state.meta.errors} />
+								</FormItem>
+							)}
+						</form.Field>
 
-				<form.Field name="revokeOtherSessions">
-					{(field) => (
-						<FormItem className="flex items-center gap-2.5">
-							<FormControl
-								render={<Checkbox name={field.name} checked={field.state.value} onCheckedChange={field.handleChange} />}
-							/>
-							<FormLabel>
-								<Trans>Sign out of all other devices</Trans>
-							</FormLabel>
-						</FormItem>
-					)}
-				</form.Field>
+						<form.Field name="revokeOtherSessions">
+							{(field) => (
+								<Checkbox name={field.name} isSelected={field.state.value} onChange={field.handleChange}>
+									<Checkbox.Content>
+										<Checkbox.Control>
+											<Checkbox.Indicator />
+										</Checkbox.Control>
+										<Trans>Sign out of all other devices</Trans>
+									</Checkbox.Content>
+								</Checkbox>
+							)}
+						</form.Field>
 
-				<DialogFooter>
-					<Button type="submit" disabled={isSubmitting}>
-						<Trans comment="Primary action button to submit changed password">Change password</Trans>
-					</Button>
-				</DialogFooter>
-			</form>
-		</DialogContent>
+						<Modal.Footer className="p-0">
+							<Button type="submit" isDisabled={isSubmitting}>
+								<Trans comment="Primary action button to submit changed password">Change password</Trans>
+							</Button>
+						</Modal.Footer>
+					</form>
+				</Modal.Body>
+			</Modal.Dialog>
+		</Modal.Container>
 	);
 }

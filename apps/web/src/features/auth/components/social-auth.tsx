@@ -1,12 +1,11 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Button, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { AppleLogoIcon, GithubLogoIcon, GoogleLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearch } from "@tanstack/react-router";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { getAuthRedirectOptions, getOAuthPasskeyOptions, getOAuthSignInOptions, isOAuthRedirect } from "../redirect";
@@ -84,7 +83,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 	return (
 		<div className={cn(ENTER_CLASS, "grid grid-cols-2 gap-4")}>
 			<Button
-				onClick={() =>
+				onPress={() =>
 					runSignIn(() =>
 						authClient.signIn.social({
 							provider: "apple",
@@ -101,7 +100,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 
 			<Button
 				variant="secondary"
-				onClick={() =>
+				onPress={() =>
 					runSignIn(() =>
 						authClient.signIn.social({
 							provider: "custom",
@@ -118,7 +117,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 
 			<Button
 				variant="secondary"
-				onClick={() =>
+				onPress={() =>
 					runSignIn(() => authClient.signIn.passkey({ autoFill: false, ...getOAuthPasskeyOptions(callbackURL) }), true)
 				}
 				className={cn("hidden", "passkey" in providers && "inline-flex")}
@@ -128,7 +127,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 			</Button>
 
 			<Button
-				onClick={() =>
+				onPress={() =>
 					runSignIn(() =>
 						authClient.signIn.social({
 							provider: "google",
@@ -147,7 +146,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 			</Button>
 
 			<Button
-				onClick={() =>
+				onPress={() =>
 					runSignIn(() =>
 						authClient.signIn.social({
 							provider: "github",
@@ -166,7 +165,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 			</Button>
 
 			<Button
-				onClick={() =>
+				onPress={() =>
 					runSignIn(() =>
 						authClient.signIn.social({
 							provider: "linkedin",

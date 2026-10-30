@@ -1,13 +1,11 @@
 import type { Entry } from "./model";
 import type { Website } from "@rezumi/schema/resume/data";
 import type { ComponentProps, ReactNode } from "react";
+import { Checkbox, Disclosure, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useCallback, useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@rezumi/ui/components/collapsible";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { Input } from "@rezumi/ui/components/input";
 import { cn } from "@rezumi/utils/style";
 import { findEntry } from "./model";
 import { URLInput } from "@/components/input/url-input";
@@ -67,7 +65,7 @@ const validateUrl: Validator = (value) => {
 	}
 };
 
-type TextFieldProps = Omit<ComponentProps<typeof Input>, "value" | "onChange"> & {
+type TextFieldProps = Omit<ComponentProps<"input">, "value" | "onChange"> & {
 	label: ReactNode;
 	value: string;
 	onChange: (value: string) => void;
@@ -98,14 +96,15 @@ export function TextField({
 			<FormControl
 				render={
 					<Input
+						fullWidth
 						value={value}
 						onChange={(event) => onChange(event.target.value)}
 						onBlur={(event) => {
 							setTouched(true);
 							onBlur?.(event);
 						}}
-						className={className}
-						{...props}
+						className={cn(className)}
+						{...(props as ComponentProps<typeof Input>)}
 					/>
 				}
 			/>
@@ -141,11 +140,18 @@ export function WebsiteField({ label, value, onChange, allowInlineLink = true }:
 			</FormItem>
 
 			{allowInlineLink && (
-				// oxlint-disable-next-line jsx-a11y/label-has-associated-control -- Base UI's Checkbox is the control; wrapping it in a label is its documented pattern.
-				<label className="flex w-fit cursor-pointer items-center gap-2 text-sm">
-					<Checkbox checked={inline} onCheckedChange={(checked) => onChange({ ...value, inlineLink: checked })} />
-					<Trans>Show link in title</Trans>
-				</label>
+				<Checkbox
+					isSelected={inline}
+					onChange={(selected) => onChange({ ...value, inlineLink: selected })}
+					className="w-fit text-sm"
+				>
+					<Checkbox.Content>
+						<Checkbox.Control>
+							<Checkbox.Indicator />
+						</Checkbox.Control>
+						<Trans>Show link in title</Trans>
+					</Checkbox.Content>
+				</Checkbox>
 			)}
 		</div>
 	);
@@ -155,20 +161,26 @@ type MoreOptionsProps = { children: ReactNode };
 
 /** Secondary fields (level, icon, colour) stay out of the way until asked for. */
 export function MoreOptions({ children }: MoreOptionsProps) {
+	const [open, setOpen] = useState(false);
+
 	return (
-		<Collapsible className="col-span-full">
-			<CollapsibleTrigger className="group/more flex w-fit cursor-pointer items-center gap-1 rounded-sm text-[13px] font-medium text-ink-2 transition-colors duration-quick hover:text-ink">
-				<span
-					aria-hidden="true"
-					className="transition-transform duration-standard ease-enter group-data-panel-open/more:rotate-90"
-				>
-					›
-				</span>
-				<Trans>More options</Trans>
-			</CollapsibleTrigger>
-			<CollapsibleContent hiddenUntilFound>
-				<div className="grid gap-y-2.5 pt-3">{children}</div>
-			</CollapsibleContent>
-		</Collapsible>
+		<Disclosure isExpanded={open} onExpandedChange={setOpen} className="col-span-full">
+			<Disclosure.Heading>
+				<Disclosure.Trigger className="flex w-fit cursor-pointer items-center gap-1 rounded-sm text-[13px] font-medium text-ink-2 transition-colors duration-quick hover:text-ink">
+					<span
+						aria-hidden="true"
+						className={cn("transition-transform duration-standard ease-enter", open && "rotate-90")}
+					>
+						›
+					</span>
+					<Trans>More options</Trans>
+				</Disclosure.Trigger>
+			</Disclosure.Heading>
+			<Disclosure.Content>
+				<Disclosure.Body>
+					<div className="grid gap-y-2.5 pt-3">{children}</div>
+				</Disclosure.Body>
+			</Disclosure.Content>
+		</Disclosure>
 	);
 }

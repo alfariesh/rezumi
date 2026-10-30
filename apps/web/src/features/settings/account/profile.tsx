@@ -1,14 +1,11 @@
 import type { AuthSession } from "@rezumi/auth/types";
+import { Avatar, Button, Input, InputGroup, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useId, useRef, useState } from "react";
 import z from "zod";
-import { Avatar, AvatarFallback, AvatarImage } from "@rezumi/ui/components/avatar";
-import { Button } from "@rezumi/ui/components/button";
-import { Input } from "@rezumi/ui/components/input";
-import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@rezumi/ui/components/input-group";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
@@ -100,14 +97,14 @@ function SavedField({
 				{label}
 			</label>
 			{prefix ? (
-				<InputGroup>
-					<InputGroupAddon>
-						<InputGroupText>{prefix}</InputGroupText>
-					</InputGroupAddon>
-					<InputGroupInput {...inputProps} />
+				<InputGroup fullWidth>
+					<InputGroup.Prefix>
+						<span>{prefix}</span>
+					</InputGroup.Prefix>
+					<InputGroup.Input {...inputProps} />
 				</InputGroup>
 			) : (
-				<Input {...inputProps} />
+				<Input fullWidth {...inputProps} />
 			)}
 			{error ? (
 				<p id={`${id}-error`} role="alert" className="text-xs text-danger-text">
@@ -256,10 +253,10 @@ function ProfilePhoto({ name, image, onChange }: ProfilePhotoProps) {
 	return (
 		<div className="flex items-center gap-3.5">
 			<Avatar className="size-14">
-				<AvatarImage src={image ?? undefined} alt="" />
-				<AvatarFallback className="bg-accent-soft text-lg font-semibold text-accent-text">
+				{image && <Avatar.Image src={image} alt="" />}
+				<Avatar.Fallback className="bg-accent-soft text-lg font-semibold text-accent-text">
 					{getInitials(name)}
-				</AvatarFallback>
+				</Avatar.Fallback>
 			</Avatar>
 			<input
 				ref={input}
@@ -270,11 +267,12 @@ function ProfilePhoto({ name, image, onChange }: ProfilePhotoProps) {
 				aria-hidden
 				onChange={(event) => choose(event.target.files?.[0])}
 			/>
-			<Button size="sm" variant="secondary" loading={upload.isPending} onClick={() => input.current?.click()}>
+			<Button size="sm" variant="secondary" isPending={upload.isPending} onPress={() => input.current?.click()}>
+				{upload.isPending && <Spinner size="sm" color="current" aria-hidden />}
 				<Trans>Change photo</Trans>
 			</Button>
 			{image && (
-				<Button size="sm" variant="ghost" onClick={() => void onChange(null)}>
+				<Button size="sm" variant="ghost" onPress={() => void onChange(null)}>
 					<Trans>Remove photo</Trans>
 				</Button>
 			)}

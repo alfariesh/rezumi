@@ -1,15 +1,13 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
+import { Button, Spinner, TextArea, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
@@ -87,8 +85,12 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 				</p>
 				<AiNotice className="max-w-[420px] text-start" />
 				{provider && (
-					<Button loading={generate.isPending} onClick={check}>
-						<Icon name="list-checks" size={18} />
+					<Button isPending={generate.isPending} onPress={check}>
+						{generate.isPending ? (
+							<Spinner size="sm" color="current" aria-hidden />
+						) : (
+							<Icon name="list-checks" size={18} />
+						)}
 						{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check fit</Trans>}
 					</Button>
 				)}
@@ -143,11 +145,11 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 					{t`${supported} supported · ${partial} partly · ${missing} missing`}
 					{item.outdated && !readOnly && provider && (
 						<Button
-							variant="link"
+							variant="ghost"
 							size="sm"
-							className="font-sans text-[13px] tracking-normal normal-case"
-							loading={generate.isPending}
-							onClick={check}
+							className="h-auto px-0 font-sans text-[13px] tracking-normal text-link normal-case underline-offset-4 hover:underline"
+							isPending={generate.isPending}
+							onPress={check}
 						>
 							{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check again</Trans>}
 						</Button>
@@ -267,7 +269,7 @@ function RequirementRow({ requirement, status, evidence, readOnly, onSaved }: Re
 						{editing ? (
 							<EvidenceEditor requirement={requirement} onCancel={() => setEditing(false)} onSaved={onSaved} />
 						) : (
-							<Button size="sm" variant="secondary" onClick={() => setEditing(true)}>
+							<Button size="sm" variant="secondary" onPress={() => setEditing(true)}>
 								<Icon name="plus" size={16} />
 								{status === "missing" ? <Trans>Add evidence</Trans> : <Trans>Clarify</Trans>}
 							</Button>
@@ -310,7 +312,8 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 
 	return (
 		<div className="grid w-full gap-2">
-			<Textarea
+			<TextArea
+				fullWidth
 				// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add evidence
 				autoFocus
 				rows={2}
@@ -323,7 +326,7 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				onKeyDown={(event) => {
 					if (event.key === "Escape") onCancel();
 				}}
-				className="min-h-14 border-accent text-sm shadow-[0_0_0_3px_var(--accent-soft)]"
+				className="min-h-14"
 			/>
 			{touched && empty && (
 				<p role="alert" className="text-xs text-danger-text">
@@ -331,10 +334,11 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				</p>
 			)}
 			<div className="flex gap-1.5">
-				<Button size="sm" variant="secondary" loading={saveFact.isPending} onClick={() => void save()}>
+				<Button size="sm" variant="secondary" isPending={saveFact.isPending} onPress={() => void save()}>
+					{saveFact.isPending && <Spinner size="sm" color="current" aria-hidden />}
 					<Trans>Save to Knowledge</Trans>
 				</Button>
-				<Button size="sm" variant="ghost" onClick={onCancel}>
+				<Button size="sm" variant="ghost" onPress={onCancel}>
 					<Trans>Cancel</Trans>
 				</Button>
 			</div>
@@ -357,8 +361,8 @@ function WorthAsking({ ask, applicationId, readOnly }: WorthAskingProps) {
 				<Button
 					size="sm"
 					variant="secondary"
-					disabled={added}
-					onClick={() =>
+					isDisabled={added}
+					onPress={() =>
 						workspace.save({ questions: [...workspace.data.questions, { text: ask.text, origin: t`From Fit` }] })
 					}
 				>

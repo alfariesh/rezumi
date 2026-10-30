@@ -380,7 +380,7 @@ it("keeps one editable Debrief form after returning from a read-only saved revie
 	const view = mount(<DebriefTab {...props} version={review} />);
 	expect(screen.getByRole("heading", { name: "Earlier round" })).toBeTruthy();
 	const archivedTask = screen.getByRole("checkbox", { name: /Practise explaining the result/ });
-	expect(archivedTask).toHaveAttribute("aria-disabled", "true");
+	expect(archivedTask).toBeDisabled();
 	fireEvent.click(archivedTask);
 	expect(api.save).not.toHaveBeenCalled();
 	expect(screen.queryByRole("button", { name: "Remember" })).toBeNull();

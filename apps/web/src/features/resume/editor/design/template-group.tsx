@@ -1,16 +1,14 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import type { FocusEvent, KeyboardEvent, PointerEvent } from "react";
-import { Radio } from "@base-ui/react/radio";
-import { RadioGroup } from "@base-ui/react/radio-group";
+import { Segment } from "@heroui-pro/react";
+import { Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useInView } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { templateLayouts } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Slider } from "@rezumi/ui/components/slider";
 import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
@@ -96,27 +94,24 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 	return (
 		<div className="grid gap-3">
-			<RadioGroup
+			<Segment
 				aria-label={t`Show templates`}
-				value={filter}
-				onValueChange={(value) => setFilter(value as Filter)}
-				className="flex flex-wrap items-center gap-1.5"
+				size="sm"
+				selectedKey={filter}
+				onSelectionChange={(key) => setFilter(key as Filter)}
+				className="w-full"
 			>
 				{filters.map((option) => (
-					<Radio.Root
-						key={option.id}
-						value={option.id}
-						className="flex h-7 cursor-pointer items-center rounded-sm border border-line-2 px-3 text-[13px] text-ink-2 transition-colors duration-quick hover:bg-hover data-checked:border-accent data-checked:bg-accent-soft data-checked:font-medium data-checked:text-accent-text"
-					>
+					<Segment.Item key={option.id} id={option.id} className="flex-1">
 						{option.label}
-					</Radio.Root>
+					</Segment.Item>
 				))}
-				<span className="ms-auto text-xs text-ink-3">
-					<Trans>
-						{shown.length} of {TEMPLATE_IDS.length} shown
-					</Trans>
-				</span>
-			</RadioGroup>
+			</Segment>
+			<span className="text-end text-xs text-muted">
+				<Trans>
+					{shown.length} of {TEMPLATE_IDS.length} shown
+				</Trans>
+			</span>
 
 			{/* oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- listens for Esc and pointer exit from the cards; each card is a button. */}
 			<div
@@ -227,26 +222,26 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 			<p id={titleId} className="text-sm font-medium">
 				<Trans>Sidebar</Trans>
 			</p>
-			<SegmentedControl
+			<Segment
 				aria-label={t`Sidebar side`}
-				value={side}
-				onValueChange={(value) =>
+				selectedKey={side}
+				onSelectionChange={(key) =>
 					updateResumeData(
 						(draft) => {
-							draft.metadata.layout.sidebarSide = value === "right" ? "right" : "left";
+							draft.metadata.layout.sidebarSide = key === "right" ? "right" : "left";
 						},
 						{ newStep: true },
 					)
 				}
 				className="w-full"
 			>
-				<SegmentedControlItem value="left">
+				<Segment.Item id="left" className="flex-1">
 					<Trans>Left</Trans>
-				</SegmentedControlItem>
-				<SegmentedControlItem value="right">
+				</Segment.Item>
+				<Segment.Item id="right" className="flex-1">
 					<Trans>Right</Trans>
-				</SegmentedControlItem>
-			</SegmentedControl>
+				</Segment.Item>
+			</Segment>
 			<div className="grid gap-2">
 				<div className="flex items-center justify-between text-[13px]">
 					<span id={widthId}>
@@ -256,11 +251,11 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 				</div>
 				<Slider
 					aria-labelledby={`${titleId} ${widthId}`}
-					min={10}
-					max={50}
+					minValue={10}
+					maxValue={50}
 					step={1}
-					value={[width]}
-					onValueChange={(value) =>
+					value={width}
+					onChange={(value) =>
 						updateResumeData(
 							(draft) => {
 								draft.metadata.layout.sidebarWidth = Array.isArray(value) ? (value[0] ?? width) : value;
@@ -268,7 +263,12 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 							{ coalesceKey: "design.sidebarWidth" },
 						)
 					}
-				/>
+				>
+					<Slider.Track>
+						<Slider.Fill />
+						<Slider.Thumb />
+					</Slider.Track>
+				</Slider>
 			</div>
 		</div>
 	);

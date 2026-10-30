@@ -2,11 +2,10 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useRouteContext, useRouterState } from "@tanstack/react-router";
-import { CommandItem } from "@rezumi/ui/components/command";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useCommandPaletteStore } from "../store";
-import { BaseCommandGroup } from "./base";
+import { BaseCommandGroup, PaletteItem } from "./base";
 import { openAssistantFrom } from "@/features/assistant/open";
 import { orpc } from "@/libs/orpc/client";
 
@@ -46,12 +45,12 @@ export function AskCommandGroup() {
 
 	return (
 		<BaseCommandGroup heading={<Trans>Ask</Trans>}>
-			<CommandItem value={`ask ${question}`} onSelect={() => void ask()}>
+			<PaletteItem id="ask" textValue={`${question} ${t`Ask the assistant`}`} onAction={() => void ask()}>
 				<Icon name="sparkle" size={16} />
 				<span className="min-w-0 truncate">
 					<Trans>Ask the assistant “{question}”</Trans>
 				</span>
-			</CommandItem>
+			</PaletteItem>
 		</BaseCommandGroup>
 	);
 }

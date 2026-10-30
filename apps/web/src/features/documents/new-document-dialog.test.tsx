@@ -3,10 +3,10 @@
 import type { Application } from "@/features/applications/types";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vite-plus/test";
+import { Modal } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Dialog } from "@rezumi/ui/components/dialog";
 import { NewDocumentDialog } from "./new-document-dialog";
 import { applicationsListQueryKey } from "@/features/applications/queries";
 import { orpc } from "@/libs/orpc/client";
@@ -27,9 +27,9 @@ it("explains a missing source resume and offers import or creation when copying 
 	render(
 		<I18nProvider i18n={i18n}>
 			<QueryClientProvider client={queryClient}>
-				<Dialog open>
+				<Modal.Backdrop isOpen>
 					<NewDocumentDialog data={{ step: "copy", applicationId: "application-1" }} />
-				</Dialog>
+				</Modal.Backdrop>
 			</QueryClientProvider>
 		</I18nProvider>,
 	);
@@ -42,5 +42,5 @@ it("explains a missing source resume and offers import or creation when copying 
 	expect(screen.getByRole("button", { name: /^Start blank/ })).toBeEnabled();
 
 	fireEvent.click(screen.getByRole("button", { name: /^Copy a resume for a job/ }));
-	expect(screen.getByRole("button", { name: "ABOUT YOU" })).toHaveAttribute("aria-pressed", "true");
+	expect(screen.getByRole("row", { name: "ABOUT YOU" })).toHaveAttribute("aria-selected", "true");
 });

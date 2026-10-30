@@ -2,6 +2,7 @@ import type { SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { SavedItemKind, WorkspaceTab } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
+import { Button, buttonVariants, Tooltip, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -9,11 +10,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { useState } from "react";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rezumi/ui/components/tooltip";
 import { useSavedItems } from "../hooks";
 import { formatMoney } from "../offer-compare";
 import { CollapseRow, FilterChip, tabLabel, useCareerTime, withUndo } from "../shared";
@@ -166,16 +164,14 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 							{" · "}
 							{usedFacts.length > 0 ? (
 								<Tooltip>
-									<TooltipTrigger
-										render={<span className="cursor-help underline decoration-dotted underline-offset-3" />}
-									>
-										{t`used ${used}`}
-									</TooltipTrigger>
-									<TooltipContent className="grid max-w-sm gap-1">
+									<Tooltip.Trigger aria-label={t`used ${used}`}>
+										<span className="cursor-help underline decoration-dotted underline-offset-3">{t`used ${used}`}</span>
+									</Tooltip.Trigger>
+									<Tooltip.Content className="grid max-w-sm gap-1">
 										{usedFacts.map((text) => (
 											<span key={text}>{text}</span>
 										))}
-									</TooltipContent>
+									</Tooltip.Content>
 								</Tooltip>
 							) : (
 								t`used ${used}`
@@ -186,26 +182,19 @@ function SavedRow({ item, applicationId, expanded, onToggle, onOpen, onDelete }:
 			</div>
 			<div className="col-start-2 mt-2 flex items-center gap-1 sm:col-start-3 sm:row-start-1 sm:mt-0">
 				{meta?.tab ? (
-					<Button size="sm" variant="secondary" className="h-8" onClick={() => meta.tab && onOpen(meta.tab)}>
+					<Button size="sm" variant="secondary" onPress={() => meta.tab && onOpen(meta.tab)}>
 						{t`Open in ${tabLabel(meta.tab)}`}
 					</Button>
 				) : (
 					<Link
 						to="/dashboard/career/offers"
 						search={{ a: item.id }}
-						className={buttonVariants({ size: "sm", variant: "secondary", className: "h-8" })}
+						className={buttonVariants({ size: "sm", variant: "secondary" })}
 					>
 						<Trans>Open in Offers</Trans>
 					</Link>
 				)}
-				<IconButton
-					icon="trash"
-					label={t`Delete`}
-					size="icon-sm"
-					iconSize={18}
-					className="text-ink-2"
-					onClick={onDelete}
-				/>
+				<IconButton icon="trash" label={t`Delete`} size="sm" iconSize={18} className="text-ink-2" onPress={onDelete} />
 			</div>
 			<AnimatePresence initial={false}>
 				{expanded && (

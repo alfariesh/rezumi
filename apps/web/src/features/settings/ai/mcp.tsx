@@ -1,7 +1,7 @@
+import { Button } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Button } from "@rezumi/ui/components/button";
 import { Swap } from "@rezumi/ui/components/swap";
 import { SettingsSection } from "../section";
 
@@ -23,7 +23,7 @@ export function McpSection() {
 					size="sm"
 					variant="secondary"
 					aria-live="polite"
-					onClick={async () => {
+					onPress={async () => {
 						await copy(address);
 						setCopied(true);
 						setTimeout(() => setCopied(false), 2000);

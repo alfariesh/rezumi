@@ -9,10 +9,7 @@ const Content = lazy(() => import("./content"));
 export function CommandPalette() {
 	const open = useCommandPaletteStore((state) => state.open);
 	const setOpen = useCommandPaletteStore((state) => state.setOpen);
-	useHotkeys([
-		{ hotkey: "Mod+K", callback: () => setOpen(!open) },
-		{ hotkey: "Escape", options: { enabled: open, conflictBehavior: "allow" }, callback: () => setOpen(false) },
-	]);
+	useHotkeys([{ hotkey: "Mod+K", callback: () => setOpen(!open) }]);
 
 	return open ? (
 		<Suspense

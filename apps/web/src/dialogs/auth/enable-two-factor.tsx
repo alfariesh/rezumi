@@ -1,25 +1,16 @@
 import type { DialogProps } from "../store";
+import { Button, Input, InputOTP, Modal, REGEXP_ONLY_DIGITS } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { match } from "ts-pattern";
 import z from "zod";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { OTPField } from "@rezumi/ui/components/otp-field";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { useDialogStore } from "../store";
@@ -59,6 +50,7 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 	const [backupCodes, setBackupCodes] = useState<string[] | null>(null);
 	const [step, setStep] = useState<TwoFactorSetupStep>("enable");
 
+	const descriptionId = useId();
 	const closeDialog = useDialogStore((state) => state.closeDialog);
 
 	const enableForm = useAppForm({
@@ -174,163 +166,179 @@ export function EnableTwoFactorDialog(_: DialogProps<"auth.two-factor.enable">) 
 	};
 
 	return (
-		<DialogContent closeLabel={t`Close`}>
-			<DialogHeader>
-				<DialogTitle>
-					<TwoFactorDialogTitle step={step} />
-				</DialogTitle>
-				<DialogDescription>
-					<TwoFactorDialogDescription step={step} />
-				</DialogDescription>
-			</DialogHeader>
+		<Modal.Container size="sm">
+			<Modal.Dialog aria-describedby={descriptionId}>
+				<Modal.CloseTrigger aria-label={t`Close`} />
+				<Modal.Header>
+					<Modal.Heading>
+						<TwoFactorDialogTitle step={step} />
+					</Modal.Heading>
+					<p id={descriptionId} className="text-sm text-muted">
+						<TwoFactorDialogDescription step={step} />
+					</p>
+				</Modal.Header>
 
-			{match(step)
-				.with("enable", () => (
-					<form
-						className="space-y-4"
-						onSubmit={(event) => {
-							event.preventDefault();
-							event.stopPropagation();
-							void enableForm.handleSubmit();
-						}}
-					>
-						<enableForm.Field name="password">
-							{(field) => (
-								<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
-									<FormLabel>
-										<Trans>Password</Trans>
-									</FormLabel>
-									<FormControl
-										render={
-											<PasswordInput
-												minLength={6}
-												maxLength={64}
-												autoComplete="current-password"
-												name={field.name}
-												value={field.state.value}
-												onBlur={field.handleBlur}
-												onChange={(event) => field.handleChange(event.target.value)}
-											/>
-										}
-									/>
-									<FormMessage errors={field.state.meta.errors} />
-								</FormItem>
-							)}
-						</enableForm.Field>
-
-						<DialogFooter>
-							<Button type="submit" disabled={enableIsSubmitting}>
-								<Trans>Continue</Trans>
-							</Button>
-						</DialogFooter>
-					</form>
-				))
-				.with("verify", () => {
-					const secret = totpUri ? extractSecretFromTotpUri(totpUri) : null;
-					return (
-						<div className="space-y-4">
-							{totpUri && secret && (
-								<>
-									<div className="flex items-center gap-x-2">
-										<Input readOnly value={secret} className="font-mono text-sm" />
-										<Button size="icon" variant="ghost" type="button" onClick={handleCopySecret}>
-											<span className="sr-only">
-												{t({
-													comment: "Accessible label for the button that copies the two-factor secret key",
-													message: "Copy secret",
-												})}
-											</span>
-											<Icon name="copy" size={16} />
-										</Button>
-									</div>
-
-									<TwoFactorQRCode totpUri={totpUri} />
-								</>
-							)}
-
-							<p>
-								<Trans>Then enter the 6-digit code from the app.</Trans>
-							</p>
-
+				<Modal.Body>
+					{match(step)
+						.with("enable", () => (
 							<form
 								className="space-y-4"
 								onSubmit={(event) => {
 									event.preventDefault();
 									event.stopPropagation();
-									void verifyForm.handleSubmit();
+									void enableForm.handleSubmit();
 								}}
 							>
-								<verifyForm.Field name="code">
+								<enableForm.Field name="password">
 									{(field) => (
 										<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
-											<FormLabel className="sr-only">
-												<Trans>Verification code</Trans>
+											<FormLabel>
+												<Trans>Password</Trans>
 											</FormLabel>
 											<FormControl
 												render={
-													<OTPField
-														length={6}
-														autoSubmit
+													<PasswordInput
+														minLength={6}
+														maxLength={64}
+														autoComplete="current-password"
 														name={field.name}
 														value={field.state.value}
 														onBlur={field.handleBlur}
-														onValueChange={field.handleChange}
+														onChange={(event) => field.handleChange(event.target.value)}
 													/>
 												}
 											/>
 											<FormMessage errors={field.state.meta.errors} />
 										</FormItem>
 									)}
-								</verifyForm.Field>
+								</enableForm.Field>
 
-								<DialogFooter className="gap-x-2">
-									<Button type="button" variant="secondary" onClick={requestClose}>
-										<Trans comment="Secondary action button to close two-factor setup dialog">Cancel</Trans>
+								<Modal.Footer className="p-0">
+									<Button type="submit" isDisabled={enableIsSubmitting}>
+										<Trans>Continue</Trans>
 									</Button>
-									<Button type="submit" disabled={verifyIsSubmitting}>
-										<Trans comment="Primary action button to proceed to next step in two-factor setup">Continue</Trans>
-									</Button>
-								</DialogFooter>
+								</Modal.Footer>
 							</form>
-						</div>
-					);
-				})
-				.with("backup", () => (
-					<div className="space-y-4">
-						{backupCodes && (
+						))
+						.with("verify", () => {
+							const secret = totpUri ? extractSecretFromTotpUri(totpUri) : null;
+							return (
+								<div className="space-y-4">
+									{totpUri && secret && (
+										<>
+											<div className="flex items-center gap-x-2">
+												<Input fullWidth readOnly value={secret} className="font-mono text-sm" />
+												<Button isIconOnly variant="ghost" onPress={() => handleCopySecret()}>
+													<span className="sr-only">
+														{t({
+															comment: "Accessible label for the button that copies the two-factor secret key",
+															message: "Copy secret",
+														})}
+													</span>
+													<Icon name="copy" size={16} />
+												</Button>
+											</div>
+
+											<TwoFactorQRCode totpUri={totpUri} />
+										</>
+									)}
+
+									<p>
+										<Trans>Then enter the 6-digit code from the app.</Trans>
+									</p>
+
+									<form
+										className="space-y-4"
+										onSubmit={(event) => {
+											event.preventDefault();
+											event.stopPropagation();
+											void verifyForm.handleSubmit();
+										}}
+									>
+										<verifyForm.Field name="code">
+											{(field) => (
+												<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
+													<FormLabel className="sr-only">
+														<Trans>Verification code</Trans>
+													</FormLabel>
+													<FormControl
+														render={(props) => (
+															<InputOTP
+																{...props}
+																isInvalid={Boolean(props["aria-invalid"])}
+																maxLength={6}
+																pattern={REGEXP_ONLY_DIGITS}
+																name={field.name}
+																value={field.state.value}
+																onBlur={field.handleBlur}
+																onChange={field.handleChange}
+																onComplete={() => void verifyForm.handleSubmit()}
+															>
+																<InputOTP.Group>
+																	{Array.from({ length: 6 }, (_, index) => (
+																		<InputOTP.Slot key={index} index={index} />
+																	))}
+																</InputOTP.Group>
+															</InputOTP>
+														)}
+													/>
+													<FormMessage errors={field.state.meta.errors} />
+												</FormItem>
+											)}
+										</verifyForm.Field>
+
+										<Modal.Footer className="gap-x-2 p-0">
+											<Button variant="secondary" onPress={() => requestClose()}>
+												<Trans comment="Secondary action button to close two-factor setup dialog">Cancel</Trans>
+											</Button>
+											<Button type="submit" isDisabled={verifyIsSubmitting}>
+												<Trans comment="Primary action button to proceed to next step in two-factor setup">
+													Continue
+												</Trans>
+											</Button>
+										</Modal.Footer>
+									</form>
+								</div>
+							);
+						})
+						.with("backup", () => (
 							<div className="space-y-4">
-								<div className="grid grid-cols-2 gap-2">
-									{backupCodes.map((code) => (
-										<div key={code} className="rounded-md border border-line p-2 text-center font-mono text-sm">
-											{code}
+								{backupCodes && (
+									<div className="space-y-4">
+										<div className="grid grid-cols-2 gap-2">
+											{backupCodes.map((code) => (
+												<div key={code} className="rounded-md border border-line p-2 text-center font-mono text-sm">
+													{code}
+												</div>
+											))}
 										</div>
-									))}
-								</div>
 
-								<div className="flex items-center gap-x-2">
-									<Button type="button" variant="secondary" onClick={handleDownloadBackupCodes} className="flex-1">
-										<Icon name="arrow-down" size={16} className="me-2" />
-										<Trans comment="Action button to download two-factor backup codes as a text file">
-											Download codes
-										</Trans>
+										<div className="flex items-center gap-x-2">
+											<Button variant="secondary" onPress={() => handleDownloadBackupCodes()} className="flex-1">
+												<Icon name="arrow-down" size={16} className="me-2" />
+												<Trans comment="Action button to download two-factor backup codes as a text file">
+													Download codes
+												</Trans>
+											</Button>
+											<Button variant="ghost" onPress={() => handleCopyBackupCodes()} className="flex-1">
+												<Icon name="copy" size={16} className="me-2" />
+												<Trans comment="Action button to copy two-factor backup codes to clipboard">Copy codes</Trans>
+											</Button>
+										</div>
+									</div>
+								)}
+
+								<Modal.Footer className="p-0">
+									<Button onPress={() => onConfirmBackup()}>
+										<Trans comment="Final action button after saving backup codes">Continue</Trans>
 									</Button>
-									<Button type="button" variant="ghost" onClick={handleCopyBackupCodes} className="flex-1">
-										<Icon name="copy" size={16} className="me-2" />
-										<Trans comment="Action button to copy two-factor backup codes to clipboard">Copy codes</Trans>
-									</Button>
-								</div>
+								</Modal.Footer>
 							</div>
-						)}
-
-						<DialogFooter>
-							<Button type="button" onClick={onConfirmBackup}>
-								<Trans comment="Final action button after saving backup codes">Continue</Trans>
-							</Button>
-						</DialogFooter>
-					</div>
-				))
-				.exhaustive()}
-		</DialogContent>
+						))
+						.exhaustive()}
+				</Modal.Body>
+			</Modal.Dialog>
+		</Modal.Container>
 	);
 }
 

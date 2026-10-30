@@ -1,20 +1,13 @@
 import type { VersionSummary } from "./format";
 import type { Resume } from "@/features/resume/builder/draft";
+import { Button, Dropdown, Input, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button } from "@rezumi/ui/components/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Input } from "@rezumi/ui/components/input";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { formatVersionMoment, formatVersionTime, getVersionDetail, getVersionTitle } from "./format";
@@ -146,14 +139,14 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 				}}
 			>
 				<Input
+					fullWidth
 					value={name}
 					maxLength={80}
 					aria-label={t`Name this version`}
 					placeholder={t`Sent to Lumen`}
 					onChange={(event) => setName(event.target.value)}
-					className="h-9"
 				/>
-				<Button type="submit" variant="secondary" disabled={!name.trim() || busy}>
+				<Button type="submit" variant="secondary" isDisabled={!name.trim() || busy}>
 					<Trans>Save</Trans>
 				</Button>
 			</form>
@@ -167,14 +160,14 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 						</Trans>
 					</span>
 					<span className="flex flex-wrap gap-2">
-						<Button size="sm" disabled={source.locked || busy} onClick={() => restore(selected)}>
+						<Button size="sm" isDisabled={source.locked || busy} onPress={() => restore(selected)}>
 							<Trans>Restore this version</Trans>
 						</Button>
 						<Button
 							size="sm"
 							variant="ghost"
 							className="text-bg underline underline-offset-[3px] hover:bg-transparent hover:text-bg"
-							onClick={() => useEditorStore.setState({ historyVersionId: null })}
+							onPress={() => useEditorStore.setState({ historyVersionId: null })}
 						>
 							<Trans>Back to now</Trans>
 						</Button>
@@ -298,27 +291,29 @@ function NamedVersionMenu({ version, source }: { version: HistoryVersion; source
 	};
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					<IconButton
-						icon="dots-three"
-						label={t`Options for ${title}`}
-						size="icon-sm"
-						className="text-ink-2 opacity-0 group-hover/version:opacity-100 focus-visible:opacity-100 data-popup-open:opacity-100"
-					/>
-				}
+		<Dropdown>
+			<IconButton
+				icon="dots-three"
+				label={t`Options for ${title}`}
+				size="sm"
+				className="opacity-0 group-hover/version:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
 			/>
-			<DropdownMenuContent align="end" className="w-44">
-				<DropdownMenuItem onClick={() => void rename()}>
-					<Icon name="pencil-simple" />
-					<Trans>Rename…</Trans>
-				</DropdownMenuItem>
-				<DropdownMenuItem variant="destructive" onClick={() => void remove()}>
-					<Icon name="trash" />
-					<Trans>Delete</Trans>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+			<Dropdown.Popover placement="bottom end" className="w-44">
+				<Dropdown.Menu>
+					<Dropdown.Item id="rename" textValue={t`Rename…`} onAction={() => void rename()}>
+						<Icon name="pencil-simple" className="text-muted" />
+						<Label>
+							<Trans>Rename…</Trans>
+						</Label>
+					</Dropdown.Item>
+					<Dropdown.Item id="delete" textValue={t`Delete`} variant="danger" onAction={() => void remove()}>
+						<Icon name="trash" />
+						<Label>
+							<Trans>Delete</Trans>
+						</Label>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }

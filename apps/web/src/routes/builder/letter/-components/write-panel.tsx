@@ -2,6 +2,7 @@ import type { ApplicationSummary } from "@/features/applications/types";
 import type { LetterDraft } from "@/features/letters/store";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
+import { Button, Description, Dropdown, Input, Label, Separator, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -10,20 +11,9 @@ import { Link } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
 import { useId, useRef, useState } from "react";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
-import { Button, buttonVariants } from "@rezumi/ui/components/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Input } from "@rezumi/ui/components/input";
-import { Label } from "@rezumi/ui/components/label";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SwitchRow } from "@rezumi/ui/components/switch";
-import { Textarea } from "@rezumi/ui/components/textarea";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { templates } from "@/dialogs/resume/template/data";
@@ -131,34 +121,42 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 		}).catch(failed);
 
 	const menu = (trigger: ReactElement) => (
-		<DropdownMenu>
-			<DropdownMenuTrigger disabled={disabled} render={trigger} />
-			<DropdownMenuContent align="end" className="max-h-80 w-72 overflow-y-auto">
-				{choices.map((item) => (
-					<DropdownMenuItem key={item.id} onClick={() => choose(item)}>
-						<Icon name="briefcase" />
-						<span className="grid min-w-0">
-							<span className="truncate">{item.role}</span>
-							<span className="truncate text-xs text-ink-3">{item.company}</span>
-						</span>
-					</DropdownMenuItem>
-				))}
-				{choices.length === 0 && (
-					<p className="px-2 py-1.5 text-sm text-ink-2">
-						<Trans>No applications yet. Add one in Applications first.</Trans>
-					</p>
-				)}
-				{application && (
-					<>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => choose(null)}>
+		<Dropdown>
+			{trigger}
+			<Dropdown.Popover placement="bottom end" className="max-h-80 w-72 overflow-y-auto">
+				<Dropdown.Menu
+					renderEmptyState={() => (
+						<p className="px-2 py-1.5 text-sm text-ink-2">
+							<Trans>No applications yet. Add one in Applications first.</Trans>
+						</p>
+					)}
+				>
+					{choices.map((item) => (
+						<Dropdown.Item
+							key={item.id}
+							id={item.id}
+							textValue={`${item.role} ${item.company}`}
+							onAction={() => choose(item)}
+						>
+							<Icon name="briefcase" />
+							<span className="grid min-w-0">
+								<Label className="truncate">{item.role}</Label>
+								<Description className="truncate">{item.company}</Description>
+							</span>
+						</Dropdown.Item>
+					))}
+					{application && <Separator />}
+					{application && (
+						<Dropdown.Item id="none" textValue={t`No application`} onAction={() => choose(null)}>
 							<Icon name="link-simple-horizontal-break" />
-							<Trans>No application</Trans>
-						</DropdownMenuItem>
-					</>
-				)}
-			</DropdownMenuContent>
-		</DropdownMenu>
+							<Label>
+								<Trans>No application</Trans>
+							</Label>
+						</Dropdown.Item>
+					)}
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 
 	return (
@@ -185,7 +183,7 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 						</span>
 					</span>
 					{menu(
-						<Button size="sm" variant="secondary">
+						<Button variant="secondary" size="sm" isDisabled={disabled}>
 							<Trans>Change</Trans>
 						</Button>,
 					)}
@@ -193,7 +191,7 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 			) : (
 				<>
 					{menu(
-						<Button variant="secondary" className="w-full justify-start gap-2">
+						<Button variant="secondary" fullWidth isDisabled={disabled} className="justify-start gap-2">
 							<Icon name="briefcase" />
 							<Trans>Link an application</Trans>
 							<Icon name="caret-down" className="ms-auto text-ink-3" />
@@ -240,6 +238,7 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 						<Trans>Name or team</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-name`}
 						value={letter.recipientName}
 						maxLength={200}
@@ -253,6 +252,7 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 						<Trans>Company</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-company`}
 						value={letter.recipientCompany}
 						maxLength={200}
@@ -265,6 +265,7 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 						<Trans>Date</Trans>
 					</Label>
 					<Input
+						fullWidth
 						id={`${id}-date`}
 						type="date"
 						value={letter.letterDate ?? ""}
@@ -334,9 +335,9 @@ function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: bool
 							? t`Linked. Name, email, phone and city update when the resume does.`
 							: t`Off. The letter keeps its own copy of your details.`
 					}
-					checked={letter.senderLinked}
-					disabled={disabled}
-					onCheckedChange={setLinked}
+					isSelected={letter.senderLinked}
+					isDisabled={disabled}
+					onChange={setLinked}
 				/>
 			) : (
 				<p className="text-xs text-ink-3">
@@ -439,12 +440,13 @@ function LetterFramingField({ letter, field, defaultValue, disabled }: LetterFra
 			<div className="flex items-center justify-between gap-2">
 				<Label htmlFor={id}>{field === "greeting" ? <Trans>Greeting</Trans> : <Trans>Sign-off</Trans>}</Label>
 				{letter[field] !== null && (
-					<Button variant="ghost" size="sm" disabled={disabled} onClick={() => edit({ [field]: null })}>
+					<Button variant="ghost" size="sm" isDisabled={disabled} onPress={() => edit({ [field]: null })}>
 						<Trans>Use default</Trans>
 					</Button>
 				)}
 			</div>
-			<Textarea
+			<TextArea
+				fullWidth
 				id={id}
 				value={letter[field] ?? defaultValue}
 				maxLength={2_000}
@@ -486,15 +488,15 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 				{canDraft && hasUsableProvider && (
 					<Button
 						size="sm"
-						disabled={disabled}
+						isDisabled={disabled}
 						className="bg-accent-soft text-accent-text hover:bg-accent-soft hover:brightness-95"
-						onClick={() => void startLetterDraft("draft")}
+						onPress={() => void startLetterDraft("draft")}
 					>
 						<Icon name="sparkle" size={16} />
 						{application ? <Trans>Draft from the posting</Trans> : <Trans>Draft from your resume</Trans>}
 					</Button>
 				)}
-				<Button size="sm" variant="ghost" disabled={disabled} onClick={onWrite}>
+				<Button size="sm" variant="ghost" isDisabled={disabled} onPress={() => onWrite()}>
 					<Trans>Write it myself</Trans>
 				</Button>
 			</div>
@@ -502,7 +504,7 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 			{canDraft && !providerState.isUnavailable && !hasUsableProvider && (
 				<p className="text-xs text-ink-3">
 					<Trans>Drafting needs an AI provider.</Trans>{" "}
-					<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "link", size: "sm" })}>
+					<Link to="/dashboard/settings/ai" className="text-link underline-offset-4 hover:underline">
 						<Trans>Open AI settings</Trans>
 					</Link>
 				</p>
@@ -541,10 +543,10 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 					)}
 				</span>
 				<div className="flex gap-1.5">
-					<Button size="sm" variant="secondary" onClick={() => run(last.current.variant, last.current.previous)}>
+					<Button size="sm" variant="secondary" onPress={() => run(last.current.variant, last.current.previous)}>
 						<Trans>Try again</Trans>
 					</Button>
-					<Button size="sm" variant="ghost" onClick={discardLetterDraft}>
+					<Button size="sm" variant="ghost" onPress={() => discardLetterDraft()}>
 						<Trans>Dismiss</Trans>
 					</Button>
 				</div>
@@ -580,7 +582,7 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 				)}
 			</div>
 			{streaming && (
-				<Button size="sm" variant="ghost" className="w-fit" onClick={discardLetterDraft}>
+				<Button size="sm" variant="ghost" className="w-fit" onPress={() => discardLetterDraft()}>
 					<Trans>Stop</Trans>
 				</Button>
 			)}
