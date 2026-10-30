@@ -1135,8 +1135,8 @@ msgstr "Sasniegums"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Konts"
 
@@ -1267,10 +1267,6 @@ msgstr "Pievienojiet atzīmi"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Pievienojiet birku un nospiediet Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "Pievienojiet AI nodrošinātāju"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Pievienojiet brīvprātīgo darbu"
 msgid "Add what happened before you can save."
 msgstr "Lai saglabātu, aprakstiet, kas notika."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Pievienojiet savu vārdu"
@@ -1571,13 +1571,6 @@ msgstr "Pēc pirmā izvērtējuma šeit parādīsies viegls šīs nedēļas plā
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "Salīdzinot ar jūsu prasībām"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI un izstrādātājs"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Atbildes nokopētas"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Saderīgi ar Anthropic, Gemini, Ollama, OpenAI"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Jebkur"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Lietotne"
 msgid "App navigation"
 msgstr "Lietotnes navigācija"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Izskats"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, Komunikācijas dizains"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Atpakaļ"
 
@@ -3068,10 +3063,6 @@ msgstr "Pievienojiet lietojumprogrammu"
 msgid "Connect another…"
 msgstr "Pievienojiet citu…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Savienojiet rīkus, kurus izmantojat rakstīšanai, darba meklēšanai un darbam ar saviem CV."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Pievienojiet savu AI pakalpojumu sniedzēju, lai valodas modelis lasītu jūsu saraksta ierakstus un ieteiktu pārrakstīšanu. Problēmām un darba atbilstībai nav nepieciešams nodrošinātājs."
@@ -3685,7 +3676,7 @@ msgstr "Nevarēja saglabāt stāstu. Mēģiniet vēlreiz."
 msgid "Couldn't save the tags. Try again."
 msgstr "Nevarēja saglabāt atzīmes. Mēģiniet vēlreiz."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Nevarēja saglabāt laika joslu. Mēģiniet vēlreiz."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Nevarēja pieteikties. Mēģiniet vēlreiz."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Nevarēja izrakstīties. Mēģiniet vēlreiz."
@@ -3976,6 +3966,10 @@ msgstr "Izveidots"
 msgid "Created “{finalName}”"
 msgstr "Izveidots “{finalName}”"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Ikdienas skatījumi 30 dienu laikā, maksimums {0}"
 msgid "Danish"
 msgstr "Dāņu"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Tumšs"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Beidzas"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "skaidri izskaidrojiet vienu mērījuma ierobežojumu, nemazinot darba vērtību."
@@ -5540,6 +5536,10 @@ msgstr "Pilns vārds"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Pilns platums"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Integrācija"
 msgid "Interests"
 msgstr "Intereses"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Interfeisa valoda"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Tikai interfeiss. Katrs CV nosaka savu dizaina valodu."
 
@@ -6147,7 +6147,7 @@ msgstr "Intervija saglabāta"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Intervija saglabāta · atgādne pārcelta uz {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "To izmanto interviju laiki, atgādinājumi un grafiki sadaļā “Karjera”."
 
@@ -6428,10 +6428,9 @@ msgstr "Saglabāts kā ir"
 msgid "Kept yours"
 msgstr "Paturēts jūsu variants"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Atslēga beidzas ar {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Etiķete, piem. Vervētājs"
 msgid "Landscape"
 msgstr "Ainava"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Valoda"
@@ -6526,6 +6523,10 @@ msgstr "Pēdējo reizi rediģēts"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Pēdējo reizi lietots"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "Licencēts saskaņā ar <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatūras var izlaist burtus tādos vārdos kā \"workflow\"."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Gaišs"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP serveris"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Šajā darba sludinājumā neviens termins neizcēlās."
 msgid "No text could be read from this file."
 msgstr "No šī faila nevarēja nolasīt tekstu."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Neviena laika josla neatbilst."
 
@@ -7967,10 +7970,6 @@ msgstr "Nav vērtēts"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Nav atlasīts"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Nav iestatīts"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Dodiet priekšroku vienai kolonnai vai izmantojiet sānu kolonnu tikai �
 msgid "Preference"
 msgstr "Preference"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Preferences"
 
@@ -9912,7 +9907,7 @@ msgstr "CV iesniegts (pēc izvēles)"
 msgid "Resumes"
 msgstr "CV"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "CV vienmēr renderē uz balta papīra neatkarīgi no tēmas."
 
@@ -9995,10 +9990,9 @@ msgstr "Izvērtēšanai nepieciešams AI savienojums. <0>Pievienojiet to iestat�
 msgid "Revoke"
 msgstr "Atsaukt"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "Atsaukt {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Meklējiet lomu, uzņēmumu vai kontaktpersonu"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Meklēt laika joslas"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Iestatiet autentifikatora lietotni"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Iestatījumi"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Pierakstieties ar pirksta nospiedumu, seju vai ierīces PIN"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Atteikties"
@@ -11539,8 +11532,6 @@ msgstr "Pārslēgts uz vienu kolonnu"
 msgid "Synced changes made in another tab."
 msgstr "Sinhronizētās izmaiņas, kas veiktas citā cilnē."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Operētājsistēma"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Saglabātā atslēga netiek nosūtīta uz jaunu bāzes URL. Ievadiet atslēgu vēlreiz."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Saglabāto nodrošinātāja atslēgu nevar atšifrēt. Ievadiet atslēgu vēlreiz sadaļā Iestatījumi → AI un izstrādātājs."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Teksts kļūst nelasāms."
 msgid "The top of the first page does not look like a name."
 msgstr "Pirmās lapas augšdaļa neizskatās pēc vārda."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Tēma"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Laiki tiek rādīti laika joslā {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Laika josla"
 
@@ -12968,7 +12958,7 @@ msgstr "Izmantojiet standarta virsrakstu"
 msgid "Use these answers"
 msgstr "Izmantot šīs atbildes"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Izmantot šīs ierīces laika joslu ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Mēs nosūtījām saiti uz {currentEmail}, lai apstiprinātu izmaiņas. 
 msgid "We sent a new verification link to {0}."
 msgstr "Mēs nosūtījām jaunu verifikācijas saiti uz {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Piekļuve tīmeklim"

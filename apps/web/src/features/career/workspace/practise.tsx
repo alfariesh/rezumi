@@ -474,7 +474,11 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 									<Trans>
 										This browser can't take dictation, and none of your AI connections can transcribe speech (OpenAI,
 										Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can).{" "}
-										<Link to="/dashboard/settings/ai" className="text-accent underline underline-offset-3">
+										<Link
+											to="/dashboard/settings/app"
+											hash="ai-providers"
+											className="text-accent underline underline-offset-3"
+										>
 											Add one in Settings
 										</Link>
 										, or type your answer.
@@ -674,7 +678,11 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 							<PrivacyLine>
 								<Trans>
 									Feedback needs an AI connection.{" "}
-									<Link to="/dashboard/settings/ai" className="text-accent underline underline-offset-3">
+									<Link
+										to="/dashboard/settings/app"
+										hash="ai-providers"
+										className="text-accent underline underline-offset-3"
+									>
 										Add one in Settings
 									</Link>
 									. Nothing is sent until you ask.

@@ -26,13 +26,17 @@ export async function loginViaUi(page: Page, account: E2EAccount, path = "/auth/
 	await page.waitForURL(/\/dashboard/);
 }
 
-export async function logoutViaUi(page: Page, account: E2EAccount) {
-	// The avatar row at the foot of the sidebar opens the account menu.
+/** Sign out lives in the account menu: the avatar row at the foot of the sidebar opens it. */
+export async function clickSignOutInMenu(page: Page, account: E2EAccount) {
 	await page
 		.getByRole("complementary")
 		.getByRole("button", { name: new RegExp(account.name) })
 		.click();
 	await page.getByRole("menuitem", { name: "Sign out" }).click();
+}
+
+export async function logoutViaUi(page: Page, account: E2EAccount) {
+	await clickSignOutInMenu(page, account);
 	await page.waitForURL(/\/auth\/login/);
 }
 

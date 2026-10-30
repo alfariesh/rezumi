@@ -66,7 +66,7 @@ export function AuthErrorPage({ code, description }: AuthErrorPageProps) {
 				</h1>
 			</div>
 
-			<Alert status="danger" role="alert">
+			<Alert status="danger" role="alert" className="bg-surface-secondary">
 				<Alert.Indicator>
 					<Icon name="warning" size={16} />
 				</Alert.Indicator>

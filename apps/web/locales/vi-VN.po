@@ -1135,8 +1135,8 @@ msgstr "Thành tích"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Tài khoản"
 
@@ -1267,10 +1267,6 @@ msgstr "Thêm thẻ"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Thêm thẻ và nhấn Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "Thêm nhà cung cấp AI"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Thêm hoạt động tình nguyện"
 msgid "Add what happened before you can save."
 msgstr "Hãy mô tả điều đã xảy ra trước khi lưu."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Thêm tên của bạn"
@@ -1571,13 +1571,6 @@ msgstr "Sau lần tổng kết đầu tiên, một kế hoạch nhẹ nhàng cho
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "So với yêu cầu của bạn"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI & nhà phát triển"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Đã sao chép các câu trả lời"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Tương thích với Anthropic, Gemini, Ollama, OpenAI"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "mọi nơi"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Ứng dụng"
 msgid "App navigation"
 msgstr "Điều hướng ứng dụng"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Vẻ bề ngoài"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "Cử nhân, Thiết kế Truyền thông"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Mặt sau"
 
@@ -3068,10 +3063,6 @@ msgstr "Kết nối một ứng dụng"
 msgid "Connect another…"
 msgstr "Kết nối cái khác…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Kết nối các công cụ bạn sử dụng để viết, tìm kiếm việc làm và làm việc với sơ yếu lý lịch của mình."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Kết nối nhà cung cấp AI của riêng bạn để mô hình ngôn ngữ đọc các mục trong danh sách của bạn và đề xuất viết lại. Các vấn đề và công việc phù hợp không cần nhà cung cấp."
@@ -3685,7 +3676,7 @@ msgstr "Không thể lưu câu chuyện. Hãy thử lại."
 msgid "Couldn't save the tags. Try again."
 msgstr "Không thể lưu thẻ. Hãy thử lại."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Không thể lưu múi giờ. Hãy thử lại."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Không thể đăng nhập. Hãy thử lại."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Không thể đăng xuất. Hãy thử lại."
@@ -3976,6 +3966,10 @@ msgstr "Đã tạo"
 msgid "Created “{finalName}”"
 msgstr "Đã tạo “{finalName}”"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Lượt xem hàng ngày trong 30 ngày, đỉnh {0}"
 msgid "Danish"
 msgstr "Tiếng Đan Mạch"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Tối"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Hết hạn"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "giải thích rõ một hạn chế của cách đo, mà không hạ thấp công việc."
@@ -5540,6 +5536,10 @@ msgstr "Tên đầy đủ"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Chiều rộng đầy đủ"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Tích hợp"
 msgid "Interests"
 msgstr "Sở thích"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Ngôn ngữ giao diện"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Chỉ giao diện. Mỗi sơ yếu lý lịch đặt ngôn ngữ riêng trong Thiết kế."
 
@@ -6147,7 +6147,7 @@ msgstr "Đã lưu buổi phỏng vấn"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Đã lưu buổi phỏng vấn · bản tóm tắt chuyển sang {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Giờ phỏng vấn, lời nhắc và lịch trình trong Sự nghiệp sẽ dùng múi giờ này."
 
@@ -6428,10 +6428,9 @@ msgstr "Giữ nguyên như cũ"
 msgid "Kept yours"
 msgstr "Đã giữ bản của bạn"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Khóa kết thúc bằng {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Nhãn, ví dụ: Nhà tuyển dụng"
 msgid "Landscape"
 msgstr "Ngang"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Ngôn ngữ"
@@ -6526,6 +6523,10 @@ msgstr "Chỉnh sửa lần cuối"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Lần sử dụng cuối cùng"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "Cấp phép theo <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Chữ ghép (ligature) có thể làm mất chữ cái trong các từ như \"workflow\"."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Sáng"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "Máy chủ MCP"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Không có điều khoản nào nổi bật trong tin tuyển dụng nà
 msgid "No text could be read from this file."
 msgstr "Không thể đọc được văn bản nào từ tệp này."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Không có múi giờ phù hợp."
 
@@ -7967,10 +7970,6 @@ msgstr "Không được chấm điểm"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Không được chọn"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Chưa thiết lập"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Ưu tiên bố cục một cột, hoặc chỉ dùng cột bên để ch
 msgid "Preference"
 msgstr "Mong muốn"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Tùy chọn"
 
@@ -9912,7 +9907,7 @@ msgstr "sơ yếu lý lịch đã nộp (tùy chọn)"
 msgid "Resumes"
 msgstr "Sơ yếu lý lịch"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "sơ yếu lý lịch luôn được trình bày trên giấy trắng, bất kể chủ đề gì."
 
@@ -9995,10 +9990,9 @@ msgstr "Cần có kết nối AI để đánh giá. <0>Thêm kết nối trong C
 msgid "Revoke"
 msgstr "Thu hồi"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "Thu hồi {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Tìm kiếm vai trò, công ty hoặc liên hệ"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Tìm múi giờ"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Thiết lập ứng dụng xác thực của bạn"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Cài đặt"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Đăng nhập bằng vân tay, khuôn mặt hoặc mã PIN thiết bị của bạn"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Đăng xuất"
@@ -11539,8 +11532,6 @@ msgstr "Đã chuyển sang một cột"
 msgid "Synced changes made in another tab."
 msgstr "Các thay đổi được thực hiện trong tab khác đã được đồng bộ hóa."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Hệ điều hành"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Khóa đã lưu không được gửi tới URL cơ sở mới. Nhập lại khóa."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Không thể giải mã khóa nhà cung cấp đã lưu. Nhập lại khóa trong Cài đặt → AI & nhà phát triển."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Văn bản khi trích xuất ra không thể đọc được."
 msgid "The top of the first page does not look like a name."
 msgstr "Phần đầu trang một không trông giống một cái tên."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Chủ đề"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Thời gian được hiển thị theo {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Múi giờ"
 
@@ -12968,7 +12958,7 @@ msgstr "Sử dụng tiêu đề tiêu chuẩn"
 msgid "Use these answers"
 msgstr "Dùng các câu trả lời này"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Dùng múi giờ của thiết bị này ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Chúng tôi đã gửi một liên kết đến {currentEmail} để ph�
 msgid "We sent a new verification link to {0}."
 msgstr "Chúng tôi đã gửi liên kết xác minh mới tới {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Truy cập web"

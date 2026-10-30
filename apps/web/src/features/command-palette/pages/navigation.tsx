@@ -10,7 +10,6 @@ export function NavigationCommandGroup() {
 	const navigate = useNavigate();
 	const { session } = useRouteContext({ strict: false });
 	const reset = useCommandPaletteStore((state) => state.reset);
-	const pushPage = useCommandPaletteStore((state) => state.pushPage);
 
 	const onNavigate = async (path: string) => {
 		await navigate({ to: path });
@@ -91,19 +90,7 @@ export function NavigationCommandGroup() {
 				</PaletteItem>
 
 				<PaletteItem
-					id="navigation.settings"
-					textValue={searchText(t`Settings`, [t`Settings`])}
-					isDisabled={!session}
-					onAction={() => pushPage("settings")}
-				>
-					<Icon name="gear-six" size={16} />
-					<Trans>Settings</Trans>
-				</PaletteItem>
-			</BaseCommandGroup>
-
-			<BaseCommandGroup page="settings" heading={<Trans>Settings</Trans>}>
-				<PaletteItem
-					id="navigation.settings.account"
+					id="navigation.account"
 					textValue={searchText(t`Account`, [
 						t`Account`,
 						t`Profile`,
@@ -113,6 +100,7 @@ export function NavigationCommandGroup() {
 						t`Export data`,
 						t`Delete account`,
 					])}
+					isDisabled={!session}
 					onAction={() => onNavigate("/dashboard/settings/account")}
 				>
 					<Icon name="user-circle" size={16} />
@@ -120,27 +108,23 @@ export function NavigationCommandGroup() {
 				</PaletteItem>
 
 				<PaletteItem
-					id="navigation.settings.preferences"
-					textValue={searchText(t`Preferences`, [t`Preferences`, t`Theme`, t`Language`])}
-					onAction={() => onNavigate("/dashboard/settings/preferences")}
-				>
-					<Icon name="gear-six" size={16} />
-					<Trans>Preferences</Trans>
-				</PaletteItem>
-
-				<PaletteItem
-					id="navigation.settings.ai"
-					textValue={searchText(t`AI & developer`, [
-						t`AI & developer`,
+					id="navigation.settings"
+					textValue={searchText(t`Settings`, [
+						t`Settings`,
+						t`Theme`,
+						t`Language`,
+						t`Timezone`,
 						t`AI providers`,
+						t`Web access`,
 						t`API keys`,
 						t`MCP`,
 						t`Integrations`,
 					])}
-					onAction={() => onNavigate("/dashboard/settings/ai")}
+					isDisabled={!session}
+					onAction={() => onNavigate("/dashboard/settings/app")}
 				>
-					<Icon name="key" size={16} />
-					<Trans>AI & developer</Trans>
+					<Icon name="gear-six" size={16} />
+					<Trans>Settings</Trans>
 				</PaletteItem>
 			</BaseCommandGroup>
 		</>

@@ -1,10 +1,10 @@
 import type { AuthSession } from "@rezumi/auth/types";
-import { Avatar, Button, Input, InputGroup, Spinner } from "@heroui/react";
+import { Avatar, Button, Description, FieldError, Input, InputGroup, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
-import { useId, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import z from "zod";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
@@ -50,7 +50,6 @@ function SavedField({
 	autoComplete,
 	className,
 }: FieldProps) {
-	const id = useId();
 	const [draft, setDraft] = useState(value);
 	const [error, setError] = useState<string | null>(null);
 	const [saving, setSaving] = useState(false);
@@ -72,14 +71,7 @@ function SavedField({
 	};
 
 	const inputProps = {
-		id,
-		type,
-		value: draft,
-		autoComplete,
-		"aria-invalid": error ? true : undefined,
-		"aria-describedby": error ? `${id}-error` : hint ? `${id}-hint` : undefined,
 		"aria-busy": saving || undefined,
-		onChange: (event: React.ChangeEvent<HTMLInputElement>) => setDraft(event.target.value),
 		onBlur: () => void commit(),
 		onKeyDown: (event: React.KeyboardEvent<HTMLInputElement>) => {
 			if (isImeComposing(event)) return;
@@ -92,32 +84,32 @@ function SavedField({
 	};
 
 	return (
-		<div className={cn("grid content-start gap-1.5", className)}>
-			<label htmlFor={id} className="text-xs font-medium text-ink-2">
-				{label}
-			</label>
+		<TextField
+			fullWidth
+			type={type}
+			value={draft}
+			{...(autoComplete ? { autoComplete } : {})}
+			isInvalid={Boolean(error)}
+			// The save runs on blur and our own checks decide validity, so the browser's native validation stays out.
+			validationBehavior="aria"
+			onChange={setDraft}
+			className={cn("content-start gap-1.5", className)}
+		>
+			<Label>{label}</Label>
 			{prefix ? (
-				<InputGroup fullWidth>
+				<InputGroup fullWidth variant="secondary">
 					<InputGroup.Prefix>
-						<span>{prefix}</span>
+						<span dir="ltr">{prefix}</span>
 					</InputGroup.Prefix>
 					<InputGroup.Input {...inputProps} />
 				</InputGroup>
 			) : (
-				<Input fullWidth {...inputProps} />
+				<Input variant="secondary" {...inputProps} />
 			)}
-			{error ? (
-				<p id={`${id}-error`} role="alert" className="text-xs text-danger-text">
-					{error}
-				</p>
-			) : (
-				hint && (
-					<p id={`${id}-hint`} className="text-xs text-ink-3">
-						{hint}
-					</p>
-				)
-			)}
-		</div>
+			{hint && <Description>{hint}</Description>}
+			{/* Saving runs on blur, so focus has left the field: the alert role is what announces the reason. */}
+			<FieldError>{error ? <span role="alert">{error}</span> : null}</FieldError>
+		</TextField>
 	);
 }
 
@@ -205,7 +197,7 @@ export function ProfileSection({ session }: ProfileSectionProps) {
 							{user.emailVerified ? null : smtpEnabled ? (
 								<button
 									type="button"
-									className="underline underline-offset-2"
+									className="underline underline-offset-2 hover:text-foreground"
 									onClick={() => void resendVerification()}
 								>
 									<Trans>Not verified yet. Resend the link</Trans>
@@ -252,11 +244,9 @@ function ProfilePhoto({ name, image, onChange }: ProfilePhotoProps) {
 
 	return (
 		<div className="flex items-center gap-3.5">
-			<Avatar className="size-14">
+			<Avatar color="accent" variant="soft" className="size-14">
 				{image && <Avatar.Image src={image} alt="" />}
-				<Avatar.Fallback className="bg-accent-soft text-lg font-semibold text-accent-text">
-					{getInitials(name)}
-				</Avatar.Fallback>
+				<Avatar.Fallback className="text-lg font-semibold">{getInitials(name)}</Avatar.Fallback>
 			</Avatar>
 			<input
 				ref={input}

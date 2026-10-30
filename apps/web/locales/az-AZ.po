@@ -1135,8 +1135,8 @@ msgstr "Nailiyyət"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Hesab"
 
@@ -1267,10 +1267,6 @@ msgstr "Etiket əlavə edin"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Etiket əlavə edin və Enter basın…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AI provayderi əlavə edin"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Könüllülük əlavə edin"
 msgid "Add what happened before you can save."
 msgstr "Yadda saxlamazdan əvvəl nə baş verdiyini əlavə edin."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Adınızı əlavə edin"
@@ -1571,13 +1571,6 @@ msgstr "İlk baxışınızdan sonra bu həftə üçün yüngül plan burada gör
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "Tələblərinizlə müqayisədə"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI və inkişaf etdirici"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Cavablar kopyalandı"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI uyğun"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Hər yerdə"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Tətbiq"
 msgid "App navigation"
 msgstr "Tətbiq naviqasiyası"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Görünüş"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, Kommunikasiya Dizaynı"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Geri"
 
@@ -3068,10 +3063,6 @@ msgstr "Proqramı birləşdirin"
 msgid "Connect another…"
 msgstr "Başqasını birləşdirin..."
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Yazmaq, iş axtarmaq və CV-lərinizlə işləmək üçün istifadə etdiyiniz alətləri birləşdirin."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Dil modelinin siyahı qeydlərinizi oxuması və yenidən yazmağı təklif etməsi üçün öz AI provayderinizi birləşdirin. Problemlər və İş uyğunluğu provayderə ehtiyac duymur."
@@ -3685,7 +3676,7 @@ msgstr "Hekayəni saxlamaq mümkün olmadı. Yenidən cəhd edin."
 msgid "Couldn't save the tags. Try again."
 msgstr "Teqləri saxlamaq mümkün olmadı. Yenidən cəhd edin."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Saat qurşağını saxlamaq mümkün olmadı. Yenidən cəhd edin."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Daxil olmaq mümkün olmadı. Yenidən cəhd edin."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Çıxış etmək mümkün olmadı. Yenidən cəhd edin."
@@ -3976,6 +3966,10 @@ msgstr "Yaradılıb"
 msgid "Created “{finalName}”"
 msgstr "“{finalName}” yaradıldı"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "30 gün ərzində gündəlik baxışlar, pik {0}"
 msgid "Danish"
 msgstr "Danimarka"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Tünd"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Müddəti bitir"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "işin dəyərini azaltmadan ölçmənin bir məhdudiyyətini aydın izah edin."
@@ -5540,6 +5536,10 @@ msgstr "Tam adı"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Tam en"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "İnteqrasiyalar"
 msgid "Interests"
 msgstr "Maraqlar"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "İnterfeys dili"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Yalnız interfeys. Hər bir rezyume Dizaynda öz dilini təyin edir."
 
@@ -6147,7 +6147,7 @@ msgstr "Müsahibə saxlanıldı"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Müsahibə saxlanıldı · brifinq {0} vaxtına keçirildi"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Karyeradakı müsahibə vaxtları, xatırlatmalar və cədvəllər bundan istifadə edir."
 
@@ -6428,10 +6428,9 @@ msgstr "Olduğu kimi saxlanılır"
 msgid "Kept yours"
 msgstr "Sizinki saxlanıldı"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Açar {0} ilə bitir"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Etiket, məs. İşə götürən"
 msgid "Landscape"
 msgstr "Landşaft"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Dil"
@@ -6526,6 +6523,10 @@ msgstr "Son redaktə"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Son istifadə olunub"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "<0>MIT</0> lisenziyası altında"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Liqaturalar \"workflow\" kimi sözlərdən hərfləri itirə bilər."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Açıq"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP serveri"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Bu iş elanında heç bir termin seçilmir."
 msgid "No text could be read from this file."
 msgstr "Bu fayldan heç bir mətn oxuna bilmədi."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Uyğun saat qurşağı yoxdur."
 
@@ -7967,10 +7970,6 @@ msgstr "Qiymətləndirilməyib"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Seçilməyib"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Qurulmayıb"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Tək sütunu üstün tutun, ya da yan sütunu qısa, müstəqil siyahıl
 msgid "Preference"
 msgstr "Tərcih"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Tərcihlər"
 
@@ -9912,7 +9907,7 @@ msgstr "CV təqdim edildi (isteğe bağlı)"
 msgid "Resumes"
 msgstr "CV-lər"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "Mövzu nə olursa olsun, rezyumelər həmişə ağ kağızda göstərilir."
 
@@ -9995,10 +9990,9 @@ msgstr "Nəzərdən keçirmə üçün AI bağlantısı lazımdır. <0>Parametrl�
 msgid "Revoke"
 msgstr "Ləğv et"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0} ləğv edin"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Rol, şirkət və ya əlaqə axtarın"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Saat qurşaqlarında axtar"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Autentifikator tətbiqinizi qurun"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Parametrlər"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Barmaq izi, üz və ya cihaz PIN kodu ilə daxil olun"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Çıxış"
@@ -11539,8 +11532,6 @@ msgstr "Bir sütuna keçdi"
 msgid "Synced changes made in another tab."
 msgstr "Başqa bir sekmede sinxronlaşdırılmış dəyişikliklər edildi."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Əməliyyat sistemi"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Saxlanmış açar yeni əsas URL-ə göndərilmir. Açarı yenidən daxil edin."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Yadda saxlanmış provayder açarı deşifrə edilə bilməz. Açarı yenidən Parametrlər → AI və tərtibatçıya daxil edin."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Mətn oxunmaz şəkildə çıxır."
 msgid "The top of the first page does not look like a name."
 msgstr "Birinci səhifənin yuxarı hissəsi ad kimi görünmür."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Mövzu"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Vaxtlar {timeZone} üzrə göstərilir."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Saat qurşağı"
 
@@ -12968,7 +12958,7 @@ msgstr "Standart başlıqdan istifadə edin"
 msgid "Use these answers"
 msgstr "Bu cavablardan istifadə et"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Bu cihazın saat qurşağından istifadə et ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Dəyişikliyi təsdiqləmək üçün {currentEmail} ünvanına keçid g�
 msgid "We sent a new verification link to {0}."
 msgstr "{0}-a yeni doğrulama linki göndərdik."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Veb girişi"

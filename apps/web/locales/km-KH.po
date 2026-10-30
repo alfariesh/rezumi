@@ -1135,8 +1135,8 @@ msgstr "សមិទ្ធផល"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "គណនី"
 
@@ -1267,10 +1267,6 @@ msgstr "បន្ថែមស្លាក"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "បន្ថែមស្លាក ហើយចុច Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "បន្ថែមអ្នកផ្តល់សេវា AI"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "បន្ថែមការស្ម័គ្រចិត្ត"
 msgid "Add what happened before you can save."
 msgstr "បន្ថែមអ្វីដែលបានកើតឡើង ទើបអាចរក្សាទុកបាន។"
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "បន្ថែមឈ្មោះរបស់អ្នក។"
@@ -1571,13 +1571,6 @@ msgstr "បន្ទាប់ពីការពិនិត្យលើកដំ
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "ធៀបនឹងតម្រូវការរបស់អ្នក"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI និងអ្នកអភិវឌ្ឍន៍"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "បានចម្លងចម្លើយ"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI-ត្រូវគ្នា"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "កន្លែងណាក៏បាន"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "កម្មវិធី"
 msgid "App navigation"
 msgstr "ការរុករកកម្មវិធី"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "រូបរាង"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, រចនាទំនាក់ទំនង"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "ត្រឡប់មកវិញ"
 
@@ -3068,10 +3063,6 @@ msgstr "ភ្ជាប់កម្មវិធី"
 msgid "Connect another…"
 msgstr "ភ្ជាប់មួយផ្សេងទៀត…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "ភ្ជាប់ឧបករណ៍ដែលអ្នកប្រើសម្រាប់ការសរសេរ ការស្វែងរកការងារ និងធ្វើការជាមួយប្រវត្តិរូបសង្ខេបរបស់អ្នក។"
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "ភ្ជាប់អ្នកផ្តល់សេវា AI ផ្ទាល់ខ្លួនរបស់អ្នកដើម្បីឱ្យមានគំរូភាសាអានធាតុបញ្ជីរបស់អ្នក និងស្នើឱ្យសរសេរឡើងវិញ។ បញ្ហា និងការផ្គូផ្គងការងារមិនត្រូវការអ្នកផ្តល់សេវាទេ។"
@@ -3685,7 +3676,7 @@ msgstr "មិនអាចរក្សាទុករឿងបានទេ។ �
 msgid "Couldn't save the tags. Try again."
 msgstr "មិនអាចរក្សាទុកស្លាកបានទេ។ ព្យាយាមម្តងទៀត។"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "មិនអាចរក្សាទុកតំបន់ពេលវេលាបានទេ។ ព្យាយាមម្តងទៀត។"
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "មិនអាចចូលបានទេ។ ព្យាយាមម្តងទៀត។"
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "មិនអាចចេញពីគណនីបានទេ។ ព្យាយាមម្តងទៀត។"
@@ -3976,6 +3966,10 @@ msgstr "បាន​បង្កើត"
 msgid "Created “{finalName}”"
 msgstr "បានបង្កើត \"{finalName}\""
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "ការមើលប្រចាំថ្ងៃលើសពី 30 ថ�
 msgid "Danish"
 msgstr "Danish"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "ងងឹត"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "ផុតកំណត់"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "ពន្យល់ដែនកំណត់មួយនៃការវាស់វែងឱ្យច្បាស់ ដោយមិនបន្ទាបតម្លៃការងារ។"
@@ -5540,6 +5536,10 @@ msgstr "ឈ្មោះពេញ"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "ទទឹងពេញ"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "ការរួមបញ្ចូល"
 msgid "Interests"
 msgstr "ចំណាប់អារម្មណ៍"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "ភាសាចំណុចប្រទាក់"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "ចំណុចប្រទាក់តែប៉ុណ្ណោះ។ ប្រវត្តិរូបសង្ខេបនីមួយៗកំណត់ភាសារបស់ខ្លួននៅក្នុងការរចនា។"
 
@@ -6147,7 +6147,7 @@ msgstr "បានរក្សាទុកការសម្ភាសន៍"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "បានរក្សាទុកការសម្ភាសន៍ · ឯកសារសង្ខេបផ្លាស់ទៅ {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "ម៉ោងសម្ភាសន៍ ការរំលឹក និងកាលវិភាគក្នុងអាជីព ប្រើវា។"
 
@@ -6428,10 +6428,9 @@ msgstr "រក្សា​ទុក​ដូច​ជា"
 msgid "Kept yours"
 msgstr "បានរក្សារបស់អ្នក"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "ការបញ្ចប់គន្លឹះនៅក្នុង {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "ស្លាក, ឧ។ អ្នកជ្រើសរើសបុគ្
 msgid "Landscape"
 msgstr "ផ្ទៃ​ទេសភាព"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "ភាសា"
@@ -6526,6 +6523,10 @@ msgstr "កែប្រែចុងក្រោយ"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "ប្រើចុងក្រោយ"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "មានអាជ្ញាប័ណ្ណក្រោម <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "តួអក្សរភ្ជាប់អាចធ្វើឱ្យអក្សរបាត់ចេញពីពាក្យដូចជា \"workflow\"។"
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "ភ្លឺ"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "ម៉ាស៊ីនមេ MCP"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "គ្មានលក្ខខណ្ឌណាមួយលេចធ្ល
 msgid "No text could be read from this file."
 msgstr "មិនអាចអានអត្ថបទណាមួយពីឯកសារនេះបានទេ។"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "គ្មានតំបន់ពេលវេលាដែលត្រូវគ្នាទេ។"
 
@@ -7967,10 +7970,6 @@ msgstr "មិនបានដាក់ពិន្ទុ"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "មិនបានជ្រើសរើស"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "មិនបានដំឡើង"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "ចូលចិត្តជួរឈរតែមួយ ឬរក្ស�
 msgid "Preference"
 msgstr "ចំណង់ចំណូលចិត្ត"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "ចំណង់ចំណូលចិត្ត"
 
@@ -9912,7 +9907,7 @@ msgstr "ប្រវត្តិរូបសង្ខេបត្រូវបា
 msgid "Resumes"
 msgstr "ប្រវត្តិរូបសង្ខេប"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "ប្រវត្តិរូបសង្ខេបតែងតែបង្ហាញនៅលើក្រដាសស មិនថាប្រធានបទអ្វីក៏ដោយ។"
 
@@ -9995,10 +9990,9 @@ msgstr "ការពិនិត្យត្រូវការការតភ្
 msgid "Revoke"
 msgstr "ដកហូត"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "ដកហូត {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "ស្វែងរកតួនាទី ក្រុមហ៊ុន ឬ�
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "ស្វែងរកតំបន់ពេលវេលា"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "រៀបចំកម្មវិធីផ្ទៀងផ្ទាត់អត្តសញ្ញាណរបស់អ្នក"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "ការកំណត់"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "ចូលដោយប្រើស្នាមម្រាមដៃ មុខ ឬលេខ PIN ឧបករណ៍របស់អ្នក។"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "ចាកចេញ"
@@ -11539,8 +11532,6 @@ msgstr "បានប្តូរទៅជួរឈរមួយ។"
 msgid "Synced changes made in another tab."
 msgstr "ការ​ផ្លាស់ប្ដូរ​ដែល​បាន​ធ្វើ​សមកាលកម្ម​បាន​ធ្វើ​ឡើង​នៅ​ក្នុង​ផ្ទាំង​ផ្សេង​ទៀត។"
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "ប្រព័ន្ធប្រតិបត្តិការ"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "សោដែលបានរក្សាទុកមិនត្រូវបានផ្ញើទៅកាន់ URL មូលដ្ឋានថ្មីទេ។ បញ្ចូលសោម្តងទៀត។"
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "សោអ្នកផ្តល់សេវាដែលបានរក្សាទុកមិនអាចឌិគ្រីបបានទេ។ បញ្ចូលសោម្តងទៀតនៅក្នុងការកំណត់ → AI & developer ។"
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "អត្ថបទចេញមកមិនអាចអានបានទ
 msgid "The top of the first page does not look like a name."
 msgstr "ផ្នែកខាងលើនៃទំព័រទីមួយមិនមើលទៅដូចជាឈ្មោះទេ។"
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "ស្បែក"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "ពេលវេលាត្រូវបានបង្ហាញតាម {timeZone}។"
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "តំបន់ពេលវេលា"
 
@@ -12968,7 +12958,7 @@ msgstr "ប្រើចំណងជើងស្តង់ដារ"
 msgid "Use these answers"
 msgstr "ប្រើចម្លើយទាំងនេះ"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "ប្រើតំបន់ពេលវេលារបស់ឧបករណ៍នេះ ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "យើងបានផ្ញើតំណទៅ {currentEmail} ដើម�
 msgid "We sent a new verification link to {0}."
 msgstr "យើងបានផ្ញើតំណផ្ទៀងផ្ទាត់ថ្មីទៅ {0} ។"
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "ការចូលប្រើគេហទំព័រ"

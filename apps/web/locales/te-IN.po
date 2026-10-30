@@ -1135,8 +1135,8 @@ msgstr "విజయం"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "ఖాతా"
 
@@ -1267,10 +1267,6 @@ msgstr "ట్యాగ్‌ని జోడించండి"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "ట్యాగ్‌ను జోడించి Enter నొక్కండి…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AI ప్రొవైడర్‌ని జోడించండి"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "స్వచ్ఛంద సేవను జోడించండి"
 msgid "Add what happened before you can save."
 msgstr "సేవ్ చేసే ముందు ఏమి జరిగిందో జోడించండి."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "మీ పేరును జోడించండి"
@@ -1571,13 +1571,6 @@ msgstr "మీ మొదటి సమీక్ష తర్వాత, ఈ వా
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "మీ అవసరాలతో పోలిస్తే"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI & డెవలపర్"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "సమాధానాలు కాపీ చేయబడ్డాయి"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI-అనుకూలమైనది"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "ఎక్కడైనా"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "యాప్"
 msgid "App navigation"
 msgstr "యాప్ నావిగేషన్"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "స్వరూపం"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, కమ్యూనికేషన్ డిజైన్"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "వెనుకకు"
 
@@ -3068,10 +3063,6 @@ msgstr "అప్లికేషన్‌ను కనెక్ట్ చేయ�
 msgid "Connect another…"
 msgstr "మరొకటి కనెక్ట్ చేయండి…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "మీ రెజ్యూమ్‌లతో రాయడం, ఉద్యోగ శోధన మరియు పని కోసం మీరు ఉపయోగించే సాధనాలను కనెక్ట్ చేయండి."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "మీ జాబితా ఎంట్రీలను చదవడానికి మరియు తిరిగి వ్రాయడాన్ని సూచించడానికి భాషా నమూనాను కలిగి ఉండటానికి మీ స్వంత AI ప్రొవైడర్‌ను కనెక్ట్ చేయండి. సమస్యలు మరియు ఉద్యోగ సరిపోలికలకు ప్రొవైడర్ అవసరం లేదు."
@@ -3685,7 +3676,7 @@ msgstr "కథను సేవ్ చేయడం సాధ్యపడలేద
 msgid "Couldn't save the tags. Try again."
 msgstr "ట్యాగ్‌లను సేవ్ చేయడం సాధ్యపడలేదు. మళ్ళీ ప్రయత్నించండి."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "టైమ్ జోన్‌ను సేవ్ చేయడం సాధ్యపడలేదు. మళ్ళీ ప్రయత్నించండి."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "సైన్ ఇన్ చేయడం సాధ్యపడలేదు. మళ్ళీ ప్రయత్నించండి."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "సైన్ అవుట్ చేయడం సాధ్యపడలేదు. మళ్ళీ ప్రయత్నించండి."
@@ -3976,6 +3966,10 @@ msgstr "సృష్టించబడింది"
 msgid "Created “{finalName}”"
 msgstr "\"{finalName}\" సృష్టించబడింది"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "30 రోజులలో రోజువారీ వీక్షణల�
 msgid "Danish"
 msgstr "డానిష్"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "చీకటి"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "గడువు ముగుస్తుంది"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "పనిని తక్కువ చేయకుండా, కొలమానంలోని ఒక పరిమితిని స్పష్టంగా వివరించండి."
@@ -5540,6 +5536,10 @@ msgstr "పూర్తి పేరు"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "పూర్తి వెడల్పు"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "సంయోజనాలు"
 msgid "Interests"
 msgstr "అభిరుచులు"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "ఇంటర్ఫేస్ భాష"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "ఇంటర్ఫేస్ మాత్రమే. ప్రతి రెజ్యూమే డిజైన్‌లో దాని స్వంత భాషను సెట్ చేస్తుంది."
 
@@ -6147,7 +6147,7 @@ msgstr "ఇంటర్వ్యూ సేవ్ చేయబడింది"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "ఇంటర్వ్యూ సేవ్ చేయబడింది · బ్రీఫింగ్ {0}కి మారుతుంది"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "కెరీర్‌లోని ఇంటర్వ్యూ సమయాలు, రిమైండర్‌లు, షెడ్యూల్‌లు దీన్ని ఉపయోగిస్తాయి."
 
@@ -6428,10 +6428,9 @@ msgstr "అలాగే ఉంచారు"
 msgid "Kept yours"
 msgstr "మీది ఉంచబడింది"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "{0}లో కీ ముగుస్తుంది"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "లేబుల్, ఉదా. రిక్రూటర్"
 msgid "Landscape"
 msgstr "ల్యాండ్‌స్కేప్"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "భాష"
@@ -6526,6 +6523,10 @@ msgstr "చివరిగా సవరించబడింది"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "చివరిగా ఉపయోగించబడింది"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "<0>MIT</0> లైసెన్స్ కింద"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "లిగేచర్లు \"workflow\" వంటి పదాల నుండి అక్షరాలను వదిలేయగలవు."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "లైట్"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP సర్వర్"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "ఈ ఉద్యోగ పోస్టింగ్‌లో ఎటువ
 msgid "No text could be read from this file."
 msgstr "ఈ ఫైల్ నుండి టెక్స్ట్ చదవలేకపోయాం."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "ఏ టైమ్ జోన్ సరిపోలలేదు."
 
@@ -7967,10 +7970,6 @@ msgstr "స్కోర్ చేయలేదు"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "ఎంపిక కాలేదు"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "ఏర్పాటు చేయలేదు"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "సింగిల్ కాలమ్‌కు ప్రాధాన్�
 msgid "Preference"
 msgstr "ప్రాధాన్యత"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "ప్రాధాన్యతలు"
 
@@ -9912,7 +9907,7 @@ msgstr "రెజ్యూమ్ సమర్పించబడింది (ఐ
 msgid "Resumes"
 msgstr "రిజ్యూమ్స్"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "రెజ్యూమెలు ఎల్లప్పుడూ తెలుపు కాగితంపై రెండర్, థీమ్ ఏదైనప్పటికీ."
 
@@ -9995,10 +9990,9 @@ msgstr "సమీక్షకు AI కనెక్షన్ అవసరం. <0
 msgid "Revoke"
 msgstr "ఉపసంహరించుకోండి"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0}ని రద్దు చేయండి"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "శోధన పాత్ర, కంపెనీ లేదా పరి�
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "టైమ్ జోన్‌లను వెతుకు"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "మీ ఆథెంటికేటర్ యాప్‌ను సెటప్ చేయండి"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "సెట్టింగులు"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "మీ వేలిముద్ర, ముఖం లేదా పరికర పిన్‌తో సైన్ ఇన్ చేయండి"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "సైన్ అవుట్"
@@ -11539,8 +11532,6 @@ msgstr "ఒక నిలువు వరుసకు మార్చబడిం
 msgid "Synced changes made in another tab."
 msgstr "మరొక ట్యాబ్‌లో చేసిన మార్పులు సింక్ చేయబడ్డాయి."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "ఆపరేటింగ్ సిస్టమ్"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "సేవ్ చేయబడిన కీ కొత్త బేస్ URLకి పంపబడదు. కీని మళ్లీ నమోదు చేయండి."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "సేవ్ చేయబడిన ప్రొవైడర్ కీని డీక్రిప్ట్ చేయడం సాధ్యపడదు. సెట్టింగ్‌లు → AI & డెవలపర్‌లో మళ్లీ కీని నమోదు చేయండి."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "టెక్స్ట్ చదవలేనిదిగా వస్త�
 msgid "The top of the first page does not look like a name."
 msgstr "మొదటి పేజీ పైభాగం పేరులా కనిపించడం లేదు."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "థీమ్"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "సమయాలు {timeZone}లో చూపబడతాయి."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "టైమ్ జోన్"
 
@@ -12968,7 +12958,7 @@ msgstr "ప్రామాణిక శీర్షికను ఉపయోగ�
 msgid "Use these answers"
 msgstr "ఈ సమాధానాలను ఉపయోగించు"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "ఈ పరికరం టైమ్ జోన్‌ను ఉపయోగించు ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "మార్పును ఆమోదించడానికి మే�
 msgid "We sent a new verification link to {0}."
 msgstr "మేము {0}కి కొత్త ధృవీకరణ లింక్‌ని పంపాము."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "వెబ్ యాక్సెస్"

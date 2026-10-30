@@ -528,7 +528,7 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 			{canDraft && !providerState.isUnavailable && !hasUsableProvider && (
 				<p className="text-xs text-muted">
 					<Trans>Drafting needs an AI provider.</Trans>{" "}
-					<RouterLink to="/dashboard/settings/ai" className="link text-xs">
+					<RouterLink to="/dashboard/settings/app" hash="ai-providers" className="link text-xs">
 						<Trans>Open AI settings</Trans>
 					</RouterLink>
 				</p>

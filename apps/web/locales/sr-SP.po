@@ -1135,8 +1135,8 @@ msgstr "Достигнуће"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Налог"
 
@@ -1267,10 +1267,6 @@ msgstr "Додајте ознаку"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Додајте ознаку и притисните Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "Додајте АИ провајдера"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Додајте волонтирање"
 msgid "Add what happened before you can save."
 msgstr "Додајте шта се догодило пре него што сачувате."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Додајте своје име"
@@ -1571,13 +1571,6 @@ msgstr "После вашег првог прегледа, овде се пој�
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "У односу на ваше захтеве"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "АИ и програмер"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Одговори копирани"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Компатибилни са Anthropic, Gemini, Ollama, OpenAI"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Било где"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Апликација"
 msgid "App navigation"
 msgstr "Навигација апликације"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Изглед"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "БА, комуникациони дизајн"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Назад"
 
@@ -3068,10 +3063,6 @@ msgstr "Повежите апликацију"
 msgid "Connect another…"
 msgstr "Повежите другу…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Повежите алате које користите за писање, тражење посла и рад са својим биографијама."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Повежите свог АИ провајдера да би језички модел прочитао ваше уносе на листи и предложио преписивање. Проблеми и подударање посла не захтевају добављача."
@@ -3685,7 +3676,7 @@ msgstr "Није могуће сачувати причу. Покушајте п
 msgid "Couldn't save the tags. Try again."
 msgstr "Није могуће сачувати ознаке. Покушајте поново."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Није могуће сачувати временску зону. Покушајте поново."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Пријављивање није успело. Покушајте поново."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Одјављивање није успело. Покушајте поново."
@@ -3976,6 +3966,10 @@ msgstr "Креирано"
 msgid "Created “{finalName}”"
 msgstr "Направљено „{finalName}“"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Дневни прегледи током 30 дана, врхунац {0}
 msgid "Danish"
 msgstr "Дански"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Тамна"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Истиче"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "јасно објасните једно ограничење мерења, а да не потцените рад."
@@ -5540,6 +5536,10 @@ msgstr "Пуно име"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Пуна ширина"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Интеграције"
 msgid "Interests"
 msgstr "Интересовања"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Језик интерфејса"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Само интерфејс. Сваки резиме поставља свој језик у дизајну."
 
@@ -6147,7 +6147,7 @@ msgstr "Интервју сачуван"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Интервју сачуван · брифинг се помера на {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Користе је времена интервјуа, подсетници и распореди у Каријери."
 
@@ -6428,10 +6428,9 @@ msgstr "Одржано како јесте"
 msgid "Kept yours"
 msgstr "Задржана ваша верзија"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Кључ се завршава на {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Ознака, нпр. Регрутер"
 msgid "Landscape"
 msgstr "Пејзаж"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Језик"
@@ -6526,6 +6523,10 @@ msgstr "Последње измењено"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Последње коришћено"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "Лиценцирано под <0>MIT</0> лиценцом"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Лигатуре могу да избаце слова из речи попут „workflow“."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Светла"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP сервер"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Ниједан термин се није истакао у овом о�
 msgid "No text could be read from this file."
 msgstr "Из ове датотеке није могао да се прочита никакав текст."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Ниједна временска зона се не поклапа."
 
@@ -7967,10 +7970,6 @@ msgstr "Није оцењено"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Није изабрано"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Није постављено"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Дајте предност једној колони, или задрж
 msgid "Preference"
 msgstr "Преференција"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Поставке"
 
@@ -9912,7 +9907,7 @@ msgstr "послати биографију (опционо)"
 msgid "Resumes"
 msgstr "Резимеи"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "резимеи се увек приказују на белом папиру, без обзира на тему."
 
@@ -9995,10 +9990,9 @@ msgstr "За преглед је потребна АИ веза. <0>Додајт
 msgid "Revoke"
 msgstr "Опозови"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "Опозовите {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Тражите улогу, компанију или контакт"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Претражи временске зоне"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Подесите апликацију за аутентификацију"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Подешавања"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Пријавите се помоћу отиска прста, лица или ПИН-а уређаја"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Одјава"
@@ -11539,8 +11532,6 @@ msgstr "Прешао на једну колону"
 msgid "Synced changes made in another tab."
 msgstr "Синхронизоване измене направљене на другој картици."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Оперативни систем"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Сачувани кључ се не шаље на нову основну УРЛ адресу. Поново унесите кључ."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Сачувани кључ провајдера се не може дешифровати. Поново унесите кључ у Подешавања → АИ и програмер."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Текст излази нечитљив."
 msgid "The top of the first page does not look like a name."
 msgstr "Врх прве странице не изгледа као име."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Тема"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Времена су приказана у зони {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Временска зона"
 
@@ -12968,7 +12958,7 @@ msgstr "Користите стандардни наслов"
 msgid "Use these answers"
 msgstr "Користи ове одговоре"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Користи временску зону овог уређаја ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Послали смо везу на {currentEmail} за одобрава
 msgid "We sent a new verification link to {0}."
 msgstr "Послали смо нову везу за верификацију на {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Веб приступ"

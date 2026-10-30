@@ -1135,8 +1135,8 @@ msgstr "उपलब्धि"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "खाता"
 
@@ -1267,10 +1267,6 @@ msgstr "ट्याग थप्नुहोस्"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "ट्याग थप्नुहोस् र Enter थिच्नुहोस्…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AI प्रदायक थप्नुहोस्"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "स्वयंसेवा थप्नुहोस्"
 msgid "Add what happened before you can save."
 msgstr "सुरक्षित गर्नुअघि के भयो थप्नुहोस्।"
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "आफ्नो नाम थप्नुहोस्"
@@ -1571,13 +1571,6 @@ msgstr "तपाईंको पहिलो समीक्षापछि, �
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "तपाईंका आवश्यकताहरूसँग तुलना"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "एआई र विकासकर्ता"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "जवाफहरू प्रतिलिपि गरिए"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI- संगत"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "जहाँ पनि"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "एप"
 msgid "App navigation"
 msgstr "एप नेभिगेसन"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "उपस्थिति"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "बीए, कम्युनिकेशन डिजाइन"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "पछाडि"
 
@@ -3068,10 +3063,6 @@ msgstr "एप्लिकेसन जडान गर्नुहोस्"
 msgid "Connect another…"
 msgstr "अर्को जडान गर्नुहोस्..."
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "तपाईंले लेखन, जागिर खोजी र आफ्नो रिजुमेहरूसँग काम गर्न प्रयोग गर्ने उपकरणहरू जडान गर्नुहोस्।"
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "तपाईंको आफ्नै AI प्रदायकलाई एक भाषा मोडेलसँग तपाईंको सूची प्रविष्टिहरू पढ्न र पुन: लेख्न सुझाव दिन जडान गर्नुहोस्। मुद्दाहरू र काम मिलाउन कुनै प्रदायकको आवश्यकता छैन।"
@@ -3685,7 +3676,7 @@ msgstr "कथा सुरक्षित गर्न सकिएन। प�
 msgid "Couldn't save the tags. Try again."
 msgstr "ट्यागहरू सुरक्षित गर्न सकिएन। पुन: प्रयास गर्नुहोस्।"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "समय क्षेत्र सुरक्षित गर्न सकिएन। पुन: प्रयास गर्नुहोस्।"
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "साइन इन गर्न सकिएन। पुन: प्रयास गर्नुहोस्।"
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "साइन आउट गर्न सकिएन। पुन: प्रयास गर्नुहोस्।"
@@ -3976,6 +3966,10 @@ msgstr "बनाइएको मिति"
 msgid "Created “{finalName}”"
 msgstr "\"{finalName}\" सिर्जना गरियो"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "३० दिनमा दैनिक हेराइहरू, शि�
 msgid "Danish"
 msgstr "डेनिस"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "डार्क"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "म्याद सकिन्छ"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "कामलाई कम नआँकी, मापनको एउटा सीमा स्पष्टसँग बताउनुहोस्।"
@@ -5540,6 +5536,10 @@ msgstr "पूरा नाम"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "पूर्ण चौडाइ"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "एकीकरणहरू"
 msgid "Interests"
 msgstr "रुचिहरू"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "इन्टरफेस भाषा"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "इन्टरफेस मात्र। प्रत्येक रिज्युमले डिजाइनमा आफ्नै भाषा सेट गर्दछ।"
 
@@ -6147,7 +6147,7 @@ msgstr "अन्तर्वार्ता सुरक्षित गरि�
 msgid "Interview saved · briefing moves to {0}"
 msgstr "अन्तर्वार्ता सुरक्षित गरियो · ब्रिफिङ {0} मा सारियो"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "करियरका अन्तर्वार्ता समय, रिमाइन्डर र तालिकाहरूले यो प्रयोग गर्छन्।"
 
@@ -6428,10 +6428,9 @@ msgstr "जस्तो छ त्यस्तै राखियो"
 msgid "Kept yours"
 msgstr "तपाईंकै राखियो"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "कुञ्जी {0} मा समाप्त हुन्छ"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "लेबल, उदाहरण भर्तीकर्ता"
 msgid "Landscape"
 msgstr "ल्यान्डस्केप"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "भाषा"
@@ -6526,6 +6523,10 @@ msgstr "पछिल्लो पटक सम्पादन गरिएको
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "पछिल्लो पटक प्रयोग गरियो"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "<0>MIT</0> अन्तर्गत इजाजतपत्र प्�
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "लिगेचरले \"workflow\" जस्ता शब्दबाट अक्षरहरू हटाउन सक्छ।"
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "ल्याइट"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP सर्भर"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "यो जागिर पोस्टिङमा कुनै सर�
 msgid "No text could be read from this file."
 msgstr "यो फाइलबाट कुनै पाठ पढ्न सकिएन।"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "कुनै समय क्षेत्र मेल खाएन।"
 
@@ -7967,10 +7970,6 @@ msgstr "स्कोर गरिएको छैन"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "चयन गरिएको छैन"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "सेटअप गरिएको छैन"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "एकल स्तम्भ रोज्नुहोस्, वा छ�
 msgid "Preference"
 msgstr "प्राथमिकता"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "प्राथमिकता (Preferences)"
 
@@ -9912,7 +9907,7 @@ msgstr "रिजुमे पेश गरियो (वैकल्पिक)"
 msgid "Resumes"
 msgstr "बायोडाटाहरू"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "रिज्युमहरू सधैं सेतो कागजमा रेन्डर हुन्छन्, विषयवस्तु जस्तोसुकै होस्।"
 
@@ -9995,10 +9990,9 @@ msgstr "समीक्षाका लागि AI जडान चाहिन
 msgid "Revoke"
 msgstr "रद्द गर्नुहोस्"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0} रद्द गर्नुहोस्"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "भूमिका, कम्पनी वा सम्पर्क ख�
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "समय क्षेत्रहरू खोज्नुहोस्"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "आफ्नो प्रमाणीकरण एप सेट अप गर्नुहोस्"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "सेटिङहरू"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "आफ्नो फिंगरप्रिन्ट, अनुहार वा यन्त्र PIN मार्फत साइन इन गर्नुहोस्"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "साइन आउट"
@@ -11539,8 +11532,6 @@ msgstr "एउटा स्तम्भमा स्विच गरियो"
 msgid "Synced changes made in another tab."
 msgstr "अर्को ट्याबमा गरिएका सिङ्क गरिएका परिवर्तनहरू।"
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "अपरेटिङ सिस्टम"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "बचत गरिएको कुञ्जी नयाँ आधार URL मा पठाइएको छैन। फेरि कुञ्जी प्रविष्ट गर्नुहोस्।"
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "सुरक्षित गरिएको प्रदायक कुञ्जी डिक्रिप्ट गर्न सकिँदैन। सेटिङहरू → AI र विकासकर्तामा फेरि कुञ्जी प्रविष्ट गर्नुहोस्।"
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "पाठ पढ्न नसकिने अवस्थामा आ�
 msgid "The top of the first page does not look like a name."
 msgstr "पहिलो पृष्ठको माथिल्लो भाग नाम जस्तो देखिँदैन।"
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "थिम"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "समयहरू {timeZone} मा देखाइन्छन्।"
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "समय क्षेत्र"
 
@@ -12968,7 +12958,7 @@ msgstr "मानक शीर्षक प्रयोग गर्नुहो
 msgid "Use these answers"
 msgstr "यी जवाफहरू प्रयोग गर्नुहोस्"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "यो उपकरणको समय क्षेत्र प्रयोग गर्नुहोस् ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "परिवर्तन स्वीकृत गर्न हामी
 msgid "We sent a new verification link to {0}."
 msgstr "हामीले {0} मा नयाँ प्रमाणीकरण लिङ्क पठाएका छौं।"
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "वेब पहुँच"

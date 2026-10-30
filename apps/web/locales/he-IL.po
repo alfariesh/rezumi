@@ -1135,8 +1135,8 @@ msgstr "הישג"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "חשבון"
 
@@ -1267,10 +1267,6 @@ msgstr "הוסף תג"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "הוסף תגית ולחץ Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "הוסף ספק AI"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "הוסף התנדבות"
 msgid "Add what happened before you can save."
 msgstr "תאר מה קרה כדי שתוכל לשמור."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "הוסף את שמך"
@@ -1571,13 +1571,6 @@ msgstr "אחרי הסקירה הראשונה שלך תופיע כאן תוכני
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "מול הדרישות שלך"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI ומפתח"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "התשובות הועתקו"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "תואם Anthropic, Gemini, Ollama, OpenAI"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "בְּכָל מָקוֹם"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "יישום"
 msgid "App navigation"
 msgstr "ניווט באפליקציה"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "הוֹפָעָה"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, עיצוב תקשורת"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "בְּחֲזָרָה"
 
@@ -3068,10 +3063,6 @@ msgstr "חבר אפליקציה"
 msgid "Connect another…"
 msgstr "חבר אחר..."
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "חבר את הכלים שבהם אתה משתמש לכתיבה, חיפוש עבודה ועבודה עם קורות החיים שלך."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "חבר את ספק הבינה המלאכותית שלך כדי שמודל שפה יקרא את ערכי הרשימה שלך ויציע שכתובים. בעיות והתאמה לעבודה אין צורך לספק."
@@ -3685,7 +3676,7 @@ msgstr "לא ניתן היה לשמור את הסיפור. נסה שוב."
 msgid "Couldn't save the tags. Try again."
 msgstr "לא ניתן היה לשמור את התגים. נסה שוב."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "לא ניתן היה לשמור את אזור הזמן. נסה שוב."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "לא ניתן היה להיכנס. נסה שוב."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "לא ניתן היה לצאת. נסה שוב."
@@ -3976,6 +3966,10 @@ msgstr "תאריך יצירה"
 msgid "Created “{finalName}”"
 msgstr "יצר את \"{finalName}\""
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "צפיות יומיות במשך 30 יום, שיא {0}"
 msgid "Danish"
 msgstr "דנית"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "כהה"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "פג תוקף"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "הסבר בבירור מגבלה אחת של המדידה, בלי להמעיט בערך העבודה."
@@ -5540,6 +5536,10 @@ msgstr "שם מלא"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "רוחב מלא"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "שילובים"
 msgid "Interests"
 msgstr "תחביבים"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "שפת ממשק"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "ממשק בלבד. כל קורות חיים קובעים את השפה שלו בעיצוב."
 
@@ -6147,7 +6147,7 @@ msgstr "הראיון נשמר"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "הראיון נשמר · התדריך עובר ל-{0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "שעות הראיונות, התזכורות והתזמונים בקריירה משתמשים בו."
 
@@ -6428,10 +6428,9 @@ msgstr "נשמר כמו שהוא"
 msgid "Kept yours"
 msgstr "הגרסה שלך נשמרה"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "המפתח מסתיים ב-{0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "תווית, למשל. מגייסת"
 msgid "Landscape"
 msgstr "לרוחב"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "שפה"
@@ -6526,6 +6523,10 @@ msgstr "נערך לאחרונה"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "בשימוש אחרון"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "ברישיון <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ליגטורות עלולות להשמיט אותיות ממילים כמו ״workflow״."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "בהירה"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "שרת MCP"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "שום מונח לא בלטו בפרסום דרושים זה."
 msgid "No text could be read from this file."
 msgstr "לא ניתן היה לקרוא טקסט מהקובץ הזה."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "אין אזור זמן תואם."
 
@@ -7967,10 +7970,6 @@ msgstr "ללא ציון"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "לא נבחר"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "לא מוגדר"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "עדיף עמודה אחת, או שמור על העמודה הצדדית
 msgid "Preference"
 msgstr "העדפה"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "העדפות"
 
@@ -9912,7 +9907,7 @@ msgstr "קורות חיים נשלחו (אופציונלי)"
 msgid "Resumes"
 msgstr "מסמכי קורות חיים"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "קורות חיים תמיד מוצגים על נייר לבן, לא משנה מה הנושא."
 
@@ -9995,10 +9990,9 @@ msgstr "סקירה דורשת חיבור AI. <0>הוסף חיבור בהגדרו
 msgid "Revoke"
 msgstr "לְבַטֵל"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "בטל את {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "חפש תפקיד, חברה או איש קשר"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "חפש אזורי זמן"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "הגדר את אפליקציית המאמת שלך"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "הגדרות"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "היכנס באמצעות טביעת האצבע, הפנים או ה-PIN של המכשיר"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "התנתקות"
@@ -11539,8 +11532,6 @@ msgstr "עבר לעמודה אחת"
 msgid "Synced changes made in another tab."
 msgstr "שינויים מסונכרנים שבוצעו בכרטיסייה אחרת."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "מַעֲרֶכֶת הַפעָלָה"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "המפתח השמור לא נשלח לכתובת אתר בסיס חדשה. הזן שוב את המפתח."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "לא ניתן לפענח את מפתח הספק השמור. הזן שוב את המפתח בהגדרות ← AI ומפתח."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "הטקסט יוצא בלתי קריא."
 msgid "The top of the first page does not look like a name."
 msgstr "ראש העמוד הראשון לא נראה כמו שם."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "ערכת עיצוב"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "השעות מוצגות לפי {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "אזור זמן"
 
@@ -12968,7 +12958,7 @@ msgstr "השתמש בכותרת הרגילה"
 msgid "Use these answers"
 msgstr "השתמש בתשובות האלה"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "השתמש באזור הזמן של המכשיר הזה ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "שלחנו קישור אל {currentEmail} כדי לאשר את השינ�
 msgid "We sent a new verification link to {0}."
 msgstr "שלחנו קישור אימות חדש אל {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "גישה לאינטרנט"

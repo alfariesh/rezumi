@@ -28,7 +28,7 @@ export function useNow(intervalMs = 60_000) {
 
 const capitalize = (text: string) => text.charAt(0).toLocaleUpperCase() + text.slice(1);
 
-/** Formatters in the user's timezone (Settings → Preferences) and interface locale. */
+/** Formatters in the user's timezone (Settings → General) and interface locale. */
 export function useCareerTime() {
 	const { i18n } = useLingui();
 	const { session } = useRouteContext({ strict: false });

@@ -1,4 +1,4 @@
-import { Button, buttonVariants, Input } from "@heroui/react";
+import { Button, buttonVariants, Input, linkVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -61,13 +61,10 @@ export function ForgotPasswordPage() {
 					<Trans>Forgot your password?</Trans>
 				</h1>
 
-				<div className="text-ink-3">
+				<div className="text-muted">
 					<Trans>
 						Remember your password?{" "}
-						<Link
-							to="/auth/login"
-							className="inline-flex items-center gap-1.5 px-1 text-link underline-offset-4 hover:underline"
-						>
+						<Link to="/auth/login" className={linkVariants().base({ className: "gap-1.5 px-1" })}>
 							<Trans comment="Call-to-action link from forgot-password page to login page">Sign in now</Trans>{" "}
 							<Icon name="arrow-right" size={16} />
 						</Link>
@@ -93,6 +90,7 @@ export function ForgotPasswordPage() {
 								render={
 									<Input
 										fullWidth
+										variant="secondary"
 										type="email"
 										autoComplete="email"
 										placeholder="john.doe@example.com"
@@ -124,7 +122,7 @@ function PostForgotPasswordScreen() {
 				<h1 className="text-2xl font-semibold tracking-tight">
 					<Trans>Check your email</Trans>
 				</h1>
-				<p className="text-ink-3">
+				<p className="text-muted">
 					<Trans>Check your email for a link to reset your password.</Trans>
 				</p>
 			</div>

@@ -235,7 +235,11 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 							<PrivacyLine>
 								<Trans>
 									Reviewing needs an AI connection.{" "}
-									<Link to="/dashboard/settings/ai" className="text-accent underline underline-offset-3">
+									<Link
+										to="/dashboard/settings/app"
+										hash="ai-providers"
+										className="text-accent underline underline-offset-3"
+									>
 										Add one in Settings
 									</Link>
 									. What you write here stays in this browser until then.
@@ -381,7 +385,7 @@ function zonedParts(at: Date, timeZone: string) {
 	};
 }
 
-/** The next `weekday` at 18:00 in the Preferences timezone; today when it's that day and 18:00 is still ahead. */
+/** The next `weekday` at 18:00 in the account timezone; today when it's that day and 18:00 is still ahead. */
 function nextEvening(weekday: (typeof WEEKDAYS)[number], now: Date, timeZone: string) {
 	const today = zonedParts(now, timeZone);
 	let ahead = (WEEKDAYS.indexOf(weekday) - today.weekday + 7) % 7;

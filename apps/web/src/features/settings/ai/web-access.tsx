@@ -1,5 +1,5 @@
 import { Segment } from "@heroui-pro/react";
-import { Button, Input, Label, Spinner } from "@heroui/react";
+import { Alert, Button, Chip, Description, Input, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -7,6 +7,8 @@ import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useHasUsableAiProvider } from "../integrations/hooks/use-has-usable-ai-provider";
+import { SettingsSection } from "../section";
+import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
@@ -57,29 +59,61 @@ export function WebAccessSection() {
 	};
 
 	return (
-		<section aria-labelledby={`${id}-title`} className="overflow-hidden rounded-xl border border-line bg-surface">
-			<header className="grid gap-1 border-b border-line px-5 py-4 max-sm:px-4">
-				<h2 id={`${id}-title`} className="text-[17px] font-semibold">
-					<Trans>Web access</Trans>
-				</h2>
-				<p className="max-w-[60ch] text-[13px] leading-5 text-ink-3">
-					<Trans>Read the job links you save. Saving and preparing jobs works without a connection.</Trans>
-				</p>
-			</header>
-
-			<div className="mx-5 flex items-start gap-3 border-b border-line py-4 max-sm:mx-4">
-				<Icon name="file-text" size={20} className="mt-0.5 shrink-0 text-ink-2" />
+		<SettingsSection
+			id="web-access"
+			title={<Trans>Web access</Trans>}
+			description={<Trans>Read the job links you save. Saving and preparing jobs works without a connection.</Trans>}
+			footer={
+				<div className="flex items-start gap-2 text-xs leading-5 text-muted">
+					<Icon name="sparkle" size={16} className="mt-0.5 shrink-0" />
+					<div>
+						<span className="font-medium text-foreground">
+							<Trans>Assistant.</Trans>
+						</span>{" "}
+						{providerState.isUnavailable ? (
+							<AiProviderLoadState state={providerState} />
+						) : !hasUsableProvider ? (
+							<Trans>
+								Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one.
+							</Trans>
+						) : serverSearch && connectedProvider ? (
+							<Trans>
+								Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you
+								use.
+							</Trans>
+						) : serverSearch ? (
+							<Trans>
+								Searches with your server's search and reads links with the built-in reader, whichever AI provider you
+								use.
+							</Trans>
+						) : connectedProvider ? (
+							<Trans>Searches and reads pages with {connectedProvider}, whichever AI provider you use.</Trans>
+						) : (
+							<Trans>
+								Uses your AI provider's own web search where supported, and reads links with the built-in reader.
+							</Trans>
+						)}
+					</div>
+				</div>
+			}
+		>
+			<div className="flex items-start gap-3">
+				<RowIcon>
+					<Icon name="file-text" size={20} />
+				</RowIcon>
 				<div className="grid flex-1 gap-1">
 					<div className="flex flex-wrap items-center justify-between gap-2">
 						<h3 className="text-sm font-medium">
 							<Trans>Built-in reader</Trans>
 						</h3>
-						<span className="inline-flex items-center gap-1 rounded-sm bg-accent-soft px-2 py-0.5 text-xs font-medium text-accent-text">
+						<Chip size="sm" variant="soft" color="success" className="gap-1">
 							<Icon name="check" size={14} />
-							<Trans>Active</Trans>
-						</span>
+							<Chip.Label>
+								<Trans>Active</Trans>
+							</Chip.Label>
+						</Chip>
 					</div>
-					<p className="text-[13px] leading-5 text-ink-3">
+					<p className="text-[13px] leading-5 text-muted">
 						{connectedProvider ? (
 							<Trans>Used when {connectedProvider} can't read a page. No account needed.</Trans>
 						) : (
@@ -89,21 +123,20 @@ export function WebAccessSection() {
 				</div>
 			</div>
 
-			<div className="grid gap-4 px-5 py-4 max-sm:px-4">
+			<RowSeparator />
+
+			<div className="grid gap-4">
 				<div className="flex items-start gap-3">
-					<Icon name="magnifying-glass" size={20} className="mt-0.5 shrink-0 text-ink-2" />
+					<RowIcon>
+						<Icon name="magnifying-glass" size={20} />
+					</RowIcon>
 					<div className="grid flex-1 gap-1.5">
 						<div className="flex flex-wrap items-center justify-between gap-2">
 							<h3 className="text-sm font-medium">
 								<Trans>Search and enhanced reading</Trans>
 							</h3>
 							{status && (
-								<span
-									className={cn(
-										"rounded-sm px-2 py-0.5 text-xs font-medium",
-										status.configured ? "bg-accent-soft text-accent-text" : "bg-sunken text-ink-2",
-									)}
-								>
+								<Chip size="sm" variant="soft" color={status.configured ? "success" : "default"}>
 									{status.managed ? (
 										<Trans>Managed by server</Trans>
 									) : status.configured ? (
@@ -111,10 +144,10 @@ export function WebAccessSection() {
 									) : (
 										<Trans>Optional</Trans>
 									)}
-								</span>
+								</Chip>
 							)}
 						</div>
-						<p className="max-w-[58ch] text-[13px] leading-5 text-ink-3">
+						<p className="max-w-[58ch] text-[13px] leading-5 text-muted">
 							{serverSearch ? (
 								<Trans>
 									Your server provides search for Applications and the assistant. Connect a service to read pages the
@@ -131,17 +164,20 @@ export function WebAccessSection() {
 				</div>
 
 				{failure && (
-					<p
-						role="alert"
-						className="flex items-start gap-2 rounded-lg bg-danger-soft px-3 py-2.5 text-[13px] leading-5 text-danger-text"
-					>
-						<Icon name="warning-circle" size={18} className="mt-0.5 shrink-0" />
-						{getOrpcErrorMessage(failure, { fallback: t`Couldn't load or save web access settings. Try again.` })}
-					</p>
+					<Alert status="danger">
+						<Alert.Indicator>
+							<Icon name="warning-circle" />
+						</Alert.Indicator>
+						<Alert.Content>
+							<Alert.Description>
+								{getOrpcErrorMessage(failure, { fallback: t`Couldn't load or save web access settings. Try again.` })}
+							</Alert.Description>
+						</Alert.Content>
+					</Alert>
 				)}
 				{isLoading ? (
-					<p role="status" className="flex min-h-10 items-center gap-2 text-sm text-ink-3">
-						<Spinner size="sm" color="current" className="text-muted" aria-hidden />
+					<p role="status" className="flex min-h-10 items-center gap-2 text-sm text-muted">
+						<Spinner size="sm" color="current" aria-hidden />
 						<Trans>Loading connection…</Trans>
 					</p>
 				) : !status ? (
@@ -151,42 +187,46 @@ export function WebAccessSection() {
 				) : (
 					<>
 						{status.managed && (
-							<div className="grid gap-2 rounded-lg bg-info-soft p-3 text-[13px] leading-5 text-info-text">
-								<p className="font-medium">
-									<Trans>Provided by your server: {connectedProvider}.</Trans>
-								</p>
-								<p>
-									<Trans>Search and reading are set up for everyone here. Ask your administrator about changes.</Trans>
-								</p>
-								<Button
-									variant="secondary"
-									size="sm"
-									className="w-fit"
-									isDisabled={pending}
-									isPending={test.isPending}
-									onPress={() => test.mutate()}
-								>
-									{test.isPending && <Spinner size="sm" color="current" aria-hidden />}
-									<Trans>Test connection</Trans>
-								</Button>
-							</div>
+							<Alert status="accent">
+								<Alert.Indicator>
+									<Icon name="info" />
+								</Alert.Indicator>
+								<Alert.Content>
+									<Alert.Title>
+										<Trans>Provided by your server: {connectedProvider}.</Trans>
+									</Alert.Title>
+									<Alert.Description className="grid gap-2">
+										<span>
+											<Trans>
+												Search and reading are set up for everyone here. Ask your administrator about changes.
+											</Trans>
+										</span>
+										<Button
+											variant="secondary"
+											size="sm"
+											className="w-fit"
+											isDisabled={pending}
+											isPending={test.isPending}
+											onPress={() => test.mutate()}
+										>
+											{test.isPending && <Spinner size="sm" color="current" aria-hidden />}
+											<Trans>Test connection</Trans>
+										</Button>
+									</Alert.Description>
+								</Alert.Content>
+							</Alert>
 						)}
 						{status.configured && !status.managed && !editing && (
-							<div className="flex flex-wrap items-center gap-3 rounded-lg border border-line px-3 py-3">
-								<span
-									aria-hidden="true"
-									className="grid size-9 shrink-0 place-items-center rounded-md bg-sunken text-sm font-semibold text-ink-2"
-								>
-									{connectedProvider?.slice(0, 1)}
-								</span>
+							<div className="flex flex-wrap items-center gap-3">
+								<RowIcon className="text-sm font-semibold text-muted">{connectedProvider?.slice(0, 1)}</RowIcon>
 								<div className="grid flex-1 gap-0.5">
 									<p className="text-sm font-medium">{connectedProvider}</p>
-									<p className="flex items-center gap-1 text-xs text-ink-3">
+									<p className="flex items-center gap-1 text-xs text-muted">
 										<Icon name="lock" size={13} />
 										<Trans>Key stored encrypted</Trans>
 									</p>
 								</div>
-								<div className="flex flex-wrap items-center gap-1 max-sm:w-full">
+								<div className="max-sm:ps-row-indent flex flex-wrap items-center gap-1 max-sm:basis-full">
 									<Button
 										variant="secondary"
 										size="sm"
@@ -203,9 +243,8 @@ export function WebAccessSection() {
 												<Trans>Change connection</Trans>
 											</Button>
 											<Button
-												variant="ghost"
+												variant="danger-soft"
 												size="sm"
-												className="text-danger-text hover:bg-danger-soft"
 												isDisabled={pending}
 												isPending={remove.isPending}
 												onPress={() => remove.mutate()}
@@ -222,7 +261,7 @@ export function WebAccessSection() {
 							<Button
 								variant="secondary"
 								size="sm"
-								className="ms-8 w-fit max-sm:ms-0"
+								className="ms-row-indent w-fit"
 								isDisabled={pending}
 								isPending={test.isPending}
 								onPress={() => test.mutate()}
@@ -232,7 +271,7 @@ export function WebAccessSection() {
 							</Button>
 						)}
 						{test.isPending && (
-							<p role="status" className="text-[13px] text-ink-2">
+							<p role="status" className="text-[13px] text-muted">
 								{!serverSearch ? (
 									<Trans>Testing search and reading with {connectedProvider}…</Trans>
 								) : connectedProvider ? (
@@ -258,7 +297,10 @@ export function WebAccessSection() {
 								].map(({ result, label }, index) => (
 									<p
 										key={index}
-										className={cn("flex items-start gap-2", result.success ? "text-accent-text" : "text-warn-text")}
+										className={cn(
+											"flex items-start gap-2",
+											result.success ? "text-success-soft-foreground" : "text-warning-soft-foreground",
+										)}
 									>
 										<Icon name={result.success ? "check-circle" : "info"} size={16} className="mt-0.5 shrink-0" />
 										<span>
@@ -268,11 +310,11 @@ export function WebAccessSection() {
 									</p>
 								))}
 								{connectedProvider && !test.data.read.success && (
-									<p className="text-ink-3">
+									<p className="text-muted">
 										<Trans>The built-in reader remains active.</Trans>
 									</p>
 								)}
-								<p className="text-xs text-ink-3">
+								<p className="text-xs text-muted">
 									{!serverSearch ? (
 										<Trans>Tested with {connectedProvider}. Only this service was tested.</Trans>
 									) : connectedProvider ? (
@@ -284,28 +326,36 @@ export function WebAccessSection() {
 							</div>
 						)}
 						{!status.managed && !status.canSave && (
-							<p className="rounded-lg bg-info-soft p-3 text-[13px] leading-5 text-info-text">
-								<Trans>
-									Ask your server administrator to enable credential encryption or configure a shared web connection.
-								</Trans>
-							</p>
+							<Alert status="accent">
+								<Alert.Indicator>
+									<Icon name="info" />
+								</Alert.Indicator>
+								<Alert.Content>
+									<Alert.Description>
+										<Trans>
+											Ask your server administrator to enable credential encryption or configure a shared web
+											connection.
+										</Trans>
+									</Alert.Description>
+								</Alert.Content>
+							</Alert>
 						)}
 						{status.canSave && !status.configured && !editing && (
-							<Button variant="secondary" className="ms-8 w-fit max-sm:ms-0" onPress={openEditor}>
+							<Button variant="secondary" className="ms-row-indent w-fit" onPress={openEditor}>
 								<Icon name="link-simple-horizontal" size={18} />
 								<Trans>Connect a service</Trans>
 							</Button>
 						)}
 						{status.canSave && editing && (
 							<form
-								className="grid gap-4 rounded-lg border border-line bg-bg p-4"
+								className="grid gap-4"
 								onSubmit={(event) => {
 									event.preventDefault();
 									if (!pending && apiKey.trim()) save.mutate({ provider, apiKey });
 								}}
 							>
 								<div className="grid gap-1.5">
-									<span id={`${id}-provider`} className="text-xs font-medium text-ink-2">
+									<span id={`${id}-provider`} className="text-sm font-medium">
 										<Trans>Provider</Trans>
 									</span>
 									<Segment
@@ -326,43 +376,45 @@ export function WebAccessSection() {
 										))}
 									</Segment>
 								</div>
-								<div className="grid gap-2">
-									<Label htmlFor={`${id}-key`}>
+								<TextField
+									fullWidth
+									autoFocus
+									isRequired
+									type="password"
+									value={apiKey}
+									isDisabled={pending}
+									autoComplete="off"
+									onChange={setApiKey}
+									className="gap-1.5"
+								>
+									<Label>
 										<Trans>API key</Trans>
 									</Label>
 									<Input
-										fullWidth
-										id={`${id}-key`}
-										type="password"
-										value={apiKey}
+										variant="secondary"
 										placeholder={t`Paste your key`}
 										maxLength={2_000}
-										autoComplete="off"
 										autoCapitalize="off"
 										autoCorrect="off"
 										spellCheck={false}
-										required
-										autoFocus
-										disabled={pending}
-										onChange={(event) => setApiKey(event.target.value)}
 									/>
-									<p className="text-xs leading-5 text-ink-3">
+									<Description>
 										<Trans>
 											Get a key at{" "}
 											<a
 												href={`https://${PROVIDER_SITES[provider]}`}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="text-accent-text underline underline-offset-2"
+												className="text-accent underline underline-offset-2"
 											>
 												{PROVIDER_SITES[provider]}
 											</a>
 											. It's stored encrypted and used only for your requests.
 										</Trans>
-									</p>
-								</div>
-								<div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-3">
-									<p className="max-w-[34ch] text-xs leading-5 text-ink-3">
+									</Description>
+								</TextField>
+								<div className="flex flex-wrap items-center justify-between gap-3 border-t border-separator pt-3">
+									<p className="max-w-[34ch] text-xs leading-5 text-muted">
 										<Trans>Save first, then test search and reading. No test runs automatically.</Trans>
 									</p>
 									<div className="ms-auto flex gap-1">
@@ -388,38 +440,6 @@ export function WebAccessSection() {
 					</>
 				)}
 			</div>
-
-			<footer className="flex items-start gap-2 border-t border-line bg-bg px-5 py-3 text-xs leading-5 text-ink-2 max-sm:px-4">
-				<Icon name="sparkle" size={16} className="mt-0.5 shrink-0 text-ink-3" />
-				<div>
-					<span className="font-medium">
-						<Trans>Assistant.</Trans>
-					</span>{" "}
-					{providerState.isUnavailable ? (
-						<AiProviderLoadState state={providerState} />
-					) : !hasUsableProvider ? (
-						<Trans>
-							Connect an AI provider above to use the assistant. Saving and preparing jobs doesn't need one.
-						</Trans>
-					) : serverSearch && connectedProvider ? (
-						<Trans>
-							Searches with your server's search and reads pages with {connectedProvider}, whichever AI provider you
-							use.
-						</Trans>
-					) : serverSearch ? (
-						<Trans>
-							Searches with your server's search and reads links with the built-in reader, whichever AI provider you
-							use.
-						</Trans>
-					) : connectedProvider ? (
-						<Trans>Searches and reads pages with {connectedProvider}, whichever AI provider you use.</Trans>
-					) : (
-						<Trans>
-							Uses your AI provider's own web search where supported, and reads links with the built-in reader.
-						</Trans>
-					)}
-				</div>
-			</footer>
-		</section>
+		</SettingsSection>
 	);
 }

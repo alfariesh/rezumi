@@ -1135,8 +1135,8 @@ msgstr "성과"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "계정"
 
@@ -1267,10 +1267,6 @@ msgstr "태그 추가"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "태그를 추가하고 Enter를 누르세요…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AI 공급자 추가"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "자원봉사 추가"
 msgid "Add what happened before you can save."
 msgstr "저장하려면 무슨 일이 있었는지 추가하세요."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "이름을 추가하세요"
@@ -1571,13 +1571,6 @@ msgstr "첫 검토를 마치면 이번 주를 위한 가벼운 계획이 여기�
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "내 요건과 비교"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI 및 개발자"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "답변이 복사되었습니다"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI 호환"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "어딘가에"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "앱"
 msgid "App navigation"
 msgstr "앱 탐색"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "모습"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "학사, 커뮤니케이션 디자인"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "뒤쪽에"
 
@@ -3068,10 +3063,6 @@ msgstr "애플리케이션 연결"
 msgid "Connect another…"
 msgstr "다른 것을 연결하세요…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "글쓰기, 구직, 이력서 작업에 사용하는 도구를 연결하세요."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "자체 AI 공급자를 연결하여 언어 모델이 목록 항목을 읽고 다시 쓰기를 제안하도록 하세요. 문제 및 직업 일치에는 공급자가 필요하지 않습니다."
@@ -3685,7 +3676,7 @@ msgstr "이야기를 저장할 수 없습니다. 다시 시도해 보세요."
 msgid "Couldn't save the tags. Try again."
 msgstr "태그를 저장할 수 없습니다. 다시 시도해 보세요."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "시간대를 저장할 수 없습니다. 다시 시도해 보세요."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "로그인할 수 없습니다. 다시 시도해 보세요."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "로그아웃할 수 없습니다. 다시 시도해 보세요."
@@ -3976,6 +3966,10 @@ msgstr "생성일"
 msgid "Created “{finalName}”"
 msgstr "“{finalName}”를 만들었습니다."
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "30일 동안의 일일 조회수, 최대 {0}"
 msgid "Danish"
 msgstr "덴마크어"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "다크"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "만료"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "작업을 과소평가하지 않으면서 측정의 한계 하나를 명확히 설명하세요."
@@ -5540,6 +5536,10 @@ msgstr "이름"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "전체 너비"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "통합"
 msgid "Interests"
 msgstr "관심사"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "인터페이스 언어"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "인터페이스 전용. 각 이력서는 디자인에서 고유한 언어를 설정합니다."
 
@@ -6147,7 +6147,7 @@ msgstr "면접이 저장되었습니다"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "면접이 저장되었습니다 · 브리핑 시간: {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "커리어의 면접 시간, 알림, 스케줄에 이 설정이 사용됩니다."
 
@@ -6428,10 +6428,9 @@ msgstr "그대로 유지"
 msgid "Kept yours"
 msgstr "내 문장 유지함"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "키는 {0}로 끝납니다."
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "라벨(예: 모집자"
 msgid "Landscape"
 msgstr "가로"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "언어"
@@ -6526,6 +6523,10 @@ msgstr "마지막으로 수정됨"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "마지막으로 사용됨"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "<0>MIT</0> 라이선스"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "합자(리게이처)는 \"workflow\"와 같은 단어에서 글자를 누락시킬 수 있습니다."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "라이트"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP 서버"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "이 채용 공고에는 눈에 띄는 용어가 없습니다."
 msgid "No text could be read from this file."
 msgstr "이 파일에서 텍스트를 읽을 수 없습니다."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "일치하는 시간대가 없습니다."
 
@@ -7967,10 +7970,6 @@ msgstr "점수 미부여"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "선택되지 않음"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "설정되지 않음"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "단일 열을 사용하거나, 사이드 열은 짧고 독립적인 목�
 msgid "Preference"
 msgstr "선호 사항"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "환경 설정"
 
@@ -9912,7 +9907,7 @@ msgstr "이력서 제출(선택)"
 msgid "Resumes"
 msgstr "이력서"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "이력서는 주제가 무엇이든 항상 백서에 렌더링됩니다."
 
@@ -9995,10 +9990,9 @@ msgstr "검토에는 AI 연결이 필요합니다. <0>설정에서 추가하세�
 msgid "Revoke"
 msgstr "취소"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0} 취소"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "역할, 회사 또는 연락처 검색"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "시간대 검색"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "인증 앱 설정"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "설정"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "지문, 얼굴 또는 장치 PIN으로 로그인"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "로그아웃"
@@ -11539,8 +11532,6 @@ msgstr "1개 열로 전환됨"
 msgid "Synced changes made in another tab."
 msgstr "다른 탭에서 변경된 내용이 동기화되었습니다."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "운영 체제"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "저장된 키는 새 기본 URL로 전송되지 않습니다. 키를 다시 입력하세요."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "저장된 공급자 키는 해독할 수 없습니다. 설정 → AI 및 개발자에서 키를 다시 입력하세요."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "텍스트가 읽을 수 없는 형태로 추출됩니다."
 msgid "The top of the first page does not look like a name."
 msgstr "첫 페이지 상단이 이름처럼 보이지 않습니다."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "테마"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "시간은 {timeZone} 기준으로 표시됩니다."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "시간대"
 
@@ -12968,7 +12958,7 @@ msgstr "표준 제목을 사용하세요"
 msgid "Use these answers"
 msgstr "이 답변 사용"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "이 기기의 시간대 사용({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "변경을 승인할 수 있도록 {currentEmail}(으)로 링크를 보�
 msgid "We sent a new verification link to {0}."
 msgstr "{0}로 새로운 확인 링크를 보냈습니다."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "웹 접속"

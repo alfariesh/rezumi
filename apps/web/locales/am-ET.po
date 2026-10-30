@@ -1135,8 +1135,8 @@ msgstr "ስኬት"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "መለያ"
 
@@ -1267,10 +1267,6 @@ msgstr "መለያ ጨምር"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "መለያ ያክሉ እና Enter ይጫኑ…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AI አቅራቢን ያክሉ"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "በጎ ፈቃደኝነትን ይጨምሩ"
 msgid "Add what happened before you can save."
 msgstr "ከማስቀመጥዎ በፊት የሆነውን ያክሉ።"
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "ስምህን ጨምር"
@@ -1571,13 +1571,6 @@ msgstr "ከመጀመሪያው ግምገማዎ በኋላ፣ ለዚህ ሳምን�
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "ከመስፈርቶችዎ አንጻር"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI እና ገንቢ"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "መልሶቹ ተቀድተዋል"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic፣ Gemini፣ Ollama፣ OpenAI-ተኳሃኝ"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "የትም ቦታ"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "መተግበሪያ"
 msgid "App navigation"
 msgstr "የመተግበሪያ ዳሰሳ"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "መልክ"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "ቢኤ, የግንኙነት ንድፍ"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "ተመለስ"
 
@@ -3068,10 +3063,6 @@ msgstr "መተግበሪያ ያገናኙ"
 msgid "Connect another…"
 msgstr "ሌላ አገናኝ…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "ለመጻፍ፣ ለስራ ፍለጋ እና ከሪሱሞችዎ ጋር ለመስራት የሚጠቀሙባቸውን መሳሪያዎች ያገናኙ።"
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "የቋንቋ ሞዴል የዝርዝር ግቤቶችዎን እንዲያነብ እና እንደገና እንዲፃፍ ለመጠቆም የራስዎን AI አቅራቢ ያገናኙ። ጉዳዮች እና የስራ ግጥሚያ ምንም አቅራቢ አያስፈልጋቸውም።"
@@ -3685,7 +3676,7 @@ msgstr "ታሪኩን ማስቀመጥ አልተቻለም። እንደገና ይ�
 msgid "Couldn't save the tags. Try again."
 msgstr "መለያዎቹን ማስቀመጥ አልተቻለም። እንደገና ይሞክሩ።"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "የሰዓት ሰቁን ማስቀመጥ አልተቻለም። እንደገና ይሞክሩ።"
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "መግባት አልተቻለም። እንደገና ይሞክሩ።"
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "መውጣት አልተቻለም። እንደገና ይሞክሩ።"
@@ -3976,6 +3966,10 @@ msgstr "የተፈጠረበት ቀን።"
 msgid "Created “{finalName}”"
 msgstr "\"{finalName}\" ተፈጠረ"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "ዕለታዊ እይታዎች ከ30 ቀናት በላይ፣ ከፍተኛ�
 msgid "Danish"
 msgstr "ዴኒሽ"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "ጨለማ"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "ጊዜው ያበቃል"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "የሥራውን ዋጋ ሳያሳንሱ፣ የመለኪያውን አንድ ውስንነት በግልጽ ያስረዱ።"
@@ -5540,6 +5536,10 @@ msgstr "ሙሉ ስም"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "ሙሉ ስፋት"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "ውህደቶች"
 msgid "Interests"
 msgstr "ፍላጎቶች"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "የበይነገጽ ቋንቋ"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "በይነገጽ ብቻ። እያንዳንዱ የትምህርት ማስረጃ በንድፍ ውስጥ የራሱን ቋንቋ ያዘጋጃል።"
 
@@ -6147,7 +6147,7 @@ msgstr "ቃለ መጠይቁ ተቀምጧል"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "ቃለ መጠይቁ ተቀምጧል · አጭር መግለጫው ወደ {0} ተዛውሯል"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "በሙያ ውስጥ ያሉ የቃለ መጠይቅ ሰዓቶች፣ አስታዋሾች እና መርሐ ግብሮች ይህን ይጠቀማሉ።"
 
@@ -6428,10 +6428,9 @@ msgstr "እንዳለ ተይዟል።"
 msgid "Kept yours"
 msgstr "የእርስዎ ተጠብቋል"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "ቁልፉ በ {0} ያበቃል"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "መለያ፣ ለምሳሌ መልማይ"
 msgid "Landscape"
 msgstr "መሬት አቀማመጥ"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "ቋንቋ"
@@ -6526,6 +6523,10 @@ msgstr "መጨረሻ የተስተካከለው"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "ለመጨረሻ ጊዜ ጥቅም ላይ የዋለ"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "በ<0>MIT</0> ፈቃድ የተሰጠ"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ሊጋቸሮች እንደ \"workflow\" ካሉ ቃላት ውስጥ ፊደላትን ሊጥሉ ይችላሉ።"
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "ብርሃን"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP አገልጋይ"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "በዚህ የሥራ ማስታወቂያ ውስጥ ጎልቶ የወጣ ቃ
 msgid "No text could be read from this file."
 msgstr "ከዚህ ፋይል ምንም ጽሁፍ ሊነበብ አልቻለም።"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "የሚዛመድ የሰዓት ሰቅ የለም።"
 
@@ -7967,10 +7970,6 @@ msgstr "ውጤት አልተሰጠውም"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "አልተመረጠም።"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "አልተዋቀረም።"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "ነጠላ አምድን ይምረጡ፣ ወይም የጎን አምዱን 
 msgid "Preference"
 msgstr "ምርጫ"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "ምርጫዎች"
 
@@ -9912,7 +9907,7 @@ msgstr "የትምህርት ማስረጃ ገብቷል (አማራጭ)"
 msgid "Resumes"
 msgstr "የስራ ልምድ ማስረጃዎች"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "ርእሶች ሁልጊዜ በነጭ ወረቀት ይሰጣሉ፣ ጭብጥ ምንም ይሁን።"
 
@@ -9995,10 +9990,9 @@ msgstr "መገምገም AI ግንኙነት ይፈልጋል። <0>በቅንብሮ
 msgid "Revoke"
 msgstr "መሻር"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0} ይሻሩ"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "ሚና ፣ ኩባንያ ወይም ግንኙነት ይፈልጉ"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "የሰዓት ሰቆችን ፈልግ"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "የማረጋገጫ መተግበሪያዎን ያዋቅሩ"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "ቅንብሮች"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "በእርስዎ የጣት አሻራ፣ ፊት ወይም መሣሪያ ፒን ይግቡ"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "ውጣ"
@@ -11539,8 +11532,6 @@ msgstr "ወደ አንድ አምድ ተቀይሯል።"
 msgid "Synced changes made in another tab."
 msgstr "በሌላ ትር ላይ የተደረጉ ለውጦች ተመሳስለዋል።"
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "ስርዓተ ክወና"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "የተቀመጠው ቁልፍ ወደ አዲስ የመሠረት ዩአርኤል አይላክም። ቁልፉን እንደገና ያስገቡ።"
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "የተቀመጠው የአቅራቢ ቁልፍ ዲክሪፕት ሊደረግ አይችልም። ቁልፉን እንደገና በቅንብሮች → AI እና ገንቢ ውስጥ ያስገቡ።"
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "ጽሁፉ ሊነበብ በማይችል መልኩ ይወጣል።"
 msgid "The top of the first page does not look like a name."
 msgstr "የመጀመሪያው ገጽ ላይኛው ክፍል እንደ ስም አይመስልም።"
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "ገጽታ"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "ሰዓቶች በ{timeZone} ይታያሉ።"
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "የሰዓት ሰቅ"
 
@@ -12968,7 +12958,7 @@ msgstr "መደበኛውን ርዕስ ተጠቀም"
 msgid "Use these answers"
 msgstr "እነዚህን መልሶች ተጠቀም"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "የዚህን መሣሪያ የሰዓት ሰቅ ተጠቀም ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "ለውጡን ለማጽደቅ ወደ {currentEmail} አገናኝ ልከ�
 msgid "We sent a new verification link to {0}."
 msgstr "አዲስ የማረጋገጫ አገናኝ ወደ {0} ልከናል።"
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "የድር መዳረሻ"

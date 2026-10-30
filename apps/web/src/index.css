@@ -38,6 +38,9 @@
 }
 
 @theme {
+	/* Where a list row's text starts: the 40px icon tile plus a 12px gap. Rules and controls under a row line up on it. */
+	--spacing-row-indent: 3.25rem;
+
 	/* A document made on this device lands on the grid: a fade up from 96%, once per mount. */
 	--animate-arrive: arrive var(--d2) var(--ease) backwards;
 
@@ -91,7 +94,7 @@
 
 /*
  * Page transitions: the router starts a view transition of type `page` when the pathname changes. The page fades
- * out quickly and the new one fades up 6px; named navigation (app-nav, settings-nav, auth-brand) stays in place.
+ * out quickly and the new one fades up 6px; named navigation (app-nav, auth-brand) stays in place.
  */
 @keyframes vt-page-out {
 	to {

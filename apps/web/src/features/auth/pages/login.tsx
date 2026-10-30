@@ -1,5 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
-import { Button, Input, Spinner } from "@heroui/react";
+import { Button, Input, linkVariants, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -158,13 +158,13 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 				</h1>
 
 				{!disableSignups && (
-					<div className="text-ink-3">
+					<div className="text-muted">
 						<Trans>
 							Don't have an account?{" "}
 							<Link
 								to="/auth/register"
 								search={{ callbackURL, reauthenticate }}
-								className="inline-flex items-center gap-1.5 px-1 text-link underline-offset-4 hover:underline"
+								className={linkVariants().base({ className: "gap-1.5 px-1" })}
 							>
 								<Trans comment="Call-to-action link from login page to account registration page">Create one now</Trans>{" "}
 								<Icon name="arrow-right" size={16} />
@@ -193,6 +193,7 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 									render={
 										<Input
 											fullWidth
+											variant="secondary"
 											autoComplete="section-login username webauthn"
 											placeholder="john.doe@example.com"
 											className="lowercase"
@@ -222,7 +223,7 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 									<Link
 										to="/auth/forgot-password"
 										tabIndex={-1}
-										className="text-xs leading-none text-link underline-offset-4 hover:underline"
+										className={linkVariants().base({ className: "text-xs leading-none" })}
 									>
 										<Trans comment="Link label to password reset page from login form">Forgot password?</Trans>
 									</Link>
@@ -230,6 +231,7 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 								<FormControl
 									render={
 										<PasswordInput
+											variant="secondary"
 											minLength={6}
 											maxLength={64}
 											autoComplete="section-login current-password"

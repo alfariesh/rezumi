@@ -6,11 +6,11 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 
 type PasswordInputProps = Omit<InputProps, "type">;
 
-export function PasswordInput(props: PasswordInputProps) {
+export function PasswordInput({ variant, ...props }: PasswordInputProps) {
 	const [visible, toggleVisible] = useToggle(false);
 
 	return (
-		<InputGroup fullWidth>
+		<InputGroup fullWidth variant={variant}>
 			<InputGroup.Input {...props} type={visible ? "text" : "password"} />
 
 			<InputGroup.Suffix>

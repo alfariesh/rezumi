@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { Button, buttonVariants, Card } from "@heroui/react";
+import { Button, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -11,6 +11,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { PIPELINE } from "../../stages";
 import { useInvalidateApplications } from "../../use-application-actions";
 import { FileAttachmentField } from "../file-attachment-field";
+import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import { useDialogStore } from "@/dialogs/store";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
@@ -33,14 +34,16 @@ type SentDocumentRowProps = {
 
 function SentDocumentRow({ icon, name, status, children }: SentDocumentRowProps) {
 	return (
-		<Card variant="secondary" className="flex-row items-center gap-2.5 rounded-2xl p-3">
-			<Icon name={icon} className="shrink-0 text-muted" />
+		<div className="flex items-center gap-3">
+			<RowIcon>
+				<Icon name={icon} size={20} />
+			</RowIcon>
 			<div className="grid min-w-0 flex-1">
 				<span className="truncate text-sm font-medium">{name}</span>
 				<span className="text-xs text-muted">{status}</span>
 			</div>
 			{children}
-		</Card>
+		</div>
 	);
 }
 
@@ -119,6 +122,8 @@ export function SentDocuments({ application, disabled }: SentDocumentsProps) {
 					</Link>
 				</SentDocumentRow>
 			)}
+
+			{application.resumeId && application.coverLetterId && <RowSeparator />}
 
 			{application.coverLetterId && (
 				<SentDocumentRow

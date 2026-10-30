@@ -1135,8 +1135,8 @@ msgstr "إنجاز"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "الحساب"
 
@@ -1267,10 +1267,6 @@ msgstr "أضف علامة"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "أضف وسمًا واضغط Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "إضافة مزود الذكاء الاصطناعي"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "أضف العمل التطوعي"
 msgid "Add what happened before you can save."
 msgstr "أضف ما حدث قبل أن تتمكن من الحفظ."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "أضف اسمك"
@@ -1571,13 +1571,6 @@ msgstr "بعد مراجعتك الأولى، تظهر هنا خطة خفيفة �
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "مقارنةً بمتطلباتك"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "الذكاء الاصطناعي والمطور"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "تم نسخ الإجابات"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "متوافق مع Anthropic، Gemini، Ollama، OpenAI"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "في أي مكان"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "التطبيق"
 msgid "App navigation"
 msgstr "التنقل في التطبيق"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "مظهر"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "بكالوريوس، تصميم الاتصالات"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "خلف"
 
@@ -3068,10 +3063,6 @@ msgstr "قم بتوصيل التطبيق"
 msgid "Connect another…"
 msgstr "ربط آخر…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "قم بتوصيل الأدوات التي تستخدمها للكتابة والبحث عن وظيفة والعمل مع سيرتك الذاتية."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "قم بتوصيل مزود الذكاء الاصطناعي الخاص بك للحصول على نموذج لغة يقرأ إدخالات قائمتك ويقترح إعادة كتابتها. المشكلات والمطابقة الوظيفية لا تحتاج إلى مزود."
@@ -3685,7 +3676,7 @@ msgstr "تعذّر حفظ القصة. حاول مرة أخرى."
 msgid "Couldn't save the tags. Try again."
 msgstr "تعذّر حفظ الوسوم. حاول مرة أخرى."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "تعذّر حفظ المنطقة الزمنية. حاول مرة أخرى."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "تعذّر تسجيل الدخول. حاول مرة أخرى."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "تعذّر تسجيل الخروج. حاول مرة أخرى."
@@ -3976,6 +3966,10 @@ msgstr "تم الإنشاء"
 msgid "Created “{finalName}”"
 msgstr "تم إنشاء \"{finalName}\""
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "المشاهدات اليومية على مدى 30 يومًا، الذر
 msgid "Danish"
 msgstr "الدانماركية"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "داكن"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "تنتهي"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "اشرح قيدًا واحدًا في القياس بوضوح، دون التقليل من قيمة العمل."
@@ -5540,6 +5536,10 @@ msgstr "الاسم الكامل"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "عرض كامل"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "عمليات الدمج"
 msgid "Interests"
 msgstr "الاهتمامات"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "لغة الواجهة"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "الواجهة فقط. تحدد كل سيرة ذاتية لغتها الخاصة في التصميم."
 
@@ -6147,7 +6147,7 @@ msgstr "تم حفظ المقابلة"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "تم حفظ المقابلة · تنتقل الإحاطة إلى {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "تستخدمها مواعيد المقابلات والتذكيرات والجداول في المسار المهني."
 
@@ -6428,10 +6428,9 @@ msgstr "أبقى كما هو"
 msgid "Kept yours"
 msgstr "أُبقي على نسختك"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "ينتهي المفتاح بـ {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "التسمية، على سبيل المثال. المجند"
 msgid "Landscape"
 msgstr "أفقي"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "اللّغة"
@@ -6526,6 +6523,10 @@ msgstr "تم التعديل الأخير"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "آخر استخدام"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "مرخّص بموجب <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "يمكن للحروف المدمجة (Ligatures) أن تُسقط أحرفًا من كلمات مثل \"workflow\"."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "مضيء"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "خادم MCP"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "لم يبرز أي مصطلح في إعلان الوظيفة هذا."
 msgid "No text could be read from this file."
 msgstr "تعذّرت قراءة أي نص من هذا الملف."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "لا توجد منطقة زمنية مطابقة."
 
@@ -7967,10 +7970,6 @@ msgstr "غير مُقيَّم"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "لم يتم التحديد"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "لم يتم إعداده"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "يُفضَّل عمود واحد، أو إبقاء العمود الجا
 msgid "Preference"
 msgstr "تفضيل"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "التفضيلات"
 
@@ -9912,7 +9907,7 @@ msgstr "السيرة الذاتية المقدمة (اختياري)"
 msgid "Resumes"
 msgstr "السير الذاتية"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "يتم تقديم السيرة الذاتية دائمًا على ورق أبيض، مهما كان الموضوع."
 
@@ -9995,10 +9990,9 @@ msgstr "تحتاج المراجعة إلى اتصال ذكاء اصطناعي. <
 msgid "Revoke"
 msgstr "إبطال"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "إبطال {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "ابحث عن الدور أو الشركة أو جهة الاتصال"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "ابحث في المناطق الزمنية"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "إعداد تطبيق المصادقة"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "إعدادات"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "قم بتسجيل الدخول باستخدام بصمة الإصبع أو الوجه أو رقم التعريف الشخصي للجهاز"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "تسجيل الخروج"
@@ -11539,8 +11532,6 @@ msgstr "تحولت إلى عمود واحد"
 msgid "Synced changes made in another tab."
 msgstr "تمت مزامنة التغييرات التي تم إجراؤها في علامة تبويب أخرى."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "نظام التشغيل"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "لا يتم إرسال المفتاح المحفوظ إلى عنوان URL أساسي جديد. أدخل المفتاح مرة أخرى."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "لا يمكن فك تشفير مفتاح الموفر المحفوظ. أدخل المفتاح مرة أخرى في الإعدادات → AI & Developer."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "يخرج النص غير قابل للقراءة."
 msgid "The top of the first page does not look like a name."
 msgstr "لا يبدو أعلى الصفحة الأولى كاسم."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "السمة"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "تُعرض الأوقات بتوقيت {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "المنطقة الزمنية"
 
@@ -12968,7 +12958,7 @@ msgstr "استخدم العنوان القياسي"
 msgid "Use these answers"
 msgstr "استخدم هذه الإجابات"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "استخدم المنطقة الزمنية لهذا الجهاز ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "أرسلنا رابطًا إلى {currentEmail} للموافقة على 
 msgid "We sent a new verification link to {0}."
 msgstr "لقد أرسلنا رابط تحقق جديد إلى {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "الوصول إلى الويب"

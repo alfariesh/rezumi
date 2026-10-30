@@ -1135,8 +1135,8 @@ msgstr "Arritje"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Llogaria"
 
@@ -1267,10 +1267,6 @@ msgstr "Shto një etiketë"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Shto një etiketë dhe shtyp Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "Shto ofruesin e AI"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Shto vullnetarizmin"
 msgid "Add what happened before you can save."
 msgstr "Shtoni se çfarë ndodhi para se të ruani."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Shtoni emrin tuaj"
@@ -1571,13 +1571,6 @@ msgstr "Pas rishikimit tuaj të parë, këtu shfaqet një plan i lehtë për kë
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "Kundrejt kërkesave tuaja"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI dhe zhvillues"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Përgjigjet u kopjuan"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI-të përputhshme"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Kudo"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Aplikacioni"
 msgid "App navigation"
 msgstr "Navigimi i aplikacionit"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Pamja e jashtme"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, Dizajn Komunikimi"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Mbrapa"
 
@@ -3068,10 +3063,6 @@ msgstr "Lidhni një aplikacion"
 msgid "Connect another…"
 msgstr "Lidh një tjetër…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Lidhni mjetet që përdorni për të shkruar, për të kërkuar punë dhe për të punuar me CV-të tuaja."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Lidhni ofruesin tuaj të AI për të pasur një model gjuhe të lexojë hyrjet në listën tuaj dhe të sugjerojë rishkrime. Problemet dhe përputhja e punës nuk kanë nevojë për ofrues."
@@ -3685,7 +3676,7 @@ msgstr "Historia nuk mund të ruhej. Provoni përsëri."
 msgid "Couldn't save the tags. Try again."
 msgstr "Etiketat nuk mund të ruheshin. Provoni përsëri."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Zona kohore nuk mund të ruhej. Provoni përsëri."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Hyrja nuk u krye. Provoni përsëri."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Dalja nuk u krye. Provoni përsëri."
@@ -3976,6 +3966,10 @@ msgstr "Krijuar"
 msgid "Created “{finalName}”"
 msgstr "Krijuar \"{finalName}\""
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Shikime ditore mbi 30 ditë, kulmi {0}"
 msgid "Danish"
 msgstr "Danisht"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "E errët"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Skadon"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "shpjegoni qartë një kufizim të matjes, pa e nënvlerësuar punën."
@@ -5540,6 +5536,10 @@ msgstr "Emri i plotë"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Gjerësi e plotë"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Integrime"
 msgid "Interests"
 msgstr "Interesa"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Gjuha e ndërfaqes"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Vetëm ndërfaqja. Çdo rezyme vendos gjuhën e vet në Dizajn."
 
@@ -6147,7 +6147,7 @@ msgstr "Intervista u ruajt"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Intervista u ruajt · përmbledhja zhvendoset në {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Orët e intervistave, kujtesat dhe oraret te Karriera e përdorin."
 
@@ -6428,10 +6428,9 @@ msgstr "E mbajtur ashtu siç është"
 msgid "Kept yours"
 msgstr "U mbajt versioni juaj"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Çelësi përfundon në {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Etiketa, p.sh. Rekrutuesi"
 msgid "Landscape"
 msgstr "Peizazh"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Gjuha"
@@ -6526,6 +6523,10 @@ msgstr "Redaktimi i fundit"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Përdorur për herë të fundit"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "Licencuar sipas <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligaturat mund të hedhin shkronja jashtë fjalëve si \"workflow\"."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "E çelët"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "Serveri MCP"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Asnjë term nuk binte në sy në këtë njoftim pune."
 msgid "No text could be read from this file."
 msgstr "Nuk mund të lexohej asnjë tekst nga ky skedar."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Asnjë zonë kohore nuk përputhet."
 
@@ -7967,10 +7970,6 @@ msgstr "Pa rezultat"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Nuk është zgjedhur"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Nuk është ngritur"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Preferoni një kolonë të vetme, ose mbani kolonën anësore me lista t
 msgid "Preference"
 msgstr "Preferencë"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Preferenca"
 
@@ -9912,7 +9907,7 @@ msgstr "CV e dorëzuar (opsionale)"
 msgid "Resumes"
 msgstr "CV-të"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "rezymetë jepen gjithmonë në letër të bardhë, pavarësisht nga tema."
 
@@ -9995,10 +9990,9 @@ msgstr "Rishikimi kërkon një lidhje AI. <0>Shtoni një te Parametrat</0>. Deri
 msgid "Revoke"
 msgstr "Revoko"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "Revoko {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Kërko rolin, kompaninë ose kontaktin"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Kërko zona kohore"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Konfiguroni aplikacionin e autentikimit"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Parametrat"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Identifikohu me gjurmën e gishtit, fytyrën ose kodin PIN të pajisjes"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Dilni"
@@ -11539,8 +11532,6 @@ msgstr "Kaloi në një kolonë"
 msgid "Synced changes made in another tab."
 msgstr "Ndryshimet e sinkronizuara të bëra në një skedë tjetër."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Sistemi operativ"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Çelësi i ruajtur nuk dërgohet në një URL të re bazë. Futni përsëri çelësin."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Çelësi i ruajtur i ofruesit nuk mund të deshifrohet. Fusni përsëri çelësin te Cilësimet → AI dhe zhvilluesi."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Teksti del i palexueshëm."
 msgid "The top of the first page does not look like a name."
 msgstr "Kreu i faqes së parë nuk duket si emër."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Tema"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Oraret shfaqen në {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Zona kohore"
 
@@ -12968,7 +12958,7 @@ msgstr "Përdorni titullin standard"
 msgid "Use these answers"
 msgstr "Përdor këto përgjigje"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Përdor zonën kohore të kësaj pajisjeje ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Dërguam një lidhje te {currentEmail} për të miratuar ndryshimin. Pas
 msgid "We sent a new verification link to {0}."
 msgstr "Ne dërguam një lidhje të re verifikimi te {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Qasja në ueb"

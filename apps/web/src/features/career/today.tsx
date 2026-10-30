@@ -2,8 +2,8 @@ import type { Kind, Lead, Schedule } from "./schedule-sheet";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Ref } from "react";
-import { EmptyState, ItemCard } from "@heroui-pro/react";
-import { Button, buttonVariants, Chip, Separator, Skeleton, Spinner, Switch } from "@heroui/react";
+import { EmptyState } from "@heroui-pro/react";
+import { Button, buttonVariants, Chip, Skeleton, Spinner, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -28,6 +28,7 @@ import {
 	useNow,
 	withUndo,
 } from "./shared";
+import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import {
 	collectInterviews,
 	formatDuration,
@@ -100,7 +101,7 @@ export function TodayPage({ schedule, onScheduleChange }: TodayPageProps) {
 
 // ---- Shared bits ----
 
-/** 0 for today, -1 for yesterday, 1 for tomorrow (in the Preferences timezone), otherwise null. */
+/** 0 for today, -1 for yesterday, 1 for tomorrow (in the account timezone), otherwise null. */
 function useDayOffset() {
 	const { format } = useCareerTime();
 	return (value: Date | string, now: Date) => {
@@ -210,7 +211,7 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 									const actionable = row.notice.type === "opportunities" || /^\/(?!\/)/.test(row.url ?? "");
 									return (
 										<CollapseRow key={row.id} role="listitem">
-											{index > 0 && <Separator className="ms-12" />}
+											{index > 0 && <RowSeparator />}
 											<div
 												role="group"
 												aria-labelledby={`note-${row.id}`}
@@ -221,12 +222,9 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 													index < rows.length - 1 && "pb-3",
 												)}
 											>
-												<span
-													aria-hidden="true"
-													className={cn("grid size-9 shrink-0 place-items-center rounded-xl bg-default", kind.tone)}
-												>
-													<Icon name={kind.icon} size={18} />
-												</span>
+												<RowIcon className={kind.tone}>
+													<Icon name={kind.icon} size={20} />
+												</RowIcon>
 												<div className="flex min-w-0 flex-1 flex-wrap items-start gap-x-3 gap-y-2">
 													<div className="grid min-w-0 flex-1 basis-56 gap-0.5">
 														<p id={`note-${row.id}`} className="text-sm leading-5 font-semibold">
@@ -440,7 +438,7 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 								const offset = dayOffset(row.firstSeenAt, now);
 								return (
 									<CollapseRow key={row.id}>
-										{index > 0 && <Separator className="ms-[54px]" />}
+										{index > 0 && <RowSeparator />}
 										<RoleCard
 											row={row}
 											first={index === 0}
@@ -495,14 +493,9 @@ function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDism
 		<article
 			data-role-card
 			aria-labelledby={`role-${row.id}`}
-			className={cn("flex items-start gap-3.5 rounded-xl py-4", first && "pt-0")}
+			className={cn("flex items-start gap-3 rounded-xl py-4", first && "pt-0")}
 		>
-			<span
-				aria-hidden="true"
-				className="grid size-10 shrink-0 place-items-center rounded-xl bg-default text-sm font-semibold text-muted"
-			>
-				{getInitials(company).slice(0, 1)}
-			</span>
+			<RowIcon className="text-sm font-semibold text-muted">{getInitials(company).slice(0, 1)}</RowIcon>
 			<div className="grid min-w-0 flex-1 gap-3">
 				<div className="grid gap-0.5">
 					<h3 id={`role-${row.id}`} className="text-[15px] leading-5 font-semibold">
@@ -780,30 +773,23 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 							const done = !row.intervalDays && Boolean(row.lastQueuedAt);
 							return (
 								<CollapseRow key={row.id}>
-									{index > 0 && <Separator className="ms-12" />}
-									<ItemCard
-										variant="transparent"
-										className={cn("items-start gap-3 px-0", index === 0 ? "pt-0" : "pt-3")}
-									>
-										<ItemCard.Icon className="mt-0.5">
-											<Icon name={icon} size={18} />
-										</ItemCard.Icon>
-										<ItemCard.Content>
-											<button
-												type="button"
-												onClick={() => onOpenSchedule(row.id)}
-												className="grid min-w-0 gap-0.5 rounded-lg text-start focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
-											>
-												<ItemCard.Title>{title}</ItemCard.Title>
-												<ItemCard.Description className="line-clamp-2 whitespace-normal">
-													{describe(row)}
-												</ItemCard.Description>
-												<span className={cn("text-xs", row.enabled && !done ? "text-success" : "text-muted")}>
-													{status(row)}
-												</span>
-											</button>
-										</ItemCard.Content>
-										<ItemCard.Action>
+									{index > 0 && <RowSeparator />}
+									<div className={cn("flex items-start gap-3", index > 0 && "pt-3")}>
+										<RowIcon>
+											<Icon name={icon} size={20} />
+										</RowIcon>
+										<button
+											type="button"
+											onClick={() => onOpenSchedule(row.id)}
+											className="grid min-w-0 flex-1 gap-0.5 rounded-lg text-start focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
+										>
+											<span className="text-sm font-medium">{title}</span>
+											<span className="line-clamp-2 text-[13px] text-muted">{describe(row)}</span>
+											<span className={cn("text-xs", row.enabled && !done ? "text-success" : "text-muted")}>
+												{status(row)}
+											</span>
+										</button>
+										<div className="self-center">
 											<Switch
 												aria-label={[title, describe(row)].filter(Boolean).join(" · ")}
 												isSelected={row.enabled}
@@ -815,8 +801,8 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 													</Switch.Control>
 												</Switch.Content>
 											</Switch>
-										</ItemCard.Action>
-									</ItemCard>
+										</div>
+									</div>
 								</CollapseRow>
 							);
 						})}

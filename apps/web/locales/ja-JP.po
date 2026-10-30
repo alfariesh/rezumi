@@ -1135,8 +1135,8 @@ msgstr "実績"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "アカウント"
 
@@ -1267,10 +1267,6 @@ msgstr "タグを追加する"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "タグを追加して Enter を押す…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AIプロバイダーの追加"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "ボランティア活動を追加する"
 msgid "Add what happened before you can save."
 msgstr "保存するには、何が起きたかを入力してください。"
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "あなたの名前を追加してください"
@@ -1571,13 +1571,6 @@ msgstr "最初のレビューの後、今週の軽めのプランがここに表
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "あなたの条件との比較"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AIと開発者"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "回答をコピーしました"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic、Gemini、Ollama、OpenAI互換"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "どこでも"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "アプリ"
 msgid "App navigation"
 msgstr "アプリのナビゲーション"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "外観"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "学士、コミュニケーションデザイン"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "戻る"
 
@@ -3068,10 +3063,6 @@ msgstr "アプリケーションを接続"
 msgid "Connect another…"
 msgstr "別のを接続して…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "履歴書の作成、求職活動、作業に使用するツールを接続します。"
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "独自の AI プロバイダーに接続して、言語モデルにリストのエントリを読み取り、書き換えを提案させます。 Issue と Job Match にはプロバイダーは必要ありません。"
@@ -3685,7 +3676,7 @@ msgstr "ストーリーを保存できませんでした。もう一度お試し
 msgid "Couldn't save the tags. Try again."
 msgstr "タグを保存できませんでした。もう一度お試しください。"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "タイムゾーンを保存できませんでした。もう一度お試しください。"
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "サインインできませんでした。もう一度お試しください。"
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "サインアウトできませんでした。もう一度お試しください。"
@@ -3976,6 +3966,10 @@ msgstr "作成日"
 msgid "Created “{finalName}”"
 msgstr "「{finalName}」を作成しました"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "30 日間にわたる毎日の視聴数、ピーク {0}"
 msgid "Danish"
 msgstr "デンマーク語"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "ダーク"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "有効期限が切れます"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "仕事を過小評価せずに、測定の限界を1つ明確に説明しましょう。"
@@ -5540,6 +5536,10 @@ msgstr "フルネーム"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "全幅"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "統合"
 msgid "Interests"
 msgstr "趣味・関心"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "インターフェース言語"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "インターフェースのみ。各履歴書は、デザインにおいて独自の言語を設定します。"
 
@@ -6147,7 +6147,7 @@ msgstr "面接を保存しました"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "面接を保存しました · ブリーフィングは{0}に移動します"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "キャリアの面接時刻、リマインダー、スケジュールで使用されます。"
 
@@ -6428,10 +6428,9 @@ msgstr "そのままにしておきます"
 msgid "Kept yours"
 msgstr "あなたの文を維持"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "キーは {0} で終わります"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "ラベル、例:採用担当者"
 msgid "Landscape"
 msgstr "横長"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "言語"
@@ -6526,6 +6523,10 @@ msgstr "最終編集"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "最後に使用した"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "<0>MIT</0>ライセンス"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "合字（リガチャ）により、「workflow」のような単語から文字が欠落することがあります。"
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "ライト"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCPサーバー"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "この求人情報には目立った条件はありませんでした。
 msgid "No text could be read from this file."
 msgstr "このファイルからテキストを読み取れませんでした。"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "一致するタイムゾーンがありません。"
 
@@ -7967,10 +7970,6 @@ msgstr "採点対象外"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "未選択"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "セットアップされていません"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "単一列のレイアウトを優先するか、サイドの列は短く
 msgid "Preference"
 msgstr "希望条件"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "環境設定"
 
@@ -9912,7 +9907,7 @@ msgstr "履歴書提出（任意）"
 msgid "Resumes"
 msgstr "レジュメ"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "履歴書は、テーマが何であれ、常に白い紙にレンダリングされます。"
 
@@ -9995,10 +9990,9 @@ msgstr "レビューにはAI接続が必要です。<0>設定で追加してく�
 msgid "Revoke"
 msgstr "取り消す"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0}を取り消す"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "役割、会社、または連絡先を検索する"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "タイムゾーンを検索"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "認証アプリを設定"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "設定"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "指紋、顔、またはデバイスの PIN を使用してサインインします"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "サインアウト"
@@ -11539,8 +11532,6 @@ msgstr "1列に切り替えました"
 msgid "Synced changes made in another tab."
 msgstr "別のタブで行われた変更を同期しました。"
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "オペレーティング·システム"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "保存されたキーは新しいベース URL には送信されません。再度キーを入力してください。"
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "保存されたプロバイダー キーは復号化できません。 「設定」→「AIと開発者」にキーを再度入力します。"
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "テキストが読み取れない状態で出力されます。"
 msgid "The top of the first page does not look like a name."
 msgstr "1ページ目の冒頭が氏名のようには見えません。"
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "テーマ"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "時刻は{timeZone}で表示されます。"
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "タイムゾーン"
 
@@ -12968,7 +12958,7 @@ msgstr "標準の見出しを使用する"
 msgid "Use these answers"
 msgstr "この回答を使用"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "このデバイスのタイムゾーンを使用（{device}）"
 
@@ -13221,6 +13211,7 @@ msgstr "変更を承認するためのリンクを {currentEmail} に送信し�
 msgid "We sent a new verification link to {0}."
 msgstr "新しい確認リンクを {0} に送信しました。"
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "ウェブアクセス"

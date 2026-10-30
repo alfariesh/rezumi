@@ -1135,8 +1135,8 @@ msgstr "നേട്ടം"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "അക്കൗണ്ട്"
 
@@ -1267,10 +1267,6 @@ msgstr "ഒരു ടാഗ് ചേർക്കുക"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "ഒരു ടാഗ് ചേർത്ത് Enter അമർത്തുക…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AI ദാതാവിനെ ചേർക്കുക"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "സന്നദ്ധപ്രവർത്തനം ചേർക്ക�
 msgid "Add what happened before you can save."
 msgstr "സേവ് ചെയ്യുന്നതിന് മുമ്പ് എന്താണ് സംഭവിച്ചതെന്ന് ചേർക്കുക."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "നിങ്ങളുടെ പേര് ചേർക്കുക"
@@ -1571,13 +1571,6 @@ msgstr "നിങ്ങളുടെ ആദ്യ റിവ്യൂവിന് 
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "നിങ്ങളുടെ ആവശ്യകതകളുമായി താരതമ്യം"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI & ഡെവലപ്പർ"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "ഉത്തരങ്ങൾ പകർത്തി"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI-അനുയോജ്യമാണ്"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "എവിടെയും"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "ആപ്പ്"
 msgid "App navigation"
 msgstr "ആപ്പ് നാവിഗേഷൻ"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "രൂപഭാവം"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "ബിഎ, കമ്മ്യൂണിക്കേഷൻ ഡിസൈൻ"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "തിരികെ"
 
@@ -3068,10 +3063,6 @@ msgstr "ഒരു ആപ്ലിക്കേഷൻ ബന്ധിപ്പി�
 msgid "Connect another…"
 msgstr "മറ്റൊന്ന് ബന്ധിപ്പിക്കുക..."
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "എഴുതുന്നതിനും ജോലി തിരയുന്നതിനും ജോലി ചെയ്യുന്നതിനും നിങ്ങൾ ഉപയോഗിക്കുന്ന ടൂളുകൾ നിങ്ങളുടെ റെസ്യൂമെകളുമായി ബന്ധിപ്പിക്കുക."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "നിങ്ങളുടെ ലിസ്റ്റ് എൻട്രികൾ വായിക്കാനും മാറ്റിയെഴുതാൻ നിർദ്ദേശിക്കാനും ഒരു ഭാഷാ മോഡൽ ലഭിക്കുന്നതിന് നിങ്ങളുടെ സ്വന്തം AI ദാതാവിനെ ബന്ധിപ്പിക്കുക. പ്രശ്‌നങ്ങൾക്കും ജോലി പൊരുത്തത്തിനും ദാതാവിൻ്റെ ആവശ്യമില്ല."
@@ -3685,7 +3676,7 @@ msgstr "കഥ സേവ് ചെയ്യാനായില്ല. വീണ�
 msgid "Couldn't save the tags. Try again."
 msgstr "ടാഗുകൾ സേവ് ചെയ്യാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "സമയമേഖല സേവ് ചെയ്യാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "സൈൻ ഇൻ ചെയ്യാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "സൈൻ ഔട്ട് ചെയ്യാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
@@ -3976,6 +3966,10 @@ msgstr "സൃഷ്‌ടിച്ചത്"
 msgid "Created “{finalName}”"
 msgstr "\"{finalName}\" സൃഷ്ടിച്ചു"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "30 ദിവസത്തിലധികം പ്രതിദിന ക�
 msgid "Danish"
 msgstr "ഡാനിഷ്"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "ഡാർക്ക്"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "കാലഹരണപ്പെടുന്നു"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "ജോലിയുടെ മൂല്യം കുറച്ചുകാണിക്കാതെ, അളവെടുപ്പിന്റെ ഒരു പരിമിതി വ്യക്തമായി വിശദീകരിക്കുക."
@@ -5540,6 +5536,10 @@ msgstr "പൂർണ്ണമായ പേര്"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "പൂർണ്ണ വീതി"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "സംയോജനങ്ങൾ"
 msgid "Interests"
 msgstr "താൽപര്യങ്ങൾ"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "ഇൻ്റർഫേസ് ഭാഷ"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "ഇൻ്റർഫേസ് മാത്രം. ഓരോ റെസ്യൂമെയും ഡിസൈനിൽ അതിൻ്റേതായ ഭാഷ സജ്ജീകരിക്കുന്നു."
 
@@ -6147,7 +6147,7 @@ msgstr "അഭിമുഖം സേവ് ചെയ്തു"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "അഭിമുഖം സേവ് ചെയ്തു · ബ്രീഫിംഗ് {0}-ലേക്ക് മാറ്റി"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "കരിയറിലെ അഭിമുഖ സമയങ്ങളും ഓർമ്മപ്പെടുത്തലുകളും ഷെഡ്യൂളുകളും ഇത് ഉപയോഗിക്കുന്നു."
 
@@ -6428,10 +6428,9 @@ msgstr "അതുപോലെ സൂക്ഷിച്ചു"
 msgid "Kept yours"
 msgstr "നിങ്ങളുടേത് നിലനിർത്തി"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "{0}-ൽ കീ അവസാനിക്കുന്നു"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "ലേബൽ, ഉദാ. റിക്രൂട്ടർ"
 msgid "Landscape"
 msgstr "ലാൻഡ്‌സ്‌കേപ്പ്"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "ഭാഷ"
@@ -6526,6 +6523,10 @@ msgstr "അവസാനം എഡിറ്റ് ചെയ്തത്"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "അവസാനം ഉപയോഗിച്ചത്"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "<0>MIT</0> ലൈസൻസിന് കീഴിൽ"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ലിഗേച്ചറുകൾ \"workflow\" പോലുള്ള വാക്കുകളിൽ നിന്ന് അക്ഷരങ്ങൾ വീഴ്ത്തിക്കളയാം."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "ലൈറ്റ്"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP സെർവർ"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "ഈ ജോലി പോസ്റ്റിംഗിൽ നിബന്ധ
 msgid "No text could be read from this file."
 msgstr "ഈ ഫയലിൽ നിന്ന് ടെക്സ്റ്റൊന്നും വായിക്കാൻ കഴിഞ്ഞില്ല."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "പൊരുത്തപ്പെടുന്ന സമയമേഖലയില്ല."
 
@@ -7967,10 +7970,6 @@ msgstr "സ്കോർ ചെയ്തിട്ടില്ല"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "തിരഞ്ഞെടുത്തിട്ടില്ല"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "സജ്ജീകരിച്ചിട്ടില്ല"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "ഒറ്റ കോളം ഇഷ്ടപ്പെടുക, അല്�
 msgid "Preference"
 msgstr "പ്രിഫറൻസ്"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "പ്രിഫറൻസുകൾ"
 
@@ -9912,7 +9907,7 @@ msgstr "റെസ്യൂമെ സമർപ്പിച്ചു (ഓപ്ഷ
 msgid "Resumes"
 msgstr "റെസ്യൂമെകൾ"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "തീം എന്തുതന്നെയായാലും റെസ്യൂമെകൾ എല്ലായ്പ്പോഴും വെള്ള പേപ്പറിൽ റെൻഡർ ചെയ്യുന്നു."
 
@@ -9995,10 +9990,9 @@ msgstr "വിലയിരുത്തലിന് ഒരു AI കണക്ഷ�
 msgid "Revoke"
 msgstr "അസാധുവാക്കുക"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0} അസാധുവാക്കുക"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "സെർച്ച് റോൾ, കമ്പനി അല്ലെങ�
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "സമയമേഖലകൾ തിരയുക"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "നിങ്ങളുടെ ഓതന്റിക്കേറ്റർ ആപ്പ് സജ്ജമാക്കുക"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "സെറ്റിംഗ്സ്"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "നിങ്ങളുടെ വിരലടയാളം, മുഖം അല്ലെങ്കിൽ ഉപകരണ പിൻ ഉപയോഗിച്ച് സൈൻ ഇൻ ചെയ്യുക"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "സൈൻ ഔട്ട്"
@@ -11539,8 +11532,6 @@ msgstr "ഒരു കോളത്തിലേക്ക് മാറി"
 msgid "Synced changes made in another tab."
 msgstr "മറ്റൊരു ടാബിൽ വരുത്തിയ സമന്വയിപ്പിച്ച മാറ്റങ്ങൾ."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "ഓപ്പറേറ്റിംഗ് സിസ്റ്റം"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "സംരക്ഷിച്ച കീ ഒരു പുതിയ അടിസ്ഥാന URL-ലേക്ക് അയച്ചിട്ടില്ല. കീ വീണ്ടും നൽകുക."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "സംരക്ഷിച്ച ദാതാവിൻ്റെ കീ ഡീക്രിപ്റ്റ് ചെയ്യാൻ കഴിയില്ല. ക്രമീകരണം → AI & ഡെവലപ്പർ എന്നതിൽ കീ വീണ്ടും നൽകുക."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "ടെക്സ്റ്റ് വായിക്കാൻ കഴിയ�
 msgid "The top of the first page does not look like a name."
 msgstr "ആദ്യ പേജിന്റെ മുകൾഭാഗം ഒരു പേര് പോലെ കാണുന്നില്ല."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "തീം"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "സമയങ്ങൾ {timeZone}-ൽ കാണിക്കുന്നു."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "സമയമേഖല"
 
@@ -12968,7 +12958,7 @@ msgstr "സാധാരണ തലക്കെട്ട് ഉപയോഗിക�
 msgid "Use these answers"
 msgstr "ഈ ഉത്തരങ്ങൾ ഉപയോഗിക്കുക"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "ഈ ഉപകരണത്തിന്റെ സമയമേഖല ഉപയോഗിക്കുക ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "മാറ്റം അംഗീകരിക്കാൻ ഞങ്ങൾ 
 msgid "We sent a new verification link to {0}."
 msgstr "{0}-ലേക്ക് ഞങ്ങൾ ഒരു പുതിയ സ്ഥിരീകരണ ലിങ്ക് അയച്ചു."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "വെബ് ആക്സസ്"

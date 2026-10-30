@@ -512,7 +512,7 @@ export const careerService = {
 			careerService.stories(input),
 			db.select({ timezone: tables.user.timezone }).from(tables.user).where(eq(tables.user.id, input.userId)),
 		]);
-		// The coach reads times in the user's timezone (Settings → Preferences) with the rest of their preferences.
+		// The coach reads times in the user's account timezone with the rest of their preferences.
 		const profile = { ...preferences, timezone: owner?.timezone ?? "UTC" };
 		const knowledgeRevision = knowledgeSignature(preferences, facts, stories, profile.timezone);
 		let resume: { text: string; version: string; submitted: boolean; source: { kind: string; id: string } } | null =

@@ -1,10 +1,11 @@
-import { loginViaUi, logoutViaUi, registerViaUi } from "../fixtures/auth";
+import { clickSignOutInMenu, loginViaUi, logoutViaUi, registerViaUi } from "../fixtures/auth";
 import { expect, test } from "../fixtures/test";
 
 test.use({ launchOptions: { ignoreDefaultArgs: ["--hide-scrollbars"] } });
 
-test("failed settings sign-out retains the session and drafts; successful sign-out clears private browser data", async ({
+test("failed sign-out retains the session and drafts; successful sign-out clears private browser data", async ({
 	authPage: page,
+	account,
 }) => {
 	await page.goto("/dashboard/settings/account");
 	const key = "career-story:security-fixture";
@@ -19,8 +20,8 @@ test("failed settings sign-out retains the session and drafts; successful sign-o
 			body: JSON.stringify({ code: "TOO_MANY_REQUESTS", message: "Try later" }),
 		}),
 	);
-	await page.getByRole("button", { name: "Sign out", exact: true }).last().click();
-	await expect(page.getByText("Couldn't sign out. Try again.", { exact: true })).toBeVisible();
+	await clickSignOutInMenu(page, account);
+	await expect(page.getByText("Try later", { exact: true })).toBeVisible();
 	await expect(page).toHaveURL(/\/dashboard\/settings\/account/);
 	expect(await page.evaluate((key) => [localStorage.getItem(key), sessionStorage.getItem(key)], key)).toEqual([
 		"fictional draft",
@@ -29,8 +30,7 @@ test("failed settings sign-out retains the session and drafts; successful sign-o
 	const session = await page.request.get("/api/auth/get-session");
 	expect((await session.json()).user).toBeTruthy();
 	await page.unroute("**/api/auth/sign-out");
-	await page.getByRole("button", { name: "Sign out", exact: true }).last().click();
-	await expect(page).toHaveURL(/\/$/);
+	await logoutViaUi(page, account);
 	expect(await page.evaluate((key) => [localStorage.getItem(key), sessionStorage.getItem(key)], key)).toEqual([
 		null,
 		null,

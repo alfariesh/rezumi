@@ -144,7 +144,7 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 					</PrivacyLine>
 				</>
 			) : (
-				<Link to="/dashboard/settings/ai" className={cn(buttonVariants({ variant: "secondary" }))}>
+				<Link to="/dashboard/settings/app" hash="ai-providers" className={cn(buttonVariants({ variant: "secondary" }))}>
 					<Trans>Connect an AI provider in Settings</Trans>
 				</Link>
 			)}

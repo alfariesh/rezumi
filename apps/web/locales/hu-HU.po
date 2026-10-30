@@ -1135,8 +1135,8 @@ msgstr "Teljesítmény"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Fiók"
 
@@ -1267,10 +1267,6 @@ msgstr "Adjon hozzá egy címkét"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Adj hozzá egy címkét, majd nyomj Entert…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "AI szolgáltató hozzáadása"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Adjon hozzá önkéntességet"
 msgid "Add what happened before you can save."
 msgstr "A mentéshez írd le, mi történt."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Adja hozzá a nevét"
@@ -1571,13 +1571,6 @@ msgstr "Az első értékelésed után itt jelenik meg egy könnyű terv erre a h
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "Az elvárásaidhoz mérve"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI és fejlesztő"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Válaszok másolva"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI kompatibilis"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Bárhol"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Alkalmazás"
 msgid "App navigation"
 msgstr "Alkalmazásnavigáció"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Megjelenés"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, kommunikációtervezés"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Vissza"
 
@@ -3068,10 +3063,6 @@ msgstr "Csatlakoztasson egy alkalmazást"
 msgid "Connect another…"
 msgstr "Csatlakoztasson egy másikat…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Csatlakoztassa az íráshoz, álláskereséshez és munkához használt eszközöket önéletrajzaihoz."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Csatlakoztassa saját mesterségesintelligencia-szolgáltatóját, hogy egy nyelvi modell elolvassa a lista bejegyzéseit és javasoljon átírásokat. A problémák és az állásegyeztetés nem igényel szolgáltatót."
@@ -3685,7 +3676,7 @@ msgstr "Nem sikerült menteni a történetet. Próbáld újra."
 msgid "Couldn't save the tags. Try again."
 msgstr "Nem sikerült menteni a címkéket. Próbáld újra."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Nem sikerült menteni az időzónát. Próbáld újra."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Nem sikerült bejelentkezni. Próbáld újra."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Nem sikerült kijelentkezni. Próbáld újra."
@@ -3976,6 +3966,10 @@ msgstr "Létrehozva"
 msgid "Created “{finalName}”"
 msgstr "Létrehozva: „{finalName}”"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Napi megtekintések 30 napon keresztül, csúcs {0}"
 msgid "Danish"
 msgstr "dán"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Sötét"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Lejár"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "magyarázd el világosan a mérés egyik korlátját, a munka lekicsinylése nélkül."
@@ -5540,6 +5536,10 @@ msgstr "Teljes név"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Teljes szélesség"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Integrációk"
 msgid "Interests"
 msgstr "Érdeklődési körök"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Interfész nyelve"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Csak interfész. Minden önéletrajz beállítja a saját nyelvét a Designban."
 
@@ -6147,7 +6147,7 @@ msgstr "Interjú mentve"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Interjú mentve · az eligazítás új időpontja: {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "A Karrier interjúidőpontjai, emlékeztetői és ütemezései ezt használják."
 
@@ -6428,10 +6428,9 @@ msgstr "Megtartva, ahogy van"
 msgid "Kept yours"
 msgstr "A tiéd megmaradt"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "A kulcs {0}-ban végződik"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Címke, pl. Toborzó"
 msgid "Landscape"
 msgstr "Fekvő"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Nyelv"
@@ -6526,6 +6523,10 @@ msgstr "Utoljára szerkesztve"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Utoljára használt"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "<0>MIT</0> licenc alatt"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "A ligatúrák betűket ejthetnek ki az olyan szavakból, mint a \"workflow\"."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Világos"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP szerver"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Ebben az álláshirdetésben egyetlen kifejezés sem tűnt fel."
 msgid "No text could be read from this file."
 msgstr "Nem sikerült szöveget kiolvasni ebből a fájlból."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Nincs egyező időzóna."
 
@@ -7967,10 +7970,6 @@ msgstr "Nincs pontozva"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Nincs kiválasztva"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Nincs beállítva"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Részesítsd előnyben az egyoszlopos elrendezést, vagy tartsd meg az o
 msgid "Preference"
 msgstr "Preferencia"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Preferenciák"
 
@@ -9912,7 +9907,7 @@ msgstr "önéletrajz beküldve (nem kötelező)"
 msgid "Resumes"
 msgstr "Önéletrajzok"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "Az önéletrajzok mindig fehér papírra jelennek meg, bármilyen témáról is legyen szó."
 
@@ -9995,10 +9990,9 @@ msgstr "Az értékeléshez AI-kapcsolat kell. <0>Adj hozzá egyet a Beállítás
 msgid "Revoke"
 msgstr "Visszavonás"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "{0} visszavonása"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Szerepkör, cég vagy kapcsolat keresése"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Időzónák keresése"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Állítsd be a hitelesítő alkalmazásodat"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Beállítások"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Jelentkezzen be ujjlenyomatával, arcával vagy az eszköz PIN-kódjával"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Kijelentkezés"
@@ -11539,8 +11532,6 @@ msgstr "Egy oszlopra váltott"
 msgid "Synced changes made in another tab."
 msgstr "Egy másik lapon végrehajtott módosítások szinkronizálva."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Operációs rendszer"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "A mentett kulcsot nem küldi el új alap URL-re. Írja be újra a kulcsot."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "A mentett szolgáltatói kulcsot nem lehet visszafejteni. Írja be újra a kulcsot a Beállítások → AI és fejlesztő menüpontban."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "A szöveg olvashatatlanul kerül elő."
 msgid "The top of the first page does not look like a name."
 msgstr "Az első oldal teteje nem néz ki névnek."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Téma"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Az időpontok ebben az időzónában jelennek meg: {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Időzóna"
 
@@ -12968,7 +12958,7 @@ msgstr "Használja a szabványos címsort"
 msgid "Use these answers"
 msgstr "Ezeknek a válaszoknak a használata"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Az eszköz időzónájának használata ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "A módosítás jóváhagyásához linket küldtünk a(z) {currentEmail} 
 msgid "We sent a new verification link to {0}."
 msgstr "Új ellenőrző linket küldtünk a {0} címre."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Web hozzáférés"
