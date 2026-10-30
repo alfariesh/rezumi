@@ -1,19 +1,11 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Dropdown, Input, Label } from "@heroui/react";
+import { Button, Dropdown, Input, Label, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useId, useState } from "react";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
@@ -155,66 +147,71 @@ function FollowUpDialog({ application, open, onOpenChange }: FollowUpDialogProps
 	});
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-sm">
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Follow-up</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>A reminder to check in, shown as the next step until you do.</Trans>
-					</DialogDescription>
-				</DialogHeader>
-				<form
-					id={`${id}-form`}
-					className="grid gap-3"
-					onSubmit={(event) => {
-						event.preventDefault();
-						// A date at 9:00 local time, so it reads as that day everywhere.
-						const at = date ? new Date(`${date}T09:00`) : null;
-						update.mutate({ id: application.id, followUpAt: at, followUpNote: note.trim() || null });
-					}}
-				>
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-date`}>
-							<Trans>Date</Trans>
-						</Label>
-						<Input
-							fullWidth
-							id={`${id}-date`}
-							type="date"
-							value={date}
-							onChange={(event) => setDate(event.target.value)}
-						/>
-					</div>
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-note`}>
-							<Trans>What to do</Trans>
-						</Label>
-						<Input
-							fullWidth
-							id={`${id}-note`}
-							value={note}
-							placeholder={t`Email the recruiter`}
-							onChange={(event) => setNote(event.target.value)}
-						/>
-					</div>
-				</form>
-				<DialogFooter>
-					{application.followUpAt && (
-						<Button
-							variant="ghost"
-							className="me-auto"
-							onPress={() => update.mutate({ id: application.id, followUpAt: null, followUpNote: null })}
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size="sm">
+				<Modal.Dialog aria-describedby={`${id}-description`}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Follow-up</Trans>
+						</Modal.Heading>
+						<p id={`${id}-description`} className="text-sm text-muted">
+							<Trans>A reminder to check in, shown as the next step until you do.</Trans>
+						</p>
+					</Modal.Header>
+					<Modal.Body className="p-1">
+						<form
+							id={`${id}-form`}
+							className="grid gap-3"
+							onSubmit={(event) => {
+								event.preventDefault();
+								// A date at 9:00 local time, so it reads as that day everywhere.
+								const at = date ? new Date(`${date}T09:00`) : null;
+								update.mutate({ id: application.id, followUpAt: at, followUpNote: note.trim() || null });
+							}}
 						>
-							<Trans>Clear</Trans>
+							<div className="grid gap-1.5">
+								<Label htmlFor={`${id}-date`}>
+									<Trans>Date</Trans>
+								</Label>
+								<Input
+									fullWidth
+									id={`${id}-date`}
+									type="date"
+									value={date}
+									onChange={(event) => setDate(event.target.value)}
+								/>
+							</div>
+							<div className="grid gap-1.5">
+								<Label htmlFor={`${id}-note`}>
+									<Trans>What to do</Trans>
+								</Label>
+								<Input
+									fullWidth
+									id={`${id}-note`}
+									value={note}
+									placeholder={t`Email the recruiter`}
+									onChange={(event) => setNote(event.target.value)}
+								/>
+							</div>
+						</form>
+					</Modal.Body>
+					<Modal.Footer>
+						{application.followUpAt && (
+							<Button
+								variant="ghost"
+								className="me-auto"
+								onPress={() => update.mutate({ id: application.id, followUpAt: null, followUpNote: null })}
+							>
+								<Trans>Clear</Trans>
+							</Button>
+						)}
+						<Button type="submit" form={`${id}-form`} isDisabled={!date || update.isPending}>
+							<Trans>Save</Trans>
 						</Button>
-					)}
-					<Button type="submit" form={`${id}-form`} isDisabled={!date || update.isPending}>
-						<Trans>Save</Trans>
-					</Button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+					</Modal.Footer>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }

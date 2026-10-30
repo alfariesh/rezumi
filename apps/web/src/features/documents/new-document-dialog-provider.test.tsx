@@ -1,10 +1,10 @@
-// @vitest-environment happy-dom
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
+// @vitest-environment happy-dom
+import { Modal } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Dialog } from "@rezumi/ui/components/dialog";
 
 const api = vi.hoisted(() => ({
 	providers: vi.fn(),
@@ -52,9 +52,9 @@ function mount(file: File) {
 	return render(
 		<I18nProvider i18n={i18n}>
 			<QueryClientProvider client={queryClient}>
-				<Dialog open>
+				<Modal.Backdrop isOpen>
 					<NewDocumentDialog data={{ file }} />
-				</Dialog>
+				</Modal.Backdrop>
 			</QueryClientProvider>
 		</I18nProvider>,
 	);

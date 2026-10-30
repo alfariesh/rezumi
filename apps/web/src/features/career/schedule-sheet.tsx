@@ -3,7 +3,7 @@ import type { careerScheduleInputSchema } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type z from "zod";
-import { Segment } from "@heroui-pro/react";
+import { Segment, Sheet } from "@heroui-pro/react";
 import { Button, buttonVariants, Input, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -12,7 +12,6 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { Sheet, SheetClose, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -238,310 +237,311 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 
 	return (
 		<Sheet
-			open={Boolean(schedule)}
+			isOpen={Boolean(schedule)}
+			placement={phone ? "bottom" : "right"}
 			onOpenChange={(next) => {
 				if (!next) requestClose();
 			}}
-			onOpenChangeComplete={(next) => {
+			onAnimationEnd={(next) => {
 				onClosingComplete(next);
 				if (!next) setForm(null);
 			}}
 		>
-			<SheetContent
-				side={phone ? "bottom" : "right"}
-				showCloseButton={false}
-				className="gap-0 data-[side=right]:border-s data-[side=right]:border-line data-[side=right]:sm:max-w-[480px]"
-			>
-				<div className="flex items-center gap-3 border-b border-line ps-[22px] pe-3 pt-[18px] pb-3.5">
-					<SheetTitle className="flex-1">
-						{form?.existing ? <Trans>Edit schedule</Trans> : <Trans>New schedule</Trans>}
-					</SheetTitle>
-					<SheetClose
-						aria-label={t`Close`}
-						render={<button type="button" className={buttonVariants({ variant: "ghost", isIconOnly: true })} />}
-					>
-						<Icon name="x" />
-					</SheetClose>
-				</div>
+			<Sheet.Backdrop>
+				<Sheet.Content className={phone ? "" : "w-full border-s border-line sm:max-w-[480px]"}>
+					<Sheet.Dialog className="gap-0 p-0">
+						{phone && <Sheet.Handle />}
+						<div className="flex items-center gap-3 border-b border-line ps-[22px] pe-3 pt-[18px] pb-3.5">
+							<Sheet.Heading className="flex-1">
+								{form?.existing ? <Trans>Edit schedule</Trans> : <Trans>New schedule</Trans>}
+							</Sheet.Heading>
+							<Sheet.Close>
+								<Button aria-label={t`Close`} variant="ghost" isIconOnly>
+									<Icon name="x" />
+								</Button>
+							</Sheet.Close>
+						</div>
 
-				{!form || !draft ? (
-					<div className="grid min-h-40 flex-1 place-items-center">
-						<Spinner size="md" color="current" aria-label={t`Loading`} />
-					</div>
-				) : (
-					<div className="flex min-h-0 flex-1 flex-col gap-[18px] overflow-y-auto px-[22px] py-5">
-						<Segments
-							label={t`What should run`}
-							value={draft.kind}
-							onChange={(kind) => set({ kind: kind as Kind })}
-							options={[
-								{ value: "discovery", label: t`Find roles` },
-								{ value: "prepare", label: t`Prepare` },
-								{ value: "follow-up", label: t`Remind me` },
-							]}
-						/>
+						{!form || !draft ? (
+							<div className="grid min-h-40 flex-1 place-items-center">
+								<Spinner size="md" color="current" aria-label={t`Loading`} />
+							</div>
+						) : (
+							<div className="flex min-h-0 flex-1 flex-col gap-[18px] overflow-y-auto px-[22px] py-5">
+								<Segments
+									label={t`What should run`}
+									value={draft.kind}
+									onChange={(kind) => set({ kind: kind as Kind })}
+									options={[
+										{ value: "discovery", label: t`Find roles` },
+										{ value: "prepare", label: t`Prepare` },
+										{ value: "follow-up", label: t`Remind me` },
+									]}
+								/>
 
-						<Swap id={draft.kind} className="flex flex-col gap-[18px]">
-							{draft.kind === "discovery" && (
-								<>
-									<Field
-										label={t`Look for`}
-										hint={t`Roles, places and companies. Starts from your preferences.`}
-										error={shownError("query")}
-									>
-										{(props) => (
-											<Input
-												fullWidth
-												{...props}
-												value={draft.query}
-												maxLength={500}
-												onChange={(event) => set({ query: event.target.value })}
-												onBlur={() => touch("query")}
-												className="pointer-coarse:text-base"
-											/>
-										)}
-									</Field>
-									<Segments
-										label={t`How often`}
-										value={draft.every}
-										onChange={(every) => set({ every })}
-										options={[
-											{ value: "1", label: t`Every day` },
-											{ value: "3", label: t`Every 3 days` },
-											{ value: "7", label: t`Every week` },
-										]}
-									/>
-									<p className="flex gap-2.5 rounded-lg bg-info-soft px-3 py-2.5 text-[13px] leading-[19px] text-ink">
-										<Icon name="globe-simple" size={18} className="mt-px shrink-0 text-info-text" />
-										<Trans>
-											Uses the web search service set up in Settings. Results wait in Today for your review;
-											applications and documents are never created for you.
-										</Trans>
-									</p>
-								</>
-							)}
-
-							{draft.kind === "prepare" && (
-								<>
-									<Field
-										label={t`Interview`}
-										hint={
-											choices.length === 0
-												? t`Add an interview in an application first`
-												: runAt && runAt <= now
-													? draft.lead === "morning"
-														? t`The morning of the interview has passed, so the briefing runs now.`
-														: t`Starts in under ${draft.lead === "24h" ? 24 : 2} hours, so the briefing runs now.`
-													: undefined
-										}
-									>
-										{(props) => (
-											<NativeSelect
-												{...props}
-												disabled={choices.length === 0}
-												value={draft.interviewId}
-												onChange={(event) => set({ interviewId: event.target.value })}
-												className="pointer-coarse:text-base"
+								<Swap id={draft.kind} className="flex flex-col gap-[18px]">
+									{draft.kind === "discovery" && (
+										<>
+											<Field
+												label={t`Look for`}
+												hint={t`Roles, places and companies. Starts from your preferences.`}
+												error={shownError("query")}
 											>
-												{choices.map((item) => (
-													<option key={item.interview.id} value={item.interview.id}>
-														{[
-															item.application.company,
-															interviewKindOf(item.interview.kind)?.label ?? item.interview.kind,
-															when(item.start),
-														].join(" · ")}
-													</option>
-												))}
-											</NativeSelect>
-										)}
-									</Field>
-									<Segments
-										label={t`Prepare a briefing`}
-										value={draft.lead}
-										onChange={(lead) => set({ lead: lead as Lead })}
-										options={[
-											{ value: "24h", label: t`24 hours before` },
-											{ value: "2h", label: t`2 hours before` },
-											{ value: "morning", label: t`Morning of` },
-										]}
-									/>
-									<Field label={t`AI connection`}>
-										{(props) =>
-											providerState.isUnavailable ? (
-												<AiProviderLoadState state={providerState} />
-											) : providers.length === 0 ? (
-												<Link
-													to="/dashboard/settings/ai"
-													className="w-fit text-link underline-offset-4 hover:underline"
-												>
-													<Trans>Connect an AI provider in Settings</Trans>
-												</Link>
-											) : (
+												{(props) => (
+													<Input
+														fullWidth
+														{...props}
+														value={draft.query}
+														maxLength={500}
+														onChange={(event) => set({ query: event.target.value })}
+														onBlur={() => touch("query")}
+														className="pointer-coarse:text-base"
+													/>
+												)}
+											</Field>
+											<Segments
+												label={t`How often`}
+												value={draft.every}
+												onChange={(every) => set({ every })}
+												options={[
+													{ value: "1", label: t`Every day` },
+													{ value: "3", label: t`Every 3 days` },
+													{ value: "7", label: t`Every week` },
+												]}
+											/>
+											<p className="flex gap-2.5 rounded-lg bg-info-soft px-3 py-2.5 text-[13px] leading-[19px] text-ink">
+												<Icon name="globe-simple" size={18} className="mt-px shrink-0 text-info-text" />
+												<Trans>
+													Uses the web search service set up in Settings. Results wait in Today for your review;
+													applications and documents are never created for you.
+												</Trans>
+											</p>
+										</>
+									)}
+
+									{draft.kind === "prepare" && (
+										<>
+											<Field
+												label={t`Interview`}
+												hint={
+													choices.length === 0
+														? t`Add an interview in an application first`
+														: runAt && runAt <= now
+															? draft.lead === "morning"
+																? t`The morning of the interview has passed, so the briefing runs now.`
+																: t`Starts in under ${draft.lead === "24h" ? 24 : 2} hours, so the briefing runs now.`
+															: undefined
+												}
+											>
+												{(props) => (
+													<NativeSelect
+														{...props}
+														disabled={choices.length === 0}
+														value={draft.interviewId}
+														onChange={(event) => set({ interviewId: event.target.value })}
+														className="pointer-coarse:text-base"
+													>
+														{choices.map((item) => (
+															<option key={item.interview.id} value={item.interview.id}>
+																{[
+																	item.application.company,
+																	interviewKindOf(item.interview.kind)?.label ?? item.interview.kind,
+																	when(item.start),
+																].join(" · ")}
+															</option>
+														))}
+													</NativeSelect>
+												)}
+											</Field>
+											<Segments
+												label={t`Prepare a briefing`}
+												value={draft.lead}
+												onChange={(lead) => set({ lead: lead as Lead })}
+												options={[
+													{ value: "24h", label: t`24 hours before` },
+													{ value: "2h", label: t`2 hours before` },
+													{ value: "morning", label: t`Morning of` },
+												]}
+											/>
+											<Field label={t`AI connection`}>
+												{(props) =>
+													providerState.isUnavailable ? (
+														<AiProviderLoadState state={providerState} />
+													) : providers.length === 0 ? (
+														<Link
+															to="/dashboard/settings/ai"
+															className="w-fit text-link underline-offset-4 hover:underline"
+														>
+															<Trans>Connect an AI provider in Settings</Trans>
+														</Link>
+													) : (
+														<NativeSelect
+															{...props}
+															value={draft.aiProviderId}
+															onChange={(event) => set({ aiProviderId: event.target.value })}
+															className="pointer-coarse:text-base"
+														>
+															{providers.map((provider) => (
+																<option key={provider.id} value={provider.id}>
+																	{provider.label}
+																</option>
+															))}
+														</NativeSelect>
+													)
+												}
+											</Field>
+											{/* The run itself falls back to the default the same way, so this says what will happen. */}
+											{form?.existing?.kind === "prepare" &&
+												providers.length > 0 &&
+												!providers.some((provider) => provider.id === form.existing?.aiProviderId) && (
+													<p className="-mt-2 text-xs text-warn-text">
+														{t`Its connection was switched off or removed, so it runs on ${providers[0]?.label ?? ""} until you choose another.`}
+													</p>
+												)}
+											<PrivacyLine cost>
+												<Trans>
+													Sends this application's posting, notes and documents, plus Knowledge that's switched on, to
+													this connection. Your provider may charge for it.
+												</Trans>
+											</PrivacyLine>
+										</>
+									)}
+
+									{draft.kind === "follow-up" && (
+										<Field label={t`Application`} hint={open.length === 0 ? t`Add an application first` : undefined}>
+											{(props) => (
 												<NativeSelect
 													{...props}
-													value={draft.aiProviderId}
-													onChange={(event) => set({ aiProviderId: event.target.value })}
+													disabled={open.length === 0}
+													value={draft.applicationId}
+													onChange={(event) => set({ applicationId: event.target.value })}
 													className="pointer-coarse:text-base"
 												>
-													{providers.map((provider) => (
-														<option key={provider.id} value={provider.id}>
-															{provider.label}
+													{open.map((application) => (
+														<option key={application.id} value={application.id}>
+															{`${application.company} · ${application.role}`}
 														</option>
 													))}
 												</NativeSelect>
-											)
-										}
-									</Field>
-									{/* The run itself falls back to the default the same way, so this says what will happen. */}
-									{form?.existing?.kind === "prepare" &&
-										providers.length > 0 &&
-										!providers.some((provider) => provider.id === form.existing?.aiProviderId) && (
-											<p className="-mt-2 text-xs text-warn-text">
-												{t`Its connection was switched off or removed, so it runs on ${providers[0]?.label ?? ""} until you choose another.`}
-											</p>
-										)}
-									<PrivacyLine cost>
-										<Trans>
-											Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this
-											connection. Your provider may charge for it.
-										</Trans>
-									</PrivacyLine>
-								</>
-							)}
-
-							{draft.kind === "follow-up" && (
-								<Field label={t`Application`} hint={open.length === 0 ? t`Add an application first` : undefined}>
-									{(props) => (
-										<NativeSelect
-											{...props}
-											disabled={open.length === 0}
-											value={draft.applicationId}
-											onChange={(event) => set({ applicationId: event.target.value })}
-											className="pointer-coarse:text-base"
-										>
-											{open.map((application) => (
-												<option key={application.id} value={application.id}>
-													{`${application.company} · ${application.role}`}
-												</option>
-											))}
-										</NativeSelect>
+											)}
+										</Field>
 									)}
-								</Field>
-							)}
 
-							{draft.kind !== "prepare" && (
-								<div className="grid gap-1.5">
-									<div className="grid grid-cols-2 gap-3">
-										<Field label={dateLabel}>
-											{(props) => (
-												<Input
-													fullWidth
-													{...props}
-													type="date"
-													aria-invalid={Boolean(shownError("when")) || undefined}
-													value={draft.date}
-													onChange={(event) => set({ date: event.target.value })}
-													onBlur={() => touch("when")}
-													className="pointer-coarse:text-base"
-												/>
-											)}
-										</Field>
-										<Field label={t`Time · ${timeZone}`}>
-											{(props) => (
-												<Input
-													fullWidth
-													{...props}
-													type="time"
-													aria-invalid={Boolean(shownError("when")) || undefined}
-													value={draft.time}
-													onChange={(event) => set({ time: event.target.value })}
-													onBlur={() => touch("when")}
-													className="pointer-coarse:text-base"
-												/>
-											)}
-										</Field>
-									</div>
-									<FieldError>{shownError("when")}</FieldError>
+									{draft.kind !== "prepare" && (
+										<div className="grid gap-1.5">
+											<div className="grid grid-cols-2 gap-3">
+												<Field label={dateLabel}>
+													{(props) => (
+														<Input
+															fullWidth
+															{...props}
+															type="date"
+															aria-invalid={Boolean(shownError("when")) || undefined}
+															value={draft.date}
+															onChange={(event) => set({ date: event.target.value })}
+															onBlur={() => touch("when")}
+															className="pointer-coarse:text-base"
+														/>
+													)}
+												</Field>
+												<Field label={t`Time · ${timeZone}`}>
+													{(props) => (
+														<Input
+															fullWidth
+															{...props}
+															type="time"
+															aria-invalid={Boolean(shownError("when")) || undefined}
+															value={draft.time}
+															onChange={(event) => set({ time: event.target.value })}
+															onBlur={() => touch("when")}
+															className="pointer-coarse:text-base"
+														/>
+													)}
+												</Field>
+											</div>
+											<FieldError>{shownError("when")}</FieldError>
+										</div>
+									)}
+								</Swap>
+
+								<div className="flex flex-col border-t border-line">
+									<SwitchRow
+										isSelected={draft.enabled}
+										onChange={(enabled) => set({ enabled })}
+										label={<span className="font-semibold">{t`Turn this schedule on`}</span>}
+										description={t`Paused schedules keep their settings.`}
+										className="rounded-none border-b border-line py-3.5"
+									/>
+									{smtp && (
+										<SwitchRow
+											isSelected={verified && draft.email}
+											isDisabled={!verified}
+											onChange={(email) => set({ email })}
+											label={<span className="font-semibold">{t`Also email ${user?.email ?? ""}`}</span>}
+											description={
+												verified
+													? t`You'll always see it in Today. Email depends on your server's mail setup.`
+													: t`Verify your email in Settings first`
+											}
+											className="rounded-none border-b border-line py-3.5"
+										/>
+									)}
 								</div>
-							)}
-						</Swap>
-
-						<div className="flex flex-col border-t border-line">
-							<SwitchRow
-								isSelected={draft.enabled}
-								onChange={(enabled) => set({ enabled })}
-								label={<span className="font-semibold">{t`Turn this schedule on`}</span>}
-								description={t`Paused schedules keep their settings.`}
-								className="rounded-none border-b border-line py-3.5"
-							/>
-							{smtp && (
-								<SwitchRow
-									isSelected={verified && draft.email}
-									isDisabled={!verified}
-									onChange={(email) => set({ email })}
-									label={<span className="font-semibold">{t`Also email ${user?.email ?? ""}`}</span>}
-									description={
-										verified
-											? t`You'll always see it in Today. Email depends on your server's mail setup.`
-											: t`Verify your email in Settings first`
-									}
-									className="rounded-none border-b border-line py-3.5"
-								/>
-							)}
-						</div>
-					</div>
-				)}
-
-				<div className="relative border-t border-line px-[22px] py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
-					<Swap id={form?.discarding ? "discard" : "actions"} className="flex flex-wrap items-center gap-2">
-						{form?.discarding ? (
-							<>
-								<p role="status" className="me-auto text-sm font-semibold">
-									<Trans>Discard changes?</Trans>
-								</p>
-								<Button
-									variant="secondary"
-									onPress={() => setForm((current) => current && { ...current, discarding: false })}
-								>
-									<Trans>Keep editing</Trans>
-								</Button>
-								<Button variant="danger" onPress={close}>
-									<Trans>Discard</Trans>
-								</Button>
-							</>
-						) : (
-							<>
-								{form?.existing && (
-									<Button
-										variant="ghost"
-										className="text-danger"
-										onPress={() => {
-											if (form.existing) onDelete(form.existing.id);
-											close();
-										}}
-									>
-										<Trans>Delete</Trans>
-									</Button>
-								)}
-								<span className="flex-1" />
-								<Button variant="secondary" onPress={requestClose}>
-									<Trans>Cancel</Trans>
-								</Button>
-								{needsWebSearch ? (
-									<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "secondary" })}>
-										<Trans>Set up web search in Settings</Trans>
-									</Link>
-								) : (
-									<Button isDisabled={!form || blocked} isPending={save.isPending} onPress={onSave}>
-										{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
-										<Trans>Save schedule</Trans>
-									</Button>
-								)}
-							</>
+							</div>
 						)}
-					</Swap>
-				</div>
-			</SheetContent>
+
+						<div className="relative border-t border-line px-[22px] py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
+							<Swap id={form?.discarding ? "discard" : "actions"} className="flex flex-wrap items-center gap-2">
+								{form?.discarding ? (
+									<>
+										<p role="status" className="me-auto text-sm font-semibold">
+											<Trans>Discard changes?</Trans>
+										</p>
+										<Button
+											variant="secondary"
+											onPress={() => setForm((current) => current && { ...current, discarding: false })}
+										>
+											<Trans>Keep editing</Trans>
+										</Button>
+										<Button variant="danger" onPress={close}>
+											<Trans>Discard</Trans>
+										</Button>
+									</>
+								) : (
+									<>
+										{form?.existing && (
+											<Button
+												variant="ghost"
+												className="text-danger"
+												onPress={() => {
+													if (form.existing) onDelete(form.existing.id);
+													close();
+												}}
+											>
+												<Trans>Delete</Trans>
+											</Button>
+										)}
+										<span className="flex-1" />
+										<Button variant="secondary" onPress={requestClose}>
+											<Trans>Cancel</Trans>
+										</Button>
+										{needsWebSearch ? (
+											<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "secondary" })}>
+												<Trans>Set up web search in Settings</Trans>
+											</Link>
+										) : (
+											<Button isDisabled={!form || blocked} isPending={save.isPending} onPress={onSave}>
+												{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
+												<Trans>Save schedule</Trans>
+											</Button>
+										)}
+									</>
+								)}
+							</Swap>
+						</div>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
 		</Sheet>
 	);
 }

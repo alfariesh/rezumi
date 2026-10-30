@@ -1,16 +1,9 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Modal, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
+import { useId } from "react";
 import { formatTimeSince } from "@rezumi/resume/sharing";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { CopyText } from "./copy-text";
 
 const cellClass =
@@ -27,77 +20,82 @@ type DnsRecordsDialogProps = {
 /** The records that connect a custom domain, each name and value copied with a click, and the DNS check. */
 export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck }: DnsRecordsDialogProps) {
 	const { i18n } = useLingui();
+	const descriptionId = useId();
 	const hasCname = domain.records.some((record) => record.type === "CNAME");
 	const lastChecked = domain.lastCheckedAt ? formatTimeSince(domain.lastCheckedAt, i18n.locale) : null;
 
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent closeLabel={t`Close`} className="sm:max-w-[680px]">
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Connect {domain.hostname}</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>
-							Add these records where you manage the domain, then check. Changes can take a few hours to reach everyone.
-						</Trans>
-					</DialogDescription>
-				</DialogHeader>
-
-				{/* On a phone each record stacks: its type, then its name and value on their own labelled lines. */}
-				<table className="w-full text-[13px]" dir="ltr">
-					<thead className="max-sm:sr-only">
-						<tr className="text-xs text-ink-3">
-							<th scope="col" className="w-16 pb-2 text-start font-normal">
-								<Trans context="DNS record">Type</Trans>
-							</th>
-							<th scope="col" className="pe-4 pb-2 text-start font-normal">
-								<Trans context="DNS record">Name</Trans>
-							</th>
-							<th scope="col" className="pb-2 text-start font-normal">
-								<Trans>Value</Trans>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{domain.records.map((record) => (
-							<tr
-								key={`${record.type}-${record.value}`}
-								className="border-t border-line align-top max-sm:grid max-sm:grid-cols-[3.5rem_minmax(0,1fr)] max-sm:gap-y-1 max-sm:py-2.5"
-							>
-								<td className="py-2.5 font-medium max-sm:row-span-2 max-sm:py-0">{record.type}</td>
-								<td data-label={t({ message: "Name", context: "DNS record" })} className={cellClass}>
-									<CopyText value={record.name} className="font-mono" />
-								</td>
-								<td data-label={t`Value`} className={cellClass}>
-									<CopyText value={record.value} className="font-mono" />
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-
-				{hasCname && (
-					<p className="text-xs leading-4 text-ink-3">
-						<Trans>
-							For a root domain such as example.com, use A and AAAA records with {domain.target}'s addresses instead of
-							the CNAME.
-						</Trans>
-					</p>
-				)}
-
-				<DialogFooter className="items-center">
-					{lastChecked && (
-						<p className="me-auto text-xs text-ink-3">
-							<Trans>Last checked {lastChecked} ago</Trans>
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size="lg">
+				<Modal.Dialog aria-describedby={descriptionId} className="sm:max-w-[680px]">
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Connect {domain.hostname}</Trans>
+						</Modal.Heading>
+						<p id={descriptionId} className="text-sm text-muted">
+							<Trans>
+								Add these records where you manage the domain, then check. Changes can take a few hours to reach
+								everyone.
+							</Trans>
 						</p>
-					)}
-					<Button isPending={checking} onPress={onCheck}>
-						{checking && <Spinner size="sm" color="current" aria-hidden />}
-						<Trans>Check DNS</Trans>
-					</Button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+					</Modal.Header>
+					<Modal.Body className="space-y-4">
+						{/* On a phone each record stacks: its type, then its name and value on their own labelled lines. */}
+						<table className="w-full text-[13px]" dir="ltr">
+							<thead className="max-sm:sr-only">
+								<tr className="text-xs text-ink-3">
+									<th scope="col" className="w-16 pb-2 text-start font-normal">
+										<Trans context="DNS record">Type</Trans>
+									</th>
+									<th scope="col" className="pe-4 pb-2 text-start font-normal">
+										<Trans context="DNS record">Name</Trans>
+									</th>
+									<th scope="col" className="pb-2 text-start font-normal">
+										<Trans>Value</Trans>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{domain.records.map((record) => (
+									<tr
+										key={`${record.type}-${record.value}`}
+										className="border-t border-line align-top max-sm:grid max-sm:grid-cols-[3.5rem_minmax(0,1fr)] max-sm:gap-y-1 max-sm:py-2.5"
+									>
+										<td className="py-2.5 font-medium max-sm:row-span-2 max-sm:py-0">{record.type}</td>
+										<td data-label={t({ message: "Name", context: "DNS record" })} className={cellClass}>
+											<CopyText value={record.name} className="font-mono" />
+										</td>
+										<td data-label={t`Value`} className={cellClass}>
+											<CopyText value={record.value} className="font-mono" />
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+
+						{hasCname && (
+							<p className="text-xs leading-4 text-ink-3">
+								<Trans>
+									For a root domain such as example.com, use A and AAAA records with {domain.target}'s addresses instead
+									of the CNAME.
+								</Trans>
+							</p>
+						)}
+					</Modal.Body>
+					<Modal.Footer className="items-center">
+						{lastChecked && (
+							<p className="me-auto text-xs text-ink-3">
+								<Trans>Last checked {lastChecked} ago</Trans>
+							</p>
+						)}
+						<Button isPending={checking} onPress={onCheck}>
+							{checking && <Spinner size="sm" color="current" aria-hidden />}
+							<Trans>Check DNS</Trans>
+						</Button>
+					</Modal.Footer>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }

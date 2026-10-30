@@ -1,16 +1,15 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants, Dropdown, Input, Label, Separator } from "@heroui/react";
+import { Sheet } from "@heroui-pro/react";
+import { Button, buttonVariants, Dropdown, Input, Label, Modal, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
@@ -56,33 +55,40 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 	const current = data;
 
 	return (
-		<Sheet open={Boolean(application)} onOpenChange={onOpenChange} onOpenChangeComplete={onOpenChangeComplete}>
-			<SheetContent
-				side={phone ? "bottom" : "right"}
-				closeLabel={t`Close`}
-				className={cn("gap-0", phone ? "h-svh" : "data-[side=right]:sm:max-w-[480px]")}
-			>
-				{current ? (
-					<Detail
-						key={current.id}
-						application={current}
-						onEditDetails={onEditDetails}
-						onDeleted={() => onOpenChange(false)}
-					/>
-				) : (
-					<div className="grid gap-2 p-5">
-						<SheetTitle>{shown?.role}</SheetTitle>
-						<SheetDescription aria-live="polite">
-							{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
-						</SheetDescription>
-						{isError && (
-							<Button variant="secondary" isDisabled={isFetching || isPending} onPress={() => void refetch()}>
-								<Trans>Try again</Trans>
-							</Button>
+		<Sheet
+			isOpen={Boolean(application)}
+			onOpenChange={onOpenChange}
+			onAnimationEnd={onOpenChangeComplete}
+			placement={phone ? "bottom" : "right"}
+		>
+			<Sheet.Backdrop>
+				<Sheet.Content className={phone ? "h-svh" : "w-full sm:max-w-[480px]"}>
+					<Sheet.Dialog>
+						{phone && <Sheet.Handle />}
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						{current ? (
+							<Detail
+								key={current.id}
+								application={current}
+								onEditDetails={onEditDetails}
+								onDeleted={() => onOpenChange(false)}
+							/>
+						) : (
+							<div className="grid gap-2 p-5">
+								<Sheet.Heading>{shown?.role}</Sheet.Heading>
+								<p className="text-sm text-muted" aria-live="polite">
+									{isError ? t`Couldn't load this. Your saved data hasn't changed.` : t`Loading…`}
+								</p>
+								{isError && (
+									<Button variant="secondary" isDisabled={isFetching || isPending} onPress={() => void refetch()}>
+										<Trans>Try again</Trans>
+									</Button>
+								)}
+							</div>
 						)}
-					</div>
-				)}
-			</SheetContent>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
 		</Sheet>
 	);
 }
@@ -121,7 +127,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 
 	return (
 		<>
-			<div className="min-h-0 flex-1 overflow-y-auto">
+			<Sheet.Body className="min-h-0 flex-1 p-0">
 				<header className="grid gap-4 border-b border-line px-5 pt-5 pb-4">
 					<div className="flex items-start gap-3 pe-8">
 						<span
@@ -131,8 +137,8 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 							{application.company.slice(0, 1).toUpperCase()}
 						</span>
 						<div className="grid min-w-0 flex-1 gap-0.5">
-							<SheetTitle className="font-display text-[22px] leading-7 font-medium">{application.role}</SheetTitle>
-							<SheetDescription className="flex flex-wrap items-center gap-x-1.5 text-sm text-ink-2">
+							<Sheet.Heading>{application.role}</Sheet.Heading>
+							<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-ink-2">
 								<span>{[application.company, application.location].filter(Boolean).join(" · ")}</span>
 								{(application.sourceUrl || application.jobDescription) && (
 									<>
@@ -157,7 +163,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 										)}
 									</>
 								)}
-							</SheetDescription>
+							</div>
 						</div>
 						<Dropdown>
 							<IconButton icon="dots-three" size="sm" label={t`Application options`} />
@@ -260,7 +266,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 					<ApplicationNotes application={application} />
 					<Activity application={application} onOpenInterview={(entry) => setInterview({ open: true, entry })} />
 				</div>
-			</div>
+			</Sheet.Body>
 
 			<footer className="flex shrink-0 flex-wrap items-center gap-2 border-t border-line bg-surface px-5 py-3">
 				{!closed ? (
@@ -473,185 +479,198 @@ function MarkAppliedDialog({ application, onClose }: MarkAppliedDialogProps) {
 		},
 	});
 	return (
-		<Dialog
-			open
+		<Modal.Backdrop
+			isOpen
 			onOpenChange={(open) => {
 				if (!open) onClose();
 			}}
 		>
-			<DialogContent>
-				<form
-					className="grid gap-4"
-					onSubmit={(event) => {
-						event.preventDefault();
-						update.mutate({
-							id: application.id,
-							status: "applied",
-							stageEnteredAt: date,
-							resumeId: resumeId || null,
-							coverLetterId: coverLetterId || null,
-							...(!resumeFileSent ? { resumeFileUrl: null, resumeFileName: null } : {}),
-							...(!letterFileSent ? { coverLetterUrl: null, coverLetterName: null } : {}),
-						});
-					}}
-				>
-					<DialogHeader>
-						<DialogTitle>
-							<Trans>Mark as applied</Trans>
-						</DialogTitle>
-						<DialogDescription>
-							<Trans>
-								Confirm submission and choose the documents you actually sent. Their current versions will be saved.
-							</Trans>
-						</DialogDescription>
-					</DialogHeader>
-					<div className="grid gap-1.5">
-						<label htmlFor={`${id}-date`}>
-							<Trans>Application date</Trans>
-						</label>
-						<Input
-							fullWidth
-							id={`${id}-date`}
-							type="date"
-							required
-							value={date}
-							onChange={(event) => setDate(event.target.value)}
-						/>
-					</div>
-					<div className="grid gap-1.5">
-						<label htmlFor={`${id}-resume`}>
-							<Trans>Resume submitted (optional)</Trans>
-						</label>
-						<select
-							id={`${id}-resume`}
-							value={resumeId}
-							onChange={(event) => setResumeId(event.target.value)}
-							className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
-						>
-							<option value="">{t`None`}</option>
-							{documents
-								?.filter((document) => document.type === "resume")
-								.map((document) => (
-									<option key={document.id} value={document.id}>
-										{document.name}
-									</option>
-								))}
-						</select>
-					</div>
-					<div className="grid gap-1.5">
-						<label htmlFor={`${id}-letter`}>
-							<Trans>Cover letter submitted (optional)</Trans>
-						</label>
-						<select
-							id={`${id}-letter`}
-							value={coverLetterId}
-							onChange={(event) => setCoverLetterId(event.target.value)}
-							className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
-						>
-							<option value="">{t`None`}</option>
-							{documents
-								?.filter((document) => document.type === "letter")
-								.map((document) => (
-									<option key={document.id} value={document.id}>
-										{document.name}
-									</option>
-								))}
-						</select>
-					</div>
-					{application.resumeFileUrl && (
-						<label className="flex items-center gap-2 text-sm">
-							<input
-								type="checkbox"
-								checked={resumeFileSent}
-								onChange={(event) => setResumeFileSent(event.target.checked)}
-							/>
-							<Trans>Submitted attached resume: {application.resumeFileName ?? "PDF"}</Trans>
-						</label>
-					)}
-					{application.coverLetterUrl && (
-						<label className="flex items-center gap-2 text-sm">
-							<input
-								type="checkbox"
-								checked={letterFileSent}
-								onChange={(event) => setLetterFileSent(event.target.checked)}
-							/>
-							<Trans>Submitted attached cover letter: {application.coverLetterName ?? "PDF"}</Trans>
-						</label>
-					)}
-					{update.error && (
-						<p role="alert" className="text-sm text-danger-text">
-							{getOrpcErrorMessage(update.error, { fallback: t`Couldn't record submission. Try again.` })}
-						</p>
-					)}
-					<Button type="submit" isDisabled={!date || update.isPending}>
-						<Trans>Confirm applied</Trans>
-					</Button>
-				</form>
-			</DialogContent>
-		</Dialog>
+			<Modal.Container size="md">
+				<Modal.Dialog aria-describedby={`${id}-description`}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<form
+						className="contents"
+						onSubmit={(event) => {
+							event.preventDefault();
+							update.mutate({
+								id: application.id,
+								status: "applied",
+								stageEnteredAt: date,
+								resumeId: resumeId || null,
+								coverLetterId: coverLetterId || null,
+								...(!resumeFileSent ? { resumeFileUrl: null, resumeFileName: null } : {}),
+								...(!letterFileSent ? { coverLetterUrl: null, coverLetterName: null } : {}),
+							});
+						}}
+					>
+						<Modal.Header>
+							<Modal.Heading>
+								<Trans>Mark as applied</Trans>
+							</Modal.Heading>
+							<p id={`${id}-description`} className="text-sm text-muted">
+								<Trans>
+									Confirm submission and choose the documents you actually sent. Their current versions will be saved.
+								</Trans>
+							</p>
+						</Modal.Header>
+						<Modal.Body className="grid gap-4 p-1">
+							<div className="grid gap-1.5">
+								<label htmlFor={`${id}-date`}>
+									<Trans>Application date</Trans>
+								</label>
+								<Input
+									fullWidth
+									id={`${id}-date`}
+									type="date"
+									required
+									value={date}
+									onChange={(event) => setDate(event.target.value)}
+								/>
+							</div>
+							<div className="grid gap-1.5">
+								<label htmlFor={`${id}-resume`}>
+									<Trans>Resume submitted (optional)</Trans>
+								</label>
+								<select
+									id={`${id}-resume`}
+									value={resumeId}
+									onChange={(event) => setResumeId(event.target.value)}
+									className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
+								>
+									<option value="">{t`None`}</option>
+									{documents
+										?.filter((document) => document.type === "resume")
+										.map((document) => (
+											<option key={document.id} value={document.id}>
+												{document.name}
+											</option>
+										))}
+								</select>
+							</div>
+							<div className="grid gap-1.5">
+								<label htmlFor={`${id}-letter`}>
+									<Trans>Cover letter submitted (optional)</Trans>
+								</label>
+								<select
+									id={`${id}-letter`}
+									value={coverLetterId}
+									onChange={(event) => setCoverLetterId(event.target.value)}
+									className="h-9 rounded-md border border-line bg-surface px-2 text-sm"
+								>
+									<option value="">{t`None`}</option>
+									{documents
+										?.filter((document) => document.type === "letter")
+										.map((document) => (
+											<option key={document.id} value={document.id}>
+												{document.name}
+											</option>
+										))}
+								</select>
+							</div>
+							{application.resumeFileUrl && (
+								<label className="flex items-center gap-2 text-sm">
+									<input
+										type="checkbox"
+										checked={resumeFileSent}
+										onChange={(event) => setResumeFileSent(event.target.checked)}
+									/>
+									<Trans>Submitted attached resume: {application.resumeFileName ?? "PDF"}</Trans>
+								</label>
+							)}
+							{application.coverLetterUrl && (
+								<label className="flex items-center gap-2 text-sm">
+									<input
+										type="checkbox"
+										checked={letterFileSent}
+										onChange={(event) => setLetterFileSent(event.target.checked)}
+									/>
+									<Trans>Submitted attached cover letter: {application.coverLetterName ?? "PDF"}</Trans>
+								</label>
+							)}
+							{update.error && (
+								<p role="alert" className="text-sm text-danger-text">
+									{getOrpcErrorMessage(update.error, { fallback: t`Couldn't record submission. Try again.` })}
+								</p>
+							)}
+						</Modal.Body>
+						<Modal.Footer>
+							<Button type="submit" isDisabled={!date || update.isPending}>
+								<Trans>Confirm applied</Trans>
+							</Button>
+						</Modal.Footer>
+					</form>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
 /** The saved posting: its link, what it asks for, and its text. */
 function PostingDialog({ application, open, onOpenChange }: PostingDialogProps) {
+	const descriptionId = useId();
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-h-[85svh] overflow-y-auto sm:max-w-xl">
-				<DialogHeader>
-					<DialogTitle>
-						{application.role} · {application.company}
-					</DialogTitle>
-					<DialogDescription>
-						{application.sourceUrl ? (
-							<a
-								href={application.sourceUrl}
-								target="_blank"
-								rel="noreferrer"
-								className="text-accent-text hover:underline"
-							>
-								{application.sourceUrl}
-							</a>
-						) : (
-							<Trans>The posting saved with this application.</Trans>
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size="lg">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							{application.role} · {application.company}
+						</Modal.Heading>
+						<div id={descriptionId} className="text-sm text-muted">
+							{application.sourceUrl ? (
+								<a
+									href={application.sourceUrl}
+									target="_blank"
+									rel="noreferrer"
+									className="text-accent-text hover:underline"
+								>
+									{application.sourceUrl}
+								</a>
+							) : (
+								<Trans>The posting saved with this application.</Trans>
+							)}
+						</div>
+					</Modal.Header>
+					<Modal.Body className="grid gap-4 p-1">
+						{application.postingSource && (
+							<p className="text-xs text-ink-3">
+								{application.postingSource.method === "paste" ? (
+									<Trans>Pasted description</Trans>
+								) : (
+									<Trans>
+										Retrieved {application.postingSource.retrievedAt} using {application.postingSource.method}.
+										Retrieval time does not establish origin freshness.
+									</Trans>
+								)}
+							</p>
 						)}
-					</DialogDescription>
-				</DialogHeader>
-				{application.postingSource && (
-					<p className="text-xs text-ink-3">
-						{application.postingSource.method === "paste" ? (
-							<Trans>Pasted description</Trans>
-						) : (
-							<Trans>
-								Retrieved {application.postingSource.retrievedAt} using {application.postingSource.method}. Retrieval
-								time does not establish origin freshness.
-							</Trans>
+						{(application.postingSource?.truncated || application.postingSource?.completeness === "incomplete") && (
+							<p className="text-xs text-warn-text" role="alert">
+								<Trans>This saved description is clipped or incomplete. Review before preparing documents.</Trans>
+							</p>
 						)}
-					</p>
-				)}
-				{(application.postingSource?.truncated || application.postingSource?.completeness === "incomplete") && (
-					<p className="text-xs text-warn-text" role="alert">
-						<Trans>This saved description is clipped or incomplete. Review before preparing documents.</Trans>
-					</p>
-				)}
-				{application.requirements.length > 0 && (
-					<section aria-labelledby="posting-requirements" className="grid gap-2">
-						<h3 id="posting-requirements" className="text-xs font-semibold text-ink-3">
-							<Trans>What it asks for</Trans>
-						</h3>
-						<ul className="flex flex-wrap gap-1.5">
-							{application.requirements.map((requirement) => (
-								<li key={requirement} className="rounded-md bg-sunken px-2 py-1 text-xs">
-									{requirement}
-								</li>
-							))}
-						</ul>
-					</section>
-				)}
-				{application.jobDescription && (
-					<p className="text-sm leading-6 whitespace-pre-wrap text-ink-2">{application.jobDescription}</p>
-				)}
-			</DialogContent>
-		</Dialog>
+						{application.requirements.length > 0 && (
+							<section aria-labelledby="posting-requirements" className="grid gap-2">
+								<h3 id="posting-requirements" className="text-xs font-semibold text-ink-3">
+									<Trans>What it asks for</Trans>
+								</h3>
+								<ul className="flex flex-wrap gap-1.5">
+									{application.requirements.map((requirement) => (
+										<li key={requirement} className="rounded-md bg-sunken px-2 py-1 text-xs">
+											{requirement}
+										</li>
+									))}
+								</ul>
+							</section>
+						)}
+						{application.jobDescription && (
+							<p className="text-sm leading-6 whitespace-pre-wrap text-ink-2">{application.jobDescription}</p>
+						)}
+					</Modal.Body>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 

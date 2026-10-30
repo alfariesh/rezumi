@@ -1,18 +1,12 @@
 import type { DialogProps } from "../store";
-import { Button } from "@heroui/react";
+import { Button, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
+import { useId } from "react";
 import z from "zod";
-import {
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -32,6 +26,7 @@ const formSchema = z.object({
 });
 
 export function DisableTwoFactorDialog(_: DialogProps<"auth.two-factor.disable">) {
+	const descriptionId = useId();
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const closeDialog = useDialogStore((state) => state.closeDialog);
@@ -78,60 +73,65 @@ export function DisableTwoFactorDialog(_: DialogProps<"auth.two-factor.disable">
 	useFormBlocker(form);
 
 	return (
-		<DialogContent closeLabel={t`Close`}>
-			<DialogHeader>
-				<DialogTitle className="flex items-center gap-x-2">
-					<Icon name="lock-open" size={16} />
-					<Trans>Turn off two-step verification?</Trans>
-				</DialogTitle>
-				<DialogDescription>
-					<Trans>
-						Enter your password to turn off two-step verification. Without it, your password alone can sign in to your
-						account.
-					</Trans>
-				</DialogDescription>
-			</DialogHeader>
-
-			<form
-				className="space-y-4"
-				onSubmit={(event) => {
-					event.preventDefault();
-					event.stopPropagation();
-					void form.handleSubmit();
-				}}
-			>
-				<form.Field name="password">
-					{(field) => (
-						<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
-							<FormLabel>
-								<Trans>Password</Trans>
-							</FormLabel>
-							<FormControl
-								render={
-									<PasswordInput
-										minLength={6}
-										maxLength={64}
-										autoComplete="current-password"
-										name={field.name}
-										value={field.state.value}
-										onBlur={field.handleBlur}
-										onChange={(event) => field.handleChange(event.target.value)}
-									/>
-								}
-							/>
-							<FormMessage errors={field.state.meta.errors} />
-						</FormItem>
-					)}
-				</form.Field>
-
-				<DialogFooter>
-					<Button type="submit" variant="danger" isDisabled={isSubmitting}>
-						<Trans comment="Destructive action button to turn off two-factor authentication">
-							Turn off two-step verification
+		<Modal.Container size="sm">
+			<Modal.Dialog aria-describedby={descriptionId}>
+				<Modal.CloseTrigger aria-label={t`Close`} />
+				<Modal.Header>
+					<Modal.Heading className="flex items-center gap-x-2">
+						<Icon name="lock-open" size={16} />
+						<Trans>Turn off two-step verification?</Trans>
+					</Modal.Heading>
+					<p id={descriptionId} className="text-sm text-muted">
+						<Trans>
+							Enter your password to turn off two-step verification. Without it, your password alone can sign in to your
+							account.
 						</Trans>
-					</Button>
-				</DialogFooter>
-			</form>
-		</DialogContent>
+					</p>
+				</Modal.Header>
+
+				<Modal.Body>
+					<form
+						className="space-y-4"
+						onSubmit={(event) => {
+							event.preventDefault();
+							event.stopPropagation();
+							void form.handleSubmit();
+						}}
+					>
+						<form.Field name="password">
+							{(field) => (
+								<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
+									<FormLabel>
+										<Trans>Password</Trans>
+									</FormLabel>
+									<FormControl
+										render={
+											<PasswordInput
+												minLength={6}
+												maxLength={64}
+												autoComplete="current-password"
+												name={field.name}
+												value={field.state.value}
+												onBlur={field.handleBlur}
+												onChange={(event) => field.handleChange(event.target.value)}
+											/>
+										}
+									/>
+									<FormMessage errors={field.state.meta.errors} />
+								</FormItem>
+							)}
+						</form.Field>
+
+						<Modal.Footer className="p-0">
+							<Button type="submit" variant="danger" isDisabled={isSubmitting}>
+								<Trans comment="Destructive action button to turn off two-factor authentication">
+									Turn off two-step verification
+								</Trans>
+							</Button>
+						</Modal.Footer>
+					</form>
+				</Modal.Body>
+			</Modal.Dialog>
+		</Modal.Container>
 	);
 }

@@ -1,6 +1,7 @@
 import type { Application } from "../types";
 import type { FileAttachment } from "./file-attachment-field";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
+import { Sheet } from "@heroui-pro/react";
 import { Accordion, Button, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -8,14 +9,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { STAGES } from "@rezumi/schema/applications/data";
 import { Icon } from "@rezumi/ui/components/icon";
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetFooter,
-	SheetHeader,
-	SheetTitle,
-} from "@rezumi/ui/components/sheet";
 import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryKey } from "../queries";
 import { FileAttachmentField } from "./file-attachment-field";
@@ -272,11 +265,13 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 
 	return (
 		<Sheet
-			open={open}
+			isOpen={open}
+			placement="right"
+			shouldAutoFocus
 			onOpenChange={(nextOpen) => {
 				if (!pending) onOpenChange(nextOpen);
 			}}
-			onOpenChangeComplete={(next) => {
+			onAnimationEnd={(next) => {
 				onApplicationOpenChangeComplete(next);
 				// After adding, the fields clear once the sheet has closed; closing without saving keeps the draft.
 				if (!next && create.isSuccess) {
@@ -285,238 +280,260 @@ export function ApplicationFormSheet({ open, onOpenChange, application: requeste
 				}
 			}}
 		>
-			<SheetContent side="right" className="w-full gap-0 data-[side=right]:sm:max-w-lg">
-				<SheetHeader>
-					<SheetTitle>{isEditing ? <Trans>Edit application</Trans> : <Trans>Add application</Trans>}</SheetTitle>
-					<SheetDescription>
-						{isEditing ? (
-							<Trans>Update this application's details.</Trans>
-						) : (
-							<Trans>Track a job you're applying to and link the resume you sent.</Trans>
-						)}
-					</SheetDescription>
-				</SheetHeader>
+			<Sheet.Backdrop>
+				<Sheet.Content className="w-full sm:max-w-lg">
+					<Sheet.Dialog>
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						<Sheet.Header>
+							<Sheet.Heading>
+								{isEditing ? <Trans>Edit application</Trans> : <Trans>Add application</Trans>}
+							</Sheet.Heading>
+							<p className="text-sm text-muted">
+								{isEditing ? (
+									<Trans>Update this application's details.</Trans>
+								) : (
+									<Trans>Track a job you're applying to and link the resume you sent.</Trans>
+								)}
+							</p>
+						</Sheet.Header>
 
-				<div className="-mt-1 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pt-1 pb-4 [&>*]:shrink-0">
-					{/* Hidden entirely when AI is off. */}
-					{!aiEnabled && (
-						<Field label={t`Job description`}>
-							{(id) => (
-								<TextArea
-									fullWidth
-									id={id}
-									rows={6}
-									maxLength={MAX_JOB_DESCRIPTION_CHARS}
+						<Sheet.Body className="flex flex-col gap-4 [&>*]:shrink-0">
+							{/* Hidden entirely when AI is off. */}
+							{!aiEnabled && (
+								<Field label={t`Job description`}>
+									{(id) => (
+										<TextArea
+											fullWidth
+											id={id}
+											rows={6}
+											maxLength={MAX_JOB_DESCRIPTION_CHARS}
+											value={form.jobDescription}
+											onChange={(event) => set("jobDescription", event.target.value)}
+										/>
+									)}
+								</Field>
+							)}
+							{aiEnabled && (
+								<JobDescriptionAutofill
 									value={form.jobDescription}
-									onChange={(event) => set("jobDescription", event.target.value)}
+									onChange={(value) => set("jobDescription", value)}
+									onFill={(result) =>
+										setForm((prev) => ({
+											...prev,
+											company: result.company || prev.company,
+											role: result.role || prev.role,
+											location: result.location || prev.location,
+											salary: result.salary || prev.salary,
+										}))
+									}
 								/>
 							)}
-						</Field>
-					)}
-					{aiEnabled && (
-						<JobDescriptionAutofill
-							value={form.jobDescription}
-							onChange={(value) => set("jobDescription", value)}
-							onFill={(result) =>
-								setForm((prev) => ({
-									...prev,
-									company: result.company || prev.company,
-									role: result.role || prev.role,
-									location: result.location || prev.location,
-									salary: result.salary || prev.salary,
-								}))
-							}
-						/>
-					)}
 
-					<Field label={t`Company`} required>
-						{(id) => (
-							<Input fullWidth id={id} value={form.company} onChange={(event) => set("company", event.target.value)} />
-						)}
-					</Field>
-					<Field label={t`Role / title`} required>
-						{(id) => (
-							<Input fullWidth id={id} value={form.role} onChange={(event) => set("role", event.target.value)} />
-						)}
-					</Field>
-
-					<div className="grid grid-cols-2 gap-3">
-						<Field label={t`Location`}>
-							{(id) => (
-								<>
+							<Field label={t`Company`} required>
+								{(id) => (
 									<Input
 										fullWidth
 										id={id}
-										value={form.location}
-										list="application-locations"
-										placeholder={t`Remote, Hybrid, a city…`}
-										onChange={(event) => set("location", event.target.value)}
+										value={form.company}
+										onChange={(event) => set("company", event.target.value)}
 									/>
-									<datalist id="application-locations">
-										<option value="Remote" />
-										<option value="Hybrid" />
-										<option value="In-office" />
-									</datalist>
-								</>
-							)}
-						</Field>
-						<Field label={t`Salary range`}>
-							{(id) => (
-								<Input fullWidth id={id} value={form.salary} onChange={(event) => set("salary", event.target.value)} />
-							)}
-						</Field>
-					</div>
+								)}
+							</Field>
+							<Field label={t`Role / title`} required>
+								{(id) => (
+									<Input fullWidth id={id} value={form.role} onChange={(event) => set("role", event.target.value)} />
+								)}
+							</Field>
 
-					<div className="grid grid-cols-2 gap-3">
-						<Field label={t`Source`}>
-							{(id) => (
-								<>
-									<Input
-										fullWidth
-										id={id}
-										value={form.source}
-										list="application-sources"
-										placeholder={t`LinkedIn, Referral…`}
-										onChange={(event) => set("source", event.target.value)}
-									/>
-									<datalist id="application-sources">
-										{SOURCE_OPTIONS.map((option) => (
-											<option key={option} value={option} />
-										))}
-									</datalist>
-								</>
-							)}
-						</Field>
-						<Field label={t`Stage`}>
-							{(id) => (
-								<Combobox
-									id={id}
-									className="w-full"
-									value={form.status}
-									options={STAGES.map((s) => ({ value: s.value, label: s.label }))}
-									onValueChange={(value) => value && set("status", value)}
-								/>
-							)}
-						</Field>
-					</div>
-
-					<Field label={t`Job posting link`}>
-						{(id) => (
-							<Input
-								fullWidth
-								id={id}
-								type="url"
-								value={form.sourceUrl}
-								placeholder="https://…"
-								onChange={(event) => set("sourceUrl", event.target.value)}
-							/>
-						)}
-					</Field>
-
-					{!isEditing && (
-						<Field label={t`Stage date`}>
-							{(id) => (
-								<Input
-									fullWidth
-									id={id}
-									type="date"
-									value={form.stageEnteredAt}
-									onChange={(event) => set("stageEnteredAt", event.target.value)}
-								/>
-							)}
-						</Field>
-					)}
-
-					{/* Resume: link a live Rezumi (unlocks AI) or upload the exact PDF you sent. */}
-					<Field label={t`Resume`}>
-						{(id) => (
-							<div className="flex flex-col gap-2">
-								<Combobox
-									id={id}
-									className="w-full"
-									value={form.resumeId || null}
-									options={resumeOptions}
-									placeholder={t`Link a Rezumi (recommended)`}
-									showClear
-									emptyMessage={t`No resumes yet.`}
-									onValueChange={(value) => set("resumeId", value ?? "")}
-								/>
-								<FileAttachmentField
-									value={form.resumeFile}
-									attachLabel={t`Or upload a resume PDF`}
-									onChange={(value) => set("resumeFile", value)}
-								/>
-								<p className="text-[11px] text-ink-3">
-									<Trans>Link a Rezumi to use AI match scoring and tailoring.</Trans>
-								</p>
+							<div className="grid grid-cols-2 gap-3">
+								<Field label={t`Location`}>
+									{(id) => (
+										<>
+											<Input
+												fullWidth
+												id={id}
+												value={form.location}
+												list="application-locations"
+												placeholder={t`Remote, Hybrid, a city…`}
+												onChange={(event) => set("location", event.target.value)}
+											/>
+											<datalist id="application-locations">
+												<option value="Remote" />
+												<option value="Hybrid" />
+												<option value="In-office" />
+											</datalist>
+										</>
+									)}
+								</Field>
+								<Field label={t`Salary range`}>
+									{(id) => (
+										<Input
+											fullWidth
+											id={id}
+											value={form.salary}
+											onChange={(event) => set("salary", event.target.value)}
+										/>
+									)}
+								</Field>
 							</div>
-						)}
-					</Field>
 
-					{/* The attach button below names itself; the file picker has no labelable control. */}
-					<Field label={t`Cover letter`}>
-						{() => (
-							<FileAttachmentField
-								value={form.coverLetter}
-								attachLabel={t`Attach a cover letter (PDF)`}
-								onChange={(value) => set("coverLetter", value)}
-							/>
-						)}
-					</Field>
+							<div className="grid grid-cols-2 gap-3">
+								<Field label={t`Source`}>
+									{(id) => (
+										<>
+											<Input
+												fullWidth
+												id={id}
+												value={form.source}
+												list="application-sources"
+												placeholder={t`LinkedIn, Referral…`}
+												onChange={(event) => set("source", event.target.value)}
+											/>
+											<datalist id="application-sources">
+												{SOURCE_OPTIONS.map((option) => (
+													<option key={option} value={option} />
+												))}
+											</datalist>
+										</>
+									)}
+								</Field>
+								<Field label={t`Stage`}>
+									{(id) => (
+										<Combobox
+											id={id}
+											className="w-full"
+											value={form.status}
+											options={STAGES.map((s) => ({ value: s.value, label: s.label }))}
+											onValueChange={(value) => value && set("status", value)}
+										/>
+									)}
+								</Field>
+							</div>
 
-					<Field label={t`Tags`}>
-						{(id) => (
-							<TagsField id={id} value={form.tags} suggestions={allTags ?? []} onChange={(tags) => set("tags", tags)} />
-						)}
-					</Field>
+							<Field label={t`Job posting link`}>
+								{(id) => (
+									<Input
+										fullWidth
+										id={id}
+										type="url"
+										value={form.sourceUrl}
+										placeholder="https://…"
+										onChange={(event) => set("sourceUrl", event.target.value)}
+									/>
+								)}
+							</Field>
 
-					<div className="grid grid-cols-2 gap-3">
-						<Field label={t`Follow-up date`}>
-							{(id) => (
-								<Input
-									fullWidth
-									id={id}
-									type="date"
-									value={form.followUpAt}
-									onChange={(event) => set("followUpAt", event.target.value)}
-								/>
+							{!isEditing && (
+								<Field label={t`Stage date`}>
+									{(id) => (
+										<Input
+											fullWidth
+											id={id}
+											type="date"
+											value={form.stageEnteredAt}
+											onChange={(event) => set("stageEnteredAt", event.target.value)}
+										/>
+									)}
+								</Field>
 							)}
-						</Field>
-						<Field label={t`Follow-up note`}>
-							{(id) => (
-								<Input
-									fullWidth
-									id={id}
-									value={form.followUpNote}
-									onChange={(event) => set("followUpNote", event.target.value)}
-								/>
-							)}
-						</Field>
-					</div>
 
-					<Field label={t`Notes`}>
-						{(id) => (
-							<TextArea
-								fullWidth
-								id={id}
-								value={form.notes}
-								rows={3}
-								placeholder={t`Referred by…, things to emphasize, etc.`}
-								onChange={(event) => set("notes", event.target.value)}
-							/>
-						)}
-					</Field>
-				</div>
+							{/* Resume: link a live Rezumi (unlocks AI) or upload the exact PDF you sent. */}
+							<Field label={t`Resume`}>
+								{(id) => (
+									<div className="flex flex-col gap-2">
+										<Combobox
+											id={id}
+											className="w-full"
+											value={form.resumeId || null}
+											options={resumeOptions}
+											placeholder={t`Link a Rezumi (recommended)`}
+											showClear
+											emptyMessage={t`No resumes yet.`}
+											onValueChange={(value) => set("resumeId", value ?? "")}
+										/>
+										<FileAttachmentField
+											value={form.resumeFile}
+											attachLabel={t`Or upload a resume PDF`}
+											onChange={(value) => set("resumeFile", value)}
+										/>
+										<p className="text-[11px] text-ink-3">
+											<Trans>Link a Rezumi to use AI match scoring and tailoring.</Trans>
+										</p>
+									</div>
+								)}
+							</Field>
 
-				<SheetFooter className="flex-row justify-end gap-2">
-					<Button variant="secondary" isDisabled={pending} onPress={() => onOpenChange(false)}>
-						<Trans>Cancel</Trans>
-					</Button>
-					<Button isDisabled={!form.company.trim() || !form.role.trim() || pending} onPress={submit}>
-						{isEditing ? <Trans>Save changes</Trans> : <Trans>Add to pipeline</Trans>}
-					</Button>
-				</SheetFooter>
-			</SheetContent>
+							{/* The attach button below names itself; the file picker has no labelable control. */}
+							<Field label={t`Cover letter`}>
+								{() => (
+									<FileAttachmentField
+										value={form.coverLetter}
+										attachLabel={t`Attach a cover letter (PDF)`}
+										onChange={(value) => set("coverLetter", value)}
+									/>
+								)}
+							</Field>
+
+							<Field label={t`Tags`}>
+								{(id) => (
+									<TagsField
+										id={id}
+										value={form.tags}
+										suggestions={allTags ?? []}
+										onChange={(tags) => set("tags", tags)}
+									/>
+								)}
+							</Field>
+
+							<div className="grid grid-cols-2 gap-3">
+								<Field label={t`Follow-up date`}>
+									{(id) => (
+										<Input
+											fullWidth
+											id={id}
+											type="date"
+											value={form.followUpAt}
+											onChange={(event) => set("followUpAt", event.target.value)}
+										/>
+									)}
+								</Field>
+								<Field label={t`Follow-up note`}>
+									{(id) => (
+										<Input
+											fullWidth
+											id={id}
+											value={form.followUpNote}
+											onChange={(event) => set("followUpNote", event.target.value)}
+										/>
+									)}
+								</Field>
+							</div>
+
+							<Field label={t`Notes`}>
+								{(id) => (
+									<TextArea
+										fullWidth
+										id={id}
+										value={form.notes}
+										rows={3}
+										placeholder={t`Referred by…, things to emphasize, etc.`}
+										onChange={(event) => set("notes", event.target.value)}
+									/>
+								)}
+							</Field>
+						</Sheet.Body>
+
+						<Sheet.Footer>
+							<Button variant="secondary" isDisabled={pending} onPress={() => onOpenChange(false)}>
+								<Trans>Cancel</Trans>
+							</Button>
+							<Button isDisabled={!form.company.trim() || !form.role.trim() || pending} onPress={submit}>
+								{isEditing ? <Trans>Save changes</Trans> : <Trans>Add to pipeline</Trans>}
+							</Button>
+						</Sheet.Footer>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
 		</Sheet>
 	);
 }

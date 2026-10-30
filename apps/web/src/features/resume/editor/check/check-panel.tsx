@@ -4,12 +4,11 @@ import type { CheckResult } from "./use-check";
 import type { AtsCategory, AtsReport } from "@rezumi/resume/ats";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
-import { Button, Disclosure, Spinner, Tabs } from "@heroui/react";
+import { Button, Disclosure, Modal, Spinner, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { ATS_CATEGORIES } from "@rezumi/resume/ats";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -335,6 +334,7 @@ async function checkExportedPdf(data: ResumeData) {
  */
 function DeepCheck({ data }: { data: ResumeData }) {
 	const [running, setRunning] = useState(false);
+	const reportDescriptionId = useId();
 	const report = useEditorStore((state) => state.exportCheck?.report ?? null);
 	const reportOpen = useEditorStore((state) => state.exportReportOpen);
 
@@ -367,24 +367,27 @@ function DeepCheck({ data }: { data: ResumeData }) {
 				{running ? <Trans>Checking the exported PDF…</Trans> : <Trans>Also check the exported PDF</Trans>}
 			</Button>
 
-			<Dialog
-				open={reportOpen && report !== null}
+			<Modal.Backdrop
+				isOpen={reportOpen && report !== null}
 				onOpenChange={(open) => useEditorStore.setState({ exportReportOpen: open })}
 			>
-				<DialogContent className="max-h-[85svh] overflow-y-auto sm:max-w-2xl">
-					<DialogHeader>
-						<DialogTitle>
-							<Trans>The exported PDF</Trans>
-						</DialogTitle>
-						<DialogDescription>
-							<Trans>
-								What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded.
-							</Trans>
-						</DialogDescription>
-					</DialogHeader>
-					{report && <AtsPdfReportView report={report} />}
-				</DialogContent>
-			</Dialog>
+				<Modal.Container size="lg">
+					<Modal.Dialog aria-describedby={reportDescriptionId}>
+						<Modal.CloseTrigger aria-label={t`Close`} />
+						<Modal.Header>
+							<Modal.Heading>
+								<Trans>The exported PDF</Trans>
+							</Modal.Heading>
+							<p id={reportDescriptionId} className="text-sm text-muted">
+								<Trans>
+									What the file-level check found in the PDF you'd send. It ran in this tab; nothing was uploaded.
+								</Trans>
+							</p>
+						</Modal.Header>
+						<Modal.Body>{report && <AtsPdfReportView report={report} />}</Modal.Body>
+					</Modal.Dialog>
+				</Modal.Container>
+			</Modal.Backdrop>
 		</>
 	);
 }

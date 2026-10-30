@@ -2,7 +2,7 @@ import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
-import { ContextMenu } from "@heroui-pro/react";
+import { ContextMenu, Sheet } from "@heroui-pro/react";
 import { Button, buttonVariants, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -13,7 +13,6 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Sheet, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
@@ -350,13 +349,20 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 				{wide ? (
 					rail
 				) : (
-					<Sheet open={railOpen} onOpenChange={setRailOpen}>
-						<SheetContent side="left" closeLabel={t`Close`} className="p-4 pt-5 data-[side=left]:sm:max-w-[320px]">
-							<SheetTitle>
-								<Trans>Conversations</Trans>
-							</SheetTitle>
-							{rail}
-						</SheetContent>
+					<Sheet isOpen={railOpen} onOpenChange={setRailOpen} placement="left">
+						<Sheet.Backdrop>
+							<Sheet.Content className="w-full sm:max-w-[320px]">
+								<Sheet.Dialog>
+									<Sheet.CloseTrigger aria-label={t`Close`} />
+									<Sheet.Header>
+										<Sheet.Heading>
+											<Trans>Conversations</Trans>
+										</Sheet.Heading>
+									</Sheet.Header>
+									<Sheet.Body>{rail}</Sheet.Body>
+								</Sheet.Dialog>
+							</Sheet.Content>
+						</Sheet.Backdrop>
 					</Sheet>
 				)}
 

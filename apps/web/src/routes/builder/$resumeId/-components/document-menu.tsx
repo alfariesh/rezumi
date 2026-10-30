@@ -1,10 +1,9 @@
-import { Dropdown, Label, Separator } from "@heroui/react";
+import { Dropdown, Label, Modal, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
+import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { NotesSectionBuilder } from "../-sidebar/right/sections/notes";
@@ -33,6 +32,7 @@ export function DocumentMenu() {
 	const name = useCurrentBuilderResumeSelector((resume) => resume.name);
 	const isLocked = useCurrentBuilderResumeSelector((resume) => resume.isLocked);
 	const [dialog, setDialog] = useState<DocumentDialog>(null);
+	const detailsDescriptionId = useId();
 
 	return (
 		<>
@@ -42,22 +42,30 @@ export function DocumentMenu() {
 			</Dropdown>
 			<SaveStatus />
 
-			<Dialog open={dialog === "notes"} onOpenChange={(open) => !open && setDialog(null)}>
-				<DialogContent className="sm:max-w-[560px]">
-					<DialogHeader>
-						<DialogTitle>
-							<Trans>Notes</Trans>
-						</DialogTitle>
-					</DialogHeader>
-					<NotesSectionBuilder />
-				</DialogContent>
-			</Dialog>
+			<Modal.Backdrop isOpen={dialog === "notes"} onOpenChange={(open) => !open && setDialog(null)}>
+				<Modal.Container size="lg">
+					<Modal.Dialog>
+						<Modal.CloseTrigger aria-label={t`Close`} />
+						<Modal.Header>
+							<Modal.Heading>
+								<Trans>Notes</Trans>
+							</Modal.Heading>
+						</Modal.Header>
+						<Modal.Body>
+							<NotesSectionBuilder />
+						</Modal.Body>
+					</Modal.Dialog>
+				</Modal.Container>
+			</Modal.Backdrop>
 
-			<Dialog open={dialog === "details"} onOpenChange={(open) => !open && setDialog(null)}>
-				<DialogContent className="sm:max-w-[440px]">
-					<DocumentDetails />
-				</DialogContent>
-			</Dialog>
+			<Modal.Backdrop isOpen={dialog === "details"} onOpenChange={(open) => !open && setDialog(null)}>
+				<Modal.Container size="md">
+					<Modal.Dialog aria-describedby={detailsDescriptionId}>
+						<Modal.CloseTrigger aria-label={t`Close`} />
+						<DocumentDetails descriptionId={detailsDescriptionId} />
+					</Modal.Dialog>
+				</Modal.Container>
+			</Modal.Backdrop>
 		</>
 	);
 }

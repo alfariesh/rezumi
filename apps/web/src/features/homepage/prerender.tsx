@@ -7,12 +7,12 @@
 import type { IconProps } from "@phosphor-icons/react";
 import type { Locale } from "@rezumi/utils/locale";
 import type { ReactNode } from "react";
-import { DirectionProvider } from "@base-ui/react/direction-provider";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 import { IconContext } from "@phosphor-icons/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createMemoryHistory, createRootRoute, createRouter, RouterContextProvider } from "@tanstack/react-router";
+import { I18nProvider as AriaI18nProvider } from "react-aria-components";
 import { renderToString } from "react-dom/server";
 import { isRTL, localeSchema } from "@rezumi/utils/locale";
 import { Homepage } from "./page";
@@ -77,7 +77,7 @@ export async function renderPage(name: PrerenderedPage, locale: Locale) {
 				<I18nProvider i18n={i18n}>
 					<IconContext.Provider value={iconContextValue}>
 						<ThemeProvider theme="system">
-							<DirectionProvider direction={dir}>{page.render()}</DirectionProvider>
+							<AriaI18nProvider locale={locale}>{page.render()}</AriaI18nProvider>
 						</ThemeProvider>
 					</IconContext.Provider>
 				</I18nProvider>

@@ -1,4 +1,5 @@
 import type { CsvField } from "../csv";
+import { Sheet } from "@heroui-pro/react";
 import { Button, Label, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -6,14 +7,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetFooter,
-	SheetHeader,
-	SheetTitle,
-} from "@rezumi/ui/components/sheet";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { autoMapHeaders, CSV_FIELDS, mapCsvToApplications, parseCsv, rowsToCsv } from "../csv";
@@ -100,188 +93,196 @@ export function ImportApplicationsSheet({ open, onOpenChange }: ImportSheetProps
 
 	return (
 		<Sheet
-			open={open}
+			isOpen={open}
 			onOpenChange={onOpenChange}
+			placement="right"
 			// After an import, the rows clear once the sheet has slid away; closing without importing keeps them.
-			onOpenChangeComplete={(next) => {
+			onAnimationEnd={(next) => {
 				if (next || !importMutation.isSuccess) return;
 				reset();
 				importMutation.reset();
 			}}
 		>
-			<SheetContent side="right" className="w-full gap-0 data-[side=right]:sm:max-w-lg">
-				<SheetHeader>
-					<SheetTitle>
-						<Trans>Import from CSV</Trans>
-					</SheetTitle>
-					<SheetDescription>
-						<Trans>
-							Paste rows or upload a .csv. Columns are matched automatically, and you check the match before anything is
-							saved.
-						</Trans>
-					</SheetDescription>
-				</SheetHeader>
+			<Sheet.Backdrop>
+				<Sheet.Content className="w-full sm:max-w-lg">
+					<Sheet.Dialog>
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						<Sheet.Header>
+							<Sheet.Heading>
+								<Trans>Import from CSV</Trans>
+							</Sheet.Heading>
+							<p className="text-sm text-muted">
+								<Trans>
+									Paste rows or upload a .csv. Columns are matched automatically, and you check the match before
+									anything is saved.
+								</Trans>
+							</p>
+						</Sheet.Header>
 
-				<div className="-mt-1 flex flex-1 flex-col gap-4 overflow-y-auto px-4 pt-1 pb-4">
-					<div className="flex items-center gap-2">
-						<Button size="sm" variant="secondary" onPress={() => fileRef.current?.click()}>
-							<Icon name="file-arrow-up" size={16} />
-							<Trans>Upload .csv</Trans>
-						</Button>
-						<Button size="sm" variant="ghost" onPress={() => setText(SAMPLE)}>
-							<Trans>Use sample</Trans>
-						</Button>
-						<input
-							ref={fileRef}
-							type="file"
-							accept=".csv,text/csv"
-							className="hidden"
-							onChange={(event) =>
-								void event.target.files?.[0]
-									?.text()
-									.then((value) => {
-										setOverrides({});
-										setText(value);
-									})
-									.catch(() =>
-										toast.add({
-											type: "error",
-											description: t`Couldn't read that file. Choose a .csv file and try again.`,
-										}),
-									)
-							}
-						/>
-					</div>
-
-					<div className="grid gap-1.5">
-						<Label htmlFor="import-csv-text">
-							<Trans>CSV data</Trans>
-						</Label>
-						<TextArea
-							fullWidth
-							id="import-csv-text"
-							value={text}
-							rows={6}
-							placeholder="Company,Role,Stage,…"
-							className="font-mono text-xs"
-							onChange={(event) => {
-								setOverrides({});
-								setText(event.target.value);
-							}}
-						/>
-					</div>
-
-					{result && headers.length > 0 && (
-						<section aria-labelledby="import-columns" className="grid gap-2">
-							<h3 id="import-columns" className="text-sm font-semibold">
-								<Trans>Columns</Trans>
-							</h3>
-							<ul className="grid gap-1.5">
-								{headers.map((header, index) => (
-									<li
-										key={`${header}-${index}`}
-										className="grid grid-cols-[minmax(0,1fr)_16px_minmax(0,1fr)] items-center gap-2 text-sm"
-									>
-										<span className="truncate font-mono text-xs">{header || t`(no header)`}</span>
-										<Icon name="arrow-right" size={16} className="text-ink-3" />
-										<NativeSelect
-											aria-label={t`Column ${header} goes to`}
-											value={mapping[index] ?? ""}
-											onChange={(event) =>
-												setOverrides((current) => ({
-													...current,
-													[index]: (event.target.value || null) as CsvField | null,
-												}))
-											}
-										>
-											<option value="">{t`Leave out`}</option>
-											{CSV_FIELDS.map((field) => (
-												<option key={field} value={field}>
-													{fieldLabel(field)}
-												</option>
-											))}
-										</NativeSelect>
-									</li>
-								))}
-							</ul>
-
-							<div className="grid gap-1 rounded-lg border border-line p-3 text-sm">
-								{result.invalidValues.length > 0 && (
-									<div role="alert" className="grid gap-1 text-warn-text">
-										<p>
-											<Trans>Fix these values in the CSV, or leave their columns out, before importing.</Trans>
-										</p>
-										<ul className="list-disc ps-4">
-											{result.invalidValues.map(({ row, field, value }) => (
-												<li key={`${row}:${field}`}>
-													<Trans>
-														Row {row}, {fieldLabel(field)}: “{value}” is invalid.
-													</Trans>
-												</li>
-											))}
-										</ul>
-									</div>
-								)}
-								<p className="flex items-center gap-1.5 font-medium">
-									<Icon name="check-circle" size={18} className="text-accent-text" />
-									<Plural
-										value={importable.length}
-										one="# application ready to import"
-										other="# applications ready to import"
-									/>
-								</p>
-								{result.skipped > 0 && (
-									<p className="text-xs text-ink-2">
-										<Plural
-											value={result.skipped}
-											one="# row has no company or role and will be skipped."
-											other="# rows have no company or role and will be skipped."
-										/>{" "}
-										<button
-											type="button"
-											className="font-medium underline underline-offset-2"
-											onClick={downloadSkipped}
-										>
-											<Trans>Download them</Trans>
-										</button>
-									</p>
-								)}
-								{result.contactsSkipped > 0 && (
-									<p className="text-xs text-ink-3">
-										<Plural
-											value={result.contactsSkipped}
-											one="# contact has an invalid email or no name; its application still imports."
-											other="# contacts have an invalid email or no name; their applications still import."
-										/>
-									</p>
-								)}
-								{overflow > 0 && (
-									<p className="text-xs text-warn-text">
-										<Trans>
-											Only the first {MAX_IMPORT} rows import at once, leaving out {overflow}. Split the file to import
-											the rest.
-										</Trans>
-									</p>
-								)}
+						<Sheet.Body className="flex flex-col gap-4">
+							<div className="flex items-center gap-2">
+								<Button size="sm" variant="secondary" onPress={() => fileRef.current?.click()}>
+									<Icon name="file-arrow-up" size={16} />
+									<Trans>Upload .csv</Trans>
+								</Button>
+								<Button size="sm" variant="ghost" onPress={() => setText(SAMPLE)}>
+									<Trans>Use sample</Trans>
+								</Button>
+								<input
+									ref={fileRef}
+									type="file"
+									accept=".csv,text/csv"
+									className="hidden"
+									onChange={(event) =>
+										void event.target.files?.[0]
+											?.text()
+											.then((value) => {
+												setOverrides({});
+												setText(value);
+											})
+											.catch(() =>
+												toast.add({
+													type: "error",
+													description: t`Couldn't read that file. Choose a .csv file and try again.`,
+												}),
+											)
+									}
+								/>
 							</div>
-						</section>
-					)}
-				</div>
 
-				<SheetFooter className="flex-row justify-end gap-2">
-					<Button variant="secondary" onPress={() => onOpenChange(false)}>
-						<Trans>Cancel</Trans>
-					</Button>
-					<Button
-						isDisabled={importable.length === 0 || (result?.invalidValues.length ?? 0) > 0 || importMutation.isPending}
-						onPress={() => {
-							if (!result?.invalidValues.length) importMutation.mutate({ items: importable });
-						}}
-					>
-						<Plural value={importable.length} one="Import # application" other="Import # applications" />
-					</Button>
-				</SheetFooter>
-			</SheetContent>
+							<div className="grid gap-1.5">
+								<Label htmlFor="import-csv-text">
+									<Trans>CSV data</Trans>
+								</Label>
+								<TextArea
+									fullWidth
+									id="import-csv-text"
+									value={text}
+									rows={6}
+									placeholder="Company,Role,Stage,…"
+									className="font-mono text-xs"
+									onChange={(event) => {
+										setOverrides({});
+										setText(event.target.value);
+									}}
+								/>
+							</div>
+
+							{result && headers.length > 0 && (
+								<section aria-labelledby="import-columns" className="grid gap-2">
+									<h3 id="import-columns" className="text-sm font-semibold">
+										<Trans>Columns</Trans>
+									</h3>
+									<ul className="grid gap-1.5">
+										{headers.map((header, index) => (
+											<li
+												key={`${header}-${index}`}
+												className="grid grid-cols-[minmax(0,1fr)_16px_minmax(0,1fr)] items-center gap-2 text-sm"
+											>
+												<span className="truncate font-mono text-xs">{header || t`(no header)`}</span>
+												<Icon name="arrow-right" size={16} className="text-ink-3" />
+												<NativeSelect
+													aria-label={t`Column ${header} goes to`}
+													value={mapping[index] ?? ""}
+													onChange={(event) =>
+														setOverrides((current) => ({
+															...current,
+															[index]: (event.target.value || null) as CsvField | null,
+														}))
+													}
+												>
+													<option value="">{t`Leave out`}</option>
+													{CSV_FIELDS.map((field) => (
+														<option key={field} value={field}>
+															{fieldLabel(field)}
+														</option>
+													))}
+												</NativeSelect>
+											</li>
+										))}
+									</ul>
+
+									<div className="grid gap-1 rounded-lg border border-line p-3 text-sm">
+										{result.invalidValues.length > 0 && (
+											<div role="alert" className="grid gap-1 text-warn-text">
+												<p>
+													<Trans>Fix these values in the CSV, or leave their columns out, before importing.</Trans>
+												</p>
+												<ul className="list-disc ps-4">
+													{result.invalidValues.map(({ row, field, value }) => (
+														<li key={`${row}:${field}`}>
+															<Trans>
+																Row {row}, {fieldLabel(field)}: “{value}” is invalid.
+															</Trans>
+														</li>
+													))}
+												</ul>
+											</div>
+										)}
+										<p className="flex items-center gap-1.5 font-medium">
+											<Icon name="check-circle" size={18} className="text-accent-text" />
+											<Plural
+												value={importable.length}
+												one="# application ready to import"
+												other="# applications ready to import"
+											/>
+										</p>
+										{result.skipped > 0 && (
+											<p className="text-xs text-ink-2">
+												<Plural
+													value={result.skipped}
+													one="# row has no company or role and will be skipped."
+													other="# rows have no company or role and will be skipped."
+												/>{" "}
+												<button
+													type="button"
+													className="font-medium underline underline-offset-2"
+													onClick={downloadSkipped}
+												>
+													<Trans>Download them</Trans>
+												</button>
+											</p>
+										)}
+										{result.contactsSkipped > 0 && (
+											<p className="text-xs text-ink-3">
+												<Plural
+													value={result.contactsSkipped}
+													one="# contact has an invalid email or no name; its application still imports."
+													other="# contacts have an invalid email or no name; their applications still import."
+												/>
+											</p>
+										)}
+										{overflow > 0 && (
+											<p className="text-xs text-warn-text">
+												<Trans>
+													Only the first {MAX_IMPORT} rows import at once, leaving out {overflow}. Split the file to
+													import the rest.
+												</Trans>
+											</p>
+										)}
+									</div>
+								</section>
+							)}
+						</Sheet.Body>
+
+						<Sheet.Footer>
+							<Button variant="secondary" onPress={() => onOpenChange(false)}>
+								<Trans>Cancel</Trans>
+							</Button>
+							<Button
+								isDisabled={
+									importable.length === 0 || (result?.invalidValues.length ?? 0) > 0 || importMutation.isPending
+								}
+								onPress={() => {
+									if (!result?.invalidValues.length) importMutation.mutate({ items: importable });
+								}}
+							>
+								<Plural value={importable.length} one="Import # application" other="Import # applications" />
+							</Button>
+						</Sheet.Footer>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
 		</Sheet>
 	);
 }

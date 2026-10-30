@@ -1,18 +1,7 @@
-import { Input } from "@heroui/react";
+import { AlertDialog, Button, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import * as React from "react";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-} from "@rezumi/ui/components/alert-dialog";
 import { HoldButton } from "@rezumi/ui/components/hold-button";
-import { cn } from "@rezumi/utils/style";
 import { isImeComposing } from "@/libs/keyboard";
 
 type AskOptions = {
@@ -58,42 +47,51 @@ export function ConfirmDialogProvider({ children }: { children: React.ReactNode 
 		<AskContext.Provider value={ask}>
 			{children}
 
-			<AlertDialog open={state.open} onOpenChange={(open) => !open && answer(null)}>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>{state.title}</AlertDialogTitle>
-						<AlertDialogDescription className={cn(!state.description && "sr-only")}>
-							{state.description}
-						</AlertDialogDescription>
-					</AlertDialogHeader>
+			<AlertDialog.Backdrop
+				isOpen={state.open}
+				onOpenChange={(open) => !open && answer(null)}
+				isKeyboardDismissDisabled={false}
+			>
+				<AlertDialog.Container size="sm">
+					<AlertDialog.Dialog>
+						<AlertDialog.Header>
+							{state.hold && <AlertDialog.Icon status="danger" />}
+							<AlertDialog.Heading>{state.title}</AlertDialog.Heading>
+						</AlertDialog.Header>
 
-					{state.withInput && (
-						<Input
-							fullWidth
-							value={value}
-							aria-label={state.title}
-							onChange={(event) => setValue(event.target.value)}
-							onKeyDown={(event) => {
-								if (isImeComposing(event)) return;
-								if (event.key === "Enter") answer(value);
-							}}
-						/>
-					)}
-
-					<AlertDialogFooter>
-						<AlertDialogCancel onClick={() => answer(null)}>{state.cancelText ?? t`Cancel`}</AlertDialogCancel>
-						{state.hold ? (
-							<HoldButton variant="danger" onConfirm={() => answer("")}>
-								{state.confirmText}
-							</HoldButton>
-						) : (
-							<AlertDialogAction onClick={() => answer(state.withInput ? value : "")}>
-								{state.confirmText ?? t`Confirm`}
-							</AlertDialogAction>
+						{(state.description || state.withInput) && (
+							<AlertDialog.Body className="grid gap-3">
+								{state.description && <p>{state.description}</p>}
+								{state.withInput && (
+									<Input
+										fullWidth
+										value={value}
+										aria-label={state.title}
+										onChange={(event) => setValue(event.target.value)}
+										onKeyDown={(event) => {
+											if (isImeComposing(event)) return;
+											if (event.key === "Enter") answer(value);
+										}}
+									/>
+								)}
+							</AlertDialog.Body>
 						)}
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
+
+						<AlertDialog.Footer>
+							<Button slot="close" variant="tertiary">
+								{state.cancelText ?? t`Cancel`}
+							</Button>
+							{state.hold ? (
+								<HoldButton variant="danger" onConfirm={() => answer("")}>
+									{state.confirmText}
+								</HoldButton>
+							) : (
+								<Button onPress={() => answer(state.withInput ? value : "")}>{state.confirmText ?? t`Confirm`}</Button>
+							)}
+						</AlertDialog.Footer>
+					</AlertDialog.Dialog>
+				</AlertDialog.Container>
+			</AlertDialog.Backdrop>
 		</AskContext.Provider>
 	);
 }

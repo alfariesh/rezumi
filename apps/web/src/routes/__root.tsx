@@ -5,7 +5,6 @@ import type { FeatureFlags } from "@rezumi/api/features/flags";
 import type { AuthSession } from "@rezumi/auth/types";
 import type { Locale } from "@rezumi/utils/locale";
 import type { QueryClient } from "@tanstack/react-query";
-import { DirectionProvider } from "@base-ui/react/direction-provider";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { I18nProvider, useLingui } from "@lingui/react";
@@ -93,32 +92,30 @@ function RootComponent() {
 									<IconContext.Provider value={iconContextValue}>
 										<ThemeProvider theme={theme}>
 											<HotkeysProvider>
-												<DirectionProvider direction={dir}>
-													<ConfirmDialogProvider>
-														<Outlet />
+												<ConfirmDialogProvider>
+													<Outlet />
 
-														<DialogManager />
-														<CommandPalette />
-														<LocalizedToaster />
+													<DialogManager />
+													<CommandPalette />
+													<LocalizedToaster />
 
-														{import.meta.env.DEV && <BreakpointIndicator />}
-														{import.meta.env.DEV && (
-															<TanStackDevtools
-																config={{ position: "bottom-left" }}
-																plugins={[
-																	{
-																		name: "TanStack Query",
-																		render: <ReactQueryDevtoolsPanel />,
-																	},
-																	{
-																		name: "TanStack Router",
-																		render: <TanStackRouterDevtoolsPanel />,
-																	},
-																]}
-															/>
-														)}
-													</ConfirmDialogProvider>
-												</DirectionProvider>
+													{import.meta.env.DEV && <BreakpointIndicator />}
+													{import.meta.env.DEV && (
+														<TanStackDevtools
+															config={{ position: "bottom-left" }}
+															plugins={[
+																{
+																	name: "TanStack Query",
+																	render: <ReactQueryDevtoolsPanel />,
+																},
+																{
+																	name: "TanStack Router",
+																	render: <TanStackRouterDevtoolsPanel />,
+																},
+															]}
+														/>
+													)}
+												</ConfirmDialogProvider>
 											</HotkeysProvider>
 										</ThemeProvider>
 									</IconContext.Provider>

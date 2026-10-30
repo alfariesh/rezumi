@@ -16,6 +16,7 @@ import {
 	keymap,
 	lineNumbers,
 } from "@codemirror/view";
+import { Sheet } from "@heroui-pro/react";
 import { Popover } from "@heroui/react";
 import { tags } from "@lezer/highlight";
 import { t } from "@lingui/core/macro";
@@ -29,7 +30,6 @@ import {
 } from "@rezumi/pdf/semantic-tree";
 import { isFatalStylesheetDiagnostic } from "@rezumi/resume/stylesheet";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Sheet, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
 import { useEditorStore } from "../editor/store";
 import { serializeStylesheetColor, toStylesheetPickerColor } from "./color-format";
 import {
@@ -554,13 +554,20 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 	return (
 		<div>
 			{!focusOpen && editorChrome}
-			<Sheet open={focusOpen} onOpenChange={setFocusOpen}>
-				<SheetContent side="right" className="w-full max-w-full gap-3 overflow-hidden p-4 sm:max-w-full">
-					<SheetTitle>
-						<Trans>Semantic CSS stylesheet</Trans>
-					</SheetTitle>
-					<div className="min-h-0 flex-1 overflow-y-auto">{focusOpen ? editorChrome : null}</div>
-				</SheetContent>
+			<Sheet isOpen={focusOpen} onOpenChange={setFocusOpen} placement="right">
+				<Sheet.Backdrop>
+					<Sheet.Content className="w-full max-w-full sm:max-w-full">
+						<Sheet.Dialog className="gap-3">
+							<Sheet.CloseTrigger aria-label={t`Close`} />
+							<Sheet.Header>
+								<Sheet.Heading>
+									<Trans>Semantic CSS stylesheet</Trans>
+								</Sheet.Heading>
+							</Sheet.Header>
+							<Sheet.Body>{focusOpen ? editorChrome : null}</Sheet.Body>
+						</Sheet.Dialog>
+					</Sheet.Content>
+				</Sheet.Backdrop>
 			</Sheet>
 		</div>
 	);

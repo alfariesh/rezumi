@@ -1,13 +1,12 @@
 import type { ImportKind } from "@/features/resume/import/read-file";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
-import { Button, Input, Spinner } from "@heroui/react";
+import { Button, Input, Modal, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useId, useRef, useState } from "react";
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatFileSize } from "@rezumi/utils/file";
@@ -159,6 +158,7 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 	const markNew = useNewDocumentsStore((state) => state.markNew);
 	const [step, setStep] = useState<Step>({ name: data?.step ?? "choose" } as Step);
 	const inputRef = useRef<HTMLInputElement>(null);
+	const descriptionId = useId();
 
 	// A copy made for a job opens with the assistant ready to tailor it.
 	const openResume = (resumeId: string, { withAssistant = false, importedFrom }: OpenResumeOptions = {}) => {
@@ -193,120 +193,126 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 	const chooseFile = () => inputRef.current?.click();
 
 	return (
-		<DialogContent closeLabel={t`Close`} className="sm:max-w-[640px]">
-			<AiProviderLoadState state={providerState} />
-			<input
-				ref={inputRef}
-				type="file"
-				accept={ACCEPT}
-				className="hidden"
-				aria-label={t`Choose a file to import`}
-				onChange={(event) => {
-					const file = event.target.files?.[0];
-					event.target.value = "";
-					if (file) void importFile(file);
-				}}
-			/>
-			{/* Each step fades up into place as it replaces the last; the dialog's height changes in the same frame. */}
-			{step.name === "copy" ? (
-				<div key="copy" className={cn(ENTER_CLASS, "grid gap-4")}>
-					<CopyForJob
-						initialSourceId={data?.sourceResumeId}
-						initialJobId={data?.applicationId}
-						onBack={() => setStep({ name: "choose" })}
-						onCreated={(resumeId, forJob) => {
-							markNew(resumeId);
-							void refreshDocuments();
-							openResume(resumeId, { withAssistant: forJob && hasUsableProvider });
-						}}
-					/>
-				</div>
-			) : step.name !== "choose" ? (
-				<ImportStep
-					key="progress"
-					step={step}
-					creating={creating}
-					onCancel={cancel}
-					onStartBlank={() => void startBlank()}
-					onChooseFile={chooseFile}
-					onClose={closeDialog}
-					onOpen={(resumeId, importedFrom) => openResume(resumeId, { importedFrom })}
+		<Modal.Container size="lg">
+			<Modal.Dialog
+				{...(step.name === "choose" ? { "aria-describedby": descriptionId } : {})}
+				className="sm:max-w-[640px]"
+			>
+				<Modal.CloseTrigger aria-label={t`Close`} />
+				<AiProviderLoadState state={providerState} />
+				<input
+					ref={inputRef}
+					type="file"
+					accept={ACCEPT}
+					className="hidden"
+					aria-label={t`Choose a file to import`}
+					onChange={(event) => {
+						const file = event.target.files?.[0];
+						event.target.value = "";
+						if (file) void importFile(file);
+					}}
 				/>
-			) : (
-				<div key="choose" className={cn(ENTER_CLASS, "grid gap-4")}>
-					<DialogHeader>
-						<DialogTitle className="font-display text-[22px] font-medium">
-							<Trans>New document</Trans>
-						</DialogTitle>
-						<DialogDescription className="sr-only">
-							<Trans>Import a resume, copy one for a job, or start blank.</Trans>
-						</DialogDescription>
-					</DialogHeader>
-
-					<button
-						type="button"
-						onClick={chooseFile}
-						onDragOver={(event) => event.preventDefault()}
-						onDrop={(event) => {
-							event.preventDefault();
-							const file = event.dataTransfer.files[0];
-							if (file) void importFile(file);
-						}}
-						className="flex items-start gap-4 rounded-xl border-[1.5px] border-dashed border-line-2 p-5 text-start transition-[background-color,border-color,scale] duration-quick ease-enter hover:border-accent hover:bg-accent-soft active:scale-[0.98]"
-					>
-						<span className="grid size-11 shrink-0 place-items-center rounded-lg bg-sunken text-ink-2">
-							<Icon name="file-arrow-up" size={24} />
-						</span>
-						<span className="grid gap-1">
-							<span className="text-[15px] font-semibold">
-								<Trans>Import a resume</Trans>
-							</span>
-							<span className="text-[13px] leading-[19px] text-ink-2">
-								<Trans>
-									Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag
-									anything we're unsure of.
-								</Trans>
-							</span>
-						</span>
-					</button>
-
-					<div className="grid gap-3 sm:grid-cols-2">
-						<ChoiceTile
-							icon="copy"
-							title={t`Copy a resume for a job`}
-							description={t`Start from one you have and link the application.`}
-							onClick={() => setStep({ name: "copy" })}
-						/>
-						<ChoiceTile
-							icon="file-plus"
-							title={t`Start blank`}
-							description={t`Opens the editor on your name. Nothing else to fill in first.`}
-							disabled={creating}
-							onClick={() => void startBlank()}
+				{/* Each step fades up into place as it replaces the last; the dialog's height changes in the same frame. */}
+				{step.name === "copy" ? (
+					<div key="copy" className={cn(ENTER_CLASS, "grid gap-4")}>
+						<CopyForJob
+							initialSourceId={data?.sourceResumeId}
+							initialJobId={data?.applicationId}
+							onBack={() => setStep({ name: "choose" })}
+							onCreated={(resumeId, forJob) => {
+								markNew(resumeId);
+								void refreshDocuments();
+								openResume(resumeId, { withAssistant: forJob && hasUsableProvider });
+							}}
 						/>
 					</div>
+				) : step.name !== "choose" ? (
+					<ImportStep
+						key="progress"
+						step={step}
+						creating={creating}
+						onCancel={cancel}
+						onStartBlank={() => void startBlank()}
+						onChooseFile={chooseFile}
+						onClose={closeDialog}
+						onOpen={(resumeId, importedFrom) => openResume(resumeId, { importedFrom })}
+					/>
+				) : (
+					<div key="choose" className={cn(ENTER_CLASS, "grid gap-4")}>
+						<Modal.Header>
+							<Modal.Heading>
+								<Trans>New document</Trans>
+							</Modal.Heading>
+							<p id={descriptionId} className="sr-only">
+								<Trans>Import a resume, copy one for a job, or start blank.</Trans>
+							</p>
+						</Modal.Header>
 
-					<div className="flex flex-wrap items-center justify-between gap-2 border-t border-line pt-4 text-[13px]">
 						<button
 							type="button"
-							className="flex items-center gap-1.5 text-ink-2 hover:text-ink"
-							onClick={() => void newLetter()}
+							onClick={chooseFile}
+							onDragOver={(event) => event.preventDefault()}
+							onDrop={(event) => {
+								event.preventDefault();
+								const file = event.dataTransfer.files[0];
+								if (file) void importFile(file);
+							}}
+							className="flex items-start gap-4 rounded-xl border-[1.5px] border-dashed border-line-2 p-5 text-start transition-[background-color,border-color,scale] duration-quick ease-enter hover:border-accent hover:bg-accent-soft active:scale-[0.98]"
 						>
-							<Icon name="envelope-simple" size={18} />
-							<Trans>New cover letter instead</Trans>
+							<span className="grid size-11 shrink-0 place-items-center rounded-lg bg-sunken text-ink-2">
+								<Icon name="file-arrow-up" size={24} />
+							</span>
+							<span className="grid gap-1">
+								<span className="text-[15px] font-semibold">
+									<Trans>Import a resume</Trans>
+								</span>
+								<span className="text-[13px] leading-[19px] text-ink-2">
+									<Trans>
+										Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag
+										anything we're unsure of.
+									</Trans>
+								</span>
+							</span>
 						</button>
-						<button
-							type="button"
-							className="text-ink-2 underline underline-offset-2 hover:text-ink"
-							disabled={creating}
-							onClick={() => void trySample()}
-						>
-							<Trans>Try with a sample resume</Trans>
-						</button>
+
+						<div className="grid gap-3 sm:grid-cols-2">
+							<ChoiceTile
+								icon="copy"
+								title={t`Copy a resume for a job`}
+								description={t`Start from one you have and link the application.`}
+								onClick={() => setStep({ name: "copy" })}
+							/>
+							<ChoiceTile
+								icon="file-plus"
+								title={t`Start blank`}
+								description={t`Opens the editor on your name. Nothing else to fill in first.`}
+								disabled={creating}
+								onClick={() => void startBlank()}
+							/>
+						</div>
+
+						<div className="flex flex-wrap items-center justify-between gap-2 border-t border-line pt-4 text-[13px]">
+							<button
+								type="button"
+								className="flex items-center gap-1.5 text-ink-2 hover:text-ink"
+								onClick={() => void newLetter()}
+							>
+								<Icon name="envelope-simple" size={18} />
+								<Trans>New cover letter instead</Trans>
+							</button>
+							<button
+								type="button"
+								className="text-ink-2 underline underline-offset-2 hover:text-ink"
+								disabled={creating}
+								onClick={() => void trySample()}
+							>
+								<Trans>Try with a sample resume</Trans>
+							</button>
+						</div>
 					</div>
-				</div>
-			)}
-		</DialogContent>
+				)}
+			</Modal.Dialog>
+		</Modal.Container>
 	);
 }
 
@@ -325,8 +331,8 @@ function ImportStep({ step, creating, onCancel, onStartBlank, onChooseFile, onCl
 	const { i18n } = useLingui();
 	return (
 		<div className={cn(ENTER_CLASS, "grid gap-4")}>
-			<DialogHeader>
-				<DialogTitle className="font-display text-[22px] font-medium">
+			<Modal.Header>
+				<Modal.Heading>
 					{step.name === "failed" ? (
 						<Trans>Couldn't import</Trans>
 					) : step.name === "imported" ? (
@@ -334,8 +340,8 @@ function ImportStep({ step, creating, onCancel, onStartBlank, onChooseFile, onCl
 					) : (
 						<Trans>Importing</Trans>
 					)}
-				</DialogTitle>
-			</DialogHeader>
+				</Modal.Heading>
+			</Modal.Header>
 			<div className="flex items-center gap-3 rounded-lg border border-line p-3">
 				<Icon name={step.file.name.toLowerCase().endsWith(".pdf") ? "file-pdf" : "file-text"} className="text-ink-2" />
 				<span className="grid min-w-0 flex-1">
@@ -540,11 +546,11 @@ function CopyForJob({ initialSourceId, initialJobId, onBack, onCreated }: CopyFo
 
 	return (
 		<>
-			<DialogHeader>
-				<DialogTitle className="font-display text-[22px] font-medium">
+			<Modal.Header>
+				<Modal.Heading>
 					<Trans>Copy a resume for a job</Trans>
-				</DialogTitle>
-			</DialogHeader>
+				</Modal.Heading>
+			</Modal.Header>
 
 			<fieldset className="grid gap-1.5">
 				<legend className="mb-1.5 text-xs font-medium text-ink-2">

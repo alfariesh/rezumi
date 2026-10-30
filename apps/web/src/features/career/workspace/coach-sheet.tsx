@@ -2,6 +2,7 @@ import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { WorkspaceTab } from "@rezumi/schema/career";
+import { Sheet } from "@heroui-pro/react";
 import { Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -10,7 +11,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
 import { CoachThread, connectionName, deleteConversation, titleFor, useConversationDate } from "../coach-thread";
 import { PrivacyLine, tabLabel } from "../shared";
 import { useConversationConnection } from "@/features/assistant/chat";
@@ -61,21 +61,26 @@ export function CoachSheet({ application, tab, conversation, onConversationChang
 		);
 
 	return (
-		<Sheet open={conversation !== undefined} onOpenChange={(open) => onConversationChange(open ? true : undefined)}>
-			<SheetContent
-				side="right"
-				closeLabel={t`Close`}
-				className="gap-0 border-s border-line data-[side=right]:sm:max-w-none data-[side=right]:md:max-w-[420px]"
-			>
-				<CoachSheetBody
-					application={application}
-					tab={tab}
-					conversation={shown}
-					hidden={hidden}
-					onConversationChange={onConversationChange}
-					onDelete={remove}
-				/>
-			</SheetContent>
+		<Sheet
+			isOpen={conversation !== undefined}
+			onOpenChange={(open) => onConversationChange(open ? true : undefined)}
+			placement="right"
+		>
+			<Sheet.Backdrop>
+				<Sheet.Content className="w-full border-s border-line sm:max-w-none md:max-w-[420px]">
+					<Sheet.Dialog className="gap-0 p-0">
+						<Sheet.CloseTrigger aria-label={t`Close`} />
+						<CoachSheetBody
+							application={application}
+							tab={tab}
+							conversation={shown}
+							hidden={hidden}
+							onConversationChange={onConversationChange}
+							onDelete={remove}
+						/>
+					</Sheet.Dialog>
+				</Sheet.Content>
+			</Sheet.Backdrop>
 		</Sheet>
 	);
 }
@@ -145,12 +150,12 @@ function CoachSheetBody({
 		<header className="flex h-14 shrink-0 items-center gap-1 border-b border-line ps-4 pe-14">
 			<Icon name="sparkle" size={20} className="me-1.5 shrink-0 text-accent-text" />
 			<div className="grid min-w-0 flex-1">
-				<SheetTitle className="font-sans text-[15px] leading-5 font-semibold">
+				<Sheet.Heading className="font-sans text-[15px] leading-5 font-semibold">
 					<Trans>Coach</Trans>
-				</SheetTitle>
-				<SheetDescription className="truncate text-xs text-ink-3">
+				</Sheet.Heading>
+				<p className="truncate text-xs text-ink-3">
 					{application.company} · {tabLabel(tab)}
-				</SheetDescription>
+				</p>
 			</div>
 			{list.length > 0 && <ConversationMenu threads={list} currentId={threadId} onOpen={open} onDelete={remove} />}
 			<IconButton

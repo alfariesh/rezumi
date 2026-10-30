@@ -1,19 +1,11 @@
 import type { Application } from "../../types";
 import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Dropdown, Input, Label, TextArea } from "@heroui/react";
+import { Button, Dropdown, Input, Label, Modal, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
+import { useEffect, useState } from "react";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { interviewKindOf } from "../../interviews";
@@ -48,6 +40,13 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 	const [editing, setEditing] = useState<{ entry: ApplicationTimelineEntry; date: string; text: string } | null>(null);
 	// Closing keeps the entry's title and fields on screen until the dialog has faded out.
 	const [shownEdit, onEditOpenChangeComplete] = useClosingValue(editing);
+	// Modal has no "closed" callback, so release the held entry once the exit animation has had time to finish.
+	const editOpen = editing !== null;
+	useEffect(() => {
+		if (editOpen) return;
+		const timer = setTimeout(() => onEditOpenChangeComplete(false), 400);
+		return () => clearTimeout(timer);
+	}, [editOpen, onEditOpenChangeComplete]);
 
 	const onError = () => toast.add({ type: "error", description: t`Couldn't update the timeline. Try again.` });
 	const addNote = useMutation({
@@ -201,69 +200,67 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 				})}
 			</ol>
 
-			<Dialog
-				open={editing !== null}
-				onOpenChange={(open) => !open && setEditing(null)}
-				onOpenChangeComplete={onEditOpenChangeComplete}
-			>
-				<DialogContent className="sm:max-w-sm">
-					<DialogHeader>
-						<DialogTitle>
-							{shownEdit?.entry.type === "note" ? <Trans>Edit note</Trans> : <Trans>Edit date</Trans>}
-						</DialogTitle>
-						<DialogDescription className="sr-only">
-							<Trans>Change this timeline entry.</Trans>
-						</DialogDescription>
-					</DialogHeader>
-					{shownEdit && (
-						<form
-							id="timeline-entry-form"
-							className="grid gap-3"
-							onSubmit={(event) => {
-								event.preventDefault();
-								if (!editing) return;
-								updateEntry.mutate({
-									id: application.id,
-									entryId: editing.entry.id,
-									date: editing.date,
-									...(editing.entry.type === "note" && editing.text.trim() ? { text: editing.text.trim() } : {}),
-								});
-							}}
-						>
-							{shownEdit.entry.type === "note" && (
-								<TextArea
-									fullWidth
-									aria-label={t`Note`}
-									rows={3}
-									value={shownEdit.text}
-									onChange={(event) => {
-										const text = event.target.value;
-										setEditing((current) => current && { ...current, text });
+			<Modal.Backdrop isOpen={editOpen} onOpenChange={(open) => !open && setEditing(null)}>
+				<Modal.Container size="sm">
+					<Modal.Dialog>
+						<Modal.CloseTrigger aria-label={t`Close`} />
+						<Modal.Header>
+							<Modal.Heading>
+								{shownEdit?.entry.type === "note" ? <Trans>Edit note</Trans> : <Trans>Edit date</Trans>}
+							</Modal.Heading>
+						</Modal.Header>
+						<Modal.Body className="p-1">
+							{shownEdit && (
+								<form
+									id="timeline-entry-form"
+									className="grid gap-3"
+									onSubmit={(event) => {
+										event.preventDefault();
+										if (!editing) return;
+										updateEntry.mutate({
+											id: application.id,
+											entryId: editing.entry.id,
+											date: editing.date,
+											...(editing.entry.type === "note" && editing.text.trim() ? { text: editing.text.trim() } : {}),
+										});
 									}}
-								/>
+								>
+									{shownEdit.entry.type === "note" && (
+										<TextArea
+											fullWidth
+											aria-label={t`Note`}
+											rows={3}
+											value={shownEdit.text}
+											onChange={(event) => {
+												const text = event.target.value;
+												setEditing((current) => current && { ...current, text });
+											}}
+										/>
+									)}
+									<Input
+										fullWidth
+										type="date"
+										aria-label={t`Date`}
+										value={shownEdit.date}
+										onChange={(event) => {
+											const date = event.target.value;
+											setEditing((current) => current && { ...current, date });
+										}}
+									/>
+								</form>
 							)}
-							<Input
-								fullWidth
-								type="date"
-								aria-label={t`Date`}
-								value={shownEdit.date}
-								onChange={(event) => {
-									const date = event.target.value;
-									setEditing((current) => current && { ...current, date });
-								}}
-							/>
-						</form>
-					)}
-					<DialogFooter>
-						<Button variant="secondary" onPress={() => setEditing(null)}>
-							<Trans>Cancel</Trans>
-						</Button>
-						<Button type="submit" form="timeline-entry-form" isDisabled={!shownEdit?.date || updateEntry.isPending}>
-							<Trans>Save</Trans>
-						</Button>
-					</DialogFooter>
-				</DialogContent>
-			</Dialog>
+						</Modal.Body>
+						<Modal.Footer>
+							<Button variant="secondary" onPress={() => setEditing(null)}>
+								<Trans>Cancel</Trans>
+							</Button>
+							<Button type="submit" form="timeline-entry-form" isDisabled={!shownEdit?.date || updateEntry.isPending}>
+								<Trans>Save</Trans>
+							</Button>
+						</Modal.Footer>
+					</Modal.Dialog>
+				</Modal.Container>
+			</Modal.Backdrop>
 		</section>
 	);
 }

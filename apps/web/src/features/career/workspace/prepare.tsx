@@ -3,13 +3,12 @@ import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { ReactNode } from "react";
-import { Button, buttonVariants, Checkbox, Spinner, Skeleton } from "@heroui/react";
+import { Button, buttonVariants, Checkbox, Modal, Spinner, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { useRef, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
@@ -453,23 +452,26 @@ function BriefingNotes({ briefing }: { briefing: Briefing }) {
 	);
 }
 
-const FULL_SCREEN_ON_PHONES =
-	"max-sm:inset-s-0 max-sm:top-0 max-sm:h-dvh max-sm:max-h-none max-sm:max-w-none max-sm:translate-x-0 max-sm:translate-y-0 max-sm:rounded-none";
-
 type BriefingDialogProps = { briefing: Briefing; open: boolean; onOpenChange: (open: boolean) => void };
 
 function BriefingDialog({ briefing, open, onOpenChange }: BriefingDialogProps) {
+	const mobile = useBreakpoint() === "mobile";
 	return (
-		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent closeLabel={t`Close`} className={cn("content-start sm:max-w-[560px]", FULL_SCREEN_ON_PHONES)}>
-				<DialogHeader>
-					<DialogTitle className="text-2xl leading-8">
-						<Trans>10-minute briefing</Trans>
-					</DialogTitle>
-				</DialogHeader>
-				<BriefingNotes briefing={briefing} />
-			</DialogContent>
-		</Dialog>
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size={mobile ? "full" : "md"}>
+				<Modal.Dialog className="sm:max-w-[560px]">
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>10-minute briefing</Trans>
+						</Modal.Heading>
+					</Modal.Header>
+					<Modal.Body>
+						<BriefingNotes briefing={briefing} />
+					</Modal.Body>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 

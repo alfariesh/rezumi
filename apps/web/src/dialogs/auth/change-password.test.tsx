@@ -1,9 +1,9 @@
 // @vitest-environment happy-dom
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
+import { Modal } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { Dialog } from "@rezumi/ui/components/dialog";
 
 const mocks = vi.hoisted(() => ({ changePassword: vi.fn(), close: vi.fn() }));
 vi.mock("@/libs/auth/client", () => ({
@@ -28,9 +28,9 @@ afterEach(cleanup);
 it("sends revokeOtherSessions: true when user checks the option", async () => {
 	render(
 		<I18nProvider i18n={i18n}>
-			<Dialog open>
+			<Modal.Backdrop isOpen>
 				<ChangePasswordDialog />
-			</Dialog>
+			</Modal.Backdrop>
 		</I18nProvider>,
 	);
 
@@ -52,9 +52,9 @@ it("sends revokeOtherSessions: true when user checks the option", async () => {
 it("preserves a legacy current password and keeps other sessions by default", async () => {
 	render(
 		<I18nProvider i18n={i18n}>
-			<Dialog open>
+			<Modal.Backdrop isOpen>
 				<ChangePasswordDialog />
-			</Dialog>
+			</Modal.Backdrop>
 		</I18nProvider>,
 	);
 

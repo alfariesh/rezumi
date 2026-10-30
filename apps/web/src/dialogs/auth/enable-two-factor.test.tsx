@@ -1,9 +1,9 @@
 // @vitest-environment happy-dom
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
+import { Modal } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { Dialog } from "@rezumi/ui/components/dialog";
 
 const mocks = vi.hoisted(() => ({ enable: vi.fn(), verify: vi.fn(), close: vi.fn() }));
 vi.mock("@/libs/auth/client", () => ({
@@ -32,9 +32,9 @@ afterEach(cleanup);
 it("shows recoverable backup codes before the TOTP verification that activates two-factor authentication", async () => {
 	render(
 		<I18nProvider i18n={i18n}>
-			<Dialog open>
+			<Modal.Backdrop isOpen>
 				<EnableTwoFactorDialog />
-			</Dialog>
+			</Modal.Backdrop>
 		</I18nProvider>,
 	);
 	const password = screen.getByLabelText("Password");

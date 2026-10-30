@@ -12,12 +12,11 @@ import {
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
-import { Button } from "@heroui/react";
+import { Button, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
-import { useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
+import { useId, useState } from "react";
 import { cn } from "@rezumi/utils/style";
 import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, PIPELINE } from "../stages";
 import { useApplicationActions } from "../use-application-actions";
@@ -44,6 +43,7 @@ export function ApplicationBoard({ applications, showClosed, onOpen }: BoardProp
 	const { moveTo, close } = useApplicationActions();
 	const reduceMotion = useReducedMotion();
 	const [activeId, setActiveId] = useState<string | null>(null);
+	const closeDescriptionId = useId();
 	const [closing, setClosing] = useState<ApplicationSummary | null>(null);
 	// The list query publishes the optimistic move a task after the drop (TanStack Query notifies on a timeout), so
 	// until it does the board shows the dropped card in its new column itself. Otherwise the card blinks back to its
@@ -99,34 +99,37 @@ export function ApplicationBoard({ applications, showClosed, onOpen }: BoardProp
 			<DragOverlay dropAnimation={reduceMotion ? null : { ...DRAG_SETTLE, sideEffects: dropSideEffects }}>
 				{active ? <ApplicationCard application={active} dragging /> : null}
 			</DragOverlay>
-			<Dialog open={Boolean(closing)} onOpenChange={(open) => !open && setClosing(null)}>
-				<DialogContent className="sm:max-w-sm">
-					<DialogHeader>
-						<DialogTitle>
-							<Trans>Close application</Trans>
-						</DialogTitle>
-						<DialogDescription>
-							{closing?.role} · {closing?.company}
-						</DialogDescription>
-					</DialogHeader>
-					<div className="grid gap-2">
-						{CLOSED_REASONS.map((reason) => (
-							<Button
-								key={reason}
-								variant="secondary"
-								onPress={() => {
-									if (!closing) return;
-									setPendingMove({ id: closing.id, from: closing.status, to: "closed" });
-									close(closing, reason);
-									setClosing(null);
-								}}
-							>
-								{getClosedReasonLabel(reason)}
-							</Button>
-						))}
-					</div>
-				</DialogContent>
-			</Dialog>
+			<Modal.Backdrop isOpen={Boolean(closing)} onOpenChange={(open) => !open && setClosing(null)}>
+				<Modal.Container size="sm">
+					<Modal.Dialog aria-describedby={closeDescriptionId}>
+						<Modal.CloseTrigger aria-label={t`Close`} />
+						<Modal.Header>
+							<Modal.Heading>
+								<Trans>Close application</Trans>
+							</Modal.Heading>
+							<p id={closeDescriptionId} className="text-sm text-muted">
+								{closing?.role} · {closing?.company}
+							</p>
+						</Modal.Header>
+						<Modal.Body className="grid gap-2 p-1">
+							{CLOSED_REASONS.map((reason) => (
+								<Button
+									key={reason}
+									variant="secondary"
+									onPress={() => {
+										if (!closing) return;
+										setPendingMove({ id: closing.id, from: closing.status, to: "closed" });
+										close(closing, reason);
+										setClosing(null);
+									}}
+								>
+									{getClosedReasonLabel(reason)}
+								</Button>
+							))}
+						</Modal.Body>
+					</Modal.Dialog>
+				</Modal.Container>
+			</Modal.Backdrop>
 		</DndContext>
 	);
 }

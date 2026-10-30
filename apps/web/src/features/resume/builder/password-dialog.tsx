@@ -1,16 +1,8 @@
-import { Button, Input, Label } from "@heroui/react";
+import { Button, Input, Label, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useId, useRef, useState } from "react";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 
 type ResumePasswordDialogProps = {
 	onSubmit: (password: string) => Promise<void>;
@@ -52,86 +44,90 @@ export function ResumePasswordDialog({ onSubmit, onClose }: ResumePasswordDialog
 	};
 
 	return (
-		<Dialog
-			open
+		<Modal.Backdrop
+			isOpen
 			onOpenChange={(open) => {
 				if (!open && !submitting.current) onClose();
 			}}
 		>
-			<DialogContent showCloseButton={!isPending} className="sm:max-w-md">
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Protect your resume with a password</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>Anyone who opens the public URL will need this password.</Trans>
-					</DialogDescription>
-				</DialogHeader>
-				<form
-					noValidate
-					className="space-y-4"
-					onSubmit={(event) => {
-						event.preventDefault();
-						event.stopPropagation();
-						void submit();
-					}}
-				>
-					<div className="space-y-2">
-						<Label htmlFor={`${id}-password`}>
-							<Trans>Password</Trans>
-						</Label>
-						<Input
-							fullWidth
-							id={`${id}-password`}
-							type="password"
-							autoComplete="new-password"
-							required
-							minLength={6}
-							maxLength={64}
-							value={password}
-							disabled={isPending}
-							onChange={(event) => setPassword(event.target.value)}
-							aria-invalid={!!error}
-							aria-describedby={`${id}-hint${error ? ` ${id}-error` : ""}`}
-						/>
-						<p id={`${id}-hint`} className="text-sm text-ink-3">
-							<Trans>Use between 6 and 64 characters.</Trans>
+			<Modal.Container size="sm">
+				<Modal.Dialog aria-describedby={`${id}-description`}>
+					{!isPending && <Modal.CloseTrigger aria-label={t`Close`} />}
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Protect your resume with a password</Trans>
+						</Modal.Heading>
+						<p id={`${id}-description`} className="text-sm text-muted">
+							<Trans>Anyone who opens the public URL will need this password.</Trans>
 						</p>
-					</div>
-					<div className="space-y-2">
-						<Label htmlFor={`${id}-confirmation`}>
-							<Trans>Confirm password</Trans>
-						</Label>
-						<Input
-							fullWidth
-							id={`${id}-confirmation`}
-							type="password"
-							autoComplete="new-password"
-							required
-							minLength={6}
-							maxLength={64}
-							value={confirmation}
-							disabled={isPending}
-							onChange={(event) => setConfirmation(event.target.value)}
-							aria-invalid={!!error}
-							aria-describedby={error ? `${id}-error` : undefined}
-						/>
-					</div>
-					{error && (
-						<p id={`${id}-error`} role="alert" className="text-sm text-danger-text">
-							{error}
-						</p>
-					)}
-					<DialogFooter>
-						<Button type="button" variant="secondary" isDisabled={isPending} onPress={onClose}>
-							<Trans>Cancel</Trans>
-						</Button>
-						<Button type="submit" isDisabled={isPending}>
-							<Trans>Set password</Trans>
-						</Button>
-					</DialogFooter>
-				</form>
-			</DialogContent>
-		</Dialog>
+					</Modal.Header>
+					<form
+						noValidate
+						onSubmit={(event) => {
+							event.preventDefault();
+							event.stopPropagation();
+							void submit();
+						}}
+					>
+						<Modal.Body className="space-y-4">
+							<div className="space-y-2">
+								<Label htmlFor={`${id}-password`}>
+									<Trans>Password</Trans>
+								</Label>
+								<Input
+									fullWidth
+									id={`${id}-password`}
+									type="password"
+									autoComplete="new-password"
+									required
+									minLength={6}
+									maxLength={64}
+									value={password}
+									disabled={isPending}
+									onChange={(event) => setPassword(event.target.value)}
+									aria-invalid={!!error}
+									aria-describedby={`${id}-hint${error ? ` ${id}-error` : ""}`}
+								/>
+								<p id={`${id}-hint`} className="text-sm text-ink-3">
+									<Trans>Use between 6 and 64 characters.</Trans>
+								</p>
+							</div>
+							<div className="space-y-2">
+								<Label htmlFor={`${id}-confirmation`}>
+									<Trans>Confirm password</Trans>
+								</Label>
+								<Input
+									fullWidth
+									id={`${id}-confirmation`}
+									type="password"
+									autoComplete="new-password"
+									required
+									minLength={6}
+									maxLength={64}
+									value={confirmation}
+									disabled={isPending}
+									onChange={(event) => setConfirmation(event.target.value)}
+									aria-invalid={!!error}
+									aria-describedby={error ? `${id}-error` : undefined}
+								/>
+							</div>
+							{error && (
+								<p id={`${id}-error`} role="alert" className="text-sm text-danger-text">
+									{error}
+								</p>
+							)}
+						</Modal.Body>
+						<Modal.Footer>
+							<Button type="button" variant="secondary" isDisabled={isPending} onPress={onClose}>
+								<Trans>Cancel</Trans>
+							</Button>
+							<Button type="submit" isDisabled={isPending}>
+								<Trans>Set password</Trans>
+							</Button>
+						</Modal.Footer>
+					</form>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }

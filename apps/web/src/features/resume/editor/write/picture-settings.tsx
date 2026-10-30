@@ -1,20 +1,12 @@
 import type { Area } from "react-easy-crop";
 import type z from "zod";
-import { Button, ButtonGroup, Input, InputGroup, Slider } from "@heroui/react";
+import { Button, ButtonGroup, Input, InputGroup, Modal, Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Cropper from "react-easy-crop";
 import { pictureSchema } from "@rezumi/schema/resume/data";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -478,12 +470,38 @@ type PictureCropDialogProps = {
 	onUpload: (file: File) => void;
 };
 
+/** Runs `done(false)` once the Modal's exit fade (~300ms) has finished; Modal has no animation-complete callback. */
+function useAfterExit(open: boolean, done: (open: boolean) => void) {
+	const doneRef = useRef(done);
+	useEffect(() => {
+		doneRef.current = done;
+	});
+	useEffect(() => {
+		if (open) return;
+		const timer = setTimeout(() => doneRef.current(false), 300);
+		return () => clearTimeout(timer);
+	}, [open]);
+}
+
 function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCropDialogProps) {
 	// Closing keeps the picture in the cropper until the dialog has faded out.
 	const [shownCrop, onCropOpenChangeComplete] = useClosingValue(cropState);
+	const descriptionId = useId();
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
 	const [zoom, setZoom] = useState(1);
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+
+	// HeroUI's Modal has no animation-complete callback: wait out the exit fade before cleaning up.
+	useAfterExit(cropState !== null, (open) => {
+		if (!open) {
+			// The object URL is freed only once the cropper has gone; the next picture starts unzoomed.
+			if (shownCrop) URL.revokeObjectURL(shownCrop.imageSrc);
+			setCrop({ x: 0, y: 0 });
+			setZoom(1);
+			setCroppedAreaPixels(null);
+		}
+		onCropOpenChangeComplete(open);
+	});
 
 	const onConfirmCrop = async () => {
 		if (!cropState) return;
@@ -504,103 +522,96 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 	};
 
 	return (
-		<Dialog
-			open={cropState !== null}
+		<Modal.Backdrop
+			isOpen={cropState !== null}
 			onOpenChange={(open) => {
 				if (!open) onClose();
 			}}
-			onOpenChangeComplete={(open) => {
-				if (!open) {
-					// The object URL is freed only once the cropper has gone; the next picture starts unzoomed.
-					if (shownCrop) URL.revokeObjectURL(shownCrop.imageSrc);
-					setCrop({ x: 0, y: 0 });
-					setZoom(1);
-					setCroppedAreaPixels(null);
-				}
-				onCropOpenChangeComplete(open);
-			}}
 		>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Crop photo</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>Drag to reposition and use the slider to zoom before uploading.</Trans>
-					</DialogDescription>
-				</DialogHeader>
+			<Modal.Container size="sm">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Crop photo</Trans>
+						</Modal.Heading>
+						<p id={descriptionId} className="text-sm text-muted">
+							<Trans>Drag to reposition and use the slider to zoom before uploading.</Trans>
+						</p>
+					</Modal.Header>
+					<Modal.Body className="space-y-4">
+						{shownCrop && (
+							<div className="relative h-64 w-full overflow-hidden rounded-md bg-sunken ring-1 ring-line ring-inset">
+								<Cropper
+									image={shownCrop.imageSrc}
+									crop={crop}
+									zoom={zoom}
+									aspect={aspect}
+									onCropChange={setCrop}
+									onZoomChange={setZoom}
+									onCropComplete={(_, areaPixels) => {
+										setCroppedAreaPixels(areaPixels);
+									}}
+								/>
+							</div>
+						)}
 
-				{shownCrop && (
-					<div className="relative h-64 w-full overflow-hidden rounded-md bg-sunken ring-1 ring-line ring-inset">
-						<Cropper
-							image={shownCrop.imageSrc}
-							crop={crop}
-							zoom={zoom}
-							aspect={aspect}
-							onCropChange={setCrop}
-							onZoomChange={setZoom}
-							onCropComplete={(_, areaPixels) => {
-								setCroppedAreaPixels(areaPixels);
-							}}
-						/>
-					</div>
-				)}
-
-				<div className="space-y-2.5">
-					<div className="flex items-center justify-between">
-						<FormLabel className="mb-0">
-							<Trans>Zoom</Trans>
-						</FormLabel>
-						<span className="text-xs text-ink-3 tabular-nums">{zoom.toFixed(1)}×</span>
-					</div>
-					<div className="flex items-center gap-x-3">
-						<Icon name="magnifying-glass-minus" size={16} className="shrink-0 text-ink-3" />
-						<Slider
-							minValue={1}
-							maxValue={3}
-							step={0.01}
-							value={zoom}
-							aria-label={t`Zoom`}
-							className="flex-1"
-							onChange={(value) => {
-								if (typeof value === "number") setZoom(value);
-							}}
-						>
-							<Slider.Track>
-								<Slider.Fill />
-								<Slider.Thumb />
-							</Slider.Track>
-						</Slider>
-						<Icon name="magnifying-glass-plus" size={16} className="shrink-0 text-ink-3" />
-					</div>
-				</div>
-
-				<DialogFooter className="flex-row flex-wrap justify-between">
-					<Button variant="secondary" onPress={onClose}>
-						<Trans>Cancel</Trans>
-					</Button>
-					<div className="flex flex-wrap gap-2">
-						<Button
-							variant="secondary"
-							onPress={() => {
-								if (!cropState) return;
-								onUpload(cropState.file);
-								onClose();
-							}}
-						>
-							<Trans>Skip and upload</Trans>
+						<div className="space-y-2.5">
+							<div className="flex items-center justify-between">
+								<FormLabel className="mb-0">
+									<Trans>Zoom</Trans>
+								</FormLabel>
+								<span className="text-xs text-ink-3 tabular-nums">{zoom.toFixed(1)}×</span>
+							</div>
+							<div className="flex items-center gap-x-3">
+								<Icon name="magnifying-glass-minus" size={16} className="shrink-0 text-ink-3" />
+								<Slider
+									minValue={1}
+									maxValue={3}
+									step={0.01}
+									value={zoom}
+									aria-label={t`Zoom`}
+									className="flex-1"
+									onChange={(value) => {
+										if (typeof value === "number") setZoom(value);
+									}}
+								>
+									<Slider.Track>
+										<Slider.Fill />
+										<Slider.Thumb />
+									</Slider.Track>
+								</Slider>
+								<Icon name="magnifying-glass-plus" size={16} className="shrink-0 text-ink-3" />
+							</div>
+						</div>
+					</Modal.Body>
+					<Modal.Footer className="flex-row flex-wrap justify-between">
+						<Button variant="secondary" onPress={onClose}>
+							<Trans>Cancel</Trans>
 						</Button>
-						<Button
-							onPress={() => {
-								void onConfirmCrop();
-							}}
-						>
-							<Trans>Crop and upload</Trans>
-						</Button>
-					</div>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+						<div className="flex flex-wrap gap-2">
+							<Button
+								variant="secondary"
+								onPress={() => {
+									if (!cropState) return;
+									onUpload(cropState.file);
+									onClose();
+								}}
+							>
+								<Trans>Skip and upload</Trans>
+							</Button>
+							<Button
+								onPress={() => {
+									void onConfirmCrop();
+								}}
+							>
+								<Trans>Crop and upload</Trans>
+							</Button>
+						</div>
+					</Modal.Footer>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 

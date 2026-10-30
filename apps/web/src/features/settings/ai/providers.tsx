@@ -1,20 +1,12 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { AIProvider } from "@rezumi/ai/types";
-import { Button, Input, Label, Spinner, Switch } from "@heroui/react";
+import { Button, Input, Label, Modal, Spinner, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { AI_PROVIDER_DEFAULT_BASE_URLS } from "@rezumi/ai/types";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import {
@@ -435,6 +427,7 @@ type AddProviderDialogProps = { open: boolean; onOpenChange: (open: boolean) => 
 /** Every supported provider; saving tests the connection at once. */
 function AddProviderDialog({ open, onOpenChange }: AddProviderDialogProps) {
 	const id = useId();
+	const descriptionId = useId();
 	const queryClient = useQueryClient();
 	const [provider, setProvider] = useState<AIProvider>("openai");
 	const [fields, setFields] = useState<ProviderFields>({ label: "", apiKey: "", ...providerDefaults("openai") });
@@ -486,69 +479,76 @@ function AddProviderDialog({ open, onOpenChange }: AddProviderDialogProps) {
 	const ready = Boolean((provider === "ollama" || fields.apiKey.trim()) && fields.model.trim());
 
 	return (
-		<Dialog
-			open={open}
-			onOpenChange={onOpenChange}
-			// The fields clear once the dialog has faded out, not while it does.
-			onOpenChangeComplete={(next) => !next && reset()}
+		<Modal.Backdrop
+			isOpen={open}
+			onOpenChange={(next) => {
+				onOpenChange(next);
+				// The fields clear once the dialog has faded out, not while it does.
+				if (!next) setTimeout(reset, 300);
+			}}
 		>
-			<DialogContent closeLabel={t`Close`}>
-				<DialogHeader>
-					<DialogTitle>
-						<Trans>Add provider</Trans>
-					</DialogTitle>
-					<DialogDescription>
-						<Trans>The key is encrypted on the server and never shown again. Saving tests the connection.</Trans>
-					</DialogDescription>
-				</DialogHeader>
-				<form
-					className="grid gap-3"
-					onSubmit={(event) => {
-						event.preventDefault();
-						if (ready && !pending) void save();
-					}}
-				>
-					<div className="grid gap-1.5">
-						<Label htmlFor={`${id}-provider`} className="flex items-center gap-2">
-							<ProviderLogo key={provider} provider={provider} />
-							<Trans>Provider</Trans>
-						</Label>
-						<Combobox
-							id={`${id}-provider`}
-							value={provider}
-							showClear={false}
-							options={providerOptions.map((option) => ({
-								...option,
-								textValue: String(option.label),
-								label: (
-									<>
-										<ProviderLogo provider={option.value} />
-										{option.label}
-									</>
-								),
-							}))}
-							onValueChange={(next) => {
-								if (!next) return;
-								setProvider(next);
-								setFields((current) => ({ ...current, ...providerDefaults(next) }));
-							}}
-						/>
-					</div>
-					<ProviderFieldsForm provider={provider} value={fields} onChange={setFields} />
-					{failure && (
-						<p role="alert" className="text-sm text-danger-text">
-							{failure}
+			<Modal.Container size="md">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Add provider</Trans>
+						</Modal.Heading>
+						<p id={descriptionId} className="text-sm text-muted">
+							<Trans>The key is encrypted on the server and never shown again. Saving tests the connection.</Trans>
 						</p>
-					)}
-					<DialogFooter>
-						<Button type="submit" isDisabled={!ready || pending} isPending={pending}>
-							{pending && <Spinner size="sm" color="current" aria-hidden />}
-							{test.isPending ? <Trans>Testing the connection…</Trans> : <Trans>Save and test</Trans>}
-						</Button>
-					</DialogFooter>
-				</form>
-			</DialogContent>
-		</Dialog>
+					</Modal.Header>
+					<Modal.Body>
+						<form
+							className="grid gap-3"
+							onSubmit={(event) => {
+								event.preventDefault();
+								if (ready && !pending) void save();
+							}}
+						>
+							<div className="grid gap-1.5">
+								<Label htmlFor={`${id}-provider`} className="flex items-center gap-2">
+									<ProviderLogo key={provider} provider={provider} />
+									<Trans>Provider</Trans>
+								</Label>
+								<Combobox
+									id={`${id}-provider`}
+									value={provider}
+									showClear={false}
+									options={providerOptions.map((option) => ({
+										...option,
+										textValue: String(option.label),
+										label: (
+											<>
+												<ProviderLogo provider={option.value} />
+												{option.label}
+											</>
+										),
+									}))}
+									onValueChange={(next) => {
+										if (!next) return;
+										setProvider(next);
+										setFields((current) => ({ ...current, ...providerDefaults(next) }));
+									}}
+								/>
+							</div>
+							<ProviderFieldsForm provider={provider} value={fields} onChange={setFields} />
+							{failure && (
+								<p role="alert" className="text-sm text-danger-text">
+									{failure}
+								</p>
+							)}
+							<Modal.Footer className="p-0">
+								<Button type="submit" isDisabled={!ready || pending} isPending={pending}>
+									{pending && <Spinner size="sm" color="current" aria-hidden />}
+									{test.isPending ? <Trans>Testing the connection…</Trans> : <Trans>Save and test</Trans>}
+								</Button>
+							</Modal.Footer>
+						</form>
+					</Modal.Body>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
@@ -560,22 +560,28 @@ function EditProviderDialog({ provider, onClose }: EditProviderDialogProps) {
 	// starts fresh (the typed key is never kept).
 	const [shown, onOpenChangeComplete] = useClosingValue(provider);
 
+	const descriptionId = useId();
+	const close = () => {
+		onClose();
+		// The form is dropped once the dialog has faded out.
+		setTimeout(() => onOpenChangeComplete(false), 300);
+	};
+
 	return (
-		<Dialog
-			open={provider !== null}
-			onOpenChange={(open) => !open && onClose()}
-			onOpenChangeComplete={onOpenChangeComplete}
-		>
-			<DialogContent closeLabel={t`Close`}>
-				{shown && <EditProviderForm key={shown.id} provider={shown} onClose={onClose} />}
-			</DialogContent>
-		</Dialog>
+		<Modal.Backdrop isOpen={provider !== null} onOpenChange={(open) => !open && close()}>
+			<Modal.Container size="md">
+				<Modal.Dialog aria-describedby={descriptionId}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					{shown && <EditProviderForm key={shown.id} provider={shown} descriptionId={descriptionId} onClose={close} />}
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
-type EditProviderFormProps = { provider: SavedProvider; onClose: () => void };
+type EditProviderFormProps = { provider: SavedProvider; descriptionId: string; onClose: () => void };
 
-function EditProviderForm({ provider, onClose }: EditProviderFormProps) {
+function EditProviderForm({ provider, descriptionId, onClose }: EditProviderFormProps) {
 	const queryClient = useQueryClient();
 	const confirm = useConfirm();
 	const [fields, setFields] = useState<ProviderFields>({
@@ -633,91 +639,95 @@ function EditProviderForm({ provider, onClose }: EditProviderFormProps) {
 
 	return (
 		<>
-			<DialogHeader>
-				<DialogTitle>{provider.label}</DialogTitle>
-				<DialogDescription>{providerLabel(provider.provider)}</DialogDescription>
-			</DialogHeader>
-			<form
-				className="grid gap-4"
-				onSubmit={(event) => {
-					event.preventDefault();
-					if (changed && !keyMissing) void save();
-				}}
-			>
-				<ProviderFieldsForm
-					provider={provider.provider}
-					value={fields}
-					onChange={setFields}
-					keyOptional
-					keyAgain={newURL}
-				/>
-				<div className="flex items-center justify-between gap-3 text-sm">
-					<span className="grid gap-0.5">
-						<span id={`${provider.id}-use`} className="font-medium">
-							<Trans>Use this provider</Trans>
+			<Modal.Header>
+				<Modal.Heading>{provider.label}</Modal.Heading>
+				<p id={descriptionId} className="text-sm text-muted">
+					{providerLabel(provider.provider)}
+				</p>
+			</Modal.Header>
+			<Modal.Body>
+				<form
+					className="grid gap-4"
+					onSubmit={(event) => {
+						event.preventDefault();
+						if (changed && !keyMissing) void save();
+					}}
+				>
+					<ProviderFieldsForm
+						provider={provider.provider}
+						value={fields}
+						onChange={setFields}
+						keyOptional
+						keyAgain={newURL}
+					/>
+					<div className="flex items-center justify-between gap-3 text-sm">
+						<span className="grid gap-0.5">
+							<span id={`${provider.id}-use`} className="font-medium">
+								<Trans>Use this provider</Trans>
+							</span>
+							<span id={`${provider.id}-use-hint`} className="text-xs text-ink-3">
+								<Trans>Only providers that pass their test can be turned on.</Trans>
+							</span>
 						</span>
-						<span id={`${provider.id}-use-hint`} className="text-xs text-ink-3">
-							<Trans>Only providers that pass their test can be turned on.</Trans>
-						</span>
-					</span>
-					<Switch
-						aria-labelledby={`${provider.id}-use`}
-						aria-describedby={`${provider.id}-use-hint`}
-						isSelected={provider.enabled}
-						isDisabled={provider.testStatus !== "success" || update.isPending}
-						onChange={setEnabled}
-					>
-						<Switch.Content>
-							<Switch.Control>
-								<Switch.Thumb />
-							</Switch.Control>
-						</Switch.Content>
-					</Switch>
-				</div>
-				{failure && (
-					<p role="alert" className="text-sm text-danger-text">
-						{failure}
-					</p>
-				)}
-				<DialogFooter className="sm:justify-between">
-					<Button
-						variant="ghost"
-						className="text-danger-text hover:bg-danger-soft"
-						isPending={remove.isPending}
-						onPress={async () => {
-							if (
-								!(await confirm(t`Delete “${provider.label}”?`, {
-									description: t`Its saved key is deleted. Conversations using it need another provider.`,
-									confirmText: t`Delete provider`,
-								}))
-							)
-								return;
-							remove.mutate(
-								{ id: provider.id },
-								{
-									onSuccess: () => {
-										void invalidate();
-										onClose();
+						<Switch
+							aria-labelledby={`${provider.id}-use`}
+							aria-describedby={`${provider.id}-use-hint`}
+							isSelected={provider.enabled}
+							isDisabled={provider.testStatus !== "success" || update.isPending}
+							onChange={setEnabled}
+						>
+							<Switch.Content>
+								<Switch.Control>
+									<Switch.Thumb />
+								</Switch.Control>
+							</Switch.Content>
+						</Switch>
+					</div>
+					{failure && (
+						<p role="alert" className="text-sm text-danger-text">
+							{failure}
+						</p>
+					)}
+					<Modal.Footer className="p-0 sm:justify-between">
+						<Button
+							variant="ghost"
+							className="text-danger-text hover:bg-danger-soft"
+							isPending={remove.isPending}
+							onPress={async () => {
+								if (
+									!(await confirm(t`Delete “${provider.label}”?`, {
+										description: t`Its saved key is deleted. Conversations using it need another provider.`,
+										confirmText: t`Delete provider`,
+									}))
+								)
+									return;
+								remove.mutate(
+									{ id: provider.id },
+									{
+										onSuccess: () => {
+											void invalidate();
+											onClose();
+										},
+										onError: (error) =>
+											setFailure(getOrpcErrorMessage(error, { fallback: t`Couldn't delete the provider. Try again.` })),
 									},
-									onError: (error) =>
-										setFailure(getOrpcErrorMessage(error, { fallback: t`Couldn't delete the provider. Try again.` })),
-								},
-							);
-						}}
-					>
-						{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
-						<Trans>Delete provider</Trans>
-					</Button>
-					<Button
-						type="submit"
-						isDisabled={!changed || keyMissing || update.isPending || test.isPending}
-						isPending={update.isPending || test.isPending}
-					>
-						{(update.isPending || test.isPending) && <Spinner size="sm" color="current" aria-hidden />}
-						<Trans>Save and test</Trans>
-					</Button>
-				</DialogFooter>
-			</form>
+								);
+							}}
+						>
+							{remove.isPending && <Spinner size="sm" color="current" aria-hidden />}
+							<Trans>Delete provider</Trans>
+						</Button>
+						<Button
+							type="submit"
+							isDisabled={!changed || keyMissing || update.isPending || test.isPending}
+							isPending={update.isPending || test.isPending}
+						>
+							{(update.isPending || test.isPending) && <Spinner size="sm" color="current" aria-hidden />}
+							<Trans>Save and test</Trans>
+						</Button>
+					</Modal.Footer>
+				</form>
+			</Modal.Body>
 		</>
 	);
 }
