@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Card, Dropdown, Input, Label, Modal } from "@heroui/react";
+import { Button, Dropdown, Input, Label, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -14,6 +14,7 @@ import { buildIcs } from "../../ics";
 import { dayKey } from "../../interviews";
 import { describeNextStep, getNextStep } from "../../next-step";
 import { useInvalidateApplications } from "../../use-application-actions";
+import { RowIcon } from "@/components/layout/icon-row";
 import { orpc } from "@/libs/orpc/client";
 
 type NextStepCardProps = {
@@ -30,6 +31,7 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 	const [followUpOpen, setFollowUpOpen] = useState(false);
 	const step = getNextStep(application);
 	const text = describeNextStep(step, application, i18n.locale);
+	const warn = text.tone === "warn";
 
 	const addToCalendar = () => {
 		if (step.kind !== "interview" && step.kind !== "follow-up") return;
@@ -52,15 +54,11 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 			<h3 id="application-next-step" className="text-xs font-semibold text-muted">
 				<Trans>Next step</Trans>
 			</h3>
-			<Card
-				variant={text.tone === "warn" ? "transparent" : "secondary"}
-				className={cn("gap-2 rounded-2xl p-3", text.tone === "warn" && "border border-warning bg-warning-soft")}
-			>
-				<div className="flex items-start gap-2.5">
-					<Icon
-						name={text.icon}
-						className={cn("mt-0.5 shrink-0", text.tone === "warn" ? "text-warning-soft-foreground" : "text-muted")}
-					/>
+			<div className={cn("grid gap-2", warn && "rounded-2xl border border-warning bg-warning-soft p-3")}>
+				<div className="flex items-center gap-3">
+					<RowIcon className={cn(warn && "bg-warning/20 text-warning-soft-foreground")}>
+						<Icon name={text.icon} size={20} />
+					</RowIcon>
 					<div className="grid min-w-0 flex-1">
 						<strong className="text-sm font-semibold">{text.title}</strong>
 						{text.sub && <span className="text-xs leading-[17px] text-muted">{text.sub}</span>}
@@ -107,12 +105,12 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 					)}
 				</div>
 				{(step.kind === "interview" || step.kind === "follow-up") && (
-					<Button size="sm" variant="ghost" className="ms-7 w-fit" onPress={addToCalendar}>
+					<Button size="sm" variant="ghost" className="ms-row-indent w-fit" onPress={addToCalendar}>
 						<Icon name="calendar-dots" size={16} />
 						<Trans>Add to calendar</Trans>
 					</Button>
 				)}
-			</Card>
+			</div>
 
 			<FollowUpDialog application={application} open={followUpOpen} onOpenChange={setFollowUpOpen} />
 		</section>

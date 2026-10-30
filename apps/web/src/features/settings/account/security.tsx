@@ -1,4 +1,5 @@
 import type { AuthProvider } from "@rezumi/auth/types";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { Button, buttonVariants, Spinner, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -14,6 +15,13 @@ import { getReadableErrorMessage } from "@/libs/error-message";
 
 const SOCIAL: AuthProvider[] = ["apple", "google", "github", "linkedin", "custom"];
 
+const SOCIAL_ICONS: Partial<Record<AuthProvider, IconName>> = {
+	apple: "apple-logo",
+	google: "google-logo",
+	github: "github-logo",
+	linkedin: "linkedin-logo",
+};
+
 const monthYear = (date: Date) => date.toLocaleDateString(undefined, { month: "long", year: "numeric" });
 
 export function SecuritySection() {
@@ -28,8 +36,9 @@ export function SecuritySection() {
 	const social = SOCIAL.filter((provider) => provider in enabledProviders);
 
 	return (
-		<SettingsSection title={<Trans>Sign-in & security</Trans>}>
+		<SettingsSection divided title={<Trans>Sign-in & security</Trans>}>
 			<SettingsRow
+				icon="lock"
 				title={<Trans>Password</Trans>}
 				description={
 					password ? (
@@ -52,6 +61,8 @@ export function SecuritySection() {
 
 			{password && (
 				<SettingsRow
+					icon="device-mobile"
+					inline
 					title={<Trans>Two-step verification</Trans>}
 					description={<Trans>A code from an authenticator app at sign-in</Trans>}
 				>
@@ -78,6 +89,8 @@ export function SecuritySection() {
 					provider === "custom" ? (enabledProviders.custom ?? getProviderName(provider)) : getProviderName(provider);
 				return (
 					<SettingsRow
+						// SSO has no brand glyph: a key.
+						icon={SOCIAL_ICONS[provider] ?? "key"}
 						key={provider}
 						title={name}
 						description={hasAccount(provider) ? <Trans>Connected</Trans> : <Trans>Not connected</Trans>}
@@ -159,6 +172,7 @@ function Passkeys() {
 	return (
 		<div className="grid">
 			<SettingsRow
+				icon="fingerprint"
 				title={<Trans>Passkeys</Trans>}
 				description={<Trans>Sign in with your fingerprint, face or device PIN</Trans>}
 			>
@@ -168,7 +182,7 @@ function Passkeys() {
 				</Button>
 			</SettingsRow>
 			{passkeys.length > 0 && (
-				<ul className="ms-4 grid border-s border-line ps-3">
+				<ul className="ms-row-indent mt-2 grid border-s border-separator ps-3">
 					{passkeys.map((passkey) => (
 						<li key={passkey.id} className="flex items-center gap-3 py-1.5 text-sm">
 							<span className="min-w-0 flex-1 truncate">{passkey.name || t`Unnamed passkey`}</span>

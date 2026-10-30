@@ -2,7 +2,7 @@ import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { SettingsRoot } from "@/features/settings/root";
 
-// Phones (below 640px) get the three-row root; wider screens open Account, with the pages beside it.
+// Phones (below 640px) get the root with the two pages; wider screens open Account.
 export const Route = createFileRoute("/dashboard/settings/")({
 	component: RouteComponent,
 });

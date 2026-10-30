@@ -1,8 +1,7 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button, Skeleton } from "@heroui/react";
+import { Button, Separator, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { AppleLogoIcon, GithubLogoIcon, GoogleLogoIcon, LinkedinLogoIcon } from "@phosphor-icons/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearch } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -20,13 +19,13 @@ export function SocialAuth() {
 	return (
 		<>
 			<div className="flex items-center gap-x-2">
-				<hr className="flex-1" />
-				<span className="text-xs font-medium tracking-wide">
+				<Separator className="flex-1" />
+				<span className="text-xs font-medium tracking-wide text-muted">
 					<Trans context="Choose to authenticate with a social provider (Google, GitHub, etc.) instead of email and password">
 						or continue with
 					</Trans>
 				</span>
-				<hr className="flex-1" />
+				<Separator className="flex-1" />
 			</div>
 
 			{isLoading ? <SocialAuthSkeleton /> : <SocialAuthButtons providers={providers} />}
@@ -94,7 +93,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 				}
 				className={cn("hidden flex-1 bg-black text-white hover:bg-black/80", "apple" in providers && "inline-flex")}
 			>
-				<AppleLogoIcon />
+				<Icon name="apple-logo" size={18} />
 				<Trans comment="Brand name label for Apple social sign-in button">Apple</Trans>
 			</Button>
 
@@ -111,7 +110,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 				}
 				className={cn("hidden", "custom" in providers && "inline-flex")}
 			>
-				<Icon name="key" size={16} />
+				<Icon name="key" size={18} />
 				{providers.custom}
 			</Button>
 
@@ -122,7 +121,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 				}
 				className={cn("hidden", "passkey" in providers && "inline-flex")}
 			>
-				<Icon name="fingerprint" size={16} />
+				<Icon name="fingerprint" size={18} />
 				<Trans comment="Label for passkey sign-in button">Passkey</Trans>
 			</Button>
 
@@ -141,7 +140,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 					"google" in providers && "inline-flex",
 				)}
 			>
-				<GoogleLogoIcon />
+				<Icon name="google-logo" size={18} />
 				<Trans comment="Brand name label for Google social sign-in button">Google</Trans>
 			</Button>
 
@@ -160,7 +159,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 					"github" in providers && "inline-flex",
 				)}
 			>
-				<GithubLogoIcon />
+				<Icon name="github-logo" size={18} />
 				<Trans comment="Brand name label for GitHub social sign-in button">GitHub</Trans>
 			</Button>
 
@@ -179,7 +178,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 					"linkedin" in providers && "inline-flex",
 				)}
 			>
-				<LinkedinLogoIcon />
+				<Icon name="linkedin-logo" size={18} />
 				<Trans comment="Brand name label for LinkedIn social sign-in button">LinkedIn</Trans>
 			</Button>
 		</div>

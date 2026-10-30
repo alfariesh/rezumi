@@ -113,9 +113,9 @@ function buildIntegrations() {
 			"api-key": {
 				type: "api_key",
 				label: "Rezumi API key",
-				generateUrl: `${baseUrl}/dashboard/settings/ai`,
+				generateUrl: `${baseUrl}/dashboard/settings/app#api-keys`,
 				setup: [
-					"Open **Settings → AI & developer**, select **New key** in the **API keys** section, name it, choose when it expires, then copy it.",
+					"Open **Settings**, select **New key** in the **API keys** section, name it, choose when it expires, then copy it.",
 					"The key is shown only once and acts as you: anyone holding it can read and edit your documents. Revoke it from the same table when you no longer need it.",
 					"Send it in the `x-api-key` header.",
 				].join("\n\n"),

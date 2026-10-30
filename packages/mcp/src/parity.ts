@@ -144,11 +144,11 @@ const settingsHandoff = (title: string, page: string): Handoff => ({
 	url: () => (page ? `/dashboard/settings/${page}` : "/dashboard"),
 });
 const HANDOFFS: Record<string, Handoff> = {
-	"aiProviders.create": settingsHandoff("Add an AI provider in the app", "ai"),
-	"aiProviders.update": settingsHandoff("Edit an AI provider in the app", "ai"),
-	"webAccess.save": settingsHandoff("Set up web search in the app", "ai"),
+	"aiProviders.create": settingsHandoff("Add an AI provider in the app", "app#ai-providers"),
+	"aiProviders.update": settingsHandoff("Edit an AI provider in the app", "app#ai-providers"),
+	"webAccess.save": settingsHandoff("Set up web search in the app", "app#web-access"),
 	"resume.getRoot": settingsHandoff("Open the dashboard", ""),
-	"auth.createApiKey": settingsHandoff("Create an API key in the app", "api-keys"),
+	"auth.createApiKey": settingsHandoff("Create an API key in the app", "app#api-keys"),
 	"auth.deleteAccount": settingsHandoff("Delete your account in the app", "account"),
 	// Resume share passwords are credentials too: owners set them and visitors enter them in the browser.
 	"resume.setPassword": {

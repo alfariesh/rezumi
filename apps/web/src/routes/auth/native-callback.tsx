@@ -1,3 +1,4 @@
+import { linkVariants } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
@@ -23,15 +24,15 @@ function NativeCallbackPage() {
 
 	return (
 		<div className="space-y-4 text-center">
-			<h1 className="text-xl font-semibold">
+			<h1 className="text-2xl font-semibold tracking-tight">
 				<Trans>Open the Rezumi app</Trans>
 			</h1>
-			<p className="text-muted-foreground text-sm">
+			<p className="text-sm text-muted">
 				<Trans>If the app did not open, try again on a device where it is installed.</Trans>
 			</p>
 			<a
 				href="/auth/native-callback"
-				className="inline-flex min-h-11 items-center underline underline-offset-4"
+				className={linkVariants().base({ className: "min-h-11 underline" })}
 				onClick={(event) => {
 					event.preventDefault();
 					openApp();

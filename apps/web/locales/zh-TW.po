@@ -1135,8 +1135,8 @@ msgstr "成就"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "帳戶"
 
@@ -1267,10 +1267,6 @@ msgstr "添加標籤"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "新增標籤並按 Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "新增AI提供商"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "新增志工服務"
 msgid "Add what happened before you can save."
 msgstr "請先填寫發生了什麼，才能儲存。"
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "添加您的名字"
@@ -1571,13 +1571,6 @@ msgstr "完成第一次回顧後，本週的輕量計畫會顯示在這裡。"
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "對照您的條件"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "人工智慧與開發人員"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "已複製回答"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic、Gemini、Ollama、OpenAI 相容"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "任何地方"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "應用程式"
 msgid "App navigation"
 msgstr "應用程式導覽"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "外貌"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "傳播設計學士"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "後退"
 
@@ -3068,10 +3063,6 @@ msgstr "連接應用程式"
 msgid "Connect another…"
 msgstr "連接另一個…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "連結您用於寫作、求職和處理履歷的工具。"
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "連接您自己的 AI 供應商，讓語言模型讀取您的清單項目並建議重寫。問題和工作配對不需要提供者。"
@@ -3685,7 +3676,7 @@ msgstr "無法儲存故事。請再試一次。"
 msgid "Couldn't save the tags. Try again."
 msgstr "無法儲存標籤。請再試一次。"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "無法儲存時區。請再試一次。"
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "無法登入。請再試一次。"
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "無法登出。請再試一次。"
@@ -3976,6 +3966,10 @@ msgstr "建立日期"
 msgid "Created “{finalName}”"
 msgstr "創建“{finalName}”"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "30天內每日觀看次數，高峰 {0}"
 msgid "Danish"
 msgstr "丹麥語"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "暗色"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "過期"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "清楚說明衡量方式的一項限制，同時不要低估這項工作。"
@@ -5540,6 +5536,10 @@ msgstr "姓名"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "全幅寬"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "整合"
 msgid "Interests"
 msgstr "興趣"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "介面語言"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "僅接口。每份履歷都有自己的設計語言。"
 
@@ -6147,7 +6147,7 @@ msgstr "已儲存面試"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "已儲存面試 · 簡報改至 {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "「職涯」中的面試時間、提醒和排程都會使用它。"
 
@@ -6428,10 +6428,9 @@ msgstr "保持原樣"
 msgid "Kept yours"
 msgstr "已保留您的版本"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "金鑰以 {0} 結尾"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "標籤，例如招聘人員"
 msgid "Landscape"
 msgstr "橫向"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "語言"
@@ -6526,6 +6523,10 @@ msgstr "最後編輯"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "上次使用"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "採用 <0>MIT</0> 授權"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "連字（ligature）可能會讓「workflow」這樣的單字掉字母。"
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "亮色"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP伺服器"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "這份招聘啟事中沒有任何突出的條款。"
 msgid "No text could be read from this file."
 msgstr "無法從該檔案中讀取任何文字。"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "沒有符合的時區。"
 
@@ -7967,10 +7970,6 @@ msgstr "未評分"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "未選擇"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "未設定"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "優先使用單欄佈局，或讓側欄只放簡短、獨立的清單。
 msgid "Preference"
 msgstr "偏好"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "偏好設定"
 
@@ -9912,7 +9907,7 @@ msgstr "提交簡歷（可選）"
 msgid "Resumes"
 msgstr "履歷"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "無論主題是什麼，履歷總是呈現在白紙上。"
 
@@ -9995,10 +9990,9 @@ msgstr "評論需要 AI 連線。<0>在設定中新增</0>。在此之前，您�
 msgid "Revoke"
 msgstr "撤銷"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "撤銷{0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "搜尋職位、公司或聯絡人"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "搜尋時區"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "設定您的驗證器應用程式"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "設定"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "使用您的指紋、臉部或裝置 PIN 碼登錄"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "登出"
@@ -11539,8 +11532,6 @@ msgstr "切換到一欄"
 msgid "Synced changes made in another tab."
 msgstr "已同步在另一個標籤頁中所做的變更。"
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "作業系統"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "儲存的密鑰不會傳送到新的基本 URL。再次輸入密鑰。"
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "儲存的提供者密鑰無法解密。在「設定」→「AI 和開發者」中再次輸入金鑰。"
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "擷取出的文字無法閱讀。"
 msgid "The top of the first page does not look like a name."
 msgstr "第一頁頂部的內容看起來不像是姓名。"
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "佈景主題"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "時間依 {timeZone} 顯示。"
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "時區"
 
@@ -12968,7 +12958,7 @@ msgstr "使用標準標題"
 msgid "Use these answers"
 msgstr "使用這些回答"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "使用此裝置的時區（{device}）"
 
@@ -13221,6 +13211,7 @@ msgstr "我們已向 {currentEmail} 傳送連結以核准此變更。然後請�
 msgid "We sent a new verification link to {0}."
 msgstr "我們向 {0} 發送了新的驗證連結。"
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "網路存取"

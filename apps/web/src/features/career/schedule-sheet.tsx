@@ -38,7 +38,7 @@ export function scheduleKind(kind: string): { icon: IconName; title: string } {
 	return { icon: "globe-simple", title: t`Opportunity discovery` };
 }
 
-// ---- Wall-clock time in the Preferences timezone ----
+// ---- Wall-clock time in the account timezone ----
 
 /** "2026-10-08" and "17:58": the wall clock in `timeZone` at `at`. */
 function toZoned(at: Date, timeZone: string) {
@@ -373,7 +373,7 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 													providerState.isUnavailable ? (
 														<AiProviderLoadState state={providerState} />
 													) : providers.length === 0 ? (
-														<HeroLink href="/dashboard/settings/ai" className="w-fit">
+														<HeroLink href="/dashboard/settings/app#ai-providers" className="w-fit">
 															<Trans>Connect an AI provider in Settings</Trans>
 														</HeroLink>
 													) : (
@@ -539,7 +539,11 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 											<Trans>Cancel</Trans>
 										</Button>
 										{needsWebSearch ? (
-											<Link to="/dashboard/settings/ai" className={buttonVariants({ variant: "secondary" })}>
+											<Link
+												to="/dashboard/settings/app"
+												hash="web-access"
+												className={buttonVariants({ variant: "secondary" })}
+											>
 												<Trans>Set up web search in Settings</Trans>
 											</Link>
 										) : (

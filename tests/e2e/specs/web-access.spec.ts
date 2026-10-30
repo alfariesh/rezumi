@@ -7,10 +7,8 @@ test("selects, replaces and removes one optional web connection while the built-
 	page.on("request", (request) => {
 		if (new URL(request.url()).pathname === "/api/rpc/webAccess/test") probes += 1;
 	});
-	await page.goto("/dashboard/settings/ai");
-	const section = page
-		.locator("section")
-		.filter({ has: page.getByRole("heading", { name: "Web access", exact: true }) });
+	await page.goto("/dashboard/settings/app");
+	const section = page.getByRole("region", { name: "Web access", exact: true });
 	await expect(section.getByText("Active", { exact: true })).toBeVisible();
 	await expect(section.getByText("Optional", { exact: true })).toBeVisible();
 	await expect(section.getByLabel("API key", { exact: true })).toHaveCount(0);

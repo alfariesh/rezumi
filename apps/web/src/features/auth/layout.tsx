@@ -1,12 +1,15 @@
+import { Card } from "@heroui/react";
 import { Outlet } from "@tanstack/react-router";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 
 export function AuthLayout() {
 	return (
-		<div className="xs:px-0 mx-auto flex min-h-svh w-full max-w-sm flex-col justify-center gap-y-6 px-4 py-8">
-			<BrandIcon className="mb-4 size-20 self-center [view-transition-name:auth-brand]" />
+		<main className="mx-auto flex min-h-svh w-full max-w-md flex-col justify-center px-4 py-8">
+			<Card className="gap-y-6 p-6 sm:p-8">
+				<BrandIcon className="size-16 self-center [view-transition-name:auth-brand]" />
 
-			<Outlet />
-		</div>
+				<Outlet />
+			</Card>
+		</main>
 	);
 }

@@ -5,7 +5,7 @@ export function openAccountSettings(
 	path:
 		| "/dashboard/settings/account"
 		| "/dashboard/settings/account?deleteAccount=true"
-		| "/dashboard/settings/ai" = "/dashboard/settings/account",
+		| "/dashboard/settings/app#api-keys" = "/dashboard/settings/account",
 ) {
 	return openBrowserAsync(`${getServer()}${path}`);
 }

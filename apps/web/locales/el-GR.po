@@ -1135,8 +1135,8 @@ msgstr "Επίτευγμα"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Λογαριασμός"
 
@@ -1267,10 +1267,6 @@ msgstr "Προσθέστε μια ετικέτα"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Προσθέστε ετικέτα και πατήστε Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "Προσθήκη παρόχου AI"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Προσθήκη εθελοντισμού"
 msgid "Add what happened before you can save."
 msgstr "Προσθέστε τι συνέβη για να μπορέσετε να αποθηκεύσετε."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Προσθέστε το όνομά σας"
@@ -1571,13 +1571,6 @@ msgstr "Μετά τον πρώτο σας έλεγχο, εδώ εμφανίζε�
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "Σε σχέση με τις απαιτήσεις σας"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI & προγραμματιστής"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Οι απαντήσεις αντιγράφηκαν"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI συμβατό"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Οπουδήποτε"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Εφαρμογή"
 msgid "App navigation"
 msgstr "Πλοήγηση εφαρμογής"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Εμφάνιση"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, Σχεδιασμός Επικοινωνίας"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Πίσω"
 
@@ -3068,10 +3063,6 @@ msgstr "Συνδέστε μια εφαρμογή"
 msgid "Connect another…"
 msgstr "Συνδέστε ένα άλλο…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Συνδέστε τα εργαλεία που χρησιμοποιείτε για τη συγγραφή, την αναζήτηση εργασίας και την εργασία με τα βιογραφικά σας."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Συνδέστε τον δικό σας πάροχο τεχνητής νοημοσύνης για να έχετε ένα μοντέλο γλώσσας να διαβάζει τις καταχωρίσεις της λίστας σας και να προτείνει επαναλήψεις. Τα ζητήματα και η αντιστοίχιση εργασίας δεν χρειάζονται πάροχο."
@@ -3685,7 +3676,7 @@ msgstr "Δεν ήταν δυνατή η αποθήκευση της ιστορί
 msgid "Couldn't save the tags. Try again."
 msgstr "Δεν ήταν δυνατή η αποθήκευση των ετικετών. Προσπαθήστε ξανά."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Δεν ήταν δυνατή η αποθήκευση της ζώνης ώρας. Προσπαθήστε ξανά."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Δεν ήταν δυνατή η σύνδεση. Προσπαθήστε ξανά."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Δεν ήταν δυνατή η αποσύνδεση. Προσπαθήστε ξανά."
@@ -3976,6 +3966,10 @@ msgstr "Ημερομηνία δημιουργίας"
 msgid "Created “{finalName}”"
 msgstr "Δημιουργήθηκε το \"{finalName}\""
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Καθημερινές προβολές για 30 ημέρες, κορυ
 msgid "Danish"
 msgstr "Δανικά"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Σκούρο"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Λήγει"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "εξηγήστε καθαρά έναν περιορισμό της μέτρησης, χωρίς να υποτιμήσετε τη δουλειά."
@@ -5540,6 +5536,10 @@ msgstr "Ονοματεπώνυμο"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Πλήρες πλάτος"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Ενσωματώσεις"
 msgid "Interests"
 msgstr "Ενδιαφέροντα"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Γλώσσα διεπαφής"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Μόνο διεπαφή. Κάθε βιογραφικό θέτει τη δική του γλώσσα στο Design."
 
@@ -6147,7 +6147,7 @@ msgstr "Η συνέντευξη αποθηκεύτηκε"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Η συνέντευξη αποθηκεύτηκε · το ενημερωτικό μετακινείται στις {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Οι ώρες συνεντεύξεων, οι υπενθυμίσεις και τα προγράμματα στην Καριέρα τη χρησιμοποιούν."
 
@@ -6428,10 +6428,9 @@ msgstr "Διατηρήθηκε όπως είναι"
 msgid "Kept yours"
 msgstr "Κρατήθηκε η δική σας"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Το κλειδί τελειώνει σε {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Ετικέτα, π.χ. Στρατολογών"
 msgid "Landscape"
 msgstr "Οριζόντιος προσανατολισμός"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Γλώσσα"
@@ -6526,6 +6523,10 @@ msgstr "Τελευταία επεξεργασία"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Τελευταία χρήση"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "Με άδεια <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Οι συνδέσεις γραμμάτων (ligatures) μπορούν να αφαιρέσουν γράμματα από λέξεις όπως «workflow»."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Φωτεινό"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "Διακομιστής MCP"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Κανένας όρος δεν ξεχώριζε σε αυτήν την �
 msgid "No text could be read from this file."
 msgstr "Δεν ήταν δυνατή η ανάγνωση κειμένου από αυτό το αρχείο."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Καμία ζώνη ώρας δεν ταιριάζει."
 
@@ -7967,10 +7970,6 @@ msgstr "Χωρίς βαθμολογία"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Δεν έχει επιλεγεί"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Δεν έχει ρυθμιστεί"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Προτιμήστε μία μόνο στήλη ή κρατήστε τη
 msgid "Preference"
 msgstr "Προτίμηση"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Προτιμήσεις"
 
@@ -9912,7 +9907,7 @@ msgstr "υποβλήθηκε βιογραφικό (προαιρετικό)"
 msgid "Resumes"
 msgstr "Βιογραφικά σημειώματα"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "τα βιογραφικά αποδίδονται πάντα σε λευκό χαρτί, ανεξάρτητα από το θέμα."
 
@@ -9995,10 +9990,9 @@ msgstr "Ο έλεγχος χρειάζεται σύνδεση AI. <0>Προσθ�
 msgid "Revoke"
 msgstr "Ανακαλώ"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "Ανάκληση {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Αναζήτηση ρόλου, εταιρείας ή επαφής"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Αναζήτηση ζωνών ώρας"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Ρυθμίστε την εφαρμογή ελέγχου ταυτότητας"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Συνδεθείτε με το δακτυλικό σας αποτύπωμα, το πρόσωπο ή το PIN της συσκευής σας"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Αποσύνδεση"
@@ -11539,8 +11532,6 @@ msgstr "Μετάβαση σε μία στήλη"
 msgid "Synced changes made in another tab."
 msgstr "Συγχρονισμένες αλλαγές που έγιναν σε άλλη καρτέλα."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Λειτουργικό σύστημα"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Το αποθηκευμένο κλειδί δεν αποστέλλεται σε νέα διεύθυνση URL βάσης. Εισάγετε ξανά το κλειδί."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Το αποθηκευμένο κλειδί παρόχου δεν μπορεί να αποκρυπτογραφηθεί. Εισαγάγετε ξανά το κλειδί στις Ρυθμίσεις → AI & προγραμματιστής."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Το κείμενο βγαίνει μη αναγνώσιμο."
 msgid "The top of the first page does not look like a name."
 msgstr "Η κορυφή της πρώτης σελίδας δεν μοιάζει με όνομα."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Θέμα"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Οι ώρες εμφανίζονται σε {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Ζώνη ώρας"
 
@@ -12968,7 +12958,7 @@ msgstr "Χρησιμοποιήστε την τυπική επικεφαλίδα"
 msgid "Use these answers"
 msgstr "Χρήση αυτών των απαντήσεων"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Χρήση της ζώνης ώρας αυτής της συσκευής ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Στείλαμε έναν σύνδεσμο στο {currentEmail} για 
 msgid "We sent a new verification link to {0}."
 msgstr "Στείλαμε έναν νέο σύνδεσμο επαλήθευσης στο {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Πρόσβαση στον Ιστό"

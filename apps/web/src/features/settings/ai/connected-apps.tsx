@@ -1,8 +1,9 @@
-import { Button } from "@heroui/react";
+import { Alert, Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { SettingsSection } from "../section";
+import { Icon } from "@rezumi/ui/components/icon";
+import { SettingsRow, SettingsRows, SettingsSection } from "../section";
 import { authClient } from "@/libs/auth/client";
 
 const queryKey = ["auth", "connected-apps"];
@@ -38,26 +39,39 @@ export function ConnectedAppsSection() {
 
 	return (
 		<SettingsSection
+			id="connected-apps"
 			title={<Trans>Connected applications</Trans>}
 			description={<Trans>Revoke an application's access to your account.</Trans>}
 		>
-			{error || revoke.error ? <p role="alert">{(error ?? revoke.error)?.message}</p> : null}
+			{error || revoke.error ? (
+				<Alert status="danger">
+					<Alert.Indicator>
+						<Icon name="warning-circle" />
+					</Alert.Indicator>
+					<Alert.Content>
+						<Alert.Description>{(error ?? revoke.error)?.message}</Alert.Description>
+					</Alert.Content>
+				</Alert>
+			) : null}
 			{isPending ? (
-				<p role="status">
+				<p role="status" className="flex items-center gap-2 text-sm text-muted">
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Loading connections...</Trans>
 				</p>
 			) : connections.length === 0 ? (
-				<p className="text-sm text-ink-3">
+				<p className="text-sm text-muted">
 					<Trans>No connected applications yet. Apps you allow to access your account appear here.</Trans>
 				</p>
 			) : (
-				<ul className="divide-y divide-line">
+				<SettingsRows>
 					{connections.map((connection) => (
-						<li key={connection.id} className="flex items-center justify-between gap-3 py-3">
-							<div className="min-w-0 text-sm">
-								<p className="font-medium break-all">{connection.clientName}</p>
-								<p className="break-words text-ink-3">{connection.scopes.join(", ")}</p>
-							</div>
+						<SettingsRow
+							as="li"
+							key={connection.id}
+							icon="link-simple-horizontal"
+							title={connection.clientName}
+							description={connection.scopes.join(", ")}
+						>
 							<Button
 								variant="secondary"
 								size="sm"
@@ -66,9 +80,9 @@ export function ConnectedAppsSection() {
 							>
 								<Trans>Revoke access</Trans>
 							</Button>
-						</li>
+						</SettingsRow>
 					))}
-				</ul>
+				</SettingsRows>
 			)}
 		</SettingsSection>
 	);

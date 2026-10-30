@@ -13,8 +13,8 @@ The Rezumi REST API lets your own scripts, extensions and automations read and c
 ## Create an API key
 
 <Steps>
-  <Step title="Open AI & developer settings">
-    Select your name at the bottom of the sidebar, choose **Settings**, then open **AI & developer**. You can also press <kbd>⌘</kbd> <kbd>K</kbd> (<kbd>Ctrl</kbd> <kbd>K</kbd> on Windows and Linux) and type "API keys".
+  <Step title="Open Settings">
+    Select your name at the bottom of the sidebar, choose **Settings**, then find **API keys**. You can also press <kbd>⌘</kbd> <kbd>K</kbd> (<kbd>Ctrl</kbd> <kbd>K</kbd> on Windows and Linux) and type "API keys".
   </Step>
   <Step title="Start a new key">
     In the **API keys** section, select **New key**.
@@ -43,7 +43,7 @@ The Rezumi REST API lets your own scripts, extensions and automations read and c
 
 Your keys are listed in the **API keys** table with the date each was created, the date it was last used and when it expires. Expired keys disappear from the list and stop working.
 
-<Frame caption="The API keys section in AI & developer settings">
+<Frame caption="The API keys section in Settings">
   <img
     src="/images/guides/using-the-api/api-keys-section.webp"
     alt="API keys table listing two keys, Claude Desktop that never expires and Resume sync script that expires on 29 Dec 2026, each with a Revoke button"
@@ -203,7 +203,7 @@ The API accepts three kinds of credentials:
 
 Send one credential. When several are present, the server tries API key, bearer token, then session cookie, using the first valid credential. Cookie-authenticated requests with a foreign `Origin` or cross-site fetch metadata are rejected; explicit API keys and bearer tokens do not rely on browser cookies.
 
-Account deletion (`DELETE /auth/account`) requires a browser session; API keys and OAuth tokens receive `403 FORBIDDEN`. Delete your account in **Settings → Account**.
+Account deletion (`DELETE /auth/account`) requires a browser session; API keys and OAuth tokens receive `403 FORBIDDEN`. Delete your account in **Account**.
 
 A private request without valid credentials gets `401` with the code `UNAUTHORIZED`. Public operations are marked with `security: []` in the OpenAPI specification. Public resumes still enforce visibility, trash status and sharing passwords, and redact private data.
 
@@ -239,7 +239,7 @@ Branch on `code` rather than on the message text. Invalid input uses `400`, miss
 
 <Steps>
   <Step title="Find the key">
-    Open **Settings**, then **AI & developer**. In the **API keys** table, find the key you want to stop.
+    Open **Settings**. In the **API keys** table, find the key you want to stop.
   </Step>
   <Step title="Revoke it">
     Select **Revoke**. The key stops working at once, and a message confirms which key you revoked.

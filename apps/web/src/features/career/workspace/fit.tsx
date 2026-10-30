@@ -32,7 +32,7 @@ export function AiNotice({ className }: AiNoticeProps) {
 	if (!provider)
 		return (
 			<TextLink
-				href="/dashboard/settings/ai"
+				href="/dashboard/settings/app#ai-providers"
 				className={cn("w-fit gap-1.5 text-sm text-link no-underline hover:underline", className)}
 			>
 				<Icon name="key" size={16} />

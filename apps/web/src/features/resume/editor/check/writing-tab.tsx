@@ -104,7 +104,8 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 					</Trans>
 				</p>
 				<Link
-					to="/dashboard/settings/ai"
+					to="/dashboard/settings/app"
+					hash="ai-providers"
 					className={buttonVariants({ size: "sm", variant: "secondary", className: "w-fit" })}
 				>
 					<Trans>Open AI settings</Trans>
@@ -148,7 +149,11 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 					<Button size="sm" onPress={run}>
 						<Trans>Retry</Trans>
 					</Button>
-					<Link to="/dashboard/settings/ai" className={buttonVariants({ size: "sm", variant: "secondary" })}>
+					<Link
+						to="/dashboard/settings/app"
+						hash="ai-providers"
+						className={buttonVariants({ size: "sm", variant: "secondary" })}
+					>
 						<Trans>Open AI settings</Trans>
 					</Link>
 				</div>

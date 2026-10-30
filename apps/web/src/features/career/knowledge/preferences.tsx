@@ -212,7 +212,11 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 
 				<p className="text-xs text-muted">
 					<Trans>Times are shown in {timeZone}.</Trans>{" "}
-					<Link to="/dashboard/settings/preferences" className="underline underline-offset-2 hover:text-foreground">
+					<Link
+						to="/dashboard/settings/app"
+						hash="timezone"
+						className="underline underline-offset-2 hover:text-foreground"
+					>
 						<Trans>Change timezone</Trans>
 					</Link>
 				</p>

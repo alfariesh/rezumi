@@ -65,7 +65,7 @@ export function ResetPasswordPage({ token }: Props) {
 					<Trans>Reset your password</Trans>
 				</h1>
 
-				<div className="text-ink-3">
+				<div className="text-muted">
 					<Trans>Enter a new password for your account.</Trans>
 				</div>
 			</div>
@@ -87,6 +87,7 @@ export function ResetPasswordPage({ token }: Props) {
 							<FormControl
 								render={
 									<PasswordInput
+										variant="secondary"
 										minLength={8}
 										maxLength={64}
 										autoComplete="new-password"

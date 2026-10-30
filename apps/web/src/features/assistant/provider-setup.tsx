@@ -73,7 +73,11 @@ export function ProviderSetup() {
 			<p className="text-xs text-muted">
 				<Trans>
 					More providers and options are in{" "}
-					<Link to="/dashboard/settings/ai" className="text-link underline-offset-4 hover:underline">
+					<Link
+						to="/dashboard/settings/app"
+						hash="ai-providers"
+						className="text-link underline-offset-4 hover:underline"
+					>
 						Settings
 					</Link>
 					. The rest of the app works fully without AI.

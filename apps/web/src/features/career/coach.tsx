@@ -454,7 +454,7 @@ function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }
 			className="w-auto max-w-[180px]"
 			value={current?.id ?? null}
 			onChange={(key) => {
-				if (key === "connect") void navigate({ to: "/dashboard/settings/ai" });
+				if (key === "connect") void navigate({ to: "/dashboard/settings/app", hash: "ai-providers" });
 				else if (typeof key === "string") onChoose(key);
 			}}
 		>

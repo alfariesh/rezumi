@@ -1,9 +1,9 @@
-import { AlertDialog, Button, Input, Spinner } from "@heroui/react";
+import { AlertDialog, Button, Input, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { SettingsRow, SettingsSection } from "../section";
@@ -34,8 +34,9 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 	});
 
 	return (
-		<SettingsSection title={<Trans>Your data</Trans>}>
+		<SettingsSection divided title={<Trans>Your data</Trans>}>
 			<SettingsRow
+				icon="download-simple"
 				title={<Trans>Export everything</Trans>}
 				description={<Trans>All documents and applications as JSON, in one zip</Trans>}
 			>
@@ -45,15 +46,11 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 				</Button>
 			</SettingsRow>
 			<SettingsRow
+				icon="trash"
 				title={<Trans>Delete account</Trans>}
 				description={<Trans>Permanently removes everything. Export first if you want a copy.</Trans>}
 			>
-				<Button
-					size="sm"
-					variant="ghost"
-					className="border border-danger font-semibold text-danger-text hover:bg-danger-soft"
-					onPress={() => setDeleting(true)}
-				>
+				<Button size="sm" variant="danger-soft" onPress={() => setDeleting(true)}>
 					<Trans>Delete…</Trans>
 				</Button>
 			</SettingsRow>
@@ -66,7 +63,6 @@ type DeleteAccountDialogProps = { open: boolean; onOpenChange: (open: boolean) =
 
 /** The one confirmation in Settings that asks you to type: it names what goes, and can't be undone. */
 function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogProps) {
-	const id = useId();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 	const [typed, setTyped] = useState("");
@@ -110,20 +106,14 @@ function DeleteAccountDialog({ open, onOpenChange }: DeleteAccountDialogProps) {
 								All your documents, applications, API keys and public links are deleted for good. This can't be undone.
 							</Trans>
 						</p>
-						<div className="mt-4 grid gap-1.5">
-							<label htmlFor={id} className="text-[13px] font-medium">
+						<TextField fullWidth value={typed} onChange={setTyped} autoComplete="off" className="mt-4 gap-1.5">
+							<Label>
 								<Trans>
 									Type <b className="font-mono font-medium">{CONFIRMATION}</b> to confirm
 								</Trans>
-							</label>
-							<Input
-								fullWidth
-								id={id}
-								value={typed}
-								autoComplete="off"
-								onChange={(event) => setTyped(event.target.value)}
-							/>
-						</div>
+							</Label>
+							<Input variant="secondary" />
+						</TextField>
 					</AlertDialog.Body>
 					<AlertDialog.Footer>
 						<Button slot="close" variant="tertiary">

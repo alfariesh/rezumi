@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PreferencesSettings } from "@/features/settings/preferences";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// Settings is two pages, Account and Settings; the old address redirects to the group it held.
 export const Route = createFileRoute("/dashboard/settings/preferences")({
-	component: PreferencesSettings,
+	beforeLoad: () => {
+		throw redirect({ to: "/dashboard/settings/app", hash: "general", replace: true });
+	},
 });

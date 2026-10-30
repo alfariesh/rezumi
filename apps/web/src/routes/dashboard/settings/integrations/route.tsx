@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-// Settings became three pages in 6.0; the old address redirects (through 6.0.x).
+// Settings is two pages, Account and Settings; the old address redirects to the group it held.
 export const Route = createFileRoute("/dashboard/settings/integrations")({
 	beforeLoad: () => {
-		throw redirect({ to: "/dashboard/settings/ai", replace: true });
+		throw redirect({ to: "/dashboard/settings/app", hash: "ai-providers", replace: true });
 	},
 });

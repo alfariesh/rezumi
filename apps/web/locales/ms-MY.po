@@ -1135,8 +1135,8 @@ msgstr "Pencapaian"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Akaun"
 
@@ -1267,10 +1267,6 @@ msgstr "Tambah tag"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Tambah tag dan tekan Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "Tambah pembekal AI"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Tambah sukarela"
 msgid "Add what happened before you can save."
 msgstr "Tambah apa yang berlaku sebelum anda boleh menyimpan."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Tambah nama anda"
@@ -1571,13 +1571,6 @@ msgstr "Selepas ulasan pertama anda, pelan ringan untuk minggu ini muncul di sin
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "Berbanding keperluan anda"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI & pembangun"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Jawapan disalin"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI-serasi"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Di mana-mana sahaja"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "Apl"
 msgid "App navigation"
 msgstr "Navigasi aplikasi"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Penampilan"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, Reka Bentuk Komunikasi"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "belakang"
 
@@ -3068,10 +3063,6 @@ msgstr "Sambungkan aplikasi"
 msgid "Connect another…"
 msgstr "Sambungkan yang lain…"
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Sambungkan alat yang anda gunakan untuk menulis, mencari pekerjaan dan bekerja dengan resume anda."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Sambungkan pembekal AI anda sendiri untuk meminta model bahasa membaca entri senarai anda dan mencadangkan penulisan semula. Isu dan padanan kerja tidak memerlukan pembekal."
@@ -3685,7 +3676,7 @@ msgstr "Tidak dapat menyimpan cerita. Cuba lagi."
 msgid "Couldn't save the tags. Try again."
 msgstr "Tidak dapat menyimpan teg. Cuba lagi."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Tidak dapat menyimpan zon waktu. Cuba lagi."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Tidak dapat log masuk. Cuba lagi."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Tidak dapat log keluar. Cuba lagi."
@@ -3976,6 +3966,10 @@ msgstr "Dicipta"
 msgid "Created “{finalName}”"
 msgstr "Dicipta \"{finalName}\""
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Tontonan harian selama 30 hari, memuncak {0}"
 msgid "Danish"
 msgstr "Danish"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Gelap"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "tamat tempoh"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "terangkan satu had pengukuran dengan jelas, tanpa memperkecilkan kerja itu."
@@ -5540,6 +5536,10 @@ msgstr "Nama penuh"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Lebar penuh"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Integrasi"
 msgid "Interests"
 msgstr "Minat"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Bahasa antara muka"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Antara muka sahaja. Setiap resume menetapkan bahasanya sendiri dalam Reka Bentuk."
 
@@ -6147,7 +6147,7 @@ msgstr "Temu duga disimpan"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Temu duga disimpan · taklimat dipindahkan ke {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Masa temu duga, peringatan dan jadual dalam Kerjaya menggunakannya."
 
@@ -6428,10 +6428,9 @@ msgstr "Disimpan seadanya"
 msgid "Kept yours"
 msgstr "Milik anda dikekalkan"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Kunci berakhir dalam {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Label, mis. Perekrut"
 msgid "Landscape"
 msgstr "Lanskap"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Bahasa"
@@ -6526,6 +6523,10 @@ msgstr "Terakhir diedit"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Terakhir digunakan"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "Dilesenkan di bawah <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligatur boleh menggugurkan huruf daripada perkataan seperti \"workflow\"."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Cerah"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "Pelayan MCP"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Tiada istilah yang menonjol dalam siaran kerja ini."
 msgid "No text could be read from this file."
 msgstr "Tiada teks dapat dibaca daripada fail ini."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Tiada zon waktu yang sepadan."
 
@@ -7967,10 +7970,6 @@ msgstr "Tidak diberi skor"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Tidak dipilih"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Tidak disediakan"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Utamakan satu lajur, atau kekalkan lajur sisi kepada senarai pendek dan 
 msgid "Preference"
 msgstr "Keutamaan"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Keutamaan"
 
@@ -9912,7 +9907,7 @@ msgstr "resume diserahkan (pilihan)"
 msgid "Resumes"
 msgstr "Resume"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "resume sentiasa dipaparkan di atas kertas putih, apa jua temanya."
 
@@ -9995,10 +9990,9 @@ msgstr "Semakan memerlukan sambungan AI. <0>Tambah satu dalam Tetapan</0>. Apa y
 msgid "Revoke"
 msgstr "Batalkan"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "Batalkan {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Cari peranan, syarikat atau kenalan"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Cari zon waktu"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Sediakan aplikasi pengesah anda"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Tetapan"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Log masuk dengan cap jari, muka atau PIN peranti anda"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Log keluar"
@@ -11539,8 +11532,6 @@ msgstr "Bertukar kepada satu lajur"
 msgid "Synced changes made in another tab."
 msgstr "Perubahan disegerakkan yang dibuat dalam tab lain."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Sistem pengendalian"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Kunci yang disimpan tidak dihantar ke URL asas baharu. Masukkan kunci sekali lagi."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Kunci pembekal yang disimpan tidak boleh dinyahsulitkan. Masukkan kekunci sekali lagi dalam Tetapan → AI & pembangun."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Teks keluar tidak boleh dibaca."
 msgid "The top of the first page does not look like a name."
 msgstr "Bahagian atas halaman pertama tidak kelihatan seperti nama."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Tema"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Masa ditunjukkan dalam {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Zon waktu"
 
@@ -12968,7 +12958,7 @@ msgstr "Gunakan tajuk standard"
 msgid "Use these answers"
 msgstr "Gunakan jawapan ini"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Gunakan zon waktu peranti ini ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Kami menghantar pautan ke {currentEmail} untuk meluluskan perubahan. Kem
 msgid "We sent a new verification link to {0}."
 msgstr "Kami menghantar pautan pengesahan baharu ke {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Akses web"

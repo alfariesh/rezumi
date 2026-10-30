@@ -1,4 +1,4 @@
-import { Button, buttonVariants, Input, Alert } from "@heroui/react";
+import { Alert, Button, buttonVariants, Input, linkVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -107,13 +107,13 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 					<Trans>Create a new account</Trans>
 				</h1>
 
-				<div className="text-ink-3">
+				<div className="text-muted">
 					<Trans>
 						Already have an account?{" "}
 						<Link
 							to="/auth/login"
 							search={{ callbackURL, reauthenticate }}
-							className="inline-flex items-center gap-1.5 px-1 text-link underline-offset-4 hover:underline"
+							className={linkVariants().base({ className: "gap-1.5 px-1" })}
 						>
 							<Trans comment="Call-to-action link from registration page to login page">Sign in now</Trans>{" "}
 							<Icon name="arrow-right" size={16} />
@@ -141,6 +141,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 									render={
 										<Input
 											fullWidth
+											variant="secondary"
 											minLength={1}
 											maxLength={64}
 											autoComplete="section-register name"
@@ -170,6 +171,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 									render={
 										<Input
 											fullWidth
+											variant="secondary"
 											minLength={3}
 											maxLength={64}
 											autoComplete="section-register username"
@@ -200,6 +202,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 									render={
 										<Input
 											fullWidth
+											variant="secondary"
 											type="email"
 											autoComplete="section-register email"
 											placeholder="john.doe@example.com"
@@ -225,6 +228,7 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 								<FormControl
 									render={
 										<PasswordInput
+											variant="secondary"
 											minLength={8}
 											maxLength={64}
 											autoComplete="section-register new-password"
@@ -261,12 +265,12 @@ function PostSignupScreen() {
 				<h1 className="text-2xl font-semibold tracking-tight">
 					<Trans>Check your email</Trans>
 				</h1>
-				<p className="text-ink-3">
+				<p className="text-muted">
 					<Trans>Check your email for a link to verify your account.</Trans>
 				</p>
 			</div>
 
-			<Alert status="default">
+			<Alert status="default" className="bg-surface-secondary">
 				<Alert.Indicator />
 				<Alert.Content>
 					<Alert.Title>

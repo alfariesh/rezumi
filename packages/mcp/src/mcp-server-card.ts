@@ -81,7 +81,7 @@ export function buildMcpServerCard(appVersion: string) {
 					type: "string",
 					title: "API key",
 					description:
-						"Optional. Create a key under Settings → AI & developer → API keys. Forwarded as the x-api-key header when not using OAuth.",
+						"Optional. Create a key under Settings → API keys. Forwarded as the x-api-key header when not using OAuth.",
 					"x-from": { header: "x-api-key" },
 				},
 			},

@@ -1,4 +1,4 @@
-import { Button } from "@heroui/react";
+import { Alert, Button, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
@@ -83,28 +83,36 @@ export function OAuthConsentPage({ oauthQuery, email }: OAuthConsentPageProps) {
 				<h1 className="text-2xl font-semibold tracking-tight">
 					<Trans>Connect an application</Trans>
 				</h1>
-				<p className="text-sm wrap-anywhere text-ink-3">
+				<p className="text-sm wrap-anywhere text-muted">
 					<Trans>Signed in as {email}</Trans>
 				</p>
 			</div>
 			{!validRequest || isError ? (
-				<p key="invalid" role="alert" className={ENTER_CLASS}>
-					<Trans>This connection request is invalid or has expired. Start the connection again from your client.</Trans>
-				</p>
+				<Alert key="invalid" status="danger" role="alert" className={cn(ENTER_CLASS, "bg-surface-secondary")}>
+					<Alert.Indicator />
+					<Alert.Content>
+						<Alert.Title>
+							<Trans>
+								This connection request is invalid or has expired. Start the connection again from your client.
+							</Trans>
+						</Alert.Title>
+					</Alert.Content>
+				</Alert>
 			) : isPending ? (
-				<p role="status">
+				<p role="status" className="flex items-center justify-center gap-2 text-sm text-muted">
+					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Loading connection request...</Trans>
 				</p>
 			) : client ? (
 				<div className={cn(ENTER_CLASS, "space-y-4")}>
-					<div className="space-y-1 wrap-anywhere">
+					<div className="space-y-1 rounded-2xl bg-surface-secondary p-4 wrap-anywhere">
 						<p className="font-medium">{client.client_name || clientId}</p>
-						<p className="text-xs text-ink-3">
+						<p className="text-xs text-muted">
 							<Trans>Client ID</Trans>: {clientId}
 						</p>
 						{destination && (
-							<p className="text-xs text-ink-3">
-								<Trans>Access is sent to</Trans>: <span className="font-medium text-ink">{destination}</span>
+							<p className="text-xs text-muted">
+								<Trans>Access is sent to</Trans>: <span className="font-medium text-foreground">{destination}</span>
 							</p>
 						)}
 					</div>
@@ -161,9 +169,12 @@ export function OAuthConsentPage({ oauthQuery, email }: OAuthConsentPageProps) {
 						)}
 					</ul>
 					{error && (
-						<p role="alert" className={cn(ENTER_CLASS, "text-sm text-danger-text")}>
-							{error}
-						</p>
+						<Alert status="danger" role="alert" className={cn(ENTER_CLASS, "bg-surface-secondary")}>
+							<Alert.Indicator />
+							<Alert.Content>
+								<Alert.Title>{error}</Alert.Title>
+							</Alert.Content>
+						</Alert>
 					)}
 					<div className="flex gap-2">
 						<Button className="flex-1" variant="secondary" isDisabled={pending} onPress={() => void submit(false)}>

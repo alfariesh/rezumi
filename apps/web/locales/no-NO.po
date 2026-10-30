@@ -1135,8 +1135,8 @@ msgstr "Prestasjon"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/page.tsx
 #: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Account"
 msgstr "Konto"
 
@@ -1267,10 +1267,6 @@ msgstr "Legg til en tag"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Legg til en tagg og trykk Enter…"
-
-#: src/features/settings/ai/providers.tsx
-msgid "Add AI provider"
-msgstr "Legg til AI-leverandør"
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1481,6 +1477,10 @@ msgstr "Legg til frivillighet"
 msgid "Add what happened before you can save."
 msgstr "Beskriv hva som skjedde før du kan lagre."
 
+#: src/features/settings/ai/providers.tsx
+msgid "Add your first AI provider"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Add your name"
 msgstr "Legg til navnet ditt"
@@ -1571,13 +1571,6 @@ msgstr "Etter den første gjennomgangen din vises en enkel plan for denne uken h
 #: src/features/career/workspace/fit.tsx
 msgid "Against your requirements"
 msgstr "Mot kravene dine"
-
-#: src/features/command-palette/pages/navigation.tsx
-#: src/features/settings/ai/page.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
-msgid "AI & developer"
-msgstr "AI og utvikler"
 
 #: src/features/career/schedule-sheet.tsx
 msgid "AI connection"
@@ -1784,7 +1777,7 @@ msgstr "Svarene er kopiert"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Anthropic, Gemini, Ollama, OpenAI-compatible"
-msgstr "Anthropic, Gemini, Ollama, OpenAI-kompatibel"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Any"
@@ -1811,6 +1804,7 @@ msgid "Anywhere"
 msgstr "Hvor som helst"
 
 #: src/features/assistant/provider-setup.tsx
+#: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "API key"
@@ -1829,9 +1823,9 @@ msgstr "App"
 msgid "App navigation"
 msgstr "Appnavigasjon"
 
-#: src/features/settings/preferences.tsx
-msgid "Appearance"
-msgstr "Utseende"
+#: src/features/settings/page.tsx
+msgid "Appearance, language and the tools you connect for writing, job search and your resumes."
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Appears on the page once it has a company."
@@ -2189,6 +2183,7 @@ msgid "BA, Communication Design"
 msgstr "BA, kommunikasjonsdesign"
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Tilbake"
 
@@ -3068,10 +3063,6 @@ msgstr "Koble til en applikasjon"
 msgid "Connect another…"
 msgstr "Koble til en annen..."
 
-#: src/features/settings/ai/page.tsx
-msgid "Connect the tools you use for writing, job search and working with your resumes."
-msgstr "Koble sammen verktøyene du bruker til å skrive, jobbsøke og jobbe med CV-ene dine."
-
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job match need no provider."
 msgstr "Koble til din egen AI-leverandør for å få en språkmodell til å lese listeoppføringene dine og foreslå omskrivninger. Problemer og jobbmatch trenger ingen leverandør."
@@ -3685,7 +3676,7 @@ msgstr "Kunne ikke lagre historien. Prøv igjen."
 msgid "Couldn't save the tags. Try again."
 msgstr "Kunne ikke lagre taggene. Prøv igjen."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Couldn't save the timezone. Try again."
 msgstr "Kunne ikke lagre tidssonen. Prøv igjen."
 
@@ -3750,7 +3741,6 @@ msgid "Couldn't sign in. Try again."
 msgstr "Kunne ikke logge inn. Prøv igjen."
 
 #. Fallback toast when signing out fails
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Couldn't sign out. Try again."
 msgstr "Kunne ikke logge av. Prøv igjen."
@@ -3976,6 +3966,10 @@ msgstr "Opprettet"
 msgid "Created “{finalName}”"
 msgstr "Opprettet \"{finalName}\""
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Created {created}"
+msgstr ""
+
 #. placeholder {0}: job.company
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
@@ -4068,9 +4062,7 @@ msgstr "Daglige visninger over 30 dager, topp {0}"
 msgid "Danish"
 msgstr "Dansk"
 
-#. Appearance theme option for dark mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "Mørk"
@@ -5060,6 +5052,10 @@ msgstr ""
 msgid "Expires"
 msgstr "Utløper"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Expires {expiry}"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "explain one limit of the measurement clearly, without underselling the work."
 msgstr "forklar én begrensning ved målingen tydelig, uten å undervurdere arbeidet."
@@ -5540,6 +5536,10 @@ msgstr "Fullt navn"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Full bredde"
+
+#: src/features/settings/general.tsx
+msgid "General"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 msgid "Generate a random name"
@@ -6076,11 +6076,11 @@ msgstr "Integrasjoner"
 msgid "Interests"
 msgstr "Interesser"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface language"
 msgstr "Grensesnittspråk"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interface only. Each resume sets its own language in Design."
 msgstr "Bare grensesnitt. Hver CV setter sitt eget språk i design."
 
@@ -6147,7 +6147,7 @@ msgstr "Intervjuet er lagret"
 msgid "Interview saved · briefing moves to {0}"
 msgstr "Intervjuet er lagret · brifingen flyttes til {0}"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Interview times, reminders and schedules in Career use it."
 msgstr "Intervjutider, påminnelser og tidsplaner i Karriere bruker den."
 
@@ -6428,10 +6428,9 @@ msgstr "Beholdt som den er"
 msgid "Kept yours"
 msgstr "Beholdt din"
 
-#. placeholder {0}: keyEnding(provider.apiKeyPreview)
 #: src/features/settings/ai/providers.tsx
-msgid "Key ends in {0}"
-msgstr "Nøkkelen slutter på {0}"
+msgid "Key ends in {ending}"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Key revoked. Apps using it stop working now."
@@ -6491,14 +6490,12 @@ msgstr "Etikett, f.eks. Rekrutterer"
 msgid "Landscape"
 msgstr "Liggende"
 
-#. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "Språk"
@@ -6526,6 +6523,10 @@ msgstr "Sist redigert"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
 msgstr "Sist brukt"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "Last used {used}"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -6707,9 +6708,7 @@ msgstr "Lisensiert under <0>MIT</0>"
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "Ligaturer kan miste bokstaver fra ord som \"workflow\"."
 
-#. Appearance theme option for light mode
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "Lyst"
@@ -7173,6 +7172,10 @@ msgstr "MCP"
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP server"
+
+#: src/features/settings/ai/mcp.tsx
+msgid "MCP server address"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
@@ -7840,7 +7843,7 @@ msgstr "Ingen vilkår skilte seg ut i denne stillingsannonsen."
 msgid "No text could be read from this file."
 msgstr "Ingen tekst kunne leses fra denne filen."
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "No timezone matches."
 msgstr "Ingen tidssoner samsvarer."
 
@@ -7967,10 +7970,6 @@ msgstr "Ikke scoret"
 #: src/features/applications/stages.ts
 msgid "Not selected"
 msgstr "Ikke valgt"
-
-#: src/features/settings/root.tsx
-msgid "Not set up"
-msgstr "Ikke satt opp"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Not sure what to write?"
@@ -8869,11 +8868,7 @@ msgstr "Foretrekk én kolonne, eller begrens sidekolonnen til korte, selvstendig
 msgid "Preference"
 msgstr "Preferanse"
 
-#: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/settings/root.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Preferences"
 msgstr "Preferanser"
 
@@ -9912,7 +9907,7 @@ msgstr "CV sendt inn (valgfritt)"
 msgid "Resumes"
 msgstr "CV-er"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "CVer gjengis alltid på hvitt papir, uansett tema."
 
@@ -9995,10 +9990,9 @@ msgstr "Vurdering krever en AI-tilkobling. <0>Legg til en i Innstillinger</0>. D
 msgid "Revoke"
 msgstr "Oppheve"
 
-#. placeholder {0}: key.name || key.start || t`unnamed key`
 #: src/features/settings/ai/api-keys.tsx
-msgid "Revoke {0}"
-msgstr "Tilbakekall {0}"
+msgid "Revoke {label}"
+msgstr ""
 
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke access"
@@ -10466,7 +10460,7 @@ msgstr "Søk rolle, firma eller kontakt"
 msgid "Search the web"
 msgstr ""
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Search timezones"
 msgstr "Søk etter tidssoner"
 
@@ -10699,9 +10693,9 @@ msgid "Set up your authenticator app"
 msgstr "Sett opp autentiseringsappen din"
 
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Innstillinger"
 
@@ -10924,7 +10918,6 @@ msgid "Sign in with your fingerprint, face or device PIN"
 msgstr "Logg på med fingeravtrykket, ansiktet eller enhetens PIN-kode"
 
 #. User menu action to sign out of current account
-#: src/features/settings/account/page.tsx
 #: src/features/user/dropdown-menu.tsx
 msgid "Sign out"
 msgstr "Logg ut"
@@ -11539,8 +11532,6 @@ msgstr "Byttet til én kolonne"
 msgid "Synced changes made in another tab."
 msgstr "Synkroniserte endringer gjort i en annen fane."
 
-#. Appearance theme option that follows the operating system
-#: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "System"
 msgstr "Operativsystem"
@@ -12036,8 +12027,8 @@ msgid "The saved key isn't sent to a new base URL. Enter it again."
 msgstr "Den lagrede nøkkelen sendes ikke til en ny basis-URL. Tast inn nøkkelen igjen."
 
 #: src/libs/error-message.ts
-msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI & developer."
-msgstr "Den lagrede leverandørnøkkelen kan ikke dekrypteres. Skriv inn nøkkelen igjen i Innstillinger → AI og utvikler."
+msgid "The saved provider key can't be decrypted. Enter the key again in Settings → AI providers."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The score counts how reliably software reads your resume. It doesn't predict whether you'll be shortlisted."
@@ -12080,12 +12071,10 @@ msgstr "Teksten kommer ut uleselig."
 msgid "The top of the first page does not look like a name."
 msgstr "Toppen av den første siden ser ikke ut som et navn."
 
-#. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
-#: src/features/settings/preferences.tsx
-#: src/features/user/dropdown-menu.tsx
+#: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "Tema"
 
@@ -12396,7 +12385,8 @@ msgstr ""
 msgid "Times are shown in {timeZone}."
 msgstr "Tider vises i {timeZone}."
 
-#: src/features/settings/preferences.tsx
+#: src/features/command-palette/pages/navigation.tsx
+#: src/features/settings/general.tsx
 msgid "Timezone"
 msgstr "Tidssone"
 
@@ -12968,7 +12958,7 @@ msgstr "Bruk standardoverskriften"
 msgid "Use these answers"
 msgstr "Bruk disse svarene"
 
-#: src/features/settings/preferences.tsx
+#: src/features/settings/general.tsx
 msgid "Use this device's timezone ({device})"
 msgstr "Bruk tidssonen til denne enheten ({device})"
 
@@ -13221,6 +13211,7 @@ msgstr "Vi sendte en lenke til {currentEmail} for å godkjenne endringen. Åpne 
 msgid "We sent a new verification link to {0}."
 msgstr "Vi sendte en ny bekreftelseslenke til {0}."
 
+#: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
 msgid "Web access"
 msgstr "Netttilgang"

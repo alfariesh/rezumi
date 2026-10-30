@@ -1,4 +1,13 @@
-import { Button, buttonVariants, Checkbox, Input, InputOTP, REGEXP_ONLY_DIGITS, Spinner } from "@heroui/react";
+import {
+	Button,
+	buttonVariants,
+	Checkbox,
+	Input,
+	InputOTP,
+	linkVariants,
+	REGEXP_ONLY_DIGITS,
+	Spinner,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -86,7 +95,7 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 				<h1 className="text-2xl font-semibold tracking-tight">
 					{backupCode ? <Trans>Verify with a backup code</Trans> : <Trans>Two-step verification</Trans>}
 				</h1>
-				<div className="text-ink-3">
+				<div className="text-muted">
 					{backupCode ? (
 						<Trans>Enter one of your saved backup codes to access your account.</Trans>
 					) : (
@@ -117,6 +126,7 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 									backupCode ? (
 										<Input
 											fullWidth
+											variant="secondary"
 											type="text"
 											maxLength={11}
 											className="max-w-xs"
@@ -129,6 +139,7 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 										(props) => (
 											<InputOTP
 												{...props}
+												variant="secondary"
 												isInvalid={Boolean(props["aria-invalid"])}
 												maxLength={6}
 												pattern={REGEXP_ONLY_DIGITS}
@@ -156,6 +167,7 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 				<form.Field name="trustDevice">
 					{(field) => (
 						<Checkbox
+							variant="secondary"
 							name={field.name}
 							isSelected={field.state.value}
 							onChange={field.handleChange}
@@ -201,7 +213,7 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 				<Link
 					to="/auth/verify-2fa-backup"
 					search={{ callbackURL, reauthenticate }}
-					className="justify-self-center text-sm text-link underline-offset-4 hover:underline"
+					className={linkVariants().base({ className: "self-center text-sm" })}
 				>
 					<Trans comment="Link to backup-code verification flow when authenticator app is unavailable">
 						Lost access to your authenticator?

@@ -169,12 +169,12 @@ Never use `bulk_delete_applications` for clean-up. Deletion is permanent and rem
 
 ## 10. Errors
 
-| Error                                              | Meaning and action                                                                                                                                             |
-| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `NOT_FOUND`                                        | Stale or wrong ID: list again and match by company and role.                                                                                                   |
-| 409                                                | Changed since you read it: read again, recompute, re-show the change if it differs.                                                                            |
-| 422 `POSTING_UNREADABLE`                           | Ask for the pasted posting text.                                                                                                                               |
-| 429                                                | Rate limited: wait, and batch fewer calls.                                                                                                                     |
-| `BAD_GATEWAY`                                      | The user's AI provider failed: carry on without the AI tool.                                                                                                   |
-| "No AI provider is configured"                     | No default AI provider. Skip AI tools; the user can add one in the web app under Settings (labelled "Integrations" or "AI & developer", depending on version). |
-| "Recorded submitted documents cannot be replaced…" | The sent documents are fixed; see §8.                                                                                                                          |
+| Error                                              | Meaning and action                                                                                                                                                             |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `NOT_FOUND`                                        | Stale or wrong ID: list again and match by company and role.                                                                                                                   |
+| 409                                                | Changed since you read it: read again, recompute, re-show the change if it differs.                                                                                            |
+| 422 `POSTING_UNREADABLE`                           | Ask for the pasted posting text.                                                                                                                                               |
+| 429                                                | Rate limited: wait, and batch fewer calls.                                                                                                                                     |
+| `BAD_GATEWAY`                                      | The user's AI provider failed: carry on without the AI tool.                                                                                                                   |
+| "No AI provider is configured"                     | No default AI provider. Skip AI tools; the user can add one in the web app under Settings (labelled "Integrations", "AI & developer" or "AI providers", depending on version). |
+| "Recorded submitted documents cannot be replaced…" | The sent documents are fixed; see §8.                                                                                                                                          |

@@ -213,7 +213,7 @@ function CoachSheetBody({
 				company={application.company}
 				context={context}
 				connection={connection}
-				onChangeConnection={() => void navigate({ to: "/dashboard/settings/ai" })}
+				onChangeConnection={() => void navigate({ to: "/dashboard/settings/app", hash: "ai-providers" })}
 				header={() => null}
 				empty={() => (
 					<EmptyState size="sm">

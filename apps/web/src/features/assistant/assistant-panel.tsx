@@ -356,7 +356,7 @@ function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: 
 					<Dropdown.Item
 						id="connect"
 						textValue={t`Connect another…`}
-						onAction={() => void navigate({ to: "/dashboard/settings/ai" })}
+						onAction={() => void navigate({ to: "/dashboard/settings/app", hash: "ai-providers" })}
 					>
 						<Label>
 							<Trans>Connect another…</Trans>

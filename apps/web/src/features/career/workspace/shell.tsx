@@ -4,19 +4,9 @@ import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
-import { EmptyState, ItemCard } from "@heroui-pro/react";
+import { EmptyState } from "@heroui-pro/react";
 import { Segment } from "@heroui-pro/react";
-import {
-	Alert,
-	Avatar,
-	Button,
-	buttonVariants,
-	Chip,
-	Disclosure,
-	Link as TextLink,
-	Separator,
-	Spinner,
-} from "@heroui/react";
+import { Alert, Avatar, Button, buttonVariants, Chip, Disclosure, Link as TextLink, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -41,6 +31,7 @@ import { MessagesTab } from "./messages";
 import { PractiseTab } from "./practise";
 import { PrepareTab } from "./prepare";
 import { SavedTab } from "./saved";
+import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import { ApplicationNotes } from "@/features/applications/components/application-notes";
 import { InterviewDialog } from "@/features/applications/components/interview-dialog";
 import { buildIcs } from "@/features/applications/ics";
@@ -637,28 +628,26 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 							search={application.sentResumeVersionId ? { version: application.sentResumeVersionId } : {}}
 							className="group block min-w-0 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-focus"
 						>
-							<ItemCard
-								variant="transparent"
-								className="px-2 py-2 transition-colors duration-quick group-hover:bg-default"
-							>
-								<ItemCard.Icon>
-									<Icon name="file-text" size={16} />
-								</ItemCard.Icon>
-								<ItemCard.Content>
-									<ItemCard.Title className="max-w-full">{resume.name}</ItemCard.Title>
-									<ItemCard.Description className="max-w-full">
+							<div className="flex items-center gap-3 rounded-2xl px-2 py-2 transition-colors duration-quick group-hover:bg-default">
+								<RowIcon>
+									<Icon name="file-text" size={20} />
+								</RowIcon>
+								<span className="grid min-w-0 flex-1">
+									<span className="truncate text-sm font-medium">{resume.name}</span>
+									<span className="text-xs text-muted">
 										{application.sentResumeVersionId ? (
 											<Trans>Resume · version sent</Trans>
 										) : (
 											<Trans>Resume · not sent yet</Trans>
 										)}
-									</ItemCard.Description>
-								</ItemCard.Content>
-							</ItemCard>
+									</span>
+								</span>
+							</div>
 						</Link>
 					)}
+					{/* The rule starts under the text: the rows' 8px padding plus the indent. */}
 					{resume && application.resumeId && letter && application.coverLetterId && (
-						<Separator className="-my-1 ms-14" />
+						<RowSeparator className="-my-1 ms-[calc(var(--spacing-row-indent)+0.5rem)]" />
 					)}
 					{letter && application.coverLetterId && (
 						<Link
@@ -667,24 +656,21 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 							search={application.sentCoverLetterVersionId ? { version: application.sentCoverLetterVersionId } : {}}
 							className="group block min-w-0 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-focus"
 						>
-							<ItemCard
-								variant="transparent"
-								className="px-2 py-2 transition-colors duration-quick group-hover:bg-default"
-							>
-								<ItemCard.Icon>
-									<Icon name="envelope-simple" size={16} />
-								</ItemCard.Icon>
-								<ItemCard.Content>
-									<ItemCard.Title className="max-w-full">{letter.name}</ItemCard.Title>
-									<ItemCard.Description className="max-w-full">
+							<div className="flex items-center gap-3 rounded-2xl px-2 py-2 transition-colors duration-quick group-hover:bg-default">
+								<RowIcon>
+									<Icon name="envelope-simple" size={20} />
+								</RowIcon>
+								<span className="grid min-w-0 flex-1">
+									<span className="truncate text-sm font-medium">{letter.name}</span>
+									<span className="text-xs text-muted">
 										{application.sentCoverLetterVersionId ? (
 											<Trans>Letter · version sent</Trans>
 										) : (
 											<Trans>Letter · not sent yet</Trans>
 										)}
-									</ItemCard.Description>
-								</ItemCard.Content>
-							</ItemCard>
+									</span>
+								</span>
+							</div>
 						</Link>
 					)}
 				</CareerWidget>
