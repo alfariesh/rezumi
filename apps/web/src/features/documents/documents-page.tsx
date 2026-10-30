@@ -1,18 +1,6 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
 import { ActionBar, EmptyState, Segment } from "@heroui-pro/react";
-import {
-	Button,
-	Chip,
-	Dropdown,
-	InputGroup,
-	Kbd,
-	Label,
-	Separator,
-	Skeleton,
-	Tabs,
-	Tag,
-	TagGroup,
-} from "@heroui/react";
+import { Button, Chip, Dropdown, InputGroup, Kbd, Label, Separator, Skeleton, Tag, TagGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -132,28 +120,23 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 			<PageHeader title={<Trans>Documents</Trans>}>
 				{!failed && !firstRun && (
 					<>
-						<Tabs
+						<Segment
+							aria-label={t`Document type`}
+							// On a phone the filter spans the row, its three items sharing it.
+							className="max-sm:w-full"
 							selectedKey={search.type}
 							onSelectionChange={(type) => onSearchChange({ type: String(type) as DocumentTypeFilter })}
-							variant="secondary"
 						>
-							<Tabs.ListContainer>
-								<Tabs.List aria-label={t`Document type`}>
-									<Tabs.Tab id="all">
-										<Trans>All</Trans> <span className="text-xs text-muted tabular-nums">{counts.all}</span>
-										<Tabs.Indicator />
-									</Tabs.Tab>
-									<Tabs.Tab id="resume">
-										<Trans>Resumes</Trans> <span className="text-xs text-muted tabular-nums">{counts.resume}</span>
-										<Tabs.Indicator />
-									</Tabs.Tab>
-									<Tabs.Tab id="letter">
-										<Trans>Letters</Trans> <span className="text-xs text-muted tabular-nums">{counts.letter}</span>
-										<Tabs.Indicator />
-									</Tabs.Tab>
-								</Tabs.List>
-							</Tabs.ListContainer>
-						</Tabs>
+							<Segment.Item id="all">
+								<Trans>All</Trans> <span className="text-xs text-muted tabular-nums">{counts.all}</span>
+							</Segment.Item>
+							<Segment.Item id="resume">
+								<Trans>Resumes</Trans> <span className="text-xs text-muted tabular-nums">{counts.resume}</span>
+							</Segment.Item>
+							<Segment.Item id="letter">
+								<Trans>Letters</Trans> <span className="text-xs text-muted tabular-nums">{counts.letter}</span>
+							</Segment.Item>
+						</Segment>
 
 						<div className="ms-auto flex flex-wrap items-center gap-2 max-sm:ms-0 max-sm:w-full">
 							<InputGroup className="w-60 max-sm:w-full">
@@ -172,7 +155,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 									<Kbd>/</Kbd>
 								</InputGroup.Suffix>
 							</InputGroup>
-							<div className="w-[150px]">
+							<div className="w-[150px] max-sm:w-auto max-sm:flex-1">
 								<NativeSelect
 									aria-label={t`Sort`}
 									value={search.sort}
@@ -185,6 +168,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 							</div>
 							<Segment
 								aria-label={t`View`}
+								className="shrink-0"
 								selectedKey={view}
 								onSelectionChange={(next) => setView(next as "grid" | "list")}
 							>
@@ -379,6 +363,7 @@ function TagFilter({ tags, active, onChange, showPublic, publicOnly, onPublicCha
 	return (
 		<TagGroup
 			aria-label={t`Filter by tag`}
+			size="lg"
 			selectionMode="multiple"
 			selectedKeys={selectedKeys}
 			onSelectionChange={(keys) => {
@@ -388,10 +373,11 @@ function TagFilter({ tags, active, onChange, showPublic, publicOnly, onPublicCha
 				if (nextTags.length !== active.length || nextTags.some((tag) => !active.includes(tag))) onChange(nextTags);
 			}}
 		>
-			<TagGroup.List className="flex-wrap">
+			{/* On a phone the chips stay on one row that scrolls sideways, edge to edge past the page's 16px padding. */}
+			<TagGroup.List className="max-sm:-mx-4 max-sm:-my-1 max-sm:[scrollbar-width:none] max-sm:flex-nowrap max-sm:overflow-x-auto max-sm:px-4 max-sm:py-1 max-sm:*:shrink-0">
 				{showPublic && (
 					<Tag id={PUBLIC_KEY} textValue={t`Public`}>
-						<Icon name="globe" size={14} />
+						<Icon name="globe" size={16} />
 						<Trans>Public</Trans>
 					</Tag>
 				)}

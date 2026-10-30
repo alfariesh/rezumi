@@ -181,7 +181,7 @@ export function DocumentCard({
 				style={introIndex === undefined ? undefined : stagger(introIndex)}
 				className={cardVariants({ variant: "default" }).base({
 					className: cn(
-						"group/card gap-2.5 p-2 ring-0 ring-accent transition-[box-shadow,translate] duration-quick ease-enter hover:-translate-y-0.5 hover:shadow-overlay",
+						"group/card rounded-[20px] p-2 shadow-none ring-0 ring-accent transition-[box-shadow,translate] duration-quick ease-enter hover:-translate-y-0.5 hover:shadow-overlay",
 						(isNew || selected) && "ring-2",
 						introIndex !== undefined && ENTER_CLASS,
 						isNew && "animate-arrive",
@@ -195,7 +195,7 @@ export function DocumentCard({
 						label={document.name}
 						onSelect={selecting && onSelectedChange ? () => onSelectedChange(!selected) : undefined}
 						className={cn(
-							"relative block aspect-page overflow-hidden rounded-xl bg-white ring-1 ring-separator transition-[scale] duration-quick ease-enter active:scale-[0.98]",
+							"relative block aspect-page overflow-hidden rounded-[12px] bg-white ring-1 ring-separator transition-[scale] duration-quick ease-enter active:scale-[0.98]",
 							document.trashedAt && "pointer-events-none",
 						)}
 					>
@@ -229,7 +229,8 @@ export function DocumentCard({
 					)}
 				</div>
 
-				<div className="flex items-start gap-1 ps-1">
+				{/* A margin, not a gap: the context-menu trigger makes the card a block, where `gap` does nothing. */}
+				<div className="mt-3 flex items-start gap-1 ps-1 pb-0.5">
 					<div className="grid min-w-0 flex-1 gap-0.5">
 						{renaming ? (
 							<RenameInput document={document} onDone={() => setRenaming(false)} />
