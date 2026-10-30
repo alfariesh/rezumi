@@ -139,7 +139,7 @@ it("selects a row without opening it", () => {
 	fireEvent.click(checkbox.closest("td") as HTMLElement);
 
 	expect(onOpen).not.toHaveBeenCalled();
-	expect(checkbox.getAttribute("aria-checked")).toBe("true");
+	expect((checkbox as HTMLInputElement).checked).toBe(true);
 });
 
 it.each(["desktop", "mobile"] as const)(

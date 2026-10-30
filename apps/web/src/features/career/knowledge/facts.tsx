@@ -2,7 +2,8 @@ import type { Fact } from "../hooks";
 import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
-import { Button, Spinner, TextArea } from "@heroui/react";
+import { Segment } from "@heroui-pro/react";
+import { Button, Spinner, Switch, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,8 +12,6 @@ import { memo, useDeferredValue, useEffect, useId, useRef, useState } from "reac
 import { factCategorySchema } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
-import { Switch } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError, CareerLoading } from "../load-state";
 import { CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
@@ -209,30 +208,18 @@ function MemoryCard() {
 				</p>
 				<p className="text-xs text-ink-3">{hints[profile.memoryMode]}</p>
 			</div>
-			<SegmentedControl
+			<Segment
 				aria-labelledby={labelId}
-				value={mode}
-				disabled={!profile}
-				onValueChange={(value) => profile && save({ ...profile, memoryMode: value as MemoryMode })}
-				className="h-[34px]"
+				selectedKey={mode ?? null}
+				isDisabled={!profile}
+				onSelectionChange={(key) => profile && save({ ...profile, memoryMode: String(key) as MemoryMode })}
 			>
 				{modes.map(([value, label]) => (
-					<SegmentedControlItem
-						key={value}
-						value={value}
-						className="touch-target relative flex-none px-2.5 data-checked:bg-transparent data-checked:shadow-none"
-					>
-						{mode === value && (
-							<m.span
-								layoutId="memory-mode"
-								transition={{ duration: D2, ease: EASE }}
-								className="absolute inset-0 rounded-sm bg-raised shadow-e1"
-							/>
-						)}
-						<span className="relative">{label}</span>
-					</SegmentedControlItem>
+					<Segment.Item key={value} id={value} className="touch-target">
+						{label}
+					</Segment.Item>
 				))}
-			</SegmentedControl>
+			</Segment>
 		</div>
 	);
 }
@@ -285,7 +272,6 @@ function AddFact({ onAdded }: AddFactProps) {
 						aria-label={t`Fact type`}
 						value={category}
 						onChange={(event) => setCategory(event.target.value as FactCategory)}
-						className="h-8 text-[13px] font-medium"
 					>
 						{CATEGORIES.map((option) => (
 							<option key={option} value={option}>
@@ -465,10 +451,16 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 
 				<div className="flex w-[120px] flex-none flex-col items-end gap-1 max-sm:w-20">
 					<Switch
-						checked={on}
+						isSelected={on}
 						aria-label={t`Use in coaching: ${excerpt}`}
-						onCheckedChange={(checked) => onStatus(fact, checked ? "active" : "excluded")}
-					/>
+						onChange={(selected) => onStatus(fact, selected ? "active" : "excluded")}
+					>
+						<Switch.Content>
+							<Switch.Control>
+								<Switch.Thumb />
+							</Switch.Control>
+						</Switch.Content>
+					</Switch>
 					<span className="text-end text-xs text-ink-3">{on ? t`Used in coaching` : t`Not used`}</span>
 				</div>
 			</div>

@@ -1,6 +1,6 @@
 import type { Area } from "react-easy-crop";
 import type z from "zod";
-import { Button, ButtonGroup, Input, InputGroup } from "@heroui/react";
+import { Button, ButtonGroup, Input, InputGroup, Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -17,7 +17,6 @@ import {
 } from "@rezumi/ui/components/dialog";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Slider } from "@rezumi/ui/components/slider";
 import { toast } from "@rezumi/ui/components/toast";
 import "react-easy-crop/react-easy-crop.css";
 import { ColorPicker } from "@/components/input/color-picker";
@@ -557,16 +556,21 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 					<div className="flex items-center gap-x-3">
 						<Icon name="magnifying-glass-minus" size={16} className="shrink-0 text-ink-3" />
 						<Slider
-							min={1}
-							max={3}
+							minValue={1}
+							maxValue={3}
 							step={0.01}
-							value={[zoom]}
+							value={zoom}
 							aria-label={t`Zoom`}
 							className="flex-1"
-							onValueChange={(value) => {
-								setZoom(Array.isArray(value) ? value[0] : value);
+							onChange={(value) => {
+								if (typeof value === "number") setZoom(value);
 							}}
-						/>
+						>
+							<Slider.Track>
+								<Slider.Fill />
+								<Slider.Thumb />
+							</Slider.Track>
+						</Slider>
 						<Icon name="magnifying-glass-plus" size={16} className="shrink-0 text-ink-3" />
 					</div>
 				</div>

@@ -1,14 +1,13 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
-import { Button, buttonVariants, Spinner, TextArea, Tooltip } from "@heroui/react";
+import { Button, buttonVariants, Checkbox, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { careerWorkspaceSchema } from "@rezumi/schema/career";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -600,19 +599,26 @@ function Checklist({
 						</li>
 					) : (
 						<li key={label}>
-							<label className="flex cursor-pointer gap-2.5 text-[13px] leading-[19px]">
-								<Checkbox
-									className="mt-px"
-									checked={ticked.includes(index)}
-									disabled={readOnly || submitting}
-									onCheckedChange={(checked) => toggle(index, checked)}
-								/>
-								<span
-									className={cn("transition-colors duration-quick", ticked.includes(index) ? "text-ink-2" : "text-ink")}
-								>
-									{label}
-								</span>
-							</label>
+							<Checkbox
+								className="text-[13px] leading-[19px]"
+								isSelected={ticked.includes(index)}
+								isDisabled={readOnly || submitting}
+								onChange={(checked) => toggle(index, checked)}
+							>
+								<Checkbox.Content className="items-start">
+									<Checkbox.Control className="mt-px">
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span
+										className={cn(
+											"transition-colors duration-quick",
+											ticked.includes(index) ? "text-ink-2" : "text-ink",
+										)}
+									>
+										{label}
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
 						</li>
 					),
 				)}

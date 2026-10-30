@@ -1,11 +1,11 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
-import { Button, buttonVariants, InputGroup, Kbd } from "@heroui/react";
+import { Segment } from "@heroui-pro/react";
+import { Button, buttonVariants, Checkbox, InputGroup, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -16,7 +16,6 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { Tabs, TabsCount, TabsList, TabsTrigger } from "@rezumi/ui/components/tabs";
 import { cn } from "@rezumi/utils/style";
@@ -174,18 +173,18 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 									<option value="created">{t`Created`}</option>
 								</NativeSelect>
 							</div>
-							<SegmentedControl
+							<Segment
 								aria-label={t`View`}
-								value={view}
-								onValueChange={(next) => setView(next as "grid" | "list")}
+								selectedKey={view}
+								onSelectionChange={(next) => setView(next as "grid" | "list")}
 							>
-								<SegmentedControlItem value="grid" aria-label={t`Grid`}>
+								<Segment.Item id="grid" aria-label={t`Grid`}>
 									<Icon name="squares-four" size={18} />
-								</SegmentedControlItem>
-								<SegmentedControlItem value="list" aria-label={t`List`}>
+								</Segment.Item>
+								<Segment.Item id="list" aria-label={t`List`}>
 									<Icon name="list-dashes" size={18} />
-								</SegmentedControlItem>
-							</SegmentedControl>
+								</Segment.Item>
+							</Segment>
 						</div>
 					</>
 				)}
@@ -242,11 +241,17 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 								<tr className="border-b border-line text-start text-xs font-medium text-ink-3">
 									<th className="w-10 ps-3">
 										<Checkbox
-											checked={allSelected}
-											indeterminate={selecting && !allSelected}
-											onCheckedChange={(on) => selectAll(on)}
+											isSelected={allSelected}
+											isIndeterminate={selecting && !allSelected}
+											onChange={(on) => selectAll(on)}
 											aria-label={t`Select all`}
-										/>
+										>
+											<Checkbox.Content>
+												<Checkbox.Control>
+													<Checkbox.Indicator />
+												</Checkbox.Control>
+											</Checkbox.Content>
+										</Checkbox>
 									</th>
 									<th className="h-10 ps-3 text-start font-medium">
 										<Trans>Name</Trans>

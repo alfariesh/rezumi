@@ -1,10 +1,10 @@
+import { Segment } from "@heroui-pro/react";
 import { Button, Input, Label, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { cn } from "@rezumi/utils/style";
 import { useHasUsableAiProvider } from "../integrations/hooks/use-has-usable-ai-provider";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -308,27 +308,23 @@ export function WebAccessSection() {
 									<span id={`${id}-provider`} className="text-xs font-medium text-ink-2">
 										<Trans>Provider</Trans>
 									</span>
-									<SegmentedControl
+									<Segment
 										aria-labelledby={`${id}-provider`}
-										value={provider}
-										disabled={pending}
-										className="h-10 w-fit max-w-full"
-										onValueChange={(value) => {
-											setProvider(value as Provider);
+										selectedKey={provider}
+										isDisabled={pending}
+										className="w-fit max-w-full"
+										onSelectionChange={(key) => {
+											setProvider(String(key) as Provider);
 											setApiKey("");
 											save.reset();
 										}}
 									>
 										{Object.entries(PROVIDERS).map(([value, label]) => (
-											<SegmentedControlItem
-												key={value}
-												value={value}
-												className="touch-target relative flex-auto max-sm:px-2"
-											>
+											<Segment.Item key={value} id={value} className="flex-auto max-sm:px-2">
 												{label}
-											</SegmentedControlItem>
+											</Segment.Item>
 										))}
-									</SegmentedControl>
+									</Segment>
 								</div>
 								<div className="grid gap-2">
 									<Label htmlFor={`${id}-key`}>

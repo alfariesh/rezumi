@@ -1,5 +1,5 @@
 import type { Fact, Story } from "../hooks";
-import { Button, Input, Spinner, TextArea, Tooltip } from "@heroui/react";
+import { Button, Checkbox, Input, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -7,7 +7,6 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
 import { memo, useState } from "react";
 import * as z from "zod";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
@@ -531,29 +530,31 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					const disabled = fact.status !== "active";
 					const checked = draft.factIds.includes(fact.id) && !disabled;
 					return (
-						<label
+						<Checkbox
 							key={fact.id}
+							isSelected={checked}
+							isDisabled={disabled}
+							onChange={(value) => toggleFact(fact.id, value)}
 							className={cn(
 								"flex items-start gap-2.5 rounded-md px-2.5 py-2 text-[13px] leading-[19px] transition-colors duration-quick",
 								checked ? "bg-accent-soft" : "bg-bg",
 								disabled ? "cursor-not-allowed text-ink-3" : "cursor-pointer",
 							)}
 						>
-							<Checkbox
-								checked={checked}
-								disabled={disabled}
-								onCheckedChange={(value) => toggleFact(fact.id, value)}
-								className="mt-px"
-							/>
-							<span className="min-w-0 flex-1">
-								{fact.text}
-								{disabled && (
-									<span className="block text-xs text-ink-3">
-										<Trans>Not used in coaching, so it can't back a story.</Trans>
-									</span>
-								)}
-							</span>
-						</label>
+							<Checkbox.Content className="items-start">
+								<Checkbox.Control className="mt-px">
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+								<span className="min-w-0 flex-1">
+									{fact.text}
+									{disabled && (
+										<span className="block text-xs text-ink-3">
+											<Trans>Not used in coaching, so it can't back a story.</Trans>
+										</span>
+									)}
+								</span>
+							</Checkbox.Content>
+						</Checkbox>
 					);
 				})}
 				{shared.length === 0 && (

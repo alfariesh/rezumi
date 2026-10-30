@@ -337,9 +337,9 @@ function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: bool
 							? t`Linked. Name, email, phone and city update when the resume does.`
 							: t`Off. The letter keeps its own copy of your details.`
 					}
-					checked={letter.senderLinked}
-					disabled={disabled}
-					onCheckedChange={setLinked}
+					isSelected={letter.senderLinked}
+					isDisabled={disabled}
+					onChange={setLinked}
 				/>
 			) : (
 				<p className="text-xs text-ink-3">

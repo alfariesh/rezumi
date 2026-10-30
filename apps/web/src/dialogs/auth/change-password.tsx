@@ -1,11 +1,10 @@
 import type { DialogProps } from "../store";
-import { Button } from "@heroui/react";
+import { Button, Checkbox } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import z from "zod";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DialogContent,
 	DialogDescription,
@@ -157,14 +156,14 @@ export function ChangePasswordDialog(_: DialogProps<"auth.change-password">) {
 
 				<form.Field name="revokeOtherSessions">
 					{(field) => (
-						<FormItem className="flex items-center gap-2.5">
-							<FormControl
-								render={<Checkbox name={field.name} checked={field.state.value} onCheckedChange={field.handleChange} />}
-							/>
-							<FormLabel>
+						<Checkbox name={field.name} isSelected={field.state.value} onChange={field.handleChange}>
+							<Checkbox.Content>
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
 								<Trans>Sign out of all other devices</Trans>
-							</FormLabel>
-						</FormItem>
+							</Checkbox.Content>
+						</Checkbox>
 					)}
 				</form.Field>
 

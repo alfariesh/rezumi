@@ -95,9 +95,9 @@ export function LetterDesignPanel() {
 									? t`Template, type and colors follow the resume, so the pair always matches.`
 									: t`The letter keeps a design of its own.`
 							}
-							checked={letter.designLinked}
-							disabled={disabled}
-							onCheckedChange={setLinked}
+							isSelected={letter.designLinked}
+							isDisabled={disabled}
+							onChange={setLinked}
 						/>
 						{letter.designLinked && (
 							<Link

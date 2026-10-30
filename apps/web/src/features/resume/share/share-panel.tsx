@@ -58,12 +58,12 @@ export function SharePanel() {
 		<div className="grid gap-[18px] p-4">
 			{isPublic ? (
 				<SwitchRow
-					checked
-					disabled={isPending || resume.isLocked}
-					onCheckedChange={(checked) => void setPublic(checked)}
+					isSelected
+					isDisabled={isPending || resume.isLocked}
+					onChange={(checked) => void setPublic(checked)}
 					label={<span className="font-semibold">{t`Public link`}</span>}
 					description={t`On. Anyone with the link can see your web page.`}
-					className="items-start rounded-xl border border-line p-3.5 transition-colors duration-standard data-checked:border-accent data-checked:bg-accent-soft"
+					className="items-start rounded-xl border border-line p-3.5 transition-colors duration-standard data-selected:border-accent data-selected:bg-accent-soft"
 				/>
 			) : (
 				<div className="grid gap-3 rounded-xl border border-line p-3.5">
@@ -208,9 +208,9 @@ function PrimaryRow({ setting: { update, isPending } }: ShareSettingProps) {
 
 	return (
 		<SwitchRow
-			checked={resume.isPrimary ?? false}
-			disabled={isPending || resume.isLocked || (!isPublic && !resume.isPrimary)}
-			onCheckedChange={(checked) => void setPrimary(checked)}
+			isSelected={resume.isPrimary ?? false}
+			isDisabled={isPending || resume.isLocked || (!isPublic && !resume.isPrimary)}
+			onChange={(checked) => void setPrimary(checked)}
 			label={t`Primary resume`}
 			description={
 				resume.isPrimary
@@ -246,9 +246,9 @@ function WebPageSettings() {
 				</p>
 			</div>
 			<SwitchRow
-				checked={data?.metadata.web?.showCredit !== false}
-				disabled={locked}
-				onCheckedChange={(checked) =>
+				isSelected={data?.metadata.web?.showCredit !== false}
+				isDisabled={locked}
+				onChange={(checked) =>
 					updateResumeData((draft) => {
 						draft.metadata.web = { ...draft.metadata.web, showCredit: checked };
 					})
@@ -274,17 +274,17 @@ function PrivacySettings({ setting: { update, isPending } }: ShareSettingProps) 
 			</h3>
 			<PasswordRow />
 			<SwitchRow
-				checked={resume.hideContactDetails ?? false}
-				disabled={disabled}
-				onCheckedChange={(checked) => void update({ hideContactDetails: checked })}
+				isSelected={resume.hideContactDetails ?? false}
+				isDisabled={disabled}
+				onChange={(checked) => void update({ hideContactDetails: checked })}
 				label={t`Hide contact details`}
 				description={t`Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results.`}
 				className="items-start py-0"
 			/>
 			<SwitchRow
-				checked={(resume.showInSearchEngines ?? false) && !searchBlocked}
-				disabled={disabled || searchBlocked}
-				onCheckedChange={(checked) => void update({ showInSearchEngines: checked })}
+				isSelected={(resume.showInSearchEngines ?? false) && !searchBlocked}
+				isDisabled={disabled || searchBlocked}
+				onChange={(checked) => void update({ showInSearchEngines: checked })}
 				label={t`Show in search engines`}
 				description={
 					searchBlocked
@@ -298,9 +298,9 @@ function PrivacySettings({ setting: { update, isPending } }: ShareSettingProps) 
 				className="items-start py-0"
 			/>
 			<SwitchRow
-				checked={resume.showDownloadButtons !== false}
-				disabled={disabled}
-				onCheckedChange={(checked) => void update({ showDownloadButtons: checked })}
+				isSelected={resume.showDownloadButtons !== false}
+				isDisabled={disabled}
+				onChange={(checked) => void update({ showDownloadButtons: checked })}
 				label={t`Visitors can download the PDF`}
 				className="py-0"
 			/>
@@ -337,9 +337,9 @@ function PasswordRow() {
 	return (
 		<>
 			<SwitchRow
-				checked={resume.hasPassword ?? false}
-				disabled={resume.isLocked}
-				onCheckedChange={(checked) => (checked ? setDialogOpen(true) : void turnOff())}
+				isSelected={resume.hasPassword ?? false}
+				isDisabled={resume.isLocked}
+				onChange={(checked) => (checked ? setDialogOpen(true) : void turnOff())}
 				label={t`Require a password`}
 				description={
 					resume.hasPassword

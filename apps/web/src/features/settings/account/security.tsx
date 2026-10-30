@@ -1,10 +1,9 @@
 import type { AuthProvider } from "@rezumi/auth/types";
-import { Button, buttonVariants, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Spinner, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Switch } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { SettingsRow, SettingsSection } from "../section";
 import { getProviderName, useAuthAccounts, useAuthProviderActions, useEnabledProviders } from "./auth-hooks";
@@ -58,12 +57,16 @@ export function SecuritySection() {
 				>
 					<Switch
 						aria-label={t`Two-step verification`}
-						checked={twoFactor}
+						isSelected={twoFactor}
 						// Turning it on walks through the QR code and backup codes; turning it off asks for the password.
-						onCheckedChange={() =>
-							openDialog(twoFactor ? "auth.two-factor.disable" : "auth.two-factor.enable", undefined)
-						}
-					/>
+						onChange={() => openDialog(twoFactor ? "auth.two-factor.disable" : "auth.two-factor.enable", undefined)}
+					>
+						<Switch.Content>
+							<Switch.Control>
+								<Switch.Thumb />
+							</Switch.Control>
+						</Switch.Content>
+					</Switch>
 				</SettingsRow>
 			)}
 

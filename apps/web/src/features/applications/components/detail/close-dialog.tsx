@@ -1,8 +1,8 @@
 import type { ApplicationClosedReason } from "@rezumi/schema/applications/data";
-import { Button } from "@heroui/react";
+import { Button, Radio, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useId, useState } from "react";
+import { useState } from "react";
 import {
 	Dialog,
 	DialogContent,
@@ -11,7 +11,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
-import { RadioGroup, RadioGroupItem } from "@rezumi/ui/components/radio-group";
 import { CLOSED_REASONS, getClosedReasonLabel } from "../../stages";
 
 type CloseDialogProps = {
@@ -22,7 +21,6 @@ type CloseDialogProps = {
 
 /** "Close this application": one reason, kept for Insights. It replaces Reject, Archive and Delete buttons. */
 export function CloseDialog({ open, onOpenChange, onClose }: CloseDialogProps) {
-	const id = useId();
 	const [reason, setReason] = useState<ApplicationClosedReason>("not-selected");
 
 	return (
@@ -39,19 +37,22 @@ export function CloseDialog({ open, onOpenChange, onClose }: CloseDialogProps) {
 				<RadioGroup
 					aria-label={t`Reason`}
 					value={reason}
-					onValueChange={(value) => setReason(value as ApplicationClosedReason)}
+					onChange={(value) => setReason(value as ApplicationClosedReason)}
 					className="grid gap-1"
 				>
 					{CLOSED_REASONS.map((value) => (
-						<div
+						<Radio
 							key={value}
-							className="flex h-10 items-center gap-2.5 rounded-lg px-2 transition-colors hover:bg-hover"
+							value={value}
+							className="flex h-10 items-center rounded-lg px-2 transition-colors hover:bg-hover"
 						>
-							<RadioGroupItem id={`${id}-${value}`} value={value} />
-							<label htmlFor={`${id}-${value}`} className="flex-1 cursor-pointer text-sm">
+							<Radio.Content className="flex-1 text-sm">
+								<Radio.Control>
+									<Radio.Indicator />
+								</Radio.Control>
 								{getClosedReasonLabel(value)}
-							</label>
-						</div>
+							</Radio.Content>
+						</Radio>
 					))}
 				</RadioGroup>
 				<DialogFooter>

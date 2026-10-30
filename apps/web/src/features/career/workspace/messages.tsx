@@ -1,12 +1,11 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
-import { Button, Spinner, TextArea } from "@heroui/react";
+import { Button, Checkbox, Spinner, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { toast } from "@rezumi/ui/components/toast";
@@ -314,17 +313,22 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 						<li key={id} className={cn("flex gap-2.5 rounded-lg bg-bg px-3 py-2.5", isFixed && "opacity-70")}>
 							<Checkbox
 								id={id}
-								className="mt-px"
-								checked={isFixed || selected.includes(index)}
-								disabled={isFixed || applied !== null || readOnly}
-								onCheckedChange={(checked) =>
+								isSelected={isFixed || selected.includes(index)}
+								isDisabled={isFixed || applied !== null || readOnly}
+								onChange={(checked) =>
 									setTicked((rows) => (checked ? [...rows, index] : rows.filter((row) => row !== index)))
 								}
-							/>
-							<label htmlFor={id} className="grid gap-0.5 text-[13px] leading-[19px]">
-								<span className="font-semibold">{title}</span>
-								<span className="text-ink-2">{detail}</span>
-							</label>
+							>
+								<Checkbox.Content className="items-start">
+									<Checkbox.Control className="mt-px">
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span className="grid gap-0.5 text-[13px] leading-[19px]">
+										<span className="font-semibold">{title}</span>
+										<span className="text-ink-2">{detail}</span>
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
 						</li>
 					);
 				})}

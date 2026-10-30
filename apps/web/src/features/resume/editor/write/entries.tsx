@@ -3,14 +3,13 @@ import type { Entry } from "./model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import type { ReactNode } from "react";
-import { Button } from "@heroui/react";
+import { Button, Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
 import { FormControl, FormDescription, FormItem, FormLabel } from "@rezumi/ui/components/form";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { PopoverTrigger } from "@rezumi/ui/components/popover";
-import { Slider } from "@rezumi/ui/components/slider";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
 import { MoreOptions, TextField, WebsiteField } from "./fields";
@@ -140,21 +139,24 @@ function Level({ entry, write }: FieldSetProps) {
 			<FormLabel>
 				<Trans>Level</Trans>
 			</FormLabel>
-			<FormControl
-				render={
-					<Slider
-						min={0}
-						max={5}
-						step={1}
-						value={[level]}
-						onValueChange={(value) =>
-							write("level", (target) => {
-								target.level = Array.isArray(value) ? value[0] : value;
-							})
-						}
-					/>
-				}
-			/>
+			<Slider
+				aria-label={t`Level`}
+				minValue={0}
+				maxValue={5}
+				step={1}
+				value={level}
+				onChange={(value) => {
+					if (typeof value !== "number") return;
+					write("level", (target) => {
+						target.level = value;
+					});
+				}}
+			>
+				<Slider.Track>
+					<Slider.Fill />
+					<Slider.Thumb />
+				</Slider.Track>
+			</Slider>
 			<FormDescription>{level === 0 ? t`Hidden` : `${level} / 5`}</FormDescription>
 		</FormItem>
 	);

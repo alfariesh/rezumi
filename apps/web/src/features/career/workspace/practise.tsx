@@ -2,19 +2,18 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, Label, Spinner, TextArea, Tooltip } from "@heroui/react";
+import { Segment } from "@heroui-pro/react";
+import { Button, Checkbox, Label, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, m } from "motion/react";
+import { AnimatePresence } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
 import { z } from "zod";
 import { AI_VOICE_MODELS } from "@rezumi/ai/types";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -36,7 +35,7 @@ import {
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { toastError } from "@/libs/error-message";
-import { D2, EASE, ENTER_CLASS } from "@/libs/motion";
+import { ENTER_CLASS } from "@/libs/motion";
 import { client } from "@/libs/orpc/client";
 
 type Practice = SavedData<"practice">;
@@ -702,31 +701,19 @@ function Notice({ icon, children }: { icon: IconName; children: ReactNode }) {
 }
 
 function ModeSwitch({ value, onChange }: { value: Mode; onChange: (mode: Mode) => void }) {
-	const id = useId();
 	const options = [
 		{ value: "typed", label: t`Type`, icon: "keyboard" },
 		{ value: "spoken", label: t`Speak`, icon: "microphone" },
 	] as const;
 	return (
-		<SegmentedControl aria-label={t`Answer by`} value={value} onValueChange={(next) => onChange(next as Mode)}>
+		<Segment aria-label={t`Answer by`} selectedKey={value} onSelectionChange={(next) => onChange(String(next) as Mode)}>
 			{options.map((option) => (
-				<SegmentedControlItem
-					key={option.value}
-					value={option.value}
-					className="relative data-checked:bg-transparent data-checked:shadow-none"
-				>
-					{value === option.value && (
-						<m.span
-							layoutId={`${id}-thumb`}
-							transition={{ duration: D2, ease: EASE }}
-							className="absolute inset-0 rounded-sm bg-raised shadow-e1"
-						/>
-					)}
-					<Icon name={option.icon} size={16} className="relative" />
-					<span className="relative">{option.label}</span>
-				</SegmentedControlItem>
+				<Segment.Item key={option.value} id={option.value}>
+					<Icon name={option.icon} size={16} />
+					{option.label}
+				</Segment.Item>
 			))}
-		</SegmentedControl>
+		</Segment>
 	);
 }
 
@@ -920,10 +907,14 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 							</div>
 							{!browserTranscribes && (
 								<div className="flex flex-wrap items-center justify-between gap-2">
-									<label htmlFor={`${id}-keep`} className="flex items-center gap-2.5 text-[13px]">
-										<Checkbox id={`${id}-keep`} checked={settings.keep} onCheckedChange={(keep) => update({ keep })} />
-										<Trans>Keep the recording in this browser so I can download it</Trans>
-									</label>
+									<Checkbox isSelected={settings.keep} onChange={(keep) => update({ keep })} className="text-[13px]">
+										<Checkbox.Content>
+											<Checkbox.Control>
+												<Checkbox.Indicator />
+											</Checkbox.Control>
+											<Trans>Keep the recording in this browser so I can download it</Trans>
+										</Checkbox.Content>
+									</Checkbox>
 									{settings.keep && audio && (
 										<a
 											href={audio.url}

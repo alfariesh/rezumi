@@ -1,13 +1,12 @@
 import type { ApplicationSummary } from "../types";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants, Input } from "@heroui/react";
+import { Button, buttonVariants, Checkbox, Input } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, m } from "motion/react";
 import { memo, useMemo, useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -299,10 +298,16 @@ const ApplicationRow = memo(function ApplicationRow({
 		>
 			<td onClick={(event) => event.stopPropagation()} className="w-10 cursor-default ps-3">
 				<Checkbox
-					checked={checked}
-					onCheckedChange={() => onCheck(application.id)}
+					isSelected={checked}
+					onChange={() => onCheck(application.id)}
 					aria-label={t`Select ${application.role} at ${application.company}`}
-				/>
+				>
+					<Checkbox.Content>
+						<Checkbox.Control>
+							<Checkbox.Indicator />
+						</Checkbox.Control>
+					</Checkbox.Content>
+				</Checkbox>
 			</td>
 			<td className="py-2 pe-2">
 				<div className="flex items-center gap-3">

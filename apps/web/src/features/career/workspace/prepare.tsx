@@ -3,13 +3,12 @@ import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { ReactNode } from "react";
-import { Button, buttonVariants, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Checkbox, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { useId, useRef, useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
+import { useRef, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
@@ -241,10 +240,16 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 							<Checkbox
 								className="mt-px"
 								aria-label={row.title}
-								disabled={readOnly}
-								checked={done(index)}
-								onCheckedChange={(checked) => ticks.toggle(String(index), checked)}
-							/>
+								isDisabled={readOnly}
+								isSelected={done(index)}
+								onChange={(checked) => ticks.toggle(String(index), checked)}
+							>
+								<Checkbox.Content>
+									<Checkbox.Control>
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+								</Checkbox.Content>
+							</Checkbox>
 							<span className="font-mono text-xs leading-5 font-medium text-ink-3">
 								<Trans>{row.minutes} min</Trans>
 							</span>
@@ -370,9 +375,9 @@ function RefreshSwitch({ application, interview }: RefreshSwitchProps) {
 			<SwitchRow
 				label={<span className="font-semibold">{label}</span>}
 				description={description}
-				checked={enabled}
-				disabled={save.isPending || (!available && !enabled)}
-				onCheckedChange={(checked) =>
+				isSelected={Boolean(enabled)}
+				isDisabled={save.isPending || (!available && !enabled)}
+				onChange={(checked) =>
 					save.mutate({
 						...(schedule ? { id: schedule.id } : {}),
 						kind: "prepare",
@@ -522,7 +527,6 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 				: plural(-minutes, { one: "Started # minute ago", other: "Started # minutes ago" });
 	const rehearse = () => go("practise", { speak: true });
 	const rows = steps();
-	const id = useId();
 
 	if (mobile)
 		return (
@@ -544,25 +548,25 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 				{rows.map((row, index) => {
 					const on = ticks.ticked.includes(String(index));
 					return (
-						<label
+						<Checkbox
 							key={row.title}
-							htmlFor={`${id}-${index}`}
+							isSelected={on}
+							onChange={(checked) => ticks.toggle(String(index), checked)}
 							className={cn(
 								"flex min-h-14 cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 transition-colors duration-quick",
 								on ? "border-transparent bg-accent-soft" : "border-line bg-surface",
 							)}
 						>
-							<Checkbox
-								id={`${id}-${index}`}
-								className="size-[22px]"
-								checked={on}
-								onCheckedChange={(checked) => ticks.toggle(String(index), checked)}
-							/>
-							<span className="grid gap-0.5">
-								<span className={cn("text-[15px] font-semibold", on && "text-accent-text")}>{row.title}</span>
-								<span className="text-[13px] leading-[19px] text-ink-2">{row.short}</span>
-							</span>
-						</label>
+							<Checkbox.Content className="items-start gap-3">
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+								<span className="grid gap-0.5">
+									<span className={cn("text-[15px] font-semibold", on && "text-accent-text")}>{row.title}</span>
+									<span className="text-[13px] leading-[19px] text-ink-2">{row.short}</span>
+								</span>
+							</Checkbox.Content>
+						</Checkbox>
 					);
 				})}
 				{briefing?.data.opening && (
@@ -621,32 +625,32 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 					{rows.map((row, index) => {
 						const on = ticks.ticked.includes(String(index));
 						return (
-							<label
+							<Checkbox
 								key={row.title}
-								htmlFor={`${id}-${index}`}
+								isSelected={on}
+								onChange={(checked) => ticks.toggle(String(index), checked)}
 								className={cn(
 									"flex cursor-pointer items-start gap-3 rounded-lg px-3 py-2.5 transition-colors duration-quick",
 									on ? "bg-accent-soft" : "bg-bg",
 								)}
 							>
-								<Checkbox
-									id={`${id}-${index}`}
-									className="mt-px"
-									checked={on}
-									onCheckedChange={(checked) => ticks.toggle(String(index), checked)}
-								/>
-								<span className="grid min-w-0 flex-1 gap-0.5">
-									<span
-										className={cn("text-sm font-semibold transition-colors duration-quick", on && "text-accent-text")}
-									>
-										{row.title}
+								<Checkbox.Content className="w-full items-start gap-3">
+									<Checkbox.Control className="mt-px">
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span className="grid min-w-0 flex-1 gap-0.5">
+										<span
+											className={cn("text-sm font-semibold transition-colors duration-quick", on && "text-accent-text")}
+										>
+											{row.title}
+										</span>
+										<span className="text-[13px] leading-[19px] text-ink-2">{row.detail}</span>
 									</span>
-									<span className="text-[13px] leading-[19px] text-ink-2">{row.detail}</span>
-								</span>
-								<span className="ms-auto font-mono text-xs font-medium whitespace-nowrap text-ink-3">
-									<Trans>{row.minutes} min</Trans>
-								</span>
-							</label>
+									<span className="ms-auto font-mono text-xs font-medium whitespace-nowrap text-ink-3">
+										<Trans>{row.minutes} min</Trans>
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
 						);
 					})}
 				</div>

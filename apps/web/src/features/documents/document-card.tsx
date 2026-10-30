@@ -1,11 +1,10 @@
 import type { DocumentSummary } from "./filter";
-import { buttonVariants } from "@heroui/react";
+import { buttonVariants, Checkbox } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { ContextMenu, ContextMenuTrigger } from "@rezumi/ui/components/context-menu";
 import { DropdownMenu, DropdownMenuTrigger } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -199,14 +198,20 @@ export function DocumentCard({
 					</OpenLink>
 					{onSelectedChange && (
 						<Checkbox
-							checked={selected}
-							onCheckedChange={onSelectedChange}
+							isSelected={selected}
+							onChange={onSelectedChange}
 							aria-label={t`Select ${document.name}`}
 							className={cn(
-								"absolute end-2 top-2 shadow-e1 transition-[opacity,background-color,border-color] duration-quick",
-								!selecting && "opacity-0 group-hover/card:opacity-100 focus-visible:opacity-100",
+								"absolute end-2 top-2 transition-opacity duration-quick",
+								!selecting && "opacity-0 group-hover/card:opacity-100 focus-within:opacity-100",
 							)}
-						/>
+						>
+							<Checkbox.Content>
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+							</Checkbox.Content>
+						</Checkbox>
 					)}
 				</div>
 
@@ -284,7 +289,13 @@ export function DocumentRow({
 			>
 				{onSelectedChange && (
 					<td className="w-10 ps-3">
-						<Checkbox checked={selected} onCheckedChange={onSelectedChange} aria-label={t`Select ${document.name}`} />
+						<Checkbox isSelected={selected} onChange={onSelectedChange} aria-label={t`Select ${document.name}`}>
+							<Checkbox.Content>
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
+							</Checkbox.Content>
+						</Checkbox>
 					</td>
 				)}
 				<td className="py-3 ps-3 pe-2">

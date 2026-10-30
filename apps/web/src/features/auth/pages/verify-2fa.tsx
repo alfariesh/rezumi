@@ -1,11 +1,10 @@
-import { Button, buttonVariants, Input, InputOTP, REGEXP_ONLY_DIGITS, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Checkbox, Input, InputOTP, REGEXP_ONLY_DIGITS, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useRouter, useSearch } from "@tanstack/react-router";
 import z from "zod";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
@@ -156,14 +155,19 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 
 				<form.Field name="trustDevice">
 					{(field) => (
-						<FormItem className="flex items-center gap-2.5 justify-self-center">
-							<FormControl
-								render={<Checkbox name={field.name} checked={field.state.value} onCheckedChange={field.handleChange} />}
-							/>
-							<FormLabel>
+						<Checkbox
+							name={field.name}
+							isSelected={field.state.value}
+							onChange={field.handleChange}
+							className="justify-self-center"
+						>
+							<Checkbox.Content>
+								<Checkbox.Control>
+									<Checkbox.Indicator />
+								</Checkbox.Control>
 								<Trans>Trust this device for 30 days</Trans>
-							</FormLabel>
-						</FormItem>
+							</Checkbox.Content>
+						</Checkbox>
 					)}
 				</form.Field>
 

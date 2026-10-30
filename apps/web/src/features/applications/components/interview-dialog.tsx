@@ -1,16 +1,15 @@
 import type { ApplicationSummary } from "../types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Segment } from "@heroui-pro/react";
 import { Button, Input, Label, Spinner, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { m } from "motion/react";
 import { useId, useMemo, useState } from "react";
 import { interviewDetailsSchema } from "@rezumi/schema/applications/data";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateId } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
@@ -20,7 +19,6 @@ import { applicationsListQueryKey } from "../queries";
 import { Combobox } from "@/components/ui/combobox";
 import { useCareerTime, withUndo } from "@/features/career/shared";
 import { useClosingValue } from "@/hooks/use-closing-value";
-import { D2, EASE } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
 
 /** "Screening", "Behavioral": interview types in the interface language. */
@@ -534,33 +532,21 @@ type SegmentsProps<T extends string | number> = {
 	className?: string;
 };
 
-/** A segmented control whose raised thumb slides between choices. */
+/** A segmented control. */
 function Segments<T extends string | number>({ label, value, options, onChange, className }: SegmentsProps<T>) {
-	const id = useId();
 	return (
-		<SegmentedControl
+		<Segment
 			aria-label={label}
-			value={value}
-			onValueChange={(next) => onChange(next as T)}
+			selectedKey={value}
+			onSelectionChange={(next) => onChange(next as T)}
 			className={cn("flex w-full", className)}
 		>
 			{options.map((option) => (
-				<SegmentedControlItem
-					key={option.value}
-					value={option.value}
-					className="relative min-h-[30px] min-w-fit px-2 pointer-coarse:min-w-fit data-checked:bg-transparent data-checked:shadow-none"
-				>
-					{option.value === value && (
-						<m.span
-							layoutId={`${id}-thumb`}
-							transition={{ duration: D2, ease: EASE }}
-							className="absolute inset-0 rounded-sm bg-raised shadow-e1"
-						/>
-					)}
-					<span className="relative">{option.label}</span>
-				</SegmentedControlItem>
+				<Segment.Item key={option.value} id={option.value} className="flex-1 px-2">
+					{option.label}
+				</Segment.Item>
 			))}
-		</SegmentedControl>
+		</Segment>
 	);
 }
 

@@ -5,12 +5,12 @@ import { SwitchRow } from "./switch";
 
 describe("SwitchRow", () => {
 	it("makes the whole row the switch, named by its label and described by its description", async () => {
-		const onCheckedChange = vi.fn();
+		const onChange = vi.fn();
 		render(
 			<SwitchRow
 				label="Visitors can download the PDF"
 				description="Download is hidden when this is off."
-				onCheckedChange={onCheckedChange}
+				onChange={onChange}
 			/>,
 		);
 
@@ -18,6 +18,6 @@ describe("SwitchRow", () => {
 		expect(row).toHaveAccessibleDescription("Download is hidden when this is off.");
 
 		await userEvent.click(screen.getByText("Visitors can download the PDF"));
-		expect(onCheckedChange).toHaveBeenCalledWith(true, expect.anything());
+		expect(onChange).toHaveBeenCalledWith(true);
 	});
 });

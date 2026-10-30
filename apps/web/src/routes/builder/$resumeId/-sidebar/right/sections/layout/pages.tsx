@@ -12,11 +12,11 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button } from "@heroui/react";
+import { Button, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
-import { useCallback, useId, useState } from "react";
+import { useCallback, useState } from "react";
 import { match } from "ts-pattern";
 import { filterSections } from "@rezumi/pdf/filtering";
 import { templateLayouts } from "@rezumi/schema/templates";
@@ -32,7 +32,6 @@ import {
 	DropdownMenuTrigger,
 } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Switch } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 import { resolveLayoutSectionTitle } from "./title";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -291,7 +290,6 @@ function PageContainer({
 	onToggleFullWidth,
 }: PageContainerProps) {
 	const isFullWidth = page.fullWidth;
-	const fullWidthSwitchId = useId();
 
 	return (
 		<div className="space-y-3 rounded-md border border-dashed bg-bg/40">
@@ -302,17 +300,18 @@ function PageContainer({
 							<Trans comment="Layout editor page label with 1-based page number">Page {pageIndex + 1}</Trans>
 						</span>
 
-						<label htmlFor={fullWidthSwitchId} className="flex min-w-0 cursor-pointer items-center gap-2">
-							<Switch
-								id={fullWidthSwitchId}
-								checked={page.fullWidth}
-								onCheckedChange={(checked) => onToggleFullWidth(pageIndex, checked)}
-							/>
-
-							<span className="text-xs font-medium text-ink-3">
+						<Switch
+							className="min-w-0"
+							isSelected={page.fullWidth}
+							onChange={(checked) => onToggleFullWidth(pageIndex, checked)}
+						>
+							<Switch.Content className="gap-2 text-xs font-medium text-ink-3">
+								<Switch.Control>
+									<Switch.Thumb />
+								</Switch.Control>
 								<Trans comment="Layout editor toggle label that makes a page single-column">Full width</Trans>
-							</span>
-						</label>
+							</Switch.Content>
+						</Switch>
 					</div>
 
 					{canDelete && (

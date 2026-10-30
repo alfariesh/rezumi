@@ -1,6 +1,6 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { AIProvider } from "@rezumi/ai/types";
-import { Button, Input, Label, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -16,7 +16,6 @@ import {
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Switch } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 import {
 	describeTest,
@@ -664,10 +663,16 @@ function EditProviderForm({ provider, onClose }: EditProviderFormProps) {
 					<Switch
 						aria-labelledby={`${provider.id}-use`}
 						aria-describedby={`${provider.id}-use-hint`}
-						checked={provider.enabled}
-						disabled={provider.testStatus !== "success" || update.isPending}
-						onCheckedChange={setEnabled}
-					/>
+						isSelected={provider.enabled}
+						isDisabled={provider.testStatus !== "success" || update.isPending}
+						onChange={setEnabled}
+					>
+						<Switch.Content>
+							<Switch.Control>
+								<Switch.Thumb />
+							</Switch.Control>
+						</Switch.Content>
+					</Switch>
 				</div>
 				{failure && (
 					<p role="alert" className="text-sm text-danger-text">

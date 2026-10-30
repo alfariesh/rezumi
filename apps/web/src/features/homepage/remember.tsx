@@ -1,8 +1,8 @@
 import type { CSSProperties } from "react";
+import { Segment } from "@heroui-pro/react";
 import { t } from "@lingui/core/macro";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { cn } from "@rezumi/utils/style";
 import { SCENE } from "./scroll";
@@ -215,8 +215,8 @@ export function Remember() {
 								{t`Activation rose from 31% to 44% in one quarter, measured across new teams.`}
 							</p>
 							<SwitchRow
-								checked={withResult}
-								onCheckedChange={(checked) => {
+								isSelected={withResult}
+								onChange={(checked) => {
 									setWithResult(checked);
 									setChanged(true);
 									setSwitched(true);
@@ -255,26 +255,26 @@ export function Remember() {
 
 				{/* The draft, on its own sheet, for the place you choose. */}
 				<div className="flex [transform:translateY(calc((1-var(--rin))*12vh))] flex-col gap-4 opacity-[clamp(0,var(--rin)*2.5-.3,1)] [transition:transform_.6s_var(--ease)]">
-					<SegmentedControl
+					<Segment
 						aria-label={t`Draft it as`}
-						value={destination}
-						onValueChange={(value) => {
-							setDestination(value as Destination);
+						selectedKey={destination}
+						onSelectionChange={(key) => {
+							setDestination(key as Destination);
 							setChanged(true);
 						}}
-						className="h-auto max-w-full [scrollbar-width:none] self-start overflow-x-auto rounded-sm border border-line bg-[color-mix(in_oklch,var(--surface)_85%,transparent)] p-1"
+						className="h-auto max-w-full [scrollbar-width:none] self-start overflow-x-auto rounded-sm border border-line bg-[color-mix(in_oklch,var(--surface)_85%,transparent)] p-1 [--segment:var(--ink)]"
 					>
 						{destinations.map((item) => (
-							<SegmentedControlItem
+							<Segment.Item
 								key={item.value}
-								value={item.value}
-								className="h-9 flex-none rounded-sm px-3.5 font-ui text-[13.5px] duration-300 data-checked:bg-ink data-checked:text-bg data-checked:shadow-none"
+								id={item.value}
+								className="h-9 w-auto flex-none rounded-sm px-3.5 font-ui text-[13.5px] duration-300 data-selected:text-bg"
 							>
 								<span className="max-[520px]:hidden">{item.label}</span>
 								<span className="min-[521px]:hidden">{item.short}</span>
-							</SegmentedControlItem>
+							</Segment.Item>
 						))}
-					</SegmentedControl>
+					</Segment>
 
 					<div className="on-paper relative rotate-[.5deg] rounded-md bg-paper px-[clamp(20px,3.4vw,52px)] py-[clamp(22px,3vw,44px)] shadow-paper">
 						<span className="font-martian text-xs font-medium text-accent-text">{draft.context}</span>

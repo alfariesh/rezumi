@@ -1,9 +1,8 @@
 import type z from "zod";
-import { InputGroup } from "@heroui/react";
+import { InputGroup, Switch } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { pageSchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { Switch } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -102,12 +101,18 @@ function PageSectionForm() {
 								render={
 									<Switch
 										// Labels describe the ON state; the stored flags are hide*, so the switch is inverted.
-										checked={!field.state.value}
-										onCheckedChange={(checked) => {
+										isSelected={!field.state.value}
+										onChange={(checked) => {
 											field.handleChange(!checked);
 											handleAutoSave();
 										}}
-									/>
+									>
+										<Switch.Content>
+											<Switch.Control>
+												<Switch.Thumb />
+											</Switch.Control>
+										</Switch.Content>
+									</Switch>
 								}
 							/>
 							<FormLabel>{label}</FormLabel>

@@ -1,4 +1,5 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Segment } from "@heroui-pro/react";
 import { Button, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -13,7 +14,6 @@ import {
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useInvalidateApplications } from "../use-application-actions";
@@ -412,16 +412,16 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 				<span id={`${id}-stage`} className="text-sm font-medium">
 					<Trans>Stage</Trans>
 				</span>
-				<SegmentedControl
+				<Segment
 					aria-labelledby={`${id}-stage`}
-					value={stage}
-					onValueChange={(value) => setStage(value as Stage)}
+					selectedKey={stage}
+					onSelectionChange={(key) => setStage(String(key) as Stage)}
 					className="h-auto w-fit max-w-full flex-wrap"
 				>
 					{STAGES.map((value) => (
-						<SegmentedControlItem
+						<Segment.Item
 							key={value}
-							value={value}
+							id={value}
 							className="min-h-7 max-w-full flex-auto [overflow-wrap:anywhere] whitespace-normal"
 						>
 							{value === "saved" ? (
@@ -431,9 +431,9 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 							) : (
 								<Trans>Already interviewing</Trans>
 							)}
-						</SegmentedControlItem>
+						</Segment.Item>
 					))}
-				</SegmentedControl>
+				</Segment>
 			</div>
 
 			<div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">

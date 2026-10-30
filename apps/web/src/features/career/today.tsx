@@ -2,7 +2,7 @@ import type { Kind, Lead, Schedule } from "./schedule-sheet";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Ref } from "react";
-import { Button, buttonVariants, Spinner } from "@heroui/react";
+import { Button, buttonVariants, Spinner, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,7 +12,6 @@ import { useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
-import { Switch } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
@@ -798,10 +797,16 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 									</button>
 									<Switch
 										aria-label={[title, describe(row)].filter(Boolean).join(" · ")}
-										checked={row.enabled}
-										onCheckedChange={(enabled) => toggle(row, enabled)}
+										isSelected={row.enabled}
+										onChange={(enabled) => toggle(row, enabled)}
 										className="mt-0.5"
-									/>
+									>
+										<Switch.Content>
+											<Switch.Control>
+												<Switch.Thumb />
+											</Switch.Control>
+										</Switch.Content>
+									</Switch>
 								</div>
 							</CollapseRow>
 						);

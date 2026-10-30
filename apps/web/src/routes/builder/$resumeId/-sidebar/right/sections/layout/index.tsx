@@ -1,10 +1,9 @@
 import type z from "zod";
-import { InputGroup } from "@heroui/react";
+import { InputGroup, Slider } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import * as React from "react";
 import { metadataSchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
-import { Slider } from "@rezumi/ui/components/slider";
 import { SectionBase } from "../../shared/section-base";
 import { LayoutPages } from "./pages";
 import { NumberInput } from "@/components/input/number-input";
@@ -59,15 +58,22 @@ function LayoutSectionForm() {
 						<div className="flex items-center gap-4">
 							<Slider
 								aria-labelledby={labelId}
-								min={10}
-								max={50}
+								className="min-w-0 flex-1"
+								minValue={10}
+								maxValue={50}
 								step={0.01}
-								value={[field.state.value]}
-								onValueChange={(value) => {
-									field.handleChange(Array.isArray(value) ? value[0] : value);
+								value={field.state.value}
+								onChange={(value) => {
+									if (typeof value !== "number") return;
+									field.handleChange(value);
 									handleAutoSave();
 								}}
-							/>
+							>
+								<Slider.Track>
+									<Slider.Fill />
+									<Slider.Thumb />
+								</Slider.Track>
+							</Slider>
 
 							<InputGroup className="w-auto shrink-0">
 								<FormControl

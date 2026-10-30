@@ -3,16 +3,15 @@ import type { careerScheduleInputSchema } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import type z from "zod";
+import { Segment } from "@heroui-pro/react";
 import { Button, buttonVariants, Input, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { m } from "motion/react";
 import { useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { Sheet, SheetClose, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
@@ -25,7 +24,6 @@ import { AiProviderLoadState } from "@/features/settings/integrations/ai-provide
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { toastError } from "@/libs/error-message";
-import { D2, EASE } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
 
 type ScheduleInput = z.input<typeof careerScheduleInputSchema>;
@@ -470,17 +468,17 @@ export function ScheduleSheet({ schedule, onScheduleChange, onDelete }: Schedule
 
 						<div className="flex flex-col border-t border-line">
 							<SwitchRow
-								checked={draft.enabled}
-								onCheckedChange={(enabled) => set({ enabled })}
+								isSelected={draft.enabled}
+								onChange={(enabled) => set({ enabled })}
 								label={<span className="font-semibold">{t`Turn this schedule on`}</span>}
 								description={t`Paused schedules keep their settings.`}
 								className="rounded-none border-b border-line py-3.5"
 							/>
 							{smtp && (
 								<SwitchRow
-									checked={verified && draft.email}
-									disabled={!verified}
-									onCheckedChange={(email) => set({ email })}
+									isSelected={verified && draft.email}
+									isDisabled={!verified}
+									onChange={(email) => set({ email })}
 									label={<span className="font-semibold">{t`Also email ${user?.email ?? ""}`}</span>}
 									description={
 										verified
@@ -603,7 +601,7 @@ type SegmentsProps = {
 	onChange: (value: string) => void;
 };
 
-/** A labelled segmented choice whose raised thumb slides to the chosen option. */
+/** A labelled segmented choice whose chosen option is highlighted. */
 function Segments({ label, value, options, onChange }: SegmentsProps) {
 	const id = useId();
 	return (
@@ -611,29 +609,18 @@ function Segments({ label, value, options, onChange }: SegmentsProps) {
 			<span id={id} className="text-xs font-medium text-ink-2">
 				{label}
 			</span>
-			<SegmentedControl
+			<Segment
 				aria-labelledby={id}
-				value={value}
-				onValueChange={(next) => onChange(String(next))}
-				className="flex w-full"
+				selectedKey={value}
+				onSelectionChange={(next) => onChange(String(next))}
+				className="w-full"
 			>
 				{options.map((option) => (
-					<SegmentedControlItem
-						key={option.value}
-						value={option.value}
-						className="relative data-checked:bg-transparent data-checked:shadow-none"
-					>
-						{option.value === value && (
-							<m.span
-								layoutId={`${id}-thumb`}
-								transition={{ duration: D2, ease: EASE }}
-								className="absolute inset-0 rounded-sm bg-raised shadow-e1"
-							/>
-						)}
-						<span className="relative">{option.label}</span>
-					</SegmentedControlItem>
+					<Segment.Item key={option.value} id={option.value} className="flex-1">
+						{option.label}
+					</Segment.Item>
 				))}
-			</SegmentedControl>
+			</Segment>
 		</div>
 	);
 }

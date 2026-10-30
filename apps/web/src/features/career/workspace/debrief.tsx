@@ -2,13 +2,12 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Input, Label, Spinner, TextArea } from "@heroui/react";
+import { Button, Checkbox, Input, Label, Spinner, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { Skeleton } from "@rezumi/ui/components/skeleton";
 import { toast } from "@rezumi/ui/components/toast";
@@ -432,27 +431,26 @@ function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 					const length = row.minutes;
 					return (
 						<li key={row.key} className="border-t border-line py-3 first:border-t-0 first:pt-1">
-							<label className="grid cursor-pointer grid-cols-[18px_40px_minmax(0,1fr)] items-start gap-3">
-								<Checkbox
-									disabled={readOnly}
-									checked={checked}
-									onCheckedChange={(on) => ticks.toggle(row.key, on)}
-									className="mt-px"
-								/>
-								<span className="font-mono text-xs leading-4 font-medium text-ink-3">
-									{weekday}
-									<br />
-									{t`${length}m`}
-								</span>
-								<span
-									className={cn(
-										"text-[13px] leading-[19px] transition-colors duration-quick",
-										checked ? "text-ink-2" : "text-ink",
-									)}
-								>
-									{row.task}
-								</span>
-							</label>
+							<Checkbox isDisabled={readOnly} isSelected={checked} onChange={(on) => ticks.toggle(row.key, on)}>
+								<Checkbox.Content className="grid grid-cols-[18px_40px_minmax(0,1fr)] items-start gap-3">
+									<Checkbox.Control className="mt-px">
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span className="font-mono text-xs leading-4 font-medium text-ink-3">
+										{weekday}
+										<br />
+										{t`${length}m`}
+									</span>
+									<span
+										className={cn(
+											"text-[13px] leading-[19px] transition-colors duration-quick",
+											checked ? "text-ink-2" : "text-ink",
+										)}
+									>
+										{row.task}
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
 						</li>
 					);
 				})}

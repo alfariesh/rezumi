@@ -1,15 +1,14 @@
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { KeyboardEvent } from "react";
+import { Segment } from "@heroui-pro/react";
 import { TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { m } from "motion/react";
 import { useId, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
-import { SegmentedControl, SegmentedControlItem } from "@rezumi/ui/components/segmented-control";
 import { cn } from "@rezumi/utils/style";
 import { useDebouncedSave } from "../hooks";
 import { CareerLoadError, CareerLoading } from "../load-state";
@@ -17,7 +16,6 @@ import { useCareerTime, useNow } from "../shared";
 import { parseAmount } from "./amount";
 import { SearchRegionsField } from "./search-regions-field";
 import { toastError } from "@/libs/error-message";
-import { D2, EASE } from "@/libs/motion";
 import { client, orpc } from "@/libs/orpc/client";
 
 const saveFailed = (error: unknown) => toastError(error, t`Couldn't save your preferences. Try again.`);
@@ -184,32 +182,21 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 						<span id={`${id}-office`} className="text-xs font-medium text-ink-2">
 							<Trans>Office days a week, at most</Trans>
 						</span>
-						<SegmentedControl
+						<Segment
 							aria-labelledby={`${id}-office`}
-							value={draft.maxOfficeDays === null ? "any" : String(draft.maxOfficeDays)}
-							onValueChange={(value) => change({ maxOfficeDays: value === "any" ? null : Number(value) })}
-							className="flex w-full"
+							selectedKey={draft.maxOfficeDays === null ? "any" : String(draft.maxOfficeDays)}
+							onSelectionChange={(key) => change({ maxOfficeDays: String(key) === "any" ? null : Number(key) })}
+							className="w-full"
 						>
-							<SegmentedControlItem value="any" className="touch-target relative px-2">
+							<Segment.Item id="any" className="touch-target flex-1 px-2">
 								<Trans>Any</Trans>
-							</SegmentedControlItem>
+							</Segment.Item>
 							{[0, 1, 2, 3, 4, 5].map((days) => (
-								<SegmentedControlItem
-									key={days}
-									value={String(days)}
-									className="touch-target relative px-1 data-checked:bg-transparent data-checked:shadow-none"
-								>
-									{draft.maxOfficeDays === days && (
-										<m.span
-											layoutId="office-days"
-											transition={{ duration: D2, ease: EASE }}
-											className="absolute inset-0 rounded-sm bg-raised shadow-e1"
-										/>
-									)}
-									<span className="relative">{days === 0 ? t`Remote` : days}</span>
-								</SegmentedControlItem>
+								<Segment.Item key={days} id={String(days)} className="touch-target flex-1 px-1">
+									{days === 0 ? t`Remote` : days}
+								</Segment.Item>
 							))}
-						</SegmentedControl>
+						</Segment>
 					</div>
 
 					<div className="grid gap-1.5">

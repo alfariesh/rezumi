@@ -1,14 +1,13 @@
 import type { GenerateTask, WorkspaceTab } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
-import { Button, Spinner, Tooltip } from "@heroui/react";
+import { Button, Checkbox, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useRouteContext } from "@tanstack/react-router";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -420,17 +419,21 @@ export function MemoryProposal(props: MemoryProposalProps) {
 							<q className="text-ink-2">{props.facts[0]}</q>
 						) : (
 							props.facts.map((fact, index) => (
-								<label key={fact} className="flex items-start gap-2 text-ink-2">
-									<Checkbox
-										checked={selected.includes(index)}
-										onCheckedChange={(checked) =>
-											setSelected((current) =>
-												checked ? [...current, index] : current.filter((item) => item !== index),
-											)
-										}
-									/>
-									<q>{fact}</q>
-								</label>
+								<Checkbox
+									key={fact}
+									isSelected={selected.includes(index)}
+									onChange={(checked) =>
+										setSelected((current) => (checked ? [...current, index] : current.filter((item) => item !== index)))
+									}
+									className="text-ink-2"
+								>
+									<Checkbox.Content className="items-start">
+										<Checkbox.Control>
+											<Checkbox.Indicator />
+										</Checkbox.Control>
+										<q>{fact}</q>
+									</Checkbox.Content>
+								</Checkbox>
 							))
 						)}
 					</div>

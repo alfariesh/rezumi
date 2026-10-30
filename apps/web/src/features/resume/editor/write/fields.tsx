@@ -1,11 +1,10 @@
 import type { Entry } from "./model";
 import type { Website } from "@rezumi/schema/resume/data";
 import type { ComponentProps, ReactNode } from "react";
-import { Input } from "@heroui/react";
+import { Checkbox, Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useCallback, useState } from "react";
-import { Checkbox } from "@rezumi/ui/components/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@rezumi/ui/components/collapsible";
 import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
@@ -142,11 +141,18 @@ export function WebsiteField({ label, value, onChange, allowInlineLink = true }:
 			</FormItem>
 
 			{allowInlineLink && (
-				// oxlint-disable-next-line jsx-a11y/label-has-associated-control -- Base UI's Checkbox is the control; wrapping it in a label is its documented pattern.
-				<label className="flex w-fit cursor-pointer items-center gap-2 text-sm">
-					<Checkbox checked={inline} onCheckedChange={(checked) => onChange({ ...value, inlineLink: checked })} />
-					<Trans>Show link in title</Trans>
-				</label>
+				<Checkbox
+					isSelected={inline}
+					onChange={(selected) => onChange({ ...value, inlineLink: selected })}
+					className="w-fit text-sm"
+				>
+					<Checkbox.Content>
+						<Checkbox.Control>
+							<Checkbox.Indicator />
+						</Checkbox.Control>
+						<Trans>Show link in title</Trans>
+					</Checkbox.Content>
+				</Checkbox>
 			)}
 		</div>
 	);
