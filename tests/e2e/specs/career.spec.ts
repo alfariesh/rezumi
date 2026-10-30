@@ -56,7 +56,7 @@ test("coach stories wait for exact-content approval and respect Skip", async ({ 
 		await expect(response).toBeOK();
 		return response.json();
 	};
-	await page.goto("/dashboard/career/coach");
+	await page.goto("/dashboard/coach");
 	for (const approve of [false, true]) {
 		const composer = page.getByPlaceholder("Ask about your next career step…");
 		await composer.fill("Review a story about my onboarding work.");
@@ -107,11 +107,11 @@ test("knowledge corrections persist and the workspace opens without an AI provid
 
 	// Stage Interview opens on Prepare; with no connection it says where to add one instead of failing.
 	await page.goto(`/dashboard/applications/${applicationId}`);
-	await expect(page.getByRole("tab", { name: /Prepare/, selected: true })).toBeVisible();
+	await expect(page.getByRole("radio", { name: /Prepare/, checked: true })).toBeVisible();
 	await expect(page.getByRole("link", { name: "Connect an AI provider in Settings" })).toBeVisible();
 });
 
-test("a fit check's missing evidence is saved to Knowledge from the table", async ({ authPage: page }) => {
+test("a fit check's missing evidence is saved to Knowledge from the requirements list", async ({ authPage: page }) => {
 	test.skip(process.env.FLAG_ALLOW_UNSAFE_AI_BASE_URL !== "true", "Needs FLAG_ALLOW_UNSAFE_AI_BASE_URL=true");
 	const applicationId = await createApplication(page);
 	const provider = await page.request.post("/api/openapi/ai-providers", {

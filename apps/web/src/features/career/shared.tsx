@@ -1,13 +1,14 @@
 import type { GenerateTask, WorkspaceTab } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ComponentProps, ReactNode } from "react";
-import { Button, Checkbox, Spinner, Tooltip } from "@heroui/react";
+import { Widget } from "@heroui-pro/react";
+import { Alert, Button, Checkbox, Chip, Spinner, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useRouteContext } from "@tanstack/react-router";
 import { AnimatePresence, m } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -235,18 +236,69 @@ export function Working({ steps }: WorkingProps) {
 
 // ---- Small parts ----
 
-/** "NEXT STEP", "SCHEDULES": 12px semibold ink-3. */
+/** A section title inside a card or panel: 12px semibold muted, Title Case. */
 type EyebrowProps = { children: ReactNode; className?: string };
 export function Eyebrow({ children, className }: EyebrowProps) {
-	return <h2 className={cn("text-xs font-semibold text-ink-3", className)}>{children}</h2>;
+	return <h2 className={cn("text-xs font-semibold text-muted", className)}>{children}</h2>;
+}
+
+type CareerWidgetProps = {
+	title: ReactNode;
+	/** A leading icon for the title; keep it muted, the title carries the meaning. */
+	icon?: IconName | undefined;
+	/** A count shown as a quiet chip after the title. */
+	count?: number | undefined;
+	/** The header's trailing slot: one short note or one small action. */
+	trailing?: ReactNode;
+	className?: string | undefined;
+	contentClassName?: string | undefined;
+	children: ReactNode;
+	id?: string | undefined;
+};
+
+/**
+ * One titled group on a Career page: the Pro `Widget` shell (a quiet outer frame around a white content area), the
+ * same one the builder panels use. The title labels the region. Nested blocks inside the content use
+ * `rounded-xl bg-surface-secondary`; never another bordered card.
+ */
+export function CareerWidget({
+	title,
+	icon,
+	count,
+	trailing,
+	className,
+	contentClassName,
+	children,
+	id,
+}: CareerWidgetProps) {
+	const titleId = useId();
+	return (
+		<Widget id={id} role="region" aria-labelledby={titleId} className={cn(className)}>
+			<Widget.Header>
+				<span className="flex min-w-0 items-center gap-2">
+					{icon && <Icon name={icon} size={16} className="shrink-0 text-muted" />}
+					<Widget.Title id={titleId} role="heading" aria-level={2} className="truncate">
+						{title}
+					</Widget.Title>
+					{count !== undefined && (
+						<Chip size="sm" variant="soft" className="tabular-nums">
+							{count}
+						</Chip>
+					)}
+				</span>
+				{trailing}
+			</Widget.Header>
+			<Widget.Content className={cn("grid gap-3", contentClassName)}>{children}</Widget.Content>
+		</Widget>
+	);
 }
 
 const statusPill = {
-	supported: { icon: "check-circle", tone: "bg-accent-soft text-accent-text" },
-	added: { icon: "check-circle", tone: "bg-accent-soft text-accent-text" },
-	partial: { icon: "circle-half", tone: "bg-warn-soft text-warn-text" },
-	missing: { icon: "question", tone: "bg-sunken text-ink-2" },
-} satisfies Record<string, { icon: IconName; tone: string }>;
+	supported: { icon: "check-circle", color: "success" },
+	added: { icon: "check-circle", color: "success" },
+	partial: { icon: "circle-half", color: "warning" },
+	missing: { icon: "question", color: "default" },
+} satisfies Record<string, { icon: IconName; color: "success" | "warning" | "default" }>;
 
 /** Evidence status: colour, icon and words together. */
 export function StatusPill({ status }: { status: keyof typeof statusPill }) {
@@ -256,47 +308,39 @@ export function StatusPill({ status }: { status: keyof typeof statusPill }) {
 		partial: t`Partly supported`,
 		missing: t`No evidence yet`,
 	};
-	const { icon, tone } = statusPill[status];
+	const { icon, color } = statusPill[status];
 	return (
-		<span className={cn("inline-flex h-6 w-fit items-center gap-1 rounded-sm px-2 text-xs font-semibold", tone)}>
-			<Icon name={icon} size={15} />
-			{labels[status]}
-		</span>
+		<Chip size="sm" variant="soft" color={color} className="w-fit gap-1">
+			<Icon name={icon} size={14} />
+			<Chip.Label>{labels[status]}</Chip.Label>
+		</Chip>
 	);
 }
 
 /** A match in the user's own words, or a fact that's unknown. */
 export function InfoChip({ tone, children }: { tone: "match" | "unknown"; children: ReactNode }) {
 	return (
-		<span
-			className={cn(
-				"inline-flex h-6 items-center gap-1 rounded-sm px-2 text-xs font-medium",
-				tone === "match" ? "bg-accent-soft text-accent-text" : "bg-warn-soft text-warn-text",
-			)}
-		>
-			<Icon name={tone === "match" ? "check" : "question"} size={15} />
-			{children}
-		</span>
+		<Chip size="sm" variant="soft" color={tone === "match" ? "success" : "warning"} className="gap-1">
+			<Icon name={tone === "match" ? "check" : "question"} size={14} />
+			<Chip.Label>{children}</Chip.Label>
+		</Chip>
 	);
 }
 
 type FilterChipProps = { pressed: boolean; onClick: () => void; children: ReactNode; className?: string };
 
-/** A 30px pill toggle for filters and single choices; selected is ink-filled. */
+/** A pill toggle for filters and single choices; selected sits on the surface tone, the rest stay quiet. */
 export function FilterChip({ pressed, onClick, children, className }: FilterChipProps) {
 	return (
-		<button
-			type="button"
+		<Button
+			size="sm"
+			variant={pressed ? "secondary" : "ghost"}
 			aria-pressed={pressed}
-			onClick={onClick}
-			className={cn(
-				"touch-target inline-flex h-[30px] items-center rounded-sm border px-2.5 text-xs font-medium transition-[background-color,border-color,color,scale] duration-quick ease-enter active:scale-[0.97]",
-				pressed ? "border-ink bg-ink text-bg" : "border-line-2 text-ink hover:bg-hover",
-				className,
-			)}
+			onPress={onClick}
+			className={cn("touch-target rounded-full", pressed ? "font-semibold" : "text-muted", className)}
 		>
 			{children}
-		</button>
+		</Button>
 	);
 }
 
@@ -318,9 +362,9 @@ export function ContextChip({ pressed, onPressedChange, label, tooltip, offIcon 
 				variant={pressed ? "secondary" : "outline"}
 				aria-pressed={pressed}
 				onPress={() => onPressedChange(!pressed)}
-				className="touch-target gap-1"
+				className="touch-target h-7 min-h-0 gap-1 px-2 text-xs"
 			>
-				<Icon name={pressed ? "check" : offIcon} size={16} />
+				<Icon name={pressed ? "check" : offIcon} size={14} />
 				{label}
 			</Button>
 			<Tooltip.Content>{tooltip}</Tooltip.Content>
@@ -340,18 +384,17 @@ export function PrivacyLine({
 }) {
 	if (cost)
 		return (
-			<p
-				className={cn(
-					"flex gap-2 rounded-lg bg-warn-soft px-3 py-2.5 text-[13px] leading-[19px] text-warn-text",
-					className,
-				)}
-			>
-				<Icon name="key" size={16} className="mt-px shrink-0" />
-				<span>{children}</span>
-			</p>
+			<Alert status="warning" className={cn(className)}>
+				<Alert.Indicator>
+					<Icon name="key" size={16} />
+				</Alert.Indicator>
+				<Alert.Content>
+					<Alert.Description>{children}</Alert.Description>
+				</Alert.Content>
+			</Alert>
 		);
 	return (
-		<p className={cn("flex gap-1.5 text-xs leading-[17px] text-ink-3", className)}>
+		<p className={cn("flex gap-1.5 text-xs leading-[17px] text-muted", className)}>
 			<Icon name="lock" size={15} className="shrink-0" />
 			<span>{children}</span>
 		</p>
@@ -363,27 +406,21 @@ export const minutesUntil = (at: Date, now: Date) => Math.round((at.getTime() - 
 
 type CountdownChipProps = { at: Date; now: Date; className?: string };
 
-/** "In 23 hours" on sunken; within the hour it turns warn and reads "Starts in 10 minutes". */
+/** "In 23 hours" on the neutral tone; within the hour it turns warning and reads "Starts in 10 minutes". */
 export function CountdownChip({ at, now, className }: CountdownChipProps) {
 	const { relative } = useCareerTime();
 	const minutes = minutesUntil(at, now);
 	const soon = minutes <= 60;
 	const label = minutes <= 0 ? t`Started` : soon ? t`Starts in ${minutes} minutes` : relative(at, now);
 	return (
-		<span
-			className={cn(
-				"inline-flex h-6 w-fit items-center gap-1 rounded-sm px-2 text-xs font-semibold",
-				soon ? "bg-warn-soft text-warn-text" : "bg-sunken text-ink-2",
-				className,
-			)}
-		>
-			<Icon name="clock" size={15} />
-			{label}
+		<Chip size="sm" variant="soft" color={soon ? "warning" : "default"} className={cn("w-fit gap-1", className)}>
+			<Icon name="clock" size={14} />
+			<Chip.Label>{label}</Chip.Label>
 			{/* Announced only when it crosses the hour and ten minutes, not every minute. */}
 			<span className="sr-only" aria-live="polite">
 				{minutes === 60 || minutes === 10 ? label : ""}
 			</span>
-		</span>
+		</Chip>
 	);
 }
 
@@ -406,17 +443,17 @@ export function MemoryProposal(props: MemoryProposalProps) {
 	return (
 		<Swap id={props.state}>
 			{props.state === "remembered" ? (
-				<p className="flex items-center gap-1.5 text-sm text-accent-text">
+				<p className="flex items-center gap-1.5 text-sm text-success">
 					<Icon name="check-circle" size={18} />
 					{props.remembered}
 				</p>
 			) : (
-				<div className="flex flex-wrap items-center gap-3 rounded-lg bg-info-soft px-3.5 py-3">
-					<Icon name="bookmark-simple" className="shrink-0 text-info-text" />
+				<div className="flex flex-wrap items-center gap-3 rounded-2xl bg-surface-secondary px-3.5 py-3">
+					<Icon name="bookmark-simple" className="shrink-0 text-accent" />
 					<div className="grid min-w-0 flex-1 basis-60 gap-1 text-[13px] leading-[19px]">
-						<p className="font-semibold text-ink">{props.question}</p>
+						<p className="font-semibold">{props.question}</p>
 						{props.facts.length === 1 ? (
-							<q className="text-ink-2">{props.facts[0]}</q>
+							<q className="text-muted">{props.facts[0]}</q>
 						) : (
 							props.facts.map((fact, index) => (
 								<Checkbox
@@ -425,7 +462,7 @@ export function MemoryProposal(props: MemoryProposalProps) {
 									onChange={(checked) =>
 										setSelected((current) => (checked ? [...current, index] : current.filter((item) => item !== index)))
 									}
-									className="text-ink-2"
+									className="text-muted"
 								>
 									<Checkbox.Content className="items-start">
 										<Checkbox.Control>

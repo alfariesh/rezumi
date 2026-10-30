@@ -2,7 +2,8 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, Checkbox, Input, Label, Spinner, TextArea, Skeleton } from "@heroui/react";
+import { EmptyState, Segment, Widget } from "@heroui-pro/react";
+import { Button, Checkbox, Chip, Input, Label, Separator, Skeleton, Spinner, TextArea, TextField } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +14,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useTicks } from "../hooks";
-import { FilterChip, MemoryProposal, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
+import { CareerWidget, MemoryProposal, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
 import { buildIcs } from "@/features/applications/ics";
 import { isInterview } from "@/features/applications/interviews";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -55,10 +56,10 @@ export function DebriefTab({ application, version, now }: WorkspaceTabProps) {
 	const plan = viewing ?? fresh ?? latest(saved.data, "debrief");
 
 	return (
-		<div className="grid items-start gap-5 @3xl:grid-cols-[minmax(0,1fr)_320px]">
-			<div className="grid min-w-0 gap-4">
+		<div className="grid items-start gap-6 @3xl:grid-cols-[minmax(0,1fr)_320px]">
+			<div className="grid min-w-0 gap-6">
 				{saved.isPending ? (
-					<Skeleton className="h-80 rounded-xl" />
+					<Skeleton className="h-80 rounded-2xl" />
 				) : (
 					<DebriefForm
 						key={`form:${viewing?.id ?? round?.id ?? "none"}`}
@@ -76,9 +77,16 @@ export function DebriefTab({ application, version, now }: WorkspaceTabProps) {
 			{plan ? (
 				<WeekPlan key={plan.id} application={application} review={plan} now={now} readOnly={!!viewing} />
 			) : (
-				<aside className="rounded-xl border border-dashed border-line-2 p-4 text-[13px] leading-[19px] text-ink-3">
-					<Trans>After your first review, a light plan for this week appears here.</Trans>
-				</aside>
+				<EmptyState size="sm" className="rounded-2xl bg-surface-secondary">
+					<EmptyState.Header>
+						<EmptyState.Media variant="icon">
+							<Icon name="calendar-dot" size={20} />
+						</EmptyState.Media>
+						<EmptyState.Description>
+							<Trans>After your first review, a light plan for this week appears here.</Trans>
+						</EmptyState.Description>
+					</EmptyState.Header>
+				</EmptyState>
 			)}
 		</div>
 	);
@@ -155,87 +163,89 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 	] as const;
 
 	return (
-		<section aria-labelledby={`${id}-title`} className="grid gap-4 rounded-xl border border-line bg-surface p-4 md:p-5">
-			<div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-				<h2 id={`${id}-title`} className="text-[15px] font-semibold">
+		<Widget role="region" aria-labelledby={`${id}-title`}>
+			<Widget.Header>
+				<Widget.Title id={`${id}-title`} role="heading" aria-level={2} className="truncate">
 					{readOnly && !round ? from?.data.round || t`Interview debrief` : afterRound(round?.kind)}
 					{round && ` · ${day(round.at)}`}
-				</h2>
-				<p className="text-xs text-ink-3">
+				</Widget.Title>
+				<span className="shrink-0 text-xs text-muted">
 					<Trans>Write it down while it's fresh</Trans>
-				</p>
-			</div>
-			<div className="grid gap-1.5">
-				<Label htmlFor={`${id}-question`}>
-					<Trans>What did they ask?</Trans>
-				</Label>
-				<Input
+				</span>
+			</Widget.Header>
+			<Widget.Content className="grid gap-4">
+				<TextField
 					fullWidth
-					id={`${id}-question`}
 					value={draft.question}
-					readOnly={readOnly}
+					isReadOnly={readOnly}
 					maxLength={500}
-					onChange={(event) => change({ question: event.target.value })}
-				/>
-			</div>
-			<div className="grid gap-1.5">
-				<Label htmlFor={`${id}-answer`}>
-					<Trans>What did you say, as close as you remember?</Trans>
-				</Label>
-				<TextArea
+					onChange={(value) => change({ question: value })}
+				>
+					<Label>
+						<Trans>What did they ask?</Trans>
+					</Label>
+					<Input variant="secondary" />
+				</TextField>
+				<TextField
 					fullWidth
-					id={`${id}-answer`}
 					value={draft.answer}
-					readOnly={readOnly}
+					isReadOnly={readOnly}
 					maxLength={6000}
-					onChange={(event) => change({ answer: event.target.value })}
-					className="min-h-21"
-				/>
-			</div>
-			<div className="grid gap-1.5">
-				<p id={`${id}-landed`} className="text-xs leading-4 font-medium text-ink-2">
-					<Trans>How did it land?</Trans>
-				</p>
-				<fieldset disabled={readOnly} aria-labelledby={`${id}-landed`} className="flex flex-wrap gap-1.5">
-					{landed.map((option) => (
-						<FilterChip
-							key={option.value}
-							pressed={draft.landed === option.value}
-							onClick={() => change({ landed: draft.landed === option.value ? null : option.value })}
-						>
-							{option.label}
-						</FilterChip>
-					))}
-				</fieldset>
-			</div>
-			{!readOnly && (
-				<div className="grid justify-items-start gap-2.5">
-					<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={submit}>
-						{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
-						{generate.isPending ? <Working steps={workingSteps("debrief")} /> : <Trans>Review my answer</Trans>}
-					</Button>
-					{connection.isUnavailable ? (
-						<AiProviderLoadState state={connection} />
-					) : provider ? (
-						<PrivacyLine>
-							<Trans>
-								Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}.
-							</Trans>
-						</PrivacyLine>
-					) : (
-						<PrivacyLine>
-							<Trans>
-								Reviewing needs an AI connection.{" "}
-								<Link to="/dashboard/settings/ai" className="text-accent-text underline underline-offset-3">
-									Add one in Settings
-								</Link>
-								. What you write here stays in this browser until then.
-							</Trans>
-						</PrivacyLine>
-					)}
+					onChange={(value) => change({ answer: value })}
+				>
+					<Label>
+						<Trans>What did you say, as close as you remember?</Trans>
+					</Label>
+					<TextArea variant="secondary" className="min-h-24" />
+				</TextField>
+				<div className="grid gap-1.5">
+					<p id={`${id}-landed`} className="text-sm font-medium">
+						<Trans>How did it land?</Trans>
+					</p>
+					<Segment
+						aria-labelledby={`${id}-landed`}
+						size="sm"
+						className="w-fit"
+						isDisabled={readOnly}
+						selectedKey={draft.landed}
+						onSelectionChange={(key) => change({ landed: String(key) as Debrief["landed"] })}
+					>
+						{landed.map((option) => (
+							<Segment.Item key={option.value} id={option.value} className="w-auto flex-none">
+								{option.label}
+							</Segment.Item>
+						))}
+					</Segment>
 				</div>
-			)}
-		</section>
+				{!readOnly && (
+					<div className="grid justify-items-start gap-3">
+						<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={submit}>
+							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
+							{generate.isPending ? <Working steps={workingSteps("debrief")} /> : <Trans>Review my answer</Trans>}
+						</Button>
+						{connection.isUnavailable ? (
+							<AiProviderLoadState state={connection} />
+						) : provider ? (
+							<PrivacyLine>
+								<Trans>
+									Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}.
+								</Trans>
+							</PrivacyLine>
+						) : (
+							<PrivacyLine>
+								<Trans>
+									Reviewing needs an AI connection.{" "}
+									<Link to="/dashboard/settings/ai" className="text-accent underline underline-offset-3">
+										Add one in Settings
+									</Link>
+									. What you write here stays in this browser until then.
+								</Trans>
+							</PrivacyLine>
+						)}
+					</div>
+				)}
+			</Widget.Content>
+		</Widget>
 	);
 }
 
@@ -275,43 +285,44 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 	const company = application.company;
 
 	return (
-		<section
-			aria-label={t`Review`}
-			className={cn("grid gap-4 rounded-xl border border-line bg-surface p-4 md:p-5", ENTER_CLASS)}
-		>
+		<CareerWidget title={t`Review`} icon="sparkle" className={ENTER_CLASS} contentClassName="gap-4">
 			<h2 className="text-base font-semibold">{data.title}</h2>
 			{data.verdicts.length > 0 && (
 				<ul className="grid gap-3">
 					{data.verdicts.map((verdict) => (
-						<li key={verdict.text} className="flex items-start gap-2.5">
-							<span
-								className={cn(
-									"inline-flex h-[22px] shrink-0 items-center rounded-sm px-1.5 text-xs font-semibold",
-									verdict.tag === "supported" ? "bg-accent-soft text-accent-text" : "bg-warn-soft text-warn-text",
-								)}
+						<li key={verdict.text} className="grid grid-cols-[5.5rem_minmax(0,1fr)] items-start gap-2.5">
+							<Chip
+								size="sm"
+								variant="soft"
+								color={verdict.tag === "supported" ? "success" : "warning"}
+								className="shrink-0"
 							>
 								{verdict.tag === "supported" ? t`Supported` : t`Observation`}
-							</span>
+							</Chip>
 							<span className="text-sm leading-[21px]">{readable(verdict.text)}</span>
 						</li>
 					))}
 				</ul>
 			)}
-			{data.nextRound && (
-				<p className="text-sm leading-[21px]">
-					<strong className="font-semibold">
-						<Trans>For the next round:</Trans>
-					</strong>{" "}
-					{readable(data.nextRound)}
-				</p>
-			)}
-			{data.priority && (
-				<p className="text-sm leading-[21px]">
-					<strong className="font-semibold">
-						<Trans>Practice priority:</Trans>
-					</strong>{" "}
-					{readable(data.priority)}
-				</p>
+			{(data.nextRound || data.priority) && (
+				<div className="grid gap-3 rounded-xl bg-default p-4">
+					{data.nextRound && (
+						<p className="text-sm leading-[21px]">
+							<strong className="font-semibold">
+								<Trans>For the next round:</Trans>
+							</strong>{" "}
+							{readable(data.nextRound)}
+						</p>
+					)}
+					{data.priority && (
+						<p className="text-sm leading-[21px]">
+							<strong className="font-semibold">
+								<Trans>Practice priority:</Trans>
+							</strong>{" "}
+							{readable(data.priority)}
+						</p>
+					)}
+				</div>
 			)}
 			{data.remember && !readOnly && (
 				<MemoryProposal
@@ -339,7 +350,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 					}}
 				/>
 			)}
-		</section>
+		</CareerWidget>
 	);
 }
 
@@ -386,6 +397,7 @@ type WeekPlanProps = { application: Application; review: Review; now: Date; read
 
 function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 	const { format, timeZone } = useCareerTime();
+	const titleId = useId();
 	const ticks = useTicks(application.id, `week:${review.id}`);
 	const rows = review.data.plan.map((row, index) => ({
 		...row,
@@ -414,55 +426,59 @@ function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 	};
 
 	return (
-		<aside className="grid gap-3 rounded-xl border border-line bg-surface p-4">
-			<div className="grid gap-1">
-				<h2 className="text-sm font-semibold">
+		<Widget role="region" aria-labelledby={titleId}>
+			<Widget.Header>
+				<Widget.Title id={titleId} role="heading" aria-level={2}>
 					<Trans>This week: make your evidence easier to follow</Trans>
-				</h2>
-				<p className="text-xs text-ink-3">
+				</Widget.Title>
+			</Widget.Header>
+			<Widget.Content className="grid gap-3">
+				<p className="text-xs text-muted tabular-nums">
 					{t`${done} of ${count} done`} · {plural(minutes, { one: "# minute in total", other: "# minutes in total" })}
 				</p>
-			</div>
-			<ul className="grid">
-				{rows.map((row) => {
-					const checked = ticks.ticked.includes(row.key);
-					const weekday = format(row.start, { weekday: "short" });
-					const length = row.minutes;
-					return (
-						<li key={row.key} className="border-t border-line py-3 first:border-t-0 first:pt-1">
-							<Checkbox isDisabled={readOnly} isSelected={checked} onChange={(on) => ticks.toggle(row.key, on)}>
-								<Checkbox.Content className="grid grid-cols-[18px_40px_minmax(0,1fr)] items-start gap-3">
-									<Checkbox.Control className="mt-px">
-										<Checkbox.Indicator />
-									</Checkbox.Control>
-									<span className="font-mono text-xs leading-4 font-medium text-ink-3">
-										{weekday}
-										<br />
-										{t`${length}m`}
-									</span>
-									<span
-										className={cn(
-											"text-[13px] leading-[19px] transition-colors duration-quick",
-											checked ? "text-ink-2" : "text-ink",
-										)}
-									>
-										{row.task}
-									</span>
-								</Checkbox.Content>
-							</Checkbox>
-						</li>
-					);
-				})}
-			</ul>
-			{rows.length > 0 && (
-				<Button size="sm" variant="secondary" className="w-fit" onPress={addToCalendar}>
-					<Icon name="calendar-plus" size={16} />
-					<Trans>Add to calendar</Trans>
-				</Button>
-			)}
-			<p className="text-xs leading-[17px] text-ink-3">
-				<Trans>Practice priorities, not conclusions about why an employer decided anything.</Trans>
-			</p>
-		</aside>
+				<ul className="grid">
+					{rows.map((row, index) => {
+						const checked = ticks.ticked.includes(row.key);
+						const weekday = format(row.start, { weekday: "short" });
+						const length = row.minutes;
+						return (
+							<li key={row.key}>
+								{index > 0 && <Separator />}
+								<div className="py-4 first:pt-1 last:pb-1">
+									<Checkbox isDisabled={readOnly} isSelected={checked} onChange={(on) => ticks.toggle(row.key, on)}>
+										<Checkbox.Content className="grid grid-cols-[18px_minmax(0,1fr)] items-start gap-x-3.5">
+											<Checkbox.Control className="mt-0.5 bg-default">
+												<Checkbox.Indicator />
+											</Checkbox.Control>
+											<span className="grid gap-1">
+												<span className="text-xs leading-4 font-medium text-muted tabular-nums">
+													{weekday} · {t`${length}m`}
+												</span>
+												<span
+													className={cn(
+														"text-sm leading-5 transition-colors duration-quick",
+														checked && "text-muted line-through",
+													)}
+												>
+													{row.task}
+												</span>
+											</span>
+										</Checkbox.Content>
+									</Checkbox>
+								</div>
+							</li>
+						);
+					})}
+				</ul>
+				{rows.length > 0 && (
+					<Button size="sm" variant="secondary" fullWidth onPress={addToCalendar}>
+						<Trans>Add to calendar</Trans>
+					</Button>
+				)}
+				<p className="text-xs leading-[17px] text-muted">
+					<Trans>Practice priorities, not conclusions about why an employer decided anything.</Trans>
+				</p>
+			</Widget.Content>
+		</Widget>
 	);
 }

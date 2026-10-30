@@ -163,10 +163,8 @@ msgstr "{0, plural, one {无法放置 # 编辑：其文本已更改。再次要�
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, other {# 个条目}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, other {# 个事实}}"
 
@@ -650,6 +648,10 @@ msgstr "{minutes, plural, other {# 分钟后开始}}"
 msgid "{minutes} min"
 msgstr "{minutes} 分钟"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {没有面试} other {# 场面试}}"
@@ -711,6 +713,10 @@ msgstr "{pages, plural, other {在 9 pt 下仍有 # 页。请隐藏一个部分�
 msgid "{pairing} type"
 msgstr "{pairing}型"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} {total}"
@@ -760,8 +766,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}。在“职业 → 录用通知”中打开。"
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} 项有证据 · {partial} 项部分 · {missing} 项缺失"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +849,6 @@ msgstr "<0>无需修复。</0> 每项检查均通过。"
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>已于 {0} 提交。</0>您发送的版本保存在“已保存”中。在此处编辑不会改变 {1} 收到的内容。"
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>合计金额特意未相加。</0>奖金和股权取决于条件，且两份录用通知的股权价值都不确定。比较合计金额前，请阅读原始录用文件。"
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1370,10 @@ msgstr "添加关键字"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "添加语言"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -1909,10 +1915,6 @@ msgstr "申请详情"
 msgid "Application options"
 msgstr "工作申请选项"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "申请摘要"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "申请标签页"
@@ -2223,6 +2225,10 @@ msgstr "返回登录"
 msgid "Back to stories"
 msgstr "返回故事"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 #: src/features/homepage/remember.tsx
@@ -2324,6 +2330,10 @@ msgstr "加粗"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "奖金"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -2466,7 +2476,6 @@ msgid "Cancel"
 msgstr "取消"
 
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Career"
 msgstr "职业"
 
@@ -2808,7 +2817,6 @@ msgstr "客户端 ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2868,7 +2876,7 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "教练"
 
@@ -2953,6 +2961,10 @@ msgstr "比较录用通知"
 #: src/features/templates/gallery.tsx
 msgid "Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark."
 msgstr "在注册之前比较真实的简历布局。每个模板都可以免费定制，提供 PDF 和 Microsoft Word 下载且无水印。"
+
+#: src/routes/dashboard/career/route.tsx
+msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Compared in their original currency and pay period. Comparing doesn't share anything with the coach."
@@ -3081,13 +3093,13 @@ msgstr "已连接。您的域名会打开您的主简历。"
 msgid "Connecting your {providerName} account…"
 msgstr "正在关联你的 {providerName} 账号…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "连接已保存"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "连接：{text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -3190,10 +3202,6 @@ msgstr "对话名称"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr "对话"
-
-#: src/features/career/coach.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "关于某个职位的对话保存在其工作区中。"
 
 #: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
@@ -4699,10 +4707,6 @@ msgstr "每个获得反馈的回答都保存在这里，最新的在前。"
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "职位公告中的每项要求都会与您知识库中的事实和故事对照。差距显示为缺少证据，而绝不是缺少能力。"
 
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "此聊天中的早前消息"
-
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
@@ -4778,6 +4782,10 @@ msgstr "编辑问题"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "编辑定时任务"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -6454,14 +6462,11 @@ msgid "Kind regards,"
 msgstr "亲切的问候，"
 
 #: src/features/homepage/remember.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "知识库"
-
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "知识库无法加载。请重试，或在发送前关闭知识库。"
 
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
@@ -6901,10 +6906,6 @@ msgstr "正在加载对话..."
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "正在加载面试…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "发送前正在加载知识库…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -7568,6 +7569,10 @@ msgstr "新建定时任务"
 msgid "New section"
 msgstr "新版块"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind 的新团队常卡在设置阶段，多数没能完成。"
@@ -7671,6 +7676,10 @@ msgstr "未找到常规的部分标题。"
 msgid "No conversations about this document yet."
 msgstr "还没有关于此文档的对话。"
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "无更正"
@@ -7706,16 +7715,16 @@ msgid "No evidence yet"
 msgstr "暂无证据"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "没有匹配的事实。请尝试其他关键词或类型。"
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "暂无可关联的事实。请在“事实”中添加。"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "暂无事实。请在上方添加一个。"
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8063,7 +8072,6 @@ msgid "Notice period"
 msgstr "离职通知期"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/career/coach.tsx
 #: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8105,6 +8113,11 @@ msgstr "离开。这封信保留了您的详细信息的单独副本。"
 msgid "Offer"
 msgstr "录用"
 
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
+
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
 msgstr "录用通知"
@@ -8120,6 +8133,10 @@ msgstr "未注明到办公室天数"
 #: src/features/resume/editor/save-status.tsx
 msgid "Offline · saved on this device"
 msgstr "离线 · 已保存在此设备上"
+
+#: src/features/career/coach.tsx
+msgid "Older"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -8727,10 +8744,6 @@ msgstr "规划我的准备"
 msgid "Plan what to ask"
 msgstr "规划要问的问题"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Plan your search, keep your evidence in one place, and decide between offers."
-msgstr "规划求职、集中管理证据，并在录用通知之间做出选择。"
-
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "正在规划您的一周"
@@ -8940,6 +8953,10 @@ msgstr "预览尺寸"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "预览 {0} · 点击应用"
+
+#: src/features/career/coach.tsx
+msgid "Previous 7 days"
+msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous day"
@@ -9155,6 +9172,10 @@ msgstr "{url} 的二维码"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "两步验证二维码"
+
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
@@ -9406,10 +9427,6 @@ msgstr "原因"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "回忆"
-
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "最近"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9750,6 +9767,7 @@ msgid "Requirement"
 msgstr "要求"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "要求"
 
@@ -10398,6 +10416,10 @@ msgstr "搜索职位申请"
 msgid "Search commands"
 msgstr "搜索命令"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "搜索涵盖标题、标签和链接的职位申请。"
@@ -10440,10 +10462,6 @@ msgstr "搜索职位信息"
 msgid "Search role, company or contact"
 msgstr "搜索职位、公司或联系人"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "搜索词会发送到您的网络搜索服务。"
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -10469,6 +10487,7 @@ msgid "Search..."
 msgstr "搜索..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -11368,6 +11387,7 @@ msgstr "故事"
 msgid "Stories to bring"
 msgstr "要准备的故事"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "故事"
@@ -11865,6 +11885,10 @@ msgstr "出口PDF"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "导出的PDF无法检查。再试一次。"
+
+#: src/routes/dashboard/career/route.tsx
+msgid "The facts, stories and preferences the coach works from."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "The file couldn't be read as a resume."
@@ -12364,6 +12388,10 @@ msgstr "时间 · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "时间、链接、面试官、您发送的内容"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "时间按 {timeZone} 显示。"
@@ -12390,7 +12418,9 @@ msgid "To"
 msgstr "到"
 
 #: src/features/applications/components/calendar-view.tsx
+#: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "今天"
@@ -12421,6 +12451,10 @@ msgstr "请求太多。稍后再试。"
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12539,10 @@ msgstr "再试一次"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "用这个再试一次"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13302,6 +13340,10 @@ msgstr "重要事项"
 msgid "What matters to you"
 msgstr "对您重要的事"
 
+#: src/routes/dashboard/career/route.tsx
+msgid "What needs you, new roles from your search, your next interview and your schedules."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"
 msgstr "应该改变什么？"
@@ -13379,10 +13421,6 @@ msgstr "什么在起作用"
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
 msgstr "对方何时需要您的答复？"
-
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "点击发送后，{shared}将发送给 {connection}。"
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
@@ -13573,6 +13611,7 @@ msgid "Write your professional resume"
 msgstr "撰写您的专业简历"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13611,6 +13650,7 @@ msgid "Yes. Rezumi is open source under the MIT License and can run on your own 
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
+#: src/features/career/coach.tsx
 msgid "Yesterday"
 msgstr "昨天"
 
@@ -13784,6 +13824,10 @@ msgstr "你的更改会自动保存。"
 msgid "Your contact details are not on the first page."
 msgstr "你的联系方式不在第一页。"
 
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "您的数据"
@@ -13824,6 +13868,10 @@ msgstr "当您使用辅导工具或定时面试准备时，已开启的事实、
 msgid "Your evidence"
 msgstr "您的证据"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "你的文件"
@@ -13855,10 +13903,6 @@ msgstr "您的简历上的工作地点发生了变化。这封信也更新了。
 #: src/features/ats-checker/messages.ts
 msgid "Your margins are very narrow."
 msgstr "你的页边距非常窄。"
-
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "您的消息"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
@@ -13907,10 +13951,6 @@ msgstr "您的简历中的电话号码发生了变化。这封信也更新了。
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "你的电话号码写法不太常见。"
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "您的偏好"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -13970,9 +14010,9 @@ msgstr "您的短链接和自定义域名会打开此简历。"
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "在您重新发布之前，您的短链接和自定义域名会显示此简历未分享。"
 
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "您的故事"
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

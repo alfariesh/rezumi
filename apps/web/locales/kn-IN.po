@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# ಸಂಪಾದನೆಯನ್ನು ಇರಿಸಲ�
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# ನಮೂದು} other {# ನಮೂದುಗಳು}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# ಸಂಗತಿ} other {# ಸಂಗತಿಗಳು}}"
 
@@ -650,6 +648,10 @@ msgstr "{minutes, plural, one {# ನಿಮಿಷದಲ್ಲಿ ಪ್ರಾರ�
 msgid "{minutes} min"
 msgstr "{minutes} ನಿಮಿಷ"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {ಸಂದರ್ಶನಗಳಿಲ್ಲ} one {# ಸಂದರ್ಶನ} other {# ಸಂದರ್ಶನಗಳು}}"
@@ -711,6 +713,10 @@ msgstr "{pages, plural, one {9 pt ನಲ್ಲಿ ಇನ್ನೂ # ಪುಟ. �
 msgid "{pairing} type"
 msgstr "{pairing} ಪ್ರಕಾರ"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{total} ನ {passed}"
@@ -760,8 +766,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. ವೃತ್ತಿಜೀವನ → ಆಫರ್‌ಗಳು ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} ಬೆಂಬಲಿತ · {partial} ಭಾಗಶಃ · {missing} ಇಲ್ಲ"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +849,6 @@ msgstr "<0> ಸರಿಪಡಿಸಲು ಏನೂ ಇಲ್ಲ.</0> ಪ್ರತ
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>{0} ರಂದು ಸಲ್ಲಿಸಲಾಗಿದೆ.</0> ನೀವು ಕಳುಹಿಸಿದ ಆವೃತ್ತಿಗಳನ್ನು “ಉಳಿಸಲಾಗಿದೆ” ನಲ್ಲಿ ಇರಿಸಲಾಗಿದೆ. ಇಲ್ಲಿ ಮಾಡುವ ಬದಲಾವಣೆಗಳು {1} ಸ್ವೀಕರಿಸಿದ್ದನ್ನು ಬದಲಾಯಿಸುವುದಿಲ್ಲ."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>ಮೊತ್ತಗಳನ್ನು ಉದ್ದೇಶಪೂರ್ವಕವಾಗಿ ಕೂಡಿಸಲಾಗಿಲ್ಲ.</0> ಬೋನಸ್ ಮತ್ತು ಈಕ್ವಿಟಿ ಷರತ್ತುಗಳನ್ನು ಅವಲಂಬಿಸಿವೆ, ಮತ್ತು ಎರಡರಲ್ಲೂ ಈಕ್ವಿಟಿ ಮೌಲ್ಯ ಅನಿಶ್ಚಿತವಾಗಿದೆ. ಮೊತ್ತಗಳನ್ನು ಹೋಲಿಸುವ ಮೊದಲು ಮೂಲ ಆಫರ್ ದಾಖಲೆಗಳನ್ನು ಓದಿ."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1370,10 @@ msgstr "ಕೀವರ್ಡ್ ಸೇರಿಸಿ"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "ಭಾಷೆಯನ್ನು ಸೇರಿಸಿ"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -1909,10 +1915,6 @@ msgstr "ಅರ್ಜಿಯ ವಿವರಗಳು"
 msgid "Application options"
 msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿ ಆಯ್ಕೆಗಳು"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "ಅರ್ಜಿಗಳ ಸಾರಾಂಶಗಳು"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "ಅರ್ಜಿಯ ಟ್ಯಾಬ್‌ಗಳು"
@@ -2223,6 +2225,10 @@ msgstr "ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ"
 msgid "Back to stories"
 msgstr "ಕಥೆಗಳಿಗೆ ಹಿಂತಿರುಗಿ"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 #: src/features/homepage/remember.tsx
@@ -2324,6 +2330,10 @@ msgstr "ದಪ್ಪ"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "ಬೋನಸ್"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -2466,7 +2476,6 @@ msgid "Cancel"
 msgstr "ರದ್ದು ಮಾಡಿ"
 
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Career"
 msgstr "ವೃತ್ತಿಜೀವನ"
 
@@ -2808,7 +2817,6 @@ msgstr "ಗ್ರಾಹಕ ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2868,7 +2876,7 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "ಕೋಚ್"
 
@@ -2953,6 +2961,10 @@ msgstr "ಆಫರ್‌ಗಳನ್ನು ಹೋಲಿಸಿ"
 #: src/features/templates/gallery.tsx
 msgid "Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark."
 msgstr "ನೋಂದಾಯಿಸುವ ಮೊದಲು ನೈಜ ಜೀವನವೃತ್ತಾಂತ ವಿನ್ಯಾಸಗಳನ್ನು ಹೋಲಿಸಿ. ಪ್ರತಿ ಟೆಂಪ್ಲೇಟ್ ಅನ್ನು ಉಚಿತವಾಗಿ ಕಸ್ಟಮೈಸ್ ಮಾಡಬಹುದು. PDF ಮತ್ತು Word ರೂಪದಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಬಹುದು, ವಾಟರ್‌ಮಾರ್ಕ್ ಇಲ್ಲದೆ."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Compared in their original currency and pay period. Comparing doesn't share anything with the coach."
@@ -3081,13 +3093,13 @@ msgstr "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ಡೊಮೇ
 msgid "Connecting your {providerName} account…"
 msgstr "ನಿಮ್ಮ {providerName} ಖಾತೆಯನ್ನು ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "ಸಂಪರ್ಕವನ್ನು ಉಳಿಸಲಾಗಿದೆ"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "ಸಂಪರ್ಕ: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -3190,10 +3202,6 @@ msgstr "ಸಂಭಾಷಣೆಯ ಹೆಸರು"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr "ಸಂಭಾಷಣೆಗಳು"
-
-#: src/features/career/coach.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "ಒಂದು ಉದ್ಯೋಗದ ಕುರಿತ ಸಂಭಾಷಣೆಗಳು ಅದರ ಕಾರ್ಯಕ್ಷೇತ್ರದಲ್ಲಿ ಇರುತ್ತವೆ."
 
 #: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
@@ -4699,10 +4707,6 @@ msgstr "ನೀವು ಪ್ರತಿಕ್ರಿಯೆ ಪಡೆದ ಪ್ರತ
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತಿನ ಪ್ರತಿಯೊಂದು ಅವಶ್ಯಕತೆಯನ್ನು ನಿಮ್ಮ ಜ್ಞಾನದಲ್ಲಿರುವ ಸಂಗತಿಗಳು ಮತ್ತು ಕಥೆಗಳೊಂದಿಗೆ ಪರಿಶೀಲಿಸಲಾಗುತ್ತದೆ. ಕೊರತೆಗಳು ಪುರಾವೆಯ ಕೊರತೆಯಾಗಿ ತೋರುತ್ತವೆ, ಸಾಮರ್ಥ್ಯದ ಕೊರತೆಯಾಗಿ ಎಂದಿಗೂ ಅಲ್ಲ."
 
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "ಈ ಚಾಟ್‌ನ ಹಿಂದಿನ ಸಂದೇಶಗಳು"
-
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
@@ -4778,6 +4782,10 @@ msgstr "ಪ್ರಶ್ನೆಯನ್ನು ಸಂಪಾದಿಸಿ"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "ವೇಳಾಪಟ್ಟಿಯನ್ನು ಸಂಪಾದಿಸಿ"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -6454,14 +6462,11 @@ msgid "Kind regards,"
 msgstr "ಆತ್ಮೀಯ ವಂದನೆಗಳು,"
 
 #: src/features/homepage/remember.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "ಜ್ಞಾನ"
-
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "ಜ್ಞಾನವನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಕಳುಹಿಸುವ ಮೊದಲು ಜ್ಞಾನವನ್ನು ಆಫ್ ಮಾಡಿ."
 
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
@@ -6901,10 +6906,6 @@ msgstr "ಸಂಭಾಷಣೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗ�
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "ಸಂದರ್ಶನಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "ನೀವು ಕಳುಹಿಸುವ ಮೊದಲು ಜ್ಞಾನವನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -7568,6 +7569,10 @@ msgstr "ಹೊಸ ವೇಳಾಪಟ್ಟಿ"
 msgid "New section"
 msgstr "ಹೊಸ ವಿಭಾಗ"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind ನಲ್ಲಿ ಹೊಸ ತಂಡಗಳು ಸೆಟಪ್‌ನಲ್ಲಿ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತಿದ್ದವು; ಹೆಚ್ಚಿನವು ಅದನ್ನು ಪೂರ್ಣಗೊಳಿಸಲೇ ಇಲ್ಲ."
@@ -7671,6 +7676,10 @@ msgstr "ಯಾವುದೇ ಸಾಂಪ್ರದಾಯಿಕ ವಿಭಾಗ ಶ
 msgid "No conversations about this document yet."
 msgstr "ಈ ಡಾಕ್ಯುಮೆಂಟ್ ಕುರಿತು ಇನ್ನೂ ಯಾವುದೇ ಸಂಭಾಷಣೆಗಳಿಲ್ಲ."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "ಯಾವುದೇ ತಿದ್ದುಪಡಿಗಳಿಲ್ಲ"
@@ -7706,16 +7715,16 @@ msgid "No evidence yet"
 msgstr "ಇನ್ನೂ ಪುರಾವೆ ಇಲ್ಲ"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "ಯಾವುದೇ ಸಂಗತಿಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ. ಬೇರೆ ಪದ ಅಥವಾ ಪ್ರಕಾರವನ್ನು ಪ್ರಯತ್ನಿಸಿ."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "ಲಿಂಕ್ ಮಾಡಲು ಇನ್ನೂ ಸಂಗತಿಗಳಿಲ್ಲ. ಅವುಗಳನ್ನು “ಸಂಗತಿಗಳು” ನಲ್ಲಿ ಸೇರಿಸಿ."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "ಇನ್ನೂ ಸಂಗತಿಗಳಿಲ್ಲ. ಮೇಲೆ ಒಂದನ್ನು ಸೇರಿಸಿ."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8063,7 +8072,6 @@ msgid "Notice period"
 msgstr "ನೋಟಿಸ್ ಅವಧಿ"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/career/coach.tsx
 #: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8105,6 +8113,11 @@ msgstr "ಆಫ್. ಪತ್ರವು ನಿಮ್ಮ ವಿವರಗಳ ಸ್�
 msgid "Offer"
 msgstr "ಆಫರ್"
 
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
+
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
 msgstr "ಆಫರ್‌ಗಳು"
@@ -8120,6 +8133,10 @@ msgstr "ಕಚೇರಿ ದಿನಗಳನ್ನು ತಿಳಿಸಿಲ್ಲ"
 #: src/features/resume/editor/save-status.tsx
 msgid "Offline · saved on this device"
 msgstr "ಆಫ್‌ಲೈನ್ · ಈ ಸಾಧನದಲ್ಲಿ ಉಳಿಸಲಾಗಿದೆ"
+
+#: src/features/career/coach.tsx
+msgid "Older"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -8727,10 +8744,6 @@ msgstr "ನನ್ನ ಸಿದ್ಧತೆಯನ್ನು ಯೋಜಿಸಿ"
 msgid "Plan what to ask"
 msgstr "ಏನು ಕೇಳಬೇಕೆಂದು ಯೋಜಿಸಿ"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Plan your search, keep your evidence in one place, and decide between offers."
-msgstr "ನಿಮ್ಮ ಉದ್ಯೋಗ ಹುಡುಕಾಟವನ್ನು ಯೋಜಿಸಿ, ನಿಮ್ಮ ಪುರಾವೆಗಳನ್ನು ಒಂದೇ ಕಡೆ ಇರಿಸಿ, ಮತ್ತು ಆಫರ್‌ಗಳ ನಡುವೆ ನಿರ್ಧರಿಸಿ."
-
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "ನಿಮ್ಮ ವಾರವನ್ನು ಯೋಜಿಸಲಾಗುತ್ತಿದೆ"
@@ -8940,6 +8953,10 @@ msgstr "ಪೂರ್ವವೀಕ್ಷಣೆ ಗಾತ್ರ"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "ಪೂರ್ವವೀಕ್ಷಣೆ {0} · ಅನ್ವಯಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ"
+
+#: src/features/career/coach.tsx
+msgid "Previous 7 days"
+msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous day"
@@ -9155,6 +9172,10 @@ msgstr "{url} ಗಾಗಿ QR ಕೋಡ್"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "ಎರಡು ಹಂತದ ಪರಿಶೀಲನೆಗಾಗಿ QR ಕೋಡ್"
+
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
@@ -9406,10 +9427,6 @@ msgstr "ಕಾರಣ"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "ನೆನಪಿಸಿಕೊಂಡದ್ದು"
-
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "ಇತ್ತೀಚಿನವು"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9750,6 +9767,7 @@ msgid "Requirement"
 msgstr "ಅವಶ್ಯಕತೆ"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "ಅವಶ್ಯಕತೆಗಳು"
 
@@ -10398,6 +10416,10 @@ msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿಗಳನ್ನು ಹುಡುಕಿ"
 msgid "Search commands"
 msgstr "ಕಮಾಂಡ್‌ಗಳನ್ನು ಹುಡುಕಿ"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "ಹುಡುಕಾಟವು ಶೀರ್ಷಿಕೆಗಳು, ಟ್ಯಾಗ್‌ಗಳು ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿದ ಉದ್ಯೋಗ ಅರ್ಜಿಗಳನ್ನು ಒಳಗೊಂಡಿದೆ."
@@ -10440,10 +10462,6 @@ msgstr "ಉದ್ಯೋಗ ಪೋಸ್ಟಿಂಗ್‌ಗಳನ್ನು ಹ�
 msgid "Search role, company or contact"
 msgstr "ಹುಡುಕಾಟ ಪಾತ್ರ, ಕಂಪನಿ ಅಥವಾ ಸಂಪರ್ಕ"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "ಹುಡುಕಾಟ ಪದಗಳು ನಿಮ್ಮ ವೆಬ್ ಹುಡುಕಾಟ ಸೇವೆಗೆ ಹೋಗುತ್ತವೆ."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -10469,6 +10487,7 @@ msgid "Search..."
 msgstr "ಹುಡುಕಿ..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -11368,6 +11387,7 @@ msgstr "ಕಥೆಗಳು"
 msgid "Stories to bring"
 msgstr "ತರಬೇಕಾದ ಕಥೆಗಳು"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "ಕಥೆ"
@@ -11865,6 +11885,10 @@ msgstr "ರಫ್ತು ಮಾಡಲಾದ PDF"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "ರಫ್ತು ಮಾಡಲಾದ PDF ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "The facts, stories and preferences the coach works from."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "The file couldn't be read as a resume."
@@ -12364,6 +12388,10 @@ msgstr "ಸಮಯ · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "ಸಮಯ, ಲಿಂಕ್, ಯಾರು, ನೀವು ಕಳುಹಿಸಿದ್ದು"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "ಸಮಯಗಳನ್ನು {timeZone} ನಲ್ಲಿ ತೋರಿಸಲಾಗಿದೆ."
@@ -12390,7 +12418,9 @@ msgid "To"
 msgstr "ಗೆ"
 
 #: src/features/applications/components/calendar-view.tsx
+#: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "ಇಂದು"
@@ -12421,6 +12451,10 @@ msgstr "ಹಲವಾರು ವಿನಂತಿಗಳು. ನಂತರ ಮತ್�
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12539,10 @@ msgstr "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "ಇದರೊಂದಿಗೆ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13302,6 +13340,10 @@ msgstr "ಮುಖ್ಯವಾದದ್ದು"
 msgid "What matters to you"
 msgstr "ನಿಮಗೆ ಮುಖ್ಯವಾದದ್ದು"
 
+#: src/routes/dashboard/career/route.tsx
+msgid "What needs you, new roles from your search, your next interview and your schedules."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"
 msgstr "ಏನು ಬದಲಾಗಬೇಕು?"
@@ -13379,10 +13421,6 @@ msgstr "ಏನು ಕೆಲಸ ಮಾಡುತ್ತಿದೆ"
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
 msgstr "ಅವರಿಗೆ ನಿಮ್ಮ ಉತ್ತರ ಯಾವಾಗ ಬೇಕು?"
-
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "ನೀವು ಕಳುಹಿಸಿ ಒತ್ತಿದಾಗ, {shared} {connection} ಗೆ ಹೋಗುತ್ತವೆ."
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
@@ -13573,6 +13611,7 @@ msgid "Write your professional resume"
 msgstr "ನಿಮ್ಮ ವೃತ್ತಿಪರ CV ಬರೆಯಿರಿ"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13611,6 +13650,7 @@ msgid "Yes. Rezumi is open source under the MIT License and can run on your own 
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
+#: src/features/career/coach.tsx
 msgid "Yesterday"
 msgstr "ನಿನ್ನೆ"
 
@@ -13784,6 +13824,10 @@ msgstr "ನಿಮ್ಮ ಬದಲಾವಣೆಗಳನ್ನು ಸ್ವಯಂ�
 msgid "Your contact details are not on the first page."
 msgstr "ನಿಮ್ಮ ಸಂಪರ್ಕ ವಿವರಗಳು ಮೊದಲ ಪುಟದಲ್ಲಿಲ್ಲ."
 
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "ನಿಮ್ಮ ಡೇಟಾ"
@@ -13824,6 +13868,10 @@ msgstr "ನೀವು ಕೋಚಿಂಗ್ ಉಪಕರಣಗಳನ್ನು ಅ
 msgid "Your evidence"
 msgstr "ನಿಮ್ಮ ಪುರಾವೆ"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "ನಿಮ್ಮ ಫೈಲ್"
@@ -13855,10 +13903,6 @@ msgstr "ರೆಸ್ಯೂಮೆಯಲ್ಲಿ ನಿಮ್ಮ ಸ್ಥಳ ಬ
 #: src/features/ats-checker/messages.ts
 msgid "Your margins are very narrow."
 msgstr "ನಿಮ್ಮ ಅಂಚುಗಳು ಬಹಳ ಕಿರಿದಾಗಿವೆ."
-
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "ನಿಮ್ಮ ಸಂದೇಶ"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
@@ -13907,10 +13951,6 @@ msgstr "ರೆಸ್ಯೂಮೆಯಲ್ಲಿ ನಿಮ್ಮ ಫೋನ್ ಸ
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "ನಿಮ್ಮ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ಅಸಾಮಾನ್ಯ ರೂಪದಲ್ಲಿ ಬರೆಯಲಾಗಿದೆ."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "ನಿಮ್ಮ ಆದ್ಯತೆಗಳು"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -13970,9 +14010,9 @@ msgstr "ನಿಮ್ಮ ಕಿರು ಲಿಂಕ್ ಮತ್ತು ಕಸ್�
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "ನೀವು ಮತ್ತೆ ಪ್ರಕಟಿಸುವವರೆಗೆ ಈ ರೆಸ್ಯೂಮ್ ಹಂಚಿಕೊಂಡಿಲ್ಲ ಎಂದು ನಿಮ್ಮ ಕಿರು ಲಿಂಕ್ ಮತ್ತು ಕಸ್ಟಮ್ ಡೊಮೇನ್ ತಿಳಿಸುತ್ತವೆ."
 
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "ನಿಮ್ಮ ಕಥೆಗಳು"
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

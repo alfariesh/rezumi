@@ -162,9 +162,13 @@ type CoachThreadProps = {
 	connection: string;
 	onChangeConnection: () => void;
 	header: (messages: readonly UIMessage[]) => ReactNode;
+	/** After the last message, once the reply is complete (the coach page's copy button). */
+	afterMessages?: (messages: readonly UIMessage[]) => ReactNode;
 	empty: (send: (text: string) => void) => ReactNode;
 	chips?: ReactNode;
-	privacy: ReactNode;
+	/** The connection picker, in the composer's toolbar. */
+	model?: ReactNode;
+	privacy?: ReactNode;
 	placeholder: string;
 	/** Keeps the unsent draft when the thread closes (the sheet). */
 	draftKey?: string;
@@ -260,7 +264,7 @@ function Empty({ render, send }: EmptyProps) {
 }
 
 export const contentClass = {
-	page: "mx-auto grid w-full max-w-[720px] content-start gap-6 px-6 py-6",
+	page: "mx-auto grid w-full max-w-[720px] content-start gap-6 px-1 pt-6 pb-3",
 	sheet: "grid content-start gap-4 p-[18px]",
 };
 
@@ -335,7 +339,7 @@ function ThreadSession(props: SessionProps) {
 
 type Upload = ChatAttachment & { size: number };
 
-type ComposerProps = Pick<CoachThreadProps, "placeholder" | "chips" | "privacy" | "draftKey" | "variant"> & {
+type ComposerProps = Pick<CoachThreadProps, "placeholder" | "chips" | "model" | "privacy" | "draftKey" | "variant"> & {
 	streaming: boolean;
 	disabled: boolean;
 	ensureThread: () => Promise<string>;
@@ -396,9 +400,10 @@ export function Composer(props: ComposerProps) {
 	const page = props.variant === "page";
 
 	return (
-		<div className={page ? "border-t border-separator px-6 py-3" : "px-3.5 pt-2 pb-3.5"}>
+		<div className={page ? "" : "px-3.5 pt-2 pb-3.5"}>
 			<div className={cn("grid gap-2", page && "mx-auto w-full max-w-[720px]")}>
 				<PromptBox
+					variant={page ? "primary" : "secondary"}
 					value={text}
 					onValueChange={setText}
 					onSubmit={() => void submit()}
@@ -418,6 +423,7 @@ export function Composer(props: ComposerProps) {
 						onRemove: () => setAttachments((current) => current.filter((item) => item.id !== attachment.id)),
 					}))}
 					context={props.chips}
+					toolbar={props.model}
 					attach={{
 						isDisabled: props.disabled || attachments.length >= MAX_ATTACHMENTS_PER_MESSAGE,
 						isPending: uploading,

@@ -1,17 +1,17 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
-import { Button, Spinner, TextArea, Skeleton } from "@heroui/react";
+import { EmptyState } from "@heroui-pro/react";
+import { Button, Chip, Link as TextLink, Spinner, TextArea, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
-import { PrivacyLine, StatusPill, Swap, Working, workingSteps } from "../shared";
+import { CareerWidget, PrivacyLine, StatusPill, Swap, Working, workingSteps } from "../shared";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
@@ -31,16 +31,13 @@ export function AiNotice({ className }: AiNoticeProps) {
 	if (connection.isUnavailable) return <AiProviderLoadState state={connection} />;
 	if (!provider)
 		return (
-			<Link
-				to="/dashboard/settings/ai"
-				className={cn(
-					"flex w-fit items-center gap-1.5 text-[13px] text-accent-text underline-offset-4 hover:underline",
-					className,
-				)}
+			<TextLink
+				href="/dashboard/settings/ai"
+				className={cn("w-fit gap-1.5 text-sm text-link no-underline hover:underline", className)}
 			>
 				<Icon name="key" size={16} />
 				<Trans>Connect an AI provider in Settings</Trans>
-			</Link>
+			</TextLink>
 		);
 	return (
 		<PrivacyLine className={cn(className)}>
@@ -73,28 +70,31 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 
 	if (!item)
 		return (
-			<div className="grid justify-items-center gap-3 rounded-xl border border-dashed border-line-2 p-7 text-center">
-				<h2 className="font-display text-[22px] leading-7 font-medium">
-					<Trans>Check this role against your evidence</Trans>
-				</h2>
-				<p className="max-w-[420px] text-sm text-ink-2">
-					<Trans>
-						Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as
-						missing evidence, never missing ability.
-					</Trans>
-				</p>
-				<AiNotice className="max-w-[420px] text-start" />
-				{provider && (
-					<Button isPending={generate.isPending} onPress={check}>
-						{generate.isPending ? (
-							<Spinner size="sm" color="current" aria-hidden />
-						) : (
-							<Icon name="list-checks" size={18} />
-						)}
-						{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check fit</Trans>}
-					</Button>
-				)}
-			</div>
+			<EmptyState className="rounded-2xl bg-surface-secondary py-12">
+				<EmptyState.Header>
+					<EmptyState.Media variant="icon">
+						<Icon name="list-checks" size={20} />
+					</EmptyState.Media>
+					<EmptyState.Title>
+						<Trans>Check this role against your evidence</Trans>
+					</EmptyState.Title>
+					<EmptyState.Description className="max-w-[420px]">
+						<Trans>
+							Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as
+							missing evidence, never missing ability.
+						</Trans>
+					</EmptyState.Description>
+				</EmptyState.Header>
+				<EmptyState.Content className="max-w-[420px] gap-3">
+					<AiNotice />
+					{provider && (
+						<Button isPending={generate.isPending} onPress={check}>
+							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
+							{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check fit</Trans>}
+						</Button>
+					)}
+				</EmptyState.Content>
+			</EmptyState>
 		);
 
 	const evidence = readOnly ? {} : workspace.data.evidence;
@@ -135,84 +135,86 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 	};
 
 	return (
-		<div className="grid gap-5">
-			<div className="grid items-end gap-x-6 gap-y-2 @xl:grid-cols-[minmax(0,1fr)_auto]">
-				<div className="grid gap-1">
-					<h2 className="font-display text-[22px] leading-7 font-medium">{item.data.headline}</h2>
-					<p className="max-w-[560px] text-sm leading-[19px] text-ink-2">{item.data.summary}</p>
+		<div className="grid gap-6">
+			<div className="grid items-end gap-x-6 gap-y-3 @xl:grid-cols-[minmax(0,1fr)_auto]">
+				<div className="grid gap-1.5">
+					<h2 className="text-xl leading-7 font-semibold">{item.data.headline}</h2>
+					<p className="max-w-[560px] text-sm leading-5 text-muted">{item.data.summary}</p>
+					{item.outdated && !readOnly && <AiNotice className="mt-1" />}
 				</div>
-				<p className="flex flex-wrap items-baseline gap-x-2 font-mono text-xs font-medium text-ink-2">
-					{t`${supported} supported · ${partial} partly · ${missing} missing`}
+				<div className="flex flex-wrap items-center gap-1.5">
+					<Chip size="sm" variant="soft" color="success" className="tabular-nums">
+						{t`${supported} supported`}
+					</Chip>
+					<Chip size="sm" variant="soft" color="warning" className="tabular-nums">
+						{t`${partial} partly`}
+					</Chip>
+					<Chip size="sm" variant="soft" className="tabular-nums">
+						{t`${missing} missing`}
+					</Chip>
 					{item.outdated && !readOnly && provider && (
-						<Button
-							variant="ghost"
-							size="sm"
-							className="h-auto px-0 font-sans text-[13px] tracking-normal text-link normal-case underline-offset-4 hover:underline"
-							isPending={generate.isPending}
-							onPress={check}
-						>
+						<Button variant="ghost" size="sm" isPending={generate.isPending} onPress={check}>
 							{generate.isPending ? <Working steps={workingSteps("fit")} /> : <Trans>Check again</Trans>}
 						</Button>
 					)}
-				</p>
-			</div>
-			{item.outdated && !readOnly && <AiNotice className="-mt-2" />}
-
-			<div
-				role="table"
-				aria-label={t`Requirements and your evidence`}
-				className="grid gap-3 @xl:gap-0 @xl:overflow-hidden @xl:rounded-xl @xl:border @xl:border-line @xl:bg-surface"
-			>
-				<div
-					role="row"
-					className="hidden grid-cols-[minmax(0,1.1fr)_90px_170px_minmax(0,1.6fr)] gap-x-4 px-4 py-3 text-[13px] text-ink-2 @3xl:grid"
-				>
-					<span role="columnheader">
-						<Trans>Requirement</Trans>
-					</span>
-					<span role="columnheader">
-						<Trans>From</Trans>
-					</span>
-					<span role="columnheader">
-						<Trans>Status</Trans>
-					</span>
-					<span role="columnheader">
-						<Trans>Your evidence</Trans>
-					</span>
 				</div>
-				{item.data.requirements.map((requirement) => {
-					const factId = added(requirement);
-					return (
-						<RequirementRow
-							key={requirement.text}
-							requirement={requirement}
-							status={statusOf(requirement)}
-							evidence={factId ? (factText(factId) ?? requirement.evidence) : requirement.evidence}
-							readOnly={readOnly}
-							onSaved={(id) => onSaved(requirement, id)}
-						/>
-					);
-				})}
 			</div>
+
+			<CareerWidget
+				title={<Trans>Requirements</Trans>}
+				icon="list-checks"
+				count={item.data.requirements.length}
+				contentClassName="p-0"
+			>
+				<div role="table" aria-label={t`Requirements and your evidence`} className="grid divide-y divide-separator">
+					<div
+						role="row"
+						className="hidden grid-cols-[minmax(0,1.1fr)_90px_170px_minmax(0,1.6fr)] gap-x-4 px-4 py-2.5 text-xs font-medium text-muted @3xl:grid"
+					>
+						<span role="columnheader">
+							<Trans>Requirement</Trans>
+						</span>
+						<span role="columnheader">
+							<Trans>From</Trans>
+						</span>
+						<span role="columnheader">
+							<Trans>Status</Trans>
+						</span>
+						<span role="columnheader">
+							<Trans>Your evidence</Trans>
+						</span>
+					</div>
+					{item.data.requirements.map((requirement) => {
+						const factId = added(requirement);
+						return (
+							<RequirementRow
+								key={requirement.text}
+								requirement={requirement}
+								status={statusOf(requirement)}
+								evidence={factId ? (factText(factId) ?? requirement.evidence) : requirement.evidence}
+								readOnly={readOnly}
+								onSaved={(id) => onSaved(requirement, id)}
+							/>
+						);
+					})}
+				</div>
+			</CareerWidget>
 
 			{(item.data.checks.length > 0 || item.data.ask) && (
 				<div className="grid items-start gap-4 @xl:grid-cols-2">
 					{item.data.checks.length > 0 && (
-						<section className="grid gap-2.5 rounded-xl border border-line bg-surface p-4">
-							<h3 className="text-sm font-semibold">
-								<Trans>Against your requirements</Trans>
-							</h3>
-							<ul className="grid gap-2">
+						<CareerWidget title={<Trans>Against your requirements</Trans>}>
+							<ul className="grid gap-2.5">
 								{item.data.checks.map((entry) => (
-									<li key={entry.label} className="flex gap-2 text-sm leading-[21px]">
+									<li key={entry.label} className="flex gap-2 text-sm leading-5">
 										<Icon
 											name={entry.met === true ? "check-circle" : entry.met === false ? "x-circle" : "question"}
 											size={18}
 											className={cn(
 												"mt-px shrink-0",
-												entry.met === true && "text-accent-text",
-												entry.met === false && "text-danger-text",
-												entry.met === null && "text-warn-text",
+												entry.met === true && "text-success",
+												entry.met === false && "text-danger",
+												entry.met === null && "text-warning",
 											)}
 										/>
 										<span>
@@ -221,7 +223,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 									</li>
 								))}
 							</ul>
-						</section>
+						</CareerWidget>
 					)}
 					{item.data.ask && <WorthAsking ask={item.data.ask} applicationId={application.id} readOnly={readOnly} />}
 				</div>
@@ -238,7 +240,7 @@ type RequirementRowProps = {
 	onSaved: (factId: string) => void;
 };
 
-/** One requirement. Below 1024px From and Status sit under the name; on phones each row is a card. */
+/** One requirement. Below 1024px From and Status sit under the name. */
 function RequirementRow({ requirement, status, evidence, readOnly, onSaved }: RequirementRowProps) {
 	const [editing, setEditing] = useState(false);
 	const from = requirement.origin === "posting" ? t`Posting` : t`Inferred`;
@@ -247,23 +249,23 @@ function RequirementRow({ requirement, status, evidence, readOnly, onSaved }: Re
 	return (
 		<div
 			role="row"
-			className="grid gap-x-4 gap-y-2 border-line p-4 @max-xl:rounded-xl @max-xl:border @max-xl:bg-surface @xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] @xl:border-t @3xl:grid-cols-[minmax(0,1.1fr)_90px_170px_minmax(0,1.6fr)]"
+			className="grid gap-x-4 gap-y-2 px-4 py-4 @xl:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] @3xl:grid-cols-[minmax(0,1.1fr)_90px_170px_minmax(0,1.6fr)]"
 		>
 			<div role="cell" className="grid content-start gap-2">
 				<p className="text-sm leading-5 font-semibold">{requirement.text}</p>
 				<div className="flex flex-wrap items-center gap-2 @3xl:hidden">
 					<StatusPill status={status} />
-					<span className="text-[13px] text-ink-3">{from}</span>
+					<span className="text-sm text-muted">{from}</span>
 				</div>
 			</div>
-			<p role="cell" className="hidden text-[13px] leading-5 text-ink-2 @3xl:block">
+			<p role="cell" className="hidden text-sm leading-5 text-muted @3xl:block">
 				{from}
 			</p>
 			<div role="cell" className="hidden @3xl:block">
 				<StatusPill status={status} />
 			</div>
 			<div role="cell" className="grid content-start justify-items-start gap-2.5">
-				<p className={cn("text-sm leading-5", status === "missing" ? "text-ink-2" : "text-ink")}>{evidence}</p>
+				<p className={cn("text-sm leading-5", status === "missing" ? "text-muted" : "text-foreground")}>{evidence}</p>
 				{canAdd && (
 					<Swap id={editing ? "editor" : "action"} className="w-full">
 						{editing ? (
@@ -329,7 +331,7 @@ function EvidenceEditor({ requirement, onCancel, onSaved }: EvidenceEditorProps)
 				className="min-h-14"
 			/>
 			{touched && empty && (
-				<p role="alert" className="text-xs text-danger-text">
+				<p role="alert" className="text-xs text-danger">
 					<Trans>Write what you did.</Trans>
 				</p>
 			)}
@@ -354,9 +356,11 @@ function WorthAsking({ ask, applicationId, readOnly }: WorthAskingProps) {
 	const added = workspace.data.questions.some((question) => question.text === ask.text);
 
 	return (
-		<section className="grid justify-items-start gap-2.5 rounded-xl border border-line bg-surface p-4">
-			<h3 className="text-sm font-semibold">{ask.person ? t`Worth asking ${ask.person}` : t`Worth asking`}</h3>
-			<p className="text-sm leading-[21px] text-ink-2">{ask.text}</p>
+		<CareerWidget
+			title={ask.person ? t`Worth asking ${ask.person}` : t`Worth asking`}
+			contentClassName="justify-items-start"
+		>
+			<p className="text-sm leading-5 text-muted">{ask.text}</p>
 			{!readOnly && (
 				<Button
 					size="sm"
@@ -370,6 +374,6 @@ function WorthAsking({ ask, applicationId, readOnly }: WorthAskingProps) {
 					{added ? <Trans>Added to Prepare</Trans> : <Trans>Add to questions</Trans>}
 				</Button>
 			)}
-		</section>
+		</CareerWidget>
 	);
 }

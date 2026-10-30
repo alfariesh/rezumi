@@ -2,8 +2,8 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Button, Checkbox, Label, Spinner, TextArea, Tooltip, Skeleton } from "@heroui/react";
+import { Segment, Widget } from "@heroui-pro/react";
+import { Alert, Button, Checkbox, Chip, Label, ProgressBar, Skeleton, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -18,7 +18,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useCoachKnowledge } from "../coach-thread";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useSessionDraft } from "../hooks";
-import { CollapseRow, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
+import { CareerWidget, CollapseRow, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
 import {
 	acceptAudioFile,
 	canDictate,
@@ -77,36 +77,40 @@ export function PractiseTab({ application, version, interview, speak, story, now
 		: practiceQuestions(saved.data, interview?.id, application.company);
 	if (story && knowledge.isError)
 		return (
-			<Notice icon="warning-circle">
-				<span>
-					<Trans>Your story couldn't be loaded.</Trans>
-				</span>
-				<Button onPress={() => knowledge.retry()}>
-					<Trans>Try again</Trans>
-				</Button>
+			<Notice
+				icon="warning-circle"
+				action={
+					<Button size="sm" variant="danger" onPress={() => knowledge.retry()}>
+						<Trans>Try again</Trans>
+					</Button>
+				}
+			>
+				<Trans>Your story couldn't be loaded.</Trans>
 			</Notice>
 		);
-	if (story && !knowledge.loaded) return <Skeleton className="h-60 rounded-xl" />;
+	if (story && !knowledge.loaded) return <Skeleton className="h-60 rounded-2xl" />;
 	if (story && !selectedStory)
 		return (
-			<Notice icon="warning-circle">
-				<span>
-					<Trans>This story is unavailable or uses facts that are switched off.</Trans>
-				</span>
-				<Button variant="secondary" onPress={() => go("practise")}>
-					<Trans>Practice another question</Trans>
-				</Button>
+			<Notice
+				icon="warning-circle"
+				action={
+					<Button size="sm" variant="secondary" onPress={() => go("practise")}>
+						<Trans>Practice another question</Trans>
+					</Button>
+				}
+			>
+				<Trans>This story is unavailable or uses facts that are switched off.</Trans>
 			</Notice>
 		);
 
 	return (
-		<div className="grid items-start gap-5 @3xl:grid-cols-[minmax(0,1fr)_280px]">
+		<div className="grid items-start gap-6 @3xl:grid-cols-[minmax(0,1fr)_280px]">
 			{viewing ? (
 				<SavedAttempt item={viewing} />
 			) : saved.isPending ? (
-				<div className="grid gap-4">
-					<Skeleton className="h-40 rounded-xl" />
-					<Skeleton className="h-60 rounded-xl" />
+				<div className="grid gap-6">
+					<Skeleton className="h-40 rounded-2xl" />
+					<Skeleton className="h-60 rounded-2xl" />
 				</div>
 			) : (
 				<Session
@@ -120,16 +124,13 @@ export function PractiseTab({ application, version, interview, speak, story, now
 					initialMode={speak ? "spoken" : "typed"}
 				/>
 			)}
-			<aside className="grid gap-3 rounded-xl border border-line bg-surface p-4">
-				<h2 className="border-b border-line pb-3 text-sm font-semibold">
-					<Trans>Your attempts</Trans>
-				</h2>
+			<CareerWidget title={t`Your attempts`} icon="clock" count={attempts.length > 0 ? attempts.length : undefined}>
 				{attempts.length === 0 ? (
-					<p className="text-[13px] leading-[19px] text-ink-3">
+					<p className="text-sm text-muted">
 						<Trans>Each answer you get feedback on is kept here, newest first.</Trans>
 					</p>
 				) : (
-					<ul className="-mx-2 grid gap-0.5">
+					<ul className="-m-2 grid gap-0.5">
 						{attempts.map((item) => (
 							<li key={item.id}>
 								<AttemptRow
@@ -142,12 +143,12 @@ export function PractiseTab({ application, version, interview, speak, story, now
 						))}
 					</ul>
 				)}
-				<p className="text-xs leading-[17px] text-ink-3">
+				<p className="text-xs leading-[17px] text-muted">
 					<Trans>
 						Compare attempts to see what improved. Practice questions are simulated, not from {application.company}.
 					</Trans>
 				</p>
-			</aside>
+			</CareerWidget>
 		</div>
 	);
 }
@@ -163,14 +164,18 @@ function AttemptRow({ item, now, current, onOpen }: AttemptRowProps) {
 			type="button"
 			aria-current={current || undefined}
 			onClick={onOpen}
-			className="grid w-full gap-1 rounded-lg px-2 py-2 text-start transition-colors duration-quick hover:bg-hover aria-[current]:bg-sunken"
+			className="grid w-full cursor-(--cursor-interactive) gap-1.5 rounded-xl p-2 text-start outline-none hover:bg-surface-secondary focus-visible:ring-2 focus-visible:ring-focus aria-[current]:bg-surface-secondary"
 		>
-			<span className="flex items-center gap-1.5 text-xs text-ink-3">
+			<span className="flex items-center gap-1.5 text-xs text-muted">
 				<Icon name={item.data.mode === "spoken" ? "microphone" : "keyboard"} size={15} />
 				{at} · {item.data.mode === "spoken" ? t`spoken` : t`typed`}
 			</span>
-			<q className="line-clamp-2 text-[13px] leading-[19px] text-ink">{item.data.answer}</q>
-			{item.data.note && <span className="text-xs text-warn-text">{item.data.note}</span>}
+			<q className="line-clamp-2 text-sm leading-5">{item.data.answer}</q>
+			{item.data.note && (
+				<Chip size="sm" variant="soft" color="warning" className="w-fit">
+					{item.data.note}
+				</Chip>
+			)}
 		</button>
 	);
 }
@@ -403,6 +408,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 	const answerField = (
 		<TextArea
 			fullWidth
+			variant="secondary"
 			id={`${id}-answer`}
 			aria-labelledby={`${id}-heading`}
 			value={answer}
@@ -414,28 +420,33 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 	);
 
 	return (
-		<div className="grid min-w-0 gap-4">
-			<section className="grid gap-3 rounded-xl border border-line bg-surface p-5">
-				<div className="flex flex-wrap items-center justify-between gap-2">
-					<p className="font-mono text-xs font-medium text-ink-2">
-						{t`Question ${position} of ${total}`} · {question.origin === "recalled" ? t`Recalled` : t`Practice`}
-					</p>
-					{canHear && (
-						<HearIt
-							key={`${question.text}:${voice.settings.speak.providerId}:${voice.settings.speak.model}`}
-							text={question.text}
-							voice={voice}
-						/>
-					)}
-				</div>
-				<h2 className="font-display text-[22px] leading-[29px]">{question.text}</h2>
-				{storyTitle && <p className="text-sm text-ink-2">{t`Practicing your story: ${storyTitle}`}</p>}
-			</section>
+		<div className="grid min-w-0 gap-6">
+			<CareerWidget
+				title={t`Question ${position} of ${total}`}
+				trailing={
+					<span className="flex items-center gap-2">
+						<Chip size="sm" variant="soft">
+							{question.origin === "recalled" ? t`Recalled` : t`Practice`}
+						</Chip>
+						{canHear && (
+							<HearIt
+								key={`${question.text}:${voice.settings.speak.providerId}:${voice.settings.speak.model}`}
+								text={question.text}
+								voice={voice}
+							/>
+						)}
+					</span>
+				}
+			>
+				<h2 className="text-xl leading-7 font-semibold">{question.text}</h2>
+				{storyTitle && <p className="text-sm text-muted">{t`Practicing your story: ${storyTitle}`}</p>}
+			</CareerWidget>
 
 			{/* Space starts and stops recording while focus is in this card (the record button handles it natively). */}
-			<section
+			<Widget
+				role="region"
 				aria-labelledby={`${id}-heading`}
-				className="grid gap-4 rounded-xl border border-line bg-surface p-4 outline-none md:p-5"
+				className="outline-none"
 				tabIndex={-1}
 				onKeyDown={(event) => {
 					if (event.key !== " " || mode !== "spoken" || !canTalk || spoken || event.target !== event.currentTarget)
@@ -444,219 +455,235 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 					toggleRecording();
 				}}
 			>
-				<div className="flex flex-wrap items-center justify-between gap-3">
-					<h2 id={`${id}-heading`} className="text-sm font-semibold">
+				<Widget.Header>
+					<Widget.Title id={`${id}-heading`} role="heading" aria-level={2}>
 						<Trans>Your answer</Trans>
-					</h2>
+					</Widget.Title>
 					<ModeSwitch value={mode} onChange={chooseMode} />
-				</div>
-
-				{mode === "typed" ? (
-					answerField
-				) : connection.isUnavailable ? (
-					<AiProviderLoadState state={connection} />
-				) : !canTalk ? (
-					<p className="rounded-lg bg-sunken px-3.5 py-3 text-[13px] leading-[19px] text-ink-2">
-						<Trans>
-							This browser can't take dictation, and none of your AI connections can transcribe speech (OpenAI, Google
-							Gemini, Mistral, xAI, Groq or Vercel AI Gateway can).{" "}
-							<Link to="/dashboard/settings/ai" className="text-accent-text underline underline-offset-3">
-								Add one in Settings
-							</Link>
-							, or type your answer.
-						</Trans>
-					</p>
-				) : spoken ? (
-					<>
-						<p className="-mb-2 flex flex-wrap items-center gap-1.5 text-xs text-ink-3">
-							<Icon name="waveform" size={16} />
-							<Trans>Transcribed</Trans>
-							{spoken.seconds !== null && <span className="font-mono">· {clock(spoken.seconds)}</span>}
-							<span>
-								· <Trans>check numbers and names before using it</Trans>
-							</span>
-						</p>
-						{answerField}
-						<div className="-mt-1 flex flex-wrap gap-2">
-							<Button size="sm" variant="secondary" onPress={() => setAnswer(writeNumbersAsDigits(answer))}>
-								<Trans>Write numbers as digits</Trans>
-							</Button>
-							<Button
-								size="sm"
-								variant="ghost"
-								onPress={() => {
-									setSpoken(null);
-									void startRecording();
-								}}
-							>
-								<Trans>Record again</Trans>
-							</Button>
-						</div>
-					</>
-				) : step.name === "transcribing" ? (
-					<p role="status" className="flex items-center gap-2.5 rounded-lg bg-sunken px-3.5 py-3 text-sm text-ink-2">
-						<Spinner size="sm" color="current" className="text-accent" aria-hidden />
-						<Trans>Transcribing with {model}…</Trans>
-					</p>
-				) : step.name === "error" ? (
-					<Notice icon="warning-circle">
-						<span className="min-w-0 flex-1">
-							<Trans>Couldn't transcribe. Your recording is still here.</Trans>
-						</span>
-						<span className="flex gap-1">
-							<Button size="sm" variant="secondary" onPress={() => audio && void transcribe(audio)}>
-								<Trans>Try again</Trans>
-							</Button>
-							<Button size="sm" variant="ghost" onPress={() => chooseMode("typed")}>
-								<Trans>Type instead</Trans>
-							</Button>
-						</span>
-					</Notice>
-				) : (
-					<>
-						<div
-							className={cn(
-								"flex flex-wrap items-center gap-x-3.5 gap-y-3 rounded-lg p-3.5 transition-colors duration-quick",
-								recordingNow ? "bg-danger-soft" : "bg-sunken",
-							)}
-						>
-							{/* One button for both, so focus stays on it and Space stops what Space started. */}
-							<button
-								type="button"
-								aria-label={recordingNow ? t`Stop recording` : t`Record your answer`}
-								onClick={toggleRecording}
-								className="touch-target relative grid size-[52px] shrink-0 place-items-center rounded-sm bg-danger text-white transition-[filter,scale] duration-quick ease-enter hover:brightness-95 active:scale-[0.97]"
-							>
-								<Icon name={recordingNow ? "stop" : "microphone"} filled={recordingNow} size={24} />
-							</button>
-							<div className="grid min-w-0 flex-1 basis-48 gap-0.5">
-								{recordingNow ? (
-									<>
-										<p className="text-sm font-semibold text-danger-text">
-											<Trans>Recording · {elapsed}</Trans>
-										</p>
-										<p className="text-[13px] leading-[19px] text-ink-2">
-											{browserDictation ? (
-												heard || <Trans>Listening… Stop when you're done.</Trans>
-											) : (
-												<Trans>Stop when you're done. Nothing is sent until then.</Trans>
-											)}
-										</p>
-									</>
-								) : (
-									<>
-										<p className="text-sm font-semibold">
-											<Trans>Record your answer</Trans>
-										</p>
-										<p className="text-[13px] leading-[19px] text-ink-2">
-											{browserDictation ? (
-												<Trans>Up to 2 minutes. Your words appear as you speak.</Trans>
-											) : (
-												<Trans>
-													Up to 2 minutes. Or{" "}
-													<button
-														type="button"
-														className="underline underline-offset-3 hover:text-ink"
-														onClick={() => fileInput.current?.click()}
-													>
-														choose an audio file
-													</button>{" "}
-													up to 2 MB.
-												</Trans>
-											)}
-										</p>
-									</>
-								)}
-							</div>
-							{recordingNow && (
-								<div
-									role="progressbar"
-									aria-label={t`Recording time`}
-									aria-valuemin={0}
-									aria-valuemax={MAX_SECONDS}
-									aria-valuenow={step.seconds}
-									aria-valuetext={clock(step.seconds)}
-									className="h-1.5 w-[180px] max-w-full overflow-hidden rounded-sm bg-bg"
-								>
-									<div
-										className="h-full rounded-sm bg-danger-text transition-[width] duration-1000 ease-linear"
-										style={{ width: `${(step.seconds / MAX_SECONDS) * 100}%` }}
-									/>
-								</div>
-							)}
-							<input
-								ref={fileInput}
-								type="file"
-								accept="audio/*"
-								hidden
-								onChange={(event) => {
-									const file = event.target.files?.[0];
-									event.target.value = "";
-									if (!file) return;
-									const accepted = acceptAudioFile(file);
-									if (accepted) takeAudio(accepted, null);
-									else setStep({ name: "failed", message: t`Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB.` });
-								}}
-							/>
-						</div>
-						{step.name === "blocked" && (
-							<Notice icon="warning-circle">
-								<span className="min-w-0 flex-1">
-									<Trans>Microphone blocked. Allow it in your browser settings, or type your answer.</Trans>
-								</span>
-								<Button size="sm" variant="secondary" onPress={() => chooseMode("typed")}>
-									<Icon name="keyboard" size={16} />
-									<Trans>Type instead</Trans>
-								</Button>
-							</Notice>
-						)}
-						{step.name === "failed" && <Notice icon="warning-circle">{step.message}</Notice>}
-					</>
-				)}
-				<p className="sr-only" aria-live="polite">
-					{announcement}
-				</p>
-
-				{mode === "spoken" && canTalk && (
-					<PrivacyLine>
-						{browserDictation
-							? t`Your browser turns your speech into text. Depending on the browser, its maker may process the audio (Google in Chrome, Apple in Safari).`
-							: t`Your recording goes to ${voice.settings.transcribe.label} to be transcribed, which may use tokens on that account.`}
-					</PrivacyLine>
-				)}
-				{mode === "spoken" && <VoiceSettingsPanel voice={voice} audio={audio} disabled={busy} />}
-
-				<div className="grid gap-2.5">
-					<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-						<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={getFeedback}>
-							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
-							{generate.isPending ? <Working steps={workingSteps("practice")} /> : <Trans>Get feedback</Trans>}
-						</Button>
-						<p className="text-xs text-ink-2">
-							<Trans>Compared with your stories and the posting.</Trans>
-						</p>
-					</div>
-					{connection.isUnavailable ? (
+				</Widget.Header>
+				<Widget.Content className="grid gap-4">
+					{mode === "typed" ? (
+						answerField
+					) : connection.isUnavailable ? (
 						<AiProviderLoadState state={connection} />
-					) : provider ? (
-						<PrivacyLine>
-							<Trans>
-								Get feedback sends the question, your answer, this posting and your stories to {providerName}.
-							</Trans>
-						</PrivacyLine>
+					) : !canTalk ? (
+						<Alert>
+							<Alert.Indicator />
+							<Alert.Content>
+								<Alert.Description>
+									<Trans>
+										This browser can't take dictation, and none of your AI connections can transcribe speech (OpenAI,
+										Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can).{" "}
+										<Link to="/dashboard/settings/ai" className="text-accent underline underline-offset-3">
+											Add one in Settings
+										</Link>
+										, or type your answer.
+									</Trans>
+								</Alert.Description>
+							</Alert.Content>
+						</Alert>
+					) : spoken ? (
+						<>
+							<p className="-mb-2 flex flex-wrap items-center gap-1.5 text-xs text-muted">
+								<Icon name="waveform" size={16} />
+								<Trans>Transcribed</Trans>
+								{spoken.seconds !== null && <span className="tabular-nums">· {clock(spoken.seconds)}</span>}
+								<span>
+									· <Trans>check numbers and names before using it</Trans>
+								</span>
+							</p>
+							{answerField}
+							<div className="-mt-1 flex flex-wrap gap-2">
+								<Button size="sm" variant="secondary" onPress={() => setAnswer(writeNumbersAsDigits(answer))}>
+									<Trans>Write numbers as digits</Trans>
+								</Button>
+								<Button
+									size="sm"
+									variant="ghost"
+									onPress={() => {
+										setSpoken(null);
+										void startRecording();
+									}}
+								>
+									<Trans>Record again</Trans>
+								</Button>
+							</div>
+						</>
+					) : step.name === "transcribing" ? (
+						<p
+							role="status"
+							className="flex items-center gap-2.5 rounded-2xl bg-default px-4 py-3.5 text-sm text-muted"
+						>
+							<Spinner size="sm" color="current" className="text-accent" aria-hidden />
+							<Trans>Transcribing with {model}…</Trans>
+						</p>
+					) : step.name === "error" ? (
+						<Notice
+							icon="warning-circle"
+							action={
+								<>
+									<Button size="sm" variant="danger" onPress={() => audio && void transcribe(audio)}>
+										<Trans>Try again</Trans>
+									</Button>
+									<Button size="sm" variant="ghost" onPress={() => chooseMode("typed")}>
+										<Trans>Type instead</Trans>
+									</Button>
+								</>
+							}
+						>
+							<Trans>Couldn't transcribe. Your recording is still here.</Trans>
+						</Notice>
 					) : (
+						<>
+							<div
+								className={cn(
+									"flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl p-4 transition-colors duration-quick",
+									recordingNow ? "bg-danger-soft" : "bg-default",
+								)}
+							>
+								{/* One button for both, so focus stays on it and Space stops what Space started. */}
+								<Tooltip>
+									<Button
+										isIconOnly
+										size="lg"
+										variant="danger"
+										aria-label={recordingNow ? t`Stop recording` : t`Record your answer`}
+										onPress={toggleRecording}
+										className="touch-target shrink-0"
+									>
+										<Icon name={recordingNow ? "stop" : "microphone"} filled={recordingNow} size={22} />
+									</Button>
+									<Tooltip.Content>{recordingNow ? t`Stop recording` : t`Record your answer`}</Tooltip.Content>
+								</Tooltip>
+								<div className="grid min-w-0 flex-1 basis-48 gap-0.5">
+									{recordingNow ? (
+										<>
+											<p className="text-sm font-semibold text-danger-soft-foreground">
+												<Trans>Recording · {elapsed}</Trans>
+											</p>
+											<p className="text-sm text-muted">
+												{browserDictation ? (
+													heard || <Trans>Listening… Stop when you're done.</Trans>
+												) : (
+													<Trans>Stop when you're done. Nothing is sent until then.</Trans>
+												)}
+											</p>
+										</>
+									) : (
+										<>
+											<p className="text-sm font-semibold">
+												<Trans>Record your answer</Trans>
+											</p>
+											<p className="text-sm text-muted">
+												{browserDictation ? (
+													<Trans>Up to 2 minutes. Your words appear as you speak.</Trans>
+												) : (
+													<Trans>
+														Up to 2 minutes. Or{" "}
+														<button
+															type="button"
+															className="cursor-(--cursor-interactive) rounded-sm underline underline-offset-3 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-focus"
+															onClick={() => fileInput.current?.click()}
+														>
+															choose an audio file
+														</button>{" "}
+														up to 2 MB.
+													</Trans>
+												)}
+											</p>
+										</>
+									)}
+								</div>
+								{recordingNow && (
+									<ProgressBar
+										aria-label={t`Recording time`}
+										color="danger"
+										size="sm"
+										maxValue={MAX_SECONDS}
+										value={step.seconds}
+										valueLabel={clock(step.seconds)}
+										className="w-45 max-w-full"
+									>
+										<ProgressBar.Track>
+											<ProgressBar.Fill />
+										</ProgressBar.Track>
+									</ProgressBar>
+								)}
+								<input
+									ref={fileInput}
+									type="file"
+									accept="audio/*"
+									hidden
+									onChange={(event) => {
+										const file = event.target.files?.[0];
+										event.target.value = "";
+										if (!file) return;
+										const accepted = acceptAudioFile(file);
+										if (accepted) takeAudio(accepted, null);
+										else setStep({ name: "failed", message: t`Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB.` });
+									}}
+								/>
+							</div>
+							{step.name === "blocked" && (
+								<Notice
+									icon="warning-circle"
+									action={
+										<Button size="sm" variant="secondary" onPress={() => chooseMode("typed")}>
+											<Trans>Type instead</Trans>
+										</Button>
+									}
+								>
+									<Trans>Microphone blocked. Allow it in your browser settings, or type your answer.</Trans>
+								</Notice>
+							)}
+							{step.name === "failed" && <Notice icon="warning-circle">{step.message}</Notice>}
+						</>
+					)}
+					<p className="sr-only" aria-live="polite">
+						{announcement}
+					</p>
+
+					{mode === "spoken" && canTalk && (
 						<PrivacyLine>
-							<Trans>
-								Feedback needs an AI connection.{" "}
-								<Link to="/dashboard/settings/ai" className="text-accent-text underline underline-offset-3">
-									Add one in Settings
-								</Link>
-								. Nothing is sent until you ask.
-							</Trans>
+							{browserDictation
+								? t`Your browser turns your speech into text. Depending on the browser, its maker may process the audio (Google in Chrome, Apple in Safari).`
+								: t`Your recording goes to ${voice.settings.transcribe.label} to be transcribed, which may use tokens on that account.`}
 						</PrivacyLine>
 					)}
-				</div>
-			</section>
+					{mode === "spoken" && <VoiceSettingsPanel voice={voice} audio={audio} disabled={busy} />}
+
+					<div className="grid gap-3">
+						<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+							<Button isDisabled={!ready || !provider} isPending={generate.isPending} onPress={getFeedback}>
+								{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
+								{generate.isPending ? <Working steps={workingSteps("practice")} /> : <Trans>Get feedback</Trans>}
+							</Button>
+							<p className="text-xs text-muted">
+								<Trans>Compared with your stories and the posting.</Trans>
+							</p>
+						</div>
+						{connection.isUnavailable ? (
+							<AiProviderLoadState state={connection} />
+						) : provider ? (
+							<PrivacyLine>
+								<Trans>
+									Get feedback sends the question, your answer, this posting and your stories to {providerName}.
+								</Trans>
+							</PrivacyLine>
+						) : (
+							<PrivacyLine>
+								<Trans>
+									Feedback needs an AI connection.{" "}
+									<Link to="/dashboard/settings/ai" className="text-accent underline underline-offset-3">
+										Add one in Settings
+									</Link>
+									. Nothing is sent until you ask.
+								</Trans>
+							</PrivacyLine>
+						)}
+					</div>
+				</Widget.Content>
+			</Widget>
 
 			{feedback && showFeedback && (
 				<FeedbackCard data={feedback.data}>
@@ -674,10 +701,10 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						</Button>
 						<Button size="sm" variant="ghost" onPress={nextQuestion}>
 							<Trans>Next question</Trans>
-							<Icon name="arrow-right" size={16} />
+							<Icon name="arrow-right" size={16} className="rtl:-scale-x-100" />
 						</Button>
-						<span className="ms-auto flex items-center gap-1 text-xs text-ink-3">
-							<Icon name="check-circle" size={15} />
+						<span className="ms-auto flex items-center gap-1 text-xs text-muted">
+							<Icon name="check-circle" size={15} className="text-success" />
 							<Trans>Saved to Saved · Practice</Trans>
 						</span>
 					</div>
@@ -687,15 +714,20 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 	);
 }
 
-function Notice({ icon, children }: { icon: IconName; children: ReactNode }) {
+type NoticeProps = { icon: IconName; children: ReactNode; action?: ReactNode };
+
+/** A failure the user can recover from: what happened, and the way out. */
+function Notice({ icon, children, action }: NoticeProps) {
 	return (
-		<div
-			role="alert"
-			className="flex flex-wrap items-center gap-x-2.5 gap-y-2 rounded-lg bg-danger-soft px-3.5 py-3 text-[13px] leading-[19px] text-danger-text"
-		>
-			<Icon name={icon} size={18} className="shrink-0" />
-			{children}
-		</div>
+		<Alert status="danger" role="alert">
+			<Alert.Indicator>
+				<Icon name={icon} size={18} />
+			</Alert.Indicator>
+			<Alert.Content>
+				<Alert.Description>{children}</Alert.Description>
+				{action && <div className="mt-2 flex flex-wrap gap-1">{action}</div>}
+			</Alert.Content>
+		</Alert>
 	);
 }
 
@@ -705,7 +737,12 @@ function ModeSwitch({ value, onChange }: { value: Mode; onChange: (mode: Mode) =
 		{ value: "spoken", label: t`Speak`, icon: "microphone" },
 	] as const;
 	return (
-		<Segment aria-label={t`Answer by`} selectedKey={value} onSelectionChange={(next) => onChange(String(next) as Mode)}>
+		<Segment
+			aria-label={t`Answer by`}
+			size="sm"
+			selectedKey={value}
+			onSelectionChange={(next) => onChange(String(next) as Mode)}
+		>
 			{options.map((option) => (
 				<Segment.Item key={option.value} id={option.value}>
 					<Icon name={option.icon} size={16} />
@@ -867,23 +904,24 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 	if (voice.providerState.isUnavailable) return null;
 	return (
 		<div className="grid">
-			<button
-				type="button"
+			<Button
+				size="sm"
+				variant="ghost"
 				aria-expanded={open}
-				onClick={() => setOpen(!open)}
-				className="touch-target relative flex w-fit items-center gap-1 rounded-sm py-1 text-xs font-medium text-ink-2 transition-colors duration-quick hover:text-ink"
+				onPress={() => setOpen(!open)}
+				className="touch-target -ms-2 w-fit text-muted"
 			>
 				<Icon
 					name="caret-right"
 					size={16}
-					className={cn("transition-transform duration-standard ease-enter", open && "rotate-90")}
+					className={cn("transition-transform duration-standard ease-enter rtl:-scale-x-100", open && "rotate-90")}
 				/>
 				<Trans>Voice settings</Trans>
-			</button>
+			</Button>
 			<AnimatePresence initial={false}>
 				{open && (
 					<CollapseRow>
-						<div className="mt-2 grid gap-3 rounded-lg bg-bg p-3">
+						<div className="mt-2 grid gap-4 rounded-2xl bg-default p-4">
 							<div className="grid gap-3 sm:grid-cols-2">
 								<VoiceSelect
 									id={`${id}-transcribe`}
@@ -906,9 +944,9 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 							</div>
 							{!browserTranscribes && (
 								<div className="flex flex-wrap items-center justify-between gap-2">
-									<Checkbox isSelected={settings.keep} onChange={(keep) => update({ keep })} className="text-[13px]">
+									<Checkbox isSelected={settings.keep} onChange={(keep) => update({ keep })} className="text-sm">
 										<Checkbox.Content>
-											<Checkbox.Control>
+											<Checkbox.Control className="bg-surface">
 												<Checkbox.Indicator />
 											</Checkbox.Control>
 											<Trans>Keep the recording in this browser so I can download it</Trans>
@@ -918,7 +956,7 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 										<a
 											href={audio.url}
 											download={audio.file.name}
-											className="flex items-center gap-1 text-[13px] text-accent-text underline-offset-3 hover:underline"
+											className="flex items-center gap-1 text-sm text-accent underline-offset-3 hover:underline"
 										>
 											<Icon name="download-simple" size={16} />
 											<Trans>Download</Trans>
@@ -926,7 +964,7 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 									)}
 								</div>
 							)}
-							<p className="text-xs leading-[17px] text-ink-3">
+							<p className="text-xs leading-[17px] text-muted">
 								<Trans>
 									Connections bill speech separately and may use tokens on your account. Your browser's speech is free,
 									but its maker may process the audio. The server keeps transcripts, never recordings.
@@ -994,60 +1032,53 @@ type FeedbackCardProps = { data: Practice; children?: ReactNode };
 /** Always the same shape, so attempts can be compared. Appears with a short rise when it arrives. */
 function FeedbackCard({ data, children }: FeedbackCardProps) {
 	return (
-		<section
-			aria-label={t`Feedback`}
-			className={cn("grid gap-4 rounded-xl border border-line bg-surface p-4 md:p-5", ENTER_CLASS)}
-		>
+		<CareerWidget title={t`Feedback`} icon="sparkle" className={ENTER_CLASS} contentClassName="gap-4">
 			<h2 className="text-base font-semibold">{data.title}</h2>
-			<div className="grid gap-2.5 sm:grid-cols-2">
-				<div className="grid content-start gap-1.5 rounded-lg bg-accent-soft p-3.5">
-					<p className="flex items-center gap-1.5 text-xs font-semibold text-accent-text">
+			<div className="grid gap-3 sm:grid-cols-2">
+				<div className="grid content-start gap-1.5 rounded-xl bg-success-soft p-4">
+					<p className="flex items-center gap-1.5 text-xs font-semibold text-success-soft-foreground">
 						<Icon name="thumbs-up" size={16} />
 						<Trans>What works</Trans>
 					</p>
 					<p className="text-sm leading-[21px]">{data.works}</p>
 				</div>
-				<div className="grid content-start gap-1.5 rounded-lg bg-warn-soft p-3.5">
-					<p className="flex items-center gap-1.5 text-xs font-semibold text-warn-text">
+				<div className="grid content-start gap-1.5 rounded-xl bg-warning-soft p-4">
+					<p className="flex items-center gap-1.5 text-xs font-semibold text-warning-soft-foreground">
 						<Icon name="wrench" size={16} />
 						<Trans>Strengthen</Trans>
 					</p>
 					<p className="text-sm leading-[21px]">{data.strengthen}</p>
 				</div>
 			</div>
-			<div className="grid gap-1.5 rounded-e-lg border-s-[3px] border-line-2 bg-bg py-3 ps-4 pe-4">
-				<p className="text-xs font-semibold text-ink-3">
+			<div className="grid gap-1.5 rounded-xl bg-default p-4">
+				<p className="text-xs font-semibold text-muted">
 					<Trans>Try this opening</Trans>
 				</p>
-				<q className="font-display text-base leading-6 md:text-[17px] md:leading-[26px]">{data.opening}</q>
+				<q className="text-[15px] leading-6">{data.opening}</q>
 			</div>
 			{children}
-		</section>
+		</CareerWidget>
 	);
 }
 
 /** A practice attempt opened from Saved: its question, answer and feedback, read-only. */
 function SavedAttempt({ item }: { item: Attempt }) {
 	return (
-		<div className="grid min-w-0 gap-4">
-			<section className="grid gap-3 rounded-xl border border-line bg-surface p-5">
-				<p className="font-mono text-xs font-medium text-ink-2">
-					{item.data.origin === "recalled" ? t`Recalled` : t`Practice`}
-				</p>
-				<h2 className="font-display text-[22px] leading-[29px]">{item.data.question}</h2>
-			</section>
-			<section className="grid gap-3 rounded-xl border border-line bg-surface p-4 md:p-5">
-				<h2 className="flex items-center gap-1.5 text-sm font-semibold">
-					<Trans>Your answer</Trans>
-					<span className="flex items-center gap-1 text-xs font-normal text-ink-3">
-						· <Icon name={item.data.mode === "spoken" ? "microphone" : "keyboard"} size={15} />
-						{item.data.mode === "spoken" ? t`spoken` : t`typed`}
-					</span>
-				</h2>
-				<p className="rounded-md border border-line bg-raised px-3.5 py-3 text-[15px] leading-[23px] whitespace-pre-wrap">
-					{item.data.answer}
-				</p>
-			</section>
+		<div className="grid min-w-0 gap-6">
+			<CareerWidget title={item.data.origin === "recalled" ? t`Recalled` : t`Practice`} contentClassName="gap-2">
+				<h2 className="text-xl leading-7 font-semibold">{item.data.question}</h2>
+			</CareerWidget>
+			<CareerWidget
+				title={t`Your answer`}
+				trailing={
+					<Chip size="sm" variant="soft" className="gap-1">
+						<Icon name={item.data.mode === "spoken" ? "microphone" : "keyboard"} size={14} />
+						<Chip.Label>{item.data.mode === "spoken" ? t`spoken` : t`typed`}</Chip.Label>
+					</Chip>
+				}
+			>
+				<p className="rounded-xl bg-default p-4 text-[15px] leading-[23px] whitespace-pre-wrap">{item.data.answer}</p>
+			</CareerWidget>
 			<FeedbackCard data={item.data} />
 		</div>
 	);

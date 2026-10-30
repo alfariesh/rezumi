@@ -1,7 +1,19 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
-import { Button, Checkbox, Dropdown, Label, Spinner, TextArea, Tooltip, Skeleton } from "@heroui/react";
+import {
+	Alert,
+	Button,
+	Checkbox,
+	Chip,
+	Dropdown,
+	Label,
+	ProgressBar,
+	Spinner,
+	TextArea,
+	Tooltip,
+	Skeleton,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,7 +26,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDebouncedSave, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
-import { CollapseRow, Swap, useCareerTime, withUndo, Working, workingSteps } from "../shared";
+import { CareerWidget, CollapseRow, Swap, useCareerTime, withUndo, Working, workingSteps } from "../shared";
 import { AiNotice } from "./fit";
 import { useInvalidateApplications } from "@/features/applications/use-application-actions";
 import { toastError } from "@/libs/error-message";
@@ -96,25 +108,32 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 	};
 
 	return (
-		<div className="grid items-start gap-5 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_320px]">
+		<div className="grid items-start gap-6 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_320px]">
 			<div className="grid gap-4">
 				{application.status !== "saved" && (
-					<p className="flex gap-2.5 rounded-xl bg-accent-soft px-4 py-3 text-[13px] leading-[18px] text-accent-text">
-						<Icon name="check-circle" size={18} className="mt-px shrink-0" />
-						<span>
-							<Trans>
-								<strong className="font-semibold">Submitted on {day(application.appliedAt)}.</strong> The versions you
-								sent are kept in Saved. Edits here don't change what {application.company} received.
-							</Trans>
-						</span>
-					</p>
+					<Alert status="success">
+						<Alert.Indicator />
+						<Alert.Content>
+							<Alert.Description>
+								<Trans>
+									<strong className="font-semibold">Submitted on {day(application.appliedAt)}.</strong> The versions you
+									sent are kept in Saved. Edits here don't change what {application.company} received.
+								</Trans>
+							</Alert.Description>
+						</Alert.Content>
+					</Alert>
 				)}
 
 				{stored && !readOnlyVersion && (
-					<div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-sunken px-3.5 py-2.5 text-sm">
-						<span>
-							<Trans>These are the answers saved when you applied.</Trans>
-						</span>
+					<Alert>
+						<Alert.Indicator>
+							<Icon name="clock-counter-clockwise" size={18} />
+						</Alert.Indicator>
+						<Alert.Content>
+							<Alert.Description>
+								<Trans>These are the answers saved when you applied.</Trans>
+							</Alert.Description>
+						</Alert.Content>
 						<Button
 							size="sm"
 							variant="secondary"
@@ -130,19 +149,20 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 						>
 							<Trans>Use these answers</Trans>
 						</Button>
-					</div>
+					</Alert>
 				)}
 
 				{shown.length > 0 && (
 					<div>
 						<AnimatePresence initial={false}>
-							{shown.map((answer) => (
+							{shown.map((answer, index) => (
 								<CollapseRow
 									key={stored ? `${version?.id ?? sentItem?.id}:${answer.id}` : answer.id}
 									className="pb-4 last:pb-0"
 								>
 									<AnswerCard
 										answer={answer}
+										index={index + 1}
 										facts={facts}
 										applicationId={application.id}
 										readOnly={stored !== undefined}
@@ -162,10 +182,11 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 				{!stored && (
 					<>
 						{shown.length > 0 && <AiNotice />}
-						<button
-							type="button"
-							disabled={submitting || live.length >= 30}
-							onClick={() =>
+						<Button
+							variant="outline"
+							fullWidth
+							isDisabled={submitting || live.length >= 30}
+							onPress={() =>
 								workspace.save({
 									answers: [
 										...workspace.current().answers,
@@ -173,13 +194,13 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 									],
 								})
 							}
-							className="touch-target flex h-9 items-center justify-center gap-1.5 rounded-lg border border-dashed border-line-2 text-[13px] font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink"
+							className="touch-target border-dashed text-muted"
 						>
 							<Icon name="plus" size={16} />
 							<Trans>Add a question from the form</Trans>
-						</button>
+						</Button>
 						{live.length >= 30 && (
-							<p className="text-xs text-ink-3">
+							<p className="text-xs text-muted">
 								<Trans>You can keep up to 30 application questions.</Trans>
 							</p>
 						)}
@@ -202,6 +223,8 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 
 type AnswerCardProps = {
 	answer: Answer;
+	/** Its place in the form, from 1. */
+	index: number;
 	facts: Fact[] | undefined;
 	applicationId: string;
 	readOnly: boolean;
@@ -219,6 +242,7 @@ type AnswerCardProps = {
  */
 function AnswerCard({
 	answer,
+	index,
 	facts,
 	applicationId,
 	readOnly,
@@ -257,92 +281,102 @@ function AnswerCard({
 	};
 
 	return (
-		<section className="grid gap-3 rounded-xl border border-line bg-surface p-4">
-			<div className="flex items-start gap-3">
-				{editingQuestion && !readOnly ? (
-					<TextArea
-						fullWidth
-						// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add a question or Edit question
-						autoFocus
-						rows={1}
-						value={question}
-						maxLength={2000}
-						disabled={disabled}
-						aria-label={t`Question from the form`}
-						placeholder={t`Paste the question from the form`}
-						onChange={(event) => setQuestion(event.target.value)}
-						onFocus={(event) => event.currentTarget.setSelectionRange(question.length, question.length)}
-						onKeyDown={(event) => {
-							// A question is one line of the form; Enter finishes it.
-							if (event.key === "Enter") {
-								event.preventDefault();
-								event.currentTarget.blur();
-							}
-						}}
-						onBlur={() => {
-							flushQuestion();
-							if (question.trim()) setEditingQuestion(false);
-						}}
-						className="field-sizing-content min-h-0 w-full min-w-0 flex-1 resize-none text-[15px] leading-[22px] font-semibold"
-					/>
-				) : (
-					<h2 className="min-w-0 flex-1 text-[15px] leading-[22px] font-semibold">{question}</h2>
-				)}
-				{/* Forms limit words or characters; the count switches between them, for every question at once. */}
-				<Tooltip>
-					<Button variant="ghost" size="sm" onPress={onToggleUnit} className="shrink-0 font-mono text-xs">
-						{unit === "words"
-							? plural(words, { one: "# word", other: "# words" })
-							: plural(characters, { one: "# character", other: "# characters" })}
-					</Button>
-					<Tooltip.Content>{unit === "words" ? t`Count characters` : t`Count words`}</Tooltip.Content>
-				</Tooltip>
-				{!readOnly && (
-					<Dropdown>
-						<IconButton
-							icon="dots-three"
+		<CareerWidget
+			title={t`Question ${index}`}
+			trailing={
+				<span className="flex items-center gap-1">
+					{/* Forms limit words or characters; the count switches between them, for every question at once. */}
+					<Tooltip>
+						<Button
+							variant="ghost"
 							size="sm"
-							label={t`Question options`}
-							isDisabled={Boolean(disabled)}
-							className="-my-1 -me-1.5 shrink-0 text-ink-2"
-						/>
-						<Dropdown.Popover placement="bottom end">
-							<Dropdown.Menu>
-								<Dropdown.Item id="edit" textValue={t`Edit question`} onAction={() => setEditingQuestion(true)}>
-									<Icon name="pencil-simple" size={18} />
-									<Label>
-										<Trans>Edit question</Trans>
-									</Label>
-								</Dropdown.Item>
-								<Dropdown.Item id="remove" textValue={t`Remove question`} variant="danger" onAction={onRemove}>
-									<Icon name="trash" size={18} />
-									<Label>
-										<Trans>Remove question</Trans>
-									</Label>
-								</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown.Popover>
-					</Dropdown>
-				)}
-			</div>
+							onPress={onToggleUnit}
+							className="shrink-0 text-xs text-muted tabular-nums"
+						>
+							{unit === "words"
+								? plural(words, { one: "# word", other: "# words" })
+								: plural(characters, { one: "# character", other: "# characters" })}
+						</Button>
+						<Tooltip.Content>{unit === "words" ? t`Count characters` : t`Count words`}</Tooltip.Content>
+					</Tooltip>
+					{!readOnly && (
+						<Dropdown>
+							<IconButton
+								icon="dots-three"
+								size="sm"
+								label={t`Question options`}
+								isDisabled={Boolean(disabled)}
+								className="shrink-0 text-muted"
+							/>
+							<Dropdown.Popover placement="bottom end">
+								<Dropdown.Menu>
+									<Dropdown.Item id="edit" textValue={t`Edit question`} onAction={() => setEditingQuestion(true)}>
+										<Icon name="pencil-simple" size={18} />
+										<Label>
+											<Trans>Edit question</Trans>
+										</Label>
+									</Dropdown.Item>
+									<Dropdown.Item id="remove" textValue={t`Remove question`} variant="danger" onAction={onRemove}>
+										<Icon name="trash" size={18} />
+										<Label>
+											<Trans>Remove question</Trans>
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
+					)}
+				</span>
+			}
+		>
+			{editingQuestion && !readOnly ? (
+				<TextArea
+					fullWidth
+					variant="secondary"
+					// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add a question or Edit question
+					autoFocus
+					rows={1}
+					value={question}
+					maxLength={2000}
+					disabled={disabled}
+					aria-label={t`Question from the form`}
+					placeholder={t`Paste the question from the form`}
+					onChange={(event) => setQuestion(event.target.value)}
+					onFocus={(event) => event.currentTarget.setSelectionRange(question.length, question.length)}
+					onKeyDown={(event) => {
+						// A question is one line of the form; Enter finishes it.
+						if (event.key === "Enter") {
+							event.preventDefault();
+							event.currentTarget.blur();
+						}
+					}}
+					onBlur={() => {
+						flushQuestion();
+						if (question.trim()) setEditingQuestion(false);
+					}}
+					className="field-sizing-content min-h-0 w-full min-w-0 resize-none text-[15px] leading-[22px] font-semibold"
+				/>
+			) : (
+				<h2 className="min-w-0 text-[15px] leading-[22px] font-semibold">{question}</h2>
+			)}
 
 			<Swap id={proposal ? "diff" : "text"}>
 				{proposal ? (
-					<div className="grid gap-2.5">
-						<p className="rounded-md border border-line-2 bg-raised px-3.5 py-3 text-sm leading-[22px]">
+					<div className="grid gap-3">
+						<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-[22px]">
 							{diffWords(text, proposal.text).map((part, index) => (
 								<span
 									key={index}
 									className={cn(
-										part.type === "removed" && "text-ink-3 line-through",
-										part.type === "added" && "rounded-md bg-accent-soft text-accent-text",
+										part.type === "removed" && "text-muted line-through",
+										part.type === "added" && "rounded-md bg-accent-soft text-accent-soft-foreground",
 									)}
 								>
 									{part.text}{" "}
 								</span>
 							))}
 						</p>
-						<div className="flex gap-1.5">
+						<div className="flex gap-2">
 							<Button
 								size="sm"
 								variant="secondary"
@@ -362,12 +396,13 @@ function AnswerCard({
 						</div>
 					</div>
 				) : readOnly ? (
-					<p className="rounded-md border border-line bg-raised px-3.5 py-3 text-sm leading-[22px] whitespace-pre-wrap text-ink-2">
+					<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-[22px] whitespace-pre-wrap text-muted">
 						{text}
 					</p>
 				) : (
 					<TextArea
 						fullWidth
+						variant="secondary"
 						value={text}
 						maxLength={6000}
 						disabled={disabled}
@@ -380,46 +415,52 @@ function AnswerCard({
 				)}
 			</Swap>
 
-			<div className="flex items-start gap-3">
-				{backing.length > 0 && (
-					<div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
-						<span className="me-1 text-xs text-ink-3">
-							<Trans>Backed by</Trans>
-						</span>
-						{backing.map((fact) => (
-							<Tooltip key={fact.id}>
-								<Tooltip.Trigger aria-label={fact.text}>
-									<span className="inline-flex h-6 items-center gap-1 rounded-sm border border-line px-2 text-xs text-ink-2">
-										<Icon name="link-simple-horizontal" size={14} />
-										{shortLabel(fact.text)}
-									</span>
-								</Tooltip.Trigger>
-								<Tooltip.Content>{fact.text}</Tooltip.Content>
-							</Tooltip>
-						))}
-					</div>
-				)}
-				{!readOnly && !proposal && provider && (
-					<Button
-						size="sm"
-						variant="ghost"
-						className="ms-auto shrink-0"
-						isPending={generate.isPending}
-						isDisabled={disabled || !question.trim()}
-						onPress={() => void ask()}
-					>
-						{generate.isPending ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="sparkle" size={16} />}
-						{generate.isPending ? (
-							<Working steps={workingSteps(empty ? "answer" : "tighten")} />
-						) : empty ? (
-							<Trans>Draft</Trans>
-						) : (
-							<Trans>Tighten</Trans>
-						)}
-					</Button>
-				)}
-			</div>
-		</section>
+			{(backing.length > 0 || (!readOnly && !proposal && provider)) && (
+				<div className="flex items-start gap-3">
+					{backing.length > 0 && (
+						<div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
+							<span className="me-1 text-xs text-muted">
+								<Trans>Backed by</Trans>
+							</span>
+							{backing.map((fact) => (
+								<Tooltip key={fact.id}>
+									<Tooltip.Trigger aria-label={fact.text}>
+										<Chip size="sm" variant="soft" className="gap-1">
+											<Icon name="link-simple-horizontal" size={14} />
+											<Chip.Label>{shortLabel(fact.text)}</Chip.Label>
+										</Chip>
+									</Tooltip.Trigger>
+									<Tooltip.Content>{fact.text}</Tooltip.Content>
+								</Tooltip>
+							))}
+						</div>
+					)}
+					{!readOnly && !proposal && provider && (
+						<Button
+							size="sm"
+							variant="ghost"
+							className="ms-auto shrink-0"
+							isPending={generate.isPending}
+							isDisabled={disabled || !question.trim()}
+							onPress={() => void ask()}
+						>
+							{generate.isPending ? (
+								<Spinner size="sm" color="current" aria-hidden />
+							) : (
+								<Icon name="sparkle" size={16} />
+							)}
+							{generate.isPending ? (
+								<Working steps={workingSteps(empty ? "answer" : "tighten")} />
+							) : empty ? (
+								<Trans>Draft</Trans>
+							) : (
+								<Trans>Tighten</Trans>
+							)}
+						</Button>
+					)}
+				</div>
+			)}
+		</CareerWidget>
 	);
 }
 
@@ -555,27 +596,17 @@ function Checklist({
 	};
 
 	return (
-		<aside className="grid gap-3.5 rounded-xl border border-line bg-surface p-4">
-			<div className="flex items-baseline justify-between gap-3">
-				<h2 className="text-sm font-semibold">
-					<Trans>Before you submit</Trans>
-				</h2>
-				<span className="font-mono text-xs font-medium text-ink-2">{t`${done} of ${items.length}`}</span>
-			</div>
-			<div
-				role="progressbar"
-				aria-label={t`Checklist progress`}
-				aria-valuemin={0}
-				aria-valuemax={items.length}
-				aria-valuenow={done}
-				className="h-1.5 overflow-hidden rounded-sm bg-line"
-			>
-				<div
-					className="h-full rounded-sm bg-accent transition-[width] duration-standard ease-enter"
-					style={{ width: `${(done / items.length) * 100}%` }}
-				/>
-			</div>
-			<ul className="grid gap-2.5">
+		<CareerWidget
+			title={<Trans>Before you submit</Trans>}
+			trailing={<span className="text-xs text-muted tabular-nums">{t`${done} of ${items.length}`}</span>}
+			contentClassName="gap-4"
+		>
+			<ProgressBar aria-label={t`Checklist progress`} size="sm" value={done} maxValue={items.length}>
+				<ProgressBar.Track>
+					<ProgressBar.Fill />
+				</ProgressBar.Track>
+			</ProgressBar>
+			<ul className="grid gap-3">
 				{items.map((label, index) =>
 					!submitted && !readOnly && index === items.length - 1 ? (
 						<li key={label}>
@@ -587,7 +618,8 @@ function Checklist({
 					) : (
 						<li key={label}>
 							<Checkbox
-								className="text-[13px] leading-[19px]"
+								variant="secondary"
+								className="text-sm leading-5"
 								isSelected={ticked.includes(index)}
 								isDisabled={readOnly || submitting}
 								onChange={(checked) => toggle(index, checked)}
@@ -599,7 +631,7 @@ function Checklist({
 									<span
 										className={cn(
 											"transition-colors duration-quick",
-											ticked.includes(index) ? "text-ink-2" : "text-ink",
+											ticked.includes(index) ? "text-muted" : "text-foreground",
 										)}
 									>
 										{label}
@@ -611,13 +643,13 @@ function Checklist({
 				)}
 			</ul>
 			{!canSubmit && !readOnly && (
-				<p role="alert" className="text-xs text-danger-text">
+				<p role="alert" className="text-xs text-danger">
 					<Trans>
 						Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied.
 					</Trans>
 				</p>
 			)}
-			<div className="flex flex-wrap gap-1.5 border-t border-line pt-3.5">
+			<div className="flex flex-wrap gap-2">
 				<Button variant="secondary" size="sm" isDisabled={written.length === 0} onPress={() => void copy()}>
 					<Icon name="copy" size={16} />
 					<Trans>Copy answers</Trans>
@@ -643,9 +675,9 @@ function Checklist({
 					</Dropdown.Popover>
 				</Dropdown>
 			</div>
-			<p className="text-xs leading-[17px] text-ink-3">
+			<p className="text-xs leading-[17px] text-muted">
 				<Trans>You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent.</Trans>
 			</p>
-		</aside>
+		</CareerWidget>
 	);
 }

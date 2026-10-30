@@ -163,10 +163,8 @@ msgstr "{0, plural, one {Не вдалося розмістити правку #
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# запис} few {# записи} many {# записів} other {# запису}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# факт} few {# факти} many {# фактів} other {# факту}}"
 
@@ -650,6 +648,10 @@ msgstr "{minutes, plural, one {Починається через # хвилин�
 msgid "{minutes} min"
 msgstr "{minutes} хв"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Немає співбесід} one {# співбесіда} few {# співбесіди} many {# співбесід} other {# співбесіди}}"
@@ -711,6 +713,10 @@ msgstr "{pages, plural, one {При 9 pt усе ще # сторінка. При�
 msgid "{pairing} type"
 msgstr "Тип {pairing}"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} з {total}"
@@ -760,8 +766,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Відкривається в Кар’єра → Пропозиції."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "Підтверджено: {supported} · частково: {partial} · бракує: {missing}"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +849,6 @@ msgstr "<0>Нічого не потрібно виправляти.</0> Кожн
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Подано {0}.</0> Надіслані версії зберігаються на вкладці «Збережено». Зміни тут не впливають на те, що отримала компанія {1}."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Підсумки навмисно не додаються.</0> Бонус і частка в капіталі залежать від умов, а вартість частки невизначена в обох випадках. Перш ніж порівнювати підсумки, прочитайте оригінальні документи пропозицій."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1370,10 @@ msgstr "Додати ключове слово"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Додайте мову"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -1909,10 +1915,6 @@ msgstr "Деталі заявки"
 msgid "Application options"
 msgstr "Параметри заявки"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "підсумки заявок"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Вкладки заявки"
@@ -2223,6 +2225,10 @@ msgstr "Назад до входу"
 msgid "Back to stories"
 msgstr "Назад до розповідей"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 #: src/features/homepage/remember.tsx
@@ -2324,6 +2330,10 @@ msgstr "Жирний"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Бонус"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -2466,7 +2476,6 @@ msgid "Cancel"
 msgstr "Скасувати"
 
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Career"
 msgstr "Кар’єра"
 
@@ -2808,7 +2817,6 @@ msgstr "ID клієнта"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2868,7 +2876,7 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Коуч"
 
@@ -2953,6 +2961,10 @@ msgstr "Порівняти пропозиції"
 #: src/features/templates/gallery.tsx
 msgid "Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark."
 msgstr "Порівняйте реальні макети резюме перед реєстрацією. Кожен шаблон можна безкоштовно налаштувати, із завантаженнями PDF і Microsoft Word і без водяних знаків."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Compared in their original currency and pay period. Comparing doesn't share anything with the coach."
@@ -3081,13 +3093,13 @@ msgstr "Підключено. Ваш домен відкриває ваше ос
 msgid "Connecting your {providerName} account…"
 msgstr "Підключення облікового запису {providerName}…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Підключення збережено"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Підключення: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -3190,10 +3202,6 @@ msgstr "Назва розмови"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr "Розмови"
-
-#: src/features/career/coach.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "Розмови про конкретну вакансію зберігаються в її робочому просторі."
 
 #: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
@@ -4699,10 +4707,6 @@ msgstr "Кожна відповідь, на яку ви отримали від�
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Кожну вимогу з оголошення звіряємо з фактами й розповідями у ваших Знаннях. Прогалини показуються як брак доказів, а не брак здібностей."
 
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "попередні повідомлення в цьому чаті"
-
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
@@ -4778,6 +4782,10 @@ msgstr "Редагувати запитання"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Редагувати розклад"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -6454,14 +6462,11 @@ msgid "Kind regards,"
 msgstr "З повагою,"
 
 #: src/features/homepage/remember.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "Знання"
-
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Не вдалося завантажити Знання. Спробуйте ще раз або вимкніть Знання перед надсиланням."
 
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
@@ -6901,10 +6906,6 @@ msgstr "Завантаження бесід…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Завантаження співбесід…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Завантаження Знань перед надсиланням…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -7568,6 +7569,10 @@ msgstr "Новий розклад"
 msgid "New section"
 msgstr "Новий розділ"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Нові команди в Northwind застрягали на налаштуванні; більшість так і не завершували його."
@@ -7671,6 +7676,10 @@ msgstr "Звичних заголовків розділів не знайден
 msgid "No conversations about this document yet."
 msgstr "Ще немає розмов про цей документ."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "Виправлень немає"
@@ -7706,16 +7715,16 @@ msgid "No evidence yet"
 msgstr "Доказів поки немає"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Немає відповідних фактів. Спробуйте інше слово або тип."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Поки немає фактів для прив’язки. Додайте їх у розділі «Факти»."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Фактів поки немає. Додайте перший вище."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8063,7 +8072,6 @@ msgid "Notice period"
 msgstr "Термін попередження про звільнення"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/career/coach.tsx
 #: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8105,6 +8113,11 @@ msgstr "Вимкнено. У листі зберігається власна к
 msgid "Offer"
 msgstr "Пропозиція"
 
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
+
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
 msgstr "Пропозиції"
@@ -8120,6 +8133,10 @@ msgstr "Дні в офісі не вказано"
 #: src/features/resume/editor/save-status.tsx
 msgid "Offline · saved on this device"
 msgstr "Офлайн · збережено на цьому пристрої"
+
+#: src/features/career/coach.tsx
+msgid "Older"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -8727,10 +8744,6 @@ msgstr "Спланувати мою підготовку"
 msgid "Plan what to ask"
 msgstr "Спланувати запитання"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Plan your search, keep your evidence in one place, and decide between offers."
-msgstr "Плануйте пошук, тримайте докази в одному місці та обирайте між пропозиціями."
-
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "Планую ваш тиждень"
@@ -8940,6 +8953,10 @@ msgstr "Розмір попереднього перегляду"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "Попередній перегляд {0} · натисніть, щоб застосувати"
+
+#: src/features/career/coach.tsx
+msgid "Previous 7 days"
+msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous day"
@@ -9155,6 +9172,10 @@ msgstr "QR-код для {url}"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "QR-код для двохетапної перевірки"
+
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
@@ -9406,10 +9427,6 @@ msgstr "Причина"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "Пригадане"
-
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "Нещодавні"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9750,6 +9767,7 @@ msgid "Requirement"
 msgstr "Вимога"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Вимоги"
 
@@ -10398,6 +10416,10 @@ msgstr "Пошук заявок на роботу"
 msgid "Search commands"
 msgstr "Команди пошуку"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "Пошук охоплює заголовки, теги та пов’язані заявки на роботу."
@@ -10440,10 +10462,6 @@ msgstr "Пошук оголошень про роботу"
 msgid "Search role, company or contact"
 msgstr "Пошук ролі, компанії чи контакту"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Пошукові запити надсилаються до вашого сервісу вебпошуку."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -10469,6 +10487,7 @@ msgid "Search..."
 msgstr "Пошук..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -11368,6 +11387,7 @@ msgstr "Розповіді"
 msgid "Stories to bring"
 msgstr "Розповіді, які варто взяти"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Розповідь"
@@ -11865,6 +11885,10 @@ msgstr "Експортований PDF"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "Експортований PDF не вдалося перевірити. Спробуйте знову."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "The facts, stories and preferences the coach works from."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "The file couldn't be read as a resume."
@@ -12364,6 +12388,10 @@ msgstr "Час · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Час, посилання, хто, що ви надіслали"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Час показано в поясі {timeZone}."
@@ -12390,7 +12418,9 @@ msgid "To"
 msgstr "до"
 
 #: src/features/applications/components/calendar-view.tsx
+#: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Сьогодні"
@@ -12421,6 +12451,10 @@ msgstr "Забагато запитів. Повторіть спробу піз�
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12539,10 @@ msgstr "Спробуйте ще раз"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Спробувати ще раз із цим"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13302,6 +13340,10 @@ msgstr "Що важливо"
 msgid "What matters to you"
 msgstr "Що для вас важливо"
 
+#: src/routes/dashboard/career/route.tsx
+msgid "What needs you, new roles from your search, your next interview and your schedules."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"
 msgstr "Що має змінитися?"
@@ -13379,10 +13421,6 @@ msgstr "Що працює"
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
 msgstr "До коли потрібна ваша відповідь?"
-
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Коли ви натиснете «Надіслати», до {connection} буде передано: {shared}."
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
@@ -13573,6 +13611,7 @@ msgid "Write your professional resume"
 msgstr "Напишіть своє професійне резюме"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13611,6 +13650,7 @@ msgid "Yes. Rezumi is open source under the MIT License and can run on your own 
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
+#: src/features/career/coach.tsx
 msgid "Yesterday"
 msgstr "Учора"
 
@@ -13784,6 +13824,10 @@ msgstr "Ваші зміни зберігаються автоматично."
 msgid "Your contact details are not on the first page."
 msgstr "Ваші контактні дані не на першій сторінці."
 
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "Ваші дані"
@@ -13824,6 +13868,10 @@ msgstr "Ваші ввімкнені факти, розповіді й побаж
 msgid "Your evidence"
 msgstr "Ваші докази"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Ваш файл"
@@ -13855,10 +13903,6 @@ msgstr "Ваше місцезнаходження змінено в резюме
 #: src/features/ats-checker/messages.ts
 msgid "Your margins are very narrow."
 msgstr "Ваші поля дуже вузькі."
-
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "ваше повідомлення"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
@@ -13907,10 +13951,6 @@ msgstr "Ваш номер телефону в резюме змінився. Л�
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Ваш номер телефону записаний у незвичному форматі."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "ваші побажання"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -13970,9 +14010,9 @@ msgstr "Ваше коротке посилання і власний домен 
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Ваше коротке посилання і власний домен повідомляють, що це резюме не поширюється, доки ви не опублікуєте його знову."
 
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "ваші розповіді"
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

@@ -1,17 +1,18 @@
 import type { Fact, Story } from "../hooks";
-import { Button, Checkbox, Input, Spinner, TextArea, Tooltip } from "@heroui/react";
+import { EmptyState } from "@heroui-pro/react";
+import { Button, buttonVariants, Checkbox, Chip, Input, Separator, Spinner, TextArea, Tooltip } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence } from "motion/react";
-import { memo, useState } from "react";
+import { Fragment, memo, useState } from "react";
 import * as z from "zod";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
 import { CareerLoadError, CareerLoading } from "../load-state";
-import { CollapseRow, Eyebrow, Swap, useNow, withUndo } from "../shared";
+import { CareerWidget, CollapseRow, Eyebrow, Swap, useNow, withUndo } from "../shared";
 import { collectInterviews, upcomingInterviews } from "@/features/applications/interviews";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { toastError } from "@/libs/error-message";
@@ -98,52 +99,76 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 	};
 
 	return (
-		<div className="grid items-start gap-5 lg:grid-cols-[300px_minmax(0,1fr)]">
-			<div className="grid content-start gap-2">
+		<div className="grid items-start gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
+			<CareerWidget
+				title={<Trans>Your stories</Trans>}
+				count={list.length}
+				trailing={
+					<Link
+						to="/dashboard/career/knowledge/stories/{-$storyId}"
+						params={{ storyId: undefined }}
+						search={{ edit: true }}
+						aria-current={editing && !selected ? "page" : undefined}
+						className={buttonVariants({ variant: editing && !selected ? "primary" : "outline", size: "sm" })}
+					>
+						<Trans>Add a story</Trans>
+					</Link>
+				}
+				contentClassName="gap-1 p-2"
+			>
 				<AnimatePresence initial={false}>
-					{list.map((story) => (
+					{list.map((story, index) => (
 						<StoryCard
 							key={story.id}
+							first={index === 0}
 							story={story}
 							selected={story.id === selected?.id}
 							changed={factChanged(story, factsById)}
 						/>
 					))}
 				</AnimatePresence>
-				<Link
-					to="/dashboard/career/knowledge/stories/{-$storyId}"
-					params={{ storyId: undefined }}
-					search={{ edit: true }}
-					className={cn(
-						"touch-target relative flex h-9 items-center justify-center gap-1.5 rounded-lg border border-dashed border-line-2 text-[13px] font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink",
-						editing && !selected && "border-accent text-ink",
-					)}
-				>
-					<Icon name="plus" size={18} />
-					<Trans>Add a story</Trans>
-				</Link>
-				<p className="px-0.5 py-1 text-xs leading-[17px] text-ink-3">
+				<p className="px-2 pt-2 pb-1 text-xs leading-[17px] text-muted">
 					<Trans>
 						Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown
 						outcomes blank.
 					</Trans>
 				</p>
-			</div>
+			</CareerWidget>
 
 			{storyId && !selected ? (
-				<div role="status" className="grid gap-2 rounded-xl border border-line p-6">
-					<h2 className="text-lg font-semibold">
-						<Trans>Story not found</Trans>
-					</h2>
-					<p className="text-sm text-ink-2">
-						<Trans>It may have been deleted. Choose another story or add a new one.</Trans>
-					</p>
-					<Button variant="secondary" onPress={() => open(undefined)}>
-						<Trans>Back to stories</Trans>
-					</Button>
-				</div>
+				<EmptyState role="status" className="rounded-2xl bg-surface-secondary">
+					<EmptyState.Header>
+						<EmptyState.Media variant="icon">
+							<Icon name="book-open" size={20} />
+						</EmptyState.Media>
+						<EmptyState.Title>
+							<Trans>Story not found</Trans>
+						</EmptyState.Title>
+						<EmptyState.Description>
+							<Trans>It may have been deleted. Choose another story or add a new one.</Trans>
+						</EmptyState.Description>
+					</EmptyState.Header>
+					<EmptyState.Content>
+						<Button variant="secondary" onPress={() => open(undefined)}>
+							<Trans>Back to stories</Trans>
+						</Button>
+					</EmptyState.Content>
+				</EmptyState>
 			) : selected || editing ? (
-				<div className="relative rounded-xl border border-line bg-surface px-4 py-5 sm:px-6 sm:py-[22px]">
+				<CareerWidget
+					title={editing ? selected ? <Trans>Edit story</Trans> : <Trans>New story</Trans> : <Trans>Story</Trans>}
+					trailing={
+						!editing && selected ? (
+							<div className="flex items-center gap-1">
+								<PractiseButton storyId={selected.id} />
+								<Button variant="outline" size="sm" onPress={() => open(selected.id, true)}>
+									<Trans>Edit</Trans>
+								</Button>
+							</div>
+						) : undefined
+					}
+					contentClassName="p-5 sm:p-6"
+				>
 					<Swap id={editing ? "edit" : "read"}>
 						{editing ? (
 							<StoryEditor
@@ -155,21 +180,26 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 								onDelete={selected ? () => remove(selected) : undefined}
 							/>
 						) : (
-							selected && <StoryReader story={selected} facts={factsById} onEdit={() => open(selected.id, true)} />
+							selected && <StoryReader story={selected} facts={factsById} />
 						)}
 					</Swap>
-				</div>
+				</CareerWidget>
 			) : (
-				<div className="grid justify-items-center gap-2 rounded-xl border border-dashed border-line-2 p-7 text-center">
-					<h2 className="font-display text-[22px] leading-7 font-medium">
-						<Trans>No stories yet</Trans>
-					</h2>
-					<p className="max-w-[300px] text-sm text-ink-2">
-						<Trans>
-							Write one about something you did, in five parts. Leave a part blank until you can support it.
-						</Trans>
-					</p>
-				</div>
+				<EmptyState className="rounded-2xl bg-surface-secondary">
+					<EmptyState.Header>
+						<EmptyState.Media variant="icon">
+							<Icon name="book-open" size={20} />
+						</EmptyState.Media>
+						<EmptyState.Title>
+							<Trans>No stories yet</Trans>
+						</EmptyState.Title>
+						<EmptyState.Description>
+							<Trans>
+								Write one about something you did, in five parts. Leave a part blank until you can support it.
+							</Trans>
+						</EmptyState.Description>
+					</EmptyState.Header>
+				</EmptyState>
 			)}
 		</div>
 	);
@@ -177,34 +207,34 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 
 // ---- List ----
 
-type StoryCardProps = { story: Story; selected: boolean; changed: boolean };
+type StoryCardProps = { story: Story; selected: boolean; changed: boolean; first: boolean };
 
 // Memoized with its motion wrapper: picking a story re-renders only the two cards whose selection changed.
-const StoryCard = memo(function StoryCard({ story, selected, changed }: StoryCardProps) {
+const StoryCard = memo(function StoryCard({ story, selected, changed, first }: StoryCardProps) {
 	const filled = parts().filter((part) => story.data[part.key].trim()).length;
 	const factCount = story.data.factIds.length;
 
 	return (
 		<CollapseRow>
+			{!first && <Separator className="mx-3 my-1 w-auto" />}
 			<Link
 				to="/dashboard/career/knowledge/stories/{-$storyId}"
 				params={{ storyId: story.id }}
 				aria-current={selected ? "page" : undefined}
-				className={cn(
-					"grid gap-2 rounded-xl border p-3.5 text-start transition-colors duration-quick",
-					selected ? "border-accent bg-surface" : "border-line hover:bg-hover",
-				)}
+				className={cn("grid gap-2 rounded-xl p-3 text-start", selected ? "bg-default" : "hover:bg-default/60")}
 			>
 				<span className="text-sm leading-5 font-semibold">{story.data.title}</span>
-				<span className="text-xs text-ink-3">
+				<span className="text-xs text-muted tabular-nums">
 					<Trans>{filled} of 5 parts</Trans> · {plural(factCount, { one: "# fact", other: "# facts" })}
 				</span>
 				<PartTiles story={story} />
 				{changed && (
-					<span className="flex items-center gap-1.5 text-xs text-warn-text">
-						<span aria-hidden="true" className="size-2 shrink-0 rounded-sm bg-warn" />
-						<Trans>A fact changed. Review this story.</Trans>
-					</span>
+					<Chip size="sm" variant="soft" color="warning" className="w-fit gap-1">
+						<Icon name="warning" size={14} />
+						<Chip.Label>
+							<Trans>A fact changed. Review this story.</Trans>
+						</Chip.Label>
+					</Chip>
 				)}
 			</Link>
 		</CollapseRow>
@@ -219,8 +249,8 @@ function PartTiles({ story }: { story: Story }) {
 					key={part.key}
 					title={part.label}
 					className={cn(
-						"h-5 w-[22px] rounded-md text-center font-mono text-[11px] leading-5 font-semibold",
-						story.data[part.key].trim() ? "bg-accent-soft text-accent-text" : "bg-sunken text-ink-3",
+						"grid h-5 w-[22px] place-items-center rounded-md text-[11px] font-semibold",
+						story.data[part.key].trim() ? "bg-accent-soft text-accent-soft-foreground" : "bg-default text-muted",
 					)}
 				>
 					{part.letter}
@@ -234,55 +264,61 @@ function PartTiles({ story }: { story: Story }) {
 
 const partTile = (filled: boolean) =>
 	cn(
-		"size-7 rounded-lg text-center font-mono text-[13px] leading-7 font-semibold",
-		filled ? "bg-accent-soft text-accent-text" : "bg-sunken text-ink-3",
+		"grid size-7 place-items-center rounded-lg text-[13px] font-semibold",
+		filled ? "bg-accent-soft text-accent-soft-foreground" : "bg-default text-muted",
 	);
 
-type StoryReaderProps = { story: Story; facts: Map<string, Fact>; onEdit: () => void };
+type StoryReaderProps = { story: Story; facts: Map<string, Fact> };
 
-function StoryReader({ story, facts, onEdit }: StoryReaderProps) {
+function StoryReader({ story, facts }: StoryReaderProps) {
 	const backing = story.data.factIds.flatMap((id) => facts.get(id) ?? []);
 
 	return (
-		<div className="grid gap-[18px]">
-			<header className="flex flex-wrap items-start gap-3">
-				<div className="grid min-w-0 flex-1 basis-60 gap-1">
-					<h2 className="font-display text-[22px] leading-7 font-medium text-pretty">{story.data.title}</h2>
-					<p className="text-[13px] text-ink-3">{story.data.tags.join(" · ") || t`No tags yet`}</p>
-				</div>
-				<div className="flex gap-1.5">
-					<PractiseButton storyId={story.id} />
-					<Button variant="secondary" size="sm" onPress={onEdit}>
-						<Icon name="pencil-simple" size={18} />
-						<Trans>Edit</Trans>
-					</Button>
-				</div>
+		<div className="grid gap-5">
+			<header className="grid gap-2">
+				<h2 className="text-xl leading-7 font-semibold text-pretty">{story.data.title}</h2>
+				{story.data.tags.length > 0 ? (
+					<div className="flex flex-wrap gap-1">
+						{story.data.tags.map((tag) => (
+							<Chip key={tag} size="sm" variant="soft">
+								{tag}
+							</Chip>
+						))}
+					</div>
+				) : (
+					<p className="text-sm text-muted">
+						<Trans>No tags yet</Trans>
+					</p>
+				)}
 			</header>
 
 			<div className="grid">
-				{parts().map((part) => {
+				{parts().map((part, index) => {
 					const text = story.data[part.key].trim();
 					return (
-						<div key={part.key} className="grid grid-cols-[32px_minmax(0,1fr)] gap-3.5 border-t border-line py-3">
-							<span aria-hidden="true" className={partTile(Boolean(text))}>
-								{part.letter}
-							</span>
-							<div className="grid min-w-0 gap-1">
-								<h3 className="text-[13px] font-semibold text-ink-2">{part.label}</h3>
-								{text ? (
-									<p className="text-[15px] leading-[23px] text-pretty whitespace-pre-line">{text}</p>
-								) : (
-									<p className="text-sm leading-[21px] text-ink-3 italic">
-										<Trans>Not recorded yet. Leave it blank until you can support it.</Trans>
-									</p>
-								)}
+						<Fragment key={part.key}>
+							{index > 0 && <Separator />}
+							<div className="grid grid-cols-[32px_minmax(0,1fr)] gap-3.5 py-3.5">
+								<span aria-hidden="true" className={partTile(Boolean(text))}>
+									{part.letter}
+								</span>
+								<div className="grid min-w-0 gap-1">
+									<h3 className="text-sm font-semibold text-muted">{part.label}</h3>
+									{text ? (
+										<p className="text-[15px] leading-[23px] text-pretty whitespace-pre-line">{text}</p>
+									) : (
+										<p className="text-sm leading-[21px] text-muted italic">
+											<Trans>Not recorded yet. Leave it blank until you can support it.</Trans>
+										</p>
+									)}
+								</div>
 							</div>
-						</div>
+						</Fragment>
 					);
 				})}
 			</div>
 
-			<div className="grid gap-2 pt-1">
+			<div className="grid gap-2">
 				<Eyebrow>
 					<Trans>Backed by</Trans>
 				</Eyebrow>
@@ -291,14 +327,14 @@ function StoryReader({ story, facts, onEdit }: StoryReaderProps) {
 						key={fact.id}
 						to="/dashboard/career/knowledge/facts"
 						search={{ highlight: fact.id }}
-						className="flex items-start gap-2.5 rounded-md bg-bg px-2.5 py-2 text-[13px] leading-[19px] transition-colors duration-quick hover:bg-hover"
+						className="flex items-start gap-2.5 rounded-xl bg-default px-3 py-2.5 text-sm leading-5 hover:bg-default-hover"
 					>
-						<Icon name="link-simple-horizontal" size={16} className="mt-0.5 shrink-0 text-accent-text" />
-						<span className={cn(fact.status !== "active" && "text-ink-3")}>{fact.text}</span>
+						<Icon name="link-simple-horizontal" size={16} className="mt-0.5 shrink-0 text-accent" />
+						<span className={cn(fact.status !== "active" && "text-muted")}>{fact.text}</span>
 					</Link>
 				))}
 				{backing.length === 0 && (
-					<p className="flex items-center gap-1.5 text-[13px] text-warn-text">
+					<p className="flex items-center gap-1.5 text-sm text-warning-soft-foreground">
 						<Icon name="warning" size={16} />
 						<Trans>No supporting facts. Link one before using this story.</Trans>
 					</p>
@@ -316,12 +352,7 @@ function PractiseButton({ storyId }: PractiseButtonProps) {
 	const now = useNow();
 	const { data: applications, isPending, isError, refetch } = useQuery(applicationsListQueryOptions());
 	const next = upcomingInterviews(collectInterviews(applications ?? []), now)[0];
-	const label = (
-		<>
-			<Icon name="microphone" size={18} />
-			<Trans context="Button: rehearse interview answers">Practice</Trans>
-		</>
-	);
+	const label = <Trans context="Button: rehearse interview answers">Practice</Trans>;
 	if (isError)
 		return (
 			<div role="alert">
@@ -465,7 +496,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 
 	return (
 		<form
-			className="grid gap-[18px]"
+			className="grid gap-5"
 			onSubmit={(event) => {
 				event.preventDefault();
 				submit();
@@ -475,6 +506,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 				{/* A textarea so a long title wraps as it does in the reader; Enter doesn't add a line. */}
 				<TextArea
 					fullWidth
+					variant="secondary"
 					rows={1}
 					value={draft.title}
 					maxLength={200}
@@ -485,10 +517,11 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					onKeyDown={(event) => {
 						if (event.key === "Enter") event.preventDefault();
 					}}
-					className="min-h-0 resize-none font-display text-[22px] leading-7 font-medium"
+					className="min-h-0 resize-none text-xl leading-7 font-semibold"
 				/>
 				<Input
 					fullWidth
+					variant="secondary"
 					value={draft.tags}
 					placeholder={t`Tags, separated by commas`}
 					aria-label={t`Tags`}
@@ -497,33 +530,37 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 			</div>
 
 			<div className="grid">
-				{parts().map((part) => {
+				{parts().map((part, index) => {
 					const text = draft[part.key];
 					return (
-						<label key={part.key} className="grid grid-cols-[32px_minmax(0,1fr)] gap-3.5 border-t border-line py-3">
-							<span aria-hidden="true" className={partTile(Boolean(text.trim()))}>
-								{part.letter}
-							</span>
-							<span className="grid min-w-0 gap-1.5">
-								<span className="text-[13px] font-semibold text-ink-2">{part.label}</span>
-								<TextArea
-									fullWidth
-									rows={2}
-									value={text}
-									maxLength={part.key === "action" ? 6000 : 4000}
-									placeholder={part.placeholder}
-									aria-invalid={tried && REQUIRED.includes(part.key) && !text.trim() ? true : undefined}
-									onChange={(event) => setDraft({ ...draft, [part.key]: event.target.value })}
-									className="min-h-[60px]"
-								/>
-							</span>
-						</label>
+						<Fragment key={part.key}>
+							{index > 0 && <Separator />}
+							<label className="grid grid-cols-[32px_minmax(0,1fr)] gap-3.5 py-3.5">
+								<span aria-hidden="true" className={partTile(Boolean(text.trim()))}>
+									{part.letter}
+								</span>
+								<span className="grid min-w-0 gap-1.5">
+									<span className="text-sm font-semibold text-muted">{part.label}</span>
+									<TextArea
+										fullWidth
+										variant="secondary"
+										rows={2}
+										value={text}
+										maxLength={part.key === "action" ? 6000 : 4000}
+										placeholder={part.placeholder}
+										aria-invalid={tried && REQUIRED.includes(part.key) && !text.trim() ? true : undefined}
+										onChange={(event) => setDraft({ ...draft, [part.key]: event.target.value })}
+										className="min-h-[60px]"
+									/>
+								</span>
+							</label>
+						</Fragment>
 					);
 				})}
 			</div>
 
-			<fieldset className="grid gap-2 pt-1">
-				<legend className="mb-2 text-xs font-semibold text-ink-3">
+			<fieldset className="grid gap-2">
+				<legend className="mb-2 text-xs font-semibold text-muted">
 					<Trans>Backed by</Trans>
 				</legend>
 				{shared.map((fact) => {
@@ -536,9 +573,9 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 							isDisabled={disabled}
 							onChange={(value) => toggleFact(fact.id, value)}
 							className={cn(
-								"flex items-start gap-2.5 rounded-md px-2.5 py-2 text-[13px] leading-[19px] transition-colors duration-quick",
-								checked ? "bg-accent-soft" : "bg-bg",
-								disabled ? "cursor-not-allowed text-ink-3" : "cursor-pointer",
+								"flex items-start gap-2.5 rounded-xl px-3 py-2.5 text-sm leading-5 transition-colors duration-quick",
+								checked ? "bg-accent-soft" : "bg-default",
+								disabled ? "cursor-not-allowed text-muted" : "cursor-pointer",
 							)}
 						>
 							<Checkbox.Content className="items-start">
@@ -548,7 +585,7 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 								<span className="min-w-0 flex-1">
 									{fact.text}
 									{disabled && (
-										<span className="block text-xs text-ink-3">
+										<span className="block text-xs text-muted">
 											<Trans>Not used in coaching, so it can't back a story.</Trans>
 										</span>
 									)}
@@ -558,15 +595,16 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					);
 				})}
 				{shared.length === 0 && (
-					<p className="text-[13px] text-ink-3">
+					<p className="text-sm text-muted">
 						<Trans>No facts to link yet. Add them in Facts.</Trans>
 					</p>
 				)}
 			</fieldset>
 
-			<div className="grid gap-2 border-t border-line pt-3.5">
+			<Separator />
+			<div className="grid gap-3">
 				{tried && problem && (
-					<p role="alert" className="flex items-center gap-1.5 text-[13px] text-danger-text">
+					<p role="alert" className="flex items-center gap-1.5 text-sm text-danger">
 						<Icon name="warning-circle" size={16} />
 						{problem}
 					</p>
@@ -574,14 +612,13 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 				<div className="flex flex-wrap items-center gap-2">
 					{onDelete && (
 						<Button
-							variant="ghost"
-							className="me-auto text-danger"
+							variant="danger-soft"
+							className="me-auto"
 							onPress={() => {
 								clear();
 								onDelete();
 							}}
 						>
-							<Icon name="trash" size={18} />
 							<Trans>Delete story</Trans>
 						</Button>
 					)}

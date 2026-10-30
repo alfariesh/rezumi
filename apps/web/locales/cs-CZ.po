@@ -163,10 +163,8 @@ msgstr "{0, plural, one {Úpravu # nelze umístit: její text se změnil. Požá
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# položka} few {# položky} other {# položek}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# fakt} few {# fakta} many {# faktu} other {# faktů}}"
 
@@ -650,6 +648,10 @@ msgstr "{minutes, plural, one {Začíná za # minutu} few {Začíná za # minuty
 msgid "{minutes} min"
 msgstr "{minutes} min"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Žádné pohovory} one {# pohovor} few {# pohovory} other {# pohovorů}}"
@@ -711,6 +713,10 @@ msgstr "{pages, plural, one {Stále # stránka při 9 pt. Skryjte sekci nebo zkr
 msgid "{pairing} type"
 msgstr "Typ {pairing}"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} nebo {total}"
@@ -760,8 +766,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Otevře se v Kariéra → Nabídky."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} doloženo · {partial} částečně · {missing} chybí"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +849,6 @@ msgstr "<0>Není co řešit.</0> Každá kontrola projde."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Odesláno {0}.</0> Odeslané verze zůstávají na kartě Uložené. Úpravy zde nemění to, co obdržela společnost {1}."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Celkové částky záměrně nesčítáme.</0> Bonus a akcie závisí na podmínkách a hodnota akcií je u obou nabídek nejistá. Před porovnáním celkových částek si přečtěte původní dokumenty nabídek."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1370,10 @@ msgstr "Přidat klíčové slovo"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Přidat jazyk"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -1909,10 +1915,6 @@ msgstr "Podrobnosti žádosti"
 msgid "Application options"
 msgstr "Možnosti žádosti"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "shrnutí žádostí"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Karty žádosti"
@@ -2223,6 +2225,10 @@ msgstr "Zpět na přihlášení"
 msgid "Back to stories"
 msgstr "Zpět na příběhy"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 #: src/features/homepage/remember.tsx
@@ -2324,6 +2330,10 @@ msgstr "Tučné"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Bonus"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -2466,7 +2476,6 @@ msgid "Cancel"
 msgstr "Zrušit"
 
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Career"
 msgstr "Kariéra"
 
@@ -2808,7 +2817,6 @@ msgstr "ID klienta"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2868,7 +2876,7 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Kouč"
 
@@ -2953,6 +2961,10 @@ msgstr "Porovnat nabídky"
 #: src/features/templates/gallery.tsx
 msgid "Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark."
 msgstr "Než se zaregistrujete, porovnejte skutečné rozvržení životopisu. Každá šablona je zdarma k přizpůsobení, se stažením PDF a Microsoft Word a bez vodoznaku."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Compared in their original currency and pay period. Comparing doesn't share anything with the coach."
@@ -3081,13 +3093,13 @@ msgstr "Připojeno. Vaše doména otevírá váš primární životopis."
 msgid "Connecting your {providerName} account…"
 msgstr "Připojujeme váš účet {providerName}…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Připojení uloženo"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Připojení: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -3190,10 +3202,6 @@ msgstr "Název konverzace"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr "Konverzace"
-
-#: src/features/career/coach.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "Konverzace o jedné pozici najdete v jejím pracovním prostoru."
 
 #: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
@@ -4699,10 +4707,6 @@ msgstr "Každá odpověď, ke které dostanete zpětnou vazbu, se ukládá sem, 
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Každý požadavek z inzerátu se porovnává s fakty a příběhy ve vašich Znalostech. Mezery se zobrazují jako chybějící doklady, nikdy jako chybějící schopnosti."
 
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "dřívější zprávy v tomto chatu"
-
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
@@ -4778,6 +4782,10 @@ msgstr "Upravit otázku"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Upravit plán"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -6454,14 +6462,11 @@ msgid "Kind regards,"
 msgstr "s pozdravem"
 
 #: src/features/homepage/remember.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "Znalosti"
-
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Znalosti se nepodařilo načíst. Zkuste to znovu nebo před odesláním Znalosti vypněte."
 
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
@@ -6901,10 +6906,6 @@ msgstr "Načítání konverzací…"
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Načítání pohovorů…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Před odesláním se načítají Znalosti…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -7568,6 +7569,10 @@ msgstr "Nový plán"
 msgid "New section"
 msgstr "Nová sekce"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Nové týmy v Northwind uvízly u nastavení; většina ho nikdy nedokončila."
@@ -7671,6 +7676,10 @@ msgstr "Nebyly nalezeny žádné obvyklé nadpisy sekcí."
 msgid "No conversations about this document yet."
 msgstr "O tomto dokumentu zatím žádné konverzace."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "Bez oprav"
@@ -7706,16 +7715,16 @@ msgid "No evidence yet"
 msgstr "Zatím bez dokladů"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Žádný fakt neodpovídá. Zkuste jiné slovo nebo typ."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Zatím nejsou fakta k propojení. Přidejte je ve Faktech."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Zatím žádná fakta. Přidejte jeden nahoře."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8063,7 +8072,6 @@ msgid "Notice period"
 msgstr "Výpovědní lhůta"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/career/coach.tsx
 #: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8105,6 +8113,11 @@ msgstr "Vypnuto. Dopis si uchovává vlastní kopii vašich údajů."
 msgid "Offer"
 msgstr "Nabídka"
 
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
+
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
 msgstr "Nabídky"
@@ -8120,6 +8133,10 @@ msgstr "Dny v kanceláři neuvedeny"
 #: src/features/resume/editor/save-status.tsx
 msgid "Offline · saved on this device"
 msgstr "Offline · uloženo v tomto zařízení"
+
+#: src/features/career/coach.tsx
+msgid "Older"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -8727,10 +8744,6 @@ msgstr "Naplánovat mou přípravu"
 msgid "Plan what to ask"
 msgstr "Naplánovat, na co se zeptat"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Plan your search, keep your evidence in one place, and decide between offers."
-msgstr "Naplánujte si hledání, mějte doklady na jednom místě a rozhodněte se mezi nabídkami."
-
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "Plánuje se váš týden"
@@ -8940,6 +8953,10 @@ msgstr "Velikost náhledu"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "Náhled {0} · kliknutím použijte"
+
+#: src/features/career/coach.tsx
+msgid "Previous 7 days"
+msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous day"
@@ -9155,6 +9172,10 @@ msgstr "QR kód pro {url}"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "QR kód pro dvoufázové ověření"
+
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
@@ -9406,10 +9427,6 @@ msgstr "Důvod"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "Zpaměti"
-
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "Nedávné"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9750,6 +9767,7 @@ msgid "Requirement"
 msgstr "Požadavek"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Požadavky"
 
@@ -10398,6 +10416,10 @@ msgstr "Hledat žádosti o zaměstnání"
 msgid "Search commands"
 msgstr "Vyhledávací příkazy"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "Vyhledávání zahrnuje tituly, štítky a propojené žádosti o zaměstnání."
@@ -10440,10 +10462,6 @@ msgstr "Hledejte nabídky práce"
 msgid "Search role, company or contact"
 msgstr "Vyhledávací role, společnost nebo kontakt"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Hledané výrazy se odesílají vaší službě webového vyhledávání."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -10469,6 +10487,7 @@ msgid "Search..."
 msgstr "Hledat..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -11368,6 +11387,7 @@ msgstr "Příběhy"
 msgid "Stories to bring"
 msgstr "Příběhy, které si připravit"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Příběh"
@@ -11865,6 +11885,10 @@ msgstr "Exportovaný PDF"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "Exportovaný PDF nelze zkontrolovat. Zkuste to znovu."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "The facts, stories and preferences the coach works from."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "The file couldn't be read as a resume."
@@ -12364,6 +12388,10 @@ msgstr "Čas · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Čas, odkaz, kdo, co jste odeslali"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Časy se zobrazují v pásmu {timeZone}."
@@ -12390,7 +12418,9 @@ msgid "To"
 msgstr "Na"
 
 #: src/features/applications/components/calendar-view.tsx
+#: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Dnes"
@@ -12421,6 +12451,10 @@ msgstr "Příliš mnoho požadavků. Zkuste to znovu později."
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12539,10 @@ msgstr "Zkuste to znovu"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Zkusit znovu s tímto"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13302,6 +13340,10 @@ msgstr "Co je důležité"
 msgid "What matters to you"
 msgstr "Co je pro vás důležité"
 
+#: src/routes/dashboard/career/route.tsx
+msgid "What needs you, new roles from your search, your next interview and your schedules."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"
 msgstr "Co by se mělo změnit?"
@@ -13379,10 +13421,6 @@ msgstr "Co funguje"
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
 msgstr "Kdy potřebují vaši odpověď?"
-
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Po stisknutí Odeslat půjdou {shared} do připojení {connection}."
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
@@ -13573,6 +13611,7 @@ msgid "Write your professional resume"
 msgstr "Napište svůj profesní životopis"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13611,6 +13650,7 @@ msgid "Yes. Rezumi is open source under the MIT License and can run on your own 
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
+#: src/features/career/coach.tsx
 msgid "Yesterday"
 msgstr "Včera"
 
@@ -13784,6 +13824,10 @@ msgstr "Vaše změny se ukládají automaticky."
 msgid "Your contact details are not on the first page."
 msgstr "Vaše kontaktní údaje nejsou na první stránce."
 
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "Vaše data"
@@ -13824,6 +13868,10 @@ msgstr "Vaše zapnutá fakta, příběhy a preference mohou být odeslány vaše
 msgid "Your evidence"
 msgstr "Vaše doklady"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Váš soubor"
@@ -13855,10 +13903,6 @@ msgstr "Vaše poloha se v životopisu změnila. Dopis byl také aktualizován."
 #: src/features/ats-checker/messages.ts
 msgid "Your margins are very narrow."
 msgstr "Vaše okraje jsou velmi úzké."
-
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "vaše zpráva"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
@@ -13907,10 +13951,6 @@ msgstr "Vaše telefonní číslo se v životopise změnilo. Dopis byl také aktu
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Vaše telefonní číslo je zapsáno v neobvyklém formátu."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "vaše předvolby"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -13970,9 +14010,9 @@ msgstr "Váš krátký odkaz a vlastní doména otevírají tento životopis."
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Váš krátký odkaz a vlastní doména hlásí, že tento životopis není sdílen, dokud ho znovu nezveřejníte."
 
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "vaše příběhy"
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."

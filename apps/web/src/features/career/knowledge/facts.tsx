@@ -2,8 +2,8 @@ import type { Fact } from "../hooks";
 import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Button, Spinner, Switch, TextArea } from "@heroui/react";
+import { EmptyState, ItemCard, NativeSelect, Segment } from "@heroui-pro/react";
+import { Button, Chip, Input, InputGroup, Separator, Spinner, Switch, TextArea } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,10 +11,9 @@ import { AnimatePresence, m } from "motion/react";
 import { memo, useDeferredValue, useEffect, useId, useRef, useState } from "react";
 import { factCategorySchema } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
-import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError, CareerLoading } from "../load-state";
-import { CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
+import { CareerWidget, CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
 import { useProfile } from "./preferences";
 import { toastError } from "@/libs/error-message";
 import { D2, EASE, EXIT } from "@/libs/motion";
@@ -116,66 +115,75 @@ export function FactsPage({ highlight }: FactsPageProps) {
 	};
 
 	return (
-		<div className="grid gap-3.5">
+		<div className="grid gap-4">
 			<MemoryCard />
 
-			<div className="flex flex-wrap items-center gap-2">
-				<label className="flex h-[34px] w-full items-center gap-1.5 rounded-md border border-line-2 bg-raised px-2.5 transition-[border-color,box-shadow] duration-quick focus-within:border-accent focus-within:shadow-[0_0_0_3px_var(--accent-soft)] sm:w-[280px] pointer-coarse:h-11">
-					<Icon name="magnifying-glass" size={18} className="text-ink-3" />
-					<input
+			<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+				<div className="-mx-4 flex [scrollbar-width:none] gap-1 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+					<FilterChip pressed={type === null} onClick={() => setType(null)}>
+						<Trans>All</Trans>
+					</FilterChip>
+					{CATEGORIES.map((category) => (
+						<FilterChip key={category} pressed={type === category} onClick={() => setType(category)}>
+							{categoryLabel(category)}
+						</FilterChip>
+					))}
+				</div>
+				<InputGroup className="w-full sm:ms-auto sm:w-72">
+					<InputGroup.Prefix>
+						<Icon name="magnifying-glass" size={18} />
+					</InputGroup.Prefix>
+					<InputGroup.Input
 						type="search"
 						value={search}
 						onChange={(event) => setSearch(event.target.value)}
 						placeholder={t`Search facts`}
 						aria-label={t`Search facts`}
-						className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-ink-3"
 					/>
-				</label>
-				<FilterChip pressed={type === null} onClick={() => setType(null)}>
-					<Trans>All</Trans>
-				</FilterChip>
-				{CATEGORIES.map((category) => (
-					<FilterChip key={category} pressed={type === category} onClick={() => setType(category)}>
-						{categoryLabel(category)}
-					</FilterChip>
-				))}
+				</InputGroup>
 			</div>
 
-			<AddFact onAdded={added} />
 			{!facts && (factQuery.isError ? <CareerLoadError onRetry={() => void factQuery.refetch()} /> : <CareerLoading />)}
 
 			{facts && (
-				<div ref={listRef} className="overflow-hidden rounded-xl border border-line bg-surface">
-					<AnimatePresence initial={false}>
-						{visible.map((fact) => (
-							<FactRow
-								key={fact.id}
-								fact={fact}
-								onStatus={setStatus}
-								onCorrect={correct}
-								onShare={share}
-								onForget={forget}
-							/>
-						))}
-					</AnimatePresence>
-					{visible.length === 0 && (
-						<div className="grid justify-items-center gap-2 p-6 text-center text-sm text-ink-3">
-							<p>
-								{facts.length === 0 ? t`No facts yet. Add one above.` : t`No facts match. Try another word or type.`}
-							</p>
-							{type !== null && (
-								<Button
-									variant="ghost"
-									size="sm"
-									className="h-auto px-0 text-link underline-offset-4 hover:underline"
-									onPress={() => setType(null)}
-								>
-									<Trans>Show all types</Trans>
-								</Button>
-							)}
-						</div>
-					)}
-				</div>
+				<CareerWidget title={<Trans>Your facts</Trans>} count={visible.length} contentClassName="gap-0 p-0">
+					<AddFact onAdded={added} />
+					<Separator />
+					<div ref={listRef}>
+						<AnimatePresence initial={false}>
+							{visible.map((fact) => (
+								<FactRow
+									key={fact.id}
+									fact={fact}
+									onStatus={setStatus}
+									onCorrect={correct}
+									onShare={share}
+									onForget={forget}
+								/>
+							))}
+						</AnimatePresence>
+						{visible.length === 0 && (
+							<EmptyState size="sm">
+								<EmptyState.Header>
+									<EmptyState.Media variant="icon">
+										<Icon name="list-checks" size={20} />
+									</EmptyState.Media>
+									<EmptyState.Title>{facts.length === 0 ? t`No facts yet` : t`No facts match`}</EmptyState.Title>
+									<EmptyState.Description>
+										{facts.length === 0 ? t`Add one above.` : t`Try another word or type.`}
+									</EmptyState.Description>
+								</EmptyState.Header>
+								{type !== null && (
+									<EmptyState.Content>
+										<Button variant="secondary" size="sm" onPress={() => setType(null)}>
+											<Trans>Show all types</Trans>
+										</Button>
+									</EmptyState.Content>
+								)}
+							</EmptyState>
+						)}
+					</div>
+				</CareerWidget>
 			)}
 		</div>
 	);
@@ -200,27 +208,31 @@ function MemoryCard() {
 	if (!profile) return isError ? <CareerLoadError onRetry={retry} /> : <CareerLoading />;
 
 	return (
-		<div className="flex flex-wrap items-center gap-3 rounded-xl border border-line bg-surface px-3.5 py-3">
-			<Icon name="brain" size={20} className="text-ink-2" />
-			<div className="grid min-w-0 flex-1 basis-56 gap-px">
-				<p id={labelId} className="text-sm font-semibold">
+		<ItemCard className="flex-wrap gap-y-3">
+			<ItemCard.Icon>
+				<Icon name="brain" size={16} />
+			</ItemCard.Icon>
+			<ItemCard.Content className="min-w-0 basis-56">
+				<ItemCard.Title id={labelId} className="whitespace-normal">
 					<Trans>Remember facts from my messages</Trans>
-				</p>
-				<p className="text-xs text-ink-3">{hints[profile.memoryMode]}</p>
-			</div>
-			<Segment
-				aria-labelledby={labelId}
-				selectedKey={mode ?? null}
-				isDisabled={!profile}
-				onSelectionChange={(key) => profile && save({ ...profile, memoryMode: String(key) as MemoryMode })}
-			>
-				{modes.map(([value, label]) => (
-					<Segment.Item key={value} id={value} className="touch-target">
-						{label}
-					</Segment.Item>
-				))}
-			</Segment>
-		</div>
+				</ItemCard.Title>
+				<ItemCard.Description className="whitespace-normal">{hints[profile.memoryMode]}</ItemCard.Description>
+			</ItemCard.Content>
+			<ItemCard.Action>
+				<Segment
+					aria-labelledby={labelId}
+					selectedKey={mode ?? null}
+					isDisabled={!profile}
+					onSelectionChange={(key) => profile && save({ ...profile, memoryMode: String(key) as MemoryMode })}
+				>
+					{modes.map(([value, label]) => (
+						<Segment.Item key={value} id={value} className="touch-target w-auto flex-none">
+							{label}
+						</Segment.Item>
+					))}
+				</Segment>
+			</ItemCard.Action>
+		</ItemCard>
 	);
 }
 
@@ -253,22 +265,24 @@ function AddFact({ onAdded }: AddFactProps) {
 	};
 
 	return (
-		<div className="flex flex-wrap items-center gap-2 rounded-xl border border-dashed border-line-2 py-1.5 ps-3.5 pe-1.5">
-			<Icon name="plus" size={20} className="text-ink-3" />
-			<input
-				value={text}
-				onChange={(event) => setText(event.target.value)}
-				onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
-					if (event.key === "Enter" && !event.nativeEvent.isComposing) add();
-				}}
-				maxLength={2000}
-				placeholder={t`Add a fact, for example “I mentored two associate PMs in 2025”`}
-				aria-label={t`New fact`}
-				className="h-[34px] min-w-0 flex-1 basis-60 bg-transparent text-sm outline-none placeholder:text-ink-3"
-			/>
+		<div className="flex flex-wrap items-center gap-2 p-3">
+			<div className="min-w-0 flex-1 basis-60">
+				<Input
+					fullWidth
+					variant="secondary"
+					value={text}
+					onChange={(event) => setText(event.target.value)}
+					onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+						if (event.key === "Enter" && !event.nativeEvent.isComposing) add();
+					}}
+					maxLength={2000}
+					placeholder={t`Add a fact, for example “I mentored two associate PMs in 2025”`}
+					aria-label={t`New fact`}
+				/>
+			</div>
 			<div className="flex gap-2">
-				<div className="w-auto">
-					<NativeSelect
+				<NativeSelect variant="secondary" className="w-40">
+					<NativeSelect.Trigger
 						aria-label={t`Fact type`}
 						value={category}
 						onChange={(event) => setCategory(event.target.value as FactCategory)}
@@ -278,11 +292,11 @@ function AddFact({ onAdded }: AddFactProps) {
 								{categoryLabel(option)}
 							</option>
 						))}
-					</NativeSelect>
-				</div>
+						<NativeSelect.Indicator />
+					</NativeSelect.Trigger>
+				</NativeSelect>
 				<Button
 					variant="secondary"
-					size="sm"
 					onPress={add}
 					isPending={save.isPending}
 					aria-disabled={!ready}
@@ -343,42 +357,43 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 			? t`Not used in a story or saved item yet`
 			: `${plural(fact.usedBy.stories, { one: "Backs # story", other: "Backs # stories" })} · ${plural(fact.usedBy.savedItems, { one: "used in # saved item", other: "used in # saved items" })}`;
 
-	type Action = { icon: IconName; label: string; onClick: () => void; expanded?: boolean };
+	type Action = { label: string; icon: IconName; onClick: () => void; expanded?: boolean };
 	const share: Action[] =
 		company === null
 			? []
-			: [{ icon: "share-network", label: t`Use for all applications`, onClick: () => onShare(fact) }];
+			: [{ label: t`Use for all applications`, icon: "globe-simple", onClick: () => onShare(fact) }];
 	const actions: Action[] = [
 		{
-			icon: "clock-counter-clockwise",
 			label: t`Source`,
+			icon: "clock-counter-clockwise",
 			onClick: () => setSourceOpen((open) => !open),
 			expanded: sourceOpen,
 		},
-		{ icon: "pencil-simple", label: t`Correct`, onClick: () => setCorrecting(true) },
+		{ label: t`Correct`, icon: "pencil-simple", onClick: () => setCorrecting(true) },
 		...share,
-		{ icon: "trash", label: t`Forget`, onClick: () => onForget(fact) },
+		{ label: t`Forget`, icon: "trash", onClick: () => onForget(fact) },
 	];
 
 	return (
-		<CollapseRow className="border-b border-line last:border-b-0">
+		<CollapseRow className="border-t border-separator first:border-t-0">
 			<div
 				data-fact={fact.id}
 				// Off-screen rows skip layout and paint; they stay findable and in the accessibility tree.
-				className="flex items-start gap-4 px-4 py-3.5 [contain-intrinsic-size:auto_112px] [content-visibility:auto]"
+				className="flex items-start gap-4 px-4 py-4 [contain-intrinsic-size:auto_112px] [content-visibility:auto]"
 			>
-				<div className="grid min-w-0 flex-1 gap-1.5">
-					<p className="flex flex-wrap items-center gap-2 font-mono text-xs font-medium text-ink-3">
-						{categoryLabel(categoryOf(fact))}
-						<span
-							className={cn(
-								"h-[18px] rounded-lg px-1.5 font-sans text-[11px] leading-[18px] normal-case",
-								company === null ? "bg-sunken text-ink-2" : "bg-info-soft text-info-text",
-							)}
-						>
-							{company === null ? t`All applications` : t`${company} only`}
-						</span>
-					</p>
+				<div className="grid min-w-0 flex-1 gap-2">
+					<div className="flex flex-wrap items-center gap-1.5">
+						<Chip size="sm" variant="soft">
+							{categoryLabel(categoryOf(fact))}
+						</Chip>
+						{company === null ? (
+							<span className="text-xs text-muted">{t`All applications`}</span>
+						) : (
+							<Chip size="sm" variant="soft" color="accent">
+								{t`${company} only`}
+							</Chip>
+						)}
+					</div>
 
 					{correcting ? (
 						<Correction
@@ -393,7 +408,7 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 						<p
 							className={cn(
 								"text-sm leading-[21px] text-pretty transition-colors duration-quick",
-								on ? "text-ink" : "text-ink-3",
+								on ? "text-foreground" : "text-muted",
 							)}
 						>
 							{fact.text}
@@ -402,16 +417,17 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 
 					<div className="-ms-2 flex flex-wrap gap-0.5">
 						{actions.map((action) => (
-							<button
+							<Button
 								key={action.label}
-								type="button"
-								onClick={action.onClick}
-								aria-expanded={action.expanded}
-								className="touch-target relative flex h-7 items-center gap-1 rounded-sm px-2 text-xs font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink"
+								size="sm"
+								variant="ghost"
+								onPress={action.onClick}
+								{...(action.expanded !== undefined && { "aria-expanded": action.expanded })}
+								className="touch-target h-7 min-h-0 gap-1 px-2 text-xs text-muted"
 							>
-								<Icon name={action.icon} size={16} />
+								<Icon name={action.icon} size={14} />
 								{action.label}
-							</button>
+							</Button>
 						))}
 					</div>
 
@@ -423,25 +439,28 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 								exit={{ height: 0, opacity: 0, transition: { duration: D2 * EXIT, ease: EASE } }}
 								className="overflow-hidden"
 							>
-								<div className="grid gap-1 rounded-md bg-sunken px-3 py-2.5 text-xs leading-[17px] text-ink-2">
-									<p className="font-semibold text-ink">
+								<div className="grid gap-1 rounded-xl bg-default px-3.5 py-3 text-xs leading-[17px] text-muted">
+									<p className="font-semibold text-foreground">
 										{sourceLabel(fact)} · {date(fact.createdAt)}
 									</p>
 									<p>{usage}</p>
-									<p className="text-xs text-ink-3">
-										{correctedOn ? t`Corrected ${correctedOn} · original kept` : t`No corrections`}
-									</p>
+									<p>{correctedOn ? t`Corrected ${correctedOn} · original kept` : t`No corrections`}</p>
 									{fact.source.quote && (
-										<blockquote className="border-s-2 border-line ps-2">{fact.source.quote}</blockquote>
+										<blockquote className="mt-1 border-s-2 border-separator ps-2 text-foreground">
+											{fact.source.quote}
+										</blockquote>
 									)}
 									{fact.revisions.length > 0 && (
-										<ol className="mt-1 grid gap-1 border-t border-line pt-2">
-											{fact.revisions.toReversed().map((revision) => (
-												<li key={revision.at} className="text-ink-3">
-													<span className="font-mono text-[11px]">{date(revision.at)}</span> · {revision.text}
-												</li>
-											))}
-										</ol>
+										<>
+											<Separator className="my-1.5" />
+											<ol className="grid gap-1">
+												{fact.revisions.toReversed().map((revision) => (
+													<li key={revision.at}>
+														<span className="tabular-nums">{date(revision.at)}</span> · {revision.text}
+													</li>
+												))}
+											</ol>
+										</>
 									)}
 								</div>
 							</m.div>
@@ -449,7 +468,10 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 					</AnimatePresence>
 				</div>
 
-				<div className="flex w-[120px] flex-none flex-col items-end gap-1 max-sm:w-20">
+				<div className="flex flex-none items-center gap-2.5 max-sm:flex-col-reverse max-sm:items-end max-sm:gap-1">
+					<span className="text-end text-xs whitespace-nowrap text-muted">
+						{on ? t`Used in coaching` : t`Not used`}
+					</span>
 					<Switch
 						isSelected={on}
 						aria-label={t`Use in coaching: ${excerpt}`}
@@ -461,7 +483,6 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 							</Switch.Control>
 						</Switch.Content>
 					</Switch>
-					<span className="text-end text-xs text-ink-3">{on ? t`Used in coaching` : t`Not used`}</span>
 				</div>
 			</div>
 		</CollapseRow>
@@ -500,7 +521,7 @@ function Correction({ text, onSave, onCancel }: CorrectionProps) {
 				<Button variant="ghost" size="sm" onPress={onCancel}>
 					<Trans>Cancel</Trans>
 				</Button>
-				<span className="text-xs text-ink-3">
+				<span className="text-xs text-muted">
 					<Trans>The original stays in the history.</Trans>
 				</span>
 			</div>

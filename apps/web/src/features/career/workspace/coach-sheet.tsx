@@ -2,7 +2,7 @@ import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { WorkspaceTab } from "@rezumi/schema/career";
-import { Sheet } from "@heroui-pro/react";
+import { EmptyState, Sheet } from "@heroui-pro/react";
 import { Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -67,7 +67,7 @@ export function CoachSheet({ application, tab, conversation, onConversationChang
 			placement="right"
 		>
 			<Sheet.Backdrop>
-				<Sheet.Content className="w-full border-s border-separator sm:max-w-none md:max-w-[420px]">
+				<Sheet.Content className="w-full sm:max-w-none md:max-w-[420px]">
 					<Sheet.Dialog className="gap-0 p-0">
 						<Sheet.CloseTrigger aria-label={t`Close`} />
 						<CoachSheetBody
@@ -216,12 +216,19 @@ function CoachSheetBody({
 				onChangeConnection={() => void navigate({ to: "/dashboard/settings/ai" })}
 				header={() => null}
 				empty={() => (
-					<p className="text-sm text-muted">
-						<Trans>
-							Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're
-							on {tabName}.
-						</Trans>
-					</p>
+					<EmptyState size="sm">
+						<EmptyState.Header>
+							<EmptyState.Media variant="icon">
+								<Icon name="sparkle" size={20} />
+							</EmptyState.Media>
+							<EmptyState.Description>
+								<Trans>
+									Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows
+									you're on {tabName}.
+								</Trans>
+							</EmptyState.Description>
+						</EmptyState.Header>
+					</EmptyState>
 				)}
 				privacy={
 					<PrivacyLine>

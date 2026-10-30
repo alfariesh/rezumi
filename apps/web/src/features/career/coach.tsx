@@ -2,10 +2,9 @@ import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
-import { ContextMenu, PromptSuggestion, Sheet } from "@heroui-pro/react";
-import { Button, buttonVariants, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
+import { ContextMenu, PromptSuggestion } from "@heroui-pro/react";
+import { Description, Dropdown, Label, ListBox, ScrollShadow, SearchField, Select, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
-import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,8 +12,6 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
-import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import {
 	CoachThread,
@@ -23,10 +20,9 @@ import {
 	deleteConversation,
 	titleFor,
 	useCoachKnowledge,
-	useConversationDate,
 } from "./coach-thread";
 import { CareerLoadError } from "./load-state";
-import { ContextChip, Eyebrow, PrivacyLine } from "./shared";
+import { ContextChip, useCareerTime, useNow } from "./shared";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -88,16 +84,14 @@ type CoachPageProps = { conversationId: string | undefined; offerIds: string[] }
 
 /** C7–C11: conversations about the whole search, with what each message shares chosen in the composer. */
 export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPageProps) {
-	const { i18n } = useLingui();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
-	const breakpoint = useBreakpoint();
-	const wide = breakpoint === "desktop" || breakpoint === "wide";
 	const providers = useHasUsableAiProvider();
 	const threads = useQuery(orpc.agent.threads.list.queryOptions());
 	const knowledge = useCoachKnowledge(null);
-	const [railOpen, setRailOpen] = useState(false);
 	const [modelMenuOpen, setModelMenuOpen] = useState(false);
+	// Below lg the chat and the conversation list share the screen: one at a time, like a mail client.
+	const [view, setView] = useState<"chat" | "history">("chat");
 	const [providerId, setProviderId] = useState<string | null>(null);
 	const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
 	const created = useRef<ThreadSummary | null>(null);
@@ -172,7 +166,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 		writeOfferIds(id, offerIds);
 		setSession((current) => ({ ...current, created: id }));
 		void navigate({
-			to: "/dashboard/career/coach/{-$conversationId}",
+			to: "/dashboard/coach/{-$conversationId}",
 			params: { conversationId: id },
 			search: offerIds.length > 0 ? { offers: offerIds } : {},
 			replace: true,
@@ -219,7 +213,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			() => {
 				setHidden((current) => new Set(current).add(thread.id));
 				if (thread.id === threadId)
-					void navigate({ to: "/dashboard/career/coach/{-$conversationId}", params: { conversationId: undefined } });
+					void navigate({ to: "/dashboard/coach/{-$conversationId}", params: { conversationId: undefined } });
 			},
 			() =>
 				setHidden((current) => {
@@ -228,34 +222,6 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 					return next;
 				}),
 		);
-
-	// The privacy line names exactly what goes. The chips choose what this message adds; earlier messages always go.
-	const parts = [
-		t`your message`,
-		t`earlier messages in this chat`,
-		...(chips.application ? [t`application summaries`] : []),
-		...(context.offerIds ? [plural(offerIds.length, { one: "# saved offer", other: "# saved offers" })] : []),
-		...(chips.memory
-			? [
-					t`your preferences`,
-					...(knowledge.active.length > 0
-						? [plural(knowledge.active.length, { one: "# fact", other: "# facts" })]
-						: []),
-					...(knowledge.stories.length > 0 ? [t`your stories`] : []),
-				]
-			: []),
-	];
-	const shared = formatList(i18n.locale, parts);
-	const privacy = (
-		<PrivacyLine>
-			{chips.memory && knowledge.isError
-				? t`Knowledge couldn't load. Try again or switch Knowledge off before sending.`
-				: chips.memory && knowledge.isPending
-					? t`Loading Knowledge before you send…`
-					: t`When you press send, ${shared} go to ${connection}.`}
-			{chips.web && ` ${t`Search terms go to your web search service.`}`}
-		</PrivacyLine>
-	);
 
 	const contextChips = (
 		<>
@@ -290,21 +256,33 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 		</>
 	);
 
-	const header = (messages: readonly UIMessage[]) => (
-		<header className="flex h-12 shrink-0 items-center gap-2 border-b border-separator ps-4 pe-2">
-			{!wide && (
-				<IconButton
-					icon="clock-counter-clockwise"
-					label={t`Conversations`}
-					size="sm"
-					className="-ms-2 text-muted"
-					onPress={() => setRailOpen(true)}
-				/>
-			)}
-			<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
-			<h2 className="me-auto min-w-0 truncate text-sm font-semibold">{titleFor(summary)}</h2>
+	// The copy button sits under the last message, at the start of the line.
+	const afterMessages = (messages: readonly UIMessage[]) => (
+		<IconButton
+			icon="copy"
+			label={t`Copy conversation`}
+			size="sm"
+			className="-ms-2 text-muted"
+			onPress={() =>
+				void copyToClipboard(
+					transcriptOf(messages, { user: t`You`, assistant: t`Coach`, sources: t`Sources` }),
+					t`Conversation copied`,
+				)
+			}
+		/>
+	);
+
+	const model = (
+		<>
+			<IconButton
+				icon="clock-counter-clockwise"
+				label={t`Conversations`}
+				size="sm"
+				className="text-muted lg:hidden"
+				onPress={() => setView("history")}
+			/>
 			{(usable.length > 0 || summary) && (
-				<ModelChip
+				<ModelSelect
 					open={modelMenuOpen}
 					onOpenChange={setModelMenuOpen}
 					providers={usable}
@@ -313,131 +291,97 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 					onChoose={(id) => void chooseProvider(id)}
 				/>
 			)}
-			<IconButton
-				icon="copy"
-				label={t`Copy conversation`}
-				size="sm"
-				className="text-muted"
-				isDisabled={messages.length === 0}
-				onPress={() =>
-					void copyToClipboard(
-						transcriptOf(messages, { user: t`You`, assistant: t`Coach`, sources: t`Sources` }),
-						t`Conversation copied`,
-					)
-				}
-			/>
-		</header>
+		</>
 	);
 
 	const notSetUp = threads.error instanceof ORPCError && threads.error.code === "PRECONDITION_FAILED";
 	const noProvider = !providers.isUnavailable && !providers.hasUsableProvider;
 
-	const rail = (
-		<ConversationRail
-			threads={conversations}
-			currentId={threadId}
-			onNavigate={() => setRailOpen(false)}
-			onRename={(thread, title) => void rename(thread, title)}
-			onDelete={remove}
-		/>
-	);
-
 	return (
-		// The card fills what's left of the page height and scrolls inside.
-		<div className="relative min-h-[560px] flex-1">
-			<div className="absolute inset-0 grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-				{wide ? (
-					rail
-				) : (
-					<Sheet isOpen={railOpen} onOpenChange={setRailOpen} placement="left">
-						<Sheet.Backdrop>
-							<Sheet.Content className="w-full sm:max-w-[320px]">
-								<Sheet.Dialog>
-									<Sheet.CloseTrigger aria-label={t`Close`} />
-									<Sheet.Header>
-										<Sheet.Heading>
-											<Trans>Conversations</Trans>
-										</Sheet.Heading>
-									</Sheet.Header>
-									<Sheet.Body>{rail}</Sheet.Body>
-								</Sheet.Dialog>
-							</Sheet.Content>
-						</Sheet.Backdrop>
-					</Sheet>
+		// The page fills what is left under the navbar; the chat and the list scroll inside it.
+		<div className="flex h-[calc(100svh-3rem)] min-h-[480px] flex-col overflow-hidden lg:grid lg:grid-cols-[minmax(280px,320px)_minmax(0,1fr)]">
+			<ConversationList
+				className={view === "history" ? "flex flex-1" : "hidden lg:flex"}
+				threads={conversations}
+				currentId={threadId}
+				onClose={() => setView("chat")}
+				onNavigate={() => setView("chat")}
+				onRename={(thread, title) => void rename(thread, title)}
+				onDelete={remove}
+			/>
+			<section
+				aria-label={t`Coach`}
+				className={cn(
+					"min-h-0 min-w-0 flex-col px-3 pt-3 pb-3 lg:ps-1 lg:pe-4",
+					view === "history" ? "hidden lg:flex" : "flex flex-1",
 				)}
-
-				<section
-					aria-label={t`Coach`}
-					className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xl border border-separator bg-surface"
-				>
-					{notSetUp ? (
-						<>
-							{header([])}
-							<p className="m-6 rounded-xl bg-default p-4 text-sm text-muted">
-								<Trans>
-									The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge,
-									Offers and your applications work without it.
-								</Trans>
-							</p>
-						</>
-					) : providers.error ? (
-						<AiProviderLoadState
-							state={{
-								...providers,
-								retry: () => {
-									providers.retry();
-									void threads.refetch();
-									knowledge.retry();
-								},
-							}}
-						/>
-					) : providers.isLoading || threads.isPending ? (
-						<div className="grid flex-1 place-items-center">
-							<Spinner size="md" color="current" aria-label={t`Loading`} />
-						</div>
-					) : threads.isError && !threads.data ? (
-						<CareerLoadError
-							onRetry={() => {
-								void threads.refetch();
+			>
+				{notSetUp ? (
+					<>
+						<p className="m-4 rounded-xl bg-default p-4 text-sm text-muted">
+							<Trans>
+								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers
+								and your applications work without it.
+							</Trans>
+						</p>
+					</>
+				) : providers.error ? (
+					<AiProviderLoadState
+						state={{
+							...providers,
+							retry: () => {
 								providers.retry();
-							}}
-						/>
-					) : noProvider && !threadId ? (
-						<>
-							{header([])}
-							<div className="min-h-0 flex-1 overflow-y-auto">
-								<div className="mx-auto max-w-[560px] py-6">
-									<ProviderSetup />
-								</div>
+								void threads.refetch();
+								knowledge.retry();
+							},
+						}}
+					/>
+				) : providers.isLoading || threads.isPending ? (
+					<div className="grid flex-1 place-items-center">
+						<Spinner size="md" color="current" className="text-muted" aria-label={t`Loading`} />
+					</div>
+				) : threads.isError && !threads.data ? (
+					<CareerLoadError
+						onRetry={() => {
+							void threads.refetch();
+							providers.retry();
+						}}
+					/>
+				) : noProvider && !threadId ? (
+					<>
+						<div className="min-h-0 flex-1 overflow-y-auto">
+							<div className="mx-auto max-w-[560px] py-6">
+								<ProviderSetup />
 							</div>
-						</>
-					) : (
-						<CoachThread
-							key={session.key}
-							draftKey={`career-coach:${threadId ?? "new"}`}
-							threadId={threadId}
-							createThread={createThread}
-							onThreadCreated={onThreadCreated}
-							applicationId={null}
-							context={context}
-							connection={connection}
-							onChangeConnection={() => setModelMenuOpen(true)}
-							header={header}
-							empty={(send) => (
-								<EmptyState
-									disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
-									onPick={send}
-								/>
-							)}
-							chips={contextChips}
-							privacy={privacy}
-							placeholder={t`Ask about your next career step…`}
-							disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
-							variant="page"
-						/>
-					)}
-				</section>
-			</div>
+						</div>
+					</>
+				) : (
+					<CoachThread
+						key={session.key}
+						draftKey={`career-coach:${threadId ?? "new"}`}
+						threadId={threadId}
+						createThread={createThread}
+						onThreadCreated={onThreadCreated}
+						applicationId={null}
+						context={context}
+						connection={connection}
+						onChangeConnection={() => setModelMenuOpen(true)}
+						header={() => null}
+						afterMessages={afterMessages}
+						empty={(send) => (
+							<EmptyState
+								disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
+								onPick={send}
+							/>
+						)}
+						chips={contextChips}
+						model={model}
+						placeholder={t`Ask about your next career step…`}
+						disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
+						variant="page"
+					/>
+				)}
+			</section>
 		</div>
 	);
 }
@@ -469,9 +413,18 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 			<PromptSuggestion variant="card" className="@container">
 				<PromptSuggestion.Items className="grid-cols-1 @xl:grid-cols-3">
 					{starters.map((starter) => (
-						<PromptSuggestion.Item key={starter.icon} isDisabled={disabled} onPress={() => onPick(starter.text)}>
+						// In the card variant the item is a plain Card (a div): it takes no onPress or isDisabled, so a button
+						// stretched over the card carries the press, focus and disabled state.
+						<PromptSuggestion.Item key={starter.icon} className="relative cursor-[var(--cursor-interactive)]">
 							<Icon name={starter.icon} size={22} className="text-accent" />
 							<PromptSuggestion.ItemTitle>{starter.text}</PromptSuggestion.ItemTitle>
+							<button
+								type="button"
+								aria-label={starter.text}
+								disabled={disabled}
+								onClick={() => onPick(starter.text)}
+								className="absolute inset-0 rounded-[inherit] focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none disabled:cursor-not-allowed"
+							/>
 						</PromptSuggestion.Item>
 					))}
 				</PromptSuggestion.Items>
@@ -480,7 +433,7 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	);
 }
 
-type ModelChipProps = {
+type ModelSelectProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	providers: readonly UsableProvider[];
@@ -489,123 +442,180 @@ type ModelChipProps = {
 	onChoose: (id: string) => void;
 };
 
-/** "Demo AI · gpt-4.1-mini": the connection this conversation uses; the menu switches it. */
-function ModelChip({ open, onOpenChange, providers, current, label, onChoose }: ModelChipProps) {
+/** The connection this conversation uses, picked in the composer's toolbar like HeroUI's model selector. */
+function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }: ModelSelectProps) {
 	const navigate = useNavigate();
-	const text = current ? `${current.label} · ${current.model}` : label;
 	return (
-		<Dropdown isOpen={open} onOpenChange={onOpenChange}>
-			<Button
-				variant="secondary"
-				size="sm"
-				aria-label={t`Connection: ${text}`}
-				className="h-7 min-h-0 max-w-[50%] min-w-0 justify-start rounded-sm bg-default px-2 font-mono text-xs text-muted transition-colors duration-quick hover:text-foreground aria-expanded:text-foreground"
-			>
-				<span className="truncate">{text}</span>
-			</Button>
-			<Dropdown.Popover placement="bottom end" className="w-64">
-				<Dropdown.Menu>
+		<Select
+			aria-label={t`Connection`}
+			placeholder={label}
+			isOpen={open}
+			onOpenChange={onOpenChange}
+			className="w-auto max-w-[180px]"
+			value={current?.id ?? null}
+			onChange={(key) => {
+				if (key === "connect") void navigate({ to: "/dashboard/settings/ai" });
+				else if (typeof key === "string") onChoose(key);
+			}}
+		>
+			<Select.Trigger className="h-8 min-h-8 items-center rounded-full bg-default ps-3 pe-8 text-[13px] shadow-none">
+				<Select.Value className="leading-none" />
+				<Select.Indicator />
+			</Select.Trigger>
+			<Select.Popover>
+				<ListBox>
 					{providers.map((item) => (
-						<Dropdown.Item
-							key={item.id}
-							id={item.id}
-							textValue={`${item.label} ${item.model}`}
-							onAction={() => onChoose(item.id)}
-						>
-							<span className="grid min-w-0 flex-1">
+						<ListBox.Item key={item.id} id={item.id} textValue={`${item.label} ${item.model}`}>
+							<span className="grid min-w-0">
 								<Label className="truncate">{item.label}</Label>
-								<Description className="truncate font-mono">{item.model}</Description>
+								<Description className="truncate">{item.model}</Description>
 							</span>
-							{item.id === current?.id && <Icon name="check" size={16} />}
-						</Dropdown.Item>
+							<ListBox.ItemIndicator />
+						</ListBox.Item>
 					))}
-					{providers.length > 0 ? <Separator /> : null}
-					<Dropdown.Item
-						id="connect"
-						textValue={t`Connect another…`}
-						onAction={() => void navigate({ to: "/dashboard/settings/ai" })}
-					>
+					<ListBox.Item id="connect" textValue={t`Connect another…`}>
 						<Label>
 							<Trans>Connect another…</Trans>
 						</Label>
-					</Dropdown.Item>
-				</Dropdown.Menu>
-			</Dropdown.Popover>
-		</Dropdown>
+					</ListBox.Item>
+				</ListBox>
+			</Select.Popover>
+		</Select>
 	);
 }
 
-// ---- Rail ----
+// ---- Conversations ----
 
-type ConversationRailProps = {
+type ConversationListProps = {
 	threads: ThreadSummary[];
 	currentId: string | null;
+	className: string;
+	/** Below lg: back to the chat without choosing. */
+	onClose: () => void;
 	onNavigate: () => void;
 	onRename: (thread: ThreadSummary, title: string) => void;
 	onDelete: (thread: ThreadSummary) => void;
 };
 
-function ConversationRail({ threads, currentId, onNavigate, onRename, onDelete }: ConversationRailProps) {
-	const when = useConversationDate();
+type Group = "today" | "yesterday" | "week" | "older";
+
+/**
+ * Past conversations, on the left of the chat (a mail client's list): a title each, grouped by when they last
+ * moved. Search matches titles. Below lg it replaces the chat until one is chosen. A conversation renames in
+ * place and deletes with Undo.
+ */
+function ConversationList({
+	threads,
+	currentId,
+	className,
+	onClose,
+	onNavigate,
+	onRename,
+	onDelete,
+}: ConversationListProps) {
+	const navigate = useNavigate();
+	const { format } = useCareerTime();
 	const [renaming, setRenaming] = useState<string | null>(null);
+	const [query, setQuery] = useState("");
+	const now = useNow();
+	const needle = query.trim().toLocaleLowerCase();
+
+	// Days are the person's own: today and yesterday follow their time zone, the rest are counted back from now.
+	const dayKey = (value: Date) => format(value, { year: "numeric", month: "numeric", day: "numeric" });
+	const today = dayKey(now);
+	const yesterday = dayKey(new Date(now.getTime() - 86_400_000));
+	const groupOf = (thread: ThreadSummary): Group => {
+		const at = new Date(thread.lastMessageAt);
+		const key = dayKey(at);
+		if (key === today) return "today";
+		if (key === yesterday) return "yesterday";
+		return now.getTime() - at.getTime() < 7 * 86_400_000 ? "week" : "older";
+	};
+	const labels: Record<Group, string> = {
+		today: t`Today`,
+		yesterday: t`Yesterday`,
+		week: t`Previous 7 days`,
+		older: t`Older`,
+	};
+	const shown = threads
+		.filter((thread) => !needle || titleFor(thread).toLocaleLowerCase().includes(needle))
+		.sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime());
+	const groups = (["today", "yesterday", "week", "older"] as const)
+		.map((group) => ({ group, items: shown.filter((thread) => groupOf(thread) === group) }))
+		.filter(({ items }) => items.length > 0);
 
 	return (
-		<nav aria-label={t`Conversations`} className="flex min-h-0 flex-1 flex-col gap-4">
-			<Link
-				to="/dashboard/career/coach/{-$conversationId}"
-				params={{ conversationId: undefined }}
-				onClick={onNavigate}
-				className={cn(buttonVariants({ variant: "secondary" }), "justify-start gap-2")}
-			>
-				<Icon name="note-pencil" size={18} />
-				<Trans>New conversation</Trans>
-			</Link>
-
-			<div className="flex min-h-0 flex-1 flex-col gap-1.5">
-				<Eyebrow className="px-2.5">
-					<Trans>Recent</Trans>
-				</Eyebrow>
-				<ul className="-mx-1 grid min-h-0 flex-1 content-start gap-0.5 overflow-y-auto px-1">
-					{currentId === null && (
-						<li aria-current="page" className="grid gap-0.5 rounded-lg bg-default px-2.5 py-2">
-							<span className="text-[13px] leading-[18px] font-medium">
-								<Trans>New conversation</Trans>
-							</span>
-							<span className="text-xs text-muted">
-								<Trans>Now</Trans>
-							</span>
-						</li>
-					)}
-					{threads.map((thread) => (
-						<RailItem
-							key={thread.id}
-							thread={thread}
-							current={thread.id === currentId}
-							date={when(new Date(thread.lastMessageAt))}
-							renaming={renaming === thread.id}
-							onRenameStart={() => setRenaming(thread.id)}
-							onRenameEnd={(title) => {
-								setRenaming(null);
-								if (title !== null) onRename(thread, title);
-							}}
-							onDelete={() => onDelete(thread)}
-							onNavigate={onNavigate}
-						/>
-					))}
-				</ul>
+		<nav
+			aria-label={t`Conversations`}
+			className={cn("min-h-0 flex-col gap-3 px-3 pt-3 pb-3 lg:ps-4 lg:pe-1", className)}
+		>
+			<div className="flex items-center gap-2">
+				<IconButton icon="arrow-left" label={t`Back to the chat`} size="sm" className="lg:hidden" onPress={onClose} />
+				<SearchField aria-label={t`Search conversations`} className="min-w-0 flex-1" value={query} onChange={setQuery}>
+					<SearchField.Group>
+						<SearchField.SearchIcon />
+						<SearchField.Input placeholder={t`Search…`} />
+						<SearchField.ClearButton />
+					</SearchField.Group>
+				</SearchField>
+				<IconButton
+					icon="note-pencil"
+					label={t`New conversation`}
+					onPress={() => {
+						onNavigate();
+						void navigate({ to: "/dashboard/coach/{-$conversationId}", params: { conversationId: undefined } });
+					}}
+				/>
 			</div>
 
-			<p className="px-2.5 text-xs leading-[17px] text-muted">
-				<Trans>Conversations about one job live in its workspace.</Trans>
-			</p>
+			<ScrollShadow hideScrollBar className="min-h-0 flex-1 overflow-y-auto">
+				{currentId === null && !needle && (
+					<ul className="mb-3">
+						<li aria-current="page" className="rounded-xl bg-default px-3 py-2 text-sm leading-5 font-medium">
+							<Trans>New conversation</Trans>
+						</li>
+					</ul>
+				)}
+				{groups.map(({ group, items }) => (
+					<section key={group} aria-label={labels[group]} className="mb-3 grid gap-0.5">
+						<h2 className="px-3 pb-1 text-xs font-semibold text-muted">{labels[group]}</h2>
+						<ul className="grid content-start gap-0.5">
+							{items.map((thread) => (
+								<ConversationItem
+									key={thread.id}
+									thread={thread}
+									current={thread.id === currentId}
+									renaming={renaming === thread.id}
+									onRenameStart={() => setRenaming(thread.id)}
+									onRenameEnd={(title) => {
+										setRenaming(null);
+										if (title !== null) onRename(thread, title);
+									}}
+									onDelete={() => onDelete(thread)}
+									onNavigate={onNavigate}
+								/>
+							))}
+						</ul>
+					</section>
+				))}
+				{threads.length > 0 && shown.length === 0 && (
+					<p className="px-3 py-10 text-center text-sm text-muted">
+						<Trans>No conversations match.</Trans>
+					</p>
+				)}
+				{threads.length === 0 && currentId !== null && (
+					<p className="px-3 py-10 text-center text-sm text-muted">
+						<Trans>Your conversations appear here.</Trans>
+					</p>
+				)}
+			</ScrollShadow>
 		</nav>
 	);
 }
 
-type RailItemProps = {
+type ConversationItemProps = {
 	thread: ThreadSummary;
 	current: boolean;
-	date: string;
 	renaming: boolean;
 	onRenameStart: () => void;
 	/** The new title, or null when renaming was cancelled. */
@@ -614,17 +624,16 @@ type RailItemProps = {
 	onNavigate: () => void;
 };
 
-/** A conversation: open it; the hover ⋯ or a right-click renames (in place) or deletes it (with Undo). */
-function RailItem({
+/** A conversation's title: open it; the hover ⋯ or a right-click renames (in place) or deletes it (with Undo). */
+function ConversationItem({
 	thread,
 	current,
-	date,
 	renaming,
 	onRenameStart,
 	onRenameEnd,
 	onDelete,
 	onNavigate,
-}: RailItemProps) {
+}: ConversationItemProps) {
 	const cancelled = useRef(false);
 	const title = titleFor(thread);
 
@@ -654,21 +663,28 @@ function RailItem({
 							onRenameEnd(cancelled.current ? null : event.currentTarget.value);
 							cancelled.current = false;
 						}}
-						className="h-[54px] w-full rounded-lg border border-accent bg-overlay px-2.5 text-base font-medium outline-none md:text-[13px]"
+						className="h-9 w-full rounded-xl border border-accent bg-overlay px-3 text-base outline-none md:text-sm"
 					/>
 				) : (
 					<Link
-						to="/dashboard/career/coach/{-$conversationId}"
+						to="/dashboard/coach/{-$conversationId}"
 						params={{ conversationId: thread.id }}
 						aria-current={current ? "page" : undefined}
 						onClick={onNavigate}
 						className={cn(
-							"grid gap-0.5 rounded-lg py-2 ps-2.5 pe-9 transition-colors duration-quick",
-							current ? "bg-default" : "hover:bg-default",
+							"flex items-center gap-2 rounded-xl py-2 ps-3 pe-9 text-sm leading-5",
+							current ? "bg-default font-medium" : "hover:bg-default/60",
 						)}
 					>
-						<span className="line-clamp-2 text-[13px] leading-[18px] font-medium">{title}</span>
-						<span className="text-xs text-muted">{date}</span>
+						<span className="truncate">{title}</span>
+						{thread.activeRunId && (
+							<>
+								<span aria-hidden="true" className="size-1.5 shrink-0 rounded-full bg-accent" />
+								<span className="sr-only">
+									<Trans>Writing</Trans>
+								</span>
+							</>
+						)}
 					</Link>
 				)}
 				{!renaming && (
@@ -678,7 +694,7 @@ function RailItem({
 							iconSize={18}
 							size="sm"
 							label={t`More for ${title}`}
-							className="absolute inset-e-1 top-1.5 size-7 min-w-0 text-muted opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
+							className="absolute inset-e-1 top-1 size-7 min-w-0 text-muted opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
 						/>
 						<Dropdown.Popover placement="bottom end">
 							<Dropdown.Menu>

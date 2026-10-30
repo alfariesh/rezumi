@@ -60,6 +60,13 @@ vi.mock("../shared", () => ({
 	CollapseRow: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 	Swap: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 	Eyebrow: ({ children }: { children: ReactNode }) => <p>{children}</p>,
+	CareerWidget: ({ title, trailing, children }: { title: ReactNode; trailing?: ReactNode; children: ReactNode }) => (
+		<section>
+			<h2>{title}</h2>
+			{trailing}
+			{children}
+		</section>
+	),
 	FilterChip: ({ children, onClick }: { children: ReactNode; onClick: () => void }) => (
 		<button onClick={onClick}>{children}</button>
 	),

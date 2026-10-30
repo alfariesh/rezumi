@@ -163,10 +163,8 @@ msgstr "{0, plural, one {# redaktəsini yerləşdirmək mümkün olmadı: onun m
 msgid "{0, plural, one {# entry} other {# entries}}"
 msgstr "{0, plural, one {# qeyd} other {# qeyd}}"
 
-#. placeholder {0}: knowledge.active.length
 #. placeholder {0}: used.facts.length
 #: src/features/career/coach-chat.tsx
-#: src/features/career/coach.tsx
 msgid "{0, plural, one {# fact} other {# facts}}"
 msgstr "{0, plural, one {# fakt} other {# fakt}}"
 
@@ -650,6 +648,10 @@ msgstr "{minutes, plural, one {# dəqiqə sonra başlayır} other {# dəqiqə so
 msgid "{minutes} min"
 msgstr "{minutes} dəq"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{missing} missing"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "{monthCount, plural, =0 {No interviews} one {# interview} other {# interviews}}"
 msgstr "{monthCount, plural, =0 {Müsahibə yoxdur} one {# müsahibə} other {# müsahibə}}"
@@ -711,6 +713,10 @@ msgstr "{pages, plural, one {9 pt ölçüdə hələ də # səhifədir. Bir bölm
 msgid "{pairing} type"
 msgstr "{pairing} növü"
 
+#: src/features/career/workspace/fit.tsx
+msgid "{partial} partly"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{passed} of {total}"
 msgstr "{passed} və {total}"
@@ -760,8 +766,8 @@ msgid "{summary}. Opens in Career → Offers."
 msgstr "{summary}. Karyera → Təkliflər bölməsində açılır."
 
 #: src/features/career/workspace/fit.tsx
-msgid "{supported} supported · {partial} partly · {missing} missing"
-msgstr "{supported} dəstəklənir · {partial} qismən · {missing} çatışmır"
+msgid "{supported} supported"
+msgstr ""
 
 #: src/features/homepage/design.tsx
 msgid "{templateCount} free resume templates."
@@ -843,10 +849,6 @@ msgstr "<0>Düzəlmək üçün heç nə yoxdur.</0> Hər yoxlamadan keçir."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>{0} tarixində göndərildi.</0> Göndərdiyiniz versiyalar Saxlanılanlar bölməsində qalır. Burada etdiyiniz dəyişikliklər {1} şirkətinin aldığını dəyişmir."
-
-#: src/features/career/offers.tsx
-msgid "<0>Totals aren't added up on purpose.</0> Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
-msgstr "<0>Cəmlər qəsdən toplanmır.</0> Bonus və pay şərtlərdən asılıdır, payın dəyəri isə hər ikisində qeyri-müəyyəndir. Cəmləri müqayisə etməzdən əvvəl orijinal təklif sənədlərini oxuyun."
 
 #: src/features/homepage/check.tsx
 #: src/features/homepage/sheet.tsx
@@ -1368,6 +1370,10 @@ msgstr "Açar söz əlavə et"
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add language"
 msgstr "Dil əlavə edin"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Add one above."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add one link that shows your work."
@@ -1909,10 +1915,6 @@ msgstr "Müraciət təfərrüatları"
 msgid "Application options"
 msgstr "Müraciət seçimləri"
 
-#: src/features/career/coach.tsx
-msgid "application summaries"
-msgstr "müraciət xülasələri"
-
 #: src/features/homepage/prepare.tsx
 msgid "Application tabs"
 msgstr "Müraciət tabları"
@@ -2223,6 +2225,10 @@ msgstr "Girişə qayıt"
 msgid "Back to stories"
 msgstr "Hekayələrə qayıt"
 
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 #: src/features/homepage/remember.tsx
@@ -2324,6 +2330,10 @@ msgstr "Qalın"
 #: src/features/career/offers.tsx
 msgid "Bonus"
 msgstr "Bonus"
+
+#: src/features/career/offers.tsx
+msgid "Bonus and equity depend on conditions, and equity value is uncertain for both. Read the original offer documents before comparing totals."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Border color"
@@ -2466,7 +2476,6 @@ msgid "Cancel"
 msgstr "Ləğv et"
 
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Career"
 msgstr "Karyera"
 
@@ -2808,7 +2817,6 @@ msgstr "Müştəri ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2868,7 +2876,7 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
-#: src/routes/dashboard/career/route.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Kouç"
 
@@ -2953,6 +2961,10 @@ msgstr "Təklifləri müqayisə et"
 #: src/features/templates/gallery.tsx
 msgid "Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark."
 msgstr "Qeydiyyatdan keçməzdən əvvəl real CV tərtibatlarını müqayisə edin. Hər bir şablon PDF və Microsoft Word yükləmələri ilə və su nişanı olmadan fərdiləşdirmək üçün pulsuzdur."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Compared in their original currency and pay period. Comparing doesn't share anything with the coach."
@@ -3081,13 +3093,13 @@ msgstr "Qoşuldu. Domeniniz əsas CV-nizi açır."
 msgid "Connecting your {providerName} account…"
 msgstr "{providerName} hesabınız qoşulur…"
 
+#: src/features/career/coach.tsx
+msgid "Connection"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Bağlantı yadda saxlanıldı"
-
-#: src/features/career/coach.tsx
-msgid "Connection: {text}"
-msgstr "Bağlantı: {text}"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Connections bill speech separately and may use tokens on your account. Your browser's speech is free, but its maker may process the audio. The server keeps transcripts, never recordings."
@@ -3190,10 +3202,6 @@ msgstr "Söhbətin adı"
 #: src/features/command-palette/pages/resumes.tsx
 msgid "Conversations"
 msgstr "Söhbətlər"
-
-#: src/features/career/coach.tsx
-msgid "Conversations about one job live in its workspace."
-msgstr "Bir işlə bağlı söhbətlər onun iş sahəsində saxlanılır."
 
 #: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
@@ -4699,10 +4707,6 @@ msgstr "Rəy aldığınız hər cavab burada saxlanılır, ən yenisi birinci."
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "İş elanındakı hər tələb Biliklərinizdəki fakt və hekayələrlə yoxlanılır. Boşluqlar çatışmayan bacarıq kimi deyil, həmişə çatışmayan sübut kimi göstərilir."
 
-#: src/features/career/coach.tsx
-msgid "earlier messages in this chat"
-msgstr "bu söhbətdəki əvvəlki mesajlar"
-
 #: src/components/input/chip-input.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/career/knowledge/stories.tsx
@@ -4778,6 +4782,10 @@ msgstr "Sualı redaktə et"
 #: src/features/career/schedule-sheet.tsx
 msgid "Edit schedule"
 msgstr "Cədvəli redaktə et"
+
+#: src/features/career/knowledge/stories.tsx
+msgid "Edit story"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Edit the email"
@@ -6454,14 +6462,11 @@ msgid "Kind regards,"
 msgstr "Hörmətlə,"
 
 #: src/features/homepage/remember.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "Biliklər"
-
-#: src/features/career/coach.tsx
-msgid "Knowledge couldn't load. Try again or switch Knowledge off before sending."
-msgstr "Biliklər yüklənmədi. Göndərməzdən əvvəl yenidən cəhd edin və ya Bilikləri söndürün."
 
 #: src/features/homepage/prepare.tsx
 msgid "Knowledge doesn’t mention mentoring."
@@ -6901,10 +6906,6 @@ msgstr "Söhbətlər yüklənir..."
 #: src/features/career/knowledge/stories.tsx
 msgid "Loading interviews…"
 msgstr "Müsahibələr yüklənir…"
-
-#: src/features/career/coach.tsx
-msgid "Loading Knowledge before you send…"
-msgstr "Göndərməzdən əvvəl Biliklər yüklənir…"
 
 #: src/features/career/workspace/shell.tsx
 msgid "Loading linked documents…"
@@ -7568,6 +7569,10 @@ msgstr "Yeni cədvəl"
 msgid "New section"
 msgstr "Yeni bölmə"
 
+#: src/features/career/knowledge/stories.tsx
+msgid "New story"
+msgstr ""
+
 #: src/features/homepage/remember.tsx
 msgid "New teams at Northwind were stalling in setup; most never got through."
 msgstr "Northwind-də yeni komandalar quraşdırmada ilişib qalırdı; çoxu sona çatmırdı."
@@ -7671,6 +7676,10 @@ msgstr "Heç bir adi bölmə başlığı tapılmadı."
 msgid "No conversations about this document yet."
 msgstr "Bu sənədlə bağlı hələ heç bir söhbət yoxdur."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "Düzəliş yoxdur"
@@ -7706,16 +7715,16 @@ msgid "No evidence yet"
 msgstr "Hələ sübut yoxdur"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts match. Try another word or type."
-msgstr "Uyğun fakt yoxdur. Başqa söz və ya növ yoxlayın."
+msgid "No facts match"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "No facts to link yet. Add them in Facts."
 msgstr "Hələ bağlanacaq fakt yoxdur. Onları Faktlar bölməsində əlavə edin."
 
 #: src/features/career/knowledge/facts.tsx
-msgid "No facts yet. Add one above."
-msgstr "Hələ fakt yoxdur. Yuxarıda birini əlavə edin."
+msgid "No facts yet"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "No job yet"
@@ -8063,7 +8072,6 @@ msgid "Notice period"
 msgstr "Xəbərdarlıq müddəti"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/career/coach.tsx
 #: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8105,6 +8113,11 @@ msgstr "Söndür. Məktub sizin məlumatlarınızın öz surətini saxlayır."
 msgid "Offer"
 msgstr "Təklif"
 
+#: src/features/career/offers.tsx
+msgid "Offer comparison"
+msgstr ""
+
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
 msgstr "Təkliflər"
@@ -8120,6 +8133,10 @@ msgstr "Ofis günləri göstərilməyib"
 #: src/features/resume/editor/save-status.tsx
 msgid "Offline · saved on this device"
 msgstr "Oflayn · bu cihazda yadda saxlanılıb"
+
+#: src/features/career/coach.tsx
+msgid "Older"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
@@ -8727,10 +8744,6 @@ msgstr "Hazırlığımı planlaşdır"
 msgid "Plan what to ask"
 msgstr "Nə soruşacağını planlaşdır"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Plan your search, keep your evidence in one place, and decide between offers."
-msgstr "Axtarışınızı planlaşdırın, sübutlarınızı bir yerdə saxlayın və təkliflər arasında seçim edin."
-
 #: src/features/career/shared.tsx
 msgid "Planning your week"
 msgstr "Həftəniz planlaşdırılır"
@@ -8940,6 +8953,10 @@ msgstr "Önizləmə ölçüsü"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "{0} əvvəlcədən baxılır · tətbiq etmək üçün klikləyin"
+
+#: src/features/career/coach.tsx
+msgid "Previous 7 days"
+msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Previous day"
@@ -9155,6 +9172,10 @@ msgstr "{url} üçün QR kodu"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "İki addımlı doğrulama üçün QR kod"
+
+#: src/features/career/workspace/apply.tsx
+msgid "Question {index}"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Question {position} of {total}"
@@ -9406,10 +9427,6 @@ msgstr "Səbəb"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "Yaddaşdan"
-
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "Son"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9750,6 +9767,7 @@ msgid "Requirement"
 msgstr "Tələb"
 
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/career/workspace/fit.tsx
 msgid "Requirements"
 msgstr "Tələblər"
 
@@ -10398,6 +10416,10 @@ msgstr "İş ərizələrini axtarın"
 msgid "Search commands"
 msgstr "Axtarış əmrləri"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "Axtarış başlıqları, teqləri və əlaqəli müraciətləri əhatə edir."
@@ -10440,10 +10462,6 @@ msgstr "İş elanları axtarın"
 msgid "Search role, company or contact"
 msgstr "Rol, şirkət və ya əlaqə axtarın"
 
-#: src/features/career/coach.tsx
-msgid "Search terms go to your web search service."
-msgstr "Axtarış sözləri veb axtarış xidmətinizə göndərilir."
-
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
 msgstr ""
@@ -10469,6 +10487,7 @@ msgid "Search..."
 msgstr "Axtar..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -11368,6 +11387,7 @@ msgstr "Hekayələr"
 msgid "Stories to bring"
 msgstr "Gətiriləcək hekayələr"
 
+#: src/features/career/knowledge/stories.tsx
 #: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Hekayə"
@@ -11865,6 +11885,10 @@ msgstr "İxrac edilmiş PDF"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "Eksport edilmiş PDF yoxlanıla bilmədi. Yenidən cəhd edin."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "The facts, stories and preferences the coach works from."
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "The file couldn't be read as a resume."
@@ -12364,6 +12388,10 @@ msgstr "Vaxt · {timeZone}"
 msgid "Time, link, who, what you sent"
 msgstr "Vaxt, link, kim, nə göndərdiniz"
 
+#: src/features/career/workspace/prepare.tsx
+msgid "Timed plan"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Vaxtlar {timeZone} üzrə göstərilir."
@@ -12390,7 +12418,9 @@ msgid "To"
 msgstr "Kimə"
 
 #: src/features/applications/components/calendar-view.tsx
+#: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Bu gün"
@@ -12421,6 +12451,10 @@ msgstr "Həddindən artıq sorğu. Daha sonra yenidən cəhd edin."
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/career/offers.tsx
+msgid "Totals aren't added up on purpose."
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
@@ -12505,6 +12539,10 @@ msgstr "Yenidən cəhd edin"
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
 msgstr "Bununla yenidən cəhd et"
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Try another word or type."
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
@@ -13302,6 +13340,10 @@ msgstr "Vacib olanlar"
 msgid "What matters to you"
 msgstr "Sizin üçün vacib olanlar"
 
+#: src/routes/dashboard/career/route.tsx
+msgid "What needs you, new roles from your search, your next interview and your schedules."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"
 msgstr "Nə dəyişməlidir?"
@@ -13379,10 +13421,6 @@ msgstr "Nə işləyir"
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
 msgstr "Cavabınız onlara nə vaxt lazımdır?"
-
-#: src/features/career/coach.tsx
-msgid "When you press send, {shared} go to {connection}."
-msgstr "Göndər düyməsini basdığınız zaman {shared} {connection} bağlantısına göndərilir."
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
@@ -13573,6 +13611,7 @@ msgid "Write your professional resume"
 msgstr "Peşəkar CV-nizi yazın"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13611,6 +13650,7 @@ msgid "Yes. Rezumi is open source under the MIT License and can run on your own 
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
+#: src/features/career/coach.tsx
 msgid "Yesterday"
 msgstr "Dünən"
 
@@ -13784,6 +13824,10 @@ msgstr "Dəyişiklikləriniz avtomatik olaraq yadda saxlanılır."
 msgid "Your contact details are not on the first page."
 msgstr "Əlaqə məlumatlarınız birinci səhifədə deyil."
 
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "Məlumatlarınız"
@@ -13824,6 +13868,10 @@ msgstr "Kouçinq alətlərindən və ya planlaşdırılmış müsahibə hazırl�
 msgid "Your evidence"
 msgstr "Sübutlarınız"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Your facts"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Your file"
 msgstr "Sizin faylınız"
@@ -13855,10 +13903,6 @@ msgstr "CV-də yeriniz dəyişdi. Məktub da yeniləndi."
 #: src/features/ats-checker/messages.ts
 msgid "Your margins are very narrow."
 msgstr "Kənar boşluqlarınız çox dardır."
-
-#: src/features/career/coach.tsx
-msgid "your message"
-msgstr "mesajınız"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
@@ -13907,10 +13951,6 @@ msgstr "CV-də telefon nömrəniz dəyişdirilib. Məktub da yeniləndi."
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Telefon nömrəniz qeyri-adi formada yazılıb."
-
-#: src/features/career/coach.tsx
-msgid "your preferences"
-msgstr "tərcihləriniz"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
@@ -13970,9 +14010,9 @@ msgstr "Qısa keçidiniz və fərdi domeniniz bu CV-ni açır."
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "Siz yenidən dərc edənə qədər qısa keçidiniz və fərdi domeniniz bu CV-nin paylaşılmadığını göstərir."
 
-#: src/features/career/coach.tsx
-msgid "your stories"
-msgstr "hekayələriniz"
+#: src/features/career/knowledge/stories.tsx
+msgid "Your stories"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Your story couldn't be loaded."
