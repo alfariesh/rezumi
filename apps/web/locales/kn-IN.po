@@ -2025,6 +2025,10 @@ msgid "Ask for something else…"
 msgstr "ಇನ್ನೇನಾದರೂ ಕೇಳಿ..."
 
 #: src/features/command-palette/pages/ask.tsx
+msgid "Ask the assistant"
+msgstr ""
+
+#: src/features/command-palette/pages/ask.tsx
 msgid "Ask the assistant “{question}”"
 msgstr "ಸಹಾಯಕರನ್ನು ಕೇಳಿ “{question}”"
 
@@ -2496,10 +2500,6 @@ msgstr "ರೆಸ್ಯೂಮೆಯ ವಿನ್ಯಾಸವನ್ನು ಬದ�
 msgid "Change theme to…"
 msgstr "ಥೀಮ್ ಅನ್ನು… ಗೆ ಬದಲಾಯಿಸಿ"
 
-#: src/features/applications/components/detail/activity.tsx
-msgid "Change this timeline entry."
-msgstr "ಈ ಟೈಮ್‌ಲೈನ್ ನಮೂದನ್ನು ಬದಲಾಯಿಸಿ."
-
 #: src/features/career/knowledge/preferences.tsx
 msgid "Change timezone"
 msgstr "ಸಮಯ ವಲಯವನ್ನು ಬದಲಾಯಿಸಿ"
@@ -2769,18 +2769,33 @@ msgstr "ಗ್ರಾಹಕ ID"
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/resume/index.tsx
+#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/board.tsx
+#: src/features/applications/components/detail/activity.tsx
+#: src/features/applications/components/detail/close-dialog.tsx
+#: src/features/applications/components/detail/next-step-card.tsx
+#: src/features/applications/components/export-applications-sheet.tsx
+#: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/builder/password-dialog.tsx
+#: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
+#: src/features/resume/stylesheet/editor.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
+#: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Close"
 msgstr "ಮುಚ್ಚಿ"
 
@@ -2857,7 +2872,6 @@ msgstr "ಮುಂಬರುವವು"
 
 #. Accessible label for command list region inside command palette
 #. Accessible label for the command palette dialog
-#. Screen-reader dialog title for the command palette
 #: src/features/command-palette/content.tsx
 msgid "Command palette"
 msgstr "ಕಮಾಂಡ್ ಪ್ಯಾಲೆಟ್"
@@ -3994,6 +4008,7 @@ msgid "Danish"
 msgstr "ಡ್ಯಾನಿಶ್"
 
 #. Appearance theme option for dark mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
@@ -6376,6 +6391,7 @@ msgstr "ಲೆಂಡ್ಸ್ಕೇಪ್"
 
 #. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -6588,6 +6604,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ಲಿಗೇಚರ್‌ಗಳು \"workflow\" ನಂತಹ ಪದಗಳಿಂದ ಅಕ್ಷರಗಳನ್ನು ಬಿಟ್ಟುಬಿಡಬಹುದು."
 
 #. Appearance theme option for light mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
@@ -6821,6 +6838,7 @@ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರವನ್ನು ಲೋಡ್ ಮಾ�
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
+#: src/features/command-palette/pages/resumes.tsx
 msgid "Loading…"
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ..."
 
@@ -8121,6 +8139,10 @@ msgstr "ಇನ್ ಎಡಿಟರ್ ತೆರೆಯಿರಿ"
 msgid "Open in Offers"
 msgstr "“ಆಫರ್‌ಗಳು” ನಲ್ಲಿ ತೆರೆಯಿರಿ"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Open navigation"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Open preferences"
 msgstr "ಆದ್ಯತೆಗಳನ್ನು ತೆರೆಯಿರಿ"
@@ -8395,10 +8417,6 @@ msgstr "ಪಾಸ್ವರ್ಡ್ ಸೆಟ್"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Past conversations"
 msgstr "ಹಿಂದಿನ ಸಂಭಾಷಣೆಗಳು"
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Paste a job link or posting, then check the role and company."
-msgstr "ಉದ್ಯೋಗ ಲಿಂಕ್ ಅಥವಾ ಉದ್ಯೋಗ ಪೋಸ್ಟ್ ಅನ್ನು ಅಂಟಿಸಿ, ನಂತರ ಪಾತ್ರ ಮತ್ತು ಕಂಪನಿಯನ್ನು ಪರಿಶೀಲಿಸಿ."
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Paste a job link. We'll save the posting so Check, the assistant and your letter can use it."
@@ -10214,10 +10232,6 @@ msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿಗಳನ್ನು ಹುಡುಕಿ"
 msgid "Search commands"
 msgstr "ಕಮಾಂಡ್‌ಗಳನ್ನು ಹುಡುಕಿ"
 
-#: src/features/career/knowledge/search-regions-field.tsx
-msgid "Search countries"
-msgstr "ದೇಶಗಳನ್ನು ಹುಡುಕಿ"
-
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "ಹುಡುಕಾಟವು ಶೀರ್ಷಿಕೆಗಳು, ಟ್ಯಾಗ್‌ಗಳು ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿದ ಉದ್ಯೋಗ ಅರ್ಜಿಗಳನ್ನು ಒಳಗೊಂಡಿದೆ."
@@ -11876,6 +11890,7 @@ msgstr "ಮೊದಲ ಪುಟದ ಮೇಲ್ಭಾಗ ಹೆಸರಿನಂತ
 
 #. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
 #: src/features/settings/preferences.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -12223,6 +12238,10 @@ msgstr "ಇಂದು {time}"
 msgid "Today, {hour}"
 msgstr "ಇಂದು, {hour}"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toggle sidebar"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Tomorrow"
 msgstr "ನಾಳೆ"
@@ -12234,6 +12253,10 @@ msgstr "ಬಿಳಿಯ ಶೀರ್ಷಿಕೆಗಳಿಗೆ ತುಂಬಾ 
 #: src/features/settings/ai/web-access.tsx
 msgid "Too many requests. Try again later."
 msgstr "ಹಲವಾರು ವಿನಂತಿಗಳು. ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toolbar"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Track a job you're applying to and link the resume you sent."
@@ -12450,7 +12473,6 @@ msgid "Type <0>{CONFIRMATION}</0> to confirm"
 msgstr "ಖಚಿತಪಡಿಸಲು <0>{CONFIRMATION}</0> ಎಂದು ಟೈಪ್ ಮಾಡಿ"
 
 #. Placeholder in command palette input on root page
-#. Screen-reader dialog description instructing users how to use the command palette
 #: src/features/command-palette/content.tsx
 msgid "Type a command or search…"
 msgstr "ಆಜ್ಞೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಹುಡುಕಿ…"

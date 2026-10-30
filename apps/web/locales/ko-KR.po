@@ -2025,6 +2025,10 @@ msgid "Ask for something else…"
 msgstr "다른 것을 요청하세요…"
 
 #: src/features/command-palette/pages/ask.tsx
+msgid "Ask the assistant"
+msgstr ""
+
+#: src/features/command-palette/pages/ask.tsx
 msgid "Ask the assistant “{question}”"
 msgstr "조수에게 \"{question}\"에게 물어보세요"
 
@@ -2496,10 +2500,6 @@ msgstr "이력서 디자인 바꾸기"
 msgid "Change theme to…"
 msgstr "테마를…로 변경하세요"
 
-#: src/features/applications/components/detail/activity.tsx
-msgid "Change this timeline entry."
-msgstr "이 타임라인 항목을 변경하세요."
-
 #: src/features/career/knowledge/preferences.tsx
 msgid "Change timezone"
 msgstr "시간대 변경"
@@ -2769,18 +2769,33 @@ msgstr "클라이언트 ID"
 #: src/dialogs/auth/change-password.tsx
 #: src/dialogs/auth/disable-two-factor.tsx
 #: src/dialogs/auth/enable-two-factor.tsx
+#: src/dialogs/resume/index.tsx
+#: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/board.tsx
+#: src/features/applications/components/detail/activity.tsx
+#: src/features/applications/components/detail/close-dialog.tsx
+#: src/features/applications/components/detail/next-step-card.tsx
+#: src/features/applications/components/export-applications-sheet.tsx
+#: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/resume/builder/password-dialog.tsx
+#: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
 #: src/features/resume/editor/chrome/download-sheet.tsx
+#: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
+#: src/features/resume/stylesheet/editor.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
+#: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Close"
 msgstr "닫기"
 
@@ -2857,7 +2872,6 @@ msgstr "예정"
 
 #. Accessible label for command list region inside command palette
 #. Accessible label for the command palette dialog
-#. Screen-reader dialog title for the command palette
 #: src/features/command-palette/content.tsx
 msgid "Command palette"
 msgstr "명령 팔레트"
@@ -3994,6 +4008,7 @@ msgid "Danish"
 msgstr "덴마크어"
 
 #. Appearance theme option for dark mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Dark"
@@ -6376,6 +6391,7 @@ msgstr "가로"
 
 #. Menu item that opens language selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -6588,6 +6604,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "합자(리게이처)는 \"workflow\"와 같은 단어에서 글자를 누락시킬 수 있습니다."
 
 #. Appearance theme option for light mode
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/user/dropdown-menu.tsx
 #: src/libs/theme.ts
 msgid "Light"
@@ -6821,6 +6838,7 @@ msgstr "워크스페이스 불러오는 중…"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
+#: src/features/command-palette/pages/resumes.tsx
 msgid "Loading…"
 msgstr "로드 중…"
 
@@ -8121,6 +8139,10 @@ msgstr "편집기에서 열기"
 msgid "Open in Offers"
 msgstr "오퍼에서 열기"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Open navigation"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Open preferences"
 msgstr "환경설정 열기"
@@ -8395,10 +8417,6 @@ msgstr "비밀번호가 설정되었습니다"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Past conversations"
 msgstr "지난 대화"
-
-#: src/features/applications/components/add-application-dialog.tsx
-msgid "Paste a job link or posting, then check the role and company."
-msgstr "채용 링크나 채용 공고를 붙여넣은 후 역할과 회사를 확인하세요."
 
 #: src/routes/dashboard/applications/index.tsx
 msgid "Paste a job link. We'll save the posting so Check, the assistant and your letter can use it."
@@ -10214,10 +10232,6 @@ msgstr "채용 지원서 검색"
 msgid "Search commands"
 msgstr "검색 명령"
 
-#: src/features/career/knowledge/search-regions-field.tsx
-msgid "Search countries"
-msgstr "국가 검색"
-
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "검색에는 제목, 태그 및 연결된 채용 지원서가 포함됩니다."
@@ -11876,6 +11890,7 @@ msgstr "첫 페이지 상단이 이름처럼 보이지 않습니다."
 
 #. Menu item that opens appearance theme selection submenu
 #: src/features/command-palette/pages/navigation.tsx
+#: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
 #: src/features/settings/preferences.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -12223,6 +12238,10 @@ msgstr "오늘 {time}"
 msgid "Today, {hour}"
 msgstr "오늘, {hour}"
 
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toggle sidebar"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Tomorrow"
 msgstr "내일"
@@ -12234,6 +12253,10 @@ msgstr "흰색 제목에 너무 밝습니다. 희미하게 인쇄되어 읽기 �
 #: src/features/settings/ai/web-access.tsx
 msgid "Too many requests. Try again later."
 msgstr "요청이 너무 많습니다. 나중에 다시 시도하세요."
+
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Toolbar"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Track a job you're applying to and link the resume you sent."
@@ -12450,7 +12473,6 @@ msgid "Type <0>{CONFIRMATION}</0> to confirm"
 msgstr "확인하려면 <0>{CONFIRMATION}</0>를 입력하세요."
 
 #. Placeholder in command palette input on root page
-#. Screen-reader dialog description instructing users how to use the command palette
 #: src/features/command-palette/content.tsx
 msgid "Type a command or search…"
 msgstr "명령어를 입력하거나…를 검색하세요."
