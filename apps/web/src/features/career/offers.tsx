@@ -128,7 +128,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 							size="sm"
 							onPress={() =>
 								void navigate({
-									to: "/dashboard/career/coach/{-$conversationId}",
+									to: "/dashboard/coach/{-$conversationId}",
 									params: { conversationId: undefined },
 									search: { offers: pair.map((offer) => offer.id) },
 								})

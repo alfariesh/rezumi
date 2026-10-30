@@ -10,18 +10,10 @@ export const Route = createFileRoute("/dashboard/career")({
 
 type Heading = { title: ReactNode; description: ReactNode };
 
-/** Career: Today, Coach, Knowledge and Offers are separate pages in the sidebar; each gets its own title here. */
+/** Career: Today, Knowledge and Offers are separate pages in the sidebar; each gets its own title here. */
 function CareerLayout() {
 	const matchRoute = useMatchRoute();
 	const headings: { match: string; fuzzy: boolean; heading: Heading }[] = [
-		{
-			match: "/dashboard/career/coach",
-			fuzzy: true,
-			heading: {
-				title: t`Coach`,
-				description: <Trans>Ask about your search. Answers use what you switch on and say what they relied on.</Trans>,
-			},
-		},
 		{
 			match: "/dashboard/career/knowledge",
 			fuzzy: true,

@@ -56,7 +56,7 @@ test("coach stories wait for exact-content approval and respect Skip", async ({ 
 		await expect(response).toBeOK();
 		return response.json();
 	};
-	await page.goto("/dashboard/career/coach");
+	await page.goto("/dashboard/coach");
 	for (const approve of [false, true]) {
 		const composer = page.getByPlaceholder("Ask about your next career step…");
 		await composer.fill("Review a story about my onboarding work.");

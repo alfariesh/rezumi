@@ -2038,10 +2038,6 @@ msgstr "നിങ്ങളുടെ അടുത്ത കരിയർ ചുവ
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "നിങ്ങളുടെ ജോലി തിരയലിനെക്കുറിച്ച് ചോദിക്കുക, അല്ലെങ്കിൽ കൂടുതൽ നന്നായി വിശദീകരിക്കാൻ ആഗ്രഹിക്കുന്ന ഒരു നേട്ടം കൊണ്ടുവരിക. താഴെ ഓണാക്കിയവയാണ് ഉത്തരങ്ങൾ ഉപയോഗിക്കുന്നത്, എന്തിനെ ആശ്രയിച്ചു എന്നും അവ പറയും."
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Ask about your search. Answers use what you switch on and say what they relied on."
-msgstr ""
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "ഈ ജോലിയെക്കുറിച്ച് എന്തും ചോദിക്കുക. കോച്ച് പോസ്റ്റിംഗും നിങ്ങളുടെ കുറിപ്പുകളും നിങ്ങൾ അയച്ചതും വായിക്കുന്നു, നിങ്ങൾ {tabName} ടാബിലാണെന്ന് അറിയുകയും ചെയ്യുന്നു."
@@ -2234,6 +2230,10 @@ msgstr "സൈൻ ഇന്നിലേക്ക് മടങ്ങുക"
 #: src/features/career/knowledge/stories.tsx
 msgid "Back to stories"
 msgstr "കഥകളിലേക്ക് മടങ്ങുക"
+
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
@@ -2823,7 +2823,6 @@ msgstr "ക്ലയൻ്റ് ഐഡി"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2884,7 +2883,6 @@ msgstr ""
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "കോച്ച്"
 
@@ -7700,6 +7698,10 @@ msgstr "പതിവ് വിഭാഗ തലക്കെട്ടുകളൊ�
 msgid "No conversations about this document yet."
 msgstr "ഈ പ്രമാണത്തെക്കുറിച്ച് ഇതുവരെ സംഭാഷണങ്ങളൊന്നുമില്ല."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "തിരുത്തലുകളില്ല"
@@ -9441,10 +9443,6 @@ msgstr "കാരണം"
 msgid "Recalled"
 msgstr "ഓർത്തെടുത്തത്"
 
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "സമീപകാലം"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "സ്വീകർത്താവ്"
@@ -10433,6 +10431,10 @@ msgstr "ജോലി അപേക്ഷകൾ തിരയുക"
 msgid "Search commands"
 msgstr "തിരയൽ നിർദ്ദേശങ്ങൾ"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "തിരയലിൽ ശീർഷകങ്ങൾ, ടാഗുകൾ, ലിങ്ക് ചെയ്‌ത ജോലി അപേക്ഷകൾ എന്നിവ ഉൾപ്പെടുന്നു."
@@ -10504,6 +10506,7 @@ msgid "Search..."
 msgstr "തിരയുക..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -13630,6 +13633,7 @@ msgid "Write your professional resume"
 msgstr "നിങ്ങളുടെ പ്രൊഫഷണൽ സിവി എഴുതുക"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13840,6 +13844,10 @@ msgstr "നിങ്ങളുടെ മാറ്റങ്ങൾ സ്വയം 
 #: src/features/ats-checker/messages.ts
 msgid "Your contact details are not on the first page."
 msgstr "നിങ്ങളുടെ ബന്ധപ്പെടാനുള്ള വിവരങ്ങൾ ആദ്യ പേജിലില്ല."
+
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your data"

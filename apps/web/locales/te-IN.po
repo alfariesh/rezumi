@@ -2038,10 +2038,6 @@ msgstr "మీ తదుపరి కెరీర్ అడుగు గుర�
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "మీ ఉద్యోగ అన్వేషణ గురించి అడగండి, లేదా మరింత బాగా వివరించాలనుకునే విజయాన్ని తీసుకురండి. సమాధానాలు కింద ఆన్ చేసినవాటిని ఉపయోగిస్తాయి, వేటిపై ఆధారపడ్డాయో కూడా చెబుతాయి."
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Ask about your search. Answers use what you switch on and say what they relied on."
-msgstr ""
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "ఈ ఉద్యోగం గురించి ఏదైనా అడగండి. కోచ్ ఉద్యోగ ప్రకటన, మీ నోట్స్, మీరు పంపినవి చదువుతుంది, మీరు {tabName}లో ఉన్నారని కూడా దానికి తెలుసు."
@@ -2234,6 +2230,10 @@ msgstr "సైన్ ఇన్‌కు తిరిగి వెళ్లండ
 #: src/features/career/knowledge/stories.tsx
 msgid "Back to stories"
 msgstr "కథలకు తిరిగి వెళ్లు"
+
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
@@ -2823,7 +2823,6 @@ msgstr "క్లయింట్ ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2884,7 +2883,6 @@ msgstr ""
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "కోచ్"
 
@@ -7700,6 +7698,10 @@ msgstr "సంప్రదాయ విభాగ శీర్షికలు క
 msgid "No conversations about this document yet."
 msgstr "ఈ పత్రం గురించి ఇంకా సంభాషణలు లేవు."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "సవరణలు లేవు"
@@ -9441,10 +9443,6 @@ msgstr "కారణం"
 msgid "Recalled"
 msgstr "గుర్తుచేసుకున్నది"
 
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "ఇటీవలివి"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "గ్రహీత"
@@ -10433,6 +10431,10 @@ msgstr "ఉద్యోగ దరఖాస్తులను శోధించ�
 msgid "Search commands"
 msgstr "శోధన ఆదేశాలు"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "శోధన శీర్షికలు, ట్యాగ్‌లు మరియు లింక్ చేసిన జాబ్ అప్లికేషన్‌లను కవర్ చేస్తుంది."
@@ -10504,6 +10506,7 @@ msgid "Search..."
 msgstr "వెతుకు..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -13630,6 +13633,7 @@ msgid "Write your professional resume"
 msgstr "మీ వృత్తిపరమైన CVని వ్రాయండి"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13840,6 +13844,10 @@ msgstr "మీ మార్పులు ఆటోమేటిక్‌గా స
 #: src/features/ats-checker/messages.ts
 msgid "Your contact details are not on the first page."
 msgstr "మీ సంప్రదింపు వివరాలు మొదటి పేజీలో లేవు."
+
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your data"

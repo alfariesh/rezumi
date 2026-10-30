@@ -2038,10 +2038,6 @@ msgstr "ನಿಮ್ಮ ಮುಂದಿನ ವೃತ್ತಿಜೀವನದ ಹ
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "ನಿಮ್ಮ ಉದ್ಯೋಗ ಹುಡುಕಾಟದ ಬಗ್ಗೆ ಕೇಳಿ, ಅಥವಾ ನೀವು ಇನ್ನೂ ಚೆನ್ನಾಗಿ ವಿವರಿಸಲು ಬಯಸುವ ಸಾಧನೆಯನ್ನು ತನ್ನಿ. ಉತ್ತರಗಳು ಕೆಳಗೆ ಆನ್ ಮಾಡಿರುವುದನ್ನು ಬಳಸುತ್ತವೆ ಮತ್ತು ಅವು ಯಾವುದನ್ನು ಆಧರಿಸಿವೆ ಎಂದು ಹೇಳುತ್ತವೆ."
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Ask about your search. Answers use what you switch on and say what they relied on."
-msgstr ""
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "ಈ ಉದ್ಯೋಗದ ಬಗ್ಗೆ ಏನನ್ನಾದರೂ ಕೇಳಿ. ಕೋಚ್ ಉದ್ಯೋಗ ಜಾಹೀರಾತು, ನಿಮ್ಮ ಟಿಪ್ಪಣಿಗಳು ಮತ್ತು ನೀವು ಕಳುಹಿಸಿದ್ದನ್ನು ಓದುತ್ತದೆ, ಮತ್ತು ನೀವು {tabName} ನಲ್ಲಿದ್ದೀರಿ ಎಂದು ಅದಕ್ಕೆ ತಿಳಿದಿದೆ."
@@ -2234,6 +2230,10 @@ msgstr "ಸೈನ್ ಇನ್‌ಗೆ ಹಿಂತಿರುಗಿ"
 #: src/features/career/knowledge/stories.tsx
 msgid "Back to stories"
 msgstr "ಕಥೆಗಳಿಗೆ ಹಿಂತಿರುಗಿ"
+
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
@@ -2823,7 +2823,6 @@ msgstr "ಗ್ರಾಹಕ ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2884,7 +2883,6 @@ msgstr ""
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "ಕೋಚ್"
 
@@ -7700,6 +7698,10 @@ msgstr "ಯಾವುದೇ ಸಾಂಪ್ರದಾಯಿಕ ವಿಭಾಗ ಶ
 msgid "No conversations about this document yet."
 msgstr "ಈ ಡಾಕ್ಯುಮೆಂಟ್ ಕುರಿತು ಇನ್ನೂ ಯಾವುದೇ ಸಂಭಾಷಣೆಗಳಿಲ್ಲ."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "ಯಾವುದೇ ತಿದ್ದುಪಡಿಗಳಿಲ್ಲ"
@@ -9441,10 +9443,6 @@ msgstr "ಕಾರಣ"
 msgid "Recalled"
 msgstr "ನೆನಪಿಸಿಕೊಂಡದ್ದು"
 
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "ಇತ್ತೀಚಿನವು"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "ಸ್ವೀಕೃತದಾರ"
@@ -10433,6 +10431,10 @@ msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿಗಳನ್ನು ಹುಡುಕಿ"
 msgid "Search commands"
 msgstr "ಕಮಾಂಡ್‌ಗಳನ್ನು ಹುಡುಕಿ"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "ಹುಡುಕಾಟವು ಶೀರ್ಷಿಕೆಗಳು, ಟ್ಯಾಗ್‌ಗಳು ಮತ್ತು ಲಿಂಕ್ ಮಾಡಿದ ಉದ್ಯೋಗ ಅರ್ಜಿಗಳನ್ನು ಒಳಗೊಂಡಿದೆ."
@@ -10504,6 +10506,7 @@ msgid "Search..."
 msgstr "ಹುಡುಕಿ..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -13630,6 +13633,7 @@ msgid "Write your professional resume"
 msgstr "ನಿಮ್ಮ ವೃತ್ತಿಪರ CV ಬರೆಯಿರಿ"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13840,6 +13844,10 @@ msgstr "ನಿಮ್ಮ ಬದಲಾವಣೆಗಳನ್ನು ಸ್ವಯಂ�
 #: src/features/ats-checker/messages.ts
 msgid "Your contact details are not on the first page."
 msgstr "ನಿಮ್ಮ ಸಂಪರ್ಕ ವಿವರಗಳು ಮೊದಲ ಪುಟದಲ್ಲಿಲ್ಲ."
+
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your data"

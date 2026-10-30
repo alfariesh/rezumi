@@ -2038,10 +2038,6 @@ msgstr "다음 커리어 단계에 대해 물어보세요…"
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "구직 활동에 대해 묻거나, 더 잘 설명하고 싶은 성과를 가져오세요. 답변은 아래에서 켜 둔 항목을 사용하며 무엇을 근거로 했는지 알려 줍니다."
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Ask about your search. Answers use what you switch on and say what they relied on."
-msgstr ""
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "이 일자리에 대해 무엇이든 물어보세요. 코치는 채용 공고, 노트, 보낸 내용을 읽고 지금 {tabName} 탭에 있다는 것을 압니다."
@@ -2234,6 +2230,10 @@ msgstr "로그인으로 돌아가기"
 #: src/features/career/knowledge/stories.tsx
 msgid "Back to stories"
 msgstr "스토리로 돌아가기"
+
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
@@ -2823,7 +2823,6 @@ msgstr "클라이언트 ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2884,7 +2883,6 @@ msgstr ""
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "코치"
 
@@ -7700,6 +7698,10 @@ msgstr "일반적인 섹션 제목을 찾을 수 없습니다."
 msgid "No conversations about this document yet."
 msgstr "아직 이 문서에 관한 대화가 없습니다."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "수정 내역 없음"
@@ -9441,10 +9443,6 @@ msgstr "이유"
 msgid "Recalled"
 msgstr "기억한 질문"
 
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "최근"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "수신인"
@@ -10433,6 +10431,10 @@ msgstr "채용 지원서 검색"
 msgid "Search commands"
 msgstr "검색 명령"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "검색에는 제목, 태그 및 연결된 채용 지원서가 포함됩니다."
@@ -10504,6 +10506,7 @@ msgid "Search..."
 msgstr "검색..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -13630,6 +13633,7 @@ msgid "Write your professional resume"
 msgstr "전문적인 이력서를 작성하세요"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13840,6 +13844,10 @@ msgstr "변경 사항은 자동으로 저장됩니다."
 #: src/features/ats-checker/messages.ts
 msgid "Your contact details are not on the first page."
 msgstr "연락처 정보가 첫 페이지에 없습니다."
+
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your data"

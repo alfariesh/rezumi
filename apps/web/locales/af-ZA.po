@@ -2038,10 +2038,6 @@ msgstr "Vra oor jou volgende loopbaanstap…"
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "Vra oor jou soektog, of bring 'n prestasie wat jy beter wil verduidelik. Antwoorde gebruik wat hieronder aangeskakel is en sê waarop hulle gesteun het."
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Ask about your search. Answers use what you switch on and say what they relied on."
-msgstr ""
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "Vra enigiets oor hierdie werk. Die afrigter lees die plasing, jou notas en wat jy gestuur het, en weet jy is op {tabName}."
@@ -2234,6 +2230,10 @@ msgstr "Terug na aanmelding"
 #: src/features/career/knowledge/stories.tsx
 msgid "Back to stories"
 msgstr "Terug na stories"
+
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
@@ -2823,7 +2823,6 @@ msgstr "Kliënt-ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2884,7 +2883,6 @@ msgstr ""
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "Afrigter"
 
@@ -7700,6 +7698,10 @@ msgstr "Geen konvensionele afdelingsopskrifte is gevind nie."
 msgid "No conversations about this document yet."
 msgstr "Nog geen gesprekke oor hierdie dokument nie."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "Geen korreksies nie"
@@ -9441,10 +9443,6 @@ msgstr "Rede"
 msgid "Recalled"
 msgstr "Uit geheue"
 
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "Onlangs"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Ontvanger"
@@ -10433,6 +10431,10 @@ msgstr "Soek werksaansoeke"
 msgid "Search commands"
 msgstr "Soekopdragte"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "Soektog dek titels, etikette en gekoppelde werksaansoeke."
@@ -10504,6 +10506,7 @@ msgid "Search..."
 msgstr "Soek..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -13630,6 +13633,7 @@ msgid "Write your professional resume"
 msgstr "Skryf jou professionele CV"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13840,6 +13844,10 @@ msgstr "Jou veranderinge word outomaties gestoor."
 #: src/features/ats-checker/messages.ts
 msgid "Your contact details are not on the first page."
 msgstr "Jou kontakbesonderhede is nie op die eerste bladsy nie."
+
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your data"

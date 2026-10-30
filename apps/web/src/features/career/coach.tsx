@@ -2,8 +2,8 @@ import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
-import { ContextMenu, PromptSuggestion, Sheet } from "@heroui-pro/react";
-import { Button, buttonVariants, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
+import { ContextMenu, PromptSuggestion } from "@heroui-pro/react";
+import { Button, Description, Dropdown, Label, ScrollShadow, SearchField, Separator, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -13,7 +13,6 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { formatList } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import {
@@ -26,7 +25,7 @@ import {
 	useConversationDate,
 } from "./coach-thread";
 import { CareerLoadError } from "./load-state";
-import { ContextChip, Eyebrow, PrivacyLine } from "./shared";
+import { ContextChip, PrivacyLine } from "./shared";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -91,12 +90,11 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 	const { i18n } = useLingui();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
-	const breakpoint = useBreakpoint();
-	const wide = breakpoint === "desktop" || breakpoint === "wide";
 	const providers = useHasUsableAiProvider();
 	const threads = useQuery(orpc.agent.threads.list.queryOptions());
 	const knowledge = useCoachKnowledge(null);
-	const [railOpen, setRailOpen] = useState(false);
+	// Below lg the chat and the conversation list share the screen: one at a time, like a mail client.
+	const [view, setView] = useState<"chat" | "history">("chat");
 	const [modelMenuOpen, setModelMenuOpen] = useState(false);
 	const [providerId, setProviderId] = useState<string | null>(null);
 	const [hidden, setHidden] = useState<ReadonlySet<string>>(() => new Set());
@@ -172,7 +170,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 		writeOfferIds(id, offerIds);
 		setSession((current) => ({ ...current, created: id }));
 		void navigate({
-			to: "/dashboard/career/coach/{-$conversationId}",
+			to: "/dashboard/coach/{-$conversationId}",
 			params: { conversationId: id },
 			search: offerIds.length > 0 ? { offers: offerIds } : {},
 			replace: true,
@@ -219,7 +217,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 			() => {
 				setHidden((current) => new Set(current).add(thread.id));
 				if (thread.id === threadId)
-					void navigate({ to: "/dashboard/career/coach/{-$conversationId}", params: { conversationId: undefined } });
+					void navigate({ to: "/dashboard/coach/{-$conversationId}", params: { conversationId: undefined } });
 			},
 			() =>
 				setHidden((current) => {
@@ -291,18 +289,9 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 	);
 
 	const header = (messages: readonly UIMessage[]) => (
-		<header className="flex h-12 shrink-0 items-center gap-2 border-b border-separator ps-4 pe-2">
-			{!wide && (
-				<IconButton
-					icon="clock-counter-clockwise"
-					label={t`Conversations`}
-					size="sm"
-					className="-ms-2 text-muted"
-					onPress={() => setRailOpen(true)}
-				/>
-			)}
+		<header className="mb-2 flex h-[52px] shrink-0 items-center gap-1 rounded-2xl bg-surface-secondary ps-4 pe-2">
 			<Icon name="sparkle" size={20} className="shrink-0 text-accent" />
-			<h2 className="me-auto min-w-0 truncate text-sm font-semibold">{titleFor(summary)}</h2>
+			<h2 className="me-auto min-w-0 truncate ps-1 text-[15px] font-semibold">{titleFor(summary)}</h2>
 			{(usable.length > 0 || summary) && (
 				<ModelChip
 					open={modelMenuOpen}
@@ -326,118 +315,106 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 					)
 				}
 			/>
+			<IconButton
+				icon="clock-counter-clockwise"
+				label={t`Conversations`}
+				size="sm"
+				className="text-muted lg:hidden"
+				onPress={() => setView("history")}
+			/>
 		</header>
 	);
 
 	const notSetUp = threads.error instanceof ORPCError && threads.error.code === "PRECONDITION_FAILED";
 	const noProvider = !providers.isUnavailable && !providers.hasUsableProvider;
 
-	const rail = (
-		<ConversationRail
-			threads={conversations}
-			currentId={threadId}
-			onNavigate={() => setRailOpen(false)}
-			onRename={(thread, title) => void rename(thread, title)}
-			onDelete={remove}
-		/>
-	);
-
 	return (
-		// The card fills what's left of the page height and scrolls inside.
-		<div className="relative min-h-[560px] flex-1">
-			<div className="absolute inset-0 grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-				{wide ? (
-					rail
-				) : (
-					<Sheet isOpen={railOpen} onOpenChange={setRailOpen} placement="left">
-						<Sheet.Backdrop>
-							<Sheet.Content className="w-full sm:max-w-[320px]">
-								<Sheet.Dialog>
-									<Sheet.CloseTrigger aria-label={t`Close`} />
-									<Sheet.Header>
-										<Sheet.Heading>
-											<Trans>Conversations</Trans>
-										</Sheet.Heading>
-									</Sheet.Header>
-									<Sheet.Body>{rail}</Sheet.Body>
-								</Sheet.Dialog>
-							</Sheet.Content>
-						</Sheet.Backdrop>
-					</Sheet>
+		// The page fills what is left under the navbar; the chat and the list scroll inside it.
+		<div className="flex h-[calc(100svh-3rem)] min-h-[480px] flex-col overflow-hidden lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(300px,360px)]">
+			<section
+				aria-label={t`Coach`}
+				className={cn(
+					"min-h-0 min-w-0 flex-col px-3 pt-3 pb-3 lg:ps-4",
+					view === "history" ? "hidden lg:flex" : "flex flex-1",
 				)}
-
-				<section
-					aria-label={t`Coach`}
-					className="flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xl border border-separator bg-surface"
-				>
-					{notSetUp ? (
-						<>
-							{header([])}
-							<p className="m-6 rounded-xl bg-default p-4 text-sm text-muted">
-								<Trans>
-									The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge,
-									Offers and your applications work without it.
-								</Trans>
-							</p>
-						</>
-					) : providers.error ? (
-						<AiProviderLoadState
-							state={{
-								...providers,
-								retry: () => {
-									providers.retry();
-									void threads.refetch();
-									knowledge.retry();
-								},
-							}}
-						/>
-					) : providers.isLoading || threads.isPending ? (
-						<div className="grid flex-1 place-items-center">
-							<Spinner size="md" color="current" aria-label={t`Loading`} />
-						</div>
-					) : threads.isError && !threads.data ? (
-						<CareerLoadError
-							onRetry={() => {
-								void threads.refetch();
+			>
+				{notSetUp ? (
+					<>
+						{header([])}
+						<p className="m-4 rounded-xl bg-default p-4 text-sm text-muted">
+							<Trans>
+								The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers
+								and your applications work without it.
+							</Trans>
+						</p>
+					</>
+				) : providers.error ? (
+					<AiProviderLoadState
+						state={{
+							...providers,
+							retry: () => {
 								providers.retry();
-							}}
-						/>
-					) : noProvider && !threadId ? (
-						<>
-							{header([])}
-							<div className="min-h-0 flex-1 overflow-y-auto">
-								<div className="mx-auto max-w-[560px] py-6">
-									<ProviderSetup />
-								</div>
+								void threads.refetch();
+								knowledge.retry();
+							},
+						}}
+					/>
+				) : providers.isLoading || threads.isPending ? (
+					<div className="grid flex-1 place-items-center">
+						<Spinner size="md" color="current" className="text-muted" aria-label={t`Loading`} />
+					</div>
+				) : threads.isError && !threads.data ? (
+					<CareerLoadError
+						onRetry={() => {
+							void threads.refetch();
+							providers.retry();
+						}}
+					/>
+				) : noProvider && !threadId ? (
+					<>
+						{header([])}
+						<div className="min-h-0 flex-1 overflow-y-auto">
+							<div className="mx-auto max-w-[560px] py-6">
+								<ProviderSetup />
 							</div>
-						</>
-					) : (
-						<CoachThread
-							key={session.key}
-							draftKey={`career-coach:${threadId ?? "new"}`}
-							threadId={threadId}
-							createThread={createThread}
-							onThreadCreated={onThreadCreated}
-							applicationId={null}
-							context={context}
-							connection={connection}
-							onChangeConnection={() => setModelMenuOpen(true)}
-							header={header}
-							empty={(send) => (
-								<EmptyState
-									disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
-									onPick={send}
-								/>
-							)}
-							chips={contextChips}
-							privacy={privacy}
-							placeholder={t`Ask about your next career step…`}
-							disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
-							variant="page"
-						/>
-					)}
-				</section>
-			</div>
+						</div>
+					</>
+				) : (
+					<CoachThread
+						key={session.key}
+						draftKey={`career-coach:${threadId ?? "new"}`}
+						threadId={threadId}
+						createThread={createThread}
+						onThreadCreated={onThreadCreated}
+						applicationId={null}
+						context={context}
+						connection={connection}
+						onChangeConnection={() => setModelMenuOpen(true)}
+						header={header}
+						empty={(send) => (
+							<EmptyState
+								disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
+								onPick={send}
+							/>
+						)}
+						chips={contextChips}
+						privacy={privacy}
+						placeholder={t`Ask about your next career step…`}
+						disabled={noProvider || (chips.memory && (knowledge.isPending || knowledge.isError))}
+						variant="page"
+					/>
+				)}
+			</section>
+
+			<ConversationList
+				className={view === "history" ? "flex flex-1" : "hidden lg:flex"}
+				threads={conversations}
+				currentId={threadId}
+				onClose={() => setView("chat")}
+				onNavigate={() => setView("chat")}
+				onRename={(thread, title) => void rename(thread, title)}
+				onDelete={remove}
+			/>
 		</div>
 	);
 }
@@ -505,10 +482,10 @@ function ModelChip({ open, onOpenChange, providers, current, label, onChoose }: 
 	return (
 		<Dropdown isOpen={open} onOpenChange={onOpenChange}>
 			<Button
-				variant="secondary"
+				variant="ghost"
 				size="sm"
 				aria-label={t`Connection: ${text}`}
-				className="h-7 min-h-0 max-w-[50%] min-w-0 justify-start rounded-sm bg-default px-2 font-mono text-xs text-muted transition-colors duration-quick hover:text-foreground aria-expanded:text-foreground"
+				className="h-7 min-h-0 max-w-[45%] min-w-0 justify-start gap-0.5 px-2 text-xs text-muted hover:text-foreground aria-expanded:text-foreground max-sm:max-w-[30%]"
 			>
 				<span className="truncate">{text}</span>
 			</Button>
@@ -544,49 +521,80 @@ function ModelChip({ open, onOpenChange, providers, current, label, onChoose }: 
 	);
 }
 
-// ---- Rail ----
+// ---- Conversations ----
 
-type ConversationRailProps = {
+type ConversationListProps = {
 	threads: ThreadSummary[];
 	currentId: string | null;
+	className: string;
+	/** Below lg: back to the chat without choosing. */
+	onClose: () => void;
 	onNavigate: () => void;
 	onRename: (thread: ThreadSummary, title: string) => void;
 	onDelete: (thread: ThreadSummary) => void;
 };
 
-function ConversationRail({ threads, currentId, onNavigate, onRename, onDelete }: ConversationRailProps) {
+/**
+ * Past conversations, on the right of the chat (a mail client's list). Below lg it replaces the chat until one is
+ * chosen. Search matches titles; a conversation renames in place and deletes with Undo.
+ */
+function ConversationList({
+	threads,
+	currentId,
+	className,
+	onClose,
+	onNavigate,
+	onRename,
+	onDelete,
+}: ConversationListProps) {
 	const when = useConversationDate();
+	const navigate = useNavigate();
 	const [renaming, setRenaming] = useState<string | null>(null);
+	const [query, setQuery] = useState("");
+	const needle = query.trim().toLocaleLowerCase();
+	const shown = needle ? threads.filter((thread) => titleFor(thread).toLocaleLowerCase().includes(needle)) : threads;
 
 	return (
-		<nav aria-label={t`Conversations`} className="flex min-h-0 flex-1 flex-col gap-4">
-			<Link
-				to="/dashboard/career/coach/{-$conversationId}"
-				params={{ conversationId: undefined }}
-				onClick={onNavigate}
-				className={cn(buttonVariants({ variant: "secondary" }), "justify-start gap-2")}
-			>
-				<Icon name="note-pencil" size={18} />
-				<Trans>New conversation</Trans>
-			</Link>
+		<nav
+			aria-label={t`Conversations`}
+			className={cn("min-h-0 flex-col gap-3 px-3 pt-3 pb-3 lg:ps-1 lg:pe-4", className)}
+		>
+			<div className="flex items-center gap-2">
+				<IconButton icon="arrow-left" label={t`Back to the chat`} size="sm" className="lg:hidden" onPress={onClose} />
+				<SearchField aria-label={t`Search conversations`} className="min-w-0 flex-1" value={query} onChange={setQuery}>
+					<SearchField.Group>
+						<SearchField.SearchIcon />
+						<SearchField.Input placeholder={t`Search…`} />
+						<SearchField.ClearButton />
+					</SearchField.Group>
+				</SearchField>
+				<IconButton
+					icon="note-pencil"
+					label={t`New conversation`}
+					onPress={() => {
+						onNavigate();
+						void navigate({ to: "/dashboard/coach/{-$conversationId}", params: { conversationId: undefined } });
+					}}
+				/>
+			</div>
 
-			<div className="flex min-h-0 flex-1 flex-col gap-1.5">
-				<Eyebrow className="px-2.5">
-					<Trans>Recent</Trans>
-				</Eyebrow>
-				<ul className="-mx-1 grid min-h-0 flex-1 content-start gap-0.5 overflow-y-auto px-1">
-					{currentId === null && (
-						<li aria-current="page" className="grid gap-0.5 rounded-lg bg-default px-2.5 py-2">
-							<span className="text-[13px] leading-[18px] font-medium">
-								<Trans>New conversation</Trans>
-							</span>
-							<span className="text-xs text-muted">
-								<Trans>Now</Trans>
+			<ScrollShadow hideScrollBar className="min-h-0 flex-1 overflow-y-auto">
+				<ul className="grid content-start gap-0.5">
+					{currentId === null && !needle && (
+						<li aria-current="page" className="flex items-start gap-3 rounded-2xl bg-surface p-3 shadow-surface">
+							<ConversationAvatar />
+							<span className="grid min-w-0 flex-1 gap-0.5">
+								<span className="text-sm leading-tight font-medium">
+									<Trans>New conversation</Trans>
+								</span>
+								<span className="text-xs leading-tight text-muted">
+									<Trans>Now</Trans>
+								</span>
 							</span>
 						</li>
 					)}
-					{threads.map((thread) => (
-						<RailItem
+					{shown.map((thread) => (
+						<ConversationItem
 							key={thread.id}
 							thread={thread}
 							current={thread.id === currentId}
@@ -602,16 +610,34 @@ function ConversationRail({ threads, currentId, onNavigate, onRename, onDelete }
 						/>
 					))}
 				</ul>
-			</div>
+				{threads.length > 0 && shown.length === 0 && (
+					<p className="px-6 py-10 text-center text-sm text-muted">
+						<Trans>No conversations match.</Trans>
+					</p>
+				)}
+				{threads.length === 0 && currentId !== null && (
+					<p className="px-6 py-10 text-center text-sm text-muted">
+						<Trans>Your conversations appear here.</Trans>
+					</p>
+				)}
+			</ScrollShadow>
 
-			<p className="px-2.5 text-xs leading-[17px] text-muted">
+			<p className="px-3 text-xs leading-[17px] text-muted">
 				<Trans>Conversations about one job live in its workspace.</Trans>
 			</p>
 		</nav>
 	);
 }
 
-type RailItemProps = {
+function ConversationAvatar() {
+	return (
+		<span aria-hidden="true" className="grid size-9 shrink-0 place-items-center rounded-full bg-default text-accent">
+			<Icon name="sparkle" size={18} />
+		</span>
+	);
+}
+
+type ConversationItemProps = {
 	thread: ThreadSummary;
 	current: boolean;
 	date: string;
@@ -624,7 +650,7 @@ type RailItemProps = {
 };
 
 /** A conversation: open it; the hover ⋯ or a right-click renames (in place) or deletes it (with Undo). */
-function RailItem({
+function ConversationItem({
 	thread,
 	current,
 	date,
@@ -633,7 +659,7 @@ function RailItem({
 	onRenameEnd,
 	onDelete,
 	onNavigate,
-}: RailItemProps) {
+}: ConversationItemProps) {
 	const cancelled = useRef(false);
 	const title = titleFor(thread);
 
@@ -663,21 +689,39 @@ function RailItem({
 							onRenameEnd(cancelled.current ? null : event.currentTarget.value);
 							cancelled.current = false;
 						}}
-						className="h-[54px] w-full rounded-lg border border-accent bg-overlay px-2.5 text-base font-medium outline-none md:text-[13px]"
+						className="h-[60px] w-full rounded-2xl border border-accent bg-overlay px-3 text-base font-medium outline-none md:text-sm"
 					/>
 				) : (
 					<Link
-						to="/dashboard/career/coach/{-$conversationId}"
+						to="/dashboard/coach/{-$conversationId}"
 						params={{ conversationId: thread.id }}
 						aria-current={current ? "page" : undefined}
 						onClick={onNavigate}
 						className={cn(
-							"grid gap-0.5 rounded-lg py-2 ps-2.5 pe-9 transition-colors duration-quick",
-							current ? "bg-default" : "hover:bg-default",
+							"relative flex items-start gap-3 rounded-2xl p-3 transition-colors duration-quick",
+							current ? "bg-surface shadow-surface" : "hover:bg-default/60",
 						)}
 					>
-						<span className="line-clamp-2 text-[13px] leading-[18px] font-medium">{title}</span>
-						<span className="text-xs text-muted">{date}</span>
+						<ConversationAvatar />
+						<span className="grid min-w-0 flex-1 gap-0.5">
+							<span className="flex items-center justify-between gap-2">
+								<span className="truncate text-sm leading-tight font-medium">{title}</span>
+								<span className="flex shrink-0 items-center gap-1.5 text-xs leading-tight whitespace-nowrap text-muted">
+									{thread.activeRunId && (
+										<>
+											<span aria-hidden="true" className="size-1.5 rounded-full bg-accent" />
+											<span className="sr-only">
+												<Trans>Writing</Trans>
+											</span>
+										</>
+									)}
+									{date}
+								</span>
+							</span>
+							<Description className="truncate text-xs leading-tight text-muted">
+								{thread.providerLabel ?? <Trans>Your AI</Trans>}
+							</Description>
+						</span>
 					</Link>
 				)}
 				{!renaming && (
@@ -687,7 +731,7 @@ function RailItem({
 							iconSize={18}
 							size="sm"
 							label={t`More for ${title}`}
-							className="absolute inset-e-1 top-1.5 size-7 min-w-0 text-muted opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
+							className="absolute inset-e-1.5 bottom-1.5 size-7 min-w-0 text-muted opacity-0 transition-[opacity,background-color,color] duration-quick group-hover/row:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100 pointer-coarse:opacity-100"
 						/>
 						<Dropdown.Popover placement="bottom end">
 							<Dropdown.Menu>

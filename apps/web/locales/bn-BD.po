@@ -2038,10 +2038,6 @@ msgstr "আপনার ক্যারিয়ারের পরবর্ত�
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "আপনার চাকরি খোঁজা নিয়ে জিজ্ঞাসা করুন, অথবা এমন একটি অর্জন নিয়ে আসুন যা আরও ভালোভাবে ব্যাখ্যা করতে চান। উত্তরগুলো নিচে চালু থাকা বিষয়গুলো ব্যবহার করে এবং কিসের ওপর নির্ভর করেছে তা জানায়।"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Ask about your search. Answers use what you switch on and say what they relied on."
-msgstr ""
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "এই চাকরি নিয়ে যেকোনো কিছু জিজ্ঞাসা করুন। কোচ চাকরির বিজ্ঞপ্তি, আপনার নোট ও আপনার পাঠানো সবকিছু পড়ে, এবং জানে আপনি {tabName}-এ আছেন।"
@@ -2234,6 +2230,10 @@ msgstr "সাইন ইনে ফিরে যান"
 #: src/features/career/knowledge/stories.tsx
 msgid "Back to stories"
 msgstr "গল্পে ফিরে যান"
+
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
@@ -2823,7 +2823,6 @@ msgstr "ক্লায়েন্ট আইডি"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2884,7 +2883,6 @@ msgstr ""
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "কোচ"
 
@@ -7700,6 +7698,10 @@ msgstr "কোনো প্রচলিত সেকশন শিরোনাম
 msgid "No conversations about this document yet."
 msgstr "এই নথি সম্পর্কে এখনও কোন কথোপকথন."
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "কোনো সংশোধন নেই"
@@ -9441,10 +9443,6 @@ msgstr "কারণ"
 msgid "Recalled"
 msgstr "স্মৃতি থেকে"
 
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "সাম্প্রতিক"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "প্রাপক"
@@ -10433,6 +10431,10 @@ msgstr "চাকরির আবেদন অনুসন্ধান করু
 msgid "Search commands"
 msgstr "অনুসন্ধান কমান্ডসমূহ"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "অনুসন্ধান শিরোনাম, ট্যাগ এবং লিঙ্কযুক্ত চাকরির আবেদন কভার করে।"
@@ -10504,6 +10506,7 @@ msgid "Search..."
 msgstr "অনুসন্ধান..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -13630,6 +13633,7 @@ msgid "Write your professional resume"
 msgstr "আপনার পেশাদার সিভি লিখুন"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13840,6 +13844,10 @@ msgstr "আপনার পরিবর্তনগুলো স্বয়ং�
 #: src/features/ats-checker/messages.ts
 msgid "Your contact details are not on the first page."
 msgstr "আপনার যোগাযোগের বিবরণ প্রথম পৃষ্ঠায় নেই।"
+
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your data"

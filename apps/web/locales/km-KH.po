@@ -2038,10 +2038,6 @@ msgstr "សួរអំពីជំហានអាជីពបន្ទាប់
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "សួរអំពីការស្វែងរកការងាររបស់អ្នក ឬយកសមិទ្ធផលដែលអ្នកចង់ពន្យល់ឱ្យកាន់តែច្បាស់មក។ ចម្លើយប្រើអ្វីដែលបានបើកខាងក្រោម ហើយប្រាប់ថាវាពឹងផ្អែកលើអ្វីខ្លះ។"
 
-#: src/routes/dashboard/career/route.tsx
-msgid "Ask about your search. Answers use what you switch on and say what they relied on."
-msgstr ""
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "សួរអ្វីក៏បានអំពីការងារនេះ។ គ្រូបង្វឹកអានការប្រកាសការងារ កំណត់ចំណាំរបស់អ្នក និងអ្វីដែលអ្នកបានផ្ញើ ហើយដឹងថាអ្នកកំពុងនៅលើ {tabName}។"
@@ -2234,6 +2230,10 @@ msgstr "ត្រឡប់ទៅការចូល"
 #: src/features/career/knowledge/stories.tsx
 msgid "Back to stories"
 msgstr "ត្រឡប់ទៅរឿង"
+
+#: src/features/career/coach.tsx
+msgid "Back to the chat"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
@@ -2823,7 +2823,6 @@ msgstr "លេខសម្គាល់អតិថិជន"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
-#: src/features/career/coach.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2884,7 +2883,6 @@ msgstr ""
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "គ្រូបង្វឹក"
 
@@ -7700,6 +7698,10 @@ msgstr "រកមិនឃើញចំណងជើងផ្នែកធម្ម
 msgid "No conversations about this document yet."
 msgstr "មិនមានការសន្ទនាអំពីឯកសារនេះនៅឡើយទេ។"
 
+#: src/features/career/coach.tsx
+msgid "No conversations match."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "No corrections"
 msgstr "គ្មានការកែតម្រូវ"
@@ -9441,10 +9443,6 @@ msgstr "ហេតុផល"
 msgid "Recalled"
 msgstr "បាននឹកឃើញវិញ"
 
-#: src/features/career/coach.tsx
-msgid "Recent"
-msgstr "ថ្មីៗ"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "អ្នកទទួល"
@@ -10433,6 +10431,10 @@ msgstr "ស្វែងរកការងារ"
 msgid "Search commands"
 msgstr "ស្វែងរកពាក្យបញ្ជា"
 
+#: src/features/career/coach.tsx
+msgid "Search conversations"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Search covers titles, tags and linked applications."
 msgstr "ការស្វែងរកគ្របដណ្តប់ចំណងជើង ស្លាក និងពាក្យសុំការងារដែលបានភ្ជាប់។"
@@ -10504,6 +10506,7 @@ msgid "Search..."
 msgstr "ស្វែងរក..."
 
 #. Placeholder in command palette input on nested pages
+#: src/features/career/coach.tsx
 #: src/features/command-palette/content.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
@@ -13630,6 +13633,7 @@ msgid "Write your professional resume"
 msgstr "សរសេរ CV វិជ្ជាជីវៈរបស់អ្នក។"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/issues.ts
 msgid "Writing"
@@ -13840,6 +13844,10 @@ msgstr "ការ​ផ្លាស់ប្ដូរ​របស់​អ្ន
 #: src/features/ats-checker/messages.ts
 msgid "Your contact details are not on the first page."
 msgstr "ព័ត៌មានទំនាក់ទំនងរបស់អ្នកមិននៅលើទំព័រទីមួយទេ។"
+
+#: src/features/career/coach.tsx
+msgid "Your conversations appear here."
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your data"
