@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import type z from "zod";
-import { InputGroup, Switch, Separator } from "@heroui/react";
+import { InputGroup } from "@heroui/react";
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { typographySchema } from "@rezumi/schema/resume/data";
-import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { SwitchRow } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";
@@ -65,33 +67,16 @@ function TypographySectionForm() {
 			<TypographyGroupFields form={form} prefix="heading" handleAutoSave={handleAutoSave} />
 			<form.Field name="hyphenation">
 				{(field) => (
-					<FormItem className="col-span-full mt-2">
-						<div className="flex items-center gap-x-3">
-							<FormControl
-								render={
-									<Switch
-										isSelected={field.state.value === true}
-										onChange={(checked) => {
-											field.handleChange(checked);
-											handleAutoSave();
-										}}
-									>
-										<Switch.Content>
-											<Switch.Control>
-												<Switch.Thumb />
-											</Switch.Control>
-										</Switch.Content>
-									</Switch>
-								}
-							/>
-							<FormLabel>
-								<Trans>Hyphenation</Trans>
-							</FormLabel>
-						</div>
-						<FormDescription>
-							<Trans>Breaks long words between syllables, using the language set in Page.</Trans>
-						</FormDescription>
-					</FormItem>
+					<SwitchRow
+						className="col-span-full"
+						label={t`Hyphenation`}
+						description={t`Breaks long words between syllables, using the language set in Page.`}
+						isSelected={field.state.value === true}
+						onChange={(checked) => {
+							field.handleChange(checked);
+							handleAutoSave();
+						}}
+					/>
 				)}
 			</form.Field>
 		</div>
@@ -121,6 +106,7 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 						<FormControl
 							render={
 								<FontFamilyCombobox
+									variant="secondary"
 									value={field.state.value}
 									className="text-base"
 									onValueChange={(value: string | null) => {
@@ -148,6 +134,7 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 						<FormControl
 							render={
 								<FontWeightCombobox
+									variant="secondary"
 									single={prefix === "heading"}
 									value={field.state.value}
 									fontFamily={fontFamily}
@@ -170,7 +157,7 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 						<FormLabel>
 							<Trans>Font size</Trans>
 						</FormLabel>
-						<InputGroup fullWidth>
+						<InputGroup variant="secondary" fullWidth className="tabular-nums">
 							<FormControl
 								render={
 									<NumberInput
@@ -199,7 +186,7 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 						<FormLabel>
 							<Trans>Line height</Trans>
 						</FormLabel>
-						<InputGroup fullWidth>
+						<InputGroup variant="secondary" fullWidth className="tabular-nums">
 							<FormControl
 								render={
 									<NumberInput
@@ -230,11 +217,5 @@ type TypographyFieldGroupProps = {
 };
 
 function TypographyFieldGroup({ label }: TypographyFieldGroupProps) {
-	return (
-		<div className="col-span-full flex items-center gap-x-2">
-			<Separator className="basis-[16px]" />
-			<div className="shrink-0 text-base leading-none font-medium">{label}</div>
-			<Separator className="flex-1" />
-		</div>
-	);
+	return <h4 className="col-span-full text-sm font-semibold">{label}</h4>;
 }

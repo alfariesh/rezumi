@@ -1,21 +1,33 @@
+import type { Key, Selection } from "@heroui/react";
 import type { JdTermMatch } from "@rezumi/resume/ats-pdf";
 import type { ResumeData, SkillItem } from "@rezumi/schema/resume/data";
-import type { CSSProperties } from "react";
-import { Button, Input, Label, TextArea } from "@heroui/react";
+import { NativeSelect, Widget } from "@heroui-pro/react";
+import {
+	Avatar,
+	Button,
+	Input,
+	Label,
+	ProgressBar,
+	Separator,
+	Tag,
+	TagGroup,
+	TextArea,
+	TextField,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useId, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { buildMarkdown } from "@rezumi/resume/markdown";
 import { Icon } from "@rezumi/ui/components/icon";
-import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
 import { generateId } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { checkStateOf, editWithUndo } from "./actions";
+import { CheckWidget } from "./check-widget";
 import { applicationsListQueryKey, applicationsListQueryOptions } from "@/features/applications/queries";
 import { openAssistantFrom } from "@/features/assistant/open";
 import { useCurrentBuilderResumeSelector, useIsResumeLocked, usePatchResume } from "@/features/resume/builder/draft";
@@ -132,153 +144,167 @@ export function JobMatchTab({ match }: JobMatchTabProps) {
 	};
 
 	return (
-		<div className="grid gap-3.5">
+		<div className="grid gap-3">
 			<PostingSource application={application} />
 
-			{!result ? (
-				<p className="flex items-center gap-2 text-sm text-ink-2">
-					<Trans>Reading the posting…</Trans>
-				</p>
-			) : result.total === 0 ? (
-				<p className="text-sm text-ink-2">
-					<Trans>No terms stood out in this posting.</Trans>
-				</p>
-			) : (
-				<>
-					<div className="grid gap-1.5">
-						<div className="flex items-baseline justify-between gap-2">
-							<strong className="text-sm font-semibold">
+			<CheckWidget
+				icon="list-magnifying-glass"
+				title={<Trans>Posting terms</Trans>}
+				trailing={
+					<Widget.Description className="shrink-0">
+						<Trans>not scored</Trans>
+					</Widget.Description>
+				}
+				contentClassName="gap-5"
+			>
+				{!result ? (
+					<p className="text-sm text-muted">
+						<Trans>Reading the posting…</Trans>
+					</p>
+				) : result.total === 0 ? (
+					<p className="text-sm text-muted">
+						<Trans>No terms stood out in this posting.</Trans>
+					</p>
+				) : (
+					<>
+						<div className="grid gap-2">
+							<strong className="text-sm font-semibold tabular-nums">
 								<Trans>
 									{result.found.length} of {result.total} posting terms appear
 								</Trans>
 							</strong>
-							<span className="text-xs text-ink-3">
-								<Trans>not scored</Trans>
-							</span>
+							<ProgressBar
+								aria-label={t`Posting terms in your resume`}
+								size="sm"
+								value={result.found.length}
+								maxValue={result.total}
+							>
+								<ProgressBar.Track>
+									<ProgressBar.Fill />
+								</ProgressBar.Track>
+							</ProgressBar>
 						</div>
-						<div
-							role="progressbar"
-							aria-label={t`Posting terms in your resume`}
-							aria-valuemin={0}
-							aria-valuemax={result.total}
-							aria-valuenow={result.found.length}
-							className="h-1.5 overflow-hidden rounded-sm bg-sunken"
-						>
-							<div
-								className="h-full translate-x-(--fill) rounded-sm bg-accent transition-[translate] duration-standard ease-enter rtl:-translate-x-(--fill)"
-								style={{ "--fill": `${(result.found.length / result.total) * 100 - 100}%` } as CSSProperties}
-							/>
-						</div>
-					</div>
 
-					{result.missing.length > 0 && (
-						<section aria-labelledby="match-missing" className="grid gap-2">
-							<h3 id="match-missing" className="text-xs font-semibold text-ink-3">
-								<Trans>Not in your resume · add only if true</Trans>
-							</h3>
-							<div className="flex flex-wrap gap-1.5">
-								{result.missing.map((term) => (
-									<button
-										key={term.term}
-										type="button"
-										aria-expanded={openTerm === term.term}
-										onClick={() => setOpenTerm(openTerm === term.term ? null : term.term)}
-										className={cn(
-											"flex h-[30px] items-center gap-1 rounded-lg border border-dashed px-2.5 text-[13px] font-medium transition-colors duration-quick",
-											openTerm === term.term ? "border-accent bg-accent-soft" : "border-line-2 hover:bg-hover",
-										)}
-									>
-										<Icon name="plus" size={15} className="text-ink-3" />
-										{term.label}
-									</button>
-								))}
-							</div>
-
-							{open && (
-								<section
-									key={open.term}
-									aria-label={t`Add “${open.label}”`}
-									className={cn(ENTER_CLASS, "grid gap-2 rounded-xl border border-line bg-raised p-3 shadow-e2")}
+						{result.missing.length > 0 && (
+							<section aria-labelledby="match-missing" className="grid gap-2">
+								<h3 id="match-missing" className="text-sm font-semibold">
+									<Trans>Not in your resume · add only if true</Trans>
+								</h3>
+								{/* Picking a term opens what to do with it below; picking it again closes it. */}
+								<TagGroup
+									aria-labelledby="match-missing"
+									selectionMode="single"
+									selectedKeys={keySet(openTerm)}
+									onSelectionChange={(keys) => setOpenTerm(firstKey(keys))}
 								>
-									<p className="text-[13px] leading-[19px] text-ink-2">
-										<Plural
-											value={open.jdCount}
-											one={`“${open.label}” appears once in the posting.`}
-											other={`“${open.label}” appears #× in the posting.`}
-										/>{" "}
-										<Trans>If it's part of your experience, add it where it belongs.</Trans>
-									</p>
-									<div className="grid justify-items-start gap-1">
-										<Button size="sm" isDisabled={locked} onPress={() => addToSkills(open)}>
-											<Icon name="plus" size={16} />
-											<Trans>Add to Skills</Trans>
-										</Button>
-										<Button size="sm" variant="secondary" isDisabled={locked} onPress={() => askAssistant(open.label)}>
-											<Icon name="sparkle" size={16} />
-											<Trans>Ask the assistant to work it in</Trans>
-										</Button>
-										<Button size="sm" variant="ghost" isDisabled={locked} onPress={() => hideTerm(open)}>
-											<Trans>Not true for me, hide it</Trans>
-										</Button>
-									</div>
-								</section>
-							)}
-						</section>
-					)}
+									<TagGroup.List>
+										{result.missing.map((term) => (
+											<Tag key={term.term} id={term.term} textValue={term.label}>
+												<Icon name="plus" />
+												{term.label}
+											</Tag>
+										))}
+									</TagGroup.List>
+								</TagGroup>
 
-					{result.found.length > 0 && (
-						<section aria-labelledby="match-found" className="grid gap-2">
-							<h3 id="match-found" className="text-xs font-semibold text-ink-3">
-								<Trans>Already covered · pick one to find it on the page</Trans>
-							</h3>
-							<div className="flex flex-wrap gap-1.5">
-								{result.found.map((term) => {
-									const on = highlightTerm === term.term;
-									return (
-										<button
-											key={term.term}
-											type="button"
-											aria-pressed={on}
-											onClick={() => useEditorStore.setState({ highlightTerm: on ? null : term.term })}
-											className={cn(
-												"flex h-7 items-center gap-1 rounded-md px-2 text-xs font-medium transition-colors duration-quick",
-												on ? "bg-[#F2DE8C] text-[oklch(0.3_0.05_80)]" : "bg-accent-soft text-accent-text",
-											)}
-										>
-											<Icon name="check" size={14} />
-											{term.label}
-										</button>
-									);
-								})}
-							</div>
-						</section>
-					)}
-				</>
-			)}
+								{open && (
+									<section
+										key={open.term}
+										aria-label={t`Add “${open.label}”`}
+										className={cn(ENTER_CLASS, "fields-on-card grid gap-3 rounded-xl bg-surface-secondary p-4")}
+									>
+										<p className="text-sm text-muted">
+											<Plural
+												value={open.jdCount}
+												one={`“${open.label}” appears once in the posting.`}
+												other={`“${open.label}” appears #× in the posting.`}
+											/>{" "}
+											<Trans>If it's part of your experience, add it where it belongs.</Trans>
+										</p>
+										<div className="grid justify-items-start gap-1">
+											<Button size="sm" isDisabled={locked} onPress={() => addToSkills(open)}>
+												<Icon name="plus" size={16} />
+												<Trans>Add to Skills</Trans>
+											</Button>
+											<Button
+												size="sm"
+												variant="secondary"
+												isDisabled={locked}
+												onPress={() => askAssistant(open.label)}
+											>
+												<Icon name="sparkle" size={16} />
+												<Trans>Ask the assistant to work it in</Trans>
+											</Button>
+											<Button size="sm" variant="ghost" isDisabled={locked} onPress={() => hideTerm(open)}>
+												<Trans>Not true for me, hide it</Trans>
+											</Button>
+										</div>
+									</section>
+								)}
+							</section>
+						)}
 
-			{hiddenTerms.length > 0 && (
-				<p className="text-xs text-ink-3">
-					<Trans>Hidden: {hiddenList}</Trans> ·{" "}
-					<button
-						type="button"
-						disabled={locked}
-						className="font-medium text-ink-2 underline underline-offset-2"
-						onClick={() =>
-							editWithUndo(
-								(draft) => {
-									checkStateOf(draft).hiddenTerms = [];
-								},
-								t`Hidden terms are back`,
-							)
-						}
-					>
-						<Trans>Show again</Trans>
-					</button>
-				</p>
-			)}
+						{result.found.length > 0 && (
+							<section aria-labelledby="match-found" className="grid gap-2">
+								<h3 id="match-found" className="text-sm font-semibold">
+									<Trans>Already covered · pick one to find it on the page</Trans>
+								</h3>
+								{/* The picked term is highlighted on the page; picking it again clears the highlight. */}
+								<TagGroup
+									aria-labelledby="match-found"
+									selectionMode="single"
+									selectedKeys={keySet(highlightTerm)}
+									onSelectionChange={(keys) => useEditorStore.setState({ highlightTerm: firstKey(keys) })}
+								>
+									<TagGroup.List>
+										{result.found.map((term) => (
+											<Tag key={term.term} id={term.term} textValue={term.label}>
+												<Icon name="check" className="text-success" />
+												{term.label}
+											</Tag>
+										))}
+									</TagGroup.List>
+								</TagGroup>
+							</section>
+						)}
+					</>
+				)}
+
+				{hiddenTerms.length > 0 && (
+					<p className="text-xs text-muted">
+						<Trans>Hidden: {hiddenList}</Trans> ·{" "}
+						{/* An inline text action inside the sentence; a HeroUI Button would break the line. */}
+						<button
+							type="button"
+							disabled={locked}
+							className="cursor-(--cursor-interactive) font-medium text-foreground underline underline-offset-2 disabled:opacity-50"
+							onClick={() =>
+								editWithUndo(
+									(draft) => {
+										checkStateOf(draft).hiddenTerms = [];
+									},
+									t`Hidden terms are back`,
+								)
+							}
+						>
+							<Trans>Show again</Trans>
+						</button>
+					</p>
+				)}
+			</CheckWidget>
 		</div>
 	);
 }
+
+/** A single-selection TagGroup's selected keys, from the one picked term (or none). */
+const keySet = (key: string | null): Selection => new Set<Key>(key ? [key] : []);
+
+/** The picked term from a single-selection change, or null once it's cleared. */
+const firstKey = (keys: Selection): string | null => {
+	if (keys === "all") return null;
+	const [key] = keys;
+	return key === undefined ? null : String(key);
+};
 
 const newSkill = (name: string): SkillItem => ({
 	id: generateId(),
@@ -317,16 +343,18 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 
 	if (!application) {
 		return (
-			<div className="grid gap-2 rounded-lg bg-bg p-3">
-				<div className="flex items-center gap-2.5">
-					<span className="grid size-7 place-items-center rounded-lg bg-sunken text-ink-2">
-						<Icon name="copy" size={16} />
-					</span>
+			<CheckWidget icon="briefcase" title={<Trans>Posting</Trans>} contentClassName="gap-2 p-3">
+				<div className="flex items-center gap-3">
+					<Avatar size="sm" className="shrink-0">
+						<Avatar.Fallback>
+							<Icon name="copy" size={16} />
+						</Avatar.Fallback>
+					</Avatar>
 					<span className="grid min-w-0 flex-1">
-						<b className="text-[13px] font-semibold">
+						<b className="text-sm font-semibold">
 							<Trans>Pasted posting</Trans>
 						</b>
-						<span className="text-xs text-ink-3">
+						<span className="text-xs text-muted">
 							<Trans>For this visit only</Trans>
 						</span>
 					</span>
@@ -335,21 +363,21 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 					</Button>
 				</div>
 				<SaveAsApplication />
-			</div>
+			</CheckWidget>
 		);
 	}
 
 	return (
-		<div className="grid gap-2 rounded-lg bg-bg p-3">
-			<div className="flex items-center gap-2.5">
-				<span className="grid size-7 place-items-center rounded-lg bg-sunken text-[13px] font-semibold text-ink-2">
-					{application.company.slice(0, 1).toUpperCase()}
-				</span>
+		<CheckWidget icon="briefcase" title={<Trans>Posting</Trans>} contentClassName="gap-2 p-3">
+			<div className="flex items-center gap-3">
+				<Avatar size="sm" className="shrink-0">
+					<Avatar.Fallback>{application.company.slice(0, 1).toUpperCase()}</Avatar.Fallback>
+				</Avatar>
 				<span className="grid min-w-0 flex-1">
-					<b className="truncate text-[13px] font-semibold">
+					<b className="truncate text-sm font-semibold">
 						{application.role} · {application.company}
 					</b>
-					<span className="text-xs text-ink-3">
+					<span className="text-xs text-muted">
 						<Trans>Posting from the linked application</Trans>
 					</span>
 				</span>
@@ -379,7 +407,7 @@ function PostingSource({ application }: { application: JobMatch["application"] }
 					</Button>
 				</div>
 			)}
-		</div>
+		</CheckWidget>
 	);
 }
 
@@ -390,20 +418,23 @@ function ApplicationPicker({ value, onChange }: { value: string | null; onChange
 	const locked = useIsResumeLocked();
 
 	return (
-		<NativeSelect
-			aria-label={t`Link an application`}
-			disabled={locked}
-			value={value ?? ""}
-			onChange={(event) => event.target.value && onChange(event.target.value)}
-		>
-			<option value="" disabled>
-				{choices.length > 0 ? t`Link an application…` : t`No applications yet`}
-			</option>
-			{choices.map((application) => (
-				<option key={application.id} value={application.id}>
-					{application.role} · {application.company}
-				</option>
-			))}
+		<NativeSelect fullWidth variant="secondary">
+			<NativeSelect.Trigger
+				aria-label={t`Link an application`}
+				disabled={locked}
+				value={value ?? ""}
+				onChange={(event) => event.target.value && onChange(event.target.value)}
+			>
+				<NativeSelect.Option value="" disabled>
+					{choices.length > 0 ? t`Link an application…` : t`No applications yet`}
+				</NativeSelect.Option>
+				{choices.map((application) => (
+					<NativeSelect.Option key={application.id} value={application.id}>
+						{application.role} · {application.company}
+					</NativeSelect.Option>
+				))}
+				<NativeSelect.Indicator />
+			</NativeSelect.Trigger>
 		</NativeSelect>
 	);
 }
@@ -431,15 +462,21 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 
 	if (application) {
 		return (
-			<div className="grid gap-2.5 rounded-xl border border-line p-4">
-				<strong className="text-sm font-semibold">
-					{application.role} · {application.company}
-				</strong>
-				<p className="text-[13px] leading-[19px] text-ink-2">
+			<CheckWidget
+				icon="briefcase"
+				title={
+					<>
+						{application.role} · {application.company}
+					</>
+				}
+				contentClassName="gap-3"
+			>
+				<p className="text-sm text-muted">
 					<Trans>This application has no posting saved yet. Paste it to match against it.</Trans>
 				</p>
 				<TextArea
 					fullWidth
+					variant="secondary"
 					aria-label={t`Job posting`}
 					rows={5}
 					maxLength={MAX_POSTING_CHARS}
@@ -455,29 +492,30 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 				>
 					<Trans>Save to the application</Trans>
 				</Button>
-			</div>
+			</CheckWidget>
 		);
 	}
 
 	return (
-		<div className="grid gap-2.5 rounded-xl border border-line p-4">
-			<strong className="text-sm font-semibold">
-				<Trans>Match against a job</Trans>
-			</strong>
-			<p className="text-[13px] leading-[19px] text-ink-2">
+		<CheckWidget icon="briefcase" title={<Trans>Match against a job</Trans>} contentClassName="gap-3">
+			<p className="text-sm text-muted">
 				<Trans>This resume isn't linked to an application yet.</Trans>
 			</p>
 			<ApplicationPicker value={null} onChange={(id) => void link(id)} />
 			{isPending && (
-				<span className="text-xs text-ink-3">
+				<span className="text-xs text-muted">
 					<Trans>Linking…</Trans>
 				</span>
 			)}
-			<span className="text-center text-xs text-ink-3">
+			{/* Two ways in: link an application, or paste a posting. */}
+			<div className="flex items-center gap-3 text-xs text-muted">
+				<Separator className="flex-1" />
 				<Trans>or</Trans>
-			</span>
+				<Separator className="flex-1" />
+			</div>
 			<TextArea
 				fullWidth
+				variant="secondary"
 				aria-label={t`Job posting`}
 				rows={4}
 				maxLength={MAX_POSTING_CHARS}
@@ -493,10 +531,10 @@ function NoPosting({ application }: { application: JobMatch["application"] }) {
 			>
 				<Trans>Match this posting</Trans>
 			</Button>
-			<span className="text-xs leading-[17px] text-ink-3">
+			<span className="text-xs text-muted">
 				<Trans>A pasted posting can be saved as an application afterwards.</Trans>
 			</span>
-		</div>
+		</CheckWidget>
 	);
 }
 
@@ -510,7 +548,6 @@ function SaveAsApplication() {
 	const queryClient = useQueryClient();
 	const { link } = useLinkApplication();
 	const { mutateAsync: create, isPending } = useMutation(orpc.applications.create.mutationOptions());
-	const companyId = useId();
 
 	if (!open) {
 		return (
@@ -540,37 +577,26 @@ function SaveAsApplication() {
 
 	return (
 		<form
-			className="grid gap-2"
+			className="@container grid gap-2"
 			onSubmit={(event) => {
 				event.preventDefault();
 				void save();
 			}}
 		>
-			<div className="grid grid-cols-2 gap-2">
-				<div className="grid gap-1">
-					<Label htmlFor={companyId}>
+			{/* Side by side once there's room; stacked in a 300px panel. */}
+			<div className="grid gap-2 @3xs:grid-cols-2">
+				<TextField isRequired fullWidth value={company} onChange={setCompany}>
+					<Label>
 						<Trans>Company</Trans>
 					</Label>
-					<Input
-						fullWidth
-						id={companyId}
-						required
-						value={company}
-						onChange={(event) => setCompany(event.target.value)}
-					/>
-				</div>
-				<div className="grid gap-1">
-					<Label htmlFor={`${companyId}-role`}>
+					<Input variant="secondary" />
+				</TextField>
+				<TextField isRequired fullWidth value={role} onChange={setRole}>
+					<Label>
 						<Trans>Role</Trans>
 					</Label>
-					<Input
-						fullWidth
-						id={`${companyId}-role`}
-						required
-						value={role}
-						onChange={(event) => setRole(event.target.value)}
-					/>
-				</div>
+					<Input variant="secondary" />
+				</TextField>
 			</div>
 			<div className="flex gap-1.5">
 				<Button size="sm" type="submit" isDisabled={!company.trim() || !role.trim() || isPending}>

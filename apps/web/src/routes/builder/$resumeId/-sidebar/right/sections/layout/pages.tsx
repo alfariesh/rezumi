@@ -283,8 +283,8 @@ function PageContainer({
 	const isFullWidth = page.fullWidth;
 
 	return (
-		<div className="space-y-3 rounded-md border border-dashed bg-bg/40">
-			<div className="@container bg-sunken/50 px-4 py-3">
+		<div className="space-y-3 rounded-xl bg-surface-secondary">
+			<div className="@container px-4 pt-3">
 				<div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 @max-[22rem]:grid-cols-1">
 					<div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2">
 						<span className="text-xs font-medium">
@@ -296,7 +296,7 @@ function PageContainer({
 							isSelected={page.fullWidth}
 							onChange={(checked) => onToggleFullWidth(pageIndex, checked)}
 						>
-							<Switch.Content className="gap-2 text-xs font-medium text-ink-3">
+							<Switch.Content className="gap-2 text-xs font-medium text-muted">
 								<Switch.Control>
 									<Switch.Thumb />
 								</Switch.Control>
@@ -306,11 +306,7 @@ function PageContainer({
 					</div>
 
 					{canDelete && (
-						<Button
-							variant="ghost"
-							onPress={() => onDelete(pageIndex)}
-							className="size-auto gap-x-2.5 justify-self-end p-0!"
-						>
+						<Button variant="danger-soft" size="sm" onPress={() => onDelete(pageIndex)} className="justify-self-end">
 							<Icon name="trash" size={16} />
 							<Trans>Delete page</Trans>
 						</Button>
@@ -369,13 +365,15 @@ function LayoutColumn({
 	return (
 		<SortableContext id={droppableId} items={items} strategy={verticalListSortingStrategy}>
 			<div className={cn("space-y-1.5", disabled && "opacity-50", className)}>
-				{!hideLabel && <div className="ps-4 text-xs font-medium @md:row-start-1">{getColumnLabel(columnId)}</div>}
+				{!hideLabel && (
+					<div className="ps-1 text-xs font-medium text-muted @md:row-start-1">{getColumnLabel(columnId)}</div>
+				)}
 
 				<div
 					ref={setNodeRef}
 					className={cn(
-						"space-y-2.5 rounded-md border border-dashed p-3 pb-8 transition-colors",
-						isOver && !disabled ? "border-accent/60 bg-accent/5" : "bg-bg/40",
+						"space-y-2 rounded-lg border border-dashed p-2 pb-8 transition-colors",
+						isOver && !disabled ? "border-accent bg-accent-soft" : "border-border",
 					)}
 				>
 					{items.map((id) => (
@@ -383,7 +381,7 @@ function LayoutColumn({
 					))}
 
 					{items.length === 0 && (
-						<div className="rounded-md border border-dashed p-4 text-xs font-medium text-ink-3">
+						<div className="p-2 text-xs text-muted">
 							<Trans>Drag and drop sections here to move them between columns</Trans>
 						</div>
 					)}
@@ -638,15 +636,19 @@ function LayoutItemContent({
 			data-overlay={isOverlay ? "true" : undefined}
 			data-dragging={isDragging ? "true" : undefined}
 			className={cn(
-				"group/item flex cursor-grab touch-none items-center gap-x-2 rounded-md border border-line bg-bg px-2 py-1.5 text-sm font-medium transition-[background-color,border-color] duration-quick select-none",
-				"hover:bg-sunken/40 active:cursor-grabbing active:border-accent/60 active:bg-sunken/40",
-				"data-[overlay=true]:cursor-grabbing data-[overlay=true]:border-accent/60 data-[overlay=true]:bg-bg data-[overlay=true]:shadow-md",
+				"group/item flex cursor-grab touch-none items-center gap-x-2 rounded-lg bg-surface px-2 py-1.5 text-sm font-medium select-none",
+				"hover:bg-default active:cursor-grabbing active:bg-default",
+				"data-[overlay=true]:cursor-grabbing data-[overlay=true]:bg-overlay data-[overlay=true]:shadow-overlay",
 				"data-[dragging=true]:cursor-grabbing data-[dragging=true]:opacity-40",
 				className,
 			)}
 			{...rest}
 		>
-			<Icon name="dots-six-vertical" size={16} className="opacity-40 transition-opacity group-hover/item:opacity-100" />
+			<Icon
+				name="dots-six-vertical"
+				size={16}
+				className="text-muted opacity-60 transition-opacity group-hover/item:opacity-100"
+			/>
 			<span className="min-w-0 flex-1 truncate">{title}</span>
 
 			{/* The drag overlay renders without a location; only real rows get the menu. */}

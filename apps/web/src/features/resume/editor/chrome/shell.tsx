@@ -1,6 +1,6 @@
 import type { MobileView } from "@/features/resume/editor/store";
 import type { IconName } from "@rezumi/ui/components/icon";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -36,6 +36,8 @@ type EditorFrameProps = {
 	editorLayout: ReturnType<typeof useEditorLayout>;
 	bar: ReactNode;
 	mode: string;
+	/** The mode switch, above the panel; phones switch from their tab bar instead. */
+	modes: ReactNode;
 	/** The panel's accessible name in this mode. */
 	panelLabel: string;
 	panel: ReactNode;
@@ -47,11 +49,33 @@ type EditorFrameProps = {
 	children: ReactNode;
 };
 
-/** A 56px bar over the panel and the page; the assistant joins as a column, in the panel's place, or over it all. */
+/**
+ * The columns the bar and the body share, so the bar's zones line up with what's under them: the panel column, the
+ * page (and on wide screens the assistant). Set as `--editor-columns` on the frame and read by both grids.
+ */
+function useEditorColumns({ layout, pinned, assistantPlace }: ReturnType<typeof useEditorLayout>) {
+	const assistantOpen = useEditorStore((state) => state.assistantOpen);
+	if (layout === "mobile" || (layout === "tablet" && !pinned)) return "auto minmax(0,1fr)";
+	if (pinned) return "380px minmax(0,1fr)";
+	return assistantPlace === "column" ? columnsWithAssistant(assistantOpen) : "var(--editor-panel) minmax(0,1fr)";
+}
+
+/** The editor grid's column transition: the assistant's column opens and closes, ⌘J switches at once. */
+export function useEditorColumnsTransition() {
+	const assistantOpen = useEditorStore((state) => state.assistantOpen);
+	const assistantInstant = useEditorStore((state) => state.assistantInstant);
+	return assistantGridTransition(assistantOpen, assistantInstant);
+}
+
+/**
+ * A 56px bar over the panel and the page, on one column grid; the assistant joins as a column, in the panel's place,
+ * or over it all.
+ */
 export function EditorFrame({
 	editorLayout,
 	bar,
 	mode,
+	modes,
 	panelLabel,
 	panel,
 	page,
@@ -60,12 +84,16 @@ export function EditorFrame({
 	children,
 }: EditorFrameProps) {
 	const { layout, pinned, assistantPlace } = editorLayout;
+	const columns = useEditorColumns(editorLayout);
 
 	return (
-		<div className="grid h-svh grid-rows-[var(--editor-bar)_minmax(0,1fr)] overflow-hidden bg-bg">
+		<div
+			className="grid h-svh grid-rows-[var(--editor-bar)_minmax(0,1fr)] overflow-hidden bg-background"
+			style={{ "--editor-columns": columns } as CSSProperties}
+		>
 			<a
 				href="#main-content"
-				className="sr-only rounded-md bg-raised px-4 py-2 text-sm focus:not-sr-only focus:absolute focus:inset-s-2 focus:top-2 focus:z-[100]"
+				className="sr-only rounded-xl bg-overlay px-4 py-2 text-sm shadow-overlay focus:not-sr-only focus:absolute focus:inset-s-2 focus:top-2 focus:z-[100]"
 			>
 				<Trans>Skip to the page</Trans>
 			</a>
@@ -75,16 +103,18 @@ export function EditorFrame({
 			{(layout === "desktop" || pinned) && (
 				<DesktopBody
 					mode={mode}
+					modes={modes}
 					panelLabel={panelLabel}
 					panel={panel}
 					page={page}
 					assistant={assistant}
 					column={assistantPlace === "column"}
 					replace={assistantPlace === "replace"}
-					narrow={pinned}
 				/>
 			)}
-			{layout === "tablet" && !pinned && <TabletBody mode={mode} panelLabel={panelLabel} panel={panel} page={page} />}
+			{layout === "tablet" && !pinned && (
+				<TabletBody mode={mode} modes={modes} panelLabel={panelLabel} panel={panel} page={page} />
+			)}
 			{layout === "mobile" && mobile}
 
 			{(assistantPlace === "drawer" || assistantPlace === "screen") && (
@@ -96,7 +126,32 @@ export function EditorFrame({
 	);
 }
 
-type BodyProps = { mode: string; panelLabel: string; panel: ReactNode; page: ReactNode };
+type BodyProps = { mode: string; modes: ReactNode; panelLabel: string; panel: ReactNode; page: ReactNode };
+
+type PanelColumnProps = Omit<BodyProps, "page">;
+
+/**
+ * The panel column: the mode switch, then the panel scrolling under it. No surface of its own: the panel's widgets
+ * sit on the window, 12px from its edge, in line with the bar's back button above them.
+ */
+function PanelColumn({ mode, modes, panelLabel, panel }: PanelColumnProps) {
+	return (
+		<div className="flex min-h-0 min-w-0 flex-col">
+			{/* The same scrollbar gutter as the panel below, so the switch and the widgets share both edges. */}
+			<div className="shrink-0 [scrollbar-gutter:stable] overflow-hidden px-3 pb-1">{modes}</div>
+			<section
+				key={mode}
+				aria-label={panelLabel}
+				// `relative`: absolutely positioned descendants (sr-only text, say) stay inside this scroller instead of
+				// stretching the document, which would let scrollIntoView shift the whole editor. Keyed by mode so each
+				// mode starts at its top; no scroll anchoring, which yanked the Design panel back while scrolling it.
+				className="relative min-h-0 flex-1 scrollbar [scrollbar-gutter:stable] overflow-y-auto [overflow-anchor:none]"
+			>
+				{panel}
+			</section>
+		</div>
+	);
+}
 
 type DesktopBodyProps = BodyProps & {
 	assistant: ReactNode;
@@ -104,40 +159,25 @@ type DesktopBodyProps = BodyProps & {
 	column: boolean;
 	/** 1024–1279: the assistant takes the panel's place while open. */
 	replace: boolean;
-	/** Pinned on a tablet: a 380px panel. */
-	narrow: boolean;
 };
 
 /** The panel beside the page: 400px on desktop, 380px when pinned on a tablet; the assistant joins at ≥1280. */
-function DesktopBody({ mode, panelLabel, panel, page, assistant, column, replace, narrow }: DesktopBodyProps) {
+function DesktopBody({ assistant, column, replace, page, ...panel }: DesktopBodyProps) {
 	const assistantOpen = useEditorStore((state) => state.assistantOpen);
-	const assistantInstant = useEditorStore((state) => state.assistantInstant);
+	const transition = useEditorColumnsTransition();
 
 	return (
-		<div
-			className={cn("relative grid min-h-0", assistantGridTransition(assistantOpen, assistantInstant))}
-			style={{
-				gridTemplateColumns: column
-					? columnsWithAssistant(assistantOpen)
-					: narrow
-						? "380px minmax(0,1fr)"
-						: "var(--editor-panel) minmax(0,1fr)",
-			}}
-		>
+		<div className={cn("relative grid min-h-0 grid-cols-(--editor-columns)", transition)}>
 			<AssistantReplace
 				replaced={replace && assistantOpen}
-				assistant={<div className="min-h-0 border-e border-line">{assistant}</div>}
+				assistant={
+					// The assistant is a conversation, not a list of widgets: it keeps a surface of its own.
+					<div className="min-h-0 ps-3 pb-3">
+						<div className="h-full overflow-hidden rounded-2xl bg-surface shadow-surface">{assistant}</div>
+					</div>
+				}
 			>
-				<section
-					key={mode}
-					aria-label={panelLabel}
-					// `relative`: absolutely positioned descendants (sr-only text, say) stay inside this scroller instead of
-					// stretching the document, which would let scrollIntoView shift the whole editor. Keyed by mode so each
-					// mode starts at its top; no scroll anchoring, which yanked the Design panel back while scrolling it.
-					className="relative min-h-0 overflow-y-auto border-e border-line bg-surface [overflow-anchor:none]"
-				>
-					{panel}
-				</section>
+				<PanelColumn {...panel} />
 			</AssistantReplace>
 			<main id="main-content" className="min-h-0 min-w-0">
 				{page}
@@ -147,8 +187,8 @@ function DesktopBody({ mode, panelLabel, panel, page, assistant, column, replace
 	);
 }
 
-/** Tablets: the page, with the panel as a 380px drawer over it. */
-function TabletBody({ mode, panelLabel, panel, page }: BodyProps) {
+/** Tablets: the page, with the panel and its mode switch as a 380px drawer over it. */
+function TabletBody({ page, ...panel }: BodyProps) {
 	const drawerOpen = useEditorStore((state) => state.drawerOpen);
 
 	return (
@@ -156,17 +196,15 @@ function TabletBody({ mode, panelLabel, panel, page }: BodyProps) {
 			<main id="main-content" className="h-full min-w-0">
 				{page}
 			</main>
-			<section
-				key={mode}
-				aria-label={panelLabel}
+			<div
 				inert={!drawerOpen}
 				className={cn(
-					"absolute inset-y-0 start-0 z-20 w-[380px] max-w-[calc(100%-3rem)] overflow-y-auto border-e border-line bg-surface shadow-e3 transition-transform duration-emphasized ease-enter [overflow-anchor:none]",
-					!drawerOpen && "-translate-x-full rtl:translate-x-full",
+					"absolute start-2 top-0 bottom-2 z-20 flex w-[380px] max-w-[calc(100%-3rem)] flex-col overflow-hidden rounded-2xl bg-background pt-3 shadow-overlay transition-transform duration-emphasized ease-enter",
+					!drawerOpen && "-translate-x-[calc(100%+1rem)] rtl:translate-x-[calc(100%+1rem)]",
 				)}
 			>
-				{panel}
-			</section>
+				<PanelColumn {...panel} />
+			</div>
 		</div>
 	);
 }
@@ -181,7 +219,10 @@ type MobileTabBarProps<V extends MobileView> = {
 /** Phones: the views along the bottom, one showing at a time. */
 export function MobileTabBar<V extends MobileView>({ tabs, view, onModeChange }: MobileTabBarProps<V>) {
 	return (
-		<nav aria-label={t`Editor views`} className="flex border-t border-line bg-surface pb-[env(safe-area-inset-bottom)]">
+		<nav
+			aria-label={t`Editor views`}
+			className="flex border-t border-separator bg-surface pb-[env(safe-area-inset-bottom)]"
+		>
 			{tabs.map(({ view: tab, icon, label }) => {
 				const active = tab === view;
 
@@ -195,8 +236,8 @@ export function MobileTabBar<V extends MobileView>({ tabs, view, onModeChange }:
 							if (tab !== "page") onModeChange(tab as Exclude<V, "page">);
 						}}
 						className={cn(
-							"relative flex min-h-[52px] flex-1 flex-col items-center justify-center gap-0.5 text-[11px] transition-[color,scale] duration-quick ease-enter active:scale-[0.97]",
-							active ? "font-semibold text-ink" : "text-ink-2",
+							"relative flex min-h-[52px] flex-1 cursor-(--cursor-interactive) flex-col items-center justify-center gap-0.5 text-[11px] transition-[color,scale] duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset active:scale-[0.97]",
+							active ? "font-semibold text-foreground" : "text-muted",
 						)}
 					>
 						{active && <MobileTabIndicator />}

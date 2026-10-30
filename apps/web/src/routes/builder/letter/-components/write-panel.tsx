@@ -1,18 +1,19 @@
 import type { ApplicationSummary } from "@/features/applications/types";
 import type { LetterDraft } from "@/features/letters/store";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import { Button, Description, Dropdown, Input, Label, Separator, TextArea } from "@heroui/react";
+import { NativeSelect, Widget } from "@heroui-pro/react";
+import { Button, Chip, Description, Dropdown, Input, Label, Link, Separator, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import { Link as RouterLink } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
 import { useId, useRef, useState } from "react";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
 import { Icon } from "@rezumi/ui/components/icon";
-import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -52,19 +53,32 @@ const updateLetter = (changes: Omit<Parameters<typeof client.coverLetters.update
 		}),
 	);
 
-type SectionProps = { id: string; title: ReactNode; aside?: ReactNode; children: ReactNode };
+type LetterWidgetProps = {
+	/** The widget's id: the page scrolls to it (`letter-from`, `letter-body`). Its title takes `${id}-title`. */
+	id: string;
+	icon: IconName;
+	title: ReactNode;
+	/** Trailing header content: a count chip or a small ghost action. */
+	aside?: ReactNode;
+	contentClassName?: string;
+	children: ReactNode;
+};
 
-function Section({ id, title, aside, children }: SectionProps) {
+/** One group of the letter panels: an icon and Title Case title over the group's elevated content. */
+export function LetterWidget({ id, icon, title, aside, contentClassName, children }: LetterWidgetProps) {
 	return (
-		<section aria-labelledby={id} className="grid gap-3 px-4 py-5">
-			<div className="flex items-center justify-between gap-3">
-				<h2 id={id} className="text-xs font-semibold text-ink-3">
-					{title}
-				</h2>
+		<Widget id={id} role="region" aria-labelledby={`${id}-title`} className="scroll-mt-3">
+			<Widget.Header className="gap-3">
+				<span className="flex min-w-0 items-center gap-2">
+					<Icon name={icon} size={16} className="shrink-0 text-muted" />
+					<Widget.Title id={`${id}-title`} role="heading" aria-level={2} className="truncate">
+						{title}
+					</Widget.Title>
+				</span>
 				{aside}
-			</div>
-			{children}
-		</section>
+			</Widget.Header>
+			<Widget.Content className={cn("grid min-w-0 gap-4", contentClassName)}>{children}</Widget.Content>
+		</Widget>
 	);
 }
 
@@ -82,13 +96,8 @@ export function LetterWritePanel() {
 	const disabled = letter.isLocked;
 
 	return (
-		<div className="divide-y divide-line">
-			{letter.isLocked && (
-				<p className="flex items-center gap-2 bg-sunken px-4 py-2.5 text-sm text-ink-2">
-					<Icon name="lock" size={18} />
-					<Trans>This letter is locked. Unlock it from its menu to edit.</Trans>
-				</p>
-			)}
+		<div className="grid gap-3 p-3">
+			{letter.isLocked && <LetterLockedNote />}
 			<ForSection letter={letter} application={application} applications={applications ?? []} disabled={disabled} />
 			<ToSection letter={letter} application={application} disabled={disabled} />
 			<FromSection letter={letter} disabled={disabled} />
@@ -97,6 +106,16 @@ export function LetterWritePanel() {
 			<LengthSection content={draft.phase === "streaming" || draft.phase === "ready" ? draft.text : letter.content} />
 			<DesignNote letter={letter} />
 		</div>
+	);
+}
+
+/** Above the widgets, not in one: a locked letter says so once, in Write and in Design. */
+export function LetterLockedNote() {
+	return (
+		<p className="flex items-center gap-2 rounded-xl bg-surface-secondary px-3 py-2.5 text-sm text-muted">
+			<Icon name="lock" size={18} className="shrink-0" />
+			<Trans>This letter is locked. Unlock it from its menu to edit.</Trans>
+		</p>
 	);
 }
 
@@ -126,7 +145,7 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 			<Dropdown.Popover placement="bottom end" className="max-h-80 w-72 overflow-y-auto">
 				<Dropdown.Menu
 					renderEmptyState={() => (
-						<p className="px-2 py-1.5 text-sm text-ink-2">
+						<p className="px-2 py-1.5 text-sm text-muted">
 							<Trans>No applications yet. Add one in Applications first.</Trans>
 						</p>
 					)}
@@ -160,18 +179,30 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 	);
 
 	return (
-		<Section id="letter-for" title={<Trans>For</Trans>}>
+		<LetterWidget
+			id="letter-for"
+			icon="briefcase"
+			title={<Trans>For</Trans>}
+			aside={
+				application &&
+				menu(
+					<Button variant="ghost" size="sm" className="shrink-0" isDisabled={disabled}>
+						<Trans>Change</Trans>
+					</Button>,
+				)
+			}
+		>
 			{application ? (
-				<div className="flex items-center gap-3 rounded-xl border border-line p-3">
+				<div className="flex min-w-0 items-center gap-3">
 					<span
 						aria-hidden="true"
-						className="grid size-9 shrink-0 place-items-center rounded-lg bg-sunken font-semibold text-ink-2"
+						className="grid size-9 shrink-0 place-items-center rounded-lg bg-surface-secondary font-semibold text-muted"
 					>
 						{application.company.charAt(0).toUpperCase()}
 					</span>
 					<span className="grid min-w-0 flex-1">
 						<span className="truncate text-sm font-medium">{application.role}</span>
-						<span className="flex min-w-0 items-center gap-1.5 text-xs text-ink-3">
+						<span className="flex min-w-0 items-center gap-1.5 text-xs text-muted">
 							<span className="truncate">{application.company}</span>
 							<span aria-hidden="true">·</span>
 							<span
@@ -179,14 +210,9 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 								className="size-1.5 shrink-0 rounded-sm"
 								style={{ background: getStageColor(application.status) }}
 							/>
-							{getStageLabel(application.status)}
+							<span className="shrink-0">{getStageLabel(application.status)}</span>
 						</span>
 					</span>
-					{menu(
-						<Button variant="secondary" size="sm" isDisabled={disabled}>
-							<Trans>Change</Trans>
-						</Button>,
-					)}
 				</div>
 			) : (
 				<>
@@ -194,15 +220,15 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 						<Button variant="secondary" fullWidth isDisabled={disabled} className="justify-start gap-2">
 							<Icon name="briefcase" />
 							<Trans>Link an application</Trans>
-							<Icon name="caret-down" className="ms-auto text-ink-3" />
+							<Icon name="caret-down" className="ms-auto text-muted" />
 						</Button>,
 					)}
-					<p className="text-xs text-ink-3">
+					<p className="text-xs text-muted">
 						<Trans>Without one, you fill in the recipient yourself and drafting uses only your resume.</Trans>
 					</p>
 				</>
 			)}
-		</Section>
+		</LetterWidget>
 	);
 }
 
@@ -210,12 +236,11 @@ type LetterSectionProps = { letter: CoverLetter; application: ApplicationSummary
 
 /** TO: name or team, company and date for structured letters; older (freeform) letters keep their recipient block. */
 function ToSection({ letter, application, disabled }: LetterSectionProps) {
-	const id = useId();
 	const edit = useLetterEditorStore((state) => state.edit);
 
 	if (letter.layout === "freeform") {
 		return (
-			<Section id="letter-to" title={<Trans>To</Trans>}>
+			<LetterWidget id="letter-to" icon="envelope-simple" title={<Trans>To</Trans>}>
 				<RichTextEditor
 					label={t`Recipient`}
 					value={letter.recipient}
@@ -223,65 +248,66 @@ function ToSection({ letter, application, disabled }: LetterSectionProps) {
 					heightClassName="min-h-[64px] max-h-[200px]"
 					onChange={(recipient) => edit({ recipient })}
 				/>
-				<p className="text-xs text-ink-3">
+				<p className="text-xs text-muted">
 					<Trans>This letter keeps its recipient as written.</Trans>
 				</p>
-			</Section>
+			</LetterWidget>
 		);
 	}
 
 	return (
-		<Section id="letter-to" title={<Trans>To</Trans>}>
-			<div className="grid grid-cols-2 gap-3">
-				<div className="col-span-2 grid gap-1.5">
-					<Label htmlFor={`${id}-name`}>
+		<LetterWidget id="letter-to" icon="envelope-simple" title={<Trans>To</Trans>} contentClassName="@container">
+			{/* Company and date share a row once each half fits a whole date; in the 300px panel they stack. */}
+			<div className="grid gap-4 @2xs:grid-cols-2">
+				<TextField
+					fullWidth
+					variant="secondary"
+					className="@2xs:col-span-2"
+					value={letter.recipientName}
+					maxLength={200}
+					isDisabled={disabled}
+					onChange={(recipientName) => edit({ recipientName })}
+				>
+					<Label>
 						<Trans>Name or team</Trans>
 					</Label>
-					<Input
-						fullWidth
-						id={`${id}-name`}
-						value={letter.recipientName}
-						maxLength={200}
-						placeholder={t`Hiring team`}
-						disabled={disabled}
-						onChange={(event) => edit({ recipientName: event.target.value })}
-					/>
-				</div>
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-company`}>
+					<Input placeholder={t`Hiring team`} />
+					<Description>
+						{application ? (
+							<Trans>Filled from the application. The greeting follows the name.</Trans>
+						) : (
+							<Trans>The greeting follows the name.</Trans>
+						)}
+					</Description>
+				</TextField>
+				<TextField
+					fullWidth
+					variant="secondary"
+					value={letter.recipientCompany}
+					maxLength={200}
+					isDisabled={disabled}
+					onChange={(recipientCompany) => edit({ recipientCompany })}
+				>
+					<Label>
 						<Trans>Company</Trans>
 					</Label>
-					<Input
-						fullWidth
-						id={`${id}-company`}
-						value={letter.recipientCompany}
-						maxLength={200}
-						disabled={disabled}
-						onChange={(event) => edit({ recipientCompany: event.target.value })}
-					/>
-				</div>
-				<div className="grid gap-1.5">
-					<Label htmlFor={`${id}-date`}>
+					<Input />
+				</TextField>
+				<TextField
+					fullWidth
+					variant="secondary"
+					type="date"
+					value={letter.letterDate ?? ""}
+					isDisabled={disabled}
+					onChange={(letterDate) => edit({ letterDate: letterDate || null })}
+				>
+					<Label>
 						<Trans>Date</Trans>
 					</Label>
-					<Input
-						fullWidth
-						id={`${id}-date`}
-						type="date"
-						value={letter.letterDate ?? ""}
-						disabled={disabled}
-						onChange={(event) => edit({ letterDate: event.target.value || null })}
-					/>
-				</div>
+					<Input />
+				</TextField>
 			</div>
-			<p className="text-xs text-ink-3">
-				{application ? (
-					<Trans>Filled from the application. The greeting follows the name.</Trans>
-				) : (
-					<Trans>The greeting follows the name.</Trans>
-				)}
-			</p>
-		</Section>
+		</LetterWidget>
 	);
 }
 
@@ -308,25 +334,27 @@ function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: bool
 			.catch(failed);
 
 	return (
-		<Section id="letter-from" title={<Trans>From</Trans>}>
-			<div className="grid gap-1.5">
+		<LetterWidget id="letter-from" icon="user-circle" title={<Trans>From</Trans>}>
+			<NativeSelect fullWidth variant="secondary">
 				<Label htmlFor={`${id}-resume`}>
 					<Trans>Resume</Trans>
 				</Label>
-				<NativeSelect
+				<NativeSelect.Trigger
 					id={`${id}-resume`}
+					className="pointer-coarse:min-h-11"
 					value={letter.sourceResumeId ?? ""}
 					disabled={disabled}
 					onChange={(event) => setResume(event.target.value || null)}
 				>
-					<option value="">{t`No resume`}</option>
+					<NativeSelect.Option value="">{t`No resume`}</NativeSelect.Option>
 					{resumes?.map((item) => (
-						<option key={item.id} value={item.id}>
+						<NativeSelect.Option key={item.id} value={item.id}>
 							{item.name}
-						</option>
+						</NativeSelect.Option>
 					))}
-				</NativeSelect>
-			</div>
+					<NativeSelect.Indicator />
+				</NativeSelect.Trigger>
+			</NativeSelect>
 			{letter.sourceResumeId ? (
 				<SwitchRow
 					label={t`Use details from “${resume?.name ?? t`the resume`}”`}
@@ -340,11 +368,11 @@ function FromSection({ letter, disabled }: { letter: CoverLetter; disabled: bool
 					onChange={setLinked}
 				/>
 			) : (
-				<p className="text-xs text-ink-3">
+				<p className="text-xs text-muted">
 					<Trans>Your name and contact details come from a resume.</Trans>
 				</p>
 			)}
-		</Section>
+		</LetterWidget>
 	);
 }
 
@@ -362,7 +390,7 @@ function BodySection({ letter, application, disabled }: LetterSectionProps) {
 	const showEditor = writing || countWords(letter.content) > 0;
 
 	return (
-		<Section id="letter-body" title={<Trans>Letter</Trans>}>
+		<LetterWidget id="letter-body" icon="note-pencil" title={<Trans>Letter</Trans>}>
 			{structured && (
 				<LetterFramingField
 					letter={letter}
@@ -414,14 +442,14 @@ function BodySection({ letter, application, disabled }: LetterSectionProps) {
 						defaultValue={defaultCoverLetterSignOff(letter, words)}
 						disabled={disabled}
 					/>
-					<p className="text-xs text-ink-3">
+					<p className="text-xs text-muted">
 						<Trans>
 							Clear the greeting or sign-off to omit it. Clearing the sign-off also removes the automatic signature.
 						</Trans>
 					</p>
 				</>
 			)}
-		</Section>
+		</LetterWidget>
 	);
 }
 
@@ -433,27 +461,26 @@ type LetterFramingFieldProps = {
 };
 
 function LetterFramingField({ letter, field, defaultValue, disabled }: LetterFramingFieldProps) {
-	const id = useId();
 	const edit = useLetterEditorStore((state) => state.edit);
 	return (
-		<div className="grid gap-1.5">
-			<div className="flex items-center justify-between gap-2">
-				<Label htmlFor={id}>{field === "greeting" ? <Trans>Greeting</Trans> : <Trans>Sign-off</Trans>}</Label>
+		<TextField
+			fullWidth
+			variant="secondary"
+			value={letter[field] ?? defaultValue}
+			maxLength={2_000}
+			isDisabled={disabled}
+			onChange={(value) => edit({ [field]: value })}
+		>
+			<div className="flex min-h-8 items-center justify-between gap-2">
+				<Label>{field === "greeting" ? <Trans>Greeting</Trans> : <Trans>Sign-off</Trans>}</Label>
 				{letter[field] !== null && (
 					<Button variant="ghost" size="sm" isDisabled={disabled} onPress={() => edit({ [field]: null })}>
 						<Trans>Use default</Trans>
 					</Button>
 				)}
 			</div>
-			<TextArea
-				fullWidth
-				id={id}
-				value={letter[field] ?? defaultValue}
-				maxLength={2_000}
-				disabled={disabled}
-				onChange={(event) => edit({ [field]: event.target.value })}
-			/>
-		</div>
+			<TextArea />
+		</TextField>
 	);
 }
 
@@ -470,10 +497,11 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 	const hasResume = Boolean(letter.sourceResumeId);
 	const company = application?.company;
 	const canDraft = hasResume || Boolean(application);
+	const offerDraft = canDraft && hasUsableProvider;
 
 	return (
-		<div className="grid justify-items-start gap-3 rounded-xl border border-dashed border-line-2 p-4">
-			<p className="text-sm text-ink-2">
+		<div className="fields-on-card grid justify-items-start gap-3 rounded-xl bg-surface-secondary p-4">
+			<p className="text-sm text-muted">
 				{company && hasResume ? (
 					<Trans>Start typing, or draft from what we know: the {company} posting and your resume.</Trans>
 				) : company ? (
@@ -484,29 +512,25 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 					<Trans>Start typing. To draft one, link a resume or an application first.</Trans>
 				)}
 			</p>
-			<div className="flex flex-wrap gap-1.5">
-				{canDraft && hasUsableProvider && (
-					<Button
-						size="sm"
-						isDisabled={disabled}
-						className="bg-accent-soft text-accent-text hover:bg-accent-soft hover:brightness-95"
-						onPress={() => void startLetterDraft("draft")}
-					>
+			<div className="flex flex-wrap gap-2">
+				{offerDraft && (
+					<Button size="sm" isDisabled={disabled} onPress={() => void startLetterDraft("draft")}>
 						<Icon name="sparkle" size={16} />
 						{application ? <Trans>Draft from the posting</Trans> : <Trans>Draft from your resume</Trans>}
 					</Button>
 				)}
-				<Button size="sm" variant="ghost" isDisabled={disabled} onPress={() => onWrite()}>
+				{/* The draft is the one primary action; without it, writing is the way in. */}
+				<Button size="sm" variant={offerDraft ? "ghost" : "secondary"} isDisabled={disabled} onPress={() => onWrite()}>
 					<Trans>Write it myself</Trans>
 				</Button>
 			</div>
 			{canDraft && <AiProviderLoadState state={providerState} />}
 			{canDraft && !providerState.isUnavailable && !hasUsableProvider && (
-				<p className="text-xs text-ink-3">
+				<p className="text-xs text-muted">
 					<Trans>Drafting needs an AI provider.</Trans>{" "}
-					<Link to="/dashboard/settings/ai" className="text-link underline-offset-4 hover:underline">
+					<RouterLink to="/dashboard/settings/ai" className="link text-xs">
 						<Trans>Open AI settings</Trans>
-					</Link>
+					</RouterLink>
 				</p>
 			)}
 		</div>
@@ -520,7 +544,7 @@ type DraftBoxProps = {
 	onKeep: (text: string) => void;
 };
 
-/** The draft on its green wash, then the dark chip: Keep, Shorter, More personal, Discard. */
+/** The draft on its accent wash, then its actions: Keep, Shorter, More personal, Discard. */
 function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 	const reducedMotion = useReducedMotion();
 	// Retrying repeats the last request.
@@ -533,8 +557,8 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 	if (draft.phase === "failed") {
 		const gateway = draft.error instanceof ORPCError && draft.error.code === "BAD_GATEWAY";
 		return (
-			<div role="alert" className="grid gap-2.5 rounded-xl bg-danger-soft p-3 text-[13px] text-danger-text">
-				<span className="flex gap-2">
+			<div role="alert" className="grid gap-3 rounded-xl bg-danger-soft p-3 text-sm">
+				<span className="flex gap-2 text-danger">
 					<Icon name="warning-circle" size={18} className="shrink-0" />
 					{gateway && draft.provider ? (
 						<Trans>Drafting stopped: {draft.provider} didn't respond. Nothing on the page changed.</Trans>
@@ -542,7 +566,7 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 						<Trans>Drafting stopped. Nothing on the page changed.</Trans>
 					)}
 				</span>
-				<div className="flex gap-1.5">
+				<div className="flex gap-2">
 					<Button size="sm" variant="secondary" onPress={() => run(last.current.variant, last.current.previous)}>
 						<Trans>Try again</Trans>
 					</Button>
@@ -570,13 +594,13 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 				aria-live="polite"
 				aria-busy={streaming}
 				className={cn(
-					"min-h-[120px] rounded-lg bg-accent-soft px-3 py-2.5 text-sm leading-relaxed whitespace-pre-wrap outline-[1.5px] transition-[outline-color] duration-standard outline-solid",
+					"min-h-[120px] rounded-xl bg-accent-soft px-3 py-2.5 text-sm leading-relaxed whitespace-pre-wrap outline-[1.5px] transition-[outline-color] duration-standard outline-solid",
 					draft.phase === "ready" ? "outline-accent" : "outline-transparent",
 				)}
 			>
 				{text}
 				{streaming && (
-					<span className="text-ink-3">
+					<span className="text-muted">
 						{reducedMotion ? <Trans>Drafting…</Trans> : <span aria-hidden="true">▍</span>}
 					</span>
 				)}
@@ -587,42 +611,29 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 				</Button>
 			)}
 			{draft.phase === "ready" && (
-				<div
-					className={cn(ENTER_CLASS, "flex flex-wrap items-center gap-1 rounded-xl bg-ink p-1 ps-3 text-bg shadow-e3")}
-				>
-					<span className="me-auto flex items-center gap-1.5 py-1 text-[13px] font-medium">
-						<Icon name="sparkle" size={16} />
+				<div className={cn(ENTER_CLASS, "fields-on-card grid gap-2 rounded-xl bg-surface-secondary p-3")}>
+					<span className="flex items-center gap-1.5 text-xs text-muted">
+						<Icon name="sparkle" size={16} className="shrink-0 text-accent" />
 						{sources}
 					</span>
-					<button
-						type="button"
-						onClick={() => onKeep(draft.text)}
-						className="h-8 rounded-lg bg-accent px-3 text-[13px] font-semibold text-on-accent hover:bg-accent-hover"
-					>
-						<Trans>Keep</Trans>
-					</button>
-					{(
-						[
-							["shorter", t`Shorter`],
-							["personal", t`More personal`],
-						] as const
-					).map(([variant, label]) => (
-						<button
-							key={variant}
-							type="button"
-							onClick={() => run(variant, draft.text)}
-							className="h-8 rounded-lg px-2.5 text-[13px] hover:bg-[oklch(1_0_0/0.12)]"
-						>
-							{label}
-						</button>
-					))}
-					<button
-						type="button"
-						onClick={discardLetterDraft}
-						className="h-8 rounded-lg px-2.5 text-[13px] hover:bg-[oklch(1_0_0/0.12)]"
-					>
-						<Trans>Discard</Trans>
-					</button>
+					<div className="flex flex-wrap items-center gap-2">
+						<Button size="sm" onPress={() => onKeep(draft.text)}>
+							<Trans>Keep</Trans>
+						</Button>
+						{(
+							[
+								["shorter", t`Shorter`],
+								["personal", t`More personal`],
+							] as const
+						).map(([variant, label]) => (
+							<Button key={variant} size="sm" variant="secondary" onPress={() => run(variant, draft.text)}>
+								{label}
+							</Button>
+						))}
+						<Button size="sm" variant="ghost" onPress={() => discardLetterDraft()}>
+							<Trans>Discard</Trans>
+						</Button>
+					</div>
 				</div>
 			)}
 		</div>
@@ -633,23 +644,24 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 function LengthSection({ content }: { content: string }) {
 	const words = countWords(content);
 	const length = letterLength(words);
-	const color = length === "empty" ? "text-ink-3" : length === "comfortable" ? "text-accent-text" : "text-warn-text";
-	const fill = length === "empty" ? "bg-line-2" : length === "comfortable" ? "bg-accent" : "bg-warn";
+	const color = length === "empty" ? "default" : length === "comfortable" ? "accent" : "warning";
+	const fill = length === "empty" ? "bg-border" : length === "comfortable" ? "bg-accent" : "bg-warning";
 	const percent = (value: number) => `${(value / LETTER_LENGTH.scale) * 100}%`;
 
 	return (
-		<Section
+		<LetterWidget
 			id="letter-length"
+			icon="hourglass"
 			title={<Trans>Length</Trans>}
 			aside={
-				<span className={cn("font-mono text-xs font-medium", color)}>
+				<Chip size="sm" variant="soft" color={color} className="shrink-0 tabular-nums">
 					<Plural value={words} one="# word" other="# words" />
-				</span>
+				</Chip>
 			}
 		>
-			<div aria-hidden="true" className="relative h-1.5 overflow-hidden rounded-sm bg-sunken">
+			<div aria-hidden="true" className="relative h-1.5 overflow-hidden rounded-full bg-default">
 				<span
-					className="absolute inset-y-0 bg-line-2"
+					className="absolute inset-y-0 bg-border"
 					style={{
 						insetInlineStart: percent(LETTER_LENGTH.min),
 						width: percent(LETTER_LENGTH.max - LETTER_LENGTH.min),
@@ -657,7 +669,7 @@ function LengthSection({ content }: { content: string }) {
 				/>
 				<span
 					className={cn(
-						"absolute inset-y-0 start-0 w-full translate-x-(--fill) rounded-sm transition-[translate] duration-quick ease-enter rtl:-translate-x-(--fill)",
+						"absolute inset-y-0 start-0 w-full translate-x-(--fill) rounded-full transition-[translate] duration-quick ease-enter rtl:-translate-x-(--fill)",
 						fill,
 					)}
 					style={
@@ -667,7 +679,7 @@ function LengthSection({ content }: { content: string }) {
 					}
 				/>
 			</div>
-			<p className="text-xs text-ink-3">
+			<p className="text-xs text-muted">
 				{length === "empty" ? (
 					<Trans>Most recruiters read 180–320 words. The shaded band shows the range.</Trans>
 				) : length === "short" ? (
@@ -678,7 +690,7 @@ function LengthSection({ content }: { content: string }) {
 					<Trans>Getting long. Try “Shorter”, or cut the least specific paragraph.</Trans>
 				)}
 			</p>
-		</Section>
+		</LetterWidget>
 	);
 }
 
@@ -691,21 +703,17 @@ function DesignNote({ letter }: { letter: CoverLetter }) {
 	const summary = [templates[metadata.template].name, pairing && t`${pairing} type`, accent].filter(Boolean).join(", ");
 
 	return (
-		<Section id="letter-design" title={<Trans>Design</Trans>}>
-			<p className="text-sm text-ink-2">
+		<LetterWidget id="letter-design" icon="palette" title={<Trans>Design</Trans>}>
+			<p className="text-sm text-muted">
 				{letter.designLinked ? (
 					<Trans>Matches the resume ({summary}).</Trans>
 				) : (
 					<Trans>Its own design ({summary}).</Trans>
 				)}{" "}
-				<button
-					type="button"
-					onClick={() => setMode("design")}
-					className="font-medium text-accent-text underline underline-offset-2"
-				>
+				<Link className="text-sm" onPress={() => setMode("design")}>
 					<Trans>Change it in Design.</Trans>
-				</button>
+				</Link>
 			</p>
-		</Section>
+		</LetterWidget>
 	);
 }

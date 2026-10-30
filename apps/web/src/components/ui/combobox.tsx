@@ -20,6 +20,8 @@ type SingleComboboxProps<TValue extends string | number = string> = {
 	defaultValue?: TValue | null | undefined;
 	onValueChange?: (value: TValue | null) => void;
 	multiple?: false;
+	/** `secondary` on an elevated surface (a card, widget, sheet or modal), like HeroUI fields. */
+	variant?: "primary" | "secondary" | undefined;
 	disabled?: boolean;
 	showClear?: boolean;
 	placeholder?: string;
@@ -37,6 +39,8 @@ type MultiComboboxProps<TValue extends string | number = string> = {
 	defaultValue?: TValue[] | null | undefined;
 	onValueChange?: (value: TValue[] | null) => void;
 	multiple: true;
+	/** `secondary` on an elevated surface (a card, widget, sheet or modal), like HeroUI fields. */
+	variant?: "primary" | "secondary" | undefined;
 	disabled?: boolean;
 	showClear?: boolean;
 	placeholder?: string;
@@ -61,6 +65,7 @@ function Combobox<TValue extends string | number = string>(props: ComboboxProps<
 		className,
 		id,
 		name,
+		variant,
 	} = props;
 
 	const { contains } = useFilter({ sensitivity: "base" });
@@ -107,6 +112,7 @@ function Combobox<TValue extends string | number = string>(props: ComboboxProps<
 	return (
 		<Autocomplete
 			fullWidth
+			{...(variant ? { variant } : {})}
 			{...(id ? { id } : {})}
 			{...(name ? { name } : {})}
 			isDisabled={disabled}

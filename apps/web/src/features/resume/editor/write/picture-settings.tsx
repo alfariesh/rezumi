@@ -1,6 +1,16 @@
 import type { Area } from "react-easy-crop";
 import type z from "zod";
-import { Button, ButtonGroup, Input, InputGroup, Modal, Slider } from "@heroui/react";
+import {
+	Button,
+	ButtonGroup,
+	Input,
+	InputGroup,
+	Label,
+	Modal,
+	Slider,
+	ToggleButton,
+	ToggleButtonGroup,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -9,6 +19,7 @@ import Cropper from "react-easy-crop";
 import { pictureSchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import "react-easy-crop/react-easy-crop.css";
 import { ColorPicker } from "@/components/input/color-picker";
@@ -57,14 +68,14 @@ function PicturePreviewControls({
 				type="button"
 				onClick={picture.url ? onDeletePicture : onSelectPicture}
 				aria-label={picture.url ? t`Remove photo` : t`Upload photo`}
-				className="group/picture relative size-18 cursor-pointer overflow-hidden rounded-md bg-sunken transition-colors hover:bg-sunken/50"
+				className="group/picture relative size-18 cursor-(--cursor-interactive) overflow-hidden rounded-xl bg-default text-muted transition-colors outline-none hover:bg-default-hover focus-visible:ring-2 focus-visible:ring-focus"
 			>
 				{normalizedPictureUrl && (
 					<img
 						alt=""
 						src={normalizedPictureUrl}
 						style={{ objectFit: picture.fit }}
-						className="relative z-10 size-full rounded-md transition-opacity group-hover/picture:opacity-20"
+						className="relative z-10 size-full rounded-xl transition-opacity group-hover/picture:opacity-20"
 					/>
 				)}
 
@@ -84,6 +95,7 @@ function PicturePreviewControls({
 								render={
 									<Input
 										fullWidth
+										variant="secondary"
 										name={field.name}
 										value={field.state.value}
 										onBlur={field.handleBlur}
@@ -95,17 +107,15 @@ function PicturePreviewControls({
 								}
 							/>
 
-							<Button
-								isIconOnly
-								variant="ghost"
-								aria-label={picture.hidden ? t`Show photo` : t`Hide photo`}
+							<IconButton
+								icon={picture.hidden ? "eye-slash" : "eye"}
+								iconSize={16}
+								label={picture.hidden ? t`Show photo` : t`Hide photo`}
 								onPress={() => {
 									form.setFieldValue("hidden", !picture.hidden);
 									onAutoSave();
 								}}
-							>
-								{picture.hidden ? <Icon name="eye-slash" size={16} /> : <Icon name="eye" size={16} />}
-							</Button>
+							/>
 						</div>
 					</FormItem>
 				)}
@@ -120,39 +130,35 @@ type PictureFieldProps = {
 };
 
 function PictureFitField({ form, onAutoSave }: PictureFieldProps) {
+	const labelId = useId();
 	return (
 		<form.Field name="fit">
 			{(field) => (
-				<div className="space-y-1.5">
-					<div className="text-sm font-medium">
+				<div className="grid gap-1.5">
+					<Label elementType="span" id={labelId}>
 						<Trans>Fit</Trans>
-					</div>
-					<ButtonGroup role="group" aria-label={t`Fit`} className="w-full">
-						<Button
-							type="button"
-							variant={field.state.value === "cover" ? "primary" : "secondary"}
-							aria-pressed={field.state.value === "cover"}
-							className="flex-1"
-							onPress={() => {
-								field.handleChange("cover");
-								onAutoSave();
-							}}
-						>
+					</Label>
+					<ToggleButtonGroup
+						aria-labelledby={labelId}
+						selectionMode="single"
+						disallowEmptySelection
+						fullWidth
+						selectedKeys={new Set([field.state.value])}
+						onSelectionChange={(keys) => {
+							const [fit] = keys;
+							if (fit !== "cover" && fit !== "contain") return;
+							field.handleChange(fit);
+							onAutoSave();
+						}}
+					>
+						<ToggleButton id="cover">
 							<Trans>Cover</Trans>
-						</Button>
-						<Button
-							type="button"
-							variant={field.state.value === "contain" ? "primary" : "secondary"}
-							aria-pressed={field.state.value === "contain"}
-							className="flex-1"
-							onPress={() => {
-								field.handleChange("contain");
-								onAutoSave();
-							}}
-						>
+						</ToggleButton>
+						<ToggleButton id="contain">
+							<ToggleButtonGroup.Separator />
 							<Trans>Contain</Trans>
-						</Button>
-					</ButtonGroup>
+						</ToggleButton>
+					</ToggleButtonGroup>
 				</div>
 			)}
 		</form.Field>
@@ -168,7 +174,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						<FormLabel>
 							<Trans>Size</Trans>
 						</FormLabel>
-						<InputGroup fullWidth>
+						<InputGroup fullWidth variant="secondary">
 							<FormControl
 								render={
 									<NumberInput
@@ -199,7 +205,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 						<FormLabel>
 							<Trans>Rotation</Trans>
 						</FormLabel>
-						<InputGroup fullWidth>
+						<InputGroup fullWidth variant="secondary">
 							<FormControl
 								render={
 									<NumberInput
@@ -219,7 +225,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							/>
 							<InputGroup.Suffix>°</InputGroup.Suffix>
 						</InputGroup>
-						<p className="text-xs text-ink-3">
+						<p className="text-xs text-muted">
 							<Trans>Rotation isn't supported by PDF rendering.</Trans>
 						</p>
 					</FormItem>
@@ -233,7 +239,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Aspect ratio</Trans>
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<InputGroup fullWidth>
+							<InputGroup fullWidth variant="secondary">
 								<FormControl
 									render={
 										<NumberInput
@@ -308,7 +314,7 @@ function PictureGeometryFields({ form, onAutoSave }: PictureFieldProps) {
 							<Trans>Border radius</Trans>
 						</FormLabel>
 						<div className="flex items-center gap-x-2">
-							<InputGroup fullWidth>
+							<InputGroup fullWidth variant="secondary">
 								<FormControl
 									render={
 										<NumberInput
@@ -541,7 +547,7 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 					</Modal.Header>
 					<Modal.Body className="space-y-4">
 						{shownCrop && (
-							<div className="relative h-64 w-full overflow-hidden rounded-md bg-sunken ring-1 ring-line ring-inset">
+							<div className="relative h-64 w-full overflow-hidden rounded-xl bg-default">
 								<Cropper
 									image={shownCrop.imageSrc}
 									crop={crop}
@@ -561,10 +567,10 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 								<FormLabel className="mb-0">
 									<Trans>Zoom</Trans>
 								</FormLabel>
-								<span className="text-xs text-ink-3 tabular-nums">{zoom.toFixed(1)}×</span>
+								<span className="text-xs text-muted tabular-nums">{zoom.toFixed(1)}×</span>
 							</div>
 							<div className="flex items-center gap-x-3">
-								<Icon name="magnifying-glass-minus" size={16} className="shrink-0 text-ink-3" />
+								<Icon name="magnifying-glass-minus" size={16} className="shrink-0 text-muted" />
 								<Slider
 									minValue={1}
 									maxValue={3}
@@ -581,7 +587,7 @@ function PictureCropDialog({ cropState, aspect, onClose, onUpload }: PictureCrop
 										<Slider.Thumb />
 									</Slider.Track>
 								</Slider>
-								<Icon name="magnifying-glass-plus" size={16} className="shrink-0 text-ink-3" />
+								<Icon name="magnifying-glass-plus" size={16} className="shrink-0 text-muted" />
 							</div>
 						</div>
 					</Modal.Body>
@@ -654,7 +660,7 @@ function ColorWidthFields(props: ColorWidthFieldsProps) {
 				{(field) => (
 					<FormItem className="flex-1" hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 						<FormLabel>{widthLabel}</FormLabel>
-						<InputGroup fullWidth>
+						<InputGroup fullWidth variant="secondary">
 							<FormControl
 								render={
 									<NumberInput

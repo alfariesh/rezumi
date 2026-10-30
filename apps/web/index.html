@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="theme-color" content="#F8F7F3" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#100F0C" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#F5F5F5" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#060607" media="(prefers-color-scheme: dark)" />
 		<!-- Apply the saved or system theme before first paint, so nothing flashes. Mirrors libs/theme.ts. -->
 		<script>
 			(() => {
@@ -49,15 +49,10 @@
 		<div id="initial-loader">
 			<img class="initial-loader__logo-light" src="/icon/light.svg" width="48" height="48" alt="Rezumi" />
 			<img class="initial-loader__logo-dark" src="/icon/dark.svg" width="48" height="48" alt="" />
-			<div class="initial-loader__spinner"></div>
+			<div class="initial-loader__quote"></div>
 			<span class="initial-loader__sr-only">Loading</span>
 		</div>
 		<style>
-			@keyframes app-spin {
-				to {
-					transform: rotate(360deg);
-				}
-			}
 			#initial-loader {
 				position: fixed;
 				inset: 0;
@@ -66,10 +61,11 @@
 				align-items: center;
 				justify-content: center;
 				gap: 24px;
-				background: #f8f7f3;
+				/* The app's own --background in each theme, so the handoff to React never changes the page color. */
+				background: #f5f5f5;
 			}
 			html.dark #initial-loader {
-				background: #100f0c;
+				background: #060607;
 			}
 			.initial-loader__logo-dark,
 			html.dark .initial-loader__logo-light {
@@ -81,17 +77,9 @@
 			#app:not(:empty) ~ #initial-loader {
 				display: none;
 			}
-			.initial-loader__spinner {
-				width: 24px;
-				height: 24px;
-				border: 2px solid rgba(28, 27, 21, 0.2);
-				border-top-color: #1c1b15;
-				border-radius: 9999px;
-				animation: app-spin 0.7s linear infinite;
-			}
-			html.dark .initial-loader__spinner {
-				border-color: rgba(239, 238, 235, 0.2);
-				border-top-color: #efeeeb;
+			/* LoadingScreen's rotating quote takes this space; reserving it keeps the logo from moving at the handoff. */
+			.initial-loader__quote {
+				height: 6rem;
 			}
 			.initial-loader__sr-only {
 				position: absolute;

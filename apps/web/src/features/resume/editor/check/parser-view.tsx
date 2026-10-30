@@ -1,12 +1,13 @@
 import type { CheckIssue } from "./issues";
 import type { AtsRuleCode } from "@rezumi/resume/ats";
 import type { ExtractedDocument, ResumeSemantics } from "@rezumi/resume/ats-pdf";
-import { Spinner } from "@heroui/react";
+import { Chip, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
+import { getIssueTone } from "./issues";
 import { useCheck } from "./use-check";
 import { extractPdf } from "@/features/ats-checker/extract-client";
 import { blobToPdfFile } from "@/features/ats-checker/run-ats-check";
@@ -49,9 +50,9 @@ const issueOnLine = (issues: readonly CheckIssue[], line: string) =>
 
 function IssueChip({ issue }: { issue: CheckIssue }) {
 	return (
-		<span className="h-[18px] shrink-0 rounded-sm bg-warn-soft px-1.5 font-sans text-[10px] leading-[18px] font-semibold whitespace-nowrap text-warn-text">
+		<Chip size="sm" variant="soft" color={getIssueTone(issue)} className="font-sans whitespace-nowrap tabular-nums">
 			<Trans>issue {issue.number}</Trans>
-		</span>
+		</Chip>
 	);
 }
 
@@ -77,13 +78,13 @@ export function ParserView() {
 	});
 
 	return (
-		<div className="mx-auto grid min-h-[792px] w-[612px] max-w-full content-start gap-[18px] rounded-lg border border-line bg-surface px-8 py-7 font-mono text-[12px] leading-[19px] text-ink max-sm:px-4">
+		<div className="mx-auto grid min-h-[792px] w-[612px] max-w-full content-start gap-[18px] rounded-2xl bg-surface px-8 py-7 font-mono text-[12px] leading-[19px] shadow-surface max-sm:px-4">
 			{isError ? (
-				<p className="font-sans text-sm text-danger-text">
+				<p className="font-sans text-sm text-danger">
 					<Trans>The page's PDF couldn't be read. Edit anything to render it again.</Trans>
 				</p>
 			) : !data ? (
-				<p className="flex items-center gap-2 font-sans text-sm text-ink-2">
+				<p className="flex items-center gap-2 font-sans text-sm text-muted">
 					<Spinner size="sm" color="current" aria-hidden />
 					<Trans>Reading the PDF…</Trans>
 				</p>
@@ -101,7 +102,7 @@ function ParsedText({ parsed, issues }: { parsed: Parsed; issues: readonly Check
 
 	if (doc.charCount === 0) {
 		return (
-			<p className="font-sans text-sm text-warn-text">
+			<p className="font-sans text-sm text-warning-soft-foreground">
 				<Trans>This PDF has no text layer, so a parser reads nothing from it.</Trans>
 			</p>
 		);
@@ -141,7 +142,7 @@ function ParsedText({ parsed, issues }: { parsed: Parsed; issues: readonly Check
 
 	return (
 		<>
-			<div className="flex flex-wrap justify-between gap-2 text-xs font-medium text-ink-3">
+			<div className="flex flex-wrap justify-between gap-2 text-xs font-medium text-muted">
 				<span>
 					<Trans>Extracted from the PDF on the page · reading order</Trans>
 				</span>
@@ -153,8 +154,13 @@ function ParsedText({ parsed, issues }: { parsed: Parsed; issues: readonly Check
 					const issue = issueFor(issues, FIELD_CODES[field.id] ?? []);
 					return (
 						<div key={field.id} className="contents">
-							<dt className="text-ink-3">{field.label}</dt>
-							<dd className={cn("flex min-w-0 items-center gap-2", (issue || !field.value) && "text-warn-text")}>
+							<dt className="text-muted">{field.label}</dt>
+							<dd
+								className={cn(
+									"flex min-w-0 items-center gap-2",
+									(issue || !field.value) && "text-warning-soft-foreground",
+								)}
+							>
 								<span className="min-w-0 break-words">{field.value || notFound}</span>
 								{issue && <IssueChip issue={issue} />}
 							</dd>
@@ -163,18 +169,18 @@ function ParsedText({ parsed, issues }: { parsed: Parsed; issues: readonly Check
 				})}
 			</dl>
 
-			<hr className="border-line" />
+			<Separator />
 
 			{groups.map((group, index) =>
 				group.heading === null && group.lines.length === 0 ? null : (
 					<section key={`${index}:${group.heading ?? ""}`} className="grid gap-1">
-						{group.heading !== null && <h3 className="text-accent-text">▸ {group.heading.toUpperCase()}</h3>}
+						{group.heading !== null && <h3 className="text-accent">▸ {group.heading.toUpperCase()}</h3>}
 						{group.lines.map((line, lineIndex) => {
 							const issue = issueOnLine(issues, line);
 							return (
 								<p
 									key={`${lineIndex}:${line}`}
-									className={cn("flex items-start gap-2 ps-3.5", issue ? "text-warn-text" : "text-ink-2")}
+									className={cn("flex items-start gap-2 ps-3.5", issue ? "text-warning-soft-foreground" : "text-muted")}
 								>
 									<span className="min-w-0 break-words">{line}</span>
 									{issue && <IssueChip issue={issue} />}

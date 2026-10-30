@@ -1,9 +1,9 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button, Input, Spinner } from "@heroui/react";
+import { Button, Input, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { CvDomainCard } from "./cv-domain-card";
@@ -18,7 +18,6 @@ type CustomDomainFieldProps = {
 
 /** Connects the account's own domain: the domain, the DNS records to add in a dialog, a check, and the result. */
 export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
-	const id = useId();
 	const queryClient = useQueryClient();
 	const { data: domain, isPending: loading } = useQuery(orpc.customDomain.get.queryOptions());
 	const { data: suggestion } = useQuery({
@@ -61,37 +60,30 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 		return (
 			<>
 				<form
-					className="grid gap-1.5"
+					className="flex items-end gap-2"
 					onSubmit={(event) => {
 						event.preventDefault();
 						set.mutate({ hostname }, { onError });
 					}}
 				>
-					<label htmlFor={id} className="text-xs font-medium text-ink-2">
-						<Trans>Your domain</Trans>
-					</label>
-					<div className="flex gap-1.5">
+					<TextField variant="secondary" value={hostname} onChange={setHostname} className="min-w-0 flex-1 gap-1.5">
+						<Label>
+							<Trans>Your domain</Trans>
+						</Label>
 						<Input
+							variant="secondary"
 							fullWidth
-							id={id}
-							value={hostname}
 							placeholder="resume.example.com"
 							spellCheck={false}
 							autoCapitalize="none"
-							onChange={(event) => setHostname(event.target.value)}
+							dir="ltr"
 							className="font-mono text-[13px]"
 						/>
-						<Button
-							type="submit"
-							variant="secondary"
-							className="h-[38px]"
-							isPending={set.isPending}
-							isDisabled={!hostname.trim()}
-						>
-							{set.isPending && <Spinner size="sm" color="current" aria-hidden />}
-							<Trans>Connect</Trans>
-						</Button>
-					</div>
+					</TextField>
+					<Button type="submit" variant="secondary" isPending={set.isPending} isDisabled={!hostname.trim()}>
+						{set.isPending && <Spinner size="sm" color="current" aria-hidden />}
+						<Trans>Connect</Trans>
+					</Button>
 				</form>
 				{suggest && suggestion && (
 					<CvDomainCard
@@ -104,18 +96,18 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 		);
 
 	return (
-		<div className="grid gap-2.5 rounded-xl border border-line p-3.5">
+		<div className="fields-on-card grid gap-3 rounded-xl bg-surface-secondary p-4">
 			<div className="flex items-center gap-2">
 				<Icon
 					name={domain.verified ? "check-circle" : "warning-circle"}
 					size={18}
-					className={domain.verified ? "text-accent-text" : "text-warn-text"}
+					className={domain.verified ? "text-success" : "text-warning"}
 				/>
 				<span className="min-w-0 flex-1 truncate font-mono text-[13px] font-medium" dir="ltr">
 					{domain.hostname}
 				</span>
 				<Button
-					variant="ghost"
+					variant="danger-soft"
 					size="sm"
 					isPending={remove.isPending}
 					onPress={() => remove.mutate(undefined, { onError })}
@@ -125,12 +117,12 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 				</Button>
 			</div>
 			{domain.verified ? (
-				<p className="text-xs leading-4 text-ink-3">
+				<p className="text-xs text-muted">
 					<Trans>Connected. Your domain opens your primary resume.</Trans>
 				</p>
 			) : (
 				<>
-					<p className="text-xs leading-4 text-ink-2">
+					<p className="text-xs text-muted">
 						<Trans>Not connected yet. Add its DNS records where you manage the domain, then check.</Trans>
 					</p>
 					<div className="flex flex-wrap gap-2">

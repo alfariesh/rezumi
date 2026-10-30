@@ -1,11 +1,14 @@
-import { Button, buttonVariants, Popover, Separator } from "@heroui/react";
+import type { IconName } from "@rezumi/ui/components/icon";
+import type { ReactNode } from "react";
+import { Widget } from "@heroui-pro/react";
+import { Button, buttonVariants, InputGroup, Label, Popover, Switch, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { formatTimeSince, publicResumeUrl, summarizeViews } from "@rezumi/resume/sharing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
@@ -52,62 +55,103 @@ export function SharePanel() {
 		if (done) toast.add({ description: checked ? t`Your web page is live` : t`Link turned off. The address is kept` });
 	};
 
+	const descriptionId = useId();
+
 	return (
-		<div className="grid gap-[18px] p-4">
-			{isPublic ? (
-				<SwitchRow
-					isSelected
-					isDisabled={isPending || resume.isLocked}
-					onChange={(checked) => void setPublic(checked)}
-					label={<span className="font-semibold">{t`Public link`}</span>}
-					description={t`On. Anyone with the link can see your web page.`}
-					className="items-start rounded-xl border border-line p-3.5 transition-colors duration-standard data-selected:border-accent data-selected:bg-accent-soft"
-				/>
-			) : (
-				<div className="grid gap-3 rounded-xl border border-line p-3.5">
-					<div className="grid gap-1">
-						<h3 className="text-sm font-semibold">
-							<Trans>Your resume as a web page</Trans>
-						</h3>
-						<p className="text-[13px] leading-[19px] text-ink-2">
-							<Trans>Publish it to share a link that opens on any screen. Only you can see it until then.</Trans>
-						</p>
+		<div className="grid gap-3 p-3">
+			<ShareWidget
+				icon="globe-hemisphere-west"
+				title={<Trans>Public Link</Trans>}
+				trailing={
+					isPublic && (
+						<Switch
+							isSelected
+							isDisabled={isPending || resume.isLocked}
+							onChange={(checked) => void setPublic(checked)}
+							aria-label={t`Public link`}
+							aria-describedby={descriptionId}
+						>
+							<Switch.Content>
+								<Switch.Control>
+									<Switch.Thumb />
+								</Switch.Control>
+							</Switch.Content>
+						</Switch>
+					)
+				}
+			>
+				{isPublic ? (
+					<p id={descriptionId} className="text-xs text-muted">
+						{t`On. Anyone with the link can see your web page.`}
+					</p>
+				) : (
+					<div className="grid gap-3">
+						<div className="grid gap-1">
+							<p className="text-sm font-medium">
+								<Trans>Publish Your Resume</Trans>
+							</p>
+							<p className="text-xs text-muted">
+								<Trans>Publish it to share a link that opens on any screen. Only you can see it until then.</Trans>
+							</p>
+						</div>
+						<Button className="w-fit" isDisabled={isPending || resume.isLocked} onPress={() => void setPublic(true)}>
+							<Icon name="globe-hemisphere-west" size={18} />
+							<Trans>Publish</Trans>
+						</Button>
 					</div>
-					<Button className="w-fit" isDisabled={isPending || resume.isLocked} onPress={() => void setPublic(true)}>
-						<Icon name="globe-hemisphere-west" size={18} />
-						<Trans>Publish</Trans>
-					</Button>
-				</div>
-			)}
+				)}
 
-			<AddressField url={url} username={username} update={update} />
+				<AddressField url={url} username={username} update={update} />
 
-			{isPublic && (
-				<div className={cn(ENTER_CLASS, "flex flex-wrap gap-2")}>
-					<a
-						href={url}
-						target="_blank"
-						rel="noopener"
-						className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-1.5" })}
-					>
-						<Icon name="arrow-square-out" size={18} />
-						<Trans>Open web page</Trans>
-					</a>
-					<QrCodeButton url={url} />
-				</div>
-			)}
+				{isPublic && (
+					<div className={cn(ENTER_CLASS, "grid grid-cols-2 gap-2")}>
+						<a
+							href={url}
+							target="_blank"
+							rel="noopener"
+							className={buttonVariants({ variant: "secondary", className: "w-full" })}
+						>
+							<Icon name="arrow-square-out" size={18} />
+							<Trans>Open web page</Trans>
+						</a>
+						<QrCodeButton url={url} />
+					</div>
+				)}
+			</ShareWidget>
 
 			<AddressesSection origin={origin} username={username} setting={setting} />
-
-			<Separator />
 			<WebPageSettings />
-
-			<Separator />
 			<PrivacySettings setting={setting} />
-
-			<Separator />
 			<ViewsAndDownloads isPublic={isPublic} />
 		</div>
+	);
+}
+
+type ShareWidgetProps = {
+	icon: IconName;
+	title: ReactNode;
+	/** Sits at the end of the header: a switch or a short note. */
+	trailing?: ReactNode;
+	children: ReactNode;
+};
+
+/** One Share group: a labelled region with an icon and title on the gray shell, its content on the white card. */
+function ShareWidget({ icon, title, trailing, children }: ShareWidgetProps) {
+	const titleId = useId();
+
+	return (
+		<Widget role="region" aria-labelledby={titleId}>
+			<Widget.Header>
+				<span className="flex min-w-0 items-center gap-2">
+					<Icon name={icon} size={16} className="shrink-0 text-muted" />
+					<Widget.Title id={titleId} className="truncate">
+						{title}
+					</Widget.Title>
+				</span>
+				{trailing}
+			</Widget.Header>
+			<Widget.Content className="@container grid gap-4">{children}</Widget.Content>
+		</Widget>
 	);
 }
 
@@ -164,22 +208,21 @@ function AddressesSection({ origin, username, setting }: AddressesSectionProps) 
 	const shortLink = publicResumeUrl(origin, { username, slug: resume.slug, isPrimary: true });
 
 	return (
-		<>
-			<Separator />
-			<section aria-labelledby="share-addresses-title" className="grid gap-3">
-				<h3 id="share-addresses-title" className="text-sm font-semibold">
-					<Trans>Short link and domain</Trans>
-				</h3>
-				<PrimaryRow setting={setting} />
-				<div className="flex items-center gap-1.5">
-					<span className="min-w-0 flex-1 truncate font-mono text-[13px] font-medium text-ink-2" dir="ltr">
-						{shortLink.replace(/^https?:\/\//, "")}
-					</span>
-					<CopyLinkButton url={shortLink} className="h-8 gap-1.5" />
-				</div>
-				{flags?.customDomains && <CustomDomainField suggest={flags.olacvSuggestion ?? false} />}
-			</section>
-		</>
+		<ShareWidget icon="link-simple-horizontal" title={<Trans>Short Link and Domain</Trans>}>
+			<PrimaryRow setting={setting} />
+			<TextField variant="secondary" isReadOnly value={shortLink.replace(/^https?:\/\//, "")}>
+				<Label>
+					<Trans>Short link</Trans>
+				</Label>
+				<InputGroup variant="secondary" fullWidth>
+					<InputGroup.Input dir="ltr" className="font-mono text-[13px]" />
+					<InputGroup.Suffix className="pe-1">
+						<CopyLinkButton url={shortLink} />
+					</InputGroup.Suffix>
+				</InputGroup>
+			</TextField>
+			{flags?.customDomains && <CustomDomainField suggest={flags.olacvSuggestion ?? false} />}
+		</ShareWidget>
 	);
 }
 
@@ -232,17 +275,12 @@ function WebPageSettings() {
 	const template = data?.metadata.template ?? "onyx";
 
 	return (
-		<section aria-labelledby="share-web-page-title" className="grid gap-3">
-			<div className="grid gap-1">
-				<h3 id="share-web-page-title" className="text-sm font-semibold">
-					<Trans>Web page</Trans>
-				</h3>
-				<p className="text-xs leading-4 text-ink-3">
-					<Trans>
-						Uses your {templates[template].name} template and Design, and fits any screen. Change them in Design.
-					</Trans>
-				</p>
-			</div>
+		<ShareWidget icon="desktop" title={<Trans>Web Page</Trans>}>
+			<p className="text-xs text-muted">
+				<Trans>
+					Uses your {templates[template].name} template and Design, and fits any screen. Change them in Design.
+				</Trans>
+			</p>
 			<SwitchRow
 				isSelected={data?.metadata.web?.showCredit !== false}
 				isDisabled={locked}
@@ -254,7 +292,7 @@ function WebPageSettings() {
 				label={t`Show “Made with Rezumi”`}
 				className="py-0"
 			/>
-		</section>
+		</ShareWidget>
 	);
 }
 
@@ -266,10 +304,7 @@ function PrivacySettings({ setting: { update, isPending } }: ShareSettingProps) 
 	const searchBlocked = !isPublic || (resume.hasPassword ?? false);
 
 	return (
-		<section aria-labelledby="share-privacy-title" className="grid gap-3">
-			<h3 id="share-privacy-title" className="text-sm font-semibold">
-				<Trans>Privacy</Trans>
-			</h3>
+		<ShareWidget icon="lock" title={<Trans>Privacy</Trans>}>
 			<PasswordRow />
 			<SwitchRow
 				isSelected={resume.hideContactDetails ?? false}
@@ -302,7 +337,7 @@ function PrivacySettings({ setting: { update, isPending } }: ShareSettingProps) 
 				label={t`Visitors can download the PDF`}
 				className="py-0"
 			/>
-		</section>
+		</ShareWidget>
 	);
 }
 
@@ -365,12 +400,12 @@ function PasswordRow() {
 function QrCodeButton({ url }: { url: string }) {
 	return (
 		<Popover>
-			<Button variant="ghost" size="sm" className="gap-1.5">
+			<Button variant="secondary" className="w-full">
 				<Icon name="qr-code" size={18} />
 				<Trans>QR code</Trans>
 			</Button>
 			<Popover.Content placement="bottom start" className="w-auto">
-				<Popover.Dialog className="p-4">
+				<Popover.Dialog className="p-3">
 					<QRCodeSVG value={url} size={176} marginSize={2} title={t`QR code for ${url}`} />
 				</Popover.Dialog>
 			</Popover.Content>
@@ -392,22 +427,21 @@ function ViewsAndDownloads({ isPublic }: { isPublic: boolean }) {
 	const firstDay = daily?.[0]?.date;
 
 	return (
-		<section aria-labelledby="share-stats-title" className="grid gap-3">
-			<div className="flex items-baseline justify-between">
-				<h3 id="share-stats-title" className="text-sm font-semibold">
-					<Trans>Visitors</Trans>
-				</h3>
-				<span className="text-xs text-ink-3">
+		<ShareWidget
+			icon="chart-line-up"
+			title={<Trans>Visitors</Trans>}
+			trailing={
+				<Widget.Description className="truncate">
 					<Trans>Only you see these</Trans>
-				</span>
-			</div>
-
+				</Widget.Description>
+			}
+		>
 			{isPublic ? (
 				<>
-					<dl className="grid grid-cols-2 gap-2.5">
+					<dl className="grid grid-cols-2 gap-2 @xs:grid-cols-3">
 						<Stat value={summary.views} label={t`views · 30 days`} />
 						<Stat value={summary.downloads} label={t`downloads`} />
-						<Stat value={lastView} label={t`since last view`} />
+						<Stat value={lastView} label={t`since last view`} className="col-span-2 @xs:col-span-1" />
 					</dl>
 					<div
 						role="img"
@@ -417,12 +451,12 @@ function ViewsAndDownloads({ isPublic }: { isPublic: boolean }) {
 						{summary.bars.map((bar) => (
 							<span
 								key={bar.date}
-								className="flex-1 rounded-t-sm bg-line-2"
+								className="flex-1 rounded-t-sm bg-border"
 								style={{ height: `${Math.max(6, Math.round(bar.height * 100))}%` }}
 							/>
 						))}
 					</div>
-					<div className="flex justify-between font-mono text-[11px] font-medium text-ink-3">
+					<div className="flex justify-between text-xs text-muted tabular-nums">
 						<span>
 							{firstDay
 								? new Date(`${firstDay}T00:00:00`).toLocaleDateString(i18n.locale, { month: "short", day: "numeric" })
@@ -434,24 +468,26 @@ function ViewsAndDownloads({ isPublic }: { isPublic: boolean }) {
 					</div>
 				</>
 			) : (
-				<p className="text-[13px] leading-[19px] text-ink-2">
+				<p className="text-sm text-muted">
 					<Trans>
 						Publish the web page to count views and downloads. Counts are anonymous, and search engines aren't counted.
 					</Trans>
 				</p>
 			)}
-			<p className="text-xs text-ink-3">
+			<p className="text-xs text-muted">
 				<Trans>Download totals can include repeat clicks.</Trans>
 			</p>
-		</section>
+		</ShareWidget>
 	);
 }
 
-function Stat({ value, label }: { value: number | string; label: string }) {
+type StatProps = { value: number | string; label: string; className?: string };
+
+function Stat({ value, label, className }: StatProps) {
 	return (
-		<div className="flex flex-col-reverse gap-0.5">
-			<dt className="text-xs text-ink-3">{label}</dt>
-			<dd className="font-display text-[26px] leading-[30px] font-medium">{value}</dd>
+		<div className={cn("flex flex-col-reverse gap-0.5 rounded-xl bg-surface-secondary p-3", className)}>
+			<dt className="text-xs text-muted">{label}</dt>
+			<dd className="text-2xl font-semibold tabular-nums">{value}</dd>
 		</div>
 	);
 }

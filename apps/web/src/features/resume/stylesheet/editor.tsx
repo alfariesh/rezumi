@@ -312,7 +312,7 @@ function StylesheetCodeEditor({
 								data-semantic-css-color-picker-trigger=""
 								title={t`Edit color ${shownColor.token.value}`}
 								aria-label={t`Edit color ${shownColor.token.value}`}
-								className="pointer-events-auto size-3 rounded-sm border border-ink/40"
+								className="pointer-events-auto size-3 rounded-sm border border-foreground/40"
 								style={{ backgroundColor: shownColor.token.value }}
 							/>
 						}

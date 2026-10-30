@@ -3,7 +3,7 @@ import type { IconName } from "@rezumi/ui/components/icon";
 import type { Editor } from "@tiptap/react";
 import type { ReactNode } from "react";
 import type { Key, Selection } from "react-aria-components";
-import { Dropdown, Label, Separator } from "@heroui/react";
+import { Button, Dropdown, Label, Separator, ToggleButton, ToggleButtonGroup, Toolbar, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
@@ -86,7 +86,7 @@ function useToolbarActions(): ToolbarAction[] {
 	];
 }
 
-// The first list button starts a new group in the toolbar.
+// The first list button starts the second toggle group in the toolbar.
 const LIST_GROUP_START = 4;
 
 const ALIGNMENTS = ["left", "center", "right", "justify"] as const;
@@ -279,56 +279,79 @@ export function RichTextEditor({
 		setImproving(lineAtCaret(editor));
 	};
 
-	const buttonSize = mobile ? "size-11" : "size-8";
+	const size = mobile ? "lg" : "sm";
+	const side = mobile ? "top" : "bottom";
+	const toggleGroup = (label: string, from: number, to: number) => {
+		const group = actions.slice(from, to);
+		const selected = new Set(group.filter((_, index) => state?.active[from + index]).map((action) => action.icon));
+		return (
+			<ToggleButtonGroup
+				aria-label={label}
+				selectionMode="multiple"
+				isDetached
+				size={size}
+				selectedKeys={selected}
+				onSelectionChange={(keys) => {
+					if (!editor) return;
+					for (const action of group) if (keys.has(action.icon) !== selected.has(action.icon)) void action.run(editor);
+				}}
+				className="gap-0.5"
+			>
+				{group.map((action) => (
+					<Tooltip key={action.icon}>
+						<ToggleButton
+							id={action.icon}
+							isIconOnly
+							variant="ghost"
+							aria-label={action.label}
+							// Keep the caret in the text while formatting.
+							preventFocusOnPress
+							className={toolbarToggleClassName}
+						>
+							<Icon name={action.icon} />
+						</ToggleButton>
+						<Tooltip.Content placement={side}>{action.label}</Tooltip.Content>
+					</Tooltip>
+				))}
+			</ToggleButtonGroup>
+		);
+	};
 	const toolbarButtons = (
 		<>
-			{actions.map((action, index) => (
-				<button
-					key={action.icon}
-					type="button"
-					aria-label={action.label}
-					aria-pressed={action.isActive ? (state?.active[index] ?? false) : undefined}
-					title={action.label}
-					// Keep the caret in the text while formatting.
-					onMouseDown={(event) => event.preventDefault()}
-					onClick={() => editor && void action.run(editor)}
-					className={cn(
-						toolbarButtonClassName,
-						buttonSize,
-						state?.active[index] && "bg-accent-soft text-accent-text",
-						index === LIST_GROUP_START && "ms-1.5",
-					)}
-				>
-					<Icon name={action.icon} />
-				</button>
-			))}
+			{toggleGroup(t`Inline formatting`, 0, LIST_GROUP_START)}
+			<Separator orientation="vertical" className="mx-0.5 h-5 self-center" />
+			{toggleGroup(t`Lists`, LIST_GROUP_START, actions.length)}
+			<Separator orientation="vertical" className="mx-0.5 h-5 self-center" />
 			{editor && (
 				<FormattingMenus
 					editor={editor}
 					formatting={state?.formatting ?? DEFAULT_FORMATTING}
-					buttonClassName={cn(toolbarButtonClassName, buttonSize)}
-					side={mobile ? "top" : "bottom"}
+					size={size}
+					side={side}
 					menus={menus}
 				/>
 			)}
-			<button
-				type="button"
-				aria-expanded={improving !== null}
-				disabled={ai.isUnavailable || (!state?.canImprove && improving === null)}
+			{/* The span carries the hint: a disabled button takes no pointer events, so it shows no title of its own. */}
+			<span
+				className="ms-auto shrink-0"
 				title={state?.canImprove ? undefined : t`Put the caret in a line to improve it`}
-				onMouseDown={(event) => event.preventDefault()}
-				onClick={() => (improving ? setImproving(null) : startImprove())}
-				className={cn(
-					"ms-auto flex shrink-0 items-center gap-1.5 rounded-md bg-accent-soft px-2.5 text-xs font-semibold text-accent-text transition-[filter] duration-quick hover:brightness-95 disabled:opacity-50",
-					mobile ? "h-11" : "h-8",
-				)}
 			>
-				<Icon name="sparkle" size={16} />
-				{/* Icon only where the toolbar is narrow, so the formatting buttons keep one row. */}
-				<span className="@max-[24rem]:sr-only">
-					<Trans>Improve</Trans>
-				</span>
-			</button>
+				<Button
+					size={size}
+					variant="secondary"
+					aria-expanded={improving !== null}
+					isDisabled={ai.isUnavailable || (!state?.canImprove && improving === null)}
+					preventFocusOnPress
+					onPress={() => (improving ? setImproving(null) : startImprove())}
+					className="[--button-bg-hover:var(--accent-soft-hover)] [--button-bg-pressed:var(--accent-soft-hover)] [--button-bg:var(--accent-soft)]"
+				>
+					<Icon name="sparkle" size={16} />
+					{/* Icon only where the toolbar is narrow, so the formatting buttons keep one row. */}
+					<span className="@max-[24rem]:sr-only">
+						<Trans>Improve</Trans>
+					</span>
+				</Button>
+			</span>
 		</>
 	);
 
@@ -341,10 +364,12 @@ export function RichTextEditor({
 				const inMenu = next instanceof Element && next.closest("[data-toolbar-menu]") !== null;
 				if (!event.currentTarget.contains(next) && !toolbar.current?.contains(next) && !inMenu) setFocused(false);
 			}}
+			// The frame of a secondary HeroUI field: its fill, radius and focus ring, around text, toolbar and footer.
 			className={cn(
-				"rounded-lg border border-line-2 bg-raised transition-[border-color,box-shadow] duration-quick",
-				editing && "border-accent shadow-[0_0_0_3px_var(--accent-soft)]",
-				disabled && "bg-sunken",
+				"rounded-field bg-background text-field-foreground transition-[background-color,box-shadow] duration-quick",
+				!editing && !disabled && "hover:bg-default",
+				editing && "ring-2 ring-focus",
+				disabled && "opacity-(--disabled-opacity)",
 				className,
 			)}
 		>
@@ -353,32 +378,32 @@ export function RichTextEditor({
 				!readOnlyTable &&
 				mobile &&
 				createPortal(
-					<div
+					<Toolbar
 						ref={toolbar}
-						role="toolbar"
 						aria-label={t`Formatting`}
 						style={{ bottom: keyboardInset }}
-						className="fixed inset-x-0 z-50 flex h-11 items-center gap-0.5 border-t border-line bg-raised px-1.5 shadow-e2"
+						className="fixed inset-x-0 z-50 flex h-12 w-full items-center gap-1 border-t border-separator bg-overlay px-1.5 shadow-overlay"
 					>
-						<div className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto">{toolbarButtons}</div>
-						<button
-							type="button"
-							onMouseDown={(event) => event.preventDefault()}
-							onClick={() => {
+						<div className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">{toolbarButtons}</div>
+						<Button
+							size="lg"
+							variant="ghost"
+							preventFocusOnPress
+							onPress={() => {
 								setImproving(null);
 								setFocused(false);
 								editor?.commands.blur();
 							}}
-							className="flex h-11 shrink-0 items-center rounded-md px-3 text-sm font-semibold text-accent-text"
+							className="shrink-0 font-semibold text-accent"
 						>
 							<Trans>Done</Trans>
-						</button>
-					</div>,
+						</Button>
+					</Toolbar>,
 					document.body,
 				)}
 
 			{readOnlyTable && (
-				<p role="status" className="border-b border-line px-3 py-2 text-xs text-ink-2">
+				<p role="status" className="border-b border-separator px-3 py-2 text-xs text-muted">
 					<Trans>
 						Original table formatting is preserved. This content is read-only because it cannot be edited safely.
 					</Trans>
@@ -390,14 +415,13 @@ export function RichTextEditor({
 
 			{/* Under the text, so focusing the field never moves the line you clicked. */}
 			{editing && !readOnlyTable && !mobile && (
-				<div
+				<Toolbar
 					ref={toolbar}
-					role="toolbar"
 					aria-label={t`Formatting`}
-					className="@container flex flex-wrap gap-0.5 border-t border-line px-1.5 py-1"
+					className="@container flex w-full flex-wrap items-center gap-1 border-t border-separator px-1.5 py-1"
 				>
 					{toolbarButtons}
-				</div>
+				</Toolbar>
 			)}
 
 			{editor && improving && (
@@ -411,9 +435,9 @@ export function RichTextEditor({
 			)}
 
 			{editing && (
-				<div className="flex items-center justify-between gap-3 border-t border-line px-3 py-1.5 text-xs text-ink-3">
+				<div className="flex items-center justify-between gap-3 border-t border-separator px-3 py-1.5 text-xs text-muted">
 					<span>{hint ?? <Trans>Markdown shortcuts on</Trans>}</span>
-					<span className="font-mono">
+					<span className="font-mono tabular-nums">
 						<Plural value={state?.characters ?? 0} one="# character" other="# characters" />
 					</span>
 				</div>
@@ -422,19 +446,22 @@ export function RichTextEditor({
 	);
 }
 
+// The toolbar sits on the field's own fill (`bg-background`), so hover and press take a step up (`default-hover`).
+const toolbarToggleClassName =
+	"[--toggle-button-bg-hover:var(--default-hover)] [--toggle-button-bg-pressed:var(--default-hover)]";
 const toolbarButtonClassName =
-	"flex shrink-0 items-center justify-center rounded-md text-ink-2 transition-colors duration-quick hover:bg-hover aria-expanded:bg-hover";
+	"[--button-bg-hover:var(--default-hover)] [--button-bg-pressed:var(--default-hover)] aria-expanded:bg-default-hover";
 
 type FormattingMenusProps = {
 	editor: Editor;
 	formatting: FormattingState;
-	buttonClassName: string;
+	size: "sm" | "lg";
 	side: "top" | "bottom";
 	menus: ReturnType<typeof useToolbarMenus>;
 };
 
 /** Alignment, then everything else the toolbar has no room for. */
-function FormattingMenus({ editor, formatting, buttonClassName, side, menus }: FormattingMenusProps) {
+function FormattingMenus({ editor, formatting, size, side, menus }: FormattingMenusProps) {
 	const chain = () => editor.chain().focus();
 	const alignLabels: Record<Alignment, string> = {
 		left: t`Align left`,
@@ -477,10 +504,13 @@ function FormattingMenus({ editor, formatting, buttonClassName, side, menus }: F
 				<IconButton
 					icon={ALIGNMENT_ICONS[formatting.align]}
 					label={t`Text alignment`}
-					size="sm"
+					size={size}
 					tooltipPlacement={side}
 					data-toolbar-trigger=""
-					className={cn(buttonClassName, "ms-1.5", formatting.align !== "left" && "bg-accent-soft text-accent-text")}
+					className={cn(
+						toolbarButtonClassName,
+						formatting.align !== "left" && "bg-accent-soft text-accent-soft-foreground",
+					)}
 				/>
 				<Dropdown.Popover placement={`${side} start`} className="w-44" {...menus.contentProps}>
 					<Dropdown.Menu
@@ -512,10 +542,10 @@ function FormattingMenus({ editor, formatting, buttonClassName, side, menus }: F
 				<IconButton
 					icon="dots-three"
 					label={t`More formatting`}
-					size="sm"
+					size={size}
 					tooltipPlacement={side}
 					data-toolbar-trigger=""
-					className={buttonClassName}
+					className={toolbarButtonClassName}
 				/>
 				<Dropdown.Popover placement={`${side} start`} className="w-56" {...menus.contentProps}>
 					<Dropdown.Menu>
@@ -575,8 +605,8 @@ function FormattingMenus({ editor, formatting, buttonClassName, side, menus }: F
 										<Dropdown.Item key={color || "default"} id={color || "default"} textValue={colorLabels[color]}>
 											<span
 												aria-hidden="true"
-												className="size-3.5 rounded-sm border border-line-2"
-												style={{ background: color || "var(--ink)" }}
+												className="size-3.5 rounded-sm border border-border"
+												style={{ background: color || "var(--foreground)" }}
 											/>
 											<Label>{colorLabels[color]}</Label>
 											<Dropdown.ItemIndicator type="dot" />

@@ -20,7 +20,7 @@ import { UserDropdownMenu } from "@/features/user/dropdown-menu";
 import { orpc } from "@/libs/orpc/client";
 
 type NavItem = {
-	to: "/dashboard" | "/dashboard/applications" | "/dashboard/career" | "/dashboard/trash" | "/dashboard/settings";
+	to: "/dashboard" | "/dashboard/applications" | "/dashboard/career" | "/dashboard/trash";
 	icon: IconName;
 	label: string;
 	count?: number;
@@ -54,12 +54,11 @@ function useNavItems() {
 	const unread = notifications?.filter((notification) => !notification.readAt).length ?? 0;
 	// Career counts what's waiting for the user (unread notifications), so nothing shows at zero.
 	items.push({ to: "/dashboard/career", icon: "compass", label: t`Career`, ...(unread ? { count: unread } : {}) });
-	const settings: NavItem = { to: "/dashboard/settings", icon: "gear-six", label: t`Settings` };
 	const trash: NavItem | null = counts?.trash
 		? { to: "/dashboard/trash", icon: "trash", label: t`Trash`, count: counts.trash }
 		: null;
 
-	return { items, settings, trash };
+	return { items, trash };
 }
 
 /** Whether the item is the current page: Documents is exact, the others match their section. */
@@ -96,9 +95,11 @@ export function AppShell({ children }: AppShellProps) {
 			sidebarCollapsible="icon"
 			sidebar={
 				<>
-					<Sidebar aria-label={t`App navigation`} className="[view-transition-name:app-nav]">
+					<Sidebar
+						aria-label={t`App navigation`}
+						className="[--sidebar-edge-outline:transparent]! [view-transition-name:app-nav]"
+					>
 						<NavigationContent />
-						<Sidebar.Rail />
 					</Sidebar>
 					<Sidebar.Mobile>
 						<NavigationContent />
@@ -136,7 +137,7 @@ function AppNavbar() {
 				</Link>
 				<Navbar.Spacer />
 				<Navbar.Content className="md:hidden">
-					<IconButton icon="magnifying-glass" label={t`Search or run…`} size="sm" onPress={() => openPalette(true)} />
+					<IconButton icon="magnifying-glass" label={t`Search…`} size="sm" onPress={() => openPalette(true)} />
 					<IconButton
 						icon="plus"
 						label={t`New`}
@@ -152,7 +153,7 @@ function AppNavbar() {
 
 /** Brand, search, destinations, New and the account menu; shared by the desktop sidebar and the phone sheet. */
 function NavigationContent() {
-	const { items, settings, trash } = useNavItems();
+	const { items, trash } = useNavItems();
 	const isCurrent = useIsCurrent();
 	const openPalette = useCommandPaletteStore((state) => state.setOpen);
 	const openDialog = useDialogStore((state) => state.openDialog);
@@ -178,13 +179,18 @@ function NavigationContent() {
 						Rezumi
 					</span>
 				</Link>
-				<Sidebar.Menu aria-label={t`Search`}>
-					<Sidebar.MenuItem id="search" textValue={t`Search or run…`} onAction={() => openPalette(true)}>
+				<Sidebar.Menu aria-label={t`Search`} className="w-full">
+					<Sidebar.MenuItem
+						id="search"
+						className="sidebar-search"
+						textValue={t`Search…`}
+						onAction={() => openPalette(true)}
+					>
 						<Sidebar.MenuIcon>
 							<Icon name="magnifying-glass" size={18} />
 						</Sidebar.MenuIcon>
 						<Sidebar.MenuLabel>
-							<Trans>Search or run…</Trans>
+							<Trans>Search…</Trans>
 						</Sidebar.MenuLabel>
 						<Sidebar.MenuChip>
 							<Kbd>⌘K</Kbd>
@@ -196,10 +202,6 @@ function NavigationContent() {
 			<Sidebar.Content>
 				<Sidebar.Group>
 					<Sidebar.Menu aria-label={t`App`}>{items.map(link)}</Sidebar.Menu>
-				</Sidebar.Group>
-				<Sidebar.Separator />
-				<Sidebar.Group>
-					<Sidebar.Menu aria-label={t`Account`}>{link(settings)}</Sidebar.Menu>
 				</Sidebar.Group>
 			</Sidebar.Content>
 

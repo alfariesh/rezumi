@@ -16,7 +16,7 @@
 }
 
 @utility score-ring {
-	background: conic-gradient(var(--ring-color) 0 var(--ring-value), var(--sunken) 0);
+	background: conic-gradient(var(--ring-color) 0 var(--ring-value), var(--default) 0);
 	transition:
 		--ring-value var(--d3) var(--ease),
 		--ring-color var(--d3) var(--ease);
@@ -50,8 +50,41 @@
 }
 
 /* A wavy warn underline under a line of the page that has a Check issue. */
+/*
+ * A gray card nested in a panel (the basics and entry cards): the controls on it take the field's own fill instead of
+ * the default fill, so secondary fields, buttons and the rich text frame read against the card. Not for cards holding a
+ * Segment or Tabs, whose track and indicator would both turn white.
+ */
+@utility fields-on-card {
+	--default: var(--field-background);
+	--default-hover: var(--field-hover);
+}
+
+/* The sidebar's search row sits on the surface (white) instead of the sidebar's gray; it greys on hover like the rest. */
+@utility sidebar-search {
+	& [data-slot="sidebar-menu-item-content"] {
+		background-color: var(--surface);
+	}
+
+	@media (hover: hover) {
+		&:hover [data-slot="sidebar-menu-item-content"],
+		&[data-hovered="true"] [data-slot="sidebar-menu-item-content"] {
+			background-color: var(--default);
+		}
+	}
+}
+
+/*
+ * Gray controls inside a section's collapsible body take the page's own `background` instead of the default fill.
+ * Cards nested in it (`fields-on-card`) set their own pair again, so their fields stay white.
+ */
+@utility fields-on-background {
+	--default: var(--background);
+	--default-hover: color-mix(in oklab, var(--background) 94%, black);
+}
+
 @utility wavy-underline {
-	background-color: var(--warn);
+	background-color: var(--warning);
 	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='4' viewBox='0 0 6 4'%3E%3Cpath d='M0 3 Q1.5 0 3 3 T6 3' fill='none' stroke='black' stroke-width='1.2'/%3E%3C/svg%3E")
 		repeat-x left center / 6px 4px;
 }

@@ -1,13 +1,10 @@
 import type { RouterOutput } from "@/libs/orpc/client";
-import { Button, Modal, Spinner } from "@heroui/react";
+import { Button, Modal, Spinner, Table } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans, useLingui } from "@lingui/react/macro";
 import { useId } from "react";
 import { formatTimeSince } from "@rezumi/resume/sharing";
 import { CopyText } from "./copy-text";
-
-const cellClass =
-	"py-2.5 pe-4 last:pe-0 max-sm:grid max-sm:py-0 max-sm:pe-0 max-sm:before:text-xs max-sm:before:text-ink-3 max-sm:before:content-[attr(data-label)]";
 
 type DnsRecordsDialogProps = {
 	domain: NonNullable<RouterOutput["customDomain"]["get"]>;
@@ -41,41 +38,39 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 						</p>
 					</Modal.Header>
 					<Modal.Body className="space-y-4">
-						{/* On a phone each record stacks: its type, then its name and value on their own labelled lines. */}
-						<table className="w-full text-[13px]" dir="ltr">
-							<thead className="max-sm:sr-only">
-								<tr className="text-xs text-ink-3">
-									<th scope="col" className="w-16 pb-2 text-start font-normal">
-										<Trans context="DNS record">Type</Trans>
-									</th>
-									<th scope="col" className="pe-4 pb-2 text-start font-normal">
-										<Trans context="DNS record">Name</Trans>
-									</th>
-									<th scope="col" className="pb-2 text-start font-normal">
-										<Trans>Value</Trans>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{domain.records.map((record) => (
-									<tr
-										key={`${record.type}-${record.value}`}
-										className="border-t border-line align-top max-sm:grid max-sm:grid-cols-[3.5rem_minmax(0,1fr)] max-sm:gap-y-1 max-sm:py-2.5"
-									>
-										<td className="py-2.5 font-medium max-sm:row-span-2 max-sm:py-0">{record.type}</td>
-										<td data-label={t({ message: "Name", context: "DNS record" })} className={cellClass}>
-											<CopyText value={record.name} className="font-mono" />
-										</td>
-										<td data-label={t`Value`} className={cellClass}>
-											<CopyText value={record.value} className="font-mono" />
-										</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
+						<Table variant="secondary">
+							<Table.ScrollContainer>
+								<Table.Content aria-label={t`DNS records`} dir="ltr" className="text-[13px]">
+									<Table.Header>
+										<Table.Column className="w-16">
+											<Trans context="DNS record">Type</Trans>
+										</Table.Column>
+										<Table.Column isRowHeader>
+											<Trans context="DNS record">Name</Trans>
+										</Table.Column>
+										<Table.Column>
+											<Trans>Value</Trans>
+										</Table.Column>
+									</Table.Header>
+									<Table.Body>
+										{domain.records.map((record) => (
+											<Table.Row key={`${record.type}-${record.value}`} id={`${record.type}-${record.value}`}>
+												<Table.Cell className="align-top font-medium">{record.type}</Table.Cell>
+												<Table.Cell className="align-top">
+													<CopyText value={record.name} className="font-mono" />
+												</Table.Cell>
+												<Table.Cell className="align-top">
+													<CopyText value={record.value} className="font-mono" />
+												</Table.Cell>
+											</Table.Row>
+										))}
+									</Table.Body>
+								</Table.Content>
+							</Table.ScrollContainer>
+						</Table>
 
 						{hasCname && (
-							<p className="text-xs leading-4 text-ink-3">
+							<p className="text-xs text-muted">
 								<Trans>
 									For a root domain such as example.com, use A and AAAA records with {domain.target}'s addresses instead
 									of the CNAME.
@@ -85,7 +80,7 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 					</Modal.Body>
 					<Modal.Footer className="items-center">
 						{lastChecked && (
-							<p className="me-auto text-xs text-ink-3">
+							<p className="me-auto text-xs text-muted">
 								<Trans>Last checked {lastChecked} ago</Trans>
 							</p>
 						)}

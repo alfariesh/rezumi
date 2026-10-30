@@ -29,6 +29,10 @@ export type CheckIssue = {
 	target: PageMapTarget | null;
 };
 
+/** The issue's colour on its card chip and page pin: danger for errors, warning for the rest. */
+export const getIssueTone = (issue: CheckIssue): "danger" | "warning" =>
+	issue.finding.severity === "error" ? "danger" : "warning";
+
 export const getCategoryName = (category: AtsCategory) =>
 	({
 		contact: t`Contact details`,

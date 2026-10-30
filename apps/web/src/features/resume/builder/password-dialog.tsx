@@ -1,4 +1,4 @@
-import { Button, Input, Label, Modal } from "@heroui/react";
+import { Button, Description, Input, Label, Modal, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -69,50 +69,51 @@ export function ResumePasswordDialog({ onSubmit, onClose }: ResumePasswordDialog
 							void submit();
 						}}
 					>
-						<Modal.Body className="space-y-4">
-							<div className="space-y-2">
-								<Label htmlFor={`${id}-password`}>
+						<Modal.Body className="grid gap-4">
+							<TextField
+								variant="secondary"
+								type="password"
+								autoComplete="new-password"
+								isRequired
+								minLength={6}
+								maxLength={64}
+								value={password}
+								isDisabled={isPending}
+								onChange={setPassword}
+								isInvalid={!!error}
+								validationBehavior="aria"
+								className="gap-1.5"
+							>
+								<Label>
 									<Trans>Password</Trans>
 								</Label>
-								<Input
-									fullWidth
-									id={`${id}-password`}
-									type="password"
-									autoComplete="new-password"
-									required
-									minLength={6}
-									maxLength={64}
-									value={password}
-									disabled={isPending}
-									onChange={(event) => setPassword(event.target.value)}
-									aria-invalid={!!error}
-									aria-describedby={`${id}-hint${error ? ` ${id}-error` : ""}`}
-								/>
-								<p id={`${id}-hint`} className="text-sm text-ink-3">
+								<Input fullWidth aria-describedby={error ? `${id}-error` : undefined} />
+								<Description>
 									<Trans>Use between 6 and 64 characters.</Trans>
-								</p>
-							</div>
-							<div className="space-y-2">
-								<Label htmlFor={`${id}-confirmation`}>
+								</Description>
+							</TextField>
+							<TextField
+								variant="secondary"
+								type="password"
+								autoComplete="new-password"
+								isRequired
+								minLength={6}
+								maxLength={64}
+								value={confirmation}
+								isDisabled={isPending}
+								onChange={setConfirmation}
+								isInvalid={!!error}
+								validationBehavior="aria"
+								className="gap-1.5"
+							>
+								<Label>
 									<Trans>Confirm password</Trans>
 								</Label>
-								<Input
-									fullWidth
-									id={`${id}-confirmation`}
-									type="password"
-									autoComplete="new-password"
-									required
-									minLength={6}
-									maxLength={64}
-									value={confirmation}
-									disabled={isPending}
-									onChange={(event) => setConfirmation(event.target.value)}
-									aria-invalid={!!error}
-									aria-describedby={error ? `${id}-error` : undefined}
-								/>
-							</div>
+								<Input fullWidth aria-describedby={error ? `${id}-error` : undefined} />
+							</TextField>
 							{error && (
-								<p id={`${id}-error`} role="alert" className="text-sm text-danger-text">
+								// A plain alert: HeroUI's ErrorMessage renders only inside a field that offers its slot.
+								<p id={`${id}-error`} role="alert" className="text-sm text-danger">
 									{error}
 								</p>
 							)}

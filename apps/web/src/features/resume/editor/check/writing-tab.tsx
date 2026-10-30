@@ -1,7 +1,8 @@
 import type { WritingNote } from "../store";
 import type { CheckIssue } from "./issues";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { Button, Spinner, buttonVariants } from "@heroui/react";
+import type { ReactNode } from "react";
+import { Button, Chip, Spinner, buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
@@ -15,6 +16,7 @@ import { cn } from "@rezumi/utils/style";
 import { ProposalList } from "../proposals/proposal-list";
 import { useEditorStore } from "../store";
 import { describeEntry } from "../write/model";
+import { CheckWidget } from "./check-widget";
 import { getSectionName } from "./issues";
 import { mapWritingReview } from "./review";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -81,15 +83,21 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 		});
 	};
 
-	if (providerState.isUnavailable) return <AiProviderLoadState state={providerState} />;
+	if (providerState.isUnavailable)
+		return (
+			// The load state brings its own padding.
+			<ReviewWidget contentClassName="p-1.5">
+				<AiProviderLoadState state={providerState} />
+			</ReviewWidget>
+		);
 
 	if (!hasUsableProvider) {
 		return (
-			<div className="grid gap-3 rounded-xl border border-line p-4">
+			<ReviewWidget>
 				<strong className="text-sm font-semibold">
 					<Trans>A second opinion on your wording</Trans>
 				</strong>
-				<p className="text-[13px] leading-[19px] text-ink-2">
+				<p className="text-sm text-muted">
 					<Trans>
 						Connect your own AI provider to have a language model read your bullets and suggest rewrites. Issues and Job
 						match need no provider.
@@ -101,31 +109,30 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 				>
 					<Trans>Open AI settings</Trans>
 				</Link>
-			</div>
+			</ReviewWidget>
 		);
 	}
 
 	if (isPending) {
 		return (
-			<div aria-busy="true" className="flex items-center gap-2.5 rounded-xl border border-line p-4 text-sm text-ink-2">
-				<Spinner size="sm" color="current" aria-hidden />
-				<Plural
-					value={passages.length}
-					one="Reading # passage of your resume…"
-					other="Reading # bullets and paragraphs of your resume…"
-				/>
-			</div>
+			<ReviewWidget>
+				<div aria-busy="true" className="flex items-center gap-2.5 text-sm text-muted">
+					<Spinner size="sm" color="current" aria-hidden />
+					<Plural
+						value={passages.length}
+						one="Reading # passage of your resume…"
+						other="Reading # bullets and paragraphs of your resume…"
+					/>
+				</div>
+			</ReviewWidget>
 		);
 	}
 
 	if (error) {
 		return (
-			<div className="grid gap-3">
-				<div
-					role="alert"
-					className="flex gap-2.5 rounded-xl bg-danger-soft p-3 text-[13px] leading-[19px] text-danger-text"
-				>
-					<Icon name="warning-circle" />
+			<ReviewWidget>
+				<div role="alert" className="flex gap-2.5 rounded-xl bg-danger-soft p-3 text-sm text-danger-soft-foreground">
+					<Icon name="warning-circle" className="shrink-0" />
 					<span>
 						{getOrpcErrorMessage(error, {
 							byCode: {
@@ -145,36 +152,37 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 						<Trans>Open AI settings</Trans>
 					</Link>
 				</div>
-				<p className="text-xs text-ink-3">
+				<p className="text-xs text-muted">
 					<Trans>Issues and Job match still work without AI.</Trans>
 				</p>
-			</div>
+			</ReviewWidget>
 		);
 	}
 
 	if (!review) {
 		return (
-			<div className="grid gap-3 rounded-xl border border-line p-4">
+			<ReviewWidget>
 				<strong className="text-sm font-semibold">
 					<Trans>A second opinion on your wording</Trans>
 				</strong>
-				<p className="text-[13px] leading-[19px] text-ink-2">
+				<p className="text-sm text-muted">
 					<Trans>
 						The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests
 						rewrites. It isn't part of the score.
 					</Trans>
 				</p>
-				<div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-3">
-					<Icon name="lock" size={16} />
+				<div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-muted">
+					<Icon name="lock" size={16} className="shrink-0" />
 					<span>
 						<Trans>
 							Sends your resume's text only to {provider?.label} · {provider?.model}, with your key.
 						</Trans>
 					</span>
+					{/* An inline text action inside the sentence; a HeroUI Button would break the line. */}
 					<button
 						type="button"
 						aria-expanded={choosing}
-						className="font-medium text-ink-2 underline underline-offset-2"
+						className="cursor-(--cursor-interactive) font-medium text-foreground underline underline-offset-2"
 						onClick={() => setChoosing(!choosing)}
 					>
 						<Trans>Change</Trans>
@@ -195,44 +203,65 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 					<Trans>Review writing</Trans>
 				</Button>
 				{passages.length === 0 && (
-					<p className="text-xs text-ink-3">
+					<p className="text-xs text-muted">
 						<Trans>Add a summary or describe a role first; there's nothing to review yet.</Trans>
 					</p>
 				)}
-			</div>
+			</ReviewWidget>
 		);
 	}
 
 	return (
 		<div className="grid gap-3">
-			{review.summary && <p className="text-[13px] leading-[19px] text-ink-2">{review.summary}</p>}
+			{(review.summary || review.strengths.length > 0) && (
+				<ReviewWidget>
+					{review.summary && <p className="text-sm text-muted">{review.summary}</p>}
+
+					{review.strengths.length > 0 && (
+						<section aria-labelledby="writing-strengths" className="grid gap-2">
+							<h3 id="writing-strengths" className="text-sm font-semibold">
+								<Trans>What's working</Trans>
+							</h3>
+							<ul className="grid list-disc gap-1 ps-[18px] text-sm text-muted">
+								{review.strengths.map((strength) => (
+									<li key={strength}>{strength}</li>
+								))}
+							</ul>
+						</section>
+					)}
+				</ReviewWidget>
+			)}
 
 			{proposals.length > 0 && <ProposalList proposals={proposals} data={data} onSuggestAgain={run} />}
 
-			{review.notes.map((note) => (
-				<WritingNoteCard key={`${note.location}:${note.note}`} note={note} />
-			))}
-
-			{review.strengths.length > 0 && (
-				<section aria-labelledby="writing-strengths" className="grid gap-1.5">
-					<h3 id="writing-strengths" className="pt-1.5 text-xs font-semibold text-ink-3">
-						<Trans>What's working</Trans>
-					</h3>
-					<ul className="grid list-disc gap-1 ps-[18px] text-[13px] leading-[19px] text-ink-2">
-						{review.strengths.map((strength) => (
-							<li key={strength}>{strength}</li>
-						))}
-					</ul>
-				</section>
+			{review.notes.length > 0 && (
+				<CheckWidget icon="note" title={<Trans>Notes</Trans>} contentClassName="gap-2 p-2">
+					{review.notes.map((note) => (
+						<WritingNoteCard key={`${note.location}:${note.note}`} note={note} />
+					))}
+				</CheckWidget>
 			)}
 
-			<p className="text-xs leading-[17px] text-ink-3">
+			<p className="px-2 text-xs leading-4 text-muted">
 				<Trans>A model's opinion, not a verdict. It can be wrong.</Trans>{" "}
-				<button type="button" className="font-medium text-ink-2 underline underline-offset-2" onClick={run}>
+				<button
+					type="button"
+					className="cursor-(--cursor-interactive) font-medium text-foreground underline underline-offset-2"
+					onClick={run}
+				>
 					<Trans>Run again</Trans>
 				</button>
 			</p>
 		</div>
+	);
+}
+
+/** The review's widget: what it is before it runs, its progress or error, then its summary and strengths. */
+function ReviewWidget({ contentClassName, children }: { contentClassName?: string; children: ReactNode }) {
+	return (
+		<CheckWidget icon="sparkle" title={<Trans>AI review</Trans>} contentClassName={cn("gap-3", contentClassName)}>
+			{children}
+		</CheckWidget>
 	);
 }
 
@@ -249,20 +278,15 @@ function WritingNoteCard({ note }: { note: WritingNote }) {
 	};
 
 	return (
-		<article className="grid gap-1.5 rounded-lg border border-line p-3">
-			<div className="flex justify-between gap-2">
-				<span className="font-mono text-xs text-ink-3">{note.location}</span>
-				<span
-					className={cn(
-						"h-[18px] rounded px-1.5 text-[11px] leading-[18px] font-semibold",
-						note.impact === "high" ? "bg-warn-soft text-warn-text" : "bg-sunken text-ink-2",
-					)}
-				>
+		<article className="fields-on-card grid gap-2 rounded-xl bg-surface-secondary p-3">
+			<div className="flex items-start justify-between gap-2">
+				<span className="min-w-0 font-mono text-xs text-muted">{note.location}</span>
+				<Chip size="sm" variant="soft" color={note.impact === "high" ? "warning" : "default"}>
 					{impactLabel(note.impact)}
-				</span>
+				</Chip>
 			</div>
-			<p className="text-[13px] leading-[19px]">
-				{note.quote && <i className="text-ink-2">“{note.quote}”</i>} {note.note}
+			<p className="text-sm">
+				{note.quote && <i className="text-muted">“{note.quote}”</i>} {note.note}
 			</p>
 			{note.target && (
 				<Button size="sm" variant="secondary" className="w-fit" onPress={showOnPage}>

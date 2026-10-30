@@ -1,8 +1,8 @@
-import { Button } from "@heroui/react";
+import { Button, Description, InputGroup, Label, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { isValidSlug, MAX_SLUG_LENGTH, normalizeSlug } from "@rezumi/resume/sharing";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -59,7 +59,6 @@ type AddressFieldProps = {
 /** The address, checked as you type. The old one stays live until the new one is valid and saved. */
 export function AddressField({ url, username, update }: AddressFieldProps) {
 	const resume = useCurrentResume();
-	const id = useId();
 	const isPublic = resume.isPublic ?? false;
 	const { slug, setSlug, changed, wellFormed, result } = useSlugAvailability(update);
 
@@ -78,74 +77,78 @@ export function AddressField({ url, username, update }: AddressFieldProps) {
 		return t`Checking… Copy is available after saving.`;
 	};
 
-	return (
-		<div className={cn("grid gap-1.5 transition-opacity duration-standard", !isPublic && "opacity-45")}>
-			<label htmlFor={id} className="text-xs font-medium text-ink-2">
-				<Trans>Address</Trans>
-			</label>
-			<div className="flex gap-1.5">
-				<div
-					className={cn(
-						"flex h-[38px] min-w-0 flex-1 items-center overflow-hidden rounded-lg border bg-raised transition-colors duration-quick focus-within:ring-3",
-						invalid
-							? "border-danger focus-within:border-danger focus-within:ring-danger/15"
-							: "border-line-2 focus-within:border-accent focus-within:ring-accent-soft",
-					)}
-				>
-					{/* A long host or username truncates, so the part being edited stays visible. */}
-					<span className="max-w-[55%] truncate ps-2.5 font-mono text-[13px] font-medium text-ink-3" dir="ltr">
-						{new URL(url).host}/{username}/
-					</span>
-					<input
-						id={id}
-						value={slug}
-						disabled={!isPublic || resume.isLocked}
-						spellCheck={false}
-						aria-invalid={invalid}
-						aria-describedby={`${id}-message`}
-						onChange={(event) => setSlug(normalizeSlug(event.target.value))}
-						className="h-full min-w-0 flex-1 bg-transparent pe-1.5 font-mono text-[13px] font-medium text-ink outline-none"
-					/>
-					{isPublic && slug && (
-						<Icon
-							name={invalid ? "warning-circle" : "check-circle"}
-							size={18}
-							className={cn("me-2.5", invalid ? "text-danger-text" : "text-accent-text")}
-						/>
-					)}
-				</div>
-				<CopyLinkButton url={url} className="h-[38px] gap-1.5" disabled={!isPublic || changed} />
-			</div>
-			<p
-				id={`${id}-message`}
-				role="status"
-				className={cn("text-xs leading-4 break-all", invalid ? "text-danger-text" : "text-ink-3")}
-			>
-				{result?.status === "taken" ? (
-					<>
-						{result.takenBy ? (
-							<Trans>You already use this for “{result.takenBy}”.</Trans>
-						) : (
-							<Trans>Another of your resumes uses this address.</Trans>
-						)}{" "}
-						{result.suggestion && (
-							<button
-								type="button"
-								className="font-medium text-ink underline underline-offset-2"
-								onClick={() => setSlug(result.suggestion ?? slug)}
-							>
-								<Trans>Try {result.suggestion}</Trans>
-							</button>
-						)}
-					</>
+	// What the field says under it: why the address is taken (with a suggestion), else the hint.
+	const note =
+		result?.status === "taken" ? (
+			<>
+				{result.takenBy ? (
+					<Trans>You already use this for “{result.takenBy}”.</Trans>
 				) : (
-					hint()
+					<Trans>Another of your resumes uses this address.</Trans>
+				)}{" "}
+				{result.suggestion && (
+					// An inline action inside the sentence: a HeroUI Button would break the line.
+					<button
+						type="button"
+						className="cursor-(--cursor-interactive) font-medium text-foreground underline underline-offset-2"
+						onClick={() => setSlug(result.suggestion ?? slug)}
+					>
+						<Trans>Try {result.suggestion}</Trans>
+					</button>
 				)}
-			</p>
+			</>
+		) : (
+			hint()
+		);
+
+	return (
+		<div className="grid gap-3">
+			<TextField
+				variant="secondary"
+				value={slug}
+				onChange={(value) => setSlug(normalizeSlug(value))}
+				isDisabled={!isPublic}
+				// Read-only, not disabled, while locked: the copy button in the field keeps working.
+				isReadOnly={resume.isLocked}
+				isInvalid={invalid}
+				className="gap-1.5"
+			>
+				<Label>
+					<Trans>Address</Trans>
+				</Label>
+				<InputGroup variant="secondary" fullWidth>
+					{/* A long host or username truncates, so the part being edited stays visible. */}
+					<InputGroup.Prefix className="max-w-[55%] pe-0">
+						<span className="truncate font-mono text-[13px] text-muted" dir="ltr">
+							{new URL(url).host}/{username}/
+						</span>
+					</InputGroup.Prefix>
+					<InputGroup.Input
+						spellCheck={false}
+						// Set explicitly so a valid address reads aria-invalid="false", not a missing attribute.
+						aria-invalid={invalid}
+						className="font-mono text-[13px]"
+					/>
+					<InputGroup.Suffix className="gap-1 pe-1">
+						{isPublic && slug && (
+							<Icon
+								name={invalid ? "warning-circle" : "check-circle"}
+								size={18}
+								className={invalid ? "text-danger" : "text-success"}
+							/>
+						)}
+						<CopyLinkButton url={url} disabled={!isPublic || changed} />
+					</InputGroup.Suffix>
+				</InputGroup>
+				{/* HeroUI hides a field's Description while it's invalid; this one carries the reason too, so it stays. */}
+				<Description role="status" className={cn("block break-all", invalid && "text-danger")}>
+					{note}
+				</Description>
+			</TextField>
 			{isPublic && canShare && (
 				<Button
 					variant="secondary"
-					className="w-fit gap-1.5 pointer-fine:hidden"
+					className="w-fit pointer-fine:hidden"
 					onPress={() => void navigator.share({ title: resume.name, url }).catch(() => undefined)}
 				>
 					<Icon name="export" size={18} />

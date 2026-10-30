@@ -68,7 +68,7 @@ export function WebPagePreview() {
 	}, [debouncedData, hideContactDetails, showDownloadButtons]);
 
 	return (
-		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-sunken p-4">
+		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-background p-4">
 			<Segment
 				aria-label={t`Preview size`}
 				selectedKey={device}
@@ -86,7 +86,8 @@ export function WebPagePreview() {
 			</Segment>
 			<div
 				className={cn(
-					"relative min-h-0 w-full flex-1 overflow-hidden rounded-lg border border-line bg-bg shadow-e1 transition-[max-width] duration-standard ease-enter",
+					// The ring sits on an overlay: an inset ring on the frame itself would paint under the iframe.
+					"relative min-h-0 w-full flex-1 overflow-hidden rounded-xl bg-surface transition-[max-width] duration-standard ease-enter after:pointer-events-none after:absolute after:inset-0 after:rounded-xl after:ring-1 after:ring-black/5 after:ring-inset dark:after:ring-white/10",
 					device === "phone" ? "max-w-[390px]" : "max-w-full",
 				)}
 			>

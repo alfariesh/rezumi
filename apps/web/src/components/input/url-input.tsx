@@ -1,6 +1,6 @@
 import type { InputGroupInputProps } from "@heroui/react";
 import type { Website } from "@rezumi/schema/resume/data";
-import { Input, InputGroup, Label, Popover } from "@heroui/react";
+import { Input, InputGroup, Label, Popover, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -22,9 +22,17 @@ type Props<TValue extends Website = Website> = Omit<InputGroupInputProps, "value
 	value: TValue;
 	onChange: (value: TValue) => void;
 	hideLabelButton?: boolean;
+	/** HeroUI field variant: "secondary" on an elevated surface (a panel, sheet or dialog). */
+	variant?: "primary" | "secondary";
 };
 
-export function URLInput<TValue extends Website>({ value, onChange, hideLabelButton, ...props }: Props<TValue>) {
+export function URLInput<TValue extends Website>({
+	value,
+	onChange,
+	hideLabelButton,
+	variant,
+	...props
+}: Props<TValue>) {
 	const prefix = value.url.match(HTTP_PREFIX)?.[0] ?? DEFAULT_PREFIX;
 	const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		onChange({
@@ -33,14 +41,10 @@ export function URLInput<TValue extends Website>({ value, onChange, hideLabelBut
 		});
 	};
 
-	const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		onChange({ ...value, label: e.target.value });
-	};
-
 	const urlValue = stripPrefix(value.url);
 
 	return (
-		<InputGroup fullWidth>
+		<InputGroup fullWidth {...(variant && { variant })}>
 			<InputGroup.Prefix>
 				<span>{prefix}</span>
 			</InputGroup.Prefix>
@@ -66,11 +70,20 @@ export function URLInput<TValue extends Website>({ value, onChange, hideLabelBut
 						/>
 
 						<Popover.Content placement="bottom end">
-							<Popover.Dialog className="grid gap-2 outline-hidden">
-								<Label htmlFor="url-label">
-									<Trans comment="Short field label for custom display text associated with a URL">Label</Trans>
-								</Label>
-								<Input fullWidth id="url-label" name="url-label" value={value.label} onChange={handleLabelChange} />
+							<Popover.Dialog className="outline-hidden">
+								{/* The popover is an elevated surface, so its field takes the secondary variant. */}
+								<TextField
+									variant="secondary"
+									name="url-label"
+									value={value.label}
+									onChange={(label) => onChange({ ...value, label })}
+									className="gap-1.5"
+								>
+									<Label>
+										<Trans comment="Short field label for custom display text associated with a URL">Label</Trans>
+									</Label>
+									<Input fullWidth />
+								</TextField>
 							</Popover.Dialog>
 						</Popover.Content>
 					</Popover>

@@ -43,7 +43,10 @@
 
 	/* Layout constants */
 	--editor-bar: 56px;
-	--editor-panel: 400px;
+	/* The editor's side panel: 420px on laptops, growing with the window to 520px on large screens. */
+	--editor-panel: clamp(420px, 32vw, 520px);
+	/* With the assistant open (≥1280), the panel and the assistant share the room equally, each this wide. */
+	--editor-side: clamp(320px, 25vw, 420px);
 	--app-sidebar: 240px;
 	--sheet-share: 440px;
 	--sheet-detail: 480px;
@@ -51,9 +54,17 @@
 
 	/* Rezumi's tooltips open after 400ms, not HeroUI's 1.5s. */
 	--tooltip-delay: 400ms;
+
+	/* Inputs, selects and the other fields sit flat: no drop shadow (HeroUI's `shadow-field`). */
+	--field-shadow: 0 0 0 0 transparent;
+
+	/* One scrollbar everywhere: a thin thumb in the default fill, a step darker while the pointer is over its area. */
+	--scrollbar-thumb: var(--default);
 }
 
 .dark {
+	--field-shadow: 0 0 0 0 transparent;
+	--scrollbar-thumb: var(--default);
 	--shadow-page: 0 1px 2px oklch(0 0 0 / 0.4), 0 12px 36px -12px oklch(0 0 0 / 0.6);
 }
 
@@ -100,9 +111,53 @@
 	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+/*
+ * Every segment shares the field radius: outer corners match inputs and selects, inner ones (items and the sliding
+ * indicator) are that minus the segment's padding: 4px by default, 2px for `sm`, none for `ghost`.
+ */
+@layer components {
+	.segment {
+		border-radius: var(--radius-field);
+	}
+
+	.segment .segment__item,
+	.segment .segment__indicator {
+		border-radius: calc(var(--radius-field) - 0.25rem);
+	}
+
+	.segment.segment--sm .segment__item,
+	.segment.segment--sm .segment__indicator {
+		border-radius: calc(var(--radius-field) - 0.125rem);
+	}
+
+	.segment.segment--ghost .segment__item,
+	.segment.segment--ghost .segment__indicator {
+		border-radius: var(--radius-field);
+	}
+}
+
+/* Pill Tabs (not `secondary`, which is an underline) follow the same radii as Segment: the container takes the field radius. */
+@layer components {
+	.tabs:not(.tabs--secondary) > .tabs__list-container {
+		border-radius: var(--radius-field);
+	}
+
+	.tabs:not(.tabs--secondary) .tabs__tab,
+	.tabs:not(.tabs--secondary) .tabs__indicator {
+		border-radius: calc(var(--radius-field) - 0.25rem);
+	}
+}
+
 @layer base {
 	* {
 		@apply min-w-0;
+		/* Every scroller, not only HeroUI's own slots, follows the scrollbar tokens. */
+		scrollbar-width: var(--scrollbar-width);
+		scrollbar-color: var(--scrollbar-color);
+	}
+
+	:hover {
+		--scrollbar-color: var(--default-hover) var(--scrollbar-track);
 	}
 
 	html {

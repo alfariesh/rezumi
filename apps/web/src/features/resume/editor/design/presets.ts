@@ -121,8 +121,6 @@ export function rgbaToHex(color: string): string | null {
 		.toUpperCase()}`;
 }
 
-export const isValidHex = (hex: string) => HEX.test(hex.trim());
-
 /** The same hue, darkened step by step until it reads on white (at least 4.6:1). */
 export function darkenForWhite(hex: string): string {
 	const value = Number.parseInt(HEX.exec(hex)?.[1] ?? "000000", 16);

@@ -8,7 +8,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { LetterDesignPanel } from "./design-panel";
 import { LetterDownloadSheet } from "./download-sheet";
-import { LetterBar, useDownloadLetter } from "./letter-bar";
+import { LetterBar, LetterModeTabs, useDownloadLetter } from "./letter-bar";
 import { LetterPage } from "./letter-page";
 import { LetterWritePanel } from "./write-panel";
 import { LetterAssistant } from "@/features/assistant/dock";
@@ -49,6 +49,7 @@ export function LetterShell() {
 				editorLayout={editorLayout}
 				bar={<LetterBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
 				mode={mode}
+				modes={<LetterModeTabs />}
 				panelLabel={mode === "design" ? t`Design` : t`Letter details`}
 				panel={<ModePanel mode={mode} />}
 				page={<LetterPage />}
@@ -89,7 +90,7 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 					<LetterPage />
 				</main>
 				{view !== "page" && (
-					<section key={mode} className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]">
+					<section key={mode} className="absolute inset-0 overflow-y-auto bg-background [overflow-anchor:none]">
 						<ModePanel mode={mode} />
 					</section>
 				)}

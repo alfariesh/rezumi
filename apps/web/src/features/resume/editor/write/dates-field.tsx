@@ -1,5 +1,5 @@
 import type { DateFormat, ResumeDates, YearMonth } from "@rezumi/schema/resume/dates";
-import { inputVariants, Switch } from "@heroui/react";
+import { Input, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
@@ -52,9 +52,11 @@ function MonthYearInput({
 			<Icon
 				name="calendar-dots"
 				size={18}
-				className="pointer-events-none absolute start-2.5 top-1/2 -translate-y-1/2 text-ink-3"
+				className="pointer-events-none absolute start-2.5 top-1/2 z-10 -translate-y-1/2 text-muted"
 			/>
-			<input
+			<Input
+				fullWidth
+				variant="secondary"
 				type="text"
 				inputMode="text"
 				autoComplete="off"
@@ -62,7 +64,7 @@ function MonthYearInput({
 				disabled={disabled}
 				placeholder={t`Mar 2022`}
 				value={placeholderValue ?? typed ?? formatted}
-				className={cn(inputVariants({ fullWidth: true }), "ps-9")}
+				className="ps-9"
 				onChange={(event) => {
 					setTyped(event.target.value);
 					const next = readTypedDate(event.target.value, locale);
@@ -105,9 +107,7 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 
 	return (
 		<fieldset className={cn("grid min-w-0 gap-1.5", className)} aria-describedby={`${id}-note`}>
-			<legend className="mb-1.5 text-[13px] leading-4 font-medium text-ink">
-				{single ? <Trans>Date</Trans> : <Trans>Dates</Trans>}
-			</legend>
+			<legend className="mb-1.5 text-sm font-medium">{single ? <Trans>Date</Trans> : <Trans>Dates</Trans>}</legend>
 
 			<div className="flex items-center gap-2">
 				<MonthYearInput
@@ -121,7 +121,7 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 
 				{!single && (
 					<>
-						<span aria-hidden="true" className="text-ink-3">
+						<span aria-hidden="true" className="text-muted">
 							–
 						</span>
 						<MonthYearInput
@@ -157,7 +157,7 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 
 			<div id={`${id}-note`}>
 				{hasError ? (
-					<p className="flex items-start gap-1 text-xs leading-4 text-danger-text">
+					<p className="flex items-start gap-1 text-xs leading-4 text-danger">
 						<Icon name="warning-circle" size={16} className="shrink-0" />
 						<Trans>
 							This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The resume keeps the
@@ -165,7 +165,7 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 						</Trans>
 					</p>
 				) : dates.raw !== undefined ? (
-					<p className="flex items-start gap-1 text-xs leading-4 text-warn-text">
+					<p className="flex items-start gap-1 text-xs leading-4 text-warning-soft-foreground">
 						<Icon name="warning" size={16} className="shrink-0" />
 						{dates.start ? (
 							<Trans>Read as “{dates.raw}”. Pick a month so it sorts and prints consistently.</Trans>
@@ -174,7 +174,7 @@ export function DatesField({ dates, single = false, locale, format, onChange, cl
 						)}
 					</p>
 				) : reversed ? (
-					<p className="flex items-start gap-1 text-xs leading-4 text-warn-text">
+					<p className="flex items-start gap-1 text-xs leading-4 text-warning-soft-foreground">
 						<Icon name="warning" size={16} className="shrink-0" />
 						<Trans>The end is before the start.</Trans>
 					</p>

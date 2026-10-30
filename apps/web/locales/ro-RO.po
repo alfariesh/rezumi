@@ -1046,6 +1046,7 @@ msgid "A web address is written without https://."
 msgstr "O adresă web este scrisă fără https://."
 
 #: src/features/homepage/footer.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "Despre această aplicație"
 
@@ -1588,6 +1589,10 @@ msgstr "Furnizorii AI nu sunt disponibili pe acest server până când nu este s
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "Furnizorii de inteligență artificială nu au putut fi încărcați. Reîncărcați pentru a încerca din nou."
+
+#: src/features/resume/editor/check/writing-tab.tsx
+msgid "AI review"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Albanian"
@@ -2244,7 +2249,6 @@ msgstr "Salariu de bază"
 msgid "Base URL"
 msgstr "URL de bază"
 
-#: src/features/resume/editor/write/basics-card.tsx
 #: src/libs/resume/section.tsx
 msgid "Basics"
 msgstr "Informații de bază"
@@ -2858,6 +2862,10 @@ msgstr "Cod"
 msgid "Color"
 msgstr "Culoare"
 
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Colors and levels"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Column {header} goes to"
 msgstr "Coloana {header} merge la"
@@ -3129,6 +3137,10 @@ msgstr "Continuă"
 msgid "Continue as guest"
 msgstr "Continuă ca invitat"
 
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Contrast on white:"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Contribution clear"
 msgstr "Contribuție clară"
@@ -3173,7 +3185,6 @@ msgid "Copied"
 msgstr "Copiat"
 
 #: src/features/career/coach-chat.tsx
-#: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/mcp.tsx
@@ -3210,6 +3221,7 @@ msgid "Copy it now. For your security, it won't be shown again."
 msgstr "Copiați-l acum. Pentru securitatea dvs., nu va fi afișat din nou."
 
 #: src/features/homepage/share.tsx
+#: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "Copiați linkul"
 
@@ -3856,6 +3868,7 @@ msgstr "Umplere"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Scrisoare de intenție"
 
@@ -3979,8 +3992,16 @@ msgid "Custom"
 msgstr "Personalizat"
 
 #: src/features/resume/editor/design/style-groups.tsx
+msgid "Custom color"
+msgstr ""
+
+#: src/features/resume/editor/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "Culoare personalizată (hex)"
+
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Custom CSS"
+msgstr ""
 
 #. Authentication provider display name in account settings
 #: src/features/settings/account/auth-hooks.ts
@@ -4360,6 +4381,10 @@ msgstr "Se deconectează contul {providerName}…"
 msgid "Dismiss"
 msgstr "Închide"
 
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "DNS records"
+msgstr ""
+
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "Documentație"
@@ -4576,7 +4601,7 @@ msgstr "Redactarea sa oprit. Nu s-a schimbat nimic pe pagină."
 msgid "Drafting…"
 msgstr "Se redactează…"
 
-#: src/features/resume/editor/write/write-panel.tsx
+#: src/features/resume/editor/write/outline.tsx
 msgid "drag · ⌥↑↓"
 msgstr "trage · ⌥↑↓"
 
@@ -4771,8 +4796,7 @@ msgstr "Editarea cuvântului cheie..."
 msgid "Editing session"
 msgstr "Sesiune de editare"
 
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
 msgid "Editor mode"
 msgstr "Modul editor"
 
@@ -4959,6 +4983,10 @@ msgstr "La fiecare {days} zile la {clock} · următoarea {next}"
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "La fiecare 3 zile"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Every application is a step closer."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
@@ -5574,6 +5602,10 @@ msgstr "Mergi la panoul de control"
 msgid "Go to…"
 msgstr "Accesați…"
 
+#: src/components/layout/loading-screen.tsx
+msgid "Good things take time. Keep going."
+msgstr ""
+
 #. Authentication provider display name in account settings
 #. Brand name label for Google social sign-in button
 #: src/features/auth/components/social-auth.tsx
@@ -5672,6 +5704,10 @@ msgstr "Ajutor și documente"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "Ajută-mă să transform o realizare într-o poveste cu Situație, Sarcină, Acțiune, Rezultat și Reflecție."
 
+#: src/components/input/color-picker.tsx
+msgid "Hex color"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
 msgstr "Bună, Alex, confirmăm: vă veți întâlni astăzi cu echipa noastră de design la {time}, prin video. Ați putea aduce un exemplu din munca dvs. de onboarding?"
@@ -5685,10 +5721,6 @@ msgstr "Ascuns"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "Ascuns din Posturi noi"
-
-#: src/features/resume/editor/write/outline.tsx
-msgid "Hidden sections"
-msgstr "Secțiuni ascunse"
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
@@ -5819,6 +5851,11 @@ msgstr "Cum să afișați fișierul"
 #: src/features/assistant/assistant-panel.tsx
 msgid "How well do I fit this role?"
 msgstr "Cât de bine mă potrivesc acestui rol?"
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Hue"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hungarian"
@@ -6000,6 +6037,10 @@ msgstr "Dedus"
 msgid "Inline"
 msgstr "În linie"
 
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Inline formatting"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "Perspective"
@@ -6151,6 +6192,7 @@ msgid "Issuer"
 msgstr "Emitent"
 
 #: src/features/resume/editor/check/check-panel.tsx
+#: src/features/resume/editor/check/page-layer.tsx
 msgid "Issues"
 msgstr "Probleme"
 
@@ -6481,6 +6523,7 @@ msgstr "Dispuneți textul pe orizontală. Porțiunile rotite sunt adesea elimina
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Layout"
 msgstr "Layout"
 
@@ -6785,6 +6828,10 @@ msgstr "Enumerați instrumentele și tehnologiile pe care le utilizați. Recruto
 #: src/features/career/workspace/practise.tsx
 msgid "Listening… Stop when you're done."
 msgstr "Se ascultă… Opriți când ați terminat."
+
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Lists"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Lithuanian"
@@ -7094,10 +7141,6 @@ msgstr "Potriviți această postare de locuri de muncă"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "Se potrivește cu CV-ul ({summary})."
-
-#: src/routes/builder/letter/-components/design-panel.tsx
-msgid "Matching the resume"
-msgstr "Potrivire cu CV-ul"
 
 #: src/features/career/shared.tsx
 msgid "Matching your facts"
@@ -7936,6 +7979,7 @@ msgstr "Informaţii"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/application-notes.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/resume/editor/check/writing-tab.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/notes.tsx
@@ -8163,6 +8207,10 @@ msgstr "Doar tu, până când îl distribui. Un CV poate rămâne privat, poate 
 msgid "Onsite"
 msgstr "La sediu"
 
+#: src/components/input/color-picker.tsx
+msgid "Opacity"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
@@ -8374,14 +8422,13 @@ msgstr "Pagină"
 
 #. Layout editor page label with 1-based page number
 #. placeholder {0}: pageIndex + 1
-#. placeholder {0}: row.page + 1
 #. placeholder {0}: targetPageIndex + 1
 #: src/features/resume/editor/write/entry-card.tsx
-#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Page {0}"
 msgstr "Pagina {0}"
 
+#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Page {pageNumber}"
@@ -8711,6 +8758,7 @@ msgstr "anunț"
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/homepage/tailor.tsx
+#: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "Anunț de angajare"
 
@@ -8721,6 +8769,10 @@ msgstr "anunțul din candidatura conectată"
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Posting source"
 msgstr "sursa postării de locuri de muncă"
+
+#: src/features/resume/editor/check/job-match.tsx
+msgid "Posting terms"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting terms in your resume"
@@ -9016,6 +9068,10 @@ msgstr "Public"
 msgid "Public link"
 msgstr "Link public"
 
+#: src/features/resume/share/share-panel.tsx
+msgid "Public Link"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Public profile links are optional and only used if Web research is on."
 msgstr "Linkurile de profil public sunt opționale și se folosesc doar dacă Cercetarea web este activată."
@@ -9047,6 +9103,10 @@ msgstr "Publică pagina web ca să numeri vizualizările și descărcările. Sta
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "Publică acest CV ca să se deschidă la linkul scurt și la domeniul personalizat."
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Publish Your Resume"
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Publisher"
@@ -9235,6 +9295,7 @@ msgid "Read, write and delete"
 msgstr "Citiți, scrieți și ștergeți"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/resume/editor/check/check-panel.tsx
 msgid "Readability"
 msgstr "Lizibilitate"
 
@@ -9451,6 +9512,10 @@ msgstr "Respinge"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Rejected"
 msgstr "Respins"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Rejection is just redirection."
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Reload"
@@ -9753,6 +9818,7 @@ msgstr "relua"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "CV"
@@ -9793,6 +9859,10 @@ msgstr "detalii CV-ul"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Resume file"
 msgstr "Fișier CV"
+
+#: src/routes/builder/letter/-components/design-panel.tsx
+msgid "Resume Match"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
@@ -10043,6 +10113,11 @@ msgstr "Aceeași persoană. Mai puțin de luat de la capăt."
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "S-a adăugat un exemplu de CV. Ștergeți-l oricând."
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Saturation and brightness"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -10346,10 +10421,6 @@ msgstr "Căutați din Candidaturi și din asistent și citiți pagini pe care ci
 msgid "Search job postings"
 msgstr "Căutați postări de locuri de muncă"
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Search or run…"
-msgstr "Căutați sau alergați..."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "Căutați rol, companie sau contact"
@@ -10384,6 +10455,7 @@ msgstr "Caută..."
 
 #. Placeholder in command palette input on nested pages
 #: src/features/command-palette/content.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
 msgstr "Căutare…"
 
@@ -10425,12 +10497,9 @@ msgstr "Titluri de secțiuni"
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/parser-view.tsx
+#: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
 msgstr "Secțiuni"
-
-#: src/features/resume/editor/write/write-panel.tsx
-msgid "Sections · print order"
-msgstr "Secțiuni · comanda tipărire"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
@@ -10473,6 +10542,10 @@ msgstr "Selectează..."
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "Documente selectate"
+
+#: src/routes/builder/$resumeId/-components/editor-shell.tsx
+msgid "Selection"
+msgstr ""
 
 #: src/features/homepage/footer.tsx
 msgid "Self-hosting"
@@ -10614,7 +10687,6 @@ msgstr "Configurează aplicația de autentificare"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Setări"
@@ -10684,8 +10756,12 @@ msgid "Short and polite, for the recruiter"
 msgstr "Scurt și politicos, pentru recrutor"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Short link and domain"
-msgstr "Link scurt și domeniu"
+msgid "Short link"
+msgstr ""
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Short Link and Domain"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -10781,6 +10857,10 @@ msgstr "Afișați șabloanele"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "Arată-le din nou"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Show up. Apply. Repeat."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
@@ -10978,6 +11058,10 @@ msgstr "Slovenă"
 #: src/features/applications/components/insights-view.tsx
 msgid "Small numbers, but worth noticing."
 msgstr "Cifre mici, dar demne de remarcat."
+
+#: src/components/layout/loading-screen.tsx
+msgid "Small steps, every day, add up."
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
@@ -11913,6 +11997,10 @@ msgstr "CV-ul așa cum este"
 msgid "The review couldn't finish. Try again."
 msgstr "Revizuirea nu s-a putut termina. Încearcă din nou."
 
+#: src/components/layout/loading-screen.tsx
+msgid "The right role is out there."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr "Același rând se repetă pe fiecare pagină."
@@ -12563,6 +12651,7 @@ msgid "typed"
 msgstr "scris"
 
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Typography"
 msgstr "Tipografie"
 
@@ -12788,10 +12877,6 @@ msgstr "Folosește cel mult 64 de caractere."
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Use between 6 and 64 characters."
 msgstr "Utilizați între 6 și 64 de caractere."
-
-#: src/components/input/color-picker.tsx
-msgid "Use color {color}"
-msgstr "Utilizați culoarea {color}"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
@@ -13104,8 +13189,8 @@ msgid "Web access"
 msgstr "Acces web"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Web page"
-msgstr "Pagină web"
+msgid "Web Page"
+msgstr ""
 
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Web page preview"
@@ -13576,6 +13661,10 @@ msgstr "Încă nu aveți un CV de copiat. Importați sau creați mai întâi un 
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Ați cerut anterior să fie uitat, așa că nu a fost salvat din nou."
 
+#: src/components/layout/loading-screen.tsx
+msgid "You only need one yes."
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "You partnered with engineering. How you led the work isn’t described yet."
 msgstr "Ați colaborat cu inginerii. Cum ați condus munca nu este încă descris."
@@ -13772,10 +13861,6 @@ msgstr "Marginile dvs. sunt foarte înguste."
 msgid "your message"
 msgstr "mesajul dvs."
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Your name"
-msgstr "Numele tău"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Numele și datele dvs. de contact provin dintr-un CV."
@@ -13791,6 +13876,10 @@ msgstr "Numele tău s-a schimbat pe cv. Scrisoarea a fost actualizată și ea."
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "Numele tău lipsește"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Your next opportunity is already looking for you."
+msgstr ""
 
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
@@ -13836,10 +13925,6 @@ msgstr "Cerințele dvs."
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "your resume"
 msgstr "CV-ul tău"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Your resume as a web page"
-msgstr "CV-ul tău ca pagină web"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your resume has a photo"
@@ -13890,6 +13975,10 @@ msgstr "poveștile dvs."
 msgid "Your story couldn't be loaded."
 msgstr "Povestea dvs. nu a putut fi încărcată."
 
+#: src/components/layout/loading-screen.tsx
+msgid "Your story is worth telling well."
+msgstr ""
+
 #: src/features/homepage/sections.tsx
 msgid "Your turn"
 msgstr "Rândul tău"
@@ -13915,6 +14004,7 @@ msgstr "Al dvs."
 msgid "Yours · {0}"
 msgstr "Al dvs. · {0}"
 
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "Zoom"

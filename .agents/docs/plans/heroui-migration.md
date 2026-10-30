@@ -1,6 +1,6 @@
 # Web app migration to HeroUI
 
-Status: Phases 0–4 done (October 30, 2026); Phase 5 (builder and letters) next.
+Status: Phases 0–5 done (October 30, 2026); Phase 6 (assistant and career coach chat) next.
 Date: October 29, 2026.
 
 ## Decisions
@@ -100,6 +100,9 @@ Replace the hand-built sidebar, icon rail and phone tab bar in `routes/dashboard
 - Rich text: keep the TipTap editor (HTML in and out, custom paragraph, heading, whitespace and table extensions). Pro `RichTextEditor` is JSON-based with fixed extensions. Rebuild only its toolbar and frame from HeroUI parts.
 - Keep `NumberInput` custom (Pro `NumberStepper` has no typed input or unit), restyled on `NumberField`/`InputGroup`.
 - Page canvas and paper stay as they are.
+- Visual language (owner asked for a modern, clean look, October 30, 2026; revised after review): the editor sits on `bg-background`. The bar and the body share one column grid (`--editor-columns`, set by `EditorFrame`): back and the document kind over the panel column, the name and save icon centered over the page, actions at the end. The mode switch (`ModeSwitch`, icon expand: the selected tab shows its label) sits above the panel. The panel has no surface of its own: each mode is a stack of Pro `Widget`s 12px from the window edge. The assistant column and the tablet drawer keep a card. Floating controls over the page (zoom, phone selection bar, Check's issue stepper) are `Toolbar isAttached` pills.
+
+- Done: no legacy token utilities remain in the builder, letters, Share, Check or preview files. Kept custom on purpose: `NumberInput` (an `InputGroup` with a `type="number"` input, not `NumberField`: it saves per keystroke and `picture-settings` composes it), template cards (hover, hold-to-preview and press are separate behaviours), drag handles and section/entry title buttons (dnd-kit listeners), and inline text actions inside sentences. `ChipInput` keeps dnd-kit instead of `TagGroup`. Alignment stays in the rich-text toolbar's dropdown so the toolbar fits one row in the panel. Gray nested cards that hold controls carry the `fields-on-card` utility (`index.css`), which points `--default` at the field fill so fields and secondary buttons read against the card; don't use it on a card holding `Segment` or `Tabs`. The accent swatches are a `ColorSwatchPicker` listbox, which `fieldset disabled` doesn't reach, so `DesignSource` carries `locked`. Check issues are coloured by severity (errors danger, the rest warning), on the panel and the page. `@uiw/react-color-colorful` left the web app. After the owner's review the panels became Pro `Widget`s: Write has About, then one widget per printed page (hidden sections keep their place; the entry count is a `Chip` after the title); Design has one widget per group under a sticky ghost `Segment` (icon expand) that follows the scroll; the letter panels follow the same shape. Check and Share are widgets too. The save state is an icon beside the name; its words are for screen readers and the hover title (`STATUS_WORDS`).
 
 ## Phase 6: Assistant and career coach chat
 

@@ -1046,6 +1046,7 @@ msgid "A web address is written without https://."
 msgstr "Interneto adresas užrašytas be https://."
 
 #: src/features/homepage/footer.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "Apie šią programėlę"
 
@@ -1588,6 +1589,10 @@ msgstr "AI teikėjai šiame serveryje nepasiekiami, kol nenustatytas ENCRYPTION_
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "AI teikėjų nepavyko įkelti. Įkelkite iš naujo ir bandykite dar kartą."
+
+#: src/features/resume/editor/check/writing-tab.tsx
+msgid "AI review"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Albanian"
@@ -2244,7 +2249,6 @@ msgstr "Bazinis atlyginimas"
 msgid "Base URL"
 msgstr "Bazinis URL"
 
-#: src/features/resume/editor/write/basics-card.tsx
 #: src/libs/resume/section.tsx
 msgid "Basics"
 msgstr "Pagrindai"
@@ -2858,6 +2862,10 @@ msgstr "Kodas"
 msgid "Color"
 msgstr "Spalva"
 
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Colors and levels"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Column {header} goes to"
 msgstr "Stulpelis {header} eina į"
@@ -3129,6 +3137,10 @@ msgstr "Tęsti"
 msgid "Continue as guest"
 msgstr "Tęsti kaip svečias"
 
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Contrast on white:"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Contribution clear"
 msgstr "Indėlis aiškus"
@@ -3173,7 +3185,6 @@ msgid "Copied"
 msgstr "Nukopijuota"
 
 #: src/features/career/coach-chat.tsx
-#: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/mcp.tsx
@@ -3210,6 +3221,7 @@ msgid "Copy it now. For your security, it won't be shown again."
 msgstr "Nukopijuokite jį dabar. Jūsų saugumo sumetimais jis daugiau nebus rodomas."
 
 #: src/features/homepage/share.tsx
+#: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "Nukopijuoti nuorodą"
 
@@ -3856,6 +3868,7 @@ msgstr "Užpildyti"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Motyvacinis laiškas"
 
@@ -3979,8 +3992,16 @@ msgid "Custom"
 msgstr "Pasirinktinis"
 
 #: src/features/resume/editor/design/style-groups.tsx
+msgid "Custom color"
+msgstr ""
+
+#: src/features/resume/editor/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "Pasirinktinė spalva (hex)"
+
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Custom CSS"
+msgstr ""
 
 #. Authentication provider display name in account settings
 #: src/features/settings/account/auth-hooks.ts
@@ -4360,6 +4381,10 @@ msgstr "Atjungiama jūsų {providerName} paskyra…"
 msgid "Dismiss"
 msgstr "Atmesti"
 
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "DNS records"
+msgstr ""
+
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "Dokumentacija"
@@ -4576,7 +4601,7 @@ msgstr "Piešimas sustabdytas. Puslapyje niekas nepasikeitė."
 msgid "Drafting…"
 msgstr "Kuriamas juodraštis…"
 
-#: src/features/resume/editor/write/write-panel.tsx
+#: src/features/resume/editor/write/outline.tsx
 msgid "drag · ⌥↑↓"
 msgstr "vilkite · ⌥↑↓"
 
@@ -4771,8 +4796,7 @@ msgstr "Raktažodžio redagavimas..."
 msgid "Editing session"
 msgstr "Redagavimo sesija"
 
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
 msgid "Editor mode"
 msgstr "Redagavimo režimas"
 
@@ -4959,6 +4983,10 @@ msgstr "Kas {days} d. {clock} · kitas {next}"
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "Kas 3 dienas"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Every application is a step closer."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
@@ -5574,6 +5602,10 @@ msgstr "Eikite į skydelį"
 msgid "Go to…"
 msgstr "Eikite į…"
 
+#: src/components/layout/loading-screen.tsx
+msgid "Good things take time. Keep going."
+msgstr ""
+
 #. Authentication provider display name in account settings
 #. Brand name label for Google social sign-in button
 #: src/features/auth/components/social-auth.tsx
@@ -5672,6 +5704,10 @@ msgstr "Pagalba ir dokumentai"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "Padėkite man paversti pasiekimą istorija: situacija, užduotis, veiksmas, rezultatas ir refleksija."
 
+#: src/components/input/color-picker.tsx
+msgid "Hex color"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
 msgstr "Sveiki, Alex, malonu patvirtinti: šiandien {time} susitiksite su mūsų dizaino komanda vaizdo skambučiu. Ar galėtumėte atsinešti savo darbo su naudotojų įvedimu pavyzdį?"
@@ -5685,10 +5721,6 @@ msgstr "Paslėptas"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "Paslėpta iš naujų pozicijų"
-
-#: src/features/resume/editor/write/outline.tsx
-msgid "Hidden sections"
-msgstr "Paslėptos skiltys"
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
@@ -5819,6 +5851,11 @@ msgstr "Kaip parodyti failą"
 #: src/features/assistant/assistant-panel.tsx
 msgid "How well do I fit this role?"
 msgstr "Kaip man tinka šis vaidmuo?"
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Hue"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hungarian"
@@ -6000,6 +6037,10 @@ msgstr "Numanoma"
 msgid "Inline"
 msgstr "Įterptinis"
 
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Inline formatting"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "Įžvalgos"
@@ -6151,6 +6192,7 @@ msgid "Issuer"
 msgstr "Leidėjas"
 
 #: src/features/resume/editor/check/check-panel.tsx
+#: src/features/resume/editor/check/page-layer.tsx
 msgid "Issues"
 msgstr "Problemos"
 
@@ -6481,6 +6523,7 @@ msgstr "Išdėstykite tekstą horizontaliai. Pasukti teksto fragmentai dažnai p
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Layout"
 msgstr "Išdėstymas"
 
@@ -6785,6 +6828,10 @@ msgstr "Išvardykite naudojamus įrankius ir technologijas. Darbdaviai pagal įg
 #: src/features/career/workspace/practise.tsx
 msgid "Listening… Stop when you're done."
 msgstr "Klausomasi… Baigę sustabdykite."
+
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Lists"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Lithuanian"
@@ -7094,10 +7141,6 @@ msgstr "Suderinkite šį darbo skelbimą"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "Atitinka gyvenimo aprašymą ({summary})."
-
-#: src/routes/builder/letter/-components/design-panel.tsx
-msgid "Matching the resume"
-msgstr "Atitinka gyvenimo aprašymą"
 
 #: src/features/career/shared.tsx
 msgid "Matching your facts"
@@ -7936,6 +7979,7 @@ msgstr "Informacija"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/application-notes.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/resume/editor/check/writing-tab.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/notes.tsx
@@ -8163,6 +8207,10 @@ msgstr "Tik tu, kol juo nepasidalinsi. Gyvenimo aprašymas gali likti privatus, 
 msgid "Onsite"
 msgstr "Biure"
 
+#: src/components/input/color-picker.tsx
+msgid "Opacity"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
@@ -8374,14 +8422,13 @@ msgstr "Puslapis"
 
 #. Layout editor page label with 1-based page number
 #. placeholder {0}: pageIndex + 1
-#. placeholder {0}: row.page + 1
 #. placeholder {0}: targetPageIndex + 1
 #: src/features/resume/editor/write/entry-card.tsx
-#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Page {0}"
 msgstr "Puslapis {0}"
 
+#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Page {pageNumber}"
@@ -8711,6 +8758,7 @@ msgstr "skelbimas"
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/homepage/tailor.tsx
+#: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "Darbo skelbimas"
 
@@ -8721,6 +8769,10 @@ msgstr "darbo skelbimas iš susietos darbo paraiškos"
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Posting source"
 msgstr "darbo skelbimo šaltinis"
+
+#: src/features/resume/editor/check/job-match.tsx
+msgid "Posting terms"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting terms in your resume"
@@ -9016,6 +9068,10 @@ msgstr "Viešas"
 msgid "Public link"
 msgstr "Vieša nuoroda"
 
+#: src/features/resume/share/share-panel.tsx
+msgid "Public Link"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Public profile links are optional and only used if Web research is on."
 msgstr "Viešų profilių nuorodos neprivalomos ir naudojamos tik tada, kai įjungtas žiniatinklio tyrimas."
@@ -9047,6 +9103,10 @@ msgstr "Paskelbkite tinklalapį, kad būtų skaičiuojamos peržiūros ir atsisi
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "Paskelbkite šį gyvenimo aprašymą, kad jis atsidarytų jūsų trumpąja nuoroda ir savu domenu."
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Publish Your Resume"
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Publisher"
@@ -9235,6 +9295,7 @@ msgid "Read, write and delete"
 msgstr "Skaityti, rašyti ir ištrinti"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/resume/editor/check/check-panel.tsx
 msgid "Readability"
 msgstr "Skaitomumas"
 
@@ -9451,6 +9512,10 @@ msgstr "Atmesti"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Rejected"
 msgstr "Atmesta"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Rejection is just redirection."
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Reload"
@@ -9753,6 +9818,7 @@ msgstr "gyvenimo aprašymas"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "Gyvenimo aprašymas"
@@ -9793,6 +9859,10 @@ msgstr "gyvenimo aprašymo detalės"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Resume file"
 msgstr "Gyvenimo aprašymo failas"
+
+#: src/routes/builder/letter/-components/design-panel.tsx
+msgid "Resume Match"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
@@ -10043,6 +10113,11 @@ msgstr "Tas pats jūs. Mažiau pradėjimo iš naujo."
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "Pridėtas gyvenimo aprašymo pavyzdys. Ištrinkite jį bet kada."
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Saturation and brightness"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -10346,10 +10421,6 @@ msgstr "Ieškokite darbo paraiškų ir asistento bei skaitykite puslapius, kuri�
 msgid "Search job postings"
 msgstr "Ieškokite darbo skelbimų"
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Search or run…"
-msgstr "Ieškokite arba paleiskite…"
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "Ieškokite vaidmens, įmonės ar kontakto"
@@ -10384,6 +10455,7 @@ msgstr "Ieškoti..."
 
 #. Placeholder in command palette input on nested pages
 #: src/features/command-palette/content.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
 msgstr "Paieška…"
 
@@ -10425,12 +10497,9 @@ msgstr "Skyrių antraštės"
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/parser-view.tsx
+#: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
 msgstr "Skyriai"
-
-#: src/features/resume/editor/write/write-panel.tsx
-msgid "Sections · print order"
-msgstr "Skyriai · spausdinimo tvarka"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
@@ -10473,6 +10542,10 @@ msgstr "Pasirinkite..."
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "Pasirinkti dokumentai"
+
+#: src/routes/builder/$resumeId/-components/editor-shell.tsx
+msgid "Selection"
+msgstr ""
 
 #: src/features/homepage/footer.tsx
 msgid "Self-hosting"
@@ -10614,7 +10687,6 @@ msgstr "Nustatykite autentifikavimo programą"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "Nustatymai"
@@ -10684,8 +10756,12 @@ msgid "Short and polite, for the recruiter"
 msgstr "Trumpas ir mandagus, skirtas verbuotojui"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Short link and domain"
-msgstr "Trumpoji nuoroda ir domenas"
+msgid "Short link"
+msgstr ""
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Short Link and Domain"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -10781,6 +10857,10 @@ msgstr "Rodyti šablonus"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "Parodykite juos dar kartą"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Show up. Apply. Repeat."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
@@ -10978,6 +11058,10 @@ msgstr "Slovėnų"
 #: src/features/applications/components/insights-view.tsx
 msgid "Small numbers, but worth noticing."
 msgstr "Maži skaičiai, bet verti dėmesio."
+
+#: src/components/layout/loading-screen.tsx
+msgid "Small steps, every day, add up."
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
@@ -11913,6 +11997,10 @@ msgstr "Gyvenimo aprašymas toks, koks yra"
 msgid "The review couldn't finish. Try again."
 msgstr "Nepavyko baigti peržiūros. Bandykite dar kartą."
 
+#: src/components/layout/loading-screen.tsx
+msgid "The right role is out there."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr "Ta pati eilutė kartojasi kiekviename puslapyje."
@@ -12563,6 +12651,7 @@ msgid "typed"
 msgstr "įvestas"
 
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Typography"
 msgstr "Tipografija"
 
@@ -12788,10 +12877,6 @@ msgstr "Naudokite ne daugiau kaip 64 simbolius."
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Use between 6 and 64 characters."
 msgstr "Įveskite nuo 6 iki 64 simbolių."
-
-#: src/components/input/color-picker.tsx
-msgid "Use color {color}"
-msgstr "Naudokite spalvą {color}"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
@@ -13104,8 +13189,8 @@ msgid "Web access"
 msgstr "Prieiga prie interneto"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Web page"
-msgstr "Tinklalapis"
+msgid "Web Page"
+msgstr ""
 
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Web page preview"
@@ -13576,6 +13661,10 @@ msgstr "Dar neturite gyvenimo aprašymo, kurį galėtumėte nukopijuoti. Pirmiau
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Anksčiau tai pamiršote, todėl neišsaugota dar kartą."
 
+#: src/components/layout/loading-screen.tsx
+msgid "You only need one yes."
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "You partnered with engineering. How you led the work isn’t described yet."
 msgstr "Bendradarbiavote su inžinieriais. Kaip vadovavote darbui, dar neaprašyta."
@@ -13772,10 +13861,6 @@ msgstr "Jūsų paraštės labai siauros."
 msgid "your message"
 msgstr "jūsų žinutė"
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Your name"
-msgstr "Jūsų vardas"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "Jūsų vardas ir kontaktiniai duomenys pateikti iš gyvenimo aprašymo."
@@ -13791,6 +13876,10 @@ msgstr "Jūsų vardas gyvenimo aprašyme pasikeitė. Laiškas taip pat atnaujint
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "Trūksta jūsų vardo"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Your next opportunity is already looking for you."
+msgstr ""
 
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
@@ -13836,10 +13925,6 @@ msgstr "Jūsų reikalavimai"
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "your resume"
 msgstr "tavo gyvenimo aprašymas"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Your resume as a web page"
-msgstr "Jūsų gyvenimo aprašymas kaip tinklalapis"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your resume has a photo"
@@ -13890,6 +13975,10 @@ msgstr "jūsų istorijos"
 msgid "Your story couldn't be loaded."
 msgstr "Nepavyko įkelti jūsų istorijos."
 
+#: src/components/layout/loading-screen.tsx
+msgid "Your story is worth telling well."
+msgstr ""
+
 #: src/features/homepage/sections.tsx
 msgid "Your turn"
 msgstr "Jūsų eilė"
@@ -13915,6 +14004,7 @@ msgstr "Jūsų"
 msgid "Yours · {0}"
 msgstr "Jūsų · {0}"
 
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "Mastelio keitimas"
