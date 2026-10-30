@@ -4,7 +4,7 @@ import type { MessageDescriptor } from "@lingui/core";
 import type { KeyboardEvent, ReactNode } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
+import { Button, Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
 import { msg, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -82,7 +82,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 	};
 	const fields = (
 		<>
-			{hint && <p className="col-span-full text-xs text-ink-3">{i18n._(hint)}</p>}
+			{hint && <p className="col-span-full text-xs text-muted">{i18n._(hint)}</p>}
 			<EntryFields type={section.type} entry={entry} write={write} page={page} autoFocus={autoFocus} />
 		</>
 	);
@@ -100,17 +100,17 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 			data-entry-id={entryId}
 			style={{ transform: CSS.Translate.toString(transform), transition: transition }}
 			className={cn(
-				"group/entry relative scroll-mt-[60px] rounded-lg border border-line bg-surface transition-[border-color,box-shadow] duration-quick ease-enter",
-				open && "border-accent shadow-e1",
-				isDragging && "z-10 bg-raised shadow-e2",
+				"group/entry fields-on-card relative scroll-mt-[60px] rounded-xl bg-background transition-shadow duration-quick ease-enter",
+				isDragging && "z-10 bg-surface shadow-overlay",
 			)}
 		>
 			<div className="flex items-center gap-0.5 pe-1">
+				{/* Raw buttons: dnd-kit's listeners and the ⌥↑ / ⌥↓ key handler need the native element. */}
 				{!locked && (
 					<button
 						type="button"
 						aria-label={t`Reorder ${title || t`Untitled`}`}
-						className="-ms-px flex h-10 w-5 shrink-0 cursor-grab items-center justify-center text-ink-3 opacity-0 transition-opacity duration-quick group-hover/entry:opacity-100 focus-visible:opacity-100 active:cursor-grabbing"
+						className="flex h-10 w-5 shrink-0 cursor-grab items-center justify-center rounded-md text-muted opacity-0 transition-opacity duration-quick outline-none group-hover/entry:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-focus active:cursor-grabbing"
 						{...attributes}
 						{...listeners}
 					>
@@ -124,12 +124,12 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 					onClick={toggle}
 					onKeyDown={onTitleKeyDown}
 					className={cn(
-						"flex min-w-0 flex-1 flex-col items-start gap-0.5 rounded-lg py-2.5 pe-2 text-start",
+						"flex min-w-0 flex-1 cursor-(--cursor-interactive) flex-col items-start gap-0.5 rounded-lg py-2.5 pe-2 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus",
 						locked ? "ps-3" : "ps-0.5",
 					)}
 				>
 					<span className="flex max-w-full items-center gap-2">
-						<span className={cn("truncate text-[13px] leading-[18px] font-semibold", !title && "text-ink-3")}>
+						<span className={cn("truncate text-[13px] leading-[18px] font-semibold", !title && "text-muted")}>
 							{title || <Trans>Untitled</Trans>}
 						</span>
 						{draft && (
@@ -143,7 +143,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 							</Chip>
 						)}
 					</span>
-					{meta && <span className="max-w-full truncate text-xs leading-4 text-ink-3">{meta}</span>}
+					{meta && <span className="max-w-full truncate text-xs leading-4 text-muted">{meta}</span>}
 				</button>
 
 				{open && !locked && (
@@ -151,7 +151,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 						icon="trash"
 						label={t`Delete entry`}
 						size="sm"
-						className="text-ink-2 hover:bg-danger-soft hover:text-danger-text"
+						className="text-muted hover:bg-danger-soft hover:text-danger"
 						onPress={() => deleteEntry(section, entryId)}
 					/>
 				)}
@@ -162,10 +162,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 				<Disclosure isExpanded={open}>
 					<Disclosure.Content>
 						<Disclosure.Body>
-							<fieldset
-								disabled={locked}
-								className="m-0 grid min-w-0 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
-							>
+							<fieldset disabled={locked} className="m-0 grid min-w-0 gap-y-3 border-0 px-3 pt-1 pb-4">
 								{fields}
 							</fieldset>
 						</Disclosure.Body>
@@ -215,17 +212,13 @@ function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }
 			animate={{ transform: "translateX(0%)", transition: { duration: D3, ease: EASE } }}
 			exit={{ transform: offscreen, transition: { duration: D3 * EXIT, ease: EASE } }}
 		>
-			<div className="flex h-14 shrink-0 items-center gap-1 border-b border-line px-1.5">
-				<button
-					type="button"
-					onClick={onBack}
-					className="flex h-11 items-center gap-0.5 rounded-lg px-2 text-[15px] font-medium text-accent-text"
-				>
+			<div className="flex h-14 shrink-0 items-center gap-1 border-b border-separator px-1.5">
+				<Button variant="ghost" size="lg" onPress={onBack} className="gap-0.5 px-2 text-accent-soft-foreground">
 					<Icon name="caret-left" size={24} />
 					{sectionTitle}
-				</button>
+				</Button>
 				<span className="min-w-0 flex-1" />
-				{!locked && <IconButton icon="trash" label={t`Delete entry`} className="text-danger-text" onPress={onDelete} />}
+				{!locked && <IconButton icon="trash" label={t`Delete entry`} className="text-danger" onPress={onDelete} />}
 			</div>
 			<fieldset
 				disabled={locked}

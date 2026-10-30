@@ -61,7 +61,7 @@ export function ResumePreviewLoader({
 				return (
 					<figure key={pageNumber} className="shrink-0">
 						{showPageNumbers ? (
-							<figcaption className="mb-1 text-[0.625rem] font-medium text-ink-3">
+							<figcaption className="mb-1 text-[0.625rem] font-medium text-muted">
 								Page {pageNumber} of {pageCount}
 							</figcaption>
 						) : null}
@@ -71,7 +71,7 @@ export function ResumePreviewLoader({
 							aria-label={failure ? undefined : `Loading resume page ${pageNumber} of ${pageCount}`}
 							style={pageSize}
 							className={cn(
-								"flex aspect-page items-center justify-center overflow-hidden rounded-md bg-white text-ink-3",
+								"flex aspect-page items-center justify-center overflow-hidden rounded-md bg-white text-muted",
 								pageClassName,
 							)}
 						>

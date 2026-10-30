@@ -14,9 +14,9 @@ type RowProps = { label: ReactNode; children: ReactNode };
 
 function Row({ label, children }: RowProps) {
 	return (
-		<div className="grid grid-cols-[7.5rem_minmax(0,1fr)] gap-4 border-t border-line py-2.5 first:border-t-0">
-			<dt className="text-ink-3">{label}</dt>
-			<dd className="min-w-0 break-words text-ink">{children}</dd>
+		<div className="grid grid-cols-[7.5rem_minmax(0,1fr)] gap-4 py-2">
+			<dt className="text-muted">{label}</dt>
+			<dd className="min-w-0 break-words text-foreground">{children}</dd>
 		</div>
 	);
 }
@@ -76,7 +76,7 @@ export function DocumentDetails({ descriptionId }: DocumentDetailsProps) {
 									href={url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="mt-0.5 block truncate font-mono text-[13px] text-accent-text underline-offset-2 hover:underline"
+									className="mt-0.5 block truncate font-mono text-[13px] text-accent underline-offset-2 hover:underline"
 								>
 									{url.replace(/^https?:\/\//, "")}
 								</a>

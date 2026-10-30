@@ -1,9 +1,20 @@
 import type { DensityId, FontPairingId, MarginId } from "./presets";
+import type { Color } from "@heroui/react";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
-import type { CSSProperties } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Button, Input, Radio, RadioGroup, Slider } from "@heroui/react";
+import { RadioButtonGroup, Segment } from "@heroui-pro/react";
+import {
+	Button,
+	ColorArea,
+	ColorField,
+	ColorPicker,
+	ColorSlider,
+	ColorSwatch,
+	ColorSwatchPicker,
+	Label,
+	parseColor,
+	Slider,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createContext, useContext, useId, useState } from "react";
@@ -20,7 +31,6 @@ import {
 	darkenForWhite,
 	FONT_PAIRINGS,
 	hexToRgba,
-	isValidHex,
 	matchDensity,
 	matchFontPairing,
 	matchMargins,
@@ -29,14 +39,19 @@ import {
 } from "./presets";
 import { Combobox } from "@/components/ui/combobox";
 import { getLocaleOptions } from "@/features/locale/locale-options";
-import { useResumeData, useUpdateResumeData } from "@/features/resume/builder/draft";
+import { useIsResumeLocked, useResumeData, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 type Metadata = Pick<ResumeData["metadata"], "typography" | "design" | "page">;
 
 /** Edits the design; `key` names the control, so dragging a slider is one undo step. */
 type DesignWriter = (key: string, mutate: (metadata: WritableDraft<Metadata>) => void, discrete?: boolean) => void;
 
-export type DesignSource = { metadata: Metadata | undefined; write: DesignWriter };
+export type DesignSource = {
+	metadata: Metadata | undefined;
+	write: DesignWriter;
+	/** Read-only: disables controls a surrounding `fieldset disabled` can't reach (the accent swatches). */
+	locked?: boolean;
+};
 
 const DesignSourceContext = createContext<DesignSource | null>(null);
 
@@ -47,9 +62,11 @@ export function useDesign(): DesignSource {
 	const source = useContext(DesignSourceContext);
 	const data = useResumeData();
 	const updateResumeData = useUpdateResumeData();
+	const locked = useIsResumeLocked();
 	if (source) return source;
 	return {
 		metadata: data?.metadata,
+		locked,
 		write: (key, mutate, discrete = false) =>
 			updateResumeData(
 				(draft) => mutate(draft.metadata),
@@ -57,6 +74,13 @@ export function useDesign(): DesignSource {
 			),
 	};
 }
+
+/** A segment option that shares the row and keeps the whole control inside a 300px panel. */
+export const SEGMENT_ITEM = "flex-1 px-2";
+
+// A selectable row: a quiet card that takes the accent when chosen. Siblings share the height.
+const OPTION_ROW =
+	"h-12 flex-row items-center gap-3 rounded-xl border-0 bg-surface-secondary px-4 py-0 data-selected:bg-accent-soft";
 
 const familiesLabel = (heading: string, body: string) => (heading === body ? heading : `${heading} + ${body}`);
 
@@ -68,7 +92,6 @@ type TypeGroupProps = {
 /** Type: five font pairings (or any font, in Advanced), the text size (9–12.5 pt) and density. */
 export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 	const { metadata, write } = useDesign();
-	const sizeLabelId = useId();
 	if (!metadata) return null;
 
 	const pairing = matchFontPairing(metadata);
@@ -78,50 +101,46 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 
 	return (
 		<div className="grid gap-4">
-			<div className="grid gap-1">
-				<RadioGroup
+			<div className="grid gap-2">
+				<RadioButtonGroup
 					aria-label={t`Font pairing`}
 					value={pairing ?? null}
 					onChange={(value) => write("pairing", (draft) => applyFontPairing(draft, value as FontPairingId), true)}
-					className="grid gap-1"
+					className="flex-col gap-2"
 				>
 					{FONT_PAIRINGS.map((option) => (
-						<Radio key={option.id} value={option.id} className="mt-0! w-full">
-							<Radio.Content className="flex h-12 w-full cursor-pointer items-center gap-3 rounded-lg border border-line px-3 text-start font-normal transition-colors duration-quick hover:bg-hover data-selected:border-accent data-selected:bg-accent-soft data-selected:hover:bg-accent-soft">
+						<RadioButtonGroup.Item key={option.id} value={option.id} className={OPTION_ROW}>
+							<RadioButtonGroup.ItemContent className="flex-row items-baseline gap-3 pe-7">
 								<span className="text-sm font-medium">{option.label}</span>
-								<span className="truncate text-xs text-ink-3">{familiesLabel(option.heading, option.body)}</span>
-								{pairing === option.id && <Icon name="check" size={18} className="ms-auto text-accent-text" />}
-							</Radio.Content>
-						</Radio>
+								<span className="truncate text-xs text-muted">{familiesLabel(option.heading, option.body)}</span>
+							</RadioButtonGroup.ItemContent>
+							<RadioButtonGroup.Indicator className="end-3 top-1/2 -translate-y-1/2">
+								<Icon name="check" />
+							</RadioButtonGroup.Indicator>
+						</RadioButtonGroup.Item>
 					))}
-				</RadioGroup>
+				</RadioButtonGroup>
 
 				{onCustomFonts && (
-					<button
-						type="button"
-						onClick={onCustomFonts}
-						className="flex h-12 cursor-pointer items-center gap-3 rounded-lg border border-dashed border-line px-3 text-start transition-colors duration-quick hover:bg-hover"
+					<Button
+						variant="ghost"
+						fullWidth
+						onPress={onCustomFonts}
+						className="h-12 justify-start gap-3 rounded-xl border border-dashed border-border px-4 text-start font-normal"
 					>
 						<span className="text-sm font-medium">
 							<Trans>Custom</Trans>
 						</span>
-						<span className="truncate text-xs text-ink-3">
+						<span className="truncate text-xs text-muted">
 							{pairing ? <Trans>Any font, in Advanced</Trans> : familiesLabel(heading.fontFamily, body.fontFamily)}
 						</span>
-						<Icon name="arrow-down" size={18} className="ms-auto text-ink-3" />
-					</button>
+						<Icon name="arrow-down" size={18} className="ms-auto text-muted" />
+					</Button>
 				)}
 			</div>
 
-			<div className="grid gap-2">
-				<div className="flex items-center justify-between text-[13px]">
-					<span id={sizeLabelId} className="font-medium">
-						<Trans>Text size</Trans>
-					</span>
-					<span className="font-mono text-xs text-ink-2">{size} pt</span>
-				</div>
+			<div className="grid gap-1.5">
 				<Slider
-					aria-labelledby={sizeLabelId}
 					minValue={TEXT_SIZE.min}
 					maxValue={TEXT_SIZE.max}
 					step={TEXT_SIZE.step}
@@ -130,18 +149,23 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 						write("size", (draft) => applyTextSize(draft, Array.isArray(value) ? (value[0] ?? size) : value))
 					}
 				>
+					<Label>
+						<Trans>Text size</Trans>
+					</Label>
+					{/* The stored size, not the clamped thumb: an exact size from Advanced can sit outside the range. */}
+					<Slider.Output className="text-muted">{size} pt</Slider.Output>
 					<Slider.Track>
 						<Slider.Fill />
 						<Slider.Thumb />
 					</Slider.Track>
 				</Slider>
-				<span className="text-xs text-ink-3">
+				<span className="text-xs text-muted">
 					<Trans>10–11 recommended</Trans>
 				</span>
 			</div>
 
 			<div className="grid gap-2">
-				<span className="text-[13px] font-medium">
+				<span className="text-sm font-medium">
 					<Trans>Density</Trans>
 				</span>
 				<Segment
@@ -150,13 +174,13 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 					onSelectionChange={(key) => write("density", (draft) => applyDensity(draft, key as DensityId), true)}
 					className="w-full"
 				>
-					<Segment.Item id="compact" className="flex-1">
+					<Segment.Item id="compact" className={SEGMENT_ITEM}>
 						<Trans>Compact</Trans>
 					</Segment.Item>
-					<Segment.Item id="normal" className="flex-1">
+					<Segment.Item id="normal" className={SEGMENT_ITEM}>
 						<Trans>Normal</Trans>
 					</Segment.Item>
-					<Segment.Item id="roomy" className="flex-1">
+					<Segment.Item id="roomy" className={SEGMENT_ITEM}>
 						<Trans>Roomy</Trans>
 					</Segment.Item>
 				</Segment>
@@ -165,74 +189,108 @@ export function TypeGroup({ onCustomFonts }: TypeGroupProps) {
 	);
 }
 
-/** Color: eight accents or a custom hex, with its contrast on white and a darker shade when it's too light. */
+/** Color: eight accents or any custom colour, with its contrast on white and a darker shade when it's too light. */
 export function ColorGroup() {
-	const { metadata, write } = useDesign();
-	const current = metadata ? (rgbaToHex(metadata.design.colors.primary) ?? "#000000") : "#000000";
-	const [typed, setTyped] = useState<string | null>(null);
+	const { metadata, write, locked = false } = useDesign();
+	// A stored grey or black has no hue: keep the colour last dragged to while it still matches, so the thumbs stay put.
+	const [picked, setPicked] = useState<Color | null>(null);
 	if (!metadata) return null;
 
-	const hex = typed ?? current;
-	const valid = isValidHex(hex);
-	const normalized = valid ? `#${hex.replace("#", "").toUpperCase()}` : current;
-	const ratio = contrastOnWhite(normalized);
-	const tooLight = valid && ratio < 4.5;
+	const current = rgbaToHex(metadata.design.colors.primary) ?? "#000000";
+	const color = picked?.toString("hex") === current ? picked : parseColor(current);
+	const ratio = contrastOnWhite(current);
+	const tooLight = ratio < 4.5;
 
-	const setAccent = (next: string, discrete = true) =>
+	const setAccent = (next: Color, discrete = true) =>
 		write(
 			"accent",
 			(draft) => {
-				draft.design.colors.primary = hexToRgba(next);
+				draft.design.colors.primary = hexToRgba(next.toString("hex"));
 			},
 			discrete,
 		);
 
 	return (
-		<div className="grid gap-3">
-			<RadioGroup
+		<div className="@container grid gap-4">
+			<ColorSwatchPicker
 				aria-label={t`Accent color`}
-				value={ACCENTS.some((accent) => accent.hex === current) ? current : null}
-				onChange={(value) => {
-					setTyped(null);
-					setAccent(value);
-				}}
-				// Touch: 48px swatches, four to a row.
-				className="grid grid-cols-8 gap-1.5 pointer-coarse:grid-cols-[repeat(4,3rem)] pointer-coarse:justify-between pointer-coarse:gap-y-3"
+				value={current}
+				onChange={(next) => setAccent(next)}
+				size="lg"
+				// Four to a row (48px swatches on touch); eight once the group is wide enough to hold them.
+				className="grid grid-cols-4 justify-items-center gap-2 pointer-coarse:gap-3 @xs:pointer-fine:grid-cols-8 @xs:pointer-fine:gap-1"
 			>
 				{ACCENTS.map((accent) => (
-					<Radio key={accent.hex} value={accent.hex} className="mt-0! w-full" aria-label={accent.label}>
-						<Radio.Content
-							aria-label={accent.label}
-							className="block aspect-square w-full cursor-pointer rounded-sm transition-[box-shadow,scale] duration-quick ease-enter active:scale-[0.97] data-selected:shadow-[0_0_0_2px_var(--surface),0_0_0_4px_var(--swatch)]"
-							style={{ backgroundColor: accent.hex, "--swatch": accent.hex } as CSSProperties}
-						/>
-					</Radio>
+					<ColorSwatchPicker.Item
+						key={accent.hex}
+						color={accent.hex}
+						aria-label={accent.label}
+						isDisabled={locked}
+						className="pointer-coarse:size-12"
+					>
+						<ColorSwatchPicker.Swatch />
+						<ColorSwatchPicker.Indicator />
+					</ColorSwatchPicker.Item>
 				))}
-			</RadioGroup>
+			</ColorSwatchPicker>
 
-			<div className="flex items-center gap-2">
-				<span className="size-9 shrink-0 rounded-lg border border-line-2" style={{ backgroundColor: normalized }} />
-				<Input
-					aria-label={t`Custom color (hex)`}
-					fullWidth
-					value={hex}
-					spellCheck={false}
-					className="font-mono"
-					onChange={(event) => {
-						setTyped(event.target.value);
-						if (isValidHex(event.target.value)) setAccent(`#${event.target.value.replace("#", "")}`, false);
+			<div className="flex items-center gap-3">
+				<ColorPicker
+					value={color}
+					onChange={(next) => {
+						setPicked(next);
+						setAccent(next, false);
 					}}
-					onBlur={() => setTyped(null)}
-				/>
-				<span className={cn("shrink-0 font-mono text-xs", tooLight ? "text-warn-text" : "text-ink-3")}>
-					{ratio.toFixed(1)}:1
-				</span>
+				>
+					<ColorPicker.Trigger aria-label={t`Custom color`} className="shrink-0 rounded-full">
+						<ColorSwatch size="lg" />
+					</ColorPicker.Trigger>
+					<ColorPicker.Popover placement="bottom start" className="w-64">
+						<ColorArea
+							aria-label={t`Saturation and brightness`}
+							colorSpace="hsb"
+							xChannel="saturation"
+							yChannel="brightness"
+							className="w-full"
+						>
+							<ColorArea.Thumb />
+						</ColorArea>
+						<ColorSlider aria-label={t`Hue`} channel="hue" colorSpace="hsb">
+							<ColorSlider.Track>
+								<ColorSlider.Thumb />
+							</ColorSlider.Track>
+						</ColorSlider>
+					</ColorPicker.Popover>
+				</ColorPicker>
+
+				<ColorField
+					aria-label={t`Custom color (hex)`}
+					value={color}
+					onChange={(next) => {
+						if (!next) return;
+						setPicked(null);
+						setAccent(next);
+					}}
+					className="min-w-0 flex-1"
+				>
+					<ColorField.Group variant="secondary" fullWidth>
+						<ColorField.Input className="font-mono" />
+						<ColorField.Suffix
+							className={cn("pe-3 font-mono text-xs tabular-nums", tooLight ? "text-warning" : "text-muted")}
+						>
+							<span className="sr-only">
+								<Trans>Contrast on white:</Trans>
+							</span>
+							{ratio.toFixed(1)}:1
+						</ColorField.Suffix>
+					</ColorField.Group>
+				</ColorField>
 			</div>
 
 			{tooLight && (
-				<div className="grid gap-2 rounded-lg bg-warn-soft p-3 text-[13px] leading-[19px] text-warn-text" role="status">
+				<div className="grid gap-2 rounded-xl bg-warning-soft p-3 text-sm text-warning-soft-foreground" role="status">
 					<span className="flex gap-2">
-						<Icon name="circle-half" size={20} />
+						<Icon name="circle-half" size={20} className="shrink-0" />
 						<Trans>Too light for headings on white. It may be hard to read and print faintly.</Trans>
 					</span>
 					<Button
@@ -240,8 +298,8 @@ export function ColorGroup() {
 						variant="secondary"
 						className="w-fit"
 						onPress={() => {
-							setTyped(null);
-							setAccent(darkenForWhite(normalized));
+							setPicked(null);
+							setAccent(parseColor(darkenForWhite(current)));
 						}}
 					>
 						<Trans>Use a darker shade</Trans>
@@ -249,7 +307,7 @@ export function ColorGroup() {
 				</div>
 			)}
 
-			<p className="text-xs leading-4 text-ink-3">
+			<p className="text-xs text-muted">
 				<Trans>
 					Accent is used for headings, icons and the header band. Body text stays near-black for print and ATS.
 				</Trans>
@@ -270,7 +328,7 @@ export function PageGroup() {
 	return (
 		<div className="grid gap-4">
 			<div className="grid gap-2">
-				<span className="text-[13px] font-medium">
+				<span className="text-sm font-medium">
 					<Trans>Paper</Trans>
 				</span>
 				<Segment
@@ -287,23 +345,24 @@ export function PageGroup() {
 					}
 					className="w-full"
 				>
-					<Segment.Item id="letter" className="flex-1">
+					<Segment.Item id="letter" className={SEGMENT_ITEM}>
 						<Trans context="US Letter paper size (8.5 × 11 in), shown beside A4">Letter</Trans>
 					</Segment.Item>
-					<Segment.Item id="a4" className="flex-1">
+					<Segment.Item id="a4" className={SEGMENT_ITEM}>
 						A4
 					</Segment.Item>
-					<Segment.Item id="free-form" className="flex-1">
+					<Segment.Item id="free-form" className={SEGMENT_ITEM}>
 						<Trans>Free-form</Trans>
 					</Segment.Item>
 				</Segment>
 			</div>
 
 			<div className="grid gap-2">
-				<label htmlFor={languageId} className="text-[13px] font-medium">
+				<label htmlFor={languageId} className="text-sm font-medium">
 					<Trans>Language</Trans>
 				</label>
 				<Combobox
+					variant="secondary"
 					id={languageId}
 					options={getLocaleOptions()}
 					value={page.locale}
@@ -317,13 +376,13 @@ export function PageGroup() {
 						)
 					}
 				/>
-				<span className="text-xs text-ink-3">
+				<span className="text-xs text-muted">
 					<Trans>Changes section titles and date words only, not your content.</Trans>
 				</span>
 			</div>
 
 			<div className="grid gap-2">
-				<span className="text-[13px] font-medium">
+				<span className="text-sm font-medium">
 					<Trans>Margins</Trans>
 				</span>
 				<Segment
@@ -332,13 +391,13 @@ export function PageGroup() {
 					onSelectionChange={(key) => write("margins", (draft) => applyMargins(draft, key as MarginId), true)}
 					className="w-full"
 				>
-					<Segment.Item id="narrow" className="flex-1">
+					<Segment.Item id="narrow" className={SEGMENT_ITEM}>
 						<Trans>Narrow</Trans>
 					</Segment.Item>
-					<Segment.Item id="normal" className="flex-1">
+					<Segment.Item id="normal" className={SEGMENT_ITEM}>
 						<Trans>Normal</Trans>
 					</Segment.Item>
-					<Segment.Item id="wide" className="flex-1">
+					<Segment.Item id="wide" className={SEGMENT_ITEM}>
 						<Trans>Wide</Trans>
 					</Segment.Item>
 				</Segment>

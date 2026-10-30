@@ -1,10 +1,11 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
+import { Widget } from "@heroui-pro/react";
 import { Button, Disclosure, Input, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { generateId, getInitials } from "@rezumi/utils/string";
+import { generateId } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { TextField, validateEmail, WebsiteField } from "./fields";
@@ -21,8 +22,8 @@ function useBasicsWriter() {
 }
 
 /**
- * The Basics card: name and "headline · location" with an initials avatar, opening to the photo, contact
- * fields and custom fields. The page header selects it.
+ * The About widget: the page header's details. Its header names it and, closed, shows "name · headline"; open, it
+ * holds the photo, contact fields and custom fields. Selecting the header on the page opens it.
  */
 export function BasicsCard({ locked }: { locked: boolean }) {
 	const basics = useCurrentBuilderResumeSelector((resume) => resume.data.basics);
@@ -39,76 +40,79 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 	});
 
 	return (
-		<section
+		<Widget
 			id="sidebar-basics"
-			aria-label={t`Basics`}
+			role="region"
+			aria-label={t`About`}
 			className={cn(
-				"scroll-mt-[60px] rounded-xl border border-line bg-surface transition-[border-color] duration-quick",
-				selected && "border-accent",
+				"scroll-mt-[60px] transition-shadow duration-quick",
+				selected && "ring-2 ring-accent",
+				!open && "pb-0.5",
 			)}
 		>
 			<Disclosure isExpanded={open} onExpandedChange={(next) => useEditorStore.setState({ basicsOpen: next })}>
-				<Disclosure.Heading>
-					<Disclosure.Trigger className="flex w-full items-center gap-3 rounded-xl p-3 text-start">
-						<span
-							aria-hidden="true"
-							className="grid size-10 shrink-0 place-items-center rounded-sm bg-accent-soft text-sm font-semibold text-accent-text"
-						>
-							{getInitials(basics.name || "?")}
-						</span>
-						<span className="min-w-0 flex-1">
-							<span className={cn("block truncate text-sm font-semibold", !basics.name && "text-ink-3")}>
-								{basics.name || <Trans>Your name</Trans>}
-							</span>
-							<span className="block truncate text-xs text-ink-3">
-								{[basics.headline, basics.location].filter((part) => part.trim()).join(" · ")}
-							</span>
-						</span>
-						<Disclosure.Indicator className="text-ink-2" />
-					</Disclosure.Trigger>
-				</Disclosure.Heading>
+				{/* The trigger sits in Widget.Header, so a folded widget keeps HeroUI's header size and padding. */}
+				<Widget.Header>
+					<Disclosure.Heading className="min-w-0 flex-1">
+						<Disclosure.Trigger className="flex min-h-8 w-full cursor-(--cursor-interactive) items-center gap-2 rounded-lg text-start outline-none focus-visible:ring-2 focus-visible:ring-focus">
+							<Icon name="user-circle" size={16} className="shrink-0 text-muted" />
+							<Widget.Title className="shrink-0">
+								<Trans>About</Trans>
+							</Widget.Title>
+							{/* Closed, the header still says whose resume this is. */}
+							<Widget.Description className={cn("min-w-0 flex-1 truncate", open && "invisible")}>
+								{[basics.name, basics.headline].filter((part) => part.trim()).join(" · ")}
+							</Widget.Description>
+							<Disclosure.Indicator className="ms-auto text-muted" />
+						</Disclosure.Trigger>
+					</Disclosure.Heading>
+				</Widget.Header>
 
-				<Disclosure.Content>
-					<Disclosure.Body>
-						<fieldset
-							disabled={locked}
-							className="m-0 grid min-w-0 grid-cols-2 gap-x-3 gap-y-2.5 border-0 border-t border-line px-3 pt-3 pb-3.5"
-						>
-							<PhotoRow locked={locked} />
-							<TextField
-								label={<Trans>Full name</Trans>}
-								wide
-								autoComplete="name"
-								// A blank resume opens straight into the name field.
-								autoFocus={!locked && !basics.name}
-								{...text("name")}
-							/>
-							<TextField label={<Trans>Headline</Trans>} wide {...text("headline")} />
-							<TextField
-								label={<Trans>Email</Trans>}
-								type="email"
-								autoComplete="email"
-								validate={validateEmail}
-								{...text("email")}
-							/>
-							<TextField label={<Trans>Phone</Trans>} type="tel" autoComplete="tel" {...text("phone")} />
-							<TextField label={<Trans>Location</Trans>} wide {...text("location")} />
-							<WebsiteField
-								label={<Trans>Website</Trans>}
-								value={basics.website}
-								allowInlineLink={false}
-								onChange={(website) =>
-									write("website", (target) => {
-										target.website = { url: website.url, label: website.label };
-									})
-								}
-							/>
-							<CustomFields fields={basics.customFields} locked={locked} />
-						</fieldset>
+				{/* `*:p-0`: Disclosure.Body pads an outer wrapper its className doesn't reach; the widget's own insets apply. */}
+				<Disclosure.Content className="*:p-0">
+					{/* `pt-px`: room for the content's hairline under the header, which the panel's clip would cut. */}
+					<Disclosure.Body className="p-0 pt-px">
+						<Widget.Content className="fields-on-background @container mt-0">
+							<fieldset
+								disabled={locked}
+								className="m-0 grid min-w-0 grid-cols-1 gap-x-3 gap-y-4 border-0 p-0 @xs:grid-cols-2"
+							>
+								<PhotoRow locked={locked} />
+								<TextField
+									label={<Trans>Full name</Trans>}
+									wide
+									autoComplete="name"
+									// A blank resume opens straight into the name field.
+									autoFocus={!locked && !basics.name}
+									{...text("name")}
+								/>
+								<TextField label={<Trans>Headline</Trans>} wide {...text("headline")} />
+								<TextField
+									label={<Trans>Email</Trans>}
+									type="email"
+									autoComplete="email"
+									validate={validateEmail}
+									{...text("email")}
+								/>
+								<TextField label={<Trans>Phone</Trans>} type="tel" autoComplete="tel" {...text("phone")} />
+								<TextField label={<Trans>Location</Trans>} wide {...text("location")} />
+								<WebsiteField
+									label={<Trans>Website</Trans>}
+									value={basics.website}
+									allowInlineLink={false}
+									onChange={(website) =>
+										write("website", (target) => {
+											target.website = { url: website.url, label: website.label };
+										})
+									}
+								/>
+								<CustomFields fields={basics.customFields} locked={locked} />
+							</fieldset>
+						</Widget.Content>
 					</Disclosure.Body>
 				</Disclosure.Content>
 			</Disclosure>
-		</section>
+		</Widget>
 	);
 }
 
@@ -117,15 +121,18 @@ function PhotoRow({ locked }: { locked: boolean }) {
 	const hasPhoto = Boolean(picture.url);
 
 	return (
-		<div id="sidebar-picture" className="col-span-full flex items-center gap-3 rounded-lg bg-bg p-2.5">
+		<div
+			id="sidebar-picture"
+			className="fields-on-card col-span-full flex items-center gap-3 rounded-xl bg-background p-2.5"
+		>
 			{hasPhoto ? (
-				<img src={picture.url} alt="" className="size-10 shrink-0 rounded-md object-cover" />
+				<img src={picture.url} alt="" className="size-10 shrink-0 rounded-lg object-cover" />
 			) : (
-				<span className="grid size-10 shrink-0 place-items-center rounded-md bg-sunken text-ink-3">
+				<span className="grid size-10 shrink-0 place-items-center rounded-lg bg-surface text-muted">
 					<Icon name="camera-plus" />
 				</span>
 			)}
-			<p className="min-w-0 flex-1 text-xs leading-4 text-ink-2">
+			<p className="min-w-0 flex-1 text-xs leading-4 text-muted">
 				{!hasPhoto ? (
 					<Trans>No photo. Most ATS ignore photos; some regions expect one.</Trans>
 				) : picture.hidden ? (
@@ -173,6 +180,7 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 					/>
 					<Input
 						fullWidth
+						variant="secondary"
 						disabled={locked}
 						aria-label={t`Field ${index + 1}`}
 						value={field.text}
@@ -189,12 +197,13 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 							label={field.link ? t`Edit link` : t`Add a link`}
 							size="sm"
 							isDisabled={locked}
-							className={field.link ? "text-accent-text" : "text-muted"}
+							className={field.link ? "text-accent" : "text-muted"}
 						/>
 						<Popover.Content placement="bottom end" className="w-72">
 							<Popover.Dialog>
 								<Input
 									fullWidth
+									variant="secondary"
 									disabled={locked}
 									type="url"
 									aria-label={t`Link address`}
@@ -226,15 +235,15 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 					/>
 				</div>
 			))}
-			<button
-				type="button"
-				disabled={locked}
-				className="flex h-9 w-fit items-center gap-1.5 rounded-lg px-2 text-sm text-accent-text hover:bg-hover disabled:pointer-events-none disabled:opacity-50"
-				onClick={() => edit("add", (list) => list.push({ id: generateId(), icon: "acorn", text: "", link: "" }))}
+			<Button
+				variant="ghost"
+				isDisabled={locked}
+				className="w-fit text-accent-soft-foreground"
+				onPress={() => edit("add", (list) => list.push({ id: generateId(), icon: "acorn", text: "", link: "" }))}
 			>
 				<Icon name="plus" size={18} />
 				<Trans>Add field</Trans>
-			</button>
+			</Button>
 		</div>
 	);
 }

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type z from "zod";
-import { Input, Separator } from "@heroui/react";
+import { Input } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
 import { colorDesignSchema, levelDesignSchema } from "@rezumi/schema/resume/data";
@@ -19,7 +19,6 @@ export function DesignSectionBuilder() {
 	return (
 		<SectionBase type="design" className="space-y-6">
 			<ColorSectionForm />
-			<Separator />
 			<LevelSectionForm />
 		</SectionBase>
 	);
@@ -88,7 +87,9 @@ function ColorFormField({ form, name, label, controlled }: ColorFormFieldProps) 
 						<FormControl
 							render={
 								<Input
+									variant="secondary"
 									fullWidth
+									className="font-mono"
 									name={field.name}
 									value={field.state.value}
 									onBlur={field.handleBlur}
@@ -140,13 +141,13 @@ function LevelSectionForm() {
 
 	return (
 		<div className="space-y-4">
-			<h4 className="text-lg leading-none font-semibold tracking-tight">
+			<h4 className="text-sm font-semibold">
 				<Trans>Level</Trans>
 			</h4>
 
 			<div
 				style={{ "--page-primary-color": colors.primary, backgroundColor: colors.background } as React.CSSProperties}
-				className="flex items-center justify-center rounded-md p-6"
+				className="flex items-center justify-center rounded-xl p-6 ring-1 ring-black/5 ring-inset dark:ring-white/10"
 			>
 				<LevelDisplay
 					level={3}
@@ -188,6 +189,7 @@ function LevelSectionForm() {
 							<FormControl
 								render={
 									<LevelTypeCombobox
+										variant="secondary"
 										value={field.state.value}
 										onValueChange={(value) => {
 											if (!value) return;

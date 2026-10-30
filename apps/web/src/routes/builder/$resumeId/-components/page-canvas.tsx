@@ -1,6 +1,7 @@
 import type { EditorSelection } from "@/features/resume/editor/store";
 import type { VersionSummary } from "@/features/resume/share/format";
 import type { Template } from "@rezumi/schema/templates";
+import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -41,7 +42,7 @@ export function PageCanvas() {
 }
 
 /**
- * The page canvas: the live resume on the sunken desk, with a caption above the first page, a pointer layer
+ * The page canvas: the live resume on the window background, with a caption above the first page, a pointer layer
  * that links lines to entries, and the zoom bar.
  */
 function ResumePageCanvas() {
@@ -97,7 +98,7 @@ function ResumePageCanvas() {
 	};
 
 	return (
-		<div className="relative h-full min-h-0 bg-sunken">
+		<div className="relative h-full min-h-0 bg-background">
 			<section
 				ref={canvasRef}
 				// The scroll area takes focus so the page can be scrolled from the keyboard even before its lines load.
@@ -128,7 +129,7 @@ function ResumePageCanvas() {
 						shifted && "-translate-x-[120px] rtl:translate-x-[120px]",
 						parser && "hidden",
 					)}
-					pageClassName={cn("rounded-none shadow-page", viewing && "outline-2 outline-offset-4 outline-ink")}
+					pageClassName={cn("rounded-xl shadow-page", viewing && "outline-2 outline-offset-4 outline-foreground")}
 					onRender={setRendered}
 					renderPageCaption={({ pageNumber }) => (
 						<ResumePageCaption
@@ -181,7 +182,7 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 
 	if (pageNumber === 1) {
 		return (
-			<figcaption className="mb-2.5 flex flex-wrap items-center justify-center gap-2.5 text-center text-xs font-medium text-ink-3">
+			<figcaption className="mb-2.5 flex flex-wrap items-center justify-center gap-2.5 text-center text-xs font-medium text-muted">
 				{viewing ? (
 					<CanvasStatusPill icon="clock-counter-clockwise">
 						<Trans>
@@ -195,7 +196,7 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 				) : (
 					<>
 						{pendingOnPage > 0 ? (
-							<span className="text-accent-text">
+							<span className="text-accent">
 								<Plural
 									value={pendingOnPage}
 									one="# proposed edit on this page · nothing changes until you accept"
@@ -217,8 +218,8 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 	// Content past the authored pages: a dashed warn line at the page boundary.
 	if (overflow && pageNumber > overflow.authored) {
 		return (
-			<figcaption className="relative mb-2.5 border-t-[1.5px] border-dashed border-warn">
-				<span className="absolute end-0 -top-2.5 rounded bg-sunken px-1.5 text-[11px] font-semibold text-warn-text">
+			<figcaption className="relative mb-2.5 border-t-[1.5px] border-dashed border-warning">
+				<span className="absolute end-0 -top-2.5 rounded-full bg-background px-2 text-[11px] font-semibold text-warning tabular-nums">
 					<Trans>Page {pageNumber}</Trans>
 				</span>
 			</figcaption>
@@ -226,7 +227,7 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 	}
 
 	return (
-		<figcaption className="mb-2.5 text-center text-xs font-medium text-ink-3">
+		<figcaption className="mb-2.5 text-center text-xs font-medium text-muted">
 			<Trans>Page {pageNumber}</Trans>
 		</figcaption>
 	);
@@ -240,7 +241,7 @@ function OverflowChip({ authored, lines }: OverflowChipProps) {
 	const next = authored + 1;
 
 	return (
-		<span className="flex min-h-8 items-center gap-2 rounded-lg bg-warn-soft py-1 ps-3 pe-1.5 text-[13px] text-warn-text">
+		<span className="flex min-h-8 items-center gap-2 rounded-full bg-warning-soft py-1 ps-3 pe-1 text-[13px] text-warning-soft-foreground">
 			<Icon name="square-split-horizontal" size={18} />
 			{lines ? (
 				<Plural
@@ -251,17 +252,18 @@ function OverflowChip({ authored, lines }: OverflowChipProps) {
 			) : (
 				<Trans>Runs onto page {next}</Trans>
 			)}
-			<button
-				type="button"
-				disabled={fitting}
-				onClick={() => {
+			<Button
+				size="sm"
+				variant="secondary"
+				isPending={fitting}
+				className="h-6 rounded-full bg-surface px-2.5 text-xs whitespace-nowrap"
+				onPress={() => {
 					setFitting(true);
 					void runFit().finally(() => setFitting(false));
 				}}
-				className="h-6 rounded-md bg-surface px-2.5 text-xs font-semibold whitespace-nowrap text-ink shadow-e1 disabled:opacity-60"
 			>
 				<Plural value={authored} _1="Fit to one page" other="Fit to # pages" />
-			</button>
+			</Button>
 		</span>
 	);
 }

@@ -43,7 +43,10 @@
 
 	/* Layout constants */
 	--editor-bar: 56px;
-	--editor-panel: 400px;
+	/* The editor's side panel: 420px on laptops, growing with the window to 520px on large screens. */
+	--editor-panel: clamp(420px, 32vw, 520px);
+	/* With the assistant open (≥1280), the panel and the assistant share the room equally, each this wide. */
+	--editor-side: clamp(320px, 25vw, 420px);
 	--app-sidebar: 240px;
 	--sheet-share: 440px;
 	--sheet-detail: 480px;

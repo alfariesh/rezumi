@@ -1,10 +1,17 @@
-import type { ColorResult } from "@uiw/color-convert";
-import { Popover, Separator } from "@heroui/react";
+import type { Color } from "@heroui/react";
+import {
+	ColorArea,
+	ColorField,
+	ColorSlider,
+	ColorSwatch,
+	ColorSwatchPicker,
+	parseColor,
+	Popover,
+	Separator,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { hsvaToRgbaString, rgbaStringToHsva } from "@uiw/color-convert";
-import ReactColorColorful from "@uiw/react-color-colorful";
-import { cn } from "@rezumi/utils/style";
+import { useState } from "react";
 import { useControlledState } from "@/hooks/use-controlled-state";
 
 const presetColors = [
@@ -26,6 +33,18 @@ const presetColors = [
 	"rgba(69, 85, 108, 1)",
 ] as const;
 
+const BLACK = parseColor("rgba(0, 0, 0, 1)");
+
+/** The stored `rgba()` string as a HeroUI colour; anything unparseable (a CSS keyword, say) shows as black. */
+function toColor(value: string | undefined): Color {
+	if (!value) return BLACK;
+	try {
+		return parseColor(value);
+	} catch {
+		return BLACK;
+	}
+}
+
 type ColorPickerProps = Omit<
 	React.ComponentProps<typeof Popover.Trigger>,
 	"children" | "defaultValue" | "onChange" | "value"
@@ -39,6 +58,10 @@ type ColorPickerProps = Omit<
 	children?: React.ReactNode;
 };
 
+/**
+ * A colour swatch that opens presets, a saturation and brightness area, hue and opacity sliders and a hex field.
+ * Values go in and out as `rgba(r, g, b, a)` strings.
+ */
 export function ColorPicker({
 	value,
 	defaultValue,
@@ -54,27 +77,30 @@ export function ColorPicker({
 		defaultValue,
 		onChange,
 	});
+	// An rgba string has no hue once the colour is grey or black. Keep the colour last picked here while it still
+	// matches the value, so the area and hue thumbs stay put while dragging through those shades.
+	const [picked, setPicked] = useState<Color | null>(null);
+	const color = picked && picked.toString("rgba") === currentValue ? picked : toColor(currentValue);
 
-	const color = rgbaStringToHsva(currentValue);
-
-	function onColorChange(color: ColorResult) {
-		const rgbaString = hsvaToRgbaString(color.hsva);
-		setCurrentValue(rgbaString);
-	}
+	const pick = (next: Color) => {
+		setPicked(next);
+		setCurrentValue(next.toString("rgba"));
+	};
 
 	return (
 		<Popover {...(open !== undefined && { isOpen: open })} {...(onOpenChange && { onOpenChange })}>
 			{trigger ?? (
-				<Popover.Trigger aria-label={t`Choose color`} {...triggerProps}>
-					<div
-						className="size-6 shrink-0 cursor-pointer rounded-sm border border-ink/60 transition-transform duration-quick ease-enter focus-visible:outline-hidden active:scale-[0.97]"
-						style={{ backgroundColor: currentValue }}
-					/>
+				<Popover.Trigger
+					aria-label={t`Choose color`}
+					className="shrink-0 cursor-(--cursor-interactive) rounded-md"
+					{...triggerProps}
+				>
+					<ColorSwatch color={color} shape="square" size="sm" className="rounded-md" />
 				</Popover.Trigger>
 			)}
 
-			<Popover.Content placement="bottom start" className="min-w-xs">
-				<Popover.Dialog className="grid gap-3 p-3 outline-hidden">
+			<Popover.Content placement="bottom start" className="w-72">
+				<Popover.Dialog className="grid gap-4 p-3 outline-hidden">
 					{children && (
 						<>
 							{children}
@@ -82,38 +108,63 @@ export function ColorPicker({
 						</>
 					)}
 
-					<div className="flex flex-col gap-2">
-						<span className="text-xs font-medium text-ink-3">
+					<div className="grid gap-2">
+						<span className="text-xs font-medium text-muted">
 							<Trans>Presets</Trans>
 						</span>
-
-						<div className="grid grid-cols-8 gap-3 rounded bg-sunken p-3">
-							{presetColors.map((color) => (
-								<button
-									key={color}
-									type="button"
-									title={color}
-									style={{ backgroundColor: color }}
-									aria-label={t`Use color ${color}`}
-									aria-pressed={currentValue === color}
-									onClick={() => setCurrentValue(color)}
-									className={cn(
-										"size-5 shrink-0 cursor-pointer rounded-sm transition-transform duration-quick ease-enter focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-hidden active:scale-[0.97]",
-										currentValue === color && "border border-ink/60",
-									)}
-								/>
+						<ColorSwatchPicker
+							aria-label={t`Presets`}
+							value={color}
+							onChange={pick}
+							size="sm"
+							variant="square"
+							className="grid grid-cols-8 gap-1.5"
+						>
+							{presetColors.map((preset) => (
+								<ColorSwatchPicker.Item key={preset} color={preset}>
+									<ColorSwatchPicker.Swatch />
+									<ColorSwatchPicker.Indicator />
+								</ColorSwatchPicker.Item>
 							))}
-						</div>
+						</ColorSwatchPicker>
 					</div>
 
-					<div className="flex flex-col gap-2">
-						<span className="text-xs font-medium text-ink-3">
+					<div className="grid gap-3">
+						<span className="text-xs font-medium text-muted">
 							<Trans>Custom</Trans>
 						</span>
-
-						<div className="rounded bg-sunken p-3 *:w-full! [&_.w-color-alpha]:mt-4! [&_.w-color-alpha]:h-4! [&_.w-color-alpha>div]:rounded-sm! [&_.w-color-hue]:mt-4! [&_.w-color-hue]:h-4! [&_.w-color-hue]:rounded-sm! [&_.w-color-saturation]:h-36! [&_.w-color-saturation]:rounded-sm!">
-							<ReactColorColorful color={color} onChange={onColorChange} />
-						</div>
+						<ColorArea
+							aria-label={t`Saturation and brightness`}
+							value={color}
+							onChange={pick}
+							colorSpace="hsb"
+							xChannel="saturation"
+							yChannel="brightness"
+							className="w-full"
+						>
+							<ColorArea.Thumb />
+						</ColorArea>
+						<ColorSlider aria-label={t`Hue`} channel="hue" colorSpace="hsb" value={color} onChange={pick}>
+							<ColorSlider.Track>
+								<ColorSlider.Thumb />
+							</ColorSlider.Track>
+						</ColorSlider>
+						<ColorSlider aria-label={t`Opacity`} channel="alpha" value={color} onChange={pick}>
+							<ColorSlider.Track>
+								<ColorSlider.Thumb />
+							</ColorSlider.Track>
+						</ColorSlider>
+						<ColorField
+							aria-label={t`Hex color`}
+							fullWidth
+							value={color}
+							// A hex has no opacity: keep the one set on the slider.
+							onChange={(next) => next && pick(next.withChannelValue("alpha", color.getChannelValue("alpha")))}
+						>
+							<ColorField.Group variant="secondary" fullWidth>
+								<ColorField.Input className="font-mono" />
+							</ColorField.Group>
+						</ColorField>
 					</div>
 				</Popover.Dialog>
 			</Popover.Content>

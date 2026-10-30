@@ -23,6 +23,8 @@ function IconCellComponent({ columnIndex, rowIndex, style, icons, onChange }: Ic
 	const index = rowIndex * columnCount + columnIndex;
 	const icon = icons[index];
 
+	// A raw button: react-window positions each cell through `style`, and the grid is a pointer shortcut next to the
+	// search field (the cells stay out of the tab order).
 	return (
 		<button
 			type="button"
@@ -32,7 +34,7 @@ function IconCellComponent({ columnIndex, rowIndex, style, icons, onChange }: Ic
 			onClick={() => {
 				if (typeof icon === "string") onChange(icon);
 			}}
-			className="flex size-full items-center justify-center hover:bg-hover"
+			className="flex size-full cursor-(--cursor-interactive) items-center justify-center rounded-lg hover:bg-default"
 		>
 			{icon ? <i className={cn("ph text-base", `ph-${icon}`)} /> : <ProhibitIcon />}
 		</button>
@@ -70,7 +72,8 @@ export function IconPickerGrid({ search, onSearchChange, onChange }: IconPickerG
 				})}
 				onChange={(e) => onSearchChange(e.currentTarget.value)}
 				fullWidth
-				className="rounded-none shadow-none"
+				variant="secondary"
+				className="rounded-none"
 			/>
 
 			<div className="size-[290px]">

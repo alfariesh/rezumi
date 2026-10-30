@@ -75,7 +75,7 @@ function LayoutSectionForm() {
 								</Slider.Track>
 							</Slider>
 
-							<InputGroup className="w-auto shrink-0">
+							<InputGroup variant="secondary" className="w-auto shrink-0 tabular-nums">
 								<FormControl
 									render={
 										<NumberInput

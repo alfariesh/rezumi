@@ -5,10 +5,12 @@ import type { MessageDescriptor } from "@lingui/core";
 import type { CustomSectionType } from "@rezumi/schema/resume/data";
 import { closestCenter, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { Widget } from "@heroui-pro/react";
+import { Button } from "@heroui/react";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { Fragment, useMemo } from "react";
+import { Fragment, useId, useMemo } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useEditorStore } from "../store";
 import { addEntryTo } from "./actions";
@@ -56,9 +58,9 @@ function useSortSensors() {
 type OutlineProps = { locked: boolean; page: PageSettings };
 
 /**
- * The outline: sections in use, in print order. Hidden sections are kept out of that flow, in a group at the
- * end, so they can be found and restored without reordering them. Dragging a row (or ⌥↑ / ⌥↓ on its title)
- * reorders the layout; a divider marks each new page and, on two-column pages, where the sidebar starts.
+ * The outline: sections in print order, one widget per page. Hidden sections keep their place (dimmed, with the
+ * eye crossed out), so showing one again puts it back where it was. Dragging a row (or ⌥↑ / ⌥↓ on its title)
+ * reorders the layout, across pages too; on two-column pages a label marks where the sidebar starts.
  */
 export function Outline({ locked, page }: OutlineProps) {
 	const added = useEditorStore((state) => state.addedSections);
@@ -66,9 +68,7 @@ export function Outline({ locked, page }: OutlineProps) {
 		getOutlineRows(resume.data, new Set(added)).map(rowKey).join("\u0001"),
 	);
 	const rows = useMemo(() => parseRows(key), [key]);
-	const activeRows = useMemo(() => rows.filter((row) => !row.hidden), [rows]);
-	const hiddenRows = useMemo(() => rows.filter((row) => row.hidden), [rows]);
-	const multiPage = activeRows.some((row) => row.page > 0);
+	const pages = useMemo(() => groupByPage(rows), [rows]);
 	const updateResumeData = useUpdateResumeData();
 	const sensors = useSortSensors();
 
@@ -79,56 +79,83 @@ export function Outline({ locked, page }: OutlineProps) {
 
 	const onDragEnd = ({ active, over }: DragEndEvent) => {
 		if (!over || active.id === over.id) return;
-		const from = activeRows.findIndex((row) => row.id === active.id);
-		const to = activeRows.findIndex((row) => row.id === over.id);
-		move(String(active.id), activeRows[to], from < to ? "down" : "up");
+		const from = rows.findIndex((row) => row.id === active.id);
+		const to = rows.findIndex((row) => row.id === over.id);
+		move(String(active.id), rows[to], from < to ? "down" : "up");
 	};
 
 	return (
 		<DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-			<SortableContext items={activeRows.map((row) => row.id)} strategy={verticalListSortingStrategy}>
-				<div className="grid gap-0.5">
-					{activeRows.map((row, index) => {
-						const previous = activeRows[index - 1];
-						const newPage = multiPage && row.page !== previous?.page;
-						const sidebarStarts = row.column === "sidebar" && (previous?.column !== "sidebar" || newPage);
+			<SortableContext items={rows.map((row) => row.id)} strategy={verticalListSortingStrategy}>
+				{pages.map(({ page: pageIndex, rows: pageRows }, widgetIndex) => (
+					<PageWidget key={pageIndex} pageNumber={pageIndex + 1} hint={!locked && widgetIndex === 0}>
+						{pageRows.map((row, index) => {
+							const sidebarStarts = row.column === "sidebar" && pageRows[index - 1]?.column !== "sidebar";
+							const position = rows.indexOf(row);
 
-						return (
-							<Fragment key={row.id}>
-								{newPage && <Divider label={<Trans>Page {row.page + 1}</Trans>} />}
-								{sidebarStarts && <Divider label={<Trans>Sidebar</Trans>} subtle />}
-								<OutlineSection
-									sectionId={row.id}
-									locked={locked}
-									page={page}
-									onMove={(direction) =>
-										move(row.id, activeRows[direction === "up" ? index - 1 : index + 1], direction)
-									}
-								/>
-							</Fragment>
-						);
-					})}
-				</div>
+							return (
+								<Fragment key={row.id}>
+									{sidebarStarts && <SidebarLabel />}
+									<OutlineSection
+										sectionId={row.id}
+										locked={locked}
+										page={page}
+										onMove={(direction) =>
+											move(row.id, rows[direction === "up" ? position - 1 : position + 1], direction)
+										}
+									/>
+								</Fragment>
+							);
+						})}
+					</PageWidget>
+				))}
 			</SortableContext>
-
-			{hiddenRows.length > 0 && (
-				<div className="grid gap-0.5">
-					<Divider label={<Trans>Hidden sections</Trans>} />
-					{hiddenRows.map((row) => (
-						<OutlineSection key={row.id} sectionId={row.id} locked={locked} page={page} />
-					))}
-				</div>
-			)}
 		</DndContext>
 	);
 }
 
-function Divider({ label, subtle = false }: { label: React.ReactNode; subtle?: boolean }) {
+/** Rows in print order, grouped by the page they print on. */
+function groupByPage(rows: OutlineRow[]) {
+	const pages: { page: number; rows: OutlineRow[] }[] = [];
+	for (const row of rows) {
+		const last = pages.at(-1);
+		if (last?.page === row.page) last.rows.push(row);
+		else pages.push({ page: row.page, rows: [row] });
+	}
+	return pages;
+}
+
+type PageWidgetProps = { pageNumber: number; hint: boolean; children: React.ReactNode };
+
+function PageWidget({ pageNumber, hint, children }: PageWidgetProps) {
+	const titleId = useId();
+
 	return (
-		<div className="flex items-center gap-2 px-1 pt-2 pb-1">
-			<span className={subtle ? "text-xs text-ink-3" : "text-xs font-semibold text-ink-2"}>{label}</span>
-			<span className="h-px flex-1 bg-line" />
-		</div>
+		<Widget role="region" aria-labelledby={titleId}>
+			<Widget.Header>
+				<span className="flex min-w-0 items-center gap-2">
+					<Icon name="file-text" size={16} className="shrink-0 text-muted" />
+					<Widget.Title id={titleId} className="truncate">
+						<Trans>Page {pageNumber}</Trans>
+					</Widget.Title>
+				</span>
+				{hint && (
+					<Widget.Description className="whitespace-nowrap max-sm:hidden">
+						<Trans>drag · ⌥↑↓</Trans>
+					</Widget.Description>
+				)}
+			</Widget.Header>
+			<Widget.Content className="grid gap-0.5 p-1.5">{children}</Widget.Content>
+		</Widget>
+	);
+}
+
+function SidebarLabel() {
+	return (
+		<p className="flex items-center gap-1.5 px-2 pt-2 pb-1 text-xs font-medium text-muted">
+			<Icon name="sidebar-simple" size={14} />
+			<Trans>Sidebar</Trans>
+		</p>
 	);
 }
 
@@ -157,14 +184,14 @@ function OutlineSection({ sectionId, locked, page, onMove }: OutlineSectionProps
 				<>
 					<EntryList section={stableSection} locked={locked} page={page} />
 					{!locked && (
-						<button
-							type="button"
-							onClick={() => addEntryTo(stableSection)}
-							className="flex h-9 items-center gap-1.5 rounded-lg px-2 text-sm text-accent-text hover:bg-hover"
+						<Button
+							variant="ghost"
+							onPress={() => addEntryTo(stableSection)}
+							className="w-fit text-accent-soft-foreground"
 						>
 							<Icon name="plus" size={18} />
 							{i18n._(ADD_LABELS[stableSection.type])}
-						</button>
+						</Button>
 					)}
 				</>
 			)}

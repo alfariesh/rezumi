@@ -1,6 +1,7 @@
 import type { CustomSectionType, SectionType } from "@rezumi/schema/resume/data";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { Button, Dropdown, Header, Label, Separator } from "@heroui/react";
+import { Widget } from "@heroui-pro/react";
+import { Button, Dropdown, Header, Label, Link, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -83,11 +84,7 @@ export function AddSectionMenu() {
 
 	return (
 		<Dropdown>
-			<Button
-				variant="ghost"
-				fullWidth
-				className="mt-2 h-10 border border-dashed border-line-2 text-ink-2 hover:border-accent hover:text-accent-text"
-			>
+			<Button variant="outline" fullWidth className="border-dashed">
 				<Icon name="plus" size={18} />
 				<Trans>Add section</Trans>
 			</Button>
@@ -144,35 +141,36 @@ const SUGGESTED: ("summary" | SectionType)[] = ["experience", "education", "skil
 /** A blank resume: the first sections to add, as + chips, and an offer to import instead. */
 export function StartSuggestions({ onImport }: { onImport: () => void }) {
 	return (
-		<div className="grid gap-3 rounded-xl border border-dashed border-line p-4">
-			<p className="text-sm text-ink-2">
-				<Trans>Start with the sections most resumes have.</Trans>
-			</p>
-			<div className="flex flex-wrap gap-2">
-				{SUGGESTED.map((type) => (
-					<button
-						key={type}
-						type="button"
-						onClick={() => addSection(type)}
-						className="flex h-8 items-center gap-1 rounded-sm border border-line-2 bg-raised px-3 text-sm hover:border-accent hover:text-accent-text"
-					>
-						<Icon name="plus" size={16} />
-						{getSectionTitle(type)}
-					</button>
-				))}
-			</div>
-			<p className="text-xs text-ink-3">
-				<Trans>
-					Have a resume already?{" "}
-					<button
-						type="button"
-						onClick={onImport}
-						className="font-medium text-accent-text underline underline-offset-2"
-					>
-						Import it
-					</button>
-				</Trans>
-			</p>
-		</div>
+		<Widget role="region" aria-label={t`Sections`}>
+			<Widget.Header>
+				<span className="flex min-w-0 items-center gap-2">
+					<Icon name="rows" size={16} className="shrink-0 text-muted" />
+					<Widget.Title>
+						<Trans>Sections</Trans>
+					</Widget.Title>
+				</span>
+			</Widget.Header>
+			<Widget.Content className="grid gap-3">
+				<p className="text-sm text-muted">
+					<Trans>Start with the sections most resumes have.</Trans>
+				</p>
+				<div className="flex flex-wrap gap-2">
+					{SUGGESTED.map((type) => (
+						<Button key={type} variant="secondary" size="sm" onPress={() => addSection(type)}>
+							<Icon name="plus" size={16} />
+							{getSectionTitle(type)}
+						</Button>
+					))}
+				</div>
+				<p className="text-xs text-muted">
+					<Trans>
+						Have a resume already?{" "}
+						<Link className="text-xs font-medium" onPress={onImport}>
+							Import it
+						</Link>
+					</Trans>
+				</p>
+			</Widget.Content>
+		</Widget>
 	);
 }

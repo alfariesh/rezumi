@@ -1,13 +1,14 @@
 import type { Proposal, ProposalState } from "@rezumi/resume/proposals";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
-import { Button } from "@heroui/react";
+import { Button, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { getProposalState } from "@rezumi/resume/proposals";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { CheckWidget } from "../check/check-widget";
 import { useEditorStore } from "../store";
 import { acceptResumeProposals } from "./proposals";
 import { useIsResumeLocked } from "@/features/resume/builder/draft";
@@ -48,6 +49,7 @@ export function ProposalList({ proposals, data, onSuggestAgain }: ProposalListPr
 				)
 			}
 			onSuggestAgain={onSuggestAgain}
+			widget
 		/>
 	);
 }
@@ -63,13 +65,16 @@ type ChangeSetProps = {
 	onSuggestAgain?: (() => void) | undefined;
 	/** The set's title; "n proposed edits" by default. */
 	title?: ReactNode;
+	/** Renders the set as a widget (Check → Writing, on the panel background) rather than a plain section. */
+	widget?: boolean;
 };
 
 /**
  * A change set: "n proposed edits" with Accept all, then each edit numbered, with where it lands, the old text
  * struck through, the new text and why. A accepts and R rejects the focused edit; ↑ and ↓ move between edits.
  */
-export function ChangeSet({ proposals, states, locked, onAccept, onReject, onSuggestAgain, title }: ChangeSetProps) {
+export function ChangeSet(props: ChangeSetProps) {
+	const { proposals, states, locked, onAccept, onReject, onSuggestAgain, title, widget = false } = props;
 	const [focused, setFocused] = useState(0);
 	const pending = proposals.filter((_, index) => states[index] === "pending");
 	const headingId = useId();
@@ -100,20 +105,17 @@ export function ChangeSet({ proposals, states, locked, onAccept, onReject, onSug
 		}
 	};
 
-	return (
-		<section aria-labelledby={headingId} className="overflow-hidden rounded-xl border border-line">
-			<header className="flex min-h-11 items-center justify-between gap-2 border-b border-line bg-bg px-3 py-2">
-				<h3 id={headingId} className="text-sm font-semibold">
-					{title ?? <Plural value={proposals.length} one="# proposed edit" other="# proposed edits" />}
-				</h3>
-				{pending.length > 1 && (
-					<Button size="sm" isDisabled={locked} onPress={() => onAccept(pending)}>
-						<Trans>Accept all</Trans>
-					</Button>
-				)}
-			</header>
+	const heading = title ?? <Plural value={proposals.length} one="# proposed edit" other="# proposed edits" />;
+	const acceptAll = pending.length > 1 && (
+		// On the widget's gray header a ghost button reads cleaner than a secondary one.
+		<Button size="sm" variant={widget ? "ghost" : "secondary"} isDisabled={locked} onPress={() => onAccept(pending)}>
+			<Trans>Accept all</Trans>
+		</Button>
+	);
 
-			<ol aria-label={t`Proposed edits`} onKeyDown={onKeyDown} className="divide-y divide-line">
+	const list = (
+		<>
+			<ol aria-label={t`Proposed edits`} onKeyDown={onKeyDown} className="grid gap-2">
 				{proposals.map((proposal, index) => (
 					<ProposalItem
 						key={proposal.id}
@@ -131,9 +133,28 @@ export function ChangeSet({ proposals, states, locked, onAccept, onReject, onSug
 				))}
 			</ol>
 
-			<p className="border-t border-line px-3 py-2 text-xs text-ink-3">
+			<p className={cn("text-xs text-muted", widget && "px-1 pb-1")}>
 				<Trans>A accepts and R rejects the focused edit. ↑ and ↓ move between edits.</Trans>
 			</p>
+		</>
+	);
+
+	if (widget)
+		return (
+			<CheckWidget icon="pencil-line" title={heading} trailing={acceptAll} contentClassName="gap-2 p-2">
+				{list}
+			</CheckWidget>
+		);
+
+	return (
+		<section aria-labelledby={headingId} className="grid gap-2">
+			<header className="flex min-h-8 items-center justify-between gap-2">
+				<h3 id={headingId} className="text-sm font-semibold">
+					{heading}
+				</h3>
+				{acceptAll}
+			</header>
+			{list}
 		</section>
 	);
 }
@@ -162,16 +183,20 @@ function ProposalItem(props: ProposalItemProps) {
 			tabIndex={focusable ? 0 : -1}
 			aria-labelledby={labelId}
 			onFocus={props.onFocus}
-			className="grid gap-2 p-3 outline-none focus-visible:bg-hover"
+			className="fields-on-card grid gap-3 rounded-xl bg-surface-secondary p-3 outline-none focus-visible:ring-2 focus-visible:ring-focus"
 		>
 			<div className="flex items-center gap-2">
-				<span
+				{/* The number matches the marker on the page. */}
+				<Chip
 					aria-hidden="true"
-					className="grid size-5 shrink-0 place-items-center rounded-sm bg-accent text-[11px] font-bold text-on-accent"
+					size="sm"
+					variant="soft"
+					color="accent"
+					className="min-w-6 justify-center tabular-nums"
 				>
 					{number}
-				</span>
-				<span id={labelId} className="truncate font-mono text-xs text-ink-3">
+				</Chip>
+				<span id={labelId} className="truncate font-mono text-xs text-muted">
 					<span className="sr-only">
 						<Trans>Edit {number}:</Trans>{" "}
 					</span>
@@ -179,10 +204,12 @@ function ProposalItem(props: ProposalItemProps) {
 				</span>
 			</div>
 
-			<div className="grid gap-1.5 text-[13px] leading-[19px]">
-				<del className="text-ink-3">{passageText(proposal.before)}</del>
-				<ins className="rounded-md bg-accent-soft px-1 py-0.5 no-underline">{passageText(proposal.after)}</ins>
-				{proposal.why && <span className="text-xs text-ink-2">{proposal.why}</span>}
+			<div className="grid gap-1.5 text-sm">
+				<del className="text-muted">{passageText(proposal.before)}</del>
+				<ins className="rounded-lg bg-accent-soft px-1.5 py-0.5 text-accent-soft-foreground no-underline">
+					{passageText(proposal.after)}
+				</ins>
+				{proposal.why && <span className="text-xs text-muted">{proposal.why}</span>}
 			</div>
 
 			{state === "pending" ? (
@@ -190,7 +217,7 @@ function ProposalItem(props: ProposalItemProps) {
 					<Button size="sm" isDisabled={locked} onPress={props.onAccept}>
 						<Trans>Accept</Trans>
 					</Button>
-					<Button size="sm" variant="secondary" onPress={props.onReject}>
+					<Button size="sm" variant="tertiary" onPress={props.onReject}>
 						<Trans>Reject</Trans>
 					</Button>
 				</div>
@@ -200,9 +227,9 @@ function ProposalItem(props: ProposalItemProps) {
 					className={cn(
 						ENTER_CLASS,
 						"flex min-h-7 items-center gap-2 text-xs font-medium",
-						state === "accepted" && "text-accent-text",
-						state === "rejected" && "text-ink-3",
-						state === "stale" && "text-warn-text",
+						state === "accepted" && "text-success",
+						state === "rejected" && "text-muted",
+						state === "stale" && "text-warning-soft-foreground",
 					)}
 				>
 					{state === "accepted" && (
@@ -218,7 +245,7 @@ function ProposalItem(props: ProposalItemProps) {
 							{props.onSuggestAgain && (
 								<button
 									type="button"
-									className="text-ink-2 underline underline-offset-2"
+									className="cursor-(--cursor-interactive) text-foreground underline underline-offset-2"
 									onClick={props.onSuggestAgain}
 								>
 									<Trans>Suggest again</Trans>

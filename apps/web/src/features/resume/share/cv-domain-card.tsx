@@ -25,15 +25,15 @@ export function CvDomainCard({ suggestion: { domain, checked, price }, connectin
 	const yearly = price?.renewal === price?.amount;
 
 	return (
-		<div className="grid gap-3 rounded-xl bg-sunken p-3.5">
+		<div className="fields-on-card grid gap-3 rounded-xl bg-surface-secondary p-4">
 			<div className="grid gap-0.5">
-				<p className="truncate font-mono text-[15px] leading-5 font-medium text-ink" dir="ltr">
+				<p className="truncate font-mono text-[15px] leading-5 font-medium" dir="ltr">
 					{domain}
 				</p>
-				<p className="text-xs leading-4 text-ink-3">
+				<p className="text-xs text-muted tabular-nums">
 					{checked ? (
 						<>
-							<span className="font-medium text-accent-text">
+							<span className="font-medium text-success">
 								<Trans>Available</Trans>
 							</span>
 							{cost && (
@@ -48,11 +48,11 @@ export function CvDomainCard({ suggestion: { domain, checked, price }, connectin
 					)}
 				</p>
 			</div>
-			<p className="text-xs leading-[18px] text-ink-2">
+			<p className="text-xs text-muted">
 				<Trans>
 					Your name as your address, from OlaCV, the .cv registry. Code{" "}
-					<CopyText value="RX" className="mx-0 bg-surface font-mono font-medium text-ink" /> takes 50% off the first
-					year.
+					<CopyText value="RX" className="mx-0 bg-surface font-mono font-medium text-foreground" /> takes 50% off the
+					first year.
 				</Trans>
 			</p>
 			<div className="flex flex-wrap items-center gap-2">

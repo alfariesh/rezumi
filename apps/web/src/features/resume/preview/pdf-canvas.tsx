@@ -200,7 +200,7 @@ export function PdfCanvasPage({
 		<figure className="shrink-0">
 			{caption ??
 				(showPageNumbers ? (
-					<figcaption className="mb-1 text-[0.625rem] font-medium text-ink-3">
+					<figcaption className="mb-1 text-[0.625rem] font-medium text-muted">
 						Page {pageNumber} of {totalPages}
 					</figcaption>
 				) : null)}

@@ -35,6 +35,7 @@
 		"db:studio": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run db:studio --filter=@rezumi/db",
 		"lingui:extract": "turbo run lingui:extract --filter=web && pnpm pdf:translations",
 		"dev": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run dev",
+		"seed:dev": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling seed:dev",
 		"dev:web": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run dev --filter=web",
 		"dev:mobile": "pnpm --filter mobile start",
 		"knip": "knip",

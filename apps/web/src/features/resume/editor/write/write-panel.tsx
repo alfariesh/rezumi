@@ -21,8 +21,8 @@ import { getResumeErrorMessage } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 
 /**
- * Write: the Basics card, then the outline of sections in print order with their entries, then Add
- * section. Every field saves as you type; a locked resume shows the same panel read-only.
+ * Write, as widgets: About (the header's details), then one widget per page with its sections in print order and
+ * their entries, then Add section. Every field saves as you type; a locked resume shows the same panel read-only.
  */
 export function WritePanel() {
 	const locked = useIsResumeLocked();
@@ -35,32 +35,21 @@ export function WritePanel() {
 	const openDialog = useDialogStore((state) => state.openDialog);
 
 	return (
-		<div className="grid gap-4 p-4">
+		<div className="grid gap-3 p-3">
 			{locked && <LockedNote />}
 			<ImportedNote />
 
 			<BasicsCard locked={locked} />
 
-			<div>
-				<p className="mb-1.5 flex items-baseline justify-between px-1 text-xs font-semibold text-ink-3">
-					<Trans>Sections · print order</Trans>
-					{!locked && (
-						<span className="font-normal tracking-normal normal-case">
-							<Trans>drag · ⌥↑↓</Trans>
-						</span>
-					)}
-				</p>
+			{isEmpty && !locked ? (
+				<StartSuggestions onImport={() => openDialog("document.new", undefined)} />
+			) : (
+				<Outline locked={locked} page={page} />
+			)}
 
-				{isEmpty && !locked ? (
-					<StartSuggestions onImport={() => openDialog("document.new", undefined)} />
-				) : (
-					<Outline locked={locked} page={page} />
-				)}
+			{!locked && <AddSectionMenu />}
 
-				{!locked && <AddSectionMenu />}
-			</div>
-
-			<p className="px-1 text-xs leading-4 text-ink-3">
+			<p className="px-2 text-xs leading-4 text-muted">
 				<Trans>Hidden sections keep their content but aren't printed or shared. Fields save as you type.</Trans>
 			</p>
 		</div>

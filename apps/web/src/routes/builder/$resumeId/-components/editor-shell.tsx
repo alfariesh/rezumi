@@ -1,4 +1,5 @@
 import type { EditorMode } from "@/features/resume/editor/store";
+import { Button, Toolbar } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { getRouteApi, Outlet } from "@tanstack/react-router";
@@ -6,7 +7,7 @@ import { Suspense, useEffect } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { DownloadSheet } from "./download-sheet";
-import { EditorBar } from "./editor-bar";
+import { EditorBar, ModeTabs } from "./editor-bar";
 import { DesignPanel, DesignSheet, ModePanel } from "./mode-panels";
 import { useEditorHotkeys } from "./use-editor-hotkeys";
 import { ResumeAssistant } from "@/features/assistant/dock";
@@ -50,6 +51,7 @@ export function EditorShell() {
 				editorLayout={editorLayout}
 				bar={<EditorBar layout={editorLayout.layout} pinnable={editorLayout.pinnable} />}
 				mode={mode}
+				modes={<ModeTabs />}
 				panelLabel={panelLabel(mode)}
 				panel={<ModePanel mode={mode} />}
 				page={<Outlet />}
@@ -151,7 +153,7 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 					</Suspense>
 				)}
 				{view !== "page" && view !== "design" && (
-					<section key={mode} className="absolute inset-0 overflow-y-auto bg-surface [overflow-anchor:none]">
+					<section key={mode} className="absolute inset-0 overflow-y-auto bg-background [overflow-anchor:none]">
 						<ModePanel mode={mode} />
 					</section>
 				)}
@@ -178,18 +180,22 @@ function SelectionBar({ onEdit }: { onEdit: () => void }) {
 	if (!selection) return null;
 
 	return (
-		<div className="absolute bottom-[76px] left-1/2 z-10 flex -translate-x-1/2 items-center rounded-xl bg-ink p-1 text-bg shadow-e3 transition-[opacity,translate] duration-standard ease-enter starting:translate-y-2 starting:opacity-0">
-			<button
-				type="button"
-				className="flex h-10 items-center gap-1.5 rounded-lg px-3 text-[15px] font-semibold"
-				onClick={() => {
+		<Toolbar
+			isAttached
+			aria-label={t`Selection`}
+			className="absolute bottom-[76px] left-1/2 z-10 -translate-x-1/2 transition-[opacity,translate] duration-standard ease-enter starting:translate-y-2 starting:opacity-0"
+		>
+			<Button
+				variant="primary"
+				className="rounded-full"
+				onPress={() => {
 					onEdit();
 					revealSelectionInPanel(selection);
 				}}
 			>
-				<Icon name="pencil-simple" size={20} />
+				<Icon name="pencil-simple" />
 				<Trans>Edit entry</Trans>
-			</button>
-		</div>
+			</Button>
+		</Toolbar>
 	);
 }

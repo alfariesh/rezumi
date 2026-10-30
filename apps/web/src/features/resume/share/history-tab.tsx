@@ -1,5 +1,6 @@
 import type { VersionSummary } from "./format";
 import type { Resume } from "@/features/resume/builder/draft";
+import { Timeline } from "@heroui-pro/react";
 import { Button, Dropdown, Input, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -130,15 +131,16 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 		});
 
 	return (
-		<div className="grid gap-3.5">
+		<div className="grid gap-4">
 			<form
-				className="flex gap-1.5"
+				className="flex gap-2"
 				onSubmit={(event) => {
 					event.preventDefault();
 					save();
 				}}
 			>
 				<Input
+					variant="secondary"
 					fullWidth
 					value={name}
 					maxLength={80}
@@ -152,59 +154,52 @@ export function HistoryTimeline({ source }: { source: HistorySource }) {
 			</form>
 
 			{selected && (
-				<div role="status" className="grid gap-2.5 rounded-lg bg-ink p-3 text-[13px] text-bg">
-					<span className="flex items-center gap-2 font-medium">
-						<Icon name="clock-counter-clockwise" size={18} />
+				<div role="status" className="grid gap-3 rounded-xl bg-accent-soft p-3 text-sm text-accent-soft-foreground">
+					<span className="flex items-center gap-2 font-medium tabular-nums">
+						<Icon name="clock-counter-clockwise" size={18} className="shrink-0" />
 						<Trans>
 							Viewing {when(selected)} · {getVersionTitle(selected)} · read-only
 						</Trans>
 					</span>
 					<span className="flex flex-wrap gap-2">
-						<Button size="sm" isDisabled={source.locked || busy} onPress={() => restore(selected)}>
+						<Button size="sm" variant="secondary" isDisabled={source.locked || busy} onPress={() => restore(selected)}>
 							<Trans>Restore this version</Trans>
 						</Button>
-						<Button
-							size="sm"
-							variant="ghost"
-							className="text-bg underline underline-offset-[3px] hover:bg-transparent hover:text-bg"
-							onPress={() => useEditorStore.setState({ historyVersionId: null })}
-						>
+						<Button size="sm" variant="ghost" onPress={() => useEditorStore.setState({ historyVersionId: null })}>
 							<Trans>Back to now</Trans>
 						</Button>
 					</span>
 				</div>
 			)}
 
-			<ol className="grid" aria-label={t`Versions`}>
+			<Timeline size="sm" density="compact" aria-label={t`Versions`}>
 				<TimelineItem
 					title={t`Now`}
 					detail={source.nowDetail}
 					selected={!selected}
 					current
-					last={!versions?.length}
 					onSelect={() => useEditorStore.setState({ historyVersionId: null })}
 				/>
-				{versions?.map((version, index) => (
+				{versions?.map((version) => (
 					<TimelineItem
 						key={version.id}
 						title={getVersionTitle(version)}
 						detail={`${when(version)} · ${getVersionDetail(version)}`}
 						named={version.kind === "named"}
 						selected={version.id === selectedId}
-						last={index === versions.length - 1}
 						onSelect={() => useEditorStore.setState({ historyVersionId: version.id })}
 						menu={version.kind === "named" ? <NamedVersionMenu version={version} source={source} /> : null}
 					/>
 				))}
-			</ol>
+			</Timeline>
 
 			{!loading && (versions?.length ?? 0) <= 1 && (
-				<p className="text-[13px] leading-[19px] text-ink-2">
+				<p className="text-sm text-muted">
 					<Trans>Only one version so far. Every editing session adds one automatically.</Trans>
 				</p>
 			)}
 
-			<p className="text-xs leading-[17px] text-ink-3">
+			<p className="text-xs text-muted">
 				<Trans>
 					Autosaves are grouped by session and kept for 90 days. Named versions are kept until you delete them.
 					Restoring saves the current state first.
@@ -218,46 +213,42 @@ type TimelineItemProps = {
 	title: string;
 	detail: string;
 	selected: boolean;
-	last: boolean;
 	onSelect: () => void;
 	current?: boolean;
 	named?: boolean;
 	menu?: React.ReactNode;
 };
 
-function TimelineItem({ title, detail, selected, last, onSelect, current, named, menu }: TimelineItemProps) {
+/** Now is the accent marker; the version on the page gets a full marker, the rest are muted. */
+function TimelineItem({ title, detail, selected, onSelect, current, named, menu }: TimelineItemProps) {
 	return (
-		<li className="grid grid-cols-[20px_minmax(0,1fr)] gap-2.5">
-			<span aria-hidden="true" className="flex flex-col items-center">
+		<Timeline.Item status={current ? "current" : selected ? "default" : "muted"}>
+			<Timeline.Marker />
+			<Timeline.Content>
+				{/* Pulled up so the title lines up with the marker. */}
 				<span
 					className={cn(
-						"mt-[15px] size-2.5 shrink-0 rounded-sm shadow-[0_0_0_3px_var(--raised)]",
-						current ? "bg-accent" : selected ? "bg-ink" : "bg-line-2",
+						"group/version -mt-1 flex items-start rounded-xl transition-colors duration-quick",
+						selected ? "bg-accent-soft text-accent-soft-foreground" : "hover:bg-default",
 					)}
-				/>
-				{!last && <span className="w-[1.5px] flex-1 bg-line" />}
-			</span>
-			<span
-				className={cn(
-					"group/version my-0.5 flex items-start rounded-lg border transition-colors duration-quick",
-					selected ? "border-line-2 bg-sunken" : "border-transparent hover:bg-hover",
-				)}
-			>
-				<button
-					type="button"
-					aria-pressed={selected}
-					onClick={onSelect}
-					className="flex min-w-0 flex-1 flex-col items-start gap-0.5 px-2.5 py-[9px] text-start"
 				>
-					<span className="flex max-w-full items-center gap-2">
-						<span className="truncate text-[13px] font-semibold">{title}</span>
-						{named && <Icon name="bookmark-simple" size={14} className="text-accent-text" />}
-					</span>
-					<span className="text-xs text-ink-3">{detail}</span>
-				</button>
-				{menu && <span className="p-1">{menu}</span>}
-			</span>
-		</li>
+					{/* A plain toggle row: HeroUI Button centres and clips its content, this row wraps a title and a detail. */}
+					<button
+						type="button"
+						aria-pressed={selected}
+						onClick={onSelect}
+						className="flex min-w-0 flex-1 cursor-(--cursor-interactive) flex-col items-start gap-0.5 rounded-xl px-2.5 py-1.5 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus"
+					>
+						<span className="flex max-w-full items-center gap-2">
+							<span className="truncate text-sm font-semibold">{title}</span>
+							{named && <Icon name="bookmark-simple" size={14} className="shrink-0 text-accent" />}
+						</span>
+						<span className="text-xs text-muted tabular-nums">{detail}</span>
+					</button>
+					{menu && <span className="p-1">{menu}</span>}
+				</span>
+			</Timeline.Content>
+		</Timeline.Item>
 	);
 }
 

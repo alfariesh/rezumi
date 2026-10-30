@@ -31,7 +31,7 @@ function NotesSectionForm() {
 
 			<RichTextEditor label={t`Notes`} value={notes} onChange={onChange} disabled={resume.isLocked} />
 
-			<p className="text-ink-3">
+			<p className="text-muted">
 				<Trans>For example, note which companies you sent this resume to, or links to the job descriptions.</Trans>
 			</p>
 		</div>

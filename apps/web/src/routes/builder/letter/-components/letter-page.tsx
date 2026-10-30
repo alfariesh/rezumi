@@ -105,7 +105,7 @@ export function LetterPage() {
 	const shifted = sheetOpen && (breakpoint === "desktop" || breakpoint === "wide");
 
 	return (
-		<div className="relative h-full min-h-0 bg-sunken">
+		<div className="relative h-full min-h-0 bg-background">
 			{/* The page has nothing to tab to, so the scroll area itself takes focus for keyboard scrolling. */}
 			<section
 				ref={canvasRef}
@@ -124,11 +124,11 @@ export function LetterPage() {
 						"mx-auto w-fit transition-transform duration-emphasized ease-enter",
 						shifted && "-translate-x-[120px] rtl:translate-x-[120px]",
 					)}
-					pageClassName={cn("rounded-none shadow-page", viewing && "outline-2 outline-offset-4 outline-ink")}
+					pageClassName={cn("rounded-xl shadow-page", viewing && "outline-2 outline-offset-4 outline-foreground")}
 					onRender={setRendered}
 					renderPageCaption={({ pageNumber }) =>
 						pageNumber === 1 ? (
-							<figcaption className="mb-2.5 flex min-h-8 flex-wrap items-center justify-center gap-2.5 text-center text-xs font-medium text-ink-3">
+							<figcaption className="mb-2.5 flex min-h-8 flex-wrap items-center justify-center gap-2.5 text-center text-xs font-medium text-muted tabular-nums">
 								{viewing ? (
 									<CanvasStatusPill icon="clock-counter-clockwise">
 										<Trans>
@@ -145,7 +145,7 @@ export function LetterPage() {
 								)}
 							</figcaption>
 						) : (
-							<figcaption className="mb-2.5 text-center text-xs font-medium text-ink-3">
+							<figcaption className="mb-2.5 text-center text-xs font-medium text-muted tabular-nums">
 								<Trans>Page {pageNumber}</Trans>
 							</figcaption>
 						)

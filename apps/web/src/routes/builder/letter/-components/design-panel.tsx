@@ -12,6 +12,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { LetterLockedNote, LetterWidget } from "./write-panel";
 import { templates } from "@/dialogs/resume/template/data";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { ColorGroup, DesignSourceProvider, PageGroup, TypeGroup } from "@/features/resume/editor/design/style-groups";
@@ -38,9 +39,11 @@ const updateDesign = (changes: { designLinked?: boolean; template?: Template }) 
 /** The letter's own type, colors and page, edited like the resume's and saved with what's typed. */
 function useLetterDesignSource() {
 	const metadata = useLetterEditorStore((state) => state.letter?.style.metadata);
+	const locked = useLetterEditorStore((state) => state.letter?.isLocked ?? false);
 	return useMemo<DesignSource>(
 		() => ({
 			metadata,
+			locked,
 			write: (_key, mutate) => {
 				const { letter, edit } = useLetterEditorStore.getState();
 				if (!letter || letter.isLocked) return;
@@ -48,7 +51,7 @@ function useLetterDesignSource() {
 				edit({ metadata: { typography, design, page } });
 			},
 		}),
-		[metadata],
+		[metadata, locked],
 	);
 }
 
@@ -81,14 +84,14 @@ export function LetterDesignPanel() {
 			.catch(failed);
 
 	return (
-		<div className="divide-y divide-line">
-			<section aria-labelledby="letter-design-match" className="grid gap-3 px-4 py-5">
-				<h2 id="letter-design-match" className="text-[15px] font-semibold">
-					<Trans>Matching the resume</Trans>
-				</h2>
+		<div className="grid gap-3 p-3">
+			{disabled && <LetterLockedNote />}
+			{/* First: whether the letter follows the resume decides whether the groups under it show at all. */}
+			<LetterWidget id="letter-design-match" icon="link-simple-horizontal" title={<Trans>Resume Match</Trans>}>
 				{letter.sourceResumeId ? (
 					<>
 						<SwitchRow
+							className="py-0"
 							label={t`Match “${resume?.name ?? t`the resume`}”`}
 							description={
 								letter.designLinked
@@ -112,17 +115,14 @@ export function LetterDesignPanel() {
 						)}
 					</>
 				) : (
-					<p className="text-sm text-ink-2">
+					<p className="text-sm text-muted">
 						<Trans>Choose a resume in Write to match its design. Until then, the letter has its own.</Trans>
 					</p>
 				)}
-			</section>
+			</LetterWidget>
 
 			{!letter.designLinked && (
-				<section aria-labelledby="letter-design-template" className="grid gap-3 px-4 py-5">
-					<h2 id="letter-design-template" className="text-[15px] font-semibold">
-						<Trans>Template</Trans>
-					</h2>
+				<LetterWidget id="letter-design-template" icon="squares-four" title={<Trans>Template</Trans>}>
 					<fieldset
 						disabled={disabled}
 						className="m-0 grid min-w-0 grid-cols-2 gap-3 border-0 p-0"
@@ -137,6 +137,7 @@ export function LetterDesignPanel() {
 						</legend>
 						{templateSchema.options.map((id) => {
 							const selected = id === current;
+							// A thumbnail that previews on hover and applies on click: custom, like the resume's template strip.
 							return (
 								<button
 									key={id}
@@ -148,14 +149,14 @@ export function LetterDesignPanel() {
 										useEditorStore.setState({ previewTemplate: null });
 										if (!selected) void updateDesign({ template: id }).catch(failed);
 									}}
-									className="group/template grid gap-1.5 text-start disabled:cursor-not-allowed disabled:opacity-60"
+									className="group/template grid cursor-(--cursor-interactive) gap-1.5 rounded-lg text-start disabled:cursor-not-allowed disabled:opacity-60"
 								>
 									<span
 										className={cn(
-											"relative block aspect-[1/1.414] overflow-hidden rounded-md border bg-white transition-[translate,scale,box-shadow] duration-quick ease-enter group-hover/template:-translate-y-0.5 group-active/template:scale-[0.98]",
+											"relative block aspect-[1/1.414] overflow-hidden rounded-lg border bg-paper transition-[translate,scale,box-shadow] duration-quick ease-enter group-hover/template:-translate-y-0.5 group-active/template:scale-[0.98]",
 											selected
 												? "border-accent shadow-[0_0_0_2px_var(--accent)]"
-												: "border-line group-hover/template:shadow-e2",
+												: "border-separator group-hover/template:shadow-overlay",
 										)}
 									>
 										<img
@@ -165,7 +166,7 @@ export function LetterDesignPanel() {
 											className="size-full object-cover object-top"
 										/>
 										{selected && (
-											<span className="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-sm bg-accent text-on-accent">
+											<span className="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-sm bg-accent text-accent-foreground">
 												<Icon name="check" size={14} />
 											</span>
 										)}
@@ -175,29 +176,20 @@ export function LetterDesignPanel() {
 							);
 						})}
 					</fieldset>
-				</section>
+				</LetterWidget>
 			)}
 
 			{!letter.designLinked && (
 				<DesignSourceProvider value={designSource}>
-					<section aria-labelledby="letter-design-type" className="grid gap-3 px-4 py-5">
-						<h2 id="letter-design-type" className="text-[15px] font-semibold">
-							<Trans>Type</Trans>
-						</h2>
+					<LetterWidget id="letter-design-type" icon="text-aa" title={<Trans>Type</Trans>}>
 						<TypeGroup />
-					</section>
-					<section aria-labelledby="letter-design-color" className="grid gap-3 px-4 py-5">
-						<h2 id="letter-design-color" className="text-[15px] font-semibold">
-							<Trans>Color</Trans>
-						</h2>
+					</LetterWidget>
+					<LetterWidget id="letter-design-color" icon="palette" title={<Trans>Color</Trans>}>
 						<ColorGroup />
-					</section>
-					<section aria-labelledby="letter-design-page" className="grid gap-3 px-4 py-5">
-						<h2 id="letter-design-page" className="text-[15px] font-semibold">
-							<Trans>Page</Trans>
-						</h2>
+					</LetterWidget>
+					<LetterWidget id="letter-design-page" icon="file" title={<Trans>Page</Trans>}>
 						<PageGroup />
-					</section>
+					</LetterWidget>
 				</DesignSourceProvider>
 			)}
 		</div>
