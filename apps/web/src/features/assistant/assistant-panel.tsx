@@ -55,9 +55,9 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 	const [view, setView] = useState<"thread" | "history">("thread");
 	const [providerId, setProviderId] = useState<string | null>(null);
 	const [modelMenuOpen, setModelMenuOpen] = useState(false);
-	const [starting, setStarting] = useState(false);
 	// The message being started, shown at once while the conversation is created.
 	const [startingText, setStartingText] = useState<string | null>(null);
+	const starting = startingText !== null;
 	const [context, setContext] = useState<MessageContext>({ document: true, posting: true });
 	const [promptAttachments, setPromptAttachments] = useState<ChatAttachment[]>([]);
 	const [draftKey, setDraftKey] = useState(0);
@@ -98,7 +98,6 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 
 	const start = async (text: string, attachments: ChatAttachment[] = []) => {
 		if (starting) return;
-		setStarting(true);
 		setStartingText(text);
 		try {
 			const id = await ensureThread();
@@ -112,7 +111,6 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		} catch (error) {
 			toastError(error, t`Couldn't start the conversation. Try again.`);
 		}
-		setStarting(false);
 		setStartingText(null);
 	};
 
@@ -249,7 +247,6 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 						document={document}
 						context={context}
 						onContextChange={setContext}
-						providerLabel={providerLabel}
 						streaming={starting}
 						disabled={document.locked}
 						threadId={null}

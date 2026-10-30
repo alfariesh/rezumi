@@ -52,8 +52,8 @@ const columnContent: Variants = {
 type AssistantColumnProps = { children: ReactNode };
 
 /**
- * ≥1280: the assistant's column, as wide as the panel's while it's open (`--editor-side`): a card 12px in from both
- * edges, with the same scrollbar gutter as the panel, so the two match. Its content keeps (nearly) the open column's
+ * ≥1280: the assistant's column, as wide as the panel's while it's open (`--editor-side`): 12px in from both edges, with
+ * no card of its own (it floats like the panel's widgets). Its content keeps (nearly) the open column's
  * width from the start, so it travels in with the column's edge instead of re-wrapping every frame, and it stays
  * mounted until it has faded out.
  */

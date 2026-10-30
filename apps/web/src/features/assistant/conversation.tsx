@@ -316,7 +316,6 @@ export function Conversation(props: ConversationProps) {
 				document={document}
 				context={context}
 				onContextChange={setContext}
-				providerLabel={props.providerLabel}
 				streaming={streaming}
 				disabled={readOnly}
 				threadId={threadId}
@@ -743,7 +742,7 @@ type ComposerProps = {
 	document: AssistantDocument;
 	context: MessageContext;
 	onContextChange: (context: MessageContext) => void;
-	providerLabel: string;
+
 	streaming: boolean;
 	disabled: boolean;
 	/** Attachments need a conversation to belong to. */

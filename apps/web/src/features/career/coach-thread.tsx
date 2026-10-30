@@ -177,9 +177,9 @@ export function CoachThread(props: CoachThreadProps) {
 	const knowledge = useCoachKnowledge(props.applicationId);
 	useEffect(() => void loadChatView(), []);
 	const [prompt, setPrompt] = useState<Prompt | null>(null);
-	const [starting, setStarting] = useState(false);
 	// The message being started, shown at once while the conversation is created.
 	const [startingText, setStartingText] = useState<string | null>(null);
+	const starting = startingText !== null;
 	const draft = useRef<string | null>(null);
 	const creating = useRef<Promise<string> | null>(null);
 
@@ -202,7 +202,6 @@ export function CoachThread(props: CoachThreadProps) {
 	/** Resolves false when the conversation couldn't start, so the composer keeps the message. */
 	const start = async (text: string, attachments: ChatAttachment[] = []) => {
 		if (starting || props.disabled) return false;
-		setStarting(true);
 		setStartingText(text);
 		try {
 			const id = await ensureThread();
@@ -214,7 +213,6 @@ export function CoachThread(props: CoachThreadProps) {
 			toastError(error, t`Couldn't start the conversation. Try again.`);
 			return false;
 		} finally {
-			setStarting(false);
 			setStartingText(null);
 		}
 	};

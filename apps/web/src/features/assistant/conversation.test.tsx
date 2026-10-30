@@ -56,7 +56,6 @@ it("uploads a file in the initial composer before sending its first message", as
 				document={document}
 				context={{ document: false, posting: false }}
 				onContextChange={() => {}}
-				providerLabel="Local"
 				streaming={false}
 				disabled={false}
 				threadId={null}
@@ -89,12 +88,12 @@ it("preserves first-message context exclusions, selected application and attachm
 	render(
 		<I18nProvider i18n={i18n}>
 			<Conversation
+				providerLabel="Local"
 				document={document}
 				threadId="thread-1"
 				initialMessages={[]}
 				activeRun={false}
 				readOnly={false}
-				providerLabel="Local"
 				initialContext={context}
 				prompt="Prepare"
 				promptAttachments={[{ id: "file-1", filename: "posting.txt", mediaType: "text/plain" }]}
@@ -150,12 +149,12 @@ it("reopens native and custom web results with sources, clipping and failed or u
 	render(
 		<I18nProvider i18n={i18n}>
 			<Conversation
+				providerLabel="Local"
 				document={document}
 				threadId="thread-1"
 				initialMessages={[]}
 				activeRun={false}
 				readOnly={false}
-				providerLabel="Local"
 				initialContext={{ document: true, posting: true }}
 				prompt={null}
 				promptAttachments={[]}
