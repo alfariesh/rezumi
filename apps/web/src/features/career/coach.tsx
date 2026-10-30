@@ -458,8 +458,8 @@ function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }
 				else if (typeof key === "string") onChoose(key);
 			}}
 		>
-			<Select.Trigger className="h-7 min-h-0 bg-transparent ps-2 pe-7 text-xs text-muted shadow-none hover:bg-default">
-				<Select.Value />
+			<Select.Trigger className="h-8 min-h-8 items-center rounded-full bg-default ps-3 pe-8 text-[13px] shadow-none">
+				<Select.Value className="leading-none" />
 				<Select.Indicator />
 			</Select.Trigger>
 			<Select.Popover>
