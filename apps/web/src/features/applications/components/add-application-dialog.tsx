@@ -424,14 +424,10 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						aria-labelledby={`${id}-stage`}
 						selectedKey={stage}
 						onSelectionChange={(key) => setStage(String(key) as Stage)}
-						className="h-auto w-fit max-w-full flex-wrap"
+						className="w-full max-w-full [scrollbar-width:none] overflow-x-auto"
 					>
 						{STAGES.map((value) => (
-							<Segment.Item
-								key={value}
-								id={value}
-								className="min-h-7 max-w-full flex-auto [overflow-wrap:anywhere] whitespace-normal"
-							>
+							<Segment.Item key={value} id={value} className="w-auto flex-1 px-3 whitespace-nowrap">
 								{value === "saved" ? (
 									<Trans>Saved</Trans>
 								) : value === "applied" ? (
