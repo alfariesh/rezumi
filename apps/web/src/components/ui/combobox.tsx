@@ -1,22 +1,8 @@
-import type { ComboboxTriggerState } from "@base-ui/react/combobox";
-import type { UseRenderRenderProp } from "@base-ui/react/use-render";
-import { buttonVariants, Input } from "@heroui/react";
+import type { Key } from "@heroui/react";
+import { Autocomplete, EmptyState, ListBox, SearchField, useFilter } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import React from "react";
-import {
-	ComboboxClear,
-	ComboboxContent,
-	ComboboxEmpty,
-	ComboboxInput,
-	ComboboxItem,
-	ComboboxList,
-	ComboboxRoot,
-	ComboboxTrigger,
-	ComboboxValue,
-	useFilter,
-} from "@rezumi/ui/components/combobox";
 import { cn } from "@rezumi/utils/style";
-import { useControlledState } from "@/hooks/use-controlled-state";
 
 type ComboboxOption<TValue extends string | number = string> = {
 	value: TValue;
@@ -41,7 +27,8 @@ type SingleComboboxProps<TValue extends string | number = string> = {
 	className?: string;
 	id?: string;
 	name?: string;
-	render?: UseRenderRenderProp<ComboboxTriggerState>;
+	// Kept for API compatibility; the trigger is rendered by HeroUI Autocomplete.
+	render?: unknown;
 };
 
 type MultiComboboxProps<TValue extends string | number = string> = {
@@ -57,16 +44,11 @@ type MultiComboboxProps<TValue extends string | number = string> = {
 	className?: string;
 	id?: string;
 	name?: string;
-	render?: UseRenderRenderProp<ComboboxTriggerState>;
+	// Kept for API compatibility; the trigger is rendered by HeroUI Autocomplete.
+	render?: unknown;
 };
 
 type ComboboxProps<TValue extends string | number = string> = SingleComboboxProps<TValue> | MultiComboboxProps<TValue>;
-
-const listContent = <TValue extends string | number>(item: ComboboxOption<TValue>) => (
-	<ComboboxItem key={String(item.value)} value={item} disabled={item.disabled}>
-		{item.label}
-	</ComboboxItem>
-);
 
 function Combobox<TValue extends string | number = string>(props: ComboboxProps<TValue>) {
 	const {
@@ -79,128 +61,91 @@ function Combobox<TValue extends string | number = string>(props: ComboboxProps<
 		className,
 		id,
 		name,
-		render,
 	} = props;
 
-	const { contains } = useFilter();
+	const { contains } = useFilter({ sensitivity: "base" });
 
 	const optionMap = new Map(options.map((opt) => [String(opt.value), opt]));
-
-	const findOption = (v: TValue | TValue[] | null | undefined) => {
-		if (multiple) {
-			if (!v || !Array.isArray(v)) return [];
-			return (v as TValue[]).flatMap((item) => {
-				const option = optionMap.get(String(item));
-				return option ? [option] : [];
-			});
-		}
-		if (v == null) return null;
-		return optionMap.get(String(v)) ?? null;
-	};
-
-	type OptionValue = ComboboxOption<TValue>[] | ComboboxOption<TValue> | null;
-
-	const resolvedValue = props.value !== undefined ? (findOption(props.value) as OptionValue) : undefined;
-	const resolvedDefaultValue =
-		props.defaultValue !== undefined ? (findOption(props.defaultValue) as OptionValue) : undefined;
-
-	const handleExternalChange = (option: ComboboxOption<TValue>[] | ComboboxOption<TValue> | null) => {
-		if (multiple) {
-			const arrOpt = Array.isArray(option) ? option : option ? [option] : [];
-			(props as MultiComboboxProps<TValue>).onValueChange?.(arrOpt.length > 0 ? arrOpt.map((opt) => opt.value) : []);
-		} else {
-			const value = option && !Array.isArray(option) ? (option as ComboboxOption<TValue>).value : null;
-			const cb = props.onValueChange as ((value: TValue | null) => void) | undefined;
-			cb?.(value ?? null);
-		}
-	};
-
-	const [selectedValue, setSelectedValue] = useControlledState({
-		value: resolvedValue,
-		defaultValue: resolvedDefaultValue,
-		onChange: handleExternalChange,
-	});
-
-	const itemToStringLabel = (item: ComboboxOption<TValue>) =>
+	const textOf = (item: ComboboxOption<TValue>) =>
 		item.textValue ?? (typeof item.label === "string" ? item.label : String(item.value));
+	const keywordsByText = new Map(options.map((opt) => [textOf(opt), opt.keywords ?? []]));
 
-	const isItemEqualToValue = (a: ComboboxOption<TValue>, b: ComboboxOption<TValue>) =>
-		String(a.value) === String(b.value);
+	const filter = (text: string, input: string) =>
+		contains(text, input) || (keywordsByText.get(text)?.some((kw) => contains(kw, input)) ?? false);
 
-	const filter = (item: ComboboxOption<TValue>, query: string) => {
-		const labelStr = typeof item.label === "string" ? item.label : (item.textValue ?? String(item.value));
-		if (contains(labelStr, query)) return true;
-		return item.keywords?.some((kw) => contains(kw, query)) ?? false;
-	};
+	const toKey = (v: TValue | null | undefined) => (v == null ? null : String(v));
+	const fromKey = (key: Key) => optionMap.get(String(key))?.value;
+
+	const [internal, setInternal] = React.useState<TValue | TValue[] | null | undefined>(props.defaultValue);
+	const controlled = props.value !== undefined;
+	const current = controlled ? props.value : internal;
 
 	const hasSelectedValue = multiple
-		? Array.isArray(selectedValue) && selectedValue.length > 0
-		: selectedValue !== null && selectedValue !== undefined;
+		? Array.isArray(current) && current.length > 0
+		: current !== null && current !== undefined;
 
-	const triggerNode = (
-		<ComboboxTrigger
-			id={id}
-			disabled={disabled}
-			render={
-				render ?? (
-					<button
-						type="button"
-						className={buttonVariants({
-							variant: "secondary",
-							className: cn("justify-start text-left font-normal", className),
-						})}
-					/>
-				)
-			}
-		>
-			<span className={cn("min-w-0 flex-1 truncate text-left", showClear && hasSelectedValue && "pe-7")}>
-				<ComboboxValue placeholder={placeholder ?? t`Select...`} />
-			</span>
-		</ComboboxTrigger>
-	);
+	const emit = (next: TValue | TValue[] | null) => {
+		if (!controlled) setInternal(next);
+		if (multiple) (props as MultiComboboxProps<TValue>).onValueChange?.(next as TValue[]);
+		else (props as SingleComboboxProps<TValue>).onValueChange?.(next as TValue | null);
+	};
+
+	const handleChange = (key: Key | Key[] | null) => {
+		if (multiple) {
+			const keys = Array.isArray(key) ? key : key === null ? [] : [key];
+			emit(keys.flatMap((k) => fromKey(k) ?? []));
+			return;
+		}
+		const single = Array.isArray(key) ? key[0] : key;
+		emit(single == null ? null : (fromKey(single) ?? null));
+	};
+
+	const value = multiple
+		? (Array.isArray(current) ? current : []).map(String)
+		: toKey(Array.isArray(current) ? undefined : current);
 
 	return (
-		<ComboboxRoot
-			name={name}
-			items={options}
-			filter={filter}
-			disabled={disabled}
-			value={selectedValue as ComboboxOption<TValue>[] & ComboboxOption<TValue>}
-			onValueChange={setSelectedValue as (value: ComboboxOption<TValue>[] | ComboboxOption<TValue> | null) => void}
-			itemToStringLabel={itemToStringLabel}
-			isItemEqualToValue={isItemEqualToValue}
-			{...(multiple ? { multiple: true } : {})}
+		<Autocomplete
+			fullWidth
+			{...(id ? { id } : {})}
+			{...(name ? { name } : {})}
+			isDisabled={disabled}
+			className={cn("min-w-0", className)}
+			placeholder={placeholder ?? t`Select...`}
+			selectionMode={multiple ? "multiple" : "single"}
+			value={value}
+			onChange={handleChange}
 		>
-			{showClear ? (
-				<div className="relative w-full min-w-0">
-					{triggerNode}
-					{hasSelectedValue && (
-						<ComboboxClear
-							aria-label={t`Clear selection`}
-							disabled={disabled}
-							className="absolute end-7 top-1/2 z-10 -translate-y-1/2 text-ink-3 opacity-70 hover:opacity-100 focus-visible:opacity-100"
-						/>
-					)}
-				</div>
-			) : (
-				triggerNode
-			)}
-
-			<ComboboxContent aria-label={placeholder ?? t`Options`}>
-				<ComboboxInput
-					placeholder={placeholder ?? t`Search...`}
-					render={
-						<Input
-							fullWidth
-							disabled={disabled}
-							className="rounded-none border-none shadow-none focus-visible:ring-0"
-						/>
-					}
-				/>
-				<ComboboxEmpty>{emptyMessage ?? t`No results found.`}</ComboboxEmpty>
-				<ComboboxList>{listContent}</ComboboxList>
-			</ComboboxContent>
-		</ComboboxRoot>
+			<Autocomplete.Trigger>
+				<Autocomplete.Value />
+				{showClear && hasSelectedValue && <Autocomplete.ClearButton aria-label={t`Clear selection`} />}
+				<Autocomplete.Indicator />
+			</Autocomplete.Trigger>
+			<Autocomplete.Popover aria-label={placeholder ?? t`Options`}>
+				<Autocomplete.Filter filter={filter}>
+					<SearchField autoFocus aria-label={placeholder ?? t`Search...`} variant="secondary">
+						<SearchField.Group>
+							<SearchField.SearchIcon />
+							<SearchField.Input placeholder={placeholder ?? t`Search...`} />
+							<SearchField.ClearButton />
+						</SearchField.Group>
+					</SearchField>
+					<ListBox renderEmptyState={() => <EmptyState>{emptyMessage ?? t`No results found.`}</EmptyState>}>
+						{options.map((item) => (
+							<ListBox.Item
+								key={String(item.value)}
+								id={String(item.value)}
+								textValue={textOf(item)}
+								isDisabled={Boolean(item.disabled)}
+							>
+								{item.label}
+								<ListBox.ItemIndicator />
+							</ListBox.Item>
+						))}
+					</ListBox>
+				</Autocomplete.Filter>
+			</Autocomplete.Popover>
+		</Autocomplete>
 	);
 }
 

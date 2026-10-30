@@ -2,7 +2,7 @@ import type { ApplicationSummary } from "@/features/applications/types";
 import type { LetterDraft } from "@/features/letters/store";
 import type { CoverLetter } from "@rezumi/schema/cover-letter/data";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
-import { Button, buttonVariants, Input, Label, TextArea } from "@heroui/react";
+import { Button, Description, Dropdown, Input, Label, Separator, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -11,13 +11,6 @@ import { Link } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
 import { useId, useRef, useState } from "react";
 import { coverLetterTextToHtml, defaultCoverLetterSignOff, greetingName } from "@rezumi/resume/cover-letter";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
 import { SwitchRow } from "@rezumi/ui/components/switch";
@@ -128,34 +121,42 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 		}).catch(failed);
 
 	const menu = (trigger: ReactElement) => (
-		<DropdownMenu>
-			<DropdownMenuTrigger disabled={disabled} render={trigger} />
-			<DropdownMenuContent align="end" className="max-h-80 w-72 overflow-y-auto">
-				{choices.map((item) => (
-					<DropdownMenuItem key={item.id} onClick={() => choose(item)}>
-						<Icon name="briefcase" />
-						<span className="grid min-w-0">
-							<span className="truncate">{item.role}</span>
-							<span className="truncate text-xs text-ink-3">{item.company}</span>
-						</span>
-					</DropdownMenuItem>
-				))}
-				{choices.length === 0 && (
-					<p className="px-2 py-1.5 text-sm text-ink-2">
-						<Trans>No applications yet. Add one in Applications first.</Trans>
-					</p>
-				)}
-				{application && (
-					<>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => choose(null)}>
+		<Dropdown>
+			{trigger}
+			<Dropdown.Popover placement="bottom end" className="max-h-80 w-72 overflow-y-auto">
+				<Dropdown.Menu
+					renderEmptyState={() => (
+						<p className="px-2 py-1.5 text-sm text-ink-2">
+							<Trans>No applications yet. Add one in Applications first.</Trans>
+						</p>
+					)}
+				>
+					{choices.map((item) => (
+						<Dropdown.Item
+							key={item.id}
+							id={item.id}
+							textValue={`${item.role} ${item.company}`}
+							onAction={() => choose(item)}
+						>
+							<Icon name="briefcase" />
+							<span className="grid min-w-0">
+								<Label className="truncate">{item.role}</Label>
+								<Description className="truncate">{item.company}</Description>
+							</span>
+						</Dropdown.Item>
+					))}
+					{application && <Separator />}
+					{application && (
+						<Dropdown.Item id="none" textValue={t`No application`} onAction={() => choose(null)}>
 							<Icon name="link-simple-horizontal-break" />
-							<Trans>No application</Trans>
-						</DropdownMenuItem>
-					</>
-				)}
-			</DropdownMenuContent>
-		</DropdownMenu>
+							<Label>
+								<Trans>No application</Trans>
+							</Label>
+						</Dropdown.Item>
+					)}
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 
 	return (
@@ -182,22 +183,19 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 						</span>
 					</span>
 					{menu(
-						<button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+						<Button variant="secondary" size="sm" isDisabled={disabled}>
 							<Trans>Change</Trans>
-						</button>,
+						</Button>,
 					)}
 				</div>
 			) : (
 				<>
 					{menu(
-						<button
-							type="button"
-							className={buttonVariants({ variant: "secondary", fullWidth: true, className: "justify-start gap-2" })}
-						>
+						<Button variant="secondary" fullWidth isDisabled={disabled} className="justify-start gap-2">
 							<Icon name="briefcase" />
 							<Trans>Link an application</Trans>
 							<Icon name="caret-down" className="ms-auto text-ink-3" />
-						</button>,
+						</Button>,
 					)}
 					<p className="text-xs text-ink-3">
 						<Trans>Without one, you fill in the recipient yourself and drafting uses only your resume.</Trans>

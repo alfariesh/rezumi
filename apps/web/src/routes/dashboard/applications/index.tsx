@@ -1,18 +1,13 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import { Button, buttonVariants, Input, Skeleton, Tabs } from "@heroui/react";
+import { Button, Dropdown, Input, Label, Skeleton, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, stripSearchParams, useNavigate } from "@tanstack/react-router";
 import { useCallback, useDeferredValue, useEffect, useRef, useState } from "react";
 import z from "zod";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { PageHeader } from "@/components/layout/page-header";
@@ -203,27 +198,28 @@ function RouteComponent() {
 				title={<Trans>Applications</Trans>}
 				actions={
 					<>
-						<DropdownMenu>
-							<DropdownMenuTrigger
-								render={
-									<button
-										type="button"
-										className={buttonVariants({ variant: "secondary", isIconOnly: true })}
-										aria-label={t`Import or export CSV`}
-									/>
-								}
-							>
-								<Icon name="arrows-down-up" />
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuItem onClick={() => setImporting(true)}>
-									<Trans>Import from CSV…</Trans>
-								</DropdownMenuItem>
-								<DropdownMenuItem disabled={empty || !applications || exportLoading} onClick={() => void openExport()}>
-									<Trans>Export to CSV…</Trans>
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<Dropdown>
+							<IconButton icon="arrows-down-up" variant="secondary" label={t`Import or export CSV`} />
+							<Dropdown.Popover placement="bottom end">
+								<Dropdown.Menu>
+									<Dropdown.Item id="import" textValue={t`Import from CSV…`} onAction={() => setImporting(true)}>
+										<Label>
+											<Trans>Import from CSV…</Trans>
+										</Label>
+									</Dropdown.Item>
+									<Dropdown.Item
+										id="export"
+										textValue={t`Export to CSV…`}
+										isDisabled={empty || !applications || exportLoading}
+										onAction={() => void openExport()}
+									>
+										<Label>
+											<Trans>Export to CSV…</Trans>
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
 						<Button onPress={() => setAdding(true)}>
 							<Icon name="plus" />
 							<Trans>Save job</Trans>

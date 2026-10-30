@@ -1,14 +1,13 @@
 import type { RouterOutput } from "@/libs/orpc/client";
+import { Command } from "@heroui-pro/react";
 import { Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useRouteContext } from "@tanstack/react-router";
-import { CommandLoading } from "cmdk";
-import { CommandItem, CommandShortcut } from "@rezumi/ui/components/command";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../store";
-import { BaseCommandGroup } from "./base";
+import { BaseCommandGroup, PaletteItem, searchText } from "./base";
 import { useDialogStore } from "@/dialogs/store";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { orpc } from "@/libs/orpc/client";
@@ -39,24 +38,28 @@ export function ResumesCommandGroup() {
 	return (
 		<>
 			<BaseCommandGroup heading={<Trans>Search for…</Trans>}>
-				<CommandItem keywords={[t`Resumes`]} value="search.resumes" onSelect={() => pushPage("resumes")}>
+				<PaletteItem id="search.resumes" textValue={searchText(t`Resumes`)} onAction={() => pushPage("resumes")}>
 					<Icon name="file-text" size={16} />
 					<Trans>Resumes</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem keywords={[t`Applications`]} value="search.applications" onSelect={() => pushPage("applications")}>
+				<PaletteItem
+					id="search.applications"
+					textValue={searchText(t`Applications`)}
+					onAction={() => pushPage("applications")}
+				>
 					<Icon name="briefcase" size={16} />
 					<Trans>Applications</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem
-					keywords={[t`Conversations`, t`Assistant`, t`Threads`]}
-					value="search.threads"
-					onSelect={() => pushPage("threads")}
+				<PaletteItem
+					id="search.threads"
+					textValue={searchText(t`Assistant conversations`, [t`Conversations`, t`Assistant`, t`Threads`])}
+					onAction={() => pushPage("threads")}
 				>
 					<Icon name="chat-text" size={16} />
 					<Trans>Assistant conversations</Trans>
-				</CommandItem>
+				</PaletteItem>
 			</BaseCommandGroup>
 
 			{searchPage === "resumes" ? <ResumesPage page={searchPage} /> : null}
@@ -88,32 +91,32 @@ function ResumesPage({ page }: SearchPageProps) {
 
 	return (
 		<BaseCommandGroup page={page} heading={<Trans>Resumes</Trans>}>
-			<CommandItem value="resumes.create" onSelect={onCreate}>
+			<PaletteItem id="resumes.create" textValue={t`Create a new resume`} onAction={onCreate}>
 				<Icon name="plus" size={16} />
 				<Trans>Create a new resume</Trans>
-			</CommandItem>
+			</PaletteItem>
 
 			{isLoading ? (
-				<CommandLoading>
+				<LoadingItem>
 					<Trans>Loading resumes…</Trans>
-				</CommandLoading>
+				</LoadingItem>
 			) : (
 				filteredResumes.map((resume) => (
-					<CommandItem
+					<PaletteItem
 						key={resume.id}
-						value={`resume.${resume.id}`}
-						keywords={[resume.name, resume.slug]}
-						onSelect={() => onNavigate(`/builder/${resume.id}`)}
+						id={`resume.${resume.id}`}
+						textValue={searchText(resume.name, [resume.slug])}
+						onAction={() => onNavigate(`/builder/${resume.id}`)}
 					>
 						<Icon name="file-text" size={16} />
 						{resume.name}
 
-						<CommandShortcut className="opacity-0 group-data-[selected=true]/command-item:opacity-100">
+						<span className="ms-auto font-mono text-xs text-ink-3 opacity-0 group-data-[focused=true]:opacity-100">
 							<Trans comment="Command palette hint that pressing Enter opens the selected resume">
 								Press <Kbd>Enter</Kbd> to open
 							</Trans>
-						</CommandShortcut>
-					</CommandItem>
+						</span>
+					</PaletteItem>
 				))
 			)}
 		</BaseCommandGroup>
@@ -144,27 +147,27 @@ function ApplicationsPage({ page }: SearchPageProps) {
 
 	return (
 		<BaseCommandGroup page={page} heading={<Trans>Applications</Trans>}>
-			<CommandItem value="applications.create" onSelect={onCreateApplication}>
+			<PaletteItem id="applications.create" textValue={t`New application`} onAction={onCreateApplication}>
 				<Icon name="plus" size={16} />
 				<Trans>New application</Trans>
-			</CommandItem>
+			</PaletteItem>
 
 			{isLoading ? (
-				<CommandLoading>
+				<LoadingItem>
 					<Trans>Loading applications…</Trans>
-				</CommandLoading>
+				</LoadingItem>
 			) : (
 				filteredApplications.map((application) => (
-					<CommandItem
+					<PaletteItem
 						key={application.id}
-						value={`application.${application.id}`}
-						keywords={[application.company, application.role]}
-						onSelect={() => onOpenApplication(application)}
+						id={`application.${application.id}`}
+						textValue={searchText(application.company, [application.role])}
+						onAction={() => onOpenApplication(application)}
 					>
 						<Icon name="briefcase" size={16} />
 						<span className="min-w-0 truncate">{application.company}</span>
 						<span className="truncate text-xs text-ink-3">{application.role}</span>
-					</CommandItem>
+					</PaletteItem>
 				))
 			)}
 		</BaseCommandGroup>
@@ -200,27 +203,38 @@ function ThreadsPage({ page }: SearchPageProps) {
 	return (
 		<BaseCommandGroup page={page} heading={<Trans>Assistant conversations</Trans>}>
 			{isLoading ? (
-				<CommandLoading>
+				<LoadingItem>
 					<Trans>Loading conversations…</Trans>
-				</CommandLoading>
+				</LoadingItem>
 			) : (
 				filteredThreads.map((thread) => {
 					const documentName = thread.coverLetterName ?? thread.resumeName ?? "";
 
 					return (
-						<CommandItem
+						<PaletteItem
 							key={thread.id}
-							value={`thread.${thread.id}`}
-							keywords={[thread.title, documentName]}
-							onSelect={() => onOpenThread(thread)}
+							id={`thread.${thread.id}`}
+							textValue={searchText(thread.title, [documentName])}
+							onAction={() => onOpenThread(thread)}
 						>
 							<Icon name="chat-text" size={16} />
 							<span className="min-w-0 truncate">{thread.title}</span>
 							<span className="truncate text-xs text-ink-3">{documentName}</span>
-						</CommandItem>
+						</PaletteItem>
 					);
 				})
 			)}
 		</BaseCommandGroup>
+	);
+}
+
+/** A disabled row shown while data loads; its text always contains the query so the filter keeps it visible. */
+function LoadingItem({ children }: { children: React.ReactNode }) {
+	const search = useCommandPaletteStore((state) => state.search);
+
+	return (
+		<Command.Item id="loading" isDisabled textValue={`${search.trim()} ${t`Loading…`}`} className="px-2 py-3">
+			{children}
+		</Command.Item>
 	);
 }

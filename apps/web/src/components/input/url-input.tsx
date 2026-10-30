@@ -1,10 +1,9 @@
 import type { InputGroupInputProps } from "@heroui/react";
 import type { Website } from "@rezumi/schema/resume/data";
-import { buttonVariants, Input, InputGroup, Label } from "@heroui/react";
+import { Input, InputGroup, Label, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { Icon } from "@rezumi/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 
 const DEFAULT_PREFIX = "https://";
@@ -56,30 +55,24 @@ export function URLInput<TValue extends Website>({ value, onChange, hideLabelBut
 			{!hideLabelButton && (
 				<InputGroup.Suffix className="pe-0">
 					<Popover>
-						<PopoverTrigger
-							render={
-								<button
-									type="button"
-									className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
-									aria-label={t({
-										comment: "Tooltip for action button that opens URL label editor",
-										message: "Add a label to the URL",
-									})}
-								>
-									<Icon name="tag" size={16} />
-								</button>
-							}
+						<IconButton
+							icon="tag"
+							iconSize={16}
+							size="sm"
+							label={t({
+								comment: "Tooltip for action button that opens URL label editor",
+								message: "Add a label to the URL",
+							})}
 						/>
 
-						<PopoverContent className="pt-3">
-							{/** oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- for stopPropagation */}
-							<div role="presentation" className="grid gap-2" onMouseDown={(e) => e.stopPropagation()}>
+						<Popover.Content placement="bottom end">
+							<Popover.Dialog className="grid gap-2 outline-hidden">
 								<Label htmlFor="url-label">
 									<Trans comment="Short field label for custom display text associated with a URL">Label</Trans>
 								</Label>
 								<Input fullWidth id="url-label" name="url-label" value={value.label} onChange={handleLabelChange} />
-							</div>
-						</PopoverContent>
+							</Popover.Dialog>
+						</Popover.Content>
 					</Popover>
 				</InputGroup.Suffix>
 			)}

@@ -1,20 +1,15 @@
 import type { Fact } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
-import { Button, buttonVariants, Checkbox, Spinner, TextArea, Tooltip, Skeleton } from "@heroui/react";
+import { Button, Checkbox, Dropdown, Label, Spinner, TextArea, Tooltip, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence } from "motion/react";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { careerWorkspaceSchema } from "@rezumi/schema/career";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor, generateFilename } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
@@ -241,8 +236,6 @@ function AnswerCard({
 		[answer, question, text, registerDraft],
 	);
 	const [editingQuestion, setEditingQuestion] = useState(answer.question === "");
-	// Edit question focuses the field as its menu closes; the menu would otherwise take focus back and end the edit.
-	const questionField = useRef<HTMLTextAreaElement>(null);
 	const [proposal, setProposal] = useState<{ text: string; factIds: string[] } | null>(null);
 	const generate = useGenerate(applicationId);
 	const { provider } = useDefaultProvider();
@@ -271,7 +264,6 @@ function AnswerCard({
 						fullWidth
 						// oxlint-disable-next-line jsx-a11y/no-autofocus -- opened by the user's click on Add a question or Edit question
 						autoFocus
-						ref={questionField}
 						rows={1}
 						value={question}
 						maxLength={2000}
@@ -306,35 +298,31 @@ function AnswerCard({
 					<Tooltip.Content>{unit === "words" ? t`Count characters` : t`Count words`}</Tooltip.Content>
 				</Tooltip>
 				{!readOnly && (
-					<DropdownMenu>
-						<DropdownMenuTrigger
-							render={
-								<button
-									type="button"
-									aria-label={t`Question options`}
-									disabled={disabled}
-									className={buttonVariants({
-										variant: "ghost",
-										size: "sm",
-										isIconOnly: true,
-										className: "-my-1 -me-1.5 shrink-0 text-ink-2",
-									})}
-								>
-									<Icon name="dots-three" />
-								</button>
-							}
+					<Dropdown>
+						<IconButton
+							icon="dots-three"
+							size="sm"
+							label={t`Question options`}
+							isDisabled={Boolean(disabled)}
+							className="-my-1 -me-1.5 shrink-0 text-ink-2"
 						/>
-						<DropdownMenuContent align="end" finalFocus={questionField}>
-							<DropdownMenuItem onClick={() => setEditingQuestion(true)}>
-								<Icon name="pencil-simple" size={18} />
-								<Trans>Edit question</Trans>
-							</DropdownMenuItem>
-							<DropdownMenuItem variant="destructive" onClick={onRemove}>
-								<Icon name="trash" size={18} />
-								<Trans>Remove question</Trans>
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+						<Dropdown.Popover placement="bottom end">
+							<Dropdown.Menu>
+								<Dropdown.Item id="edit" textValue={t`Edit question`} onAction={() => setEditingQuestion(true)}>
+									<Icon name="pencil-simple" size={18} />
+									<Label>
+										<Trans>Edit question</Trans>
+									</Label>
+								</Dropdown.Item>
+								<Dropdown.Item id="remove" textValue={t`Remove question`} variant="danger" onAction={onRemove}>
+									<Icon name="trash" size={18} />
+									<Label>
+										<Trans>Remove question</Trans>
+									</Label>
+								</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown.Popover>
+					</Dropdown>
 				)}
 			</div>
 
@@ -634,28 +622,26 @@ function Checklist({
 					<Icon name="copy" size={16} />
 					<Trans>Copy answers</Trans>
 				</Button>
-				<DropdownMenu>
-					<DropdownMenuTrigger
-						render={
-							<button
-								type="button"
-								disabled={written.length === 0}
-								className={buttonVariants({ variant: "ghost", size: "sm" })}
-							/>
-						}
-					>
+				<Dropdown>
+					<Button variant="ghost" size="sm" isDisabled={written.length === 0}>
 						<Icon name="download-simple" size={16} />
 						<Trans>Download</Trans>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent>
-						<DropdownMenuItem onClick={() => download("md")}>
-							<Trans>Markdown (.md)</Trans>
-						</DropdownMenuItem>
-						<DropdownMenuItem onClick={() => download("txt")}>
-							<Trans>Plain text (.txt)</Trans>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+					</Button>
+					<Dropdown.Popover>
+						<Dropdown.Menu>
+							<Dropdown.Item id="md" textValue={t`Markdown (.md)`} onAction={() => download("md")}>
+								<Label>
+									<Trans>Markdown (.md)</Trans>
+								</Label>
+							</Dropdown.Item>
+							<Dropdown.Item id="txt" textValue={t`Plain text (.txt)`} onAction={() => download("txt")}>
+								<Label>
+									<Trans>Plain text (.txt)</Trans>
+								</Label>
+							</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
 			</div>
 			<p className="text-xs leading-[17px] text-ink-3">
 				<Trans>You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent.</Trans>

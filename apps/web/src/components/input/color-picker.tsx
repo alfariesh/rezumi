@@ -1,10 +1,9 @@
 import type { ColorResult } from "@uiw/color-convert";
-import { Separator } from "@heroui/react";
+import { Popover, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { hsvaToRgbaString, rgbaStringToHsva } from "@uiw/color-convert";
 import ReactColorColorful from "@uiw/react-color-colorful";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { cn } from "@rezumi/utils/style";
 import { useControlledState } from "@/hooks/use-controlled-state";
 
@@ -28,15 +27,14 @@ const presetColors = [
 ] as const;
 
 type ColorPickerProps = Omit<
-	React.ComponentProps<typeof PopoverTrigger>,
+	React.ComponentProps<typeof Popover.Trigger>,
 	"children" | "defaultValue" | "onChange" | "value"
 > & {
 	value?: string;
 	defaultValue?: string;
 	onChange?: (value: string) => void;
 	open?: boolean;
-	onOpenChange?: React.ComponentProps<typeof Popover>["onOpenChange"];
-	onOpenChangeComplete?: React.ComponentProps<typeof Popover>["onOpenChangeComplete"];
+	onOpenChange?: (open: boolean) => void;
 	trigger?: React.ReactNode;
 	children?: React.ReactNode;
 };
@@ -47,7 +45,6 @@ export function ColorPicker({
 	onChange,
 	open,
 	onOpenChange,
-	onOpenChangeComplete,
 	trigger,
 	children,
 	...triggerProps
@@ -66,58 +63,60 @@ export function ColorPicker({
 	}
 
 	return (
-		<Popover open={open} onOpenChange={onOpenChange} onOpenChangeComplete={onOpenChangeComplete}>
+		<Popover {...(open !== undefined && { isOpen: open })} {...(onOpenChange && { onOpenChange })}>
 			{trigger ?? (
-				<PopoverTrigger aria-label={t`Choose color`} {...triggerProps}>
+				<Popover.Trigger aria-label={t`Choose color`} {...triggerProps}>
 					<div
 						className="size-6 shrink-0 cursor-pointer rounded-sm border border-ink/60 transition-transform duration-quick ease-enter focus-visible:outline-hidden active:scale-[0.97]"
 						style={{ backgroundColor: currentValue }}
 					/>
-				</PopoverTrigger>
+				</Popover.Trigger>
 			)}
 
-			<PopoverContent align="start" className="min-w-xs">
-				{children && (
-					<>
-						{children}
-						<Separator />
-					</>
-				)}
+			<Popover.Content placement="bottom start" className="min-w-xs">
+				<Popover.Dialog className="grid gap-3 p-3 outline-hidden">
+					{children && (
+						<>
+							{children}
+							<Separator />
+						</>
+					)}
 
-				<div className="flex flex-col gap-2">
-					<span className="text-xs font-medium text-ink-3">
-						<Trans>Presets</Trans>
-					</span>
+					<div className="flex flex-col gap-2">
+						<span className="text-xs font-medium text-ink-3">
+							<Trans>Presets</Trans>
+						</span>
 
-					<div className="grid grid-cols-8 gap-3 rounded bg-sunken p-3">
-						{presetColors.map((color) => (
-							<button
-								key={color}
-								type="button"
-								title={color}
-								style={{ backgroundColor: color }}
-								aria-label={t`Use color ${color}`}
-								aria-pressed={currentValue === color}
-								onClick={() => setCurrentValue(color)}
-								className={cn(
-									"size-5 shrink-0 cursor-pointer rounded-sm transition-transform duration-quick ease-enter focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-hidden active:scale-[0.97]",
-									currentValue === color && "border border-ink/60",
-								)}
-							/>
-						))}
+						<div className="grid grid-cols-8 gap-3 rounded bg-sunken p-3">
+							{presetColors.map((color) => (
+								<button
+									key={color}
+									type="button"
+									title={color}
+									style={{ backgroundColor: color }}
+									aria-label={t`Use color ${color}`}
+									aria-pressed={currentValue === color}
+									onClick={() => setCurrentValue(color)}
+									className={cn(
+										"size-5 shrink-0 cursor-pointer rounded-sm transition-transform duration-quick ease-enter focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-hidden active:scale-[0.97]",
+										currentValue === color && "border border-ink/60",
+									)}
+								/>
+							))}
+						</div>
 					</div>
-				</div>
 
-				<div className="flex flex-col gap-2">
-					<span className="text-xs font-medium text-ink-3">
-						<Trans>Custom</Trans>
-					</span>
+					<div className="flex flex-col gap-2">
+						<span className="text-xs font-medium text-ink-3">
+							<Trans>Custom</Trans>
+						</span>
 
-					<div className="rounded bg-sunken p-3 *:w-full! [&_.w-color-alpha]:mt-4! [&_.w-color-alpha]:h-4! [&_.w-color-alpha>div]:rounded-sm! [&_.w-color-hue]:mt-4! [&_.w-color-hue]:h-4! [&_.w-color-hue]:rounded-sm! [&_.w-color-saturation]:h-36! [&_.w-color-saturation]:rounded-sm!">
-						<ReactColorColorful color={color} onChange={onColorChange} />
+						<div className="rounded bg-sunken p-3 *:w-full! [&_.w-color-alpha]:mt-4! [&_.w-color-alpha]:h-4! [&_.w-color-alpha>div]:rounded-sm! [&_.w-color-hue]:mt-4! [&_.w-color-hue]:h-4! [&_.w-color-hue]:rounded-sm! [&_.w-color-saturation]:h-36! [&_.w-color-saturation]:rounded-sm!">
+							<ReactColorColorful color={color} onChange={onColorChange} />
+						</div>
 					</div>
-				</div>
-			</PopoverContent>
+				</Popover.Dialog>
+			</Popover.Content>
 		</Popover>
 	);
 }

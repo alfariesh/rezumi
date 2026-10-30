@@ -1,6 +1,6 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants, Input } from "@heroui/react";
+import { Button, buttonVariants, Dropdown, Input, Label, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -8,14 +8,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
@@ -165,30 +159,26 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 								)}
 							</SheetDescription>
 						</div>
-						<DropdownMenu>
-							<DropdownMenuTrigger
-								render={
-									<button
-										type="button"
-										aria-label={t`Application options`}
-										className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
-									/>
-								}
-							>
-								<Icon name="dots-three" />
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuItem onClick={() => onEditDetails(application)}>
-									<Icon name="pencil-simple" size={18} />
-									<Trans>Edit details…</Trans>
-								</DropdownMenuItem>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem variant="destructive" onClick={onDelete}>
-									<Icon name="trash" size={18} />
-									<Trans>Delete…</Trans>
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<Dropdown>
+							<IconButton icon="dots-three" size="sm" label={t`Application options`} />
+							<Dropdown.Popover placement="bottom end">
+								<Dropdown.Menu>
+									<Dropdown.Item id="edit" textValue={t`Edit details…`} onAction={() => onEditDetails(application)}>
+										<Icon name="pencil-simple" size={18} />
+										<Label>
+											<Trans>Edit details…</Trans>
+										</Label>
+									</Dropdown.Item>
+									<Separator />
+									<Dropdown.Item id="delete" textValue={t`Delete…`} variant="danger" onAction={onDelete}>
+										<Icon name="trash" size={18} />
+										<Label>
+											<Trans>Delete…</Trans>
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
 					</div>
 
 					<div className="grid gap-2.5">

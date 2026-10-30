@@ -16,6 +16,7 @@ import {
 	keymap,
 	lineNumbers,
 } from "@codemirror/view";
+import { Popover } from "@heroui/react";
 import { tags } from "@lezer/highlight";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -28,7 +29,6 @@ import {
 } from "@rezumi/pdf/semantic-tree";
 import { isFatalStylesheetDiagnostic } from "@rezumi/resume/stylesheet";
 import { Icon } from "@rezumi/ui/components/icon";
-import { PopoverTrigger } from "@rezumi/ui/components/popover";
 import { Sheet, SheetContent, SheetTitle } from "@rezumi/ui/components/sheet";
 import { useEditorStore } from "../editor/store";
 import { serializeStylesheetColor, toStylesheetPickerColor } from "./color-format";
@@ -45,7 +45,6 @@ import { createCompileWorkerClient } from "./worker-client";
 import { ColorPicker } from "@/components/input/color-picker";
 import { useIsResumeLocked, useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { useTheme } from "@/features/theme/provider";
-import { useClosingValue } from "@/hooks/use-closing-value";
 
 const externalReplacement = Annotation.define<boolean>();
 const colorPickerEdit = Annotation.define<boolean>();
@@ -145,7 +144,7 @@ function StylesheetCodeEditor({
 		top: number;
 	} | null>(null);
 	// Closing keeps the picker on its swatch until it has faded out.
-	const [shownColor, onColorOpenChangeComplete] = useClosingValue(selectedColor);
+	const shownColor = selectedColor;
 	const selectColor = useCallback((token: SemanticCssColorToken, rect: DOMRect) => {
 		const hostRect = hostRef.current?.getBoundingClientRect();
 		if (!hostRect) return;
@@ -303,31 +302,18 @@ function StylesheetCodeEditor({
 				<div className="pointer-events-none absolute z-20" style={{ left: shownColor.left, top: shownColor.top }}>
 					<ColorPicker
 						open={selectedColor !== null}
-						onOpenChangeComplete={onColorOpenChangeComplete}
-						onOpenChange={(open, details) => {
-							const target = details.event.target;
-							if (
-								target instanceof Element &&
-								target.closest(".semantic-css-color-swatch") &&
-								hostRef.current?.contains(target)
-							)
-								return;
+						onOpenChange={(open) => {
 							if (!open) setSelectedColor(null);
 						}}
 						value={toStylesheetPickerColor(shownColor.token.value)}
 						onChange={updateColor}
 						trigger={
-							<PopoverTrigger
-								render={
-									<button
-										data-semantic-css-color-picker-trigger=""
-										type="button"
-										title={t`Edit color ${shownColor.token.value}`}
-										aria-label={t`Edit color ${shownColor.token.value}`}
-										className="pointer-events-auto size-3 rounded-sm border border-ink/40"
-										style={{ backgroundColor: shownColor.token.value }}
-									/>
-								}
+							<Popover.Trigger
+								data-semantic-css-color-picker-trigger=""
+								title={t`Edit color ${shownColor.token.value}`}
+								aria-label={t`Edit color ${shownColor.token.value}`}
+								className="pointer-events-auto size-3 rounded-sm border border-ink/40"
+								style={{ backgroundColor: shownColor.token.value }}
 							/>
 						}
 					/>

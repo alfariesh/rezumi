@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants, Input, Label } from "@heroui/react";
+import { Button, Dropdown, Input, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -14,12 +14,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
@@ -82,26 +76,44 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 						{text.sub && <span className="text-xs leading-[17px] text-ink-2">{text.sub}</span>}
 					</div>
 					{step.kind !== "closed" && (
-						<DropdownMenu>
-							<DropdownMenuTrigger
-								render={<button type="button" className={buttonVariants({ variant: "secondary", size: "sm" })} />}
-							>
+						<Dropdown>
+							<Button variant="secondary" size="sm">
 								<Trans>Edit</Trans>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								{step.kind === "interview" && (
-									<DropdownMenuItem onClick={() => onScheduleInterview(step.interview)}>
-										<Trans>Edit this interview…</Trans>
-									</DropdownMenuItem>
-								)}
-								<DropdownMenuItem onClick={() => onScheduleInterview(null)}>
-									<Trans>Schedule an interview…</Trans>
-								</DropdownMenuItem>
-								<DropdownMenuItem onClick={() => setFollowUpOpen(true)}>
-									{application.followUpAt ? <Trans>Change the follow-up…</Trans> : <Trans>Set a follow-up…</Trans>}
-								</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+							</Button>
+							<Dropdown.Popover placement="bottom end">
+								<Dropdown.Menu>
+									{step.kind === "interview" ? (
+										<Dropdown.Item
+											id="edit-interview"
+											textValue={t`Edit this interview…`}
+											onAction={() => onScheduleInterview(step.interview)}
+										>
+											<Label>
+												<Trans>Edit this interview…</Trans>
+											</Label>
+										</Dropdown.Item>
+									) : null}
+									<Dropdown.Item
+										id="schedule"
+										textValue={t`Schedule an interview…`}
+										onAction={() => onScheduleInterview(null)}
+									>
+										<Label>
+											<Trans>Schedule an interview…</Trans>
+										</Label>
+									</Dropdown.Item>
+									<Dropdown.Item
+										id="follow-up"
+										textValue={application.followUpAt ? t`Change the follow-up…` : t`Set a follow-up…`}
+										onAction={() => setFollowUpOpen(true)}
+									>
+										<Label>
+											{application.followUpAt ? <Trans>Change the follow-up…</Trans> : <Trans>Set a follow-up…</Trans>}
+										</Label>
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown>
 					)}
 				</div>
 				{(step.kind === "interview" || step.kind === "follow-up") && (

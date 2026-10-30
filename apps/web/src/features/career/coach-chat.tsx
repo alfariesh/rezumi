@@ -3,7 +3,7 @@ import type { ChatAttachment } from "@/features/assistant/chat";
 import type { FactCategory } from "@rezumi/schema/career";
 import type { UIMessage } from "ai";
 import type { ReactNode } from "react";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Popover, Spinner } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -22,7 +22,6 @@ import {
 	MessageScrollerProvider,
 	MessageScrollerViewport,
 } from "@rezumi/ui/components/message-scroller";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { TraceIcon, TraceLine, TraceTitle } from "@rezumi/ui/components/trace";
 import { cn } from "@rezumi/utils/style";
 import { Composer, contentClass, copyToClipboard, usedFor, usedSchema } from "./coach-thread";
@@ -496,20 +495,15 @@ type UsedChipProps = { label: string; title: string; children: ReactNode };
 function UsedChip({ label, title, children }: UsedChipProps) {
 	return (
 		<Popover>
-			<PopoverTrigger
-				render={
-					<button
-						type="button"
-						className="inline-flex h-6 items-center rounded-sm border border-line-2 px-2 text-xs font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink aria-expanded:bg-hover"
-					/>
-				}
-			>
+			<Popover.Trigger className="inline-flex h-6 items-center rounded-sm border border-line-2 px-2 text-xs font-medium text-ink-2 transition-colors duration-quick hover:bg-hover hover:text-ink aria-expanded:bg-hover">
 				{label}
-			</PopoverTrigger>
-			<PopoverContent align="start" className="w-80 max-w-[calc(100vw-2rem)]">
-				<Eyebrow>{title}</Eyebrow>
-				<ul className="grid max-h-72 gap-2 overflow-y-auto">{children}</ul>
-			</PopoverContent>
+			</Popover.Trigger>
+			<Popover.Content placement="bottom start" className="w-80 max-w-[calc(100vw-2rem)]">
+				<Popover.Dialog aria-label={title} className="grid gap-2 p-1">
+					<Eyebrow>{title}</Eyebrow>
+					<ul className="grid max-h-72 gap-2 overflow-y-auto">{children}</ul>
+				</Popover.Dialog>
+			</Popover.Content>
 		</Popover>
 	);
 }

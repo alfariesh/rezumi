@@ -1,18 +1,11 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
 import { Segment } from "@heroui-pro/react";
-import { Button, buttonVariants, Checkbox, InputGroup, Kbd, Skeleton, Tabs } from "@heroui/react";
+import { Button, Checkbox, Dropdown, InputGroup, Kbd, Label, Separator, Skeleton, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { NativeSelect } from "@rezumi/ui/components/native-select";
@@ -491,38 +484,60 @@ function SelectionBar({ selection, allSelected, onSelectAll, onClear, onTags }: 
 					<Trans>Tags</Trans>
 				</span>
 			</Button>
-			<DropdownMenu>
-				<DropdownMenuTrigger
-					render={
-						<button type="button" disabled={busy} className={buttonVariants({ variant: "ghost", size: "sm" })}>
-							<Icon name="globe" />
-							<span className="max-sm:sr-only">
-								<Trans>Sharing</Trans>
-							</span>
-							<Icon name="caret-down" size={14} />
-						</button>
-					}
-				/>
-				<DropdownMenuContent side="top" align="center" className="w-48">
-					<DropdownMenuItem onClick={() => void run(() => batch.setPublic(selection, true))}>
-						<Icon name="globe" />
-						<Trans>Make public</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void run(() => batch.setPublic(selection, false))}>
-						<Icon name="eye-slash" />
-						<Trans>Make private</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={() => void run(() => batch.setLocked(selection, true))}>
-						<Icon name="lock" />
-						<Trans>Lock editing</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void run(() => batch.setLocked(selection, false))}>
-						<Icon name="lock-open" />
-						<Trans>Unlock</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+			<Dropdown>
+				<Button variant="ghost" size="sm" isDisabled={busy}>
+					<Icon name="globe" />
+					<span className="max-sm:sr-only">
+						<Trans>Sharing</Trans>
+					</span>
+					<Icon name="caret-down" size={14} />
+				</Button>
+				<Dropdown.Popover placement="top" className="w-48">
+					<Dropdown.Menu>
+						<Dropdown.Item
+							id="public"
+							textValue={t`Make public`}
+							onAction={() => void run(() => batch.setPublic(selection, true))}
+						>
+							<Icon name="globe" className="text-muted" />
+							<Label>
+								<Trans>Make public</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item
+							id="private"
+							textValue={t`Make private`}
+							onAction={() => void run(() => batch.setPublic(selection, false))}
+						>
+							<Icon name="eye-slash" className="text-muted" />
+							<Label>
+								<Trans>Make private</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Separator />
+						<Dropdown.Item
+							id="lock"
+							textValue={t`Lock editing`}
+							onAction={() => void run(() => batch.setLocked(selection, true))}
+						>
+							<Icon name="lock" className="text-muted" />
+							<Label>
+								<Trans>Lock editing</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item
+							id="unlock"
+							textValue={t`Unlock`}
+							onAction={() => void run(() => batch.setLocked(selection, false))}
+						>
+							<Icon name="lock-open" className="text-muted" />
+							<Label>
+								<Trans>Unlock</Trans>
+							</Label>
+						</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 			<Button
 				variant="ghost"
 				size="sm"

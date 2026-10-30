@@ -1,4 +1,5 @@
 import type { DragEndEvent, DragStartEvent } from "@dnd-kit/core";
+import type { Key } from "@heroui/react";
 import type { ResumeData, SectionType } from "@rezumi/schema/resume/data";
 import type { CSSProperties, HTMLAttributes, Ref } from "react";
 import {
@@ -12,7 +13,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Button, Switch } from "@heroui/react";
+import { Button, Description, Dropdown, Label, Separator, Switch } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useReducedMotion } from "motion/react";
@@ -20,18 +21,8 @@ import { useCallback, useState } from "react";
 import { match } from "ts-pattern";
 import { filterSections } from "@rezumi/pdf/filtering";
 import { templateLayouts } from "@rezumi/schema/templates";
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { resolveLayoutSectionTitle } from "./title";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -473,53 +464,69 @@ function MoveToSubmenu({ id, pageIndex, columnId }: MoveToSubmenuProps) {
 	};
 
 	return (
-		<DropdownMenuSub>
-			<DropdownMenuSubTrigger>
+		<Dropdown.SubmenuTrigger>
+			<Dropdown.Item id="move-to" textValue={t`Move to`}>
 				<Icon name="arrow-u-up-right" size={16} />
-				<Trans>Move to</Trans>
-			</DropdownMenuSubTrigger>
+				<Label>
+					<Trans>Move to</Trans>
+				</Label>
+				<Dropdown.SubmenuIndicator />
+			</Dropdown.Item>
 
-			<DropdownMenuSubContent>
-				{pages.map((page, targetPageIndex) => {
-					// Full-width pages hide their sidebar, so never offer it as a target.
-					const sidebarHidden = sidebarCollapsed || page.fullWidth;
+			<Dropdown.Popover>
+				<Dropdown.Menu>
+					{pages.map((page, targetPageIndex) => {
+						// Full-width pages hide their sidebar, so never offer it as a target.
+						const sidebarHidden = sidebarCollapsed || page.fullWidth;
 
-					return (
-						<DropdownMenuSub key={`page-${targetPageIndex}`}>
-							<DropdownMenuSubTrigger>
-								<Icon name="file" size={16} />
-								<Trans>Page {targetPageIndex + 1}</Trans>
-							</DropdownMenuSubTrigger>
+						return (
+							<Dropdown.SubmenuTrigger key={`page-${targetPageIndex}`}>
+								<Dropdown.Item id={`page-${targetPageIndex}`} textValue={t`Page ${targetPageIndex + 1}`}>
+									<Icon name="file" size={16} />
+									<Label>
+										<Trans>Page {targetPageIndex + 1}</Trans>
+									</Label>
+									<Dropdown.SubmenuIndicator />
+								</Dropdown.Item>
 
-							<DropdownMenuSubContent>
-								<DropdownMenuItem
-									disabled={targetPageIndex === pageIndex && columnId === "main"}
-									onClick={() => moveTo(targetPageIndex, "main")}
-								>
-									{getColumnLabel("main")}
-								</DropdownMenuItem>
+								<Dropdown.Popover>
+									<Dropdown.Menu>
+										<Dropdown.Item
+											id="main"
+											textValue={getColumnLabel("main")}
+											isDisabled={targetPageIndex === pageIndex && columnId === "main"}
+											onAction={() => moveTo(targetPageIndex, "main")}
+										>
+											<Label>{getColumnLabel("main")}</Label>
+										</Dropdown.Item>
 
-								{!sidebarHidden && (
-									<DropdownMenuItem
-										disabled={targetPageIndex === pageIndex && columnId === "sidebar"}
-										onClick={() => moveTo(targetPageIndex, "sidebar")}
-									>
-										{getColumnLabel("sidebar")}
-									</DropdownMenuItem>
-								)}
-							</DropdownMenuSubContent>
-						</DropdownMenuSub>
-					);
-				})}
+										{!sidebarHidden && (
+											<Dropdown.Item
+												id="sidebar"
+												textValue={getColumnLabel("sidebar")}
+												isDisabled={targetPageIndex === pageIndex && columnId === "sidebar"}
+												onAction={() => moveTo(targetPageIndex, "sidebar")}
+											>
+												<Label>{getColumnLabel("sidebar")}</Label>
+											</Dropdown.Item>
+										)}
+									</Dropdown.Menu>
+								</Dropdown.Popover>
+							</Dropdown.SubmenuTrigger>
+						);
+					})}
 
-				<DropdownMenuSeparator />
+					<Separator />
 
-				<DropdownMenuItem onClick={moveToNewPage}>
-					<Icon name="plus-circle" size={16} />
-					<Trans>New page</Trans>
-				</DropdownMenuItem>
-			</DropdownMenuSubContent>
-		</DropdownMenuSub>
+					<Dropdown.Item id="new-page" textValue={t`New page`} onAction={moveToNewPage}>
+						<Icon name="plus-circle" size={16} />
+						<Label>
+							<Trans>New page</Trans>
+						</Label>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown.SubmenuTrigger>
 	);
 }
 
@@ -563,30 +570,41 @@ function SectionBreakItems({ id }: SectionBreakItemsProps) {
 		});
 	};
 
+	const selected = new Set<Key>([
+		...(keepTogether ? ["keepTogether"] : []),
+		...(startOnNewPage ? ["startOnNewPage"] : []),
+	]);
+
+	const onSelectionChange = (keys: "all" | Set<Key>) => {
+		if (keys === "all") return;
+		for (const field of ["keepTogether", "startOnNewPage"] as const) {
+			if (keys.has(field) !== selected.has(field)) toggle(field);
+		}
+	};
+
 	return (
-		<>
-			<DropdownMenuCheckboxItem
-				checked={keepTogether}
-				onSelect={(event) => event.preventDefault()}
-				onCheckedChange={() => toggle("keepTogether")}
-			>
-				<Trans comment="Layout editor toggle that prevents a section from splitting across pages">Keep together</Trans>
-			</DropdownMenuCheckboxItem>
+		<Dropdown.Section selectionMode="multiple" selectedKeys={selected} onSelectionChange={onSelectionChange}>
+			<Dropdown.Item id="keepTogether" textValue={t`Keep together`}>
+				<Dropdown.ItemIndicator />
+				<Label>
+					<Trans comment="Layout editor toggle that prevents a section from splitting across pages">
+						Keep together
+					</Trans>
+				</Label>
+				<Description>
+					<Trans comment="Helper note explaining the keep-together limitation">
+						Only applies when the section fits on a single page.
+					</Trans>
+				</Description>
+			</Dropdown.Item>
 
-			<p className="px-2 pb-1 text-xs text-ink-3">
-				<Trans comment="Helper note explaining the keep-together limitation">
-					Only applies when the section fits on a single page.
-				</Trans>
-			</p>
-
-			<DropdownMenuCheckboxItem
-				checked={startOnNewPage}
-				onSelect={(event) => event.preventDefault()}
-				onCheckedChange={() => toggle("startOnNewPage")}
-			>
-				<Trans comment="Layout editor toggle that forces a section to begin on a new page">Start on new page</Trans>
-			</DropdownMenuCheckboxItem>
-		</>
+			<Dropdown.Item id="startOnNewPage" textValue={t`Start on new page`}>
+				<Dropdown.ItemIndicator />
+				<Label>
+					<Trans comment="Layout editor toggle that forces a section to begin on a new page">Start on new page</Trans>
+				</Label>
+			</Dropdown.Item>
+		</Dropdown.Section>
 	);
 }
 
@@ -633,21 +651,23 @@ function LayoutItemContent({
 
 			{/* The drag overlay renders without a location; only real rows get the menu. */}
 			{!isOverlay && pageIndex !== undefined && columnId !== undefined && (
-				<DropdownMenu>
-					<DropdownMenuTrigger
-						aria-label={t`Move section to another column or page`}
-						onPointerDown={(event) => event.stopPropagation()}
-						className="flex cursor-context-menu items-center rounded p-0.5 opacity-40 transition-opacity group-hover/item:opacity-100 hover:bg-sunken/40 focus:outline-none focus-visible:ring-1"
-					>
-						<Icon name="dots-three-vertical" size={16} />
-					</DropdownMenuTrigger>
+				<Dropdown>
+					<IconButton
+						icon="dots-three-vertical"
+						iconSize={16}
+						size="sm"
+						label={t`Move section to another column or page`}
+						className="size-6 min-w-0 opacity-40 transition-opacity group-hover/item:opacity-100"
+					/>
 
-					<DropdownMenuContent align="end">
-						<MoveToSubmenu id={id} pageIndex={pageIndex} columnId={columnId} />
-						<DropdownMenuSeparator />
-						<SectionBreakItems id={id} />
-					</DropdownMenuContent>
-				</DropdownMenu>
+					<Dropdown.Popover placement="bottom end">
+						<Dropdown.Menu>
+							<MoveToSubmenu id={id} pageIndex={pageIndex} columnId={columnId} />
+							<Separator />
+							<SectionBreakItems id={id} />
+						</Dropdown.Menu>
+					</Dropdown.Popover>
+				</Dropdown>
 			)}
 		</div>
 	);

@@ -1,19 +1,10 @@
 import type { SearchRegionsAction } from "@rezumi/utils/region";
-import { Input } from "@heroui/react";
+import type { Key } from "react";
+import { ComboBox, Input, ListBox } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { useId, useMemo } from "react";
-import {
-	ComboboxContent,
-	ComboboxEmpty,
-	ComboboxInput,
-	ComboboxItem,
-	ComboboxList,
-	ComboboxRoot,
-	ComboboxTrigger,
-	useFilter,
-} from "@rezumi/ui/components/combobox";
+import { useId, useMemo, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import {
 	countryName,
@@ -22,8 +13,6 @@ import {
 	SEARCH_REGION_CODES,
 	shownSearchRegions,
 } from "@rezumi/utils/region";
-
-type Country = { value: string; label: string };
 
 export type SearchRegionsFieldProps = {
 	value: string[] | null | undefined;
@@ -35,7 +24,7 @@ export type SearchRegionsFieldProps = {
 export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchRegionsFieldProps) {
 	const { i18n } = useLingui();
 	const labelId = useId();
-	const { contains } = useFilter();
+	const [query, setQuery] = useState("");
 	const device = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	const shown = shownSearchRegions(value, accountTimeZone, device);
 	const full = shown.codes.length >= MAX_SEARCH_REGIONS;
@@ -54,11 +43,18 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 		if (next !== shown.codes) onChange(next);
 	};
 
-	const onPick = (picked: Country[]) => {
-		const added = picked.find((country) => !shown.codes.includes(country.value));
-		const removed = shown.codes.find((code) => !picked.some((country) => country.value === code));
-		if (added) apply({ type: "add", code: added.value });
-		else if (removed) apply({ type: "remove", code: removed });
+	// Picking a country adds it; the field stays empty so the next one can be searched straight away.
+	const onPick = (key: Key | null) => {
+		setQuery("");
+		if (key === null) return;
+		const code = String(key);
+		if (!shown.codes.includes(code)) apply({ type: "add", code });
+	};
+
+	// Matches the country's name, or its code ("DE").
+	const matches = (text: string, input: string) => {
+		const needle = input.trim().toLocaleLowerCase(i18n.locale);
+		return !needle || text.toLocaleLowerCase(i18n.locale).includes(needle);
 	};
 
 	return (
@@ -97,41 +93,37 @@ export function SearchRegionsField({ value, accountTimeZone, onChange }: SearchR
 						<Trans>Anywhere</Trans>
 					</span>
 				)}
-				<ComboboxRoot
-					multiple
-					items={countries}
-					value={countries.filter((country) => shown.codes.includes(country.value))}
-					onValueChange={onPick}
-					itemToStringLabel={(country: Country) => country.label}
-					isItemEqualToValue={(a: Country, b: Country) => a.value === b.value}
-					filter={(country: Country, query: string) =>
-						contains(country.label, query) || country.value === query.trim().toUpperCase()
-					}
+				<ComboBox
+					aria-label={t`Add a country`}
+					selectedKey={null}
+					onSelectionChange={onPick}
+					inputValue={query}
+					onInputChange={setQuery}
+					defaultFilter={matches}
+					disabledKeys={full ? countries.filter((c) => !shown.codes.includes(c.value)).map((c) => c.value) : []}
+					allowsEmptyCollection
+					className="ms-auto w-44"
 				>
-					<ComboboxTrigger
-						aria-label={t`Add a country`}
-						className="ms-auto flex h-7 items-center gap-1 rounded-sm px-2 text-[13px] text-ink-3 transition-colors duration-quick hover:bg-hover hover:text-ink"
-					>
-						<Trans>Add a country</Trans>
-					</ComboboxTrigger>
-					<ComboboxContent aria-label={t`Countries`}>
-						<ComboboxInput placeholder={t`Search countries`} render={<Input fullWidth className="shadow-none" />} />
-						<ComboboxEmpty>
-							<Trans>No country matches.</Trans>
-						</ComboboxEmpty>
-						<ComboboxList>
-							{(country: Country) => (
-								<ComboboxItem
-									key={country.value}
-									value={country}
-									disabled={full && !shown.codes.includes(country.value)}
-								>
-									{country.label}
-								</ComboboxItem>
+					<ComboBox.InputGroup>
+						<Input fullWidth placeholder={t`Add a country`} className="h-7 shadow-none" />
+						<ComboBox.Trigger />
+					</ComboBox.InputGroup>
+					<ComboBox.Popover aria-label={t`Countries`}>
+						<ListBox
+							renderEmptyState={() => (
+								<p className="p-2 text-sm text-muted">
+									<Trans>No country matches.</Trans>
+								</p>
 							)}
-						</ComboboxList>
-					</ComboboxContent>
-				</ComboboxRoot>
+						>
+							{countries.map((country) => (
+								<ListBox.Item key={country.value} id={country.value} textValue={`${country.label} ${country.value}`}>
+									{country.label}
+								</ListBox.Item>
+							))}
+						</ListBox>
+					</ComboBox.Popover>
+				</ComboBox>
 			</div>
 			<p className="flex flex-wrap items-center gap-x-1 text-xs text-ink-3">
 				<Trans>Web searches look for work here, up to three countries.</Trans>

@@ -1,11 +1,10 @@
 import type { Contact } from "@rezumi/schema/applications/data";
-import { Button, Input } from "@heroui/react";
+import { Button, Input, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
 import { contactSchema } from "@rezumi/schema/applications/data";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 
 const EMPTY_CONTACT = { name: "", role: "", type: "", email: "", phone: "" };
 
@@ -17,16 +16,18 @@ export function Contacts({ contacts, disabled, onChange }: ContactsProps) {
 
 	return (
 		<Popover>
-			<PopoverTrigger className="grid min-w-0 rounded-md text-start hover:underline">
+			<Popover.Trigger className="grid min-w-0 rounded-md text-start hover:underline">
 				<span className="truncate text-sm font-medium">{primary ? primary.name : "—"}</span>
 				{others.length > 0 && <span className="text-xs text-ink-3">{t`and ${others.length} more`}</span>}
-			</PopoverTrigger>
-			<PopoverContent align="start" className="grid w-80 gap-3 p-3">
-				<h3 className="text-sm font-semibold">
-					<Trans>Contacts</Trans>
-				</h3>
-				<ContactList contacts={contacts} disabled={disabled} onChange={onChange} />
-			</PopoverContent>
+			</Popover.Trigger>
+			<Popover.Content placement="bottom start" className="w-80">
+				<Popover.Dialog className="grid gap-3 p-1">
+					<Popover.Heading className="text-sm font-semibold">
+						<Trans>Contacts</Trans>
+					</Popover.Heading>
+					<ContactList contacts={contacts} disabled={disabled} onChange={onChange} />
+				</Popover.Dialog>
+			</Popover.Content>
 		</Popover>
 	);
 }

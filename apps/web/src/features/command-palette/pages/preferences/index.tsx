@@ -1,8 +1,8 @@
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { CommandItem } from "@rezumi/ui/components/command";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useCommandPaletteStore } from "../../store";
-import { BaseCommandGroup } from "../base";
+import { BaseCommandGroup, PaletteItem, searchText } from "../base";
 import { LanguageCommandPage } from "./language";
 import { ThemeCommandPage } from "./theme";
 
@@ -12,15 +12,23 @@ export function PreferencesCommandGroup() {
 	return (
 		<>
 			<BaseCommandGroup heading={<Trans>Preferences</Trans>}>
-				<CommandItem onSelect={() => pushPage("theme")}>
+				<PaletteItem
+					id="preferences.theme"
+					textValue={searchText(t`Change theme to…`, [t`Theme`, t`Light`, t`Dark`])}
+					onAction={() => pushPage("theme")}
+				>
 					<Icon name="palette" size={16} />
 					<Trans>Change theme to…</Trans>
-				</CommandItem>
+				</PaletteItem>
 
-				<CommandItem onSelect={() => pushPage("language")}>
+				<PaletteItem
+					id="preferences.language"
+					textValue={searchText(t`Change language to…`, [t`Language`])}
+					onAction={() => pushPage("language")}
+				>
 					<Icon name="translate" size={16} />
 					<Trans>Change language to…</Trans>
-				</CommandItem>
+				</PaletteItem>
 			</BaseCommandGroup>
 
 			<ThemeCommandPage />

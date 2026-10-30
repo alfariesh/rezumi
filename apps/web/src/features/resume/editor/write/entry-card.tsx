@@ -2,25 +2,15 @@ import type { PageSettings } from "./entries";
 import type { Entry, WriteSection } from "./model";
 import type { MessageDescriptor } from "@lingui/core";
 import type { KeyboardEvent, ReactNode } from "react";
-import { useDirection } from "@base-ui/react/direction-provider";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { buttonVariants, Chip, Disclosure } from "@heroui/react";
+import { Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
 import { msg, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useMemo } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
+import { useLocale } from "react-aria-components";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
@@ -214,7 +204,7 @@ type PhoneEntryScreenProps = {
 function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }: PhoneEntryScreenProps) {
 	const sectionTitle = useSectionTitle(section);
 	// Off-screen at the end edge: the screen pushes in from there and goes back there.
-	const offscreen = useDirection() === "rtl" ? "translateX(-100%)" : "translateX(100%)";
+	const offscreen = useLocale().direction === "rtl" ? "translateX(-100%)" : "translateX(100%)";
 
 	return (
 		<m.div
@@ -304,66 +294,98 @@ function EntryMenu({ section, entry }: EntryMenuProps) {
 		);
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					<button
-						type="button"
-						aria-label={t`Entry options`}
-						className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
-					/>
-				}
-			>
-				<Icon name="dots-three" />
-			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-56">
-				<DropdownMenuItem onClick={toggleHidden}>
-					<Icon name={entry.hidden ? "eye" : "eye-slash"} />
-					{entry.hidden ? <Trans>Show on page</Trans> : <Trans>Hide from page</Trans>}
-				</DropdownMenuItem>
-				<DropdownMenuItem onClick={duplicate}>
-					<Icon name="copy" />
-					<Trans>Duplicate</Trans>
-				</DropdownMenuItem>
-				<DropdownMenuSub>
-					<DropdownMenuSubTrigger>
-						<Icon name="arrow-right" />
-						<Trans>Move to…</Trans>
-					</DropdownMenuSubTrigger>
-					<DropdownMenuSubContent className="w-56">
-						{moveTargets.map(({ pageIndex, sections }) => (
-							<DropdownMenuSub key={pageIndex}>
-								<DropdownMenuSubTrigger>
-									<Icon name="file-text" />
-									<Trans>Page {pageIndex + 1}</Trans>
-								</DropdownMenuSubTrigger>
-								<DropdownMenuSubContent>
-									{sections.map(({ sectionId, sectionTitle }) => (
-										<DropdownMenuItem key={sectionId} onClick={() => move({ type: "section", sectionId })}>
-											{sectionTitle}
-										</DropdownMenuItem>
-									))}
-									{sections.length > 0 && <DropdownMenuSeparator />}
-									<DropdownMenuItem onClick={() => move({ type: "new-section", title: sourceTitle, pageIndex })}>
-										<Icon name="plus" />
-										<Trans>New section</Trans>
-									</DropdownMenuItem>
-								</DropdownMenuSubContent>
-							</DropdownMenuSub>
-						))}
-						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={() => move({ type: "new-page", title: sourceTitle })}>
-							<Icon name="file-plus" />
-							<Trans>New page</Trans>
-						</DropdownMenuItem>
-					</DropdownMenuSubContent>
-				</DropdownMenuSub>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem variant="destructive" onClick={() => deleteEntry(section, entry.id)}>
-					<Icon name="trash" />
-					<Trans>Delete</Trans>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+		<Dropdown>
+			<IconButton icon="dots-three" label={t`Entry options`} size="sm" />
+			<Dropdown.Popover placement="bottom end" className="w-56">
+				<Dropdown.Menu>
+					<Dropdown.Item
+						id="hidden"
+						textValue={entry.hidden ? t`Show on page` : t`Hide from page`}
+						onAction={toggleHidden}
+					>
+						<Icon name={entry.hidden ? "eye" : "eye-slash"} className="text-muted" />
+						<Label>{entry.hidden ? <Trans>Show on page</Trans> : <Trans>Hide from page</Trans>}</Label>
+					</Dropdown.Item>
+					<Dropdown.Item id="duplicate" textValue={t`Duplicate`} onAction={duplicate}>
+						<Icon name="copy" className="text-muted" />
+						<Label>
+							<Trans>Duplicate</Trans>
+						</Label>
+					</Dropdown.Item>
+					<Dropdown.SubmenuTrigger>
+						<Dropdown.Item id="move" textValue={t`Move to…`}>
+							<Icon name="arrow-right" className="text-muted" />
+							<Label>
+								<Trans>Move to…</Trans>
+							</Label>
+							<Dropdown.SubmenuIndicator />
+						</Dropdown.Item>
+						<Dropdown.Popover className="w-56">
+							<Dropdown.Menu>
+								{moveTargets.map(({ pageIndex, sections }) => (
+									<Dropdown.SubmenuTrigger key={pageIndex}>
+										<Dropdown.Item id={`page-${pageIndex}`} textValue={t`Page ${pageIndex + 1}`}>
+											<Icon name="file-text" className="text-muted" />
+											<Label>
+												<Trans>Page {pageIndex + 1}</Trans>
+											</Label>
+											<Dropdown.SubmenuIndicator />
+										</Dropdown.Item>
+										<Dropdown.Popover>
+											<Dropdown.Menu>
+												{sections.map(({ sectionId, sectionTitle }) => (
+													<Dropdown.Item
+														key={sectionId}
+														id={`section-${sectionId}`}
+														textValue={sectionTitle}
+														onAction={() => move({ type: "section", sectionId })}
+													>
+														<Label>{sectionTitle}</Label>
+													</Dropdown.Item>
+												))}
+												{sections.length > 0 && <Separator />}
+												<Dropdown.Item
+													id="new-section"
+													textValue={t`New section`}
+													onAction={() => move({ type: "new-section", title: sourceTitle, pageIndex })}
+												>
+													<Icon name="plus" className="text-muted" />
+													<Label>
+														<Trans>New section</Trans>
+													</Label>
+												</Dropdown.Item>
+											</Dropdown.Menu>
+										</Dropdown.Popover>
+									</Dropdown.SubmenuTrigger>
+								))}
+								<Separator />
+								<Dropdown.Item
+									id="new-page"
+									textValue={t`New page`}
+									onAction={() => move({ type: "new-page", title: sourceTitle })}
+								>
+									<Icon name="file-plus" className="text-muted" />
+									<Label>
+										<Trans>New page</Trans>
+									</Label>
+								</Dropdown.Item>
+							</Dropdown.Menu>
+						</Dropdown.Popover>
+					</Dropdown.SubmenuTrigger>
+					<Separator />
+					<Dropdown.Item
+						id="delete"
+						textValue={t`Delete`}
+						variant="danger"
+						onAction={() => deleteEntry(section, entry.id)}
+					>
+						<Icon name="trash" />
+						<Label>
+							<Trans>Delete</Trans>
+						</Label>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }

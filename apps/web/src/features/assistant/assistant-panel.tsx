@@ -3,7 +3,7 @@ import type { AssistantDocument } from "./document";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Spinner } from "@heroui/react";
+import { Button, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -11,13 +11,6 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
@@ -314,35 +307,50 @@ function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: 
 	const navigate = useNavigate();
 
 	return (
-		<DropdownMenu open={open} onOpenChange={onOpenChange}>
-			<DropdownMenuTrigger
-				render={
-					<button
-						type="button"
-						aria-label={t`Model: ${label}`}
-						className="flex h-7 max-w-[140px] items-center gap-0.5 rounded-md px-2 text-xs text-ink-2 transition-colors hover:bg-hover"
-					/>
-				}
+		<Dropdown isOpen={open} onOpenChange={onOpenChange}>
+			<Button
+				variant="ghost"
+				size="sm"
+				aria-label={t`Model: ${label}`}
+				className="h-7 max-w-[140px] gap-0.5 px-2 text-xs text-ink-2"
 			>
 				<span className="truncate">{current?.model ?? label}</span>
 				<Icon name="caret-down" size={16} />
-			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-64">
-				{providers.map((item) => (
-					<DropdownMenuItem key={item.id} onClick={() => onChoose(item.id)}>
-						<span className="grid min-w-0 flex-1">
-							<span className="truncate">{item.label}</span>
-							<span className="truncate text-xs text-ink-3">{item.model}</span>
-						</span>
-						{item.id === current?.id && <Icon name="check" size={16} />}
-					</DropdownMenuItem>
-				))}
-				<DropdownMenuSeparator />
-				<DropdownMenuItem onClick={() => void navigate({ to: "/dashboard/settings/ai" })}>
-					<Trans>Connect another…</Trans>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+			</Button>
+			<Dropdown.Popover placement="bottom end" className="w-64">
+				<Dropdown.Menu>
+					<Dropdown.Section
+						selectionMode="single"
+						disallowEmptySelection
+						selectedKeys={new Set(current ? [current.id] : [])}
+						onSelectionChange={(keys) => {
+							const [id] = keys === "all" ? [] : keys;
+							if (typeof id === "string") onChoose(id);
+						}}
+					>
+						{providers.map((item) => (
+							<Dropdown.Item key={item.id} id={item.id} textValue={`${item.label} ${item.model}`}>
+								<span className="grid min-w-0 flex-1">
+									<Label className="truncate">{item.label}</Label>
+									<Description className="truncate">{item.model}</Description>
+								</span>
+								<Dropdown.ItemIndicator />
+							</Dropdown.Item>
+						))}
+					</Dropdown.Section>
+					<Separator />
+					<Dropdown.Item
+						id="connect"
+						textValue={t`Connect another…`}
+						onAction={() => void navigate({ to: "/dashboard/settings/ai" })}
+					>
+						<Label>
+							<Trans>Connect another…</Trans>
+						</Label>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }
 

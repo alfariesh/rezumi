@@ -2,19 +2,12 @@ import type { Application } from "@/features/applications/types";
 import type { MessageContext } from "@/features/assistant/chat";
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { WorkspaceTab } from "@rezumi/schema/career";
-import { buttonVariants, Spinner } from "@heroui/react";
+import { Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@rezumi/ui/components/sheet";
@@ -251,38 +244,46 @@ function ConversationMenu({ threads, currentId, onOpen, onDelete }: Conversation
 	const when = useConversationDate();
 	const current = threads.find((thread) => thread.id === currentId);
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					<button
-						type="button"
-						aria-label={t`Conversations`}
-						className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true, className: "text-ink-2" })}
-					>
-						<Icon name="clock-counter-clockwise" size={20} />
-					</button>
-				}
+		<Dropdown>
+			<IconButton
+				icon="clock-counter-clockwise"
+				iconSize={20}
+				size="sm"
+				label={t`Conversations`}
+				className="text-ink-2"
 			/>
-			<DropdownMenuContent align="end" className="w-72">
-				{threads.map((thread) => (
-					<DropdownMenuItem key={thread.id} onClick={() => onOpen(thread.id)}>
-						<span className="grid min-w-0 flex-1">
-							<span className="truncate">{titleFor(thread)}</span>
-							<span className="text-xs text-ink-3">{when(new Date(thread.lastMessageAt))}</span>
-						</span>
-						{thread.id === currentId && <Icon name="check" size={16} />}
-					</DropdownMenuItem>
-				))}
-				{current && (
-					<>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem variant="destructive" onClick={() => onDelete(current)}>
+			<Dropdown.Popover placement="bottom end" className="w-72">
+				<Dropdown.Menu>
+					{threads.map((thread) => (
+						<Dropdown.Item
+							key={thread.id}
+							id={thread.id}
+							textValue={titleFor(thread)}
+							onAction={() => onOpen(thread.id)}
+						>
+							<span className="grid min-w-0 flex-1">
+								<Label className="truncate">{titleFor(thread)}</Label>
+								<Description>{when(new Date(thread.lastMessageAt))}</Description>
+							</span>
+							{thread.id === currentId && <Icon name="check" size={16} />}
+						</Dropdown.Item>
+					))}
+					{current ? <Separator /> : null}
+					{current ? (
+						<Dropdown.Item
+							id="delete-current"
+							textValue={t`Delete this conversation`}
+							variant="danger"
+							onAction={() => onDelete(current)}
+						>
 							<Icon name="trash" size={18} />
-							<Trans>Delete this conversation</Trans>
-						</DropdownMenuItem>
-					</>
-				)}
-			</DropdownMenuContent>
-		</DropdownMenu>
+							<Label>
+								<Trans>Delete this conversation</Trans>
+							</Label>
+						</Dropdown.Item>
+					) : null}
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }

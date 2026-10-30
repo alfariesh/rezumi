@@ -1,14 +1,13 @@
 import type { ScheduledInterview } from "../interviews";
 import type { ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button } from "@heroui/react";
+import { Button, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useState } from "react";
 import { INTERVIEW_KINDS } from "@rezumi/schema/applications/data";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { cn } from "@rezumi/utils/style";
 import {
 	collectInterviews,
@@ -184,27 +183,22 @@ export function ApplicationCalendar({ applications, allApplications, onOpen }: A
 									))}
 									{extra > 0 && (
 										<Popover>
-											<PopoverTrigger
-												render={
-													<button
-														type="button"
-														className="self-start rounded-md px-1.5 py-0.5 text-[11px] text-ink-3 transition-colors hover:bg-sunken hover:text-ink"
-													/>
-												}
-											>
+											<Popover.Trigger className="self-start rounded-md px-1.5 py-0.5 text-[11px] text-ink-3 transition-colors hover:bg-sunken hover:text-ink">
 												<Trans>+{extra} more</Trans>
-											</PopoverTrigger>
-											<PopoverContent align="start" className="flex w-60 flex-col gap-1 p-2">
-												<p className="px-1 pb-1 text-xs font-medium">{dayHeading(day)}</p>
-												{items.map((item) => (
-													<InterviewChip
-														key={item.interview.id}
-														item={item}
-														time={timeFormat.format(item.start)}
-														onOpen={() => edit(item)}
-													/>
-												))}
-											</PopoverContent>
+											</Popover.Trigger>
+											<Popover.Content placement="bottom start" className="w-60">
+												<Popover.Dialog className="flex flex-col gap-1 p-1">
+													<Popover.Heading className="px-1 pb-1 text-xs font-medium">{dayHeading(day)}</Popover.Heading>
+													{items.map((item) => (
+														<InterviewChip
+															key={item.interview.id}
+															item={item}
+															time={timeFormat.format(item.start)}
+															onOpen={() => edit(item)}
+														/>
+													))}
+												</Popover.Dialog>
+											</Popover.Content>
 										</Popover>
 									)}
 								</div>

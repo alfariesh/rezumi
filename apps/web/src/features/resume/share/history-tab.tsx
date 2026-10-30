@@ -1,18 +1,13 @@
 import type { VersionSummary } from "./format";
 import type { Resume } from "@/features/resume/builder/draft";
-import { Button, Input, buttonVariants } from "@heroui/react";
+import { Button, Dropdown, Input, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { formatVersionMoment, formatVersionTime, getVersionDetail, getVersionTitle } from "./format";
@@ -296,34 +291,29 @@ function NamedVersionMenu({ version, source }: { version: HistoryVersion; source
 	};
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					<button
-						type="button"
-						aria-label={t`Options for ${title}`}
-						className={buttonVariants({
-							variant: "ghost",
-							size: "sm",
-							isIconOnly: true,
-							className:
-								"opacity-0 group-hover/version:opacity-100 focus-visible:opacity-100 data-popup-open:opacity-100",
-						})}
-					/>
-				}
-			>
-				<Icon name="dots-three" />
-			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-44">
-				<DropdownMenuItem onClick={() => void rename()}>
-					<Icon name="pencil-simple" />
-					<Trans>Rename…</Trans>
-				</DropdownMenuItem>
-				<DropdownMenuItem variant="destructive" onClick={() => void remove()}>
-					<Icon name="trash" />
-					<Trans>Delete</Trans>
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+		<Dropdown>
+			<IconButton
+				icon="dots-three"
+				label={t`Options for ${title}`}
+				size="sm"
+				className="opacity-0 group-hover/version:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
+			/>
+			<Dropdown.Popover placement="bottom end" className="w-44">
+				<Dropdown.Menu>
+					<Dropdown.Item id="rename" textValue={t`Rename…`} onAction={() => void rename()}>
+						<Icon name="pencil-simple" className="text-muted" />
+						<Label>
+							<Trans>Rename…</Trans>
+						</Label>
+					</Dropdown.Item>
+					<Dropdown.Item id="delete" textValue={t`Delete`} variant="danger" onAction={() => void remove()}>
+						<Icon name="trash" />
+						<Label>
+							<Trans>Delete</Trans>
+						</Label>
+					</Dropdown.Item>
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }

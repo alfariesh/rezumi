@@ -1,18 +1,9 @@
 import type { ApplicationSummary } from "../types";
-import { buttonVariants } from "@heroui/react";
+import { Dropdown, Label, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { CLOSED_REASONS, getClosedReasonLabel, getStageColor, getStageLabel, PIPELINE } from "../stages";
 import { useApplicationActions } from "../use-application-actions";
@@ -38,67 +29,83 @@ export function ApplicationActionsMenu({ application, className }: ApplicationAc
 	};
 
 	return (
-		<div className={cn("shrink-0", className)}>
-			<DropdownMenu>
-				<DropdownMenuTrigger
-					render={
-						<button
-							type="button"
-							aria-label={t`Options for ${application.role} at ${application.company}`}
-							onClick={stop}
-							onPointerDown={stop}
-							className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
-						/>
-					}
-				>
-					<Icon name="dots-three" size={18} />
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end" className="w-48" onClick={stop}>
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
-							<Icon name="arrow-right" size={18} />
-							<Trans>Move to…</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent>
-							{PIPELINE.map((status) => (
-								<DropdownMenuItem
-									key={status}
-									disabled={status === application.status}
-									onClick={() => moveTo(application, status)}
-								>
-									<span
-										aria-hidden="true"
-										className="size-2 rounded-sm"
-										style={{ background: getStageColor(status) }}
-									/>
-									{getStageLabel(status)}
-								</DropdownMenuItem>
-							))}
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
+		// The wrapper keeps pointer and clicks bubbling through the React portal away from the card, which would
+		// start a drag or open the detail sheet.
+		<div role="presentation" className={cn("shrink-0", className)} onClick={stop} onPointerDown={stop}>
+			<Dropdown>
+				<IconButton
+					icon="dots-three"
+					iconSize={18}
+					size="sm"
+					label={t`Options for ${application.role} at ${application.company}`}
+				/>
+				<Dropdown.Popover placement="bottom end" className="min-w-48">
+					<Dropdown.Menu>
+						<Dropdown.SubmenuTrigger>
+							<Dropdown.Item id="move" textValue={t`Move to…`}>
+								<Icon name="arrow-right" size={18} />
+								<Label>
+									<Trans>Move to…</Trans>
+								</Label>
+								<Dropdown.SubmenuIndicator />
+							</Dropdown.Item>
+							<Dropdown.Popover>
+								<Dropdown.Menu>
+									{PIPELINE.map((status) => (
+										<Dropdown.Item
+											key={status}
+											id={status}
+											textValue={getStageLabel(status)}
+											isDisabled={status === application.status}
+											onAction={() => moveTo(application, status)}
+										>
+											<span
+												aria-hidden="true"
+												className="size-2 rounded-sm"
+												style={{ background: getStageColor(status) }}
+											/>
+											<Label>{getStageLabel(status)}</Label>
+										</Dropdown.Item>
+									))}
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown.SubmenuTrigger>
 
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
-							<Icon name="check" size={18} />
-							<Trans>Close…</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent>
-							{CLOSED_REASONS.map((reason) => (
-								<DropdownMenuItem key={reason} onClick={() => close(application, reason)}>
-									{getClosedReasonLabel(reason)}
-								</DropdownMenuItem>
-							))}
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
+						<Dropdown.SubmenuTrigger>
+							<Dropdown.Item id="close" textValue={t`Close…`}>
+								<Icon name="check" size={18} />
+								<Label>
+									<Trans>Close…</Trans>
+								</Label>
+								<Dropdown.SubmenuIndicator />
+							</Dropdown.Item>
+							<Dropdown.Popover>
+								<Dropdown.Menu>
+									{CLOSED_REASONS.map((reason) => (
+										<Dropdown.Item
+											key={reason}
+											id={reason}
+											textValue={getClosedReasonLabel(reason)}
+											onAction={() => close(application, reason)}
+										>
+											<Label>{getClosedReasonLabel(reason)}</Label>
+										</Dropdown.Item>
+									))}
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown.SubmenuTrigger>
 
-					<DropdownMenuSeparator />
+						<Separator />
 
-					<DropdownMenuItem variant="destructive" onClick={onDelete}>
-						<Icon name="trash" size={18} />
-						<Trans>Delete…</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+						<Dropdown.Item id="delete" textValue={t`Delete…`} variant="danger" onAction={onDelete}>
+							<Icon name="trash" size={18} />
+							<Label>
+								<Trans>Delete…</Trans>
+							</Label>
+						</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 		</div>
 	);
 }

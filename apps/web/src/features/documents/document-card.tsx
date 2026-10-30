@@ -1,13 +1,13 @@
 import type { DocumentSummary } from "./filter";
-import { buttonVariants, Checkbox } from "@heroui/react";
+import { ContextMenu } from "@heroui-pro/react";
+import { Checkbox, Dropdown } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ContextMenu, ContextMenuTrigger } from "@rezumi/ui/components/context-menu";
-import { DropdownMenu, DropdownMenuTrigger } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
 import { DocumentMenuContent, useDocumentActions } from "./document-actions";
 import { daysLeftInTrash } from "./filter";
@@ -156,18 +156,15 @@ export function DocumentCard({
 
 	return (
 		<ContextMenu>
-			<ContextMenuTrigger
-				render={
-					<article
-						style={introIndex === undefined ? undefined : stagger(introIndex)}
-						className={cn(
-							"group/card grid gap-2",
-							introIndex !== undefined && ENTER_CLASS,
-							isNew && "animate-arrive",
-							document.trashedAt && "opacity-70",
-						)}
-					/>
-				}
+			<ContextMenu.Trigger<"article">
+				render={(props) => <article {...props} />}
+				style={introIndex === undefined ? undefined : stagger(introIndex)}
+				className={cn(
+					"group/card grid gap-2",
+					introIndex !== undefined && ENTER_CLASS,
+					isNew && "animate-arrive",
+					document.trashedAt && "opacity-70",
+				)}
 			>
 				<div className="relative">
 					<OpenLink
@@ -230,22 +227,12 @@ export function DocumentCard({
 							</span>
 						)}
 					</div>
-					<DropdownMenu>
-						<DropdownMenuTrigger
-							render={
-								<button
-									type="button"
-									aria-label={t`Options for ${document.name}`}
-									className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
-								>
-									<Icon name="dots-three" />
-								</button>
-							}
-						/>
+					<Dropdown>
+						<IconButton icon="dots-three" label={t`Options for ${document.name}`} size="sm" />
 						<DocumentMenuContent {...menuProps} />
-					</DropdownMenu>
+					</Dropdown>
 				</div>
-			</ContextMenuTrigger>
+			</ContextMenu.Trigger>
 			<DocumentMenuContent {...menuProps} variant="context" />
 		</ContextMenu>
 	);
@@ -274,18 +261,15 @@ export function DocumentRow({
 
 	return (
 		<ContextMenu>
-			<ContextMenuTrigger
-				render={
-					<tr
-						style={introIndex === undefined ? undefined : stagger(introIndex)}
-						className={cn(
-							"border-b border-line transition-colors duration-quick hover:bg-hover",
-							selected && "bg-accent-soft hover:bg-accent-soft",
-							introIndex !== undefined && ENTER_CLASS,
-							document.trashedAt && "opacity-70",
-						)}
-					/>
-				}
+			<ContextMenu.Trigger<"tr">
+				render={(props) => <tr {...props} />}
+				style={introIndex === undefined ? undefined : stagger(introIndex)}
+				className={cn(
+					"border-b border-line transition-colors duration-quick hover:bg-hover",
+					selected && "bg-accent-soft hover:bg-accent-soft",
+					introIndex !== undefined && ENTER_CLASS,
+					document.trashedAt && "opacity-70",
+				)}
 			>
 				{onSelectedChange && (
 					<td className="w-10 ps-3">
@@ -339,22 +323,12 @@ export function DocumentRow({
 					)}
 				</td>
 				<td className="w-10 pe-2 text-end">
-					<DropdownMenu>
-						<DropdownMenuTrigger
-							render={
-								<button
-									type="button"
-									aria-label={t`Options for ${document.name}`}
-									className={buttonVariants({ variant: "ghost", size: "sm", isIconOnly: true })}
-								>
-									<Icon name="dots-three" />
-								</button>
-							}
-						/>
+					<Dropdown>
+						<IconButton icon="dots-three" label={t`Options for ${document.name}`} size="sm" />
 						<DocumentMenuContent {...menuProps} />
-					</DropdownMenu>
+					</Dropdown>
 				</td>
-			</ContextMenuTrigger>
+			</ContextMenu.Trigger>
 			<DocumentMenuContent {...menuProps} variant="context" />
 		</ContextMenu>
 	);

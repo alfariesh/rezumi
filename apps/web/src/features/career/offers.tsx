@@ -2,20 +2,12 @@ import type { SavedData, SavedItem } from "./hooks";
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, buttonVariants, Skeleton } from "@heroui/react";
+import { Button, Dropdown, Header, Label, Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { formatList } from "@rezumi/utils/locale";
@@ -329,65 +321,62 @@ function OfferHeader({ offer, offers, otherId, onChoose }: OfferHeaderProps) {
 	}
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					offer ? (
-						<button
-							type="button"
-							className="flex w-full items-center gap-3 px-[18px] py-4 text-start transition-colors duration-quick hover:bg-hover aria-expanded:bg-hover"
-						/>
-					) : (
-						<button
-							type="button"
-							className={buttonVariants({ variant: "secondary", size: "sm", className: "mt-2 w-fit" })}
-						/>
-					)
-				}
-			>
-				{offer ? (
-					<>
-						<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-sunken text-sm font-semibold">
-							{companyOf(offer).charAt(0).toLocaleUpperCase()}
+		<Dropdown>
+			{offer ? (
+				<Button
+					variant="ghost"
+					className="h-auto min-h-0 w-full justify-start gap-3 rounded-none px-[18px] py-4 text-start font-normal transition-colors duration-quick hover:bg-hover aria-expanded:bg-hover"
+				>
+					<span className="grid size-9 shrink-0 place-items-center rounded-lg bg-sunken text-sm font-semibold">
+						{companyOf(offer).charAt(0).toLocaleUpperCase()}
+					</span>
+					<span className="grid min-w-0 flex-1">
+						<span className="truncate text-[15px] font-semibold">{companyOf(offer)}</span>
+						{offer.application?.role && (
+							<span className="truncate text-[13px] text-ink-2">{offer.application.role}</span>
+						)}
+						<span className="text-xs text-ink-3">
+							{versionLabel(offer)} · {t`saved ${when(offer.createdAt)}`}
 						</span>
-						<span className="grid min-w-0 flex-1">
-							<span className="truncate text-[15px] font-semibold">{companyOf(offer)}</span>
-							{offer.application?.role && (
-								<span className="truncate text-[13px] text-ink-2">{offer.application.role}</span>
-							)}
-							<span className="text-xs text-ink-3">
-								{versionLabel(offer)} · {t`saved ${when(offer.createdAt)}`}
-							</span>
-						</span>
-						<Icon name="caret-down" size={18} className="shrink-0 text-ink-3" />
-					</>
-				) : (
+					</span>
+					<Icon name="caret-down" size={18} className="shrink-0 text-ink-3" />
+				</Button>
+			) : (
+				<Button variant="secondary" size="sm" className="mt-2 w-fit">
 					<Trans>Choose an offer</Trans>
-				)}
-			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-72">
-				{[...groups.values()].map((versions) => {
-					const [first] = versions;
-					if (!first) return null;
-					return (
-						<DropdownMenuGroup key={first.id}>
-							<DropdownMenuLabel>
-								{companyOf(first)}
-								{first.application?.role ? ` · ${first.application.role}` : ""}
-							</DropdownMenuLabel>
-							{versions.map((item) => (
-								<DropdownMenuItem key={item.id} disabled={item.id === otherId} onClick={() => onChoose(item.id)}>
-									<span className="flex-1">
-										{versionLabel(item)} · {when(item.createdAt)}
-									</span>
-									{item.id === offer?.id && <Icon name="check" size={16} />}
-								</DropdownMenuItem>
-							))}
-						</DropdownMenuGroup>
-					);
-				})}
-			</DropdownMenuContent>
-		</DropdownMenu>
+				</Button>
+			)}
+			<Dropdown.Popover placement="bottom start" className="w-72">
+				<Dropdown.Menu>
+					{[...groups.values()].map((versions) => {
+						const [first] = versions;
+						if (!first) return null;
+						return (
+							<Dropdown.Section key={first.id}>
+								<Header>
+									{companyOf(first)}
+									{first.application?.role ? ` · ${first.application.role}` : ""}
+								</Header>
+								{versions.map((item) => (
+									<Dropdown.Item
+										key={item.id}
+										id={item.id}
+										textValue={`${versionLabel(item)} · ${when(item.createdAt)}`}
+										isDisabled={item.id === otherId}
+										onAction={() => onChoose(item.id)}
+									>
+										<Label className="flex-1">
+											{versionLabel(item)} · {when(item.createdAt)}
+										</Label>
+										{item.id === offer?.id && <Icon name="check" size={16} />}
+									</Dropdown.Item>
+								))}
+							</Dropdown.Section>
+						);
+					})}
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }
 

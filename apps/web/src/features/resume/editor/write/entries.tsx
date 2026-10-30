@@ -9,7 +9,6 @@ import { Trans } from "@lingui/react/macro";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
 import { FormControl, FormDescription, FormItem, FormLabel } from "@rezumi/ui/components/form";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { PopoverTrigger } from "@rezumi/ui/components/popover";
 import { generateId } from "@rezumi/utils/string";
 import { DatesField } from "./dates-field";
 import { MoreOptions, TextField, WebsiteField } from "./fields";
@@ -184,16 +183,13 @@ function IconAndColor({ entry, write }: FieldSetProps) {
 					})
 				}
 				trigger={
-					<PopoverTrigger
-						aria-label={t`Icon color`}
-						className="flex h-9 items-center gap-2 rounded-lg border border-line-2 bg-raised px-2.5 text-sm"
-					>
+					<Button variant="secondary" size="sm">
 						<span
 							className="size-4 rounded-sm border border-line-2"
 							style={{ backgroundColor: str(values.iconColor) || "currentColor" }}
 						/>
 						<Trans>Icon color</Trans>
-					</PopoverTrigger>
+					</Button>
 				}
 			/>
 		</div>

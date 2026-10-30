@@ -1,4 +1,4 @@
-import { Button, buttonVariants, Separator } from "@heroui/react";
+import { Button, buttonVariants, Popover, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -8,7 +8,6 @@ import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
 import { formatTimeSince, publicResumeUrl, summarizeViews } from "@rezumi/resume/sharing";
 import { Icon } from "@rezumi/ui/components/icon";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
@@ -366,17 +365,15 @@ function PasswordRow() {
 function QrCodeButton({ url }: { url: string }) {
 	return (
 		<Popover>
-			<PopoverTrigger
-				render={
-					<button type="button" className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-1.5" })} />
-				}
-			>
+			<Button variant="ghost" size="sm" className="gap-1.5">
 				<Icon name="qr-code" size={18} />
 				<Trans>QR code</Trans>
-			</PopoverTrigger>
-			<PopoverContent className="w-auto p-4">
-				<QRCodeSVG value={url} size={176} marginSize={2} title={t`QR code for ${url}`} />
-			</PopoverContent>
+			</Button>
+			<Popover.Content placement="bottom start" className="w-auto">
+				<Popover.Dialog className="p-4">
+					<QRCodeSVG value={url} size={176} marginSize={2} title={t`QR code for ${url}`} />
+				</Popover.Dialog>
+			</Popover.Content>
 		</Popover>
 	);
 }

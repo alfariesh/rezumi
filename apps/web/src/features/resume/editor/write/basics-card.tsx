@@ -1,10 +1,9 @@
 import type { Basics, CustomField } from "@rezumi/schema/resume/data";
-import { Disclosure, Input, buttonVariants } from "@heroui/react";
+import { Button, Disclosure, Input, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { generateId, getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
@@ -136,16 +135,14 @@ function PhotoRow({ locked }: { locked: boolean }) {
 				)}
 			</p>
 			<Popover>
-				<PopoverTrigger
-					render={
-						<button type="button" disabled={locked} className={buttonVariants({ variant: "secondary", size: "sm" })} />
-					}
-				>
+				<Button variant="secondary" size="sm" isDisabled={locked}>
 					{hasPhoto ? <Trans>Edit</Trans> : <Trans>Add</Trans>}
-				</PopoverTrigger>
-				<PopoverContent align="end" className="max-h-[70svh] w-[360px] overflow-y-auto p-4">
-					<PictureSettings />
-				</PopoverContent>
+				</Button>
+				<Popover.Content placement="bottom end" className="max-h-[70svh] w-[360px] overflow-y-auto">
+					<Popover.Dialog className="p-4">
+						<PictureSettings />
+					</Popover.Dialog>
+				</Popover.Content>
 			</Popover>
 		</div>
 	);
@@ -164,7 +161,7 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 			{fields.map((field, index) => (
 				<div key={field.id} className="flex items-center gap-1.5">
 					<IconPicker
-						disabled={locked}
+						isDisabled={locked}
 						value={field.icon}
 						popoverProps={{ modal: true }}
 						onChange={(icon) =>
@@ -187,39 +184,31 @@ function CustomFields({ fields, locked }: CustomFieldsProps) {
 						}
 					/>
 					<Popover>
-						<PopoverTrigger
-							render={
-								<button
-									type="button"
+						<IconButton
+							icon={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"}
+							label={field.link ? t`Edit link` : t`Add a link`}
+							size="sm"
+							isDisabled={locked}
+							className={field.link ? "text-accent-text" : "text-muted"}
+						/>
+						<Popover.Content placement="bottom end" className="w-72">
+							<Popover.Dialog>
+								<Input
+									fullWidth
 									disabled={locked}
-									aria-label={field.link ? t`Edit link` : t`Add a link`}
-									className={buttonVariants({
-										variant: "ghost",
-										size: "sm",
-										isIconOnly: true,
-										className: field.link ? "text-accent-text" : "text-muted",
-									})}
+									type="url"
+									aria-label={t`Link address`}
+									placeholder="https://"
+									value={field.link}
+									onChange={(event) =>
+										edit(`${field.id}.link`, (list) => {
+											const target = list[index];
+											if (target) target.link = event.target.value;
+										})
+									}
 								/>
-							}
-						>
-							<Icon name={field.link ? "link-simple-horizontal" : "link-simple-horizontal-break"} />
-						</PopoverTrigger>
-						<PopoverContent align="end" className="w-72">
-							<Input
-								fullWidth
-								disabled={locked}
-								type="url"
-								aria-label={t`Link address`}
-								placeholder="https://"
-								value={field.link}
-								onChange={(event) =>
-									edit(`${field.id}.link`, (list) => {
-										const target = list[index];
-										if (target) target.link = event.target.value;
-									})
-								}
-							/>
-						</PopoverContent>
+							</Popover.Dialog>
+						</Popover.Content>
 					</Popover>
 					<IconButton
 						icon="arrow-up"

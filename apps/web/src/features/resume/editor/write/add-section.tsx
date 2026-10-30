@@ -1,18 +1,8 @@
 import type { CustomSectionType, SectionType } from "@rezumi/schema/resume/data";
 import type { IconName } from "@rezumi/ui/components/icon";
+import { Button, Dropdown, Header, Label, Separator } from "@heroui/react";
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useEditorStore } from "../store";
 import { openEntry } from "./actions";
@@ -85,63 +75,67 @@ export function AddSectionMenu() {
 	);
 	const unused = unusedKey ? (unusedKey.split(",") as ("summary" | SectionType)[]) : [];
 	const customItems = CUSTOM_SECTION_TYPES.map((type) => (
-		<DropdownMenuItem key={type} onClick={() => addCustom(type)}>
-			<Icon name={SECTION_ICONS[type]} />
-			{getSectionTitle(type)}
-		</DropdownMenuItem>
+		<Dropdown.Item key={type} id={type} textValue={getSectionTitle(type)} onAction={() => addCustom(type)}>
+			<Icon name={SECTION_ICONS[type]} className="text-muted" />
+			<Label>{getSectionTitle(type)}</Label>
+		</Dropdown.Item>
 	));
 
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger
-				render={
-					<button
-						type="button"
-						className="mt-2 flex h-10 w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-line-2 text-sm text-ink-2 transition-colors duration-quick hover:border-accent hover:text-accent-text"
-					>
-						<Icon name="plus" size={18} />
-						<Trans>Add section</Trans>
-					</button>
-				}
-			/>
-			<DropdownMenuContent align="start" className="w-[var(--anchor-width)] min-w-[320px]">
-				{unused.length > 0 && (
-					<DropdownMenuGroup className="grid grid-cols-2">
-						{unused.map((type) => (
-							<DropdownMenuItem key={type} onClick={() => addSection(type)}>
-								<Icon name={SECTION_ICONS[type]} />
-								{getSectionTitle(type)}
-							</DropdownMenuItem>
-						))}
-					</DropdownMenuGroup>
-				)}
-				{unused.length > 0 && <DropdownMenuSeparator />}
-				{unused.length > 0 ? (
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
-							<Icon name="plus" />
-							<Trans>Custom section</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent className="w-56">
-							<DropdownMenuGroup>
-								<DropdownMenuLabel>
-									<Trans>What goes in it?</Trans>
-								</DropdownMenuLabel>
-								{customItems}
-							</DropdownMenuGroup>
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
-				) : (
-					// Every built-in section is in use, so the custom types are the only choice: list them here.
-					<DropdownMenuGroup className="grid grid-cols-2">
-						<DropdownMenuLabel className="col-span-2">
-							<Trans>Custom section</Trans>
-						</DropdownMenuLabel>
-						{customItems}
-					</DropdownMenuGroup>
-				)}
-			</DropdownMenuContent>
-		</DropdownMenu>
+		<Dropdown>
+			<Button
+				variant="ghost"
+				fullWidth
+				className="mt-2 h-10 border border-dashed border-line-2 text-ink-2 hover:border-accent hover:text-accent-text"
+			>
+				<Icon name="plus" size={18} />
+				<Trans>Add section</Trans>
+			</Button>
+			<Dropdown.Popover placement="bottom start" className="min-w-[320px]">
+				<Dropdown.Menu>
+					{unused.length > 0 && (
+						<Dropdown.Section className="grid grid-cols-2">
+							{unused.map((type) => (
+								<Dropdown.Item key={type} id={type} textValue={getSectionTitle(type)} onAction={() => addSection(type)}>
+									<Icon name={SECTION_ICONS[type]} className="text-muted" />
+									<Label>{getSectionTitle(type)}</Label>
+								</Dropdown.Item>
+							))}
+						</Dropdown.Section>
+					)}
+					{unused.length > 0 && <Separator />}
+					{unused.length > 0 ? (
+						<Dropdown.SubmenuTrigger>
+							<Dropdown.Item id="custom" textValue={t`Custom section`}>
+								<Icon name="plus" className="text-muted" />
+								<Label>
+									<Trans>Custom section</Trans>
+								</Label>
+								<Dropdown.SubmenuIndicator />
+							</Dropdown.Item>
+							<Dropdown.Popover className="w-56">
+								<Dropdown.Menu>
+									<Dropdown.Section>
+										<Header>
+											<Trans>What goes in it?</Trans>
+										</Header>
+										{customItems}
+									</Dropdown.Section>
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown.SubmenuTrigger>
+					) : (
+						// Every built-in section is in use, so the custom types are the only choice: list them here.
+						<Dropdown.Section className="grid grid-cols-2">
+							<Header className="col-span-2">
+								<Trans>Custom section</Trans>
+							</Header>
+							{customItems}
+						</Dropdown.Section>
+					)}
+				</Dropdown.Menu>
+			</Dropdown.Popover>
+		</Dropdown>
 	);
 }
 

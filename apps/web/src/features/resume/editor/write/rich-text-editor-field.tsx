@@ -1,27 +1,16 @@
 import type { ImproveLine } from "./improve";
-import type { Menu } from "@base-ui/react/menu";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Editor } from "@tiptap/react";
 import type { ReactNode } from "react";
+import type { Key, Selection } from "react-aria-components";
+import { Dropdown, Label, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { EditorContent, useEditor, useEditorState } from "@tiptap/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuRadioGroup,
-	DropdownMenuRadioItem,
-	DropdownMenuSeparator,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { useKeyboardInset } from "@rezumi/ui/hooks/use-keyboard-inset";
 import { cn } from "@rezumi/utils/style";
@@ -148,19 +137,34 @@ function useToolbarMenus(editor: Editor | null, onLeave: () => void) {
 	const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 	const leaving = useRef(false);
 
+	const open = Object.values(openMenus).some(Boolean);
+
+	// A press outside the open menu and the toolbar's own buttons leaves the field, like a click outside the toolbar.
+	useEffect(() => {
+		if (!open) return;
+		const onPointerDown = (event: PointerEvent) => {
+			leaving.current =
+				!(event.target instanceof Element) ||
+				event.target.closest("[data-toolbar-menu], [data-toolbar-trigger]") === null;
+		};
+		document.addEventListener("pointerdown", onPointerDown, true);
+		return () => document.removeEventListener("pointerdown", onPointerDown, true);
+	}, [open]);
+
 	const rootProps = (menu: string) => ({
-		modal: false,
-		onOpenChange: (next: boolean, details: Menu.Root.ChangeEventDetails) => {
+		onOpenChange: (next: boolean) => {
 			setOpenMenus((current) => ({ ...current, [menu]: next }));
-			leaving.current = !next && (details.reason === "outside-press" || details.reason === "focus-out");
-			if (leaving.current) onLeave();
+			if (next) {
+				leaving.current = false;
+				return;
+			}
+			if (leaving.current) return onLeave();
+			// React Aria returns focus to the trigger; the caret belongs in the text.
+			requestAnimationFrame(() => editor?.view.focus());
 		},
 	});
-	const contentProps = {
-		"data-toolbar-menu": "",
-		finalFocus: () => (leaving.current ? false : (editor?.view.dom ?? true)),
-	};
-	return { open: Object.values(openMenus).some(Boolean), rootProps, contentProps };
+	const contentProps = { "data-toolbar-menu": "" };
+	return { open, rootProps, contentProps };
 }
 
 /** Where a click on the read-only preview landed, or "end" when focus arrived another way. */
@@ -419,7 +423,7 @@ export function RichTextEditor({
 }
 
 const toolbarButtonClassName =
-	"flex shrink-0 items-center justify-center rounded-md text-ink-2 transition-colors duration-quick hover:bg-hover data-popup-open:bg-hover";
+	"flex shrink-0 items-center justify-center rounded-md text-ink-2 transition-colors duration-quick hover:bg-hover aria-expanded:bg-hover";
 
 type FormattingMenusProps = {
 	editor: Editor;
@@ -460,116 +464,191 @@ function FormattingMenus({ editor, formatting, buttonClassName, side, menus }: F
 					.setHeading({ level: level as 1 | 2 | 3 })
 					.run();
 
+	const changed = (keys: Selection) => (keys === "all" ? new Set<Key>() : new Set<Key>(keys));
+	const toggles = [
+		{ id: "strike", active: formatting.strike, run: () => chain().toggleStrike().run() },
+		{ id: "code", active: formatting.code, run: () => chain().toggleCode().run() },
+		{ id: "highlight", active: formatting.highlight, run: () => chain().toggleHighlight().run() },
+	];
+
 	return (
 		<>
-			<DropdownMenu {...menus.rootProps("align")}>
-				<DropdownMenuTrigger
-					aria-label={t`Text alignment`}
-					title={t`Text alignment`}
+			<Dropdown {...menus.rootProps("align")}>
+				<IconButton
+					icon={ALIGNMENT_ICONS[formatting.align]}
+					label={t`Text alignment`}
+					size="sm"
+					tooltipPlacement={side}
+					data-toolbar-trigger=""
 					className={cn(buttonClassName, "ms-1.5", formatting.align !== "left" && "bg-accent-soft text-accent-text")}
-				>
-					<Icon name={ALIGNMENT_ICONS[formatting.align]} />
-				</DropdownMenuTrigger>
-				<DropdownMenuContent side={side} className="w-44" {...menus.contentProps}>
-					<DropdownMenuRadioGroup
-						value={formatting.align}
-						onValueChange={(align: Alignment) =>
-							align === "left" ? chain().unsetTextAlign().run() : chain().setTextAlign(align).run()
-						}
+				/>
+				<Dropdown.Popover placement={`${side} start`} className="w-44" {...menus.contentProps}>
+					<Dropdown.Menu
+						selectionMode="single"
+						disallowEmptySelection
+						selectedKeys={new Set([formatting.align])}
+						onSelectionChange={(keys) => {
+							const [align] = changed(keys);
+							if (typeof align !== "string") return;
+							if (align === "left") chain().unsetTextAlign().run();
+							else
+								chain()
+									.setTextAlign(align as Alignment)
+									.run();
+						}}
 					>
 						{ALIGNMENTS.map((align) => (
-							<DropdownMenuRadioItem key={align} value={align}>
-								<Icon name={ALIGNMENT_ICONS[align]} />
-								{alignLabels[align]}
-							</DropdownMenuRadioItem>
+							<Dropdown.Item key={align} id={align} textValue={alignLabels[align]}>
+								<Icon name={ALIGNMENT_ICONS[align]} className="text-muted" />
+								<Label>{alignLabels[align]}</Label>
+								<Dropdown.ItemIndicator type="dot" />
+							</Dropdown.Item>
 						))}
-					</DropdownMenuRadioGroup>
-				</DropdownMenuContent>
-			</DropdownMenu>
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 
-			<DropdownMenu {...menus.rootProps("more")}>
-				<DropdownMenuTrigger aria-label={t`More formatting`} title={t`More formatting`} className={buttonClassName}>
-					<Icon name="dots-three" />
-				</DropdownMenuTrigger>
-				<DropdownMenuContent side={side} className="w-56" {...menus.contentProps}>
-					<DropdownMenuCheckboxItem checked={formatting.strike} onCheckedChange={() => chain().toggleStrike().run()}>
-						<Icon name="text-strikethrough" />
-						<Trans>Strikethrough</Trans>
-					</DropdownMenuCheckboxItem>
-					<DropdownMenuCheckboxItem checked={formatting.code} onCheckedChange={() => chain().toggleCode().run()}>
-						<Icon name="code" />
-						<Trans>Code</Trans>
-					</DropdownMenuCheckboxItem>
-					<DropdownMenuCheckboxItem
-						checked={formatting.highlight}
-						onCheckedChange={() => chain().toggleHighlight().run()}
-					>
-						<Icon name="highlighter" />
-						<Trans>Highlight</Trans>
-					</DropdownMenuCheckboxItem>
+			<Dropdown {...menus.rootProps("more")}>
+				<IconButton
+					icon="dots-three"
+					label={t`More formatting`}
+					size="sm"
+					tooltipPlacement={side}
+					data-toolbar-trigger=""
+					className={buttonClassName}
+				/>
+				<Dropdown.Popover placement={`${side} start`} className="w-56" {...menus.contentProps}>
+					<Dropdown.Menu>
+						<Dropdown.Section
+							selectionMode="multiple"
+							selectedKeys={new Set(toggles.filter((toggle) => toggle.active).map((toggle) => toggle.id))}
+							onSelectionChange={(keys) => {
+								const next = changed(keys);
+								for (const toggle of toggles) if (next.has(toggle.id) !== toggle.active) toggle.run();
+							}}
+						>
+							<Dropdown.Item id="strike" textValue={t`Strikethrough`}>
+								<Icon name="text-strikethrough" className="text-muted" />
+								<Label>
+									<Trans>Strikethrough</Trans>
+								</Label>
+								<Dropdown.ItemIndicator />
+							</Dropdown.Item>
+							<Dropdown.Item id="code" textValue={t`Code`}>
+								<Icon name="code" className="text-muted" />
+								<Label>
+									<Trans>Code</Trans>
+								</Label>
+								<Dropdown.ItemIndicator />
+							</Dropdown.Item>
+							<Dropdown.Item id="highlight" textValue={t`Highlight`}>
+								<Icon name="highlighter" className="text-muted" />
+								<Label>
+									<Trans>Highlight</Trans>
+								</Label>
+								<Dropdown.ItemIndicator />
+							</Dropdown.Item>
+						</Dropdown.Section>
 
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
-							<Icon name="palette" />
-							<Trans>Text color</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent {...menus.contentProps}>
-							<DropdownMenuRadioGroup
-								value={formatting.color}
-								onValueChange={(color: string) => (color ? chain().setColor(color).run() : chain().unsetColor().run())}
-							>
-								{TEXT_COLORS.map((color) => (
-									<DropdownMenuRadioItem key={color || "default"} value={color}>
-										<span
-											aria-hidden="true"
-											className="size-3.5 rounded-sm border border-line-2"
-											style={{ background: color || "var(--ink)" }}
-										/>
-										{colorLabels[color]}
-									</DropdownMenuRadioItem>
-								))}
-							</DropdownMenuRadioGroup>
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
+						<Dropdown.SubmenuTrigger>
+							<Dropdown.Item id="color" textValue={t`Text color`}>
+								<Icon name="palette" className="text-muted" />
+								<Label>
+									<Trans>Text color</Trans>
+								</Label>
+								<Dropdown.SubmenuIndicator />
+							</Dropdown.Item>
+							<Dropdown.Popover {...menus.contentProps}>
+								<Dropdown.Menu
+									selectionMode="single"
+									disallowEmptySelection
+									selectedKeys={new Set([formatting.color || "default"])}
+									onSelectionChange={(keys) => {
+										const [key] = changed(keys);
+										if (typeof key !== "string") return;
+										const color = key === "default" ? "" : key;
+										if (color) chain().setColor(color).run();
+										else chain().unsetColor().run();
+									}}
+								>
+									{TEXT_COLORS.map((color) => (
+										<Dropdown.Item key={color || "default"} id={color || "default"} textValue={colorLabels[color]}>
+											<span
+												aria-hidden="true"
+												className="size-3.5 rounded-sm border border-line-2"
+												style={{ background: color || "var(--ink)" }}
+											/>
+											<Label>{colorLabels[color]}</Label>
+											<Dropdown.ItemIndicator type="dot" />
+										</Dropdown.Item>
+									))}
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown.SubmenuTrigger>
 
-					<DropdownMenuSub>
-						<DropdownMenuSubTrigger>
-							<Icon name="text-aa" />
-							<Trans>Text style</Trans>
-						</DropdownMenuSubTrigger>
-						<DropdownMenuSubContent {...menus.contentProps}>
-							<DropdownMenuRadioGroup value={formatting.block} onValueChange={(level: number) => setBlock(level)}>
-								{blocks.map((block) => (
-									<DropdownMenuRadioItem key={block.level} value={block.level}>
-										<Icon name={block.icon} />
-										{block.label}
-									</DropdownMenuRadioItem>
-								))}
-							</DropdownMenuRadioGroup>
-						</DropdownMenuSubContent>
-					</DropdownMenuSub>
+						<Dropdown.SubmenuTrigger>
+							<Dropdown.Item id="style" textValue={t`Text style`}>
+								<Icon name="text-aa" className="text-muted" />
+								<Label>
+									<Trans>Text style</Trans>
+								</Label>
+								<Dropdown.SubmenuIndicator />
+							</Dropdown.Item>
+							<Dropdown.Popover {...menus.contentProps}>
+								<Dropdown.Menu
+									selectionMode="single"
+									disallowEmptySelection
+									selectedKeys={new Set([String(formatting.block)])}
+									onSelectionChange={(keys) => {
+										const [key] = changed(keys);
+										if (typeof key === "string") setBlock(Number(key));
+									}}
+								>
+									{blocks.map((block) => (
+										<Dropdown.Item key={block.level} id={String(block.level)} textValue={block.label}>
+											<Icon name={block.icon} className="text-muted" />
+											<Label>{block.label}</Label>
+											<Dropdown.ItemIndicator type="dot" />
+										</Dropdown.Item>
+									))}
+								</Dropdown.Menu>
+							</Dropdown.Popover>
+						</Dropdown.SubmenuTrigger>
 
-					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={() => chain().increaseIndent().run()}>
-						<Icon name="text-indent" />
-						<Trans>Indent</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => chain().decreaseIndent().run()}>
-						<Icon name="text-outdent" />
-						<Trans>Outdent</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => chain().setHorizontalRule().run()}>
-						<Icon name="minus" />
-						<Trans>Horizontal line</Trans>
-					</DropdownMenuItem>
+						<Separator />
+						<Dropdown.Item id="indent" textValue={t`Indent`} onAction={() => chain().increaseIndent().run()}>
+							<Icon name="text-indent" className="text-muted" />
+							<Label>
+								<Trans>Indent</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item id="outdent" textValue={t`Outdent`} onAction={() => chain().decreaseIndent().run()}>
+							<Icon name="text-outdent" className="text-muted" />
+							<Label>
+								<Trans>Outdent</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item id="rule" textValue={t`Horizontal line`} onAction={() => chain().setHorizontalRule().run()}>
+							<Icon name="minus" className="text-muted" />
+							<Label>
+								<Trans>Horizontal line</Trans>
+							</Label>
+						</Dropdown.Item>
 
-					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={() => chain().clearNodes().unsetAllMarks().unsetTextAlign().run()}>
-						<Icon name="text-t-slash" />
-						<Trans>Clear formatting</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+						<Separator />
+						<Dropdown.Item
+							id="clear"
+							textValue={t`Clear formatting`}
+							onAction={() => chain().clearNodes().unsetAllMarks().unsetTextAlign().run()}
+						>
+							<Icon name="text-t-slash" className="text-muted" />
+							<Label>
+								<Trans>Clear formatting</Trans>
+							</Label>
+						</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 		</>
 	);
 }

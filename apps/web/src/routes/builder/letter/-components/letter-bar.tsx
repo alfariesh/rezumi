@@ -1,16 +1,9 @@
-import { Button, Spinner, Tabs } from "@heroui/react";
+import { Button, Dropdown, Label, Separator, Spinner, Tabs } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
@@ -179,28 +172,46 @@ function LetterMenu() {
 
 	return (
 		<>
-			<DropdownMenu>
-				<DropdownMenuTrigger render={<DocumentMenuTrigger name={name} isLocked={isLocked} />} />
-				<DropdownMenuContent align="start" className="w-60">
-					<DropdownMenuItem disabled={isLocked} onClick={() => void rename()}>
-						<Icon name="pencil-simple" />
-						<Trans>Rename…</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void duplicate()}>
-						<Icon name="copy" />
-						<Trans>Duplicate</Trans>
-					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => void setLocked(!isLocked)}>
-						<Icon name={isLocked ? "lock-open" : "lock"} />
-						{isLocked ? <Trans>Unlock editing</Trans> : <Trans>Lock editing</Trans>}
-					</DropdownMenuItem>
-					<DropdownMenuSeparator />
-					<DropdownMenuItem variant="destructive" disabled={isLocked} onClick={() => void trash()}>
-						<Icon name="trash" />
-						<Trans>Move to Trash</Trans>
-					</DropdownMenuItem>
-				</DropdownMenuContent>
-			</DropdownMenu>
+			<Dropdown>
+				<DocumentMenuTrigger name={name} isLocked={isLocked} />
+				<Dropdown.Popover placement="bottom start" className="w-60">
+					<Dropdown.Menu>
+						<Dropdown.Item id="rename" textValue={t`Rename…`} isDisabled={isLocked} onAction={() => void rename()}>
+							<Icon name="pencil-simple" />
+							<Label>
+								<Trans>Rename…</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item id="duplicate" textValue={t`Duplicate`} onAction={() => void duplicate()}>
+							<Icon name="copy" />
+							<Label>
+								<Trans>Duplicate</Trans>
+							</Label>
+						</Dropdown.Item>
+						<Dropdown.Item
+							id="lock"
+							textValue={isLocked ? t`Unlock editing` : t`Lock editing`}
+							onAction={() => void setLocked(!isLocked)}
+						>
+							<Icon name={isLocked ? "lock-open" : "lock"} />
+							<Label>{isLocked ? <Trans>Unlock editing</Trans> : <Trans>Lock editing</Trans>}</Label>
+						</Dropdown.Item>
+						<Separator />
+						<Dropdown.Item
+							id="trash"
+							textValue={t`Move to Trash`}
+							variant="danger"
+							isDisabled={isLocked}
+							onAction={() => void trash()}
+						>
+							<Icon name="trash" />
+							<Label>
+								<Trans>Move to Trash</Trans>
+							</Label>
+						</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 			<LetterSaveStatus />
 		</>
 	);

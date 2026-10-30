@@ -1,6 +1,7 @@
+import type { ButtonProps } from "@heroui/react";
 import type { IconName } from "@rezumi/ui/components/icon";
-import type { ComponentProps, ReactNode } from "react";
-import { buttonVariants, Tooltip } from "@heroui/react";
+import type { ReactNode } from "react";
+import { Button, buttonVariants, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -75,24 +76,26 @@ export function CanvasStatusPill({ icon, children }: CanvasStatusPillProps) {
 	);
 }
 
-// Base UI's trigger hands its ref, handlers and aria state to the element it renders.
-type DocumentMenuTriggerProps = ComponentProps<"button"> & { name: string; isLocked: boolean };
+type DocumentMenuTriggerProps = Omit<ButtonProps, "children"> & { name: string; isLocked: boolean };
 
 /** The document name in the editor bar, as the button that opens the document menu. */
-export function DocumentMenuTrigger({ name, isLocked, ...props }: DocumentMenuTriggerProps) {
+export function DocumentMenuTrigger({ name, isLocked, className, ...props }: DocumentMenuTriggerProps) {
 	return (
-		<button
-			type="button"
+		<Button
+			variant="ghost"
 			{...props}
 			aria-label={t`Document menu: ${name}`}
-			className="-mx-1.5 flex max-w-[calc(100%+0.75rem)] min-w-0 flex-col items-start rounded-md px-1.5 py-0.5 text-start transition-colors duration-quick hover:bg-hover"
+			className={cn(
+				"-mx-1.5 flex h-auto max-w-[calc(100%+0.75rem)] min-w-0 flex-col items-start rounded-md px-1.5 py-0.5 text-start font-normal",
+				typeof className === "string" && className,
+			)}
 		>
 			<span className="flex max-w-full min-w-0 items-center gap-1.5">
 				<span className="truncate text-sm leading-[18px] font-semibold text-ink">{name}</span>
 				{isLocked && <Icon name="lock" size={16} className="text-ink-3" />}
 				<Icon name="caret-down" size={16} className="text-ink-3" />
 			</span>
-		</button>
+		</Button>
 	);
 }
 

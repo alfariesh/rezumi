@@ -1,13 +1,13 @@
 import type { DocumentSummary } from "./filter";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { Button } from "@heroui/react";
+import { ContextMenu } from "@heroui-pro/react";
+import { Button, Description, Dropdown, Label, Separator } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
-import { ContextMenuContent, ContextMenuItem, ContextMenuSeparator } from "@rezumi/ui/components/context-menu";
 import {
 	Dialog,
 	DialogContent,
@@ -16,7 +16,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
-import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { useNewDocumentsStore } from "./new-documents";
@@ -292,27 +291,37 @@ export function DocumentMenuContent({
 	];
 	const entries = document.trashedAt ? trashEntries : liveEntries;
 
-	const Content = variant === "context" ? ContextMenuContent : DropdownMenuContent;
-	const Item = variant === "context" ? ContextMenuItem : DropdownMenuItem;
-	const Separator = variant === "context" ? ContextMenuSeparator : DropdownMenuSeparator;
+	const Item = variant === "context" ? ContextMenu.Item : Dropdown.Item;
+	const items = entries.map((entry) => (
+		<Item
+			key={entry.label}
+			id={entry.label}
+			textValue={entry.label}
+			variant={entry.danger ? "danger" : "default"}
+			isDisabled={Boolean(entry.disabled)}
+			onAction={entry.onSelect}
+		>
+			<Icon name={entry.icon} className={entry.danger ? undefined : "text-muted"} />
+			<Label>{entry.label}</Label>
+			{entry.disabled && document.isLocked && <Description>{t`Unlock it first`}</Description>}
+		</Item>
+	));
+	// The dangerous entry sits apart from the rest.
+	const dangerIndex = entries.findIndex((entry) => entry.danger);
+	const Divider = variant === "context" ? ContextMenu.Separator : Separator;
+	const children =
+		dangerIndex < 0
+			? items
+			: [...items.slice(0, dangerIndex), <Divider key="danger-separator" />, ...items.slice(dangerIndex)];
 
-	return (
-		<Content align="end" className="w-60">
-			{entries.map((entry) => (
-				<div key={entry.label} className="contents">
-					{entry.danger && <Separator />}
-					<Item
-						variant={entry.danger ? "destructive" : "default"}
-						disabled={entry.disabled}
-						onClick={entry.onSelect}
-						title={entry.disabled ? t`Unlock it first` : undefined}
-					>
-						<Icon name={entry.icon} />
-						{entry.label}
-					</Item>
-				</div>
-			))}
-		</Content>
+	return variant === "context" ? (
+		<ContextMenu.Popover placement="bottom start" className="w-60">
+			<ContextMenu.Menu>{children}</ContextMenu.Menu>
+		</ContextMenu.Popover>
+	) : (
+		<Dropdown.Popover placement="bottom end" className="w-60">
+			<Dropdown.Menu>{children}</Dropdown.Menu>
+		</Dropdown.Popover>
 	);
 }
 

@@ -1,21 +1,14 @@
 import type { ApplicationSummary } from "../types";
 import type { ApplicationStatus } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants, Checkbox, Input } from "@heroui/react";
+import { Button, Checkbox, Dropdown, Input, Label, Popover } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence, m } from "motion/react";
 import { memo, useMemo, useState } from "react";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { Popover, PopoverContent, PopoverTrigger } from "@rezumi/ui/components/popover";
 import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
@@ -391,69 +384,78 @@ function BulkBar({ ids, onDone }: BulkBarProps) {
 				<Plural value={ids.length} one="# selected" other="# selected" />
 			</span>
 
-			<DropdownMenu>
-				<DropdownMenuTrigger
-					render={<button type="button" className={buttonVariants({ variant: "ghost", size: "sm" })} />}
-				>
+			<Dropdown>
+				<Button variant="ghost" size="sm">
 					<Icon name="arrow-right" />
 					<Trans>Move to…</Trans>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="start">
-					{PIPELINE.map((status) => (
-						<DropdownMenuItem key={status} onClick={() => bulkUpdate.mutate({ ids, status })}>
-							<span aria-hidden="true" className="size-2 rounded-sm" style={{ background: getStageColor(status) }} />
-							{getStageLabel(status)}
-						</DropdownMenuItem>
-					))}
-				</DropdownMenuContent>
-			</DropdownMenu>
+				</Button>
+				<Dropdown.Popover placement="bottom start">
+					<Dropdown.Menu>
+						{PIPELINE.map((status) => (
+							<Dropdown.Item
+								key={status}
+								id={status}
+								textValue={getStageLabel(status)}
+								onAction={() => bulkUpdate.mutate({ ids, status })}
+							>
+								<span aria-hidden="true" className="size-2 rounded-sm" style={{ background: getStageColor(status) }} />
+								<Label>{getStageLabel(status)}</Label>
+							</Dropdown.Item>
+						))}
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 
 			<Popover>
-				<PopoverTrigger render={<button type="button" className={buttonVariants({ variant: "ghost", size: "sm" })} />}>
+				<Button variant="ghost" size="sm">
 					<Icon name="tag" />
 					<Trans>Add tag</Trans>
-				</PopoverTrigger>
-				<PopoverContent align="start" className="w-60 p-2">
-					<form
-						className="flex gap-1.5"
-						onSubmit={(event) => {
-							event.preventDefault();
-							if (!tag.trim()) return;
-							bulkUpdate.mutate({ ids, addTags: [tag.trim()] });
-							setTag("");
-						}}
-					>
-						<Input
-							fullWidth
-							aria-label={t`Tag`}
-							value={tag}
-							onChange={(event) => setTag(event.target.value)}
-							autoFocus
-						/>
-						<Button size="sm" type="submit" isDisabled={!tag.trim()}>
-							<Trans>Add</Trans>
-						</Button>
-					</form>
-				</PopoverContent>
+				</Button>
+				<Popover.Content placement="bottom start" className="w-60">
+					<Popover.Dialog className="p-1">
+						<form
+							className="flex gap-1.5"
+							onSubmit={(event) => {
+								event.preventDefault();
+								if (!tag.trim()) return;
+								bulkUpdate.mutate({ ids, addTags: [tag.trim()] });
+								setTag("");
+							}}
+						>
+							<Input
+								fullWidth
+								aria-label={t`Tag`}
+								value={tag}
+								onChange={(event) => setTag(event.target.value)}
+								autoFocus
+							/>
+							<Button size="sm" type="submit" isDisabled={!tag.trim()}>
+								<Trans>Add</Trans>
+							</Button>
+						</form>
+					</Popover.Dialog>
+				</Popover.Content>
 			</Popover>
 
-			<DropdownMenu>
-				<DropdownMenuTrigger
-					render={<button type="button" className={buttonVariants({ variant: "ghost", size: "sm" })} />}
-				>
+			<Dropdown>
+				<Button variant="ghost" size="sm">
 					<Trans>Close…</Trans>
-				</DropdownMenuTrigger>
-				<DropdownMenuContent align="start">
-					{CLOSED_REASONS.map((reason) => (
-						<DropdownMenuItem
-							key={reason}
-							onClick={() => bulkUpdate.mutate({ ids, status: "closed", closedReason: reason })}
-						>
-							{getClosedReasonLabel(reason)}
-						</DropdownMenuItem>
-					))}
-				</DropdownMenuContent>
-			</DropdownMenu>
+				</Button>
+				<Dropdown.Popover placement="bottom start">
+					<Dropdown.Menu>
+						{CLOSED_REASONS.map((reason) => (
+							<Dropdown.Item
+								key={reason}
+								id={reason}
+								textValue={getClosedReasonLabel(reason)}
+								onAction={() => bulkUpdate.mutate({ ids, status: "closed", closedReason: reason })}
+							>
+								<Label>{getClosedReasonLabel(reason)}</Label>
+							</Dropdown.Item>
+						))}
+					</Dropdown.Menu>
+				</Dropdown.Popover>
+			</Dropdown>
 
 			<Button
 				size="sm"

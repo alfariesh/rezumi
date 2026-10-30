@@ -1,16 +1,10 @@
+import { Dropdown, Label, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@rezumi/ui/components/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { NotesSectionBuilder } from "../-sidebar/right/sections/notes";
@@ -42,10 +36,10 @@ export function DocumentMenu() {
 
 	return (
 		<>
-			<DropdownMenu>
-				<DropdownMenuTrigger render={<DocumentMenuTrigger name={name} isLocked={isLocked} />} />
+			<Dropdown>
+				<DocumentMenuTrigger name={name} isLocked={isLocked} />
 				<DocumentMenuItems onOpenDialog={setDialog} />
-			</DropdownMenu>
+			</Dropdown>
 			<SaveStatus />
 
 			<Dialog open={dialog === "notes"} onOpenChange={(open) => !open && setDialog(null)}>
@@ -131,46 +125,84 @@ function DocumentMenuItems({ onOpenDialog }: DocumentMenuItemsProps) {
 	};
 
 	return (
-		<DropdownMenuContent align="start" className="w-60">
-			<DropdownMenuItem disabled={isLocked} onClick={() => openDialog("resume.update", { id, name, slug, tags })}>
-				<Icon name="pencil-simple" />
-				<Trans>Rename…</Trans>
-			</DropdownMenuItem>
-			<DropdownMenuItem onClick={() => openDialog("resume.duplicate", { id, name, slug, tags })}>
-				<Icon name="copy" />
-				<Trans>Duplicate</Trans>
-			</DropdownMenuItem>
-			<DropdownMenuItem onClick={handleToggleLock}>
-				<Icon name={isLocked ? "lock-open" : "lock"} />
-				{isLocked ? <Trans>Unlock editing</Trans> : <Trans>Lock editing</Trans>}
-			</DropdownMenuItem>
-			<DropdownMenuSeparator />
-			<DropdownMenuItem onClick={() => onOpenDialog("notes")}>
-				<Icon name="note" />
-				<Trans>Notes</Trans>
-			</DropdownMenuItem>
-			<DropdownMenuItem onClick={() => onOpenDialog("details")}>
-				<Icon name="info" />
-				<Trans>Details</Trans>
-			</DropdownMenuItem>
-			<DropdownMenuItem onClick={() => void onPrint()}>
-				<Icon name="printer" />
-				<Trans>Print</Trans>
-			</DropdownMenuItem>
-			{/* Download & history, from every layout: phones have no ▾ beside Download PDF and no clock in the bar. */}
-			<DropdownMenuItem disabled={offline} onClick={() => setSheetTab("download")}>
-				<Icon name="download-simple" />
-				<Trans>More download formats</Trans>
-			</DropdownMenuItem>
-			<DropdownMenuItem onClick={() => setSheetTab("history")}>
-				<Icon name="clock-counter-clockwise" />
-				<Trans>History</Trans>
-			</DropdownMenuItem>
-			<DropdownMenuSeparator />
-			<DropdownMenuItem variant="destructive" disabled={isLocked} onClick={handleTrash}>
-				<Icon name="trash" />
-				<Trans>Move to Trash</Trans>
-			</DropdownMenuItem>
-		</DropdownMenuContent>
+		<Dropdown.Popover placement="bottom start" className="w-60">
+			<Dropdown.Menu>
+				<Dropdown.Item
+					id="rename"
+					textValue={t`Rename…`}
+					isDisabled={isLocked}
+					onAction={() => openDialog("resume.update", { id, name, slug, tags })}
+				>
+					<Icon name="pencil-simple" />
+					<Label>
+						<Trans>Rename…</Trans>
+					</Label>
+				</Dropdown.Item>
+				<Dropdown.Item
+					id="duplicate"
+					textValue={t`Duplicate`}
+					onAction={() => openDialog("resume.duplicate", { id, name, slug, tags })}
+				>
+					<Icon name="copy" />
+					<Label>
+						<Trans>Duplicate</Trans>
+					</Label>
+				</Dropdown.Item>
+				<Dropdown.Item id="lock" textValue={isLocked ? t`Unlock editing` : t`Lock editing`} onAction={handleToggleLock}>
+					<Icon name={isLocked ? "lock-open" : "lock"} />
+					<Label>{isLocked ? <Trans>Unlock editing</Trans> : <Trans>Lock editing</Trans>}</Label>
+				</Dropdown.Item>
+				<Separator />
+				<Dropdown.Item id="notes" textValue={t`Notes`} onAction={() => onOpenDialog("notes")}>
+					<Icon name="note" />
+					<Label>
+						<Trans>Notes</Trans>
+					</Label>
+				</Dropdown.Item>
+				<Dropdown.Item id="details" textValue={t`Details`} onAction={() => onOpenDialog("details")}>
+					<Icon name="info" />
+					<Label>
+						<Trans>Details</Trans>
+					</Label>
+				</Dropdown.Item>
+				<Dropdown.Item id="print" textValue={t`Print`} onAction={() => void onPrint()}>
+					<Icon name="printer" />
+					<Label>
+						<Trans>Print</Trans>
+					</Label>
+				</Dropdown.Item>
+				{/* Download & history, from every layout: phones have no ▾ beside Download PDF and no clock in the bar. */}
+				<Dropdown.Item
+					id="download"
+					textValue={t`More download formats`}
+					isDisabled={offline}
+					onAction={() => setSheetTab("download")}
+				>
+					<Icon name="download-simple" />
+					<Label>
+						<Trans>More download formats</Trans>
+					</Label>
+				</Dropdown.Item>
+				<Dropdown.Item id="history" textValue={t`History`} onAction={() => setSheetTab("history")}>
+					<Icon name="clock-counter-clockwise" />
+					<Label>
+						<Trans>History</Trans>
+					</Label>
+				</Dropdown.Item>
+				<Separator />
+				<Dropdown.Item
+					id="trash"
+					textValue={t`Move to Trash`}
+					variant="danger"
+					isDisabled={isLocked}
+					onAction={handleTrash}
+				>
+					<Icon name="trash" />
+					<Label>
+						<Trans>Move to Trash</Trans>
+					</Label>
+				</Dropdown.Item>
+			</Dropdown.Menu>
+		</Dropdown.Popover>
 	);
 }

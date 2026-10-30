@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
 import type { ApplicationTimelineEntry, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Button, buttonVariants, Input, TextArea } from "@heroui/react";
+import { Button, Dropdown, Input, Label, TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -14,13 +14,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@rezumi/ui/components/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@rezumi/ui/components/dropdown-menu";
-import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { interviewKindOf } from "../../interviews";
 import { getStageColor, getStageLabel } from "../../stages";
@@ -145,57 +139,63 @@ export function Activity({ application, onOpenInterview }: ActivityProps) {
 							<span className="shrink-0 text-xs leading-5 text-ink-3">
 								{formatDate(entry.at, entry.type === "interview")}
 							</span>
-							<DropdownMenu>
-								<DropdownMenuTrigger
-									render={
-										<button
-											type="button"
-											aria-label={t`Options for this entry`}
-											className={buttonVariants({
-												variant: "ghost",
-												size: "sm",
-												isIconOnly: true,
-												className:
-													"-my-1 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 data-[popup-open]:opacity-100",
-											})}
-										/>
-									}
-								>
-									<Icon name="dots-three" size={16} />
-								</DropdownMenuTrigger>
-								<DropdownMenuContent align="end">
-									{entry.type === "interview" ? (
-										<DropdownMenuItem onClick={() => onOpenInterview(entry)}>
-											<Trans>Edit interview…</Trans>
-										</DropdownMenuItem>
-									) : (
-										<DropdownMenuItem
-											onClick={() =>
-												setEditing({
-													entry,
-													date: dateInputValue(entry.at),
-													text: entry.type === "note" ? entry.text : "",
-												})
-											}
+							<Dropdown>
+								<IconButton
+									icon="dots-three"
+									iconSize={16}
+									size="sm"
+									label={t`Options for this entry`}
+									className="-my-1 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 aria-expanded:opacity-100"
+								/>
+								<Dropdown.Popover placement="bottom end">
+									<Dropdown.Menu>
+										{entry.type === "interview" ? (
+											<Dropdown.Item
+												id="edit-interview"
+												textValue={t`Edit interview…`}
+												onAction={() => onOpenInterview(entry)}
+											>
+												<Label>
+													<Trans>Edit interview…</Trans>
+												</Label>
+											</Dropdown.Item>
+										) : (
+											<Dropdown.Item
+												id="edit"
+												textValue={t`Edit…`}
+												onAction={() =>
+													setEditing({
+														entry,
+														date: dateInputValue(entry.at),
+														text: entry.type === "note" ? entry.text : "",
+													})
+												}
+											>
+												<Label>
+													<Trans>Edit…</Trans>
+												</Label>
+											</Dropdown.Item>
+										)}
+										<Dropdown.Item
+											id="delete"
+											textValue={t`Delete…`}
+											variant="danger"
+											isDisabled={entry.id === anchorId}
+											onAction={async () => {
+												const confirmed = await confirm(t`Delete this entry?`, {
+													description: t`It's removed from the timeline for good.`,
+													confirmText: t`Delete entry`,
+												});
+												if (confirmed) deleteEntry.mutate({ id: application.id, entryId: entry.id });
+											}}
 										>
-											<Trans>Edit…</Trans>
-										</DropdownMenuItem>
-									)}
-									<DropdownMenuItem
-										variant="destructive"
-										disabled={entry.id === anchorId}
-										onClick={async () => {
-											const confirmed = await confirm(t`Delete this entry?`, {
-												description: t`It's removed from the timeline for good.`,
-												confirmText: t`Delete entry`,
-											});
-											if (confirmed) deleteEntry.mutate({ id: application.id, entryId: entry.id });
-										}}
-									>
-										<Trans>Delete…</Trans>
-									</DropdownMenuItem>
-								</DropdownMenuContent>
-							</DropdownMenu>
+											<Label>
+												<Trans>Delete…</Trans>
+											</Label>
+										</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown.Popover>
+							</Dropdown>
 						</li>
 					);
 				})}
