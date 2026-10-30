@@ -31,7 +31,7 @@ For shared web access, set one provider and key on the Rezumi Worker. Put the pr
 pnpm exec wrangler secret put WEB_ACCESS_API_KEY
 ```
 
-**Settings → AI & developer → Web access** then says **Provided by the server**, and personal connection changes are
+**Settings → Web access** then says **Provided by the server**, and personal connection changes are
 disabled. Paid usage is charged to the shared account. Existing personal connections stay stored and become available
 again if you remove shared configuration. AI has its own existing shared/personal configuration.
 
@@ -187,7 +187,7 @@ On Cloudflare, set plain values in `vars` in `wrangler.jsonc` and secrets with `
 `pnpm deploy:cloudflare`. For local development, edit `.env.local` and restart `pnpm dev`. Keep keys in Wrangler secrets
 or server configuration, never browser build variables.
 
-1. Open **Settings → AI & developer → Web access**. The built-in reader should show **Active**. The selected web service
+1. Open **Settings → Web access**. The built-in reader should show **Active**. The selected web service
    should show its provider and ownership.
 2. Click **Test connection**. Search and reading are tested separately; a built-in fallback cannot make this pass.
 3. Open **Applications**, enter search keywords, choose a result and review the role, company and retained description.

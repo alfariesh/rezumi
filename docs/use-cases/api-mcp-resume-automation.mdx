@@ -14,19 +14,19 @@ Through the API and the MCP server, a client acting as you can:
 - **Job applications:** create and update applications, move them through stages, add notes and interviews, edit the activity timeline, attach the documents you sent, bulk-update or delete, and import rows from a spreadsheet.
 - **Job-focused actions:** fill in an application from a job posting, score a resume against it, create a tailored resume copy, and draft a message such as a follow-up.
 
-The job-focused actions use your own AI provider, connected in **Settings → AI**.
+The job-focused actions use your own AI provider, connected in **Settings → AI providers**.
 
 ## API or MCP?
 
 Use the **API** for scripts, services and integrations you write yourself. It is described by an OpenAPI spec, and large requests are supported.
 
-Use the **MCP server** when you want an AI client that speaks the Model Context Protocol to read and edit your resumes through ready-made tools. The address to paste into your client is shown under **MCP server** in **Settings → AI**.
+Use the **MCP server** when you want an AI client that speaks the Model Context Protocol to read and edit your resumes through ready-made tools. The address to paste into your client is shown under **MCP server** in **Settings**.
 
 For targeted resume edits, prefer the Patch API (JSON Patch operations) over replacing the whole resume. It changes only the fields you name, so it is less likely to overwrite something by accident.
 
 ## Authentication
 
-Create an API key in **Settings → AI → API keys**. Keys act as you and can read and edit your documents. You choose an expiry of **30 days**, **90 days** or **Never**, the key is shown once, and you can revoke it at any time. MCP clients that support OAuth can sign in without a key.
+Create an API key in **Settings → API keys**. Keys act as you and can read and edit your documents. You choose an expiry of **30 days**, **90 days** or **Never**, the key is shown once, and you can revoke it at any time. MCP clients that support OAuth can sign in without a key.
 
 If you self-host, replace `https://rezumi.app` with your own instance's address in every API and MCP example.
 

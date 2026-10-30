@@ -86,7 +86,7 @@ All URLs must use `http` or `https`. On Cloudflare, put `OAUTH_CLIENT_SECRET` in
 
 1. Open your installation's sign-in page. Under **or continue with**, a button with a key icon shows your `OAUTH_PROVIDER_NAME`.
 2. Select it, sign in at your provider, and approve access. You land on **Documents**.
-3. In **Settings → Account**, the **Sign-in & security** section lists your provider as **Connected**.
+3. In **Account**, the **Sign-in & security** section lists your provider as **Connected**.
 
 People who already have an account can add or remove SSO from the same place with **Connect** and **Disconnect**. See [Linking social accounts](/guides/linking-social-accounts).
 
@@ -101,7 +101,7 @@ When someone signs in for the first time, Rezumi creates their account from the 
 | Username         | `preferred_username`, then the part of the email before `@`. A number is added if it's taken. |
 | Picture          | `image`, then `picture`, then `avatar_url`                                                    |
 
-If the email already belongs to an account, the sign-in is linked to that account, which keeps its name and username. This works only when that account's email address is verified in Rezumi, protecting an existing account from an unverified email match. If it isn't (common on installations without SMTP, where verification emails never arrive), the sign-in stops with an "account not linked" error. Verify the existing account's email before trying SSO again, or sign in to that account and connect the provider in **Settings → Account**.
+If the email already belongs to an account, the sign-in is linked to that account, which keeps its name and username. This works only when that account's email address is verified in Rezumi, protecting an existing account from an unverified email match. If it isn't (common on installations without SMTP, where verification emails never arrive), the sign-in stops with an "account not linked" error. Verify the existing account's email before trying SSO again, or sign in to that account and connect the provider in **Account**.
 
 ## Make SSO the only way in
 

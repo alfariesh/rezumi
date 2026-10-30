@@ -15,9 +15,9 @@ Rezumi runs a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) se
 
 ## Find your server address
 
-The server address is your instance's address followed by `/mcp`. On the hosted instance it's `https://rezumi.app/mcp`. You can copy it from **Settings** → **AI & developer**, in the **MCP server** section.
+The server address is your instance's address followed by `/mcp`. On the hosted instance it's `https://rezumi.app/mcp`. You can copy it from **Settings**, in the **MCP server** section.
 
-<Frame caption="The MCP server section in AI & developer settings">
+<Frame caption="The MCP server section in Settings">
   <img
     src="/images/guides/using-the-mcp-server/mcp-server-settings.webp"
     alt="MCP server section showing the address https://rezumi.app/mcp with a Copy button and a Setup guide link"
@@ -304,7 +304,7 @@ This section is for client developers and self-hosters.
 - New OAuth clients can request `api:read`, `api:write` and `api:delete`. The consent screen describes these permissions alongside identity scopes. Existing identity-only grants and legacy keys without permission statements retain account-wide access for compatibility.
 - The server checks the user, client and consent grant on every authenticated request. Tokens with `offline_access` outlive the browser session that approved them; other tokens remain bound to their login session. Disabled clients, banned accounts and revoked grants cannot continue using signed tokens. Proof-bound DPoP tokens are rejected: this endpoint supports ordinary bearer access tokens.
 - Revoking a refresh token or signing out in the app leaves already-issued JWT access tokens valid for up to 1 hour. Revoking consent under Connected applications blocks them immediately.
-- Revoke a connection under Settings → AI & developer → Connected applications. Revoking the application grant invalidates existing access and refresh tokens. The authorization provider does not support revoking one self-contained JWT independently of its grant.
+- Revoke a connection under Settings → Connected applications. Revoking the application grant invalidates existing access and refresh tokens. The authorization provider does not support revoking one self-contained JWT independently of its grant.
 
 ## Troubleshooting
 
@@ -312,7 +312,7 @@ This section is for client developers and self-hosters.
 | ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | "Unauthorized" and no sign-in window                          | Your client doesn't support MCP OAuth. Connect with an API key.                                       |
 | The sign-in window says the request is invalid or has expired | Start the connection again from your client.                                                          |
-| `401` with an API key                                         | The key is wrong, revoked or expired. Create a new one in **Settings** → **AI & developer**.          |
+| `401` with an API key                                         | The key is wrong, revoked or expired. Create a new one in **Settings** → **API keys**.                |
 | A tool says the resume is locked                              | Unlock it in the app, or ask the client to run `unlock_resume`.                                       |
 | A tool says an ID wasn't found                                | Ask the client to list resumes, letters or applications first to get valid IDs.                       |
 | An edit to dates doesn't stick                                | The client changed the `period` or `date` text. Ask it to write the `dates` object instead.           |
