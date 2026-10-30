@@ -6,8 +6,9 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useMatchRoute } from "@tanstack/react-router";
+import { Link, useMatchRoute, useNavigate } from "@tanstack/react-router";
 import Cookies from "js-cookie";
+import { useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -20,11 +21,16 @@ import { UserDropdownMenu } from "@/features/user/dropdown-menu";
 import { orpc } from "@/libs/orpc/client";
 
 type NavItem = {
-	to: "/dashboard" | "/dashboard/applications" | "/dashboard/career" | "/dashboard/trash";
+	to: "/dashboard" | "/dashboard/applications" | "/dashboard/trash";
 	icon: IconName;
 	label: string;
 	count?: number;
 };
+
+/** A page under Career: `match` is the route it is current on, `href` where it links. */
+const CAREER_KEY = "career";
+
+type CareerPage = { id: string; href: string; match: string; fuzzy: boolean; label: string; count?: number };
 
 function useNavItems() {
 	const { data: counts } = useQuery(orpc.documents.counts.queryOptions());
@@ -51,20 +57,50 @@ function useNavItems() {
 				: {}),
 		},
 	];
-	const unread = notifications?.filter((notification) => !notification.readAt).length ?? 0;
 	// Career counts what's waiting for the user (unread notifications), so nothing shows at zero.
-	items.push({ to: "/dashboard/career", icon: "compass", label: t`Career`, ...(unread ? { count: unread } : {}) });
+	const unread = notifications?.filter((notification) => !notification.readAt).length ?? 0;
+	const career: CareerPage[] = [
+		{
+			id: "today",
+			href: "/dashboard/career",
+			match: "/dashboard/career/",
+			fuzzy: false,
+			label: t`Today`,
+			...(unread ? { count: unread } : {}),
+		},
+		{ id: "coach", href: "/dashboard/career/coach", match: "/dashboard/career/coach", fuzzy: true, label: t`Coach` },
+		{
+			id: "knowledge",
+			href: "/dashboard/career/knowledge/facts",
+			match: "/dashboard/career/knowledge",
+			fuzzy: true,
+			label: t`Knowledge`,
+		},
+		{
+			id: "offers",
+			href: "/dashboard/career/offers",
+			match: "/dashboard/career/offers",
+			fuzzy: true,
+			label: t`Offers`,
+		},
+	];
 	const trash: NavItem | null = counts?.trash
 		? { to: "/dashboard/trash", icon: "trash", label: t`Trash`, count: counts.trash }
 		: null;
 
-	return { items, trash };
+	return { items, career, trash };
 }
 
 /** Whether the item is the current page: Documents is exact, the others match their section. */
 function useIsCurrent() {
 	const matchRoute = useMatchRoute();
 	return (to: NavItem["to"]) => Boolean(matchRoute({ to, fuzzy: to !== "/dashboard" }));
+}
+
+/** Whether a Career page is the current one. Today is the index route, so it matches exactly. */
+function useIsCareerCurrent() {
+	const matchRoute = useMatchRoute();
+	return (page: CareerPage) => Boolean(matchRoute({ to: page.match, fuzzy: page.fuzzy }));
 }
 
 /** The sidebar state HeroUI's AppLayout saves on every toggle; collapsed to icons by default below 1024px. */
@@ -153,12 +189,22 @@ function AppNavbar() {
 
 /** Brand, search, destinations, New and the account menu; shared by the desktop sidebar and the phone sheet. */
 function NavigationContent() {
-	const { items, trash } = useNavItems();
+	const { items, career, trash } = useNavItems();
 	const isCurrent = useIsCurrent();
+	const isCareerCurrent = useIsCareerCurrent();
+	const navigate = useNavigate();
 	const openPalette = useCommandPaletteStore((state) => state.setOpen);
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const { isOpen, isMobile } = useSidebar();
 	const expanded = isOpen || isMobile;
+	const onCareerPage = career.some(isCareerCurrent);
+	// Open while on a Career page unless the person closed it; elsewhere it stays as they left it.
+	const [careerChoice, setCareerChoice] = useState<boolean | null>(null);
+	const careerOpen = careerChoice ?? onCareerPage;
+	const setCareerOpen = (next: boolean | ((open: boolean) => boolean)) =>
+		setCareerChoice(typeof next === "function" ? next(careerOpen) : next);
+	const expandedCareer = expanded && careerOpen;
+	const unread = career[0]?.count ?? 0;
 
 	const link = (item: NavItem) => (
 		<Sidebar.MenuItem key={item.to} id={item.to} href={item.to} isCurrent={isCurrent(item.to)} textValue={item.label}>
@@ -201,7 +247,48 @@ function NavigationContent() {
 
 			<Sidebar.Content>
 				<Sidebar.Group>
-					<Sidebar.Menu aria-label={t`App`}>{items.map(link)}</Sidebar.Menu>
+					<Sidebar.Menu
+						aria-label={t`App`}
+						expandedKeys={careerOpen ? [CAREER_KEY] : []}
+						onExpandedChange={(keys) => setCareerOpen(keys.has(CAREER_KEY))}
+					>
+						{items.map(link)}
+						<Sidebar.MenuItem
+							id={CAREER_KEY}
+							textValue={t`Career`}
+							isCurrent={!expandedCareer && onCareerPage}
+							// Collapsed to icons there is no submenu to open, so the icon goes to Today.
+							onAction={() => {
+								if (!expanded) void navigate({ to: "/dashboard/career" });
+								else setCareerOpen((open) => !open);
+							}}
+						>
+							<Sidebar.MenuIcon>
+								<Icon name="compass" size={18} />
+							</Sidebar.MenuIcon>
+							<Sidebar.MenuLabel>
+								<Trans>Career</Trans>
+								<Sidebar.MenuTrigger>
+									<Sidebar.MenuIndicator />
+								</Sidebar.MenuTrigger>
+							</Sidebar.MenuLabel>
+							{!expandedCareer && unread ? <Sidebar.MenuChip>{unread}</Sidebar.MenuChip> : null}
+							<Sidebar.Submenu>
+								{career.map((page) => (
+									<Sidebar.MenuItem
+										key={page.id}
+										id={`${CAREER_KEY}:${page.id}`}
+										href={page.href}
+										isCurrent={isCareerCurrent(page)}
+										textValue={page.label}
+									>
+										<Sidebar.MenuLabel>{page.label}</Sidebar.MenuLabel>
+										{page.count ? <Sidebar.MenuChip>{page.count}</Sidebar.MenuChip> : null}
+									</Sidebar.MenuItem>
+								))}
+							</Sidebar.Submenu>
+						</Sidebar.MenuItem>
+					</Sidebar.Menu>
 				</Sidebar.Group>
 			</Sidebar.Content>
 

@@ -2038,6 +2038,10 @@ msgstr "നിങ്ങളുടെ അടുത്ത കരിയർ ചുവ
 msgid "Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on below and say what they relied on."
 msgstr "നിങ്ങളുടെ ജോലി തിരയലിനെക്കുറിച്ച് ചോദിക്കുക, അല്ലെങ്കിൽ കൂടുതൽ നന്നായി വിശദീകരിക്കാൻ ആഗ്രഹിക്കുന്ന ഒരു നേട്ടം കൊണ്ടുവരിക. താഴെ ഓണാക്കിയവയാണ് ഉത്തരങ്ങൾ ഉപയോഗിക്കുന്നത്, എന്തിനെ ആശ്രയിച്ചു എന്നും അവ പറയും."
 
+#: src/routes/dashboard/career/route.tsx
+msgid "Ask about your search. Answers use what you switch on and say what they relied on."
+msgstr ""
+
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Ask anything about this job. The coach reads the posting, your notes and what you sent, and knows you're on {tabName}."
 msgstr "ഈ ജോലിയെക്കുറിച്ച് എന്തും ചോദിക്കുക. കോച്ച് പോസ്റ്റിംഗും നിങ്ങളുടെ കുറിപ്പുകളും നിങ്ങൾ അയച്ചതും വായിക്കുന്നു, നിങ്ങൾ {tabName} ടാബിലാണെന്ന് അറിയുകയും ചെയ്യുന്നു."
@@ -2478,7 +2482,6 @@ msgid "Cancel"
 msgstr "റദ്ദാക്കുക"
 
 #: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Career"
 msgstr "കരിയർ"
 
@@ -2880,6 +2883,7 @@ msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Coach"
 msgstr "കോച്ച്"
@@ -2965,6 +2969,10 @@ msgstr "ഓഫറുകൾ താരതമ്യം ചെയ്യുക"
 #: src/features/templates/gallery.tsx
 msgid "Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark."
 msgstr "നിങ്ങൾ സൈൻ അപ്പ് ചെയ്യുന്നതിന് മുമ്പ് യഥാർത്ഥ CV ലേഔട്ടുകൾ താരതമ്യം ചെയ്യുക. PDF, Microsoft Word ഡൗൺലോഡുകൾ കൂടാതെ വാട്ടർമാർക്ക് ഇല്ലാതെ എല്ലാ ടെംപ്ലേറ്റും ഇഷ്ടാനുസൃതമാക്കാൻ സൌജന്യമാണ്."
+
+#: src/routes/dashboard/career/route.tsx
+msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Compared in their original currency and pay period. Comparing doesn't share anything with the coach."
@@ -6470,6 +6478,7 @@ msgid "Kind regards,"
 msgstr "വിശ്വസ്തതയോടെ,"
 
 #: src/features/homepage/remember.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
@@ -8129,6 +8138,7 @@ msgstr "ഓഫർ"
 msgid "Offer comparison"
 msgstr ""
 
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Offers"
 msgstr "ഓഫറുകൾ"
@@ -8750,10 +8760,6 @@ msgstr "എന്റെ തയ്യാറെടുപ്പ് പ്ലാൻ 
 #: src/features/career/offers.tsx
 msgid "Plan what to ask"
 msgstr "എന്ത് ചോദിക്കണമെന്ന് പ്ലാൻ ചെയ്യുക"
-
-#: src/routes/dashboard/career/route.tsx
-msgid "Plan your search, keep your evidence in one place, and decide between offers."
-msgstr "നിങ്ങളുടെ ജോലി തിരയൽ പ്ലാൻ ചെയ്യുക, തെളിവുകൾ ഒരിടത്ത് സൂക്ഷിക്കുക, ഓഫറുകൾക്കിടയിൽ തീരുമാനിക്കുക."
 
 #: src/features/career/shared.tsx
 msgid "Planning your week"
@@ -11896,6 +11902,10 @@ msgstr "കയറ്റുമതി ചെയ്ത PDF"
 msgid "The exported PDF couldn't be checked. Try again."
 msgstr "കയറ്റുമതി ചെയ്ത PDF പരിശോധിക്കാനായില്ല. വീണ്ടും ശ്രമിക്കുക."
 
+#: src/routes/dashboard/career/route.tsx
+msgid "The facts, stories and preferences the coach works from."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "The file couldn't be read as a resume."
 msgstr "ഫയൽ ഒരു റെസ്യൂമെ ആയി വായിക്കാൻ കഴിഞ്ഞില്ല."
@@ -12425,6 +12435,7 @@ msgstr "ലേക്ക്"
 
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/resume/share/share-panel.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "ഇന്ന്"
@@ -13343,6 +13354,10 @@ msgstr "പ്രധാനപ്പെട്ടത്"
 #: src/features/career/knowledge/preferences.tsx
 msgid "What matters to you"
 msgstr "നിങ്ങൾക്ക് പ്രധാനപ്പെട്ടത്"
+
+#: src/routes/dashboard/career/route.tsx
+msgid "What needs you, new roles from your search, your next interview and your schedules."
+msgstr ""
 
 #: src/features/resume/editor/write/improve.tsx
 msgid "What should change?"

@@ -1,79 +1,57 @@
-import type { IconName } from "@rezumi/ui/components/icon";
-import { Tabs } from "@heroui/react";
+import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
-import { Icon } from "@rezumi/ui/components/icon";
 import { PageHeader } from "@/components/layout/page-header";
 
 export const Route = createFileRoute("/dashboard/career")({
 	component: CareerLayout,
 });
 
-type Place = {
-	to:
-		| "/dashboard/career"
-		| "/dashboard/career/coach/{-$conversationId}"
-		| "/dashboard/career/knowledge/facts"
-		| "/dashboard/career/offers";
-	href: string;
-	match: string;
-	icon: IconName;
-	label: string;
-};
+type Heading = { title: ReactNode; description: ReactNode };
 
-/** Career: Today, Coach, Knowledge and Offers under one header, as the same pill control the Documents and Applications headers use. */
+/** Career: Today, Coach, Knowledge and Offers are separate pages in the sidebar; each gets its own title here. */
 function CareerLayout() {
 	const matchRoute = useMatchRoute();
-	const places: Place[] = [
-		{ to: "/dashboard/career", href: "/dashboard/career", match: "/dashboard/career/", icon: "tray", label: t`Today` },
+	const headings: { match: string; fuzzy: boolean; heading: Heading }[] = [
 		{
-			to: "/dashboard/career/coach/{-$conversationId}",
-			href: "/dashboard/career/coach",
 			match: "/dashboard/career/coach",
-			icon: "sparkle",
-			label: t`Coach`,
+			fuzzy: true,
+			heading: {
+				title: t`Coach`,
+				description: <Trans>Ask about your search. Answers use what you switch on and say what they relied on.</Trans>,
+			},
 		},
 		{
-			to: "/dashboard/career/knowledge/facts",
-			href: "/dashboard/career/knowledge/facts",
 			match: "/dashboard/career/knowledge",
-			icon: "books",
-			label: t`Knowledge`,
+			fuzzy: true,
+			heading: {
+				title: t`Knowledge`,
+				description: <Trans>The facts, stories and preferences the coach works from.</Trans>,
+			},
 		},
 		{
-			to: "/dashboard/career/offers",
-			href: "/dashboard/career/offers",
 			match: "/dashboard/career/offers",
-			icon: "scales",
-			label: t`Offers`,
+			fuzzy: true,
+			heading: {
+				title: t`Offers`,
+				description: <Trans>Compare two saved offers side by side, and decide what to ask.</Trans>,
+			},
+		},
+		{
+			match: "/dashboard/career/",
+			fuzzy: false,
+			heading: {
+				title: t`Today`,
+				description: <Trans>What needs you, new roles from your search, your next interview and your schedules.</Trans>,
+			},
 		},
 	];
-	const current = places.find((place) => matchRoute({ to: place.match, fuzzy: place.match !== "/dashboard/career/" }));
+	const current = headings.find((item) => matchRoute({ to: item.match, fuzzy: item.fuzzy }))?.heading;
 
 	return (
 		<div className="mx-auto flex min-h-svh w-full max-w-[1180px] flex-col gap-5 px-8 py-8 max-sm:px-4 max-sm:py-5">
-			<PageHeader
-				title={<Trans>Career</Trans>}
-				description={<Trans>Plan your search, keep your evidence in one place, and decide between offers.</Trans>}
-			>
-				<Tabs
-					selectedKey={current?.to ?? ""}
-					className="-mx-4 max-w-[100vw] [scrollbar-width:none] overflow-x-auto px-4 sm:mx-0 sm:px-0"
-				>
-					<Tabs.ListContainer>
-						<Tabs.List aria-label={t`Career`}>
-							{places.map((place) => (
-								<Tabs.Tab key={place.to} id={place.to} href={place.href} className="gap-1.5">
-									<Icon name={place.icon} size={18} />
-									{place.label}
-									<Tabs.Indicator />
-								</Tabs.Tab>
-							))}
-						</Tabs.List>
-					</Tabs.ListContainer>
-				</Tabs>
-			</PageHeader>
+			{current && <PageHeader title={current.title} description={current.description} />}
 			<Outlet />
 		</div>
 	);
