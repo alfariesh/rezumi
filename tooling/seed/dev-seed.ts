@@ -13,12 +13,10 @@ import type { ApplicationStatus, ApplicationTimelineEntry, Contact } from "@rezu
 import type { CoverLetterLayout } from "@rezumi/schema/cover-letter/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
+import type { PoolClient } from "pg";
 import { parseArgs } from "node:util";
 import { hash } from "bcryptjs";
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as schema from "@rezumi/db/schema";
 import { copyCoverLetterStyle } from "@rezumi/resume/cover-letter";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
@@ -37,7 +35,20 @@ if (!LOCAL_HOSTS.has(new URL(databaseUrl).hostname)) {
 if (!args.email) throw new Error("Pass the account to fill: pnpm seed:dev --email you@example.test");
 
 const pool = new Pool({ connectionString: databaseUrl });
-const db = drizzle({ client: pool });
+
+// Plain SQL through `pg`: the seed only inserts and deletes, and an ORM here would pull its optional peers into the
+// tooling package. Keys are the schema's camelCase names (packages/db/src/schema); columns are their snake_case.
+// jsonb columns go as JSON text, since `pg` would send a JS array as a Postgres array.
+const JSONB_COLUMNS = new Set(["data", "style", "requirements", "contacts", "activity"]);
+const columnOf = (key: string) => key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
+
+async function insert(client: PoolClient, table: string, row: Record<string, unknown>) {
+	const keys = Object.keys(row);
+	const columns = keys.map((key) => `"${columnOf(key)}"`).join(", ");
+	const placeholders = keys.map((_, index) => `$${index + 1}`).join(", ");
+	const values = keys.map((key) => (JSONB_COLUMNS.has(key) ? JSON.stringify(row[key]) : row[key]));
+	await client.query(`insert into "${table}" (${columns}) values (${placeholders})`, values);
+}
 
 const DAY = 24 * 60 * 60 * 1000;
 const now = Date.now();
@@ -738,29 +749,25 @@ const letters: LetterSeed[] = [
 // --- Write -----------------------------------------------------------------------------------------------------
 
 async function main() {
-	const [user] = await db
-		.select()
-		.from(schema.user)
-		.where(eq(schema.user.email, args.email ?? ""))
-		.limit(1);
+	const { rows } = await pool.query<{ id: string }>(`select id from "user" where email = $1`, [args.email]);
+	const user = rows[0];
 	if (!user) throw new Error(`No account for ${args.email}. Sign up in the app first.`);
 
-	await db.transaction(async (tx) => {
+	const tx = await pool.connect();
+	try {
+		await tx.query("begin");
 		// Letters and applications point at each other and at resumes: clear the links, then the rows.
-		await tx
-			.update(schema.application)
-			.set({ coverLetterId: null, resumeId: null })
-			.where(eq(schema.application.userId, user.id));
-		await tx.delete(schema.coverLetter).where(eq(schema.coverLetter.userId, user.id));
-		await tx.delete(schema.application).where(eq(schema.application.userId, user.id));
-		await tx.delete(schema.resume).where(eq(schema.resume.userId, user.id));
+		await tx.query(`update "application" set cover_letter_id = null, resume_id = null where user_id = $1`, [user.id]);
+		for (const table of ["cover_letter", "application", "resume"]) {
+			await tx.query(`delete from "${table}" where user_id = $1`, [user.id]);
+		}
 
 		const resumeIds = new Map<string, string>();
 		for (const seed of resumes) {
 			const data = resumeDataSchema.parse(seed.data) as ResumeData;
 			const id = generateId();
 			resumeIds.set(seed.key, id);
-			await tx.insert(schema.resume).values({
+			await insert(tx, "resume", {
 				id,
 				userId: user.id,
 				name: seed.name,
@@ -790,7 +797,8 @@ async function main() {
 				{ kind: "auto" as const, age: seed.updatedDaysAgo, sessionId: generateId() },
 			];
 			for (const version of versions) {
-				await tx.insert(schema.resumeVersion).values({
+				await insert(tx, "resume_version", {
+					id: generateId(),
 					resumeId: id,
 					userId: user.id,
 					data,
@@ -806,7 +814,7 @@ async function main() {
 		for (const seed of applications) {
 			const id = generateId();
 			applicationIds.set(seed.key, id);
-			await tx.insert(schema.application).values({
+			await insert(tx, "application", {
 				id,
 				userId: user.id,
 				company: seed.company,
@@ -837,7 +845,7 @@ async function main() {
 			if (!resume) continue;
 			const id = generateId();
 			const applicationId = seed.application ? (applicationIds.get(seed.application) ?? null) : null;
-			await tx.insert(schema.coverLetter).values({
+			await insert(tx, "cover_letter", {
 				id,
 				userId: user.id,
 				name: seed.name,
@@ -857,17 +865,17 @@ async function main() {
 				createdAt: daysAgo(seed.updatedDaysAgo + 4),
 				updatedAt: daysAgo(seed.updatedDaysAgo),
 			});
-			if (applicationId)
-				if (applicationId) {
-					// Keeps the application's own date: the ORM would stamp this update as now.
-					const appliedDaysAgo = applications.find((item) => item.key === seed.application)?.appliedDaysAgo ?? 0;
-					await tx
-						.update(schema.application)
-						.set({ coverLetterId: id, updatedAt: daysAgo(Math.min(appliedDaysAgo, 2)) })
-						.where(eq(schema.application.id, applicationId));
-				}
+			if (applicationId) {
+				await tx.query(`update "application" set cover_letter_id = $1 where id = $2`, [id, applicationId]);
+			}
 		}
-	});
+		await tx.query("commit");
+	} catch (error) {
+		await tx.query("rollback");
+		throw error;
+	} finally {
+		tx.release();
+	}
 
 	console.info(
 		`Seeded ${args.email}: ${resumes.length} resumes, ${letters.length} cover letters, ${applications.length} applications.`,
