@@ -1,6 +1,6 @@
 # Web app migration to HeroUI
 
-Status: Phase 0 done (October 30, 2026); Phase 1 next.
+Status: Phases 0 and 1 done (October 30, 2026); Phase 2 (app shell) next.
 Date: October 29, 2026.
 
 ## Decisions
