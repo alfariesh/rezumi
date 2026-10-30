@@ -2,16 +2,19 @@ import type { CheckIssue } from "./issues";
 import type { PageMap, PageMapNode, PageMapTarget } from "@rezumi/pdf/page-map";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
-import { Button } from "@heroui/react";
+import { Segment } from "@heroui-pro/react";
+import { Button, Toolbar } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { getProposalState } from "@rezumi/resume/proposals";
 import { Icon } from "@rezumi/ui/components/icon";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { isSameSelection, useEditorStore } from "../store";
 import { findEntry } from "../write/model";
 import { scrollToIssue, useCheckActions } from "./actions";
+import { getIssueTone } from "./issues";
 import { useCheck } from "./use-check";
 import { getPdfFindingMessage } from "@/features/ats-checker/messages";
 
@@ -45,6 +48,15 @@ function boxStyle(node: Box, page: { width: number; height: number }): CSSProper
 		height: `${(node.height / page.height) * 100}%`,
 	};
 }
+
+/** Pin, outline and underline colours per issue severity. Pins sit on the white paper, hence the paper border. */
+const TONE = {
+	warning: { pin: "bg-warning text-warning-foreground", outline: "outline-warning", underline: "var(--warning)" },
+	danger: { pin: "bg-danger text-danger-foreground", outline: "outline-danger", underline: "var(--danger)" },
+} as const;
+
+const PIN_CLASS =
+	"pointer-events-auto absolute grid size-[22px] cursor-(--cursor-interactive) place-items-center rounded-full border-2 border-(--paper) text-[11px] font-bold tabular-nums shadow-[0_1px_3px_oklch(0_0_0/0.25)]";
 
 const text = (value: unknown): string =>
 	typeof value === "string"
@@ -80,7 +92,7 @@ function targetsMentioning(data: ResumeData, term: string): PageMapTarget[] {
 type CheckPageLayerProps = { pageIndex: number; pageMap: PageMap | undefined };
 
 /**
- * Check's marks on one page: numbered warn pins with a wavy underline for open issues, numbered accent markers for
+ * Check's marks on one page: numbered pins (warning, or danger for errors) with a wavy underline for open issues, numbered accent markers for
  * proposed edits (while Writing is open), and a highlight on the entries that mention the picked job-match term.
  */
 export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
@@ -148,24 +160,31 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 				<div
 					key={`tint:${node.key}:${node.y}`}
 					aria-hidden="true"
-					className="absolute -m-[3px] rounded-md bg-[#F2DE8C]/45 p-[3px] mix-blend-multiply"
+					className="absolute -m-[3px] rounded-md bg-accent/20 p-[3px] mix-blend-multiply"
 					style={boxStyle(node, page)}
 				/>
 			))}
 
 			{pins.map(({ issue, node, stack }) => {
 				const isSelected = selected === issue.key;
+				const tone = TONE[getIssueTone(issue)];
 				return (
 					<div key={issue.key}>
 						<div aria-hidden="true" className="absolute" style={boxStyle(node, page)}>
 							<div
 								className={cn(
 									"absolute -inset-x-1.5 -inset-y-[3px] rounded-md outline-[1.5px] transition-[outline-color] duration-quick outline-solid",
-									isSelected ? "outline-warn" : "outline-transparent",
+									isSelected ? tone.outline : "outline-transparent",
 								)}
 							/>
-							{stack === 0 && <div className="wavy-underline absolute inset-x-0 -bottom-1 h-1" />}
+							{stack === 0 && (
+								<div
+									className="wavy-underline absolute inset-x-0 -bottom-1 h-1"
+									style={{ backgroundColor: tone.underline }}
+								/>
+							)}
 						</div>
+						{/* Raw buttons: 22px markers placed in the page margin, which a HeroUI Button's sizing can't express. */}
 						<button
 							type="button"
 							data-issue-pin={issue.key}
@@ -173,10 +192,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 							aria-pressed={isSelected}
 							onClick={() => pickIssue(issue)}
 							style={marginStyle(node, page, stack)}
-							className={cn(
-								"pointer-events-auto absolute grid size-[22px] place-items-center rounded-sm border-2 border-white bg-warn text-[11px] font-bold text-[oklch(0.22_0.03_80)] shadow-[0_1px_3px_oklch(0_0_0/0.25)]",
-								isSelected && "outline-2 outline-offset-1 outline-warn",
-							)}
+							className={cn(PIN_CLASS, tone.pin, isSelected && cn("outline-[2px] outline-offset-1", tone.outline))}
 						>
 							{issue.number}
 						</button>
@@ -188,7 +204,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 				<div key={key}>
 					<div
 						aria-hidden="true"
-						className="absolute -m-[3px] rounded-md border-[1.5px] border-dashed border-info-text p-[3px]"
+						className="absolute -m-[3px] rounded-md border-[1.5px] border-dashed border-accent p-[3px]"
 						style={boxStyle(box, page)}
 					/>
 					<button
@@ -198,7 +214,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 						title={getPdfFindingMessage(finding.code).title}
 						onClick={() => useEditorStore.setState({ exportReportOpen: true })}
 						style={marginStyle(box, page)}
-						className="pointer-events-auto absolute grid size-[22px] place-items-center rounded-sm border-2 border-white bg-info-text text-bg shadow-[0_1px_3px_oklch(0_0_0/0.25)]"
+						className={cn(PIN_CLASS, "bg-accent text-accent-foreground")}
 					>
 						<Icon name="file-pdf" size={13} />
 					</button>
@@ -209,7 +225,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 				<span
 					key={`marker:${number}`}
 					aria-hidden="true"
-					className="absolute grid size-5 place-items-center rounded-sm bg-accent text-[11px] font-bold text-on-accent"
+					className="absolute grid size-5 place-items-center rounded-full bg-accent text-[11px] font-bold text-accent-foreground tabular-nums"
 					style={marginStyle(node, page)}
 				>
 					{number}
@@ -228,26 +244,21 @@ export function PageViewToggle() {
 	] as const;
 
 	return (
-		<fieldset className="absolute top-3.5 left-1/2 z-10 flex -translate-x-1/2 gap-0.5 rounded-lg border border-line bg-raised p-[3px] shadow-e1">
-			<legend className="sr-only">
-				<Trans>Page view</Trans>
-			</legend>
-			{options.map((option) => (
-				<button
-					key={option.value}
-					type="button"
-					aria-pressed={view === option.value}
-					onClick={() => useEditorStore.setState({ pageView: option.value })}
-					className={cn(
-						"flex h-[30px] items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium whitespace-nowrap max-sm:px-2",
-						view === option.value ? "bg-ink text-bg" : "text-ink-2 hover:bg-hover",
-					)}
-				>
-					<Icon name={option.icon} size={18} />
-					<span className="max-sm:sr-only">{option.label}</span>
-				</button>
-			))}
-		</fieldset>
+		<div className="absolute inset-x-0 top-3.5 z-10 mx-auto w-fit rounded-3xl bg-overlay p-1 shadow-overlay">
+			<Segment
+				aria-label={t`Page view`}
+				size="sm"
+				selectedKey={view}
+				onSelectionChange={(key) => useEditorStore.setState({ pageView: key === "parser" ? "parser" : "page" })}
+			>
+				{options.map((option) => (
+					<Segment.Item key={option.value} id={option.value} className="whitespace-nowrap">
+						<Icon name={option.icon} size={16} />
+						<span className="max-sm:sr-only">{option.label}</span>
+					</Segment.Item>
+				))}
+			</Segment>
+		</div>
 	);
 }
 
@@ -274,45 +285,24 @@ export function IssueStepper() {
 
 	return (
 		<>
-			<div className="absolute inset-x-3 top-3 z-10 flex h-11 items-center gap-1 rounded-xl bg-ink px-1 text-bg shadow-e3">
-				<button
-					type="button"
-					aria-label={t`Close`}
-					onClick={() => useEditorStore.setState({ checkIssue: null })}
-					className="grid size-9 place-items-center rounded-lg"
-				>
-					<Icon name="x" size={20} />
-				</button>
-				<span className="flex-1 text-center text-sm font-semibold">
+			<Toolbar isAttached aria-label={t`Issues`} className="absolute inset-x-3 top-3 z-10 flex w-auto gap-1 bg-overlay">
+				<IconButton icon="x" label={t`Close`} onPress={() => useEditorStore.setState({ checkIssue: null })} />
+				<span className="flex-1 text-center text-sm font-semibold tabular-nums">
 					<Trans>
 						Issue {issue.number} of {issues.length}
 					</Trans>
 				</span>
-				<button
-					type="button"
-					aria-label={t`Previous issue`}
-					onClick={() => go(-1)}
-					className="grid size-9 place-items-center rounded-lg"
-				>
-					<Icon name="caret-left" size={20} />
-				</button>
-				<button
-					type="button"
-					aria-label={t`Next issue`}
-					onClick={() => go(1)}
-					className="grid size-9 place-items-center rounded-lg"
-				>
-					<Icon name="caret-right" size={20} />
-				</button>
-			</div>
+				<IconButton icon="caret-left" label={t`Previous issue`} onPress={() => go(-1)} />
+				<IconButton icon="caret-right" label={t`Next issue`} onPress={() => go(1)} />
+			</Toolbar>
 
 			<section
 				aria-label={t`Issue ${issue.number}`}
-				className="absolute inset-x-3 bottom-3 z-10 grid gap-2 rounded-xl border border-line bg-surface p-3.5 shadow-e3"
+				className="absolute inset-x-3 bottom-3 z-10 grid gap-2 rounded-2xl bg-overlay p-4 shadow-overlay"
 			>
-				<strong className="text-[15px] font-semibold">{issue.title}</strong>
-				<p className="text-[13px] leading-[19px] text-ink-2">{issue.body}</p>
-				<Button size="sm" className="h-10 w-fit px-3.5 text-sm" onPress={() => fix(issue)}>
+				<strong className="text-base font-semibold">{issue.title}</strong>
+				<p className="text-sm text-muted">{issue.body}</p>
+				<Button className="mt-1" onPress={() => fix(issue)}>
 					{issue.fix.kind === "apply" ? (
 						<Icon name={issue.fix.icon} size={18} />
 					) : (

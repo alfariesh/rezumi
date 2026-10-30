@@ -97,7 +97,7 @@ export function PageOverlay({ pageIndex, pageMap, onSelect }: PageOverlayProps) 
 						data-section-id={node.kind === "header" ? undefined : node.sectionId}
 						data-item-id={node.kind === "item" ? node.itemId : undefined}
 						className={cn(
-							"absolute cursor-pointer rounded-lg outline-[1.5px] transition-[background-color,outline-color] duration-quick outline-solid hover:bg-[oklch(0.5_0.1_150/0.06)]",
+							"absolute cursor-pointer rounded-lg outline-[1.5px] transition-[background-color,outline-color] duration-quick outline-solid hover:bg-accent/6",
 							selected.includes(node) ? "outline-accent" : "outline-transparent",
 						)}
 						style={boxOf(node)}
@@ -107,7 +107,7 @@ export function PageOverlay({ pageIndex, pageMap, onSelect }: PageOverlayProps) 
 					<div
 						key={`style:${node.key}:${node.y}`}
 						data-slot="style-highlight"
-						className="pointer-events-none absolute rounded-lg bg-[oklch(0.5_0.1_150/0.08)] outline-[1.5px] outline-accent transition-opacity duration-quick ease-enter outline-dashed starting:opacity-0"
+						className="pointer-events-none absolute rounded-lg bg-accent/8 outline-[1.5px] outline-accent transition-opacity duration-quick ease-enter outline-dashed starting:opacity-0"
 						style={boxOf(node)}
 					/>
 				))}
@@ -120,7 +120,7 @@ export function PageOverlay({ pageIndex, pageMap, onSelect }: PageOverlayProps) 
 					style={boxOf(node)}
 				>
 					<div className="absolute start-1 -top-2 flex gap-1 text-[8px] leading-3 font-semibold">
-						<span aria-hidden="true" className="rounded-md bg-accent px-1 text-on-accent">
+						<span aria-hidden="true" className="rounded-full bg-accent px-1.5 text-accent-foreground">
 							<Trans>Editing</Trans>
 						</span>
 						{swappable && (
@@ -129,7 +129,7 @@ export function PageOverlay({ pageIndex, pageMap, onSelect }: PageOverlayProps) 
 								onClick={swapRows}
 								// The canvas reads a press outside an entry as "tapped the page" and closes the tablet drawer.
 								onPointerDown={(event) => event.stopPropagation()}
-								className="pointer-events-auto flex cursor-pointer items-center gap-0.5 rounded-md bg-raised px-1 text-accent-text ring-1 ring-accent transition-colors duration-quick ring-inset hover:bg-accent-soft"
+								className="pointer-events-auto flex cursor-(--cursor-interactive) items-center gap-0.5 rounded-full bg-overlay px-1.5 text-accent-soft-foreground ring-1 ring-accent transition-colors duration-quick ring-inset hover:bg-accent-soft"
 							>
 								<Icon name="arrows-down-up" size={9} />
 								<Trans>Swap rows</Trans>

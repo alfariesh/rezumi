@@ -81,7 +81,7 @@ function SocialAuthButtons({ providers }: SocialAuthButtonsProps) {
 	};
 
 	return (
-		<div className={cn(ENTER_CLASS, "grid grid-cols-2 gap-4")}>
+		<div className={cn(ENTER_CLASS, "flex flex-wrap gap-4 *:flex-1 *:basis-[calc(50%-0.5rem)]")}>
 			<Button
 				onPress={() =>
 					runSignIn(() =>

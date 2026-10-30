@@ -1,10 +1,7 @@
-import { Button } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { Trans } from "@lingui/react/macro";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
-import { Icon } from "@rezumi/ui/components/icon";
-import { Swap } from "@rezumi/ui/components/swap";
+import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 
 const COPIED_MS = 2000;
@@ -15,11 +12,13 @@ type CopyLinkButtonProps = {
 	className?: string;
 };
 
-/** Copies `url` and shows "Copied" for two seconds. */
+/** An icon button, usually an address field's trailing action, that copies `url` and shows a check for two seconds. */
 export function CopyLinkButton({ url, disabled, className }: CopyLinkButtonProps) {
 	const [copied, setCopied] = useState(false);
 	const [, copyToClipboard] = useCopyToClipboard();
 	const timer = useRef<number>(undefined);
+
+	useEffect(() => () => window.clearTimeout(timer.current), []);
 
 	const copy = async () => {
 		if (!(await copyToClipboard(url))) {
@@ -33,28 +32,14 @@ export function CopyLinkButton({ url, disabled, className }: CopyLinkButtonProps
 	};
 
 	return (
-		<Button
-			variant="secondary"
+		<IconButton
+			icon={copied ? "check" : "copy"}
+			label={copied ? t`Copied` : t`Copy link`}
+			size="sm"
 			className={className ?? ""}
 			isDisabled={disabled ?? false}
 			aria-live="polite"
 			onPress={() => void copy()}
-		>
-			<Swap
-				swapped={copied}
-				from={
-					<>
-						<Icon name="copy" size={18} />
-						<Trans>Copy</Trans>
-					</>
-				}
-				to={
-					<>
-						<Icon name="check" size={18} />
-						<Trans>Copied</Trans>
-					</>
-				}
-			/>
-		</Button>
+		/>
 	);
 }

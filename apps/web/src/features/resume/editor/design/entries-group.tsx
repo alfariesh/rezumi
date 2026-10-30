@@ -1,14 +1,13 @@
 import type { EntryHeader } from "@rezumi/schema/resume/data";
 import type { ReactNode } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Radio, RadioGroup } from "@heroui/react";
+import { RadioButtonGroup, Segment } from "@heroui-pro/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { m } from "motion/react";
 import { entryHeaderOf } from "@rezumi/schema/resume/data";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
-import { useDesign } from "./style-groups";
+import { SEGMENT_ITEM, useDesign } from "./style-groups";
 import { D2, EASE_MOVE } from "@/libs/motion";
 
 type BarProps = { tone?: "lead" | "accent"; className: string };
@@ -19,7 +18,7 @@ function Bar({ tone, className }: BarProps) {
 		<span
 			className={cn(
 				"block h-1 rounded-sm",
-				tone === "lead" ? "bg-ink" : tone === "accent" ? "h-[3px] bg-accent" : "bg-line-2",
+				tone === "lead" ? "bg-foreground" : tone === "accent" ? "h-[3px] bg-accent" : "bg-muted/35",
 				className,
 			)}
 		/>
@@ -132,39 +131,44 @@ export function EntriesGroup() {
 		<div className="grid gap-4">
 			<div className="grid gap-2">
 				<div className="flex items-baseline justify-between gap-2">
-					<span className="shrink-0 text-[13px] font-medium">
+					<span className="shrink-0 text-sm font-medium">
 						<Trans>Header layout</Trans>
 					</span>
-					<span className="truncate text-xs text-ink-3">
+					<span className="truncate text-xs text-muted">
 						<Trans>Experience, Education and more</Trans>
 					</span>
 				</div>
-				<RadioGroup
+				<RadioButtonGroup
 					aria-label={t`Header layout`}
+					layout="grid"
 					value={entry.layout}
 					onChange={(value) => set({ layout: value as EntryHeader["layout"] })}
-					className="grid grid-cols-3 gap-1.5"
+					className="grid-cols-3 gap-2"
 				>
 					{LAYOUTS.map((option) => (
-						<Radio key={option.id} value={option.id} className="mt-0! w-full">
-							<Radio.Content className="group/layout grid w-full cursor-pointer content-start items-stretch gap-1.5 rounded-md border border-line bg-bg px-1.5 pt-1.5 pb-1 text-start font-normal transition-colors duration-quick hover:bg-hover data-selected:border-accent data-selected:ring-1 data-selected:ring-accent">
+						<RadioButtonGroup.Item
+							key={option.id}
+							value={option.id}
+							className="group/layout gap-1.5 rounded-xl border-0 bg-surface-secondary px-2 pt-2.5 pb-1.5 data-selected:bg-accent-soft"
+						>
+							<RadioButtonGroup.ItemContent className="gap-1.5">
 								<span aria-hidden="true" className="flex h-7.5 flex-col justify-center gap-1 px-0.5">
 									{option.wireframe}
 								</span>
-								<span className="text-center text-xs leading-4 text-ink-2 group-data-selected/layout:font-semibold group-data-selected/layout:text-ink">
+								<span className="text-center text-xs leading-4 text-muted group-data-selected/layout:font-semibold group-data-selected/layout:text-foreground">
 									{option.label()}
 								</span>
-							</Radio.Content>
-						</Radio>
+							</RadioButtonGroup.ItemContent>
+						</RadioButtonGroup.Item>
 					))}
-				</RadioGroup>
+				</RadioButtonGroup>
 			</div>
 
 			<div className="grid gap-2">
-				<span className="text-[13px] font-medium">
+				<span className="text-sm font-medium">
 					<Trans>Row order</Trans>
 				</span>
-				<div className="flex items-center gap-2 rounded-lg border border-line bg-bg p-1.5">
+				<div className="flex items-center gap-2 rounded-xl bg-surface-secondary p-2">
 					<div className="grid min-w-0 flex-1 gap-1">
 						{rows.map((row) => (
 							<m.div
@@ -173,10 +177,10 @@ export function EntriesGroup() {
 								// Measured only when the order changes, so the panel moving around it doesn't slide the chips.
 								layoutDependency={entry.lead}
 								transition={{ duration: D2, ease: EASE_MOVE }}
-								className="flex items-center justify-between gap-2 rounded-sm bg-sunken px-2 py-1 text-xs"
+								className="flex items-center justify-between gap-2 rounded-lg bg-surface px-2.5 py-1.5 text-xs"
 							>
 								<span className="truncate font-semibold">{row.name}</span>
-								<span className="truncate text-ink-3">{row.detail}</span>
+								<span className="truncate text-muted">{row.detail}</span>
 							</m.div>
 						))}
 					</div>
@@ -191,13 +195,13 @@ export function EntriesGroup() {
 						onPress={() => set({ lead: entry.lead === "role" ? "organization" : "role" })}
 					/>
 				</div>
-				<span className="text-xs text-ink-3">
+				<span className="text-xs text-muted">
 					<Trans>Education swaps school and field of study the same way.</Trans>
 				</span>
 			</div>
 
 			<div className="grid gap-2">
-				<span className="text-[13px] font-medium">
+				<span className="text-sm font-medium">
 					<Trans>Accent</Trans>
 				</span>
 				<Segment
@@ -206,16 +210,16 @@ export function EntriesGroup() {
 					onSelectionChange={(key) => set({ accent: key as EntryHeader["accent"] })}
 					className="w-full"
 				>
-					<Segment.Item id="none" className="flex-1">
+					<Segment.Item id="none" className={SEGMENT_ITEM}>
 						<Trans context="Entry header accent">None</Trans>
 					</Segment.Item>
-					<Segment.Item id="rule" className="flex-1">
+					<Segment.Item id="rule" className={SEGMENT_ITEM}>
 						<Trans context="Entry header accent: a line under the header">Rule</Trans>
 					</Segment.Item>
-					<Segment.Item id="bar" className="flex-1">
+					<Segment.Item id="bar" className={SEGMENT_ITEM}>
 						<Trans context="Entry header accent: a bar beside the header">Bar</Trans>
 					</Segment.Item>
-					<Segment.Item id="band" className="flex-1">
+					<Segment.Item id="band" className={SEGMENT_ITEM}>
 						<Trans context="Entry header accent: a tinted background behind the header">Band</Trans>
 					</Segment.Item>
 				</Segment>

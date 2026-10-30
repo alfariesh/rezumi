@@ -11,8 +11,8 @@ import { useEditorStore } from "@/features/resume/editor/store";
 import { D2, D3, EASE, EXIT } from "@/libs/motion";
 
 /**
- * Where the assistant sits (README §6.5): a third column at ≥1280 (the panel narrows to 300px), in place of the panel
- * at 1024–1279, a drawer over the page on tablets, and the whole screen on phones.
+ * Where the assistant sits (README §6.5): a third column at ≥1280 (it and the panel share `--editor-side`), in place
+ * of the panel at 1024–1279, a drawer over the page on tablets, and the whole screen on phones.
  */
 export type AssistantPlace = "column" | "replace" | "drawer" | "screen";
 
@@ -27,7 +27,7 @@ export const assistantPlaceFor = (breakpoint: Breakpoint): AssistantPlace =>
 
 /** The editor grid's columns at ≥1280: the panel narrows and the assistant's column opens, animated. */
 export const columnsWithAssistant = (open: boolean) =>
-	open ? "300px minmax(0,1fr) 400px" : "var(--editor-panel) minmax(0,1fr) 0px";
+	open ? "var(--editor-side) minmax(0,1fr) var(--editor-side)" : "var(--editor-panel) minmax(0,1fr) 0px";
 
 /** The editor grid's transition: the assistant's column opens over 320ms and closes in 70% of that; ⌘J is instant. */
 export const assistantGridTransition = (open: boolean, instant: boolean) =>
@@ -52,16 +52,17 @@ const columnContent: Variants = {
 type AssistantColumnProps = { children: ReactNode };
 
 /**
- * ≥1280: the assistant's column. Its content keeps the open column's width (400px less the 1px border), so it
- * travels in with the column's edge instead of re-wrapping every frame, and it stays mounted until it has faded
- * out.
+ * ≥1280: the assistant's column, as wide as the panel's while it's open (`--editor-side`): a card 12px in from both
+ * edges, with the same scrollbar gutter as the panel, so the two match. Its content keeps (nearly) the open column's
+ * width from the start, so it travels in with the column's edge instead of re-wrapping every frame, and it stays
+ * mounted until it has faded out.
  */
 export function AssistantColumn({ children }: AssistantColumnProps) {
 	const open = useEditorStore((state) => state.assistantOpen);
 	const instant = useEditorStore((state) => state.assistantInstant);
 
 	return (
-		<div inert={!open} className="min-h-0 min-w-0 overflow-hidden border-s border-line bg-surface">
+		<div inert={!open} className="min-h-0 min-w-0 scrollbar [scrollbar-gutter:stable] overflow-hidden px-3 pb-3">
 			<AnimatePresence initial={false} custom={instant}>
 				{open && (
 					<m.div
@@ -71,7 +72,7 @@ export function AssistantColumn({ children }: AssistantColumnProps) {
 						initial="hidden"
 						animate="shown"
 						exit="hidden"
-						className="h-full w-[399px]"
+						className="h-full w-full min-w-[calc(var(--editor-side)-3rem)] overflow-hidden rounded-2xl bg-surface shadow-surface"
 					>
 						{children}
 					</m.div>
@@ -145,7 +146,11 @@ export function AssistantOverlay({ place, children }: AssistantOverlayProps) {
 	const rtl = useLocale().direction === "rtl";
 	const custom: OverlayCustom =
 		place === "drawer"
-			? { instant, hidden: rtl ? "translateX(-100%)" : "translateX(100%)", shown: "translateX(0%)" }
+			? {
+					instant,
+					hidden: rtl ? "translateX(calc(-100% - 1rem))" : "translateX(calc(100% + 1rem))",
+					shown: "translateX(0%)",
+				}
 			: { instant, hidden: "translateY(100%)", shown: "translateY(0%)" };
 
 	return (
@@ -160,7 +165,7 @@ export function AssistantOverlay({ place, children }: AssistantOverlayProps) {
 					exit="hidden"
 					className={
 						place === "drawer"
-							? "fixed end-0 top-(--editor-bar) bottom-0 z-40 flex w-[400px] max-w-full flex-col border-s border-line bg-surface shadow-e3"
+							? "fixed end-2 top-(--editor-bar) bottom-2 z-40 flex w-[400px] max-w-[calc(100%-1rem)] flex-col overflow-hidden rounded-2xl bg-overlay shadow-overlay"
 							: "fixed inset-0 z-40 flex flex-col bg-surface pb-[env(safe-area-inset-bottom)]"
 					}
 				>

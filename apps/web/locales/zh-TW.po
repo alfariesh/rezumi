@@ -1046,6 +1046,7 @@ msgid "A web address is written without https://."
 msgstr "有一個網址沒有寫 https://。"
 
 #: src/features/homepage/footer.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "關於"
 
@@ -1588,6 +1589,10 @@ msgstr "在設定 ENCRYPTION_SECRET 之前，AI 提供者在此伺服器上不�
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "無法載入 AI 提供者。重新加載再試一次。"
+
+#: src/features/resume/editor/check/writing-tab.tsx
+msgid "AI review"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Albanian"
@@ -2244,7 +2249,6 @@ msgstr "底薪"
 msgid "Base URL"
 msgstr "基本 URL"
 
-#: src/features/resume/editor/write/basics-card.tsx
 #: src/libs/resume/section.tsx
 msgid "Basics"
 msgstr "基本資料"
@@ -2858,6 +2862,10 @@ msgstr "程式碼"
 msgid "Color"
 msgstr "顏色"
 
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Colors and levels"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Column {header} goes to"
 msgstr "{header} 欄位轉到"
@@ -3129,6 +3137,10 @@ msgstr "繼續"
 msgid "Continue as guest"
 msgstr "以訪客身分繼續"
 
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Contrast on white:"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Contribution clear"
 msgstr "貢獻清楚"
@@ -3173,7 +3185,6 @@ msgid "Copied"
 msgstr "已複製"
 
 #: src/features/career/coach-chat.tsx
-#: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/mcp.tsx
@@ -3210,6 +3221,7 @@ msgid "Copy it now. For your security, it won't be shown again."
 msgstr "現在複製它。為了您的安全，它不會再次顯示。"
 
 #: src/features/homepage/share.tsx
+#: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "複製連結"
 
@@ -3856,6 +3868,7 @@ msgstr "裁切填滿"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "求職信"
 
@@ -3979,8 +3992,16 @@ msgid "Custom"
 msgstr "自訂"
 
 #: src/features/resume/editor/design/style-groups.tsx
+msgid "Custom color"
+msgstr ""
+
+#: src/features/resume/editor/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "自訂顏色（十六進位）"
+
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Custom CSS"
+msgstr ""
 
 #. Authentication provider display name in account settings
 #: src/features/settings/account/auth-hooks.ts
@@ -4360,6 +4381,10 @@ msgstr "正在取消連結您的 {providerName} 帳戶…"
 msgid "Dismiss"
 msgstr "解僱"
 
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "DNS records"
+msgstr ""
+
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "說明文件"
@@ -4576,7 +4601,7 @@ msgstr "起草工作停止了。页面上没有任何变化。"
 msgid "Drafting…"
 msgstr "起草…"
 
-#: src/features/resume/editor/write/write-panel.tsx
+#: src/features/resume/editor/write/outline.tsx
 msgid "drag · ⌥↑↓"
 msgstr "拖動·⌥↑↓"
 
@@ -4771,8 +4796,7 @@ msgstr "編輯關鍵字..."
 msgid "Editing session"
 msgstr "編輯會話"
 
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
 msgid "Editor mode"
 msgstr "編輯器模式"
 
@@ -4959,6 +4983,10 @@ msgstr "每 {days} 天 {clock} · 下次 {next}"
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "每 3 天"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Every application is a step closer."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
@@ -5574,6 +5602,10 @@ msgstr "前往儀表板"
 msgid "Go to…"
 msgstr "前往…"
 
+#: src/components/layout/loading-screen.tsx
+msgid "Good things take time. Keep going."
+msgstr ""
+
 #. Authentication provider display name in account settings
 #. Brand name label for Google social sign-in button
 #: src/features/auth/components/social-auth.tsx
@@ -5672,6 +5704,10 @@ msgstr "幫助和文檔"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "幫我把一項成就整理成包含情境、任務、行動、結果和反思的故事。"
 
+#: src/components/input/color-picker.tsx
+msgid "Hex color"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
 msgstr "Alex 您好，跟您確認：今天 {time} 您將透過視訊與我們的設計團隊見面。可以帶一個您在新手引導方面的工作範例嗎？"
@@ -5685,10 +5721,6 @@ msgstr "隱藏"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "已從新職缺中隱藏"
-
-#: src/features/resume/editor/write/outline.tsx
-msgid "Hidden sections"
-msgstr "已隱藏的部分"
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
@@ -5819,6 +5851,11 @@ msgstr "如何顯示文件"
 #: src/features/assistant/assistant-panel.tsx
 msgid "How well do I fit this role?"
 msgstr "我有多適合這個角色？"
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Hue"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hungarian"
@@ -6000,6 +6037,10 @@ msgstr "推斷"
 msgid "Inline"
 msgstr "行內"
 
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Inline formatting"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "深入分析"
@@ -6151,6 +6192,7 @@ msgid "Issuer"
 msgstr "發行者"
 
 #: src/features/resume/editor/check/check-panel.tsx
+#: src/features/resume/editor/check/page-layer.tsx
 msgid "Issues"
 msgstr "問題"
 
@@ -6481,6 +6523,7 @@ msgstr "將文字水平排列。旋轉的文字段落常常會遺失或錯位。
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Layout"
 msgstr "版面配置"
 
@@ -6785,6 +6828,10 @@ msgstr "列出您使用的工具和技術。招募人員搜尋技能的頻率高
 #: src/features/career/workspace/practise.tsx
 msgid "Listening… Stop when you're done."
 msgstr "正在聆聽… 說完後請停止。"
+
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Lists"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Lithuanian"
@@ -7094,10 +7141,6 @@ msgstr "符合此職缺發布"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "與履歷表相符 ({summary})。"
-
-#: src/routes/builder/letter/-components/design-panel.tsx
-msgid "Matching the resume"
-msgstr "與履歷相符"
 
 #: src/features/career/shared.tsx
 msgid "Matching your facts"
@@ -7936,6 +7979,7 @@ msgstr "資訊"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/application-notes.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/resume/editor/check/writing-tab.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/notes.tsx
@@ -8163,6 +8207,10 @@ msgstr "只有你，直到你分享為止。簡歷可以保持私密、透過公
 msgid "Onsite"
 msgstr "現場面試"
 
+#: src/components/input/color-picker.tsx
+msgid "Opacity"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
@@ -8374,14 +8422,13 @@ msgstr "頁"
 
 #. Layout editor page label with 1-based page number
 #. placeholder {0}: pageIndex + 1
-#. placeholder {0}: row.page + 1
 #. placeholder {0}: targetPageIndex + 1
 #: src/features/resume/editor/write/entry-card.tsx
-#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Page {0}"
 msgstr "第 {0} 頁"
 
+#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Page {pageNumber}"
@@ -8711,6 +8758,7 @@ msgstr "職缺公告"
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/homepage/tailor.tsx
+#: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "職缺公告"
 
@@ -8721,6 +8769,10 @@ msgstr "來自連結的職位申請的職位發布"
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Posting source"
 msgstr "職缺發布來源"
+
+#: src/features/resume/editor/check/job-match.tsx
+msgid "Posting terms"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting terms in your resume"
@@ -9016,6 +9068,10 @@ msgstr "公開"
 msgid "Public link"
 msgstr "公共連結"
 
+#: src/features/resume/share/share-panel.tsx
+msgid "Public Link"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Public profile links are optional and only used if Web research is on."
 msgstr "公開個人檔案連結為選填，只有在開啟網路研究時才會使用。"
@@ -9047,6 +9103,10 @@ msgstr "發布網頁後即可計算瀏覽和下載次數。統計為匿名，且
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "發布這份履歷，即可透過您的短網址和自訂網域開啟。"
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Publish Your Resume"
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Publisher"
@@ -9235,6 +9295,7 @@ msgid "Read, write and delete"
 msgstr "讀取、寫入和刪除"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/resume/editor/check/check-panel.tsx
 msgid "Readability"
 msgstr "可讀性"
 
@@ -9451,6 +9512,10 @@ msgstr "拒絕"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Rejected"
 msgstr "被拒絕"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Rejection is just redirection."
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Reload"
@@ -9753,6 +9818,7 @@ msgstr "恢復"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "履歷"
@@ -9793,6 +9859,10 @@ msgstr "履歷詳情"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Resume file"
 msgstr "履歷檔案"
+
+#: src/routes/builder/letter/-components/design-panel.tsx
+msgid "Resume Match"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
@@ -10043,6 +10113,11 @@ msgstr "還是您，少一點從頭來過。"
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "新增了履歷表範本。隨時刪除。"
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Saturation and brightness"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -10346,10 +10421,6 @@ msgstr "從「應徵紀錄」和助理中搜尋，並讀取內建閱讀器無法
 msgid "Search job postings"
 msgstr "搜尋職位資訊"
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Search or run…"
-msgstr "搜尋或運行..."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "搜尋職位、公司或聯絡人"
@@ -10384,6 +10455,7 @@ msgstr "搜尋..."
 
 #. Placeholder in command palette input on nested pages
 #: src/features/command-palette/content.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
 msgstr "搜尋…"
 
@@ -10425,12 +10497,9 @@ msgstr "章節標題"
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/parser-view.tsx
+#: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
 msgstr "各部分"
-
-#: src/features/resume/editor/write/write-panel.tsx
-msgid "Sections · print order"
-msgstr "章節·列印順序"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
@@ -10473,6 +10542,10 @@ msgstr "選擇..."
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "所選文件"
+
+#: src/routes/builder/$resumeId/-components/editor-shell.tsx
+msgid "Selection"
+msgstr ""
 
 #: src/features/homepage/footer.tsx
 msgid "Self-hosting"
@@ -10614,7 +10687,6 @@ msgstr "設定您的驗證器應用程式"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "設定"
@@ -10684,8 +10756,12 @@ msgid "Short and polite, for the recruiter"
 msgstr "簡短而禮貌，適合招募人員"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Short link and domain"
-msgstr "短網址與網域"
+msgid "Short link"
+msgstr ""
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Short Link and Domain"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -10781,6 +10857,10 @@ msgstr "顯示模板"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "再次向他們展示"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Show up. Apply. Repeat."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
@@ -10978,6 +11058,10 @@ msgstr "斯洛維尼亞語"
 #: src/features/applications/components/insights-view.tsx
 msgid "Small numbers, but worth noticing."
 msgstr "數字雖小，但值得注意。"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Small steps, every day, add up."
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
@@ -11913,6 +11997,10 @@ msgstr "履歷原樣"
 msgid "The review couldn't finish. Try again."
 msgstr "審核無法完成。再試一次。"
 
+#: src/components/layout/loading-screen.tsx
+msgid "The right role is out there."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr "同一行文字在每一頁都重複出現。"
@@ -12563,6 +12651,7 @@ msgid "typed"
 msgstr "文字"
 
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Typography"
 msgstr "字體樣式"
 
@@ -12788,10 +12877,6 @@ msgstr "最多使用 64 個字元。"
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Use between 6 and 64 characters."
 msgstr "請使用 6 至 64 個字元。"
-
-#: src/components/input/color-picker.tsx
-msgid "Use color {color}"
-msgstr "使用顏色 {color}"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
@@ -13104,8 +13189,8 @@ msgid "Web access"
 msgstr "網路存取"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Web page"
-msgstr "網頁"
+msgid "Web Page"
+msgstr ""
 
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Web page preview"
@@ -13576,6 +13661,10 @@ msgstr "您還沒有可以複製的簡歷。首先匯入或建立一份簡歷，
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "您先前忘記過這項，所以沒有再次儲存。"
 
+#: src/components/layout/loading-screen.tsx
+msgid "You only need one yes."
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "You partnered with engineering. How you led the work isn’t described yet."
 msgstr "您與工程團隊合作。您如何主導這項工作尚未描述。"
@@ -13772,10 +13861,6 @@ msgstr "您的頁邊界非常窄。"
 msgid "your message"
 msgstr "您的訊息"
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Your name"
-msgstr "你的名字"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "您的姓名和聯絡方式來自履歷。"
@@ -13791,6 +13876,10 @@ msgstr "您的履歷上的名字發生了變化。這封信也更新了。"
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "你的名字不見了"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Your next opportunity is already looking for you."
+msgstr ""
 
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
@@ -13836,10 +13925,6 @@ msgstr "您的條件"
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "your resume"
 msgstr "你的履歷"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Your resume as a web page"
-msgstr "以網頁呈現您的履歷"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your resume has a photo"
@@ -13890,6 +13975,10 @@ msgstr "您的故事"
 msgid "Your story couldn't be loaded."
 msgstr "無法載入您的故事。"
 
+#: src/components/layout/loading-screen.tsx
+msgid "Your story is worth telling well."
+msgstr ""
+
 #: src/features/homepage/sections.tsx
 msgid "Your turn"
 msgstr "輪到你了"
@@ -13915,6 +14004,7 @@ msgstr "您的"
 msgid "Yours · {0}"
 msgstr "您的履歷 · {0}"
 
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "飛漲"

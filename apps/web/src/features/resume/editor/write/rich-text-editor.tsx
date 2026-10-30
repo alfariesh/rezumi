@@ -42,9 +42,16 @@ function RichTextPreview({
 	const editable = !disabled && !readOnlyTable;
 
 	return (
-		<div className={cn("rounded-lg border border-line-2 bg-raised", disabled && "bg-sunken", className)}>
+		// Matches the loaded editor's frame: a secondary HeroUI field.
+		<div
+			className={cn(
+				"rounded-field bg-background text-field-foreground",
+				disabled ? "opacity-(--disabled-opacity)" : "hover:bg-default",
+				className,
+			)}
+		>
 			{readOnlyTable && (
-				<p role="status" className="border-b border-line px-3 py-2 text-xs text-ink-2">
+				<p role="status" className="border-b border-separator px-3 py-2 text-xs text-muted">
 					<Trans>
 						Original table formatting is preserved. This content is read-only because it cannot be edited safely.
 					</Trans>

@@ -2,11 +2,12 @@ import type { Resume } from "@/features/resume/builder/draft";
 import type { ExportFormat } from "@/features/resume/export/use-resume-export";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, Checkbox, Chip, Radio, RadioGroup, Spinner } from "@heroui/react";
+import { RadioButtonGroup } from "@heroui-pro/react";
+import { Button, Checkbox, Chip, Description, InputGroup, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useId, useState } from "react";
+import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
@@ -77,43 +78,45 @@ type FormatRadioGroupProps<Id extends string> = {
 	onChange: (value: Id) => void;
 };
 
-/** Format radio cards: icon, name, extension and when to use it. PDF is marked "Best for applying". */
+/** Format rows: icon, name, extension and when to use it. PDF is marked "Best for applying". */
 export function FormatRadioGroup<Id extends string>({ formats, value, onChange }: FormatRadioGroupProps<Id>) {
 	return (
-		<RadioGroup
+		<RadioButtonGroup
+			variant="secondary"
 			aria-label={t`Format`}
 			value={value}
 			onChange={(next) => onChange(next as Id)}
 			// Picking a format usually comes next: start loading the DOCX and ODT builders.
 			onPointerEnter={preloadDocumentExport}
 			onFocus={preloadDocumentExport}
-			className="grid gap-1.5"
+			className="flex-col gap-2"
 		>
 			{formats.map((option) => (
-				<Radio key={option.id} value={option.id} isDisabled={Boolean(option.disabled)} className="mt-0!">
-					<Radio.Content className="group/format flex w-full cursor-pointer items-start gap-3 rounded-2xl border border-border p-3 text-start transition-colors data-[selected=true]:border-accent data-[selected=true]:bg-accent-soft">
-						<span className="grid size-9 shrink-0 place-items-center rounded-xl bg-default text-muted">
-							<Icon name={option.icon} size={22} />
+				<RadioButtonGroup.Item
+					key={option.id}
+					value={option.id}
+					isDisabled={Boolean(option.disabled)}
+					className="flex-row items-start gap-3 px-4 py-3"
+				>
+					<RadioButtonGroup.ItemIcon className="grid size-9 place-items-center rounded-xl bg-default text-muted">
+						<Icon name={option.icon} size={20} />
+					</RadioButtonGroup.ItemIcon>
+					<RadioButtonGroup.ItemContent className="flex-1 gap-0.5 pe-6">
+						<span className="flex flex-wrap items-center gap-2">
+							<Label className="text-sm font-semibold">{option.label}</Label>
+							<span className="font-mono text-xs text-muted">{option.extension}</span>
+							{option.id === "pdf" && (
+								<Chip size="sm" color="accent" variant="soft">
+									<Trans>Best for applying</Trans>
+								</Chip>
+							)}
 						</span>
-						<span className="grid min-w-0 flex-1 gap-0.5">
-							<span className="flex flex-wrap items-center gap-2">
-								<span className="text-sm font-semibold">{option.label}</span>
-								<span className="font-mono text-[11px] font-medium text-muted">{option.extension}</span>
-								{option.id === "pdf" && (
-									<Chip size="sm" color="accent" variant="soft">
-										<Trans>Best for applying</Trans>
-									</Chip>
-								)}
-							</span>
-							<span className="text-[13px] leading-[18px] text-muted">{option.description}</span>
-						</span>
-						<Radio.Control className="mt-0.5">
-							<Radio.Indicator />
-						</Radio.Control>
-					</Radio.Content>
-				</Radio>
+						<Description>{option.description}</Description>
+					</RadioButtonGroup.ItemContent>
+					<RadioButtonGroup.Indicator />
+				</RadioButtonGroup.Item>
 			))}
-		</RadioGroup>
+		</RadioButtonGroup>
 	);
 }
 
@@ -121,28 +124,22 @@ type FileNameFieldProps = { value: string; extension: string; hint: ReactNode; o
 
 /** The file name recruiters see, with the extension shown after it. Characters file systems reject are dropped. */
 export function FileNameField({ value, extension, hint, onChange }: FileNameFieldProps) {
-	const id = useId();
-
 	return (
-		<div className="grid gap-1.5">
-			<label htmlFor={id} className="text-xs font-medium text-ink-2">
+		<TextField
+			variant="secondary"
+			value={value}
+			onChange={(next) => onChange(sanitizeFileName(next))}
+			className="gap-1.5"
+		>
+			<Label>
 				<Trans>File name</Trans>
-			</label>
-			<div className="flex h-[38px] items-center overflow-hidden rounded-lg border border-line-2 bg-raised focus-within:border-accent focus-within:ring-3 focus-within:ring-accent-soft">
-				<input
-					id={id}
-					value={value}
-					spellCheck={false}
-					aria-describedby={`${id}-hint`}
-					onChange={(event) => onChange(sanitizeFileName(event.target.value))}
-					className="h-full min-w-0 flex-1 bg-transparent ps-2.5 font-mono text-[13px] font-medium text-ink outline-none"
-				/>
-				<span className="px-2.5 font-mono text-[13px] font-medium text-ink-3">{extension}</span>
-			</div>
-			<span id={`${id}-hint`} className="text-xs text-ink-3">
-				{hint}
-			</span>
-		</div>
+			</Label>
+			<InputGroup variant="secondary" fullWidth>
+				<InputGroup.Input spellCheck={false} className="font-mono text-[13px]" />
+				<InputGroup.Suffix className="font-mono text-[13px] text-muted">{extension}</InputGroup.Suffix>
+			</InputGroup>
+			<Description>{hint}</Description>
+		</TextField>
 	);
 }
 
@@ -166,7 +163,7 @@ export function DownloadActions({ state, label, onDownload, onDownloadPdf }: Dow
 			{state === "error" && (
 				<div
 					role="alert"
-					className="flex flex-wrap items-start gap-2.5 rounded-lg bg-danger-soft px-3 py-2.5 text-[13px] leading-[19px] text-danger-text"
+					className="flex flex-wrap items-start gap-2.5 rounded-xl bg-danger-soft px-3 py-2.5 text-sm text-danger"
 				>
 					<Icon name="warning-circle" size={20} />
 					<span className="min-w-0 flex-1">
@@ -180,12 +177,7 @@ export function DownloadActions({ state, label, onDownload, onDownloadPdf }: Dow
 				</div>
 			)}
 
-			<Button
-				className="h-11 gap-2 text-[15px]"
-				aria-busy={state === "busy"}
-				isDisabled={state === "busy"}
-				onPress={onDownload}
-			>
+			<Button size="lg" fullWidth aria-busy={state === "busy"} isDisabled={state === "busy"} onPress={onDownload}>
 				{state === "busy" ? (
 					<>
 						<Spinner size="sm" color="current" aria-hidden />
@@ -293,15 +285,20 @@ export function DownloadTab({ onReview }: DownloadTabProps) {
 			)}
 
 			{issues > 0 && (
-				<div className="flex gap-2.5 rounded-lg bg-warn-soft px-3 py-2.5 text-[13px] leading-[19px] text-warn-text">
-					<Icon name="list-checks" size={20} />
+				<div className="flex gap-2.5 rounded-xl bg-warning-soft px-3 py-2.5 text-sm text-warning-soft-foreground">
+					<Icon name="list-checks" size={20} className="shrink-0 text-warning" />
 					<span>
 						<Plural
 							value={issues}
 							one="Check has # thing to review. You can still download."
 							other="Check has # things to review. You can still download."
 						/>{" "}
-						<button type="button" className="font-medium underline underline-offset-2" onClick={onReview}>
+						{/* An inline action inside the sentence: a HeroUI Button would break the line. */}
+						<button
+							type="button"
+							className="cursor-(--cursor-interactive) font-medium underline underline-offset-2"
+							onClick={onReview}
+						>
 							<Trans>Review</Trans>
 						</button>
 					</span>

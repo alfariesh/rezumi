@@ -1,8 +1,9 @@
 import type z from "zod";
-import { InputGroup, Switch } from "@heroui/react";
+import { InputGroup } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { pageSchema } from "@rezumi/schema/resume/data";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { SwitchRow } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -65,7 +66,7 @@ function PageSectionForm() {
 					{(field) => (
 						<FormItem hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}>
 							<FormLabel>{label}</FormLabel>
-							<InputGroup fullWidth>
+							<InputGroup variant="secondary" fullWidth className="tabular-nums">
 								<FormControl
 									render={
 										<NumberInput
@@ -93,30 +94,16 @@ function PageSectionForm() {
 			{pageSwitchFields.map(({ name, label }) => (
 				<form.Field key={name} name={name}>
 					{(field) => (
-						<FormItem
-							className="col-span-full flex items-center gap-x-3 py-1"
-							hasError={field.state.meta.isTouched && field.state.meta.errors.length > 0}
-						>
-							<FormControl
-								render={
-									<Switch
-										// Labels describe the ON state; the stored flags are hide*, so the switch is inverted.
-										isSelected={!field.state.value}
-										onChange={(checked) => {
-											field.handleChange(!checked);
-											handleAutoSave();
-										}}
-									>
-										<Switch.Content>
-											<Switch.Control>
-												<Switch.Thumb />
-											</Switch.Control>
-										</Switch.Content>
-									</Switch>
-								}
-							/>
-							<FormLabel>{label}</FormLabel>
-						</FormItem>
+						<SwitchRow
+							className="col-span-full"
+							label={label}
+							// Labels describe the ON state; the stored flags are hide*, so the switch is inverted.
+							isSelected={!field.state.value}
+							onChange={(checked) => {
+								field.handleChange(!checked);
+								handleAutoSave();
+							}}
+						/>
 					)}
 				</form.Field>
 			))}

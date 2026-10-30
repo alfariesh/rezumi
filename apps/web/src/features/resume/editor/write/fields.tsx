@@ -1,11 +1,11 @@
 import type { Entry } from "./model";
 import type { Website } from "@rezumi/schema/resume/data";
 import type { ComponentProps, ReactNode } from "react";
-import { Checkbox, Disclosure, Input } from "@heroui/react";
+import { Checkbox, Description, Disclosure, FieldError, Input, Label, TextField as FieldRoot } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useCallback, useState } from "react";
-import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
+import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { cn } from "@rezumi/utils/style";
 import { findEntry } from "./model";
 import { URLInput } from "@/components/input/url-input";
@@ -91,26 +91,27 @@ export function TextField({
 	const error = touched ? validate?.(value) : undefined;
 
 	return (
-		<FormItem hasError={Boolean(error)} className={cn(wide && "col-span-full")}>
-			<FormLabel>{label}</FormLabel>
-			<FormControl
-				render={
-					<Input
-						fullWidth
-						value={value}
-						onChange={(event) => onChange(event.target.value)}
-						onBlur={(event) => {
-							setTouched(true);
-							onBlur?.(event);
-						}}
-						className={cn(className)}
-						{...(props as ComponentProps<typeof Input>)}
-					/>
-				}
+		<FieldRoot
+			variant="secondary"
+			value={value}
+			onChange={onChange}
+			isInvalid={Boolean(error)}
+			validationBehavior="aria"
+			className={cn("gap-1.5", wide && "col-span-full")}
+		>
+			<Label>{label}</Label>
+			<Input
+				fullWidth
+				onBlur={(event) => {
+					setTouched(true);
+					onBlur?.(event);
+				}}
+				{...(className && { className })}
+				{...(props as ComponentProps<typeof Input>)}
 			/>
-			<FormMessage errors={error ? [error] : []} />
-			{hint && !error && <FormDescription>{hint}</FormDescription>}
-		</FormItem>
+			<FieldError>{error}</FieldError>
+			{hint && !error && <Description>{hint}</Description>}
+		</FieldRoot>
 	);
 }
 
@@ -133,7 +134,13 @@ export function WebsiteField({ label, value, onChange, allowInlineLink = true }:
 				<FormLabel>{label ?? <Trans>Link</Trans>}</FormLabel>
 				<FormControl
 					render={
-						<URLInput value={value} onChange={onChange} hideLabelButton={inline} onBlur={() => setTouched(true)} />
+						<URLInput
+							variant="secondary"
+							value={value}
+							onChange={onChange}
+							hideLabelButton={inline}
+							onBlur={() => setTouched(true)}
+						/>
 					}
 				/>
 				<FormMessage errors={error ? [error] : []} />
@@ -166,19 +173,14 @@ export function MoreOptions({ children }: MoreOptionsProps) {
 	return (
 		<Disclosure isExpanded={open} onExpandedChange={setOpen} className="col-span-full">
 			<Disclosure.Heading>
-				<Disclosure.Trigger className="flex w-fit cursor-pointer items-center gap-1 rounded-sm text-[13px] font-medium text-ink-2 transition-colors duration-quick hover:text-ink">
-					<span
-						aria-hidden="true"
-						className={cn("transition-transform duration-standard ease-enter", open && "rotate-90")}
-					>
-						›
-					</span>
+				<Disclosure.Trigger className="flex w-fit cursor-(--cursor-interactive) items-center gap-1 rounded-sm text-sm font-medium text-muted transition-colors duration-quick outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-focus">
 					<Trans>More options</Trans>
+					<Disclosure.Indicator />
 				</Disclosure.Trigger>
 			</Disclosure.Heading>
 			<Disclosure.Content>
 				<Disclosure.Body>
-					<div className="grid gap-y-2.5 pt-3">{children}</div>
+					<div className="fields-on-background grid gap-y-2.5 pt-3">{children}</div>
 				</Disclosure.Body>
 			</Disclosure.Content>
 		</Disclosure>

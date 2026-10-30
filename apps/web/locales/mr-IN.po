@@ -1046,6 +1046,7 @@ msgid "A web address is written without https://."
 msgstr "वेब पत्ता https:// शिवाय लिहिला आहे."
 
 #: src/features/homepage/footer.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "या ॲपबद्दल"
 
@@ -1588,6 +1589,10 @@ msgstr "ENCRYPTION_SECRET सेट होईपर्यंत AI प्रद�
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "AI प्रदाते लोड केले जाऊ शकले नाहीत. पुन्हा प्रयत्न करण्यासाठी रीलोड करा."
+
+#: src/features/resume/editor/check/writing-tab.tsx
+msgid "AI review"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Albanian"
@@ -2244,7 +2249,6 @@ msgstr "मूळ पगार"
 msgid "Base URL"
 msgstr "बेस यूआरएल"
 
-#: src/features/resume/editor/write/basics-card.tsx
 #: src/libs/resume/section.tsx
 msgid "Basics"
 msgstr "मूलभूत"
@@ -2858,6 +2862,10 @@ msgstr "कोड"
 msgid "Color"
 msgstr "रंग"
 
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Colors and levels"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Column {header} goes to"
 msgstr "स्तंभ {header} वर जातो"
@@ -3129,6 +3137,10 @@ msgstr "पुढे"
 msgid "Continue as guest"
 msgstr "अतिथी म्हणून सुरू ठेवा"
 
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Contrast on white:"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Contribution clear"
 msgstr "योगदान स्पष्ट"
@@ -3173,7 +3185,6 @@ msgid "Copied"
 msgstr "कॉपी केले"
 
 #: src/features/career/coach-chat.tsx
-#: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/mcp.tsx
@@ -3210,6 +3221,7 @@ msgid "Copy it now. For your security, it won't be shown again."
 msgstr "आता कॉपी करा. तुमच्या सुरक्षिततेसाठी, ते पुन्हा दाखवले जाणार नाही."
 
 #: src/features/homepage/share.tsx
+#: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "लिंक कॉपी करा"
 
@@ -3856,6 +3868,7 @@ msgstr "फ्रेम भरा"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "कव्हर लेटर"
 
@@ -3979,8 +3992,16 @@ msgid "Custom"
 msgstr "सानुकूल"
 
 #: src/features/resume/editor/design/style-groups.tsx
+msgid "Custom color"
+msgstr ""
+
+#: src/features/resume/editor/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "सानुकूल रंग (हेक्स)"
+
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Custom CSS"
+msgstr ""
 
 #. Authentication provider display name in account settings
 #: src/features/settings/account/auth-hooks.ts
@@ -4360,6 +4381,10 @@ msgstr "तुमचे {providerName} खाते डिस्कनेक्�
 msgid "Dismiss"
 msgstr "बरखास्त करा"
 
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "DNS records"
+msgstr ""
+
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "दस्तऐवजीकरण"
@@ -4576,7 +4601,7 @@ msgstr "मसुदा तयार करणे थांबवले. पृ�
 msgid "Drafting…"
 msgstr "मसुदा तयार करत आहे…"
 
-#: src/features/resume/editor/write/write-panel.tsx
+#: src/features/resume/editor/write/outline.tsx
 msgid "drag · ⌥↑↓"
 msgstr "ड्रॅग करा · ⌥↑↓"
 
@@ -4771,8 +4796,7 @@ msgstr "संपादन कीवर्ड..."
 msgid "Editing session"
 msgstr "संपादन सत्र"
 
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
 msgid "Editor mode"
 msgstr "संपादक मोड"
 
@@ -4959,6 +4983,10 @@ msgstr "दर {days} दिवसांनी {clock} वाजता · पु
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "दर 3 दिवसांनी"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Every application is a step closer."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
@@ -5574,6 +5602,10 @@ msgstr "डॅशबोर्डला जा"
 msgid "Go to…"
 msgstr "… वर जा"
 
+#: src/components/layout/loading-screen.tsx
+msgid "Good things take time. Keep going."
+msgstr ""
+
 #. Authentication provider display name in account settings
 #. Brand name label for Google social sign-in button
 #: src/features/auth/components/social-auth.tsx
@@ -5672,6 +5704,10 @@ msgstr "मदत आणि दस्तऐवज"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "एखादी कामगिरी परिस्थिती, कार्य, कृती, परिणाम आणि चिंतन अशा कथेत बदलण्यासाठी मला मदत करा."
 
+#: src/components/input/color-picker.tsx
+msgid "Hex color"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
 msgstr "नमस्कार Alex, निश्चित करताना आनंद होत आहे: तुम्ही आज {time} वाजता आमच्या डिझाइन टीमला व्हिडिओद्वारे भेटाल. तुम्ही तुमच्या ऑनबोर्डिंग कामाचे एखादे उदाहरण आणू शकाल का?"
@@ -5685,10 +5721,6 @@ msgstr "लपवलेले"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "नवीन भूमिकांमधून लपवले"
-
-#: src/features/resume/editor/write/outline.tsx
-msgid "Hidden sections"
-msgstr "लपवलेले विभाग"
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
@@ -5819,6 +5851,11 @@ msgstr "फाइल कशी दाखवायची"
 #: src/features/assistant/assistant-panel.tsx
 msgid "How well do I fit this role?"
 msgstr "मी या भूमिकेत कितपत फिट आहे?"
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Hue"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hungarian"
@@ -6000,6 +6037,10 @@ msgstr "अनुमानित"
 msgid "Inline"
 msgstr "इनलाइन"
 
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Inline formatting"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "अंतर्दृष्टी"
@@ -6151,6 +6192,7 @@ msgid "Issuer"
 msgstr "जारीकर्ता"
 
 #: src/features/resume/editor/check/check-panel.tsx
+#: src/features/resume/editor/check/page-layer.tsx
 msgid "Issues"
 msgstr "मुद्दे"
 
@@ -6481,6 +6523,7 @@ msgstr "मजकूर आडवा मांडा. फिरवलेले �
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Layout"
 msgstr "मांडणी"
 
@@ -6785,6 +6828,10 @@ msgstr "तुम्ही वापरत असलेली साधने �
 #: src/features/career/workspace/practise.tsx
 msgid "Listening… Stop when you're done."
 msgstr "ऐकत आहे… पूर्ण झाल्यावर थांबवा."
+
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Lists"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Lithuanian"
@@ -7094,10 +7141,6 @@ msgstr "या जॉब पोस्टिंगशी जुळवा"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "रेझ्युमे ({summary}) शी जुळते."
-
-#: src/routes/builder/letter/-components/design-panel.tsx
-msgid "Matching the resume"
-msgstr "रेझ्युमे जुळत आहे"
 
 #: src/features/career/shared.tsx
 msgid "Matching your facts"
@@ -7936,6 +7979,7 @@ msgstr "माहिती"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/application-notes.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/resume/editor/check/writing-tab.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/notes.tsx
@@ -8163,6 +8207,10 @@ msgstr "फक्त तुम्ही, जोपर्यंत तुम्�
 msgid "Onsite"
 msgstr "ऑनसाइट"
 
+#: src/components/input/color-picker.tsx
+msgid "Opacity"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
@@ -8374,14 +8422,13 @@ msgstr "पान"
 
 #. Layout editor page label with 1-based page number
 #. placeholder {0}: pageIndex + 1
-#. placeholder {0}: row.page + 1
 #. placeholder {0}: targetPageIndex + 1
 #: src/features/resume/editor/write/entry-card.tsx
-#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Page {0}"
 msgstr "पान {0}"
 
+#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Page {pageNumber}"
@@ -8711,6 +8758,7 @@ msgstr "जॉब पोस्टिंग"
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/homepage/tailor.tsx
+#: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "जॉब पोस्टिंग"
 
@@ -8721,6 +8769,10 @@ msgstr "लिंक केलेल्या नोकरीच्या अर
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Posting source"
 msgstr "जॉब पोस्टिंग स्त्रोत"
+
+#: src/features/resume/editor/check/job-match.tsx
+msgid "Posting terms"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting terms in your resume"
@@ -9016,6 +9068,10 @@ msgstr "सार्वजनिक"
 msgid "Public link"
 msgstr "सार्वजनिक दुवा"
 
+#: src/features/resume/share/share-panel.tsx
+msgid "Public Link"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Public profile links are optional and only used if Web research is on."
 msgstr "सार्वजनिक प्रोफाईल लिंक ऐच्छिक आहेत आणि वेब संशोधन चालू असल्यासच वापरल्या जातात."
@@ -9047,6 +9103,10 @@ msgstr "व्ह्यूज आणि डाउनलोड मोजण्य
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "हा रेझ्युमे तुमच्या शॉर्ट लिंक आणि कस्टम डोमेनवर उघडण्यासाठी तो प्रकाशित करा."
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Publish Your Resume"
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Publisher"
@@ -9235,6 +9295,7 @@ msgid "Read, write and delete"
 msgstr "वाचा, लिहा आणि हटवा"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/resume/editor/check/check-panel.tsx
 msgid "Readability"
 msgstr "वाचनीयता"
 
@@ -9451,6 +9512,10 @@ msgstr "नकार द्या"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Rejected"
 msgstr "नाकारले"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Rejection is just redirection."
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Reload"
@@ -9753,6 +9818,7 @@ msgstr "रेझ्युमे"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "रेझ्युमे"
@@ -9793,6 +9859,10 @@ msgstr "रेझ्युमे तपशील"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Resume file"
 msgstr "रेझ्युमे फाइल"
+
+#: src/routes/builder/letter/-components/design-panel.tsx
+msgid "Resume Match"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
@@ -10043,6 +10113,11 @@ msgstr "तुम्ही तेच. पुन्हा पुन्हा स�
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "नमुना सारांश जोडला. ते कधीही हटवा."
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Saturation and brightness"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -10346,10 +10421,6 @@ msgstr "अर्ज आणि असिस्टंटमधून शोधा
 msgid "Search job postings"
 msgstr "जॉब पोस्टिंग शोधा"
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Search or run…"
-msgstr "शोधा किंवा चालवा..."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "भूमिका, कंपनी किंवा संपर्क शोधा"
@@ -10384,6 +10455,7 @@ msgstr "शोधा..."
 
 #. Placeholder in command palette input on nested pages
 #: src/features/command-palette/content.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
 msgstr "शोध…"
 
@@ -10425,12 +10497,9 @@ msgstr "विभागाचे शीर्षक"
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/parser-view.tsx
+#: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
 msgstr "विभाग"
-
-#: src/features/resume/editor/write/write-panel.tsx
-msgid "Sections · print order"
-msgstr "विभाग · प्रिंट ऑर्डर"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
@@ -10473,6 +10542,10 @@ msgstr "निवडा..."
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "निवडलेली कागदपत्रे"
+
+#: src/routes/builder/$resumeId/-components/editor-shell.tsx
+msgid "Selection"
+msgstr ""
 
 #: src/features/homepage/footer.tsx
 msgid "Self-hosting"
@@ -10614,7 +10687,6 @@ msgstr "तुमचे ऑथेंटिकेटर अॅप सेट क�
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "सेटिंग"
@@ -10684,8 +10756,12 @@ msgid "Short and polite, for the recruiter"
 msgstr "लहान आणि विनम्र, भर्तीसाठी"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Short link and domain"
-msgstr "शॉर्ट लिंक आणि डोमेन"
+msgid "Short link"
+msgstr ""
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Short Link and Domain"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -10781,6 +10857,10 @@ msgstr "टेम्पलेट्स दाखवा"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "त्यांना पुन्हा दाखवा"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Show up. Apply. Repeat."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
@@ -10978,6 +11058,10 @@ msgstr "स्लोव्हेनियन"
 #: src/features/applications/components/insights-view.tsx
 msgid "Small numbers, but worth noticing."
 msgstr "लहान संख्या, परंतु लक्षात घेण्यासारखे आहे."
+
+#: src/components/layout/loading-screen.tsx
+msgid "Small steps, every day, add up."
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
@@ -11913,6 +11997,10 @@ msgstr "रेझ्युमे जसा आहे तसा"
 msgid "The review couldn't finish. Try again."
 msgstr "पुनरावलोकन पूर्ण होऊ शकले नाही. पुन्हा प्रयत्न करा."
 
+#: src/components/layout/loading-screen.tsx
+msgid "The right role is out there."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr "तीच ओळ प्रत्येक पानावर पुनरावृत्त होते."
@@ -12563,6 +12651,7 @@ msgid "typed"
 msgstr "टाइप केलेले"
 
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Typography"
 msgstr "टायपोग्राफी"
 
@@ -12788,10 +12877,6 @@ msgstr "जास्तीत जास्त 64 अक्षरे वापर
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Use between 6 and 64 characters."
 msgstr "६ ते ६४ अक्षरांदरम्यान वापरा."
-
-#: src/components/input/color-picker.tsx
-msgid "Use color {color}"
-msgstr "रंग वापरा {color}"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
@@ -13104,8 +13189,8 @@ msgid "Web access"
 msgstr "वेब प्रवेश"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Web page"
-msgstr "वेब पेज"
+msgid "Web Page"
+msgstr ""
 
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Web page preview"
@@ -13576,6 +13661,10 @@ msgstr "तुमच्याकडे कॉपी करण्यासाठ�
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "तुम्ही हे आधी विसरायला सांगितले होते, म्हणून ते पुन्हा जतन केले नाही."
 
+#: src/components/layout/loading-screen.tsx
+msgid "You only need one yes."
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "You partnered with engineering. How you led the work isn’t described yet."
 msgstr "तुम्ही इंजिनिअरिंगसोबत भागीदारी केली. तुम्ही कामाचे नेतृत्व कसे केले हे अद्याप वर्णन केलेले नाही."
@@ -13772,10 +13861,6 @@ msgstr "तुमचे मार्जिन्स खूप अरुंद �
 msgid "your message"
 msgstr "तुमचा संदेश"
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Your name"
-msgstr "तुमचे नाव"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "तुमचे नाव आणि संपर्क तपशील रेझ्युमेमधून येतात."
@@ -13791,6 +13876,10 @@ msgstr "रेझ्युमेवर तुमचे नाव बदलले
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "तुमचे नाव नाही"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Your next opportunity is already looking for you."
+msgstr ""
 
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
@@ -13836,10 +13925,6 @@ msgstr "तुमच्या आवश्यकता"
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "your resume"
 msgstr "तुमचा रेझ्युमे"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Your resume as a web page"
-msgstr "वेब पेज म्हणून तुमचा रेझ्युमे"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your resume has a photo"
@@ -13890,6 +13975,10 @@ msgstr "तुमच्या कथा"
 msgid "Your story couldn't be loaded."
 msgstr "तुमची कथा लोड करता आली नाही."
 
+#: src/components/layout/loading-screen.tsx
+msgid "Your story is worth telling well."
+msgstr ""
+
 #: src/features/homepage/sections.tsx
 msgid "Your turn"
 msgstr "तुमची पाळी"
@@ -13915,6 +14004,7 @@ msgstr "तुमचे"
 msgid "Yours · {0}"
 msgstr "तुमचे · {0}"
 
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "झूम"

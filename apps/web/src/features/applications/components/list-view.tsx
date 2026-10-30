@@ -33,6 +33,11 @@ const sortValue: Record<SortKey, (application: ApplicationSummary) => string | n
 	updated: (application) => new Date(application.updatedAt).getTime(),
 };
 
+// Header and cells follow the Documents table: a filled header bar with rounded ends, 16px/12px cell padding and a
+// faint divider under every row.
+const TH = "bg-surface-secondary px-4 py-2.5 text-start text-xs font-medium text-muted";
+const ROW_DIVIDER = "[&>td]:border-b [&>td]:border-separator-tertiary/25";
+
 const compareValues = (a: string | number, b: string | number) =>
 	typeof a === "string" && typeof b === "string" ? a.localeCompare(b) : Number(a) - Number(b);
 
@@ -111,12 +116,12 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 		<th
 			scope="col"
 			aria-sort={sort.key === key ? (sort.direction === "asc" ? "ascending" : "descending") : undefined}
-			className={cn("px-2 text-start font-medium", className)}
+			className={cn(TH, className)}
 		>
 			<button
 				type="button"
 				onClick={() => sortBy(key)}
-				className="inline-flex h-9 items-center gap-1 rounded-lg transition-colors hover:text-foreground"
+				className="inline-flex items-center gap-1 rounded-md transition-colors hover:text-foreground"
 			>
 				{label}
 				{sort.key === key && <Icon name={sort.direction === "asc" ? "arrow-up" : "arrow-down"} size={14} />}
@@ -143,24 +148,24 @@ export function ApplicationList({ applications, showClosed, selectedId, onOpen }
 
 	return (
 		<div className="grid min-w-0 content-start gap-3">
-			<table className={cn("w-full border-collapse text-sm", !phone && "table-fixed")}>
+			<table className={cn("w-full border-separate border-spacing-0 text-sm", !phone && "table-fixed")}>
 				{!phone && (
 					<thead>
-						<tr className="border-b border-separator text-xs text-muted">
-							<th scope="col" className="w-10 ps-3">
+						<tr>
+							<th scope="col" className={cn(TH, "w-11 rounded-s-2xl")}>
 								<span className="sr-only">
 									<Trans>Select</Trans>
 								</span>
 							</th>
 							{header("role", t`Role`)}
 							{header("next", t`Next step`, "w-1/4")}
-							<th scope="col" className="w-32 px-2 text-start font-medium max-xl:hidden">
+							<th scope="col" className={cn(TH, "w-32 max-xl:hidden")}>
 								<Trans>Stage</Trans>
 							</th>
-							<th scope="col" className="w-20 px-2 text-start font-medium">
+							{header("updated", t`Updated`, "w-32 max-lg:hidden")}
+							<th scope="col" className={cn(TH, "w-24 rounded-e-2xl")}>
 								<Trans>Sent</Trans>
 							</th>
-							{header("updated", t`Updated`, "w-28 max-lg:hidden")}
 						</tr>
 					</thead>
 				)}
@@ -268,7 +273,7 @@ const ApplicationRow = memo(function ApplicationRow({
 			<tr
 				data-application-id={application.id}
 				onClick={() => onOpen(application)}
-				className={cn("cursor-pointer border-b border-separator", selected && "bg-accent-soft")}
+				className={cn("cursor-pointer", ROW_DIVIDER, selected && "bg-accent-soft")}
 			>
 				<td className="py-2.5 ps-1">
 					<div className="flex items-center gap-3">
@@ -286,11 +291,12 @@ const ApplicationRow = memo(function ApplicationRow({
 			data-application-id={application.id}
 			onClick={() => onOpen(application)}
 			className={cn(
-				"cursor-pointer border-b border-separator transition-colors duration-quick hover:bg-default",
+				"cursor-pointer transition-colors duration-quick hover:bg-default",
+				ROW_DIVIDER,
 				selected && "bg-accent-soft",
 			)}
 		>
-			<td onClick={(event) => event.stopPropagation()} className="w-10 cursor-default ps-3">
+			<td onClick={(event) => event.stopPropagation()} className="w-11 cursor-default px-4">
 				<Checkbox
 					isSelected={checked}
 					onChange={() => onCheck(application.id)}
@@ -303,19 +309,19 @@ const ApplicationRow = memo(function ApplicationRow({
 					</Checkbox.Content>
 				</Checkbox>
 			</td>
-			<td className="py-2 pe-2">
+			<td className="px-4 py-2.5">
 				<div className="flex items-center gap-3">
 					{initial}
 					{openButton}
 				</div>
 			</td>
-			<td className="px-2">
+			<td className="px-4">
 				<span className={cn("flex items-center gap-1.5", tone)}>
 					<Icon name={next.icon} size={16} className="shrink-0" />
 					<span className="min-w-0 truncate">{next.title}</span>
 				</span>
 			</td>
-			<td className="px-2 max-xl:hidden">
+			<td className="px-4 max-xl:hidden">
 				<Chip size="sm" variant="soft" className="gap-1.5">
 					<span
 						aria-hidden="true"
@@ -325,7 +331,10 @@ const ApplicationRow = memo(function ApplicationRow({
 					{getStageLabel(application.status)}
 				</Chip>
 			</td>
-			<td className="px-2">
+			<td className="px-4 text-xs whitespace-nowrap text-muted max-lg:hidden">
+				{formatRelativeTime(application.updatedAt, i18n.locale)}
+			</td>
+			<td className="px-4">
 				{application.resumeId || application.coverLetterId ? (
 					<span className="flex items-center gap-1 text-muted">
 						{application.resumeId && <Icon name="file-text" size={18} aria-label={t`Resume`} />}
@@ -336,9 +345,6 @@ const ApplicationRow = memo(function ApplicationRow({
 						<Trans>None</Trans>
 					</span>
 				)}
-			</td>
-			<td className="px-2 text-xs whitespace-nowrap text-muted max-lg:hidden">
-				{formatRelativeTime(application.updatedAt, i18n.locale)}
 			</td>
 		</tr>
 	);

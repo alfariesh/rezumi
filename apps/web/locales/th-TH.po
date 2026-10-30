@@ -1046,6 +1046,7 @@ msgid "A web address is written without https://."
 msgstr "ที่อยู่เว็บเขียนโดยไม่มี https://"
 
 #: src/features/homepage/footer.tsx
+#: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "เกี่ยวกับแอพนี้"
 
@@ -1588,6 +1589,10 @@ msgstr "ผู้ให้บริการ AI จะไม่พร้อม�
 #: src/features/settings/ai/providers.tsx
 msgid "AI providers couldn't be loaded. Reload to try again."
 msgstr "ไม่สามารถโหลดผู้ให้บริการ AI ได้ โหลดซ้ำเพื่อลองอีกครั้ง"
+
+#: src/features/resume/editor/check/writing-tab.tsx
+msgid "AI review"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Albanian"
@@ -2244,7 +2249,6 @@ msgstr "เงินเดือนพื้นฐาน"
 msgid "Base URL"
 msgstr "URL พื้นฐาน"
 
-#: src/features/resume/editor/write/basics-card.tsx
 #: src/libs/resume/section.tsx
 msgid "Basics"
 msgstr "พื้นฐาน"
@@ -2858,6 +2862,10 @@ msgstr "โค้ด"
 msgid "Color"
 msgstr "สี"
 
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Colors and levels"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Column {header} goes to"
 msgstr "คอลัมน์ {header} ไปที่"
@@ -3129,6 +3137,10 @@ msgstr "ทำต่อ"
 msgid "Continue as guest"
 msgstr "ดำเนินการต่อในฐานะผู้เยี่ยมชม"
 
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Contrast on white:"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Contribution clear"
 msgstr "การมีส่วนร่วมชัดเจน"
@@ -3173,7 +3185,6 @@ msgid "Copied"
 msgstr "คัดลอกแล้ว"
 
 #: src/features/career/coach-chat.tsx
-#: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/mcp.tsx
@@ -3210,6 +3221,7 @@ msgid "Copy it now. For your security, it won't be shown again."
 msgstr "คัดลอกเลย เพื่อความปลอดภัยของคุณ มันจะไม่แสดงอีก"
 
 #: src/features/homepage/share.tsx
+#: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "คัดลอกลิงก์"
 
@@ -3856,6 +3868,7 @@ msgstr "เต็มกรอบ"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "จดหมายสมัครงาน"
 
@@ -3979,8 +3992,16 @@ msgid "Custom"
 msgstr "กำหนดเอง"
 
 #: src/features/resume/editor/design/style-groups.tsx
+msgid "Custom color"
+msgstr ""
+
+#: src/features/resume/editor/design/style-groups.tsx
 msgid "Custom color (hex)"
 msgstr "สีที่กำหนดเอง (ฐานสิบหก)"
+
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
+msgid "Custom CSS"
+msgstr ""
 
 #. Authentication provider display name in account settings
 #: src/features/settings/account/auth-hooks.ts
@@ -4360,6 +4381,10 @@ msgstr "กำลังยกเลิกการเชื่อมต่อบ
 msgid "Dismiss"
 msgstr "อนุญาตให้ออกไป"
 
+#: src/features/resume/share/dns-records-dialog.tsx
+msgid "DNS records"
+msgstr ""
+
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "เอกสาร"
@@ -4576,7 +4601,7 @@ msgstr "การร่างหยุดแล้ว ไม่มีอะไ�
 msgid "Drafting…"
 msgstr "กำลังร่าง…"
 
-#: src/features/resume/editor/write/write-panel.tsx
+#: src/features/resume/editor/write/outline.tsx
 msgid "drag · ⌥↑↓"
 msgstr "ลาก · ⌥↑↓"
 
@@ -4771,8 +4796,7 @@ msgstr "กำลังแก้ไขคำค้นหา..."
 msgid "Editing session"
 msgstr "เซสชันการแก้ไข"
 
-#: src/routes/builder/$resumeId/-components/editor-bar.tsx
-#: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/features/resume/editor/chrome/mode-switch.tsx
 msgid "Editor mode"
 msgstr "โหมดแก้ไข"
 
@@ -4959,6 +4983,10 @@ msgstr "ทุก {days} วัน เวลา {clock} · ครั้งถั
 #: src/features/career/schedule-sheet.tsx
 msgid "Every 3 days"
 msgstr "ทุก 3 วัน"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Every application is a step closer."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
@@ -5574,6 +5602,10 @@ msgstr "ไปที่แดชบอร์ด"
 msgid "Go to…"
 msgstr "ไปที่…"
 
+#: src/components/layout/loading-screen.tsx
+msgid "Good things take time. Keep going."
+msgstr ""
+
 #. Authentication provider display name in account settings
 #. Brand name label for Google social sign-in button
 #: src/features/auth/components/social-auth.tsx
@@ -5672,6 +5704,10 @@ msgstr "ความช่วยเหลือ & เอกสาร"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "ช่วยฉันเปลี่ยนความสำเร็จให้เป็นเรื่องราวแบบสถานการณ์ หน้าที่ การกระทำ ผลลัพธ์ และการสะท้อนคิด"
 
+#: src/components/input/color-picker.tsx
+msgid "Hex color"
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
 msgstr "สวัสดี Alex ขอยืนยันนัดหมาย: คุณจะได้พบทีมออกแบบของเราวันนี้เวลา {time} ผ่านวิดีโอ ช่วยนำตัวอย่างงานออนบอร์ดดิ้งของคุณมาด้วยได้ไหม?"
@@ -5685,10 +5721,6 @@ msgstr "ซ่อนไว้"
 #: src/features/career/today.tsx
 msgid "Hidden from New roles"
 msgstr "ซ่อนจากตำแหน่งงานใหม่แล้ว"
-
-#: src/features/resume/editor/write/outline.tsx
-msgid "Hidden sections"
-msgstr "ส่วนที่ซ่อนไว้"
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
@@ -5819,6 +5851,11 @@ msgstr "วิธีแสดงไฟล์"
 #: src/features/assistant/assistant-panel.tsx
 msgid "How well do I fit this role?"
 msgstr "ฉันเหมาะกับบทบาทนี้ดีแค่ไหน?"
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Hue"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Hungarian"
@@ -6000,6 +6037,10 @@ msgstr "อนุมาน"
 msgid "Inline"
 msgstr "แบบอินไลน์"
 
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Inline formatting"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Insights"
 msgstr "ข้อมูลเชิงลึก"
@@ -6151,6 +6192,7 @@ msgid "Issuer"
 msgstr "ออกโดย"
 
 #: src/features/resume/editor/check/check-panel.tsx
+#: src/features/resume/editor/check/page-layer.tsx
 msgid "Issues"
 msgstr "ปัญหา"
 
@@ -6481,6 +6523,7 @@ msgstr "จัดวางข้อความตามแนวนอน ข�
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Layout"
 msgstr "เค้าโครง"
 
@@ -6785,6 +6828,10 @@ msgstr "ระบุเครื่องมือและเทคโนโล
 #: src/features/career/workspace/practise.tsx
 msgid "Listening… Stop when you're done."
 msgstr "กำลังฟัง… กดหยุดเมื่อพูดจบ"
+
+#: src/features/resume/editor/write/rich-text-editor-field.tsx
+msgid "Lists"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Lithuanian"
@@ -7094,10 +7141,6 @@ msgstr "ตรงกับประกาศรับสมัครงานน
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Matches the resume ({summary})."
 msgstr "ตรงกับเรซูเม่ ({summary})"
-
-#: src/routes/builder/letter/-components/design-panel.tsx
-msgid "Matching the resume"
-msgstr "การจับคู่ประวัติย่อ"
 
 #: src/features/career/shared.tsx
 msgid "Matching your facts"
@@ -7936,6 +7979,7 @@ msgstr "ข้อมูล"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/application-notes.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/resume/editor/check/writing-tab.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/notes.tsx
@@ -8163,6 +8207,10 @@ msgstr "เพียงคุณเท่านั้นจนกว่าคุ
 msgid "Onsite"
 msgstr "ที่สำนักงาน"
 
+#: src/components/input/color-picker.tsx
+msgid "Opacity"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
@@ -8374,14 +8422,13 @@ msgstr "หน้า"
 
 #. Layout editor page label with 1-based page number
 #. placeholder {0}: pageIndex + 1
-#. placeholder {0}: row.page + 1
 #. placeholder {0}: targetPageIndex + 1
 #: src/features/resume/editor/write/entry-card.tsx
-#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Page {0}"
 msgstr "หน้า {0}"
 
+#: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Page {pageNumber}"
@@ -8711,6 +8758,7 @@ msgstr "ประกาศงาน"
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/homepage/tailor.tsx
+#: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "ประกาศรับสมัครงาน"
 
@@ -8721,6 +8769,10 @@ msgstr "ประกาศรับสมัครงานจากการส
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Posting source"
 msgstr "แหล่งประกาศรับสมัครงาน"
+
+#: src/features/resume/editor/check/job-match.tsx
+msgid "Posting terms"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting terms in your resume"
@@ -9016,6 +9068,10 @@ msgstr "สาธารณะ"
 msgid "Public link"
 msgstr "ลิงค์สาธารณะ"
 
+#: src/features/resume/share/share-panel.tsx
+msgid "Public Link"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Public profile links are optional and only used if Web research is on."
 msgstr "ลิงก์โปรไฟล์สาธารณะไม่บังคับ และจะใช้เฉพาะเมื่อเปิดการค้นคว้าบนเว็บ"
@@ -9047,6 +9103,10 @@ msgstr "เผยแพร่หน้าเว็บเพื่อนับย
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "เผยแพร่ประวัติย่อนี้เพื่อเปิดผ่านลิงก์สั้นและโดเมนที่กำหนดเองของคุณ"
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Publish Your Resume"
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Publisher"
@@ -9235,6 +9295,7 @@ msgid "Read, write and delete"
 msgstr "อ่าน เขียน และลบ"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/resume/editor/check/check-panel.tsx
 msgid "Readability"
 msgstr "ความอ่านง่าย"
 
@@ -9451,6 +9512,10 @@ msgstr "ปฏิเสธ"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Rejected"
 msgstr "ถูกปฏิเสธ"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Rejection is just redirection."
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Reload"
@@ -9753,6 +9818,7 @@ msgstr "ประวัติย่อ"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
 msgstr "ประวัติย่อ"
@@ -9793,6 +9859,10 @@ msgstr "รายละเอียดประวัติย่อ"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Resume file"
 msgstr "ไฟล์เรซูเม่"
+
+#: src/routes/builder/letter/-components/design-panel.tsx
+msgid "Resume Match"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
@@ -10043,6 +10113,11 @@ msgstr "ยังเป็นคุณคนเดิม แต่ไม่ต�
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "เพิ่มตัวอย่างประวัติย่อแล้ว ลบมันได้ตลอดเวลา"
+
+#: src/components/input/color-picker.tsx
+#: src/features/resume/editor/design/style-groups.tsx
+msgid "Saturation and brightness"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -10346,10 +10421,6 @@ msgstr "ค้นหาจากการสมัครงานและผู
 msgid "Search job postings"
 msgstr "ค้นหาประกาศรับสมัครงาน"
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Search or run…"
-msgstr "ค้นหาหรือเรียกใช้..."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "ค้นหาบทบาท บริษัท หรือผู้ติดต่อ"
@@ -10384,6 +10455,7 @@ msgstr "ค้นหา..."
 
 #. Placeholder in command palette input on nested pages
 #: src/features/command-palette/content.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search…"
 msgstr "ค้นหา…"
 
@@ -10425,12 +10497,9 @@ msgstr "ส่วนหัวของส่วน"
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/parser-view.tsx
+#: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
 msgstr "ส่วนต่าง ๆ"
-
-#: src/features/resume/editor/write/write-panel.tsx
-msgid "Sections · print order"
-msgstr "ส่วน·สั่งพิมพ์"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Sections use headings systems recognize, and work experience shows."
@@ -10473,6 +10542,10 @@ msgstr "เลือก..."
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "เอกสารที่เลือก"
+
+#: src/routes/builder/$resumeId/-components/editor-shell.tsx
+msgid "Selection"
+msgstr ""
 
 #: src/features/homepage/footer.tsx
 msgid "Self-hosting"
@@ -10614,7 +10687,6 @@ msgstr "ตั้งค่าแอปยืนยันตัวตนของ
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Settings"
 msgstr "การตั้งค่า"
@@ -10684,8 +10756,12 @@ msgid "Short and polite, for the recruiter"
 msgstr "สั้นและสุภาพสำหรับผู้สรรหา"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Short link and domain"
-msgstr "ลิงก์สั้นและโดเมน"
+msgid "Short link"
+msgstr ""
+
+#: src/features/resume/share/share-panel.tsx
+msgid "Short Link and Domain"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -10781,6 +10857,10 @@ msgstr "แสดงเทมเพลต"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "แสดงให้พวกเขาอีกครั้ง"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Show up. Apply. Repeat."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
@@ -10978,6 +11058,10 @@ msgstr "ภาษาสโลวีเนีย"
 #: src/features/applications/components/insights-view.tsx
 msgid "Small numbers, but worth noticing."
 msgstr "ตัวเลขน้อยแต่น่าสังเกต"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Small steps, every day, add up."
+msgstr ""
 
 #: src/features/homepage/remember.tsx
 msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
@@ -11913,6 +11997,10 @@ msgstr "ประวัติย่อตามที่เป็นอยู่
 msgid "The review couldn't finish. Try again."
 msgstr "การตรวจสอบไม่สามารถเสร็จสิ้นได้ ลองอีกครั้ง"
 
+#: src/components/layout/loading-screen.tsx
+msgid "The right role is out there."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The same line repeats on every page."
 msgstr "บรรทัดเดียวกันซ้ำในทุกหน้า"
@@ -12563,6 +12651,7 @@ msgid "typed"
 msgstr "แบบพิมพ์"
 
 #: src/libs/resume/section.tsx
+#: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Typography"
 msgstr "แบบอักษร"
 
@@ -12788,10 +12877,6 @@ msgstr "ใช้ไม่เกิน 64 อักขระ"
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Use between 6 and 64 characters."
 msgstr "ใช้ตัวอักษรระหว่าง 6 ถึง 64 ตัว"
-
-#: src/components/input/color-picker.tsx
-msgid "Use color {color}"
-msgstr "ใช้สี {color}"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Use default"
@@ -13104,8 +13189,8 @@ msgid "Web access"
 msgstr "การเข้าถึงเว็บ"
 
 #: src/features/resume/share/share-panel.tsx
-msgid "Web page"
-msgstr "หน้าเว็บ"
+msgid "Web Page"
+msgstr ""
 
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Web page preview"
@@ -13576,6 +13661,10 @@ msgstr "คุณยังไม่มีประวัติย่อที่
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "คุณเคยสั่งให้ลืมสิ่งนี้แล้ว จึงไม่ได้บันทึกซ้ำ"
 
+#: src/components/layout/loading-screen.tsx
+msgid "You only need one yes."
+msgstr ""
+
 #: src/features/homepage/prepare.tsx
 msgid "You partnered with engineering. How you led the work isn’t described yet."
 msgstr "คุณทำงานร่วมกับทีมวิศวกรรม แต่ยังไม่ได้อธิบายว่าคุณนำงานอย่างไร"
@@ -13772,10 +13861,6 @@ msgstr "ขอบกระดาษของคุณแคบมาก"
 msgid "your message"
 msgstr "ข้อความของคุณ"
 
-#: src/features/resume/editor/write/basics-card.tsx
-msgid "Your name"
-msgstr "ชื่อของคุณ"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "ชื่อและรายละเอียดการติดต่อของคุณมาจากประวัติย่อ"
@@ -13791,6 +13876,10 @@ msgstr "ชื่อของคุณเปลี่ยนไปในเรซ
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "ชื่อของคุณหายไป"
+
+#: src/components/layout/loading-screen.tsx
+msgid "Your next opportunity is already looking for you."
+msgstr ""
 
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
@@ -13836,10 +13925,6 @@ msgstr "ข้อกำหนดของคุณ"
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "your resume"
 msgstr "ประวัติย่อของคุณ"
-
-#: src/features/resume/share/share-panel.tsx
-msgid "Your resume as a web page"
-msgstr "ประวัติย่อของคุณในรูปแบบหน้าเว็บ"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your resume has a photo"
@@ -13890,6 +13975,10 @@ msgstr "เรื่องราวของคุณ"
 msgid "Your story couldn't be loaded."
 msgstr "โหลดเรื่องราวของคุณไม่ได้"
 
+#: src/components/layout/loading-screen.tsx
+msgid "Your story is worth telling well."
+msgstr ""
+
 #: src/features/homepage/sections.tsx
 msgid "Your turn"
 msgstr "ตาของคุณ"
@@ -13915,6 +14004,7 @@ msgstr "ของคุณ"
 msgid "Yours · {0}"
 msgstr "ของคุณ · {0}"
 
+#: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Zoom"
 msgstr "ซูม"

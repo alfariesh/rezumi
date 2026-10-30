@@ -61,6 +61,7 @@ test("round-trips a JSON backup and splits a legacy embedded letter on import", 
 	await expect(page.getByText("Dear Globex team,")).toHaveCount(0);
 
 	await page.goto("/dashboard");
-	await page.getByRole("tab", { name: /^Letters/ }).click();
+	// The type filter is a segmented control: its options are radios.
+	await page.getByRole("radio", { name: /^Letters/ }).click();
 	await expect(page.getByRole("heading", { name: /— Letter to Globex$/ })).toHaveCount(1);
 });

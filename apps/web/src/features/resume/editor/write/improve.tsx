@@ -70,28 +70,28 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 	return (
 		// oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- Escape closes the panel from any control inside it.
 		<div
-			className="grid gap-1 border-t border-line p-1.5"
+			className="grid gap-1 border-t border-separator p-1.5"
 			onKeyDown={(event) => {
 				if (event.key !== "Escape") return;
 				event.stopPropagation();
 				close();
 			}}
 		>
-			<span className="px-2 pt-1 pb-1.5 text-xs font-semibold text-ink-3">
+			<span className="px-2 pt-1 pb-1.5 text-xs font-semibold text-muted">
 				<Trans>Improve selected line</Trans>
 			</span>
 
 			{improve.data ? (
-				<div className="grid gap-2 rounded-lg bg-bg p-2.5">
+				<div className="grid gap-2 rounded-xl bg-surface p-2.5">
 					<p role="status" className="w-fit rounded-sm bg-accent-soft px-1 py-0.5 text-[13px] leading-[19px]">
 						{improve.data.text}
 					</p>
-					<p className="text-xs text-ink-3">
+					<p className="text-xs text-muted">
 						{improve.data.why}
 						{improve.data.addsFacts && <> {t`Check it's accurate.`}</>}
 					</p>
 					{changed && (
-						<p role="alert" className="text-xs text-danger-text">
+						<p role="alert" className="text-xs text-danger">
 							<Trans>The line changed since you asked, so it wasn't replaced.</Trans>
 						</p>
 					)}
@@ -107,7 +107,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 					</div>
 				</div>
 			) : improve.isPending ? (
-				<p role="status" className="flex items-center gap-2 p-2 text-sm text-ink-2">
+				<p role="status" className="flex items-center gap-2 p-2 text-sm text-muted">
 					<Icon name="sparkle" size={16} className="animate-pulse motion-reduce:animate-none" />
 					<Trans>Improving…</Trans>
 				</p>
@@ -135,35 +135,32 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 			) : (
 				<div className="grid gap-0.5">
 					{options.map((option, index) => (
-						<button
+						<Button
 							key={option.action}
-							type="button"
+							variant="ghost"
+							fullWidth
 							// oxlint-disable-next-line jsx-a11y/no-autofocus -- the menu opens from the Improve button.
 							autoFocus={index === 0}
-							onClick={() => run(option.action)}
-							className="flex h-9 items-center gap-2.5 rounded-md px-2 text-start text-sm transition-colors duration-quick hover:bg-hover"
+							onPress={() => run(option.action)}
+							className={optionClassName}
 						>
-							<Icon name={option.icon} size={18} className="text-ink-2" />
+							<Icon name={option.icon} size={18} className="text-muted" />
 							{option.label}
-						</button>
+						</Button>
 					))}
-					<button
-						type="button"
-						onClick={() => setAsking(true)}
-						className="flex h-9 items-center gap-2.5 rounded-md px-2 text-start text-sm transition-colors duration-quick hover:bg-hover"
-					>
-						<Icon name="chat-text" size={18} className="text-ink-2" />
+					<Button variant="ghost" fullWidth onPress={() => setAsking(true)} className={optionClassName}>
+						<Icon name="chat-text" size={18} className="text-muted" />
 						<Trans>Ask for something else…</Trans>
-					</button>
+					</Button>
 				</div>
 			)}
 
 			{improve.error && (
 				<div className="grid gap-2 px-2 pb-1">
-					<p role="alert" className="text-xs text-danger-text">
+					<p role="alert" className="text-xs text-danger">
 						{getOrpcErrorMessage(improve.error, { fallback: t`Couldn't get a suggestion. Nothing changed.` })}
 					</p>
-					<Button size="sm" variant="secondary" className="w-fit" onPress={() => improve.reset()}>
+					<Button size="sm" variant="outline" className="w-fit" onPress={() => improve.reset()}>
 						<Trans>Try again</Trans>
 					</Button>
 				</div>
@@ -171,3 +168,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 		</div>
 	);
 }
+
+// The panel sits on the rich text field's fill (`bg-default`), so hover and press take the next step up.
+const optionClassName =
+	"justify-start font-normal [--button-bg-hover:var(--default-hover)] [--button-bg-pressed:var(--default-hover)]";

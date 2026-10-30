@@ -1,4 +1,4 @@
-import { Button, Dropdown, Label, Separator, Spinner, Tabs } from "@heroui/react";
+import { Button, Dropdown, Label, Separator, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQueryClient } from "@tanstack/react-query";
@@ -12,9 +12,11 @@ import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
-import { type LetterMode, useLetterMode } from "@/features/letters/use-letter-mode";
+import { useLetterMode } from "@/features/letters/use-letter-mode";
 import { DocumentMenuTrigger } from "@/features/resume/editor/chrome";
 import { DownloadButtons, EditorBarFrame } from "@/features/resume/editor/chrome/bar";
+import { ModeSwitch } from "@/features/resume/editor/chrome/mode-switch";
+import { STATUS_WORDS } from "@/features/resume/editor/save-status";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { usePrompt } from "@/hooks/use-confirm";
 import { getOrpcErrorMessage, getReadableErrorMessage } from "@/libs/error-message";
@@ -27,41 +29,35 @@ type LetterBarProps = {
 	pinnable: boolean;
 };
 
-/**
- * The 56px bar: back, the letter's name and save state · Write/Design · History, Share and Download PDF. The mode
- * switch stays centered through a `1fr auto 1fr` grid.
- */
+/** The 56px bar: back and "Cover letter" · the letter's name and save state · History, Share and Download PDF. */
+/** Write · Design, above the panel. */
+export function LetterModeTabs() {
+	const [mode, setMode] = useLetterMode();
+
+	return (
+		<ModeSwitch
+			selected={mode}
+			onChange={setMode}
+			modes={[
+				{ id: "write", icon: "pencil-simple", label: t`Write` },
+				{ id: "design", icon: "palette", label: t`Design` },
+			]}
+		/>
+	);
+}
+
 export function LetterBar({ layout, pinnable }: LetterBarProps) {
 	const setSheetTab = useEditorStore((state) => state.setSheetTab);
 	// Below 1280 the bar is too narrow for Share's label next to everything else.
 	const wide = useBreakpoint() === "wide";
 	const download = useDownloadLetter();
-	const [mode, setMode] = useLetterMode();
 
 	return (
 		<EditorBarFrame
 			layout={layout}
 			pinnable={pinnable}
 			menu={<LetterMenu />}
-			modes={
-				// Only the list sits in Tabs: React Aria renders everything inside Tabs a second time to collect the tabs.
-				<Tabs selectedKey={mode} onSelectionChange={(key) => setMode(String(key) as LetterMode)}>
-					<Tabs.ListContainer>
-						<Tabs.List aria-label={t`Editor mode`} className="h-9" data-mode-switch="">
-							<Tabs.Tab id="write" className="px-4">
-								<Icon name="pencil-simple" size={18} />
-								<Trans>Write</Trans>
-								<Tabs.Indicator />
-							</Tabs.Tab>
-							<Tabs.Tab id="design" className="px-4">
-								<Icon name="palette" size={18} />
-								<Trans>Design</Trans>
-								<Tabs.Indicator />
-							</Tabs.Tab>
-						</Tabs.List>
-					</Tabs.ListContainer>
-				</Tabs>
-			}
+			kind={{ icon: "envelope-simple", label: t`Cover letter` }}
 		>
 			{layout === "desktop" && wide ? (
 				<Button variant="secondary" className="gap-1.5" onPress={() => setSheetTab("download")}>
@@ -235,46 +231,67 @@ function LetterSaveStatus() {
 		}
 	};
 
+	const words = {
+		saving: t`Saving…`,
+		saved: t`Saved`,
+		error: t`Not saved`,
+		conflict: t`Changed elsewhere`,
+	}[status];
+
 	return (
-		<span role="status" aria-live="polite" className="flex min-w-0 items-center gap-1.5 text-xs leading-4 text-ink-3">
+		<span
+			role="status"
+			aria-live="polite"
+			title={words}
+			className="flex min-w-0 shrink-0 items-center gap-1.5 text-xs leading-4 whitespace-nowrap text-muted"
+		>
 			{status === "saving" && (
 				<>
 					<Spinner size="sm" color="current" aria-hidden />
-					<Trans>Saving…</Trans>
+					<span className={STATUS_WORDS}>
+						<Trans>Saving…</Trans>
+					</span>
 				</>
 			)}
 			{status === "saved" && (
 				<>
 					<Icon name="cloud-check" size={16} />
-					<Trans>Saved</Trans>
+					<span className={STATUS_WORDS}>
+						<Trans>Saved</Trans>
+					</span>
 				</>
 			)}
 			{status === "error" && (
-				<span className={cn(ENTER_CLASS, "flex min-w-0 items-center gap-1.5 text-danger-text")}>
+				<span className={cn(ENTER_CLASS, "flex min-w-0 items-center gap-1.5 text-danger")}>
 					<Icon name="cloud-warning" size={16} />
-					<Trans>Not saved</Trans>
+					<span className={STATUS_WORDS}>
+						<Trans>Not saved</Trans>
+					</span>
 					<span aria-hidden="true">·</span>
+					{/* An inline text action inside the 16px status line: a HeroUI Button would be too tall here. */}
 					<button
 						type="button"
 						onClick={() => void useLetterEditorStore.getState().flush()}
 						aria-label={t`Retry saving`}
-						className="rounded-sm font-semibold underline underline-offset-2 hover:opacity-80"
+						className="cursor-(--cursor-interactive) rounded-sm font-semibold underline underline-offset-2 outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-focus"
 					>
 						<Trans>Retry</Trans>
 					</button>
 				</span>
 			)}
 			{status === "conflict" && (
-				<span className={cn(ENTER_CLASS, "flex min-w-0 items-center gap-1.5 text-warn-text")}>
+				<span className={cn(ENTER_CLASS, "flex min-w-0 items-center gap-1.5 text-warning")}>
 					<Icon name="cloud-warning" size={16} />
 					<span className="truncate">
-						<Trans>Changed elsewhere</Trans>
+						<span className={STATUS_WORDS}>
+							<Trans>Changed elsewhere</Trans>
+						</span>
 					</span>
 					<span aria-hidden="true">·</span>
 					<button
 						type="button"
 						onClick={() => void reload()}
-						className="rounded-sm font-semibold underline underline-offset-2 hover:opacity-80"
+						className="cursor-(--cursor-interactive) rounded-sm font-semibold underline underline-offset-2 outline-none hover:opacity-80 focus-visible:ring-2 focus-visible:ring-focus"
 					>
 						<Trans>Reload</Trans>
 					</button>

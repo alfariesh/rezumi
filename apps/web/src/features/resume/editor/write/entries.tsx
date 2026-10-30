@@ -3,7 +3,7 @@ import type { Entry } from "./model";
 import type { CustomSectionType, RoleItem, Website } from "@rezumi/schema/resume/data";
 import type { DateFormat, ResumeDates } from "@rezumi/schema/resume/dates";
 import type { ReactNode } from "react";
-import { Button, Slider } from "@heroui/react";
+import { Button, Label, Slider } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { EMPTY_RESUME_DATES } from "@rezumi/schema/resume/dates";
@@ -96,7 +96,7 @@ function Description({
 }: FieldSetProps & { field?: string; label?: string }) {
 	return (
 		<div className="col-span-full grid gap-1.5">
-			<span className="text-[13px] leading-4 font-medium">{label ?? t`Description`}</span>
+			<Label elementType="span">{label ?? t`Description`}</Label>
 			<RichTextEditor
 				label={label ?? t`Description`}
 				value={str(valuesOf(entry)[field])}
@@ -185,7 +185,7 @@ function IconAndColor({ entry, write }: FieldSetProps) {
 				trigger={
 					<Button variant="secondary" size="sm">
 						<span
-							className="size-4 rounded-sm border border-line-2"
+							className="size-4 rounded-sm border border-border"
 							style={{ backgroundColor: str(values.iconColor) || "currentColor" }}
 						/>
 						<Trans>Icon color</Trans>
@@ -207,9 +207,9 @@ function Roles({ entry, write, page }: FieldSetProps) {
 	return (
 		<div className="col-span-full grid gap-3">
 			{roles.map((role, index) => (
-				<div key={role.id} className="grid grid-cols-2 gap-x-3 gap-y-2.5 rounded-lg border border-line bg-bg p-3">
+				<div key={role.id} className="grid grid-cols-2 gap-x-3 gap-y-3 rounded-xl bg-surface p-3">
 					<div className="col-span-full flex items-center justify-between">
-						<span className="text-[13px] font-medium text-ink-2">
+						<span className="text-sm font-medium text-muted">
 							<Trans>Role {index + 1}</Trans>
 						</span>
 						<div className="flex">
@@ -263,9 +263,9 @@ function Roles({ entry, write, page }: FieldSetProps) {
 						}
 					/>
 					<div className="col-span-full grid gap-1.5">
-						<span className="text-[13px] leading-4 font-medium">
+						<Label elementType="span">
 							<Trans>Description</Trans>
-						</span>
+						</Label>
 						<RichTextEditor
 							label={t`Description of role ${index + 1}`}
 							value={role.description}

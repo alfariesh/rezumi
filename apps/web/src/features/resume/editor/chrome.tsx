@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@heroui/react";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Button, buttonVariants, Tooltip } from "@heroui/react";
+import { Button, buttonVariants, Separator, Toolbar, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -69,7 +69,10 @@ type CanvasStatusPillProps = { icon: IconName; children: ReactNode };
 /** The dark pill above the first page while a version or template is previewed instead of the live document. */
 export function CanvasStatusPill({ icon, children }: CanvasStatusPillProps) {
 	return (
-		<span role="status" className="flex h-8 items-center gap-2 rounded-lg bg-ink px-3 text-[13px] text-bg">
+		<span
+			role="status"
+			className="flex h-8 items-center gap-2 rounded-full bg-foreground ps-2.5 pe-3.5 text-[13px] font-medium text-background shadow-overlay"
+		>
 			<Icon name={icon} size={18} />
 			{children}
 		</span>
@@ -86,15 +89,13 @@ export function DocumentMenuTrigger({ name, isLocked, className, ...props }: Doc
 			{...props}
 			aria-label={t`Document menu: ${name}`}
 			className={cn(
-				"-mx-1.5 flex h-auto max-w-[calc(100%+0.75rem)] min-w-0 flex-col items-start rounded-md px-1.5 py-0.5 text-start font-normal",
+				"-ms-1.5 h-8 max-w-fit min-w-0 shrink justify-start gap-1.5 rounded-lg px-1.5 text-start font-normal",
 				typeof className === "string" && className,
 			)}
 		>
-			<span className="flex max-w-full min-w-0 items-center gap-1.5">
-				<span className="truncate text-sm leading-[18px] font-semibold text-ink">{name}</span>
-				{isLocked && <Icon name="lock" size={16} className="text-ink-3" />}
-				<Icon name="caret-down" size={16} className="text-ink-3" />
-			</span>
+			<span className="truncate text-sm font-semibold text-foreground">{name}</span>
+			{isLocked && <Icon name="lock" size={16} className="shrink-0 text-muted" />}
+			<Icon name="caret-down" size={16} className="shrink-0 text-muted" />
 		</Button>
 	);
 }
@@ -131,7 +132,7 @@ export function DrawerControls({ pinnable }: { pinnable: boolean }) {
 					icon={open ? "sidebar-simple" : "sidebar-simple"}
 					label={open ? t`Hide panel` : t`Show panel`}
 					aria-expanded={open}
-					className="text-ink-2"
+					className="text-muted"
 					onPress={() => useEditorStore.setState({ drawerOpen: !open })}
 				/>
 			)}
@@ -140,7 +141,7 @@ export function DrawerControls({ pinnable }: { pinnable: boolean }) {
 					icon="square-split-horizontal"
 					label={t`Keep the panel beside the page`}
 					aria-pressed={pinned}
-					className={cn("text-ink-2", pinned && "bg-accent-soft text-accent-text")}
+					className={cn("text-muted", pinned && "bg-accent-soft text-accent-soft-foreground")}
 					onPress={() => {
 						// Unpinning leaves the drawer open over the page.
 						useEditorStore.setState({ drawerPinned: !pinned, drawerOpen: true });
@@ -164,40 +165,39 @@ export function ZoomBar({ fitScale, pageCount }: ZoomBarProps) {
 
 	useHotkey("Mod+0", () => setZoom("fit"));
 
-	const buttonClassName =
-		"flex size-8 items-center justify-center rounded-lg text-ink-2 transition-colors duration-quick hover:bg-hover disabled:text-ink-3 disabled:hover:bg-transparent";
-
 	return (
-		<div className="absolute bottom-[18px] left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-lg border border-line bg-raised p-1 shadow-e2">
-			<button
-				type="button"
-				aria-label={t`Zoom out`}
-				disabled={current <= ZOOM_MIN}
-				className={buttonClassName}
-				onClick={() => setZoom(current - ZOOM_STEP)}
-			>
-				<Icon name="minus" />
-			</button>
-			<button
-				type="button"
+		<Toolbar isAttached aria-label={t`Zoom`} className="absolute bottom-[18px] left-1/2 -translate-x-1/2 gap-0.5">
+			<IconButton
+				icon="minus"
+				label={t`Zoom out`}
+				size="sm"
+				tooltipPlacement="top"
+				className="rounded-full"
+				isDisabled={current <= ZOOM_MIN}
+				onPress={() => setZoom(current - ZOOM_STEP)}
+			/>
+			<Button
+				variant="ghost"
+				size="sm"
 				aria-label={t`Fit page to width`}
-				className="h-8 min-w-[52px] rounded-lg px-1.5 font-mono text-xs font-medium text-ink transition-colors duration-quick hover:bg-hover"
-				onClick={() => setZoom("fit")}
+				className="min-w-[52px] rounded-full px-2 text-xs font-medium tabular-nums"
+				onPress={() => setZoom("fit")}
 			>
 				{zoom === "fit" ? <Trans>Fit</Trans> : `${Math.round(current * 100)}%`}
-			</button>
-			<button
-				type="button"
-				aria-label={t`Zoom in`}
-				disabled={current >= ZOOM_MAX}
-				className={buttonClassName}
-				onClick={() => setZoom(current + ZOOM_STEP)}
-			>
-				<Icon name="plus" />
-			</button>
-			<span className="px-2 font-mono text-xs whitespace-nowrap text-ink-3">
+			</Button>
+			<IconButton
+				icon="plus"
+				label={t`Zoom in`}
+				size="sm"
+				tooltipPlacement="top"
+				className="rounded-full"
+				isDisabled={current >= ZOOM_MAX}
+				onPress={() => setZoom(current + ZOOM_STEP)}
+			/>
+			<Separator orientation="vertical" className="mx-1" />
+			<span className="ps-1 pe-3 text-xs whitespace-nowrap text-muted tabular-nums">
 				<Plural value={pageCount} one="# page" other="# pages" />
 			</span>
-		</div>
+		</Toolbar>
 	);
 }

@@ -223,7 +223,7 @@ export function ResumePreviewClient({
 			{lostCharacters && (
 				<p
 					role="status"
-					className="sticky top-3 z-10 col-start-1 row-start-1 mb-3 flex max-w-md items-start gap-2 justify-self-center rounded-lg border border-warn bg-warn-soft px-3 py-2 text-sm text-warn-text shadow-e1"
+					className="sticky top-3 z-10 col-start-1 row-start-1 mb-3 flex max-w-md items-start gap-2 justify-self-center rounded-xl bg-warning-soft px-3 py-2 text-sm text-warning-soft-foreground shadow-surface"
 				>
 					<Icon name="warning" size={18} className="mt-px shrink-0" />
 					{getLostCharactersMessage(lostCharacters)}
@@ -247,7 +247,7 @@ export function ResumePreviewClient({
 							showPageNumbers={showPageNumbers}
 							failure={
 								failure ? (
-									<div role="alert" className="grid justify-items-center gap-3 p-6 text-center text-sm text-ink-2">
+									<div role="alert" className="grid justify-items-center gap-3 p-6 text-center text-sm text-muted">
 										<p>{failure}</p>
 										<Button
 											variant="secondary"

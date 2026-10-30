@@ -22,7 +22,7 @@ type Place = {
 	label: string;
 };
 
-/** Career: Today, Coach, Knowledge and Offers under one header. The selected place's underline slides between them. */
+/** Career: Today, Coach, Knowledge and Offers under one header, as the same pill control the Documents and Applications headers use. */
 function CareerLayout() {
 	const matchRoute = useMatchRoute();
 	const places: Place[] = [
@@ -58,7 +58,6 @@ function CareerLayout() {
 				description={<Trans>Plan your search, keep your evidence in one place, and decide between offers.</Trans>}
 			>
 				<Tabs
-					variant="secondary"
 					selectedKey={current?.to ?? ""}
 					className="-mx-4 max-w-[100vw] [scrollbar-width:none] overflow-x-auto px-4 sm:mx-0 sm:px-0"
 				>

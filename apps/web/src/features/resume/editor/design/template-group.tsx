@@ -2,7 +2,7 @@ import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import type { FocusEvent, KeyboardEvent, PointerEvent } from "react";
 import { Segment } from "@heroui-pro/react";
-import { Slider } from "@heroui/react";
+import { Label, Slider, Tag, TagGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useInView } from "motion/react";
@@ -13,6 +13,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
+import { SEGMENT_ITEM } from "./style-groups";
 import { useTemplateThumbnail } from "./thumbnails";
 import { templates } from "@/dialogs/resume/template/data";
 import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -94,31 +95,40 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 	return (
 		<div className="grid gap-3">
-			<Segment
-				aria-label={t`Show templates`}
-				size="sm"
-				selectedKey={filter}
-				onSelectionChange={(key) => setFilter(key as Filter)}
-				className="w-full"
-			>
-				{filters.map((option) => (
-					<Segment.Item key={option.id} id={option.id} className="flex-1">
-						{option.label}
-					</Segment.Item>
-				))}
-			</Segment>
-			<span className="text-end text-xs text-muted">
-				<Trans>
-					{shown.length} of {TEMPLATE_IDS.length} shown
-				</Trans>
-			</span>
+			{/* Chips rather than a segmented control: they wrap, so the four filters fit a 300px panel in any language. */}
+			<div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+				<TagGroup
+					aria-label={t`Show templates`}
+					selectionMode="single"
+					disallowEmptySelection
+					size="sm"
+					selectedKeys={[filter]}
+					onSelectionChange={(keys) => {
+						const [key] = keys === "all" ? [] : [...keys];
+						if (key) setFilter(key as Filter);
+					}}
+				>
+					<TagGroup.List>
+						{filters.map((option) => (
+							<Tag key={option.id} id={option.id}>
+								{option.label}
+							</Tag>
+						))}
+					</TagGroup.List>
+				</TagGroup>
+				<span className="text-xs text-muted tabular-nums">
+					<Trans>
+						{shown.length} of {TEMPLATE_IDS.length} shown
+					</Trans>
+				</span>
+			</div>
 
 			{/* oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- listens for Esc and pointer exit from the cards; each card is a button. */}
 			<div
 				className={
 					layout === "grid"
 						? "grid grid-cols-2 gap-3"
-						: "-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1 *:w-28 *:shrink-0 *:snap-start"
+						: "-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 py-2.5 *:w-28 *:shrink-0 *:snap-start"
 				}
 				onPointerLeave={() => useEditorStore.setState({ previewTemplate: null })}
 				onBlur={onGridBlur}
@@ -155,6 +165,8 @@ function TemplateCard({ id, data, selected, onPreview }: TemplateCardProps) {
 		if (hold.current.previewing) useEditorStore.setState({ previewTemplate: null });
 	};
 
+	// A raw button: hover and hold preview the template and a press applies it, which a HeroUI Button's press
+	// handling would fold together.
 	return (
 		<button
 			ref={ref}
@@ -183,23 +195,25 @@ function TemplateCard({ id, data, selected, onPreview }: TemplateCardProps) {
 				}
 				applyTemplate(id);
 			}}
-			className="group/card grid gap-1.5 rounded-lg text-start"
+			className="group/card grid cursor-(--cursor-interactive) gap-1.5 rounded-xl text-start outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
 		>
+			{/* The paper is white in both themes; the inset hairline sits over the image so it shows on white pages. */}
 			<span
 				className={cn(
-					"relative block aspect-page overflow-hidden rounded-md border border-line bg-white shadow-e1 transition-[translate,scale,box-shadow] duration-quick ease-enter group-hover/card:-translate-y-0.5 group-hover/card:shadow-e2 group-active/card:scale-[0.98]",
+					"relative block aspect-page overflow-hidden rounded-xl bg-white transition-[translate,scale] duration-quick ease-enter group-hover/card:-translate-y-0.5 group-active/card:scale-[0.98]",
+					"after:pointer-events-none after:absolute after:inset-0 after:rounded-xl after:ring-1 after:ring-black/5 after:ring-inset dark:after:ring-white/10",
 					selected && "ring-2 ring-accent ring-offset-2 ring-offset-surface",
 				)}
 			>
 				<img src={thumbnail ?? metadata.imageUrl} alt="" className="size-full object-cover object-top" />
 				{selected && (
-					<span className="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-sm bg-accent text-on-accent">
+					<span className="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-accent text-accent-foreground">
 						<Icon name="check" size={14} />
 					</span>
 				)}
 			</span>
 			<span className="text-sm leading-4 font-medium">{metadata.name}</span>
-			<span className="text-xs leading-4 text-ink-3">{layoutTags(id)}</span>
+			<span className="text-xs leading-4 text-muted">{layoutTags(id)}</span>
 		</button>
 	);
 }
@@ -215,10 +229,9 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 	const side = data.metadata.layout.sidebarSide ?? shownOwnSide;
 	const width = data.metadata.layout.sidebarWidth;
 	const titleId = useId();
-	const widthId = useId();
 
 	return (
-		<div className="grid gap-3 rounded-lg border border-line bg-bg p-3">
+		<div className="grid gap-4 rounded-xl bg-surface-secondary p-4">
 			<p id={titleId} className="text-sm font-medium">
 				<Trans>Sidebar</Trans>
 			</p>
@@ -235,41 +248,38 @@ function SidebarPanel({ data, template }: SidebarPanelProps) {
 				}
 				className="w-full"
 			>
-				<Segment.Item id="left" className="flex-1">
+				<Segment.Item id="left" className={SEGMENT_ITEM}>
 					<Trans>Left</Trans>
 				</Segment.Item>
-				<Segment.Item id="right" className="flex-1">
+				<Segment.Item id="right" className={SEGMENT_ITEM}>
 					<Trans>Right</Trans>
 				</Segment.Item>
 			</Segment>
-			<div className="grid gap-2">
-				<div className="flex items-center justify-between text-[13px]">
-					<span id={widthId}>
-						<Trans>Width</Trans>
-					</span>
-					<span className="font-mono text-xs text-ink-2">{width}%</span>
-				</div>
-				<Slider
-					aria-labelledby={`${titleId} ${widthId}`}
-					minValue={10}
-					maxValue={50}
-					step={1}
-					value={width}
-					onChange={(value) =>
-						updateResumeData(
-							(draft) => {
-								draft.metadata.layout.sidebarWidth = Array.isArray(value) ? (value[0] ?? width) : value;
-							},
-							{ coalesceKey: "design.sidebarWidth" },
-						)
-					}
-				>
-					<Slider.Track>
-						<Slider.Fill />
-						<Slider.Thumb />
-					</Slider.Track>
-				</Slider>
-			</div>
+			<Slider
+				aria-labelledby={titleId}
+				minValue={10}
+				maxValue={50}
+				step={1}
+				value={width}
+				onChange={(value) =>
+					updateResumeData(
+						(draft) => {
+							draft.metadata.layout.sidebarWidth = Array.isArray(value) ? (value[0] ?? width) : value;
+						},
+						{ coalesceKey: "design.sidebarWidth" },
+					)
+				}
+			>
+				<Label>
+					<Trans>Width</Trans>
+				</Label>
+				{/* The stored width: Advanced allows fractions the 1% steps here round away. */}
+				<Slider.Output className="text-muted">{width}%</Slider.Output>
+				<Slider.Track>
+					<Slider.Fill />
+					<Slider.Thumb />
+				</Slider.Track>
+			</Slider>
 		</div>
 	);
 }

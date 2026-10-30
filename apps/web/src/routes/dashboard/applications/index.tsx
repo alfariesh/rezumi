@@ -1,6 +1,6 @@
 import type { Application, ApplicationSummary } from "@/features/applications/types";
-import { EmptyState } from "@heroui-pro/react";
-import { Button, Dropdown, Input, Label, Skeleton, Tabs } from "@heroui/react";
+import { EmptyState, Segment } from "@heroui-pro/react";
+import { Button, Dropdown, Input, Label, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -230,42 +230,35 @@ function RouteComponent() {
 			>
 				{!(isError && !applications) && !empty && (
 					<>
-						<Tabs
+						<Segment
+							aria-label={t`View`}
 							selectedKey={shown}
 							onSelectionChange={(key) => {
 								setViewSwitched(true);
 								setSearch({ view: String(key) as View });
 							}}
 						>
-							<Tabs.ListContainer>
-								<Tabs.List aria-label={t`View`}>
-									<Tabs.Tab id="list">
-										<Icon name="rows" size={18} />
-										<Trans>List</Trans>
-										<Tabs.Indicator />
-									</Tabs.Tab>
-									{!phone && (
-										<Tabs.Tab id="board">
-											<Icon name="kanban" size={18} />
-											<Trans>Board</Trans>
-											<Tabs.Indicator />
-										</Tabs.Tab>
-									)}
-									<Tabs.Tab id="insights">
-										<Icon name="chart-line-up" size={18} />
-										<Trans>Insights</Trans>
-										<Tabs.Indicator />
-									</Tabs.Tab>
-									{!phone && (
-										<Tabs.Tab id="calendar">
-											<Icon name="calendar-dots" size={18} />
-											<Trans>Calendar</Trans>
-											<Tabs.Indicator />
-										</Tabs.Tab>
-									)}
-								</Tabs.List>
-							</Tabs.ListContainer>
-						</Tabs>
+							<Segment.Item id="list">
+								<Icon name="rows" size={18} />
+								<Trans>List</Trans>
+							</Segment.Item>
+							{!phone && (
+								<Segment.Item id="board">
+									<Icon name="kanban" size={18} />
+									<Trans>Board</Trans>
+								</Segment.Item>
+							)}
+							<Segment.Item id="insights">
+								<Icon name="chart-line-up" size={18} />
+								<Trans>Insights</Trans>
+							</Segment.Item>
+							{!phone && (
+								<Segment.Item id="calendar">
+									<Icon name="calendar-dots" size={18} />
+									<Trans>Calendar</Trans>
+								</Segment.Item>
+							)}
+						</Segment>
 
 						<div className="relative max-w-72 min-w-40 flex-1">
 							<Icon

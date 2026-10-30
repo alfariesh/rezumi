@@ -8,7 +8,7 @@ import { Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { sortSectionItemsByPeriod } from "@rezumi/resume/section-sort";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -36,14 +36,14 @@ export function useSectionTitle(section: WriteSection) {
 type SectionRowProps = {
 	section: WriteSection;
 	locked: boolean;
-	/** ⌥↑ / ⌥↓ on the focused title. Hidden sections sit outside the print order, so they have none. */
+	/** ⌥↑ / ⌥↓ on the focused title. Hidden sections keep their place, so they move like the rest. */
 	onMove?: ((direction: "up" | "down") => void) | undefined;
 	children: ReactNode;
 };
 
 /**
- * An outline row: drag handle, title (opens the section), entry count, the eye (hidden sections keep their
- * content but aren't printed), the chevron and the ⋯ menu. Open, it shows the section's entries.
+ * An outline row: drag handle, title with its entry count (opens the section), the eye (hidden sections keep their
+ * content and place but aren't printed), the chevron and the ⋯ menu. Open, it shows the section's entries.
  */
 export function SectionRow({ section, locked, onMove, children }: SectionRowProps) {
 	const title = useSectionTitle(section);
@@ -52,12 +52,14 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 	// Dates read from text that wasn't exact ask for a look (they print as typed until then).
 	const toCheck = useCurrentBuilderResumeSelector((resume) => countEntriesToCheck(getEntries(resume.data, section)));
 	const proposed = useProposedCount(section.id);
+	const titleId = useId();
+	const detailsId = useId();
 	const open = useEditorStore((state) => state.openSections.includes(section.id));
 	const setOpen = useEditorStore((state) => state.setSectionOpen);
 	const updateResumeData = useUpdateResumeData();
 	const { setNodeRef, transform, transition, isDragging, attributes, listeners } = useSortable({
 		id: section.id,
-		disabled: locked || hidden,
+		disabled: locked,
 		transition: DRAG_SETTLE,
 	});
 
@@ -83,17 +85,18 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 			data-section-id={section.id}
 			style={{ transform: CSS.Translate.toString(transform), transition: transition }}
 			className={cn(
-				"relative scroll-mt-[60px] rounded-lg transition-shadow duration-quick ease-enter",
-				isDragging && "z-10 bg-raised shadow-e2",
+				"relative scroll-mt-[60px] rounded-xl transition-shadow duration-quick ease-enter",
+				isDragging && "z-10 bg-surface shadow-overlay",
 			)}
 		>
-			<div className="group/row flex h-11 items-center gap-0.5 rounded-lg pe-1 hover:bg-hover">
+			<div className="group/row flex h-11 items-center gap-0.5 rounded-xl pe-1 hover:bg-default">
+				{/* Raw buttons: dnd-kit's listeners and the ⌥↑ / ⌥↓ key handler need the native element. */}
 				<button
 					type="button"
 					aria-label={t`Reorder ${title}`}
-					disabled={locked || hidden}
+					disabled={locked}
 					className={cn(
-						"flex h-11 w-7 shrink-0 cursor-grab items-center justify-center text-ink-3 active:cursor-grabbing disabled:cursor-default",
+						"flex h-11 w-7 shrink-0 cursor-grab items-center justify-center rounded-md text-muted outline-none focus-visible:ring-2 focus-visible:ring-focus active:cursor-grabbing disabled:cursor-default",
 						hidden && "opacity-40",
 					)}
 					{...attributes}
@@ -102,35 +105,39 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 					<Icon name="dots-six-vertical" size={18} />
 				</button>
 
+				{/* The whole stretch up to the row's buttons opens the section; its count sits right after the title. The
+				    button is named by the title alone, and the count and flags describe it. */}
 				<button
 					type="button"
+					aria-labelledby={titleId}
+					aria-describedby={detailsId}
 					aria-expanded={open}
 					onClick={() => setOpen(section.id, !open)}
 					onKeyDown={onTitleKeyDown}
-					className={cn(
-						"min-w-0 flex-1 truncate rounded-md py-1 text-start text-sm font-medium",
-						hidden && "text-ink-3 line-through",
-					)}
+					className="flex min-w-0 flex-1 cursor-(--cursor-interactive) items-center gap-1.5 self-stretch rounded-md text-start text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-focus"
 				>
-					{title}
-				</button>
-
-				{proposed > 0 && (
-					<Chip size="sm" color="accent" variant="soft" className="shrink-0">
-						<Plural value={proposed} one="# proposed" other="# proposed" />
-					</Chip>
-				)}
-				{toCheck > 0 && (
-					<Chip size="sm" color="warning" variant="soft" className="shrink-0">
-						<Plural value={toCheck} one="# to check" other="# to check" />
-					</Chip>
-				)}
-				{section.kind !== "summary" && (
-					<span className="px-1 font-mono text-xs text-ink-3">
-						<span aria-hidden="true">{count}</span>
-						<span className="sr-only">{plural(count, { one: "# entry", other: "# entries" })}</span>
+					<span id={titleId} className={cn("truncate", hidden && "text-muted line-through")}>
+						{title}
 					</span>
-				)}
+					<span id={detailsId} className="contents">
+						{section.kind !== "summary" && (
+							<Chip size="sm" variant="soft" className="shrink-0 justify-center tabular-nums">
+								<span aria-hidden="true">{count}</span>
+								<span className="sr-only">{plural(count, { one: "# entry", other: "# entries" })}</span>
+							</Chip>
+						)}
+						{proposed > 0 && (
+							<Chip size="sm" color="accent" variant="soft" className="shrink-0">
+								<Plural value={proposed} one="# proposed" other="# proposed" />
+							</Chip>
+						)}
+						{toCheck > 0 && (
+							<Chip size="sm" color="warning" variant="soft" className="shrink-0">
+								<Plural value={toCheck} one="# to check" other="# to check" />
+							</Chip>
+						)}
+					</span>
+				</button>
 
 				<IconButton
 					icon={hidden ? "eye-slash" : "eye"}
@@ -138,14 +145,14 @@ export function SectionRow({ section, locked, onMove, children }: SectionRowProp
 					aria-pressed={hidden}
 					size="sm"
 					isDisabled={locked}
-					className="text-ink-2"
+					className={rowButtonClassName}
 					onPress={toggleHidden}
 				/>
 				<IconButton
 					icon="caret-down"
 					label={open ? t`Close ${title}` : t`Open ${title}`}
 					size="sm"
-					className={cn("text-ink-2 transition-transform duration-standard ease-enter", open && "rotate-180")}
+					className={cn(rowButtonClassName, "transition-transform duration-standard ease-enter", open && "rotate-180")}
 					onPress={() => setOpen(section.id, !open)}
 				/>
 				{!locked && <SectionMenu section={section} title={title} onMove={onMove} />}
@@ -254,7 +261,7 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 	return (
 		<span className="relative">
 			<Dropdown>
-				<IconButton icon="dots-three" label={t`Options for ${title}`} size="sm" />
+				<IconButton icon="dots-three" label={t`Options for ${title}`} size="sm" className={rowButtonClassName} />
 				<Dropdown.Popover placement="bottom end" className="w-60">
 					<Dropdown.Menu>
 						{section.kind !== "summary" && (
@@ -464,6 +471,10 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 		</span>
 	);
 }
+
+// The row itself hovers to `bg-default`, so its icon buttons hover and press one step up.
+const rowButtonClassName =
+	"text-muted [--button-bg-hover:var(--default-hover)] [--button-bg-pressed:var(--default-hover)]";
 
 const has = (keys: Selection, key: string) => keys === "all" || keys.has(key);
 const first = (keys: Selection) => {

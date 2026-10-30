@@ -20,7 +20,7 @@ type IconPickerProps = Omit<React.ComponentProps<typeof Button>, "children" | "v
 		};
 	};
 
-export function IconPicker({ value, onChange, popoverProps, ...props }: IconPickerProps) {
+export function IconPicker({ value, onChange, popoverProps, className, ...props }: IconPickerProps) {
 	const { open, onOpenChange } = popoverProps ?? {};
 	const [search, setSearch] = useState("");
 
@@ -30,6 +30,8 @@ export function IconPicker({ value, onChange, popoverProps, ...props }: IconPick
 				variant="secondary"
 				isIconOnly
 				aria-label={t`Pick an icon`}
+				// `min-w-0` on every element lets a flex row squeeze this square into a tall pill; it never shrinks.
+				className={cn("shrink-0", typeof className === "string" && className)}
 				onHoverStart={preloadGrid}
 				onFocus={preloadGrid}
 				{...props}

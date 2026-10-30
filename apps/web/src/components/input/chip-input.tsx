@@ -50,8 +50,9 @@ function ChipDragPreview({ chip }: ChipDragPreviewProps) {
 	return (
 		<Chip
 			size="sm"
-			variant="secondary"
-			className="h-6 max-w-44 cursor-grabbing justify-start rounded-md border-accent bg-sunken px-2 text-xs font-medium text-ink shadow-lg ring-2 ring-accent/25 select-none sm:max-w-52"
+			color="accent"
+			variant="soft"
+			className="h-6 max-w-44 cursor-grabbing justify-start px-2 shadow-overlay select-none sm:max-w-52"
 		>
 			<span className="truncate">{chip}</span>
 		</Chip>
@@ -95,14 +96,16 @@ function ChipItem({ id, chip, index, isEditing, onEdit, onRemove }: ChipItemProp
 		>
 			<Chip
 				size="sm"
-				variant="secondary"
+				color="accent"
+				variant="soft"
 				className={cn(
-					"h-6 max-w-full cursor-grab justify-start gap-0 rounded-md border-line bg-sunken/55 px-2 text-xs font-medium text-ink transition-colors select-none hover:border-ink/20 hover:bg-sunken active:cursor-grabbing",
-					isEditing && "border-accent bg-accent/10 ring-1 ring-accent/40",
-					isDragging && "border-accent bg-sunken shadow-sm",
+					"h-6 max-w-full cursor-grab justify-start gap-0 px-2 select-none active:cursor-grabbing",
+					isEditing && "ring-1 ring-accent",
 				)}
 			>
 				<span className="max-w-32 truncate sm:max-w-44">{chip}</span>
+				{/* Raw buttons: tiny pointer shortcuts inside a dnd-kit sortable chip, out of the tab order (the chip itself takes
+				    keyboard drag, the field edits by typing). */}
 				<div
 					className={cn(
 						"ms-1.5 flex shrink-0 items-center gap-x-0.5 transition-opacity duration-quick group-focus-within/chip:opacity-100 group-hover/chip:opacity-100",
@@ -112,7 +115,7 @@ function ChipItem({ id, chip, index, isEditing, onEdit, onRemove }: ChipItemProp
 					<button
 						type="button"
 						tabIndex={-1}
-						className="rounded-sm p-0.5 text-ink/70 transition-colors hover:bg-sunken hover:text-ink focus:outline-none"
+						className="cursor-(--cursor-interactive) rounded-sm p-0.5 transition-colors outline-none hover:bg-accent-soft-hover"
 						aria-label={t({
 							comment:
 								"Screen reader label for button that edits a keyword chip. Variable is the current keyword text.",
@@ -128,7 +131,7 @@ function ChipItem({ id, chip, index, isEditing, onEdit, onRemove }: ChipItemProp
 					<button
 						type="button"
 						tabIndex={-1}
-						className="rounded-sm p-0.5 text-ink/70 transition-colors hover:bg-danger/10 hover:text-danger-text focus:outline-none"
+						className="cursor-(--cursor-interactive) rounded-sm p-0.5 transition-colors outline-none hover:bg-danger-soft hover:text-danger"
 						aria-label={t({
 							comment:
 								"Screen reader label for button that removes a keyword chip. Variable is the current keyword text.",
@@ -311,12 +314,14 @@ export function ChipInput({
 				<div
 					role="none"
 					onClick={() => inputRef.current?.focus()}
-					className="overflow-hidden rounded-lg border border-line-2 bg-bg/40 transition-colors focus-within:border-accent focus-within:ring-3 focus-within:ring-accent/50 dark:bg-line-2/20"
+					// Looks like a secondary HeroUI field: its fill, radius, hover and focus ring.
+					className={cn(
+						"overflow-hidden rounded-field bg-default text-field-foreground transition-[background-color,box-shadow] duration-quick focus-within:bg-default focus-within:ring-2 focus-within:ring-focus hover:bg-default-hover",
+						(invalid === true || invalid === "true") && "ring-1 ring-danger focus-within:ring-danger",
+					)}
 				>
 					<div className="flex flex-col">
-						<div
-							className={cn("max-h-24 overflow-y-auto px-2 py-1.5", hasChips ? "border-b border-line/70" : "hidden")}
-						>
+						<div className={cn("max-h-24 overflow-y-auto px-2 pt-2 pb-1", !hasChips && "hidden")}>
 							<SortableContext items={chips} strategy={rectSortingStrategy}>
 								<div className="flex flex-wrap gap-1">
 									{chips.map((chip, idx) => (
@@ -333,7 +338,7 @@ export function ChipInput({
 								</div>
 							</SortableContext>
 						</div>
-						<div className={cn("flex items-center gap-1.5 px-2", hasChips ? "py-1.5" : "py-0")}>
+						<div className="flex items-center gap-1.5 pe-1">
 							<Input
 								ref={inputRef}
 								type="text"
@@ -350,19 +355,18 @@ export function ChipInput({
 								placeholder={isEditingKeyword ? t`Editing keyword...` : t`Add a keyword...`}
 								onKeyDown={handleKeyDown}
 								onChange={handleInputChange}
-								className="h-9 flex-1 border-none bg-transparent p-0 shadow-none focus-visible:ring-0"
+								// The frame is the field; the input inside it stays bare.
+								className="h-9 flex-1 border-none bg-transparent px-3 py-0 shadow-none ring-0 hover:bg-transparent focus:bg-transparent focus:ring-0"
 							/>
 							{chips.length > 0 && (
-								<span
-									className={cn(
-										"flex h-6 min-w-6 shrink-0 items-center justify-center rounded-md border px-1.5 text-[0.7rem] font-medium tabular-nums",
-										isEditingKeyword
-											? "border-accent/30 bg-accent/10 text-accent-text"
-											: "border-line bg-sunken/50 text-ink/80 opacity-80",
-									)}
+								<Chip
+									size="sm"
+									variant={isEditingKeyword ? "soft" : "tertiary"}
+									color={isEditingKeyword ? "accent" : "default"}
+									className="shrink-0 tabular-nums"
 								>
 									{isEditingKeyword ? <Trans>Edit</Trans> : chips.length}
-								</span>
+								</Chip>
 							)}
 						</div>
 					</div>
@@ -370,7 +374,7 @@ export function ChipInput({
 				<ChipDragOverlay activeChip={activeChip} />
 			</DndContext>
 
-			<p className="text-xs text-ink-3">
+			<p className="text-xs text-muted">
 				{allowCommas ? (
 					<Trans>
 						Press <Kbd>{RETURN_KEY}</Kbd> to add or save the current keyword.

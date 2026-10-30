@@ -206,7 +206,7 @@ export function DocumentList({
 		<DataGrid
 			aria-label={label}
 			variant="secondary"
-			className={cn("w-full", className)}
+			className={cn("w-full [&_td]:border-separator-tertiary/25", className)}
 			contentClassName="table-fixed"
 			columns={columns}
 			data={documents}
