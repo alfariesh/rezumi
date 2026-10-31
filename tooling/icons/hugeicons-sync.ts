@@ -21,7 +21,7 @@ type Config = {
 	cv: { categories: string[]; names: string[]; phosphor: Record<string, string> };
 };
 type IconNode = [tag: string, attributes: Record<string, string>];
-type CatalogEntry = { category: string; sets: Set<"app" | "app-extra" | "cv">; styles: Set<string> };
+type CatalogEntry = { category: string; sets: Set<"app" | "app-extra" | "cv">; styles: Set<Style> };
 
 const STYLES = ["stroke-standard", "duotone-standard", "stroke-rounded", "stroke-sharp"] as const;
 type Style = (typeof STYLES)[number];
