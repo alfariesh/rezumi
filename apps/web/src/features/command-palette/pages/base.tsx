@@ -43,7 +43,7 @@ export function PaletteItem({ id, textValue, onAction, isDisabled, checked, chil
 			className="group gap-3 px-2 py-3"
 		>
 			{children}
-			{checked ? <Icon name="check" className="ms-auto text-accent-text" /> : null}
+			{checked ? <Icon name="check" className="ms-auto text-accent-soft-foreground" /> : null}
 		</Command.Item>
 	);
 }

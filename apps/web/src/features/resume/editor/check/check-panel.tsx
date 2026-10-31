@@ -215,7 +215,7 @@ function IssueCard({ issue, selected, locked }: IssueCardProps) {
 			aria-labelledby={titleId}
 			onClick={() => useEditorStore.setState({ checkIssue: issue.key })}
 			className={cn(
-				"fields-on-card grid cursor-(--cursor-interactive) grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-3 rounded-xl bg-surface-secondary p-3 transition-[box-shadow] duration-standard",
+				"grid cursor-(--cursor-interactive) grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-3 rounded-xl bg-surface-secondary p-3 transition-[box-shadow] duration-standard fields-on-card",
 				selected && SELECTED_RING[tone],
 			)}
 		>

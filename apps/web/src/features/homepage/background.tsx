@@ -35,13 +35,13 @@ export function LandingBackground() {
 			/>
 			<div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
 				<div className="transition-opacity duration-[.8s] dark:opacity-0">
-					<div className="motion-safe:animate-breathe absolute -inset-[20%] bg-[radial-gradient(38%_34%_at_24%_20%,oklch(0.995_0.04_85/.8),transparent_72%)]" />
-					<div className="window-shadow motion-safe:animate-drift absolute -top-[30%] -left-[12%] h-[140%] w-[78%]" />
+					<div className="absolute -inset-[20%] bg-[radial-gradient(38%_34%_at_24%_20%,oklch(0.995_0.04_85/.8),transparent_72%)] motion-safe:animate-breathe" />
+					<div className="absolute -top-[30%] -left-[12%] h-[140%] w-[78%] window-shadow motion-safe:animate-drift" />
 				</div>
 				{motes.map((style) => (
 					<span
 						key={style.left}
-						className="motion-safe:animate-mote absolute size-(--size) rounded-full bg-[oklch(0.5_0.04_80/.35)] opacity-0 dark:bg-[oklch(0.9_0.06_80/.45)]"
+						className="absolute size-(--size) rounded-full bg-[oklch(0.5_0.04_80/.35)] opacity-0 motion-safe:animate-mote dark:bg-[oklch(0.9_0.06_80/.45)]"
 						style={style as CSSProperties}
 					/>
 				))}
@@ -49,7 +49,7 @@ export function LandingBackground() {
 			{/* Above the header (z-70) and the theme cord (z-72), below the skip link (z-100); it never takes a click. */}
 			<div
 				aria-hidden="true"
-				className="paper-grain pointer-events-none fixed inset-0 z-80 opacity-[.07] dark:opacity-[.05] dark:invert"
+				className="pointer-events-none fixed inset-0 z-80 paper-grain opacity-[.07] dark:opacity-[.05] dark:invert"
 			/>
 		</>
 	);

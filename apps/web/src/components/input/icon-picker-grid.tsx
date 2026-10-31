@@ -3,10 +3,10 @@ import type { IconName } from "@rezumi/schema/icons";
 import type { CellComponentProps } from "react-window";
 import { Input } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { ProhibitIcon } from "@phosphor-icons/react";
 import Fuse from "fuse.js";
 import { Grid } from "react-window";
 import { icons } from "@rezumi/schema/icons";
+import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
 const columnCount = 8;
@@ -36,7 +36,7 @@ function IconCellComponent({ columnIndex, rowIndex, style, icons, onChange }: Ic
 			}}
 			className="flex size-full cursor-(--cursor-interactive) items-center justify-center rounded-lg hover:bg-default"
 		>
-			{icon ? <i className={cn("ph text-base", `ph-${icon}`)} /> : <ProhibitIcon />}
+			{icon ? <i className={cn("ph text-base", `ph-${icon}`)} /> : <Icon name="prohibit" size={16} />}
 		</button>
 	);
 }

@@ -15,7 +15,7 @@ export function LanguageCommandPage() {
 					textValue={searchText(i18n.t(label), [value])}
 					onAction={() => changeLocale(value)}
 				>
-					<span className="font-mono text-xs text-ink-3">{value}</span>
+					<span className="font-mono text-xs text-muted">{value}</span>
 					{i18n.t(label)}
 				</PaletteItem>
 			))}

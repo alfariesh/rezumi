@@ -217,7 +217,7 @@ To deploy, follow the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cl
 | API              | oRPC, OpenAPI REST, and MCP             |
 | Auth             | Better Auth                             |
 | Styling          | Tailwind CSS                            |
-| UI Components    | Base UI + shared UI package             |
+| UI Components    | HeroUI + HeroUI Pro, shared UI package  |
 | State Management | Zustand + TanStack Query                |
 | PDF rendering    | Forme, with PDF.js for the viewer       |
 | Rich text        | TipTap                                  |

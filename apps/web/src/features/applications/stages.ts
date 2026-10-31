@@ -34,7 +34,7 @@ export const getStageLabel = (status: ApplicationStatus) =>
 	})[status];
 
 export const getStageColor = (status: ApplicationStatus) =>
-	STAGES.find((stage) => stage.value === status)?.color ?? "var(--ink-3)";
+	STAGES.find((stage) => stage.value === status)?.color ?? "var(--muted)";
 
 export const getClosedReasonLabel = (reason: ApplicationClosedReason) =>
 	({

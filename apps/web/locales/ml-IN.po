@@ -2703,6 +2703,7 @@ msgstr "ചൈനീസ് (സിംപ്ലിഫൈഡ്)"
 msgid "Chinese (Traditional)"
 msgstr "ചൈനീസ് (ട്രഡീഷണൽ)"
 
+#: src/features/ats-checker/checker.tsx
 #: src/features/documents/documents-page.tsx
 msgid "Choose a file"
 msgstr "ഒരു ഫയൽ തിരഞ്ഞെടുക്കുക"
@@ -4646,10 +4647,6 @@ msgstr "സ്ഥാനം മാറ്റാൻ വലിച്ചിടുക,
 msgid "Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag anything we're unsure of."
 msgstr "ഇവിടെ ഒരു ഫയൽ ഇടുക അല്ലെങ്കിൽ ബ്രൗസ് ചെയ്യുക. PDF, Word, Rezumi അല്ലെങ്കിൽ JSON Resume. ഞങ്ങൾ എല്ലാ വിഭാഗങ്ങളും പൂരിപ്പിക്കുകയും ഞങ്ങൾക്ക് ഉറപ്പില്ലാത്ത എന്തും ഫ്ലാഗ് ചെയ്യുകയും ചെയ്യുന്നു."
 
-#: src/features/ats-checker/checker.tsx
-msgid "Drop a PDF here or choose a file"
-msgstr "ഇവിടെ ഒരു PDF ഇടുക അല്ലെങ്കിൽ ഒരു ഫയൽ തിരഞ്ഞെടുക്കുക"
-
 #: src/features/documents/documents-page.tsx
 msgid "Drop a PDF, Word or JSON file"
 msgstr "ഒരു PDF, Word അല്ലെങ്കിൽ JSON ഫയൽ ഡ്രോപ്പ് ചെയ്യുക"
@@ -4661,6 +4658,10 @@ msgstr "സർവ്വനാമങ്ങൾ ഒഴിവാക്കി ക്�
 #: src/features/documents/documents-page.tsx
 msgid "Drop to import"
 msgstr "ഇറക്കുമതി ചെയ്യാൻ ഡ്രോപ്പ് ചെയ്യുക"
+
+#: src/features/ats-checker/checker.tsx
+msgid "Drop your PDF here"
+msgstr ""
 
 #: src/dialogs/resume/index.tsx
 #: src/features/documents/document-actions.tsx
@@ -9715,6 +9716,7 @@ msgid "Reorder {0}"
 msgstr "{0} പുനഃക്രമീകരിക്കുക"
 
 #: src/features/resume/editor/write/section-row.tsx
+#: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
 msgstr "{title} പുനഃക്രമീകരിക്കുക"
 
@@ -11129,6 +11131,10 @@ msgstr "അടുക്കുക"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Sort by date"
 msgstr "തീയതി പ്രകാരം അടുക്കുക"
+
+#: src/components/input/chip-input.tsx
+msgid "sortable"
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/application-form-sheet.tsx

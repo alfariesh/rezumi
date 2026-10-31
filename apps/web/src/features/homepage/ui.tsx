@@ -169,7 +169,7 @@ export function Stamp({ tone, children, stamp, className }: StampProps) {
 	return (
 		<span
 			className={cn(
-				"font-martian inline-flex h-[2em] shrink-0 [transform:scale(calc(1.7-var(--s)*.7))_rotate(calc(-5deg-(1-var(--s))*10deg))] items-center rounded-sm border-2 border-current px-[.6em] text-[.72em] font-bold whitespace-nowrap opacity-[calc(var(--s)*.88)] mix-blend-multiply [filter:url(#landing-pencil)] [transition:transform_.2s_var(--ease-out-strong)] dark:mix-blend-normal",
+				"inline-flex h-[2em] shrink-0 [transform:scale(calc(1.7-var(--s)*.7))_rotate(calc(-5deg-(1-var(--s))*10deg))] items-center rounded-sm border-2 border-current px-[.6em] font-martian text-[.72em] font-bold whitespace-nowrap opacity-[calc(var(--s)*.88)] mix-blend-multiply [filter:url(#landing-pencil)] [transition:transform_.2s_var(--ease-out-strong)] dark:mix-blend-normal",
 				tone === "supported" && "text-[oklch(0.48_0.11_150)]",
 				tone === "partial" && "text-[oklch(0.55_0.12_70)]",
 				tone === "missing" && "text-[oklch(0.5_0.01_95)]",

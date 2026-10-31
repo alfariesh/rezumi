@@ -1,18 +1,19 @@
-import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderToStaticMarkup } from "react-dom/server";
 import { defaultSectionIconNames } from "@rezumi/schema/resume/section-icons";
 
 /**
  * Writes `packages/pdf/src/forme/phosphor-icons/`: every regular-weight Phosphor icon as the SVG markup inside its
  * 256×256 viewBox, keyed by its kebab-case name ("address-book"). The PDF engine draws icons from these strings: the
- * common ones load first, the rest only when a render draws one of them.
+ * common ones load first, the rest only when a render draws one of them. The source is the upstream
+ * `@phosphor-icons/core` catalog (`assets/regular/<name>.svg`), whose file names are already the keys.
  */
 
 const require = createRequire(import.meta.url);
-const defsDirectory = join(dirname(require.resolve("@phosphor-icons/react")), "defs");
+// The package exports only `dist` and `assets/*` paths, so find the package root from its entry point.
+const assetsDirectory = join(dirname(require.resolve("@phosphor-icons/core")), "..", "assets", "regular");
 const target = fileURLToPath(new URL("../../packages/pdf/src/forme/phosphor-icons/", import.meta.url));
 
 // Icons most resumes draw, loaded as one file: default section icons, contact icons and network icons. A name
@@ -40,12 +41,15 @@ const COMMON = new Set<string>([
 	"git-branch",
 ]);
 
-// "AddressBookTabs" → "address-book-tabs", "XLogo" → "x-logo", "NumberCircleOne" → "number-circle-one".
-export const kebab = (name: string) =>
-	name
-		.replace(/([a-z0-9])([A-Z])/g, "$1-$2")
-		.replace(/([A-Z])([A-Z][a-z])/g, "$1-$2")
-		.toLowerCase();
+// Regular-weight icons are plain `<path d="…"/>` elements inside a bare `<svg>`; anything else would need new handling
+// in the PDF engine, so fail loudly instead of writing markup it can't draw.
+const SVG_WRAPPER = /^<svg[^>]*>|<\/svg>\s*$/g;
+const PATH_ELEMENT = /<path d="[^"]*"\/>/g;
+const pathMarkup = (name: string, svg: string) => {
+	const inner = svg.replace(SVG_WRAPPER, "");
+	if (!inner || inner.replace(PATH_ELEMENT, "") !== "") throw new Error(`Unexpected markup in ${name}.svg: ${inner}`);
+	return inner.replaceAll("/>", "></path>");
+};
 
 // Forme 0.25 misreads path numbers written back to back ("-21.11-.13-.06"), drawing some icons as blobs, so every
 // number and command gets its own space-separated token.
@@ -55,15 +59,11 @@ const spacePathData = (markup: string) =>
 		return ` d="${tokens.join(" ")}"`;
 	});
 
-const files = (await readdir(defsDirectory)).filter((file) => file.endsWith(".es.js")).sort();
+const files = (await readdir(assetsDirectory)).filter((file) => file.endsWith(".svg")).sort();
 const icons: Record<string, string> = {};
 for (const file of files) {
-	const module = (await import(join(defsDirectory, file))) as { default: Map<string, unknown> };
-	const regular = module.default.get("regular");
-	if (!regular) continue;
-	icons[kebab(file.replace(/\.es\.js$/, ""))] = spacePathData(
-		renderToStaticMarkup(regular as Parameters<typeof renderToStaticMarkup>[0]),
-	);
+	const name = file.replace(/\.svg$/, "");
+	icons[name] = spacePathData(pathMarkup(name, await readFile(join(assetsDirectory, file), "utf8")));
 }
 
 const common: Record<string, string> = {};

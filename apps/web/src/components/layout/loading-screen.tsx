@@ -40,7 +40,7 @@ export function LoadingScreen() {
 		<div
 			role="status"
 			className={cn(
-				"fixed inset-0 z-50 flex h-svh w-svw flex-col items-center justify-center gap-y-6 bg-bg",
+				"fixed inset-0 z-50 flex h-svh w-svw flex-col items-center justify-center gap-y-6 bg-background",
 				hasNavigated && "transition-opacity duration-standard ease-enter starting:opacity-0",
 			)}
 		>
@@ -50,7 +50,7 @@ export function LoadingScreen() {
 			<div aria-hidden="true" className="flex h-24 w-[min(34rem,calc(100vw-3rem))] items-start justify-center">
 				<TextShimmer
 					key={index}
-					className="animate-in text-center text-2xl leading-tight font-semibold tracking-tight text-balance duration-500 fade-in sm:text-3xl"
+					className="text-center text-2xl leading-tight font-semibold tracking-tight text-balance transition-opacity duration-500 ease-enter sm:text-3xl starting:opacity-0"
 				>
 					{quotes[index]}
 				</TextShimmer>

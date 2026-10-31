@@ -7,8 +7,8 @@ import { getPdfFindingMessage, getPdfSeverityLabel } from "../messages";
 function severityDotClass(severity: PdfSeverity) {
 	return match(severity)
 		.with("blocker", () => "bg-danger")
-		.with("warning", () => "bg-warn")
-		.with("tip", () => "bg-info-text")
+		.with("warning", () => "bg-warning")
+		.with("tip", () => "bg-accent")
 		.exhaustive();
 }
 
@@ -27,7 +27,7 @@ export function FindingRow({ finding }: FindingRowProps) {
 
 				<div className="min-w-0 flex-1 space-y-1">
 					<p className="text-sm leading-snug font-medium">{message.title}</p>
-					<p className="text-xs leading-normal text-ink-3">{message.action}</p>
+					<p className="text-xs leading-normal text-muted">{message.action}</p>
 				</div>
 
 				<Chip size="sm" variant="soft" className="shrink-0">
@@ -38,7 +38,7 @@ export function FindingRow({ finding }: FindingRowProps) {
 			{(evidence?.snippet || evidence?.page !== undefined) && (
 				<div className="flex flex-wrap items-center gap-2">
 					{evidence.snippet && (
-						<code className="min-w-0 truncate rounded bg-sunken px-1.5 py-0.5 font-mono text-xs text-ink-3">
+						<code className="min-w-0 truncate rounded bg-default px-1.5 py-0.5 font-mono text-xs text-muted">
 							{evidence.snippet}
 						</code>
 					)}

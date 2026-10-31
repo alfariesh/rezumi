@@ -58,14 +58,14 @@ export function Tailor() {
 					id="tailor-title"
 					className="absolute start-(--gutter) top-[10vh] text-[14vw] leading-[.86] font-normal whitespace-nowrap text-ink min-[900px]:top-[11vh] min-[900px]:text-[clamp(64px,8vw,150px)]"
 				>
-					<span className="font-anybody block [transform:translateX(calc(var(--dir)*(1-var(--sw))*-3vw))] font-light tracking-[-.03em] [clip-path:inset(-25%_-5%_50%_-5%)]">
+					<span className="block [transform:translateX(calc(var(--dir)*(1-var(--sw))*-3vw))] font-anybody font-light tracking-[-.03em] [clip-path:inset(-25%_-5%_50%_-5%)]">
 						{tailor}
 						<span className="text-accent">.</span>
 					</span>
 					<span
 						aria-hidden="true"
 						data-text={tailor}
-						className="font-anybody absolute start-0 top-0 block [transform:translateX(calc(var(--dir)*(1-var(--sw))*3vw))] font-light tracking-[-.03em] [clip-path:inset(50%_-5%_-25%_-5%)] before:content-[attr(data-text)] after:text-accent after:content-['.']"
+						className="absolute start-0 top-0 block [transform:translateX(calc(var(--dir)*(1-var(--sw))*3vw))] font-anybody font-light tracking-[-.03em] [clip-path:inset(50%_-5%_-25%_-5%)] before:content-[attr(data-text)] after:text-accent after:content-['.']"
 					/>
 					<span
 						aria-hidden="true"
@@ -76,7 +76,7 @@ export function Tailor() {
 				<SceneCaption
 					number="04"
 					title={tailor}
-					className="min-[900px]:short:hidden absolute end-(--gutter) top-[13vh] hidden w-[min(24em,30vw)] min-[900px]:flex"
+					className="absolute end-(--gutter) top-[13vh] hidden w-[min(24em,30vw)] min-[900px]:flex min-[900px]:short:hidden"
 				>
 					{t`Paste a job posting once. It feeds a tailored copy of your resume, a match score, a cover letter draft and a place to track the role.`}
 				</SceneCaption>
@@ -114,7 +114,7 @@ export function Tailor() {
 						<div className="flex items-center gap-[11px]">
 							<span
 								aria-hidden="true"
-								className="font-anybody flex size-9 shrink-0 items-center justify-center rounded-lg bg-ink text-[19px] leading-none font-medium text-bg font-stretch-[95%]"
+								className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-ink font-anybody text-[19px] leading-none font-medium text-bg font-stretch-[95%]"
 							>
 								F
 							</span>
@@ -140,8 +140,8 @@ export function Tailor() {
 						</div>
 					</div>
 
-					<div className="min-[900px]:short:hidden hidden flex-col gap-2 rounded-lg border border-dashed border-line-2 px-3.5 py-3 min-[900px]:flex">
-						<div className="font-martian grid grid-cols-4 text-xs leading-none font-medium text-ink-3">
+					<div className="hidden flex-col gap-2 rounded-lg border border-dashed border-line-2 px-3.5 py-3 min-[900px]:flex min-[900px]:short:hidden">
+						<div className="grid grid-cols-4 font-martian text-xs leading-none font-medium text-ink-3">
 							{stages.map((stage) => (
 								<span key={stage.label} className="flex min-w-0 items-center gap-[5px]">
 									<span aria-hidden="true" className={cn("size-[7px] shrink-0 rounded-sm", stage.dot)} />

@@ -170,7 +170,7 @@ function GroupNav({ active, onJump, navRef }: GroupNavProps) {
 						>
 							{({ isSelected }) => (
 								<>
-									<Icon name={group.icon} size={16} />
+									<Icon name={group.icon} size={16} variant={isSelected ? "duotone" : "stroke"} />
 									<ExpandingLabel shown={isSelected}>{group.label()}</ExpandingLabel>
 								</>
 							)}

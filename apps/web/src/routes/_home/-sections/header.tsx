@@ -1,10 +1,10 @@
 import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { ArrowRightIcon, TranslateIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
+import { Icon } from "@rezumi/ui/components/icon";
 import { GithubStarsButton } from "@/components/input/github-stars-button";
 import { LocaleCombobox } from "@/features/locale/combobox";
 import { ThemeToggleButton } from "@/features/theme/toggle-button";
@@ -20,7 +20,7 @@ export function Header() {
 	return (
 		<header
 			data-hidden={hidden}
-			className="fixed inset-x-0 top-0 z-50 animate-in border-b border-transparent bg-bg/80 backdrop-blur-lg ease-out-strong animation-duration-300 [transition:translate_250ms_var(--ease-out-strong)] fade-in data-[hidden=true]:-translate-y-full"
+			className="fixed inset-x-0 top-0 z-50 border-b border-transparent bg-background/80 backdrop-blur-lg [transition:translate_250ms_var(--ease-out-strong),opacity_300ms_var(--ease-out-strong)] data-[hidden=true]:-translate-y-full starting:opacity-0"
 		>
 			<nav aria-label={t`Main navigation`} className="container mx-auto flex items-center gap-x-4 p-3 lg:px-12">
 				<Link to="/" className="transition-opacity hover:opacity-80" aria-label={t`Rezumi - Go to homepage`}>
@@ -35,7 +35,7 @@ export function Header() {
 								className={buttonVariants({ variant: "ghost", isIconOnly: true })}
 								aria-label={t`Change language`}
 							>
-								<TranslateIcon />
+								<Icon name="translate" />
 							</button>
 						}
 					/>
@@ -46,7 +46,7 @@ export function Header() {
 						<GithubStarsButton />
 
 						<Link to="/dashboard" aria-label={t`Go to dashboard`} className={buttonVariants({ isIconOnly: true })}>
-							<ArrowRightIcon aria-hidden="true" />
+							<Icon name="arrow-right" />
 						</Link>
 					</div>
 				</div>

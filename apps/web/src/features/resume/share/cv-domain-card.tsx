@@ -25,7 +25,7 @@ export function CvDomainCard({ suggestion: { domain, checked, price }, connectin
 	const yearly = price?.renewal === price?.amount;
 
 	return (
-		<div className="fields-on-card grid gap-3 rounded-xl bg-surface-secondary p-4">
+		<div className="grid gap-3 rounded-xl bg-surface-secondary p-4 fields-on-card">
 			<div className="grid gap-0.5">
 				<p className="truncate font-mono text-[15px] leading-5 font-medium" dir="ltr">
 					{domain}

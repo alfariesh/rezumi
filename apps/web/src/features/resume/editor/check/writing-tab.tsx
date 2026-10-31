@@ -283,7 +283,7 @@ function WritingNoteCard({ note }: { note: WritingNote }) {
 	};
 
 	return (
-		<article className="fields-on-card grid gap-2 rounded-xl bg-surface-secondary p-3">
+		<article className="grid gap-2 rounded-xl bg-surface-secondary p-3 fields-on-card">
 			<div className="flex items-start justify-between gap-2">
 				<span className="min-w-0 font-mono text-xs text-muted">{note.location}</span>
 				<Chip size="sm" variant="soft" color={note.impact === "high" ? "warning" : "default"}>

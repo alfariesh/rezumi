@@ -4,12 +4,10 @@
  * paragraph is in the first response and the page paints before any JavaScript runs; React renders the live page in
  * its place once the route has loaded.
  */
-import type { IconProps } from "@phosphor-icons/react";
 import type { Locale } from "@rezumi/utils/locale";
 import type { ReactNode } from "react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { IconContext } from "@phosphor-icons/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createMemoryHistory, createRootRoute, createRouter, RouterContextProvider } from "@tanstack/react-router";
 import { I18nProvider as AriaI18nProvider } from "react-aria-components";
@@ -24,9 +22,6 @@ import { getAtsCheckerMeta, getHomepageMeta, getTemplatesMeta } from "@/libs/seo
 import { Header } from "@/routes/_home/-sections/header";
 
 export const locales = localeSchema.options;
-
-// Matches the root route's icon defaults (routes/__root.tsx), which the marketing header's icons inherit.
-const iconContextValue: IconProps = { size: 16, weight: "regular" };
 
 const pages = {
 	home: { path: "/", meta: getHomepageMeta, render: () => <Homepage /> },
@@ -75,11 +70,9 @@ export async function renderPage(name: PrerenderedPage, locale: Locale) {
 		<RouterContextProvider router={router}>
 			<QueryClientProvider client={new QueryClient()}>
 				<I18nProvider i18n={i18n}>
-					<IconContext.Provider value={iconContextValue}>
-						<ThemeProvider theme="system">
-							<AriaI18nProvider locale={locale}>{page.render()}</AriaI18nProvider>
-						</ThemeProvider>
-					</IconContext.Provider>
+					<ThemeProvider theme="system">
+						<AriaI18nProvider locale={locale}>{page.render()}</AriaI18nProvider>
+					</ThemeProvider>
 				</I18nProvider>
 			</QueryClientProvider>
 		</RouterContextProvider>,

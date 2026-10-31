@@ -164,7 +164,7 @@ export function PromptBox(props: PromptBoxProps) {
 					<PromptInput.ToolbarEnd>
 						<PromptInput.Send aria-label={sendLabel} isDisabled={streaming ? false : props.disabled || !props.canSend}>
 							{/* Stop is the one filled glyph: a solid square. */}
-							<Icon name={streaming ? "stop" : "arrow-up"} filled={streaming} size={18} />
+							<Icon name={streaming ? "stop" : "arrow-up"} variant={streaming ? "duotone" : "stroke"} size={18} />
 						</PromptInput.Send>
 					</PromptInput.ToolbarEnd>
 				</PromptInput.Toolbar>

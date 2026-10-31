@@ -1,7 +1,7 @@
 import { buttonVariants } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
-import { GithubLogoIcon, StarIcon } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
+import { Icon } from "@rezumi/ui/components/icon";
 import { RollingNumber } from "@/components/ui/rolling-number";
 import { orpc } from "@/libs/orpc/client";
 
@@ -24,9 +24,9 @@ export function GithubStarsButton() {
 			rel="noopener noreferrer"
 			className={buttonVariants({ variant: "secondary" })}
 		>
-			<GithubLogoIcon aria-hidden="true" />
+			<Icon name="github-logo" size={16} />
 			{starCount != null ? <RollingNumber value={starCount} className="font-bold" /> : null}
-			<StarIcon aria-hidden="true" />
+			<Icon name="star" size={16} />
 		</a>
 	);
 }

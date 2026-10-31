@@ -114,7 +114,7 @@ function ScanResult() {
 						)}
 					>
 						<Icon
-							filled
+							variant="duotone"
 							size={18}
 							name={item.done ? "check-circle" : item.warning ? "warning-circle" : "circle"}
 							className={cn(
@@ -172,14 +172,14 @@ export function Check() {
 					id="check-title"
 					className="absolute start-(--gutter) top-[10vh] max-w-[90vw] text-[9vw] leading-[1.05] font-normal text-balance text-ink min-[900px]:top-[11vh] min-[900px]:max-w-[45vw] min-[900px]:text-[clamp(40px,4vw,72px)]"
 				>
-					<span className="font-anybody block font-light tracking-[-.03em] [clip-path:inset(calc(var(--sv)*120%-20%)_0_-20%_0)]">
+					<span className="block font-anybody font-light tracking-[-.03em] [clip-path:inset(calc(var(--sv)*120%-20%)_0_-20%_0)]">
 						{check}
 						<span className="text-accent">.</span>
 					</span>
 					<span
 						aria-hidden="true"
 						data-text={`${check}.`}
-						className="font-martian absolute start-0 top-0 block font-light tracking-[-.05em] text-accent-text [clip-path:inset(-20%_0_calc((1-var(--sv))*120%)_0)] before:content-[attr(data-text)]"
+						className="absolute start-0 top-0 block font-martian font-light tracking-[-.05em] text-accent-text [clip-path:inset(-20%_0_calc((1-var(--sv))*120%)_0)] before:content-[attr(data-text)]"
 					/>
 					<span
 						aria-hidden="true"
@@ -195,7 +195,7 @@ export function Check() {
 					<SceneCaption
 						number="03"
 						title={check}
-						className="min-[900px]:short:hidden hidden min-[900px]:flex"
+						className="hidden min-[900px]:flex min-[900px]:short:hidden"
 						action={
 							<Link
 								to="/ats-checker"
@@ -219,7 +219,7 @@ export function Check() {
 					<Sheet />
 					<div
 						aria-hidden="true"
-						className="check-lens font-martian absolute inset-0 flex flex-col gap-[2.2cqw] overflow-hidden rounded-sm p-[7cqw] text-[2.15cqw] leading-[1.7] text-[oklch(0.9_0.09_150)] opacity-(--lo)"
+						className="absolute inset-0 flex flex-col gap-[2.2cqw] overflow-hidden rounded-sm check-lens p-[7cqw] font-martian text-[2.15cqw] leading-[1.7] text-[oklch(0.9_0.09_150)] opacity-(--lo)"
 					>
 						<ParsedTextLive />
 					</div>
@@ -232,7 +232,7 @@ export function Check() {
 					/>
 					<span
 						aria-hidden="true"
-						className="font-martian pointer-events-none absolute top-[calc(var(--ly,16%)-14.5cqw)] left-(--lx,50%) -translate-x-1/2 -translate-y-full rounded-sm bg-[oklch(0.2_0.03_160)] px-[9px] py-[5px] text-xs leading-none font-medium whitespace-nowrap text-[oklch(0.88_0.09_150)] opacity-(--lo)"
+						className="pointer-events-none absolute top-[calc(var(--ly,16%)-14.5cqw)] left-(--lx,50%) -translate-x-1/2 -translate-y-full rounded-sm bg-[oklch(0.2_0.03_160)] px-[9px] py-[5px] font-martian text-xs leading-none font-medium whitespace-nowrap text-[oklch(0.88_0.09_150)] opacity-(--lo)"
 					>
 						{t`What software reads`}
 					</span>

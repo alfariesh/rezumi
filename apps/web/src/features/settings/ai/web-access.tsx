@@ -226,7 +226,7 @@ export function WebAccessSection() {
 										<Trans>Key stored encrypted</Trans>
 									</p>
 								</div>
-								<div className="max-sm:ps-row-indent flex flex-wrap items-center gap-1 max-sm:basis-full">
+								<div className="flex flex-wrap items-center gap-1 max-sm:basis-full max-sm:ps-row-indent">
 									<Button
 										variant="secondary"
 										size="sm"

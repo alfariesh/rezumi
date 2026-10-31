@@ -141,8 +141,8 @@ export function Remember() {
 				{/* Knowledge: the story on an index card, with its result's fact clipped to it. */}
 				<div className="relative flex [transform:translateY(calc((1-var(--rin))*8vh))_rotate(calc(-1.2deg-(1-var(--rin))*3deg))] flex-col opacity-[clamp(0,var(--rin)*3,1)] [transition:transform_.5s_var(--ease)]">
 					<span className={cn(labelClass, "mb-3 text-ink-3")}>{t`Knowledge`}</span>
-					<div className="on-paper rounded-md bg-paper px-[clamp(18px,2vw,30px)] py-[clamp(18px,2vw,26px)] shadow-paper">
-						<span className="font-martian flex items-center gap-2 text-xs font-medium text-accent-text">
+					<div className="rounded-md bg-paper px-[clamp(18px,2vw,30px)] py-[clamp(18px,2vw,26px)] on-paper shadow-paper">
+						<span className="flex items-center gap-2 font-martian text-xs font-medium text-accent-text">
 							<Icon name="book-open" size={15} />
 							{t`Story · 5 of 5 parts`}
 						</span>
@@ -204,11 +204,11 @@ export function Remember() {
 						/>
 						<div
 							className={cn(
-								"on-paper rounded-md bg-paper px-5 py-4 ring-2 shadow-paper transition-shadow duration-500",
+								"rounded-md bg-paper px-5 py-4 on-paper shadow-paper ring-2 transition-shadow duration-500",
 								withResult ? "ring-transparent" : "ring-[oklch(0.75_0.09_70/.6)]",
 							)}
 						>
-							<span className="font-martian flex items-center gap-2 text-xs font-medium text-ink-3">
+							<span className="flex items-center gap-2 font-martian text-xs font-medium text-ink-3">
 								{t`Fact · Accomplishment`}
 							</span>
 							<p className="mt-1.5 font-ui text-[14px] leading-[1.5] text-ink">
@@ -276,7 +276,7 @@ export function Remember() {
 						))}
 					</Segment>
 
-					<div className="on-paper relative rotate-[.5deg] rounded-md bg-paper px-[clamp(20px,3.4vw,52px)] py-[clamp(22px,3vw,44px)] shadow-paper">
+					<div className="relative rotate-[.5deg] rounded-md bg-paper px-[clamp(20px,3.4vw,52px)] py-[clamp(22px,3vw,44px)] on-paper shadow-paper">
 						<span className="font-martian text-xs font-medium text-accent-text">{draft.context}</span>
 						<p
 							key={`${destination}-${withResult}`}
@@ -301,7 +301,7 @@ export function Remember() {
 							))}
 						</p>
 						{!withResult && (
-							<p className="remember-settle mt-3 inline-flex items-start gap-2 rounded-md border border-dashed border-[oklch(0.75_0.09_70)] px-3 py-2 font-ui text-[13.5px] text-warn-text">
+							<p className="mt-3 inline-flex remember-settle items-start gap-2 rounded-md border border-dashed border-[oklch(0.75_0.09_70)] px-3 py-2 font-ui text-[13.5px] text-warn-text">
 								<Icon name="question" size={16} className="mt-0.5 shrink-0" />
 								{t`Result left out: no fact backs it. Switch it on, or add one, and it comes back.`}
 							</p>

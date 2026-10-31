@@ -500,7 +500,7 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 	const offerDraft = canDraft && hasUsableProvider;
 
 	return (
-		<div className="fields-on-card grid justify-items-start gap-3 rounded-xl bg-surface-secondary p-4">
+		<div className="grid justify-items-start gap-3 rounded-xl bg-surface-secondary p-4 fields-on-card">
 			<p className="text-sm text-muted">
 				{company && hasResume ? (
 					<Trans>Start typing, or draft from what we know: the {company} posting and your resume.</Trans>
@@ -611,7 +611,7 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 				</Button>
 			)}
 			{draft.phase === "ready" && (
-				<div className={cn(ENTER_CLASS, "fields-on-card grid gap-2 rounded-xl bg-surface-secondary p-3")}>
+				<div className={cn(ENTER_CLASS, "grid gap-2 rounded-xl bg-surface-secondary p-3 fields-on-card")}>
 					<span className="flex items-center gap-1.5 text-xs text-muted">
 						<Icon name="sparkle" size={16} className="shrink-0 text-accent" />
 						{sources}

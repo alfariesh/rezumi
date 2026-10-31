@@ -181,7 +181,7 @@ export function PdfViewer({ className, file }: PdfViewerProps) {
 			// Until the real height is known, reserve an A4 page so the viewer doesn't grow from 192px.
 			// PDF.js's own stylesheet is unlayered, so the page spacing overrides need `!` to beat it.
 			className={cn(
-				"relative bg-sunken [&_.pdfViewer]:py-0! [&_.pdfViewer_.page]:mt-0! [&_.pdfViewer_.page]:mb-4! [&_.pdfViewer_.page:last-child]:mb-0!",
+				"relative bg-default [&_.pdfViewer]:py-0! [&_.pdfViewer_.page]:mt-0! [&_.pdfViewer_.page]:mb-4! [&_.pdfViewer_.page:last-child]:mb-0!",
 				viewerHeight ? "min-h-0" : "aspect-[210/297]",
 				className,
 			)}
@@ -192,14 +192,14 @@ export function PdfViewer({ className, file }: PdfViewerProps) {
 			</div>
 
 			{error ? (
-				<div className="absolute inset-0 flex items-center justify-center bg-bg px-6 text-center text-sm text-ink-3">
+				<div className="absolute inset-0 flex items-center justify-center bg-background px-6 text-center text-sm text-muted">
 					Unable to display PDF preview.
 				</div>
 			) : (
 				<div
 					aria-hidden={isReady}
 					className={cn(
-						"absolute inset-0 flex items-center justify-center bg-bg transition-[opacity,visibility] ease-enter",
+						"absolute inset-0 flex items-center justify-center bg-background transition-[opacity,visibility] ease-enter",
 						isReady ? "invisible opacity-0 duration-[calc(var(--d2)*0.7)]" : "duration-standard",
 					)}
 				>

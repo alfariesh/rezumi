@@ -99,7 +99,7 @@ Fit for Rezumi (partial; real regression risk):
 
 - Replaces `MessageScroller*` in `packages/ui/src/components/message-scroller.tsx` used by `assistant/conversation.tsx` and `career/coach-chat.tsx`. Both already use `role="log"` + `aria-busy`.
 - Lost behaviours: (a) `scrollAnchor={message.role === "user"}` + `defaultScrollPosition="last-anchor"`: a new turn settles near the top and a saved thread reopens on its last user message; HeroUI only pins to the bottom, so a long streaming answer pushes the user's question off screen. (b) `data-pending-scroll:invisible` flash guard. (c) per-row `content-visibility:auto` (`MessageScrollerItem`). (d) "Latest" text button: HeroUI's is icon-only with tooltip.
-- Recommendation: keep `MessageScroller` (behaviour comes from `@shadcn/react/message-scroller`, not from the visual layer) unless the product accepts pin-to-bottom. If adopted, wrap rows that need alignment with your own divs and verify thread reopen UX.
+- Recommendation: keep `MessageScroller` (its behaviour is owned in `packages/ui`, adapted from shadcn's message scroller, not taken from the visual layer) unless the product accepts pin-to-bottom. If adopted, wrap rows that need alignment with your own divs and verify thread reopen UX.
 
 ---
 

@@ -1,54 +1,8 @@
 ---
-version: 6.0.0
-name: Rezumi · Desk & Paper
-description: A warm, quiet interface around bright paper. Moss green marks primary actions, selection, and progress. Light and dark themes keep document paper white.
+version: 7.0.0
+name: Rezumi · HeroUI
+description: The app is HeroUI's default system as shipped: its palette, radius, system type and focus ring, with HeroUI Pro for the shell and the data-heavy surfaces. Rezumi adds paper, application stages and a few layout and motion tokens. The homepage keeps its own Desk & Paper look.
 colors:
-  light:
-    bg: "#F8F7F3"
-    surface: "#FEFDFC"
-    raised: "#FFFFFF"
-    sunken: "#F0EFEB"
-    line: "#DFDEDA"
-    line-2: "#C5C4BE"
-    ink: "#1C1B15"
-    ink-2: "#4F4D47"
-    ink-3: "#6D6C65"
-    accent: "#337344"
-    accent-hover: "#206133"
-    on-accent: "#F7FEF8"
-    accent-soft: "#DCF2DF"
-    accent-text: "#195C2E"
-    danger: "#BA3630"
-    danger-soft: "#FFE7E4"
-    danger-text: "#A92321"
-    warn: "#D29922"
-    warn-soft: "#FCEDCD"
-    warn-text: "#81520A"
-    info-soft: "#E0F1FF"
-    info-text: "#1D5B92"
-  dark:
-    bg: "#100F0C"
-    surface: "#171613"
-    raised: "#1F1E1A"
-    sunken: "#0B0A08"
-    line: "#2C2B27"
-    line-2: "#494843"
-    ink: "#EFEEEB"
-    ink-2: "#BCBAB5"
-    ink-3: "#979590"
-    accent: "#6FC082"
-    accent-hover: "#83D494"
-    on-accent: "#07150A"
-    accent-soft: "#1A3520"
-    accent-text: "#8FD89E"
-    danger: "#D9544B"
-    danger-soft: "#47211D"
-    danger-text: "#FDA297"
-    warn: "#E4B750"
-    warn-soft: "#3E2D10"
-    warn-text: "#EFCC83"
-    info-soft: "#192F46"
-    info-text: "#9DC9F7"
   paper: "#FFFFFF"
   stages:
     saved: "#908C7F"
@@ -58,27 +12,16 @@ colors:
     offer: "#579F68"
     closed: "#C67067"
 typography:
-  display: { fontFamily: Instrument Serif, fontSize: 44px, lineHeight: 48px, fontWeight: 400, letterSpacing: -0.01em }
-  title: { fontFamily: Instrument Serif, fontSize: 30px, lineHeight: 36px, fontWeight: 400 }
-  sheet-title: { fontFamily: Instrument Serif, fontSize: 22px, lineHeight: 28px, fontWeight: 400 }
-  heading: { fontFamily: Figtree, fontSize: 20px, lineHeight: 28px, fontWeight: 600 }
-  section-heading: { fontFamily: Figtree, fontSize: 17px, lineHeight: 24px, fontWeight: 600 }
-  label: { fontFamily: Figtree, fontSize: 15px, lineHeight: 22px, fontWeight: 600 }
-  field-label: { fontFamily: Figtree, fontSize: 12px, lineHeight: 16px, fontWeight: 500 }
-  body: { fontFamily: Figtree, fontSize: 15px, lineHeight: 24px, fontWeight: 400 }
-  ui: { fontFamily: Figtree, fontSize: 14px, lineHeight: 20px, fontWeight: 400 }
-  small: { fontFamily: Figtree, fontSize: 13px, lineHeight: 18px, fontWeight: 400 }
-  caption: { fontFamily: Figtree, fontSize: 12px, lineHeight: 16px, fontWeight: 500 }
-  mono: { fontFamily: Geist Mono, fontSize: 12px, lineHeight: 16px, fontWeight: 500 }
+  family: "HeroUI system stack (--font-sans); --font-mono for shortcuts, URLs and counts"
+  body: { fontSize: 14px, fontWeight: 400 }
+  title: { fontSize: 30px, lineHeight: 36px, fontWeight: 600, letterSpacing: -0.025em }
+  heading: { fontSize: 20px, lineHeight: 28px, fontWeight: 600 }
+  label: { fontSize: 14px, fontWeight: 500 }
+  caption: { fontSize: 12px, lineHeight: 16px, fontWeight: 500 }
 rounded:
-  xs: 2px
-  sm: 2px
-  md: 3px
-  lg: 4px
-  xl: 4px
-  2xl: 4px
-  3xl: 4px
-  4xl: 4px
+  radius: 0.5rem
+  field: "1.5 × radius"
+  page: none (paper is square)
 spacing: [4, 8, 12, 16, 24, 32, 48, 64]
 motion:
   quick: 120ms
@@ -121,63 +64,69 @@ marketing:
 
 ## Overview
 
-Rezumi uses “Desk & Paper”: a warm, quiet interface around a bright resume or letter. Low-contrast surfaces, thin rules, and a moss-green accent keep attention on the document.
+Rezumi's app is HeroUI's default theme, used as shipped: its blue accent (the logo's `#00BAFF` family), light gray desk, white surfaces, 0.5rem radius, system font and focus ring. We restyle nothing HeroUI already draws. A bright resume or letter sits in the middle of that quiet interface and is the one thing that is not themed.
 
-This reference covers the current app and homepage. Implementation details live in the source files named below; [REDESIGN_PLAN.md](REDESIGN_PLAN.md) records the redesign milestones and deviations from the original handoff.
+Components come from `@heroui/react` and, where the base library has none, `@heroui-pro/react` (the shell, widgets, grids, charts, chat, command palette and sheets). Where neither has one, `packages/ui` and the owning feature build it from HeroUI tokens and BEM-style class names, so it reads as HeroUI. Check `apps/web/PRODUCT.md` for who the product is for. The decisions behind this system, and what changed from the earlier Desk & Paper look, are in `.agents/docs/plans/heroui-migration.md`.
 
 Five principles guide decisions:
 
 1. **The page is the interface.** Keep the live document visible while editing. Selecting a supported block opens its fields.
-2. **One obvious next step.** Each app view has one primary action. Reserve accent fills for that action, selection, and progress.
+2. **One obvious next step.** Each view has one primary action. Reserve the accent fill for that action, selection and progress.
 3. **Nothing is lost.** Edits autosave, reversible changes offer undo, and confirmations are reserved for irreversible actions.
 4. **Detail on demand.** Make defaults useful; put advanced controls one disclosure deeper.
 5. **AI proposes, you decide.** Show AI edits as reviewable proposals before applying them.
 
-Resume templates retain their Pokémon names, fonts, and palettes. App typography and control styling do not dictate template appearance.
+And one rule for every screen: **say each thing once.** One route to each destination (the sidebar owns navigation and the account menu owns Settings: no second rail, no duplicate tab bar, no breadcrumb that repeats the sidebar). No heading, caption or helper text that restates the control or the title beside it. Empty states and placeholders say what to do, not what the page is.
+
+Resume templates keep their Pokémon names, fonts and palettes. App typography and control styling never dictate template appearance.
 
 ## Tokens
 
-`packages/ui/src/styles/globals.css` defines light tokens on `:root` and dark overrides on `.dark`. OKLCH values are authoritative; the front matter lists approximate sRGB equivalents. Tailwind exposes semantic utilities such as `bg-bg`, `bg-surface`, `border-line`, `text-ink`, and `bg-accent`.
+`packages/ui/src/styles/globals.css` imports `@heroui/styles` and `@heroui-pro/react/css`. HeroUI owns every color, radius, shadow and focus token and their dark values (`.dark`); read them with the HeroUI MCP (`get_theme_variables`) rather than copying values here. Tailwind exposes them as semantic utilities.
 
-- **Surfaces:** `bg` for the app desk; `surface` for panels and cards; `raised` for menus, dialogs, and inputs; `sunken` for wells, tracks, and the page canvas.
-- **Text:** `ink` for primary text, `ink-2` for secondary text, and `ink-3` for metadata and placeholders. Use no lighter text token, and check contrast on tinted backgrounds.
-- **Signals:** `danger` for errors and irreversible actions; `warn` for issues to review; `info-soft` and `info-text` for neutral guidance. Success uses `accent-soft` and `accent-text`.
-- **Overlays:** `hover` and `press` are translucent interaction states; `scrim` and `scrim-sheet` dim the background behind layers.
-- **Paper:** `--paper` remains white in both themes. Switching the app theme must not invert documents.
-- **Stages:** `stage-saved`, `stage-applied`, `stage-screening`, `stage-interview`, `stage-offer`, and `stage-closed` identify application stages. Use small dots or stepper bars beside stage names.
+- **Surfaces:** `bg-background` for the desk; `bg-surface` for panels, cards and widgets; `bg-surface-secondary` for blocks nested in a surface (never another border); `bg-overlay` for menus, popovers, dialogs and toasts; `bg-default` for wells, tracks, hover rows and selected rows.
+- **Text:** `text-foreground`, `text-muted` for secondary text, metadata and placeholders. Use no lighter text token, and check contrast on tinted backgrounds.
+- **Lines:** `border-separator` for rules between rows, `border-border` for outlines that carry structure. Prefer spacing and surface changes to either.
+- **Signals:** `accent` for the primary action, selection and progress; `danger` for errors and irreversible actions; `warning` for issues to review; `success` for done and better. Tinted callouts use `bg-accent-soft` with `text-accent-soft-foreground` (and the same pair per signal). HeroUI has no info role: neutral guidance uses the accent soft pair.
+- **Elevation:** `shadow-surface` for cards (built into `Card`; do not add another), `shadow-overlay` for menus, popovers, dialogs, sheets and toasts, `shadow-page` for editor paper.
+- **Fields:** fill only: no border and no drop shadow (`--field-shadow` is zero). On a white surface use `variant="secondary"` (the default fill disappears on white). On a gray nested card use the `fields-on-card` utility; inside a collapsible section's body use `fields-on-background` (both in `apps/web/src/index.css`).
+- **Paper:** `--paper` stays white in both themes. Switching the theme must not invert documents.
+- **Stages:** `stage-saved`, `stage-applied`, `stage-screening`, `stage-interview`, `stage-offer` and `stage-closed` identify application stages. Use small dots or stepper bars beside the stage name, never the color alone.
 
-Use semantic tokens in app code. Legacy names such as `background`, `foreground`, `primary`, `muted`, and `sidebar-*` are no longer defined.
+Use semantic tokens in app code. No arbitrary colors and no palette classes such as `amber-600`; the old Desk & Paper names (`ink`, `line`, `raised`, `sunken`, `warn`, `shadow-e1`) exist only inside the homepage's `.landing` scope.
 
 ## Typography
 
-The front matter records the app type scale. Field labels use the separate `field-label` size.
+HeroUI's system stack, with no webfont in the app. Hierarchy comes from size and weight.
 
-- **Instrument Serif:** page, dialog, and sheet titles; empty-state headlines; large statistics. Use `font-display`. It has one weight (400 and italic): never set it semibold or bold, which the browser would fake.
-- **Figtree:** functional UI and body text. Use `font-sans` or `font-ui`.
-- **Geist Mono:** shortcuts, URLs, slugs, filenames and counts. Use `font-mono`.
+- **Titles:** 30px semibold with `tracking-tight` for a page title (`PageHeader`); 20px semibold for a section; 14px medium for a label. Body is 14px. Descriptions and metadata are `text-muted` at 12–14px.
+- **Numbers:** `tabular-nums` on prices, counts, scores and stats so columns align.
+- **Mono:** `font-mono` for shortcuts, URLs, slugs, filenames and counts.
 - No all-caps labels or title caps: headings, eyebrows, group labels and buttons are sentence case at 12px or larger, with normal tracking.
-- Field labels are 12px, medium weight, in `ink-2`, with a 6px gap above the control. Group eyebrows are 12px, semibold, in `ink-3`.
-- Rendered rich text (assistant and coach replies, the rich-text editor) uses shadcn Typeset: `packages/ui/src/styles/typeset.css`, an owned copy reading the app tokens. Wrap content in `typeset` plus a preset: `typeset-chat` or `typeset-field`. It styles only the elements those surfaces render (no images, `kbd`, `details`, definition lists or math). Opt a component out with `not-typeset`.
+- Field labels are 12–14px medium; a description sits under the control in `text-muted`.
+- Rendered rich text (assistant and coach replies, the rich-text editor) uses `packages/ui/src/styles/typeset.css`, an owned stylesheet based on shadcn's typeset (MIT) that reads HeroUI tokens. Wrap content in `typeset` plus a preset: `typeset-chat` or `typeset-field`. It styles only the elements those surfaces render (no images, `kbd`, `details`, definition lists or math). Opt a component out with `not-typeset`.
 - Touch inputs use at least 16px text to prevent iOS zoom.
-- Fonts are self-hosted through `@fontsource-variable/figtree`, `@fontsource/instrument-serif` and `@fontsource-variable/geist-mono`.
 
 ## Iconography
 
-App icons use **Phosphor** (regular weight) through `Icon` from `@rezumi/ui/components/icon`. `Icon` takes the glyph's Phosphor name (`x`, `gear-six`, `magnifying-glass`), the same names the [Phosphor catalog](https://phosphoricons.com) and resume icons use. To use another glyph, add it to the `icons` map in that file.
+Every system icon in the web and mobile apps comes from the Hugeicons Pro set staged in `packages/icons` (`@rezumi/icons`). Do not add another icon library, import `@hugeicons/*`, or draw a one-off SVG for the interface; a missing glyph is added to the set.
 
-Use 20px icons on desktop and 24px on touch interfaces. Regular weight is the default; reserve filled app icons for selected navigation. Marketing illustrations may use filled icons, such as the GitHub star.
+- **Two variants.** `stroke` is the default: Stroke Standard, 24px grid, 1.5px line. `duotone` (Duotone Standard) is for the selected state only: the current sidebar item, the active mobile navbar tab, and the selected tab or segment. It is also the solid form of stop, play, pause and star. Never use duotone for resting controls, and never mix other Hugeicons styles (rounded, sharp, solid, bulk, twotone) into the interface.
+- **Web.** `Icon` from `@rezumi/ui/components/icon` takes a Phosphor-style kebab name (`x`, `gear-six`, `magnifying-glass`) and an optional `variant="duotone"`. Those names are the shared vocabulary for web and mobile and stay stable; `packages/icons/icons.config.json` maps each to its Hugeicons glyph. Pass `variant` from the selected state: `variant={isCurrent ? "duotone" : "stroke"}`.
+- **Mobile.** The native app draws the same names and the same two variants from `@rezumi/icons` (render data in `getAppIcon`, raw files in `@rezumi/icons/svg/<style>/<name>.svg`). Its `Icon` still uses Phosphor until it moves over; the tab bar and navbar active state become duotone then.
+- **Adding or changing a glyph.** Edit `icons.config.json` (the `app` map for an icon in use; `appCategories` stages whole categories as files only), then run `pnpm --filter @rezumi/tooling icons:sync <path to the Hugeicons SVG export>`. The command rewrites `packages/icons/svg`, `catalog.json` and `src/generated`; do not edit those by hand. Brand marks (Apple, Google, GitHub, LinkedIn, Google Play) are in the map like any other glyph.
 
-Pair icons with text. Back, close, more, undo/redo, history, assistant, and zoom controls may use `IconButton`, which requires an accessible label and supplies a tooltip with an optional shortcut. `Icon` is decorative (`aria-hidden`) and sized by its font size, so containers can resize it with `text-*`. Directional arrows, chevrons, undo, and redo mirror in RTL layouts.
+Use 20px icons on desktop and 24px on touch interfaces; 16px inside small buttons, chips and rows. `Icon` is decorative (`aria-hidden`), so pair it with text or give the control a label. Icon-only controls use `IconButton` (a `Button isIconOnly` with a tooltip, an optional shortcut and a required label). Directional arrows, chevrons, undo and redo mirror in RTL layouts.
 
-Icons inside resumes use Phosphor names stored in resume data, drawn by the Phosphor web font; they remain separate from app icons.
+Icons inside resumes are Phosphor names stored in resume data, drawn by the Phosphor web font (`@phosphor-icons/web`) in the page and by generated SVG data in the PDF (`pnpm --filter @rezumi/tooling icons:pdf`). They are separate from app icons. The resume's icon style will be a person's choice of three stroke-only sets: rounded, standard or sharp. `packages/icons/svg/stroke-rounded`, `stroke-standard` and `stroke-sharp` already hold every brand logo and the resume-related categories (work, education, awards, programming, sport, health, legal), and `catalog.json` maps the Phosphor names resumes use today (`cvPhosphor`) to their Hugeicons counterparts. The preference itself is not built yet; until it is, resumes keep drawing Phosphor.
 
-## Space, shape, and elevation
+## Space, shape and elevation
 
-- **Spacing:** use the 4px scale in the front matter. Cards typically have 16px padding, panels 16–24px, mobile pages 16px margins, and desktop pages 32–40px margins.
-- **Radius:** 2px (`rounded-sm`) for chips, tags, avatars, switches and small marks; 3px (`rounded-md`) for inputs and controls; 4px (`rounded-lg` and up) for cards, menus, dialogs and sheets. Nothing is rounder than 4px; no pills. Only data-viz rings, radio buttons, spinners and landing illustrations stay circular.
-- **Elevation:** `shadow-e1` for cards; `shadow-e2` for menus and popovers; `shadow-e3` for dialogs, sheets, and toasts; `shadow-page` for editor paper.
-- **Controls:** button heights are 28px (`sm`), 36px (`default`), and 44px (`lg`). Icon button sizes range from 28px to 44px. Inputs grow from 36px to 44px on touch devices; `touch-target` expands smaller controls' hit areas to at least 44×44px.
-- **Layout variables:** `--editor-bar: 56px`, `--editor-panel: 400px`, `--app-sidebar: 240px`, `--sheet-share: 440px`, `--sheet-detail: 480px`, and `--assistant: 400px`.
+- **Spacing:** the 4px scale. Cards 16px padding; panels 16–24px; phone pages 16px margins; desktop pages 32–40px margins with generous top padding, and a constrained max width (Career and Settings use a centred 720px column) so lines stay readable.
+- **Radius:** HeroUI's. `--radius` is 0.5rem; fields use 1.5× that (`rounded-field`); cards, popovers and dialogs use the surface radii. Nested rounded boxes follow outer = inner + padding. `Segment` and pill `Tabs` take the field radius (`globals.css`).
+- **Controls:** the default size of every component; omit `size` unless a layout asks otherwise. Icon-only and badge-carrying buttons keep the minimum touch target; `touch-target` grows a smaller control's hit area to 44×44px on coarse pointers.
+- **Layout variables:** `--editor-bar: 56px`, `--editor-panel` (420px, growing to 520px on large screens), `--editor-side`, `--app-sidebar: 240px`, `--sheet-share: 440px`, `--sheet-detail: 480px`, `--assistant: 400px`, `--tooltip-delay: 400ms`.
+- **Scrollbars:** one thin thumb in the default fill (`--scrollbar-thumb`), a step darker while the pointer is over its area.
 
 ## Motion
 
@@ -187,54 +136,63 @@ Icons inside resumes use Phosphor names stored in resume data, drawn by the Phos
 | `duration-standard`   | 200ms    | Menus, popovers, expansion, content swaps, and dialogs |
 | `duration-emphasized` | 320ms    | Sheets, toasts, and the assistant column               |
 
-- Entering and changing state use `ease-enter` (`cubic-bezier(0.2, 0.8, 0.2, 1)`). Exits take 70% of the entry duration.
-- Sliding indicators, reordering, and settling use `ease-in-out-strong` (`cubic-bezier(0.77, 0, 0.175, 1)`). Swipe-dismissed bottom sheets use `ease-drawer`.
-- Keep app motion brief and purposeful. Small entrance fades, status transitions, and the mobile tab indicator's spring are supported. Loading placeholders stay still; document reflow is never animated. Keyboard mode switches are instant.
-- Reduced motion sets duration tokens to 1ms and collapses CSS transitions and animations. Status spinners continue turning.
-- `apps/web/src/libs/motion.ts` mirrors CSS timings. `MotionConfig reducedMotion="user"` and `followReducedMotion()` make Motion animations respect the preference.
+- Entering and changing state use `ease-enter` (`cubic-bezier(0.2, 0.8, 0.2, 1)`). Exits take 70% of the entry duration. Bare `transition-*` utilities already use these.
+- Sliding indicators, reordering and settling use `ease-in-out-strong` (`cubic-bezier(0.77, 0, 0.175, 1)`). Swipe-dismissed bottom sheets use `ease-drawer`. `ease-out-strong` is for marketing pages only.
+- Hover states on sidebar links and nav items are static (color or background), not animated.
+- First appearance uses the `starting:` variant (`ENTER_CLASS`, `POP_CLASS` in `apps/web/src/libs/motion.ts`), not an animation library class. Loading placeholders stay still; document reflow is never animated. Keyboard mode switches are instant.
+- Reduced motion sets the duration tokens to 1ms and collapses CSS transitions and animations. Status spinners continue turning.
+- `apps/web/src/libs/motion.ts` mirrors the CSS timings for Motion. `MotionConfig reducedMotion="user"` and `followReducedMotion()` make Motion animations respect the preference.
 
 The homepage has separate motion rules below.
 
 ## Components
 
-Generic primitives live in `packages/ui/src/components`, using Base UI and cmdk for the command palette. Feature-specific UI belongs in its owning `apps/web` feature.
+Use HeroUI and HeroUI Pro directly at call sites: `onPress` (not `onClick`), `isDisabled`, `isPending`, `isSelected`, compound parts in dot notation (`Card.Header`, `Sheet.Content`). Look a component up with the HeroUI MCP before using it; never guess a name or a prop. `packages/ui` keeps only what HeroUI lacks: `Icon`, `IconButton`, `HoldButton` (press and hold to confirm), `Form` (TanStack Form wired to a label, description and error for any control), `SwitchRow`, `NativeSelect`, `Swap`, the toast helper, `MessageScroller`, `Trace`, `BrandIcon` and two hooks. Feature-specific UI belongs in its owning `apps/web` feature.
 
-- **Buttons:** `primary`, `secondary`, `ghost`, `danger`, and `link`. `loading` adds a spinner, sets `aria-busy`, and blocks activation. Use a progress label such as “Preparing…”.
-- **Inputs:** `raised` background and `line-2` border; focus adds an accent border and a 3px `accent-soft` ring. Invalid fields use danger styling. Show errors after blur or submission, with an icon and a specific remedy.
-- **Switches:** prefer `SwitchRow` so the label is part of the target. Checkboxes are 18px with a 3px radius; radios are 18px with an 8px accent dot.
-- **Segments and tabs:** use `SegmentedControl` for 2–4 options in a radio group. Use `Tabs` to switch panels; set `TabsList variant="line"` for underline tabs.
-- **Menus:** 4px radius and 36px items. Size popups for their content and trigger; put destructive items last, after a separator.
-- **Layers:** menus and popovers provide lightweight choices; sheets hold tasks beside the document and use the bottom variant on mobile; dialogs hold decisions. Use `AlertDialog` for destructive confirmation and name what cancel keeps.
-- **Toasts:** one visible at a time, bottom center, with `bg-ink` and `text-bg`. The default timeout is six seconds; `timeout: 0` keeps a toast visible. Undo is an optional underlined action.
-- **Chats:** the assistant and career coach transcripts use `MessageScroller` (shadcn, behaviour from `@shadcn/react`): it follows a streaming reply only while the reader is at the latest message, settles each question near the top, reopens a saved thread on its last question, and shows a “Latest” button after scrolling away. Agent steps are `Trace` lines: spinner and shimmer while running, check when done, danger when failed, dimmed dash when unfinished. Mobile mirrors both.
-- **Alerts:** `info`, `success`, `warn`, and `error`; only the error variant adds `role="alert"` by default.
-- **Empty states:** a 22px Instrument Serif headline, concise 14px body text, and a primary action. Add a secondary action only when useful.
+- **Shell:** Pro `AppLayout` with a 240px `Sidebar` (collapsible to icons by default below 1024px; the state is the `sidebar_state` cookie) and a `Navbar`. The sidebar holds the brand, the command-bar search, the destinations (Career opens its Today, Knowledge and Offers pages as a submenu), New and the account menu. Phones open the same sidebar from a menu sheet; there is no bottom tab bar. Headers carry only contextual controls and page actions, never the brand or the user.
+- **Pages and groups:** every group of content is a Pro `Widget`: a level-2 title, an optional trailing action, a muted description line and an optional footer. Blocks nested in a widget use `rounded-xl bg-surface-secondary` with no border; rows split by a `Separator`, starting under the text. A row is the 40px `RowIcon` tile, the text and the control, the same on Settings and Career.
+- **Buttons:** `primary` for the one main action, `secondary` for the rest, `ghost` and `outline` for supporting actions, `tertiary` for quiet ones, `danger-soft` for destructive actions that are not the main one, `danger` for the confirmation. Give a button text only unless an icon adds information; pending state is `isPending`. Provide an escape action (Cancel, Skip) beside the primary action in footers.
+- **Inputs:** `TextField` with `Label`, `Description` and `FieldError`; show errors after blur or submission, with a specific remedy. `Segment` (Pro) for 2–4 options and `Tabs` for panels; `Switch` is at the trailing end of its row and uses the dot-notation anatomy; prefer `SwitchRow` when the label is part of the target.
+- **Menus:** `Dropdown` with a ghost `Button` or `IconButton` trigger and no chevron unless the affordance would be invisible; destructive items last, after a separator; `ContextMenu` for right-click. The command bar is Pro `Command` (⌘K): put keywords into each item's `textValue`.
+- **Layers:** popovers and menus hold light choices; Pro `Sheet` holds a task beside the document (a bottom sheet on phones); `Modal` holds a form or a decision, sized to its content (`max-w-md` or `max-w-lg`); `AlertDialog` confirms what cannot be undone and names what cancel keeps (the `use-confirm` hook). Tooltips open after 400ms and wrap every icon-only control.
+- **Toasts:** HeroUI's `Toast` region, bottom, one visible at a time, six seconds by default; `timeout: 0` keeps one. `toast.add({ id })` updates the toast with that id in place. Undo is the optional action.
+- **Alerts:** HeroUI `Alert` with `status` danger, warning, success or accent; only danger adds `role="alert"` by default.
+- **Data:** Pro `DataGrid` for tables (secondary variant; phones drop secondary columns into a line under the name), `ListView` and `ItemCard` for lists, `Kanban` for the application board, `Agenda` for the calendar, `KPI` and the chart set for stats, `ActionBar` for bulk actions (a floating bar, never inline), `EmptyState` for empty and no-result states.
+- **Files:** Pro `DropZone` for choosing or dropping a file; a `Button` that opens a file picker only when there is no drop target.
+- **Chats:** Pro `PromptInput`, `PromptSuggestion`, `ChainOfThought` and `Markdown` for the assistant and the career coach. Transcripts use `MessageScroller` (`packages/ui`, behaviour adapted from shadcn's message scroller, MIT): it follows a streaming reply only while the reader is at the latest message, settles each question near the top, reopens a saved thread on its last question and shows a “Latest” button after scrolling away. Agent steps are `Trace` lines: shimmer while running, check when done, danger when failed, a dimmed dash when unfinished. Mobile mirrors both.
+- **Reordering:** `apps/web/src/components/input/sortable.tsx` on React Aria drag and drop. A grip (`SortableHandle`) starts a drag by pointer, touch or keyboard (Enter on the grip, then the arrow keys and Enter; Escape cancels); a line shows where the item lands; the dragged item dims. Every reorder also has a non-drag route: ⌥↑ / ⌥↓ on a section or entry title, and the item's Move menu.
+- **Empty states:** concise body text and a primary action; add a secondary action only when it helps. Never a headline that restates the page title.
 
 ## Accessibility
 
 Target WCAG 2.2 AA:
 
-- Show a 2px accent focus outline with a 2px gap on `:focus-visible`. Inputs use their border and soft ring instead.
+- HeroUI draws its own focus ring on its components; everything else gets a 2px accent outline with a 2px gap on `:focus-visible`.
 - Provide at least 24px pointer targets and 44px touch targets. Every drag operation needs keyboard and menu alternatives.
 - Pair color signals with text; add icons where they clarify status.
-- Trap focus in modal sheets and dialogs. Escape closes the top layer; closing returns focus to its trigger.
+- Trap focus in modal sheets and dialogs. Escape closes the top layer; closing returns focus to its trigger. React Aria provides most of this; do not remove an existing alternative.
 - Announce save state and routine feedback politely. Reserve assertive announcements for errors that need immediate attention.
+- Informational items have no hover state; reserve hover feedback for what can be pressed. Custom interactive elements use `cursor-(--cursor-interactive)`.
 
 ## Themes
 
-The shared `theme` cookie stores `light`, `dark`, or `system` (the default). System mode follows `prefers-color-scheme` live. `ThemeProvider` manages the `.dark` class on `<html>`; an inline script in `apps/web/index.html` applies it before first paint. The homepage uses this same preference.
+The shared `theme` cookie stores `light`, `dark` or `system` (the default). System mode follows `prefers-color-scheme` live. `ThemeProvider` manages the `.dark` class on `<html>`; an inline script in `apps/web/index.html` applies it before first paint. The homepage uses this same preference. Theme choice lives in Settings (a `Segment`) and the command bar, not in the account menu.
 
 ## Internationalization
 
-- Translate user-facing text and accessible labels through Lingui (`t`, `msg`, or `<Trans>`). Catalogs live in `apps/web/locales`.
-- UI primitives receive translated labels as props, such as `closeLabel`; they do not depend on Lingui.
-- Supported locales come from `packages/utils/src/locale.ts`. The root route updates `<html lang>` and `<html dir>` and passes direction to Base UI's `DirectionProvider`.
-- Prefer logical properties and utilities (`ps`, `pe`, `ms`, `me`, `start`, `end`, `inset-s`, `inset-e`).
+- Translate user-facing text and accessible labels through Lingui (`t`, `msg` or `<Trans>`). Catalogs live in `apps/web/locales`. HeroUI and Pro ship English defaults (Command placeholder, Navbar label, Toast close, Agenda labels): pass a translated string for every visible or accessible default.
+- UI primitives receive translated labels as props; they do not depend on Lingui.
+- Supported locales come from `packages/utils/src/locale.ts`. The root route updates `<html lang>` and `<html dir>`; React Aria's `I18nProvider` takes the same locale, so HeroUI's number and date formats and RTL (ar, fa, he) follow the app language.
+- Prefer logical properties and utilities (`ps`, `pe`, `ms`, `me`, `start`, `end`, `inset-s`, `inset-e`). Prefix a value that is not text direction, such as a username or a code, with `dir="ltr"`.
 - Allow 30–50% text expansion; avoid fixed widths for translated labels.
 
 ## Marketing site
 
-The public homepage in `apps/web/src/features/homepage` shares app colors and themes but has its own typography, illustrations, and motion. `landing.css` defines its fonts, graphite color, paper shadows, and ambient animations. Other illustration colors in the front matter are scene values, not global app tokens.
+The public homepage in `apps/web/src/features/homepage` keeps the earlier Desk & Paper look, scoped to the `.landing` wrapper: its own palette, typography, illustrations and motion. It shares the app's theme switch (the `.dark` class) and nothing else. `landing.css` defines the palette (below), the fonts (Figtree, Instrument Serif and Geist Mono, imported there), the names its utilities use (`bg-bg`, `text-ink`, `text-ink-2`, `text-ink-3`, `border-line`, `accent-text`, `shadow-e1` to `shadow-e3` and the rest), the graphite color, paper shadows and ambient animations. Illustration colors in the front matter are scene values, not tokens. The other public pages under `routes/_home` (templates, the ATS checker) are app surfaces and use HeroUI tokens.
+
+### Palette
+
+OKLCH values live in `.landing` and `.dark .landing`; light sRGB approximations: `bg` #F8F7F3, `surface` #FEFDFC, `raised` #FFFFFF, `sunken` #F0EFEB, `line` #DFDEDA, `line-2` #C5C4BE, `ink` #1C1B15, `ink-2` #4F4D47, `ink-3` #6D6C65, `accent` moss #337344, `accent-text` #195C2E, `accent-soft` #DCF2DF. Dark: `bg` #100F0C, `surface` #171613, `ink` #EFEEEB, `accent` #6FC082. Radius is 4px, with 2px for small marks; nothing is rounder, and there are no pills.
 
 ### Brand and type
 
@@ -250,7 +208,7 @@ The public homepage in `apps/web/src/features/homepage` shares app colors and th
 
 - Repeat the same primary CTA, “Build your resume,” in the header, hero, and closing section. Buttons have 2px corners, in Figtree 600, at 38px, 54px, and 56px respectively.
 - Scene navigation appears from 1240px. Sentence-case labels use `ink` when active and `ink-3` when inactive; a 6px accent dot marks the active scene. The Share night scene uses its own light inks.
-- The GitHub link appears from 1024px, with the GitHub mark, a filled gold star, and a live compact count. Format counts with the locale's `Intl.NumberFormat`; include the full count in the accessible name.
+- The GitHub link appears from 1024px, with the GitHub mark, a duotone gold star, and a live compact count. Format counts with the locale's `Intl.NumberFormat`; include the full count in the accessible name.
 - The homepage theme control is a fixed 30px pull-cord button at the top end corner. Its height is 92px at rest, 112px on hover, and 124px during a pull. It uses a 450ms spring curve, toggles the shared theme after 170ms, and sways every seven seconds until first activated. The bulb glows in dark mode.
 
 ### Motion
@@ -304,10 +262,13 @@ Reduced motion fixes scenes at their end state and collapses pinned sections to 
 
 ## Do and don't
 
-- **Do** make the primary action obvious and reserve accent for actions and state.
+- **Do** make the primary action obvious and reserve the accent for actions and state.
+- **Do** use a HeroUI or HeroUI Pro component before building one, and its default size, variant and look before adding classes.
 - **Do** keep text readable and pair color signals with words.
-- **Do** provide empty, loading, error, and success states; keep loading placeholders at their final size.
+- **Do** provide empty, loading, error and success states; keep loading placeholders at their final size.
 - **Don't** introduce arbitrary app colors or palette classes such as `amber-600`; use semantic tokens.
-- **Don't** use Instrument Serif for small functional app text or at bold weights, set labels in all caps, or round anything past 4px. Homepage prose follows its separate type rules.
+- **Don't** add a border, shadow or background HeroUI already draws, nest a surface in a surface, or stack a second shadow on `Card`.
+- **Don't** duplicate navigation or repeat a title as a caption; say it once.
+- **Don't** set labels in all caps, use emoji in headings or labels, or put an icon beside self-explanatory text.
 - **Don't** confirm reversible actions; offer undo.
-- **Don't** omit `data-slot` on UI primitives; styles and tests rely on it.
+- **Don't** build a drag interaction without a keyboard and a menu route.

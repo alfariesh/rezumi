@@ -1,6 +1,5 @@
 import type { orpc } from "@/libs/orpc/client";
 import type { Theme } from "@/libs/theme";
-import type { IconProps } from "@phosphor-icons/react";
 import type { FeatureFlags } from "@rezumi/api/features/flags";
 import type { AuthSession } from "@rezumi/auth/types";
 import type { Locale } from "@rezumi/utils/locale";
@@ -8,7 +7,6 @@ import type { QueryClient } from "@tanstack/react-query";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { I18nProvider, useLingui } from "@lingui/react";
-import { IconContext } from "@phosphor-icons/react";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { HotkeysProvider } from "@tanstack/react-hotkeys";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -38,8 +36,6 @@ type RouterContext = {
 	session: AuthSession | null;
 	flags: FeatureFlags;
 };
-
-const iconContextValue: IconProps = { size: 16, weight: "regular" };
 
 // Requested now, while the route loads, so animations are ready by the first render without blocking it.
 const motionFeatures = import("@/libs/motion-features").then((module) => module.default);
@@ -89,36 +85,34 @@ function RootComponent() {
 							{/* HeroUI is built on React Aria: its formats and direction follow the app locale, and its `href`s use the router. */}
 							<AriaI18nProvider locale={locale}>
 								<AriaRouterProvider navigate={(href) => router.navigate({ href })} useHref={(href) => href}>
-									<IconContext.Provider value={iconContextValue}>
-										<ThemeProvider theme={theme}>
-											<HotkeysProvider>
-												<ConfirmDialogProvider>
-													<Outlet />
+									<ThemeProvider theme={theme}>
+										<HotkeysProvider>
+											<ConfirmDialogProvider>
+												<Outlet />
 
-													<DialogManager />
-													<CommandPalette />
-													<LocalizedToaster />
+												<DialogManager />
+												<CommandPalette />
+												<LocalizedToaster />
 
-													{import.meta.env.DEV && <BreakpointIndicator />}
-													{import.meta.env.DEV && (
-														<TanStackDevtools
-															config={{ position: "bottom-left" }}
-															plugins={[
-																{
-																	name: "TanStack Query",
-																	render: <ReactQueryDevtoolsPanel />,
-																},
-																{
-																	name: "TanStack Router",
-																	render: <TanStackRouterDevtoolsPanel />,
-																},
-															]}
-														/>
-													)}
-												</ConfirmDialogProvider>
-											</HotkeysProvider>
-										</ThemeProvider>
-									</IconContext.Provider>
+												{import.meta.env.DEV && <BreakpointIndicator />}
+												{import.meta.env.DEV && (
+													<TanStackDevtools
+														config={{ position: "bottom-left" }}
+														plugins={[
+															{
+																name: "TanStack Query",
+																render: <ReactQueryDevtoolsPanel />,
+															},
+															{
+																name: "TanStack Router",
+																render: <TanStackRouterDevtoolsPanel />,
+															},
+														]}
+													/>
+												)}
+											</ConfirmDialogProvider>
+										</HotkeysProvider>
+									</ThemeProvider>
 								</AriaRouterProvider>
 							</AriaI18nProvider>
 						</I18nProvider>

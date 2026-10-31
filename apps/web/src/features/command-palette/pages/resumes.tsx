@@ -111,7 +111,7 @@ function ResumesPage({ page }: SearchPageProps) {
 						<Icon name="file-text" size={16} />
 						{resume.name}
 
-						<span className="ms-auto font-mono text-xs text-ink-3 opacity-0 group-data-[focused=true]:opacity-100">
+						<span className="ms-auto font-mono text-xs text-muted opacity-0 group-data-[focused=true]:opacity-100">
 							<Trans comment="Command palette hint that pressing Enter opens the selected resume">
 								Press <Kbd>Enter</Kbd> to open
 							</Trans>
@@ -166,7 +166,7 @@ function ApplicationsPage({ page }: SearchPageProps) {
 					>
 						<Icon name="briefcase" size={16} />
 						<span className="min-w-0 truncate">{application.company}</span>
-						<span className="truncate text-xs text-ink-3">{application.role}</span>
+						<span className="truncate text-xs text-muted">{application.role}</span>
 					</PaletteItem>
 				))
 			)}
@@ -219,7 +219,7 @@ function ThreadsPage({ page }: SearchPageProps) {
 						>
 							<Icon name="chat-text" size={16} />
 							<span className="min-w-0 truncate">{thread.title}</span>
-							<span className="truncate text-xs text-ink-3">{documentName}</span>
+							<span className="truncate text-xs text-muted">{documentName}</span>
 						</PaletteItem>
 					);
 				})

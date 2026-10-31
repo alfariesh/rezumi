@@ -16,7 +16,7 @@ export function CommandPalette() {
 			fallback={
 				<div
 					role="status"
-					className="fixed inset-x-4 top-24 z-50 mx-auto max-w-lg rounded-lg bg-surface p-4 text-ink shadow-e3"
+					className="fixed inset-x-4 top-24 z-50 mx-auto max-w-lg rounded-lg bg-surface p-4 text-foreground shadow-overlay"
 				>{t`Loading…`}</div>
 			}
 		>

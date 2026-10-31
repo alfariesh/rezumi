@@ -51,7 +51,12 @@ export function ModeSwitch<M extends string>({ modes, selected, onChange }: Mode
 				<Tabs.List aria-label={t`Editor mode`} data-mode-switch="" className="w-full">
 					{modes.map((mode) => (
 						<Tabs.Tab key={mode.id} id={mode.id} className="w-auto min-w-0 flex-auto gap-0 px-2.5">
-							<Icon name={mode.icon} size={18} className="shrink-0" />
+							<Icon
+								name={mode.icon}
+								size={18}
+								variant={mode.id === selected ? "duotone" : "stroke"}
+								className="shrink-0"
+							/>
 							<ExpandingLabel shown={mode.id === selected}>{mode.label}</ExpandingLabel>
 							{mode.extra ? <span className="ms-1.5 flex shrink-0 items-center">{mode.extra}</span> : null}
 							<Tabs.Indicator />

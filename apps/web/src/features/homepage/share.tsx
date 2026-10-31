@@ -147,7 +147,7 @@ export function Share() {
 						id="share-title"
 						dir="ltr"
 						className={cn(
-							"font-anybody flex flex-wrap items-center justify-center text-[8vw] leading-[1.1] font-light tracking-[-.025em] text-(--night-ink) transition-opacity duration-300 min-[900px]:text-[clamp(34px,4.6vw,88px)]",
+							"flex flex-wrap items-center justify-center font-anybody text-[8vw] leading-[1.1] font-light tracking-[-.025em] text-(--night-ink) transition-opacity duration-300 min-[900px]:text-[clamp(34px,4.6vw,88px)]",
 							isPrivate && "opacity-40",
 						)}
 					>
@@ -209,7 +209,7 @@ export function Share() {
 						{formats.map((format, index) => (
 							<li
 								key={format.icon}
-								className="font-martian flex h-9 [transform:translateY(calc((1-var(--f))*10px))] items-center gap-2 rounded-md border border-[color-mix(in_oklch,var(--night-chip-line)_calc(var(--f)*100%),transparent)] px-3.5 text-[11.5px] leading-none font-medium text-(--night-chip) opacity-(--f)"
+								className="flex h-9 [transform:translateY(calc((1-var(--f))*10px))] items-center gap-2 rounded-md border border-[color-mix(in_oklch,var(--night-chip-line)_calc(var(--f)*100%),transparent)] px-3.5 font-martian text-[11.5px] leading-none font-medium text-(--night-chip) opacity-(--f)"
 								style={{ "--f": `var(--f${index + 1})` } as CSSProperties}
 							>
 								<Icon name={format.icon} size={18} />
@@ -221,7 +221,7 @@ export function Share() {
 
 				<div className="absolute start-(--gutter) bottom-[clamp(20px,5vh,44px)] flex max-w-[90vw] flex-col gap-2.5 min-[900px]:max-w-[min(28em,34vw)]">
 					<span className={cn(labelClass, "text-(--night-label)")}>05 / {share}</span>
-					<p className="min-[900px]:short:hidden font-display text-base leading-[1.45] text-pretty text-(--night-ink) min-[900px]:text-[clamp(17px,1.35vw,20px)]">
+					<p className="font-display text-base leading-[1.45] text-pretty text-(--night-ink) min-[900px]:text-[clamp(17px,1.35vw,20px)] min-[900px]:short:hidden">
 						{t`Share a public link, add a password or keep it private. Choose from 3 visibility options. Export to PDF or Word, or take all your data with you as JSON.`}
 					</p>
 				</div>
