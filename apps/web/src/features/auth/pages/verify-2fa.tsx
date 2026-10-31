@@ -7,6 +7,7 @@ import {
 	linkVariants,
 	REGEXP_ONLY_DIGITS,
 	Spinner,
+	Typography,
 } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -21,6 +22,7 @@ import { getAuthRedirectOptions, getOAuthSignInOptions, isOAuthRedirect } from "
 import { authClient } from "@/libs/auth/client";
 import { sessionQueryKey } from "@/libs/root-context";
 import { useAppForm } from "@/libs/tanstack-form";
+import { renderAsH1 } from "@/libs/typography";
 
 const totpSchema = z.object({
 	code: z.string().length(6, { error: () => t`Enter the 6-digit code.` }),
@@ -92,9 +94,9 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<Typography type="h3" render={renderAsH1}>
 					{backupCode ? <Trans>Verify with a backup code</Trans> : <Trans>Two-step verification</Trans>}
-				</h1>
+				</Typography>
 				<div className="text-muted">
 					{backupCode ? (
 						<Trans>Enter one of your saved backup codes to access your account.</Trans>

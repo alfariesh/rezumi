@@ -235,7 +235,7 @@ export function MobileTabBar<V extends MobileView>({ tabs, view, onModeChange }:
 							if (tab !== "page") onModeChange(tab as Exclude<V, "page">);
 						}}
 						className={cn(
-							"relative flex min-h-[52px] flex-1 cursor-(--cursor-interactive) flex-col items-center justify-center gap-0.5 text-[11px] transition-[color,scale] duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset active:scale-[0.97]",
+							"relative flex min-h-[52px] flex-1 cursor-(--cursor-interactive) flex-col items-center justify-center gap-0.5 text-xs transition-[color,scale] duration-quick ease-enter outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-inset active:scale-[0.97]",
 							active ? "font-semibold text-foreground" : "text-muted",
 						)}
 					>

@@ -264,7 +264,7 @@ export function Conversation(props: ConversationProps) {
 									<MessageScrollerItem>
 										<div
 											role="alert"
-											className="grid gap-2 rounded-xl bg-danger-soft p-3 text-[13px] text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
+											className="grid gap-2 rounded-xl bg-danger-soft p-3 text-sm text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
 										>
 											<span className="flex gap-2">
 												<Icon name="warning-circle" size={18} className="shrink-0" />
@@ -692,7 +692,7 @@ function QuestionCard({ part, readOnly, onAnswer }: QuestionCardProps) {
 		<div className="grid gap-2.5 rounded-xl bg-accent-soft p-3 text-accent-soft-foreground">
 			<p className="text-sm font-medium">{question}</p>
 			{answer !== null ? (
-				<p className="text-[13px] opacity-80">
+				<p className="text-sm opacity-80">
 					<Trans>You answered: {answer}</Trans>
 				</p>
 			) : readOnly || !toolCallId ? null : (

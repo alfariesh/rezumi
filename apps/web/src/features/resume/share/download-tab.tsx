@@ -135,8 +135,8 @@ export function FileNameField({ value, extension, hint, onChange }: FileNameFiel
 				<Trans>File name</Trans>
 			</Label>
 			<InputGroup variant="secondary" fullWidth>
-				<InputGroup.Input spellCheck={false} className="font-mono text-[13px]" />
-				<InputGroup.Suffix className="font-mono text-[13px] text-muted">{extension}</InputGroup.Suffix>
+				<InputGroup.Input spellCheck={false} className="font-mono text-sm" />
+				<InputGroup.Suffix className="font-mono text-sm text-muted">{extension}</InputGroup.Suffix>
 			</InputGroup>
 			<Description>{hint}</Description>
 		</TextField>

@@ -61,7 +61,7 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 					</RowIcon>
 					<div className="grid min-w-0 flex-1">
 						<strong className="text-sm font-semibold">{text.title}</strong>
-						{text.sub && <span className="text-xs leading-[17px] text-muted">{text.sub}</span>}
+						{text.sub && <span className="text-xs text-muted">{text.sub}</span>}
 					</div>
 					{step.kind !== "closed" && (
 						<Dropdown>

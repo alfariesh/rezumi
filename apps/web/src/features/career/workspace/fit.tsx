@@ -2,7 +2,7 @@ import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
 import type { CareerWorkspace } from "@rezumi/schema/career";
 import { EmptyState } from "@heroui-pro/react";
-import { Button, Chip, Link as TextLink, Spinner, TextArea, Skeleton } from "@heroui/react";
+import { Button, Chip, Link as TextLink, Spinner, TextArea, Skeleton, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +15,7 @@ import { CareerWidget, PrivacyLine, StatusPill, Swap, Working, workingSteps } fr
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 type FitItem = SavedItem & { data: SavedData<"fit"> };
 type Requirement = SavedData<"fit">["requirements"][number];
@@ -138,7 +139,9 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 		<div className="grid gap-6">
 			<div className="grid items-end gap-x-6 gap-y-3 @xl:grid-cols-[minmax(0,1fr)_auto]">
 				<div className="grid gap-1.5">
-					<h2 className="text-xl leading-7 font-semibold">{item.data.headline}</h2>
+					<Typography type="h4" render={renderAsH2}>
+						{item.data.headline}
+					</Typography>
 					<p className="max-w-[560px] text-sm leading-5 text-muted">{item.data.summary}</p>
 					{item.outdated && !readOnly && <AiNotice className="mt-1" />}
 				</div>

@@ -56,7 +56,7 @@ const TONE = {
 } as const;
 
 const PIN_CLASS =
-	"pointer-events-auto absolute grid size-[22px] cursor-(--cursor-interactive) place-items-center rounded-full border-2 border-(--paper) text-[11px] font-bold tabular-nums shadow-[0_1px_3px_oklch(0_0_0/0.25)]";
+	"pointer-events-auto absolute grid size-[22px] cursor-(--cursor-interactive) place-items-center rounded-full border-2 border-(--paper) text-xs font-bold tabular-nums shadow-[0_1px_3px_oklch(0_0_0/0.25)]";
 
 const text = (value: unknown): string =>
 	typeof value === "string"
@@ -225,7 +225,7 @@ export function CheckPageLayer({ pageIndex, pageMap }: CheckPageLayerProps) {
 				<span
 					key={`marker:${number}`}
 					aria-hidden="true"
-					className="absolute grid size-5 place-items-center rounded-full bg-accent text-[11px] font-bold text-accent-foreground tabular-nums"
+					className="absolute grid size-5 place-items-center rounded-full bg-accent text-xs font-bold text-accent-foreground tabular-nums"
 					style={marginStyle(node, page)}
 				>
 					{number}

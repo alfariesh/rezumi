@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { useLingui } from "@lingui/react";
+import { cn } from "@rezumi/utils/style";
 
 type RollingNumberProps = {
 	value: number;
@@ -16,7 +17,8 @@ type RollingNumberProps = {
 
 /**
  * A number whose digits roll like an odometer, one column per digit, in the locale's own digits. Columns are keyed
- * from the right, so a changed value rolls only the digits that changed; a new column rolls up from zero.
+ * from the right, so a changed value rolls only the digits that changed; a new column rolls up from zero. `--cell` is
+ * the height of one digit, in em, so the column, its glyphs and the roll distance stay one number.
  */
 export function RollingNumber({
 	value,
@@ -32,7 +34,7 @@ export function RollingNumber({
 	const digits = Array.from({ length: 10 }, (_, digit) => i18n.number(digit));
 
 	return (
-		<span className={className}>
+		<span className={cn("[--cell:1.15em]", className)}>
 			<span className="sr-only">{text}</span>
 			<span aria-hidden="true" dir="ltr" className="inline-flex">
 				{characters.map((character, index) => {
@@ -40,11 +42,11 @@ export function RollingNumber({
 					return (
 						<span
 							key={characters.length - index}
-							className="relative inline-block h-[1.15em] overflow-hidden text-center"
+							className="relative inline-block h-(--cell) overflow-hidden text-center"
 						>
 							<span className="invisible">{character}</span>
 							<span
-								className="absolute inset-x-0 top-0 flex translate-y-[calc(var(--offset)*1.15em)] flex-col transition-transform ease-enter starting:translate-y-0"
+								className="absolute inset-x-0 top-0 flex translate-y-[calc(var(--offset)*var(--cell))] flex-col transition-transform ease-enter starting:translate-y-0"
 								style={
 									{
 										"--offset": roll ? -Math.max(0, digit) : 0,
@@ -54,10 +56,10 @@ export function RollingNumber({
 								}
 							>
 								{digit === -1 ? (
-									<span className="h-[1.15em] leading-[1.15]">{character}</span>
+									<span className="h-(--cell) leading-(--cell)">{character}</span>
 								) : (
 									digits.map((glyph) => (
-										<span key={glyph} className="h-[1.15em] leading-[1.15]">
+										<span key={glyph} className="h-(--cell) leading-(--cell)">
 											{glyph}
 										</span>
 									))

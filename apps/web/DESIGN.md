@@ -1,7 +1,7 @@
 ---
 version: 7.0.0
 name: Rezumi · HeroUI
-description: The app is HeroUI's default system as shipped: its palette, radius, system type and focus ring, with HeroUI Pro for the shell and the data-heavy surfaces. Rezumi adds paper, application stages and a few layout and motion tokens. The homepage keeps its own Desk & Paper look.
+description: The app is HeroUI's default system as shipped: its palette, radius, focus ring and type scale, set in Google Sans, with HeroUI Pro for the shell and the data-heavy surfaces. Rezumi adds paper, application stages and a few layout and motion tokens. The homepage keeps its own Desk & Paper look.
 colors:
   paper: "#FFFFFF"
   stages:
@@ -12,10 +12,11 @@ colors:
     offer: "#579F68"
     closed: "#C67067"
 typography:
-  family: "HeroUI system stack (--font-sans); --font-mono for shortcuts, URLs and counts"
+  family: "Google Sans (--font-sans); Google Sans Code (--font-mono) for shortcuts, URLs, slugs and counts"
   body: { fontSize: 14px, fontWeight: 400 }
   title: { fontSize: 30px, lineHeight: 36px, fontWeight: 600, letterSpacing: -0.025em }
   heading: { fontSize: 20px, lineHeight: 28px, fontWeight: 600 }
+  card-title: { fontSize: 16px, lineHeight: 24px, fontWeight: 600 }
   label: { fontSize: 14px, fontWeight: 500 }
   caption: { fontSize: 12px, lineHeight: 16px, fontWeight: 500 }
 rounded:
@@ -43,7 +44,7 @@ marketing:
       }
     body: { fontFamily: Instrument Serif, fontSize: "16–21px", lineHeight: "1.45–1.5", fontWeight: 400 }
     accent: { fontFamily: Instrument Serif, fontStyle: italic, color: accent-text }
-    label: { fontFamily: Figtree, fontSize: 13px, fontWeight: 500 }
+    label: { fontFamily: Google Sans, fontSize: 13px, fontWeight: 500 }
   colors:
     graphite: { light: "oklch(0.38 0.01 95 / .3)", dark: "oklch(0.9 0.01 95 / .18)" }
     night-1: "oklch(0.24 0.03 265)"
@@ -64,7 +65,7 @@ marketing:
 
 ## Overview
 
-Rezumi's app is HeroUI's default theme, used as shipped: its blue accent (the logo's `#00BAFF` family), light gray desk, white surfaces, 0.5rem radius, system font and focus ring. We restyle nothing HeroUI already draws. A bright resume or letter sits in the middle of that quiet interface and is the one thing that is not themed.
+Rezumi's app is HeroUI's default theme, used as shipped: its blue accent (the logo's `#00BAFF` family), light gray desk, white surfaces, 0.5rem radius, focus ring and type scale, set in Google Sans. We restyle nothing HeroUI already draws. A bright resume or letter sits in the middle of that quiet interface and is the one thing that is not themed.
 
 Components come from `@heroui/react` and, where the base library has none, `@heroui-pro/react` (the shell, widgets, grids, charts, chat, command palette and sheets). Where neither has one, `packages/ui` and the owning feature build it from HeroUI tokens and BEM-style class names, so it reads as HeroUI. Check `apps/web/PRODUCT.md` for who the product is for. The decisions behind this system, and what changed from the earlier Desk & Paper look, are in `.agents/docs/plans/heroui-migration.md`.
 
@@ -97,15 +98,28 @@ Use semantic tokens in app code. No arbitrary colors and no palette classes such
 
 ## Typography
 
-HeroUI's system stack, with no webfont in the app. Hierarchy comes from size and weight.
+Google Sans for the interface and Google Sans Code for monospace, self-hosted from `@fontsource-variable` and named once, in `packages/ui/src/styles/globals.css` (`--font-sans` and `--font-mono`; Tailwind's `font-sans` and `font-mono` read them). Scripts those fonts do not draw (Arabic, CJK) fall through to the system stack. Google Sans has weights 400 to 700, so the interface uses `font-normal`, `font-medium`, `font-semibold` and `font-bold` and nothing lighter or heavier. Hierarchy comes from size and weight.
 
-- **Titles:** 30px semibold with `tracking-tight` for a page title (`PageHeader`); 20px semibold for a section; 14px medium for a label. Body is 14px. Descriptions and metadata are `text-muted` at 12–14px.
+The scale is HeroUI's [Typography](https://heroui.com/docs/react/components/typography) scale, which is Tailwind's `text-*` steps. Use no arbitrary value (`text-[13px]`, `leading-[19px]`, `tracking-[-.02em]`, `font-[…]`) and no literal font stack in app code; a value the scale lacks is a design decision to make here first. `apps/web/src/typography.test.ts` fails when one appears.
+
+| Role                  | Look                       | Use                                                                                               |
+| --------------------- | -------------------------- | ------------------------------------------------------------------------------------------------- |
+| Page title            | 30 / 36, semibold, tight   | `<Typography type="h2" render={renderAsH1}>` (`PageHeader`; auth cards use `type="h3"`)           |
+| Section title         | 20 / 28, semibold, tight   | `type="h4"`                                                                                       |
+| Card or row title     | 16 / 24, semibold, tight   | `type="h6"`                                                                                       |
+| Body, label           | 14, labels `font-medium`   | `text-sm`; HeroUI controls already set it                                                         |
+| Description, metadata | 14 or 12, `text-muted`     | `text-sm text-muted`, `text-xs text-muted`; a multi-line paragraph is `Typography type="body-sm"` |
+| Group label, caption  | 12, semibold, `text-muted` | `text-xs font-semibold text-muted`                                                                |
+| Mono                  | 14                         | `font-mono text-sm` for shortcuts, URLs, slugs, filenames and counts                              |
+
+- **Titles use `Typography`.** Its `type` sets how text looks and `render` sets the element, so the document outline and the scale stay independent. `renderAsH1`, `renderAsH2` and `renderAsH3` in `apps/web/src/libs/typography.tsx` are the shared render functions; a page title is the `h1` that looks like an `h2`. A public page that is itself an `h1`-sized hero (templates, the ATS checker) uses `type="h1"` and steps up with `sm:text-5xl` or `sm:text-6xl`.
+- **Dense UI uses the scale utilities.** Single-line labels, captions, table cells and chips take `text-xs` or `text-sm` with a `font-*` weight. Typography's `body-*` types carry paragraph leading (24px at 14px), which is too loose for rows and chips.
 - **Numbers:** `tabular-nums` on prices, counts, scores and stats so columns align.
-- **Mono:** `font-mono` for shortcuts, URLs, slugs, filenames and counts.
-- No all-caps labels or title caps: headings, eyebrows, group labels and buttons are sentence case at 12px or larger, with normal tracking.
+- No all-caps labels or title caps: headings, eyebrows, group labels and buttons are sentence case at 12px or larger, with normal tracking. Nothing is set below 12px.
 - Field labels are 12–14px medium; a description sits under the control in `text-muted`.
 - Rendered rich text (assistant and coach replies, the rich-text editor) uses `packages/ui/src/styles/typeset.css`, an owned stylesheet based on shadcn's typeset (MIT) that reads HeroUI tokens. Wrap content in `typeset` plus a preset: `typeset-chat` or `typeset-field`. It styles only the elements those surfaces render (no images, `kbd`, `details`, definition lists or math). Opt a component out with `not-typeset`.
 - Touch inputs use at least 16px text to prevent iOS zoom.
+- **Outside the scale:** the landing page (Marketing site below), a reflowed resume (`resume-reflow.tsx`, drawn in the resume's own font on white paper), and the exported chart image in Insights (SVG pixel geometry). Resume templates and the font picker name their own families; app type never sets them.
 
 ## Iconography
 
@@ -188,7 +202,7 @@ The shared `theme` cookie stores `light`, `dark` or `system` (the default). Syst
 
 ## Marketing site
 
-The public homepage in `apps/web/src/features/homepage` keeps the earlier Desk & Paper look, scoped to the `.landing` wrapper: its own palette, typography, illustrations and motion. It shares the app's theme switch (the `.dark` class) and nothing else. `landing.css` defines the palette (below), the fonts (Figtree, Instrument Serif and Geist Mono, imported there), the names its utilities use (`bg-bg`, `text-ink`, `text-ink-2`, `text-ink-3`, `border-line`, `accent-text`, `shadow-e1` to `shadow-e3` and the rest), the graphite color, paper shadows and ambient animations. Illustration colors in the front matter are scene values, not tokens. The other public pages under `routes/_home` (templates, the ATS checker) are app surfaces and use HeroUI tokens.
+The public homepage in `apps/web/src/features/homepage` keeps the earlier Desk & Paper look, scoped to the `.landing` wrapper: its own palette, typography, illustrations and motion. It shares the app's theme switch (the `.dark` class) and the app's Google Sans and Google Sans Code, and nothing else. `landing.css` defines the palette (below), the Instrument Serif and IBM Plex Mono faces, the names its utilities use (`bg-bg`, `text-ink`, `text-ink-2`, `text-ink-3`, `border-line`, `accent-text`, `shadow-e1` to `shadow-e3` and the rest), the graphite color, paper shadows and ambient animations. Illustration colors in the front matter are scene values, not tokens. The other public pages under `routes/_home` (templates, the ATS checker) are app surfaces and use HeroUI tokens.
 
 ### Palette
 
@@ -199,14 +213,14 @@ OKLCH values live in `.landing` and `.dark .landing`; light sRGB approximations:
 - **Header:** a 30px logomark from `apps/web/public/icon/{light,dark}.svg`. Keep “Rezumi” as visually hidden text inside the home link.
 - **Footer:** a 140px logo from `apps/web/public/logo/{light,dark}.svg` above the hero's promise (its two highlighted phrases in `accent-text`), the link columns, then a line of community, MIT license and version copy.
 - **Footer desk:** two drawings of the same writing desk in front of an open window, day (`apps/web/public/illustrations/footer-desk-light.webp`, moss and charcoal on white) and night (`footer-desk-dark.webp`, silver and amber on black). The light one multiplies and the dark one lightens into the page, so their white or black wall vanishes and the desk seems to stand on the footer; their far edges fade out. As the desk scrolls into view it paints itself in from the window down, just ahead of the fold, while it rises and settles from a 4% zoom; it completes exactly when the page ends (`--dp`, written by `scroll.ts`; 1 under reduced motion). In the light theme a soft morning glow rises behind the window with it. Its objects are links back into the story, each showing its scene number and name on hover or focus: the resume to Write, the glasses to Check, the letters to Share, the calendar to Prepare, the window to Remember. The lamp switches the theme, like the header's cord. Below 700px the desk crops to its middle and the hotspots hide (the columns carry the same links). Hotspot boxes are percentages of the drawing (`getDeskSpots` in `footer.tsx`): re-measure them if the drawing changes. The wall must be pure white in the day drawing and pure black in the night one: multiply and lighten only make those disappear, and any tint shows as a band. Flatten with `magick in.png -background white -alpha remove -alpha off flat.png` (black for the night one); if the wall came back tinted, lift it to white per channel (e.g. `-channel R -level 0,97% -channel G -level 0,96.6% -channel B -level 0,95% +channel` for a #F8F7F3 wall), then `cwebp -q 74 -m 6 -sharp_yuv flat.png -o out.webp`. The 3200px drawing also ships at 1600px and 2400px (`footer-desk-<theme>-1600.webp`, `-2400.webp`; `magick -filter Lanczos -resize 1600x`, same `cwebp` settings), listed in the images' `srcSet`.
-- **Instrument Serif (`font-anybody`):** hero and closing headlines, selected scene titles, and large numerals. `font-anybody` is an alias of `font-display`.
+- **Instrument Serif (`font-display`):** hero and closing headlines, selected scene titles, and large numerals.
 - **Instrument Serif:** body copy, italic accents, and serif title treatments in the Design scene.
-- **Labels (`font-martian`, an alias of `font-ui`):** Figtree 13px, weight 500, sentence case (`labelClass`).
-- **Figtree:** buttons and mock app UI. The receipt keeps IBM Plex Mono (`public/fonts`).
+- **Labels (`font-sans`):** Google Sans 13px, weight 500, sentence case (`labelClass`).
+- **Google Sans (`font-sans`):** buttons and mock app UI. The receipt keeps IBM Plex Mono (`font-receipt`, `public/fonts`). Sizes here are fluid and tied to the illustrations (`cqw`, `vw`, `clamp`, `em`), so the scale rules above do not apply; the families still come from the tokens.
 
 ### Controls
 
-- Repeat the same primary CTA, “Build your resume,” in the header, hero, and closing section. Buttons have 2px corners, in Figtree 600, at 38px, 54px, and 56px respectively.
+- Repeat the same primary CTA, “Build your resume,” in the header, hero, and closing section. Buttons have 2px corners, in Google Sans 600, at 38px, 54px, and 56px respectively.
 - Scene navigation appears from 1240px. Sentence-case labels use `ink` when active and `ink-3` when inactive; a 6px accent dot marks the active scene. The Share night scene uses its own light inks.
 - The GitHub link appears from 1024px, with the GitHub mark, a duotone gold star, and a live compact count. Format counts with the locale's `Intl.NumberFormat`; include the full count in the accessible name.
 - The homepage theme control is a fixed 30px pull-cord button at the top end corner. Its height is 92px at rest, 112px on hover, and 124px during a pull. It uses a 450ms spring curve, toggles the shared theme after 170ms, and sways every seven seconds until first activated. The bulb glows in dark mode.

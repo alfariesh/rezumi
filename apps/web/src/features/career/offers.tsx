@@ -259,9 +259,7 @@ function ComparisonTable({ offers, left, right, onChoose }: ComparisonTableProps
 									<td key={index} className="px-5 py-3.5">
 										{offer && cell && (
 											<>
-												<p className={cn("text-sm leading-[21px] tabular-nums", cell.strong && "font-semibold")}>
-													{cell.value}
-												</p>
+												<p className={cn("text-sm tabular-nums", cell.strong && "font-semibold")}>{cell.value}</p>
 												{cell.notes.map((note) =>
 													note.tone === "better" ? (
 														<Chip
@@ -358,7 +356,7 @@ function OfferHeader({ offer, offers, otherId, onChoose }: OfferHeaderProps) {
 						<Avatar.Fallback>{companyOf(offer).charAt(0).toLocaleUpperCase()}</Avatar.Fallback>
 					</Avatar>
 					<span className="grid min-w-0 flex-1">
-						<span className="truncate text-[15px] font-semibold">{companyOf(offer)}</span>
+						<span className="truncate text-base font-semibold">{companyOf(offer)}</span>
 						{offer.application?.role && <span className="truncate text-sm text-muted">{offer.application.role}</span>}
 						<span className="text-xs text-muted">
 							{versionLabel(offer)} · {t`saved ${when(offer.createdAt)}`}
@@ -590,7 +588,7 @@ function OpenQuestions({ offers }: OpenQuestionsProps) {
 				</p>
 			) : (
 				<>
-					<p className="text-sm leading-[21px] text-muted">
+					<p className="text-sm text-muted">
 						{said
 							? offers.length > 1
 								? t`You said: “${said}” Ask both companies before deciding.`
@@ -599,7 +597,7 @@ function OpenQuestions({ offers }: OpenQuestionsProps) {
 					</p>
 					<ol className="grid gap-2.5">
 						{questions.map((item, index) => (
-							<li key={item.question} className="grid grid-cols-[24px_minmax(0,1fr)] text-sm leading-[21px]">
+							<li key={item.question} className="grid grid-cols-[24px_minmax(0,1fr)] text-sm">
 								<span className="text-muted tabular-nums">{index + 1}.</span>
 								<span>
 									{item.question} <span className="text-xs text-muted">· {item.ask}</span>

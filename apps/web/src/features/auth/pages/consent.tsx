@@ -1,4 +1,4 @@
-import { Alert, Button, Spinner } from "@heroui/react";
+import { Alert, Button, Spinner, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
@@ -7,6 +7,7 @@ import { cn } from "@rezumi/utils/style";
 import { isOAuthRedirect } from "../redirect";
 import { authClient } from "@/libs/auth/client";
 import { ENTER_CLASS } from "@/libs/motion";
+import { renderAsH1 } from "@/libs/typography";
 
 type OAuthConsentPageProps = {
 	oauthQuery: string;
@@ -80,9 +81,9 @@ export function OAuthConsentPage({ oauthQuery, email }: OAuthConsentPageProps) {
 	return (
 		<>
 			<div className="space-y-2 text-center">
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<Typography type="h3" render={renderAsH1}>
 					<Trans>Connect an application</Trans>
-				</h1>
+				</Typography>
 				<p className="text-sm wrap-anywhere text-muted">
 					<Trans>Signed in as {email}</Trans>
 				</p>

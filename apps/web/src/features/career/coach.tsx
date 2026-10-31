@@ -3,7 +3,17 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { UIMessage } from "ai";
 import { ContextMenu, PromptSuggestion } from "@heroui-pro/react";
-import { Description, Dropdown, Label, ListBox, ScrollShadow, SearchField, Select, Spinner } from "@heroui/react";
+import {
+	Description,
+	Dropdown,
+	Label,
+	ListBox,
+	ScrollShadow,
+	SearchField,
+	Select,
+	Spinner,
+	Typography,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
@@ -29,6 +39,7 @@ import { AiProviderLoadState } from "@/features/settings/integrations/ai-provide
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
+import { renderAsH3 } from "@/libs/typography";
 
 type ThreadSummary = RouterOutput["agent"]["threads"]["list"][number];
 type UsableProvider = ReturnType<typeof useHasUsableAiProvider>["usableProviders"][number];
@@ -400,10 +411,10 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	return (
 		<div className="grid gap-6 pt-[clamp(0px,6vh,48px)]">
 			<div className="grid gap-3">
-				<h3 className="text-3xl leading-9 font-semibold">
+				<Typography type="h2" render={renderAsH3}>
 					<Trans>What are you working on?</Trans>
-				</h3>
-				<p className="text-[15px] leading-[23px] text-muted">
+				</Typography>
+				<p className="text-base text-muted">
 					<Trans>
 						Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on
 						below and say what they relied on.
@@ -458,7 +469,7 @@ function ModelSelect({ open, onOpenChange, providers, current, label, onChoose }
 				else if (typeof key === "string") onChoose(key);
 			}}
 		>
-			<Select.Trigger className="h-8 min-h-8 items-center rounded-full bg-default ps-3 pe-8 text-[13px] shadow-none">
+			<Select.Trigger className="h-8 min-h-8 items-center rounded-full bg-default ps-3 pe-8 text-sm shadow-none">
 				<Select.Value className="leading-none" />
 				<Select.Indicator />
 			</Select.Trigger>

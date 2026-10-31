@@ -3,7 +3,7 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { Ref } from "react";
 import { EmptyState } from "@heroui-pro/react";
-import { Button, buttonVariants, Chip, Skeleton, Spinner, Switch } from "@heroui/react";
+import { Button, buttonVariants, Chip, Skeleton, Spinner, Switch, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -38,6 +38,7 @@ import {
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsH3 } from "@/libs/typography";
 
 type Notification = RouterOutput["career"]["notifications"][number];
 type Opportunity = RouterOutput["career"]["opportunities"][number];
@@ -230,7 +231,7 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 														<p id={`note-${row.id}`} className="text-sm leading-5 font-semibold">
 															{row.title}
 														</p>
-														<p className="line-clamp-3 text-[13px] leading-[19px] text-muted">{row.body}</p>
+														<p className="line-clamp-3 text-sm text-muted">{row.body}</p>
 														<p className="mt-0.5 text-xs text-muted">{meta(row)}</p>
 													</div>
 													{actionable && (
@@ -498,12 +499,12 @@ function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDism
 			<RowIcon className="text-sm font-semibold text-muted">{getInitials(company).slice(0, 1)}</RowIcon>
 			<div className="grid min-w-0 flex-1 gap-3">
 				<div className="grid gap-0.5">
-					<h3 id={`role-${row.id}`} className="text-[15px] leading-5 font-semibold">
+					<Typography type="h6" render={renderAsH3} id={`role-${row.id}`}>
 						{row.role}
-					</h3>
-					<p className="text-[13px] text-muted">{[company, row.location, found].filter(Boolean).join(" · ")}</p>
+					</Typography>
+					<p className="text-sm text-muted">{[company, row.location, found].filter(Boolean).join(" · ")}</p>
 				</div>
-				{row.snippet && <p className="line-clamp-3 text-sm leading-[21px] text-muted">{row.snippet}</p>}
+				{row.snippet && <p className="line-clamp-3 text-sm text-muted">{row.snippet}</p>}
 				{matches.length + unknowns.length > 0 && (
 					<div className="flex flex-wrap gap-1.5">
 						{matches.map((match) => (
@@ -520,7 +521,7 @@ function RoleCard({ row, found, first, tracked, pending, onTrack, onUndo, onDism
 				)}
 				<Swap id={tracked ? "tracked" : "actions"}>
 					{tracked ? (
-						<p className="flex min-h-8 items-center gap-2 text-[13px] text-success">
+						<p className="flex min-h-8 items-center gap-2 text-sm text-success">
 							<Icon name="check-circle" size={18} className="shrink-0" />
 							<span className="me-auto">
 								<Trans>Saved to Applications with the posting</Trans>
@@ -605,7 +606,7 @@ function ComingUp({ now, className }: ComingUpProps) {
 						/>
 						{t`${kind} interview`}
 					</p>
-					<p className="text-[13px] text-muted">
+					<p className="text-sm text-muted">
 						{[application.company, time(start), formatDuration(interview.durationMinutes, locale)].join(" · ")}
 					</p>
 				</div>
@@ -784,7 +785,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 											className="grid min-w-0 flex-1 gap-0.5 rounded-lg text-start focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none"
 										>
 											<span className="text-sm font-medium">{title}</span>
-											<span className="line-clamp-2 text-[13px] text-muted">{describe(row)}</span>
+											<span className="line-clamp-2 text-sm text-muted">{describe(row)}</span>
 											<span className={cn("text-xs", row.enabled && !done ? "text-success" : "text-muted")}>
 												{status(row)}
 											</span>
@@ -809,7 +810,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 					</AnimatePresence>
 				</div>
 			)}
-			<p className="text-xs leading-[17px] text-muted">
+			<p className="text-xs text-muted">
 				<Trans>Reminders appear here. Email copies are optional and need a verified address.</Trans>
 			</p>
 		</CareerWidget>

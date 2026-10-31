@@ -119,7 +119,7 @@ export function PageOverlay({ pageIndex, pageMap, onSelect }: PageOverlayProps) 
 					className="pointer-events-none absolute max-sm:hidden"
 					style={boxOf(node)}
 				>
-					<div className="absolute start-1 -top-2 flex gap-1 text-[8px] leading-3 font-semibold">
+					<div className="absolute start-1 -top-2 flex gap-1 text-xs leading-3 font-semibold">
 						<span aria-hidden="true" className="rounded-full bg-accent px-1.5 text-accent-foreground">
 							<Trans>Editing</Trans>
 						</span>

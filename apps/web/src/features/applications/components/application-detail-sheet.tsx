@@ -209,7 +209,7 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 										/>
 										<span
 											className={cn(
-												"truncate text-[11px]",
+												"truncate text-xs",
 												stage === application.status ? "font-semibold text-foreground" : "text-muted",
 											)}
 										>

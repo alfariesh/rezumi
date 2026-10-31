@@ -33,7 +33,7 @@ export function FontDisplay({ family, label, type, url }: FontDisplayProps) {
 	return (
 		<div ref={containerRef} className="inline-flex items-baseline gap-2">
 			<span
-				style={{ fontFamily: isLoaded ? `'${previewName}', sans-serif` : "sans-serif" }}
+				style={isLoaded ? { fontFamily: `'${previewName}', var(--font-sans)` } : undefined}
 				className={cn(isLoaded ? "opacity-100" : "opacity-50", "transition-opacity duration-quick ease-enter")}
 			>
 				{label}

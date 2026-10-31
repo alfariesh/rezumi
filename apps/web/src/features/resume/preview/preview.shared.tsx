@@ -61,7 +61,7 @@ export function ResumePreviewLoader({
 				return (
 					<figure key={pageNumber} className="shrink-0">
 						{showPageNumbers ? (
-							<figcaption className="mb-1 text-[0.625rem] font-medium text-muted">
+							<figcaption className="mb-1 text-xs font-medium text-muted">
 								Page {pageNumber} of {pageCount}
 							</figcaption>
 						) : null}

@@ -1,6 +1,17 @@
 import type { Fact, Story } from "../hooks";
 import { EmptyState } from "@heroui-pro/react";
-import { Button, buttonVariants, Checkbox, Chip, Input, Separator, Spinner, TextArea, Tooltip } from "@heroui/react";
+import {
+	Button,
+	buttonVariants,
+	Checkbox,
+	Chip,
+	Input,
+	Separator,
+	Spinner,
+	TextArea,
+	Tooltip,
+	Typography,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,6 +28,7 @@ import { collectInterviews, upcomingInterviews } from "@/features/applications/i
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 type PartKey = "situation" | "task" | "action" | "result" | "reflection";
 
@@ -127,7 +139,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 						/>
 					))}
 				</AnimatePresence>
-				<p className="px-2 pt-2 pb-1 text-xs leading-[17px] text-muted">
+				<p className="px-2 pt-2 pb-1 text-xs text-muted">
 					<Trans>
 						Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown
 						outcomes blank.
@@ -249,7 +261,7 @@ function PartTiles({ story }: { story: Story }) {
 					key={part.key}
 					title={part.label}
 					className={cn(
-						"grid h-5 w-[22px] place-items-center rounded-md text-[11px] font-semibold",
+						"grid h-5 w-[22px] place-items-center rounded-md text-xs font-semibold",
 						story.data[part.key].trim() ? "bg-accent-soft text-accent-soft-foreground" : "bg-default text-muted",
 					)}
 				>
@@ -264,7 +276,7 @@ function PartTiles({ story }: { story: Story }) {
 
 const partTile = (filled: boolean) =>
 	cn(
-		"grid size-7 place-items-center rounded-lg text-[13px] font-semibold",
+		"grid size-7 place-items-center rounded-lg text-sm font-semibold",
 		filled ? "bg-accent-soft text-accent-soft-foreground" : "bg-default text-muted",
 	);
 
@@ -276,7 +288,9 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 	return (
 		<div className="grid gap-5">
 			<header className="grid gap-2">
-				<h2 className="text-xl leading-7 font-semibold text-pretty">{story.data.title}</h2>
+				<Typography type="h4" render={renderAsH2} className="text-pretty">
+					{story.data.title}
+				</Typography>
 				{story.data.tags.length > 0 ? (
 					<div className="flex flex-wrap gap-1">
 						{story.data.tags.map((tag) => (
@@ -305,9 +319,9 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 								<div className="grid min-w-0 gap-1">
 									<h3 className="text-sm font-semibold text-muted">{part.label}</h3>
 									{text ? (
-										<p className="text-[15px] leading-[23px] text-pretty whitespace-pre-line">{text}</p>
+										<p className="text-base text-pretty whitespace-pre-line">{text}</p>
 									) : (
-										<p className="text-sm leading-[21px] text-muted italic">
+										<p className="text-sm text-muted italic">
 											<Trans>Not recorded yet. Leave it blank until you can support it.</Trans>
 										</p>
 									)}

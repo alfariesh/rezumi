@@ -50,7 +50,7 @@ function ChartWidget({ title, description, children }: ChartWidgetProps) {
 	);
 }
 
-const LABEL_PROPS = { fill: "var(--muted)", fontSize: 11 } as const;
+const LABEL_PROPS = { fill: "var(--muted)", fontSize: 12 } as const;
 
 export function ApplicationInsights({ applications }: { applications: ApplicationSummary[] }) {
 	const { i18n } = useLingui();

@@ -150,7 +150,7 @@ function CoachSheetBody({
 		<header className="flex h-14 shrink-0 items-center gap-1 border-b border-separator ps-4 pe-14">
 			<Icon name="sparkle" size={20} className="me-1.5 shrink-0 text-accent" />
 			<div className="grid min-w-0 flex-1">
-				<Sheet.Heading className="font-sans text-[15px] leading-5 font-semibold">
+				<Sheet.Heading className="font-sans text-base leading-5 font-semibold">
 					<Trans>Coach</Trans>
 				</Sheet.Heading>
 				<p className="truncate text-xs text-muted">

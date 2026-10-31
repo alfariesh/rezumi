@@ -319,7 +319,7 @@ function NavigationContent() {
 						>
 							<Avatar size="sm" className="size-7 shrink-0">
 								{session.user.image && <Avatar.Image src={session.user.image} alt="" />}
-								<Avatar.Fallback className="text-[11px]">{getInitials(session.user.name)}</Avatar.Fallback>
+								<Avatar.Fallback className="text-xs">{getInitials(session.user.name)}</Avatar.Fallback>
 							</Avatar>
 							{expanded && (
 								<span className="grid min-w-0">

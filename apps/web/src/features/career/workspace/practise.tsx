@@ -3,7 +3,19 @@ import type { WorkspaceTabProps } from "./shell";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Segment, Widget } from "@heroui-pro/react";
-import { Alert, Button, Checkbox, Chip, Label, ProgressBar, Skeleton, Spinner, TextArea, Tooltip } from "@heroui/react";
+import {
+	Alert,
+	Button,
+	Checkbox,
+	Chip,
+	Label,
+	ProgressBar,
+	Skeleton,
+	Spinner,
+	TextArea,
+	Tooltip,
+	Typography,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -36,6 +48,7 @@ import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/u
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
 import { client } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 type Practice = SavedData<"practice">;
 type Attempt = SavedItem & { data: Practice };
@@ -143,7 +156,7 @@ export function PractiseTab({ application, version, interview, speak, story, now
 						))}
 					</ul>
 				)}
-				<p className="text-xs leading-[17px] text-muted">
+				<p className="text-xs text-muted">
 					<Trans>
 						Compare attempts to see what improved. Practice questions are simulated, not from {application.company}.
 					</Trans>
@@ -438,7 +451,9 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 					</span>
 				}
 			>
-				<h2 className="text-xl leading-7 font-semibold">{question.text}</h2>
+				<Typography type="h4" render={renderAsH2}>
+					{question.text}
+				</Typography>
 				{storyTitle && <p className="text-sm text-muted">{t`Practicing your story: ${storyTitle}`}</p>}
 			</CareerWidget>
 
@@ -976,7 +991,7 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 									)}
 								</div>
 							)}
-							<p className="text-xs leading-[17px] text-muted">
+							<p className="text-xs text-muted">
 								<Trans>
 									Connections bill speech separately and may use tokens on your account. Your browser's speech is free,
 									but its maker may process the audio. The server keeps transcripts, never recordings.
@@ -1045,28 +1060,30 @@ type FeedbackCardProps = { data: Practice; children?: ReactNode };
 function FeedbackCard({ data, children }: FeedbackCardProps) {
 	return (
 		<CareerWidget title={t`Feedback`} icon="sparkle" className={ENTER_CLASS} contentClassName="gap-4">
-			<h2 className="text-base font-semibold">{data.title}</h2>
+			<Typography type="h6" render={renderAsH2}>
+				{data.title}
+			</Typography>
 			<div className="grid gap-3 sm:grid-cols-2">
 				<div className="grid content-start gap-1.5 rounded-xl bg-success-soft p-4">
 					<p className="flex items-center gap-1.5 text-xs font-semibold text-success-soft-foreground">
 						<Icon name="thumbs-up" size={16} />
 						<Trans>What works</Trans>
 					</p>
-					<p className="text-sm leading-[21px]">{data.works}</p>
+					<p className="text-sm">{data.works}</p>
 				</div>
 				<div className="grid content-start gap-1.5 rounded-xl bg-warning-soft p-4">
 					<p className="flex items-center gap-1.5 text-xs font-semibold text-warning-soft-foreground">
 						<Icon name="wrench" size={16} />
 						<Trans>Strengthen</Trans>
 					</p>
-					<p className="text-sm leading-[21px]">{data.strengthen}</p>
+					<p className="text-sm">{data.strengthen}</p>
 				</div>
 			</div>
 			<div className="grid gap-1.5 rounded-xl bg-default p-4">
 				<p className="text-xs font-semibold text-muted">
 					<Trans>Try this opening</Trans>
 				</p>
-				<q className="text-[15px] leading-6">{data.opening}</q>
+				<q className="text-base leading-6">{data.opening}</q>
 			</div>
 			{children}
 		</CareerWidget>
@@ -1078,7 +1095,9 @@ function SavedAttempt({ item }: { item: Attempt }) {
 	return (
 		<div className="grid min-w-0 gap-6">
 			<CareerWidget title={item.data.origin === "recalled" ? t`Recalled` : t`Practice`} contentClassName="gap-2">
-				<h2 className="text-xl leading-7 font-semibold">{item.data.question}</h2>
+				<Typography type="h4" render={renderAsH2}>
+					{item.data.question}
+				</Typography>
 			</CareerWidget>
 			<CareerWidget
 				title={t`Your answer`}
@@ -1089,7 +1108,7 @@ function SavedAttempt({ item }: { item: Attempt }) {
 					</Chip>
 				}
 			>
-				<p className="rounded-xl bg-default p-4 text-[15px] leading-[23px] whitespace-pre-wrap">{item.data.answer}</p>
+				<p className="rounded-xl bg-default p-4 text-base whitespace-pre-wrap">{item.data.answer}</p>
 			</CareerWidget>
 			<FeedbackCard data={item.data} />
 		</div>

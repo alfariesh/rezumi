@@ -1,9 +1,10 @@
-import { buttonVariants } from "@heroui/react";
+import { buttonVariants, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
 import { templates } from "@/dialogs/resume/template/data";
+import { renderAsH2 } from "@/libs/typography";
 
 export function TemplateGallery() {
 	const { i18n } = useLingui();
@@ -13,9 +14,9 @@ export function TemplateGallery() {
 		<main id="main-content" className="min-h-svh bg-background px-5 pt-28 pb-16 text-foreground sm:px-8">
 			<div className="mx-auto max-w-6xl">
 				<div className="max-w-3xl">
-					<h1 className="text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-6xl">
+					<Typography type="h1" className="text-balance sm:text-6xl">
 						{t`${count} free resume templates. Find your fit.`}
-					</h1>
+					</Typography>
 					<p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
 						{t`Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark.`}
 					</p>
@@ -61,7 +62,9 @@ export function TemplateGallery() {
 										className="mx-auto aspect-[298/420] w-full max-w-74.5 rounded-sm bg-white object-contain shadow-surface"
 									/>
 								</a>
-								<h2 className="mt-5 text-2xl font-semibold">{name}</h2>
+								<Typography type="h3" render={renderAsH2} className="mt-5">
+									{name}
+								</Typography>
 								<p className="mt-1 text-sm font-medium text-accent-soft-foreground">
 									{layout.columns === 1 ? t`One column` : t`Two columns`}
 								</p>
@@ -80,7 +83,7 @@ export function TemplateGallery() {
 				</div>
 
 				<section aria-labelledby="layout-advice" className="my-10 border-y border-separator py-6">
-					<h2 id="layout-advice" className="text-2xl font-semibold">{t`One column or two?`}</h2>
+					<Typography type="h3" render={renderAsH2} id="layout-advice">{t`One column or two?`}</Typography>
 					<p className="mt-3 max-w-3xl leading-relaxed text-muted">
 						{t`One-column templates give hiring software a simple top-to-bottom reading order. Two-column templates put supporting details in a sidebar and leave more room for visual hierarchy. Choose for your content, then check the exported PDF.`}
 					</p>

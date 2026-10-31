@@ -71,16 +71,16 @@ function EntryView({ type, entry }: { type: string; entry: Entry }) {
 		<article className="grid gap-0.5">
 			{title && <h3 className="font-semibold">{title}</h3>}
 			{(subtitle.length > 0 || meta.length > 0) && (
-				<p className="text-[14px] text-[#555]">{[...subtitle, ...meta].join(" · ")}</p>
+				<p className="text-sm text-[#555]">{[...subtitle, ...meta].join(" · ")}</p>
 			)}
 			{url && /^https?:/i.test(url) && (
-				<a className="w-fit text-[14px] underline" href={url} target="_blank" rel="noopener noreferrer nofollow">
+				<a className="w-fit text-sm underline" href={url} target="_blank" rel="noopener noreferrer nofollow">
 					{website?.label || url.replace(/^https?:\/\//, "")}
 				</a>
 			)}
-			{keywords.length > 0 && <p className="text-[14px] text-[#555]">{keywords.join(", ")}</p>}
+			{keywords.length > 0 && <p className="text-sm text-[#555]">{keywords.join(", ")}</p>}
 			{phone && (
-				<a className="w-fit text-[14px] underline" href={`tel:${phone.replace(/\s+/g, "")}`}>
+				<a className="w-fit text-sm underline" href={`tel:${phone.replace(/\s+/g, "")}`}>
 					{phone}
 				</a>
 			)}
@@ -89,7 +89,7 @@ function EntryView({ type, entry }: { type: string; entry: Entry }) {
 			{roles.map((role) => (
 				<div key={role.id} className="mt-1.5 grid gap-0.5">
 					<h4 className="font-medium">{text(role, "position")}</h4>
-					{text(role, "period") && <p className="text-[14px] text-[#555]">{text(role, "period")}</p>}
+					{text(role, "period") && <p className="text-sm text-[#555]">{text(role, "period")}</p>}
 					{text(role, "description") && <RichText html={text(role, "description")} className={RICH} />}
 				</div>
 			))}
@@ -139,11 +139,11 @@ export function ResumeReflow({ data }: ResumeReflowProps) {
 		<div
 			lang={data.metadata.page.locale}
 			dir={isRTL(data.metadata.page.locale) ? "rtl" : "ltr"}
-			className="grid gap-6 bg-white px-5 py-6 text-[15px] leading-[1.5] text-[#1a1a1a]"
-			style={{ fontFamily: `"${font}", ui-sans-serif, system-ui, sans-serif` }}
+			className="grid gap-6 bg-white px-5 py-6 text-base leading-normal text-[#1a1a1a]"
+			style={{ fontFamily: `"${font}", var(--font-sans)` }}
 		>
 			<header className="grid gap-2">
-				<h1 className="text-[26px] leading-tight font-semibold">{basics.name}</h1>
+				<h1 className="text-2xl leading-tight font-semibold">{basics.name}</h1>
 				{(basics.headline || basics.location) && (
 					<p className="text-[#555]">{[basics.headline, basics.location].filter(Boolean).join(" · ")}</p>
 				)}
@@ -154,7 +154,7 @@ export function ResumeReflow({ data }: ResumeReflowProps) {
 							<li key={`${index}:${pill.label}`}>
 								<Tag
 									href={pill.href}
-									className="flex h-9 items-center gap-1.5 rounded-sm border border-[#ddd] px-3 text-[14px]"
+									className="flex h-9 items-center gap-1.5 rounded-sm border border-[#ddd] px-3 text-sm"
 									{...(pill.href?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer nofollow" } : {})}
 								>
 									<Icon name={pill.icon} size={18} />
@@ -175,7 +175,7 @@ export function ResumeReflow({ data }: ResumeReflowProps) {
 				if (entries.length === 0) return null;
 				return (
 					<section key={sectionId} className="grid gap-3">
-						<h2 className="border-b pb-1 text-[17px] font-semibold" style={{ color: accent, borderColor: accent }}>
+						<h2 className="border-b pb-1 text-lg font-semibold" style={{ color: accent, borderColor: accent }}>
 							{getResumeSectionTitle(data, sectionId)}
 						</h2>
 						{entries.map((entry) => (

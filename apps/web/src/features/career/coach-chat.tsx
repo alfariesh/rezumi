@@ -180,7 +180,7 @@ export function ChatView(props: ChatViewProps) {
 								))}
 
 								<WaitingRow show={streaming} skipEnter={fromPending && messages.length <= 1}>
-									<TraceLine status="running" className="text-[13px]">
+									<TraceLine status="running" className="text-sm">
 										<TraceIcon>
 											<Spinner size="sm" color="current" aria-hidden />
 										</TraceIcon>
@@ -214,7 +214,7 @@ export function ChatView(props: ChatViewProps) {
 									<MessageScrollerItem>
 										<div
 											role="alert"
-											className="grid gap-2.5 rounded-xl bg-danger-soft p-3.5 text-[13px] text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
+											className="grid gap-2.5 rounded-xl bg-danger-soft p-3.5 text-sm text-danger-soft-foreground transition-opacity duration-standard ease-enter starting:opacity-0"
 										>
 											<span className="flex gap-2">
 												<Icon name="warning-circle" size={18} className="shrink-0" />
@@ -340,7 +340,7 @@ const MessageView = memo(function MessageView({
 					// min-w-0 lets a wide table scroll inside its own box instead of stretching the column.
 					<ChatMessage.Content
 						className={cn(
-							"w-fit! max-w-full min-w-0 rounded-2xl rounded-ss-none bg-default px-4 py-2.5 text-[15px]",
+							"w-fit! max-w-full min-w-0 rounded-2xl rounded-ss-none bg-default px-4 py-2.5",
 							enter && ENTER_CLASS,
 						)}
 					>
@@ -413,7 +413,7 @@ type UsedChipsProps = {
 
 function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 	const chips: ReactNode[] = [];
-	const linkClass = "text-[13px] leading-[19px] text-foreground hover:underline underline-offset-2";
+	const linkClass = "text-sm text-foreground hover:underline underline-offset-2";
 
 	if (used.facts.length > 0)
 		chips.push(
@@ -427,7 +427,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 									{fact.text}
 								</Link>
 							) : (
-								<span className="text-[13px] text-muted">
+								<span className="text-sm text-muted">
 									<Trans>A fact you've since forgotten</Trans>
 								</span>
 							)}
@@ -456,7 +456,7 @@ function UsedChips({ used, applications, knowledge }: UsedChipsProps) {
 									{story.data.title}
 								</Link>
 							) : (
-								<span className="text-[13px] text-muted">
+								<span className="text-sm text-muted">
 									<Trans>A story you've since deleted</Trans>
 								</span>
 							)}
@@ -557,16 +557,13 @@ function PreferencesList() {
 	return (
 		<>
 			{rows.map((row) => (
-				<li key={row.label} className="grid gap-0.5 text-[13px] leading-[19px]">
+				<li key={row.label} className="grid gap-0.5 text-sm">
 					<span className="text-xs text-muted">{row.label}</span>
 					<span className="line-clamp-3">{row.value}</span>
 				</li>
 			))}
 			<li>
-				<Link
-					to="/dashboard/career/knowledge/preferences"
-					className="text-[13px] text-accent underline underline-offset-2"
-				>
+				<Link to="/dashboard/career/knowledge/preferences" className="text-sm text-accent underline underline-offset-2">
 					<Trans>Open preferences</Trans>
 				</Link>
 			</li>

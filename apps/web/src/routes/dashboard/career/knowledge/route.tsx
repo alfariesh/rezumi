@@ -86,7 +86,7 @@ function KnowledgeLayout() {
 						);
 					})}
 				</nav>
-				<p className="hidden max-w-prose px-1 text-xs leading-[17px] text-muted sm:block 2xl:px-3">
+				<p className="hidden max-w-prose px-1 text-xs text-muted sm:block 2xl:px-3">
 					<Trans>
 						Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or
 						scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message.

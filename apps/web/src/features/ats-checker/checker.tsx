@@ -4,7 +4,7 @@ import type { PdfAtsReport, PdfCategory } from "@rezumi/resume/ats-pdf";
 import type { CSSProperties } from "react";
 import type { DropEvent } from "react-aria";
 import { DropZone } from "@heroui-pro/react";
-import { Alert, Button, Disclosure, Label, Spinner, Tabs, TextArea, TextField } from "@heroui/react";
+import { Alert, Button, Disclosure, Label, Spinner, Tabs, TextArea, TextField, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useNavigate } from "@tanstack/react-router";
@@ -21,6 +21,7 @@ import { RollingNumber } from "@/components/ui/rolling-number";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { ENTER_CLASS, POP_CLASS, stagger } from "@/libs/motion";
 import { client } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 // PDF.js and the importers load only once there is a file, so the page's first screen stays light and prerenderable.
 const PdfViewer = lazy(() => import("./pdf-viewer").then((module) => ({ default: module.PdfViewer })));
@@ -188,10 +189,10 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 	return (
 		<div className="mx-auto grid w-full max-w-[640px] gap-6 px-4 py-16 sm:py-20">
 			<div className="grid justify-items-center gap-3 text-center">
-				<h1 className="text-[34px] leading-10 font-semibold tracking-tight sm:text-[44px] sm:leading-[48px]">
+				<Typography type="h1" className="sm:text-5xl">
 					<Trans>Can software read your resume?</Trans>
-				</h1>
-				<p className="max-w-[520px] text-base leading-[25px] text-muted">
+				</Typography>
+				<p className="max-w-[520px] text-base text-muted">
 					<Trans>
 						Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order,
 						and how to fix it. Free, no account needed.
@@ -254,10 +255,10 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 
 			<section aria-labelledby={`${id}-checks`} className="mt-8 grid gap-4">
 				<div className="grid gap-1.5">
-					<h2 id={`${id}-checks`} className="text-[22px] leading-7 font-semibold tracking-tight">
+					<Typography type="h3" render={renderAsH2} id={`${id}-checks`}>
 						<Trans>What it checks</Trans>
-					</h2>
-					<p className="text-sm leading-[21px] text-muted">
+					</Typography>
+					<p className="text-sm text-muted">
 						<Trans>
 							Applicant tracking systems turn your PDF into plain text before anyone reads it. The checker does the
 							same, with the PDF.js library in your browser, then scores how much of your resume survives: 0 to 100,
@@ -269,7 +270,7 @@ function Idle({ error, posting, onPosting, onFile }: IdleProps) {
 					{checkedCategories.map((category) => (
 						<div key={category} className="grid gap-0.5">
 							<dt className="text-sm font-semibold">{getPdfCategoryLabel(category)}</dt>
-							<dd className="text-[13px] leading-[19px] text-muted">{getPdfCategoryDescription(category)}</dd>
+							<dd className="text-sm text-muted">{getPdfCategoryDescription(category)}</dd>
 						</div>
 					))}
 				</dl>
@@ -285,7 +286,7 @@ function Progress({ file, step }: { file: File; step: number }) {
 	return (
 		<div className="grid place-items-center px-4 py-24">
 			<div role="status" className="grid w-full max-w-[420px] gap-3.5">
-				<b className="truncate text-[15px] font-semibold">
+				<b className="truncate text-base font-semibold">
 					<Trans>Checking {file.name}</Trans>
 				</b>
 				{steps.map((label, index) => (
@@ -387,13 +388,13 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 							} as CSSProperties
 						}
 					>
-						<span className="grid size-[70px] place-items-center rounded-full bg-surface text-[26px] font-semibold tabular-nums">
+						<span className="grid size-[70px] place-items-center rounded-full bg-surface text-2xl font-semibold tabular-nums">
 							<RollingNumber value={report.score} duration="480ms" />
 						</span>
 					</div>
 					<div className="grid gap-1">
 						<b className="text-base font-semibold">{verdict(report.score)}</b>
-						<span className="text-[13px] leading-[19px] text-muted">
+						<span className="text-sm text-muted">
 							{issues > 0 ? (
 								<Plural value={issues} one="# issue could cost you a match." other="# issues could cost you a match." />
 							) : (
@@ -456,9 +457,7 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 									</button>
 									<Disclosure isExpanded={expanded}>
 										<Disclosure.Content>
-											<Disclosure.Body className="px-3.5 ps-11 pb-3.5 text-[13px] leading-[19px] text-muted">
-												{row.body}
-											</Disclosure.Body>
+											<Disclosure.Body className="px-3.5 ps-11 pb-3.5 text-sm text-muted">{row.body}</Disclosure.Body>
 										</Disclosure.Content>
 									</Disclosure>
 								</div>
@@ -468,10 +467,10 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 				)}
 
 				<div className="grid gap-2.5 rounded-xl bg-accent-soft p-4 max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-20 max-lg:rounded-none max-lg:border-t max-lg:border-separator max-lg:bg-surface max-lg:pb-[max(1rem,env(safe-area-inset-bottom))]">
-					<b className="text-[15px] font-semibold max-lg:hidden">
+					<b className="text-base font-semibold max-lg:hidden">
 						<Trans>Fix these in a few minutes</Trans>
 					</b>
-					<span className="text-[13px] leading-[19px] text-muted max-lg:hidden">
+					<span className="text-sm text-muted max-lg:hidden">
 						<Trans>Import this file into a free Rezumi. Every issue is waiting for you in Check.</Trans>
 					</span>
 					<Button className="h-10" onPress={onFix}>
@@ -520,7 +519,7 @@ function Result({ result, file, onFix, onReset }: ResultProps) {
 						hidden={lens !== "text"}
 						className={cn(
 							ENTER_CLASS,
-							"w-full max-w-[612px] rounded-lg border border-separator bg-overlay px-7 py-6 font-mono text-[13px] leading-[21px] whitespace-pre-wrap",
+							"w-full max-w-[612px] rounded-lg border border-separator bg-overlay px-7 py-6 font-mono text-sm leading-relaxed whitespace-pre-wrap",
 						)}
 					>
 						{result.fullText || t`No text could be read from this file.`}
