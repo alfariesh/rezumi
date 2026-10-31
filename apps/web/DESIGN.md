@@ -109,11 +109,16 @@ HeroUI's system stack, with no webfont in the app. Hierarchy comes from size and
 
 ## Iconography
 
-App icons are Hugeicons Stroke Rounded (`@hugeicons/react`, free set `@hugeicons/core-free-icons`) through `Icon` from `@rezumi/ui/components/icon`. `Icon` takes a Phosphor-style kebab name (`x`, `gear-six`, `magnifying-glass`), keeps that vocabulary stable and maps it to a glyph in the `icons` map in that file. To use another glyph, add it there. Brand marks (Apple, Google, GitHub, LinkedIn, Google Play) are in the same map.
+Every system icon in the web and mobile apps comes from the Hugeicons Pro set staged in `packages/icons` (`@rezumi/icons`). Do not add another icon library, import `@hugeicons/*`, or draw a one-off SVG for the interface; a missing glyph is added to the set.
+
+- **Two variants.** `stroke` is the default: Stroke Standard, 24px grid, 1.5px line. `duotone` (Duotone Standard) is for the selected state only: the current sidebar item, the active mobile navbar tab, and the selected tab or segment. It is also the solid form of stop, play, pause and star. Never use duotone for resting controls, and never mix other Hugeicons styles (rounded, sharp, solid, bulk, twotone) into the interface.
+- **Web.** `Icon` from `@rezumi/ui/components/icon` takes a Phosphor-style kebab name (`x`, `gear-six`, `magnifying-glass`) and an optional `variant="duotone"`. Those names are the shared vocabulary for web and mobile and stay stable; `packages/icons/icons.config.json` maps each to its Hugeicons glyph. Pass `variant` from the selected state: `variant={isCurrent ? "duotone" : "stroke"}`.
+- **Mobile.** The native app draws the same names and the same two variants from `@rezumi/icons` (render data in `getAppIcon`, raw files in `@rezumi/icons/svg/<style>/<name>.svg`). Its `Icon` still uses Phosphor until it moves over; the tab bar and navbar active state become duotone then.
+- **Adding or changing a glyph.** Edit `icons.config.json` (the `app` map for an icon in use; `appCategories` stages whole categories as files only), then run `pnpm --filter @rezumi/tooling icons:sync <path to the Hugeicons SVG export>`. The command rewrites `packages/icons/svg`, `catalog.json` and `src/generated`; do not edit those by hand. Brand marks (Apple, Google, GitHub, LinkedIn, Google Play) are in the map like any other glyph.
 
 Use 20px icons on desktop and 24px on touch interfaces; 16px inside small buttons, chips and rows. `Icon` is decorative (`aria-hidden`), so pair it with text or give the control a label. Icon-only controls use `IconButton` (a `Button isIconOnly` with a tooltip, an optional shortcut and a required label). Directional arrows, chevrons, undo and redo mirror in RTL layouts.
 
-Icons inside resumes are Phosphor names stored in resume data, drawn by the Phosphor web font (`@phosphor-icons/web`) in the page and by generated SVG data in the PDF (`pnpm --filter @rezumi/tooling icons:pdf`). They are separate from app icons.
+Icons inside resumes are Phosphor names stored in resume data, drawn by the Phosphor web font (`@phosphor-icons/web`) in the page and by generated SVG data in the PDF (`pnpm --filter @rezumi/tooling icons:pdf`). They are separate from app icons. The resume's icon style will be a person's choice of three stroke-only sets: rounded, standard or sharp. `packages/icons/svg/stroke-rounded`, `stroke-standard` and `stroke-sharp` already hold every brand logo and the resume-related categories (work, education, awards, programming, sport, health, legal), and `catalog.json` maps the Phosphor names resumes use today (`cvPhosphor`) to their Hugeicons counterparts. The preference itself is not built yet; until it is, resumes keep drawing Phosphor.
 
 ## Space, shape and elevation
 
@@ -203,7 +208,7 @@ OKLCH values live in `.landing` and `.dark .landing`; light sRGB approximations:
 
 - Repeat the same primary CTA, “Build your resume,” in the header, hero, and closing section. Buttons have 2px corners, in Figtree 600, at 38px, 54px, and 56px respectively.
 - Scene navigation appears from 1240px. Sentence-case labels use `ink` when active and `ink-3` when inactive; a 6px accent dot marks the active scene. The Share night scene uses its own light inks.
-- The GitHub link appears from 1024px, with the GitHub mark, a filled gold star, and a live compact count. Format counts with the locale's `Intl.NumberFormat`; include the full count in the accessible name.
+- The GitHub link appears from 1024px, with the GitHub mark, a duotone gold star, and a live compact count. Format counts with the locale's `Intl.NumberFormat`; include the full count in the accessible name.
 - The homepage theme control is a fixed 30px pull-cord button at the top end corner. Its height is 92px at rest, 112px on hover, and 124px during a pull. It uses a 450ms spring curve, toggles the shared theme after 170ms, and sways every seven seconds until first activated. The bulb glows in dark mode.
 
 ### Motion

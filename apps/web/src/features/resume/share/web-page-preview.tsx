@@ -76,11 +76,11 @@ export function WebPagePreview() {
 				className="shrink-0"
 			>
 				<Segment.Item id="desktop">
-					<Icon name="desktop" size={16} />
+					<Icon name="desktop" size={16} variant={device === "desktop" ? "duotone" : "stroke"} />
 					<Trans>Computer</Trans>
 				</Segment.Item>
 				<Segment.Item id="phone">
-					<Icon name="device-mobile" size={16} />
+					<Icon name="device-mobile" size={16} variant={device === "phone" ? "duotone" : "stroke"} />
 					<Trans>Phone</Trans>
 				</Segment.Item>
 			</Segment>

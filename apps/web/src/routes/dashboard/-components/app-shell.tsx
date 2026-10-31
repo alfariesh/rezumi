@@ -209,7 +209,7 @@ function NavigationContent() {
 	const link = (item: NavItem) => (
 		<Sidebar.MenuItem key={item.to} id={item.to} href={item.to} isCurrent={isCurrent(item.to)} textValue={item.label}>
 			<Sidebar.MenuIcon>
-				<Icon name={item.icon} size={18} />
+				<Icon name={item.icon} size={18} variant={isCurrent(item.to) ? "duotone" : "stroke"} />
 			</Sidebar.MenuIcon>
 			<Sidebar.MenuLabel>{item.label}</Sidebar.MenuLabel>
 			{item.count ? <Sidebar.MenuChip>{item.count}</Sidebar.MenuChip> : null}
@@ -264,7 +264,7 @@ function NavigationContent() {
 							}}
 						>
 							<Sidebar.MenuIcon>
-								<Icon name="compass" size={18} />
+								<Icon name="compass" size={18} variant={onCareerPage ? "duotone" : "stroke"} />
 							</Sidebar.MenuIcon>
 							<Sidebar.MenuLabel>
 								<Trans>Career</Trans>

@@ -136,7 +136,7 @@ function ThemeSwitch() {
 		>
 			{THEMES.map((option) => (
 				<Segment.Item key={option.value} id={option.value} className="flex-1 gap-1.5">
-					<Icon name={option.icon} size={16} />
+					<Icon name={option.icon} size={16} variant={option.value === theme ? "duotone" : "stroke"} />
 					{i18n.t(themeMap[option.value])}
 				</Segment.Item>
 			))}

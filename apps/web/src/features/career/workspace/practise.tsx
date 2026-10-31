@@ -555,7 +555,11 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 										onPress={toggleRecording}
 										className="touch-target shrink-0"
 									>
-										<Icon name={recordingNow ? "stop" : "microphone"} filled={recordingNow} size={22} />
+										<Icon
+											name={recordingNow ? "stop" : "microphone"}
+											variant={recordingNow ? "duotone" : "stroke"}
+											size={22}
+										/>
 									</Button>
 									<Tooltip.Content>{recordingNow ? t`Stop recording` : t`Record your answer`}</Tooltip.Content>
 								</Tooltip>
@@ -753,7 +757,7 @@ function ModeSwitch({ value, onChange }: { value: Mode; onChange: (mode: Mode) =
 		>
 			{options.map((option) => (
 				<Segment.Item key={option.value} id={option.value}>
-					<Icon name={option.icon} size={16} />
+					<Icon name={option.icon} size={16} variant={option.value === value ? "duotone" : "stroke"} />
 					{option.label}
 				</Segment.Item>
 			))}

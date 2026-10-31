@@ -240,7 +240,7 @@ export function MobileTabBar<V extends MobileView>({ tabs, view, onModeChange }:
 						)}
 					>
 						{active && <MobileTabIndicator />}
-						<Icon name={icon} size={24} filled={active} />
+						<Icon name={icon} size={24} variant={active ? "duotone" : "stroke"} />
 						{label}
 					</button>
 				);

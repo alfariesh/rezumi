@@ -173,10 +173,10 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 								onSelectionChange={(next) => setView(next as "grid" | "list")}
 							>
 								<Segment.Item id="grid" aria-label={t`Grid`}>
-									<Icon name="squares-four" size={18} />
+									<Icon name="squares-four" size={18} variant={view === "grid" ? "duotone" : "stroke"} />
 								</Segment.Item>
 								<Segment.Item id="list" aria-label={t`List`}>
-									<Icon name="list-dashes" size={18} />
+									<Icon name="list-dashes" size={18} variant={view === "list" ? "duotone" : "stroke"} />
 								</Segment.Item>
 							</Segment>
 						</div>

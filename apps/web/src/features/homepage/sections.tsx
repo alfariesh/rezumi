@@ -156,7 +156,7 @@ export function Languages() {
 					aria-label={paused ? t`Play the list of languages` : t`Pause the list of languages`}
 					className="grid size-6 place-items-center rounded-sm text-ink-3 transition-colors hover:bg-hover hover:text-ink motion-reduce:hidden"
 				>
-					<Icon name={paused ? "play" : "pause"} size={16} filled />
+					<Icon name={paused ? "play" : "pause"} size={16} variant="duotone" />
 				</button>
 			</div>
 			<p className="mt-3 flex max-w-[30em] flex-col font-display text-[clamp(17px,1.4vw,21px)] leading-normal text-pretty text-ink-2">

@@ -234,12 +234,6 @@ catalogs:
     '@heroui/styles':
       specifier: ^3.2.7
       version: 3.2.7
-    '@hugeicons/core-free-icons':
-      specifier: 4.3.5
-      version: 4.3.5
-    '@hugeicons/react':
-      specifier: ^1.1.10
-      version: 1.1.10
     '@legendapp/list':
       specifier: 3.6.0
       version: 3.6.0
@@ -1822,6 +1816,21 @@ importers:
         specifier: 'catalog:'
         version: 0.18.0-ts7.1.0-dev.20260929
 
+  packages/icons:
+    devDependencies:
+      '@rezumi/config':
+        specifier: workspace:*
+        version: link:../config
+      tsrs:
+        specifier: 'catalog:'
+        version: 0.18.0-ts7.1.0-dev.20260929
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.3.0(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(@vitest/ui@5.0.5)(esbuild@0.28.2)(happy-dom@21.0.4)(jiti@2.7.0)(playwright@1.64.1)(terser@5.51.2)(tsx@4.23.15)(typescript@7.0.2)(yaml@2.9.1)
+
   packages/import:
     dependencies:
       '@rezumi/resume':
@@ -2058,15 +2067,12 @@ importers:
       '@heroui/styles':
         specifier: 'catalog:'
         version: 3.2.7(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
-      '@hugeicons/core-free-icons':
-        specifier: 'catalog:'
-        version: 4.3.5
-      '@hugeicons/react':
-        specifier: 'catalog:'
-        version: 1.1.10(react@19.3.1)
       '@phosphor-icons/web':
         specifier: ^2.1.2
         version: 2.1.2
+      '@rezumi/icons':
+        specifier: workspace:*
+        version: link:../icons
       '@rezumi/utils':
         specifier: workspace:*
         version: link:../utils
@@ -3779,14 +3785,6 @@ packages:
     engines: {node: '>=20'}
     peerDependencies:
       hono: ^4 || ^5.0.0-0
-
-  '@hugeicons/core-free-icons@4.3.5':
-    resolution: {integrity: sha512-Sv+NjHRPnQk+yZsGCMcGznCHdTfJR9PMMOEKcJYAQU4gy90dmlc9PwdtvYOImBZIjiheMsTLL5eMn2DmHxUiUg==}
-
-  '@hugeicons/react@1.1.10':
-    resolution: {integrity: sha512-9tAsd92yMVVGP+E+d8cM+wc0VnXuYZHNbWQi7TOe8k2neawmhiaFmVFbzyruejhOMa197/LbgvSED32ayUo3ZA==}
-    peerDependencies:
-      react: '>=16.0.0'
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -13940,12 +13938,6 @@ snapshots:
   '@hono/node-server@2.1.5(hono@4.13.14)':
     dependencies:
       hono: 4.13.14
-
-  '@hugeicons/core-free-icons@4.3.5': {}
-
-  '@hugeicons/react@1.1.10(react@19.3.1)':
-    dependencies:
-      react: 19.3.1
 
   '@img/colour@1.1.0': {}
 

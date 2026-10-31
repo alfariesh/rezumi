@@ -239,22 +239,22 @@ function RouteComponent() {
 							}}
 						>
 							<Segment.Item id="list">
-								<Icon name="rows" size={18} />
+								<Icon name="rows" size={18} variant={shown === "list" ? "duotone" : "stroke"} />
 								<Trans>List</Trans>
 							</Segment.Item>
 							{!phone && (
 								<Segment.Item id="board">
-									<Icon name="kanban" size={18} />
+									<Icon name="kanban" size={18} variant={shown === "board" ? "duotone" : "stroke"} />
 									<Trans>Board</Trans>
 								</Segment.Item>
 							)}
 							<Segment.Item id="insights">
-								<Icon name="chart-line-up" size={18} />
+								<Icon name="chart-line-up" size={18} variant={shown === "insights" ? "duotone" : "stroke"} />
 								<Trans>Insights</Trans>
 							</Segment.Item>
 							{!phone && (
 								<Segment.Item id="calendar">
-									<Icon name="calendar-dots" size={18} />
+									<Icon name="calendar-dots" size={18} variant={shown === "calendar" ? "duotone" : "stroke"} />
 									<Trans>Calendar</Trans>
 								</Segment.Item>
 							)}

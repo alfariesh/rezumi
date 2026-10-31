@@ -253,7 +253,7 @@ export function PageViewToggle() {
 			>
 				{options.map((option) => (
 					<Segment.Item key={option.value} id={option.value} className="whitespace-nowrap">
-						<Icon name={option.icon} size={16} />
+						<Icon name={option.icon} size={16} variant={option.value === view ? "duotone" : "stroke"} />
 						<span className="max-sm:sr-only">{option.label}</span>
 					</Segment.Item>
 				))}

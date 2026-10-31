@@ -9,7 +9,7 @@ Owner decisions, October 29, 2026:
 
 - **Scope:** `apps/web` app surfaces: dashboard, builder, letters, applications, career, assistant, settings, auth, command palette and dialogs. The marketing homepage (`features/homepage`, `routes/_home`) keeps its look. The native app (`apps/mobile`) is out of scope here; a HeroUI Native migration is separate work.
 - **Look:** full HeroUI default theme. Use HeroUI default tokens, radius, font (system stack), focus ring and the default blue accent, which suits the new `#00BAFF` logo. Desk & Paper tokens, Figtree, Instrument Serif and Geist Mono leave the app UI. Resume and letter paper, templates and PDF fonts are unchanged.
-- **Icons:** Hugeicons Stroke Rounded, through `@hugeicons/react` and `@hugeicons/core-free-icons`. The free set is the Stroke Rounded style. Pin `@hugeicons/core-free-icons` to 4.3.5; 4.4.0 was published October 28, 2026. Icons inside resumes stay Phosphor names drawn by `@phosphor-icons/web`, because they are stored in resume data.
+- **Icons:** superseded: system icons are now Hugeicons Pro Stroke Standard and Duotone Standard from `packages/icons` (see `apps/web/DESIGN.md` → Iconography). Icons inside resumes stay Phosphor names drawn by `@phosphor-icons/web`, because they are stored in resume data.
 - **Components:** use `@heroui/react` (OSS) and `@heroui-pro/react` (Pro) directly at call sites. When neither has a component, build one in `packages/ui` from HeroUI tokens, primitives and BEM-style class names, so it reads as HeroUI.
 - **Delivery:** phased. Each phase builds, passes the checks below and is a separate Conventional Commit on a migration branch.
 

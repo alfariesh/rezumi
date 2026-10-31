@@ -114,7 +114,7 @@ function ScanResult() {
 						)}
 					>
 						<Icon
-							filled
+							variant="duotone"
 							size={18}
 							name={item.done ? "check-circle" : item.warning ? "warning-circle" : "circle"}
 							className={cn(
