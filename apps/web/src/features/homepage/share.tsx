@@ -147,7 +147,7 @@ export function Share() {
 						id="share-title"
 						dir="ltr"
 						className={cn(
-							"flex flex-wrap items-center justify-center font-anybody text-[8vw] leading-[1.1] font-light tracking-[-.025em] text-(--night-ink) transition-opacity duration-300 min-[900px]:text-[clamp(34px,4.6vw,88px)]",
+							"flex flex-wrap items-center justify-center font-display text-[8vw] leading-[1.1] font-light tracking-[-.025em] text-(--night-ink) transition-opacity duration-300 min-[900px]:text-[clamp(34px,4.6vw,88px)]",
 							isPrivate && "opacity-40",
 						)}
 					>
@@ -185,7 +185,7 @@ export function Share() {
 								<Segment.Item
 									key={label}
 									id={index}
-									className="h-[34px] w-auto flex-none rounded-sm px-3.5 font-ui text-(--night-ink-2) duration-300 not-data-selected:hover:text-(--night-ink) data-selected:text-(--night-on-ink)"
+									className="h-[34px] w-auto flex-none rounded-sm px-3.5 font-sans text-(--night-ink-2) duration-300 not-data-selected:hover:text-(--night-ink) data-selected:text-(--night-on-ink)"
 								>
 									<Icon name={visibilityIcons[index] ?? "globe-hemisphere-west"} size={17} />
 									{label}
@@ -196,7 +196,7 @@ export function Share() {
 							type="button"
 							onClick={copy}
 							className={cn(
-								"flex h-11 items-center gap-1.5 rounded-sm px-[18px] font-ui text-sm font-semibold text-(--night-on-ink) transition-colors duration-standard",
+								"flex h-11 items-center gap-1.5 rounded-sm px-[18px] font-sans text-sm font-semibold text-(--night-on-ink) transition-colors duration-standard",
 								copied ? "bg-(--night-accent)" : "bg-(--night-ink)",
 							)}
 						>
@@ -209,7 +209,7 @@ export function Share() {
 						{formats.map((format, index) => (
 							<li
 								key={format.icon}
-								className="flex h-9 [transform:translateY(calc((1-var(--f))*10px))] items-center gap-2 rounded-md border border-[color-mix(in_oklch,var(--night-chip-line)_calc(var(--f)*100%),transparent)] px-3.5 font-martian text-[11.5px] leading-none font-medium text-(--night-chip) opacity-(--f)"
+								className="flex h-9 [transform:translateY(calc((1-var(--f))*10px))] items-center gap-2 rounded-md border border-[color-mix(in_oklch,var(--night-chip-line)_calc(var(--f)*100%),transparent)] px-3.5 font-sans text-[11.5px] leading-none font-medium text-(--night-chip) opacity-(--f)"
 								style={{ "--f": `var(--f${index + 1})` } as CSSProperties}
 							>
 								<Icon name={format.icon} size={18} />

@@ -99,12 +99,12 @@ function ScanResult() {
 		<>
 			<span className={cn(labelClass, "text-ink-3")}>{t`ATS readability`}</span>
 			<p className="flex items-baseline gap-2.5">
-				<span className="font-anybody text-[48px] leading-[.9] font-light tracking-[-.03em] text-ink tabular-nums min-[900px]:text-[clamp(52px,5vw,92px)]">
+				<span className="font-display text-[48px] leading-[.9] font-light tracking-[-.03em] text-ink tabular-nums min-[900px]:text-[clamp(52px,5vw,92px)]">
 					{i18n.number(score)}
 				</span>
-				<span className="font-martian text-[13px] text-ink-3">/ {i18n.number(100)}</span>
+				<span className="font-sans text-[13px] text-ink-3">/ {i18n.number(100)}</span>
 			</p>
-			<ul className="flex flex-col gap-2 font-ui text-sm leading-[1.3] font-medium">
+			<ul className="flex flex-col gap-2 font-sans text-sm leading-[1.3] font-medium">
 				{items.map((item, index) => (
 					<li
 						key={index}
@@ -172,14 +172,14 @@ export function Check() {
 					id="check-title"
 					className="absolute start-(--gutter) top-[10vh] max-w-[90vw] text-[9vw] leading-[1.05] font-normal text-balance text-ink min-[900px]:top-[11vh] min-[900px]:max-w-[45vw] min-[900px]:text-[clamp(40px,4vw,72px)]"
 				>
-					<span className="block font-anybody font-light tracking-[-.03em] [clip-path:inset(calc(var(--sv)*120%-20%)_0_-20%_0)]">
+					<span className="block font-display font-light tracking-[-.03em] [clip-path:inset(calc(var(--sv)*120%-20%)_0_-20%_0)]">
 						{check}
 						<span className="text-accent">.</span>
 					</span>
 					<span
 						aria-hidden="true"
 						data-text={`${check}.`}
-						className="absolute start-0 top-0 block font-martian font-light tracking-[-.05em] text-accent-text [clip-path:inset(-20%_0_calc((1-var(--sv))*120%)_0)] before:content-[attr(data-text)]"
+						className="absolute start-0 top-0 block font-sans tracking-[-.05em] text-accent-text [clip-path:inset(-20%_0_calc((1-var(--sv))*120%)_0)] before:content-[attr(data-text)]"
 					/>
 					<span
 						aria-hidden="true"
@@ -199,7 +199,7 @@ export function Check() {
 						action={
 							<Link
 								to="/ats-checker"
-								className="flex items-center gap-1.5 self-start font-ui text-[15px] font-semibold text-accent-text transition-colors hover:text-accent-hover"
+								className="flex items-center gap-1.5 self-start font-sans text-[15px] font-semibold text-accent-text transition-colors hover:text-accent-hover"
 							>
 								{t`Check any PDF, no account needed`}
 								<Icon name="arrow-right" size={19} />
@@ -219,7 +219,7 @@ export function Check() {
 					<Sheet />
 					<div
 						aria-hidden="true"
-						className="absolute inset-0 flex flex-col gap-[2.2cqw] overflow-hidden rounded-sm check-lens p-[7cqw] font-martian text-[2.15cqw] leading-[1.7] text-[oklch(0.9_0.09_150)] opacity-(--lo)"
+						className="absolute inset-0 flex flex-col gap-[2.2cqw] overflow-hidden rounded-sm check-lens p-[7cqw] font-sans text-[2.15cqw] leading-[1.7] text-[oklch(0.9_0.09_150)] opacity-(--lo)"
 					>
 						<ParsedTextLive />
 					</div>
@@ -232,7 +232,7 @@ export function Check() {
 					/>
 					<span
 						aria-hidden="true"
-						className="pointer-events-none absolute top-[calc(var(--ly,16%)-14.5cqw)] left-(--lx,50%) -translate-x-1/2 -translate-y-full rounded-sm bg-[oklch(0.2_0.03_160)] px-[9px] py-[5px] font-martian text-xs leading-none font-medium whitespace-nowrap text-[oklch(0.88_0.09_150)] opacity-(--lo)"
+						className="pointer-events-none absolute top-[calc(var(--ly,16%)-14.5cqw)] left-(--lx,50%) -translate-x-1/2 -translate-y-full rounded-sm bg-[oklch(0.2_0.03_160)] px-[9px] py-[5px] font-sans text-xs leading-none font-medium whitespace-nowrap text-[oklch(0.88_0.09_150)] opacity-(--lo)"
 					>
 						{t`What software reads`}
 					</span>

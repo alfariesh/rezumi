@@ -55,7 +55,7 @@ export function Numbers() {
 								{row.detail}
 							</span>
 						</dt>
-						<dd className="font-anybody text-[clamp(44px,14cqi,80px)] leading-none font-light tracking-[-.03em] text-ink tabular-nums min-[900px]:text-[clamp(40px,calc(15cqi/var(--count)),80px)]">
+						<dd className="font-display text-[clamp(44px,14cqi,80px)] leading-none font-light tracking-[-.03em] text-ink tabular-nums min-[900px]:text-[clamp(40px,calc(15cqi/var(--count)),80px)]">
 							{row.value == null ? (
 								<span className="text-ink-3">
 									<span aria-hidden="true">—</span>
@@ -68,7 +68,7 @@ export function Numbers() {
 					</div>
 				))}
 			</dl>
-			<p className="border-t border-line pt-5 font-ui text-[13px] text-ink-3 max-[900px]:border-t-0">{t`Live totals, refreshed every 6 hours.`}</p>
+			<p className="border-t border-line pt-5 font-sans text-[13px] text-ink-3 max-[900px]:border-t-0">{t`Live totals, refreshed every 6 hours.`}</p>
 		</section>
 	);
 }
@@ -127,7 +127,7 @@ export function Languages() {
 			</h2>
 			<div
 				aria-hidden="true"
-				className="h-[1.25em] w-full overflow-hidden font-anybody text-[clamp(48px,7.5vw,140px)] leading-[1.25] font-light tracking-[-.03em] text-ink"
+				className="h-[1.25em] w-full overflow-hidden font-display text-[clamp(48px,7.5vw,140px)] leading-[1.25] font-light tracking-[-.03em] text-ink"
 			>
 				<div
 					key={index}
@@ -146,7 +146,7 @@ export function Languages() {
 			<div className="flex items-center gap-2">
 				<span
 					lang={current?.lang}
-					className="font-martian text-[12px] leading-[1.4] font-medium tracking-[.1em] text-accent-text"
+					className="font-sans text-[12px] leading-[1.4] font-medium tracking-[.1em] text-accent-text"
 				>
 					{current?.language}
 				</span>
@@ -187,7 +187,7 @@ export function Closing() {
 				aria-hidden="true"
 				className="mb-4 w-[min(100%,560px)] rounded-lg border border-dashed border-line-2 px-3.5 py-3"
 			>
-				<div className="grid grid-cols-4 gap-2 font-martian text-xs leading-none font-medium text-ink-3">
+				<div className="grid grid-cols-4 gap-2 font-sans text-xs leading-none font-medium text-ink-3">
 					{stages.map((stage) => (
 						<span key={stage.label} className="flex min-w-0 items-center gap-[5px]">
 							<span className={cn("size-[7px] shrink-0 rounded-sm", stage.dot)} />
@@ -199,7 +199,7 @@ export function Closing() {
 					<span className="flex h-11 items-center justify-center rounded-lg border-[1.5px] border-dashed border-accent font-display text-[15px] text-accent-text italic">
 						{t`Yours`}
 					</span>
-					<span className="col-start-3 flex h-11 min-w-0 flex-col justify-center rounded-lg border border-line bg-raised px-2 font-ui text-[11.5px] leading-[1.2] font-semibold text-ink shadow-e2">
+					<span className="col-start-3 flex h-11 min-w-0 flex-col justify-center rounded-lg border border-line bg-raised px-2 font-sans text-[11.5px] leading-[1.2] font-semibold text-ink shadow-e2">
 						{t`Fieldnote`}
 						<span className="truncate text-[10.5px] font-normal text-ink-3">{t`Interview done`}</span>
 					</span>
@@ -208,7 +208,7 @@ export function Closing() {
 			<span className={cn(labelClass, "text-ink-3")}>{t`Your turn`}</span>
 			<h2
 				id="closing-title"
-				className="font-anybody text-[clamp(48px,6vw,108px)] leading-none font-light tracking-[-.03em] text-balance text-ink"
+				className="font-display text-[clamp(48px,6vw,108px)] leading-none font-light tracking-[-.03em] text-balance text-ink"
 			>
 				<Trans>
 					Put it all on <em className="font-display font-normal text-accent-text italic">one page.</em>
@@ -223,7 +223,7 @@ export function Closing() {
 				<div className="flex flex-wrap justify-center gap-3">
 					<a
 						href="https://play.google.com/store/apps/details?id=app.rezumi"
-						className="inline-flex min-h-14 items-center gap-3 rounded-xl border border-line-2 bg-raised px-5 py-2.5 text-start font-ui text-ink transition-[background-color,transform] duration-[160ms] ease-out-strong hover:bg-hover motion-safe:active:scale-[.97]"
+						className="inline-flex min-h-14 items-center gap-3 rounded-xl border border-line-2 bg-raised px-5 py-2.5 text-start font-sans text-ink transition-[background-color,transform] duration-[160ms] ease-out-strong hover:bg-hover motion-safe:active:scale-[.97]"
 					>
 						<Icon name="google-play-logo" size={28} />
 						<span className="flex flex-col gap-0.5">
@@ -234,7 +234,7 @@ export function Closing() {
 					<button
 						type="button"
 						disabled
-						className="inline-flex min-h-14 cursor-not-allowed items-center gap-3 rounded-xl border border-line px-5 py-2.5 text-start font-ui text-ink-3"
+						className="inline-flex min-h-14 cursor-not-allowed items-center gap-3 rounded-xl border border-line px-5 py-2.5 text-start font-sans text-ink-3"
 					>
 						<Icon name="apple-logo" size={28} />
 						<span className="flex flex-col gap-0.5">

@@ -13,7 +13,7 @@ import { Icon } from "@rezumi/ui/components/icon";
  */
 
 const fonts = {
-	sans: "var(--font-ui)",
+	sans: "var(--font-sans)",
 	serif: "var(--font-display)",
 	mono: "var(--font-mono)",
 	display: "var(--font-display)",

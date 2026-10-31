@@ -143,7 +143,7 @@ function ClockReadout({ step }: { step: number }) {
 
 /** Paper drawn on in either theme: the light theme's tokens, so the product's own colours read the same. */
 const sheet = "on-paper relative h-full overflow-hidden rounded-md bg-paper shadow-paper";
-const note = "font-ui text-[.86em] text-ink-3";
+const note = "font-sans text-[.86em] text-ink-3";
 
 /** A pencil tick in a pencil box, drawn as `tick` goes from 0 to 1. */
 function PencilTick({ tick }: { tick: string }) {
@@ -180,7 +180,7 @@ function MessagesPanel() {
 	const time = useTime(INTERVIEW_AT);
 	return (
 		<div className={cn(sheet, "flex flex-col gap-[1em] p-[1.8em]")}>
-			<span className="font-martian text-[.74em] font-medium text-ink-3">{t`Messages · Pasted from your email`}</span>
+			<span className="font-sans text-[.74em] font-medium text-ink-3">{t`Messages · Pasted from your email`}</span>
 			<div className="flex flex-col gap-[.15em] border-b border-line pb-[.7em] text-[.92em] text-ink-2">
 				<span>
 					<b className="font-semibold text-ink">{t`From`}</b> {t`Sam, Fieldnote`}
@@ -271,7 +271,7 @@ function FitPanel() {
 				<h3 className="max-w-[17em] font-display text-[1.55em] leading-[1.15] text-ink">
 					{t`A strong match, with one question to resolve`}
 				</h3>
-				<span className="font-martian text-[.74em] text-ink-3">{t`3 supported · 1 partly · 1 missing`}</span>
+				<span className="font-sans text-[.74em] text-ink-3">{t`3 supported · 1 partly · 1 missing`}</span>
 			</div>
 			<ul className="flex flex-col divide-y divide-line border-y border-line">
 				{rows.map((row, index) => (
@@ -329,7 +329,7 @@ function PlanPanel() {
 				{rows.map((row, index) => (
 					<li key={row.title} className="flex items-start gap-[.8em] py-[.4em]">
 						<PencilTick tick={`--k${index + 1}`} />
-						<span className="w-[4.4em] shrink-0 pt-[.2em] font-martian text-[.76em] text-ink-3">
+						<span className="w-[4.4em] shrink-0 pt-[.2em] font-sans text-[.76em] text-ink-3">
 							{t`${i18n.number(row.minutes)} min`}
 						</span>
 						<span className="flex min-w-0 flex-1 flex-col gap-[.15em]">
@@ -382,7 +382,7 @@ function PractisePanel({ active }: { active: boolean }) {
 	return (
 		<div className={cn(sheet, "flex flex-col gap-[.9em] border-t-[.35em] border-[oklch(0.7_0.12_25/.55)] p-[1.8em]")}>
 			<div className="flex flex-wrap items-center justify-between gap-[1em]">
-				<span className="font-martian text-[.74em] text-ink-3">{t`Question 1 of 4 · Practice`}</span>
+				<span className="font-sans text-[.74em] text-ink-3">{t`Question 1 of 4 · Practice`}</span>
 				<button
 					type="button"
 					onClick={hear}
@@ -454,13 +454,13 @@ function DebriefPanel() {
 			<div className="flex flex-col gap-[.6em] border-t border-line pt-[.8em]">
 				<b className="font-semibold text-ink">{t`Keep the evidence precise`}</b>
 				<p className="flex items-start gap-[.6em] text-ink opacity-(--db2)">
-					<span className="mt-[.1em] shrink-0 rounded-sm bg-accent-soft px-[.45em] py-[.15em] font-martian text-[.74em] text-accent-text">
+					<span className="mt-[.1em] shrink-0 rounded-sm bg-accent-soft px-[.45em] py-[.15em] font-sans text-[.74em] text-accent-text">
 						{t`Supported`}
 					</span>
 					{t`The 13-point activation lift. Knowledge has the before and after.`}
 				</p>
 				<p className="flex items-start gap-[.6em] text-ink opacity-(--db3)">
-					<span className="mt-[.1em] shrink-0 rounded-sm bg-warn-soft px-[.45em] py-[.15em] font-martian text-[.74em] text-warn-text">
+					<span className="mt-[.1em] shrink-0 rounded-sm bg-warn-soft px-[.45em] py-[.15em] font-sans text-[.74em] text-warn-text">
 						{t`Observation`}
 					</span>
 					{t`Fewer support tickets isn’t backed by a number yet. Say it as something you noticed.`}
@@ -569,7 +569,7 @@ export function Prepare() {
 
 				<h2
 					id="prepare-title"
-					className="absolute start-(--gutter) top-[10vh] font-anybody text-[16vw] leading-[.9] font-light tracking-[-.03em] whitespace-nowrap text-ink min-[900px]:top-[11vh] min-[900px]:text-[clamp(72px,9vw,160px)]"
+					className="absolute start-(--gutter) top-[10vh] font-display text-[16vw] leading-[.9] font-light tracking-[-.03em] whitespace-nowrap text-ink min-[900px]:top-[11vh] min-[900px]:text-[clamp(72px,9vw,160px)]"
 				>
 					{prepare}
 					<span className="text-accent">.</span>
@@ -584,7 +584,7 @@ export function Prepare() {
 								key={mark.step}
 								aria-hidden="true"
 								className={cn(
-									"absolute hidden -translate-x-1/2 -translate-y-1/2 font-martian text-xs font-medium whitespace-nowrap transition-colors duration-300 min-[900px]:block",
+									"absolute hidden -translate-x-1/2 -translate-y-1/2 font-sans text-xs font-medium whitespace-nowrap transition-colors duration-300 min-[900px]:block",
 									mark.step === step ? "text-accent-text" : mark.step < step ? "text-ink-3" : "text-ink-3/60",
 								)}
 								style={{ left: `${50 + mark.x * 66}%`, top: `${50 + mark.y * 62}%` }}
@@ -611,7 +611,7 @@ export function Prepare() {
 				</SceneCaption>
 
 				{/* The application's folder. Its sheets share one cell; the one in front is the tab in front. */}
-				<div className="@container absolute inset-x-(--gutter) top-[calc(10vh+16vw+44px)] bottom-[3vh] flex [transform:translateY(calc((1-var(--in))*12vh+var(--nw)*3vh))_scale(calc(1-var(--nw)*.03))] flex-col font-ui text-[13px] leading-[1.45] opacity-[calc((1-var(--nw))*clamp(0,var(--p)*20,1))] [transition:transform_.5s_var(--ease)] min-[900px]:start-auto min-[900px]:end-[4vw] min-[900px]:top-[14vh] min-[900px]:bottom-auto min-[900px]:h-[min(600px,74vh)] min-[900px]:w-[min(54vw,820px)] min-[900px]:text-[clamp(13px,1.06vw,16px)]">
+				<div className="@container absolute inset-x-(--gutter) top-[calc(10vh+16vw+44px)] bottom-[3vh] flex [transform:translateY(calc((1-var(--in))*12vh+var(--nw)*3vh))_scale(calc(1-var(--nw)*.03))] flex-col font-sans text-[13px] leading-[1.45] opacity-[calc((1-var(--nw))*clamp(0,var(--p)*20,1))] [transition:transform_.5s_var(--ease)] min-[900px]:start-auto min-[900px]:end-[4vw] min-[900px]:top-[14vh] min-[900px]:bottom-auto min-[900px]:h-[min(600px,74vh)] min-[900px]:w-[min(54vw,820px)] min-[900px]:text-[clamp(13px,1.06vw,16px)]">
 					<div className="relative z-1 -mb-px flex shrink-0 items-end">
 						<div
 							ref={tabsRef}
@@ -635,7 +635,7 @@ export function Prepare() {
 									</>
 								);
 								const tabClass = cn(
-									"flex h-[2.6em] shrink-0 items-center gap-[.5em] rounded-t-sm px-[1em] font-martian text-[.74em] font-medium whitespace-nowrap transition-[transform,background-color,color] duration-300",
+									"flex h-[2.6em] shrink-0 items-center gap-[.5em] rounded-t-sm px-[1em] font-sans text-[.74em] font-medium whitespace-nowrap transition-[transform,background-color,color] duration-300",
 									front
 										? "bg-[oklch(0.87_0.05_80)] text-[oklch(0.25_0.03_70)] dark:bg-[oklch(0.62_0.045_78)] dark:text-[oklch(0.16_0.02_70)]"
 										: "translate-y-[.4em] bg-[oklch(0.8_0.05_74)] text-[oklch(0.38_0.03_70)] dark:bg-[oklch(0.5_0.04_72)] dark:text-[oklch(0.14_0.02_70)]",
@@ -665,7 +665,7 @@ export function Prepare() {
 						</div>
 						{/* The folder's label: the same Fieldnote role Tailor applied to, its stage moving on when the change is applied. */}
 						<span className="me-[.6em] mb-[.45em] hidden shrink-0 -rotate-1 items-center gap-[.5em] rounded-sm bg-paper py-[.3em] ps-[.35em] pe-[.7em] text-[.8em] font-medium text-[oklch(0.3_0.01_95)] shadow-e1 @min-[640px]:flex">
-							<span className="grid size-[1.6em] place-items-center rounded-sm bg-[oklch(0.22_0.01_95)] font-anybody text-[1.05em] leading-none text-white">
+							<span className="grid size-[1.6em] place-items-center rounded-sm bg-[oklch(0.22_0.01_95)] font-display text-[1.05em] leading-none text-white">
 								F
 							</span>
 							{t`Fieldnote`}

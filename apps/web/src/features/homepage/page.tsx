@@ -27,11 +27,11 @@ export function Homepage() {
 	useScrollScenes(root);
 
 	return (
-		<div ref={root} className="landing relative isolate overflow-x-clip bg-bg font-ui text-ink">
+		<div ref={root} className="landing relative isolate overflow-x-clip bg-bg font-sans text-ink">
 			<LandingBackground />
 			<a
 				href="#main"
-				className="fixed start-4 top-2.5 z-100 -translate-y-[160%] rounded-md bg-ink px-3.5 py-2.5 font-ui text-sm font-semibold text-bg transition-transform focus:translate-y-0"
+				className="fixed start-4 top-2.5 z-100 -translate-y-[160%] rounded-md bg-ink px-3.5 py-2.5 font-sans text-sm font-semibold text-bg transition-transform focus:translate-y-0"
 			>
 				{t`Skip to content`}
 			</a>

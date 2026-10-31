@@ -1,6 +1,10 @@
 @import "tailwindcss" source(none);
 @import "@heroui/styles";
 @import "@heroui-pro/react/css";
+/* The interface fonts (`--font-sans`, `--font-mono`, set in @theme below). Their @font-face rules carry a unicode-range per script, so a page downloads only the scripts it shows. */
+@import "@fontsource-variable/google-sans/wght.css";
+@import "@fontsource-variable/google-sans/wght-italic.css";
+@import "@fontsource-variable/google-sans-code/wght.css";
 /* Phosphor's web font draws the icons inside resumes (their names are stored in resume data). */
 @import "@phosphor-icons/web/regular/style.css";
 @import "./typeset.css";
@@ -69,6 +73,18 @@
 
 @theme {
 	--aspect-page: 210 / 297;
+
+	/*
+	 * The one place the app's font families are named. Google Sans sets the interface and Google Sans Code the shortcuts,
+	 * URLs, slugs and code. Scripts the fonts do not draw (Arabic, CJK) fall through to the system stack. The weights
+	 * the interface uses are 400, 500, 600 and 700: Google Sans has no lighter or heavier ones.
+	 */
+	--font-sans:
+		"Google Sans Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+		"Segoe UI Symbol", "Noto Color Emoji";
+	--font-mono:
+		"Google Sans Code Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
 }
 
 @theme inline {
