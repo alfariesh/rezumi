@@ -35,7 +35,7 @@ export const isLabelledTemplate = (plan: PlanSummary | undefined, template: Temp
 
 export const getPlanName = (planId: PlanId) => (planId === "free" ? t`Free` : planId === "plus" ? "Plus" : "Pro AI");
 
-export const freeTemplateNames = () => FREE_TEMPLATES.map((id) => templates[id].name);
+const freeTemplateNames = () => FREE_TEMPLATES.map((id) => templates[id].name);
 
 /** What a plan refusal was about: a document limit, or a feature. */
 export type PlanProblem =

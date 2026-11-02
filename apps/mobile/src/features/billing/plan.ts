@@ -10,8 +10,8 @@ import { orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
 import { templateName } from "@/features/design/presets";
 
-export { canShowPlans, describePlanProblem, getPlanProblem, showPlanAlert, showPlanAlertForError } from "./plan-alert";
-export type { PlanFeature, PlanProblem } from "./plan-alert";
+export { canShowPlans, showPlanAlert } from "./plan-alert";
+export type { PlanFeature } from "./plan-alert";
 
 export type PlanSummary = RouterOutput["billing"]["summary"];
 
