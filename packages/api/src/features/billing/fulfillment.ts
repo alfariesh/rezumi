@@ -29,7 +29,7 @@ export type AppliedPaymentStatus = {
 };
 
 /** Takes back a payment's pass and the credits it brought (full refund, reversal). Safe to call twice. */
-export async function revokePaymentBenefits(
+async function revokePaymentBenefits(
 	tx: Transaction,
 	payment: Pick<PaymentRow, "id" | "userId">,
 	reason: string,

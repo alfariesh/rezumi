@@ -2,7 +2,7 @@ import type { MidtransPaymentCode } from "./config";
 import type { PaidPlanId } from "@rezumi/schema/billing";
 
 /** How long a checkout can be paid, from the moment its Snap page is created. Covers the page and every method. */
-export const PAYMENT_WINDOW_HOURS = 24;
+const PAYMENT_WINDOW_HOURS = 24;
 
 /** The Snap request for one pass. Field names and limits from Midtrans' JSON objects reference. */
 export type SnapTransactionPayload = {

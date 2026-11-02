@@ -7,7 +7,7 @@ import { env } from "@rezumi/env/server";
 import { BILLING_SELLER } from "@rezumi/schema/billing";
 
 /** Receipts a payment gets at most, so a mailbox that keeps failing isn't tried forever. */
-export const MAX_RECEIPT_ATTEMPTS = 5;
+const MAX_RECEIPT_ATTEMPTS = 5;
 // How long another sender leaves a receipt alone after a send started.
 const RECEIPT_LEASE_MS = 5 * 60 * 1000;
 const RECEIPT_BATCH = 10;
@@ -24,7 +24,7 @@ const METHOD_NAMES: Record<string, string> = {
 };
 
 /** The account's time zone, or Western Indonesian Time while it is still the default UTC (or unknown). */
-export function receiptTimeZone(timezone: string | null | undefined) {
+function receiptTimeZone(timezone: string | null | undefined) {
 	if (!timezone || timezone === "UTC") return "Asia/Jakarta";
 	try {
 		new Intl.DateTimeFormat("id-ID", { timeZone: timezone });
@@ -35,7 +35,7 @@ export function receiptTimeZone(timezone: string | null | undefined) {
 }
 
 /** "2 November 2026 pukul 14.05 WIB". */
-export function formatReceiptTime(at: Date, timeZone: string) {
+function formatReceiptTime(at: Date, timeZone: string) {
 	return new Intl.DateTimeFormat("id-ID", {
 		day: "numeric",
 		month: "long",
@@ -48,9 +48,9 @@ export function formatReceiptTime(at: Date, timeZone: string) {
 }
 
 /** "Rp79.000", the way prices are written everywhere else. */
-export const formatRupiah = (amount: number) => `Rp${new Intl.NumberFormat("id-ID").format(amount)}`;
+const formatRupiah = (amount: number) => `Rp${new Intl.NumberFormat("id-ID").format(amount)}`;
 
-export const paymentMethodName = (paymentType: string | null) =>
+const paymentMethodName = (paymentType: string | null) =>
 	(paymentType && METHOD_NAMES[paymentType]) ?? paymentType ?? "—";
 
 /**
@@ -89,7 +89,7 @@ function claimReceipt(paymentId: string, now: Date) {
  * Emails a paid payment's receipt once. Indonesian, times in the account's zone (WIB while it is the default). The
  * seller's details come from BILLING_SELLER. Returns whether it went out; failures are retried by the billing job.
  */
-export async function sendPaymentReceipt(paymentId: string, now = new Date()): Promise<boolean> {
+async function sendPaymentReceipt(paymentId: string, now = new Date()): Promise<boolean> {
 	const payment = await claimReceipt(paymentId, now);
 	if (!payment) return false;
 	const [owner] = payment.userId

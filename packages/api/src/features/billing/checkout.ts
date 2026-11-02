@@ -82,7 +82,7 @@ export type PaymentView = {
 	redirectUrl: string | null;
 };
 
-export function toPaymentView(payment: PaymentRow, authentication: Authentication, now = new Date()): PaymentView {
+function toPaymentView(payment: PaymentRow, authentication: Authentication, now = new Date()): PaymentView {
 	const payable =
 		authentication.method === "session" &&
 		payment.status === "pending" &&
