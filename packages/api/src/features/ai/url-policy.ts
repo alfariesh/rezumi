@@ -32,8 +32,10 @@ export function resolveAiBaseUrl(input: ResolveAiBaseUrlInput) {
 
 /**
  * Where a user chooses the endpoint, requests may only reach public addresses, checked when each connection opens, and
- * never follow redirects. Server AI (`AI_PROVIDER`) and the unsafe flag are operator choices, so they use plain fetch.
+ * never follow redirects. The server's own AI (`AI_PROVIDER`, `serverAi`) and the unsafe flag are operator choices, so
+ * they use plain fetch. Users' own connections stay guarded even on a server with its own AI, since accounts that
+ * choose Rezumi AI can add them too.
  */
-export function aiTransport(): { fetch?: typeof fetch } {
-	return env.AI_PROVIDER || env.FLAG_ALLOW_UNSAFE_AI_BASE_URL ? {} : { fetch: fetchPublic };
+export function aiTransport(serverAi = false): { fetch?: typeof fetch } {
+	return serverAi || env.FLAG_ALLOW_UNSAFE_AI_BASE_URL ? {} : { fetch: fetchPublic };
 }

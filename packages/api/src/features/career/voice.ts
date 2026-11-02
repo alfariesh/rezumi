@@ -36,7 +36,7 @@ async function voiceConnection(userId: string, id: string, kind: "transcription"
 		});
 	return {
 		provider: provider.provider,
-		settings: { apiKey: provider.apiKey, baseURL: resolveAiBaseUrl(provider), ...aiTransport() },
+		settings: { apiKey: provider.apiKey, baseURL: resolveAiBaseUrl(provider), ...aiTransport(provider.managed) },
 	};
 }
 

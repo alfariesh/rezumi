@@ -75,7 +75,8 @@ export async function authorizeAiRequest(
 		const wantsRezumi = named?.managed === true;
 		if (wantsRezumi && chat && !canUseRezumiAi())
 			throw new Error(t`This conversation can't continue in this app. Start a new conversation.`);
-		source = wantsRezumi && canUseRezumiAi() && action ? "rezumi" : "own";
+		// A conversation's attachments go where the conversation runs, Rezumi AI included, though uploading costs nothing.
+		source = wantsRezumi && canUseRezumiAi() && (action || chat) ? "rezumi" : "own";
 		if (source === "rezumi") return managed;
 		return named && !named.managed ? named : usable.find((entry) => !entry.managed);
 	};
@@ -109,7 +110,8 @@ export async function authorizeAiRequest(
 		: "";
 
 	const rezumi = source === "rezumi" && action ? action : null;
-	const balance = rezumi ? ((await api.billing.summary({}, options)).credits?.balance ?? 0) : 0;
+	const summary = rezumi ? await api.billing.summary({}, options).catch(() => null) : null;
+	const balance = summary?.credits?.balance ?? 0;
 	const cost = rezumi ? `${describeCreditCost(rezumi, balance)}\n\n` : "";
 	const result = dialogs.then(async () => {
 		current();
@@ -138,7 +140,8 @@ export async function authorizeAiRequest(
 	});
 	dialogs = result.catch(() => undefined);
 	await result;
-	if (!source) return undefined;
+	// Only AI work names its source; an upload or a connection test takes no such field.
+	if (!source || !action) return undefined;
 	// Each Rezumi AI action has its own key, so a retry of this request doesn't take the credits twice.
 	return source === "rezumi" ? { aiSource: source, idempotencyKey: generateId() } : { aiSource: source };
 }
@@ -147,7 +150,13 @@ type RequestOptions = { context: { scope?: string | undefined }; signal?: AbortS
 
 /** Whether the account chooses between Rezumi AI and its own connections: plans apply to it (its credits show). */
 async function choosesSource(api: ConsentApi, options: RequestOptions) {
-	return (await api.billing.summary({}, options)).credits !== null;
+	// When plans can't be read, the request goes without a source: the server then uses the user's own connection or
+	// refuses, but never takes credits. AI keeps working instead of every request failing here.
+	try {
+		return (await api.billing.summary({}, options)).credits !== null;
+	} catch {
+		return false;
+	}
 }
 
 /** The source a new conversation runs on: the connection named, or the default; never Rezumi AI on iOS. */

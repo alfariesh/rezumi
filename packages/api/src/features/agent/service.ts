@@ -1258,6 +1258,9 @@ export const agentService = {
 				userId: input.userId,
 				runId,
 				streamId,
+			}).catch(async (error: unknown) => {
+				await ai.fail(errorCode(error));
+				throw error;
 			});
 			if (!claimed) {
 				await ai.fail("run_conflict");
@@ -1446,6 +1449,7 @@ export const agentService = {
 							model: runnableProvider.model,
 							apiKey: runnableProvider.apiKey,
 							baseURL: runnableProvider.baseURL ?? "",
+							serverAi: runnableProvider.managed,
 						}),
 					),
 				});
@@ -1454,7 +1458,18 @@ export const agentService = {
 				const result = await agent.stream({
 					messages: attachModelPartsToLatestUserMessage(modelMessages, attachmentModelParts),
 					abortSignal: controller.signal,
-					experimental_transform: smoothStream({ chunking: "word" }),
+					experimental_transform: [
+						smoothStream({ chunking: "word" }),
+						// Only a top-level error part fails the run. A failed tool also reaches the UI stream's onError, but the
+						// model carries on after it, so the reply can still finish.
+						() =>
+							new TransformStream({
+								transform(part, controller) {
+									if (part.type === "error") streamFailed = true;
+									controller.enqueue(part);
+								},
+							}),
+					],
 					// Crash-safety: fold each finished step into the draft row so a process death
 					// mid-run loses at most the current step, never the whole transcript.
 					onStepEnd: async (step) => {
@@ -1551,7 +1566,6 @@ export const agentService = {
 									}
 								},
 								onError: (error) => {
-									streamFailed = true;
 									const message = error instanceof Error ? error.message : "Agent run failed.";
 									return runnableProvider.apiKey ? message.replaceAll(runnableProvider.apiKey, "***") : message;
 								},

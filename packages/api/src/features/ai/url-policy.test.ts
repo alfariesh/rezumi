@@ -2,11 +2,12 @@ import { describe, expect, it, vi } from "vite-plus/test";
 
 const envMock = vi.hoisted(() => ({
 	FLAG_ALLOW_UNSAFE_AI_BASE_URL: false,
+	AI_PROVIDER: undefined as string | undefined,
 }));
 
 vi.mock("@rezumi/env/server", () => ({ env: envMock }));
 
-const { resolveAiBaseUrl } = await import("./url-policy");
+const { aiTransport, resolveAiBaseUrl } = await import("./url-policy");
 
 describe("AI provider base URL policy", () => {
 	it("allows public HTTPS provider URLs", () => {
@@ -37,5 +38,16 @@ describe("AI provider base URL policy", () => {
 		expect(() => resolveAiBaseUrl({ provider: "openai-compatible", baseURL: "ftp://example.com/v1" })).toThrow(
 			"INVALID_AI_BASE_URL",
 		);
+	});
+});
+
+describe("AI transport", () => {
+	it("guards users' own endpoints even on a server with its own AI", () => {
+		envMock.FLAG_ALLOW_UNSAFE_AI_BASE_URL = false;
+		envMock.AI_PROVIDER = "openai";
+
+		expect(aiTransport().fetch).toBeDefined();
+		// The server's own AI is the operator's endpoint: plain fetch.
+		expect(aiTransport(true)).toEqual({});
 	});
 });

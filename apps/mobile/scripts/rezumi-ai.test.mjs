@@ -128,11 +128,42 @@ async function run(request, choose = 1) {
 	assert.equal(sent[0].input.aiSource, "rezumi");
 }
 
-// Voice never runs on Rezumi AI: the user's own connection, without a cost.
+// Voice never runs on Rezumi AI: the user's own connection, without a cost or a source field.
 {
 	const { dialog: shown } = await run(() => client.career.voice.speak({ providerId: "own", model: "mine", text: "x" }));
 	assert.doesNotMatch(shown.message, /credits/);
-	assert.equal(sent[0].input.aiSource, "own");
+	assert.match(shown.title, /My key/);
+	assert.equal(sent[0].input.aiSource, undefined);
+}
+
+// A file attached in a Rezumi AI conversation goes to Rezumi AI, and the confirmation says so. Uploading costs nothing.
+{
+	const { error, dialog: shown } = await run(() =>
+		client.agent.attachments.create({
+			threadId: "fictional",
+			filename: "cv.txt",
+			data: "AA==",
+			mediaType: "text/plain",
+		}),
+	);
+	assert.equal(error, null);
+	assert.match(shown.title, /Rezumi AI/);
+	assert.doesNotMatch(shown.message, /credits/);
+	assert.equal(sent[0].input.aiSource, undefined);
+}
+
+// Plans that can't be read don't block AI: the request goes without a source, so the server never takes credits.
+{
+	const summary = credits;
+	credits = undefined;
+	const failing = modules["expo/fetch"].fetch;
+	modules["expo/fetch"].fetch = async (url, init) =>
+		url.includes("billing/summary") ? new Response("down", { status: 503 }) : failing(url, init);
+	const { error } = await run(() => client.ai.improve({ line: "x", action: "verb" }));
+	assert.equal(error, null);
+	assert.equal(sent[0].input.aiSource, undefined);
+	modules["expo/fetch"].fetch = failing;
+	credits = summary;
 }
 
 // iOS never offers or sends Rezumi AI: the same action goes to the user's own connection.

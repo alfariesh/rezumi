@@ -204,6 +204,7 @@ function ownRun(provider: RunnableAiProvider): AiRun {
 				model: provider.model,
 				apiKey: provider.apiKey,
 				...(provider.baseURL ? { baseURL: provider.baseURL } : {}),
+				serverAi: provider.managed,
 			});
 			return model;
 		},
@@ -219,6 +220,8 @@ async function rezumiRun(
 	action: CreditAction,
 	idempotencyKey: string | undefined,
 ): Promise<AiRun> {
+	// Built first: a provider setup that can't work fails here, before any credits are taken.
+	const base = ownRun(provider).model;
 	await db.transaction((tx) => ensureTrialCredits(tx, userId));
 	const reservation = await reserve(userId, action, idempotencyKey ?? generateId());
 	const limits = AI_WORK_LIMITS[action];
@@ -236,7 +239,7 @@ async function rezumiRun(
 		metered: true,
 		credits: reservation.credits,
 		limits,
-		model: wrap(ownRun(provider).model),
+		model: wrap(base),
 		wrap,
 		succeed: async () => {
 			if (settled) return;

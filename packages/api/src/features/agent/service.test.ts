@@ -43,6 +43,9 @@ const resumeServiceMock = {
 	patchInTransaction: vi.fn(),
 };
 
+// The credits of one run, so tests can check a turn is kept or given back.
+const runMock = { succeed: vi.fn(async () => {}), fail: vi.fn(async (_code: string) => {}) };
+
 const aiProvidersServiceMock = {
 	getRunnableById: vi.fn(),
 	getDefaultRunnable: vi.fn(),
@@ -171,8 +174,8 @@ vi.mock("../billing/metered-ai", () => ({
 		credits: 0,
 		limits: null,
 		wrap: (model: unknown) => model,
-		succeed: async () => {},
-		fail: async () => {},
+		succeed: runMock.succeed,
+		fail: runMock.fail,
 	}),
 }));
 vi.mock("../ai-providers/service", () => ({
@@ -1395,7 +1398,10 @@ describe("agentService.messages.stop", () => {
 
 			let capturedSignal: AbortSignal | undefined;
 			let onFinish: ((event: { responseMessage: UIMessage; isAborted: boolean }) => Promise<void>) | undefined;
+			let onError: ((error: unknown) => string) | undefined;
 			let source: ReadableStreamDefaultController<UIMessageChunk> | undefined;
+			runMock.succeed.mockClear();
+			runMock.fail.mockClear();
 			let streamDone: Promise<void> | undefined;
 			const chunks: UIMessageChunk[] = [];
 			const originalChunks: UIMessageChunk[] = [
@@ -1408,8 +1414,9 @@ describe("agentService.messages.stop", () => {
 				stream = vi.fn(({ abortSignal }: { abortSignal: AbortSignal }) => {
 					capturedSignal = abortSignal;
 					return {
-						toUIMessageStream: vi.fn((options: { onFinish: typeof onFinish }) => {
+						toUIMessageStream: vi.fn((options: { onFinish: typeof onFinish; onError: typeof onError }) => {
 							onFinish = options.onFinish;
+							onError = options.onError;
 							return new ReadableStream<UIMessageChunk>({
 								start(controller) {
 									source = controller;
@@ -1491,6 +1498,8 @@ describe("agentService.messages.stop", () => {
 			]);
 			expect(clearActiveAgentRunIfCurrentMock).not.toHaveBeenCalled();
 			expect(onFinish).toBeDefined();
+			// A tool that failed reaches onError too, but the model carried on: the turn still finishes.
+			onError?.(new Error("A tool failed."));
 			await onFinish?.({
 				responseMessage: {
 					id: "assistant-1",
@@ -1499,6 +1508,14 @@ describe("agentService.messages.stop", () => {
 				},
 				isAborted: action !== "complete",
 			});
+			// The turn's credits are kept only for a reply that finished; a stopped or timed-out one gives them back.
+			if (action === "complete") {
+				expect(runMock.succeed).toHaveBeenCalledOnce();
+				expect(runMock.fail).not.toHaveBeenCalled();
+			} else {
+				expect(runMock.fail).toHaveBeenCalledWith("aborted");
+				expect(runMock.succeed).not.toHaveBeenCalled();
+			}
 			expect(messagesPersistenceMock.upsertAssistantUiMessage).toHaveBeenCalledWith(
 				expect.objectContaining({
 					status: action === "complete" ? "completed" : "canceled",

@@ -83,7 +83,7 @@ Catat setiap baris dengan format "Sandbox result" dari skill:
 
 ### 7. Buka untuk semua
 
-1. PR `BILLING_MODE=on`. Saat itu juga terbitkan draf panduan pengguna dari Phase 03/05/07 di `docs/guides/`, perbarui FAQ/homepage (tombol paket aktif), dan pastikan halaman legal sudah final.
+1. PR `BILLING_MODE=on`. Saat itu juga terbitkan draf panduan pengguna dari Phase 03/05/07 di `docs/guides/` (Phase 05: `draf-panduan-rezumi-ai.md`), perbarui FAQ/homepage (tombol paket aktif), dan pastikan halaman legal sudah final.
 2. Pantau 48 jam: peringatan email, pembayaran menggantung, error notifikasi di tabel event, keluhan.
 3. Perbarui README (status ✅, catatan sesi) dan log keputusan.
 

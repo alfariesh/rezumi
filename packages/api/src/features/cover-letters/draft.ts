@@ -68,22 +68,6 @@ export async function* draftLetterBody(
 		throw new ORPCError("BAD_REQUEST", { message: "No AI provider is set up. Add one in Settings to draft letters." });
 	}
 
-	const posting =
-		application?.jobDescription?.trim() ||
-		(application?.requirements.length ? application.requirements.map((item) => `- ${item}`).join("\n") : undefined);
-	const result = streamText({
-		model: ai.model,
-		system: letterDraftSystemPrompt,
-		prompt: buildLetterDraftPrompt({
-			variant: input.variant,
-			job: application ? `${application.role} at ${application.company}` : undefined,
-			posting,
-			resume: resume ? buildMarkdown(resume.data) : undefined,
-			previous: input.previous,
-		}),
-		...(input.signal ? { abortSignal: input.signal } : {}),
-	});
-
 	// The client names the provider in "Drafting stopped: … didn't respond".
 	const unreachable = (cause?: unknown) =>
 		new ORPCError("BAD_GATEWAY", {
@@ -92,22 +76,40 @@ export async function* draftLetterBody(
 			cause,
 		});
 
-	// Rezumi AI keeps its credits only for a draft that arrived in full; a failed or stopped draft costs nothing.
+	// Rezumi AI keeps its credits only for a draft that arrived in full. A failed draft, or one stopped part-way (the AI
+	// SDK ends a stopped stream with an `abort` part rather than an error), costs nothing.
 	let complete = false;
+	let stopped = false;
 	try {
+		const posting =
+			application?.jobDescription?.trim() ||
+			(application?.requirements.length ? application.requirements.map((item) => `- ${item}`).join("\n") : undefined);
+		const result = streamText({
+			model: ai.model,
+			system: letterDraftSystemPrompt,
+			prompt: buildLetterDraftPrompt({
+				variant: input.variant,
+				job: application ? `${application.role} at ${application.company}` : undefined,
+				posting,
+				resume: resume ? buildMarkdown(resume.data) : undefined,
+				previous: input.previous,
+			}),
+			...(input.signal ? { abortSignal: input.signal } : {}),
+		});
 		let wrote = false;
 		for await (const part of result.stream) {
 			if (part.type === "text-delta") {
 				wrote ||= part.text.length > 0;
 				yield part.text;
-			} else if (part.type === "error") throw unreachable(part.error);
+			} else if (part.type === "abort") stopped = true;
+			else if (part.type === "error") throw unreachable(part.error);
 		}
-		complete = wrote;
+		complete = wrote && !stopped && !input.signal?.aborted;
 	} catch (error) {
 		if (input.signal?.aborted) return;
 		throw error instanceof ORPCError ? error : unreachable(error);
 	} finally {
 		if (complete) await ai.succeed();
-		else await ai.fail(input.signal?.aborted ? "aborted" : "no_result");
+		else await ai.fail(stopped || input.signal?.aborted ? "aborted" : "no_result");
 	}
 }

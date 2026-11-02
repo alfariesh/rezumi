@@ -80,13 +80,14 @@ Tugasmu sebelum phase berikutnya: …
 
 ## Isi folder
 
-| File                     | Isi                                                                            |
-| ------------------------ | ------------------------------------------------------------------------------ |
-| `00-keputusan-produk.md` | Paket, harga, aturan bisnis final, perubahan dari proposal awal, log keputusan |
-| `01-arsitektur.md`       | Rancangan teknis: lokasi kode, tabel, status, alur, invariant, konfigurasi     |
-| `phase-00` … `phase-11`  | Instruksi tiap phase                                                           |
-| `backlog-lanjutan.md`    | Ide setelah go-live dan syarat memulainya                                      |
-| `runbook-pemilik.md`     | Dibuat di Phase 09: langkah menangani masalah pembayaran                       |
+| File                        | Isi                                                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `00-keputusan-produk.md`    | Paket, harga, aturan bisnis final, perubahan dari proposal awal, log keputusan                                     |
+| `01-arsitektur.md`          | Rancangan teknis: lokasi kode, tabel, status, alur, invariant, konfigurasi                                         |
+| `phase-00` … `phase-11`     | Instruksi tiap phase                                                                                               |
+| `backlog-lanjutan.md`       | Ide setelah go-live dan syarat memulainya                                                                          |
+| `draf-panduan-rezumi-ai.md` | Dibuat di Phase 05: draf perubahan panduan `docs/` untuk Rezumi AI dan kredit, diterbitkan saat go-live (Phase 11) |
+| `runbook-pemilik.md`        | Dibuat di Phase 09: langkah menangani masalah pembayaran                                                           |
 
 ## Catatan sesi
 

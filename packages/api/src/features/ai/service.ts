@@ -69,6 +69,8 @@ type GetModelInput = {
 	model: string;
 	apiKey: string;
 	baseURL?: string;
+	/** The server's own AI, whose endpoint the operator set: it skips the public-address guard on users' endpoints. */
+	serverAi?: boolean;
 };
 
 const MAX_AI_FILE_BYTES = 10 * 1024 * 1024; // 10MB
@@ -94,7 +96,7 @@ const MAX_DOCX_DOCUMENT_XML_BYTES = 20 * 1024 * 1024;
 export function getModel(input: GetModelInput) {
 	const { provider, model, apiKey } = input;
 	const baseURL = resolveAiBaseUrl(input);
-	const settings = { apiKey, baseURL, ...aiTransport() };
+	const settings = { apiKey, baseURL, ...aiTransport(input.serverAi) };
 
 	return match(provider)
 		.with("openai", () => createOpenAI(settings).chat(model))
@@ -118,7 +120,7 @@ export function getModel(input: GetModelInput) {
 			const ollama = createOllama({
 				name: "ollama",
 				baseURL,
-				...aiTransport(),
+				...aiTransport(input.serverAi),
 				...(apiKey ? { headers: { Authorization: `Bearer ${apiKey}` } } : {}),
 			});
 
@@ -131,9 +133,11 @@ export function getAgentModel(input: GetModelInput) {
 	if (!isDirectOpenAIProvider(input)) return getModel(input);
 
 	// Direct OpenAI assistants use Responses for reasoning with function tools.
-	return createOpenAI({ apiKey: input.apiKey, baseURL: resolveAiBaseUrl(input), ...aiTransport() }).responses(
-		input.model,
-	);
+	return createOpenAI({
+		apiKey: input.apiKey,
+		baseURL: resolveAiBaseUrl(input),
+		...aiTransport(input.serverAi),
+	}).responses(input.model);
 }
 
 const aiCredentialsSchema = z.object({
