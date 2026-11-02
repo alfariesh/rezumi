@@ -1,46 +1,9 @@
 ---
-title: "Self-hosted resume builder"
-description: "Run Rezumi on your own Cloudflare account: Workers, PostgreSQL through Hyperdrive, R2 storage, single sign-on, and the full v6 feature set."
+title: "Hosted Rezumi service"
+description: "Use the official Rezumi service and contact support about deployment needs."
 ---
 
-You can run Rezumi on your own infrastructure instead of using [rezumi.app](https://rezumi.app). A self-hosted instance has the same features as the hosted app: resumes, cover letters, Check mode, public links, the application tracker, the AI assistant, the API and the MCP server.
+Use [rezumi.app](https://rezumi.app) to create and manage your documents. Public source downloads and a public self-hosting offering
+are no longer advertised. Existing deployment references serve authorized operators and do not grant repository access.
 
-## When self-hosting is a good fit
-
-Self-host when you need to control where data lives, who can sign in, and which outside services the app talks to. Common reasons are a company or school that wants its own resume tool, strict data-residency rules, or a personal Cloudflare account you already use.
-
-If you only need a resume for yourself, the hosted app is less work.
-
-## What a deployment needs
-
-Rezumi runs on Cloudflare Workers. One Worker serves the app, the API and the MCP server, and static assets come from Workers Static Assets. Around it you need:
-
-- **PostgreSQL** for accounts, documents and applications, reached through Hyperdrive. Run database migrations yourself before each upgrade.
-- **A private R2 bucket** for photos and uploads.
-- **SMTP** for account emails. Without it, emails are written to the Worker logs, which is fine for testing.
-- **Optional: an encryption secret.** It is needed for saved AI providers and the assistant. Core resume features work without it.
-- **Optional: single sign-on** through Google, GitHub, LinkedIn or a custom OpenID Connect provider.
-
-Rendering PDFs needs no extra service: PDF export runs as WebAssembly inside the Worker, with no headless browser or Redis server to run. Cloudflare Workers Paid is required.
-
-## How to deploy
-
-<CardGroup cols={2}>
-  <Card title="Cloudflare Workers" icon="cloud" href="/self-hosting/cloudflare">
-    The deployment guide: Workers, R2, Durable Objects and PostgreSQL through Hyperdrive.
-  </Card>
-  <Card title="Environment variables" icon="sliders" href="/self-hosting/environment-variables">
-    Every setting the Worker reads.
-  </Card>
-</CardGroup>
-
-For sign-in providers, see [Single sign-on](/self-hosting/sso).
-
-## Upgrading an existing instance
-
-Apply database migrations before you deploy a new version. Moving from an older v4 instance? See [Migrating from v4](/self-hosting/migration).
-
-<Tip>
-  When you follow API, MCP or sharing examples in these docs, replace `https://rezumi.app` with your own instance's
-  address.
-</Tip>
+See [plans](/use-cases/free-resume-builder), [privacy](/legal/kebijakan-privasi) and [support](/legal/kontak).

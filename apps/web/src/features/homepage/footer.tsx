@@ -1,5 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { Link } from "@tanstack/react-router";
+import { LEGAL_URLS } from "@rezumi/schema/billing";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Container } from "./ui";
 
@@ -23,13 +24,18 @@ const getColumns = (): { id: string; title: string; links: FooterLink[] }[] => [
 		title: t`Help`,
 		links: [
 			{ label: t`Guides`, href: "https://docs.rezumi.app/getting-started" },
-			{ label: t`Contact`, href: "mailto:hi@rezumi.app" },
+			{ label: t`Contact`, href: LEGAL_URLS.contact },
 		],
 	},
 	{
 		id: "legal",
 		title: t`Legal`,
-		links: [{ label: t`Privacy policy`, href: "https://docs.rezumi.app/legal/privacy-policy" }],
+		links: [
+			{ label: t`Privacy policy`, href: LEGAL_URLS.privacy },
+			{ label: t`Terms of service`, href: LEGAL_URLS.terms },
+			{ label: t`Refund policy`, href: LEGAL_URLS.refund },
+			{ label: t`Licenses`, href: LEGAL_URLS.license },
+		],
 	},
 ];
 

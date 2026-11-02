@@ -2,15 +2,18 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { Fragment } from "react";
+import { LEGAL_URLS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { popTransition } from "@/features/settings/root";
 
-// The project's own links: where to read up, see the code, help translate or report a problem.
+// Help and legal documents for the hosted service.
 const getProjectLinks = () => [
 	{ href: "https://docs.rezumi.app", label: t`Docs` },
-	{ href: "https://github.com/alfariesh/rezumi", label: t`Source` },
-	{ href: "https://crowdin.com/project/reactive-resume", label: t`Translate` },
-	{ href: "https://github.com/alfariesh/rezumi/issues", label: t`Report a bug` },
+	{ href: LEGAL_URLS.contact, label: t`Contact & complaints` },
+	{ href: LEGAL_URLS.terms, label: t`Terms of service` },
+	{ href: LEGAL_URLS.privacy, label: t`Privacy policy` },
+	{ href: LEGAL_URLS.refund, label: t`Refund policy` },
+	{ href: LEGAL_URLS.license, label: t`Licenses` },
 ];
 
 export const Route = createFileRoute("/dashboard/settings")({ component: RouteComponent });

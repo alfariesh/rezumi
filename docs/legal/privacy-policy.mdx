@@ -1,257 +1,105 @@
 ---
-title: "Privacy Policy"
-description: "How the hosted Rezumi service handles your personal data, account information, uploaded files, cookies, analytics, and PDF printing."
+title: "Privacy policy"
+description: "English translation of the Indonesian draft policy for account, document, payment and AI data."
 ---
 
-## Overview
-
-This Privacy Policy explains how **Rezumi** (the "Service") collects, uses, stores, and shares information when you use it.
-
-Rezumi is open-source and can be operated in different ways (for example, by the official hosted service, or by an organization/self-hosted deployment). The specific data controller for your use depends on who operates the instance you are using.
-
-- **Service Operator**: Salman Alfariesh
-- **Contact**: hi@rezumi.app
-- **Service URL**: https://rezumi.app
-- **Effective date**: 2026-10-29
-- **Last updated**: 2026-10-29
-
-If you are self-hosting, **you** are the Service Operator and responsible for compliance (including configuring email delivery, storage, and logging appropriately).
-
-<Note>
-  **Note for self-hosted deployments:** the details above apply to the hosted service at <code>rezumi.app</code>. If you
-  self-host Rezumi, you are the Service Operator for your deployment.
-</Note>
-
----
-
-## What the Service does
-
-Rezumi is a resume builder that lets you:
-
-- Create and edit resumes and cover letters in a browser-based editor
-- Store documents in an account, optionally make a resume public, and share it via a link
-- Export resumes and cover letters (for example, to PDF, DOCX, Markdown, or JSON)
-- Track job applications, including notes, contacts, interviews, and the documents you sent
-- Upload files such as profile pictures (and other assets used in a resume)
-- Optionally connect your own AI provider (e.g., OpenAI, Anthropic, Google Gemini, or another supported provider) to use AI features such as the assistant
-- Optionally connect AI agents and apps (for example, Claude, ChatGPT, Codex, or Cursor) to your account through the Service's MCP server or API
-
----
-
-## Information we collect
-
-### Account information
-
-When you create an account or sign in, the Service stores:
-
-- **Identity and profile**: name, email address, username/display username, optional profile image
-- **Authentication state**: whether email is verified; whether two-factor authentication is enabled
-
-If you use social sign-in (e.g., Google, GitHub, LinkedIn, or a custom OAuth provider), the Service stores identifiers and tokens needed to link and maintain that login.
-
-### Authentication and security data
-
-To keep your account secure and keep you signed in, the Service stores:
-
-- **Session data**: session token, session expiry, and (if provided) IP address and user agent
-- **Verification data**: values used for email verification, password reset, or email change flows
-- **Two-factor authentication**: a 2FA secret and backup codes (if you enable 2FA)
-- **Passkeys** (if you use them): public key, credential ID, device metadata, counters, and related fields
-
-The Service Operator may also send **transactional emails** (for example, password reset or email verification). Depending on deployment, these emails may be delivered via an email provider or (in development/testing) the links may be logged to server output.
-
-### Resume and cover letter content
-
-When you create or import a resume or cover letter, the Service stores the data you provide, which may include personal data such as:
-
-- Contact details, location, summary
-- Employment, education, projects, links, and other resume sections
-- Cover letter text and recipient details
-- Any other content you add (including rich text and private notes)
-
-Resumes may also have metadata such as tags, a slug, visibility (public/private), and an optional resume password (if you password-protect a resume). The Service also keeps a version history of your documents so you can restore earlier versions.
-
-### Job applications
-
-If you use the application tracker, the Service stores the application details you enter or import, such as company, role, job posting details, stages, interviews, notes, contacts, and which resume or cover letter you sent.
-
-### Public resume access and statistics
-
-If you publish a resume, other users may access it via its public link. The Service may also maintain simple statistics such as:
-
-- View count and download count, including daily totals
-- Last viewed/downloaded timestamps
-
-### Uploaded files (e.g., profile pictures)
-
-If you upload files, the Service stores them either:
-
-- On the **local filesystem** of the server (default: under a `data/` directory), or
-- In **S3-compatible object storage**, if configured by the Service Operator, or
-- In a private **Cloudflare R2** bucket, when the Service runs on Cloudflare Workers
-
-Depending on configuration, uploaded files may be publicly accessible (for example, some S3 configurations may default to public read access for uploaded objects). The Service Operator is responsible for selecting appropriate access controls for uploads.
-
-### API keys created in the Service
-
-If the Service Operator enables API key functionality, the Service can store:
-
-- API key metadata and rate limit counters
-- A hashed form of the API key, used to verify it
-
-### Connected AI agents and applications
-
-If you connect an AI agent or application to your account (for example, Claude, ChatGPT, Codex, Cursor, or the Rezumi plugin) through the Service's MCP server or API, the Service stores:
-
-- The application's registration details, such as its name and redirect addresses
-- Your consent to that application, the permissions (scopes) you granted, and the tokens needed to keep the connection working
-- Rate limit counters for requests made through the connection
-
-### Local-only preferences and settings
-
-Some settings are stored on your device:
-
-- **Cookies**: UI preferences such as `theme` and `locale`
-- **Local storage**: some client-side state, such as view preferences and unsaved drafts
-
-These local-only values are stored in your browser and are not necessarily transmitted to the Service Operator unless you choose to use related features.
-
----
-
-## Native iOS and Android app
-
-The mobile app connects to the Rezumi server you select. Account data, documents, applications, uploads, and AI requests go to that server; a self-hosted server has its own operator and data practices. This policy describes the official hosted service, not every self-hosted installation.
-
-The app stores sign-in tokens in the operating system's secure storage. App-private storage holds preferences, unsaved drafts, and cached documents, fonts, images, and exports. PDF previews and PDF exports render on your device. Other exports and document checks can send content to your selected server. Loading remote images and fonts also makes network requests to their hosts.
-
-Before an AI operation, the app identifies the selected server and provider and asks permission to share the data needed for that operation. Declining blocks that operation. Enabling an automated career schedule authorizes its recurring processing while the schedule remains enabled; turn it off to stop future runs.
-
-Photo selection uses the system picker. Camera access is optional and used when you choose to take a profile photo. Interview practice requests microphone access when you record an answer. If you choose transcription, the recording is uploaded through your server to your selected transcription provider; generated speech sends its text through your server to your selected speech provider. These features are not on-device speech recognition. The Keep audio setting controls local recording retention, not your server's or provider's retention.
-
-Optional reminders use local operating-system notifications. The app does not register for remote push notifications. You can manage camera, microphone, and notification permissions in your device settings.
-
-You can report unsafe AI-generated content inside the app, including through **Settings → AI & developer → Report AI content**. A report stores only the content you choose to submit, its category, your explanation, your account identifier, and review timestamps on your selected server for private operator review. Reports are not sent to an AI provider. They are included in your account export and deleted with your account, or may be removed earlier by the operator after review.
-
-The native shared-resume viewer also lets you report a shared resume to your server operator and block its author. The report form starts with the public resume URL; only what you submit is stored under the report terms above. Blocked-author preferences stay on your device, scoped to your account and server. Blocking hides that author's shared resumes in the native viewer; it does not remove their content from the website or other devices. Open a blocked link and choose **Unblock author** to restore access.
-
-To delete your account, open **Settings → Account → Delete account**. The app opens your selected server's browser-based deletion confirmation; you may need to sign in again. Confirming deletion removes the account and associated data under the retention terms below. Removing the app from your device does not delete your account.
-
----
-
-## How we use information
-
-We use the information above to:
-
-- Provide and operate the Service (account access, resume editing, storage, sharing)
-- Authenticate users and prevent abuse/fraud (sessions, security logs/metadata)
-- Generate PDFs, previews, and other exports you request
-- Maintain basic functionality such as localization and theme preferences
-- Provide support and respond to user requests (if you contact the Service Operator)
-
----
-
-## Cookies and similar technologies
-
-The Service uses cookies primarily for functionality:
-
-- **Authentication cookies**: to keep you signed in
-- **Preference cookies**: theme (`theme`) and language (`locale`)
-
-The Service does not include built-in behavioral advertising or third-party analytics by default. (For example, the authentication layer's built-in telemetry is disabled in this codebase.)
-
----
-
-## Sharing and third parties
-
-We share information only as needed to provide the Service:
-
-### PDF generation
-
-When you download a PDF from the editor, the Service renders the document directly in your browser using the Forme PDF engine, which runs in your browser as WebAssembly. Resume content is processed locally on your device for this purpose. When a visitor downloads the PDF of a public resume, or when a PDF is requested through the API, the Service's own server renders it with the same engine. No third-party "printer" or headless-browser service is involved in either case.
-
-### Storage providers (optional)
-
-If configured, uploaded files may be stored in an S3-compatible provider or in Cloudflare R2. In that case, the storage provider processes and stores file data on behalf of the Service Operator.
-
-### OAuth providers (optional)
-
-If you sign in via OAuth (Google/GitHub/LinkedIn/custom), those providers receive authentication requests and return profile information (such as email/name) to the Service, as permitted by your provider settings.
-
-### AI agents and applications you connect (optional)
-
-When you connect an AI agent or application to your account and approve its access, it can read and change the data that its permissions cover: your profile (name, email address, and username), resumes, cover letters, job applications (including contacts, notes, and interviews), version history, document statistics, and saved career information such as facts, stories, and offers. The Service sends this data to the application only when the application requests it on your behalf.
-
-Once data reaches the application, it is processed by that application's provider (for example, Anthropic for Claude or OpenAI for ChatGPT and Codex) under that provider's own terms and privacy policy, not this one. The Service Operator does not control how those providers store or use it. The Service does not sell this data or use it for advertising.
-
-You can see and revoke connected applications at any time under **Settings → Connected applications**. Revoking access invalidates the application's existing access and refresh tokens.
-
-### Job posting pages (optional)
-
-When you ask the Service to fill in an application from a job posting link, the Service fetches that public page. If you or the Service Operator configure a web access provider (Firecrawl, Tavily, or Exa), the link or your search terms are sent to that provider to read or search the page.
-
-### AI providers (optional, user-supplied)
-
-If you enable AI features and provide your own API key, the Service stores your provider settings and stores the API key encrypted. When you use AI features, the Service sends prompts, the relevant document content, and any files you attach to your selected AI provider (for example, OpenAI, Anthropic, or Google Gemini), according to your use of those features and the provider's policies. The Service stores your assistant conversations, attachments, and proposed changes in your account until you delete them or your account.
-
----
-
-## Data retention
-
-Retention depends on the Service Operator's configuration and your actions.
-
-As a baseline:
-
-- Account data and resumes are retained until you delete them (or your account is deleted).
-- Session and security data may be retained as needed for authentication and security.
-- Uploaded files are retained until deleted (for example, when you remove a picture or delete a resume/account).
-- Connected application registrations, consents, and tokens are retained until you revoke access, the tokens expire, or your account is deleted.
-- Documents you move to the Trash are deleted permanently after 30 days, unless you restore or delete them sooner.
-
-The Service Operator may also retain backups and logs for limited periods.
-
----
-
-## Security
-
-We take reasonable measures to protect data (authentication, access controls, and storage separation). No method of transmission or storage is 100% secure; you should use strong passwords and enable 2FA/passkeys where available.
-
-If you are self-hosting, you are responsible for:
-
-- Securing your infrastructure, database, and storage buckets
-- Using HTTPS and secure cookie settings
-- Configuring access controls for object storage (and avoiding unintended public access)
-
----
-
-## International transfers
-
-The hosted Service runs on Cloudflare and a managed PostgreSQL database, so your data may be processed outside Indonesia. The Service Operator handles personal data in line with Indonesian law, including Law No. 27 of 2022 on Personal Data Protection.
-
-If the Service Operator (or its vendors) stores or processes data in other countries, your information may be transferred internationally. The Service Operator is responsible for providing appropriate safeguards where required by law.
-
----
-
-## Your choices and rights
-
-Depending on your location, you may have rights to access, correct, delete, export, or restrict processing of your personal data. You can often exercise these rights directly in the Service (for example, by editing or deleting resumes), or by contacting the Service Operator.
-
----
-
-## Children's privacy
-
-The Service is not intended for children under the age of 13 (or the minimum age required in your jurisdiction). If you believe a child has provided personal data, contact the Service Operator.
-
----
-
-## Changes to this Policy
-
-We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated effective date.
-
----
-
-## Contact
-
-For privacy requests or questions, contact:
-
-- **Service Operator**: Salman Alfariesh
-- **Email**: hi@rezumi.app
+<Warning>
+  Draft dated 2 November 2026 — pending owner approval; not effective as new contractual terms. Support email,
+  resolution deadline, operational retention and providers require confirmation before publication. Paid plans and
+  Rezumi AI credits are not sold while billing remains disabled.
+</Warning>
+
+The [Indonesian privacy policy](/legal/kebijakan-privasi) governs. Effective date: **[NOT SET]**.
+Controller: **Salman Alfariesh — Rezumi**, hi@rezumi.app **[CONFIRMATION REQUIRED]**.
+Mailing address: **Apartement Centerpoint, Tower A, 1211, Jl. Ahmad Yani No.kav20, RT.005/RW.002, Marga Jaya, Kec. Bekasi Sel., Kota Bks, Jawa Barat 17141**. Complaint phone: **08125800097**; see [Contact & complaints](/legal/contact).
+This covers rezumi.app and apps connected to it. Other servers have their own operators and policies.
+
+## Data, purposes and legal bases
+
+| Data                                                                                                                       | Purpose                                               | Basis                                                                   |
+| -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------- |
+| Name, email, username, optional photo, verification status                                                                 | Accounts, profiles and service delivery               | Contract                                                                |
+| Password hash, sessions/tokens, IP/user agent, verification, 2FA/passkeys, social login identifiers/tokens                 | Authentication and abuse prevention                   | Contract and security legitimate interests balanced against user rights |
+| Resumes, letters, uploads, versions, private notes, applications, contacts/interviews, knowledge, offers, career schedules | Storage, sync, exports and requested features         | Contract; user choices to publish/connect                               |
+| Order reference, amount, method/status/time, access periods, refunds, credit usage ledger                                  | Payment verification, access, disputes and accounting | Contract and legal obligations                                          |
+| Document/text, job context, prompts, AI results and action costs                                                           | Requested AI operations                               | User request/contract and consent where required                        |
+| Session/preference cookies, device storage, security logs, resume view/download counts                                     | Functionality, security, resume statistics            | Contract and proportionate legitimate interests                         |
+| Submitted complaints and content reports                                                                                   | Support, moderation, rights                           | Contract, legal obligations and security legitimate interests           |
+
+Avoid unnecessary identity numbers, health data, children's data and sensitive information in documents/prompts.
+Only provide others' data with a lawful basis. We do not sell data or use resumes for advertising.
+Cookies support login, theme and language; device storage may hold drafts/preferences.
+At draft time the official apps include no third-party advertising analytics; security logs and resume statistics still operate.
+
+## Recipients
+
+- **Cloudflare:** Workers, network/security and private R2 uploads, including request metadata.
+- **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **[OWNER TO CONFIRM]**.
+- **Midtrans:** once checkout launches, name/email and order details/amount for payment. Rezumi receives payment status/references;
+  it does not store card numbers, PINs, OTPs or bank credentials. Manual refunds need recipient information through support;
+  transfer evidence may retain necessary personal details and is not necessarily anonymous.
+- **AI providers:** only information needed for requested operations, such as resume/letter text, job descriptions, answers,
+  knowledge and conversation context. BYOK uses the selected provider (such as OpenAI, Anthropic, Google Gemini, OpenRouter or compatible endpoints).
+  Rezumi AI will identify provider/model before use; **launch provider, location and retention are undecided**.
+  Spending credits does not authorize model training. Provider retention/training terms must be disclosed before activation;
+  Rezumi AI must remain disabled until complete. Saved API keys are encrypted and not exposed to other users.
+- **Transactional email:** email address and necessary account/receipt details; production provider/retention **[OWNER TO CONFIRM]**.
+- **Social login and connected apps:** login providers receive authentication requests. Authorized OAuth/API/MCP apps may read/change
+  profile, resumes, letters, applications, history/statistics and career data within granted scopes. Revoke access in connected apps/API key settings.
+  Recipients apply their own policies; revocation stops future access but does not erase prior copies automatically.
+- **Public recipients:** published resumes can be viewed/copied under your link/password choices. Search engines may retain allowed copies.
+  External images/fonts contact their hosts. Law may require limited disclosure to authorities.
+
+Web editor PDFs render locally with Forme; mobile PDF previews/exports render on-device. Public/API PDFs render on our server.
+The public ATS checker reads files in-browser without uploads. Sync, other checks/exports and AI may send content to the server as needed.
+
+## Mobile and permissions
+
+Login tokens use OS secure storage. Private app storage holds preferences, drafts and cached documents/fonts/images/exports.
+Photos use the system picker; camera is optional for profile photos, microphone for recorded interview practice.
+Transcription uploads audio through the server to the chosen provider; generated speech sends text to a speech provider.
+These are not local speech processing. Keep audio controls local copies, not provider retention. Manage camera/microphone/notification permissions in OS settings.
+Reminders use local notifications; the app does not register for remote push.
+
+Mobile requests data consent before AI operations; declining blocks them. Enabling a career schedule authorizes recurring processing
+under its settings until disabled. AI/shared-resume reports send only chosen content, category, explanation, account identifier and review timestamps
+to the operator, not AI providers. Reports are included in account export and deleted with the account or earlier after review.
+Author blocks are local per account/server; they do not remove website content or affect other devices.
+
+## Retention and deletion
+
+Account data, documents, uploads and versions remain as needed until deletion. Trash is permanently removed after 30 days unless restored/deleted sooner.
+App consents/tokens remain until revoked, expired or account deletion. Delete through **Settings → Account → Delete account**;
+mobile opens server browser confirmation and may require login. Uninstalling does not delete an account. Clean exported files/device caches separately.
+
+On deletion, identity links in payment records are removed/anonymized; records must not be called anonymous if re-identification remains possible.
+Non-identifying accounting records are planned for **10 years [OWNER/ADVISER TO CONFIRM OBLIGATION AND SCHEMA]**.
+If law requires identifiable evidence, retain only the necessary portion separately with restricted access and disclose the basis and duration.
+Law or disputes may delay relevant deletion with an explanation. Log, support ticket, AI ledger and backup retention/deletion cycles:
+**[OWNER MUST SET BEFORE PUBLICATION]**. No promise of instant erasure from every backup/provider; completion and residual retention are explained.
+
+## Rights
+
+You may request processing information, access/copies, correction, deletion/destruction, withdrawal of consent, cessation/restriction,
+portability subject to legal conditions, objection to significant automated decisions and complaints/compensation.
+Rezumi does not promise automated hiring decisions. Account export/editing are available in-app; email for other requests.
+Identity checks are proportionate. Withdrawal affects future processing; legal duties may still require limited retention.
+Access, correction, stopping processing on consent withdrawal and restriction are handled within **3 × 24 hours** where that statutory deadline applies;
+other rights follow their specific deadlines. Legal restrictions are explained with an objection route.
+
+## Security, incidents and international transfers
+
+We use access controls, HTTPS, storage separation and credential protection; no system is risk-free.
+A personal data protection failure is notified in writing to affected people and the competent institution within **3 × 24 hours** under the PDP Law,
+including affected data, timing/circumstances and response measures; public notice is given where required.
+
+Cloudflare, Neon, email and AI providers may process data outside Indonesia. Before transfer, assess equivalent protection;
+otherwise ensure adequate binding safeguards, and if those conditions cannot be met obtain consent as required by law.
+Production countries/locations, processing agreements and transfer mechanisms: **[OWNER MUST VERIFY]**.
+
+## Children and changes
+
+The service is for users **aged 18 and over**. Registration and purchases by users under 18 are not permitted.
+If you discover an underage account or improperly submitted child data, contact support for review of processing and deletion under applicable law. Material changes are notified by email/in-app before effect;
+new consent is requested when required by purpose/basis changes. Indonesian text and translation are updated together.
+Contact [support and complaints](/legal/contact).

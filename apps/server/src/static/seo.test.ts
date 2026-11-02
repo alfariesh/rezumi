@@ -23,6 +23,7 @@ it("publishes Context7 Ask after the llms title and summary", async () => {
 	expect(text).toMatch(
 		/^# Rezumi\n\n> [^\n]+\n\n## Search\n\nThis site has a search endpoint: https:\/\/context7.com\/api\/v2\/ask\?siteKey=ask_b3fd9335a63f1b21b1a814ac&query=<URL-encoded question>\./,
 	);
+	expect(text).toContain("Plus, Pro AI and Rezumi AI trial credits are coming soon.");
 	expect(text).toContain(
 		"It returns documentation that answers the question, with a source link for each part. No API key is needed. If nothing matches, it says so.\n\n## Product",
 	);

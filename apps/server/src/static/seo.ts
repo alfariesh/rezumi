@@ -126,6 +126,9 @@ export function handleLlms() {
 		`- [Get started](${baseUrl}/dashboard): create an account and a first resume.`,
 		"",
 		"## Facts",
+		...(env.BILLING_MODE === "on"
+			? []
+			: ["- Plus, Pro AI and Rezumi AI trial credits are coming soon. Paid plan limits are not active yet."]),
 		"",
 		"- Plans (prices in Indonesian Rupiah): Free (Rp0: 3 active resumes and 3 cover letters, 4 templates, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus (Rp29,000 for 30 days: 50 resumes and letters, every template, Word and ODT, custom styles, MCP and API); Pro AI (Rp79,000 for 30 days: everything in Plus and 100 AI credits, no API key needed). Paid plans never renew automatically.",
 		"- Export: PDF, Markdown and JSON on every plan; Word (DOCX) and ODT with Plus and Pro AI.",

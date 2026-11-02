@@ -14,14 +14,14 @@ Status kamu per 2 November 2026: **perorangan**, akun **Midtrans production suda
 
 Isi tabel ini (boleh langsung di file ini; repo akan private). **Jangan menulis NIK, NPWP, nomor rekening, atau password di sini.**
 
-| Data                                                                                            | Isi                                               | Dipakai di                                                                 |
-| ----------------------------------------------------------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------- |
-| Nama penjual (sesuai KTP) dan nama merek                                                        | Salman Alfariesh — Rezumi (konfirmasi)            | S&K, bukti bayar, halaman Kontak                                           |
-| Email dukungan                                                                                  | hi@rezumi.app (konfirmasi masih aktif dan dibaca) | Semua halaman, email bukti bayar                                           |
-| Alamat surat-menyurat (kota minimal; alamat lengkap bila bersedia, boleh alamat kantor virtual) |                                                   | Halaman Kontak, S&K (PP 80/2019 meminta alamat dan nomor kontak pengaduan) |
-| Nomor kontak pengaduan (mis. WhatsApp bisnis)                                                   |                                                   | Halaman Kontak                                                             |
-| Jam/tenggat menjawab pengaduan (mis. 2 hari kerja)                                              |                                                   | Halaman Kontak, runbook                                                    |
-| Email pemilik untuk peringatan sistem                                                           |                                                   | Phase 09 (`BILLING_ALERT_EMAIL`)                                           |
+| Data                                                                                            | Isi                                                                                                                                     | Dipakai di                                                                 |
+| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Nama penjual (sesuai KTP) dan nama merek                                                        | Salman Alfariesh — Rezumi (dikonfirmasi 2 November 2026)                                                                                | S&K, bukti bayar, halaman Kontak                                           |
+| Email dukungan                                                                                  | hi@rezumi.app (konfirmasi masih aktif dan dibaca)                                                                                       | Semua halaman, email bukti bayar                                           |
+| Alamat surat-menyurat (kota minimal; alamat lengkap bila bersedia, boleh alamat kantor virtual) | Apartement Centerpoint, Tower A, 1211, Jl. Ahmad Yani No.kav20, RT.005/RW.002, Marga Jaya, Kec. Bekasi Sel., Kota Bks, Jawa Barat 17141 | Halaman Kontak, S&K (PP 80/2019 meminta alamat dan nomor kontak pengaduan) |
+| Nomor kontak pengaduan (mis. WhatsApp bisnis)                                                   | 08125800097                                                                                                                             | Halaman Kontak                                                             |
+| Jam/tenggat menjawab pengaduan (mis. 2 hari kerja)                                              | Senin–Jumat 09.00–17.00 WIB; respons awal maksimal 3 hari kerja; tenggat penyelesaian belum ditetapkan                                  | Halaman Kontak, runbook                                                    |
+| Email pemilik untuk peringatan sistem                                                           |                                                                                                                                         | Phase 09 (`BILLING_ALERT_EMAIL`)                                           |
 
 ## B. Midtrans (akun sudah production)
 
@@ -54,7 +54,7 @@ Ringkasan riset 2 November 2026; bukan nasihat hukum. Detail di `00-keputusan-pr
 
 1. **NIB perorangan** lewat [OSS](https://oss.go.id) dengan NIK. Pilih kode KBLI 2025 yang sesuai; kandidat: **58290** (Penerbitan Perangkat Lunak Lainnya) atau **62199** (Aktivitas Pemrograman Komputer Lainnya). Pastikan tingkat risikonya; bila OSS meminta Sertifikat Standar, ikuti langkahnya.
 2. **PSE Lingkup Privat** (TDPSE) lewat OSS untuk website `rezumi.app`, lalu untuk app iOS/Android saat dirilis. Komdigi aktif menegur dan bisa memblokir PSE yang belum terdaftar.
-3. **Usia pengguna**: putuskan usia minimum (usulan: 18 tahun untuk membeli; di bawah itu dengan izin orang tua/wali). Ini masuk S&K di Phase 02.
+3. **Usia pengguna**: minimum **18 tahun untuk menggunakan dan membeli**, keputusan pemilik 2 November 2026. Sudah masuk draf S&K dan privasi Phase 02.
 
 ## D. Pajak (konsultasi singkat disarankan)
 

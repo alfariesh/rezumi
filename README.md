@@ -1,7 +1,3 @@
-> [!IMPORTANT]
-> Rezumi lives at **[`alfariesh/rezumi`](https://github.com/alfariesh/rezumi)** on GitHub.  
-> This fork deploys only to Cloudflare Workers. See the [Cloudflare guide](https://docs.rezumi.app/self-hosting/cloudflare).
-
 <div align="center">
   <a href="https://rezumi.app">
     <img src="apps/web/public/opengraph/banner.jpg" alt="Rezumi" />
@@ -25,9 +21,9 @@
 
 ---
 
-Create a free account, import an existing resume or start fresh, and see the finished page as you write. Download a PDF, Word, Markdown, or JSON file, or share your resume with a public link. You can also run the whole application on your own infrastructure.
+Create a free account, import an existing resume or start fresh, and see the finished page as you write. Download a PDF, Word, Markdown, or JSON file, or share your resume with a public link.
 
-You own your data: no tracking, no ads, and a full data export on every plan. The hosted app at [rezumi.app](https://rezumi.app) starts on a free plan; Plus (Rp29.000) and Pro AI (Rp79.000) are 30-day passes that never renew on their own. AI features use the credits included with Pro AI or a provider key you connect.
+You own your data: a full data export on every plan, with no advertising analytics. The hosted app at [rezumi.app](https://rezumi.app) starts on a free plan; Plus (Rp29.000) and Pro AI (Rp79.000) are 30-day passes that never renew on their own. Plus, Pro AI and Rezumi AI trial credits are coming soon while billing is disabled. Planned limits: Free has 3 active resumes and 3 cover letters; paid plans have 50 of each. Pro AI includes 100 credits per purchase; BYOK is available on every plan. Existing documents remain editable, shareable and downloadable as PDF after a pass ends.
 
 ![Rezumi v6 editor with Write, Design, and Check modes and a live PDF preview](docs/images/getting-started/editor-overview.webp)
 
@@ -43,7 +39,7 @@ You own your data: no tracking, no ads, and a full data export on every plan. Th
 
 **Templates and Customization**
 
-- 18 templates, including the new Porygon and Smeargle, previewed with your own content
+- Templates from the shared catalog, including Porygon and Smeargle, previewed with your own content
 - One-column, two-column, and ATS-safe template filters
 - Font presets, custom fonts, colors, spacing, A4 and Letter paper, and left or right sidebars
 - Fit overflowing content by adjusting density, margins, and text size
@@ -262,22 +258,12 @@ The application needs:
 
 Every setting is listed in the [environment variables reference](https://docs.rezumi.app/self-hosting/environment-variables). Self-hosters can also configure [shared AI and job-search services](https://docs.rezumi.app/self-hosting/job-search-and-ai) and [single sign-on](https://docs.rezumi.app/self-hosting/sso).
 
-## Contributing
+## Support and legal
 
-Every contribution helps, whether it is a typo fix or a new feature.
+Contact [support and complaints](https://docs.rezumi.app/legal/kontak). Indonesian [terms](https://docs.rezumi.app/legal/syarat-dan-ketentuan), [privacy policy](https://docs.rezumi.app/legal/kebijakan-privasi) and [refund policy](https://docs.rezumi.app/legal/kebijakan-pengembalian-dana) govern the hosted service; English translations are linked from each page.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes using Conventional Commits (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-See the [development setup guide](https://docs.rezumi.app/contributing/development) for how to run the project locally.
-
-Maintainers review the [`status: needs triage` queue](https://github.com/alfariesh/rezumi/issues?q=is%3Aissue+is%3Aopen+label%3A%22status%3A+needs+triage%22)
-weekly. Triaged bugs become `status: confirmed`; feature proposals become `status: accepted`; reports that need details become
-`status: needs info`.
+Repository access is restricted. Development and deployment instructions here serve authorized maintainers.
 
 ## License
 
-[MIT](./LICENSE) — do whatever you want with it.
+Third-party and inherited MIT notices remain in [LICENSE](./LICENSE) and the [license page](https://docs.rezumi.app/legal/license). These notices do not promise public access to the hosted service’s source code.
