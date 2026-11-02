@@ -213,7 +213,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 					/>
 				)}
 				<div className="grid gap-1.5">
-					<Button size="sm" variant="secondary" fullWidth isDisabled={passages.length === 0} onPress={run}>
+					<Button size="sm" fullWidth isDisabled={passages.length === 0} onPress={run}>
 						<Icon name="sparkle" size={16} />
 						<Trans>Review writing</Trans>
 					</Button>
