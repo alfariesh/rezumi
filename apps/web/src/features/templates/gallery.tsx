@@ -4,21 +4,23 @@ import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
 import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
 import { templates } from "@/dialogs/resume/template/data";
+import { freeTemplates } from "@/features/homepage/plans";
 import { renderAsH2 } from "@/libs/typography";
 
 export function TemplateGallery() {
 	const { i18n } = useLingui();
 	const count = i18n.number(templateSchema.options.length);
+	const freeCount = i18n.number(freeTemplates.length);
 
 	return (
 		<main id="main-content" className="min-h-svh bg-background px-5 pt-28 pb-16 text-foreground sm:px-8">
 			<div className="mx-auto max-w-6xl">
 				<div className="max-w-3xl">
 					<Typography type="h1" className="text-balance sm:text-6xl">
-						{t`${count} free resume templates. Find your fit.`}
+						{t`${count} resume templates. Find your fit.`}
 					</Typography>
 					<p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
-						{t`Compare real resume layouts before you sign up. Every template is free to customize, with PDF and Word downloads and no watermark.`}
+						{t`Preview every template before you sign up. The Free plan includes ${freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads.`}
 					</p>
 					<div className="mt-6 flex flex-wrap items-center gap-4">
 						<Link to="/auth/register" className={buttonVariants()}>
@@ -32,7 +34,7 @@ export function TemplateGallery() {
 						</a>
 					</div>
 					<p className="mt-3 text-sm text-muted">
-						{t`Create a free account, then choose your template in Design. Switch layouts anytime without rewriting your content.`}
+						{t`Create a free account, then choose a template included in your plan in Design. Switch layouts without rewriting your content.`}
 					</p>
 				</div>
 
@@ -41,6 +43,7 @@ export function TemplateGallery() {
 						const template = templates[id];
 						const name = template.name;
 						const layout = templateLayouts[id];
+						const isFree = freeTemplates.includes(id);
 						return (
 							<article key={id} id={id} className="scroll-mt-24">
 								<a
@@ -67,6 +70,8 @@ export function TemplateGallery() {
 								</Typography>
 								<p className="mt-1 text-sm font-medium text-accent-soft-foreground">
 									{layout.columns === 1 ? t`One column` : t`Two columns`}
+									<span aria-hidden="true"> · </span>
+									{isFree ? t`Free` : t`Plus / Pro AI`}
 								</p>
 								<p className="mt-3 leading-relaxed text-muted">{i18n._(template.description)}</p>
 								<a
@@ -94,11 +99,12 @@ export function TemplateGallery() {
 				</section>
 
 				<section className="mt-16 border-t border-separator pt-8" aria-labelledby="make-it-yours">
-					<h2
+					<Typography
+						type="h2"
+						render={renderAsH2}
 						id="make-it-yours"
-						className="text-3xl font-semibold tracking-tight"
-					>{t`Make it yours, then take it with you.`}</h2>
-					<p className="mt-3 max-w-2xl leading-relaxed text-muted">{t`Adjust fonts, colors, spacing and sections in the resume builder. Export your finished resume to PDF or Word, or share a link. The PDFs above are examples to help you compare designs.`}</p>
+					>{t`Make it yours, then take it with you.`}</Typography>
+					<p className="mt-3 max-w-2xl leading-relaxed text-muted">{t`Adjust fonts, colors, spacing and sections in the resume builder. Download a PDF without a watermark on every plan, or share a link. Word and ODT downloads are included with Plus and Pro AI. The PDFs above are examples to help you compare designs.`}</p>
 					<Link to="/auth/register" className={buttonVariants({ className: "mt-5" })}>
 						{t`Build your resume`}
 					</Link>

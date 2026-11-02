@@ -153,9 +153,9 @@ const ROOT_DESCRIPTION =
 const ATS_CHECKER_TITLE = "Free ATS resume checker | Rezumi";
 const ATS_CHECKER_DESCRIPTION =
 	"Check whether software can read your resume PDF. Runs entirely in your browser, so your file is never uploaded.";
-const TEMPLATES_TITLE = "Free resume templates with PDF examples | Rezumi";
+const TEMPLATES_TITLE = "Resume templates with PDF examples | Rezumi";
 const TEMPLATES_DESCRIPTION =
-	"Browse free resume templates, compare one-column and two-column layouts, and download sample PDFs. Customize your resume and export to PDF or Word.";
+	"Preview every resume template and download sample PDFs. Start with 4 templates and watermark-free PDF downloads on Free; unlock every template, Word and ODT with Plus or Pro AI.";
 
 type StructuredData = Record<string, unknown>;
 
@@ -360,7 +360,7 @@ const prerenderedPages: Record<
 		structuredData: (origin) => ({
 			"@context": "https://schema.org",
 			"@type": "CollectionPage",
-			name: "Free resume templates",
+			name: "Resume templates",
 			url: `${origin}/resume-templates`,
 			description: TEMPLATES_DESCRIPTION,
 			mainEntity: {
