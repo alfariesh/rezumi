@@ -1,6 +1,7 @@
 import z from "zod";
 import { env } from "@rezumi/env/server";
 import { publicProcedure } from "../../context";
+import { getBillingMode } from "../billing/entitlements";
 import { isCareerSchedulingEnabled } from "../career/runner";
 import { isCustomDomainsEnabled } from "../custom-domain/service";
 
@@ -14,6 +15,7 @@ export type FeatureFlags = {
 	aliasUrl?: string | undefined;
 	customDomains?: boolean;
 	olacvSuggestion?: boolean;
+	billing?: boolean;
 };
 
 // Mirrors isSmtpEnabled() in packages/email/src/transport.ts (kept local to avoid an api -> email dependency).
@@ -52,6 +54,7 @@ export const flagsRouter = {
 				olacvSuggestion: z
 					.boolean()
 					.describe("Whether accounts without a custom domain see a suggestion to register one at OlaCV."),
+				billing: z.boolean().describe("Whether paid plans and their limits apply to every account on this instance."),
 			}),
 		)
 		.handler(() => ({
@@ -64,5 +67,6 @@ export const flagsRouter = {
 			...(env.APP_ALIAS_URL ? { aliasUrl: new URL(env.APP_ALIAS_URL).origin } : {}),
 			customDomains: isCustomDomainsEnabled(),
 			olacvSuggestion: env.FLAG_OLACV_SUGGESTION,
+			billing: getBillingMode() === "on",
 		})),
 };

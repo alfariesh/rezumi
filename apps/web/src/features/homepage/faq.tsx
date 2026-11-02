@@ -1,6 +1,7 @@
 import { Accordion } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Link } from "@tanstack/react-router";
+import { PLANS, TRIAL_CREDITS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
@@ -16,11 +17,16 @@ type Question = {
 
 const getQuestions = (): Question[] => {
 	const freeTemplateCount = freeTemplates.length;
+	const freeResumes = PLANS.free.limits.activeResumes;
+	const freeCoverLetters = PLANS.free.limits.activeCoverLetters;
+	const proCredits = PLANS["pro-ai"].creditsPerPurchase;
+	const trialCredits = TRIAL_CREDITS.amount;
+	const trialDays = TRIAL_CREDITS.validDays;
 	return [
 		{
 			id: "free",
 			question: t`Is there a free plan?`,
-			answer: t`Yes. The free plan covers 3 active resumes and 3 cover letters, ${freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up.`,
+			answer: t`Yes. The free plan covers ${freeResumes} active resumes and ${freeCoverLetters} cover letters, ${freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up.`,
 		},
 		{
 			id: "access",
@@ -30,7 +36,7 @@ const getQuestions = (): Question[] => {
 		{
 			id: "credits",
 			question: t`What is an AI credit?`,
-			answer: t`Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes 100 credits. The Free plan includes a one-time trial of 5 credits, valid for 14 days.`,
+			answer: t`Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes ${proCredits} credits. The Free plan includes a one-time trial of ${trialCredits} credits, valid for ${trialDays} days.`,
 		},
 		{
 			id: "own-key",

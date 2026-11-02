@@ -51,6 +51,21 @@ Prinsip yang tidak boleh dilanggar:
 
 Gunakan graph `codebase-memory-mcp` (`search_graph` → `trace_path`) untuk menemukan pemanggil sebelum mengubah fungsi bersama, lalu konfirmasi dengan membaca source.
 
+Isi `packages/api/src/features/billing/` setelah Phase 01:
+
+| Berkas            | Isi                                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `account.ts`      | Tipe `Transaction` dan `lockBillingAccount(tx, userId)` (4.1)                                                            |
+| `timeline.ts`     | Fungsi murni `schedulePurchase`, `revokePeriod`, konstanta `DAY_MS` (6.6)                                                |
+| `periods.ts`      | `grantMembershipPeriod(tx, …)` dan `revokeMembershipPeriod(tx, …)`: kunci akun → baca jadwal → terapkan hasil `timeline` |
+| `entitlements.ts` | `getBillingMode`, `isBillingActiveFor`, `resolveEntitlements` (murni), `getEntitlements` (6.7)                           |
+| `limits.ts`       | `countActiveDocuments(userId, database)`: CV dan surat yang tidak di Trash (dipakai `summary`, nanti Phase 03)           |
+| `admin.ts`        | `assertBillingAdmin` dan `billingAdmin.grantPeriod/revokePeriod` (tulis `billing_audit_log` di transaksi yang sama)      |
+| `router.ts`       | `billing.summary`, `billing.admin.grantPeriod`, `billing.admin.revokePeriod` (semua tag `Internal`)                      |
+| `*.test.ts`       | Unit `timeline` + `entitlements`; `billing.integration.test.ts` memakai `BILLING_TEST_DATABASE_URL`                      |
+
+MCP memakai allowlist eksplisit (`packages/mcp/src/parity.ts`), dan tag `Internal` menyembunyikan rute dari OpenAPI, jadi prosedur `billing.*` tidak terlihat oleh klien luar. Jangan tambahkan prosedur admin ke allowlist MCP.
+
 ## 3. Katalog paket (`@rezumi/schema/billing`)
 
 Satu sumber data untuk semua tempat yang menampilkan atau menegakkan paket. Bentuk yang disarankan:
@@ -58,6 +73,8 @@ Satu sumber data untuk semua tempat yang menampilkan atau menegakkan paket. Bent
 ```ts
 export const planIdSchema = z.enum(["free", "plus", "pro-ai"]);
 export type PlanId = z.infer<typeof planIdSchema>;
+export const paidPlanIdSchema = planIdSchema.exclude(["free"]); // isi membership_period.plan_id
+export type PlanLimits = { activeResumes: number; activeCoverLetters: number };
 
 export type PlanFeatures = {
   premiumTemplates: boolean; // template di luar FREE_TEMPLATES
@@ -78,10 +95,16 @@ export type PlanDefinition = {
 };
 
 export const BILLING_CATALOG_VERSION = 1; // naikkan setiap harga/isi paket berubah
+export const BILLING_CURRENCY = "IDR";
 export const FREE_TEMPLATES = ["bronzor", "onyx", "rhyhorn", "azurill"] as const;
 export const TRIAL_CREDITS = { amount: 5, validDays: 14 } as const;
 export const CREDIT_COSTS = {/* actionKey → kredit, diisi Phase 04/05 */} as const;
+export const PLANS = { free, plus, "pro-ai" }; // satisfies { [Id in PlanId]: PlanDefinition & { id: Id } }
+export function getPlan(id: PlanId): PlanDefinition;
+export function isPaidPlan(id: PlanId): id is PaidPlanId;
 ```
+
+Homepage (`apps/web/src/features/homepage/plans.ts` dan `faq.tsx`) membaca harga, batas dokumen, jumlah template gratis, kredit Pro AI, dan kredit coba dari katalog ini (Phase 01).
 
 Aturan katalog:
 
@@ -91,7 +114,7 @@ Aturan katalog:
 
 ## 4. Model data
 
-Semua tabel di `packages/db/src/schema/billing.ts`. Tabel dibuat pada phase yang pertama kali memakainya (kolom "Phase"). Setelah `pnpm db:generate`, baca SQL migrasi yang dihasilkan sebelum di-commit.
+Semua tabel di `packages/db/src/schema/billing.ts`. Tabel dibuat pada phase yang pertama kali memakainya (kolom "Phase"). Setelah `pnpm db:generate`, baca SQL migrasi yang dihasilkan sebelum di-commit. **Jangan mengganti nama folder migrasi** setelah dibuat: server dev (`tsx watch`) bisa langsung menerapkannya ke DB lokal, dan Drizzle mencatatnya per nama folder, sehingga nama baru dianggap migrasi baru dan gagal "relation already exists". Migrasi Phase 01: `migrations/20261102033349_thin_wilson_fisk`.
 
 ### 4.1 `billing_account` (Phase 01)
 
@@ -117,9 +140,12 @@ Satu baris = satu potong waktu akses berbayar. Potongan tidak boleh tumpang tind
 | `starts_at`, `ends_at`        | timestamptz           | `CHECK (ends_at > starts_at)`                                             |
 | `source`                      | text                  | `payment`, `admin`, `promo`                                               |
 | `payment_id`                  | text ∅                | FK `billing_payment.id` `ON DELETE SET NULL` (kolom ditambah di Phase 06) |
-| `granted_by`                  | text ∅                | id admin bila `source = admin`                                            |
+| `granted_by`                  | text ∅                | id admin bila `source = admin`; FK `user.id` `ON DELETE SET NULL`         |
 | `revoked_at`, `revoke_reason` | timestamptz ∅, text ∅ | Dicabut karena refund atau koreksi admin                                  |
-| `created_at`                  | timestamptz           |                                                                           |
+| `created_at`                  | timestamptz           | Waktu beli; mengurutkan potongan berperingkat sama                        |
+
+- "Jadwal" = baris dengan `revoked_at IS NULL` dan `ends_at > now`. Invariant tanpa tumpang tindih berlaku untuk baris yang tidak dicabut.
+- Saat paket lebih tinggi menggeser potongan yang sedang berjalan, sisa potongan menjadi baris baru yang **menyalin `source`, `granted_by`, dan `created_at`** dari baris asal (Phase 06: juga `payment_id`), supaya urutan beli dan asal-usulnya tetap.
 
 ### 4.3 `billing_payment` (Phase 06)
 
@@ -206,7 +232,7 @@ Setiap notifikasi masuk dan setiap pengecekan status yang mengubah sesuatu. Jeja
 | `action`         | text        | `period.granted`, `period.revoked`, `credits.adjusted`, `payment.fulfilled`, `payment.refund_recorded`, `payment.synced`, … |
 | `reason`         | text ∅      | **Wajib** untuk tindakan admin                                                                                              |
 | `details`        | jsonb       | Data ringkas, tanpa isi CV atau PII yang tidak perlu                                                                        |
-| `created_at`     | timestamptz |                                                                                                                             |
+| `created_at`     | timestamptz | index `(target_user_id, created_at)`                                                                                        |
 
 ### 4.7 Penghapusan akun dan retensi
 
@@ -359,14 +385,16 @@ Contoh wajib di tes (30 hari = D):
 | Pro AI aktif, sisa 10 hari                    | Plus      | Pro AI tetap; Plus 30 hari setelah Pro AI selesai                       |
 | Pro AI aktif sisa 10 hari, Plus antre 20 hari | Pro AI    | Pro AI 10 + Pro AI 30, lalu Plus 20                                     |
 
-Pencabutan (refund/koreksi admin) memakai aturan yang sama: potongan masa depan dihapus, potongan berjalan dipotong `ends_at = now` dan diberi `revoked_at`, lalu sisa potongan lain disusun ulang mulai `now`.
+Pencabutan (refund/koreksi admin) memakai aturan yang sama: potongan berjalan dipotong `ends_at = now` dan diberi `revoked_at`; potongan masa depan dikeluarkan dari jadwal dengan mengisi `revoked_at` (barisnya **tidak dihapus** dan waktunya tidak diubah, sebagai catatan); lalu sisa potongan lain disusun ulang mulai `now`. Potongan yang sudah berakhir atau sudah dicabut tidak bisa dicabut lagi (`BAD_REQUEST`).
+
+Detail implementasi: potongan dianggap "berjalan" bila `starts_at < now`. Potongan yang mulai tepat `now` diperlakukan sebagai potongan masa depan (digeser, bukan dipotong), sehingga `CHECK (ends_at > starts_at)` tidak pernah dilanggar. Urutan: `rank` menurun, lalu `created_at` naik, lalu `id`; pembelian baru selalu terakhir di peringkatnya.
 
 ### 6.7 Hak akses (`getEntitlements`)
 
-`getEntitlements(userId, now)` → `{ planId, features, limits, currentPeriodEndsAt, upcoming: [{ planId, startsAt, endsAt }] }`.
+`getEntitlements(userId, now = new Date(), database = db)` → `{ enabled, planId, features, limits, currentPeriodEndsAt, upcoming: [{ planId, startsAt, endsAt }] }`. Di dalam transaksi, kirim `tx` sebagai `database`.
 
-- `BILLING_MODE = off`, atau `admins` untuk bukan admin: kembalikan **mode tanpa batas** (perilaku hari ini: semua fitur terbuka, tanpa batas). Ini menjaga produksi tidak berubah sebelum go-live.
-- Selain itu: cari potongan yang belum dicabut dan memuat `now`. Ada → paket itu. Tidak ada → `free`.
+- `BILLING_MODE = off`, atau `admins` untuk bukan admin: kembalikan **mode tanpa batas** (perilaku hari ini: semua fitur terbuka, tanpa batas): `enabled: false`, `limits` bernilai `null`, `planId: "free"` yang tidak bermakna. Mode `off` **tidak menyentuh database sama sekali** (dibuktikan tes). Mode `admins` membaca `user.role` dari database (bukan dari objek sesi), lalu memakai `isBillingActiveFor`.
+- Selain itu (`resolveEntitlements`, fungsi murni): cari potongan yang belum dicabut dan memuat `now`. Ada → paket itu. Tidak ada → `free`. Potongan berurutan dengan paket yang sama digabung: `currentPeriodEndsAt` adalah akhir akses paket sekarang (mis. Plus + Plus antre = satu tanggal), dan `upcoming` berisi paket berikutnya yang sudah digabung.
 - Baca dari database setiap request yang menegakkan aturan; jangan cache di sesi Better Auth atau di klien sebagai sumber kebenaran. Klien boleh cache untuk tampilan saja.
 
 ### 6.8 Batas dokumen
@@ -425,7 +453,8 @@ Host Midtrans: Snap `app.sandbox.midtrans.com` / `app.midtrans.com`; Core API (s
 
 - `billing.checkout` dan `billing.changePaymentMethod`: **hanya sesi web (cookie)**. Tolak OAuth bearer (termasuk app mobile resmi — pembelian di app dilarang oleh keputusan kanal), API key, dan klien MCP. Prosedur baca (`billing.summary`, `billing.payment`, `billing.payments`) boleh dipakai app resmi.
 - Membedakan app resmi: app mobile mendaftar sebagai klien OAuth dinamis dengan `client_name` "Rezumi for iOS/Android" dan `redirect_uris` `https://<APP_URL host>/auth/native-callback` (`apps/mobile/src/auth/oauth.ts`). Phase 03 membuat helper `isFirstPartyClient(authentication)` berdasarkan redirect URI terdaftar klien token. Keterbatasan yang diterima: pengguna teknis bisa meniru klien ini untuk akunnya sendiri; dampaknya kecil karena tetap terkena rate limit.
-- Admin: `user.role === "admin"` (plugin admin Better Auth sudah aktif), sesi web saja, setiap tindakan wajib alasan dan tercatat di `billing_audit_log`.
+- Admin: `user.role === "admin"` (plugin admin Better Auth sudah aktif), sesi web saja, setiap tindakan wajib alasan dan tercatat di `billing_audit_log`. Phase 01: `assertBillingAdmin` menolak metode selain `session` dan membaca `role` dari database; `billing.admin.grantPeriod({ userId | email, planId, days 1–366, reason })` dan `billing.admin.revokePeriod({ periodId, reason })` (RPC saja, tag `Internal`). Belum ada UI; sebelum Phase 09 panggil lewat `/api/rpc/billing/admin/...` dari browser yang login sebagai admin.
+- Flag publik `flags.get` → `billing: boolean` (`true` hanya bila `BILLING_MODE = on`); field opsional di tipe `FeatureFlags`, jadi klien lama tidak rusak.
 - Rate limit: pakai `accountRateLimit` atau buat limit khusus checkout di `packages/api/src/middleware/rate-limit/index.ts`.
 
 ### 9.2 Data yang boleh disimpan dari Midtrans

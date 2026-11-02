@@ -472,6 +472,10 @@ msgstr "{0}. Masalah terselesaikan."
 msgid "{accepted} of {0} applied"
 msgstr "{accepted} dari {0} diterapkan"
 
+#: src/features/homepage/plans.ts
+msgid "{activeResumes} active resumes and {activeCoverLetters} cover letters"
+msgstr "{activeResumes} CV aktif dan {activeCoverLetters} surat lamaran"
+
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "{authored, plural, =1 {Fit to one page} other {Fit to # pages}}"
 msgstr "{authored, plural, =1 {Muatkan dalam satu halaman} other {Muatkan dalam # halaman}}"
@@ -724,6 +728,10 @@ msgstr "{passedRules} dari {totalRules} lulus cek."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# usulan edit di halaman ini · tidak ada perubahan sampai Anda menerimanya} other {# usulan pengeditan pada halaman ini · tidak ada perubahan sampai Anda menerimanya}}"
 
+#: src/features/homepage/plans.ts
+msgid "{proCredits} AI credits per purchase"
+msgstr ""
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {# diusulkan} other {# diusulkan}}"
@@ -785,6 +793,10 @@ msgstr "{toCheck, plural, one {# untuk memeriksa} other {# untuk memeriksa}}"
 msgid "{total} templates. {free} of them free."
 msgstr "{total} template. {free} di antaranya gratis."
 
+#: src/features/homepage/plans.ts
+msgid "{trialCredits} AI credits to try"
+msgstr "{trialCredits} kredit AI untuk mencoba"
+
 #. placeholder {0}: formatRelativeTime(document.updatedAt, i18n.locale)
 #: src/features/documents/document-card.tsx
 msgid "{type} · Edited {0}"
@@ -841,10 +853,6 @@ msgstr "Briefing 10 menit"
 msgid "10–11 recommended"
 msgstr "10–11 direkomendasikan"
 
-#: src/features/homepage/plans.ts
-msgid "100 AI credits per purchase"
-msgstr ""
-
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "2 files"
 msgstr "2 file"
@@ -871,10 +879,6 @@ msgstr "2022 – Sekarang"
 msgid "24 hours before"
 msgstr "24 jam sebelumnya"
 
-#: src/features/homepage/plans.ts
-msgid "3 active resumes and 3 cover letters"
-msgstr "3 CV aktif dan 3 surat lamaran"
-
 #: src/features/homepage/features.tsx
 msgid "3 of 5 keywords on your resume"
 msgstr "3 dari 5 kata kunci ada di CV Anda"
@@ -883,17 +887,9 @@ msgstr "3 dari 5 kata kunci ada di CV Anda"
 msgid "30 days"
 msgstr "30 hari"
 
-#: src/features/homepage/plans.ts
-msgid "5 AI credits to try"
-msgstr "5 kredit AI untuk mencoba"
-
 #: src/features/homepage/features.tsx
 msgid "5 credits"
 msgstr "5 kredit"
-
-#: src/features/homepage/plans.ts
-msgid "50 active resumes and 50 cover letters"
-msgstr "50 CV aktif dan 50 surat lamaran"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
@@ -3862,7 +3858,7 @@ msgid "Created and linked to {0}"
 msgstr "Dibuat dan ditautkan ke {0}"
 
 #: src/features/homepage/faq.tsx
-msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes 100 credits. The Free plan includes a one-time trial of 5 credits, valid for 14 days."
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
 msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -13283,8 +13279,8 @@ msgid "Yes. Import a PDF, a LinkedIn data export or a JSON Resume file, then pic
 msgstr "Ya. Impor PDF, ekspor data LinkedIn, atau file JSON Resume, lalu lanjutkan dari situ."
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. The free plan covers 3 active resumes and 3 cover letters, {freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up."
-msgstr "Ya. Paket gratis mencakup 3 CV aktif dan 3 surat lamaran, {freeTemplateCount} template, unduhan PDF tanpa watermark, cek ATS, dan pelacak lamaran. Tidak perlu kartu untuk mendaftar."
+msgid "Yes. The free plan covers {freeResumes} active resumes and {freeCoverLetters} cover letters, {freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up."
+msgstr "Ya. Paket gratis mencakup {freeResumes} CV aktif dan {freeCoverLetters} surat lamaran, {freeTemplateCount} template, unduhan PDF tanpa watermark, cek ATS, dan pelacak lamaran. Tidak perlu kartu untuk mendaftar."
 
 #: src/features/career/coach-thread.tsx
 #: src/features/career/coach.tsx
