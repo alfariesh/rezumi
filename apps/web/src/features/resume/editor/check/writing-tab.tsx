@@ -205,18 +205,19 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 					<AiProviderPicker
 						value={provider?.id ?? null}
 						providers={usableProviders}
+						variant="secondary"
 						onValueChange={(value) => {
 							setProviderOverride(value);
 							setChoosing(false);
 						}}
 					/>
 				)}
-				<div className="flex flex-wrap items-center gap-2">
-					<Button size="sm" variant="secondary" className="w-fit" isDisabled={passages.length === 0} onPress={run}>
+				<div className="grid gap-1.5">
+					<Button size="sm" variant="secondary" fullWidth isDisabled={passages.length === 0} onPress={run}>
 						<Icon name="sparkle" size={16} />
 						<Trans>Review writing</Trans>
 					</Button>
-					<AiCostNote action="review" providerId={provider?.id} />
+					<AiCostNote action="review" providerId={provider?.id} className="text-center" />
 				</div>
 				{passages.length === 0 && (
 					<p className="text-xs text-muted">

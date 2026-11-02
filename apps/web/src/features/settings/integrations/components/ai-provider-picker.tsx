@@ -20,9 +20,17 @@ type AiProviderPickerProps = {
 	isLoading?: boolean;
 	disabled?: boolean;
 	onValueChange: (value: string | null) => void;
+	variant?: "primary" | "secondary";
 };
 
-export function AiProviderPicker({ value, providers, isLoading, disabled, onValueChange }: AiProviderPickerProps) {
+export function AiProviderPicker({
+	value,
+	providers,
+	isLoading,
+	disabled,
+	onValueChange,
+	variant,
+}: AiProviderPickerProps) {
 	const options = providers.map((provider) => ({
 		value: provider.id,
 		label: aiProviderLabel(provider),
@@ -36,6 +44,7 @@ export function AiProviderPicker({ value, providers, isLoading, disabled, onValu
 			disabled={disabled || isLoading || options.length === 0}
 			placeholder={isLoading ? t`Loading providers…` : t`Select an AI provider`}
 			onValueChange={onValueChange}
+			{...(variant ? { variant } : {})}
 		/>
 	);
 }

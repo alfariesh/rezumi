@@ -134,6 +134,7 @@ export function CreditsDialog() {
 		>
 			<AlertDialog.Container size="sm">
 				<AlertDialog.Dialog>
+					<AlertDialog.CloseTrigger aria-label={t`Close`} />
 					<AlertDialog.Header>
 						<AlertDialog.Heading>
 							<Trans>Not enough Rezumi AI credits</Trans>
@@ -147,12 +148,10 @@ export function CreditsDialog() {
 							</Trans>
 						</p>
 					</AlertDialog.Body>
-					<AlertDialog.Footer className="flex-wrap">
-						<Button slot="close" variant="tertiary">
-							<Trans>Cancel</Trans>
-						</Button>
+					<AlertDialog.Footer>
 						{own.length > 0 ? (
 							<Button
+								className="flex-1"
 								variant="secondary"
 								onPress={() => {
 									chooseAiSource("own");
@@ -165,13 +164,13 @@ export function CreditsDialog() {
 							<Link
 								to="/dashboard/settings/app"
 								hash="ai-providers"
-								className={buttonVariants({ variant: "secondary" })}
+								className={cn(buttonVariants({ variant: "secondary" }), "flex-1")}
 								onClick={close}
 							>
 								<Trans>Add my connection</Trans>
 							</Link>
 						)}
-						<Link to="/dashboard/settings/billing" className={buttonVariants()} onClick={close}>
+						<Link to="/dashboard/settings/billing" className={cn(buttonVariants(), "flex-1")} onClick={close}>
 							<Trans>See Pro AI</Trans>
 						</Link>
 					</AlertDialog.Footer>
