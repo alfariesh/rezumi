@@ -496,6 +496,7 @@ msgstr "{cost} în primul an"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# coloană} few {# coloane} other {# de coloane}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "Următoarele file ale spațiului de lucru"
 msgid "No AI provider yet"
 msgstr "Niciun furnizor AI încă"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "Nicio cerere de angajare"
@@ -6464,6 +6470,10 @@ msgstr "Indisponibil cât timp CV-ul necesită o parolă."
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "Încă neconectat. Adaugă înregistrările DNS ale domeniului acolo unde îl gestionezi, apoi verifică."
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "Nu e pentru mine"
@@ -6640,6 +6650,7 @@ msgstr "Offline · salvat pe acest dispozitiv"
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Offline. Editările sunt salvate pe acest dispozitiv și se sincronizează când vă reconectați."
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "Se planifică săptămâna dvs."
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "Acest lucru s-a schimbat în altă parte, așa că nu a fost salvat. Tex
 msgid "This connection is managed by your server."
 msgstr "Această conexiune este gestionată de serverul dvs."
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "Aceasta măsoară cât de fidel poate extrage software-ul textul acestui
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "Luna aceasta"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "Folosiți cel puțin 9pt."
 msgid "Use at most 64 characters."
 msgstr "Folosește cel mult 64 de caractere."
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "Folosește valoarea implicită"
@@ -10854,6 +10884,10 @@ msgstr "Folosiți titluri simple precum „Experiență”, „Educație” și 
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "Utilizați link-ul de postare de locuri de muncă; revizuiți înainte de a salva"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

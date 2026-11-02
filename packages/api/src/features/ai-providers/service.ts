@@ -5,9 +5,15 @@ import { aiProviderSchema } from "@rezumi/ai/types";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
-import { assertCredentialEncryptionConfigured, decryptCredential, encryptCredential } from "../ai/credentials";
+import {
+	assertCredentialEncryptionConfigured,
+	decryptCredential,
+	encryptCredential,
+	isCredentialEncryptionConfigured,
+} from "../ai/credentials";
 import { testConnection } from "../ai/service";
 import { resolveAiBaseUrl } from "../ai/url-policy";
+import { isBillingAppliedTo } from "../billing/entitlements";
 
 type AiProviderRecord = typeof schema.aiProvider.$inferSelect;
 
@@ -106,24 +112,36 @@ const automaticOrder = [
 	asc(schema.aiProvider.createdAt),
 ];
 
-function assertPersonalProvidersAllowed() {
-	if (env.AI_PROVIDER)
+const serverAiConfigured = () => Boolean(env.AI_PROVIDER && env.AI_MODEL);
+
+/**
+ * With server AI set up, accounts paid plans apply to choose between it (Rezumi AI) and their own connections; for
+ * everyone else the server's AI is the only one, as before plans existed.
+ */
+async function personalProvidersAllowed(userId: string) {
+	return !env.AI_PROVIDER || (await isBillingAppliedTo(userId));
+}
+
+async function assertPersonalProvidersAllowed(userId: string) {
+	if (!(await personalProvidersAllowed(userId)))
 		throw new ORPCError("FORBIDDEN", {
 			message: "AI is set up by the server administrator and can't be changed here.",
 		});
 }
 
-/** A persisted reference keeps Assistant thread foreign keys valid; server credentials stay in the environment. */
-async function serverProvider(userId: string) {
+/**
+ * A persisted reference keeps Assistant thread foreign keys valid; server credentials stay in the environment. Without
+ * a choice of connections it's always the default; as Rezumi AI it stays the default only while the user keeps it so.
+ */
+async function serverProvider(userId: string, options: { choice: boolean }) {
 	if (!env.AI_PROVIDER || !env.AI_MODEL) return null;
 	const values = {
 		userId,
-		label: "Server AI",
+		label: options.choice ? "Rezumi AI" : "Server AI",
 		provider: env.AI_PROVIDER,
 		model: env.AI_MODEL,
 		baseUrl: env.AI_BASE_URL ?? null,
 		enabled: true,
-		isDefault: true,
 		testStatus: "success",
 		encryptedApiKey: "",
 		apiKeySalt: "",
@@ -132,54 +150,104 @@ async function serverProvider(userId: string) {
 	};
 	const [row] = await db
 		.insert(schema.aiProvider)
-		.values({ id: serverProviderId(userId), ...values })
-		.onConflictDoUpdate({ target: schema.aiProvider.id, set: values })
+		.values({ id: serverProviderId(userId), ...values, isDefault: !options.choice })
+		.onConflictDoUpdate({
+			target: schema.aiProvider.id,
+			set: options.choice ? values : { ...values, isDefault: true },
+		})
 		.returning();
 	if (!row) throw new Error("SERVER_AI_PROVIDER_UNAVAILABLE");
 	return { ...toResponse(row), apiKey: env.AI_API_KEY ?? "", baseURL: env.AI_BASE_URL ?? "" };
 }
 
+function toRunnable(provider: AiProviderRecord) {
+	return {
+		...toResponse(provider),
+		apiKey: decryptCredential(provider.encryptedApiKey),
+		baseURL: provider.baseUrl ?? "",
+	};
+}
+
+export type RunnableAiProvider = AiProviderResponse & { apiKey: string; baseURL: string };
+
+/**
+ * The rows an account's list and automatic choice cover: its own connections, plus Rezumi AI when the server has AI.
+ * Without ENCRYPTION_SECRET own connections can't be read, but Rezumi AI still works.
+ */
+function choiceScope(userId: string, managed: { id: string } | null) {
+	if (!managed) return ne(schema.aiProvider.id, serverProviderId(userId));
+	return isCredentialEncryptionConfigured() ? undefined : eq(schema.aiProvider.id, managed.id);
+}
+
+/** The user's own connection: the one named, or the first usable in automatic order. Never Rezumi AI. */
+async function ownRunnable(input: { userId: string; id?: string | null | undefined }) {
+	assertCredentialEncryptionConfigured();
+	if (input.id) {
+		const provider = await getOwnedProvider({ id: input.id, userId: input.userId });
+		if (!provider.enabled || provider.testStatus !== "success")
+			throw new ORPCError("BAD_REQUEST", { message: "Test and turn on this AI provider before using it." });
+		return toRunnable(provider);
+	}
+	const [provider] = await db
+		.select()
+		.from(schema.aiProvider)
+		.where(
+			and(
+				eq(schema.aiProvider.userId, input.userId),
+				eq(schema.aiProvider.enabled, true),
+				eq(schema.aiProvider.testStatus, "success"),
+				ne(schema.aiProvider.id, serverProviderId(input.userId)),
+			),
+		)
+		.orderBy(...automaticOrder)
+		.limit(1);
+	return provider ? toRunnable(provider) : null;
+}
+
 export const aiProvidersService = {
 	list: async (input: { userId: string }) => {
-		const global = await serverProvider(input.userId);
-		if (global) {
-			const { apiKey: _apiKey, ...response } = global;
-			return [response];
+		if (!(await personalProvidersAllowed(input.userId))) {
+			const global = await serverProvider(input.userId, { choice: false });
+			if (global) {
+				const { apiKey: _apiKey, ...response } = global;
+				return [response];
+			}
 		}
-		assertCredentialEncryptionConfigured();
+		// Rezumi AI, when the server has AI, listed with the user's own connections in the order the server picks.
+		const managed = await serverProvider(input.userId, { choice: true });
+		if (!managed) assertCredentialEncryptionConfigured();
 
 		const providers = await db
 			.select()
 			.from(schema.aiProvider)
-			.where(and(eq(schema.aiProvider.userId, input.userId), ne(schema.aiProvider.id, serverProviderId(input.userId))))
+			.where(and(eq(schema.aiProvider.userId, input.userId), choiceScope(input.userId, managed)))
 			.orderBy(...automaticOrder);
 
 		return providers.map(toResponse);
 	},
 
-	getRunnableById: async (input: { id: string; userId: string }) => {
-		const global = await serverProvider(input.userId);
-		if (global) return global;
-		assertCredentialEncryptionConfigured();
-
-		const provider = await getOwnedProvider(input);
-		if (!provider.enabled || provider.testStatus !== "success") {
-			throw new ORPCError("BAD_REQUEST", { message: "Test and turn on this AI provider before using it." });
+	getRunnableById: async (input: { id: string; userId: string }): Promise<RunnableAiProvider> => {
+		if (!(await personalProvidersAllowed(input.userId))) {
+			const global = await serverProvider(input.userId, { choice: false });
+			if (global) return global;
 		}
-
-		return {
-			...toResponse(provider),
-			apiKey: decryptCredential(provider.encryptedApiKey),
-			baseURL: provider.baseUrl ?? "",
-		};
+		if (input.id === serverProviderId(input.userId)) {
+			const managed = await serverProvider(input.userId, { choice: true });
+			if (managed) return managed;
+		}
+		const provider = await ownRunnable(input);
+		if (!provider) throw new ORPCError("NOT_FOUND");
+		return provider;
 	},
 
-	getDefaultRunnable: async (input: { userId: string }) => {
-		const global = await serverProvider(input.userId);
-		if (global) return global;
-		assertCredentialEncryptionConfigured();
-
-		const [provider] = await db
+	getDefaultRunnable: async (input: { userId: string }): Promise<RunnableAiProvider | null> => {
+		if (!(await personalProvidersAllowed(input.userId))) {
+			const global = await serverProvider(input.userId, { choice: false });
+			if (global) return global;
+		}
+		const managed = await serverProvider(input.userId, { choice: true });
+		if (!managed) return ownRunnable(input);
+		const [first] = await db
 			.select()
 			.from(schema.aiProvider)
 			.where(
@@ -187,23 +255,30 @@ export const aiProvidersService = {
 					eq(schema.aiProvider.userId, input.userId),
 					eq(schema.aiProvider.enabled, true),
 					eq(schema.aiProvider.testStatus, "success"),
-					ne(schema.aiProvider.id, serverProviderId(input.userId)),
+					choiceScope(input.userId, managed),
 				),
 			)
 			.orderBy(...automaticOrder)
 			.limit(1);
-
-		return provider
-			? {
-					...toResponse(provider),
-					apiKey: decryptCredential(provider.encryptedApiKey),
-					baseURL: provider.baseUrl ?? "",
-				}
-			: null;
+		return !first || first.id === managed.id ? managed : toRunnable(first);
 	},
 
+	/**
+	 * Whether the account chooses between Rezumi AI and its own connections. Off while billing doesn't apply to it or the
+	 * server has no AI of its own: then the server picks the connection as before plans existed.
+	 */
+	offersChoice: async (userId: string) => serverAiConfigured() && (await isBillingAppliedTo(userId)),
+
+	/** Rezumi AI for this account, or null when the server has no AI of its own. */
+	getManagedRunnable: (input: { userId: string }) => serverProvider(input.userId, { choice: true }),
+
+	/** One of the user's own connections (the one named, or the default), never Rezumi AI. Null when they have none. */
+	getOwnRunnable: (input: { userId: string; id?: string | null | undefined }) => ownRunnable(input),
+
+	isManagedId: (input: { userId: string; id: string }) => input.id === serverProviderId(input.userId),
+
 	create: async (input: CreateAiProviderInput) => {
-		assertPersonalProvidersAllowed();
+		await assertPersonalProvidersAllowed(input.userId);
 		assertCredentialEncryptionConfigured();
 
 		const encrypted = encryptCredential(input.apiKey.trim());
@@ -225,7 +300,7 @@ export const aiProvidersService = {
 	},
 
 	update: async (input: UpdateAiProviderInput) => {
-		assertPersonalProvidersAllowed();
+		await assertPersonalProvidersAllowed(input.userId);
 		assertCredentialEncryptionConfigured();
 
 		const existing = await getOwnedProvider(input);
@@ -285,16 +360,23 @@ export const aiProvidersService = {
 	},
 
 	delete: async (input: { id: string; userId: string }) => {
-		assertPersonalProvidersAllowed();
+		await assertPersonalProvidersAllowed(input.userId);
 		assertCredentialEncryptionConfigured();
 
+		// Rezumi AI isn't the user's to delete.
 		await db
 			.delete(schema.aiProvider)
-			.where(and(eq(schema.aiProvider.id, input.id), eq(schema.aiProvider.userId, input.userId)));
+			.where(
+				and(
+					eq(schema.aiProvider.id, input.id),
+					eq(schema.aiProvider.userId, input.userId),
+					ne(schema.aiProvider.id, serverProviderId(input.userId)),
+				),
+			);
 	},
 
 	test: async (input: { id: string; userId: string }) => {
-		assertPersonalProvidersAllowed();
+		await assertPersonalProvidersAllowed(input.userId);
 		assertCredentialEncryptionConfigured();
 
 		const provider = await getOwnedProvider(input);
@@ -355,8 +437,13 @@ export const aiProvidersService = {
 
 	/** Makes one tested, switched-on connection the default; the previous default stops being one. */
 	setDefault: async (input: { id: string; userId: string }) => {
-		assertPersonalProvidersAllowed();
-		const provider = await getOwnedProvider(input);
+		await assertPersonalProvidersAllowed(input.userId);
+		// Rezumi AI can be the default too, for an account that chooses.
+		const managed =
+			input.id === serverProviderId(input.userId) && (await aiProvidersService.offersChoice(input.userId))
+				? await serverProvider(input.userId, { choice: true })
+				: null;
+		const provider = managed ?? (await getOwnedProvider(input));
 		if (!provider.enabled || provider.testStatus !== "success")
 			throw new ORPCError("BAD_REQUEST", {
 				message: "Test and turn on this provider before making it the default.",

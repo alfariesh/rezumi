@@ -496,6 +496,7 @@ msgstr "ପ୍ରଥମ ବର୍ଷ ପାଇଁ {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# ସ୍ତମ୍ଭ} other {# ସ୍ତମ୍ଭ}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6219,6 +6220,11 @@ msgstr "|\n"
 msgid "No AI provider yet"
 msgstr "ଏପର୍ଯ୍ୟନ୍ତ AI ପ୍ରଦାତା ନାହିଁ"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "କୌଣସି ଚାକିରି ଆବେଦନ ନାହିଁ"
@@ -6485,6 +6491,10 @@ msgstr "ରେଜ୍ୟୁମେ ପାଇଁ ପାସୱାର୍ଡ ଆବଶ
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "ଏପର୍ଯ୍ୟନ୍ତ ସଂଯୁକ୍ତ ହୋଇନାହିଁ। ଆପଣ ଯେଉଁଠି ଡୋମେନ୍ ପରିଚାଳନା କରନ୍ତି ସେଠାରେ ଏହାର DNS ରେକର୍ଡଗୁଡ଼ିକ ଯୋଡନ୍ତୁ, ତାପରେ ଯାଞ୍ଚ କରନ୍ତୁ।"
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "ମୋ ପାଇଁ ନୁହେଁ"
@@ -6661,6 +6671,7 @@ msgstr "ଅଫଲାଇନ୍ · ଏହି ଡିଭାଇସରେ ସେଭ୍
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "ଅଫଲାଇନ୍। ସମ୍ପାଦନା ଏହି ଡିଭାଇସ୍‌ରେ ସେଭ୍ ହୁଏ ଓ ପୁଣି ସଂଯୋଗ ହେଲେ ସିଙ୍କ୍ ହୁଏ।"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7201,6 +7212,7 @@ msgid "Planning your week"
 msgstr "ଆପଣଙ୍କ ସପ୍ତାହର ଯୋଜନା କରୁଛି"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8303,6 +8315,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10130,6 +10148,10 @@ msgstr "ଅନ୍ୟ ସ୍ଥାନରେ ବଦଳିଥିବାରୁ ସେ
 msgid "This connection is managed by your server."
 msgstr "ଏହି ସଂଯୋଗ ସର୍ଭର୍ ପରିଚାଳନା କରେ।"
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10286,6 +10308,10 @@ msgstr "ସଫ୍ଟୱେର୍ ଏହି ଫାଇଲ୍‌ର ଲେଖା �
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "ଏହି ମାସ"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10861,6 +10887,10 @@ msgstr "ଅତିକମରେ 9pt ବ୍ୟବହାର କରନ୍ତୁ।"
 msgid "Use at most 64 characters."
 msgstr "ସର୍ବାଧିକ 64 ଅକ୍ଷର ବ୍ୟବହାର କରନ୍ତୁ।"
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "ଡିଫଲ୍ଟ ବ୍ୟବହାର କରନ୍ତୁ"
@@ -10897,6 +10927,10 @@ msgstr "\"Experience\", \"Education\" ଏବଂ \"Skills\" ପରି ସରଳ �
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "ବିଜ୍ଞାପନ ଲିଙ୍କ୍ ବ୍ୟବହାର କରନ୍ତୁ; ସେଭ୍ ପୂର୍ବରୁ ସମୀକ୍ଷା କରନ୍ତୁ"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

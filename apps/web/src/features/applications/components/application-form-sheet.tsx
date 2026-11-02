@@ -13,6 +13,8 @@ import { toast } from "@rezumi/ui/components/toast";
 import { applicationsListQueryKey } from "../queries";
 import { FileAttachmentField } from "./file-attachment-field";
 import { Combobox } from "@/components/ui/combobox";
+import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { isImeComposing } from "@/libs/keyboard";
 import { orpc } from "@/libs/orpc/client";
@@ -124,10 +126,14 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 		}),
 	);
 
+	const ai = useAiSource();
+	// Rezumi AI costs credits, so it runs only on the button, never by itself on paste.
+	const fillsOnPaste = ai.source !== "rezumi" || !ai.choice;
+
 	const runAutofill = (jobDescription: string) => {
 		const posting = jobDescription.trim();
 		if (posting.length < MIN_AUTOFILL_CHARS || autofill.isPending) return;
-		autofill.mutate({ jobDescription: posting.slice(0, MAX_JOB_DESCRIPTION_CHARS) });
+		autofill.mutate({ jobDescription: posting.slice(0, MAX_JOB_DESCRIPTION_CHARS), ...aiSourceFields(ai) });
 	};
 
 	return (
@@ -160,16 +166,19 @@ function JobDescriptionAutofill({ value, onChange, onFill }: JobDescriptionAutof
 							maxLength={MAX_JOB_DESCRIPTION_CHARS}
 							placeholder={t`Paste the full job description here…`}
 							onChange={(event) => onChange(event.target.value)}
-							onPaste={(event) => runAutofill(event.clipboardData.getData("text"))}
+							onPaste={(event) => {
+								if (fillsOnPaste) runAutofill(event.clipboardData.getData("text"));
+							}}
 						/>
 						<div className="flex items-center justify-between gap-2">
 							<p className="text-xs text-muted">
 								{autofill.isPending ? (
 									<Trans>Reading the posting…</Trans>
-								) : (
+								) : fillsOnPaste ? (
 									<Trans>Pasting fills the fields automatically.</Trans>
-								)}
+								) : null}
 							</p>
+							<AiSourceMenu action="short-text" className="ms-auto" />
 							<Button
 								size="sm"
 								variant="secondary"

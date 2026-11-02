@@ -29,6 +29,11 @@ const api = vi.hoisted(() => ({
 	knowledgeError: false,
 	retryKnowledge: vi.fn(),
 }));
+// Plans don't apply in these tests: AI runs on the user's own connection, with no credits shown.
+vi.mock("@/features/billing/ai-source", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@/features/billing/ai-source")>()),
+	useAiSource: () => ({ choice: false, source: "own", balance: 0, managed: undefined, own: [] }),
+}));
 vi.mock("@/libs/orpc/client", () => {
 	const endpoint = (name: string, mutation = vi.fn()) => ({
 		key: () => [name],

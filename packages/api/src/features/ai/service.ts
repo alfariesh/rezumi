@@ -1,6 +1,6 @@
 import type { AIProvider } from "@rezumi/ai/types";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import type { ModelMessage } from "ai";
+import type { LanguageModel, ModelMessage } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createCerebras } from "@ai-sdk/cerebras";
 import { createCohere } from "@ai-sdk/cohere";
@@ -286,6 +286,8 @@ export async function testConnection(input: TestConnectionInput): Promise<TestCo
 
 type ParsePdfInput = z.infer<typeof aiCredentialsSchema> & {
 	file: z.infer<typeof fileInputSchema>;
+	/** A ready model, for example one Rezumi AI counts; otherwise one is made from the credentials. */
+	languageModel?: LanguageModel;
 };
 
 type BuildResumeParsingMessagesInput = {
@@ -325,7 +327,7 @@ function buildResumeParsingTextMessages({ userPrompt, text }: { userPrompt: stri
 }
 
 async function parsePdf(input: ParsePdfInput): Promise<ResumeData> {
-	const model = getModel(input);
+	const model = input.languageModel ?? getModel(input);
 
 	const result = await generateText({
 		model,
@@ -343,6 +345,7 @@ async function parsePdf(input: ParsePdfInput): Promise<ResumeData> {
 
 type ParseDocxInput = z.infer<typeof aiCredentialsSchema> & {
 	file: z.infer<typeof fileInputSchema>;
+	languageModel?: LanguageModel;
 	mediaType: "application/msword" | "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 };
 
@@ -386,7 +389,7 @@ function extractDocxText(file: z.infer<typeof fileInputSchema>): string {
 }
 
 async function parseDocx(input: ParseDocxInput): Promise<ResumeData> {
-	const model = getModel(input);
+	const model = input.languageModel ?? getModel(input);
 	const messages =
 		input.mediaType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 			? buildResumeParsingTextMessages({ userPrompt: docxParserUserPrompt, text: extractDocxText(input.file) })

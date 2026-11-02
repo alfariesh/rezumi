@@ -43,6 +43,7 @@ import {
 	speakAloud,
 	writeNumbersAsDigits,
 } from "./recorder";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { toastError } from "@/libs/error-message";
@@ -688,11 +689,14 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 						{connection.isUnavailable ? (
 							<AiProviderLoadState state={connection} />
 						) : provider ? (
-							<PrivacyLine>
-								<Trans>
-									Get feedback sends the question, your answer, this posting and your stories to {providerName}.
-								</Trans>
-							</PrivacyLine>
+							<div className="flex flex-wrap items-center gap-x-2">
+								<PrivacyLine>
+									<Trans>
+										Get feedback sends the question, your answer, this posting and your stories to {providerName}.
+									</Trans>
+								</PrivacyLine>
+								<AiSourceMenu action="interview-practice" />
+							</div>
 						) : (
 							<PrivacyLine>
 								<Trans>
@@ -873,7 +877,10 @@ function useVoiceSettings() {
 	const providerState = useHasUsableAiProvider();
 	const { usableProviders } = providerState;
 	const capable = (kind: VoiceKind) =>
-		usableProviders.filter((provider) => (AI_VOICE_MODELS[provider.provider]?.[kind].length ?? 0) > 0);
+		// Rezumi AI doesn't do voice: speech runs on the user's own connections.
+		usableProviders.filter(
+			(provider) => !provider.managed && (AI_VOICE_MODELS[provider.provider]?.[kind].length ?? 0) > 0,
+		);
 	const transcribers = capable("transcription");
 	const readers = capable("speech");
 	const [stored, setStored] = useState<StoredVoice>(() => {

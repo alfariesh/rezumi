@@ -8,6 +8,7 @@ import {
 	coverLetterStyleSchema,
 } from "@rezumi/schema/cover-letter/data";
 import { templateSchema } from "@rezumi/schema/templates";
+import { aiSourceInput } from "../features/billing/ai-source";
 import { paginationShape } from "../pagination";
 
 const idSchema = z.object({ id: z.string().min(1) });
@@ -115,6 +116,7 @@ export const coverLetterDto = {
 				.default("draft")
 				.describe("draft writes the body; shorter and personal revise `previous`."),
 			previous: z.string().max(20_000).optional().describe("The draft being revised."),
+			...aiSourceInput,
 		}),
 	},
 	refreshStyle: { input: revisionSchema.extend({ resumeId: z.string().min(1) }), output: coverLetterSchema },

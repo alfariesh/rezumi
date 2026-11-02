@@ -35,6 +35,7 @@ import { CareerLoadError } from "./load-state";
 import { ContextChip, useCareerTime, useNow } from "./shared";
 import { transcriptOf, useConversationConnection } from "@/features/assistant/chat";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
+import { useAiSource } from "@/features/billing/ai-source";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { toastError } from "@/libs/error-message";
@@ -141,7 +142,11 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 	const summary = threads.data?.find((thread) => thread.id === threadId);
 	const usable = providers.usableProviders;
 	// A conversation runs on its own connection; one switched off or removed moves to the default.
-	const provider = usable.find((item) => item.id === (summary ? summary.aiProviderId : providerId)) ?? usable[0];
+	const ai = useAiSource();
+	// While the account chooses, a new conversation starts on the source chosen (Rezumi AI or the user's own).
+	const preferred = ai.choice ? (ai.source === "rezumi" ? ai.managed : ai.own[0]) : undefined;
+	const provider =
+		usable.find((item) => item.id === (summary ? summary.aiProviderId : providerId)) ?? preferred ?? usable[0];
 	useConversationConnection(summary, provider);
 	const label = provider?.label ?? summary?.providerLabel ?? t`Your AI`;
 	const connection = connectionName(label);
@@ -160,6 +165,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 		const thread = await client.agent.threads.start({
 			scope: "career",
 			...(provider ? { aiProviderId: provider.id } : {}),
+			...(ai.choice && provider ? { aiSource: provider.managed ? ("rezumi" as const) : ("own" as const) } : {}),
 		});
 		created.current = thread;
 		return thread.id;
@@ -376,6 +382,7 @@ export function CoachPage({ conversationId, offerIds: routeOfferIds }: CoachPage
 						applicationId={null}
 						context={context}
 						connection={connection}
+						providerId={provider?.id}
 						onChangeConnection={() => setModelMenuOpen(true)}
 						header={() => null}
 						afterMessages={afterMessages}

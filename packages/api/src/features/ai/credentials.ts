@@ -85,7 +85,7 @@ export function decryptCredential(payload: string) {
 	}
 }
 
-function isCredentialEncryptionConfigured() {
+export function isCredentialEncryptionConfigured() {
 	return !!getEncryptionSecret();
 }
 

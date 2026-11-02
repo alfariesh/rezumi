@@ -10,7 +10,9 @@ vi.mock("ai", async (importOriginal) => ({
 vi.mock("../../context", async () => ({ protectedProcedure: (await import("@orpc/server")).os }));
 vi.mock("../../middleware/rate-limit", () => ({ aiRequestRateLimit: ({ next }: { next: () => unknown }) => next() }));
 vi.mock("../ai/service", () => ({ getModel: vi.fn() }));
-vi.mock("../ai-providers/service", () => ({ aiProvidersService: { getDefaultRunnable: vi.fn() } }));
+vi.mock("../ai-providers/service", () => ({
+	aiProvidersService: { getDefaultRunnable: vi.fn(), offersChoice: vi.fn(async () => false) },
+}));
 vi.mock("../resume/service", () => ({ resumeService: { getById: vi.fn(), create: vi.fn() } }));
 vi.mock("../cover-letters/service", () => ({ coverLetterService: { create: vi.fn() } }));
 // A copy, so a test can set the server's SearXNG URL.

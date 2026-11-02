@@ -496,6 +496,7 @@ msgstr "首年 {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# 欄} other {# 欄}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "下一個工作區選項卡"
 msgid "No AI provider yet"
 msgstr "尚無AI供應商"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "沒有工作申請"
@@ -6464,6 +6470,10 @@ msgstr "履歷需要密碼時無法使用。"
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "尚未連結。請在管理網域的地方新增其 DNS 記錄，然後進行檢查。"
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "不適合我"
@@ -6640,6 +6650,7 @@ msgstr "離線 · 已儲存在此裝置上"
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "離線。編輯內容將儲存在此裝置上，並在您重新連線時同步。"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "正在規劃您的這一週"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "此內容在其他地方變更，因此未儲存。文字仍保留在此
 msgid "This connection is managed by your server."
 msgstr "此連線由您的伺服器管理。"
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "這項指標衡量軟體擷取檔案文字的準確程度，無法預測
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "本月"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "至少使用 9pt。"
 msgid "Use at most 64 characters."
 msgstr "最多使用 64 個字元。"
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "使用預設值"
@@ -10854,6 +10884,10 @@ msgstr "使用簡單明瞭的標題，例如「經歷」、「學歷」和「技
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "使用職缺連結；儲存前請檢視"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

@@ -7,6 +7,11 @@ import { I18nProvider } from "@lingui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const api = vi.hoisted(() => ({ list: vi.fn() }));
+// Plans don't apply in these tests: AI runs on the user's own connection, with no credits shown.
+vi.mock("@/features/billing/ai-source", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@/features/billing/ai-source")>()),
+	useAiSource: () => ({ choice: false, source: "own", balance: 0, managed: undefined, own: [] }),
+}));
 vi.mock("@/libs/orpc/client", () => ({
 	client: {},
 	orpc: {
@@ -43,7 +48,7 @@ afterEach(() => {
 
 it("shows a recoverable lookup error instead of setup, then restores the saved provider after Retry", async () => {
 	api.list.mockRejectedValueOnce(new Error("Offline")).mockResolvedValueOnce([provider]);
-	render(<AiNotice />, { wrapper: Wrapper });
+	render(<AiNotice task="fit" />, { wrapper: Wrapper });
 	expect(screen.getByRole("status").textContent).toContain("Loading AI connections");
 	expect(screen.queryByRole("link", { name: /Connect an AI provider/ })).toBeNull();
 	expect((await screen.findByRole("alert")).textContent).toContain("saved connections haven't changed");
@@ -56,7 +61,7 @@ it("shows a recoverable lookup error instead of setup, then restores the saved p
 
 it("offers setup only after a successful empty provider lookup", async () => {
 	api.list.mockResolvedValue([]);
-	render(<AiNotice />, { wrapper: Wrapper });
+	render(<AiNotice task="fit" />, { wrapper: Wrapper });
 	await screen.findByRole("link", { name: "Connect an AI provider in Settings" });
 	expect(screen.queryByRole("alert")).toBeNull();
 });

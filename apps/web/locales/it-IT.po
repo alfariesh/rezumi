@@ -450,6 +450,11 @@ msgstr "{0} delle domande di lavoro adattate {1} hanno ricevuto risposta; {2} di
 msgid "{0} of {1} terms found"
 msgstr "{0} termini trovati su {1}"
 
+#. placeholder {0}: creditCount(credits)
+#: src/features/assistant/assistant-panel.tsx
+msgid "{0} per reply"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -535,6 +540,11 @@ msgstr "{connection} non ha risposto."
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} a year"
 msgstr "{cost} all'anno"
+
+#. placeholder {0}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "{cost} each time · {0} left"
+msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
@@ -1379,8 +1389,16 @@ msgstr "Aggiungi la parola chiave"
 msgid "Add language"
 msgstr "Aggiungi lingua"
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "Add my connection"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Add one above."
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Add one in Settings to use it without credits"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -2437,6 +2455,7 @@ msgstr "Il software può leggere il tuo curriculum?"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/ai-source-menu.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -3959,6 +3978,10 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
 msgstr "Creato e collegato a {0}"
+
+#: src/features/settings/ai/providers.tsx
+msgid "Credits"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -7590,6 +7613,11 @@ msgstr "Nessuna candidatura attiva."
 msgid "No activity yet"
 msgstr ""
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/settings/ai/providers.tsx
+msgid "No API key needed. Each action shows its cost in credits first · {0} left"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "No API key to set up"
 msgstr ""
@@ -7886,6 +7914,10 @@ msgstr "Non connesso"
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "Non ancora collegato. Aggiungi i suoi record DNS dove gestisci il dominio, poi verifica."
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Not enough Rezumi AI credits"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Not for me"
@@ -8592,6 +8624,10 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "Periodo di retribuzione"
+
+#: src/features/documents/new-document-dialog.tsx
+msgid "PDF and Word files are read with"
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
@@ -9961,6 +9997,15 @@ msgstr "Rezumi - Vai alla homepage"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "Rezumi AI · {cost}"
+msgstr ""
+
+#. placeholder {0}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "Rezumi AI · {cost} · {0} left"
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Rezumi AI credits"
 msgstr ""
@@ -10057,6 +10102,14 @@ msgstr ""
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Run again"
 msgstr "Esegui di nuovo"
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Runs on Rezumi AI for {cost}. Change"
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Runs on your AI connection. Change"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Runs onto page {next}"
@@ -10486,6 +10539,10 @@ msgstr ""
 
 #: src/features/homepage/hero.tsx
 msgid "See pricing"
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "See Pro AI"
 msgstr ""
 
 #: src/features/homepage/features.tsx
@@ -12196,6 +12253,10 @@ msgstr "Questa lettera mantiene il destinatario così come è scritto."
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Misura con quanta fedeltà un software riesce a estrarre il testo di questo file. Non prevede se una candidatura verrà rifiutata, e nessuno strumento può farlo. Il tuo file è stato letto in questo browser e non è mai stato caricato."
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
+msgstr ""
+
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "Questa pagina non si è caricata"
@@ -12883,6 +12944,10 @@ msgstr "Usa nel coaching: {excerpt}"
 #: src/features/resume/share/address-field.tsx
 msgid "Use lowercase letters, numbers and single dashes."
 msgstr "Utilizza lettere minuscole, numeri e trattini singoli."
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Use my connection"
+msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Use my timezone"
@@ -13707,6 +13772,7 @@ msgstr "La tua IA"
 msgid "your AI connection"
 msgstr "la tua connessione IA"
 
+#: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
 msgid "Your AI connection"
 msgstr "La tua connessione IA"

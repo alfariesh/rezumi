@@ -496,6 +496,7 @@ msgstr "पहिलो वर्ष {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# स्तम्भ} other {# स्तम्भहरू}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "अर्को कार्यस्थान ट्याबहरू"
 msgid "No AI provider yet"
 msgstr "अझै AI प्रदायक छैन"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "जागिरको आवेदन छैन"
@@ -6464,6 +6470,10 @@ msgstr "बायोडाटालाई पासवर्ड चाहिँ�
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "अझै जोडिएको छैन। तपाईंले डोमेन व्यवस्थापन गर्ने ठाउँमा यसका DNS रेकर्डहरू थप्नुहोस्, अनि जाँच गर्नुहोस्।"
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "मेरो लागि होइन"
@@ -6640,6 +6650,7 @@ msgstr "अफलाइन · यो यन्त्रमा सुरक्ष
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "अफलाइन। सम्पादनहरू यस यन्त्रमा सुरक्षित हुन्छन् र तपाईंले पुन: जडान गर्दा सिंक हुन्छन्।"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "तपाईंको हप्ताको योजना बनाउँदै"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "यो कतै परिवर्तन भयो, त्यसैल�
 msgid "This connection is managed by your server."
 msgstr "यो जडान तपाइँको सर्भर द्वारा व्यवस्थित गरिएको छ।"
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "यसले सफ्टवेयरले यस फाइलको �
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "यो महिना"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "कम्तीमा 9pt प्रयोग गर्नुहोस्
 msgid "Use at most 64 characters."
 msgstr "बढीमा ६४ अक्षर प्रयोग गर्नुहोस्।"
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "पूर्वनिर्धारित प्रयोग गर्नुहोस्"
@@ -10854,6 +10884,10 @@ msgstr "\"Experience\", \"Education\" र \"Skills\" जस्ता साद�
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "जागिरको विज्ञापन लिङ्क प्रयोग गर्नुहोस्; बचत गर्नु अघि समीक्षा गर्नुहोस्"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

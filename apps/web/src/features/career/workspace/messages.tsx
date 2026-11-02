@@ -92,7 +92,7 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 			/>
 			{!readOnly && (
 				<div className="grid justify-items-start gap-2.5">
-					<AiNotice />
+					<AiNotice task="reply" />
 					{provider && (
 						<Button
 							variant="secondary"

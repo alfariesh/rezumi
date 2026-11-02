@@ -32,6 +32,14 @@ const modules = {
 	"@/auth/session": sessions,
 	// The API client shows plan alerts; none of these calls is refused by a plan.
 	"@/features/billing/plan-alert": { showPlanAlertForError: () => false },
+	// No Rezumi AI here (scripts/rezumi-ai.test.mjs covers it): every call is AI work on the user's own connection.
+	"@/features/billing/ai-source": {
+		canUseRezumiAi: () => true,
+		creditActionOf: () => "short-text",
+		describeCreditCost: () => "",
+		showCreditsAlertForError: () => false,
+	},
+	"@rezumi/utils/string": { generateId: () => "fixture-key" },
 	"@lingui/core/macro": { t: (parts, ...values) => String.raw({ raw: parts }, ...values) },
 	"react-native": {
 		Alert: {

@@ -496,6 +496,7 @@ msgstr "ಮೊದಲ ವರ್ಷಕ್ಕೆ {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# ಕಾಲಮ್} other {# ಕಾಲಮ್‌ಗಳು}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "ಮುಂದಿನ ಕಾರ್ಯಸ್ಥಳದ ಟ್ಯಾಬ್‌�
 msgid "No AI provider yet"
 msgstr "ಇನ್ನೂ AI ಪೂರೈಕೆದಾರರು ಇಲ್ಲ"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿ ಇಲ್ಲ"
@@ -6464,6 +6470,10 @@ msgstr "ರೆಸ್ಯೂಮ್‌ಗೆ ಗುಪ್ತಪದ ಅಗತ್ಯ�
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "ಇನ್ನೂ ಸಂಪರ್ಕಿಸಲಾಗಿಲ್ಲ. ನೀವು ಡೊಮೇನ್ ನಿರ್ವಹಿಸುವಲ್ಲಿ ಅದರ DNS ರೆಕಾರ್ಡ್‌ಗಳನ್ನು ಸೇರಿಸಿ, ನಂತರ ಪರಿಶೀಲಿಸಿ."
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "ನನಗಲ್ಲ"
@@ -6640,6 +6650,7 @@ msgstr "ಆಫ್‌ಲೈನ್ · ಈ ಸಾಧನದಲ್ಲಿ ಉಳಿಸ
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "ಆಫ್‌ಲೈನ್. ಈ ಸಾಧನದಲ್ಲಿ ಸಂಪಾದನೆಗಳನ್ನು ಉಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ನೀವು ಮರುಸಂಪರ್ಕಿಸಿದಾಗ ಸಿಂಕ್ ಮಾಡಲಾಗುತ್ತದೆ."
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "ನಿಮ್ಮ ವಾರವನ್ನು ಯೋಜಿಸಲಾಗುತ್ತಿದೆ"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "ಇದು ಬೇರೆಡೆ ಬದಲಾಗಿದೆ, ಆದ್ದರ�
 msgid "This connection is managed by your server."
 msgstr "ಈ ಸಂಪರ್ಕವನ್ನು ನಿಮ್ಮ ಸರ್ವರ್ ನಿರ್ವಹಿಸುತ್ತದೆ."
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "ಸಾಫ್ಟ್‌ವೇರ್ ಈ ಫೈಲ್‌ನ ಪಠ್ಯವ
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "ಈ ತಿಂಗಳು"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "ಕನಿಷ್ಠ 9pt ಬಳಸಿ."
 msgid "Use at most 64 characters."
 msgstr "ಗರಿಷ್ಠ 64 ಅಕ್ಷರಗಳನ್ನು ಬಳಸಿ."
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "ಡೀಫಾಲ್ಟ್ ಬಳಸಿ"
@@ -10854,6 +10884,10 @@ msgstr "\"Experience\", \"Education\" ಮತ್ತು \"Skills\" ನಂತಹ �
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತು ಲಿಂಕ್ ಬಳಸಿ; ಉಳಿಸುವ ಮೊದಲು ಪರಿಶೀಲಿಸಿ"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

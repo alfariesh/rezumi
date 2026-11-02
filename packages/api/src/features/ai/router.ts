@@ -1,10 +1,14 @@
+import type { AiSourceRequest } from "../billing/ai-source";
+import type { AiRun } from "../billing/metered-ai";
+import type { CreditAction } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/client";
 import { AISDKError } from "ai";
 import { flattenError, ZodError, z } from "zod";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { protectedProcedure } from "../../context";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
-import { aiProvidersService } from "../ai-providers/service";
+import { aiSourceInput } from "../billing/ai-source";
+import { runWithAiSource } from "../billing/metered-ai";
 import { atsReviewInputSchema, atsReviewOutputSchema, reviewResumeText } from "./ats-review";
 import { improveInputSchema, improveLine, improveOutputSchema } from "./improve";
 import { reportAiContent } from "./reports";
@@ -44,18 +48,34 @@ const aiErrors = {
 	},
 } as const;
 
-async function getRunnableProvider(userId: string, aiProviderId?: string) {
-	const provider = aiProviderId
-		? await aiProvidersService.getRunnableById({ id: aiProviderId, userId })
-		: await aiProvidersService.getDefaultRunnable({ userId });
+type AiRequest = AiSourceRequest & { aiProviderId?: string | undefined };
 
-	if (!provider)
-		throw new ORPCError("BAD_REQUEST", {
-			message: "Test and turn on an AI provider in Settings → AI & developer first.",
-		});
-
-	return provider;
+/** The request's AI source, for one kind of Rezumi AI work. */
+function aiRequest(userId: string, input: AiRequest, action: CreditAction) {
+	return {
+		userId,
+		action,
+		providerId: input.aiProviderId,
+		aiSource: input.aiSource,
+		idempotencyKey: input.idempotencyKey,
+		missing: () =>
+			new ORPCError("BAD_REQUEST", { message: "Test and turn on an AI provider in Settings → AI & developer first." }),
+	};
 }
+
+/** The provider fields the AI services take, with the model Rezumi AI counts when it runs the work. */
+function modelOf(ai: AiRun) {
+	return {
+		provider: ai.provider.provider,
+		model: ai.provider.model,
+		apiKey: ai.provider.apiKey,
+		baseURL: ai.provider.baseURL ?? "",
+		languageModel: ai.model,
+	};
+}
+
+const REZUMI_AI_NOTE =
+	'With `aiSource: "rezumi"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user\'s own AI connections.';
 
 export const aiRouter = {
 	reportContent: reportAiContent,
@@ -66,24 +86,18 @@ export const aiRouter = {
 			tags: ["AI"],
 			operationId: "parseResumePdf",
 			summary: "Parse a PDF file into resume data",
-			description:
-				"Extracts structured resume data from a PDF file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string. Returns a complete ResumeData object and saves nothing.",
+			description: `Extracts structured resume data from a PDF file with one of the user's saved AI providers: the one named by \`aiProviderId\`, or their default. Send the file as a base64-encoded string. Returns a complete ResumeData object and saves nothing. ${REZUMI_AI_NOTE} (5 credits)`,
 			successDescription: "The PDF was successfully parsed into structured resume data.",
 		})
-		.input(z.object({ aiProviderId: z.string().optional(), file: fileInputSchema }))
+		.input(z.object({ aiProviderId: z.string().optional(), file: fileInputSchema, ...aiSourceInput }))
 		.use(aiRequestRateLimit)
 		.errors(aiErrors)
 		.output(resumeDataSchema)
 		.handler(async ({ context, input }) => {
 			try {
-				const provider = await getRunnableProvider(context.user.id, input.aiProviderId);
-				return await aiService.parsePdf({
-					provider: provider.provider,
-					model: provider.model,
-					apiKey: provider.apiKey,
-					baseURL: provider.baseURL ?? "",
-					file: input.file,
-				});
+				return await runWithAiSource(aiRequest(context.user.id, input, "import-document"), (ai) =>
+					aiService.parsePdf({ ...modelOf(ai), file: input.file }),
+				);
 			} catch (error) {
 				rethrowAiError(error, "The AI returned resume data in the wrong format. Try again, or choose another model.");
 			}
@@ -96,8 +110,7 @@ export const aiRouter = {
 			tags: ["AI"],
 			operationId: "parseResumeDocx",
 			summary: "Parse a DOCX file into resume data",
-			description:
-				"Extracts structured resume data from a DOCX or DOC file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string with the document's media type. Returns a complete ResumeData object and saves nothing.",
+			description: `Extracts structured resume data from a DOCX or DOC file with one of the user's saved AI providers: the one named by \`aiProviderId\`, or their default. Send the file as a base64-encoded string with the document's media type. Returns a complete ResumeData object and saves nothing. ${REZUMI_AI_NOTE} (5 credits)`,
 			successDescription: "The DOCX was successfully parsed into structured resume data.",
 		})
 		.input(
@@ -108,6 +121,7 @@ export const aiRouter = {
 					"application/msword",
 					"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 				]),
+				...aiSourceInput,
 			}),
 		)
 		.use(aiRequestRateLimit)
@@ -115,15 +129,9 @@ export const aiRouter = {
 		.output(resumeDataSchema)
 		.handler(async ({ context, input }) => {
 			try {
-				const provider = await getRunnableProvider(context.user.id, input.aiProviderId);
-				return await aiService.parseDocx({
-					provider: provider.provider,
-					model: provider.model,
-					apiKey: provider.apiKey,
-					baseURL: provider.baseURL ?? "",
-					mediaType: input.mediaType,
-					file: input.file,
-				});
+				return await runWithAiSource(aiRequest(context.user.id, input, "import-document"), (ai) =>
+					aiService.parseDocx({ ...modelOf(ai), mediaType: input.mediaType, file: input.file }),
+				);
 			} catch (error) {
 				rethrowAiError(error, "The AI returned resume data in the wrong format. Try again, or choose another model.");
 			}
@@ -136,25 +144,18 @@ export const aiRouter = {
 			tags: ["AI"],
 			operationId: "atsReview",
 			summary: "Review extracted resume text",
-			description:
-				"Reviews the plain text extracted from a resume PDF and returns qualitative feedback: a summary, rewrite suggestions, strengths, and — when a job description is supplied — how the candidate's experience lines up with the role. Deliberately returns no score: the deterministic ATS report owns the only number in this feature. Requires authentication and AI credentials.",
+			description: `Reviews the plain text extracted from a resume PDF and returns qualitative feedback: a summary, rewrite suggestions, strengths, and — when a job description is supplied — how the candidate's experience lines up with the role. Deliberately returns no score: the deterministic ATS report owns the only number in this feature. Requires authentication and AI credentials. ${REZUMI_AI_NOTE} (4 credits)`,
 			successDescription: "Qualitative review returned successfully.",
 		})
-		.input(atsReviewInputSchema)
+		.input(atsReviewInputSchema.extend(aiSourceInput))
 		.use(aiRequestRateLimit)
 		.output(atsReviewOutputSchema)
 		.errors(aiErrors)
 		.handler(async ({ context, input }) => {
 			try {
-				const provider = await getRunnableProvider(context.user.id, input.aiProviderId);
-
-				return await reviewResumeText({
-					...input,
-					provider: provider.provider,
-					model: provider.model,
-					apiKey: provider.apiKey,
-					baseURL: provider.baseURL ?? "",
-				});
+				return await runWithAiSource(aiRequest(context.user.id, input, "review"), (ai) =>
+					reviewResumeText({ ...input, ...modelOf(ai) }),
+				);
 			} catch (error) {
 				rethrowAiError(error, "The AI returned the review in the wrong format. Try again, or choose another model.");
 			}
@@ -167,25 +168,18 @@ export const aiRouter = {
 			tags: ["AI"],
 			operationId: "improveLine",
 			summary: "Suggest a rewrite of one line",
-			description:
-				"Suggests a rewrite of one line of a resume or cover letter: a stronger verb, an added result, a shorter version, or the user's own request. Returns the new line, a short reason, and whether it states anything the input didn't, so the user can check it. Writes nothing. Requires authentication and AI credentials.",
+			description: `Suggests a rewrite of one line of a resume or cover letter: a stronger verb, an added result, a shorter version, or the user's own request. Returns the new line, a short reason, and whether it states anything the input didn't, so the user can check it. Writes nothing. Requires authentication and AI credentials. ${REZUMI_AI_NOTE} (1 credit)`,
 			successDescription: "The suggested line.",
 		})
-		.input(improveInputSchema)
+		.input(improveInputSchema.extend(aiSourceInput))
 		.use(aiRequestRateLimit)
 		.output(improveOutputSchema)
 		.errors(aiErrors)
 		.handler(async ({ context, input }) => {
 			try {
-				const provider = await getRunnableProvider(context.user.id, input.aiProviderId);
-
-				return await improveLine({
-					...input,
-					provider: provider.provider,
-					model: provider.model,
-					apiKey: provider.apiKey,
-					baseURL: provider.baseURL ?? "",
-				});
+				return await runWithAiSource(aiRequest(context.user.id, input, "short-text"), (ai) =>
+					improveLine({ ...input, ...modelOf(ai) }),
+				);
 			} catch (error) {
 				rethrowAiError(error, "The AI returned suggestions in the wrong format. Try again, or choose another model.");
 			}

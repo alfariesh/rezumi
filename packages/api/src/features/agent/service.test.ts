@@ -47,6 +47,7 @@ const aiProvidersServiceMock = {
 	getRunnableById: vi.fn(),
 	getDefaultRunnable: vi.fn(),
 	markUsed: vi.fn(),
+	offersChoice: vi.fn(),
 };
 
 vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
@@ -154,6 +155,26 @@ vi.mock("../ai/service", () => ({
 	})),
 }));
 vi.mock("../ai/credentials", () => ({ assertAgentEnvironment: vi.fn() }));
+vi.mock("../billing/metered-ai", () => ({
+	aiSourceRequired: () => new Error("AI_SOURCE_REQUIRED"),
+	errorCode: () => "error",
+	// The user's own connection, picked as before Rezumi AI: billing has its own tests.
+	resolveAiSource: async (request: { userId: string; providerId?: string }) => {
+		const provider = request.providerId
+			? await aiProvidersServiceMock.getRunnableById({ id: request.providerId, userId: request.userId })
+			: await aiProvidersServiceMock.getDefaultRunnable({ userId: request.userId });
+		return provider ? { provider, rezumi: false } : null;
+	},
+	startResolvedAiRun: async ({ provider }: { provider: unknown }) => ({
+		provider,
+		metered: false,
+		credits: 0,
+		limits: null,
+		wrap: (model: unknown) => model,
+		succeed: async () => {},
+		fail: async () => {},
+	}),
+}));
 vi.mock("../ai-providers/service", () => ({
 	aiProvidersService: aiProvidersServiceMock,
 }));
@@ -241,6 +262,7 @@ beforeEach(() => {
 	for (const mock of Object.values(storageServiceMock)) mock.mockReset();
 	for (const mock of Object.values(resumeServiceMock)) mock.mockReset();
 	for (const mock of Object.values(aiProvidersServiceMock)) mock.mockReset();
+	aiProvidersServiceMock.offersChoice.mockResolvedValue(false);
 	for (const mock of Object.values(documentMock)) mock.mockReset();
 	documentMock.loadDocument.mockResolvedValue({
 		kind: "resume",

@@ -2,6 +2,7 @@ import z from "zod";
 import { protectedProcedure } from "../../context";
 import { agentThreadSchema, agentConversationSchema } from "../../dto/agent";
 import { paginate, paginationShape } from "../../pagination";
+import { aiSourceInput } from "../billing/ai-source";
 import { mapAgentEnvironmentError } from "./routing";
 import { agentService } from "./service";
 
@@ -29,7 +30,7 @@ export const threadsRouter = {
 			operationId: "startAgentThread",
 			summary: "Start a document, application or career conversation",
 			description:
-				"Starts an assistant conversation about one resume or cover letter, using the given tested provider or the default one. The assistant reads the document and proposes edits; it never changes the document itself.",
+				'Starts an assistant conversation about one resume or cover letter, using the given tested provider or the default one. The assistant reads the document and proposes edits; it never changes the document itself. With `aiSource: "rezumi"` the conversation runs on Rezumi AI, where each reply costs 3 credits.',
 		})
 		.input(
 			z
@@ -37,6 +38,7 @@ export const threadsRouter = {
 					resumeId: z.string().min(1).optional(),
 					coverLetterId: z.string().min(1).optional(),
 					aiProviderId: z.string().optional(),
+					aiSource: aiSourceInput.aiSource,
 					scope: z.enum(["document", "application", "career"]).default("document"),
 					applicationId: z.string().min(1).optional(),
 				})

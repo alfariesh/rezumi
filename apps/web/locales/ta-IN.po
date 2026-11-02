@@ -450,6 +450,11 @@ msgstr "மாற்றியமைக்கப்பட்ட {1} வேலை 
 msgid "{0} of {1} terms found"
 msgstr "{0} சொற்களில் {1} கண்டறியப்பட்டன"
 
+#. placeholder {0}: creditCount(credits)
+#: src/features/assistant/assistant-panel.tsx
+msgid "{0} per reply"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -535,6 +540,11 @@ msgstr "{connection} பதிலளிக்கவில்லை."
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} a year"
 msgstr "ஆண்டுக்கு {cost}"
+
+#. placeholder {0}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "{cost} each time · {0} left"
+msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
@@ -1379,8 +1389,16 @@ msgstr "முக்கியச்சொல்லைச் சேர்க்�
 msgid "Add language"
 msgstr "மொழியைச் சேர்க்கவும்"
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "Add my connection"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Add one above."
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Add one in Settings to use it without credits"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -2437,6 +2455,7 @@ msgstr "மென்பொருள் உங்கள் விண்ணப்�
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/ai-source-menu.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -3959,6 +3978,10 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
 msgstr "{0} உருவாக்கப்பட்டது மற்றும் இணைக்கப்பட்டது"
+
+#: src/features/settings/ai/providers.tsx
+msgid "Credits"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -7590,6 +7613,11 @@ msgstr "செயலில் வேலை விண்ணப்பங்கள�
 msgid "No activity yet"
 msgstr ""
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/settings/ai/providers.tsx
+msgid "No API key needed. Each action shows its cost in credits first · {0} left"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "No API key to set up"
 msgstr ""
@@ -7886,6 +7914,10 @@ msgstr "இணைப்பு இல்லை"
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "இன்னும் இணைக்கப்படவில்லை. டொமைனை நீங்கள் நிர்வகிக்கும் இடத்தில் அதன் DNS பதிவுகளைச் சேர்த்து, பின்னர் சரிபார்க்கவும்."
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Not enough Rezumi AI credits"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Not for me"
@@ -8592,6 +8624,10 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "ஊதியக் காலம்"
+
+#: src/features/documents/new-document-dialog.tsx
+msgid "PDF and Word files are read with"
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
@@ -9961,6 +9997,15 @@ msgstr "Rezumi - முகப்புப் பக்கத்துக்க�
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "Rezumi AI · {cost}"
+msgstr ""
+
+#. placeholder {0}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "Rezumi AI · {cost} · {0} left"
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Rezumi AI credits"
 msgstr ""
@@ -10057,6 +10102,14 @@ msgstr ""
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Run again"
 msgstr "மீண்டும் இயக்கு"
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Runs on Rezumi AI for {cost}. Change"
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Runs on your AI connection. Change"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Runs onto page {next}"
@@ -10486,6 +10539,10 @@ msgstr ""
 
 #: src/features/homepage/hero.tsx
 msgid "See pricing"
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "See Pro AI"
 msgstr ""
 
 #: src/features/homepage/features.tsx
@@ -12196,6 +12253,10 @@ msgstr "இந்த கடிதம் அதன் பெறுநரை எ�
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "இந்தக் கோப்பின் உரையை மென்பொருள் எவ்வளவு நம்பகமாக எடுக்க முடியும் என்பதை இது அளக்கிறது. ஒரு விண்ணப்பம் நிராகரிக்கப்படுமா என்பதை இது கணிப்பதில்லை, எந்தக் கருவியாலும் அதைச் செய்ய முடியாது. உங்கள் கோப்பு இந்த உலாவியிலேயே படிக்கப்பட்டது, எப்போதும் பதிவேற்றப்படவில்லை."
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
+msgstr ""
+
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "இந்தப் பக்கம் ஏற்றப்படவில்லை"
@@ -12883,6 +12944,10 @@ msgstr "ஆலோசனையில் பயன்படுத்து: {excer
 #: src/features/resume/share/address-field.tsx
 msgid "Use lowercase letters, numbers and single dashes."
 msgstr "சிறிய எழுத்துக்கள், எண்கள் மற்றும் ஒற்றை கோடுகளைப் பயன்படுத்தவும்."
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Use my connection"
+msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Use my timezone"
@@ -13707,6 +13772,7 @@ msgstr "உங்கள் AI"
 msgid "your AI connection"
 msgstr "உங்கள் AI இணைப்பு"
 
+#: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
 msgid "Your AI connection"
 msgstr "உங்கள் AI இணைப்பு"

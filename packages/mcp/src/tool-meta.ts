@@ -8,6 +8,7 @@ import { resumePatchOperationsSchema } from "@rezumi/ai/tools/resume-tool-contra
 import { applicationDto } from "@rezumi/api/dto/application";
 import { coverLetterDto } from "@rezumi/api/dto/cover-letter";
 import { resumeDto } from "@rezumi/api/dto/resume";
+import { aiSourceInput } from "@rezumi/api/features/billing/ai-source";
 import { applicationStatusSchema, interviewDetailsSchema, interviewKindSchema } from "@rezumi/schema/applications/data";
 import { coverLetterDocumentSchema } from "@rezumi/schema/cover-letter/data";
 import { READ_IDEMPOTENT, WRITE_DESTRUCTIVE_EXTERNAL, WRITE_NON_IDEMPOTENT, WRITE_DESTRUCTIVE } from "./annotations";
@@ -117,6 +118,10 @@ const pdfBase64Schema = z
 	);
 
 // SDK discovery requires pure JSON schemas; API handlers still validate native DTOs.
+/** How a tool that runs AI says what Rezumi AI costs. */
+const rezumiAiCost = (credits: number | string) =>
+	`With \`aiSource: "rezumi"\` it runs on Rezumi AI for ${typeof credits === "number" ? `${credits} ${credits === 1 ? "credit" : "credits"}` : credits}; otherwise it uses the account's own AI connection.`;
+
 function wireInput<T extends z.ZodObject>(schema: T): T {
 	const wire = toWireSchema(schema, "input");
 	if (!(wire instanceof z.ZodObject)) throw new Error("MCP tool input must be an object.");
@@ -711,38 +716,36 @@ export const TOOL_META = withAnnotationTitles({
 	},
 	[T.autofillApplicationFromJob]: {
 		title: "Autofill Application From Job",
-		description:
-			"Send a pasted job posting to your configured AI provider to extract company, role, location, and salary. Requires an enabled, tested default AI provider. Returns suggestions without saving an application or fetching a job URL. Server-managed AI can synchronize its account provider record.",
+		description: `Send a pasted job posting to your configured AI provider to extract company, role, location, and salary. Requires an enabled, tested default AI provider. Returns suggestions without saving an application or fetching a job URL. Server-managed AI can synchronize its account provider record. ${rezumiAiCost(1)}`,
 		outputSchema: z.object({ company: z.string(), role: z.string(), location: z.string(), salary: z.string() }),
-		inputSchema: wireInput(z.strictObject({ jobDescription: z.string().trim().min(1).max(20_000) })),
+		inputSchema: wireInput(z.strictObject({ jobDescription: z.string().trim().min(1).max(20_000), ...aiSourceInput })),
 		annotations: WRITE_DESTRUCTIVE_EXTERNAL,
 	},
 	[T.scoreApplicationMatch]: {
 		title: "Score Application Match",
-		description:
-			"Send the full linked resume and job description to your configured AI provider to score their match. Requires an enabled, tested default AI provider, a linked resume, and a job description. Overwrites the application's saved match score and AI metadata.",
+		description: `Send the full linked resume and job description to your configured AI provider to score their match. Requires an enabled, tested default AI provider, a linked resume, and a job description. Overwrites the application's saved match score and AI metadata. ${rezumiAiCost(4)}`,
 		outputSchema: z.object({
 			score: z.number().int().min(0).max(100),
 			gaps: z.array(z.string()).max(8),
 			strengths: z.array(z.string()).max(8),
 		}),
-		inputSchema: wireInput(z.strictObject({ id: applicationIdSchema })),
+		inputSchema: wireInput(z.strictObject({ id: applicationIdSchema, ...aiSourceInput })),
 		annotations: { ...WRITE_NON_IDEMPOTENT, destructiveHint: true, openWorldHint: true },
 	},
 	[T.tailorResumeForApplication]: {
 		title: "Tailor Resume For Application",
-		description:
-			"Send the full linked resume and job description to your configured AI provider to rewrite the summary in a new private resume copy. Requires an enabled, tested default AI provider, a linked resume, and a job description. Replaces the application's resume link with the new copy and adds a timeline note; the original resume is unchanged.",
+		description: `Send the full linked resume and job description to your configured AI provider to rewrite the summary in a new private resume copy. Requires an enabled, tested default AI provider, a linked resume, and a job description. Replaces the application's resume link with the new copy and adds a timeline note; the original resume is unchanged. ${rezumiAiCost(5)}`,
 		outputSchema: z.object({ resumeId: z.string(), name: z.string() }),
-		inputSchema: wireInput(z.strictObject({ id: applicationIdSchema })),
+		inputSchema: wireInput(z.strictObject({ id: applicationIdSchema, ...aiSourceInput })),
 		annotations: { ...WRITE_NON_IDEMPOTENT, destructiveHint: true, openWorldHint: true },
 	},
 	[T.draftApplicationMessage]: {
 		title: "Draft Application Message",
-		description:
-			"Send application context and the full linked resume, when available, to your configured AI provider to draft a cover letter or recruiter follow-up. Requires an enabled, tested default AI provider. Cover-letter mode saves a new cover letter and returns text plus coverLetterId; follow-up mode returns text without saving it. Neither mode sends a message to a recruiter.",
+		description: `Send application context and the full linked resume, when available, to your configured AI provider to draft a cover letter or recruiter follow-up. Requires an enabled, tested default AI provider. Cover-letter mode saves a new cover letter and returns text plus coverLetterId; follow-up mode returns text without saving it. Neither mode sends a message to a recruiter. ${rezumiAiCost("3 credits for a cover letter, 2 for a follow-up")}`,
 		outputSchema: z.object({ text: z.string(), coverLetterId: z.string().optional() }),
-		inputSchema: wireInput(z.strictObject({ id: applicationIdSchema, kind: z.enum(["cover-letter", "follow-up"]) })),
+		inputSchema: wireInput(
+			z.strictObject({ id: applicationIdSchema, kind: z.enum(["cover-letter", "follow-up"]), ...aiSourceInput }),
+		),
 		annotations: { ...WRITE_NON_IDEMPOTENT, openWorldHint: true },
 	},
 } as const);

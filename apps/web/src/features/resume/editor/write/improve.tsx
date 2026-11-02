@@ -6,6 +6,8 @@ import { Trans } from "@lingui/react/macro";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
+import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 
@@ -39,6 +41,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 	const [request, setRequest] = useState("");
 	const [changed, setChanged] = useState(false);
 	const improve = useMutation(orpc.ai.improve.mutationOptions());
+	const ai = useAiSource();
 
 	const options: Array<{ action: Action; icon: IconName; label: string }> = [
 		{ action: "verb", icon: "lightning", label: t`Stronger verb` },
@@ -53,6 +56,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 			where,
 			context: editor.getText(),
 			...(action === "custom" ? { request: request.trim() } : {}),
+			...aiSourceFields(ai),
 		});
 
 	const close = () => {
@@ -77,8 +81,9 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 				close();
 			}}
 		>
-			<span className="px-2 pt-1 pb-1.5 text-xs font-semibold text-muted">
+			<span className="flex items-center justify-between gap-2 px-2 pt-1 pb-1.5 text-xs font-semibold text-muted">
 				<Trans>Improve selected line</Trans>
+				<AiSourceMenu action="short-text" className="-my-1" />
 			</span>
 
 			{improve.data ? (

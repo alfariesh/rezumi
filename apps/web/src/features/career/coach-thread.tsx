@@ -19,6 +19,7 @@ import { acceptUploads, MAX_ATTACHMENTS_PER_MESSAGE } from "@/features/assistant
 import { fileToBase64 } from "@/features/assistant/chat";
 import { PendingTurn } from "@/features/assistant/pending-turn";
 import { PromptBox } from "@/features/assistant/prompt-box";
+import { AiCostNote } from "@/features/billing/ai-source-menu";
 import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
@@ -160,6 +161,8 @@ type CoachThreadProps = {
 	context: MessageContext;
 	/** "Demo AI connection". */
 	connection: string;
+	/** The connection replies run on, for their Rezumi AI cost. */
+	providerId?: string | undefined;
 	onChangeConnection: () => void;
 	header: (messages: readonly UIMessage[]) => ReactNode;
 	/** After the last message, once the reply is complete (the coach page's copy button). */
@@ -339,7 +342,10 @@ function ThreadSession(props: SessionProps) {
 
 type Upload = ChatAttachment & { size: number };
 
-type ComposerProps = Pick<CoachThreadProps, "placeholder" | "chips" | "model" | "privacy" | "draftKey" | "variant"> & {
+type ComposerProps = Pick<
+	CoachThreadProps,
+	"placeholder" | "chips" | "model" | "privacy" | "draftKey" | "variant" | "providerId"
+> & {
 	streaming: boolean;
 	disabled: boolean;
 	ensureThread: () => Promise<string>;
@@ -431,6 +437,7 @@ export function Composer(props: ComposerProps) {
 					}}
 				/>
 				{props.privacy}
+				<AiCostNote action="coach-turn" providerId={props.providerId} className="px-1" />
 			</div>
 		</div>
 	);

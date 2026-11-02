@@ -10,6 +10,8 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { useInvalidateApplications } from "../use-application-actions";
 import { useDialogStore } from "@/dialogs/store";
+import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
@@ -78,6 +80,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 	const [reading, setReading] = useState<{ text: string; result: Parsed } | null>(null);
 	const providerState = useHasUsableAiProvider();
 	const { hasUsableProvider } = providerState;
+	const ai = useAiSource();
 	const invalidate = useInvalidateApplications();
 	const openDialog = useDialogStore((state) => state.openDialog);
 
@@ -106,7 +109,7 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 		const request = new AbortController();
 		controller.current = request;
 		read.mutate(
-			{ input: text },
+			{ input: text, ...aiSourceFields(ai) },
 			{
 				onSuccess: (result) => {
 					if (request.signal.aborted) return;
@@ -330,9 +333,12 @@ function AddApplicationForm({ onClose, onAdded }: AddApplicationFormProps) {
 						</div>
 					)}
 					{readable && (
-						<Button variant="secondary" size="sm" isDisabled={read.isPending} onPress={readPosting}>
-							<Trans>Read posting</Trans>
-						</Button>
+						<div className="flex flex-wrap items-center gap-2">
+							<Button variant="secondary" size="sm" isDisabled={read.isPending} onPress={readPosting}>
+								<Trans>Read posting</Trans>
+							</Button>
+							<AiSourceMenu action="short-text" />
+						</div>
 					)}
 					{(clipped || parsed?.postingSource.completeness === "incomplete") && (
 						<p className="text-xs text-warning-soft-foreground" role="alert">

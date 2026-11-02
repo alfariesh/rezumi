@@ -15,6 +15,7 @@ import { CoachThread, connectionName, deleteConversation, titleFor, useConversat
 import { PrivacyLine, tabLabel } from "../shared";
 import { useConversationConnection } from "@/features/assistant/chat";
 import { ProviderSetup } from "@/features/assistant/provider-setup";
+import { useAiSource } from "@/features/billing/ai-source";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { client, orpc } from "@/libs/orpc/client";
@@ -121,7 +122,10 @@ function CoachSheetBody({
 	const threadId = summary?.id ?? null;
 	const usable = providers.usableProviders;
 	const tabName = tabLabel(tab);
-	const provider = usable.find((item) => item.id === summary?.aiProviderId) ?? usable[0];
+	const ai = useAiSource();
+	// While the account chooses, a new conversation starts on the source chosen (Rezumi AI or the user's own).
+	const preferred = ai.choice ? (ai.source === "rezumi" ? ai.managed : ai.own[0]) : undefined;
+	const provider = usable.find((item) => item.id === summary?.aiProviderId) ?? preferred ?? usable[0];
 	const connection = connectionName(provider?.label ?? summary?.providerLabel ?? t`Your AI`);
 	useConversationConnection(summary, provider);
 
@@ -139,6 +143,7 @@ function CoachSheetBody({
 			scope: "application",
 			applicationId: application.id,
 			...(provider ? { aiProviderId: provider.id } : {}),
+			...(ai.choice && provider ? { aiSource: provider.managed ? ("rezumi" as const) : ("own" as const) } : {}),
 		});
 		queryClient.setQueryData(orpc.agent.threads.list.queryKey(), (old: ThreadSummary[] | undefined) =>
 			old ? [thread, ...old] : old,
@@ -213,6 +218,7 @@ function CoachSheetBody({
 				company={application.company}
 				context={context}
 				connection={connection}
+				providerId={provider?.id}
 				onChangeConnection={() => void navigate({ to: "/dashboard/settings/app", hash: "ai-providers" })}
 				header={() => null}
 				empty={() => (

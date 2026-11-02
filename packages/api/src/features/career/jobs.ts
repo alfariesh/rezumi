@@ -69,6 +69,14 @@ export const careerJobs = {
 		if (input.kind === "prepare" && input.enabled) {
 			if (!input.aiProviderId)
 				throw new ORPCError("BAD_REQUEST", { message: "Choose a tested AI provider for scheduled preparation." });
+			// Scheduled work runs unattended, so it never spends Rezumi AI credits.
+			if (
+				aiProvidersService.isManagedId({ userId, id: input.aiProviderId }) &&
+				(await aiProvidersService.offersChoice(userId))
+			)
+				throw new ORPCError("BAD_REQUEST", {
+					message: "Scheduled preparation runs on your own AI connection. Choose one of yours.",
+				});
 			await aiProvidersService.getRunnableById({ userId, id: input.aiProviderId });
 		} else if (input.aiProviderId) {
 			// Any other schedule may name a connection too; it still has to be one of the account's own.

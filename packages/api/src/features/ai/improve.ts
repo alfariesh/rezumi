@@ -1,3 +1,4 @@
+import type { LanguageModel } from "ai";
 import { z } from "zod";
 import { improveSystemPrompt, improveUserPromptTemplate } from "@rezumi/ai/prompts";
 import { inertMarkers } from "./data-block";
@@ -40,6 +41,8 @@ type ImproveServiceInput = ImproveInput & {
 	model: string;
 	apiKey: string;
 	baseURL: string;
+	/** A ready model, for example one Rezumi AI counts; otherwise one is made from the provider fields. */
+	languageModel?: LanguageModel;
 };
 
 function buildUserPrompt(input: ImproveInput): string {
@@ -62,7 +65,7 @@ function buildUserPrompt(input: ImproveInput): string {
 /** One suggested rewrite of one line. Nothing is written: the user replaces the line or keeps theirs. */
 export function improveLine(input: ImproveServiceInput): Promise<ImproveOutput> {
 	return generateJson(
-		getModel(input),
+		input.languageModel ?? getModel(input),
 		{ system: improveSystemPrompt, prompt: buildUserPrompt(input) },
 		improveOutputSchema,
 	);

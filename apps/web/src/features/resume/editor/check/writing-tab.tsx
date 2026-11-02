@@ -19,6 +19,8 @@ import { describeEntry } from "../write/model";
 import { CheckWidget } from "./check-widget";
 import { getSectionName } from "./issues";
 import { mapWritingReview } from "./review";
+import { aiSourceFieldsFor, useAiSource } from "@/features/billing/ai-source";
+import { AiCostNote } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { AiProviderPicker } from "@/features/settings/integrations/components/ai-provider-picker";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
@@ -40,6 +42,7 @@ type WritingTabProps = { data: ResumeData; issues: readonly CheckIssue[] };
 export function WritingTab({ data, issues }: WritingTabProps) {
 	const providerState = useHasUsableAiProvider();
 	const { usableProviders, hasUsableProvider } = providerState;
+	const ai = useAiSource();
 	const [providerOverride, setProviderOverride] = useState<string | null>(null);
 	const [choosing, setChoosing] = useState(false);
 	const review = useEditorStore((state) => state.writingReview);
@@ -69,6 +72,7 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 		reset();
 		mutate({
 			...(provider ? { aiProviderId: provider.id } : {}),
+			...aiSourceFieldsFor(ai, provider?.id),
 			extractedText: buildMarkdown(data).slice(0, MAX_TEXT_CHARS),
 			findings: issues.slice(0, MAX_FINDINGS).map((issue) => ({
 				code: issue.finding.code,
@@ -179,9 +183,13 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 				<div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-muted">
 					<Icon name="lock" size={16} className="shrink-0" />
 					<span>
-						<Trans>
-							Sends your resume's text only to {provider?.label} · {provider?.model}, with your key.
-						</Trans>
+						{provider?.managed ? (
+							<Trans>Sends your resume's text only to {provider.label}.</Trans>
+						) : (
+							<Trans>
+								Sends your resume's text only to {provider?.label} · {provider?.model}, with your key.
+							</Trans>
+						)}
 					</span>
 					{/* An inline text action inside the sentence; a HeroUI Button would break the line. */}
 					<button
@@ -203,10 +211,13 @@ export function WritingTab({ data, issues }: WritingTabProps) {
 						}}
 					/>
 				)}
-				<Button size="sm" variant="secondary" className="w-fit" isDisabled={passages.length === 0} onPress={run}>
-					<Icon name="sparkle" size={16} />
-					<Trans>Review writing</Trans>
-				</Button>
+				<div className="flex flex-wrap items-center gap-2">
+					<Button size="sm" variant="secondary" className="w-fit" isDisabled={passages.length === 0} onPress={run}>
+						<Icon name="sparkle" size={16} />
+						<Trans>Review writing</Trans>
+					</Button>
+					<AiCostNote action="review" providerId={provider?.id} />
+				</div>
 				{passages.length === 0 && (
 					<p className="text-xs text-muted">
 						<Trans>Add a summary or describe a role first; there's nothing to review yet.</Trans>

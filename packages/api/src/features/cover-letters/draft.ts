@@ -3,10 +3,9 @@ import { ORPCError } from "@orpc/client";
 import { streamText } from "ai";
 import { letterDraftSystemPrompt } from "@rezumi/ai/prompts";
 import { buildMarkdown } from "@rezumi/resume/markdown";
-import { aiProvidersService } from "../ai-providers/service";
 import { dataBlock } from "../ai/data-block";
-import { getModel } from "../ai/service";
 import { applicationService } from "../applications/service";
+import { startAiRun } from "../billing/metered-ai";
 import { resumeService } from "../resume/service";
 import { coverLetterService } from "./service";
 
@@ -59,8 +58,13 @@ export async function* draftLetterBody(
 		throw new ORPCError("BAD_REQUEST", { message: "Link the letter to a resume or an application first." });
 	}
 
-	const provider = await aiProvidersService.getDefaultRunnable({ userId });
-	if (!provider) {
+	const ai = await startAiRun({
+		userId,
+		action: "cover-letter",
+		aiSource: input.aiSource,
+		idempotencyKey: input.idempotencyKey,
+	});
+	if (!ai) {
 		throw new ORPCError("BAD_REQUEST", { message: "No AI provider is set up. Add one in Settings to draft letters." });
 	}
 
@@ -68,12 +72,7 @@ export async function* draftLetterBody(
 		application?.jobDescription?.trim() ||
 		(application?.requirements.length ? application.requirements.map((item) => `- ${item}`).join("\n") : undefined);
 	const result = streamText({
-		model: getModel({
-			provider: provider.provider,
-			model: provider.model,
-			apiKey: provider.apiKey,
-			...(provider.baseURL ? { baseURL: provider.baseURL } : {}),
-		}),
+		model: ai.model,
 		system: letterDraftSystemPrompt,
 		prompt: buildLetterDraftPrompt({
 			variant: input.variant,
@@ -89,17 +88,26 @@ export async function* draftLetterBody(
 	const unreachable = (cause?: unknown) =>
 		new ORPCError("BAD_GATEWAY", {
 			message: "Couldn't reach the AI provider. Check its settings and try again.",
-			data: { provider: provider.label },
+			data: { provider: ai.provider.label },
 			cause,
 		});
 
+	// Rezumi AI keeps its credits only for a draft that arrived in full; a failed or stopped draft costs nothing.
+	let complete = false;
 	try {
+		let wrote = false;
 		for await (const part of result.stream) {
-			if (part.type === "text-delta") yield part.text;
-			else if (part.type === "error") throw unreachable(part.error);
+			if (part.type === "text-delta") {
+				wrote ||= part.text.length > 0;
+				yield part.text;
+			} else if (part.type === "error") throw unreachable(part.error);
 		}
+		complete = wrote;
 	} catch (error) {
 		if (input.signal?.aborted) return;
 		throw error instanceof ORPCError ? error : unreachable(error);
+	} finally {
+		if (complete) await ai.succeed();
+		else await ai.fail(input.signal?.aborted ? "aborted" : "no_result");
 	}
 }

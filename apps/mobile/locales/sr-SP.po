@@ -496,6 +496,7 @@ msgstr "{cost} за прву годину"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# колона} few {# колоне} other {# колона}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "Следеће картице радног простора"
 msgid "No AI provider yet"
 msgstr "Још нема АИ провајдера"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "Нема пријаве за посао"
@@ -6464,6 +6470,10 @@ msgstr "Није доступно док резиме захтева лозин�
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "Још није повезан. Додајте његове DNS записе тамо где управљате доменом, па проверите."
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "Није за мене"
@@ -6640,6 +6650,7 @@ msgstr "Офлајн · сачувано на овом уређају"
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Оффлине. Измене се чувају на овом уређају и синхронизују се када се поново повежете."
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "Планирање ваше недеље"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "Ово се променило негде другде, тако да н
 msgid "This connection is managed by your server."
 msgstr "Овом везом управља ваш сервер."
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "Ово мери колико верно софтвер може да и�
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "Овог месеца"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "Користите бар 9pt."
 msgid "Use at most 64 characters."
 msgstr "Користите највише 64 знака."
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "Користи подразумевано"
@@ -10854,6 +10884,10 @@ msgstr "Користите обичне наслове као „Experience“, 
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "Користите везу за објављивање посла; прегледајте пре чувања"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

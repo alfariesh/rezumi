@@ -496,6 +496,7 @@ msgstr "初年度 {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {#列} other {#列}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "次のワークスペースのタブ"
 msgid "No AI provider yet"
 msgstr "AI プロバイダーはまだありません"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "求人応募はありません"
@@ -6464,6 +6470,10 @@ msgstr "レジュメにパスワードが必要な間は利用できません。
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "まだ接続されていません。ドメインを管理しているサービスで DNS レコードを追加してから、確認してください。"
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "興味なし"
@@ -6640,6 +6650,7 @@ msgstr "オフライン · このデバイスに保存されています"
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "オフライン。編集内容はこのデバイスに保存され、再接続すると同期されます。"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "今週の計画を作成中"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "これは別の場所で変更されたため、保存されませんで
 msgid "This connection is managed by your server."
 msgstr "この接続はサーバーによって管理されます。"
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "これは、ソフトウェアがこのファイルのテキストをど
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "今月"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "最低9pt以上を使用してください。"
 msgid "Use at most 64 characters."
 msgstr "最大 64 文字を使用してください。"
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "デフォルトを使用"
@@ -10854,6 +10884,10 @@ msgstr "「Experience」「Education」「Skills」のような、シンプル�
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "求人リンクを使用します。保存する前に確認してください"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

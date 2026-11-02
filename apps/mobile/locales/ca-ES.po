@@ -496,6 +496,7 @@ msgstr "{cost} el primer any"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# columna} other {# columnes}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "Següents pestanyes de l'espai de treball"
 msgid "No AI provider yet"
 msgstr "Encara no hi ha proveïdor d'IA"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "Cap sol·licitud de feina"
@@ -6464,6 +6470,10 @@ msgstr "No està disponible mentre el currículum requereixi una contrasenya."
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "Encara no està connectat. Afegiu-ne els registres DNS on gestioneu el domini i, després, comproveu-ho."
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "No és per a mi"
@@ -6640,6 +6650,7 @@ msgstr "Sense connexió · desat en aquest dispositiu"
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Fora de línia. Les modificacions es desen en aquest dispositiu i se sincronitzen quan us torneu a connectar."
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "Planificant la vostra setmana"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "Això ha canviat en un altre lloc, de manera que no es va desar. El teu 
 msgid "This connection is managed by your server."
 msgstr "Aquesta connexió la gestiona el vostre servidor."
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "Això mesura amb quina fidelitat el programari pot extreure el text d'aq
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "Aquest mes"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "Utilitza almenys 9pt."
 msgid "Use at most 64 characters."
 msgstr "Feu servir com a màxim 64 caràcters."
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "Utilitza el valor per defecte"
@@ -10854,6 +10884,10 @@ msgstr "Utilitza encapçalaments senzills com «Experience», «Education» i «
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "Utilitzeu l'enllaç de publicació de feina; revisa abans de desar"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

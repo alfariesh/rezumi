@@ -496,6 +496,7 @@ msgstr "{cost} за первый год"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# столбец} other {# столбцов} few {# столбца} many {# столбцов}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "Следующие вкладки рабочей области"
 msgid "No AI provider yet"
 msgstr "Пока нет поставщика AI"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "Нет заявления о приеме на работу"
@@ -6464,6 +6470,10 @@ msgstr "Недоступно, пока для резюме требуется п
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "Еще не подключен. Добавьте его DNS-записи там, где вы управляете доменом, затем выполните проверку."
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "Не для меня"
@@ -6640,6 +6650,7 @@ msgstr "Оффлайн · сохранено на этом устройстве"
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "не в сети. Изменения сохраняются на этом устройстве и синхронизируются при повторном подключении."
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "Планируем вашу неделю"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "Это изменилось где-то еще, поэтому не со
 msgid "This connection is managed by your server."
 msgstr "Это соединение управляется вашим сервером."
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "Оценивает, насколько точно программы и�
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "В этом месяце"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "Используйте кегль не менее 9 пунктов."
 msgid "Use at most 64 characters."
 msgstr "Используйте не более 64 символов."
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "Использовать по умолчанию"
@@ -10854,6 +10884,10 @@ msgstr "Используйте простые заголовки, такие к�
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "Используйте ссылку на объявление о вакансии; просмотрите перед сохранением"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"
