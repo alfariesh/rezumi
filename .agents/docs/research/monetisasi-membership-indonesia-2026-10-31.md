@@ -2,6 +2,8 @@
 
 Tanggal: **31 Oktober 2026**. Status: **rekomendasi untuk diuji sebelum peluncuran**, bukan keputusan implementasi.
 
+> **Diperbarui 2 November 2026:** keputusan final dan rencana implementasi ada di [`.agents/docs/plans/membership/`](../plans/membership/README.md). Bila berbeda, [`00-keputusan-produk.md`](../plans/membership/00-keputusan-produk.md) yang berlaku (antara lain: upgrade memakai antrean hari, dokumen tidak dikunci saat paket habis, insight tidak dikunci, pembelian hanya di web, dan bagian open source/self-host di bawah tidak berlaku lagi karena repo menjadi private).
+
 Konteks pemilik: **belum ada pengguna**. Belum tersedia data penggunaan, kemauan membayar, tagihan operasional, biaya akuisisi, atau pembelian ulang. Semua harga Rezumi, kuota usulan, biaya simulasi, dan target eksperimen dalam dokumen ini merupakan **asumsi**, bukan angka bisnis yang sudah terbukti.
 
 Audit memakai checkout `72506ad`, kode web/mobile/API, dokumentasi produk, serta halaman resmi pembanding. “Sudah ada” berarti ditemukan implementasi atau dokumentasi pendukung; **bukan pernyataan sudah diuji di produksi, tersedia di toko aplikasi, atau sudah digunakan pelanggan**. Proposal ini tidak mengubah produk, menyalakan pembayaran, atau mengubah lisensi.
