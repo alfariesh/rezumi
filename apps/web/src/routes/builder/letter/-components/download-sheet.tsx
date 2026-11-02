@@ -7,6 +7,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
+import { usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { DownloadSheetFrame } from "@/features/resume/editor/chrome/download-sheet";
@@ -51,11 +53,12 @@ function LetterDownloadTab() {
 	const [format, setFormat] = useState<LetterFormat>("pdf");
 	const [fileName, setFileName] = useState<string | null>(null);
 	const [state, setState] = useState<DownloadState>("idle");
+	const plan = usePlan();
 	if (!letter) return null;
 
 	const resumeId = letter.sourceResumeId;
 	const resumeName = resumes?.find((item) => item.id === resumeId)?.name ?? t`your resume`;
-	const [pdf, ...others] = getExportFormats();
+	const [pdf, ...others] = getExportFormats(plan);
 	const formats: DownloadFormat<LetterFormat>[] = [
 		...(pdf ? [pdf] : []),
 		...(resumeId
@@ -79,6 +82,9 @@ function LetterDownloadTab() {
 	const name = fileName ?? letterFileName(letter);
 
 	const download = async (as: LetterFormat) => {
+		// The plan may have loaded after the format was picked.
+		if (formats.find((option) => option.id === as)?.locked)
+			return openPlanDialog({ kind: "feature", feature: "wordOdtExport" });
 		const bothId = as === "both" ? resumeId : null;
 		const extension = formats.find((option) => option.id === as)?.extension ?? ".pdf";
 		const file = `${sanitizeFileName(name) || letterFileName(letter)}${extension}`;

@@ -12,6 +12,7 @@ import { aiProvidersService } from "../ai-providers/service";
 import { dataBlock } from "../ai/data-block";
 import { aiDeadline, generateJson as sharedGenerateJson } from "../ai/generate-json";
 import { getModel } from "../ai/service";
+import { precheckDocumentCapacity } from "../billing/limits";
 import { coverLetterService } from "../cover-letters/service";
 import { resumeService } from "../resume/service";
 import { webAccessService } from "../web-access/credentials";
@@ -390,6 +391,8 @@ export const aiRouter = {
 		.errors(aiErrors)
 		.handler(async ({ context, input }) => {
 			const application = await applicationService.getById({ id: input.id, userId: context.user.id });
+			// A drafted letter is saved as a new one: stop before the AI call when there's no room for it.
+			if (input.kind === "cover-letter") await precheckDocumentCapacity(context.user.id, { coverLetters: 1 });
 			const model = await resolveModel(context.user.id);
 			const resume = application.resumeId
 				? await resumeService.getById({ id: application.resumeId, userId: context.user.id }).catch(() => null)
@@ -433,6 +436,8 @@ export const aiRouter = {
 			if (!application.jobDescription) {
 				throw new ORPCError("BAD_REQUEST", { message: "Paste the job description into this application first." });
 			}
+			// The tailored copy is a new resume: stop before the AI call when there's no room for it.
+			await precheckDocumentCapacity(context.user.id, { resumes: 1 });
 
 			const [model, resume] = await Promise.all([
 				resolveModel(context.user.id),

@@ -287,6 +287,11 @@ msgstr "{0, plural, one {# മിനിറ്റ് മുമ്പ് തുട
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {# പ്രമാണത്തിനുള്ള ടാഗുകൾ} other {# പ്രമാണങ്ങൾക്കുള്ള ടാഗുകൾ}}"
 
+#. placeholder {0}: requested.coverLetters
+#: src/features/billing/plan.ts
+msgid "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+msgstr ""
+
 #. placeholder {0}: steps.length
 #: src/features/assistant/conversation.tsx
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
@@ -350,6 +355,11 @@ msgstr "{0} മണിക്കൂർ"
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{1}-ലെ {0} എന്നത് നിങ്ങളുടെ സമയമേഖലയിൽ ({preferredZone}) {2} ആണ്."
 
+#. placeholder {0}: usage.used
+#: src/features/billing/plan-page.tsx
+msgid "{0} in use"
+msgstr ""
+
 #. placeholder {0}: interviewKindOf(upcoming.kind)?.label ?? ""
 #. placeholder {0}: kind?.label ?? entry.kind
 #: src/features/applications/components/detail/activity.tsx
@@ -377,6 +387,12 @@ msgstr "{0} മിനിറ്റ്"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} കൂടുതൽ"
+
+#. placeholder {0}: usage.used
+#. placeholder {1}: usage.max
+#: src/features/billing/plan-page.tsx
+msgid "{0} of {1}"
+msgstr ""
 
 #. placeholder {0}: report.passedChecks
 #. placeholder {1}: report.applicableChecks
@@ -662,6 +678,10 @@ msgstr "{monthCount, plural, =0 {അഭിമുഖങ്ങളൊന്നു�
 msgid "{name} added to page 1"
 msgstr "{name} പേജ് 1-ൽ ചേർത്തു"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} പ്രതികരിച്ചില്ല. ഒന്നും മാറ്റിയിട്ടില്ല; വീണ്ടും ശ്രമിക്കുക."
@@ -669,6 +689,10 @@ msgstr "{name} പ്രതികരിച്ചില്ല. ഒന്നും
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} {columns} നിരകളായി വിഭജിച്ചിരിക്കുന്നു"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't in your plan, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} moved to the main column"
@@ -1119,6 +1143,19 @@ msgstr "പ്രവർത്തനങ്ങൾ"
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "സജീവമാണ്"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1742,6 +1779,14 @@ msgstr "ഈ ജോലിയെക്കുറിച്ച് ഓർമ്മി�
 msgid "Anywhere"
 msgstr "എവിടെയും"
 
+#: src/features/billing/plan.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
@@ -1753,6 +1798,10 @@ msgstr "API കീ"
 #: src/features/settings/ai/api-keys.tsx
 msgid "API keys"
 msgstr "API കീകൾ"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "App"
@@ -2629,6 +2678,10 @@ msgstr "ഒരു ഓഫർ തിരഞ്ഞെടുക്കുക"
 msgid "Choose another file"
 msgstr "മറ്റൊരു ഫയൽ തിരഞ്ഞെടുക്കുക"
 
+#: src/features/billing/plan.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "നിറം തിരഞ്ഞെടുക്കുക"
@@ -2710,6 +2763,7 @@ msgstr "ക്ലയൻ്റ് ഐഡി"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2799,6 +2853,10 @@ msgstr "കോളങ്ങൾ"
 msgid "Columns can scramble the order text is read in."
 msgstr "നിരകൾ വായിക്കുന്ന ഓർഡർ ടെക്‌സ്‌റ്റ് സ്‌ക്രാംബിൾ ചെയ്യാൻ കഴിയും."
 
+#: src/features/homepage/pricing.tsx
+msgid "Coming soon"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "വരാനിരിക്കുന്നത്"
@@ -2843,6 +2901,10 @@ msgstr "എന്താണ് മെച്ചപ്പെട്ടതെന്�
 #: src/features/career/workspace/shell.tsx
 msgid "Compare offers"
 msgstr "ഓഫറുകൾ താരതമ്യം ചെയ്യുക"
+
+#: src/features/billing/plan-page.tsx
+msgid "Compare plans"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
@@ -2987,6 +3049,10 @@ msgstr "കണക്ഷനുകൾ സംഭാഷണ സൗകര്യത്�
 #: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "ബന്ധപ്പെടുക"
+
+#: src/routes/dashboard/settings/route.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
@@ -3919,6 +3985,7 @@ msgstr "ഇഷ്ടാനുസൃത വിഭാഗം"
 msgid "Custom sections"
 msgstr "ഇഷ്ടാനുസൃത വിഭാഗങ്ങൾ"
 
+#: src/features/billing/plan-page.tsx
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "ഇഷ്ടാനുസൃത ശൈലികൾ"
@@ -3930,6 +3997,18 @@ msgstr ""
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "ഇഷ്‌ടാനുസൃത ശൈലികൾ പ്രയോഗിച്ചിട്ടില്ല. അവ പ്രയോഗിക്കുന്നതിന് ഈ പിശകുകൾ പരിഹരിക്കുക:"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Czech"
@@ -4284,6 +4363,7 @@ msgstr "ഡോക്യുമെൻ്റ് മെനു: {name}"
 msgid "Document type"
 msgstr "പ്രമാണ തരം"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4298,6 +4378,10 @@ msgstr "പ്രമാണങ്ങൾ 30 ദിവസത്തിന് ശേ�
 #: src/features/career/workspace/shell.tsx
 msgid "Documents for this job"
 msgstr "ഈ ജോലിക്കുള്ള രേഖകൾ"
+
+#: src/features/billing/plan-page.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
@@ -4353,6 +4437,10 @@ msgstr "{name} സാമ്പിൾ PDF ഡൗൺലോഡ് ചെയ്യ�
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download & history"
 msgstr "ഡൗൺലോഡും ചരിത്രവും"
+
+#: src/features/billing/plan.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
+msgstr ""
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Download application details, contacts, notes, and timeline history as CSV."
@@ -4877,6 +4965,10 @@ msgstr "എല്ലാ എൻട്രികൾക്കും ഒരു ഫോ
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "നിങ്ങൾ എന്താണ് ചെയ്തതെന്ന് ഓരോ വേഷവും പറയുന്നു. വാചകത്തെക്കുറിച്ചുള്ള അഭിപ്രായങ്ങൾ റൈറ്റിംഗ് ടാബിൽ തത്സമയം."
 
+#: src/features/billing/plan-page.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/homepage/templates.tsx
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr ""
@@ -5313,6 +5405,7 @@ msgstr "ഇന്ന് കണ്ടെത്തിയത്"
 msgid "Found yesterday"
 msgstr "ഇന്നലെ കണ്ടെത്തിയത്"
 
+#: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -5345,6 +5438,12 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "നിന്ന്"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: src/features/billing/plan-page.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -5889,6 +5988,10 @@ msgstr "തിരഞ്ഞെടുത്ത ലൈൻ മെച്ചപ്പ�
 msgid "Improving…"
 msgstr "മെച്ചപ്പെടുത്തുന്നു..."
 
+#: src/features/billing/plan-page.tsx
+msgid "Included"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "രണ്ട് വരികൾ ഒന്നായി ലയിക്കാതിരിക്കാൻ വരി അകലം കൂട്ടുക."
@@ -6391,6 +6494,10 @@ msgstr ""
 msgid "Leads with why you fit"
 msgstr "എന്തുകൊണ്ടാണ് നിങ്ങൾ യോജിക്കുന്നത് എന്നതിലേക്ക് നയിക്കുന്നു"
 
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Learn more"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Learning budget"
 msgstr "പഠന ബജറ്റ്"
@@ -6527,6 +6634,11 @@ msgstr "നില"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "5‑ൽ {level}‑ാം ലെവൽ"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Licenses"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6746,6 +6858,10 @@ msgstr "സ്റ്റൈൽഷീറ്റ് എഡിറ്റർ ലോഡ�
 msgid "Loading workspace…"
 msgstr "വർക്ക്‌സ്‌പേസ് ലോഡ് ചെയ്യുന്നു…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Loading your plan…"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -6809,8 +6925,8 @@ msgid "Lower the design sheet"
 msgstr "ഡിസൈൻ ഷീറ്റ് താഴ്ത്തുക"
 
 #: src/features/resume/share/web-page-text.ts
-msgid "Made with Rezumi, free and open source"
-msgstr "Rezumi ഉപയോഗിച്ച് നിർമ്മിച്ചത്, സ്വതന്ത്രവും ഓപ്പൺ സോഴ്‌സും"
+msgid "Made with Rezumi"
+msgstr ""
 
 #. Layout editor column label for the primary content area
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -7504,6 +7620,10 @@ msgstr "ഇമെയിൽ വിലാസമില്ല"
 msgid "No email address was found."
 msgstr "ഇമെയിൽ വിലാസം കണ്ടെത്തിയില്ല."
 
+#: src/features/billing/plan-page.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "No evidence yet"
 msgstr "ഇതുവരെ തെളിവില്ല"
@@ -7596,6 +7716,14 @@ msgstr "റെസ്യൂമെ ഇല്ല"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "ഇതുവരെ റെസ്യൂമുകളൊന്നുമില്ല."
+
+#: src/features/billing/plan.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7711,6 +7839,11 @@ msgstr "ഇതുവരെ ഒരു ഓഫറിലുമില്ല"
 msgid "Not in the offer · ask {company}"
 msgstr "ഓഫറിലില്ല · {company}-നോട് ചോദിക്കുക"
 
+#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/share/download-tab.tsx
+msgid "Not in your plan"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "നിങ്ങളുടെ റിസ്യൂമിൽ ഇല്ല"
@@ -7718,6 +7851,10 @@ msgstr "നിങ്ങളുടെ റിസ്യൂമിൽ ഇല്ല"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "നിങ്ങളുടെ റെസ്യൂമെയിൽ ഇല്ല · ശരിയാണെങ്കിൽ മാത്രം ചേർക്കുക"
+
+#: src/features/billing/plan-page.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Not now"
@@ -8478,6 +8615,12 @@ msgstr "പ്ലെയിൻ ടെക്സ്റ്റ് (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "തലക്കെട്ടുകളുള്ള പ്ലെയിൻ ടെക്സ്റ്റ്. ജോലി അപേക്ഷാ ഫോമുകളിലും കുറിപ്പുകളിലും ഒട്ടിക്കുക."
 
+#: src/features/billing/plan-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan again"
 msgstr "വീണ്ടും പ്ലാൻ ചെയ്യുക"
@@ -8494,8 +8637,16 @@ msgstr "എന്ത് ചോദിക്കണമെന്ന് പ്ലാ�
 msgid "Planning your week"
 msgstr "നിങ്ങളുടെ ആഴ്ച പ്ലാൻ ചെയ്യുന്നു"
 
+#: src/features/billing/plan-page.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -8748,6 +8899,7 @@ msgid "Privacy"
 msgstr "സ്വകാര്യത"
 
 #: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "സ്വകാര്യതാ നയം"
 
@@ -9243,6 +9395,11 @@ msgstr "24 മണിക്കൂർ മുമ്പ് ബ്രീഫിംഗ�
 msgid "Refresh the briefing on the morning of"
 msgstr "അന്ന് രാവിലെ ബ്രീഫിംഗ് പുതുക്കുക"
 
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
 msgstr "OlaCV-യിൽ രജിസ്റ്റർ ചെയ്യുക"
@@ -9467,10 +9624,6 @@ msgstr "മറുപടി"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "മറുപടി പകർത്തി"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Report a bug"
-msgstr "ഒരു പിഴവ് അറിയിക്കൂ"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -9721,6 +9874,10 @@ msgstr "Rezumi {__APP_VERSION__} · MIT"
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
 msgstr ""
 
 #: src/features/homepage/section-nav.tsx
@@ -10227,6 +10384,11 @@ msgstr "താഴെ കാണുക"
 
 #: src/features/homepage/introduction.tsx
 msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/billing/plan-dialog.tsx
+#: src/features/settings/ai/api-keys.tsx
+msgid "See plans"
 msgstr ""
 
 #: src/features/homepage/hero.tsx
@@ -10828,7 +10990,6 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Source"
 msgstr "ഉറവിടം"
 
@@ -11084,6 +11245,10 @@ msgstr "സ്ട്രൈക്ക്ത്രൂ"
 msgid "Stronger verb"
 msgstr "ശക്തമായ ക്രിയ"
 
+#: src/features/billing/plan.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "സ്റ്റൈൽഷീറ്റ് എഡിറ്റർ"
@@ -11337,6 +11502,11 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "ജോലി പോസ്റ്റിംഗിൽ നിന്നുള്ള നിബന്ധനകൾ"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Terms of service"
+msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Test"
@@ -11757,6 +11927,11 @@ msgstr "ആദ്യ പേജിന്റെ മുകൾഭാഗം ഒരു
 msgid "Theme"
 msgstr "തീം"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: src/features/billing/plan-page.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Then enter the 6-digit code from the app."
 msgstr "തുടർന്ന് ആപ്പിൽ നിന്നുള്ള 6 അക്ക കോഡ് നൽകുക."
@@ -12007,6 +12182,10 @@ msgstr "ഈ പടി ഐച്ചികമാണ്, പക്ഷേ നിർ�
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "ഈ കഥ ലഭ്യമല്ല, അല്ലെങ്കിൽ ഓഫാക്കിയ വസ്തുതകൾ ഉപയോഗിക്കുന്നു."
 
+#: src/features/billing/plan.ts
+msgid "This template isn't in your plan"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "തിരഞ്ഞെടുത്ത സമയമേഖലയിൽ ഈ സമയം നിലവിലില്ല. മറ്റൊരു സമയം തിരഞ്ഞെടുക്കുക."
@@ -12153,10 +12332,6 @@ msgstr "{model} ഉപയോഗിച്ച് ട്രാൻസ്ക്രൈ
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "ട്രാൻസ്ക്രിപ്റ്റ് പകർത്തി"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Translate"
-msgstr "വിവർത്തനം ചെയ്യുക"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -13069,6 +13244,10 @@ msgstr "നിങ്ങൾ അയച്ചത് · {0}"
 msgid "What you're looking for"
 msgstr "നിങ്ങൾ തിരയുന്നത്"
 
+#: src/features/billing/plan-page.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "What's it for?"
 msgstr "അത് എന്തിനുവേണ്ടിയാണ്?"
@@ -13076,6 +13255,10 @@ msgstr "അത് എന്തിനുവേണ്ടിയാണ്?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "എന്താണ് പ്രവർത്തിക്കുന്നത്"
+
+#: src/features/billing/plan-page.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
@@ -13158,12 +13341,21 @@ msgstr "വീതി"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "എൻ്റെ റെസ്യൂമെയ്ക്ക് അപേക്ഷകൻ്റെ മുൻകാല ട്രാക്കിംഗ് സംവിധാനങ്ങൾ ലഭിക്കുമോ?"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "ഒന്നുമില്ലാതെ, നിങ്ങൾ സ്വീകർത്താവിനെ പൂരിപ്പിക്കുകയും ഡ്രാഫ്റ്റിംഗ് നിങ്ങളുടെ റെസ്യൂമെ മാത്രം ഉപയോഗിക്കുകയും ചെയ്യുന്നു."
 
+#: src/features/billing/plan-page.tsx
 #: src/features/homepage/plans.ts
 msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13321,6 +13513,10 @@ msgstr "നിങ്ങൾക്ക് പരമാവധി 30 അപേക്�
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "ഈ പാസ്‌കീ ഉപയോഗിച്ച് നിങ്ങൾക്ക് ഇനി സൈൻ ഇൻ ചെയ്യാനാവില്ല."
+
+#: src/features/billing/plan.ts
+msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
+msgstr ""
 
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
@@ -13573,6 +13769,14 @@ msgstr "നിങ്ങളുടെ ആമുഖം, കൊണ്ടുവരേ
 msgid "Your own endpoint"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
 msgstr "റെസ്യൂമെയിൽ നിങ്ങളുടെ ഫോൺ നമ്പർ മാറി. കത്തും പുതുക്കി."
@@ -13580,6 +13784,18 @@ msgstr "റെസ്യൂമെയിൽ നിങ്ങളുടെ ഫോൺ 
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "നിങ്ങളുടെ ഫോൺ നമ്പർ അസാധാരണമായ രീതിയിലാണ് എഴുതിയിരിക്കുന്നത്."
+
+#: src/features/billing/plan-page.tsx
+msgid "Your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"

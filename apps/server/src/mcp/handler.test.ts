@@ -2,9 +2,10 @@ import { beforeEach, expect, it, vi } from "vite-plus/test";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ORPCError } from "@orpc/server";
 
-const mocks = vi.hoisted(() => ({ authentication: vi.fn(), limit: vi.fn() }));
+const mocks = vi.hoisted(() => ({ authentication: vi.fn(), limit: vi.fn(), plan: vi.fn() }));
 vi.mock("@rezumi/env/server", () => ({ env: { APP_URL: "https://resume.example" } }));
 vi.mock("@rezumi/api/context", () => ({ resolveAuthenticationFromRequestHeaders: mocks.authentication }));
+vi.mock("@rezumi/api/features/billing/automation", () => ({ assertAutomationAccess: mocks.plan }));
 vi.mock("@rezumi/api/features/mcp/transport", () => ({
 	consumeMcpRequestLimit: mocks.limit,
 	consumeMcpUserLimit: mocks.limit,
@@ -18,6 +19,7 @@ import { handleMcp } from "./handler";
 beforeEach(() => {
 	vi.clearAllMocks();
 	mocks.limit.mockResolvedValue(undefined);
+	mocks.plan.mockResolvedValue(undefined);
 	mocks.authentication.mockResolvedValue({ user: { id: "user-1" }, method: "bearer", permissions: ["read"] });
 });
 
@@ -67,4 +69,13 @@ it("returns actionable rate limits and conceals unexpected authentication errors
 	const failed = await handleMcp(initialize());
 	expect(failed.status).toBe(500);
 	expect(await failed.text()).not.toContain("private database connection string");
+});
+
+it("refuses MCP clients without API access in their plan, with the plan's message", async () => {
+	const message = "Connecting apps through the Rezumi API or MCP needs the Plus or Pro AI plan.";
+	mocks.plan.mockRejectedValue(new ORPCError("PLAN_FEATURE_REQUIRED", { status: 403, message }));
+	const response = await handleMcp(initialize(), "127.0.0.1");
+	expect(response.status).toBe(403);
+	expect((await response.json()).error.message).toBe(message);
+	expect(mocks.plan).toHaveBeenCalledWith(expect.objectContaining({ user: { id: "user-1" }, method: "bearer" }));
 });

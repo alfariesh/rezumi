@@ -4,9 +4,14 @@ import { getHomepageMeta } from "@/libs/seo";
 
 // An instance's root resume (`ROOT_RESUME_ID`) is served by the server as a web page; the app only shows the home.
 export const Route = createFileRoute("/_home/")({
-	component: Homepage,
+	component: HomepageRoute,
 	head: () => {
 		const { title, description } = getHomepageMeta();
 		return { meta: [{ title }, { name: "description", content: description }] };
 	},
 });
+
+function HomepageRoute() {
+	const { flags } = Route.useRouteContext();
+	return <Homepage billingEnabled={flags.billing === true} />;
+}

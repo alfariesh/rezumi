@@ -53,16 +53,17 @@ Gunakan graph `codebase-memory-mcp` (`search_graph` → `trace_path`) untuk mene
 
 Isi `packages/api/src/features/billing/` setelah Phase 01:
 
-| Berkas            | Isi                                                                                                                      |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `account.ts`      | Tipe `Transaction` dan `lockBillingAccount(tx, userId)` (4.1)                                                            |
-| `timeline.ts`     | Fungsi murni `schedulePurchase`, `revokePeriod`, konstanta `DAY_MS` (6.6)                                                |
-| `periods.ts`      | `grantMembershipPeriod(tx, …)` dan `revokeMembershipPeriod(tx, …)`: kunci akun → baca jadwal → terapkan hasil `timeline` |
-| `entitlements.ts` | `getBillingMode`, `isBillingActiveFor`, `resolveEntitlements` (murni), `getEntitlements` (6.7)                           |
-| `limits.ts`       | `countActiveDocuments(userId, database)`: CV dan surat yang tidak di Trash (dipakai `summary`, nanti Phase 03)           |
-| `admin.ts`        | `assertBillingAdmin` dan `billingAdmin.grantPeriod/revokePeriod` (tulis `billing_audit_log` di transaksi yang sama)      |
-| `router.ts`       | `billing.summary`, `billing.admin.grantPeriod`, `billing.admin.revokePeriod` (semua tag `Internal`)                      |
-| `*.test.ts`       | Unit `timeline` + `entitlements`; `billing.integration.test.ts` memakai `BILLING_TEST_DATABASE_URL`                      |
+| Berkas            | Isi                                                                                                                                                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `account.ts`      | Tipe `Transaction` dan `lockBillingAccount(tx, userId)` (4.1)                                                                                                                                                |
+| `timeline.ts`     | Fungsi murni `schedulePurchase`, `revokePeriod`, konstanta `DAY_MS` (6.6)                                                                                                                                    |
+| `periods.ts`      | `grantMembershipPeriod(tx, …)` dan `revokeMembershipPeriod(tx, …)`: kunci akun → baca jadwal → terapkan hasil `timeline`                                                                                     |
+| `entitlements.ts` | `getBillingMode`, `isBillingActiveFor`, `resolveEntitlements` (murni), `getEntitlements` (6.7)                                                                                                               |
+| `limits.ts`       | `countActiveDocuments`, `assertDocumentCapacity`, `precheckDocumentCapacity`, `assertFeature`, `assertDesignChange`, `fitImportedDesign`, error `PLAN_LIMIT_REACHED`/`PLAN_FEATURE_REQUIRED` (Phase 03, 6.8) |
+| `automation.ts`   | `isFirstPartyClient`, `firstPartyRedirectUris`, `assertAutomationAccess` (Phase 03, 9.1); diekspor `@rezumi/api/features/billing/automation`                                                                 |
+| `admin.ts`        | `assertBillingAdmin` dan `billingAdmin.grantPeriod/revokePeriod` (tulis `billing_audit_log` di transaksi yang sama)                                                                                          |
+| `router.ts`       | `billing.summary`, `billing.admin.grantPeriod`, `billing.admin.revokePeriod` (semua tag `Internal`)                                                                                                          |
+| `*.test.ts`       | Unit `timeline` + `entitlements`; `billing.integration.test.ts` memakai `BILLING_TEST_DATABASE_URL`                                                                                                          |
 
 MCP memakai allowlist eksplisit (`packages/mcp/src/parity.ts`), dan tag `Internal` menyembunyikan rute dari OpenAPI, jadi prosedur `billing.*` tidak terlihat oleh klien luar. Jangan tambahkan prosedur admin ke allowlist MCP.
 
@@ -397,14 +398,38 @@ Detail implementasi: potongan dianggap "berjalan" bila `starts_at < now`. Potong
 - Selain itu (`resolveEntitlements`, fungsi murni): cari potongan yang belum dicabut dan memuat `now`. Ada → paket itu. Tidak ada → `free`. Potongan berurutan dengan paket yang sama digabung: `currentPeriodEndsAt` adalah akhir akses paket sekarang (mis. Plus + Plus antre = satu tanggal), dan `upcoming` berisi paket berikutnya yang sudah digabung.
 - Baca dari database setiap request yang menegakkan aturan; jangan cache di sesi Better Auth atau di klien sebagai sumber kebenaran. Klien boleh cache untuk tampilan saja.
 
-### 6.8 Batas dokumen
+### 6.8 Batas dokumen dan fitur (Phase 03)
 
-Helper `assertDocumentCapacity(tx, userId, { resumes, coverLetters })` dipanggil **di dalam transaksi yang sama dengan insert/restore**, setelah `lockBillingAccount`:
+Helper `assertDocumentCapacity(tx, userId, { resumes, coverLetters })` (`packages/api/src/features/billing/limits.ts`) dipanggil **di dalam transaksi yang sama dengan insert/restore**, sebelum menulis:
 
-- Hitung dokumen aktif (tidak di Trash) milik pengguna, tambah jumlah yang akan dibuat, bandingkan dengan `limits`.
-- Lewat batas → `ORPCError` `PLAN_LIMIT_REACHED` (lihat 11).
-- Titik masuk yang wajib memakai helper ini (temukan semuanya dengan graph; daftar awal): `resumeService.create` (`packages/api/src/features/resume/service.ts`, dipakai create/import/duplicate), insert surat di `packages/api/src/features/cover-letters/service.ts` dan `embedded.ts` (surat yang ikut file impor), `documents.restore` dan `documents.copyForJob` (`packages/api/src/features/documents/service.ts`), `applications.tailorResume` (`packages/api/src/features/applications/ai.ts`), serta tool MCP yang membuat dokumen (memanggil router yang sama — pastikan).
-- Dokumen yang **pindah** dari akun tamu saat mendaftar (`linkAnonymousAccount`) tidak diblokir. Dokumen lama tidak pernah dikunci atau dihapus karena paket habis.
+- Baca hak akses dulu (`getEntitlements(userId, now, tx)`). Bila billing tidak berlaku untuk akun itu (mode `off`, atau `admins` untuk bukan admin) fungsi selesai tanpa mengunci atau membuat baris `billing_account`; mode `off` tidak menyentuh database sama sekali.
+- Bila berlaku: `lockBillingAccount` → hitung dokumen aktif (tidak di Trash) → tambah jumlah yang akan dibuat → bandingkan dengan `limits`. Kunci membuat permintaan paralel menghitung bergiliran (tes: 5 create paralel dengan sisa 1 slot → tepat 1 berhasil; tanpa kunci tes ini gagal).
+- Lewat batas → `ORPCError` `PLAN_LIMIT_REACHED` (lihat 11), `data.requested` berisi `{ resumes, coverLetters }` permintaan itu.
+- Urutan kunci bila keduanya dipakai: `lockUser` (baris `user`) lalu `lockBillingAccount`.
+- `precheckDocumentCapacity(userId, request)` menjalankan cek yang sama di transaksi pendek sebelum pekerjaan lambat (panggilan AI); cek sebenarnya tetap terjadi saat dokumen disimpan.
+
+Titik masuk final (diperiksa dengan graph `trace_path` + grep pada `insert(schema.resume|coverLetter)` dan `trashedAt: null`):
+
+| Titik masuk                                          | Pemanggil (semua jalur web/mobile/REST/MCP lewat router yang sama)                                                                                                                                       | Cek                                                                                         |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `resumeService.create` (`resume/service.ts`)         | `resume.create`, `resume.import`, `resume.duplicate`, `resumes/file-imports` (REST), `documents.copyForJob`, `applications.ai.tailorResume`, tool MCP `create_resume`/`import_resume`/`duplicate_resume` | `{ resumes: 1, coverLetters: <surat di file> }` sekaligus; impor di atas batas ditolak utuh |
+| `adoptEmbeddedLetters` (`cover-letters/embedded.ts`) | `resumeService.create` (sudah dihitung, `capacityChecked`), `resumeService.update` (termasuk restore versi), `resumeService.patch`/`patchInTransaction`                                                  | `{ coverLetters: <surat baru setelah dedup> }`                                              |
+| `insert` di `cover-letters/service.ts`               | `coverLetters.create`, `coverLetters.duplicate`, `coverLetters.import`, `applications.ai.draftMessage` (kind `cover-letter`)                                                                             | `{ coverLetters: 1 }` setelah `lockUser`                                                    |
+| `documentsService.restore` (`documents/service.ts`)  | `documents.restore` (web, mobile, REST, MCP `api_documents_restore`)                                                                                                                                     | `{ resumes: 1 }` atau `{ coverLetters: 1 }` hanya bila dokumen memang di Trash              |
+| Pre-check sebelum AI                                 | `applications.ai.tailorResume`, `applications.ai.draftMessage`                                                                                                                                           | `precheckDocumentCapacity`                                                                  |
+
+Tidak dibatasi: pemindahan dokumen tamu (`linkAnonymousAccount` di `packages/auth/src/config.ts`), restore versi isi dokumen, dan semua edit dokumen lama. Dokumen lama tidak pernah dikunci atau dihapus karena paket habis.
+
+**Template dan Custom Styles** (`assertDesignChange`, `designFeaturesNeeded`):
+
+- Butuh `premiumTemplates` hanya bila template berubah **ke** template di luar `FREE_TEMPLATES`; butuh `customStyles` hanya bila teks stylesheet (`metadata.stylesheet.source.text`, di-trim) berubah dan tidak kosong. Mempertahankan template premium/CSS lama, menghapus CSS, dan pindah ke template gratis selalu boleh.
+- Dicek di `resumeService.update` (data penuh) dan `applyResumePatchTx` (JSON Patch, termasuk tool Assistant/MCP), di `coverLetterService.create` bila `template` dikirim dan `coverLetterService.update` saat `template` berubah.
+- Salinan (duplicate, copy for job, tailoring, surat yang mengikuti desain CV) dan **restore versi** (`restoringVersion`) memakai desain dokumen itu sendiri, tidak dicek.
+- Impor (`resumeService.create` dengan `origin: "import"` dan `coverLetterService.import`) memakai `fitImportedDesign`: template premium diganti `FREE_TEMPLATES[0]` dan stylesheet dilepas bila paket tidak memuat fiturnya. Endpoint tidak berubah; web/mobile memberi tahu pengguna dengan membandingkan desain file dengan `billing.summary` (`describeImportedDesign`).
+
+**Ekspor Word/ODT**: `documents/exports.ts` memanggil `assertFeature(userId, "wordOdtExport")` untuk format `docx`/`odt` sebelum memuat dokumen (REST/MCP dan app mobile, yang mengunduh non-PDF lewat REST). Web membuat file di browser, jadi web hanya bisa mengunci di klien.
+
+**Font sendiri**: belum ada fitur unggah font di kode (Phase 03 memeriksa `features/storage` dan editor). `customFonts` sudah ada di katalog dan dialog, belum punya titik penegakan; tambahkan `assertFeature(userId, "customFonts")` saat fitur unggah font dibuat.
 
 ### 6.9 Kredit Rezumi AI
 
@@ -453,6 +478,7 @@ Host Midtrans: Snap `app.sandbox.midtrans.com` / `app.midtrans.com`; Core API (s
 
 - `billing.checkout` dan `billing.changePaymentMethod`: **hanya sesi web (cookie)**. Tolak OAuth bearer (termasuk app mobile resmi — pembelian di app dilarang oleh keputusan kanal), API key, dan klien MCP. Prosedur baca (`billing.summary`, `billing.payment`, `billing.payments`) boleh dipakai app resmi.
 - Membedakan app resmi: app mobile mendaftar sebagai klien OAuth dinamis dengan `client_name` "Rezumi for iOS/Android" dan `redirect_uris` `https://<APP_URL host>/auth/native-callback` (`apps/mobile/src/auth/oauth.ts`). Phase 03 membuat helper `isFirstPartyClient(authentication)` berdasarkan redirect URI terdaftar klien token. Keterbatasan yang diterima: pengguna teknis bisa meniru klien ini untuk akunnya sendiri; dampaknya kecil karena tetap terkena rate limit.
+- Implementasi Phase 03 (`billing/automation.ts`): app memakai `https://rezumi.app/auth/native-callback` untuk **semua** server (host tetap di `apps/mobile/src/auth/oauth.ts`), jadi daftar yang diterima = `https://rezumi.app/auth/native-callback`, `https://<host APP_URL>/auth/native-callback`, dan `app.rezumi:/auth/native-callback` (build dev). Klien dianggap resmi bila **semua** redirect URI-nya ada di daftar itu. `RequestAuthentication` membawa `clientId` (`azp` token). `protectedProcedure` memanggil `assertAutomationAccess` setelah cek izin: sesi web selalu lolos, bearer klien resmi lolos (satu query `oauth_client`), selain itu butuh `automationApi`. Endpoint MCP memanggilnya sekali per request dan menjawab 403 JSON-RPC dengan pesan paket. Mode `off` tidak membaca apa pun.
 - Admin: `user.role === "admin"` (plugin admin Better Auth sudah aktif), sesi web saja, setiap tindakan wajib alasan dan tercatat di `billing_audit_log`. Phase 01: `assertBillingAdmin` menolak metode selain `session` dan membaca `role` dari database; `billing.admin.grantPeriod({ userId | email, planId, days 1–366, reason })` dan `billing.admin.revokePeriod({ periodId, reason })` (RPC saja, tag `Internal`). Belum ada UI; sebelum Phase 09 panggil lewat `/api/rpc/billing/admin/...` dari browser yang login sebagai admin.
 - Flag publik `flags.get` → `billing: boolean` (`true` hanya bila `BILLING_MODE = on`); field opsional di tipe `FeatureFlags`, jadi klien lama tidak rusak.
 - Rate limit: pakai `accountRateLimit` atau buat limit khusus checkout di `packages/api/src/middleware/rate-limit/index.ts`.
@@ -498,6 +524,7 @@ Log (`console.*`) hanya berisi id pembayaran, `provider_order_id`, status, kode 
 - Pesan error harus kalimat yang bisa dipahami pengguna, karena app mobile versi lama belum mengenal kode baru dan hanya menampilkan pesan. Ikuti pola pesan dan lokalisasi yang sudah ada di server (`apps/server/src/rpc/locale.ts` dan pesan `ORPCError` di router lain).
 - Pesan error **netral**: tanpa harga, tanpa ajakan membeli, tanpa URL pembayaran, karena tampil juga di app iOS/Android (aturan toko). Web menambahkan tombol upgrade berdasarkan `code`. Pengecualian: pesan untuk klien API/MCP pihak ketiga boleh menyebut halaman Paket di web.
 - Gunakan status HTTP 403 untuk tiga kode pertama, kecuali pola repo menunjukkan pilihan lain; konsisten di semua phase.
+- Phase 03: pesan server berbahasa Inggris seperti pesan server lain di repo; web dan mobile menampilkan teks Lingui berdasarkan `code` dan `data` (`apps/web/src/features/billing/plan.ts`, `apps/mobile/src/features/billing/plan-alert.ts`). `PLAN_LIMIT_REACHED.data` juga memuat `requested: { resumes, coverLetters }`.
 - Endpoint lama tidak boleh mendapat field wajib baru. Endpoint baru bersifat tambahan.
 - App lama tidak boleh menjalankan Rezumi AI berbayar tanpa sadar: jalur AI lama yang tidak mengirim pilihan sumber AI diperlakukan sebagai BYOK/default lama, bukan otomatis memotong kredit (rinci di Phase 05).
 

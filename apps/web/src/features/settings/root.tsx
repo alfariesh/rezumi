@@ -7,6 +7,7 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
 import { getInitials } from "@rezumi/utils/string";
 import { PageHeader } from "@/components/layout/page-header";
+import { usePlan } from "@/features/billing/plan";
 
 // Phones: a section pushes in from the end and Back returns from the start (styles in index.css, after the page
 // transition). Browsers without view-transition types swap instantly, as for every other navigation.
@@ -29,9 +30,10 @@ function Row({ icon, label }: RowProps) {
 const rowClass =
 	"flex h-14 items-center gap-3 px-3.5 font-medium text-base transition-colors duration-quick ease-enter active:bg-default";
 
-/** Phones: the root lists the two pages, with a link to the docs. Sign out is in the sidebar menu. */
+/** Phones: the root lists the pages (Plan only while plans apply), with a link to the docs. Sign out is in the sidebar menu. */
 export function SettingsRoot() {
 	const { session } = useRouteContext({ from: "/dashboard" });
+	const plan = usePlan();
 
 	return (
 		<div className="grid gap-4">
@@ -53,6 +55,14 @@ export function SettingsRoot() {
 				</Link>
 				{/* Starts under the label: 14px padding, the 22px icon and the 12px gap. */}
 				<Separator className="ms-12" />
+				{plan?.enabled && (
+					<>
+						<Link to="/dashboard/settings/billing" viewTransition={pushTransition} className={rowClass}>
+							<Row icon="seal-check" label={<Trans>Plan</Trans>} />
+						</Link>
+						<Separator className="ms-12" />
+					</>
+				)}
 				<Link to="/dashboard/settings/app" viewTransition={pushTransition} className={rowClass}>
 					<Row icon="gear-six" label={<Trans>Settings</Trans>} />
 				</Link>

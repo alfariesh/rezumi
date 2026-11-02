@@ -334,6 +334,11 @@ msgstr "{0} (mano)"
 msgid "{0} → {1}: {2}{3}"
 msgstr "{0} → {1}: {2}{3}"
 
+#. placeholder {0}: freeTemplateList()
+#: src/features/billing/plan-alert.ts
+msgid "{0} are available, and documents that already use another template keep it."
+msgstr ""
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -381,7 +386,7 @@ msgid "{0} more"
 msgstr "{0} daugiau"
 
 #. placeholder {0}: shown.length
-#. placeholder {1}: TEMPLATES.length
+#. placeholder {1}: listed.length
 #: src/features/design/template-group.tsx
 msgid "{0} of {1} shown"
 msgstr "Parodyta {0} arba {1}"
@@ -582,6 +587,10 @@ msgstr "{minutes} min."
 msgid "{name} added to page 1"
 msgstr "{name} įtraukta į 1 puslapį"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't available, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/workspace/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} neatsakė. Niekas nepakeista; bandykite dar kartą."
@@ -589,6 +598,10 @@ msgstr "{name} neatsakė. Niekas nepakeista; bandykite dar kartą."
 #: src/features/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} yra padalintas į {columns} stulpelius"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't available, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "{name} moved to the main column"
@@ -673,6 +686,14 @@ msgstr "{toCheck, plural, one {# lauką reikia apžiūrėti.} other {# laukus re
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# patikrinti} other {# patikrinti}}"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} in use"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} of {max}"
+msgstr ""
 
 #: src/features/letters/write.tsx
 #: src/features/workspace/tabs/apply.tsx
@@ -878,6 +899,19 @@ msgstr "Veiksmai, skirti {0}, {1}"
 #: src/features/ai/web-access.tsx
 msgid "Active"
 msgstr "Aktyvus"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 #: src/features/write/basics-screen.tsx
@@ -1424,6 +1458,18 @@ msgstr "Ką reikia prisiminti apie šį darbą"
 msgid "Anywhere"
 msgstr "Bet kur"
 
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/web-access.tsx
 msgid "API key"
@@ -1437,6 +1483,10 @@ msgstr "API raktas atšauktas. Ją naudojančios programos dabar nustoja veikti.
 #: src/features/settings/api-keys.tsx
 msgid "API keys"
 msgstr "API raktai"
+
+#: src/features/settings/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: app/(tabs)/settings/preferences.tsx
 msgid "Appearance"
@@ -2227,6 +2277,10 @@ msgstr "Pasirinkite garso failą"
 msgid "Choose another file"
 msgstr "Pasirinkite kitą failą"
 
+#: src/features/billing/plan-alert.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Choose date"
 msgstr "Pasirinkite datą"
@@ -2506,6 +2560,10 @@ msgstr "Sujungiamos detalės"
 #: src/features/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "Ryšys išsaugotas"
+
+#: app/(tabs)/settings/index.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/check/issues.ts
@@ -3200,6 +3258,7 @@ msgstr "Pasirinktiniai laukai"
 msgid "Custom section"
 msgstr "Pasirinktinis skyrius"
 
+#: app/(tabs)/settings/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3208,6 +3267,26 @@ msgstr "Pasirinktiniai stiliai"
 #: src/features/design/advanced.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "Tinkinti stiliai netaikomi. Ištaisykite šias klaidas, kad juos pritaikytumėte:"
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't available"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't available. Styles already saved keep working on the page."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Czech"
@@ -3548,6 +3627,7 @@ msgid "Document type"
 msgstr "Dokumento tipas"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/settings/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
 msgid "Documents"
@@ -3560,6 +3640,10 @@ msgstr "Dokumentai ištrinami visam laikui po 30 dienų."
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "Šio darbo dokumentai"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Documents you move here stay for 30 days."
@@ -3619,6 +3703,10 @@ msgstr "Atsisiųskite {0}"
 #: src/shell/builder-chrome.tsx
 msgid "Download & history"
 msgstr "Atsisiuntimai ir istorija"
+
+#: src/features/billing/plan-alert.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON are available too."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Download both PDFs"
@@ -3983,6 +4071,10 @@ msgstr "Kiekviename įraše formų sistemose yra skaitomos datos, skaitomos eil�
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Kiekvienas vaidmuo sako, ką tu padarei. Nuomonės apie formuluotę gyvena skirtuke Rašymas."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "Kiekvienas terminas, kurį pabrėžia darbo skelbimas, jau yra."
@@ -4285,6 +4377,10 @@ msgstr "Formatavimas"
 msgid "Found {0}"
 msgstr "Rasta {0}"
 
+#: src/features/billing/plan.ts
+msgid "Free"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Free-form"
@@ -4297,6 +4393,12 @@ msgstr "Prancūzų"
 #: src/features/letters/write.tsx
 msgid "From"
 msgstr "Iš"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "From Fit"
@@ -4702,6 +4804,10 @@ msgstr "Pagerinkite pasirinktą eilutę"
 #: src/features/write/improve.tsx
 msgid "Improving…"
 msgstr "Tobulinama…"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Included"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Including closed"
@@ -6087,6 +6193,10 @@ msgstr "Nėra el. pašto adreso"
 msgid "No email address was found."
 msgstr "El. pašto adreso nerasta."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "No evidence yet"
 msgstr "Kol kas nėra įrodymų"
@@ -6185,6 +6295,14 @@ msgstr "Nėra gyvenimo aprašymo"
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
 msgstr "Šiuo adresu neatsiliepė joks Rezumi serveris. Patikrinkite rašybą arba paklauskite administratoriaus, ar serveris leidžia prisijungti prie programos."
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -6285,6 +6403,10 @@ msgstr "Nerasta:"
 #: src/features/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "Nėra jūsų gyvenimo aprašyme · pridėkite tik jei tiesa"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 #: src/features/workspace/tabs/debrief.tsx
@@ -6445,6 +6567,10 @@ msgstr "Neprisijungus · išsaugota šiame įrenginyje"
 #: app/(tabs)/_layout.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Neprisijungus. Pakeitimai išsaugomi šiame įrenginyje ir sinchronizuojami, kai vėl prisijungiate."
+
+#: src/features/billing/plan-alert.ts
+msgid "OK"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "On"
@@ -6680,6 +6806,10 @@ msgstr "Išsaugotas originalus lentelės formatas. Šis turinys yra tik skaitoma
 #: src/features/applications/next-step.ts
 msgid "Other"
 msgstr "Kita"
+
+#: src/features/settings/api-keys.tsx
+msgid "Other apps can't connect with API keys on this account. This app always works."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Other benefits"
@@ -6954,6 +7084,11 @@ msgstr "Paprastas tekstas (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Paprastas tekstas su antraštėmis. Įklijuokite į darbo prašymo formas ir pastabas."
 
+#: app/(tabs)/settings/index.tsx
+#: app/(tabs)/settings/membership.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Plan again"
 msgstr "Planuoti iš naujo"
@@ -6969,6 +7104,15 @@ msgstr "Suplanuoti, ko paklausti"
 #: src/features/workspace/parts.tsx
 msgid "Planning your week"
 msgstr "Planuojama jūsų savaitė"
+
+#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Plans can be bought on the rezumi.app website."
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Play recording"
@@ -7544,6 +7688,10 @@ msgstr "Atnaujinti atmintinę likus 24 valandoms"
 msgid "Refresh the briefing on the morning of"
 msgstr "Atnaujinti atmintinę tos dienos rytą"
 
+#: app/(tabs)/settings/index.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Register at OlaCV"
 msgstr "Registruoti per OlaCV"
@@ -7760,10 +7908,6 @@ msgstr "Ataskaita"
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "Pranešti apie AI turinį"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Report an issue"
-msgstr "Pranešti apie problemą"
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -9046,10 +9190,6 @@ msgstr "Šaltinis"
 msgid "Source and correction history"
 msgstr "Šaltinis ir taisymo istorija"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Source code on GitHub"
-msgstr "Pirminis kodas „GitHub“"
-
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
@@ -9224,6 +9364,10 @@ msgstr "Perbraukta"
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
 msgstr "Stipresnis veiksmažodis"
+
+#: src/features/billing/plan-alert.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Submit through the employer's application page yourself."
@@ -9773,6 +9917,11 @@ msgstr "Jūsų išsiųstos versijos saugomos Išsaugota. Čia atlikti pakeitimai
 msgid "Theme"
 msgstr "Tema"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: app/(tabs)/settings/membership.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "There is a gap between two dated roles."
 msgstr "Tarp dviejų pareigybių su datomis yra pertrauka."
@@ -9808,6 +9957,10 @@ msgstr "Galvoju…"
 #: app/(tabs)/settings/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "Pranešimai apie trečiųjų šalių programinę įrangą. Bakstelėkite priklausomybę, kad perskaitytumėte jos licenciją."
+
+#: src/features/billing/plan-alert.ts
+msgid "This app always works. Other apps and assistants that connect with an API key need more."
+msgstr ""
 
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/workspace/shell.tsx
@@ -9902,6 +10055,10 @@ msgstr "Šis failas nenurodo kalbos."
 #: src/features/ats-checker/messages.ts
 msgid "This file has no accessibility tags."
 msgstr "Šis failas neturi pritaikymo neįgaliesiems žymų."
+
+#: src/features/billing/plan-alert.ts
+msgid "This file holds a resume and its cover letters, and they're saved together."
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "This file is {megabytes} MB. Imports take files up to 10 MB."
@@ -10062,6 +10219,14 @@ msgstr "Šio prisijungimo bandymo galiojimas baigėsi arba jis jau panaudotas. P
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Ši istorija nepasiekiama arba naudoja išjungtus faktus."
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't in your plan"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/applications-board/reschedule-sheet.tsx
@@ -10923,9 +11088,17 @@ msgstr "Ką atsiuntėte"
 msgid "What you're looking for"
 msgstr "Ko ieškote"
 
+#: app/(tabs)/settings/membership.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "What's working"
 msgstr "Kas veikia"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do you need a decision?"
@@ -10984,6 +11157,10 @@ msgstr "Plotis"
 msgid "Within your office-day limit."
 msgstr "Neviršija jūsų dienų biure limito."
 
+#: src/features/settings/api-keys.tsx
+msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "Be jo, jūs pats užpildote gavėją, o rengiant naudojamas tik jūsų gyvenimo aprašymas."
@@ -10992,6 +11169,18 @@ msgstr "Be jo, jūs pats užpildote gavėją, o rengiant naudojamas tik jūsų g
 #: src/features/share/download.tsx
 msgid "Word"
 msgstr "Word"
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT aren't available"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT downloads aren't in your plan"
+msgstr ""
 
 #: src/features/ai/provider-list.tsx
 msgid "Word import, Improve, the assistant, letter drafts, Career coaching and generation, and voice practice need one. Editing, Design, the readability checks and downloads work without one."
@@ -11100,6 +11289,14 @@ msgstr "Jūs atsakėte: {answer}"
 #: src/shell/builder-chrome.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
 msgstr "Galite toliau redaguoti. Pakeitimai sinchronizuojami, kai vėl prisijungiate. PDF bendrinimas veikia su talpykloje esančiais šriftais ir vaizdais."
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "You can keep up to 30 application questions."
@@ -11310,9 +11507,25 @@ msgstr "Jūsų įžanga"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Jūsų įžanga, istorijos, kurias verta paminėti, ir klausimai. Likus 10 minučių iki skambučio tai tampa jūsų kontroliniu sąrašu."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Jūsų telefono numeris užrašytas neįprasta forma."
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Your plan"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"

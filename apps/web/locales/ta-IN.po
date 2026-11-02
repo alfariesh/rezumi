@@ -287,6 +287,11 @@ msgstr "{0, plural, one {# நிமிடத்திற்கு முன் 
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {# ஆவணத்திற்கான குறிச்சொற்கள்} other {# ஆவணங்களுக்கான குறிச்சொற்கள்}}"
 
+#. placeholder {0}: requested.coverLetters
+#: src/features/billing/plan.ts
+msgid "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+msgstr ""
+
 #. placeholder {0}: steps.length
 #: src/features/assistant/conversation.tsx
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
@@ -350,6 +355,11 @@ msgstr "{0} மணி"
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{1}-இல் {0} என்பது உங்கள் நேர மண்டலத்தில் ({preferredZone}) {2}."
 
+#. placeholder {0}: usage.used
+#: src/features/billing/plan-page.tsx
+msgid "{0} in use"
+msgstr ""
+
 #. placeholder {0}: interviewKindOf(upcoming.kind)?.label ?? ""
 #. placeholder {0}: kind?.label ?? entry.kind
 #: src/features/applications/components/detail/activity.tsx
@@ -377,6 +387,12 @@ msgstr "{0} நிமி"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} அதிகம்"
+
+#. placeholder {0}: usage.used
+#. placeholder {1}: usage.max
+#: src/features/billing/plan-page.tsx
+msgid "{0} of {1}"
+msgstr ""
 
 #. placeholder {0}: report.passedChecks
 #. placeholder {1}: report.applicableChecks
@@ -662,6 +678,10 @@ msgstr "{monthCount, plural, =0 {நேர்காணல்கள் இல்�
 msgid "{name} added to page 1"
 msgstr "{name} பக்கம் 1 இல் சேர்க்கப்பட்டது"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} பதிலளிக்கவில்லை. எதுவும் மாற்றப்படவில்லை; மீண்டும் முயற்சிக்கவும்."
@@ -669,6 +689,10 @@ msgstr "{name} பதிலளிக்கவில்லை. எதுவும
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} {columns} நெடுவரிசைகளாக பிரிக்கப்பட்டுள்ளது"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't in your plan, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} moved to the main column"
@@ -1119,6 +1143,19 @@ msgstr "செயல்கள்"
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "செயலில்"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1742,6 +1779,14 @@ msgstr "இந்த வேலையைப் பற்றி நினைவி
 msgid "Anywhere"
 msgstr "எங்கும்"
 
+#: src/features/billing/plan.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
@@ -1753,6 +1798,10 @@ msgstr "API விசை"
 #: src/features/settings/ai/api-keys.tsx
 msgid "API keys"
 msgstr "API விசைகள்"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "App"
@@ -2629,6 +2678,10 @@ msgstr "ஒரு சலுகையைத் தேர்ந்தெடு"
 msgid "Choose another file"
 msgstr "மற்றொரு கோப்பைத் தேர்ந்தெடுக்கவும்"
 
+#: src/features/billing/plan.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "நிறத்தைத் தேர்ந்தெடுங்கள்"
@@ -2710,6 +2763,7 @@ msgstr "வாடிக்கையாளர் ஐடி"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2799,6 +2853,10 @@ msgstr "நெடுவரிசைகள்"
 msgid "Columns can scramble the order text is read in."
 msgstr "படிக்கப்பட்ட வரிசை உரையை நெடுவரிசைகள் துருவலாம்."
 
+#: src/features/homepage/pricing.tsx
+msgid "Coming soon"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "வரவிருப்பவை"
@@ -2843,6 +2901,10 @@ msgstr "என்ன மேம்பட்டது என்பதைக் க
 #: src/features/career/workspace/shell.tsx
 msgid "Compare offers"
 msgstr "சலுகைகளை ஒப்பிடு"
+
+#: src/features/billing/plan-page.tsx
+msgid "Compare plans"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
@@ -2987,6 +3049,10 @@ msgstr "இணைப்புகள் பேச்சுக்குத் த�
 #: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "தொடர்பு கொள்ளவும்"
+
+#: src/routes/dashboard/settings/route.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
@@ -3919,6 +3985,7 @@ msgstr "தனிப்பயன் பிரிவு"
 msgid "Custom sections"
 msgstr "தனிப்பயன் பகுதிகள்"
 
+#: src/features/billing/plan-page.tsx
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "தனிப்பயன் பாணிகள்"
@@ -3930,6 +3997,18 @@ msgstr ""
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "தனிப்பயன் பாணிகள் பயன்படுத்தப்படவில்லை. அவற்றைப் பயன்படுத்த, இந்தப் பிழைகளைச் சரிசெய்யவும்:"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Czech"
@@ -4284,6 +4363,7 @@ msgstr "ஆவண மெனு: {name}"
 msgid "Document type"
 msgstr "ஆவண வகை"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4298,6 +4378,10 @@ msgstr "ஆவணங்கள் 30 நாட்களுக்குப் ப�
 #: src/features/career/workspace/shell.tsx
 msgid "Documents for this job"
 msgstr "இந்த வேலைக்கான ஆவணங்கள்"
+
+#: src/features/billing/plan-page.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
@@ -4353,6 +4437,10 @@ msgstr "{name} மாதிரி PDF ஐப் பதிவிறக்கவ�
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download & history"
 msgstr "பதிவிறக்கம் & வரலாறு"
+
+#: src/features/billing/plan.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
+msgstr ""
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Download application details, contacts, notes, and timeline history as CSV."
@@ -4877,6 +4965,10 @@ msgstr "ஒவ்வொரு பதிவிற்கும் ஒரு பட
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "ஒவ்வொரு பாத்திரமும் நீங்கள் செய்ததைச் சொல்கிறது. ரைட்டிங் டேப்பில் வார்த்தைகள் குறித்த கருத்துகள் நேரலையில் இருக்கும்."
 
+#: src/features/billing/plan-page.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/homepage/templates.tsx
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr ""
@@ -5313,6 +5405,7 @@ msgstr "இன்று கண்டறியப்பட்டது"
 msgid "Found yesterday"
 msgstr "நேற்று கண்டறியப்பட்டது"
 
+#: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -5345,6 +5438,12 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "இருந்து"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: src/features/billing/plan-page.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -5889,6 +5988,10 @@ msgstr "தேர்ந்தெடுக்கப்பட்ட வரிய�
 msgid "Improving…"
 msgstr "மேம்படுத்துகிறது…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Included"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "இரண்டு வரிகள் ஒன்றாக இணையாமல் இருக்க வரி இடைவெளியை அதிகரிக்கவும்."
@@ -6391,6 +6494,10 @@ msgstr ""
 msgid "Leads with why you fit"
 msgstr "நீங்கள் ஏன் பொருந்துகிறீர்கள் என்பதை வழிநடத்துகிறது"
 
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Learn more"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Learning budget"
 msgstr "கற்றல் பட்ஜெட்"
@@ -6527,6 +6634,11 @@ msgstr "நிலை"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "5-இல் {level} ஆம் நிலை"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Licenses"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6746,6 +6858,10 @@ msgstr "ஸ்டைல்ஷீட் எடிட்டர் ஏற்றப�
 msgid "Loading workspace…"
 msgstr "பணியிடத்தை ஏற்றுகிறது…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Loading your plan…"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -6809,8 +6925,8 @@ msgid "Lower the design sheet"
 msgstr "வடிவமைப்பு தாளைக் குறைக்கவும்"
 
 #: src/features/resume/share/web-page-text.ts
-msgid "Made with Rezumi, free and open source"
-msgstr "Rezumi, இலவச மற்றும் திறந்த மூலமாக உருவாக்கப்பட்டது"
+msgid "Made with Rezumi"
+msgstr ""
 
 #. Layout editor column label for the primary content area
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -7504,6 +7620,10 @@ msgstr "மின்னஞ்சல் முகவரி இல்லை"
 msgid "No email address was found."
 msgstr "மின்னஞ்சல் முகவரி எதுவும் காணப்படவில்லை."
 
+#: src/features/billing/plan-page.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "No evidence yet"
 msgstr "இன்னும் சான்று இல்லை"
@@ -7596,6 +7716,14 @@ msgstr "ரெஸ்யூம் இல்லை"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "இன்னும் ரெஸ்யூம்கள் இல்லை."
+
+#: src/features/billing/plan.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7711,6 +7839,11 @@ msgstr "இன்னும் எந்தச் சலுகையிலும�
 msgid "Not in the offer · ask {company}"
 msgstr "சலுகையில் இல்லை · {company}-இடம் கேளுங்கள்"
 
+#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/share/download-tab.tsx
+msgid "Not in your plan"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "உங்கள் ரெஸ்யூமில் இல்லை"
@@ -7718,6 +7851,10 @@ msgstr "உங்கள் ரெஸ்யூமில் இல்லை"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "உங்கள் ரெஸ்யூமில் இல்லை · உண்மை என்றால் மட்டும் சேர்க்கவும்"
+
+#: src/features/billing/plan-page.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Not now"
@@ -8478,6 +8615,12 @@ msgstr "எளிய உரை (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "தலைப்புகளுடன் கூடிய எளிய உரை. வேலை விண்ணப்பப் படிவங்கள் மற்றும் குறிப்புகளில் ஒட்டவும்."
 
+#: src/features/billing/plan-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan again"
 msgstr "மீண்டும் திட்டமிடு"
@@ -8494,8 +8637,16 @@ msgstr "என்ன கேட்பது எனத் திட்டமிட
 msgid "Planning your week"
 msgstr "உங்கள் வாரத்தைத் திட்டமிடுகிறது"
 
+#: src/features/billing/plan-page.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -8748,6 +8899,7 @@ msgid "Privacy"
 msgstr "தனியுரிமை"
 
 #: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "தனியுரிமைக் கொள்கை"
 
@@ -9243,6 +9395,11 @@ msgstr "24 மணி நேரத்திற்கு முன் சுரு
 msgid "Refresh the briefing on the morning of"
 msgstr "நேர்காணல் நாளன்று காலை சுருக்கக் குறிப்பைப் புதுப்பி"
 
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
 msgstr "OlaCV-இல் பதிவுசெய்"
@@ -9467,10 +9624,6 @@ msgstr "மறுமொழி"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "மறுமொழி நகலெடுக்கப்பட்டது"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Report a bug"
-msgstr "பிழையைப் புகாரளி"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -9721,6 +9874,10 @@ msgstr "Rezumi {__APP_VERSION__} · MIT"
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
 msgstr ""
 
 #: src/features/homepage/section-nav.tsx
@@ -10227,6 +10384,11 @@ msgstr "கீழே பார்க்கவும்"
 
 #: src/features/homepage/introduction.tsx
 msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/billing/plan-dialog.tsx
+#: src/features/settings/ai/api-keys.tsx
+msgid "See plans"
 msgstr ""
 
 #: src/features/homepage/hero.tsx
@@ -10828,7 +10990,6 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Source"
 msgstr "ஆதாரம்"
 
@@ -11084,6 +11245,10 @@ msgstr "அடித்தல்"
 msgid "Stronger verb"
 msgstr "வலுவான வினைச்சொல்"
 
+#: src/features/billing/plan.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "ஸ்டைல்ஷீட் எடிட்டர்"
@@ -11337,6 +11502,11 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "வேலை இடுகையின் விதிமுறைகள்"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Terms of service"
+msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Test"
@@ -11757,6 +11927,11 @@ msgstr "முதல் பக்கத்தின் மேற்பகுத�
 msgid "Theme"
 msgstr "தீம்"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: src/features/billing/plan-page.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Then enter the 6-digit code from the app."
 msgstr "பின்னர் செயலியிலிருந்து 6 இலக்கக் குறியீட்டை உள்ளிடவும்."
@@ -12007,6 +12182,10 @@ msgstr "இந்த படி கட்டாயமில்லை, ஆனா�
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "இந்தக் கதை கிடைக்கவில்லை, அல்லது அணைக்கப்பட்ட உண்மைகளைப் பயன்படுத்துகிறது."
 
+#: src/features/billing/plan.ts
+msgid "This template isn't in your plan"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "தேர்ந்தெடுத்த நேர மண்டலத்தில் இந்த நேரம் இல்லை. வேறு நேரத்தைத் தேர்ந்தெடுக்கவும்."
@@ -12153,10 +12332,6 @@ msgstr "{model} மூலம் எழுத்தாக்குகிறது
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "டிரான்ஸ்கிரிப்ட் நகலெடுக்கப்பட்டது"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Translate"
-msgstr "மொழிபெயர்"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -13069,6 +13244,10 @@ msgstr "நீங்கள் அனுப்பியது · {0}"
 msgid "What you're looking for"
 msgstr "நீங்கள் தேடுவது"
 
+#: src/features/billing/plan-page.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "What's it for?"
 msgstr "அது எதற்கு?"
@@ -13076,6 +13255,10 @@ msgstr "அது எதற்கு?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "என்ன வேலை செய்கிறது"
+
+#: src/features/billing/plan-page.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
@@ -13158,12 +13341,21 @@ msgstr "அகலம்"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "எனது ரெஸ்யூமே கடந்த விண்ணப்பதாரர் கண்காணிப்பு அமைப்புகளைப் பெறுமா?"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "ஒன்று இல்லாமல், பெறுநரை நீங்களே நிரப்பி, வரைவு உங்கள் விண்ணப்பத்தை மட்டுமே பயன்படுத்துகிறது."
 
+#: src/features/billing/plan-page.tsx
 #: src/features/homepage/plans.ts
 msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13321,6 +13513,10 @@ msgstr "30 விண்ணப்பக் கேள்விகள் வரை 
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "இந்தப் பாஸ் கீ மூலம் இனி உள்நுழைய முடியாது."
+
+#: src/features/billing/plan.ts
+msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
+msgstr ""
 
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
@@ -13573,6 +13769,14 @@ msgstr "உங்கள் தொடக்க உரை, கொண்டுச�
 msgid "Your own endpoint"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
 msgstr "ரெஸ்யூமில் உங்கள் தொலைபேசி எண் மாற்றப்பட்டுள்ளது. கடிதமும் புதுப்பிக்கப்பட்டது."
@@ -13580,6 +13784,18 @@ msgstr "ரெஸ்யூமில் உங்கள் தொலைபேச�
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "உங்கள் தொலைபேசி எண் அசாதாரண வடிவத்தில் எழுதப்பட்டுள்ளது."
+
+#: src/features/billing/plan-page.tsx
+msgid "Your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"

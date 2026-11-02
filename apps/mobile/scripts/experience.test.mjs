@@ -197,6 +197,12 @@ const { DownloadTab } = load("features/share/download.tsx", {
 	"./letter": {},
 	"./model": { safeFileName },
 	"@/api/client": { client: {} },
+	"@/features/billing/plan": {
+		canShowPlans: () => true,
+		hasPlanFeature: () => true,
+		showPlanAlert: () => {},
+		usePlan: () => undefined,
+	},
 	"@/draft": draftBoundary,
 	"@/features/applications/queries": { useApplications: () => ({ data: [] }) },
 });

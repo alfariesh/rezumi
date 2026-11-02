@@ -7,12 +7,15 @@ import { getTrustedOrigins } from "@rezumi/auth/trusted-origins";
 import { db } from "@rezumi/db/client";
 import { user } from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { assertAutomationAccess } from "./features/billing/automation";
 
 export type RequestPermission = "read" | "write" | "delete";
 export type RequestAuthentication = {
 	user: User;
 	method: "apiKey" | "bearer" | "session";
 	permissions: readonly RequestPermission[];
+	/** The OAuth client a bearer token was issued to. */
+	clientId?: string;
 };
 
 interface ORPCContext {
@@ -50,7 +53,7 @@ async function getAuthenticationFromBearerToken(headers: Headers): Promise<Reque
 		const permissions = explicitPermissions.length
 			? fullPermissions.filter((permission) => scopes.includes(`api:${permission}`))
 			: fullPermissions;
-		return { user: result, method: "bearer", permissions };
+		return { user: result, method: "bearer", permissions, clientId: payload.azp as string };
 	} catch {
 		return null;
 	}
@@ -144,7 +147,7 @@ export const protectedProcedure = publicProcedure
 	.route({
 		spec: (operation) => ({ ...operation, security: [{ apiKey: [] }, { bearerAuth: [] }, { cookieAuth: [] }] }),
 	})
-	.use(({ context, procedure, next }) => {
+	.use(async ({ context, procedure, next }) => {
 		if (!context.user) throw new ORPCError("UNAUTHORIZED");
 		const permission = requiredPermission(procedure["~orpc"].route);
 		if (!context.authentication?.permissions.includes(permission)) {
@@ -153,6 +156,8 @@ export const protectedProcedure = publicProcedure
 				message: `This credential needs the api:${permission} permission. Use a credential that includes it.`,
 			});
 		}
+		// API keys and third-party OAuth/MCP clients need a plan with automationApi; Rezumi's own apps never do.
+		await assertAutomationAccess(context.authentication);
 
 		return next({
 			context: {

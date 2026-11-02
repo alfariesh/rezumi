@@ -13,6 +13,7 @@ import { isRTL } from "@rezumi/utils/locale";
 import { Field, Slider } from "./controls";
 import { TEMPLATES, matchesFilter, templateName } from "./presets";
 import { useSession } from "@/auth/session";
+import { isLabelledTemplate, isLockedTemplate, listedTemplates, showPlanAlert, usePlan } from "@/features/billing/plan";
 import {
 	readStoredTemplateThumbnail,
 	storeTemplateThumbnail,
@@ -57,8 +58,11 @@ export function TemplateGroup(props: TemplateGroupProps) {
 	// Where the grid sits in the sheet's content: this group's top plus the grid's top within it.
 	const [groupTop, setGroupTop] = useState(0);
 	const [grid, setGrid] = useState({ top: 0, height: 0 });
-	const shown = TEMPLATES.filter((id) => matchesFilter(id, filter));
+	const plan = usePlan();
 	const current = data.metadata.template;
+	// iOS lists only the templates the account can use; Android lists all, the locked ones labelled.
+	const listed = listedTemplates(plan, TEMPLATES, current);
+	const shown = listed.filter((id) => matchesFilter(id, filter));
 	const cardWidth =
 		layout === "strip" ? space.s12 * 2 + space.s4 : (width - space.s3 * (columns - 1)) / Math.max(1, columns);
 	const pitch = cardWidth + space.s3;
@@ -93,8 +97,13 @@ export function TemplateGroup(props: TemplateGroupProps) {
 			selected={id === current}
 			previewing={id === preview}
 			disabled={disabled}
+			labelled={isLabelledTemplate(plan, id)}
 			onPreview={onPreview}
-			onApply={onApply}
+			onApply={(template) =>
+				template !== current && isLockedTemplate(plan, template)
+					? showPlanAlert({ kind: "feature", feature: "premiumTemplates" })
+					: onApply(template)
+			}
 		/>
 	));
 
@@ -110,7 +119,7 @@ export function TemplateGroup(props: TemplateGroupProps) {
 					/>
 				))}
 				<Text variant="caption" color="ink3" style={{ marginStart: "auto" }}>
-					{t`${shown.length} of ${TEMPLATES.length} shown`}
+					{t`${shown.length} of ${listed.length} shown`}
 				</Text>
 			</View>
 			{layout === "strip" ? (
@@ -157,6 +166,8 @@ type TemplateCardProps = {
 	selected: boolean;
 	previewing: boolean;
 	disabled: boolean;
+	/** Android: "Plus" on a premium template while plans apply. */
+	labelled: boolean;
 	onPreview: (template: Template | null) => void;
 	onApply: (template: Template) => void;
 };
@@ -165,7 +176,7 @@ type TemplateCardProps = {
 const PREVIEW_LINGER_MS = 3000;
 
 function TemplateCard(props: TemplateCardProps) {
-	const { id, data, content, width, near, selected, previewing, disabled, onPreview, onApply } = props;
+	const { id, data, content, width, near, selected, previewing, disabled, labelled, onPreview, onApply } = props;
 	const { t } = useLingui();
 	const { colors, fonts, motion, radius, space, shadows } = useTheme();
 	const session = useSession();
@@ -258,6 +269,21 @@ function TemplateCard(props: TemplateCardProps) {
 						}}
 					>
 						<Icon name="check" size={14} color={colors.onAccent} />
+					</View>
+				) : labelled ? (
+					<View
+						style={{
+							position: "absolute",
+							top: space.s1,
+							end: space.s1,
+							paddingHorizontal: space.s1,
+							borderRadius: radius.rLg,
+							backgroundColor: colors.ink,
+						}}
+					>
+						<Text variant="caption" style={{ color: colors.bg, fontFamily: fonts.ui[500] }}>
+							Plus
+						</Text>
 					</View>
 				) : null}
 			</View>

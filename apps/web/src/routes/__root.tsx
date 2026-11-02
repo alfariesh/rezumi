@@ -21,6 +21,7 @@ import { isAppSectionPath } from "@rezumi/utils/app-paths";
 import { isRTL } from "@rezumi/utils/locale";
 import { BreakpointIndicator } from "@/components/layout/breakpoint-indicator";
 import { DialogManager } from "@/dialogs/manager";
+import { PlanDialog } from "@/features/billing/plan-dialog";
 import { CommandPalette } from "@/features/command-palette";
 import { useDocumentWebMcpTools } from "@/features/documents/webmcp";
 import { ThemeProvider } from "@/features/theme/provider";
@@ -91,6 +92,7 @@ function RootComponent() {
 												<Outlet />
 
 												<DialogManager />
+												<PlanDialog />
 												<CommandPalette />
 												<LocalizedToaster />
 

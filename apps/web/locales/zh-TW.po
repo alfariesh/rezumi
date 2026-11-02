@@ -287,6 +287,11 @@ msgstr "{0, plural, other {# 分鐘前已開始}}"
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, other {# 份文件的標籤}}"
 
+#. placeholder {0}: requested.coverLetters
+#: src/features/billing/plan.ts
+msgid "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+msgstr ""
+
 #. placeholder {0}: steps.length
 #: src/features/assistant/conversation.tsx
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
@@ -350,6 +355,11 @@ msgstr "{0} 小時"
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{1} 的 {0} 即您所在時區（{preferredZone}）的 {2}。"
 
+#. placeholder {0}: usage.used
+#: src/features/billing/plan-page.tsx
+msgid "{0} in use"
+msgstr ""
+
 #. placeholder {0}: interviewKindOf(upcoming.kind)?.label ?? ""
 #. placeholder {0}: kind?.label ?? entry.kind
 #: src/features/applications/components/detail/activity.tsx
@@ -377,6 +387,12 @@ msgstr "{0} 分鐘"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "多 {0}"
+
+#. placeholder {0}: usage.used
+#. placeholder {1}: usage.max
+#: src/features/billing/plan-page.tsx
+msgid "{0} of {1}"
+msgstr ""
 
 #. placeholder {0}: report.passedChecks
 #. placeholder {1}: report.applicableChecks
@@ -662,6 +678,10 @@ msgstr "{monthCount, plural, =0 {沒有面試} other {# 場面試}}"
 msgid "{name} added to page 1"
 msgstr "{name} 加入第 1 頁"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} 沒有回應。未做任何變更，請重試。"
@@ -669,6 +689,10 @@ msgstr "{name} 沒有回應。未做任何變更，請重試。"
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} 分為 {columns} 列"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't in your plan, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} moved to the main column"
@@ -1119,6 +1143,19 @@ msgstr "行動"
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "積極的"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1742,6 +1779,14 @@ msgstr "關於這份工作有什麼需要記住的"
 msgid "Anywhere"
 msgstr "任何地方"
 
+#: src/features/billing/plan.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
@@ -1753,6 +1798,10 @@ msgstr "API鑰匙"
 #: src/features/settings/ai/api-keys.tsx
 msgid "API keys"
 msgstr "API按鍵"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "App"
@@ -2629,6 +2678,10 @@ msgstr "選擇一份錄取通知"
 msgid "Choose another file"
 msgstr "選擇另一個文件"
 
+#: src/features/billing/plan.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "選擇顏色"
@@ -2710,6 +2763,7 @@ msgstr "用戶端 ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2799,6 +2853,10 @@ msgstr "欄"
 msgid "Columns can scramble the order text is read in."
 msgstr "列可以打亂文字的讀入順序。"
 
+#: src/features/homepage/pricing.tsx
+msgid "Coming soon"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "即將到來"
@@ -2843,6 +2901,10 @@ msgstr "比較各次嘗試，看看哪裡進步了。練習問題為模擬產生
 #: src/features/career/workspace/shell.tsx
 msgid "Compare offers"
 msgstr "比較錄取通知"
+
+#: src/features/billing/plan-page.tsx
+msgid "Compare plans"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
@@ -2987,6 +3049,10 @@ msgstr "連線會另外對語音計費，並可能使用您帳戶中的 token。
 #: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "接觸"
+
+#: src/routes/dashboard/settings/route.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
@@ -3919,6 +3985,7 @@ msgstr "客製化部分"
 msgid "Custom sections"
 msgstr "自訂段落"
 
+#: src/features/billing/plan-page.tsx
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "自訂樣式"
@@ -3930,6 +3997,18 @@ msgstr ""
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "自訂樣式未套用。修正以下錯誤即可套用："
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Czech"
@@ -4284,6 +4363,7 @@ msgstr "文件選單：{name}"
 msgid "Document type"
 msgstr "文件類型"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4298,6 +4378,10 @@ msgstr "文件將在 30 天後永久刪除。"
 #: src/features/career/workspace/shell.tsx
 msgid "Documents for this job"
 msgstr "這份工作的文件"
+
+#: src/features/billing/plan-page.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
@@ -4353,6 +4437,10 @@ msgstr "下載 {name} 範本 PDF"
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download & history"
 msgstr "下載與歷史記錄"
+
+#: src/features/billing/plan.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
+msgstr ""
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Download application details, contacts, notes, and timeline history as CSV."
@@ -4877,6 +4965,10 @@ msgstr "每個條目都有系統讀取的表單中的日期（按順序），並
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "每個角色都說明了你所做的事情。關於措辭的意見存在於“寫作”選項卡中。"
 
+#: src/features/billing/plan-page.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/homepage/templates.tsx
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr ""
@@ -5313,6 +5405,7 @@ msgstr "今天找到"
 msgid "Found yesterday"
 msgstr "昨天找到"
 
+#: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -5345,6 +5438,12 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "從"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: src/features/billing/plan-page.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -5889,6 +5988,10 @@ msgstr "改進選定的線路"
 msgid "Improving…"
 msgstr "改善…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Included"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "增加行距，避免兩行文字被合併成一行。"
@@ -6391,6 +6494,10 @@ msgstr ""
 msgid "Leads with why you fit"
 msgstr "引導您了解適合的原因"
 
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Learn more"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Learning budget"
 msgstr "學習預算"
@@ -6527,6 +6634,11 @@ msgstr "等級"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "5 個等級中的第 {level} 級"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Licenses"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6746,6 +6858,10 @@ msgstr "正在載入樣式表編輯器…"
 msgid "Loading workspace…"
 msgstr "正在載入工作區…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Loading your plan…"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -6809,8 +6925,8 @@ msgid "Lower the design sheet"
 msgstr "降低設計表"
 
 #: src/features/resume/share/web-page-text.ts
-msgid "Made with Rezumi, free and open source"
-msgstr "使用Rezumi製作，免費開源"
+msgid "Made with Rezumi"
+msgstr ""
 
 #. Layout editor column label for the primary content area
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -7504,6 +7620,10 @@ msgstr "沒有電子郵件地址"
 msgid "No email address was found."
 msgstr "未找到電子郵件地址。"
 
+#: src/features/billing/plan-page.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "No evidence yet"
 msgstr "尚無證據"
@@ -7596,6 +7716,14 @@ msgstr "沒有履歷"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "尚無履歷。"
+
+#: src/features/billing/plan.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7711,6 +7839,11 @@ msgstr "兩份錄取通知中都還沒有"
 msgid "Not in the offer · ask {company}"
 msgstr "錄取通知中沒有 · 詢問 {company}"
 
+#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/share/download-tab.tsx
+msgid "Not in your plan"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "不在您的履歷中"
@@ -7718,6 +7851,10 @@ msgstr "不在您的履歷中"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "不在您的簡歷中·僅在屬實時添加"
+
+#: src/features/billing/plan-page.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Not now"
@@ -8478,6 +8615,12 @@ msgstr "純文字 (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "帶有標題的純文字。貼到工作申請表和註釋中。"
 
+#: src/features/billing/plan-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan again"
 msgstr "重新規劃"
@@ -8494,8 +8637,16 @@ msgstr "規劃要問的問題"
 msgid "Planning your week"
 msgstr "正在規劃您的這一週"
 
+#: src/features/billing/plan-page.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -8748,6 +8899,7 @@ msgid "Privacy"
 msgstr "隱私"
 
 #: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "隱私權政策"
 
@@ -9243,6 +9395,11 @@ msgstr "提前 24 小時更新簡報"
 msgid "Refresh the briefing on the morning of"
 msgstr "當天早上更新簡報"
 
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
 msgstr "在 OlaCV 註冊"
@@ -9467,10 +9624,6 @@ msgstr "回覆"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "已複製回覆"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Report a bug"
-msgstr "回報問題"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -9721,6 +9874,10 @@ msgstr "Rezumi {__APP_VERSION__} · MIT"
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
 msgstr ""
 
 #: src/features/homepage/section-nav.tsx
@@ -10227,6 +10384,11 @@ msgstr "請見下方"
 
 #: src/features/homepage/introduction.tsx
 msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/billing/plan-dialog.tsx
+#: src/features/settings/ai/api-keys.tsx
+msgid "See plans"
 msgstr ""
 
 #: src/features/homepage/hero.tsx
@@ -10828,7 +10990,6 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Source"
 msgstr "來源"
 
@@ -11084,6 +11245,10 @@ msgstr "刪除線"
 msgid "Stronger verb"
 msgstr "更強的動詞"
 
+#: src/features/billing/plan.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "樣式表編輯器"
@@ -11337,6 +11502,11 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "職缺發布中的條款"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Terms of service"
+msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Test"
@@ -11757,6 +11927,11 @@ msgstr "第一頁頂部的內容看起來不像是姓名。"
 msgid "Theme"
 msgstr "佈景主題"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: src/features/billing/plan-page.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Then enter the 6-digit code from the app."
 msgstr "然後輸入應用程式中的 6 位數驗證碼。"
@@ -12007,6 +12182,10 @@ msgstr "此步驟為選填，但建議您完成。"
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "此故事無法使用，或使用了已關閉的事實。"
 
+#: src/features/billing/plan.ts
+msgid "This template isn't in your plan"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "所選時區中不存在此時間。請選擇其他時間。"
@@ -12153,10 +12332,6 @@ msgstr "正在使用 {model} 轉錄…"
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "複製成績單"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Translate"
-msgstr "翻譯"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -13069,6 +13244,10 @@ msgstr "您寄出的內容 · {0}"
 msgid "What you're looking for"
 msgstr "您在尋找什麼"
 
+#: src/features/billing/plan-page.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "What's it for?"
 msgstr "這是做什麼用的？"
@@ -13076,6 +13255,10 @@ msgstr "這是做什麼用的？"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "什麼在起作用"
+
+#: src/features/billing/plan-page.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
@@ -13158,12 +13341,21 @@ msgstr "寬度"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "我的履歷會透過申請人追蹤系統嗎？"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "如果沒有，您需要自己填寫收件人，並且在起草時僅使用您的履歷。"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/homepage/plans.ts
 msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13321,6 +13513,10 @@ msgstr "最多可保存 30 個應徵問題。"
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "您將無法再使用此通行金鑰登入。"
+
+#: src/features/billing/plan.ts
+msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
+msgstr ""
 
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
@@ -13573,6 +13769,14 @@ msgstr "您的開場白、要準備的故事和要提出的問題。通話前 10
 msgid "Your own endpoint"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
 msgstr "您的履歷中的電話號碼發生了變化。這封信也更新了。"
@@ -13580,6 +13784,18 @@ msgstr "您的履歷中的電話號碼發生了變化。這封信也更新了。
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "您的電話號碼寫法不太常見。"
+
+#: src/features/billing/plan-page.tsx
+msgid "Your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"

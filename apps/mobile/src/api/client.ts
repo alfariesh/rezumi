@@ -13,6 +13,7 @@ import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { fetch as expoFetch } from "expo/fetch";
 import { authorizeAiRequest } from "./ai-consent";
 import { getAccountScope, getCredentials, recoverFromUnauthorized, rejectCredentials } from "@/auth/session";
+import { showPlanAlertForError } from "@/features/billing/plan-alert";
 
 /**
  * Per-call context. `scope` binds a call to one account (the draft store's scope, `JSON.stringify([server, user id])`):
@@ -96,6 +97,8 @@ const createLink = (label: string) =>
 			onError((error) => {
 				if (isAbort(error)) return;
 				console.warn(`[${label}]`, error instanceof Error ? error.name : "error");
+				// A plan limit or a feature the plan lacks explains itself the same way, whichever screen asked.
+				showPlanAlertForError(error);
 			}),
 		],
 	});

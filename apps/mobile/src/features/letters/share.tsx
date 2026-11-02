@@ -14,6 +14,7 @@ import { useResumes } from "./queries";
 import { restoreLetterVersion, saveLetter } from "./save";
 import { client, orpc } from "@/api/client";
 import { useLetterStore } from "@/draft";
+import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { useDocumentOperations } from "@/features/documents/queries";
 import { exportDirectory, exportFile, shareExport } from "@/features/share/files";
 import { letterWords } from "@/features/share/letter";
@@ -97,8 +98,12 @@ function LetterDownload({ letter, offline }: { letter: LetterDocument; offline: 
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const active = useRef(false);
+	const plan = usePlan();
+	// Word and ODT need the plan's feature: Android shows them locked, iOS lists only what the account can use.
+	const wordLocked = !hasPlanFeature(plan, "wordOdtExport");
+	const isWord = (id: LetterFormat) => id === "docx" || id === "odt";
 
-	const formats: { id: LetterFormat; label: string; extension: string; description: string }[] = [
+	const allFormats: { id: LetterFormat; label: string; extension: string; description: string }[] = [
 		{
 			id: "pdf",
 			label: t`PDF · Best for applying`,
@@ -142,6 +147,7 @@ function LetterDownload({ letter, offline }: { letter: LetterDocument; offline: 
 			description: t`A backup of this letter. Imports back into Rezumi as a letter.`,
 		},
 	];
+	const formats = wordLocked && !canShowPlans() ? allFormats.filter((item) => !isWord(item.id)) : allFormats;
 	const selected = formats.find((item) => item.id === format) ?? formats[0];
 	const local = (as: LetterFormat) => as === "pdf";
 
@@ -202,12 +208,15 @@ function LetterDownload({ letter, offline }: { letter: LetterDocument; offline: 
 			{formats.map((item) => (
 				<ListRow
 					key={item.id}
-					title={item.label}
+					title={wordLocked && isWord(item.id) ? `${item.label} · Plus` : item.label}
 					subtitle={`${item.description} (${item.extension})`}
 					selected={format === item.id}
-					leading={item.id === "pdf" || item.id === "both" ? "file-pdf" : "file-text"}
+					leading={
+						wordLocked && isWord(item.id) ? "lock" : item.id === "pdf" || item.id === "both" ? "file-pdf" : "file-text"
+					}
 					disabled={busy || (offline && !local(item.id))}
 					onPress={() => {
+						if (wordLocked && isWord(item.id)) return showPlanAlert({ kind: "feature", feature: "wordOdtExport" });
 						setFormat(item.id);
 						setError(null);
 					}}

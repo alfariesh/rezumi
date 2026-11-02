@@ -14,8 +14,11 @@ import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { LetterLockedNote, LetterWidget } from "./write-panel";
 import { templates } from "@/dialogs/resume/template/data";
+import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { ColorGroup, DesignSourceProvider, PageGroup, TypeGroup } from "@/features/resume/editor/design/style-groups";
+import { PlanBadge } from "@/features/resume/editor/design/template-group";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
@@ -63,6 +66,7 @@ function useLetterDesignSource() {
 export function LetterDesignPanel() {
 	const letter = useLetterEditorStore((state) => state.letter);
 	const designSource = useLetterDesignSource();
+	const plan = usePlan();
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions({ input: {} }));
 	// Leaving Design never leaves a preview on the page.
 	useEffect(() => () => useEditorStore.setState({ previewTemplate: null }), []);
@@ -137,6 +141,7 @@ export function LetterDesignPanel() {
 						</legend>
 						{templateSchema.options.map((id) => {
 							const selected = id === current;
+							const locked = isLockedTemplate(plan, id);
 							// A thumbnail that previews on hover and applies on click: custom, like the resume's template strip.
 							return (
 								<button
@@ -147,7 +152,9 @@ export function LetterDesignPanel() {
 									onFocus={() => useEditorStore.setState({ previewTemplate: id === current ? null : id })}
 									onClick={() => {
 										useEditorStore.setState({ previewTemplate: null });
-										if (!selected) void updateDesign({ template: id }).catch(failed);
+										if (selected) return;
+										if (locked) openPlanDialog({ kind: "feature", feature: "premiumTemplates" });
+										else void updateDesign({ template: id }).catch(failed);
 									}}
 									className="group/template grid cursor-(--cursor-interactive) gap-1.5 rounded-lg text-start disabled:cursor-not-allowed disabled:opacity-60"
 								>
@@ -170,6 +177,7 @@ export function LetterDesignPanel() {
 												<Icon name="check" size={14} />
 											</span>
 										)}
+										{!selected && isLabelledTemplate(plan, id) && <PlanBadge locked={locked} />}
 									</span>
 									<span className="text-sm leading-4 font-medium">{templates[id].name}</span>
 								</button>

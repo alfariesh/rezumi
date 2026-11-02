@@ -1,0 +1,109 @@
+---
+title: "Kebijakan Privasi"
+description: "Draf pemrosesan data akun, dokumen, pembayaran Midtrans dan AI pada layanan Rezumi."
+---
+
+<Warning>
+  Draf 2 November 2026 — belum disetujui pemilik dan belum berlaku sebagai kontrak baru. Email dukungan, tenggat
+  penyelesaian, retensi operasional, dan provider masih perlu dikonfirmasi sebelum publikasi. Paket berbayar dan kredit
+  Rezumi AI belum dijual selama billing belum diaktifkan.
+</Warning>
+
+Versi Bahasa Indonesia berlaku. [English translation](/legal/privacy-policy). Tanggal berlaku: **[BELUM DITETAPKAN]**.
+Pengendali data: **Salman Alfariesh — Rezumi**, hi@rezumi.app **[PERLU KONFIRMASI]**.
+Alamat: **Apartement Centerpoint, Tower A, 1211, Jl. Ahmad Yani No.kav20, RT.005/RW.002, Marga Jaya, Kec. Bekasi Sel., Kota Bks, Jawa Barat 17141**. Nomor pengaduan: **08125800097**; lihat [Kontak & Pengaduan](/legal/kontak).
+Kebijakan ini untuk layanan resmi rezumi.app dan app yang terhubung ke sana. Koneksi ke server lain mengikuti operator server tersebut.
+
+## Data, tujuan, dan dasar pemrosesan
+
+| Data                                                                                                              | Tujuan                                                       | Dasar pemrosesan                                                           |
+| ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| Nama, email, username, foto opsional, status verifikasi                                                           | Akun, profil dan pemberian layanan                           | Pelaksanaan perjanjian                                                     |
+| Hash password, sesi/token, IP/user agent, verifikasi, 2FA dan passkey; identitas/token login sosial               | Autentikasi dan pencegahan penyalahgunaan                    | Perjanjian dan kepentingan sah keamanan yang dinilai terhadap hak pengguna |
+| CV, surat, unggahan, riwayat versi, catatan privat, lamaran, kontak/interview, knowledge, offer dan jadwal karier | Penyimpanan, sinkronisasi, ekspor dan fitur yang diminta     | Pelaksanaan perjanjian; pilihan publikasi/koneksi oleh pengguna            |
+| Nomor pesanan, nilai, metode/status/waktu transaksi, masa paket, refund, ledger pemakaian kredit                  | Verifikasi pembayaran, akses, penanganan sengketa, pembukuan | Perjanjian dan kewajiban hukum                                             |
+| Teks/dokumen, konteks lowongan, prompt, hasil AI dan catatan biaya tindakan                                       | Menjalankan tindakan AI yang dipilih                         | Permintaan pengguna/perjanjian dan persetujuan bila diwajibkan             |
+| Cookie sesi/preferensi, penyimpanan perangkat, log keamanan dan hitungan tayangan/unduhan CV                      | Fungsi app, keamanan dan statistik CV                        | Perjanjian dan kepentingan sah yang proporsional                           |
+| Pengaduan dan laporan konten yang dikirim                                                                         | Dukungan, moderasi, pelaksanaan hak                          | Perjanjian, kewajiban hukum dan kepentingan sah keamanan                   |
+
+Jangan memasukkan NIK, data kesehatan, data anak atau informasi sensitif yang tidak diperlukan dalam CV/prompt.
+Data pihak lain hanya boleh dimasukkan dengan dasar yang sah. Kami tidak menjual data atau memakai CV untuk iklan.
+Cookie diperlukan untuk login, tema dan bahasa; penyimpanan lokal dapat berisi draf dan preferensi.
+Tidak ada analytics iklan pihak ketiga dalam app resmi saat draf ini dibuat; log keamanan dan statistik CV tetap diproses.
+
+## Penerima data
+
+- **Cloudflare:** Worker, jaringan, pengamanan dan penyimpanan unggahan privat di R2; termasuk metadata permintaan.
+- **Neon:** basis data PostgreSQL terkelola untuk akun, dokumen dan catatan layanan. Wilayah basis data/backup: **[KONFIRMASI PEMILIK]**.
+- **Midtrans:** ketika checkout tersedia, nama dan email serta rincian pesanan/nilai untuk pembayaran. Rezumi menerima status dan referensi transaksi;
+  tidak menyimpan nomor kartu, PIN, OTP atau kredensial bank. Transfer refund manual memerlukan data penerima melalui dukungan;
+  bukti transfer dapat memuat data seperlunya, tidak berarti seluruh catatan refund anonim.
+- **Provider AI:** hanya data yang diperlukan untuk tindakan yang diminta, seperti teks CV/surat, lowongan, jawaban, knowledge atau konteks percakapan.
+  BYOK memakai provider yang dipilih (mis. OpenAI, Anthropic, Google Gemini, OpenRouter atau endpoint kompatibel).
+  Rezumi AI akan menunjukkan provider/model sebelum digunakan; **provider peluncuran, lokasi dan retensinya belum diputuskan**.
+  Pemakaian kredit tidak berarti izin memakai data untuk melatih model. Ketentuan retensi/pelatihan provider harus disampaikan sebelum aktivasi;
+  jangan aktifkan Rezumi AI sebelum informasi tersebut lengkap. API key tersimpan dienkripsi, bukan ditampilkan ke pengguna lain.
+- **Email transaksional:** alamat email, informasi akun atau rincian bukti bayar yang diperlukan; provider/retensi produksi **[KONFIRMASI PEMILIK]**.
+- **Login sosial dan aplikasi terhubung:** provider login menerima permintaan autentikasi. Aplikasi OAuth/API/MCP yang diizinkan dapat membaca/mengubah
+  profil, CV, surat, lamaran, riwayat/statistik dan data karier sesuai scope. Cabut izin lewat pengaturan aplikasi terhubung/API key.
+  Setelah diterima, data mengikuti kebijakan pihak itu; pencabutan menghentikan akses berikutnya, tidak otomatis menghapus salinan terdahulu.
+- **Penerima publik:** CV yang dipublikasikan dapat dilihat/disalin sesuai pengaturan tautan dan password; mesin pencari dapat menyimpan salinan bila diizinkan.
+  Gambar/font eksternal membuat permintaan ke host terkait. Hukum dapat mewajibkan pengungkapan terbatas kepada otoritas.
+
+PDF editor web dirender di browser dengan Forme; preview/ekspor PDF mobile dirender di perangkat.
+PDF publik/API dirender oleh server sendiri. ATS checker publik memproses PDF di browser tanpa mengunggah file.
+Sinkronisasi, pemeriksaan/ekspor lain dan AI dapat mengirim konten ke server sesuai fungsi yang digunakan.
+
+## App mobile dan izin
+
+Token login memakai penyimpanan aman sistem. Penyimpanan privat app memuat preferensi, draf, cache dokumen/font/gambar dan ekspor.
+Picker foto sistem digunakan; kamera hanya ketika mengambil foto. Mikrofon hanya saat merekam latihan wawancara.
+Transkripsi mengirim audio melalui server ke provider pilihan; suara buatan mengirim teks ke provider suara. Ini bukan pemrosesan suara lokal.
+Pengaturan Keep audio mengendalikan salinan lokal, bukan retensi provider. Izin kamera, mikrofon dan notifikasi dapat dicabut lewat sistem.
+Pengingat menggunakan notifikasi lokal; app tidak mendaftarkan push jarak jauh.
+
+Mobile meminta persetujuan data sebelum tindakan AI; menolak membatalkan tindakan. Mengaktifkan jadwal karier mengizinkan proses berulang
+sesuai pengaturannya sampai dimatikan. Laporan AI/CV publik hanya mengirim konten, kategori dan penjelasan yang Anda pilih,
+identitas akun serta waktu peninjauan ke operator, bukan provider AI. Laporan ikut ekspor akun dan dihapus bersama akun atau lebih awal setelah ditinjau.
+Pemblokiran penulis CV disimpan lokal per akun/server dan tidak menghapus konten web atau perangkat lain.
+
+## Retensi dan penghapusan
+
+Data akun, dokumen, unggahan dan versi disimpan selama diperlukan untuk layanan sampai dihapus pengguna/akun.
+Trash dihapus permanen setelah 30 hari kecuali dipulihkan atau dihapus lebih awal. Izin aplikasi dan token disimpan sampai dicabut,
+kedaluwarsa atau akun dihapus. Penghapusan akun tersedia di **Settings → Account → Delete account**; mobile membuka konfirmasi browser
+server dan dapat meminta login ulang. Menghapus instalasi app tidak menghapus akun. Bersihkan file ekspor dan cache perangkat bila diperlukan.
+
+Setelah akun dihapus, hubungan identitas pengguna pada catatan pembayaran dilepas/dianonimkan; jangan menyebut catatan masih anonim bila dapat dihubungkan kembali.
+Catatan pembukuan transaksi yang tidak mengidentifikasi pengguna direncanakan disimpan **10 tahun [KONFIRMASI KEWAJIBAN DAN SKEMA OLEH PEMILIK/KONSULTAN]**.
+Jika hukum mengharuskan bukti beridentitas tertentu, hanya bagian yang wajib dipisahkan, aksesnya dibatasi dan dasar serta masa simpannya dijelaskan.
+Kewajiban hukum atau sengketa dapat menunda penghapusan data terkait dengan alasan yang diberitahukan.
+Retensi log, tiket dukungan, ledger AI, backup dan siklus penghapusan backup: **[BELUM DITETAPKAN PEMILIK SEBELUM PUBLIKASI]**.
+Tidak ada janji penghapusan instan dari seluruh backup/provider; penyelesaian permintaan dan sisa retensi dijelaskan kepada pengguna.
+
+## Hak dan permintaan data
+
+Anda dapat meminta informasi pemrosesan, akses/salinan, perbaikan, penghapusan/pemusnahan, penarikan persetujuan,
+penghentian/pembatasan pemrosesan, portabilitas sesuai syarat hukum, keberatan atas keputusan otomatis yang berdampak signifikan,
+dan mengajukan pengaduan/ganti rugi. Rezumi tidak menjanjikan keputusan perekrutan otomatis.
+Ekspor akun dan pengeditan tersedia di app; permintaan lain melalui email di atas. Verifikasi identitas dilakukan secara proporsional.
+Penarikan persetujuan berlaku untuk pemrosesan berikutnya; kewajiban hukum dapat tetap memerlukan retensi terbatas.
+Kami menangani akses, perbaikan, penghentian atas penarikan persetujuan dan pembatasan dalam **3 × 24 jam** bila UU PDP menetapkan tenggat itu,
+serta mengikuti tenggat khusus hak lain. Bila permintaan dibatasi oleh hukum, kami menjelaskan alasan dan jalur keberatan.
+
+## Keamanan, insiden, dan transfer internasional
+
+Kontrol akses, HTTPS, pemisahan penyimpanan dan perlindungan kredensial digunakan; tidak ada sistem bebas risiko.
+Bila terjadi kegagalan pelindungan data pribadi, pemberitahuan tertulis disampaikan kepada pihak terdampak dan lembaga berwenang
+paling lambat **3 × 24 jam** sesuai UU PDP, memuat data terdampak, waktu/cara kejadian dan langkah penanganan; pemberitahuan publik dilakukan bila diwajibkan.
+
+Cloudflare, Neon, email dan provider AI dapat memproses data di luar Indonesia. Sebelum transfer kami menilai tingkat pelindungan negara penerima;
+bila tidak setara, memastikan pelindungan memadai dan mengikat; bila syarat itu tidak terpenuhi, meminta persetujuan sesuai hukum.
+Daftar negara/lokasi, perjanjian pemrosesan dan mekanisme transfer produksi: **[WAJIB DIVERIFIKASI PEMILIK]**.
+
+## Anak dan perubahan
+
+Layanan ditujukan hanya bagi pengguna **18 tahun ke atas**. Kami tidak menerima pendaftaran atau pembelian oleh pengguna di bawah 18 tahun.
+Bila mengetahui akun atau data anak masuk tanpa semestinya, hubungi dukungan agar pemrosesan dan penghapusannya dapat ditinjau sesuai hukum.
+Perubahan material diberitahukan melalui email/app sebelum berlaku; persetujuan baru diminta bila dasar/tujuan memerlukannya.
+Versi Bahasa Indonesia dan terjemahan diperbarui bersama. Permintaan/pengaduan: [Kontak & Pengaduan](/legal/kontak).

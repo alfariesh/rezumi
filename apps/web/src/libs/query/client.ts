@@ -1,5 +1,6 @@
 import { StandardRPCJsonSerializer } from "@orpc/client/standard";
 import { MutationCache, QueryClient } from "@tanstack/react-query";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
 const serializer = new StandardRPCJsonSerializer();
 
@@ -16,6 +17,10 @@ export const getQueryClient = () => {
 			},
 		},
 		mutationCache: new MutationCache({
+			// A plan limit or feature the plan lacks, wherever it came from, explains itself the same way.
+			onError: (error) => {
+				openPlanDialogForError(error);
+			},
 			onSettled: (_1, _2, _3, _4, _5, context) => {
 				if (context?.meta?.noInvalidate) return;
 				void queryClient.invalidateQueries({

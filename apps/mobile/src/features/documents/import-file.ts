@@ -1,9 +1,13 @@
+import type { Template } from "@rezumi/schema/templates";
 import type { DocumentPickerAsset } from "expo-document-picker";
 import { t } from "@lingui/core/macro";
+import { ORPCError } from "@orpc/client";
 import { File } from "expo-file-system";
 import { coverLetterDocumentSchema } from "@rezumi/schema/cover-letter/data";
+import { templateSchema } from "@rezumi/schema/templates";
 import { client, rest, SessionChangedError } from "@/api/client";
 import { getAccountScope } from "@/auth/session";
+import { describePlanProblem, getPlanProblem, showPlanAlert } from "@/features/billing/plan-alert";
 
 export type ImportFormat =
 	| "REACTIVE_RESUME"
@@ -13,7 +17,23 @@ export type ImportFormat =
 	| "PDF"
 	| "DOCX"
 	| "LETTER";
-export type ImportedDocument = { id: string; type: "resume" | "letter" };
+export type ImportedDocument = {
+	id: string;
+	type: "resume" | "letter";
+	/** The file's own design when the app could read it, so the screen can say what the plan changed. */
+	design?: ImportedDesign | undefined;
+};
+
+type ImportedDesign = { template: Template; stylesheet?: { source: { text: string } } | undefined };
+
+/** A Rezumi JSON file's design, when it has one. */
+function designOf(value: unknown): ImportedDesign | undefined {
+	const metadata = (value as { metadata?: { template?: unknown; stylesheet?: unknown } } | null)?.metadata;
+	const template = templateSchema.safeParse(metadata?.template);
+	if (!template.success) return undefined;
+	const text = (metadata?.stylesheet as { source?: { text?: unknown } } | undefined)?.source?.text;
+	return { template: template.data, ...(typeof text === "string" ? { stylesheet: { source: { text } } } : {}) };
+}
 
 export class ImportError extends Error {}
 
@@ -82,7 +102,7 @@ export async function importDocument(
 		if (!parsed.success) throw new ImportError(t`This cover letter file isn't valid.`);
 		const letter = await client.coverLetters.import({ document: parsed.data }, options);
 		assertCurrent();
-		return { id: letter.id, type: "letter" };
+		return { id: letter.id, type: "letter", design: parsed.data.style.metadata };
 	}
 	if (format === "DOCX" || (format === "PDF" && aiPdf)) {
 		if (!aiAvailable)
@@ -99,7 +119,7 @@ export async function importDocument(
 		assertCurrent();
 		const id = await client.resume.import({ data }, options);
 		assertCurrent();
-		return { id, type: "resume" };
+		return { id, type: "resume", design: data.metadata };
 	}
 	const body = new FormData();
 	if (json && typeof json === "object" && "data" in json && !("sections" in json) && !("metadata" in json)) {
@@ -113,6 +133,16 @@ export async function importDocument(
 		if (response.status === 401) throw new ImportError(t`Your session expired. Sign in again.`);
 		if (response.status === 413) throw new ImportError(t`File is too large. Choose a file up to 10 MB.`);
 		if (response.status === 429) throw new ImportError(t`Too many requests. Try again later.`);
+		if (response.status === 403) {
+			// A plan limit: explain it like any other plan refusal.
+			const body = (await response.json().catch(() => null)) as { code?: unknown; data?: unknown } | null;
+			const problem =
+				typeof body?.code === "string" ? getPlanProblem(new ORPCError(body.code, { data: body.data })) : null;
+			if (problem) {
+				showPlanAlert(problem);
+				throw new ImportError(describePlanProblem(problem).title);
+			}
+		}
 		throw new ImportError(
 			t`Couldn't import this file. Check the selected format. PDFs need a readable text layer; account archives must be extracted first.`,
 		);
@@ -121,5 +151,9 @@ export async function importDocument(
 	assertCurrent();
 	if (typeof id !== "string" || !id)
 		throw new ImportError(t`The server returned an invalid import result. Refresh Documents before retrying.`);
-	return { id, type: "resume" };
+	return {
+		id,
+		type: "resume",
+		design: designOf(json && typeof json === "object" && "data" in json ? json.data : json),
+	};
 }

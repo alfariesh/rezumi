@@ -287,6 +287,11 @@ msgstr "{0, plural, one {# daqiqa oldin boshlandi} other {# daqiqa oldin boshlan
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {# ta hujjat uchun teglar} other {# ta hujjat uchun teglar}}"
 
+#. placeholder {0}: requested.coverLetters
+#: src/features/billing/plan.ts
+msgid "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+msgstr ""
+
 #. placeholder {0}: steps.length
 #: src/features/assistant/conversation.tsx
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
@@ -350,6 +355,11 @@ msgstr "{0} soat"
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{1} bo'yicha {0} — sizning vaqt mintaqangizda ({preferredZone}) {2}."
 
+#. placeholder {0}: usage.used
+#: src/features/billing/plan-page.tsx
+msgid "{0} in use"
+msgstr ""
+
 #. placeholder {0}: interviewKindOf(upcoming.kind)?.label ?? ""
 #. placeholder {0}: kind?.label ?? entry.kind
 #: src/features/applications/components/detail/activity.tsx
@@ -377,6 +387,12 @@ msgstr "{0} daq."
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} ko'proq"
+
+#. placeholder {0}: usage.used
+#. placeholder {1}: usage.max
+#: src/features/billing/plan-page.tsx
+msgid "{0} of {1}"
+msgstr ""
 
 #. placeholder {0}: report.passedChecks
 #. placeholder {1}: report.applicableChecks
@@ -662,6 +678,10 @@ msgstr "{monthCount, plural, =0 {Suhbatlar yo'q} one {# ta suhbat} other {# ta s
 msgid "{name} added to page 1"
 msgstr "{name} 1-sahifaga qo'shildi"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} javob bermadi. Hech narsa o'zgarmadi; qayta urinib ko'ring."
@@ -669,6 +689,10 @@ msgstr "{name} javob bermadi. Hech narsa o'zgarmadi; qayta urinib ko'ring."
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} {columns} ustunlariga bo'lingan"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't in your plan, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} moved to the main column"
@@ -1119,6 +1143,19 @@ msgstr "Harakatlar"
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Faol"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1742,6 +1779,14 @@ msgstr "Bu ish haqida eslash kerak bo'lgan hamma narsa"
 msgid "Anywhere"
 msgstr "Hamma joyda"
 
+#: src/features/billing/plan.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
@@ -1753,6 +1798,10 @@ msgstr "API kaliti"
 #: src/features/settings/ai/api-keys.tsx
 msgid "API keys"
 msgstr "API kalitlari"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "App"
@@ -2629,6 +2678,10 @@ msgstr "Taklifni tanlang"
 msgid "Choose another file"
 msgstr "Boshqa faylni tanlang"
 
+#: src/features/billing/plan.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "Rangni tanlang"
@@ -2710,6 +2763,7 @@ msgstr "Mijoz identifikatori"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2799,6 +2853,10 @@ msgstr "Ustunlar"
 msgid "Columns can scramble the order text is read in."
 msgstr "Ustunlar matnni o'qish tartibini shifrlashi mumkin."
 
+#: src/features/homepage/pricing.tsx
+msgid "Coming soon"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "Yaqinda"
@@ -2843,6 +2901,10 @@ msgstr "Nima yaxshilanganini ko'rish uchun urinishlarni solishtiring. Mashq savo
 #: src/features/career/workspace/shell.tsx
 msgid "Compare offers"
 msgstr "Takliflarni solishtirish"
+
+#: src/features/billing/plan-page.tsx
+msgid "Compare plans"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
@@ -2987,6 +3049,10 @@ msgstr "Ulanishlar nutq uchun alohida haq oladi va hisobingizdagi tokenlardan fo
 #: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "Aloqa"
+
+#: src/routes/dashboard/settings/route.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
@@ -3919,6 +3985,7 @@ msgstr "Maxsus bo'lim"
 msgid "Custom sections"
 msgstr "Maxsus boʻlimlar"
 
+#: src/features/billing/plan-page.tsx
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "Maxsus uslublar"
@@ -3930,6 +3997,18 @@ msgstr ""
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "Maxsus uslublar qo'llanilmaydi. Ularni qo'llash uchun ushbu xatolarni tuzating:"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Czech"
@@ -4284,6 +4363,7 @@ msgstr "Hujjat menyusi: {name}"
 msgid "Document type"
 msgstr "Hujjat turi"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4298,6 +4378,10 @@ msgstr "Hujjatlar 30 kundan keyin butunlay o'chiriladi."
 #: src/features/career/workspace/shell.tsx
 msgid "Documents for this job"
 msgstr "Ushbu ish uchun hujjatlar"
+
+#: src/features/billing/plan-page.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
@@ -4353,6 +4437,10 @@ msgstr "{name} PDF namunasini yuklab oling"
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download & history"
 msgstr "Yuklab olish va tarix"
+
+#: src/features/billing/plan.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
+msgstr ""
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Download application details, contacts, notes, and timeline history as CSV."
@@ -4877,6 +4965,10 @@ msgstr "Har bir yozuvda sanalar shakl tizimlarida o'qiladi, tartibda va kelajakd
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Har bir rol nima qilganingizni aytadi. Soʻzlarni yozish boʻyicha fikrlar “Yozuv” sahifasida mavjud."
 
+#: src/features/billing/plan-page.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/homepage/templates.tsx
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr ""
@@ -5313,6 +5405,7 @@ msgstr "Bugun topildi"
 msgid "Found yesterday"
 msgstr "Kecha topildi"
 
+#: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -5345,6 +5438,12 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "Kimdan"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: src/features/billing/plan-page.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -5889,6 +5988,10 @@ msgstr "Tanlangan qatorni yaxshilang"
 msgid "Improving…"
 msgstr "Yaxshilanmoqda…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Included"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "Ikki qator birlashib ketmasligi uchun qatorlar oraligʻini oshiring."
@@ -6391,6 +6494,10 @@ msgstr ""
 msgid "Leads with why you fit"
 msgstr "Siz nima uchun mos ekanligingizni aytadi"
 
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Learn more"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Learning budget"
 msgstr "O'qish byudjeti"
@@ -6527,6 +6634,11 @@ msgstr "Daraja"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "{level} daraja, jami 5 ta"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Licenses"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6746,6 +6858,10 @@ msgstr "Uslublar jadvali muharriri yuklanmoqda…"
 msgid "Loading workspace…"
 msgstr "Ish maydoni yuklanmoqda…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Loading your plan…"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -6809,8 +6925,8 @@ msgid "Lower the design sheet"
 msgstr "Dizayn varag'ini pastga tushiring"
 
 #: src/features/resume/share/web-page-text.ts
-msgid "Made with Rezumi, free and open source"
-msgstr "Rezumi bilan yaratilgan, bepul va ochiq manba"
+msgid "Made with Rezumi"
+msgstr ""
 
 #. Layout editor column label for the primary content area
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -7504,6 +7620,10 @@ msgstr "Elektron pochta manzili yo'q"
 msgid "No email address was found."
 msgstr "Elektron pochta manzili topilmadi."
 
+#: src/features/billing/plan-page.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "No evidence yet"
 msgstr "Hali dalil yo'q"
@@ -7596,6 +7716,14 @@ msgstr "Rezyume yo'q"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "Hali rezyumelar yo'q."
+
+#: src/features/billing/plan.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7711,6 +7839,11 @@ msgstr "Hali hech bir taklifda yo'q"
 msgid "Not in the offer · ask {company}"
 msgstr "Taklifda yo'q · {company} kompaniyasidan so'rang"
 
+#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/share/download-tab.tsx
+msgid "Not in your plan"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "Rezyumeingizda yoʻq"
@@ -7718,6 +7851,10 @@ msgstr "Rezyumeingizda yoʻq"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "Rezyumeda yo'q · agar rost bo'lsa, qo'shing"
+
+#: src/features/billing/plan-page.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Not now"
@@ -8478,6 +8615,12 @@ msgstr "Oddiy matn (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Sarlavhalar bilan oddiy matn. Ishga ariza shakllari va eslatmalarga joylashtiring."
 
+#: src/features/billing/plan-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan again"
 msgstr "Qayta rejalashtirish"
@@ -8494,8 +8637,16 @@ msgstr "Nimani so'rashni rejalashtirish"
 msgid "Planning your week"
 msgstr "Haftangiz rejalashtirilmoqda"
 
+#: src/features/billing/plan-page.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -8748,6 +8899,7 @@ msgid "Privacy"
 msgstr "Maxfiylik"
 
 #: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "Maxfiylik siyosati"
 
@@ -9243,6 +9395,11 @@ msgstr "Brifingni 24 soat oldin yangilash"
 msgid "Refresh the briefing on the morning of"
 msgstr "Brifingni o'sha kuni ertalab yangilash"
 
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
 msgstr "OlaCV'da ro'yxatdan o'tkazish"
@@ -9467,10 +9624,6 @@ msgstr "Javob"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "Javob nusxalandi"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Report a bug"
-msgstr "Xato haqida xabar berish"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -9721,6 +9874,10 @@ msgstr "Rezumi {__APP_VERSION__} · MIT"
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
 msgstr ""
 
 #: src/features/homepage/section-nav.tsx
@@ -10227,6 +10384,11 @@ msgstr "Quyida qarang"
 
 #: src/features/homepage/introduction.tsx
 msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/billing/plan-dialog.tsx
+#: src/features/settings/ai/api-keys.tsx
+msgid "See plans"
 msgstr ""
 
 #: src/features/homepage/hero.tsx
@@ -10828,7 +10990,6 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Source"
 msgstr "Manba"
 
@@ -11084,6 +11245,10 @@ msgstr "Ustidan chizilgan"
 msgid "Stronger verb"
 msgstr "Kuchliroq fe'l"
 
+#: src/features/billing/plan.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "Uslublar jadvali muharriri"
@@ -11337,6 +11502,11 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "Ish e'lonidan olingan shartlar"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Terms of service"
+msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Test"
@@ -11757,6 +11927,11 @@ msgstr "Birinchi sahifaning yuqori qismi ismga oʻxshamaydi."
 msgid "Theme"
 msgstr "Mavzu"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: src/features/billing/plan-page.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Then enter the 6-digit code from the app."
 msgstr "So'ng ilovadagi 6 xonali kodni kiriting."
@@ -12007,6 +12182,10 @@ msgstr "Bu bosqich ixtiyoriy, ammo tavsiya etiladi."
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Bu hikoya mavjud emas yoki o'chirilgan faktlardan foydalanadi."
 
+#: src/features/billing/plan.ts
+msgid "This template isn't in your plan"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Bu vaqt tanlangan vaqt mintaqasida mavjud emas. Boshqa vaqtni tanlang."
@@ -12153,10 +12332,6 @@ msgstr "{model} bilan transkripsiya qilinmoqda…"
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transkript nusxalandi"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Translate"
-msgstr "Tarjima"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -13069,6 +13244,10 @@ msgstr "Siz yuborgan · {0}"
 msgid "What you're looking for"
 msgstr "Nimani qidiryapsiz"
 
+#: src/features/billing/plan-page.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "What's it for?"
 msgstr "Bu nima uchun?"
@@ -13076,6 +13255,10 @@ msgstr "Bu nima uchun?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "Nima ishlayapti"
+
+#: src/features/billing/plan-page.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
@@ -13158,12 +13341,21 @@ msgstr "Kengligi"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "Mening rezyumem abituriyentlarni kuzatish tizimlaridan o'tib ketadimi?"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "Birisiz, siz oluvchini o'zingiz to'ldirasiz va loyihalashda faqat sizning rezyumeingizdan foydalaniladi."
 
+#: src/features/billing/plan-page.tsx
 #: src/features/homepage/plans.ts
 msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13321,6 +13513,10 @@ msgstr "30 tagacha ariza savolini saqlashingiz mumkin."
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "Endi bu kirish kaliti bilan kira olmaysiz."
+
+#: src/features/billing/plan.ts
+msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
+msgstr ""
 
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
@@ -13573,6 +13769,14 @@ msgstr "Kirish so'zingiz, olib boriladigan hikoyalar va beriladigan savollar. Qo
 msgid "Your own endpoint"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
 msgstr "Sizning telefon raqamingiz rezyumeda o'zgartirilgan. Xat ham yangilandi."
@@ -13580,6 +13784,18 @@ msgstr "Sizning telefon raqamingiz rezyumeda o'zgartirilgan. Xat ham yangilandi.
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Telefon raqamingiz odatiy boʻlmagan shaklda yozilgan."
+
+#: src/features/billing/plan-page.tsx
+msgid "Your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"

@@ -2,6 +2,7 @@ import { useLingui } from "@lingui/react/macro";
 import { Image } from "expo-image";
 import { openBrowserAsync } from "expo-web-browser";
 import { View } from "react-native";
+import { LEGAL_URLS } from "@rezumi/schema/billing";
 import { Button, Text, showToast, useTheme } from "@/ui";
 
 type AuthHeaderProps = {
@@ -45,7 +46,7 @@ export function PrivacyPolicyLink() {
 				label={t`Privacy policy`}
 				variant="link"
 				onPress={() => {
-					void openBrowserAsync("https://docs.rezumi.app/legal/privacy-policy").catch(() =>
+					void openBrowserAsync(LEGAL_URLS.privacy).catch(() =>
 						showToast({ message: t`Couldn't open the browser. Try again.` }),
 					);
 				}}

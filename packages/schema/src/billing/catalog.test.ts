@@ -4,7 +4,9 @@ import {
 	BILLING_CATALOG_VERSION,
 	FREE_TEMPLATES,
 	getPlan,
+	isFreeTemplate,
 	isPaidPlan,
+	PLAN_FEATURE_KEYS,
 	paidPlanIdSchema,
 	planIdSchema,
 	PLANS,
@@ -16,6 +18,17 @@ describe("billing catalog", () => {
 		for (const id of FREE_TEMPLATES) expect(templateSchema.options).toContain(id);
 		expect(new Set(FREE_TEMPLATES).size).toBe(FREE_TEMPLATES.length);
 		expect(FREE_TEMPLATES.length).toBeLessThan(templateSchema.options.length);
+	});
+
+	it("tells free templates from premium ones", () => {
+		for (const id of templateSchema.options)
+			expect(isFreeTemplate(id)).toBe((FREE_TEMPLATES as readonly string[]).includes(id));
+		expect(isFreeTemplate("onyx")).toBe(true);
+		expect(isFreeTemplate("pikachu")).toBe(false);
+	});
+
+	it("lists every plan feature once", () => {
+		expect(PLAN_FEATURE_KEYS.toSorted()).toEqual(Object.keys(PLANS.free.features).toSorted());
 	});
 
 	it("defines every plan under its own id, ranked free < plus < pro-ai", () => {

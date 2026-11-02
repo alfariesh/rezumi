@@ -14,6 +14,7 @@ import { safeFileName } from "./model";
 import { client } from "@/api/client";
 import { useLetterStore, useResumeStore } from "@/draft";
 import { useApplications } from "@/features/applications/queries";
+import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { routes } from "@/routes";
 import { Banner, Button, ListRow, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui";
 
@@ -33,7 +34,11 @@ export function DownloadTab({ resume, offline }: DownloadProps) {
 	const [busy, setBusy] = useState(false);
 	const active = useRef(false);
 	const [error, setError] = useState<string | null>(null);
-	const formats: { id: ExportFormat; label: string; description: string }[] = [
+	const plan = usePlan();
+	// Word and ODT need the plan's feature: Android shows them locked, iOS lists only what the account can use.
+	const wordLocked = !hasPlanFeature(plan, "wordOdtExport");
+	const isWord = (id: ExportFormat) => id === "docx" || id === "odt";
+	const allFormats: { id: ExportFormat; label: string; description: string }[] = [
 		{
 			id: "pdf",
 			label: t`PDF · Best for applying`,
@@ -52,6 +57,7 @@ export function DownloadTab({ resume, offline }: DownloadProps) {
 			description: t`Complete data backup. Imports back into Rezumi or JSON Resume tools.`,
 		},
 	];
+	const formats = wordLocked && !canShowPlans() ? allFormats.filter((item) => !isWord(item.id)) : allFormats;
 	const download = async (chosen: ExportFormat, print = false, includeLetter = withLetter) => {
 		if (active.current) return;
 		active.current = true;
@@ -144,11 +150,13 @@ export function DownloadTab({ resume, offline }: DownloadProps) {
 				placeholder={formats.find((item) => item.id === format)?.label}
 				options={(offline ? formats.filter((item) => item.id === "pdf") : formats).map((item) => ({
 					value: item.id,
-					label: item.label,
+					label: wordLocked && isWord(item.id) ? `${item.label} · Plus` : item.label,
 					description: `${item.description} (.${item.id})`,
+					...(wordLocked && isWord(item.id) ? { icon: "lock" as const } : {}),
 				}))}
 				disabled={busy}
 				onChange={(value) => {
+					if (wordLocked && isWord(value)) return showPlanAlert({ kind: "feature", feature: "wordOdtExport" });
 					setFormat(value);
 					setError(null);
 				}}

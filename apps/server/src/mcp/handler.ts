@@ -2,6 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { randomUUID } from "node:crypto";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
 import { ORPCError } from "@orpc/server";
+import { assertAutomationAccess } from "@rezumi/api/features/billing/automation";
 import { consumeMcpRequestLimit, consumeMcpUserLimit } from "@rezumi/api/features/mcp/transport";
 import { getTrustedOrigins } from "@rezumi/auth/trusted-origins";
 import { env } from "@rezumi/env/server";
@@ -34,6 +35,8 @@ export async function handleMcp(request: Request, trustedClient = "unknown") {
 		}
 		await consumeMcpRequestLimit(trustedClient);
 		const authentication = await authenticateRequest(request);
+		// MCP clients are third-party apps: they need a plan with API access, checked once for the whole request.
+		await assertAutomationAccess(authentication);
 		await consumeMcpUserLimit(authentication.user.id);
 		const resHeaders = new Headers(responseHeaders);
 		server = createMcpServer(request, authentication, trustedClient, resHeaders);
@@ -53,6 +56,7 @@ export async function handleMcp(request: Request, trustedClient = "unknown") {
 				"WWW-Authenticate": `Bearer resource_metadata="${env.APP_URL}/.well-known/oauth-protected-resource"`,
 			});
 		}
+		if (error instanceof ORPCError && error.code === "PLAN_FEATURE_REQUIRED") return errorResponse(403, error.message);
 		if (error instanceof ORPCError && error.code === "TOO_MANY_REQUESTS") {
 			const reset = (error.data as { reset?: number } | undefined)?.reset;
 			return errorResponse(429, "Too many MCP requests. Retry after the rate limit resets.", {

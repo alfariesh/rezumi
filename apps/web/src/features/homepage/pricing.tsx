@@ -1,5 +1,5 @@
 import type { Plan } from "./plans";
-import { buttonVariants, Chip } from "@heroui/react";
+import { Button, buttonVariants, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
@@ -34,9 +34,9 @@ function PlanPrice({ price, featured }: PlanPriceProps) {
 	);
 }
 
-type PlanCardProps = { plan: Plan };
+type PlanCardProps = { plan: Plan; billingEnabled: boolean };
 
-function PlanCard({ plan }: PlanCardProps) {
+function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 	const featured = plan.featured === true;
 	const period = plan.price === 0 ? t`No card needed` : t`For 30 days, no automatic renewal`;
 
@@ -80,20 +80,28 @@ function PlanCard({ plan }: PlanCardProps) {
 						</li>
 					))}
 				</ul>
-				<Link
-					to="/auth/register"
-					search={plan.id === "free" ? {} : { plan: plan.id }}
-					className={cn(buttonVariants({ variant: featured ? "secondary" : "primary", fullWidth: true }), "mt-8")}
-				>
-					{plan.cta}
-				</Link>
+				{plan.id !== "free" && !billingEnabled ? (
+					<Button isDisabled fullWidth variant={featured ? "secondary" : "primary"} className="mt-8">
+						{t`Coming soon`}
+					</Button>
+				) : (
+					<Link
+						to="/auth/register"
+						search={plan.id === "free" ? {} : { plan: plan.id }}
+						className={cn(buttonVariants({ variant: featured ? "secondary" : "primary", fullWidth: true }), "mt-8")}
+					>
+						{plan.cta}
+					</Link>
+				)}
 			</div>
 		</div>
 	);
 }
 
 /** 04 Pricing: three plans in one panel, Pro AI raised on the accent. Every price is a 30-day pass in Rupiah. */
-export function Pricing() {
+type PricingProps = { billingEnabled?: boolean };
+
+export function Pricing({ billingEnabled = false }: PricingProps) {
 	const plans = getPlans();
 
 	return (
@@ -108,12 +116,15 @@ export function Pricing() {
 				<p className="mt-4 max-w-2xl text-lg text-pretty text-muted">
 					{t`Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own.`}
 				</p>
+				{!billingEnabled && (
+					<p className="mt-3 text-sm text-muted">{t`Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet.`}</p>
+				)}
 			</Container>
 
 			<div className="mx-auto mt-16 max-w-6xl lg:px-8">
 				<div className="grid bg-surface-secondary sm:p-6 md:rounded-[3rem] lg:grid-cols-3 lg:gap-4 lg:p-10">
 					{plans.map((plan) => (
-						<PlanCard key={plan.id} plan={plan} />
+						<PlanCard key={plan.id} plan={plan} billingEnabled={billingEnabled} />
 					))}
 				</div>
 				<p className="mx-auto mt-6 max-w-3xl px-4 text-center text-sm text-pretty text-muted">

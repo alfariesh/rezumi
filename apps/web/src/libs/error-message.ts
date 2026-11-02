@@ -1,10 +1,14 @@
 import { plural, t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { toast } from "@rezumi/ui/components/toast";
+import { describePlanProblem, getPlanProblem } from "@/features/billing/plan";
 
 export function getReadableErrorMessage(error: unknown, fallback: string): string {
 	// A font download failed (see `assertPdfFonts`).
 	if (error instanceof Error && error.cause === "pdf-text-loss") return t`Fonts could not be loaded. Try again.`;
+	// Plan refusals open their own dialog; a toast beside it names the problem in the user's language.
+	const planProblem = getPlanProblem(error);
+	if (planProblem) return describePlanProblem(planProblem).title;
 	if (error instanceof ORPCError && error.code === "BAD_REQUEST") {
 		const data: unknown = error.data;
 		if (typeof data === "object" && data !== null && "issues" in data && Array.isArray(data.issues)) {
@@ -39,7 +43,7 @@ export function getOrpcErrorMessage(
 		allowServerMessage?: boolean;
 	},
 ): string {
-	if (!(error instanceof ORPCError)) return getReadableErrorMessage(error, options.fallback);
+	if (!(error instanceof ORPCError) || getPlanProblem(error)) return getReadableErrorMessage(error, options.fallback);
 	if (error.code === "AI_CREDENTIAL_DECRYPTION_FAILED")
 		return t`The saved provider key can't be decrypted. Enter the key again in Settings → AI providers.`;
 

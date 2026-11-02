@@ -287,6 +287,11 @@ msgstr "{0, plural, other {Dimulai # menit lalu}}"
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {Tag untuk # dokumen} other {Tag untuk # dokumen}}"
 
+#. placeholder {0}: requested.coverLetters
+#: src/features/billing/plan.ts
+msgid "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+msgstr "{0, plural, other {File ini berisi satu CV dan # surat lamaran, dan semuanya disimpan bersama.}}"
+
 #. placeholder {0}: steps.length
 #: src/features/assistant/conversation.tsx
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
@@ -350,6 +355,11 @@ msgstr "{0} j"
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{0} di {1} adalah {2} di zona waktu Anda ({preferredZone})."
 
+#. placeholder {0}: usage.used
+#: src/features/billing/plan-page.tsx
+msgid "{0} in use"
+msgstr "{0} terpakai"
+
 #. placeholder {0}: interviewKindOf(upcoming.kind)?.label ?? ""
 #. placeholder {0}: kind?.label ?? entry.kind
 #: src/features/applications/components/detail/activity.tsx
@@ -377,6 +387,12 @@ msgstr "{0} mnt"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} lebih banyak"
+
+#. placeholder {0}: usage.used
+#. placeholder {1}: usage.max
+#: src/features/billing/plan-page.tsx
+msgid "{0} of {1}"
+msgstr "{0} dari {1}"
 
 #. placeholder {0}: report.passedChecks
 #. placeholder {1}: report.applicableChecks
@@ -662,6 +678,10 @@ msgstr "{monthCount, plural, =0 {Tidak ada wawancara} one {# wawancara} other {#
 msgid "{name} added to page 1"
 msgstr "{name} ditambahkan ke halaman 1"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr "{name} dan gaya kustom tidak termasuk dalam paketmu, jadi dokumen hasil impor memakai {free} tanpa gaya dari file."
+
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} tidak merespons. Tidak ada yang diubah; coba lagi."
@@ -669,6 +689,10 @@ msgstr "{name} tidak merespons. Tidak ada yang diubah; coba lagi."
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} dibagi menjadi kolom {columns}"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't in your plan, so the imported document uses {free}."
+msgstr "{name} tidak termasuk dalam paketmu, jadi dokumen hasil impor memakai {free}."
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} moved to the main column"
@@ -730,7 +754,7 @@ msgstr "{pendingOnPage, plural, one {# usulan edit di halaman ini · tidak ada p
 
 #: src/features/homepage/plans.ts
 msgid "{proCredits} AI credits per purchase"
-msgstr ""
+msgstr "{proCredits} kredit AI per pembelian"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
@@ -1119,6 +1143,19 @@ msgstr "Tindakan"
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Aktif"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active cover letters"
+msgstr "Surat lamaran aktif"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active resumes"
+msgstr "CV aktif"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Active until {0}"
+msgstr "Berlaku sampai {0}"
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1742,6 +1779,14 @@ msgstr "Apa pun yang perlu diingat tentang pekerjaan ini"
 msgid "Anywhere"
 msgstr "Dimanapun"
 
+#: src/features/billing/plan.ts
+msgid "API and MCP access isn't in your plan"
+msgstr "Akses API dan MCP tidak termasuk dalam paketmu"
+
+#: src/features/billing/plan-page.tsx
+msgid "API and MCP for other apps"
+msgstr "API dan MCP untuk aplikasi lain"
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
@@ -1753,6 +1798,10 @@ msgstr "Kunci API"
 #: src/features/settings/ai/api-keys.tsx
 msgid "API keys"
 msgstr "Kunci API"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr "API key membutuhkan paket Plus atau Pro AI"
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "App"
@@ -2629,6 +2678,10 @@ msgstr "Pilih penawaran"
 msgid "Choose another file"
 msgstr "Pilih file lain"
 
+#: src/features/billing/plan.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr "Pilih salah satu font di Desain sebagai gantinya."
+
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "Pilih warna"
@@ -2710,6 +2763,7 @@ msgstr "ID Klien"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2799,6 +2853,10 @@ msgstr "Kolom"
 msgid "Columns can scramble the order text is read in."
 msgstr "Kolom dapat mengacak urutan teks dibaca."
 
+#: src/features/homepage/pricing.tsx
+msgid "Coming soon"
+msgstr "Segera tersedia"
+
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "Akan datang"
@@ -2843,6 +2901,10 @@ msgstr "Bandingkan percobaan untuk melihat apa yang membaik. Pertanyaan latihan 
 #: src/features/career/workspace/shell.tsx
 msgid "Compare offers"
 msgstr "Bandingkan penawaran"
+
+#: src/features/billing/plan-page.tsx
+msgid "Compare plans"
+msgstr "Bandingkan paket"
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
@@ -2987,6 +3049,10 @@ msgstr "Koneksi menagih ucapan secara terpisah dan mungkin memakai token di akun
 #: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "Kontak"
+
+#: src/routes/dashboard/settings/route.tsx
+msgid "Contact & complaints"
+msgstr "Kontak & Pengaduan"
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
@@ -3919,6 +3985,7 @@ msgstr "Bagian khusus"
 msgid "Custom sections"
 msgstr "Bagian kustom"
 
+#: src/features/billing/plan-page.tsx
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "Gaya kustom"
@@ -3930,6 +3997,18 @@ msgstr "Gaya kustom dan font Anda sendiri"
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "Gaya khusus tidak diterapkan. Perbaiki kesalahan ini untuk menerapkannya:"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan"
+msgstr "Gaya kustom tidak termasuk dalam paketmu"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+msgstr "Gaya kustom tidak termasuk dalam paketmu, jadi dokumen hasil impor tidak memakai gaya dari file."
+
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr "Gaya kustom tidak termasuk dalam paketmu. Gaya yang sudah tersimpan tetap tampil di halaman."
 
 #: src/libs/locale.ts
 msgid "Czech"
@@ -4284,6 +4363,7 @@ msgstr "Menu dokumen: {name}"
 msgid "Document type"
 msgstr "Jenis dokumen"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4298,6 +4378,10 @@ msgstr "Dokumen dihapus secara permanen setelah 30 hari."
 #: src/features/career/workspace/shell.tsx
 msgid "Documents for this job"
 msgstr "Dokumen untuk pekerjaan ini"
+
+#: src/features/billing/plan-page.tsx
+msgid "Documents in Trash don't count."
+msgstr "Dokumen di Sampah tidak dihitung."
 
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
@@ -4353,6 +4437,10 @@ msgstr "Unduh contoh PDF {name}"
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download & history"
 msgstr "Unduhan & riwayat"
+
+#: src/features/billing/plan.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
+msgstr "Unduh PDF sebagai gantinya: desainmu tetap persis sama. Unduhan Markdown dan JSON juga termasuk."
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Download application details, contacts, notes, and timeline history as CSV."
@@ -4877,6 +4965,10 @@ msgstr "Setiap entri memiliki tanggal dalam sistem formulir yang dibaca, berurut
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Setiap peran menunjukkan apa yang Anda lakukan. Pendapat tentang susunan kata langsung di tab Menulis."
 
+#: src/features/billing/plan-page.tsx
+msgid "Every template"
+msgstr "Semua template"
+
 #: src/features/homepage/templates.tsx
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr "Setiap template menghasilkan PDF berbasis teks yang bisa dibaca sistem ATS. Mulai dari yang gratis dan ganti kapan saja; isi CV Anda tetap sama."
@@ -5313,6 +5405,7 @@ msgstr "Ditemukan hari ini"
 msgid "Found yesterday"
 msgstr "Ditemukan kemarin"
 
+#: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -5345,6 +5438,12 @@ msgstr "Fresh graduate, Informatika"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "Dari"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: src/features/billing/plan-page.tsx
+msgid "From {0} until {1}"
+msgstr "Dari {0} sampai {1}"
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -5889,6 +5988,10 @@ msgstr "Tingkatkan garis yang dipilih"
 msgid "Improving…"
 msgstr "Meningkatkan…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Included"
+msgstr "Termasuk"
+
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "Tambah spasi antar baris agar dua baris tidak menyatu menjadi satu."
@@ -6150,7 +6253,7 @@ msgstr "Alur pencarian kerja"
 
 #: src/features/homepage/plans.ts
 msgid "Job tracker with board, calendar and insights"
-msgstr ""
+msgstr "Pelacak lamaran dengan papan, kalender, dan insight"
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Jobs"
@@ -6391,6 +6494,10 @@ msgstr "Lead Designer, Northwind"
 msgid "Leads with why you fit"
 msgstr "Pimpin dengan alasan mengapa Anda cocok"
 
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Learn more"
+msgstr "Selengkapnya"
+
 #: src/features/career/offers.tsx
 msgid "Learning budget"
 msgstr "Anggaran belajar"
@@ -6527,6 +6634,11 @@ msgstr "Tingkat"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "Tingkat {level} dari 5"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Licenses"
+msgstr "Lisensi"
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6746,6 +6858,10 @@ msgstr "Memuat editor stylesheet…"
 msgid "Loading workspace…"
 msgstr "Memuat ruang kerja…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Loading your plan…"
+msgstr "Memuat paketmu…"
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -6809,8 +6925,8 @@ msgid "Lower the design sheet"
 msgstr "Turunkan lembar desain"
 
 #: src/features/resume/share/web-page-text.ts
-msgid "Made with Rezumi, free and open source"
-msgstr "Dibuat dengan Rezumi, gratis dan open source"
+msgid "Made with Rezumi"
+msgstr "Dibuat dengan Rezumi"
 
 #. Layout editor column label for the primary content area
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -7504,6 +7620,10 @@ msgstr "Tidak ada alamat email"
 msgid "No email address was found."
 msgstr "Tidak ditemukan alamat email."
 
+#: src/features/billing/plan-page.tsx
+msgid "No end date"
+msgstr "Tanpa tanggal berakhir"
+
 #: src/features/career/shared.tsx
 msgid "No evidence yet"
 msgstr "Belum ada bukti"
@@ -7596,6 +7716,14 @@ msgstr "Tidak ada resume"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "Belum ada resume."
+
+#: src/features/billing/plan.ts
+msgid "No room for another cover letter"
+msgstr "Tidak ada ruang untuk surat lamaran baru"
+
+#: src/features/billing/plan.ts
+msgid "No room for another resume"
+msgstr "Tidak ada ruang untuk CV baru"
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7711,6 +7839,11 @@ msgstr "Belum ada di kedua penawaran"
 msgid "Not in the offer · ask {company}"
 msgstr "Tidak ada di penawaran · tanyakan {company}"
 
+#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/share/download-tab.tsx
+msgid "Not in your plan"
+msgstr "Tidak termasuk dalam paketmu"
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "Tidak ada dalam resume Anda"
@@ -7718,6 +7851,10 @@ msgstr "Tidak ada dalam resume Anda"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "Tidak ada dalam resume Anda · tambahkan hanya jika benar"
+
+#: src/features/billing/plan-page.tsx
+msgid "Not included"
+msgstr "Tidak termasuk"
 
 #: src/features/career/shared.tsx
 msgid "Not now"
@@ -8478,6 +8615,12 @@ msgstr "Teks biasa (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Teks biasa dengan judul. Tempelkan ke formulir dan catatan lamaran pekerjaan."
 
+#: src/features/billing/plan-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Plan"
+msgstr "Paket"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan again"
 msgstr "Rencanakan ulang"
@@ -8494,9 +8637,17 @@ msgstr "Rencanakan yang perlu ditanyakan"
 msgid "Planning your week"
 msgstr "Merencanakan minggu Anda"
 
+#: src/features/billing/plan-page.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr "Paket belum berlaku untuk akunmu, jadi semua fitur terbuka."
+
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
 msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr "Plus, Pro AI, dan kredit coba segera tersedia. Batas paket berbayar belum aktif."
 
 #: src/libs/locale.ts
 msgid "Polish"
@@ -8748,6 +8899,7 @@ msgid "Privacy"
 msgstr "Privasi"
 
 #: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "Kebijakan privasi"
 
@@ -9243,6 +9395,11 @@ msgstr "Segarkan briefing 24 jam sebelumnya"
 msgid "Refresh the briefing on the morning of"
 msgstr "Segarkan briefing pada pagi harinya"
 
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Refund policy"
+msgstr "Kebijakan Pengembalian Dana"
+
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
 msgstr "Daftarkan di OlaCV"
@@ -9467,10 +9624,6 @@ msgstr "Balasan"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "Balasan disalin"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Report a bug"
-msgstr "Laporkan bug"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -9722,6 +9875,10 @@ msgstr "Rezumi {__APP_VERSION__} · MIT"
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
 msgstr "Rezumi menyimpan seluruh perjalanan mencari kerja Anda di satu tempat: CV, surat lamaran, setiap lamaran, dan interview yang menyusul."
+
+#: src/features/billing/plan.ts
+msgid "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
+msgstr "Rezumi di web dan di ponselmu selalu bisa dipakai. Aplikasi dan asisten lain yang terhubung dengan API key atau OAuth membutuhkan paket berbayar."
 
 #: src/features/homepage/section-nav.tsx
 msgid "Rezumi, back to top"
@@ -10228,6 +10385,11 @@ msgstr "Lihat di bawah"
 #: src/features/homepage/introduction.tsx
 msgid "See exactly what applicant tracking systems read"
 msgstr "Lihat persis apa yang dibaca sistem ATS"
+
+#: src/features/billing/plan-dialog.tsx
+#: src/features/settings/ai/api-keys.tsx
+msgid "See plans"
+msgstr "Lihat paket"
 
 #: src/features/homepage/hero.tsx
 msgid "See pricing"
@@ -10828,7 +10990,6 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Source"
 msgstr "Sumber"
 
@@ -11084,6 +11245,10 @@ msgstr "Coret"
 msgid "Stronger verb"
 msgstr "Kata kerja yang lebih kuat"
 
+#: src/features/billing/plan.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr "Gaya yang sudah tersimpan tetap berlaku. Desain mengatur template, font, warna, dan jarak."
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "Editor lembar gaya"
@@ -11337,6 +11502,11 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "Persyaratan dari postingan pekerjaan"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Terms of service"
+msgstr "Syarat dan Ketentuan"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Test"
@@ -11757,6 +11927,11 @@ msgstr "Bagian atas halaman pertama tidak tampak seperti sebuah nama."
 msgid "Theme"
 msgstr "Tema"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: src/features/billing/plan-page.tsx
+msgid "Then {0}"
+msgstr "Lalu {0}"
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Then enter the 6-digit code from the app."
 msgstr "Lalu masukkan kode 6 digit dari aplikasi."
@@ -12007,6 +12182,10 @@ msgstr "Langkah ini opsional, tetapi direkomendasikan."
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "Cerita ini tidak tersedia atau memakai fakta yang dinonaktifkan."
 
+#: src/features/billing/plan.ts
+msgid "This template isn't in your plan"
+msgstr "Template ini tidak termasuk dalam paketmu"
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "Waktu ini tidak ada di zona waktu yang dipilih. Pilih waktu lain."
@@ -12153,10 +12332,6 @@ msgstr "Mentranskripsi dengan {model}…"
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transkrip disalin"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Translate"
-msgstr "Menerjemahkan"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -13069,6 +13244,10 @@ msgstr "Yang Anda kirim · {0}"
 msgid "What you're looking for"
 msgstr "Yang Anda cari"
 
+#: src/features/billing/plan-page.tsx
+msgid "What's included"
+msgstr "Yang termasuk"
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "What's it for?"
 msgstr "Untuk apa?"
@@ -13076,6 +13255,10 @@ msgstr "Untuk apa?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "Apa yang berhasil"
+
+#: src/features/billing/plan-page.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr "Saat paket berakhir, tidak ada yang dikunci atau dihapus: semua dokumen tetap bisa diedit, dibagikan, dan diunduh sebagai PDF."
 
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
@@ -13158,13 +13341,22 @@ msgstr "Lebar"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "Apakah resume saya akan lolos dari sistem pelacakan pelamar?"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+msgstr "Tanpa paket itu, API dan MCP menolak semua key, jadi aplikasi yang kamu hubungkan belum bisa bekerja. Key yang kamu buat sekarang langsung bekerja setelah paketmu mencakup akses API. Rezumi di web dan di ponselmu selalu bisa dipakai."
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "Tanpanya, Anda mengisi sendiri penerimanya dan penyusunannya hanya menggunakan resume Anda."
 
+#: src/features/billing/plan-page.tsx
 #: src/features/homepage/plans.ts
 msgid "Word and ODT downloads"
 msgstr "Unduh Word dan ODT"
+
+#: src/features/billing/plan.ts
+msgid "Word and ODT downloads aren't in your plan"
+msgstr "Unduhan Word dan ODT tidak termasuk dalam paketmu"
 
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
@@ -13321,6 +13513,10 @@ msgstr "Anda dapat menyimpan hingga 30 pertanyaan lamaran."
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "Anda tidak dapat lagi masuk dengan kunci sandi ini."
+
+#: src/features/billing/plan.ts
+msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
+msgstr "Kamu bisa melihat pratinjau semua template. {free} sudah termasuk, dan dokumen yang sudah memakai template lain tetap memakainya."
 
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
@@ -13573,6 +13769,14 @@ msgstr "Pembuka Anda, cerita yang perlu dibawa, dan pertanyaan yang perlu diajuk
 msgid "Your own endpoint"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own fonts"
+msgstr "Font sendiri"
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan"
+msgstr "Font sendiri tidak termasuk dalam paketmu"
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
 msgstr "Nomor telepon Anda berubah di resume. Surat itu juga diperbarui."
@@ -13580,6 +13784,18 @@ msgstr "Nomor telepon Anda berubah di resume. Surat itu juga diperbarui."
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Nomor telepon Anda ditulis dalam bentuk yang tidak biasa."
+
+#: src/features/billing/plan-page.tsx
+msgid "Your plan"
+msgstr "Paketmu"
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr "Paketmu menyimpan hingga {max} surat lamaran di luar Sampah. Pindahkan yang tidak kamu perlukan ke Sampah untuk memberi ruang; kamu bisa memulihkannya nanti."
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr "Paketmu menyimpan hingga {max} CV di luar Sampah. Pindahkan yang tidak kamu perlukan ke Sampah untuk memberi ruang; kamu bisa memulihkannya nanti."
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"

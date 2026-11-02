@@ -287,6 +287,11 @@ msgstr "{0, plural, other {បានចាប់ផ្តើម # នាទី�
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {ស្លាកសម្រាប់ឯកសារ #} other {ស្លាកសម្រាប់ឯកសារ #}}"
 
+#. placeholder {0}: requested.coverLetters
+#: src/features/billing/plan.ts
+msgid "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+msgstr ""
+
 #. placeholder {0}: steps.length
 #: src/features/assistant/conversation.tsx
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
@@ -350,6 +355,11 @@ msgstr "{0} ម៉ោង"
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{0} នៅ {1} គឺ {2} នៅក្នុងតំបន់ពេលវេលារបស់អ្នក ({preferredZone})។"
 
+#. placeholder {0}: usage.used
+#: src/features/billing/plan-page.tsx
+msgid "{0} in use"
+msgstr ""
+
 #. placeholder {0}: interviewKindOf(upcoming.kind)?.label ?? ""
 #. placeholder {0}: kind?.label ?? entry.kind
 #: src/features/applications/components/detail/activity.tsx
@@ -377,6 +387,12 @@ msgstr "{0} នាទី"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "ច្រើនជាង {0}"
+
+#. placeholder {0}: usage.used
+#. placeholder {1}: usage.max
+#: src/features/billing/plan-page.tsx
+msgid "{0} of {1}"
+msgstr ""
 
 #. placeholder {0}: report.passedChecks
 #. placeholder {1}: report.applicableChecks
@@ -662,6 +678,10 @@ msgstr "{monthCount, plural, =0 {គ្មានការសម្ភាសន�
 msgid "{name} added to page 1"
 msgstr "{name} បានបន្ថែមទៅទំព័រ 1"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} មិនបានឆ្លើយតបទេ។ គ្មានអ្វីត្រូវបានផ្លាស់ប្តូរទេ; សូមព្យាយាមម្តងទៀត។"
@@ -669,6 +689,10 @@ msgstr "{name} មិនបានឆ្លើយតបទេ។ គ្មាន�
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} ត្រូវបានបំបែកទៅជាជួរឈរ {columns}"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't in your plan, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} moved to the main column"
@@ -1119,6 +1143,19 @@ msgstr "សកម្មភាព"
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "សកម្ម"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1742,6 +1779,14 @@ msgstr "អ្វីដែលត្រូវចងចាំអំពីការ
 msgid "Anywhere"
 msgstr "កន្លែងណាក៏បាន"
 
+#: src/features/billing/plan.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
@@ -1753,6 +1798,10 @@ msgstr "គ្រាប់ចុច API"
 #: src/features/settings/ai/api-keys.tsx
 msgid "API keys"
 msgstr "គ្រាប់ចុច API"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "App"
@@ -2629,6 +2678,10 @@ msgstr "ជ្រើសរើសការផ្តល់ការងារ"
 msgid "Choose another file"
 msgstr "ជ្រើសរើសឯកសារផ្សេងទៀត។"
 
+#: src/features/billing/plan.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "ជ្រើសរើសពណ៌"
@@ -2710,6 +2763,7 @@ msgstr "លេខសម្គាល់អតិថិជន"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2799,6 +2853,10 @@ msgstr "ជួរឈរ"
 msgid "Columns can scramble the order text is read in."
 msgstr "ជួរឈរអាចបំបែកអត្ថបទលំដាប់ត្រូវបានអាន។"
 
+#: src/features/homepage/pricing.tsx
+msgid "Coming soon"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "នាពេលខាងមុខ"
@@ -2843,6 +2901,10 @@ msgstr "ប្រៀបធៀបការសាកល្បង ដើម្ប�
 #: src/features/career/workspace/shell.tsx
 msgid "Compare offers"
 msgstr "ប្រៀបធៀបការផ្តល់ការងារ"
+
+#: src/features/billing/plan-page.tsx
+msgid "Compare plans"
+msgstr ""
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
@@ -2987,6 +3049,10 @@ msgstr "ការតភ្ជាប់គិតថ្លៃសំឡេងដា
 #: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "ទំនាក់ទំនង"
+
+#: src/routes/dashboard/settings/route.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
@@ -3919,6 +3985,7 @@ msgstr "ផ្នែកផ្ទាល់ខ្លួន"
 msgid "Custom sections"
 msgstr "ផ្នែកផ្ទាល់ខ្លួន"
 
+#: src/features/billing/plan-page.tsx
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "រចនាប័ទ្មផ្ទាល់ខ្លួន"
@@ -3930,6 +3997,18 @@ msgstr ""
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "រចនាប័ទ្មផ្ទាល់ខ្លួនមិនត្រូវបានអនុវត្តទេ។ ជួសជុលកំហុសទាំងនេះ ដើម្បីអនុវត្តពួកវា៖"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Czech"
@@ -4284,6 +4363,7 @@ msgstr "ម៉ឺនុយឯកសារ៖ {name}"
 msgid "Document type"
 msgstr "ប្រភេទឯកសារ"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4298,6 +4378,10 @@ msgstr "ឯកសារត្រូវបានលុបជាអចិន្ត
 #: src/features/career/workspace/shell.tsx
 msgid "Documents for this job"
 msgstr "ឯកសារសម្រាប់ការងារនេះ។"
+
+#: src/features/billing/plan-page.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
@@ -4353,6 +4437,10 @@ msgstr "ទាញយក PDF គំរូ {name}"
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download & history"
 msgstr "ទាញយក និងប្រវត្តិ"
+
+#: src/features/billing/plan.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
+msgstr ""
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Download application details, contacts, notes, and timeline history as CSV."
@@ -4877,6 +4965,10 @@ msgstr "រាល់ធាតុមានកាលបរិច្ឆេទនៅ
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "តួនាទីនីមួយៗនិយាយអ្វីដែលអ្នកបានធ្វើ។ មតិ​លើ​ការ​សរសេរ​ពាក្យ​ផ្សាយ​ផ្ទាល់​ក្នុង​ផ្ទាំង​សរសេរ។"
 
+#: src/features/billing/plan-page.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/homepage/templates.tsx
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr ""
@@ -5313,6 +5405,7 @@ msgstr "បានរកឃើញថ្ងៃនេះ"
 msgid "Found yesterday"
 msgstr "បានរកឃើញម្សិលមិញ"
 
+#: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -5345,6 +5438,12 @@ msgstr ""
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "ពី"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: src/features/billing/plan-page.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -5889,6 +5988,10 @@ msgstr "កែលម្អបន្ទាត់ដែលបានជ្រើស
 msgid "Improving…"
 msgstr "កំពុងកែលម្អ…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Included"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "បង្កើនចន្លោះបន្ទាត់ ដើម្បីកុំឱ្យបន្ទាត់ពីរបញ្ចូលគ្នាទៅជាមួយ។"
@@ -6391,6 +6494,10 @@ msgstr ""
 msgid "Leads with why you fit"
 msgstr "ដឹកនាំជាមួយនឹងមូលហេតុដែលអ្នកសម"
 
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Learn more"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Learning budget"
 msgstr "ថវិកាសិក្សា"
@@ -6527,6 +6634,11 @@ msgstr "កម្រិត"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "កម្រិត {level} ក្នុងចំណោម ៥"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Licenses"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6746,6 +6858,10 @@ msgstr "កំពុងផ្ទុកកម្មវិធីកែសម្រ
 msgid "Loading workspace…"
 msgstr "កំពុងផ្ទុកផ្ទៃការងារ…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Loading your plan…"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -6809,8 +6925,8 @@ msgid "Lower the design sheet"
 msgstr "ទម្លាក់សន្លឹករចនា"
 
 #: src/features/resume/share/web-page-text.ts
-msgid "Made with Rezumi, free and open source"
-msgstr "ផលិតជាមួយ Rezumi ឥតគិតថ្លៃ និងប្រភពបើកចំហ"
+msgid "Made with Rezumi"
+msgstr ""
 
 #. Layout editor column label for the primary content area
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -7504,6 +7620,10 @@ msgstr "គ្មានអាសយដ្ឋានអ៊ីមែលទេ។"
 msgid "No email address was found."
 msgstr "រកមិនឃើញអាសយដ្ឋានអ៊ីមែលទេ។"
 
+#: src/features/billing/plan-page.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "No evidence yet"
 msgstr "មិនទាន់មានភស្តុតាង"
@@ -7596,6 +7716,14 @@ msgstr "មិនមានប្រវត្តិរូបសង្ខេបទ
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "មិនទាន់មានប្រវត្តិរូបទេ។"
+
+#: src/features/billing/plan.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7711,6 +7839,11 @@ msgstr "មិនទាន់មានក្នុងការផ្តល់ក
 msgid "Not in the offer · ask {company}"
 msgstr "មិនមានក្នុងការផ្តល់ការងារ · សួរ {company}"
 
+#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/share/download-tab.tsx
+msgid "Not in your plan"
+msgstr ""
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "មិនមាននៅក្នុងប្រវត្តិរូបសង្ខេបរបស់អ្នក"
@@ -7718,6 +7851,10 @@ msgstr "មិនមាននៅក្នុងប្រវត្តិរូប
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "មិនមាននៅក្នុងប្រវត្តិរូបសង្ខេបរបស់អ្នក · បន្ថែមតែប្រសិនបើពិត"
+
+#: src/features/billing/plan-page.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Not now"
@@ -8478,6 +8615,12 @@ msgstr "អត្ថបទធម្មតា (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "អត្ថបទធម្មតាដែលមានចំណងជើង។ បញ្ចូលទៅក្នុងទម្រង់ពាក្យសុំការងារ និងកំណត់ចំណាំ។"
 
+#: src/features/billing/plan-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan again"
 msgstr "រៀបចំផែនការម្តងទៀត"
@@ -8494,8 +8637,16 @@ msgstr "រៀបចំផែនការអ្វីដែលត្រូវស
 msgid "Planning your week"
 msgstr "កំពុងរៀបចំផែនការសប្តាហ៍របស់អ្នក"
 
+#: src/features/billing/plan-page.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr ""
 
 #: src/libs/locale.ts
@@ -8748,6 +8899,7 @@ msgid "Privacy"
 msgstr "ឯកជនភាព"
 
 #: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "គោលការណ៍ឯកជនភាព"
 
@@ -9243,6 +9395,11 @@ msgstr "ធ្វើឱ្យឯកសារសង្ខេបថ្មី 24 �
 msgid "Refresh the briefing on the morning of"
 msgstr "ធ្វើឱ្យឯកសារសង្ខេបថ្មីនៅព្រឹកថ្ងៃនោះ"
 
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
 msgstr "ចុះឈ្មោះនៅ OlaCV"
@@ -9467,10 +9624,6 @@ msgstr "ការឆ្លើយតប"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "បានចម្លងការឆ្លើយតប"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Report a bug"
-msgstr "រាយការណ៍កំហុស"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -9721,6 +9874,10 @@ msgstr "Rezumi {__APP_VERSION__} · MIT"
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
 msgstr ""
 
 #: src/features/homepage/section-nav.tsx
@@ -10227,6 +10384,11 @@ msgstr "មើលខាងក្រោម"
 
 #: src/features/homepage/introduction.tsx
 msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/billing/plan-dialog.tsx
+#: src/features/settings/ai/api-keys.tsx
+msgid "See plans"
 msgstr ""
 
 #: src/features/homepage/hero.tsx
@@ -10828,7 +10990,6 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Source"
 msgstr "ប្រភព"
 
@@ -11084,6 +11245,10 @@ msgstr "បន្ទាត់ឆូត"
 msgid "Stronger verb"
 msgstr "កិរិយាសព្ទខ្លាំងជាង"
 
+#: src/features/billing/plan.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "កម្មវិធីនិពន្ធសន្លឹករចនាប័ទ្ម"
@@ -11337,6 +11502,11 @@ msgstr ""
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "លក្ខខណ្ឌពីការប្រកាសការងារ"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Terms of service"
+msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Test"
@@ -11757,6 +11927,11 @@ msgstr "ផ្នែកខាងលើនៃទំព័រទីមួយមិ
 msgid "Theme"
 msgstr "ស្បែក"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: src/features/billing/plan-page.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Then enter the 6-digit code from the app."
 msgstr "បន្ទាប់មក បញ្ចូលកូដ 6 ខ្ទង់ពីកម្មវិធី។"
@@ -12007,6 +12182,10 @@ msgstr "ជំហាន​នេះ​ជា​ជម្រើស ប៉ុន�
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "រឿងនេះមិនអាចប្រើបាន ឬប្រើការពិតដែលត្រូវបានបិទ។"
 
+#: src/features/billing/plan.ts
+msgid "This template isn't in your plan"
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "ពេលវេលានេះមិនមាននៅក្នុងតំបន់ពេលវេលាដែលបានជ្រើសរើសទេ។ សូមជ្រើសរើសពេលវេលាផ្សេង។"
@@ -12153,10 +12332,6 @@ msgstr "កំពុងបំលែងជាអក្សរដោយប្រើ
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "ប្រតិចារិកត្រូវបានចម្លង"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Translate"
-msgstr "បកប្រែ"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -13069,6 +13244,10 @@ msgstr "អ្វីដែលអ្នកបានផ្ញើ · {0}"
 msgid "What you're looking for"
 msgstr "អ្វីដែលអ្នកកំពុងស្វែងរក"
 
+#: src/features/billing/plan-page.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "What's it for?"
 msgstr "តើវាសម្រាប់អ្វី?"
@@ -13076,6 +13255,10 @@ msgstr "តើវាសម្រាប់អ្វី?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "អ្វីដែលកំពុងដំណើរការ"
+
+#: src/features/billing/plan-page.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
@@ -13158,12 +13341,21 @@ msgstr "ទទឹង"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "តើប្រវត្តិរូបសង្ខេបរបស់ខ្ញុំនឹងទទួលបានប្រព័ន្ធតាមដានបេក្ខជនពីមុនដែរឬទេ?"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "បើគ្មានទេ អ្នកបំពេញអ្នកទទួលដោយខ្លួនឯង ហើយការព្រាងប្រើតែប្រវត្តិរូបសង្ខេបរបស់អ្នក។"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/homepage/plans.ts
 msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -13321,6 +13513,10 @@ msgstr "អ្នកអាចរក្សាទុកសំណួរពាក្
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "អ្នកមិនអាចចូលដោយប្រើកូនសោកំណត់អត្តសញ្ញាណនេះទៀតបានទេ។"
+
+#: src/features/billing/plan.ts
+msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
+msgstr ""
 
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
@@ -13573,6 +13769,14 @@ msgstr "សេចក្ដីផ្ដើមរបស់អ្នក រឿង�
 msgid "Your own endpoint"
 msgstr ""
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
 msgstr "លេខទូរស័ព្ទរបស់អ្នកបានផ្លាស់ប្តូរនៅលើប្រវត្តិរូបសង្ខេប។ លិខិត​ក៏​បាន​ធ្វើ​បច្ចុប្បន្នភាព​ដែរ។"
@@ -13580,6 +13784,18 @@ msgstr "លេខទូរស័ព្ទរបស់អ្នកបានផ្
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "លេខទូរស័ព្ទរបស់អ្នកត្រូវបានសរសេរជាទម្រង់ចម្លែក។"
+
+#: src/features/billing/plan-page.tsx
+msgid "Your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"

@@ -14,6 +14,11 @@ const api = vi.hoisted(() => ({
 	extractPdfLines: vi.fn(),
 }));
 vi.mock("@tanstack/react-router", () => ({ useNavigate: () => vi.fn() }));
+// Plans don't apply in these tests: everything is open, as with billing off.
+vi.mock("@/features/billing/plan", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@/features/billing/plan")>()),
+	usePlan: () => undefined,
+}));
 vi.mock("@/features/resume/import/pdf-text", () => ({ extractPdfLines: api.extractPdfLines }));
 vi.mock("@/libs/orpc/client", () => ({
 	client: { resume: { import: api.importResume }, ai: { parsePdf: api.parsePdf, parseDocx: api.parseDocx } },

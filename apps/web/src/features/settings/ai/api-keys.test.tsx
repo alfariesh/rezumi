@@ -11,6 +11,11 @@ const toasts = vi.hoisted(() => ({ add: vi.fn() }));
 
 vi.mock("@/libs/auth/client", () => ({ authClient: { apiKey } }));
 vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: toasts.add, close: vi.fn() } }));
+const plan = vi.hoisted(() => ({ apiLocked: false }));
+vi.mock("@/features/billing/plan", () => ({ usePlanFeature: () => !plan.apiLocked }));
+vi.mock("@tanstack/react-router", () => ({
+	Link: ({ children, to }: { children: React.ReactNode; to: string }) => <a href={to}>{children}</a>,
+}));
 
 i18n.loadAndActivate({ locale: "en", messages: {} });
 
@@ -46,6 +51,7 @@ async function revoke() {
 describe("API keys", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		plan.apiLocked = false;
 		apiKey.list.mockResolvedValue({ data: { apiKeys: [key] }, error: null });
 		apiKey.update.mockResolvedValue({ error: null });
 		apiKey.delete.mockResolvedValue({ error: null });
@@ -59,5 +65,25 @@ describe("API keys", () => {
 		toast.onClose();
 		expect(apiKey.update).toHaveBeenLastCalledWith({ keyId: "key-1", enabled: true });
 		expect(apiKey.delete).not.toHaveBeenCalled();
+	});
+
+	it("warns that keys won't work until the plan includes API access, and links to plans", async () => {
+		const renderSection = () =>
+			render(
+				<I18nProvider i18n={i18n}>
+					<QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+						<ApiKeysSection />
+					</QueryClientProvider>
+				</I18nProvider>,
+			);
+		const { unmount } = renderSection();
+		await waitFor(() => expect(screen.getByText("Claude Desktop")).toBeTruthy());
+		expect(screen.queryByText("API keys need the Plus or Pro AI plan")).toBeNull();
+		unmount();
+
+		plan.apiLocked = true;
+		renderSection();
+		expect(screen.getByText("API keys need the Plus or Pro AI plan")).toBeTruthy();
+		expect(screen.getByRole("link", { name: "See plans" }).getAttribute("href")).toBe("/dashboard/settings/billing");
 	});
 });

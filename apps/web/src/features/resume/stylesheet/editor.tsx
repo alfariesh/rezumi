@@ -43,6 +43,8 @@ import { listStyleTargets, styleTargetFor } from "./targets";
 import { StylesheetToolbar } from "./toolbar";
 import { createCompileWorkerClient } from "./worker-client";
 import { ColorPicker } from "@/components/input/color-picker";
+import { usePlanFeature } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useIsResumeLocked, useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { useTheme } from "@/features/theme/provider";
 
@@ -376,6 +378,8 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 	const data = useResumeData();
 	const updateResumeData = useUpdateResumeData();
 	const isLocked = useIsResumeLocked();
+	// Without custom styles in the plan, saved styles keep rendering but can't be edited here.
+	const planLocked = !usePlanFeature("customStyles");
 	const canUndo = useResumeStore((state) => state.undoStack.length > 0);
 	const canRedo = useResumeStore((state) => state.redoStack.length > 0);
 	const undo = useResumeStore((state) => state.undo);
@@ -395,7 +399,7 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 		[stylesheet],
 	);
 	const metadata = useMemo(() => (data ? createEditorMetadata(data) : emptyMetadata), [data]);
-	const disabled = readOnly || isLocked;
+	const disabled = readOnly || isLocked || planLocked;
 	// Swatches belong to the source they were compiled from; they go once it changes.
 	const colorTokens = compiled?.source === source ? compiled.tokens : NO_TOKENS;
 
@@ -491,6 +495,21 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 	);
 	const editorChrome = (
 		<div className="space-y-3">
+			{planLocked && (
+				<p className="flex items-start gap-1.5 rounded-xl bg-default px-3 py-2 text-xs">
+					<Icon name="lock" size={16} aria-hidden="true" className="mt-px shrink-0 text-muted" />
+					<span>
+						<Trans>Custom styles aren't in your plan. Styles already saved keep working on the page.</Trans>{" "}
+						<button
+							type="button"
+							className="cursor-(--cursor-interactive) text-accent-soft-foreground underline underline-offset-4"
+							onClick={() => openPlanDialog({ kind: "feature", feature: "customStyles" })}
+						>
+							<Trans>Learn more</Trans>
+						</button>
+					</span>
+				</p>
+			)}
 			<StylesheetToolbar
 				source={text}
 				canUndo={canUndo}

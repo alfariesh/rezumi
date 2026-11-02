@@ -16,6 +16,8 @@ import { useEditorStore } from "../store";
 import { SEGMENT_ITEM } from "./style-groups";
 import { useTemplateThumbnail } from "./thumbnails";
 import { templates } from "@/dialogs/resume/template/data";
+import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 type Filter = "all" | "one" | "two" | "ats";
@@ -37,11 +39,15 @@ const layoutTags = (id: Template) => {
 		.join(" · ");
 };
 
-/** Applies a template with the page's cross-fade and an Undo toast. Font, size and colour carry across. */
-function applyTemplate(template: Template) {
+/**
+ * Applies a template with the page's cross-fade and an Undo toast. Font, size and colour carry across. A template the
+ * plan doesn't open explains itself instead; previewing it still works.
+ */
+function applyTemplate(template: Template, locked: boolean) {
 	const { resume, updateResumeData, undo } = useResumeStore.getState();
 	useEditorStore.setState({ previewTemplate: null });
 	if (!resume || resume.data.metadata.template === template) return;
+	if (locked) return openPlanDialog({ kind: "feature", feature: "premiumTemplates" });
 
 	updateResumeData(
 		(draft) => {
@@ -69,6 +75,7 @@ type TemplateGroupProps = {
  */
 export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 	const data = useResumeData();
+	const plan = usePlan();
 	const [filter, setFilter] = useState<Filter>("all");
 	// Leaving Design (by shortcut, say) never leaves a preview on the page.
 	useEffect(() => () => useEditorStore.setState({ previewTemplate: null }), []);
@@ -140,6 +147,8 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 						id={id}
 						data={data}
 						selected={id === current}
+						labelled={isLabelledTemplate(plan, id)}
+						locked={isLockedTemplate(plan, id)}
 						onPreview={() => useEditorStore.setState({ previewTemplate: id === current ? null : id })}
 					/>
 				))}
@@ -150,9 +159,18 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 	);
 }
 
-type TemplateCardProps = { id: Template; data: ResumeData; selected: boolean; onPreview: () => void };
+type TemplateCardProps = {
+	id: Template;
+	data: ResumeData;
+	selected: boolean;
+	/** Outside the free templates, while plans apply to the account. */
+	labelled: boolean;
+	/** The plan doesn't open it: it previews, but applying it explains the plan. */
+	locked: boolean;
+	onPreview: () => void;
+};
 
-function TemplateCard({ id, data, selected, onPreview }: TemplateCardProps) {
+function TemplateCard({ id, data, selected, labelled, locked, onPreview }: TemplateCardProps) {
 	const ref = useRef<HTMLButtonElement>(null);
 	// Only cards on or near the screen render, so a font or colour change doesn't re-render every template.
 	const isInView = useInView(ref, { margin: "240px" });
@@ -193,7 +211,7 @@ function TemplateCard({ id, data, selected, onPreview }: TemplateCardProps) {
 					hold.current.previewing = false;
 					return;
 				}
-				applyTemplate(id);
+				applyTemplate(id, locked);
 			}}
 			className="group/card grid cursor-(--cursor-interactive) gap-1.5 rounded-xl text-start outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-4 focus-visible:ring-offset-surface"
 		>
@@ -211,10 +229,24 @@ function TemplateCard({ id, data, selected, onPreview }: TemplateCardProps) {
 						<Icon name="check" size={14} />
 					</span>
 				)}
+				{labelled && !selected && <PlanBadge locked={locked} />}
 			</span>
 			<span className="text-sm leading-4 font-medium">{metadata.name}</span>
 			<span className="text-xs leading-4 text-muted">{layoutTags(id)}</span>
 		</button>
+	);
+}
+
+type PlanBadgeProps = { locked: boolean };
+
+/** "Plus" on a premium template's corner, with a lock while the plan doesn't open it. */
+export function PlanBadge({ locked }: PlanBadgeProps) {
+	return (
+		<span className="absolute end-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full bg-black/70 px-1.5 py-0.5 text-xs leading-4 font-medium text-white">
+			{locked && <Icon name="lock" size={12} aria-hidden />}
+			Plus
+			{locked && <span className="sr-only">{t`Not in your plan`}</span>}
+		</span>
 	);
 }
 

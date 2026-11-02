@@ -334,6 +334,11 @@ msgstr "{0} (నాది)"
 msgid "{0} → {1}: {2}{3}"
 msgstr "{0} → {1}: {2}{3}"
 
+#. placeholder {0}: freeTemplateList()
+#: src/features/billing/plan-alert.ts
+msgid "{0} are available, and documents that already use another template keep it."
+msgstr ""
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -381,7 +386,7 @@ msgid "{0} more"
 msgstr "{0} ఎక్కువ"
 
 #. placeholder {0}: shown.length
-#. placeholder {1}: TEMPLATES.length
+#. placeholder {1}: listed.length
 #: src/features/design/template-group.tsx
 msgid "{0} of {1} shown"
 msgstr "{1} యొక్క {0} చూపబడింది"
@@ -582,6 +587,10 @@ msgstr "{minutes} నిమి"
 msgid "{name} added to page 1"
 msgstr "{name} పేజీ 1కి జోడించబడింది"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't available, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/workspace/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} స్పందించలేదు. ఏదీ మార్చబడలేదు; మళ్లీ ప్రయత్నించండి."
@@ -589,6 +598,10 @@ msgstr "{name} స్పందించలేదు. ఏదీ మార్చ�
 #: src/features/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} {columns} నిలువు వరుసలుగా విభజించబడింది"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't available, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "{name} moved to the main column"
@@ -673,6 +686,14 @@ msgstr "{toCheck, plural, one {# ఫీల్డ్‌ని పరిశీల�
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {తనిఖీ చేయడానికి #} other {తనిఖీ చేయడానికి #}}"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} in use"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} of {max}"
+msgstr ""
 
 #: src/features/letters/write.tsx
 #: src/features/workspace/tabs/apply.tsx
@@ -878,6 +899,19 @@ msgstr "{1} వద్ద {0} కోసం చర్యలు"
 #: src/features/ai/web-access.tsx
 msgid "Active"
 msgstr "చురుకుగా"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 #: src/features/write/basics-screen.tsx
@@ -1424,6 +1458,18 @@ msgstr "ఈ ఉద్యోగం గురించి ఏదైనా గు�
 msgid "Anywhere"
 msgstr "ఎక్కడైనా"
 
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/web-access.tsx
 msgid "API key"
@@ -1437,6 +1483,10 @@ msgstr "API కీ ఉపసంహరించబడింది. దీన్�
 #: src/features/settings/api-keys.tsx
 msgid "API keys"
 msgstr "API కీలు"
+
+#: src/features/settings/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: app/(tabs)/settings/preferences.tsx
 msgid "Appearance"
@@ -2227,6 +2277,10 @@ msgstr "ఆడియో ఫైల్‌ను ఎంచుకోండి"
 msgid "Choose another file"
 msgstr "మరొక ఫైల్‌ని ఎంచుకోండి"
 
+#: src/features/billing/plan-alert.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Choose date"
 msgstr "తేదీని ఎంచుకోండి"
@@ -2506,6 +2560,10 @@ msgstr "సంబంధాలను జోడిస్తోంది"
 #: src/features/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "కనెక్షన్ సేవ్ చేయబడింది"
+
+#: app/(tabs)/settings/index.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/check/issues.ts
@@ -3200,6 +3258,7 @@ msgstr "కస్టమ్ ఫీల్డ్‌లు"
 msgid "Custom section"
 msgstr "కస్టమ్ విభాగం"
 
+#: app/(tabs)/settings/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3208,6 +3267,26 @@ msgstr "కస్టమ్ స్టైల్స్"
 #: src/features/design/advanced.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "అనుకూల శైలులు వర్తించబడవు. వాటిని వర్తింపజేయడానికి ఈ లోపాలను పరిష్కరించండి:"
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't available"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't available. Styles already saved keep working on the page."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Czech"
@@ -3548,6 +3627,7 @@ msgid "Document type"
 msgstr "పత్రం రకం"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/settings/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
 msgid "Documents"
@@ -3560,6 +3640,10 @@ msgstr "పత్రాలు 30 రోజుల తర్వాత శాశ్
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "ఈ ఉద్యోగం కోసం పత్రాలు"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Documents you move here stay for 30 days."
@@ -3619,6 +3703,10 @@ msgstr "డౌన్‌లోడ్ {0}"
 #: src/shell/builder-chrome.tsx
 msgid "Download & history"
 msgstr "డౌన్‌లోడ్ & చరిత్ర"
+
+#: src/features/billing/plan-alert.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON are available too."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Download both PDFs"
@@ -3983,6 +4071,10 @@ msgstr "ప్రతి ఎంట్రీకి ఒక ఫారమ్ సి�
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "ప్రతి పాత్ర మీరు ఏమి చేశారో చెబుతుంది. రైటింగ్ ట్యాబ్‌లో పదాలపై అభిప్రాయాలు ప్రత్యక్ష ప్రసారం చేయబడతాయి."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "ఉద్యోగ పోస్టింగ్ నొక్కి చెప్పే ప్రతి పదం ఇప్పటికే ఉంది."
@@ -4285,6 +4377,10 @@ msgstr "ఫార్మాటింగ్"
 msgid "Found {0}"
 msgstr "{0}న కనుగొనబడింది"
 
+#: src/features/billing/plan.ts
+msgid "Free"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Free-form"
@@ -4297,6 +4393,12 @@ msgstr "ఫ్రెంచ్"
 #: src/features/letters/write.tsx
 msgid "From"
 msgstr "నుండి"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "From Fit"
@@ -4702,6 +4804,10 @@ msgstr "ఎంచుకున్న పంక్తిని మెరుగు�
 #: src/features/write/improve.tsx
 msgid "Improving…"
 msgstr "మెరుగుపడుతోంది..."
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Included"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Including closed"
@@ -6087,6 +6193,10 @@ msgstr "ఇమెయిల్ చిరునామా లేదు"
 msgid "No email address was found."
 msgstr "ఇమెయిల్ చిరునామా కనుగొనబడలేదు."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "No evidence yet"
 msgstr "ఇంకా ఆధారం లేదు"
@@ -6185,6 +6295,14 @@ msgstr "రెజ్యూమే లేదు"
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
 msgstr "ఈ చిరునామాలో Rezumi సర్వర్ సమాధానం ఇవ్వలేదు. స్పెల్లింగ్‌ని తనిఖీ చేయండి లేదా సర్వర్ యాప్ సైన్-ఇన్‌ను అనుమతించాలా వద్దా అని మీ నిర్వాహకుడిని అడగండి."
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -6285,6 +6403,10 @@ msgstr "కనుగొనబడలేదు:"
 #: src/features/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "మీ రెజ్యూమెలో లేదు · నిజమైతే మాత్రమే జోడించండి"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 #: src/features/workspace/tabs/debrief.tsx
@@ -6445,6 +6567,10 @@ msgstr "ఆఫ్‌లైన్ · ఈ పరికరంలో సేవ్ �
 #: app/(tabs)/_layout.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "ఆఫ్‌లైన్. సవరణలు ఈ పరికరంలో సేవ్ చేయబడతాయి మరియు మీరు మళ్లీ కనెక్ట్ చేసినప్పుడు సమకాలీకరించబడతాయి."
+
+#: src/features/billing/plan-alert.ts
+msgid "OK"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "On"
@@ -6680,6 +6806,10 @@ msgstr "అసలు టేబుల్ ఫార్మాటింగ్ భద
 #: src/features/applications/next-step.ts
 msgid "Other"
 msgstr "ఇతర"
+
+#: src/features/settings/api-keys.tsx
+msgid "Other apps can't connect with API keys on this account. This app always works."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Other benefits"
@@ -6954,6 +7084,11 @@ msgstr "సాదా టెక్స్ట్ (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "శీర్షికలతో సాదా వచనం. జాబ్ అప్లికేషన్ ఫారమ్‌లు మరియు నోట్స్‌లో అతికించండి."
 
+#: app/(tabs)/settings/index.tsx
+#: app/(tabs)/settings/membership.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Plan again"
 msgstr "మళ్లీ ప్రణాళిక వేయి"
@@ -6969,6 +7104,15 @@ msgstr "ఏమి అడగాలో ప్లాన్ చేయి"
 #: src/features/workspace/parts.tsx
 msgid "Planning your week"
 msgstr "మీ వారాన్ని ప్లాన్ చేస్తోంది"
+
+#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Plans can be bought on the rezumi.app website."
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Play recording"
@@ -7544,6 +7688,10 @@ msgstr "24 గంటల ముందు బ్రీఫింగ్‌ను ర
 msgid "Refresh the briefing on the morning of"
 msgstr "ఇంటర్వ్యూ రోజు ఉదయం బ్రీఫింగ్‌ను రిఫ్రెష్ చేయి"
 
+#: app/(tabs)/settings/index.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Register at OlaCV"
 msgstr "OlaCVలో రిజిస్టర్ చేయండి"
@@ -7760,10 +7908,6 @@ msgstr "నివేదించండి"
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "AI కంటెంట్‌ని నివేదించండి"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Report an issue"
-msgstr "ఇష్యూ నివేదించండి"
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -9046,10 +9190,6 @@ msgstr "మూలం"
 msgid "Source and correction history"
 msgstr "మూలం మరియు దిద్దుబాటు చరిత్ర"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Source code on GitHub"
-msgstr "GitHubలో సోర్స్ కోడ్"
-
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
@@ -9224,6 +9364,10 @@ msgstr "కొట్టివేత"
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
 msgstr "బలమైన క్రియ"
+
+#: src/features/billing/plan-alert.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Submit through the employer's application page yourself."
@@ -9773,6 +9917,11 @@ msgstr "మీరు పంపిన సంస్కరణలు సేవ్ �
 msgid "Theme"
 msgstr "థీమ్"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: app/(tabs)/settings/membership.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "There is a gap between two dated roles."
 msgstr "తేదీలు ఉన్న రెండు పాత్రల మధ్య గ్యాప్ ఉంది."
@@ -9808,6 +9957,10 @@ msgstr "ఆలోచిస్తూ..."
 #: app/(tabs)/settings/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "మూడవ పక్ష సాఫ్ట్‌వేర్ నోటీసులు. లైసెన్స్ చదవడానికి ఒక డిపెండెన్సీని నొక్కండి."
+
+#: src/features/billing/plan-alert.ts
+msgid "This app always works. Other apps and assistants that connect with an API key need more."
+msgstr ""
 
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/workspace/shell.tsx
@@ -9902,6 +10055,10 @@ msgstr "ఈ ఫైల్ ఏ భాషనూ ప్రకటించలేద�
 #: src/features/ats-checker/messages.ts
 msgid "This file has no accessibility tags."
 msgstr "ఈ ఫైల్‌లో యాక్సెసిబిలిటీ ట్యాగ్‌లు లేవు."
+
+#: src/features/billing/plan-alert.ts
+msgid "This file holds a resume and its cover letters, and they're saved together."
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "This file is {megabytes} MB. Imports take files up to 10 MB."
@@ -10062,6 +10219,14 @@ msgstr "ఈ సైన్-ఇన్ ప్రయత్నం గడువు మ�
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "ఈ కథ అందుబాటులో లేదు లేదా ఆఫ్ చేసిన వాస్తవాలను ఉపయోగిస్తుంది."
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't in your plan"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/applications-board/reschedule-sheet.tsx
@@ -10923,9 +11088,17 @@ msgstr "మీరు ఏమి పంపారు"
 msgid "What you're looking for"
 msgstr "మీరు వెతుకుతున్నది"
 
+#: app/(tabs)/settings/membership.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "What's working"
 msgstr "ఏమి పని చేస్తోంది"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do you need a decision?"
@@ -10984,6 +11157,10 @@ msgstr "వెడల్పు"
 msgid "Within your office-day limit."
 msgstr "మీ ఆఫీసు-రోజు పరిమితిలో."
 
+#: src/features/settings/api-keys.tsx
+msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "ఒకటి లేకుండా, మీరు స్వీకర్తను మీరే పూరించండి మరియు డ్రాఫ్టింగ్ మీ రెజ్యూమ్‌ను మాత్రమే ఉపయోగిస్తుంది."
@@ -10992,6 +11169,18 @@ msgstr "ఒకటి లేకుండా, మీరు స్వీకర్�
 #: src/features/share/download.tsx
 msgid "Word"
 msgstr "Word"
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT aren't available"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT downloads aren't in your plan"
+msgstr ""
 
 #: src/features/ai/provider-list.tsx
 msgid "Word import, Improve, the assistant, letter drafts, Career coaching and generation, and voice practice need one. Editing, Design, the readability checks and downloads work without one."
@@ -11100,6 +11289,14 @@ msgstr "మీరు సమాధానం ఇచ్చారు: {answer}"
 #: src/shell/builder-chrome.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
 msgstr "మీరు ఎడిటింగ్‌ను కొనసాగించవచ్చు. మీరు ఆన్‌లైన్‌కి తిరిగి వచ్చినప్పుడు మార్పులు సమకాలీకరణ. కాష్ చేసిన ఫాంట్‌లు మరియు చిత్రాలతో PDF షేరింగ్ పని చేస్తుంది."
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "You can keep up to 30 application questions."
@@ -11310,9 +11507,25 @@ msgstr "మీ ప్రారంభ పరిచయం"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "మీ ప్రారంభ పరిచయం, తీసుకెళ్లాల్సిన కథలు, అడగాల్సిన ప్రశ్నలు. కాల్‌కు 10 నిమిషాల ముందు ఇది మీ చెక్‌లిస్ట్‌గా మారుతుంది."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "మీ ఫోన్ నంబర్ అసాధారణ రూపంలో రాయబడింది."
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Your plan"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"

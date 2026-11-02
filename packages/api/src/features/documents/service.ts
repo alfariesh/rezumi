@@ -1,9 +1,12 @@
 import type { DocumentSummary } from "../../dto/documents";
+import type { Transaction } from "../billing/account";
+import type { DbOrTx } from "@rezumi/db/client";
 import { ORPCError } from "@orpc/client";
 import { and, asc, count, eq, isNotNull, isNull, lt, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { applicationService } from "../applications/service";
+import { assertDocumentCapacity } from "../billing/limits";
 import { coverLetterService } from "../cover-letters/service";
 import { resumeService } from "../resume/service";
 import { lockUser } from "./ownership";
@@ -52,10 +55,19 @@ const owned = ({ type, id, userId }: DocumentRef) =>
 type ResumeChanges = Partial<typeof schema.resume.$inferInsert>;
 type LetterChanges = Partial<typeof schema.coverLetter.$inferInsert>;
 
-/** The same change to either table; `letter` differs only where the columns do (the linked application). */
-async function update(ref: DocumentRef, resume: ResumeChanges, letter: LetterChanges = resume as LetterChanges) {
+/**
+ * The same change to either table; `letter` differs only where the columns do (the linked application). `check` runs
+ * first, under the same locks.
+ */
+async function update(
+	ref: DocumentRef,
+	resume: ResumeChanges,
+	letter: LetterChanges = resume as LetterChanges,
+	check?: (tx: Transaction) => Promise<void>,
+) {
 	await db.transaction(async (tx) => {
 		await lockUser(tx, ref.userId);
+		await check?.(tx);
 		const rows =
 			ref.type === "resume"
 				? await tx.update(schema.resume).set(resume).where(owned(ref)).returning({ id: schema.resume.id })
@@ -70,14 +82,14 @@ async function update(ref: DocumentRef, resume: ResumeChanges, letter: LetterCha
 	});
 }
 
-async function readState(ref: DocumentRef) {
+async function readState(ref: DocumentRef, client: DbOrTx = db) {
 	const [row] =
 		ref.type === "resume"
-			? await db
+			? await client
 					.select({ isLocked: schema.resume.isLocked, trashedAt: schema.resume.trashedAt })
 					.from(schema.resume)
 					.where(owned(ref))
-			: await db
+			: await client
 					.select({ isLocked: schema.coverLetter.isLocked, trashedAt: schema.coverLetter.trashedAt })
 					.from(schema.coverLetter)
 					.where(owned(ref));
@@ -295,7 +307,12 @@ export const documentsService = {
 		await update(input, { trashedAt: new Date() });
 	},
 
-	restore: (input: DocumentRef) => update(input, { trashedAt: null }),
+	/** A document coming back from Trash counts against the plan's limit again; one already out doesn't. */
+	restore: (input: DocumentRef) =>
+		update(input, { trashedAt: null }, undefined, async (tx) => {
+			if (!(await readState(input, tx)).trashedAt) return;
+			await assertDocumentCapacity(tx, input.userId, input.type === "resume" ? { resumes: 1 } : { coverLetters: 1 });
+		}),
 
 	/** "Delete now…": only for documents already in Trash. */
 	purge: async (input: DocumentRef) => {
