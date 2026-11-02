@@ -47,7 +47,10 @@ vi.mock("../web-access/credentials", () => ({
 vi.mock("@rezumi/email/transport", () => ({ sendCareerNotification: fixture.email }));
 // No live AI: the briefing writer is the boundary; the provider check only has to find the connection.
 vi.mock("./generate", () => ({ generateCareer: fixture.generate }));
-vi.mock("../ai-providers/service", () => ({ aiProvidersService: { getRunnableById: async () => ({}) } }));
+// The user's own connection; plans don't apply, so Rezumi AI never comes into it.
+vi.mock("../ai-providers/service", () => ({
+	aiProvidersService: { getRunnableById: async () => ({}), isManagedId: () => false, offersChoice: async () => false },
+}));
 
 function getDb() {
 	if (!fixture.db) throw new Error("Test database is not initialized.");

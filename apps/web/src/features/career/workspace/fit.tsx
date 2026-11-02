@@ -1,17 +1,19 @@
 import type { SavedData, SavedItem } from "../hooks";
 import type { WorkspaceTabProps } from "./shell";
-import type { CareerWorkspace } from "@rezumi/schema/career";
+import type { CareerWorkspace, GenerateTask } from "@rezumi/schema/career";
 import { EmptyState } from "@heroui-pro/react";
 import { Button, Chip, Link as TextLink, Spinner, TextArea, Skeleton, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { CAREER_TASK_CREDIT_ACTIONS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useWorkspace } from "../hooks";
 import { CareerWidget, PrivacyLine, StatusPill, Swap, Working, workingSteps } from "../shared";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
@@ -20,13 +22,17 @@ import { renderAsH2 } from "@/libs/typography";
 type FitItem = SavedItem & { data: SavedData<"fit"> };
 type Requirement = SavedData<"fit">["requirements"][number];
 
-type AiNoticeProps = { className?: string };
+type AiNoticeProps = {
+	/** The work the tab's AI button asks for, for its Rezumi AI cost. */
+	task: GenerateTask["task"];
+	className?: string;
+};
 
 /**
  * What an AI button in a workspace tab sends, and where; or, with no usable connection, where to add one. Tabs show
  * their AI buttons only when `useDefaultProvider().provider` is set.
  */
-export function AiNotice({ className }: AiNoticeProps) {
+export function AiNotice({ task, className }: AiNoticeProps) {
 	const connection = useDefaultProvider();
 	const { provider } = connection;
 	if (connection.isUnavailable) return <AiProviderLoadState state={connection} />;
@@ -41,9 +47,12 @@ export function AiNotice({ className }: AiNoticeProps) {
 			</TextLink>
 		);
 	return (
-		<PrivacyLine className={cn(className)}>
-			{t`Sends this application's posting, notes and documents, plus Knowledge that's switched on, to ${provider.label}.`}
-		</PrivacyLine>
+		<div className={cn("flex flex-wrap items-center gap-x-2", className)}>
+			<PrivacyLine>
+				{t`Sends this application's posting, notes and documents, plus Knowledge that's switched on, to ${provider.label}.`}
+			</PrivacyLine>
+			<AiSourceMenu action={CAREER_TASK_CREDIT_ACTIONS[task]} />
+		</div>
 	);
 }
 
@@ -87,7 +96,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 					</EmptyState.Description>
 				</EmptyState.Header>
 				<EmptyState.Content className="max-w-[420px] gap-3">
-					<AiNotice />
+					<AiNotice task="fit" />
 					{provider && (
 						<Button isPending={generate.isPending} onPress={check}>
 							{generate.isPending && <Spinner size="sm" color="current" aria-hidden />}
@@ -143,7 +152,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 						{item.data.headline}
 					</Typography>
 					<p className="max-w-[560px] text-sm leading-5 text-muted">{item.data.summary}</p>
-					{item.outdated && !readOnly && <AiNotice className="mt-1" />}
+					{item.outdated && !readOnly && <AiNotice task="fit" className="mt-1" />}
 				</div>
 				<div className="flex flex-wrap items-center gap-1.5">
 					<Chip size="sm" variant="soft" color="success" className="tabular-nums">

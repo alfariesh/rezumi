@@ -38,6 +38,7 @@ import { MessageSources } from "@/features/assistant/message-sources";
 import { ToolApprovals } from "@/features/assistant/tool-approvals";
 import { useAssistantChat } from "@/features/assistant/use-assistant-chat";
 import { WaitingRow } from "@/features/assistant/waiting-row";
+import { aiSourceFieldsFor, useAiSource } from "@/features/billing/ai-source";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
 import { client, orpc } from "@/libs/orpc/client";
@@ -80,8 +81,10 @@ export function ChatView(props: ChatViewProps) {
 	// A first message already shown while the conversation opened doesn't rise in a second time.
 	const [fromPending] = useState(() => props.prompt !== null);
 
+	const ai = useAiSource();
 	const refresh = () => {
 		void queryClient.invalidateQueries({ queryKey: orpc.agent.threads.list.key() });
+		if (ai.choice) void queryClient.invalidateQueries({ queryKey: orpc.billing.summary.key() });
 		// The coach may have remembered a fact or saved a story.
 		void queryClient.invalidateQueries({ queryKey: orpc.career.facts.key() });
 		void queryClient.invalidateQueries({ queryKey: orpc.career.stories.key() });
@@ -92,6 +95,7 @@ export function ChatView(props: ChatViewProps) {
 			initialMessages: props.initialMessages,
 			resume: props.activeRun,
 			context: props.context,
+			aiSource: aiSourceFieldsFor(ai, props.providerId).aiSource,
 			onFinish: refresh,
 		});
 	const streaming = status === "submitted" || status === "streaming";

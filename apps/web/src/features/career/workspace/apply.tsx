@@ -183,7 +183,7 @@ export function ApplyTab({ application, version }: WorkspaceTabProps) {
 
 				{!stored && (
 					<>
-						{shown.length > 0 && <AiNotice />}
+						{shown.length > 0 && <AiNotice task="answer" />}
 						<Button
 							variant="outline"
 							fullWidth

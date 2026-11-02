@@ -9,6 +9,7 @@ import { aiSettingsError } from "./error";
 import { ProviderEditorSheet } from "./provider-editor";
 import { AIProviderSetupSheet, useHasAIProvider } from "./providers";
 import { client, orpc } from "@/api/client";
+import { creditCount } from "@/features/billing/credits";
 import { Banner, Button, Card, EmptyState, Skeleton, Text, useTheme } from "@/ui";
 
 export function ProviderList() {
@@ -40,7 +41,8 @@ export function ProviderList() {
 				<Skeleton height={space.s12} />
 			</>
 		);
-	const managed = state.providers.some((provider) => provider.managed);
+	// The server's AI as the only one, as before plans existed; while the account chooses it's Rezumi AI in the list.
+	const managed = !state.choice && state.providers.some((provider) => provider.managed);
 	return (
 		<>
 			{state.providers.length === 0 && (
@@ -54,6 +56,7 @@ export function ProviderList() {
 				<ProviderRow
 					key={provider.id}
 					provider={provider}
+					balance={state.choice && provider.managed ? state.balance : null}
 					isDefault={state.defaultProvider?.id === provider.id}
 					onEdit={() => setEditingId(provider.id)}
 				/>
@@ -69,9 +72,15 @@ export function ProviderList() {
 	);
 }
 
-type ProviderRowProps = { provider: SavedProvider; isDefault: boolean; onEdit: () => void };
+type ProviderRowProps = {
+	provider: SavedProvider;
+	/** Rezumi AI's spendable credits (Android only); null for the user's own connections. */
+	balance: number | null;
+	isDefault: boolean;
+	onEdit: () => void;
+};
 
-function ProviderRow({ provider, isDefault, onEdit }: ProviderRowProps) {
+function ProviderRow({ provider, balance, isDefault, onEdit }: ProviderRowProps) {
 	const { t } = useLingui();
 	const { space } = useTheme();
 	const queryClient = useQueryClient();
@@ -123,7 +132,21 @@ function ProviderRow({ provider, isDefault, onEdit }: ProviderRowProps) {
 						: t`Off`}
 			</Text>
 			{isDefault && <Text variant="caption" color="accentText">{t`Default`}</Text>}
-			{provider.managed ? (
+			{balance !== null ? (
+				<>
+					<Text color="ink2">
+						{t`No API key needed. Each action asks before using credits · ${creditCount(balance)} left`}
+					</Text>
+					{!isDefault && (
+						<Button label={t`Make default`} variant="ghost" disabled={pending} onPress={() => void run("default")} />
+					)}
+					{failure && (
+						<Text accessibilityRole="alert" color="dangerText">
+							{t`Failed`} · {failure}
+						</Text>
+					)}
+				</>
+			) : provider.managed ? (
 				<Text color="ink2">{t`Managed by your server`}</Text>
 			) : (
 				<>

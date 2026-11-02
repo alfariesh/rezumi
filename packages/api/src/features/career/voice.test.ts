@@ -18,7 +18,9 @@ vi.mock("../../middleware/rate-limit", () => ({
 	aiVoiceRateLimit: ({ next }: { next: () => unknown }) => next(),
 }));
 vi.mock("@rezumi/db/client", () => ({ db: { insert: mocks.insert } }));
-vi.mock("../ai-providers/service", () => ({ aiProvidersService: { getRunnableById: mocks.provider } }));
+vi.mock("../ai-providers/service", () => ({
+	aiProvidersService: { getRunnableById: mocks.provider, isManagedId: () => false, offersChoice: async () => false },
+}));
 vi.mock("./service", () => ({ requireCareerApplication: mocks.requireApplication }));
 vi.mock("ai", async (importOriginal) => ({
 	...(await importOriginal<typeof import("ai")>()),

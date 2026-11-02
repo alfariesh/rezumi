@@ -1,22 +1,34 @@
 import type { client } from "./client";
+import type { AiSource } from "@rezumi/schema/billing";
 import { t } from "@lingui/core/macro";
 import { Alert } from "react-native";
+import { generateId } from "@rezumi/utils/string";
 import { getAccountScope, getServer } from "@/auth/session";
+import { canUseRezumiAi, creditActionOf, describeCreditCost } from "@/features/billing/ai-source";
 
-type ConsentApi = Pick<typeof client, "aiProviders" | "agent" | "webAccess">;
+type ConsentApi = Pick<typeof client, "aiProviders" | "agent" | "webAccess" | "billing">;
+
+/** Which AI the server runs the request on, added to the request's input. */
+export type AiSourceFields = { aiSource: AiSource; idempotencyKey?: string };
 
 let dialogs: Promise<unknown> = Promise.resolve();
 
-/** Consent is per operation, never persisted or silently reused for another account, provider, or data scope. */
+/**
+ * Consent is per operation, never persisted or silently reused for another account, provider, or data scope. While
+ * the account chooses between Rezumi AI and its own connections, returns the source to send with the request: on
+ * Android the confirmation names Rezumi AI's cost first; iOS never uses Rezumi AI.
+ */
 export async function authorizeAiRequest(
 	path: readonly string[],
 	input: unknown,
 	api: ConsentApi,
 	scope: string | null,
 	signal?: AbortSignal,
-): Promise<void> {
+): Promise<AiSourceFields | undefined> {
 	const operation = path.join(".");
 	const fields = input && typeof input === "object" ? (input as Record<string, unknown>) : {};
+	// Starting a conversation runs no AI and needs no consent, but it fixes which AI the conversation runs on.
+	if (operation === "agent.threads.start") return conversationSource(fields, api, scope, signal);
 	const scheduled = operation === "career.saveSchedule" && fields.enabled !== false;
 	const connectionTest = operation === "aiProviders.test";
 	const chat = operation === "agent.messages.send" || operation === "agent.attachments.create";
@@ -39,6 +51,8 @@ export async function authorizeAiRequest(
 	};
 	current();
 	const options = { context: { scope: scope ?? undefined }, ...(signal ? { signal } : {}) };
+	const action = creditActionOf(operation, input);
+	let source: AiSource | undefined;
 	// The provider the server will use: the one named, the thread's, or the default (same order as the server).
 	const resolveProvider = async () => {
 		const providers = await api.aiProviders.list({}, options);
@@ -48,10 +62,23 @@ export async function authorizeAiRequest(
 			id = conversation.thread.aiProviderId;
 		}
 		const usable = providers.filter((provider) => provider.enabled && provider.testStatus === "success");
-		return (
-			providers.find((entry) => entry.managed) ??
-			(id ? providers.find((entry) => entry.id === id && (connectionTest || usable.includes(entry))) : usable[0])
-		);
+		const managed = usable.find((entry) => entry.managed);
+		if (!managed || connectionTest || !(await choosesSource(api, options))) {
+			source = undefined;
+			return (
+				providers.find((entry) => entry.managed) ??
+				(id ? providers.find((entry) => entry.id === id && (connectionTest || usable.includes(entry))) : usable[0])
+			);
+		}
+		// The account chooses: the named connection, the conversation's, or the default decides the source.
+		const named = id ? usable.find((entry) => entry.id === id) : usable[0];
+		const wantsRezumi = named?.managed === true;
+		if (wantsRezumi && chat && !canUseRezumiAi())
+			throw new Error(t`This conversation can't continue in this app. Start a new conversation.`);
+		// A conversation's attachments go where the conversation runs, Rezumi AI included, though uploading costs nothing.
+		source = wantsRezumi && canUseRezumiAi() && (action || chat) ? "rezumi" : "own";
+		if (source === "rezumi") return managed;
+		return named && !named.managed ? named : usable.find((entry) => !entry.managed);
 	};
 	const destinationOf = (entry: { id: string; provider: string; model: string; baseURL?: string | null }) =>
 		[entry.id, entry.provider, entry.model, entry.baseURL ?? ""].join("|");
@@ -82,15 +109,22 @@ export async function authorizeAiRequest(
 		? t`This enables recurring processing while the schedule is on, using your server's selected providers. Turn the schedule off to stop future runs.`
 		: "";
 
+	const rezumi = source === "rezumi" && action ? action : null;
+	const summary = rezumi ? await api.billing.summary({}, options).catch(() => null) : null;
+	const balance = summary?.credits?.balance ?? 0;
+	const cost = rezumi ? `${describeCreditCost(rezumi, balance)}\n\n` : "";
 	const result = dialogs.then(async () => {
 		current();
 		const allowed = await new Promise<boolean>((resolve) => {
 			Alert.alert(
-				t`Share data with ${provider.label}?`,
-				`${t`Server`}: ${server}\n${t`Provider`}: ${destination}\n\n${data}\n\n${webNotice}\n${scheduleNotice}\n${t`Provider retention and use follow its privacy policy. Declining prevents this operation and leaves other app features available.`}`,
+				rezumi ? t`Use Rezumi AI?` : t`Share data with ${provider.label}?`,
+				`${cost}${t`Server`}: ${server}\n${t`Provider`}: ${destination}\n\n${data}\n\n${webNotice}\n${scheduleNotice}\n${t`Provider retention and use follow its privacy policy. Declining prevents this operation and leaves other app features available.`}`,
 				[
 					{ text: t`Don't share`, style: "cancel", onPress: () => resolve(false) },
-					{ text: scheduled ? t`Allow scheduled sharing` : t`Allow this operation`, onPress: () => resolve(true) },
+					{
+						text: rezumi ? t`Use credits` : scheduled ? t`Allow scheduled sharing` : t`Allow this operation`,
+						onPress: () => resolve(true),
+					},
 				],
 				{ cancelable: true, onDismiss: () => resolve(false) },
 			);
@@ -106,4 +140,37 @@ export async function authorizeAiRequest(
 	});
 	dialogs = result.catch(() => undefined);
 	await result;
+	// Only AI work names its source; an upload or a connection test takes no such field.
+	if (!source || !action) return undefined;
+	// Each Rezumi AI action has its own key, so a retry of this request doesn't take the credits twice.
+	return source === "rezumi" ? { aiSource: source, idempotencyKey: generateId() } : { aiSource: source };
+}
+
+type RequestOptions = { context: { scope?: string | undefined }; signal?: AbortSignal };
+
+/** Whether the account chooses between Rezumi AI and its own connections: plans apply to it (its credits show). */
+async function choosesSource(api: ConsentApi, options: RequestOptions) {
+	// When plans can't be read, the request goes without a source: the server then uses the user's own connection or
+	// refuses, but never takes credits. AI keeps working instead of every request failing here.
+	try {
+		return (await api.billing.summary({}, options)).credits !== null;
+	} catch {
+		return false;
+	}
+}
+
+/** The source a new conversation runs on: the connection named, or the default; never Rezumi AI on iOS. */
+async function conversationSource(
+	fields: Record<string, unknown>,
+	api: ConsentApi,
+	scope: string | null,
+	signal?: AbortSignal,
+): Promise<AiSourceFields | undefined> {
+	const options = { context: { scope: scope ?? undefined }, ...(signal ? { signal } : {}) };
+	const providers = await api.aiProviders.list({}, options);
+	const usable = providers.filter((provider) => provider.enabled && provider.testStatus === "success");
+	if (!usable.some((provider) => provider.managed) || !(await choosesSource(api, options))) return undefined;
+	const named =
+		typeof fields.aiProviderId === "string" ? usable.find((entry) => entry.id === fields.aiProviderId) : usable[0];
+	return { aiSource: named?.managed && canUseRezumiAi() ? "rezumi" : "own" };
 }

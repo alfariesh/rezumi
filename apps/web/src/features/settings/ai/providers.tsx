@@ -1,11 +1,24 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import type { AIProvider } from "@rezumi/ai/types";
 import { EmptyState } from "@heroui-pro/react";
-import { Alert, Button, Chip, Description, Input, Label, Modal, Spinner, Switch, TextField } from "@heroui/react";
+import {
+	Alert,
+	Button,
+	buttonVariants,
+	Chip,
+	Description,
+	Input,
+	Label,
+	Modal,
+	Spinner,
+	Switch,
+	TextField,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { Fragment, useId, useState } from "react";
 import { AI_PROVIDER_DEFAULT_BASE_URLS } from "@rezumi/ai/types";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -22,6 +35,9 @@ import {
 } from "./catalog";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import { Combobox } from "@/components/ui/combobox";
+import { useAiSource } from "@/features/billing/ai-source";
+import { REZUMI_AI_TEXT } from "@/features/billing/ai-source-menu";
+import { creditCount } from "@/features/billing/credits";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
@@ -44,7 +60,9 @@ export function ProvidersSection() {
 	const { data: providers, isLoading, error } = useQuery(orpc.aiProviders.list.queryOptions());
 	const [adding, setAdding] = useState(false);
 	const [editing, setEditing] = useState<SavedProvider | null>(null);
-	const managed = providers?.find((provider) => provider.managed);
+	const ai = useAiSource();
+	// The server's AI as the only one, as before plans existed. While the account chooses, it's Rezumi AI in the list.
+	const managed = ai.choice ? undefined : providers?.find((provider) => provider.managed);
 	// The server lists the default first, so the first usable provider is the one every automatic choice uses.
 	const usable = providers?.filter((provider) => provider.enabled && provider.testStatus === "success") ?? [];
 	const defaultId = usable[0]?.id;
@@ -130,6 +148,7 @@ export function ProvidersSection() {
 							{index > 0 && <RowSeparator />}
 							<ProviderRow
 								provider={provider}
+								balance={ai.choice && provider.managed ? ai.balance : null}
 								isDefault={provider.id === defaultId && (providers?.length ?? 0) > 1}
 								onMakeDefault={
 									usable.length > 1 && provider.id !== defaultId && usable.includes(provider)
@@ -220,6 +239,8 @@ function useProviderTest() {
 
 type ProviderRowProps = {
 	provider: SavedProvider;
+	/** Rezumi AI's spendable credits; null for the user's own connections. */
+	balance: number | null;
 	/** Used wherever no provider is picked. */
 	isDefault: boolean;
 	/** Offered on other tested, switched-on providers. */
@@ -228,8 +249,9 @@ type ProviderRowProps = {
 	onEdit: () => void;
 };
 
-function ProviderRow({ provider, isDefault, onMakeDefault, makingDefault, onEdit }: ProviderRowProps) {
+function ProviderRow({ provider, balance, isDefault, onMakeDefault, makingDefault, onEdit }: ProviderRowProps) {
 	const test = useProviderTest();
+	const rezumi = balance !== null;
 	const ending = keyEnding(provider.apiKeyPreview);
 	const error = test.result ? test.result.error : provider.testStatus === "failure" ? provider.testError : null;
 
@@ -241,7 +263,7 @@ function ProviderRow({ provider, isDefault, onMakeDefault, makingDefault, onEdit
 				</RowIcon>
 				<span className="grid min-w-0 flex-1 gap-0.5">
 					<span className="flex flex-wrap items-center gap-2 text-sm font-semibold">
-						<span className="break-words">{provider.label}</span>
+						<span className={cn("break-words", rezumi && REZUMI_AI_TEXT)}>{provider.label}</span>
 						<Chip
 							size="sm"
 							variant="soft"
@@ -261,7 +283,15 @@ function ProviderRow({ provider, isDefault, onMakeDefault, makingDefault, onEdit
 							</Chip>
 						)}
 					</span>
-					<span className="text-xs break-all text-muted">{provider.model}</span>
+					{rezumi ? (
+						<span className="text-xs text-muted">
+							<Trans>
+								No API key needed. Each action shows its cost in credits first · {creditCount(balance)} left
+							</Trans>
+						</span>
+					) : (
+						<span className="text-xs break-all text-muted">{provider.model}</span>
+					)}
 					{ending && (
 						<span className="text-xs text-muted">
 							<Trans>Key ends in {ending}</Trans>
@@ -275,26 +305,34 @@ function ProviderRow({ provider, isDefault, onMakeDefault, makingDefault, onEdit
 							<Trans>Make default</Trans>
 						</Button>
 					)}
-					<Button
-						size="sm"
-						variant="secondary"
-						aria-live="polite"
-						isDisabled={test.isPending}
-						className={cn(test.result?.ok && "text-success", test.result && !test.result.ok && "text-danger")}
-						onPress={() => void test.run(provider.id)}
-					>
-						{test.isPending ? (
-							<>
-								<Spinner size="sm" color="current" aria-hidden />
-								<Trans>Testing…</Trans>
-							</>
-						) : (
-							(test.result?.label ?? <Trans>Test</Trans>)
-						)}
-					</Button>
-					<Button size="sm" variant="ghost" onPress={onEdit}>
-						<Trans>Edit</Trans>
-					</Button>
+					{rezumi ? (
+						<Link to="/dashboard/settings/billing" className={buttonVariants({ size: "sm", variant: "ghost" })}>
+							<Trans>Credits</Trans>
+						</Link>
+					) : (
+						<>
+							<Button
+								size="sm"
+								variant="secondary"
+								aria-live="polite"
+								isDisabled={test.isPending}
+								className={cn(test.result?.ok && "text-success", test.result && !test.result.ok && "text-danger")}
+								onPress={() => void test.run(provider.id)}
+							>
+								{test.isPending ? (
+									<>
+										<Spinner size="sm" color="current" aria-hidden />
+										<Trans>Testing…</Trans>
+									</>
+								) : (
+									(test.result?.label ?? <Trans>Test</Trans>)
+								)}
+							</Button>
+							<Button size="sm" variant="ghost" onPress={onEdit}>
+								<Trans>Edit</Trans>
+							</Button>
+						</>
+					)}
 				</div>
 			</div>
 			{error && (

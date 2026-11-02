@@ -15,6 +15,8 @@ import { useNewDocumentsStore } from "./new-documents";
 import { useStartDocument } from "./use-start-document";
 import { useDialogStore } from "@/dialogs/store";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
+import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
+import { AiSourceMenu, openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { describeImportedDesign, usePlan } from "@/features/billing/plan";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { detectImportKind, ImportError, readResumeFile, summarizeImport } from "@/features/resume/import/read-file";
@@ -66,6 +68,7 @@ function useResumeImport(
 	const markNew = useNewDocumentsStore((state) => state.markNew);
 	const providerState = useHasUsableAiProvider();
 	const { hasUsableProvider } = providerState;
+	const ai = useAiSource();
 	const plan = usePlan();
 	const run = useRef(0);
 	// The server fits an imported design to the plan; say what changed.
@@ -119,6 +122,7 @@ function useResumeImport(
 			const resume = await readResumeFile(file, kind, {
 				aiAvailable,
 				onRead: (note) => advance(1, note),
+				aiFields: aiSourceFields(ai),
 			});
 			if (!current()) return;
 			const summary = summarizeImport(resume);
@@ -135,7 +139,7 @@ function useResumeImport(
 			setStep({ name: "imported", file, resumeId, ...summary });
 		} catch (error) {
 			if (!current()) return;
-			openPlanDialogForError(error);
+			if (!openPlanDialogForError(error)) openCreditsDialogForError(error);
 			const message =
 				error instanceof ImportError
 					? error.message
@@ -162,6 +166,18 @@ function useResumeImport(
  * New: import a file, copy a resume for a job, or start blank; no name, slug or tags are asked for first.
  * Importing shows three labelled steps rather than a spinner, so a slow parse still looks like progress.
  */
+/** Which AI reads PDF and Word files, and its cost on Rezumi AI, before the user drops one. */
+function ImportAiSource() {
+	const ai = useAiSource();
+	if (!ai.choice) return null;
+	return (
+		<p className="-mt-2 flex flex-wrap items-center gap-1 px-1 text-xs text-muted">
+			<Trans>PDF and Word files are read with</Trans>
+			<AiSourceMenu action="import-document" />
+		</p>
+	);
+}
+
 export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | undefined }) {
 	const navigate = useNavigate();
 	const providerState = useHasUsableAiProvider();
@@ -286,6 +302,7 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 								</span>
 							</span>
 						</button>
+						<ImportAiSource />
 
 						<div className="grid gap-3 sm:grid-cols-2">
 							<ChoiceTile

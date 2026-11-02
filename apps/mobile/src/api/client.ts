@@ -13,6 +13,7 @@ import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 import { fetch as expoFetch } from "expo/fetch";
 import { authorizeAiRequest } from "./ai-consent";
 import { getAccountScope, getCredentials, recoverFromUnauthorized, rejectCredentials } from "@/auth/session";
+import { showCreditsAlertForError } from "@/features/billing/ai-source";
 import { showPlanAlertForError } from "@/features/billing/plan-alert";
 
 /**
@@ -90,15 +91,20 @@ const createLink = (label: string) =>
 			async (options) => {
 				const { path, input, context, signal, next } = options;
 				const scope = context.scope ?? getAccountScope();
-				await authorizeAiRequest(path, input, client, scope, signal);
-				return next({ ...options, context: { ...context, ...(scope ? { scope } : {}) } });
+				const source = await authorizeAiRequest(path, input, client, scope, signal);
+				return next({
+					...options,
+					...(source && input && typeof input === "object" ? { input: { ...input, ...source } } : {}),
+					context: { ...context, ...(scope ? { scope } : {}) },
+				});
 			},
 			// Logs the failure only: errors can carry request data, which must never reach the device log.
 			onError((error) => {
 				if (isAbort(error)) return;
 				console.warn(`[${label}]`, error instanceof Error ? error.name : "error");
-				// A plan limit or a feature the plan lacks explains itself the same way, whichever screen asked.
-				showPlanAlertForError(error);
+				// A plan limit, a feature the plan lacks or too few Rezumi AI credits explains itself the same way,
+				// whichever screen asked.
+				if (!showPlanAlertForError(error)) showCreditsAlertForError(error);
 			}),
 		],
 	});

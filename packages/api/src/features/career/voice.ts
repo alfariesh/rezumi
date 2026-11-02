@@ -16,12 +16,16 @@ import { protectedProcedure } from "../../context";
 import { aiVoiceRateLimit } from "../../middleware/rate-limit";
 import { aiProvidersService } from "../ai-providers/service";
 import { aiTransport, resolveAiBaseUrl } from "../ai/url-policy";
+import { rezumiAiUnavailable } from "../billing/metered-ai";
 import { requireCareerApplication } from "./service";
 
 const procedure = protectedProcedure.use(aiVoiceRateLimit);
 
 /** The connection for one voice job, refused unless it offers that model (see `AI_VOICE_MODELS`). */
 async function voiceConnection(userId: string, id: string, kind: "transcription" | "speech", model: string) {
+	// Rezumi AI doesn't do voice at launch: voice practice runs on the user's own connection.
+	if (aiProvidersService.isManagedId({ userId, id }) && (await aiProvidersService.offersChoice(userId)))
+		throw rezumiAiUnavailable();
 	const provider = await aiProvidersService.getRunnableById({ userId, id });
 	if (provider.id !== id || !AI_VOICE_MODELS[provider.provider]?.[kind].includes(model))
 		throw new ORPCError("BAD_REQUEST", {
@@ -32,7 +36,7 @@ async function voiceConnection(userId: string, id: string, kind: "transcription"
 		});
 	return {
 		provider: provider.provider,
-		settings: { apiKey: provider.apiKey, baseURL: resolveAiBaseUrl(provider), ...aiTransport() },
+		settings: { apiKey: provider.apiKey, baseURL: resolveAiBaseUrl(provider), ...aiTransport(provider.managed) },
 	};
 }
 

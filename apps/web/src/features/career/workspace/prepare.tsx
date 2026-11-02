@@ -40,6 +40,7 @@ import {
 	workingSteps,
 } from "../shared";
 import { interviewTypeLabel } from "@/features/applications/components/interview-dialog";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
@@ -154,6 +155,7 @@ function PlanEmpty({ application, interview }: PlanEmptyProps) {
 							Sends this application (posting, notes, interview details) and Knowledge that's switched on to {label}.
 						</Trans>
 					</PrivacyLine>
+					<AiSourceMenu action="interview-practice" />
 				</>
 			) : (
 				<Link to="/dashboard/settings/app" hash="ai-providers" className={cn(buttonVariants({ variant: "secondary" }))}>

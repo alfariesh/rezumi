@@ -19,6 +19,9 @@ import { useConversationConnection } from "./chat";
 import { Composer, Conversation } from "./conversation";
 import { PendingTurn } from "./pending-turn";
 import { ProviderSetup } from "./provider-setup";
+import { creditCost, useAiSource } from "@/features/billing/ai-source";
+import { REZUMI_AI_TEXT } from "@/features/billing/ai-source-menu";
+import { creditCount } from "@/features/billing/credits";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { formatVersionTime } from "@/features/resume/share/format";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -71,8 +74,12 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 	const summary = threads.data?.find((item) => item.id === threadId);
 
 	const usable = providers.usableProviders;
+	const ai = useAiSource();
+	// While the account chooses, a new conversation starts on the source chosen (Rezumi AI or the user's own).
+	const preferred = ai.choice ? (ai.source === "rezumi" ? ai.managed : ai.own[0]) : undefined;
 	// A conversation runs on its own connection; one switched off or removed moves to the default.
-	const provider = usable.find((item) => item.id === (threadId ? summary?.aiProviderId : providerId)) ?? usable[0];
+	const provider =
+		usable.find((item) => item.id === (threadId ? summary?.aiProviderId : providerId)) ?? preferred ?? usable[0];
 	useConversationConnection(threadId ? summary : undefined, provider);
 	const providerLabel = provider?.label ?? summary?.providerLabel ?? t`your provider`;
 
@@ -84,6 +91,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		const input = {
 			...(document.kind === "letter" ? { coverLetterId: document.id } : { resumeId: document.id }),
 			...(provider ? { aiProviderId: provider.id } : {}),
+			...(ai.choice && provider ? { aiSource: provider.managed ? ("rezumi" as const) : ("own" as const) } : {}),
 		};
 		const creating = client.agent.threads.start(input).then((created) => {
 			if (creatingThread.current === creating) draftThread.current = created.id;
@@ -221,6 +229,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 					threadId={threadId}
 					document={document}
 					providerLabel={providerLabel}
+					providerId={provider?.id}
 					prompt={selected === threadId ? prompt : null}
 					promptAttachments={promptAttachments}
 					initialContext={{ ...context, ...(document.posting ? { applicationId: document.posting.id } : {}) }}
@@ -251,6 +260,7 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 						streaming={starting}
 						disabled={document.locked}
 						threadId={null}
+						providerId={provider?.id}
 						ensureThread={ensureThread}
 						onSend={(text, attachments) => void start(text, attachments)}
 						onStop={() => undefined}
@@ -265,6 +275,7 @@ type ConversationLoaderProps = {
 	threadId: string;
 	document: AssistantDocument;
 	providerLabel: string;
+	providerId: string | undefined;
 	prompt: string | null;
 	promptAttachments: ChatAttachment[];
 	initialContext: MessageContext;
@@ -320,6 +331,8 @@ type ModelMenuProps = {
 
 function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: ModelMenuProps) {
 	const navigate = useNavigate();
+	// Rezumi AI is named by its cost per reply, while the account chooses.
+	const credits = useAiSource().choice ? creditCost("coach-turn") : null;
 
 	return (
 		<Dropdown isOpen={open} onOpenChange={onOpenChange}>
@@ -346,8 +359,12 @@ function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: 
 						{providers.map((item) => (
 							<Dropdown.Item key={item.id} id={item.id} textValue={`${item.label} ${item.model}`}>
 								<span className="grid min-w-0 flex-1">
-									<Label className="truncate">{item.label}</Label>
-									<Description className="truncate">{item.model}</Description>
+									<Label className={cn("truncate", item.managed && credits !== null && REZUMI_AI_TEXT)}>
+										{item.label}
+									</Label>
+									<Description className="truncate">
+										{item.managed && credits !== null ? <Trans>{creditCount(credits)} per reply</Trans> : item.model}
+									</Description>
 								</span>
 								<Dropdown.ItemIndicator />
 							</Dropdown.Item>

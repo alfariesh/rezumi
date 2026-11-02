@@ -1,5 +1,6 @@
 import { StandardRPCJsonSerializer } from "@orpc/client/standard";
 import { MutationCache, QueryClient } from "@tanstack/react-query";
+import { openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 
 const serializer = new StandardRPCJsonSerializer();
@@ -17,9 +18,10 @@ export const getQueryClient = () => {
 			},
 		},
 		mutationCache: new MutationCache({
-			// A plan limit or feature the plan lacks, wherever it came from, explains itself the same way.
+			// A plan limit, a feature the plan lacks or too few Rezumi AI credits, wherever it came from, explains itself
+			// the same way.
 			onError: (error) => {
-				openPlanDialogForError(error);
+				if (!openPlanDialogForError(error)) openCreditsDialogForError(error);
 			},
 			onSettled: (_1, _2, _3, _4, _5, context) => {
 				if (context?.meta?.noInvalidate) return;

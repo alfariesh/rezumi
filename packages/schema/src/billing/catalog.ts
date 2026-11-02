@@ -1,3 +1,4 @@
+import type { GenerateTask } from "../career";
 import type { Template } from "../templates";
 import z from "zod";
 
@@ -100,6 +101,23 @@ export const CREDIT_COSTS = {
 export type CreditAction = keyof typeof CREDIT_COSTS;
 
 export const creditActionSchema = z.enum(Object.keys(CREDIT_COSTS) as [CreditAction, ...CreditAction[]]);
+
+/**
+ * Which AI runs a request: Rezumi AI (the server's AI, paid with credits) or the user's own connection. Requests that
+ * name neither come from apps older than Rezumi AI and only ever use the user's own connection.
+ */
+export const aiSourceSchema = z.enum(["rezumi", "own"]);
+export type AiSource = z.infer<typeof aiSourceSchema>;
+
+/** The kind of Rezumi AI work each application workspace task is, for its credit cost. */
+export const CAREER_TASK_CREDIT_ACTIONS = {
+	fit: "review",
+	briefing: "interview-practice",
+	practice: "interview-practice",
+	debrief: "interview-practice",
+	reply: "draft-answer",
+	answer: "draft-answer",
+} as const satisfies Record<GenerateTask["task"], CreditAction>;
 
 /** Where a grant of Rezumi AI credits came from: the one-time trial, a paid plan, or an administrator. */
 export const creditSourceSchema = z.enum(["trial", "plan", "admin"]);

@@ -496,6 +496,7 @@ msgstr "İlk il {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# sütun} other {# sütun}}"
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/credits.ts
 msgid "{count, plural, one {# credit} other {# credits}}"
 msgstr ""
@@ -6198,6 +6199,11 @@ msgstr "Növbəti iş sahəsi nişanları"
 msgid "No AI provider yet"
 msgstr "Hələ AI provayderi yoxdur"
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/ai/provider-list.tsx
+msgid "No API key needed. Each action asks before using credits · {0} left"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No application"
 msgstr "İş müraciəti yoxdur"
@@ -6464,6 +6470,10 @@ msgstr "CV parol tələb etdiyi müddətdə əlçatan deyil."
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "Hələ qoşulmayıb. Domeni idarə etdiyiniz yerdə onun DNS qeydlərini əlavə edin, sonra yoxlayın."
 
+#: src/features/billing/ai-source.ts
+msgid "Not enough Rezumi AI credits"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Not for me"
 msgstr "Mənlik deyil"
@@ -6640,6 +6650,7 @@ msgstr "Oflayn · bu cihazda yadda saxlanılıb"
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "Oflayn. Redaktələr bu cihazda yadda saxlanılır və siz yenidən qoşulduqda sinxronizasiya edilir."
 
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "OK"
 msgstr ""
@@ -7178,6 +7189,7 @@ msgid "Planning your week"
 msgstr "Həftəniz planlaşdırılır"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/ai-source.ts
 #: src/features/billing/plan-alert.ts
 msgid "Plans can be bought on the rezumi.app website."
 msgstr ""
@@ -8272,6 +8284,12 @@ msgstr "Rezumi"
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Rezumi AI credits"
+msgstr ""
+
+#. placeholder {0}: creditCount(CREDIT_COSTS[action])
+#. placeholder {1}: creditCount(balance)
+#: src/features/billing/ai-source.ts
+msgid "Rezumi AI: {0}, {1} left. If it fails, the credits come back."
 msgstr ""
 
 #: src/features/design/template-group.tsx
@@ -10089,6 +10107,10 @@ msgstr "Bu başqa yerdə dəyişdi, ona görə də yadda saxlanmadı. Mətn bura
 msgid "This connection is managed by your server."
 msgstr "Bu əlaqə serveriniz tərəfindən idarə olunur."
 
+#: src/api/ai-consent.ts
+msgid "This conversation can't continue in this app. Start a new conversation."
+msgstr ""
+
 #: src/features/assistant/assistant-screen.tsx
 #: src/features/assistant/chat-view.tsx
 msgid "This conversation couldn't be opened."
@@ -10245,6 +10267,10 @@ msgstr "Bu, proqram təminatının bu faylın mətnini nə qədər etibarlı ş�
 #: src/features/applications-board/calendar-screen.tsx
 msgid "This month"
 msgstr "Bu ay"
+
+#: src/features/billing/ai-source.ts
+msgid "This needs {required} and you have {balance}. Use your own AI connection instead: set it as the default in Settings → AI providers."
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "This page is clipped or incomplete. Check the original before using it."
@@ -10818,6 +10844,10 @@ msgstr "Ən azı 9pt istifadə edin."
 msgid "Use at most 64 characters."
 msgstr "Ən çox 64 simvol istifadə edin."
 
+#: src/api/ai-consent.ts
+msgid "Use credits"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Use default"
 msgstr "Defoltdan istifadə et"
@@ -10854,6 +10884,10 @@ msgstr "\"Experience\", \"Education\" və \"Skills\" kimi sadə başlıqlardan i
 #: src/features/applications/add-sheet.tsx
 msgid "Use posting link; review before saving"
 msgstr "İş elanı linkindən istifadə edin; saxlamadan əvvəl nəzərdən keçirin"
+
+#: src/api/ai-consent.ts
+msgid "Use Rezumi AI?"
+msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Use server version"

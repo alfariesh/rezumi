@@ -392,7 +392,7 @@
 			"post": {
 				"operationId": "parseResumePdf",
 				"summary": "Parse a PDF file into resume data",
-				"description": "Extracts structured resume data from a PDF file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string. Returns a complete ResumeData object and saves nothing.",
+				"description": "Extracts structured resume data from a PDF file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string. Returns a complete ResumeData object and saves nothing. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (5 credits)",
 				"tags": [
 					"AI"
 				],
@@ -422,6 +422,20 @@
 											"name",
 											"data"
 										]
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -4895,7 +4909,7 @@
 			"post": {
 				"operationId": "parseResumeDocx",
 				"summary": "Parse a DOCX file into resume data",
-				"description": "Extracts structured resume data from a DOCX or DOC file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string with the document's media type. Returns a complete ResumeData object and saves nothing.",
+				"description": "Extracts structured resume data from a DOCX or DOC file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string with the document's media type. Returns a complete ResumeData object and saves nothing. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (5 credits)",
 				"tags": [
 					"AI"
 				],
@@ -4932,6 +4946,20 @@
 											"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 										],
 										"type": "string"
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -9406,7 +9434,7 @@
 			"post": {
 				"operationId": "atsReview",
 				"summary": "Review extracted resume text",
-				"description": "Reviews the plain text extracted from a resume PDF and returns qualitative feedback: a summary, rewrite suggestions, strengths, and — when a job description is supplied — how the candidate's experience lines up with the role. Deliberately returns no score: the deterministic ATS report owns the only number in this feature. Requires authentication and AI credentials.",
+				"description": "Reviews the plain text extracted from a resume PDF and returns qualitative feedback: a summary, rewrite suggestions, strengths, and — when a job description is supplied — how the candidate's experience lines up with the role. Deliberately returns no score: the deterministic ATS report owns the only number in this feature. Requires authentication and AI credentials. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (4 credits)",
 				"tags": [
 					"AI"
 				],
@@ -9486,6 +9514,20 @@
 										},
 										"default": [],
 										"description": "Bullets and paragraphs the review may rewrite. A suggestion that rewrites one names it in `passageId`, with the whole new passage in `rewrite`."
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -9713,7 +9755,7 @@
 			"post": {
 				"operationId": "improveLine",
 				"summary": "Suggest a rewrite of one line",
-				"description": "Suggests a rewrite of one line of a resume or cover letter: a stronger verb, an added result, a shorter version, or the user's own request. Returns the new line, a short reason, and whether it states anything the input didn't, so the user can check it. Writes nothing. Requires authentication and AI credentials.",
+				"description": "Suggests a rewrite of one line of a resume or cover letter: a stronger verb, an added result, a shorter version, or the user's own request. Returns the new line, a short reason, and whether it states anything the input didn't, so the user can check it. Writes nothing. Requires authentication and AI credentials. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (1 credit)",
 				"tags": [
 					"AI"
 				],
@@ -9754,6 +9796,20 @@
 										"type": "string",
 										"maxLength": 10000,
 										"default": ""
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -12618,7 +12674,7 @@
 			"post": {
 				"operationId": "startAgentThread",
 				"summary": "Start a document, application or career conversation",
-				"description": "Starts an assistant conversation about one resume or cover letter, using the given tested provider or the default one. The assistant reads the document and proposes edits; it never changes the document itself.",
+				"description": "Starts an assistant conversation about one resume or cover letter, using the given tested provider or the default one. The assistant reads the document and proposes edits; it never changes the document itself. With `aiSource: \"rezumi\"` the conversation runs on Rezumi AI, where each reply costs 3 credits.",
 				"tags": [
 					"Agent"
 				],
@@ -12639,6 +12695,14 @@
 									},
 									"aiProviderId": {
 										"type": "string"
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
 									},
 									"scope": {
 										"enum": [
@@ -13642,6 +13706,7 @@
 			"post": {
 				"operationId": "sendAgentMessage",
 				"summary": "Send agent message",
+				"description": "In a conversation that runs on Rezumi AI, send `aiSource: \"rezumi\"`: every reply, including one after answering a question or approving a tool, costs 3 credits.",
 				"tags": [
 					"Agent"
 				],
@@ -13751,6 +13816,20 @@
 												"maxLength": 255
 											}
 										}
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -28272,7 +28351,7 @@
 			"post": {
 				"operationId": "aiParseApplicationPosting",
 				"summary": "Read a job posting",
-				"description": "Reads a job link or pasted posting text into role, company, location, salary and requirements, and returns the posting text to save with the application. Links must be public https pages. Without an AI provider, only a page's own job data (JSON-LD) fills the fields. Requires authentication.",
+				"description": "Reads a job link or pasted posting text into role, company, location, salary and requirements, and returns the posting text to save with the application. Links must be public https pages. Without an AI provider, only a page's own job data (JSON-LD) fills the fields. With `aiSource: \"rezumi\"` Rezumi AI reads it for 1 credit. Requires authentication.",
 				"tags": [
 					"Applications",
 					"AI"
@@ -28288,6 +28367,20 @@
 										"type": "string",
 										"minLength": 1,
 										"maxLength": 100000
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -28759,6 +28852,20 @@
 										"type": "string",
 										"minLength": 1,
 										"maxLength": 20000
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -28988,6 +29095,32 @@
 						}
 					}
 				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
+									}
+								}
+							}
+						}
+					}
+				},
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -29171,7 +29304,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/match-score\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/match-score\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -29206,6 +29339,20 @@
 											"follow-up"
 										],
 										"type": "string"
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -29426,6 +29573,32 @@
 						}
 					}
 				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
+									}
+								}
+							}
+						}
+					}
+				},
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -29616,7 +29789,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/tailor-resume\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/tailor-resume\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -43190,7 +43363,7 @@
 			"post": {
 				"operationId": "generateCareerWork",
 				"summary": "Generate AI work for an application",
-				"description": "Asks the default AI connection for one structured piece of work for an application (fit check, briefing, practice feedback, debrief review, employer message, answer draft). Everything but answer drafts is saved.",
+				"description": "Asks the default AI connection for one structured piece of work for an application (fit check, briefing, practice feedback, debrief review, employer message, answer draft). Everything but answer drafts is saved. With `aiSource: \"rezumi\"` it runs on Rezumi AI: a fit check costs 4 credits, a briefing, practice feedback or debrief 3, a reply or answer draft 2.",
 				"tags": [
 					"Career"
 				],
@@ -43378,6 +43551,20 @@
 												]
 											}
 										]
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -56330,7 +56517,7 @@
 			"post": {
 				"operationId": "draftCoverLetter",
 				"summary": "Draft a cover letter's body",
-				"description": "Streams a draft of the letter's body, as text, from its linked resume and its application's posting, using only facts from them. Nothing is saved. `shorter` and `personal` revise a previous draft.",
+				"description": "Streams a draft of the letter's body, as text, from its linked resume and its application's posting, using only facts from them. Nothing is saved. `shorter` and `personal` revise a previous draft. With `aiSource: \"rezumi\"` it runs on Rezumi AI for 3 credits, kept only when the draft arrives in full.",
 				"tags": [
 					"Cover Letters",
 					"AI"
@@ -56367,6 +56554,20 @@
 										"type": "string",
 										"maxLength": 20000,
 										"description": "The draft being revised."
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								}
 							}
@@ -104560,7 +104761,7 @@
 			"post": {
 				"operationId": "createCoverLetterDraft",
 				"summary": "Draft a cover letter's body",
-				"description": "Streams a draft of the letter's body, as text, from its linked resume and its application's posting, using only facts from them. Nothing is saved. `shorter` and `personal` revise a previous draft.",
+				"description": "Streams a draft of the letter's body, as text, from its linked resume and its application's posting, using only facts from them. Nothing is saved. `shorter` and `personal` revise a previous draft. With `aiSource: \"rezumi\"` it runs on Rezumi AI for 3 credits, kept only when the draft arrives in full.",
 				"tags": [
 					"Cover Letters",
 					"AI"
@@ -104597,6 +104798,20 @@
 										"type": "string",
 										"maxLength": 20000,
 										"description": "The draft being revised."
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								}
 							}
@@ -106632,7 +106847,7 @@
 			"post": {
 				"operationId": "createPostingParse",
 				"summary": "Read a job posting",
-				"description": "Reads a job link or pasted posting text into role, company, location, salary and requirements, and returns the posting text to save with the application. Links must be public https pages. Without an AI provider, only a page's own job data (JSON-LD) fills the fields. Requires authentication.",
+				"description": "Reads a job link or pasted posting text into role, company, location, salary and requirements, and returns the posting text to save with the application. Links must be public https pages. Without an AI provider, only a page's own job data (JSON-LD) fills the fields. With `aiSource: \"rezumi\"` Rezumi AI reads it for 1 credit. Requires authentication.",
 				"tags": [
 					"Applications",
 					"AI"
@@ -106648,6 +106863,20 @@
 										"type": "string",
 										"minLength": 1,
 										"maxLength": 100000
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -107119,6 +107348,20 @@
 										"type": "string",
 										"minLength": 1,
 										"maxLength": 20000
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -107348,6 +107591,32 @@
 						}
 					}
 				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
+									}
+								}
+							}
+						}
+					}
+				},
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -107531,7 +107800,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/match-scores\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/match-scores\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -107566,6 +107835,20 @@
 											"follow-up"
 										],
 										"type": "string"
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -107786,6 +108069,32 @@
 						}
 					}
 				],
+				"requestBody": {
+					"required": false,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
+									}
+								}
+							}
+						}
+					}
+				},
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -107976,7 +108285,7 @@
 					{
 						"lang": "bash",
 						"label": "cURL",
-						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/tailored-resumes\" --header \"x-api-key: <api-key>\""
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/applications/<id>/ai/tailored-resumes\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{}'"
 					}
 				]
 			}
@@ -109139,6 +109448,7 @@
 			"post": {
 				"operationId": "createAgentMessage",
 				"summary": "Send agent message",
+				"description": "In a conversation that runs on Rezumi AI, send `aiSource: \"rezumi\"`: every reply, including one after answering a question or approving a tool, costs 3 credits.",
 				"tags": [
 					"Agent"
 				],
@@ -109255,6 +109565,20 @@
 												"maxLength": 255
 											}
 										}
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -109794,7 +110118,7 @@
 			"post": {
 				"operationId": "createPdfParse",
 				"summary": "Parse a PDF file into resume data",
-				"description": "Extracts structured resume data from a PDF file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string. Returns a complete ResumeData object and saves nothing.",
+				"description": "Extracts structured resume data from a PDF file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string. Returns a complete ResumeData object and saves nothing. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (5 credits)",
 				"tags": [
 					"AI"
 				],
@@ -109824,6 +110148,20 @@
 											"name",
 											"data"
 										]
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -114297,7 +114635,7 @@
 			"post": {
 				"operationId": "createDocxParse",
 				"summary": "Parse a DOCX file into resume data",
-				"description": "Extracts structured resume data from a DOCX or DOC file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string with the document's media type. Returns a complete ResumeData object and saves nothing.",
+				"description": "Extracts structured resume data from a DOCX or DOC file with one of the user's saved AI providers: the one named by `aiProviderId`, or their default. Send the file as a base64-encoded string with the document's media type. Returns a complete ResumeData object and saves nothing. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (5 credits)",
 				"tags": [
 					"AI"
 				],
@@ -114334,6 +114672,20 @@
 											"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 										],
 										"type": "string"
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -118808,7 +119160,7 @@
 			"post": {
 				"operationId": "createAtsReview",
 				"summary": "Review extracted resume text",
-				"description": "Reviews the plain text extracted from a resume PDF and returns qualitative feedback: a summary, rewrite suggestions, strengths, and — when a job description is supplied — how the candidate's experience lines up with the role. Deliberately returns no score: the deterministic ATS report owns the only number in this feature. Requires authentication and AI credentials.",
+				"description": "Reviews the plain text extracted from a resume PDF and returns qualitative feedback: a summary, rewrite suggestions, strengths, and — when a job description is supplied — how the candidate's experience lines up with the role. Deliberately returns no score: the deterministic ATS report owns the only number in this feature. Requires authentication and AI credentials. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (4 credits)",
 				"tags": [
 					"AI"
 				],
@@ -118888,6 +119240,20 @@
 										},
 										"default": [],
 										"description": "Bullets and paragraphs the review may rewrite. A suggestion that rewrites one names it in `passageId`, with the whole new passage in `rewrite`."
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [
@@ -119115,7 +119481,7 @@
 			"post": {
 				"operationId": "createImprovement",
 				"summary": "Suggest a rewrite of one line",
-				"description": "Suggests a rewrite of one line of a resume or cover letter: a stronger verb, an added result, a shorter version, or the user's own request. Returns the new line, a short reason, and whether it states anything the input didn't, so the user can check it. Writes nothing. Requires authentication and AI credentials.",
+				"description": "Suggests a rewrite of one line of a resume or cover letter: a stronger verb, an added result, a shorter version, or the user's own request. Returns the new line, a short reason, and whether it states anything the input didn't, so the user can check it. Writes nothing. Requires authentication and AI credentials. With `aiSource: \"rezumi\"` it runs on Rezumi AI and costs the account credits; otherwise it uses one of the user's own AI connections. (1 credit)",
 				"tags": [
 					"AI"
 				],
@@ -119156,6 +119522,20 @@
 										"type": "string",
 										"maxLength": 10000,
 										"default": ""
+									},
+									"aiSource": {
+										"enum": [
+											"rezumi",
+											"own"
+										],
+										"type": "string",
+										"description": "Which AI runs this: \"rezumi\" for Rezumi AI, paid with the account's credits (the cost is shown before running), or \"own\" for the account's own AI connection. Left out, the account's own connection runs it."
+									},
+									"idempotencyKey": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 100,
+										"description": "A new random ID per action, reused when retrying it, so Rezumi AI takes its credits once. Only Rezumi AI reads it."
 									}
 								},
 								"required": [

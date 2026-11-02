@@ -6,6 +6,11 @@ import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 
 const mocks = vi.hoisted(() => ({ chat: vi.fn(), send: vi.fn(), attach: vi.fn(), publish: vi.fn() }));
+// Plans don't apply in these tests: AI runs on the user's own connection, with no credits shown.
+vi.mock("@/features/billing/ai-source", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@/features/billing/ai-source")>()),
+	useAiSource: () => ({ choice: false, source: "own", balance: 0, managed: undefined, own: [] }),
+}));
 vi.mock("@tanstack/react-query", () => ({ useQueryClient: () => ({ invalidateQueries: vi.fn() }) }));
 vi.mock("@/features/resume/editor/store", () => ({
 	useEditorStore: { setState: mocks.publish },

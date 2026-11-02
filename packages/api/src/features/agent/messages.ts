@@ -4,6 +4,7 @@ import { workspaceTabSchema } from "@rezumi/schema/career";
 import { protectedProcedure } from "../../context";
 import { uiMessageSchema } from "../../dto/agent";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
+import { aiSourceInput } from "../billing/ai-source";
 import { mapAgentEnvironmentError } from "./routing";
 import { agentService } from "./service";
 
@@ -15,6 +16,8 @@ export const messagesRouter = {
 			tags: ["Agent"],
 			operationId: "sendAgentMessage",
 			summary: "Send agent message",
+			description:
+				'In a conversation that runs on Rezumi AI, send `aiSource: "rezumi"`: every reply, including one after answering a question or approving a tool, costs 3 credits.',
 		})
 		.input(
 			z.object({
@@ -50,6 +53,7 @@ export const messagesRouter = {
 						applicationId: z.string().trim().min(1).max(255).optional(),
 					})
 					.optional(),
+				...aiSourceInput,
 			}),
 		)
 		.use(aiRequestRateLimit)
@@ -63,6 +67,8 @@ export const messagesRouter = {
 				message: input.message,
 				...(input.attachmentIds ? { attachmentIds: input.attachmentIds } : {}),
 				...(input.context ? { context: input.context } : {}),
+				aiSource: input.aiSource,
+				idempotencyKey: input.idempotencyKey,
 			}),
 		),
 

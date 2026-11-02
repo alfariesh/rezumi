@@ -140,7 +140,12 @@ function fileToBase64(file: File): Promise<string> {
 export async function readResumeFile(
 	file: File,
 	kind: Exclude<ImportKind, "cover-letter-json">,
-	options: { aiAvailable: boolean; onRead?: (note: string) => void },
+	options: {
+		aiAvailable: boolean;
+		onRead?: (note: string) => void;
+		/** Which AI reads PDF and Word files (see `aiSourceFields`). */
+		aiFields?: { aiSource?: "rezumi" | "own"; idempotencyKey?: string };
+	},
 ): Promise<ResumeData> {
 	if (kind === "reactive-resume-json" || kind === "reactive-resume-v4-json" || kind === "json-resume-json") {
 		const text = await file.text();
@@ -167,13 +172,13 @@ export async function readResumeFile(
 			file.type === "application/msword"
 				? ("application/msword" as const)
 				: ("application/vnd.openxmlformats-officedocument.wordprocessingml.document" as const);
-		return client.ai.parseDocx({ mediaType, file: { name: file.name, data: base64 } });
+		return client.ai.parseDocx({ mediaType, file: { name: file.name, data: base64 }, ...options.aiFields });
 	}
 
 	if (options.aiAvailable) {
 		const base64 = await fileToBase64(file);
 		options.onRead?.(t`file read`);
-		return client.ai.parsePdf({ file: { name: file.name, data: base64 } });
+		return client.ai.parsePdf({ file: { name: file.name, data: base64 }, ...options.aiFields });
 	}
 
 	const [{ extractPdfLines }, { parseResumeText }] = await Promise.all([

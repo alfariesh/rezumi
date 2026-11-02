@@ -3,7 +3,8 @@ import type { CheckIssue } from "./issues";
 import type { CheckResult } from "./use-check";
 import type { AtsCategory, AtsReport } from "@rezumi/resume/ats";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { Button, Chip, Disclosure, Modal, ProgressCircle, Spinner, Tabs } from "@heroui/react";
+import { Segment } from "@heroui-pro/react";
+import { Button, Chip, Disclosure, Modal, ProgressCircle, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useId, useState } from "react";
@@ -39,55 +40,43 @@ export function CheckPanel() {
 		<div className="grid content-start gap-3 p-3">
 			<ScoreSummary report={check.report} />
 
-			{/* The tab list sits on the background; each tab's content is its own stack of widgets. */}
-			<Tabs
-				variant="secondary"
+			<Segment
+				aria-label={t`Check views`}
 				selectedKey={tab}
 				onSelectionChange={(key) => useEditorStore.setState({ checkTab: String(key) as CheckTab })}
-				className="@container gap-3"
+				className="@container w-full"
 			>
-				<Tabs.ListContainer>
-					<Tabs.List aria-label={t`Check views`} className="w-full">
-						<Tabs.Tab id="issues" className={cn(TAB_CLASS, "gap-1.5")}>
-							<Trans>Issues</Trans>
-							<span className="text-xs text-muted tabular-nums">{check.issues.length}</span>
-							<Tabs.Indicator />
-						</Tabs.Tab>
-						<Tabs.Tab id="match" className={cn(TAB_CLASS, "gap-1.5")}>
-							<Trans>Job match</Trans>
-							{/* The Posting terms widget repeats it, so a 300px panel can drop it to keep the tabs apart. */}
-							{match.result && (
-								<span className="hidden text-xs text-muted tabular-nums @xs:inline">
-									{match.result.found.length}/{match.result.total}
-								</span>
-							)}
-							<Tabs.Indicator />
-						</Tabs.Tab>
-						<Tabs.Tab id="writing" className={TAB_CLASS}>
-							<Trans>Writing</Trans>
-							<Tabs.Indicator />
-						</Tabs.Tab>
-					</Tabs.List>
-				</Tabs.ListContainer>
+				<Segment.Item id="issues" className={SEGMENT_CLASS}>
+					<Trans>Issues</Trans>
+					<span className="text-xs text-muted tabular-nums">{check.issues.length}</span>
+				</Segment.Item>
+				<Segment.Item id="match" className={SEGMENT_CLASS}>
+					<Trans>Job match</Trans>
+					{/* The Posting terms widget repeats it, so a 300px panel can drop it to keep the items apart. */}
+					{match.result && (
+						<span className="hidden text-xs text-muted tabular-nums @xs:inline">
+							{match.result.found.length}/{match.result.total}
+						</span>
+					)}
+				</Segment.Item>
+				<Segment.Item id="writing" className={SEGMENT_CLASS}>
+					<Trans>Writing</Trans>
+				</Segment.Item>
+			</Segment>
 
-				<Tabs.Panel id="issues" className={PANEL_CLASS}>
-					<IssuesTab check={check} />
-				</Tabs.Panel>
-				<Tabs.Panel id="match" className={PANEL_CLASS}>
-					<JobMatchTab match={match} data={check.data} />
-				</Tabs.Panel>
-				<Tabs.Panel id="writing" className={PANEL_CLASS}>
-					<WritingTab data={check.data} issues={check.issues} />
-				</Tabs.Panel>
-			</Tabs>
+			{tab === "match" ? (
+				<JobMatchTab match={match} data={check.data} />
+			) : tab === "writing" ? (
+				<WritingTab data={check.data} issues={check.issues} />
+			) : (
+				<IssuesTab check={check} />
+			)}
 		</div>
 	);
 }
 
-/** One line per tab, with tighter padding in a 300px panel so all three fit without scrolling. */
-const TAB_CLASS = "px-2 whitespace-nowrap @xs:px-4";
-/** The panel's own grid sets the spacing; the tab panel adds none. */
-const PANEL_CLASS = "mt-0 p-0";
+/** One line per item, sharing the width so all three fit a 300px panel. */
+const SEGMENT_CLASS = "w-auto flex-1 gap-1.5 px-2 whitespace-nowrap";
 
 const getVerdict = (score: number) =>
 	score >= 80 ? t`Reads cleanly` : score >= 50 ? t`Mostly readable` : t`Hard for software to read`;

@@ -50,6 +50,8 @@ export type CreditReservation = {
 	balanceAfter: number;
 	/** `reserved` for a new reservation; a repeated key returns the first one as it is now. */
 	status: CreditUsageStatus;
+	/** Whether this call took the credits, rather than finding an earlier reservation with the same key. */
+	created: boolean;
 };
 
 /** What the AI provider reported for work that gave a usable result. */
@@ -58,7 +60,8 @@ export type CreditUsageResult = {
 	model: string;
 	inputTokens: number;
 	outputTokens: number;
-	costUsdMicros: number;
+	/** Null when no token prices are configured: the tokens are kept, the cost isn't guessed. */
+	costUsdMicros: number | null;
 };
 
 export type CreditHistoryEntry =
@@ -224,7 +227,13 @@ export async function reserveCredits(input: {
 			.from(schema.aiCreditUsage)
 			.where(eq(schema.aiCreditUsage.operationKey, operationKey));
 		if (existing)
-			return { usageId: existing.id, credits: existing.credits, balanceAfter: balance, status: existing.status };
+			return {
+				usageId: existing.id,
+				credits: existing.credits,
+				balanceAfter: balance,
+				status: existing.status,
+				created: false,
+			};
 		const allocations = allocateCredits(grants, credits);
 		if (!allocations) throw insufficientCredits(credits, balance);
 		await takeFromGrants(tx, input.userId, allocations);
@@ -241,12 +250,21 @@ export async function reserveCredits(input: {
 			})
 			.returning();
 		if (!usage) throw new Error("The credit reservation was not saved.");
-		return { usageId: usage.id, credits, balanceAfter: balance - credits, status: "reserved" };
+		return { usageId: usage.id, credits, balanceAfter: balance - credits, status: "reserved", created: true };
 	});
 }
 
-/** Gives a reservation's credits back to the grants they came from. An expired grant takes them back unspendable. */
-async function releaseReserved(tx: Transaction, usage: UsageRow, errorCode: string, now: Date) {
+/**
+ * Gives a reservation's credits back to the grants they came from. An expired grant takes them back unspendable. What
+ * the provider was paid for the failed work, when known, is kept with it.
+ */
+async function releaseReserved(
+	tx: Transaction,
+	usage: UsageRow,
+	errorCode: string,
+	now: Date,
+	spent?: CreditUsageResult,
+) {
 	for (const allocation of usage.allocations)
 		await tx
 			.update(schema.aiCreditGrant)
@@ -254,7 +272,7 @@ async function releaseReserved(tx: Transaction, usage: UsageRow, errorCode: stri
 			.where(and(eq(schema.aiCreditGrant.id, allocation.grantId), eq(schema.aiCreditGrant.userId, usage.userId)));
 	const [released] = await tx
 		.update(schema.aiCreditUsage)
-		.set({ status: "released", errorCode, settledAt: now })
+		.set({ status: "released", errorCode, settledAt: now, ...spent })
 		.where(eq(schema.aiCreditUsage.id, usage.id))
 		.returning();
 	if (!released) throw new Error("The credit reservation is missing.");
@@ -294,9 +312,12 @@ export function commitCredits(usageId: string, result: CreditUsageResult, now = 
 	});
 }
 
-/** Gives a reservation's credits back when the work failed or was cancelled before a usable result. */
-export function releaseCredits(usageId: string, errorCode: string, now = new Date()) {
-	return settle(usageId, (tx, usage) => releaseReserved(tx, usage, errorCode, now));
+/**
+ * Gives a reservation's credits back when the work failed or was cancelled before a usable result. `spent` records
+ * what the provider still charged for it.
+ */
+export function releaseCredits(usageId: string, errorCode: string, now = new Date(), spent?: CreditUsageResult) {
+	return settle(usageId, (tx, usage) => releaseReserved(tx, usage, errorCode, now, spent));
 }
 
 /**

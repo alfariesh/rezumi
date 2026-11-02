@@ -1,6 +1,6 @@
 import type { AIProvider } from "@rezumi/ai/types";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import type { ModelMessage } from "ai";
+import type { LanguageModel, ModelMessage } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createCerebras } from "@ai-sdk/cerebras";
 import { createCohere } from "@ai-sdk/cohere";
@@ -69,6 +69,8 @@ type GetModelInput = {
 	model: string;
 	apiKey: string;
 	baseURL?: string;
+	/** The server's own AI, whose endpoint the operator set: it skips the public-address guard on users' endpoints. */
+	serverAi?: boolean;
 };
 
 const MAX_AI_FILE_BYTES = 10 * 1024 * 1024; // 10MB
@@ -94,7 +96,7 @@ const MAX_DOCX_DOCUMENT_XML_BYTES = 20 * 1024 * 1024;
 export function getModel(input: GetModelInput) {
 	const { provider, model, apiKey } = input;
 	const baseURL = resolveAiBaseUrl(input);
-	const settings = { apiKey, baseURL, ...aiTransport() };
+	const settings = { apiKey, baseURL, ...aiTransport(input.serverAi) };
 
 	return match(provider)
 		.with("openai", () => createOpenAI(settings).chat(model))
@@ -118,7 +120,7 @@ export function getModel(input: GetModelInput) {
 			const ollama = createOllama({
 				name: "ollama",
 				baseURL,
-				...aiTransport(),
+				...aiTransport(input.serverAi),
 				...(apiKey ? { headers: { Authorization: `Bearer ${apiKey}` } } : {}),
 			});
 
@@ -131,9 +133,11 @@ export function getAgentModel(input: GetModelInput) {
 	if (!isDirectOpenAIProvider(input)) return getModel(input);
 
 	// Direct OpenAI assistants use Responses for reasoning with function tools.
-	return createOpenAI({ apiKey: input.apiKey, baseURL: resolveAiBaseUrl(input), ...aiTransport() }).responses(
-		input.model,
-	);
+	return createOpenAI({
+		apiKey: input.apiKey,
+		baseURL: resolveAiBaseUrl(input),
+		...aiTransport(input.serverAi),
+	}).responses(input.model);
 }
 
 const aiCredentialsSchema = z.object({
@@ -286,6 +290,8 @@ export async function testConnection(input: TestConnectionInput): Promise<TestCo
 
 type ParsePdfInput = z.infer<typeof aiCredentialsSchema> & {
 	file: z.infer<typeof fileInputSchema>;
+	/** A ready model, for example one Rezumi AI counts; otherwise one is made from the credentials. */
+	languageModel?: LanguageModel;
 };
 
 type BuildResumeParsingMessagesInput = {
@@ -325,7 +331,7 @@ function buildResumeParsingTextMessages({ userPrompt, text }: { userPrompt: stri
 }
 
 async function parsePdf(input: ParsePdfInput): Promise<ResumeData> {
-	const model = getModel(input);
+	const model = input.languageModel ?? getModel(input);
 
 	const result = await generateText({
 		model,
@@ -343,6 +349,7 @@ async function parsePdf(input: ParsePdfInput): Promise<ResumeData> {
 
 type ParseDocxInput = z.infer<typeof aiCredentialsSchema> & {
 	file: z.infer<typeof fileInputSchema>;
+	languageModel?: LanguageModel;
 	mediaType: "application/msword" | "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 };
 
@@ -386,7 +393,7 @@ function extractDocxText(file: z.infer<typeof fileInputSchema>): string {
 }
 
 async function parseDocx(input: ParseDocxInput): Promise<ResumeData> {
-	const model = getModel(input);
+	const model = input.languageModel ?? getModel(input);
 	const messages =
 		input.mediaType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 			? buildResumeParsingTextMessages({ userPrompt: docxParserUserPrompt, text: extractDocxText(input.file) })

@@ -3,6 +3,7 @@ import { t } from "@lingui/core/macro";
 import { ORPCError } from "@orpc/client";
 import { create } from "zustand/react";
 import { generateId } from "@rezumi/utils/string";
+import { openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { client, streamClient } from "@/libs/orpc/client";
 
 type LetterMetadata = CoverLetter["style"]["metadata"];
@@ -173,8 +174,15 @@ export const useLetterEditorStore = create<LetterEditorStore>()((set, get) => ({
 	},
 }));
 
-/** Streams a draft from the posting (or a Shorter / More personal revision of `previous`) into `draft`. */
-export async function startLetterDraft(variant: "draft" | "shorter" | "personal" = "draft", previous?: string) {
+/**
+ * Streams a draft from the posting (or a Shorter / More personal revision of `previous`) into `draft`, on the AI that
+ * `ai` names (see `aiSourceFields`). Resolves once the draft has arrived or failed.
+ */
+export async function startLetterDraft(
+	variant: "draft" | "shorter" | "personal" = "draft",
+	previous?: string,
+	ai: { aiSource?: "rezumi" | "own"; idempotencyKey?: string } = {},
+) {
 	const letter = useLetterEditorStore.getState().letter;
 	if (!letter) return;
 	drafting?.abort();
@@ -187,7 +195,7 @@ export async function startLetterDraft(variant: "draft" | "shorter" | "personal"
 
 	try {
 		const stream = await streamClient.coverLetters.draft(
-			{ id: letter.id, variant, ...(previous ? { previous } : {}) },
+			{ id: letter.id, variant, ...(previous ? { previous } : {}), ...ai },
 			{ signal: controller.signal },
 		);
 		let text = "";
@@ -199,6 +207,7 @@ export async function startLetterDraft(variant: "draft" | "shorter" | "personal"
 		setDraft({ phase: "ready", text: text.trim() });
 	} catch (error) {
 		if (controller.signal.aborted) return;
+		openCreditsDialogForError(error);
 		const data = error instanceof ORPCError ? (error.data as { provider?: unknown } | undefined) : undefined;
 		setDraft({ phase: "failed", provider: typeof data?.provider === "string" ? data.provider : null, error });
 	}

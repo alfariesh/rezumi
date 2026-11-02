@@ -1,7 +1,9 @@
 import type { getModel } from "../ai/service";
+import type { AiWorkLimits } from "../billing/metered-ai";
 import type { WebAccessConnection } from "../web-access/contracts";
 import type { AssistantDocument } from "./document";
 import type { ProposeEditsInput, ProposeEditsOutput } from "@rezumi/ai/tools/agent-tool-contracts";
+import type { AiSource } from "@rezumi/schema/billing";
 import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { FilePart, ImagePart, ModelMessage, TextPart, UIMessage, UIMessageChunk } from "ai";
 import { ORPCError } from "@orpc/client";
@@ -24,6 +26,7 @@ import { generateId } from "@rezumi/utils/string";
 import { aiProvidersService } from "../ai-providers/service";
 import { assertAgentEnvironment } from "../ai/credentials";
 import { getAgentModel } from "../ai/service";
+import { aiSourceRequired, errorCode, resolveAiSource, startResolvedAiRun } from "../billing/metered-ai";
 import { careerService, requireCareerApplication } from "../career/service";
 import { buildCareerTools, buildCareerInstructions } from "../career/tools";
 import { coverLetterService } from "../cover-letters/service";
@@ -97,6 +100,8 @@ type StartThreadInput = {
 	resumeId?: string | undefined;
 	coverLetterId?: string | undefined;
 	aiProviderId?: string | undefined;
+	/** Which AI the conversation runs on; see `resolveAiSource`. */
+	aiSource?: AiSource | undefined;
 };
 
 /** What a message shares with the model: the open document and the posting it's for. Both on by default. */
@@ -118,6 +123,9 @@ type SendMessageInput = {
 	message: UIMessage;
 	attachmentIds?: string[] | undefined;
 	context?: MessageContext | undefined;
+	/** Must be "rezumi" to send in a conversation that runs on Rezumi AI: every reply costs one Coach turn. */
+	aiSource?: AiSource | undefined;
+	idempotencyKey?: string | undefined;
 };
 
 type CreateAttachmentInput = {
@@ -778,6 +786,8 @@ function createAgent(input: {
 	connection: WebAccessConnection | null;
 	/** Whether web search is available: through the connection, or the server's SearXNG without one. */
 	search: boolean;
+	/** Rezumi AI's limits: fewer steps and no web tools. Null on the user's own connection. */
+	limits: AiWorkLimits | null;
 	signal: AbortSignal;
 }) {
 	// One greppable JSON line per tool execution.
@@ -820,8 +830,10 @@ function createAgent(input: {
 	}
 	const tools = buildAgentTools({
 		document: document?.kind ?? null,
-		// The career coach searches only when the user switched Web research on for this message.
-		externalSearch: input.search && (!input.career || input.career.web),
+		// The career coach searches only when the user switched Web research on for this message. Rezumi AI doesn't run
+		// web tools at launch.
+		externalSearch: !input.limits && input.search && (!input.career || input.career.web),
+		readPage: !input.limits,
 		signal: input.signal,
 		handlers: {
 			searchWeb: timedToolHandler("search_web", async (query: string, signal: AbortSignal) => {
@@ -903,7 +915,7 @@ function createAgent(input: {
 					}
 				: instructionsText,
 		repairToolCall: repairAgentToolCall,
-		stopWhen: isStepCount(MAX_AGENT_STEPS),
+		stopWhen: isStepCount(input.limits?.maxSteps ?? MAX_AGENT_STEPS),
 		maxOutputTokens: MAX_AGENT_OUTPUT_TOKENS,
 		maxRetries: MAX_AGENT_MODEL_RETRIES,
 		timeout: { stepMs: AGENT_STEP_TIMEOUT_MS },
@@ -985,12 +997,14 @@ export const agentService = {
 							userId: input.userId,
 						});
 
-			const provider = input.aiProviderId
-				? await aiProvidersService.getRunnableById({
-						id: input.aiProviderId,
-						userId: input.userId,
-					})
-				: await aiProvidersService.getDefaultRunnable({ userId: input.userId });
+			const provider = (
+				await resolveAiSource({
+					userId: input.userId,
+					action: "coach-turn",
+					aiSource: input.aiSource,
+					providerId: input.aiProviderId,
+				})
+			)?.provider;
 			if (!provider)
 				throw new ORPCError("BAD_REQUEST", {
 					message: "Test and turn on an AI provider in Settings → AI & developer first.",
@@ -1216,6 +1230,25 @@ export const agentService = {
 					userId: input.userId,
 				}),
 			]);
+			// A conversation on Rezumi AI costs one Coach turn per reply, so only an app that shows the cost may send in it;
+			// the source never changes mid-conversation without the user switching the model.
+			const choice = await aiProvidersService.offersChoice(input.userId);
+			const rezumi = choice && runnableProvider.managed;
+			if (rezumi && input.aiSource !== "rezumi")
+				throw input.aiSource === undefined
+					? aiSourceRequired()
+					: new ORPCError("BAD_REQUEST", {
+							message: "This conversation runs on Rezumi AI. Switch the model to use your own AI connection.",
+						});
+			if (choice && !rezumi && input.aiSource === "rezumi")
+				throw new ORPCError("BAD_REQUEST", {
+					message: "This conversation runs on your own AI connection. Switch the model to use Rezumi AI.",
+				});
+			const ai = await startResolvedAiRun(
+				{ provider: runnableProvider, rezumi },
+				{ userId: input.userId, action: "coach-turn", idempotencyKey: input.idempotencyKey },
+			);
+
 			const runId = generateId();
 			const streamId = generateId();
 			const controller = new AbortController();
@@ -1225,8 +1258,12 @@ export const agentService = {
 				userId: input.userId,
 				runId,
 				streamId,
+			}).catch(async (error: unknown) => {
+				await ai.fail(errorCode(error));
+				throw error;
 			});
 			if (!claimed) {
+				await ai.fail("run_conflict");
 				throw new ORPCError("CONFLICT", {
 					message: "This conversation is still replying. Wait for it to finish, or stop it.",
 				});
@@ -1398,6 +1435,7 @@ export const agentService = {
 					posting,
 					connection,
 					search,
+					limits: ai.limits,
 					signal: controller.signal,
 					provider: {
 						provider: runnableProvider.provider,
@@ -1405,18 +1443,33 @@ export const agentService = {
 						apiKey: runnableProvider.apiKey,
 						baseURL: runnableProvider.baseURL ?? "",
 					},
-					model: getAgentModel({
-						provider: runnableProvider.provider,
-						model: runnableProvider.model,
-						apiKey: runnableProvider.apiKey,
-						baseURL: runnableProvider.baseURL ?? "",
-					}),
+					model: ai.wrap(
+						getAgentModel({
+							provider: runnableProvider.provider,
+							model: runnableProvider.model,
+							apiKey: runnableProvider.apiKey,
+							baseURL: runnableProvider.baseURL ?? "",
+							serverAi: runnableProvider.managed,
+						}),
+					),
 				});
 
+				let streamFailed = false;
 				const result = await agent.stream({
 					messages: attachModelPartsToLatestUserMessage(modelMessages, attachmentModelParts),
 					abortSignal: controller.signal,
-					experimental_transform: smoothStream({ chunking: "word" }),
+					experimental_transform: [
+						smoothStream({ chunking: "word" }),
+						// Only a top-level error part fails the run. A failed tool also reaches the UI stream's onError, but the
+						// model carries on after it, so the reply can still finish.
+						() =>
+							new TransformStream({
+								transform(part, controller) {
+									if (part.type === "error") streamFailed = true;
+									controller.enqueue(part);
+								},
+							}),
+					],
 					// Crash-safety: fold each finished step into the draft row so a process death
 					// mid-run loses at most the current step, never the whole transcript.
 					onStepEnd: async (step) => {
@@ -1498,6 +1551,10 @@ export const agentService = {
 										persistError = error;
 										throw error;
 									} finally {
+										// Rezumi AI keeps the turn's credits only for a reply that finished and was saved.
+										if (isAborted || persistError || streamFailed)
+											await ai.fail(isAborted ? "aborted" : persistError ? "not_saved" : "stream_error");
+										else await ai.succeed();
 										await cleanupActiveRun({
 											threadId: input.threadId,
 											userId: input.userId,
@@ -1533,6 +1590,7 @@ export const agentService = {
 					),
 				);
 			} catch (error) {
+				await ai.fail(errorCode(error));
 				if (insertedDraft && draftRowId) {
 					await deleteDraftIfEmpty({
 						rowId: draftRowId,

@@ -33,6 +33,8 @@ import { PromptBox } from "./prompt-box";
 import { ToolApprovals } from "./tool-approvals";
 import { useAssistantChat } from "./use-assistant-chat";
 import { WaitingRow } from "./waiting-row";
+import { aiSourceFieldsFor, useAiSource } from "@/features/billing/ai-source";
+import { AiCostNote } from "@/features/billing/ai-source-menu";
 import { ChangeSet } from "@/features/resume/editor/proposals/proposal-list";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { getOrpcErrorMessage, toastError } from "@/libs/error-message";
@@ -57,6 +59,8 @@ type ConversationProps = {
 	document: AssistantDocument;
 	readOnly: boolean;
 	providerLabel: string;
+	/** The connection the conversation runs on, for its Rezumi AI cost. */
+	providerId?: string | undefined;
 	/** A message to send as soon as the conversation opens (the first message, ⌘K Ask). */
 	prompt: string | null;
 	promptAttachments: ChatAttachment[];
@@ -77,16 +81,20 @@ export function Conversation(props: ConversationProps) {
 	// A first message already shown while the conversation opened doesn't rise in a second time.
 	const [fromPending] = useState(() => props.prompt !== null);
 
-	const refresh = () =>
+	const ai = useAiSource();
+	const refresh = () => {
 		void queryClient.invalidateQueries({
 			queryKey: orpc.agent.threads.list.key(),
 		});
+		if (ai.choice) void queryClient.invalidateQueries({ queryKey: orpc.billing.summary.key() });
+	};
 	const { messages, sendMessage, status, error, clearError, regenerate, stop, addToolOutput, addToolApprovalResponse } =
 		useAssistantChat({
 			threadId,
 			initialMessages: props.initialMessages,
 			resume: props.activeRun,
 			context,
+			aiSource: aiSourceFieldsFor(ai, props.providerId).aiSource,
 			onFinish: refresh,
 		});
 	const streaming = status === "submitted" || status === "streaming";
@@ -319,6 +327,7 @@ export function Conversation(props: ConversationProps) {
 				streaming={streaming}
 				disabled={readOnly}
 				threadId={threadId}
+				providerId={props.providerId}
 				onSend={send}
 				onStop={stopReply}
 			/>
@@ -753,6 +762,8 @@ type ComposerProps = {
 	onStop: () => void;
 	/** Text the box starts with (a link's `?ask=`); the user still presses Send. */
 	initialText?: string | undefined;
+	/** The connection replies run on, for their Rezumi AI cost. */
+	providerId?: string | undefined;
 };
 
 /**
@@ -859,6 +870,7 @@ export function Composer(props: ComposerProps) {
 						: undefined
 				}
 			/>
+			<AiCostNote action="coach-turn" providerId={props.providerId} className="block px-1 pt-1" />
 		</div>
 	);
 }

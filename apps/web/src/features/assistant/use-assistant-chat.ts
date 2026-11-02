@@ -11,6 +11,8 @@ import {
 } from "ai";
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { agentMessageMetadataSchema } from "@rezumi/ai/tools/agent-tool-contracts";
+import { generateId } from "@rezumi/utils/string";
+import { openCreditsDialogForError } from "@/features/billing/ai-source-menu";
 import { streamClient } from "@/libs/orpc/client";
 
 // Apart from chat.ts so pages that only list conversations don't load the AI SDK.
@@ -44,6 +46,8 @@ type UseAssistantChatInput = {
 	resume: boolean;
 	/** Read when a message is sent, so the chips always apply to the next message. */
 	context: MessageContext;
+	/** Which AI the conversation runs on, while the account chooses; each reply on Rezumi AI costs one Coach turn. */
+	aiSource?: "rezumi" | "own" | undefined;
 	onFinish: () => void;
 };
 
@@ -51,10 +55,19 @@ type UseAssistantChatInput = {
  * The conversation's chat: messages stream in over oRPC, answers to the assistant's questions continue the reply,
  * and only the newest message is sent (the server keeps the transcript).
  */
-export function useAssistantChat({ threadId, initialMessages, resume, context, onFinish }: UseAssistantChatInput) {
+export function useAssistantChat({
+	threadId,
+	initialMessages,
+	resume,
+	context,
+	aiSource,
+	onFinish,
+}: UseAssistantChatInput) {
 	const contextRef = useRef(context);
+	const aiSourceRef = useRef(aiSource);
 	useLayoutEffect(() => {
 		contextRef.current = context;
+		aiSourceRef.current = aiSource;
 	});
 
 	const transport = useMemo<ChatTransport<AgentUIMessage>>(
@@ -63,10 +76,18 @@ export function useAssistantChat({ threadId, initialMessages, resume, context, o
 				const message = options.messages.at(-1);
 				if (!message) throw new Error("No message to send.");
 				const attachmentIds = attachmentIdsOf(options.body);
+				// Every reply is its own Rezumi AI action, with its own key.
+				const source = aiSourceRef.current ? { aiSource: aiSourceRef.current, idempotencyKey: generateId() } : {};
 				return parseSse(
 					eventIteratorToUnproxiedDataStream(
 						await streamClient.agent.messages.send(
-							{ threadId, message, context: contextRef.current, ...(attachmentIds ? { attachmentIds } : {}) },
+							{
+								threadId,
+								message,
+								context: contextRef.current,
+								...(attachmentIds ? { attachmentIds } : {}),
+								...source,
+							},
 							options.abortSignal ? { signal: options.abortSignal } : {},
 						),
 					),
@@ -89,5 +110,8 @@ export function useAssistantChat({ threadId, initialMessages, resume, context, o
 		sendAutomaticallyWhen: (input) =>
 			lastAssistantMessageIsCompleteWithToolCalls(input) || lastAssistantMessageIsCompleteWithApprovalResponses(input),
 		onFinish,
+		onError: (error) => {
+			openCreditsDialogForError(error);
+		},
 	});
 }

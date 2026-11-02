@@ -1,3 +1,4 @@
+import type { LanguageModel } from "ai";
 import { z } from "zod";
 import { atsReviewSystemPrompt, atsReviewUserPromptTemplate } from "@rezumi/ai/prompts";
 import { dataBlock, inertMarkers } from "./data-block";
@@ -93,6 +94,8 @@ type AtsReviewServiceInput = AtsReviewInput & {
 	model: string;
 	apiKey: string;
 	baseURL: string;
+	/** A ready model, for example one Rezumi AI counts; otherwise one is made from the provider fields. */
+	languageModel?: LanguageModel;
 };
 
 function renderFindings(findings: AtsReviewInput["findings"]): string {
@@ -139,7 +142,7 @@ function buildUserPrompt(input: AtsReviewServiceInput): string {
 
 /** Qualitative review of the writing. Never returns a score — see {@link atsReviewOutputSchema}. */
 export function reviewResumeText(input: AtsReviewServiceInput): Promise<AtsReviewOutput> {
-	const model = getModel(input);
+	const model = input.languageModel ?? getModel(input);
 
 	return generateJson(model, { system: atsReviewSystemPrompt, prompt: buildUserPrompt(input) }, atsReviewOutputSchema);
 }

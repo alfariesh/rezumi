@@ -8,6 +8,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { EMPTY_WORKSPACE } from "@rezumi/schema/career";
+import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
+import { getCreditsProblem } from "@/features/billing/ai-source-menu";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
@@ -153,10 +155,15 @@ export function latest<K extends SavedItem["data"]["kind"]>(
 	);
 }
 
-/** The connection tab AI uses: the most recently used tested one, as on the server. */
+/**
+ * The connection tab AI uses: the most recently used tested one, as on the server; or, while the account chooses, the
+ * source the user chose (Rezumi AI or their own connection).
+ */
 export function useDefaultProvider() {
 	const state = useHasUsableAiProvider();
-	return { ...state, provider: state.usableProviders[0] ?? null };
+	const ai = useAiSource();
+	const chosen = ai.choice ? (ai.source === "rezumi" ? ai.managed : ai.own[0]) : undefined;
+	return { ...state, provider: chosen ?? state.usableProviders[0] ?? null };
 }
 
 /**
@@ -166,6 +173,7 @@ export function useGenerate(applicationId: string) {
 	const { i18n } = useLingui();
 	const queryClient = useQueryClient();
 	const connection = useDefaultProvider();
+	const ai = useAiSource();
 	const { provider } = connection;
 	const mutation = useMutation({
 		...orpc.career.generate.mutationOptions(),
@@ -173,6 +181,8 @@ export function useGenerate(applicationId: string) {
 			if (result.item) void queryClient.invalidateQueries({ queryKey: orpc.career.savedItems.key() });
 		},
 		onError: (error) => {
+			// Too few Rezumi AI credits explains itself in the credits dialog.
+			if (getCreditsProblem(error)) return;
 			const name = provider?.label ?? t`Your AI connection`;
 			toastError(error, t`${name} didn't respond. Nothing was changed; try again.`, { allowServerMessage: true });
 		},
@@ -182,7 +192,7 @@ export function useGenerate(applicationId: string) {
 		run: (task: GenerateTask) => {
 			if (connection.isUnavailable)
 				return Promise.reject(new Error(t`AI connections haven't loaded. Try again before generating.`));
-			return mutation.mutateAsync({ applicationId, locale: i18n.locale, task });
+			return mutation.mutateAsync({ applicationId, locale: i18n.locale, task, ...aiSourceFields(ai) });
 		},
 	};
 }

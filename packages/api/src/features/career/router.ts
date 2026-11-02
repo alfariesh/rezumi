@@ -18,6 +18,7 @@ import {
 	savedItemSchema,
 } from "../../dto/career";
 import { aiRequestRateLimit } from "../../middleware/rate-limit";
+import { aiSourceInput } from "../billing/ai-source";
 import { searchScope } from "../web-access/regions";
 import { generateCareer } from "./generate";
 import { careerJobs } from "./jobs";
@@ -274,9 +275,15 @@ export const careerRouter = {
 			operationId: "generateCareerWork",
 			summary: "Generate AI work for an application",
 			description:
-				"Asks the default AI connection for one structured piece of work for an application (fit check, briefing, practice feedback, debrief review, employer message, answer draft). Everything but answer drafts is saved.",
+				'Asks the default AI connection for one structured piece of work for an application (fit check, briefing, practice feedback, debrief review, employer message, answer draft). Everything but answer drafts is saved. With `aiSource: "rezumi"` it runs on Rezumi AI: a fit check costs 4 credits, a briefing, practice feedback or debrief 3, a reply or answer draft 2.',
 		})
-		.input(applicationInput.extend({ locale: z.string().max(20).default("en-US"), task: generateTaskSchema }))
+		.input(
+			applicationInput.extend({
+				locale: z.string().max(20).default("en-US"),
+				task: generateTaskSchema,
+				...aiSourceInput,
+			}),
+		)
 		.output(
 			z.object({
 				item: savedItemSchema.nullable(),

@@ -243,7 +243,7 @@ export const coverLettersRouter = {
 			operationId: "draftCoverLetter",
 			summary: "Draft a cover letter's body",
 			description:
-				"Streams a draft of the letter's body, as text, from its linked resume and its application's posting, using only facts from them. Nothing is saved. `shorter` and `personal` revise a previous draft.",
+				"Streams a draft of the letter's body, as text, from its linked resume and its application's posting, using only facts from them. Nothing is saved. `shorter` and `personal` revise a previous draft. With `aiSource: \"rezumi\"` it runs on Rezumi AI for 3 credits, kept only when the draft arrives in full.",
 			successDescription: "The draft, streamed as text.",
 		})
 		.input(coverLetterDto.draft.input)

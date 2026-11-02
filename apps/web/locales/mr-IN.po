@@ -450,6 +450,11 @@ msgstr "{0} च्या {1} रुपांतरित नोकरीच्�
 msgid "{0} of {1} terms found"
 msgstr "{0} पैकी {1} संज्ञा सापडल्या"
 
+#. placeholder {0}: creditCount(credits)
+#: src/features/assistant/assistant-panel.tsx
+msgid "{0} per reply"
+msgstr ""
+
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/conversation.tsx
 msgid "{0} posting"
@@ -535,6 +540,11 @@ msgstr "{connection} ने प्रतिसाद दिला नाही."
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} a year"
 msgstr "{cost} दरवर्षी"
+
+#. placeholder {0}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "{cost} each time · {0} left"
+msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "{cost} the first year"
@@ -1379,8 +1389,16 @@ msgstr "कीवर्ड जोडा"
 msgid "Add language"
 msgstr "भाषा जोडा"
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "Add my connection"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "Add one above."
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Add one in Settings to use it without credits"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -2791,6 +2809,7 @@ msgstr "क्लायंट आयडी"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -3959,6 +3978,10 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
 msgstr "{0} तयार केले आणि लिंक केले"
+
+#: src/features/settings/ai/providers.tsx
+msgid "Credits"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
@@ -7590,6 +7613,11 @@ msgstr "कोणतेही सक्रिय नोकरी अर्ज �
 msgid "No activity yet"
 msgstr ""
 
+#. placeholder {0}: creditCount(balance)
+#: src/features/settings/ai/providers.tsx
+msgid "No API key needed. Each action shows its cost in credits first · {0} left"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "No API key to set up"
 msgstr ""
@@ -7886,6 +7914,10 @@ msgstr "जोडलेले नाही"
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "अद्याप कनेक्ट केलेले नाही. तुम्ही जिथे डोमेन व्यवस्थापित करता तिथे त्याचे DNS रेकॉर्ड जोडा, नंतर तपासा."
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Not enough Rezumi AI credits"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Not for me"
@@ -8592,6 +8624,10 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "वेतन कालावधी"
+
+#: src/features/documents/new-document-dialog.tsx
+msgid "PDF and Word files are read with"
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
@@ -9961,6 +9997,15 @@ msgstr "Rezumi - मुखपृष्ठावर जा"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "Rezumi AI · {cost}"
+msgstr ""
+
+#. placeholder {0}: creditCount(balance)
+#: src/features/billing/ai-source-menu.tsx
+msgid "Rezumi AI · {cost} · {0} left"
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Rezumi AI credits"
 msgstr ""
@@ -10057,6 +10102,14 @@ msgstr ""
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Run again"
 msgstr "पुन्हा चालवा"
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Runs on Rezumi AI for {cost}. Change"
+msgstr ""
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Runs on your AI connection. Change"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Runs onto page {next}"
@@ -10488,6 +10541,10 @@ msgstr ""
 msgid "See pricing"
 msgstr ""
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "See Pro AI"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "See what ATS software reads"
 msgstr ""
@@ -10590,6 +10647,11 @@ msgstr "तुमचा संदेश, हा अर्ज (जॉब पो�
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "Sends your resume's text only to {0} · {1}, with your key."
 msgstr "तुमच्या रेझ्युमेचा मजकूर तुमच्या कीसह फक्त {0} · {1} वर पाठवतो."
+
+#. placeholder {0}: provider.label
+#: src/features/resume/editor/check/writing-tab.tsx
+msgid "Sends your resume's text only to {0}."
+msgstr ""
 
 #: src/features/homepage/features.tsx
 #: src/features/homepage/resume.tsx
@@ -12196,6 +12258,10 @@ msgstr "हे पत्र त्याचा प्राप्तकर्त
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "सॉफ्टवेअर या फाइलमधील मजकूर किती अचूकपणे काढू शकते हे यातून मोजले जाते. एखादा अर्ज नाकारला जाईल का याचे भाकीत यातून होत नाही, आणि कोणतेही साधन ते करू शकत नाही. तुमची फाइल याच ब्राउझरमध्ये वाचली गेली आणि कधीही अपलोड झाली नाही."
 
+#: src/features/billing/ai-source-menu.tsx
+msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
+msgstr ""
+
 #: src/components/layout/error-screen.tsx
 msgid "This page didn't load"
 msgstr "हे पान लोड झाले नाही"
@@ -12883,6 +12949,10 @@ msgstr "कोचिंगमध्ये वापरा: {excerpt}"
 #: src/features/resume/share/address-field.tsx
 msgid "Use lowercase letters, numbers and single dashes."
 msgstr "लोअरकेस अक्षरे, संख्या आणि सिंगल डॅश वापरा."
+
+#: src/features/billing/ai-source-menu.tsx
+msgid "Use my connection"
+msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Use my timezone"
@@ -13707,6 +13777,7 @@ msgstr "तुमचे AI"
 msgid "your AI connection"
 msgstr "तुमचे AI कनेक्शन"
 
+#: src/features/billing/ai-source-menu.tsx
 #: src/features/career/hooks.ts
 msgid "Your AI connection"
 msgstr "तुमचे AI कनेक्शन"

@@ -29,6 +29,7 @@ import { latest, useDefaultProvider, useGenerate, useSavedItems, useTicks } from
 import { CareerWidget, MemoryProposal, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
 import { buildIcs } from "@/features/applications/ics";
 import { isInterview } from "@/features/applications/interviews";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
@@ -239,11 +240,15 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 						{connection.isUnavailable ? (
 							<AiProviderLoadState state={connection} />
 						) : provider ? (
-							<PrivacyLine>
-								<Trans>
-									Review my answer sends the question, what you said, this posting and your Knowledge to {providerName}.
-								</Trans>
-							</PrivacyLine>
+							<div className="flex flex-wrap items-center gap-x-2">
+								<PrivacyLine>
+									<Trans>
+										Review my answer sends the question, what you said, this posting and your Knowledge to{" "}
+										{providerName}.
+									</Trans>
+								</PrivacyLine>
+								<AiSourceMenu action="interview-practice" />
+							</div>
 						) : (
 							<PrivacyLine>
 								<Trans>

@@ -8,7 +8,7 @@ import { Button, Chip, Description, Dropdown, Input, Label, Link, Separator, Tex
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { useReducedMotion } from "motion/react";
 import { useId, useRef, useState } from "react";
@@ -20,6 +20,8 @@ import { cn } from "@rezumi/utils/style";
 import { templates } from "@/dialogs/resume/template/data";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { getStageColor, getStageLabel } from "@/features/applications/stages";
+import { aiSourceFields, useAiSource } from "@/features/billing/ai-source";
+import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { useLetterWords } from "@/features/letters/compose";
 import { countWords, LETTER_LENGTH, letterLength } from "@/features/letters/length";
 import { discardLetterDraft, startLetterDraft, useLetterEditorStore } from "@/features/letters/store";
@@ -491,7 +493,18 @@ type EmptyBodyProps = {
 	onWrite: () => void;
 };
 
+/** Starts a draft on the chosen AI, then refreshes the Rezumi AI balance it may have spent. */
+function useStartDraft() {
+	const ai = useAiSource();
+	const queryClient = useQueryClient();
+	return (variant: "draft" | "shorter" | "personal", previous?: string) =>
+		void startLetterDraft(variant, previous, aiSourceFields(ai)).finally(() => {
+			if (ai.choice) void queryClient.invalidateQueries({ queryKey: orpc.billing.summary.key() });
+		});
+}
+
 function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
+	const startDraft = useStartDraft();
 	const providerState = useHasUsableAiProvider();
 	const { hasUsableProvider } = providerState;
 	const hasResume = Boolean(letter.sourceResumeId);
@@ -514,11 +527,12 @@ function EmptyBody({ letter, application, disabled, onWrite }: EmptyBodyProps) {
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{offerDraft && (
-					<Button size="sm" isDisabled={disabled} onPress={() => void startLetterDraft("draft")}>
+					<Button size="sm" isDisabled={disabled} onPress={() => startDraft("draft")}>
 						<Icon name="sparkle" size={16} />
 						{application ? <Trans>Draft from the posting</Trans> : <Trans>Draft from your resume</Trans>}
 					</Button>
 				)}
+				{offerDraft && <AiSourceMenu action="cover-letter" />}
 				{/* The draft is the one primary action; without it, writing is the way in. */}
 				<Button size="sm" variant={offerDraft ? "ghost" : "secondary"} isDisabled={disabled} onPress={() => onWrite()}>
 					<Trans>Write it myself</Trans>
@@ -546,12 +560,13 @@ type DraftBoxProps = {
 
 /** The draft on its accent wash, then its actions: Keep, Shorter, More personal, Discard. */
 function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
+	const startDraft = useStartDraft();
 	const reducedMotion = useReducedMotion();
 	// Retrying repeats the last request.
 	const last = useRef<{ variant: "draft" | "shorter" | "personal"; previous?: string }>({ variant: "draft" });
 	const run = (variant: "draft" | "shorter" | "personal", previous?: string) => {
 		last.current = previous ? { variant, previous } : { variant };
-		void startLetterDraft(variant, previous);
+		startDraft(variant, previous);
 	};
 
 	if (draft.phase === "failed") {
@@ -633,6 +648,7 @@ function DraftBox({ draft, letter, application, onKeep }: DraftBoxProps) {
 						<Button size="sm" variant="ghost" onPress={() => discardLetterDraft()}>
 							<Trans>Discard</Trans>
 						</Button>
+						<AiSourceMenu action="cover-letter" className="ms-auto" />
 					</div>
 				</div>
 			)}

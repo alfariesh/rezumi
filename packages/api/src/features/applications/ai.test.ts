@@ -10,7 +10,9 @@ vi.mock("ai", async (importOriginal) => ({
 vi.mock("../../context", async () => ({ protectedProcedure: (await import("@orpc/server")).os }));
 vi.mock("../../middleware/rate-limit", () => ({ aiRequestRateLimit: ({ next }: { next: () => unknown }) => next() }));
 vi.mock("../ai/service", () => ({ getModel: vi.fn() }));
-vi.mock("../ai-providers/service", () => ({ aiProvidersService: { getDefaultRunnable: vi.fn() } }));
+vi.mock("../ai-providers/service", () => ({
+	aiProvidersService: { getDefaultRunnable: vi.fn(), offersChoice: vi.fn(async () => false) },
+}));
 vi.mock("../resume/service", () => ({ resumeService: { getById: vi.fn(), create: vi.fn() } }));
 vi.mock("../cover-letters/service", () => ({ coverLetterService: { create: vi.fn() } }));
 // A copy, so a test can set the server's SearXNG URL.
@@ -186,5 +188,25 @@ describe("posting search", () => {
 			code: "SEARCH_UNAVAILABLE",
 		});
 		expect(searchJobPostings).not.toHaveBeenCalled();
+	});
+});
+
+describe("tailoring", () => {
+	it("stops before the AI runs when the linked resume was already recorded as sent", async () => {
+		const { applicationService } = await import("./service");
+		const { resumeService } = await import("../resume/service");
+		vi.mocked(generateText).mockReset();
+		vi.mocked(applicationService.getById).mockResolvedValue({
+			id: "a1",
+			resumeId: "r1",
+			jobDescription: "Posting",
+			sentResumeVersionId: "v1",
+		} as never);
+		const context = { user: { id: "u1" }, locale: "en-US" as const, reqHeaders: new Headers() };
+		await expect(call(aiRouter.tailorResume, { id: "a1" }, { context } as never)).rejects.toMatchObject({
+			code: "BAD_REQUEST",
+		});
+		expect(generateText).not.toHaveBeenCalled();
+		expect(resumeService.create).not.toHaveBeenCalled();
 	});
 });

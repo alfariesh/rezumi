@@ -187,7 +187,8 @@ describe.skipIf(!databaseUrl)("Rezumi AI credit ledger", () => {
 		await grant("owner", 10, days(30));
 		const first = await reserve("owner", "click-1", "review");
 		const again = await reserve("owner", "click-1", "review");
-		expect(again).toEqual({ ...first, balanceAfter: 6 });
+		expect(first.created).toBe(true);
+		expect(again).toEqual({ ...first, balanceAfter: 6, created: false });
 		const other = await reserve("owner", "click-2", "review");
 		expect(other.usageId).not.toBe(first.usageId);
 		expect(await balanceOf("owner")).toBe(2);
