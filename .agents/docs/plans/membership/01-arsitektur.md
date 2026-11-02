@@ -41,7 +41,7 @@ Prinsip yang tidak boleh dilanggar:
 | Tabel database                            | `packages/db/src/schema/billing.ts`, diekspor dari `packages/db/src/schema/index.ts`; migrasi via `pnpm db:generate`                                                                   | Konvensi: id `text` dengan `generateId()` (UUIDv7), `timestamp(..., { withTimezone: true })`, nama kolom snake_case        |
 | Logika bisnis + router oRPC               | `packages/api/src/features/billing/`, didaftarkan di `packages/api/src/routers/index.ts` sebagai `billing`                                                                             | Pakai `protectedProcedure` dan pola router di `features/custom-domain/router.ts`                                           |
 | Endpoint notifikasi Midtrans              | `apps/server/src/http/midtrans.ts`, dipasang di `apps/server/src/http/app.ts`                                                                                                          | `/api/*` sudah masuk `run_worker_first` di `wrangler.jsonc`                                                                |
-| Job terjadwal                             | `packages/api/src/features/billing/jobs.ts` (`runBillingJobs`), dipanggil dari `scheduled()` di `apps/server/src/cloudflare/index.ts` dan scheduler Node di `apps/server/src/startup/` | Sekarang `scheduled()` hanya menjalankan `runCareerJobs`                                                                   |
+| Job terjadwal                             | `packages/api/src/features/billing/jobs.ts` (`runBillingJobs`), dipanggil dari `scheduled()` di `apps/server/src/cloudflare/index.ts` dan scheduler Node di `apps/server/src/startup/` | Phase 04: `scheduled()` dan `startup/job-scheduler.ts` (dulu `career-scheduler.ts`) menjalankan billing lalu career        |
 | Env                                       | `packages/env/src/server.ts`, `.env.example`, `turbo.json` (`globalPassThroughEnv` + env task tes), `wrangler.jsonc` (`vars`) / `wrangler secret put`                                  | Aturan "New env var" di `CLAUDE.md`                                                                                        |
 | UI web                                    | `apps/web/src/features/billing/`, rute `apps/web/src/routes/dashboard/settings/billing*.tsx`, entri menu di `apps/web/src/features/settings/root.tsx`                                  | Homepage `apps/web/src/features/homepage/plans.ts` pindah membaca katalog bersama                                          |
 | UI mobile                                 | `apps/mobile/src/features/billing/` (termasuk helper visibilitas per platform), layar `apps/mobile/app/(tabs)/settings/membership.tsx`                                                 | Tanpa pembelian di app. Android: status paket/kredit; iOS: tanpa UI billing sampai IAP (`00-keputusan-produk.md` bagian 6) |
@@ -51,19 +51,21 @@ Prinsip yang tidak boleh dilanggar:
 
 Gunakan graph `codebase-memory-mcp` (`search_graph` → `trace_path`) untuk menemukan pemanggil sebelum mengubah fungsi bersama, lalu konfirmasi dengan membaca source.
 
-Isi `packages/api/src/features/billing/` setelah Phase 01:
+Isi `packages/api/src/features/billing/` setelah Phase 04:
 
-| Berkas            | Isi                                                                                                                                                                                                          |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `account.ts`      | Tipe `Transaction` dan `lockBillingAccount(tx, userId)` (4.1)                                                                                                                                                |
-| `timeline.ts`     | Fungsi murni `schedulePurchase`, `revokePeriod`, konstanta `DAY_MS` (6.6)                                                                                                                                    |
-| `periods.ts`      | `grantMembershipPeriod(tx, …)` dan `revokeMembershipPeriod(tx, …)`: kunci akun → baca jadwal → terapkan hasil `timeline`                                                                                     |
-| `entitlements.ts` | `getBillingMode`, `isBillingActiveFor`, `resolveEntitlements` (murni), `getEntitlements` (6.7)                                                                                                               |
-| `limits.ts`       | `countActiveDocuments`, `assertDocumentCapacity`, `precheckDocumentCapacity`, `assertFeature`, `assertDesignChange`, `fitImportedDesign`, error `PLAN_LIMIT_REACHED`/`PLAN_FEATURE_REQUIRED` (Phase 03, 6.8) |
-| `automation.ts`   | `isFirstPartyClient`, `firstPartyRedirectUris`, `assertAutomationAccess` (Phase 03, 9.1); diekspor `@rezumi/api/features/billing/automation`                                                                 |
-| `admin.ts`        | `assertBillingAdmin` dan `billingAdmin.grantPeriod/revokePeriod` (tulis `billing_audit_log` di transaksi yang sama)                                                                                          |
-| `router.ts`       | `billing.summary`, `billing.admin.grantPeriod`, `billing.admin.revokePeriod` (semua tag `Internal`)                                                                                                          |
-| `*.test.ts`       | Unit `timeline` + `entitlements`; `billing.integration.test.ts` memakai `BILLING_TEST_DATABASE_URL`                                                                                                          |
+| Berkas            | Isi                                                                                                                                                                                                                                                                     |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `account.ts`      | Tipe `Transaction` dan `lockBillingAccount(tx, userId)` (4.1)                                                                                                                                                                                                           |
+| `timeline.ts`     | Fungsi murni `schedulePurchase`, `revokePeriod`, konstanta `DAY_MS` (6.6)                                                                                                                                                                                               |
+| `periods.ts`      | `grantMembershipPeriod(tx, …)` dan `revokeMembershipPeriod(tx, …)`: kunci akun → baca jadwal → terapkan hasil `timeline`                                                                                                                                                |
+| `entitlements.ts` | `getBillingMode`, `isBillingActiveFor`, `isBillingAppliedTo` (baca `role` dari DB; mode `off` tanpa DB), `resolveEntitlements` (murni), `getEntitlements` (6.7)                                                                                                         |
+| `limits.ts`       | `countActiveDocuments`, `assertDocumentCapacity`, `precheckDocumentCapacity`, `assertFeature`, `assertDesignChange`, `fitImportedDesign`, error `PLAN_LIMIT_REACHED`/`PLAN_FEATURE_REQUIRED` (Phase 03, 6.8)                                                            |
+| `automation.ts`   | `isFirstPartyClient`, `firstPartyRedirectUris`, `assertAutomationAccess` (Phase 03, 9.1); diekspor `@rezumi/api/features/billing/automation`                                                                                                                            |
+| `credits.ts`      | Ledger kredit (Phase 04, 6.9): `grantCredits`, `ensureTrialCredits`, `reserveCredits`, `commitCredits`, `releaseCredits`, `deductCredits`, `getCreditBalance`, `listCreditHistory`, `releaseStaleReservations`, `allocateCredits` (murni), error `INSUFFICIENT_CREDITS` |
+| `jobs.ts`         | `runBillingJobs(now)` → `{ releasedReservations }` (Phase 04, 6.4); diekspor `@rezumi/api/features/billing/jobs`                                                                                                                                                        |
+| `admin.ts`        | `assertBillingAdmin` dan `billingAdmin.grantPeriod/revokePeriod/adjustCredits` (tulis `billing_audit_log` di transaksi yang sama)                                                                                                                                       |
+| `router.ts`       | `billing.summary` (dengan `credits`), `billing.creditHistory`, `billing.admin.grantPeriod`, `billing.admin.revokePeriod`, `billing.admin.adjustCredits` (semua tag `Internal`)                                                                                          |
+| `*.test.ts`       | Unit `timeline`, `entitlements`, `limits`, `credits`; `*.integration.test.ts` (billing, limits, credits) memakai `BILLING_TEST_DATABASE_URL`                                                                                                                            |
 
 MCP memakai allowlist eksplisit (`packages/mcp/src/parity.ts`), dan tag `Internal` menyembunyikan rute dari OpenAPI, jadi prosedur `billing.*` tidak terlihat oleh klien luar. Jangan tambahkan prosedur admin ke allowlist MCP.
 
@@ -99,7 +101,9 @@ export const BILLING_CATALOG_VERSION = 1; // naikkan setiap harga/isi paket beru
 export const BILLING_CURRENCY = "IDR";
 export const FREE_TEMPLATES = ["bronzor", "onyx", "rhyhorn", "azurill"] as const;
 export const TRIAL_CREDITS = { amount: 5, validDays: 14 } as const;
-export const CREDIT_COSTS = {/* actionKey → kredit, diisi Phase 04/05 */} as const;
+export const CREDIT_COSTS = { "short-text": 1, "draft-answer": 2, "cover-letter": 3, "interview-practice": 3,
+  "coach-turn": 3, review: 4, "tailor-resume": 5, "import-document": 5 } as const; // Phase 04: satu kunci per jenis pekerjaan
+export type CreditAction = keyof typeof CREDIT_COSTS; // + creditActionSchema, creditSourceSchema (trial | plan | admin)
 export const PLANS = { free, plus, "pro-ai" }; // satisfies { [Id in PlanId]: PlanDefinition & { id: Id } }
 export function getPlan(id: PlanId): PlanDefinition;
 export function isPaidPlan(id: PlanId): id is PaidPlanId;
@@ -115,7 +119,7 @@ Aturan katalog:
 
 ## 4. Model data
 
-Semua tabel di `packages/db/src/schema/billing.ts`. Tabel dibuat pada phase yang pertama kali memakainya (kolom "Phase"). Setelah `pnpm db:generate`, baca SQL migrasi yang dihasilkan sebelum di-commit. **Jangan mengganti nama folder migrasi** setelah dibuat: server dev (`tsx watch`) bisa langsung menerapkannya ke DB lokal, dan Drizzle mencatatnya per nama folder, sehingga nama baru dianggap migrasi baru dan gagal "relation already exists". Migrasi Phase 01: `migrations/20261102033349_thin_wilson_fisk`.
+Semua tabel di `packages/db/src/schema/billing.ts`. Tabel dibuat pada phase yang pertama kali memakainya (kolom "Phase"). Setelah `pnpm db:generate`, baca SQL migrasi yang dihasilkan sebelum di-commit. **Jangan mengganti nama folder migrasi** setelah dibuat: server dev (`tsx watch`) bisa langsung menerapkannya ke DB lokal, dan Drizzle mencatatnya per nama folder, sehingga nama baru dianggap migrasi baru dan gagal "relation already exists". Migrasi Phase 01: `migrations/20261102033349_thin_wilson_fisk`; Phase 04: `migrations/20261102055558_panoramic_shen`.
 
 ### 4.1 `billing_account` (Phase 01)
 
@@ -195,33 +199,33 @@ Setiap notifikasi masuk dan setiap pengecekan status yang mengubah sesuatu. Jeja
 
 `ai_credit_grant` — kredit yang masuk:
 
-| Kolom                 | Tipe                  | Catatan                                               |
-| --------------------- | --------------------- | ----------------------------------------------------- |
-| `id`                  | text PK               |                                                       |
-| `user_id`             | text                  | FK `ON DELETE CASCADE`; index `(user_id, expires_at)` |
-| `source`              | text                  | `trial`, `plan`, `admin`                              |
-| `payment_id`          | text ∅                | FK `billing_payment.id` `ON DELETE SET NULL`          |
-| `amount`, `remaining` | integer               | `CHECK (remaining >= 0 AND remaining <= amount)`      |
-| `expires_at`          | timestamptz           |                                                       |
-| `revoked_at`, `note`  | timestamptz ∅, text ∅ |                                                       |
-| `created_at`          | timestamptz           |                                                       |
+| Kolom                 | Tipe                  | Catatan                                                                                                                           |
+| --------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                  | text PK               |                                                                                                                                   |
+| `user_id`             | text                  | FK `ON DELETE CASCADE`; index `(user_id, expires_at)`                                                                             |
+| `source`              | text                  | `trial`, `plan`, `admin`                                                                                                          |
+| `payment_id`          | text ∅                | FK `billing_payment.id` `ON DELETE SET NULL` — kolom dibuat Phase 04 **tanpa FK** karena tabelnya belum ada; Phase 06 menambah FK |
+| `amount`, `remaining` | integer               | `CHECK (remaining >= 0 AND remaining <= amount)`, `CHECK (amount > 0)`; `source` juga di-`CHECK`                                  |
+| `expires_at`          | timestamptz           |                                                                                                                                   |
+| `revoked_at`, `note`  | timestamptz ∅, text ∅ |                                                                                                                                   |
+| `created_at`          | timestamptz           |                                                                                                                                   |
 
 `ai_credit_usage` — kredit yang dipesan/dipakai:
 
-| Kolom                           | Tipe        | Catatan                                                         |
-| ------------------------------- | ----------- | --------------------------------------------------------------- |
-| `id`                            | text PK     |                                                                 |
-| `user_id`                       | text        | FK `ON DELETE CASCADE`                                          |
-| `operation_key`                 | text unique | Kunci idempotensi: `<userId>:<actionKey>:<idempotencyKey>`      |
-| `action`                        | text        | `actionKey` dari `CREDIT_COSTS`                                 |
-| `credits`                       | integer     |                                                                 |
-| `status`                        | text        | `reserved`, `committed`, `released`                             |
-| `allocations`                   | jsonb       | `[{ grantId, credits }]` — dari grant mana kredit diambil       |
-| `provider`, `model`             | text ∅      | Model managed yang dipakai                                      |
-| `input_tokens`, `output_tokens` | integer ∅   | Termasuk reasoning bila provider melaporkannya                  |
-| `cost_usd_micros`               | bigint ∅    | Biaya provider aktual (perkiraan dari tarif yang dikonfigurasi) |
-| `error_code`                    | text ∅      |                                                                 |
-| `created_at`, `settled_at`      | timestamptz | index `(status, created_at)` untuk melepas reservasi macet      |
+| Kolom                           | Tipe        | Catatan                                                                                                                                     |
+| ------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                            | text PK     |                                                                                                                                             |
+| `user_id`                       | text        | FK `ON DELETE CASCADE`                                                                                                                      |
+| `operation_key`                 | text unique | Kunci idempotensi: `<userId>:<actionKey>:<idempotencyKey>`                                                                                  |
+| `action`                        | text        | `actionKey` dari `CREDIT_COSTS`, atau `admin-adjustment` (koreksi admin negatif, langsung `committed`)                                      |
+| `credits`                       | integer     |                                                                                                                                             |
+| `status`                        | text        | `reserved`, `committed`, `released`                                                                                                         |
+| `allocations`                   | jsonb       | `[{ grantId, credits }]` — dari grant mana kredit diambil                                                                                   |
+| `provider`, `model`             | text ∅      | Model managed yang dipakai                                                                                                                  |
+| `input_tokens`, `output_tokens` | integer ∅   | Termasuk reasoning bila provider melaporkannya                                                                                              |
+| `cost_usd_micros`               | bigint ∅    | Biaya provider aktual (perkiraan dari tarif yang dikonfigurasi)                                                                             |
+| `error_code`                    | text ∅      |                                                                                                                                             |
+| `created_at`, `settled_at`      | timestamptz | index `(status, created_at)` untuk melepas reservasi macet, `(user_id, created_at)` untuk riwayat; `CHECK (credits > 0)` dan `CHECK` status |
 
 ### 4.6 `billing_audit_log` (Phase 01)
 
@@ -350,10 +354,10 @@ Setiap menit, terbatas jumlah dan waktunya:
 - Ambil maks. ±20 pembayaran `creating`/`pending` yang umurnya > 2 menit dan sudah waktunya dicek (backoff: 2, 5, 15, 30, 60 menit, lalu tiap 6 jam sampai 3 hari), dengan `FOR UPDATE SKIP LOCKED`. Jalankan Get Status → terapkan transisi yang sama dengan 6.3.
 - Get Status sebelum metode dipilih menjawab "Payment not found" (`status_code` `404` di body; kode HTTP-nya tidak didokumentasikan, jadi cek keduanya): itu berarti belum ada transaksi, bukan gagal. Setelah lewat `expires_at` + 30 menit dan status masih "tidak ditemukan" atau `pending` → panggil `POST /v2/{order_id}/expire` (best effort, abaikan error "tidak ditemukan"), cek status sekali lagi, lalu tandai `expired` bila memang tidak dibayar.
 - Kirim ulang email bukti bayar yang `receipt_sent_at`-nya masih kosong (maks. beberapa kali, lalu peringatan).
-- Lepaskan `ai_credit_usage` berstatus `reserved` yang lebih tua dari 15 menit.
+- Lepaskan `ai_credit_usage` berstatus `reserved` yang lebih tua dari 15 menit (Phase 04, `releaseStaleReservations`): ambil maks. 100 kandidat tanpa kunci, kelompokkan per akun, lalu per akun satu transaksi: `billing_account … FOR UPDATE SKIP LOCKED` (akun sibuk dilewati putaran ini) → baca ulang usage yang masih `reserved` → kembalikan ke grant asal dengan `error_code = stale_reservation`. Urutan kunci sama dengan semua operasi kredit (akun dulu, lalu usage/grant), jadi tidak ada deadlock.
 - Job harus aman berjalan bersamaan atau terulang (Cron Trigger tidak menjamin tepat sekali).
 
-`scheduled()` di Workers saat ini hanya memanggil `runCareerJobs`. Jalankan billing lebih dulu (pendek), lalu career, keduanya dengan error terisolasi, memakai pool yang sama (`max: 1`).
+Phase 04: `scheduled()` di Workers dan `startJobScheduler()` (`apps/server/src/startup/job-scheduler.ts`, dulu `career-scheduler.ts`) menjalankan billing lebih dulu (pendek), lalu career, keduanya dengan error terisolasi, memakai pool yang sama (`max: 1`). Job berjalan juga saat `BILLING_MODE=off` (satu query ber-index), agar reservasi yang tertinggal setelah rollback tetap dilepas.
 
 ### 6.5 Fulfillment (atomik, satu transaksi)
 
@@ -433,9 +437,12 @@ Tidak dibatasi: pemindahan dokumen tamu (`linkAnonymousAccount` di `packages/aut
 
 ### 6.9 Kredit Rezumi AI
 
-- `reserveCredits({ userId, actionKey, idempotencyKey })` di transaksi dengan `lockBillingAccount`: bila `operation_key` sudah ada → kembalikan baris itu. Bila belum: hitung biaya dari `CREDIT_COSTS`, ambil grant yang aktif (belum kedaluwarsa/dicabut, `remaining > 0`) urut `expires_at` paling dekat dulu, kurangi `remaining`, insert usage `reserved`. Saldo kurang → `INSUFFICIENT_CREDITS`.
-- `commitCredits(usageId, usage)` → `committed` + token/biaya. `releaseCredits(usageId, reason)` → `released` + kembalikan `remaining` ke grant asal.
-- Kredit coba: diberikan **saat pertama kali** pengguna terverifikasi (bukan tamu) memakai Rezumi AI dan `trial_granted_at` masih kosong; berlaku 14 hari sejak diberikan.
+- `reserveCredits({ userId, actionKey, idempotencyKey, now? })` → `{ usageId, credits, balanceAfter, status }`, membuka transaksi sendiri dengan `lockBillingAccount`: bila `operation_key` sudah ada → kembalikan baris itu apa adanya (status bisa sudah `committed`/`released`; Phase 05 memutuskan perlakuannya). `idempotencyKey` 1–200 karakter, selain itu `BAD_REQUEST`. Bila belum: hitung biaya dari `CREDIT_COSTS`, ambil grant yang aktif (belum kedaluwarsa/dicabut, `remaining > 0`) urut `expires_at` paling dekat dulu, kurangi `remaining`, insert usage `reserved`. Saldo kurang → `INSUFFICIENT_CREDITS`.
+- `commitCredits(usageId, { provider, model, inputTokens, outputTokens, costUsdMicros })` → `committed` + token/biaya. `releaseCredits(usageId, errorCode)` → `released` + kembalikan `remaining` ke grant asal (grant yang sudah kedaluwarsa menerima kembali tetapi tetap tidak terhitung saldo). Keduanya membuka transaksi sendiri, hanya berlaku dari `reserved`, aman dipanggil dua kali (mengembalikan status sekarang). Reservasi yang sudah dilepas job tidak bisa di-commit: hasilnya gratis untuk pengguna.
+- `grantCredits(tx, { userId, source, amount, expiresAt, paymentId?, note?, now? })` dan `deductCredits(tx, { userId, credits, now? })` berjalan di transaksi pemanggil. `deductCredits` (koreksi admin negatif) mengambil dari grant paling cepat kedaluwarsa dan mencatat usage `admin-adjustment` berstatus `committed`, jadi `remaining` grant = `amount` − alokasi usage yang belum `released`; saldo kurang → `BAD_REQUEST` dengan `data.balance` (tidak dipotong sebagian).
+- `getCreditBalance(userId, now, database)` → `{ balance, nextExpiry: { credits, at } | null, trial: { available, grantedAt, expiresAt } }`; `trial.available` = belum pernah diberi, email terverifikasi, bukan tamu. Query dijalankan berurutan karena `database` bisa transaksi (satu koneksi).
+- `billing.summary.credits` bernilai `null` bila billing tidak berlaku untuk akun (mode `off`, atau `admins` untuk bukan admin). `billing.creditHistory({ limit 1–50 = 20, offset 0–5000 })` → `{ items, hasMore }` (gabungan grant dan usage, terbaru dulu); kosong bila billing tidak berlaku. Memakai limit/offset seperti `pagination.ts`, bukan cursor.
+- Kredit coba: diberikan **saat pertama kali** pengguna terverifikasi (bukan tamu) memakai Rezumi AI dan `trial_granted_at` masih kosong; berlaku 14 hari sejak diberikan. `ensureTrialCredits(tx, userId, now?)` → `boolean`; mode `off` tidak membaca apa pun, mode `admins` hanya admin. Phase 05 memanggilnya sebelum `reserveCredits` (belum dipanggil di mana pun pada Phase 04).
 - Saldo = jumlah `remaining` grant aktif. Tampilkan juga tanggal kedaluwarsa terdekat.
 - BYOK (koneksi AI milik pengguna) tidak menyentuh kredit sama sekali. Tidak boleh ada perpindahan diam-diam dari BYOK ke Rezumi AI atau sebaliknya.
 
@@ -479,7 +486,7 @@ Host Midtrans: Snap `app.sandbox.midtrans.com` / `app.midtrans.com`; Core API (s
 - `billing.checkout` dan `billing.changePaymentMethod`: **hanya sesi web (cookie)**. Tolak OAuth bearer (termasuk app mobile resmi — pembelian di app dilarang oleh keputusan kanal), API key, dan klien MCP. Prosedur baca (`billing.summary`, `billing.payment`, `billing.payments`) boleh dipakai app resmi.
 - Membedakan app resmi: app mobile mendaftar sebagai klien OAuth dinamis dengan `client_name` "Rezumi for iOS/Android" dan `redirect_uris` `https://<APP_URL host>/auth/native-callback` (`apps/mobile/src/auth/oauth.ts`). Phase 03 membuat helper `isFirstPartyClient(authentication)` berdasarkan redirect URI terdaftar klien token. Keterbatasan yang diterima: pengguna teknis bisa meniru klien ini untuk akunnya sendiri; dampaknya kecil karena tetap terkena rate limit.
 - Implementasi Phase 03 (`billing/automation.ts`): app memakai `https://rezumi.app/auth/native-callback` untuk **semua** server (host tetap di `apps/mobile/src/auth/oauth.ts`), jadi daftar yang diterima = `https://rezumi.app/auth/native-callback`, `https://<host APP_URL>/auth/native-callback`, dan `app.rezumi:/auth/native-callback` (build dev). Klien dianggap resmi bila **semua** redirect URI-nya ada di daftar itu. `RequestAuthentication` membawa `clientId` (`azp` token). `protectedProcedure` memanggil `assertAutomationAccess` setelah cek izin: sesi web selalu lolos, bearer klien resmi lolos (satu query `oauth_client`), selain itu butuh `automationApi`. Endpoint MCP memanggilnya sekali per request dan menjawab 403 JSON-RPC dengan pesan paket. Mode `off` tidak membaca apa pun.
-- Admin: `user.role === "admin"` (plugin admin Better Auth sudah aktif), sesi web saja, setiap tindakan wajib alasan dan tercatat di `billing_audit_log`. Phase 01: `assertBillingAdmin` menolak metode selain `session` dan membaca `role` dari database; `billing.admin.grantPeriod({ userId | email, planId, days 1–366, reason })` dan `billing.admin.revokePeriod({ periodId, reason })` (RPC saja, tag `Internal`). Belum ada UI; sebelum Phase 09 panggil lewat `/api/rpc/billing/admin/...` dari browser yang login sebagai admin.
+- Admin: `user.role === "admin"` (plugin admin Better Auth sudah aktif), sesi web saja, setiap tindakan wajib alasan dan tercatat di `billing_audit_log`. Phase 01: `assertBillingAdmin` menolak metode selain `session` dan membaca `role` dari database; `billing.admin.grantPeriod({ userId | email, planId, days 1–366, reason })` dan `billing.admin.revokePeriod({ periodId, reason })` (RPC saja, tag `Internal`). Phase 04: `billing.admin.adjustCredits({ userId | email, amount −10.000…10.000 bukan 0, expiresInDays 1–366 wajib bila positif, reason })` → `{ userId, amount, balance, expiresAt }`, audit `credits.adjusted` dengan saldo sebelum/sesudah. Belum ada UI; sebelum Phase 09 panggil lewat `/api/rpc/billing/admin/...` dari browser yang login sebagai admin.
 - Flag publik `flags.get` → `billing: boolean` (`true` hanya bila `BILLING_MODE = on`); field opsional di tipe `FeatureFlags`, jadi klien lama tidak rusak.
 - Rate limit: pakai `accountRateLimit` atau buat limit khusus checkout di `packages/api/src/middleware/rate-limit/index.ts`.
 

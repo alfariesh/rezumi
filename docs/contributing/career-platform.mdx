@@ -61,7 +61,7 @@ Undo replaces confirmation dialogs throughout: forgetting, deleting, dismissing 
 
 ## Operate scheduled work
 
-Cloudflare schedules career work automatically once a minute. Users still explicitly enable each schedule and configure any required AI/web connection.
+Cloudflare schedules career work automatically once a minute. Users still explicitly enable each schedule and configure any required AI/web connection. Each tick runs billing upkeep first, then career jobs, with failures kept apart (`apps/server/src/startup/job-scheduler.ts` on Node.js).
 
 | Environment                | How ticks run                                                                                                                               | Configuration                                                              |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
@@ -145,7 +145,7 @@ Use a disposable PostgreSQL database and synthetic users. These integration suit
 ```sh
 export INTEGRATIONS_TEST_DATABASE_URL='postgresql://postgres:postgres@127.0.0.1:5432/career_test'
 pnpm --filter @rezumi/api test src/features/career
-pnpm --filter server test src/http/career-jobs.test.ts src/startup/career-scheduler.test.ts src/cloudflare/index.test.ts
+pnpm --filter server test src/http/career-jobs.test.ts src/startup/job-scheduler.test.ts src/cloudflare/index.test.ts
 pnpm --filter web test src/features/settings/account/export.test.ts
 ```
 

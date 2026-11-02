@@ -66,19 +66,25 @@ export function resolveEntitlements(periods: readonly PlanStretch[], now: Date):
 }
 
 /**
+ * Whether billing applies to an account, reading its role from the database rather than the session. Touches no table
+ * when billing is off or on for everyone.
+ */
+export async function isBillingAppliedTo(userId: string, database: DbOrTx = db): Promise<boolean> {
+	const mode = getBillingMode();
+	if (mode !== "admins") return mode === "on";
+	const [account] = await database
+		.select({ role: schema.user.role })
+		.from(schema.user)
+		.where(eq(schema.user.id, userId));
+	return Boolean(account && isBillingActiveFor(account, mode));
+}
+
+/**
  * What the account may do right now. Read it from the database on every request that enforces it; never cache it as
  * the source of truth. While billing doesn't apply to the account this touches no table and grants everything.
  */
 export async function getEntitlements(userId: string, now = new Date(), database: DbOrTx = db): Promise<Entitlements> {
-	const mode = getBillingMode();
-	if (mode === "off") return unlimited();
-	if (mode === "admins") {
-		const [account] = await database
-			.select({ role: schema.user.role })
-			.from(schema.user)
-			.where(eq(schema.user.id, userId));
-		if (!account || !isBillingActiveFor(account, mode)) return unlimited();
-	}
+	if (!(await isBillingAppliedTo(userId, database))) return unlimited();
 	const periods = await database
 		.select({
 			planId: schema.membershipPeriod.planId,

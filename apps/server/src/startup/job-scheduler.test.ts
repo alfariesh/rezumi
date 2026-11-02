@@ -1,12 +1,15 @@
 import { afterEach, beforeEach, expect, it, vi } from "vite-plus/test";
-import { startCareerScheduler } from "./career-scheduler";
+import { startJobScheduler } from "./job-scheduler";
 
 const run = vi.hoisted(() => vi.fn<() => Promise<{ processed: number }>>());
+const billing = vi.hoisted(() => vi.fn<() => Promise<{ releasedReservations: number }>>());
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: run }));
+vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: billing }));
 
 beforeEach(() => {
 	vi.useFakeTimers();
 	run.mockReset().mockResolvedValue({ processed: 0 });
+	billing.mockReset().mockResolvedValue({ releasedReservations: 0 });
 });
 afterEach(() => {
 	vi.useRealTimers();
@@ -16,7 +19,7 @@ afterEach(() => {
 it("starts immediately, skips overlapping ticks, and drains active work before stopping", async () => {
 	const first = Promise.withResolvers<{ processed: number }>();
 	run.mockReturnValueOnce(first.promise);
-	const scheduler = startCareerScheduler();
+	const scheduler = startJobScheduler();
 	await vi.advanceTimersByTimeAsync(0);
 	expect(run).toHaveBeenCalledTimes(1);
 	await vi.advanceTimersByTimeAsync(120_000);
@@ -39,17 +42,40 @@ it("starts immediately, skips overlapping ticks, and drains active work before s
 	expect(stopped).toHaveBeenCalledOnce();
 	await vi.advanceTimersByTimeAsync(60_000);
 	expect(run).toHaveBeenCalledTimes(3);
+	expect(billing).toHaveBeenCalledTimes(3);
 });
 
-it("recovers on the next tick without logging job payloads", async () => {
+it("runs billing before career on every tick", async () => {
+	const order: string[] = [];
+	billing.mockImplementation(async () => {
+		order.push("billing");
+		return { releasedReservations: 0 };
+	});
+	run.mockImplementation(async () => {
+		order.push("career");
+		return { processed: 0 };
+	});
+	const scheduler = startJobScheduler();
+	try {
+		await vi.advanceTimersByTimeAsync(60_000);
+		expect(order).toEqual(["billing", "career", "billing", "career"]);
+	} finally {
+		await scheduler.stop();
+	}
+});
+
+it("still runs career work when billing fails, and recovers on the next tick without logging payloads", async () => {
 	const log = vi.spyOn(console, "error").mockImplementation(() => {});
+	billing.mockRejectedValueOnce(new Error("private billing payload"));
 	run.mockRejectedValueOnce(new Error("private provider payload"));
-	const scheduler = startCareerScheduler();
+	const scheduler = startJobScheduler();
 	try {
 		await vi.advanceTimersByTimeAsync(0);
-		expect(log).toHaveBeenCalledOnce();
-		expect(JSON.stringify(log.mock.calls)).not.toContain("private provider payload");
+		expect(run).toHaveBeenCalledOnce();
+		expect(log).toHaveBeenCalledTimes(2);
+		expect(JSON.stringify(log.mock.calls)).not.toContain("private");
 		await vi.advanceTimersByTimeAsync(60_000);
+		expect(billing).toHaveBeenCalledTimes(2);
 		expect(run).toHaveBeenCalledTimes(2);
 	} finally {
 		await scheduler.stop();

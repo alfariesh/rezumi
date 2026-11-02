@@ -339,6 +339,18 @@ msgstr "{0} → {1}: {2}{3}"
 msgid "{0} are available, and documents that already use another template keep it."
 msgstr ""
 
+#. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
+#. placeholder {1}: TRIAL_CREDITS.validDays
+#: app/(tabs)/settings/membership.tsx
+msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
+msgstr ""
+
+#. placeholder {0}: creditCount(credits.nextExpiry.credits)
+#. placeholder {1}: formatDate(credits.nextExpiry.at)
+#: app/(tabs)/settings/membership.tsx
+msgid "{0} expire on {1}"
+msgstr ""
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -484,6 +496,10 @@ msgstr "{cost} לשנה הראשונה"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# עמודה} other {# עמודות}}"
 
+#: src/features/billing/credits.ts
+msgid "{count, plural, one {# credit} other {# credits}}"
+msgstr ""
+
 #: src/features/applications-board/time-grid.tsx
 msgid "{count, plural, one {# interview} other {# interviews}}"
 msgstr ""
@@ -568,6 +584,10 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
 msgstr "חיבור {label}"
+
+#: src/features/billing/credits.ts
+msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
@@ -910,6 +930,7 @@ msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
 
@@ -1176,6 +1197,10 @@ msgstr "הוסף התנדבות"
 msgid "Add your name"
 msgstr "הוסף את שמך"
 
+#: src/features/billing/credits.ts
+msgid "Added by Rezumi"
+msgstr ""
+
 #: src/features/career/facts.tsx
 #: src/features/workspace/parts.tsx
 msgid "Added by you"
@@ -1425,6 +1450,10 @@ msgstr "תשובה"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Answer by"
 msgstr "ענה באמצעות"
+
+#: src/features/billing/credits.ts
+msgid "Answer draft"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Answer in your own words"
@@ -2400,6 +2429,7 @@ msgstr "סגורות: {closed}"
 
 #: app/(tabs)/career/_layout.tsx
 #: src/features/assistant/coach-screen.tsx
+#: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
 msgid "Coach"
 msgstr "מאמן"
@@ -2703,6 +2733,10 @@ msgstr "תיקון עובדה"
 #: src/features/ats-checker/messages.ts
 msgid "Correct the year, or write \"Present\" for ongoing work."
 msgstr "תקן את השנה, או כתוב ״Present״ עבור עבודה נמשכת."
+
+#: src/features/billing/credits.ts
+msgid "Correction by Rezumi"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Couldn't attach the file. Try again."
@@ -3172,6 +3206,10 @@ msgstr "מכתב מקדים"
 msgid "Cover letter — {0}"
 msgstr "מכתב נלווה - {0}"
 
+#: src/features/billing/credits.ts
+msgid "Cover letter draft"
+msgstr ""
+
 #: src/features/application-detail/sections.tsx
 msgid "Cover letter file"
 msgstr "תיק מכתבים נלווים"
@@ -3229,6 +3267,10 @@ msgstr "נוצר {0} · בשימוש אחרון {1} · יפוג {2}"
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "יוצר מסמך…"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Currency"
@@ -4092,6 +4134,14 @@ msgstr "כל מה שהמאמן כתב עבור {company}, הכי חדש ראשו
 msgid "Experience"
 msgstr "ניסיון"
 
+#: src/features/billing/credits.ts
+msgid "Expired on {expires}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Expires on {expires}"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Export a smaller PDF and check it again, or start a blank resume and fix these there."
 msgstr "ייצא PDF קטן יותר ובדוק אותו שוב, או התחל קורות חיים ריקים ותקן בהם את הבעיות."
@@ -4397,6 +4447,7 @@ msgstr "מִן"
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
 
@@ -4776,6 +4827,10 @@ msgstr "ייבוא קובץ"
 msgid "Import it"
 msgstr "ייבא אותו"
 
+#: src/features/billing/credits.ts
+msgid "Import with AI"
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Import your current resume, or start fresh with your name."
 msgstr "ייבא את קורות החיים הנוכחיים שלך, או התחל מחדש עם השם שלך."
@@ -4804,6 +4859,10 @@ msgstr "שפר את השורה שנבחרה"
 #: src/features/write/improve.tsx
 msgid "Improving…"
 msgstr "משפר..."
+
+#: src/features/billing/credits.ts
+msgid "In progress"
+msgstr ""
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Included"
@@ -4875,6 +4934,10 @@ msgstr ""
 
 #: src/features/applications-board/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Interview practice"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -6169,6 +6232,14 @@ msgstr "לא נמצאו כותרות מקטע מקובלות."
 msgid "No conversations about this document yet."
 msgstr "אין עדיין שיחות על המסמך הזה."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "No credit activity yet."
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "No credits to spend right now"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No date"
 msgstr "ללא תאריך"
@@ -6194,6 +6265,7 @@ msgid "No email address was found."
 msgstr "לא נמצאה כתובת דוא״ל."
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
 
@@ -7330,6 +7402,10 @@ msgstr "מדיניות הפרטיות"
 msgid "Private. Only you can see it."
 msgstr "פְּרָטִי. רק אתה יכול לראות את זה."
 
+#: src/features/billing/credits.ts
+msgid "Pro AI credits"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
 msgid "Professional"
@@ -7614,6 +7690,10 @@ msgstr "לְנַמֵק"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Recalled"
 msgstr "שוחזרה מהראיון"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Recent activity"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Recipient"
@@ -8015,9 +8095,17 @@ msgstr "דף קורות חיים {0}"
 msgid "Resume preview"
 msgstr "תצוגה מקדימה של קורות חיים"
 
+#: src/features/billing/credits.ts
+msgid "Resume review"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "Resume submitted (optional)"
 msgstr "קורות חיים נשלחו (אופציונלי)"
+
+#: src/features/billing/credits.ts
+msgid "Resume tailoring"
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
@@ -8101,6 +8189,10 @@ msgstr "נסה שוב לשמור"
 msgid "Return to Documents and reopen it, or retry the connection."
 msgstr "חזור למסמכים ופתח אותו מחדש, או נסה שוב להתחבר."
 
+#: src/features/billing/credits.ts
+msgid "Returned: no usable result"
+msgstr ""
+
 #: src/features/assistant/page-marks.tsx
 #: src/features/career/today.tsx
 msgid "Review"
@@ -8177,6 +8269,10 @@ msgstr "שכתוב התקבל"
 #: src/auth/auth-header.tsx
 msgid "Rezumi"
 msgstr "Rezumi"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Rezumi AI credits"
+msgstr ""
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8818,6 +8914,10 @@ msgstr "קצר ומנומס, למגייס"
 #: src/features/share/web-page.tsx
 msgid "Short link and domain"
 msgstr "קישור מקוצר ודומיין"
+
+#: src/features/billing/credits.ts
+msgid "Short text help"
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -9515,6 +9615,15 @@ msgstr "קורות חיים מותאם לעומת בסיס"
 msgid "Take photo"
 msgstr "צלם תמונה"
 
+#: src/features/billing/credits.ts
+msgid "Taken away on {at}"
+msgstr ""
+
+#. placeholder {0}: formatDate(entry.revokedAt)
+#: src/features/billing/credits.ts
+msgid "Taken back on {0}"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "טמילית"
@@ -9919,6 +10028,7 @@ msgstr "ערכת עיצוב"
 
 #. placeholder {0}: getPlanName(next.planId)
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
 
@@ -10393,6 +10503,11 @@ msgstr "אשפה"
 msgid "Trash is empty"
 msgstr "האשפה ריקה"
 
+#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/credits.ts
+msgid "Trial credits"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Trimming words"
 msgstr "מקצץ מילים"
@@ -10793,6 +10908,10 @@ msgstr "השתמש ברשימת התבליטים הרגילה של העורך ש
 #: src/features/workspace/tabs/saved.tsx
 msgid "used {used}"
 msgstr "מקורות: {used}"
+
+#: src/features/billing/credits.ts
+msgid "Used on {at}"
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
@@ -11524,6 +11643,7 @@ msgid "Your phone number is written in an unusual shape."
 msgstr "מספר הטלפון שלך כתוב בצורה חריגה."
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr ""
 

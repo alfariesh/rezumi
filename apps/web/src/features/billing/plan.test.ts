@@ -28,6 +28,7 @@ const summary = (enabled: boolean, paid: boolean): PlanSummary => ({
 		customFonts: paid,
 		automationApi: paid,
 	},
+	credits: null,
 });
 
 describe("plan features", () => {

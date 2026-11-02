@@ -339,6 +339,18 @@ msgstr "{0} → {1}: {2}{3}"
 msgid "{0} are available, and documents that already use another template keep it."
 msgstr ""
 
+#. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
+#. placeholder {1}: TRIAL_CREDITS.validDays
+#: app/(tabs)/settings/membership.tsx
+msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
+msgstr ""
+
+#. placeholder {0}: creditCount(credits.nextExpiry.credits)
+#. placeholder {1}: formatDate(credits.nextExpiry.at)
+#: app/(tabs)/settings/membership.tsx
+msgid "{0} expire on {1}"
+msgstr ""
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -484,6 +496,10 @@ msgstr "প্রথম বছর {cost}"
 msgid "{count, plural, one {# column} other {# columns}}"
 msgstr "{count, plural, one {# কলাম} other {#টি কলাম}}"
 
+#: src/features/billing/credits.ts
+msgid "{count, plural, one {# credit} other {# credits}}"
+msgstr ""
+
 #: src/features/applications-board/time-grid.tsx
 msgid "{count, plural, one {# interview} other {# interviews}}"
 msgstr ""
@@ -568,6 +584,10 @@ msgstr ""
 #: src/features/assistant/coach-screen.tsx
 msgid "{label} connection"
 msgstr "{label} সংযোগ"
+
+#: src/features/billing/credits.ts
+msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
+msgstr ""
 
 #: src/features/workspace/tabs/debrief.tsx
 msgid "{minutes, plural, one {# minute in total} other {# minutes in total}}"
@@ -910,6 +930,7 @@ msgstr ""
 
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "Active until {0}"
 msgstr ""
 
@@ -1176,6 +1197,10 @@ msgstr "স্বেচ্ছাসেবী যোগ করুন"
 msgid "Add your name"
 msgstr "আপনার নাম যোগ করুন"
 
+#: src/features/billing/credits.ts
+msgid "Added by Rezumi"
+msgstr ""
+
 #: src/features/career/facts.tsx
 #: src/features/workspace/parts.tsx
 msgid "Added by you"
@@ -1425,6 +1450,10 @@ msgstr "উত্তর"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Answer by"
 msgstr "উত্তরের মাধ্যম"
+
+#: src/features/billing/credits.ts
+msgid "Answer draft"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Answer in your own words"
@@ -2400,6 +2429,7 @@ msgstr "বন্ধ: {closed}"
 
 #: app/(tabs)/career/_layout.tsx
 #: src/features/assistant/coach-screen.tsx
+#: src/features/billing/credits.ts
 #: src/features/workspace/coach-sheet.tsx
 msgid "Coach"
 msgstr "কোচ"
@@ -2703,6 +2733,10 @@ msgstr "এই তথ্যটি সংশোধন করুন"
 #: src/features/ats-checker/messages.ts
 msgid "Correct the year, or write \"Present\" for ongoing work."
 msgstr "বছরটি সংশোধন করুন, অথবা চলমান কাজের জন্য \"Present\" লিখুন।"
+
+#: src/features/billing/credits.ts
+msgid "Correction by Rezumi"
+msgstr ""
 
 #: src/features/assistant/chat-view.tsx
 msgid "Couldn't attach the file. Try again."
@@ -3172,6 +3206,10 @@ msgstr "কভার লেটার"
 msgid "Cover letter — {0}"
 msgstr "কভার লেটার — {0}"
 
+#: src/features/billing/credits.ts
+msgid "Cover letter draft"
+msgstr ""
+
 #: src/features/application-detail/sections.tsx
 msgid "Cover letter file"
 msgstr "কভার লেটার ফাইল"
@@ -3229,6 +3267,10 @@ msgstr "তৈরি করা হয়েছে {0} · সর্বশেষ �
 #: src/features/documents/new-document.tsx
 msgid "Creating document…"
 msgstr "নথি তৈরি করা হচ্ছে..."
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Currency"
@@ -4092,6 +4134,14 @@ msgstr "কর্মজীবন উপদেষ্টা {company}-এর জ�
 msgid "Experience"
 msgstr "অভিজ্ঞতা"
 
+#: src/features/billing/credits.ts
+msgid "Expired on {expires}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Expires on {expires}"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Export a smaller PDF and check it again, or start a blank resume and fix these there."
 msgstr "একটি ছোট PDF রপ্তানি করুন এবং এটি আবার পরীক্ষা করুন, অথবা একটি ফাঁকা জীবনবৃত্তান্ত শুরু করুন এবং সেখানে এইগুলি ঠিক করুন৷"
@@ -4397,6 +4447,7 @@ msgstr "থেকে"
 #. placeholder {0}: formatDate(next.startsAt)
 #. placeholder {1}: formatDate(next.endsAt)
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "From {0} until {1}"
 msgstr ""
 
@@ -4776,6 +4827,10 @@ msgstr "ফাইল আমদানি করুন"
 msgid "Import it"
 msgstr "এটি আমদানি করুন"
 
+#: src/features/billing/credits.ts
+msgid "Import with AI"
+msgstr ""
+
 #: src/features/documents/library.tsx
 msgid "Import your current resume, or start fresh with your name."
 msgstr "আপনার বর্তমান জীবনবৃত্তান্ত আমদানি করুন, অথবা আপনার নাম দিয়ে নতুন করে শুরু করুন।"
@@ -4804,6 +4859,10 @@ msgstr "নির্বাচিত লাইন উন্নত করুন"
 #: src/features/write/improve.tsx
 msgid "Improving…"
 msgstr "উন্নতি হচ্ছে..."
+
+#: src/features/billing/credits.ts
+msgid "In progress"
+msgstr ""
 
 #: app/(tabs)/settings/membership.tsx
 msgid "Included"
@@ -4875,6 +4934,10 @@ msgstr ""
 
 #: src/features/applications-board/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Interview practice"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -6169,6 +6232,14 @@ msgstr "কোনো প্রচলিত সেকশন শিরোনাম
 msgid "No conversations about this document yet."
 msgstr "এই নথি সম্পর্কে এখনও কোন কথোপকথন."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "No credit activity yet."
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "No credits to spend right now"
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "No date"
 msgstr "তারিখ নেই"
@@ -6194,6 +6265,7 @@ msgid "No email address was found."
 msgstr "কোনো ইমেইল ঠিকানা পাওয়া যায়নি।"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "No end date"
 msgstr ""
 
@@ -7330,6 +7402,10 @@ msgstr "গোপনীয়তা নীতি"
 msgid "Private. Only you can see it."
 msgstr "ব্যক্তিগত। শুধুমাত্র আপনি এটি দেখতে পারেন."
 
+#: src/features/billing/credits.ts
+msgid "Pro AI credits"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design-presets.ts
 msgid "Professional"
@@ -7614,6 +7690,10 @@ msgstr "কারণ"
 #: src/features/workspace/tabs/practise.tsx
 msgid "Recalled"
 msgstr "স্মৃতি থেকে"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Recent activity"
+msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "Recipient"
@@ -8015,9 +8095,17 @@ msgstr "জীবনবৃত্তান্ত পৃষ্ঠা {0}"
 msgid "Resume preview"
 msgstr "জীবনবৃত্তান্ত পূর্বরূপ"
 
+#: src/features/billing/credits.ts
+msgid "Resume review"
+msgstr ""
+
 #: src/features/application-detail/sheets.tsx
 msgid "Resume submitted (optional)"
 msgstr "জীবনবৃত্তান্ত জমা দেওয়া (ঐচ্ছিক)"
+
+#: src/features/billing/credits.ts
+msgid "Resume tailoring"
+msgstr ""
 
 #: src/features/search/search-screen.tsx
 msgid "Resumes"
@@ -8101,6 +8189,10 @@ msgstr "আবার সংরক্ষণ করার চেষ্টা ক�
 msgid "Return to Documents and reopen it, or retry the connection."
 msgstr "নথিপত্রে ফিরে যান এবং এটি পুনরায় খুলুন, অথবা সংযোগ পুনরায় চেষ্টা করুন।"
 
+#: src/features/billing/credits.ts
+msgid "Returned: no usable result"
+msgstr ""
+
 #: src/features/assistant/page-marks.tsx
 #: src/features/career/today.tsx
 msgid "Review"
@@ -8177,6 +8269,10 @@ msgstr "পুনর্লিখন গৃহীত"
 #: src/auth/auth-header.tsx
 msgid "Rezumi"
 msgstr "Rezumi"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Rezumi AI credits"
+msgstr ""
 
 #: src/features/design/template-group.tsx
 msgid "Right"
@@ -8818,6 +8914,10 @@ msgstr "সংক্ষিপ্ত এবং ভদ্র, নিয়োগ�
 #: src/features/share/web-page.tsx
 msgid "Short link and domain"
 msgstr "ছোট লিঙ্ক ও ডোমেইন"
+
+#: src/features/billing/credits.ts
+msgid "Short text help"
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -9515,6 +9615,15 @@ msgstr "অভিযোজিত বনাম বেস রেজিউমে"
 msgid "Take photo"
 msgstr "ছবি তুলুন"
 
+#: src/features/billing/credits.ts
+msgid "Taken away on {at}"
+msgstr ""
+
+#. placeholder {0}: formatDate(entry.revokedAt)
+#: src/features/billing/credits.ts
+msgid "Taken back on {0}"
+msgstr ""
+
 #: src/features/settings/locale-names.ts
 msgid "Tamil"
 msgstr "তামিল"
@@ -9919,6 +10028,7 @@ msgstr "থিম"
 
 #. placeholder {0}: getPlanName(next.planId)
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "Then {0}"
 msgstr ""
 
@@ -10393,6 +10503,11 @@ msgstr "ট্র্যাশ"
 msgid "Trash is empty"
 msgstr "আবর্জনা খালি"
 
+#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/credits.ts
+msgid "Trial credits"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Trimming words"
 msgstr "শব্দ ছাঁটা হচ্ছে"
@@ -10793,6 +10908,10 @@ msgstr "আপনার এডিটরের সাধারণ বুলেট
 #: src/features/workspace/tabs/saved.tsx
 msgid "used {used}"
 msgstr "ব্যবহৃত: {used}"
+
+#: src/features/billing/credits.ts
+msgid "Used on {at}"
+msgstr ""
 
 #: src/features/career/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."
@@ -11524,6 +11643,7 @@ msgid "Your phone number is written in an unusual shape."
 msgstr "আপনার ফোন নম্বর অস্বাভাবিক আকারে লেখা।"
 
 #: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-card.tsx
 msgid "Your plan"
 msgstr ""
 

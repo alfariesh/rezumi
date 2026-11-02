@@ -39,7 +39,7 @@ Sumber: `00-keputusan-produk.md` bagian 5.
 
 ### Langkah
 
-1. **Peta tindakan** — untuk setiap titik masuk, tetapkan `actionKey` dan bobot kredit (jenis pekerjaan di `00-keputusan-produk.md` bagian 5). Hasilnya tabel di laporan + `CREDIT_COSTS` final di katalog. Titik masuk yang tidak boleh memakai Rezumi AI (suara, discovery terjadwal) ditandai eksplisit.
+1. **Peta tindakan** — untuk setiap titik masuk, tetapkan `actionKey` dan bobot kredit (jenis pekerjaan di `00-keputusan-produk.md` bagian 5). Hasilnya tabel di laporan + `CREDIT_COSTS` final di katalog. Phase 04 sudah mengisi satu kunci per jenis pekerjaan (`short-text`, `draft-answer`, `cover-letter`, `interview-practice`, `coach-turn`, `review`, `tailor-resume`, `import-document`); bila kunci diganti atau ditambah, perbarui juga label riwayat `actionName` di `apps/web/src/features/billing/credits.ts` dan `apps/mobile/src/features/billing/credits.ts`. Titik masuk yang tidak boleh memakai Rezumi AI (suara, discovery terjadwal) ditandai eksplisit.
 2. **Resolver** — ubah `aiProvidersService` agar, bila `isBillingActiveFor(user)`:
    - daftar koneksi berisi Rezumi AI (baris server) **dan** koneksi pribadi; `assertPersonalProvidersAllowed()` tidak memblokir;
    - upsert baris server tidak lagi memaksa `isDefault: true` (hormati pilihan default pengguna);

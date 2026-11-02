@@ -3,6 +3,8 @@ import { ORPCError } from "@orpc/server";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { lockBillingAccount } from "./account";
+import { deductCredits, getCreditBalance, grantCredits } from "./credits";
 import { grantMembershipPeriod, revokeMembershipPeriod } from "./periods";
 import { DAY_MS } from "./timeline";
 
@@ -71,6 +73,59 @@ export const billingAdmin = {
 				},
 			});
 			return periodSummary(period);
+		});
+	},
+
+	/**
+	 * Corrects an account's Rezumi AI credits: a positive amount grants new credits that expire after `expiresInDays`;
+	 * a negative one takes credits away, soonest-expiring first, never below zero. Recorded with its reason.
+	 */
+	adjustCredits: async (input: {
+		actorUserId: string;
+		userId?: string | undefined;
+		email?: string | undefined;
+		amount: number;
+		expiresInDays?: number | undefined;
+		reason: string;
+	}) => {
+		const userId = await findUserId(input);
+		const now = new Date();
+		const expiresInDays = input.expiresInDays;
+		if (input.amount > 0 && !expiresInDays)
+			throw new ORPCError("BAD_REQUEST", { message: "Say in how many days the credits expire." });
+		return db.transaction(async (tx) => {
+			await lockBillingAccount(tx, userId);
+			const balanceBefore = (await getCreditBalance(userId, now, tx)).balance;
+			let change: { grantId: string; expiresAt: Date } | { usageId: string };
+			if (input.amount > 0 && expiresInDays) {
+				const grant = await grantCredits(tx, {
+					userId,
+					source: "admin",
+					amount: input.amount,
+					expiresAt: new Date(+now + expiresInDays * DAY_MS),
+					note: input.reason,
+					now,
+				});
+				change = { grantId: grant.id, expiresAt: grant.expiresAt };
+			} else {
+				change = { usageId: (await deductCredits(tx, { userId, credits: -input.amount, now })).usageId };
+			}
+			const balance = balanceBefore + input.amount;
+			const expiresAt = "expiresAt" in change ? change.expiresAt : null;
+			await tx.insert(schema.billingAuditLog).values({
+				actorUserId: input.actorUserId,
+				targetUserId: userId,
+				action: "credits.adjusted",
+				reason: input.reason,
+				details: {
+					amount: input.amount,
+					...change,
+					...(expiresAt && { expiresAt: expiresAt.toISOString() }),
+					balanceBefore,
+					balanceAfter: balance,
+				},
+			});
+			return { userId, amount: input.amount, balance, expiresAt };
 		});
 	},
 

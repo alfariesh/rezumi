@@ -7,6 +7,7 @@ import worker from "./index";
 
 const mocks = vi.hoisted(() => ({
 	run: vi.fn<() => Promise<{ processed: number }>>(),
+	billing: vi.fn<() => Promise<{ releasedReservations: number }>>(),
 	auth: vi.fn<() => Promise<void>>(),
 	wasm: vi.fn<() => Promise<void>>(),
 	fetch: vi.fn<(request: Request) => Promise<Response>>(),
@@ -47,6 +48,7 @@ vi.mock("@formepdf/core/pkg-web/forme_bg.wasm", () => ({ default: new Uint8Array
 vi.mock("@formepdf/core/worker", () => ({ init: mocks.wasm }));
 vi.mock("@rezumi/auth/config", () => ({ initializeAuth: mocks.auth }));
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));
+vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: mocks.billing }));
 vi.mock("@rezumi/api/features/agent/streams", () => ({
 	configureAgentStreamLifetime: (lifetime: (promise: Promise<unknown>) => void) => {
 		mocks.lifetime = lifetime;
@@ -102,6 +104,7 @@ function invocationPool() {
 beforeEach(() => {
 	mocks.pools.length = 0;
 	mocks.run.mockReset().mockResolvedValue({ processed: 0 });
+	mocks.billing.mockReset().mockResolvedValue({ releasedReservations: 0 });
 	mocks.auth.mockReset().mockResolvedValue();
 	mocks.wasm.mockReset().mockResolvedValue();
 	mocks.fetch.mockReset().mockResolvedValue(new Response("ok"));
@@ -167,6 +170,31 @@ describe("Cloudflare invocation lifetime", () => {
 		nested.resolve();
 		await Promise.all(fixture.pending);
 		expect(pool.end).toHaveBeenCalledOnce();
+	});
+
+	it("runs billing jobs before career jobs on the same pool, and career jobs still run when billing fails", async () => {
+		const log = vi.spyOn(console, "error").mockImplementation(() => {});
+		const fixture = invocation();
+		const order: Array<[string, unknown]> = [];
+		mocks.billing.mockImplementation(async () => {
+			order.push(["billing", getPool()]);
+			throw new Error("Synthetic billing failure");
+		});
+		mocks.run.mockImplementation(async () => {
+			order.push(["career", getPool()]);
+			return { processed: 0 };
+		});
+		worker.scheduled(fixture.controller, fixture.bindings, fixture.ctx);
+		await Promise.all(fixture.pending);
+		const pool = invocationPool();
+		expect(order).toEqual([
+			["billing", pool],
+			["career", pool],
+		]);
+		expect(log).toHaveBeenCalledOnce();
+		expect(JSON.stringify(log.mock.calls)).not.toContain("Synthetic billing failure");
+		expect(pool.end).toHaveBeenCalledOnce();
+		log.mockRestore();
 	});
 
 	it("retains the pool for background work when the scheduled runner rejects", async () => {

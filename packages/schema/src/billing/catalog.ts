@@ -73,8 +73,37 @@ export const PLAN_FEATURE_KEYS = [
 /** The one-time Rezumi AI trial: granted on first use to a registered account with a verified email. */
 export const TRIAL_CREDITS = { amount: 5, validDays: 14 } as const;
 
-/** Credits each Rezumi AI action costs, by action key. Filled in when metering lands (membership phases 04 and 05). */
-export const CREDIT_COSTS = {} as const satisfies Record<string, number>;
+/**
+ * Credits each kind of Rezumi AI work costs, as the user sees it before running it. Launch weights from the product
+ * decisions, calibrated against real provider costs before selling (membership phase 10); phase 05 maps each AI entry
+ * point to one of these keys.
+ */
+export const CREDIT_COSTS = {
+	/** Improve one bullet, write a short summary or read a job posting. */
+	"short-text": 1,
+	/** Draft one application-form answer or recruiter reply from the user's own experience. */
+	"draft-answer": 2,
+	/** Draft one cover letter for one job. */
+	"cover-letter": 3,
+	/** One text interview practice answer with feedback, a preparation brief or a debrief. */
+	"interview-practice": 3,
+	/** One Coach turn, with limited steps, context and output. */
+	"coach-turn": 3,
+	/** Review one resume, or match it against one job. */
+	review: 4,
+	/** Tailor one resume into a new version to review. */
+	"tailor-resume": 5,
+	/** Import one PDF or Word file with AI; importing without AI stays free. */
+	"import-document": 5,
+} as const satisfies Record<string, number>;
+
+export type CreditAction = keyof typeof CREDIT_COSTS;
+
+export const creditActionSchema = z.enum(Object.keys(CREDIT_COSTS) as [CreditAction, ...CreditAction[]]);
+
+/** Where a grant of Rezumi AI credits came from: the one-time trial, a paid plan, or an administrator. */
+export const creditSourceSchema = z.enum(["trial", "plan", "admin"]);
+export type CreditSource = z.infer<typeof creditSourceSchema>;
 
 const paidFeatures: PlanFeatures = {
 	premiumTemplates: true,
