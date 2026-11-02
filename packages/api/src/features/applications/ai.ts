@@ -444,6 +444,13 @@ export const aiRouter = {
 			if (!application.jobDescription) {
 				throw new ORPCError("BAD_REQUEST", { message: "Paste the job description into this application first." });
 			}
+			// A resume already recorded as sent stays linked, so the copy couldn't replace it: stop before the AI call
+			// (which costs even when its result can't be used) and before a copy nobody can link is saved.
+			if (application.sentResumeVersionId)
+				throw new ORPCError("BAD_REQUEST", {
+					message:
+						"Recorded submitted documents cannot be replaced. Prepare a copy to keep the submitted versions intact.",
+				});
 			// The tailored copy is a new resume: stop before the AI call when there's no room for it.
 			await precheckDocumentCapacity(context.user.id, { resumes: 1 });
 

@@ -190,3 +190,23 @@ describe("posting search", () => {
 		expect(searchJobPostings).not.toHaveBeenCalled();
 	});
 });
+
+describe("tailoring", () => {
+	it("stops before the AI runs when the linked resume was already recorded as sent", async () => {
+		const { applicationService } = await import("./service");
+		const { resumeService } = await import("../resume/service");
+		vi.mocked(generateText).mockReset();
+		vi.mocked(applicationService.getById).mockResolvedValue({
+			id: "a1",
+			resumeId: "r1",
+			jobDescription: "Posting",
+			sentResumeVersionId: "v1",
+		} as never);
+		const context = { user: { id: "u1" }, locale: "en-US" as const, reqHeaders: new Headers() };
+		await expect(call(aiRouter.tailorResume, { id: "a1" }, { context } as never)).rejects.toMatchObject({
+			code: "BAD_REQUEST",
+		});
+		expect(generateText).not.toHaveBeenCalled();
+		expect(resumeService.create).not.toHaveBeenCalled();
+	});
+});
