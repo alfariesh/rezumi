@@ -48,6 +48,7 @@ const pdfLimiter = createRateLimiter("pdfLimiter", rateLimitConfig.orpc.pdfExpor
 const resumeDownloadLimiter = createRateLimiter("resumeDownloadLimiter", rateLimitConfig.orpc.pdfExport);
 const aiLimiter = createRateLimiter("aiLimiter", rateLimitConfig.orpc.aiRequest);
 const aiVoiceLimiter = createRateLimiter("aiVoiceLimiter", rateLimitConfig.orpc.aiRequest);
+const checkoutLimiter = createRateLimiter("checkoutLimiter", rateLimitConfig.orpc.checkout);
 const storageUploadLimiter = createRateLimiter("storageUploadLimiter", rateLimitConfig.orpc.storageUpload);
 const storageDeleteLimiter = createRateLimiter("storageDeleteLimiter", rateLimitConfig.orpc.storageDelete);
 const resumeMutationLimiter = createRateLimiter("resumeMutationLimiter", rateLimitConfig.orpc.resumeMutations);
@@ -119,6 +120,12 @@ export const resumeDownloadRateLimit = createRatelimitMiddleware<
 export const aiRequestRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
 	limiter: productionLimiter(aiLimiter),
 	key: ({ context }) => `ai-request:${getUserKey(context)}`,
+});
+
+// Each checkout opens a payment at Midtrans; ten in ten minutes is plenty for a person.
+export const checkoutRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
+	limiter: productionLimiter(checkoutLimiter),
+	key: ({ context }) => `checkout:${getUserKey(context)}`,
 });
 
 // Voice practice transcribes and speaks every turn, so it has its own account budget beside the chat's.

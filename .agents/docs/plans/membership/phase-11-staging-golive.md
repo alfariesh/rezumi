@@ -34,7 +34,7 @@ Jangan lanjut sebelum semua ini benar (tulis tabelnya di laporan): Phase 01–10
 
 ### 2. Staging (disarankan)
 
-- Wrangler environment `staging` di `wrangler.jsonc` → Worker terpisah `vitaekit-staging` (bindings tidak diwariskan): Hyperdrive baru **dengan `--caching-disabled`** ke branch Neon yang sudah dimigrasi, bucket R2 terpisah, Durable Object dengan migrasi sendiri, `vars` (`APP_URL=https://staging.rezumi.app`, `BILLING_MODE=on`, `MIDTRANS_ENVIRONMENT=sandbox`, `MIDTRANS_ENABLED_PAYMENTS` sandbox), secrets sandbox (`AUTH_SECRET`, `ENCRYPTION_SECRET`, `MIDTRANS_SERVER_KEY` sandbox, key AI uji). Preview Workers tidak cocok karena cron dan route menembak produksi.
+- Wrangler environment `staging` di `wrangler.jsonc` → Worker terpisah `vitaekit-staging` (bindings tidak diwariskan): Hyperdrive baru **dengan `--caching-disabled`** ke branch Neon yang sudah dimigrasi, bucket R2 terpisah, Durable Object dengan migrasi sendiri, `vars` (`APP_URL=https://staging.rezumi.app`, `BILLING_MODE=on`, `MIDTRANS_ENVIRONMENT=sandbox`, `MIDTRANS_ENABLED_PAYMENTS` sandbox), secrets sandbox (`AUTH_SECRET`, `ENCRYPTION_SECRET`, `MIDTRANS_SERVER_KEY` dan `MIDTRANS_SIGNATURE_KEY` sandbox, key AI uji). Preview Workers tidak cocok karena cron dan route menembak produksi.
 - Custom domain `staging.rezumi.app` dipasang pemilik di dashboard (seperti domain produksi). Matikan atau batasi pengiriman email dari staging bila perlu.
 - Deploy manual: `pnpm build:cloudflare` lalu `pnpm exec wrangler deploy --env staging`. Workflow `deploy-cloudflare.yml` tetap hanya untuk produksi.
 - Dashboard Midtrans **sandbox**: Payment notification URL `https://staging.rezumi.app/api/payments/midtrans/notification`; Finish/Unfinish/Error URL `https://staging.rezumi.app/dashboard/settings/billing/return/`; tombol tes notifikasi harus 200.
@@ -71,7 +71,7 @@ Catat setiap baris dengan format "Sandbox result" dari skill:
 ### 5. Konfigurasi produksi (mode `admins`)
 
 1. Pastikan secret `DATABASE_URL` workflow deploy terpasang supaya migrasi dijalankan sebelum deploy; atau jalankan migrasi produksi secara manual sesuai `CLAUDE.md` sebelum merge.
-2. Pemilik menjalankan `pnpm exec wrangler secret put MIDTRANS_SERVER_KEY` (key produksi, diawali `Mid-server-`), dan secret AI produksi bila belum ada.
+2. Pemilik menjalankan `pnpm exec wrangler secret put MIDTRANS_SERVER_KEY` (key produksi, diawali `Mid-server-`) **dan** `pnpm exec wrangler secret put MIDTRANS_SIGNATURE_KEY` (Signature Secret Key produksi dari Settings → Access Keys → General Credentials; tanpa ini semua notifikasi ditolak), dan secret AI produksi bila belum ada. Periksa juga "Default QRIS" di Settings → Snap Checkout → Payment methods produksi: harus ada penyedia QRIS agar `other_qris` tampil.
 3. PR ke `wrangler.jsonc` `vars`: `MIDTRANS_ENVIRONMENT=production`, `MIDTRANS_ENABLED_PAYMENTS=<metode aktif produksi>`, `BILLING_MODE=admins`, `BILLING_ALERT_EMAIL`, tarif biaya AI. Merge = deploy.
 4. Dashboard Midtrans **produksi**: Payment notification URL `https://rezumi.app/api/payments/midtrans/notification`; Finish/Unfinish/Error URL `https://rezumi.app/dashboard/settings/billing/return/`; tes notifikasi → 200 (event `unknown_order` di database).
 

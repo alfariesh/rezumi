@@ -17,6 +17,11 @@ beforeEach(() => {
 		"REDIS_URL",
 		"WEB_FONT_BASE_URL",
 		"STORAGE_HEALTHCHECK_TIMEOUT_MS",
+		"MIDTRANS_ENVIRONMENT",
+		"MIDTRANS_SERVER_KEY",
+		"MIDTRANS_ENABLED_PAYMENTS",
+		"MIDTRANS_SIGNATURE_KEY",
+		"BILLING_CHECKOUT_PAUSED",
 	])
 		vi.stubEnv(name, undefined);
 });
@@ -182,5 +187,60 @@ describe("redis url userinfo", () => {
 			expect.any(String),
 			expect.arrayContaining([expect.objectContaining({ code: "invalid_format", format: "url" })]),
 		);
+	});
+});
+
+describe("Midtrans configuration", () => {
+	it("defaults to QRIS only and an open checkout", async () => {
+		const { env } = await import("./server");
+		expect(env.MIDTRANS_ENABLED_PAYMENTS).toEqual(["other_qris"]);
+		expect(env.BILLING_CHECKOUT_PAUSED).toBe(false);
+		expect(env.MIDTRANS_SERVER_KEY).toBeUndefined();
+	});
+
+	it("reads a comma-separated method list", async () => {
+		vi.stubEnv("MIDTRANS_ENABLED_PAYMENTS", " other_qris, gopay ,,bni_va ");
+		expect((await import("./server")).env.MIDTRANS_ENABLED_PAYMENTS).toEqual(["other_qris", "gopay", "bni_va"]);
+	});
+
+	it.each(["qris", "credit_card", " , "])("rejects the method list %j", async (value) => {
+		vi.stubEnv("MIDTRANS_ENABLED_PAYMENTS", value);
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
+	});
+
+	it("accepts a signature key that matches the environment", async () => {
+		vi.stubEnv("MIDTRANS_ENVIRONMENT", "sandbox");
+		vi.stubEnv("MIDTRANS_SERVER_KEY", "SB-Mid-server-test");
+		vi.stubEnv("MIDTRANS_SIGNATURE_KEY", "SB-signature-test");
+		expect((await import("./server")).env.MIDTRANS_SIGNATURE_KEY).toBe("SB-signature-test");
+	});
+
+	it("accepts a sandbox key for sandbox and a production key for production", async () => {
+		vi.stubEnv("MIDTRANS_ENVIRONMENT", "sandbox");
+		vi.stubEnv("MIDTRANS_SERVER_KEY", "SB-Mid-server-test");
+		expect((await import("./server")).env.MIDTRANS_ENVIRONMENT).toBe("sandbox");
+		vi.resetModules();
+		vi.stubEnv("MIDTRANS_ENVIRONMENT", "production");
+		vi.stubEnv("MIDTRANS_SERVER_KEY", "Mid-server-test");
+		expect((await import("./server")).env.MIDTRANS_ENVIRONMENT).toBe("production");
+	});
+
+	it.each([
+		[{ MIDTRANS_SERVER_KEY: "SB-Mid-server-test" }, "needs MIDTRANS_ENVIRONMENT"],
+		[{ MIDTRANS_ENVIRONMENT: "sandbox", MIDTRANS_SERVER_KEY: "Mid-server-test" }, "not a sandbox server key"],
+		[{ MIDTRANS_ENVIRONMENT: "production", MIDTRANS_SERVER_KEY: "SB-Mid-server-test" }, "is a sandbox key"],
+		[
+			{ MIDTRANS_ENVIRONMENT: "sandbox", MIDTRANS_SERVER_KEY: "SB-Mid-server-test", MIDTRANS_SIGNATURE_KEY: "Mid-sig" },
+			"doesn't belong to the sandbox environment",
+		],
+		[
+			{ MIDTRANS_ENVIRONMENT: "production", MIDTRANS_SERVER_KEY: "Mid-server-test", MIDTRANS_SIGNATURE_KEY: "SB-sig" },
+			"doesn't belong to the production environment",
+		],
+		[{ MIDTRANS_SIGNATURE_KEY: "SB-sig" }, "without MIDTRANS_SERVER_KEY"],
+	])("refuses to start with a mismatched key: %j", async (settings, message) => {
+		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
+		await expect(import("./server")).rejects.toThrow(message);
 	});
 });

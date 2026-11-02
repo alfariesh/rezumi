@@ -22,7 +22,7 @@ vi.mock("react-email", () => ({
 		opts?.plainText ? "plain text body" : "<p>html body</p>",
 }));
 
-const { sendEmail, configureEmailBinding } = await import("./transport");
+const { sendEmail, deliverEmail, configureEmailBinding } = await import("./transport");
 
 const fakeReact = { $$typeof: Symbol.for("react.element") } as unknown as React.ReactElement;
 
@@ -106,5 +106,53 @@ describe("sendEmail", () => {
 			text: "plain text body",
 		});
 		expect(createTransport).not.toHaveBeenCalled();
+	});
+});
+
+describe("deliverEmail", () => {
+	const originalNodeEnv = process.env.NODE_ENV;
+
+	afterEach(() => {
+		process.env.NODE_ENV = originalNodeEnv;
+		vi.restoreAllMocks();
+	});
+
+	it("reports an unconfigured production server instead of pretending it sent", async () => {
+		resetEnv();
+		process.env.NODE_ENV = "production";
+		await expect(deliverEmail({ to: "a@b.com", subject: "Receipt", react: fakeReact })).resolves.toBe("unconfigured");
+	});
+
+	it("logs the text without the recipient in development", async () => {
+		resetEnv();
+		process.env.NODE_ENV = "development";
+		const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+		await expect(deliverEmail({ to: "a@b.com", subject: "Receipt", react: fakeReact })).resolves.toBe("logged");
+		expect(infoSpy).toHaveBeenCalledExactlyOnceWith("SMTP not configured; skipping email send.", {
+			subject: "Receipt",
+			text: "plain text body",
+		});
+	});
+
+	it("throws a summary without the provider's message when sending fails", async () => {
+		resetEnv();
+		envMock.SMTP_HOST = "smtp.example.com";
+		envMock.SMTP_USER = "user";
+		envMock.SMTP_PASS = "pass";
+		envMock.SMTP_FROM = "noreply@example.com";
+		sendMail.mockRejectedValueOnce(Object.assign(new Error("password=secret"), { code: "EAUTH" }));
+		const failure = deliverEmail({ to: "a@b.com", subject: "Receipt", react: fakeReact });
+		await expect(failure).rejects.toThrow("The email could not be delivered (EAUTH).");
+		await expect(failure).rejects.not.toThrow(/secret/);
+	});
+
+	it("sends and says so", async () => {
+		resetEnv();
+		envMock.SMTP_HOST = "smtp.example.com";
+		envMock.SMTP_USER = "user";
+		envMock.SMTP_PASS = "pass";
+		envMock.SMTP_FROM = "noreply@example.com";
+		await expect(deliverEmail({ to: "a@b.com", subject: "Receipt", react: fakeReact })).resolves.toBe("sent");
+		expect(sendMail).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ to: "a@b.com", subject: "Receipt" }));
 	});
 });

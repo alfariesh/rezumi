@@ -17,7 +17,10 @@
    ```dotenv
    MIDTRANS_ENVIRONMENT=sandbox
    MIDTRANS_SERVER_KEY=SB-Mid-server-xxxxxxxx
+   MIDTRANS_SIGNATURE_KEY=isi-signature-secret-key-sandbox
    ```
+
+   `MIDTRANS_SIGNATURE_KEY` diambil dari **Settings → Access Keys → General Credentials → Signature Secret Key** (ikon mata). Akun Midtrans model baru menandatangani notifikasi dengan kunci ini, bukan dengan server key (ditemukan saat uji 2026-11-02).
 
 4. Siapkan waktu ±10 menit saat Claude meminta kamu mengisi **Payment notification URL** di dashboard sandbox (Settings → Payment Settings / Configuration) dengan alamat sementara yang Claude berikan.
 5. Bila Claude meminta memasang `cloudflared` (untuk alamat sementara itu), jalankan `brew install cloudflared` sendiri atau izinkan Claude menjalankannya.

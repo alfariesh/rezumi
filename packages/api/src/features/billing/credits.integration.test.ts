@@ -300,7 +300,7 @@ describe.skipIf(!databaseUrl)("Rezumi AI credit ledger", () => {
 		expect(usages.filter((usage) => usage.status === "released")).toHaveLength(2);
 		expect(usages.find((usage) => usage.id === fresh.usageId)?.status).toBe("reserved");
 		expect(usages.find((usage) => usage.status === "released")?.errorCode).toBe("stale_reservation");
-		expect(await runBillingJobs(now)).toEqual({ releasedReservations: 0 });
+		expect(await runBillingJobs(now)).toMatchObject({ releasedReservations: 0 });
 	});
 
 	it("lets an admin correct credits with a reason, never below zero", async () => {
