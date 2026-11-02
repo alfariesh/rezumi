@@ -2,6 +2,8 @@ import { describe, expect, it } from "vite-plus/test";
 import { templateSchema } from "../templates";
 import {
 	BILLING_CATALOG_VERSION,
+	CREDIT_COSTS,
+	creditActionSchema,
 	FREE_TEMPLATES,
 	getPlan,
 	isFreeTemplate,
@@ -67,5 +69,20 @@ describe("billing catalog", () => {
 		expect(PLANS.plus.creditsPerPurchase).toBe(0);
 		expect(PLANS["pro-ai"].creditsPerPurchase).toBe(100);
 		expect(TRIAL_CREDITS).toEqual({ amount: 5, validDays: 14 });
+	});
+
+	it("prices every kind of Rezumi AI work in whole credits, with the launch weights", () => {
+		expect(CREDIT_COSTS).toEqual({
+			"short-text": 1,
+			"draft-answer": 2,
+			"cover-letter": 3,
+			"interview-practice": 3,
+			"coach-turn": 3,
+			review: 4,
+			"tailor-resume": 5,
+			"import-document": 5,
+		});
+		for (const cost of Object.values(CREDIT_COSTS)) expect(Number.isInteger(cost) && cost > 0).toBe(true);
+		expect(creditActionSchema.options).toEqual(Object.keys(CREDIT_COSTS));
 	});
 });

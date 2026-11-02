@@ -328,10 +328,22 @@ msgstr ""
 msgid "{0} closed"
 msgstr "{0} ବନ୍ଦ |"
 
+#. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
+#. placeholder {1}: TRIAL_CREDITS.validDays
+#: src/features/billing/plan-page.tsx
+msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
 msgstr "{0} ସମ୍ପାଦନା ପ୍ରୟୋଗ ହୋଇଛି |"
+
+#. placeholder {0}: creditCount(nextExpiry.credits)
+#. placeholder {1}: formatDate(nextExpiry.at)
+#: src/features/billing/plan-page.tsx
+msgid "{0} expire on {1}"
+msgstr ""
 
 #. placeholder {0}: semantics.dates.length
 #: src/features/resume/editor/check/parser-view.tsx
@@ -528,6 +540,10 @@ msgstr "ବର୍ଷକୁ {cost}"
 msgid "{cost} the first year"
 msgstr "ପ୍ରଥମ ବର୍ଷ ପାଇଁ {cost}"
 
+#: src/features/billing/credits.ts
+msgid "{count, plural, one {# credit} other {# credits}}"
+msgstr ""
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {# ପ୍ରବେଶ} other {# ଭରଣଗୁଡ଼ିକ |}}"
@@ -637,6 +653,10 @@ msgstr "{kind} ସାକ୍ଷାତକାର |"
 #: src/features/career/coach-thread.tsx
 msgid "{label} connection"
 msgstr "{label} ସଂଯୋଗ"
+
+#: src/features/billing/credits.ts
+msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "{length}m"
@@ -1483,6 +1503,10 @@ msgstr "ଆପଣଙ୍କର ନାମ ଯୋଡନ୍ତୁ |"
 msgid "Added {0} at {1}"
 msgstr "{1} ରେ {0} ଯୋଗ କରାଯାଇଛି |"
 
+#: src/features/billing/credits.ts
+msgid "Added by Rezumi"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/shared.tsx
 msgid "Added by you"
@@ -1738,6 +1762,10 @@ msgstr "ଉତ୍ତର ଦେବାର ଶେଷ ତାରିଖ"
 #: src/features/career/coach-chat.tsx
 msgid "Answer copied"
 msgstr "ଉତ୍ତର କପି ହେଲା"
+
+#: src/features/billing/credits.ts
+msgid "Answer draft"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 msgid "Answer in your own words"
@@ -2821,6 +2849,7 @@ msgstr "ବନ୍ଦ |"
 msgid "Closed applications are hidden. Turn on Show closed to see them."
 msgstr ""
 
+#: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -3235,6 +3264,10 @@ msgstr "ଏହି ତଥ୍ୟ ସଂଶୋଧନ କରନ୍ତୁ"
 #: src/features/career/knowledge/facts.tsx
 msgid "Corrected {correctedOn} · original kept"
 msgstr "{correctedOn}ରେ ସଂଶୋଧିତ · ମୂଳ ରଖାଯାଇଛି"
+
+#: src/features/billing/credits.ts
+msgid "Correction by Rezumi"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't add that fact. Try again."
@@ -3842,6 +3875,10 @@ msgstr "କଭର ଲେଟର"
 msgid "Cover letter — {0}"
 msgstr "କଭର୍ ଅକ୍ଷର - {0} |"
 
+#: src/features/billing/credits.ts
+msgid "Cover letter draft"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Cover letter file"
 msgstr "କଭର୍ ଅକ୍ଷର ଫାଇଲ୍ |"
@@ -3922,6 +3959,10 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
 msgstr "{0} ସହିତ ସୃଷ୍ଟି ଏବଂ ସଂଯୁକ୍ତ |"
+
+#: src/features/billing/plan-page.tsx
+msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
@@ -5012,12 +5053,20 @@ msgstr "ଅନୁଭବ"
 msgid "Experience, Education and more"
 msgstr ""
 
+#: src/features/billing/credits.ts
+msgid "Expired on {expires}"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires"
 msgstr "ମିଆଦ ପୂର୍ଣ୍ଣ ହେବ |"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires {expiry}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Expires on {expires}"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -5956,6 +6005,10 @@ msgstr "ପଦକ୍ଷେପଗୁଡିକ ଆମଦାନି କରନ୍ତ�
 msgid "Import this file into a free Rezumi. Every issue is waiting for you in Check."
 msgstr "ଏକ ମାଗଣା Rezumi ରେ ଏହି ଫାଇଲକୁ ଆମଦାନି କରନ୍ତୁ | ଚେକ୍ ରେ ପ୍ରତ୍ୟେକ ଇସୁ ଆପଣଙ୍କୁ ଅପେକ୍ଷା କରିଛି |"
 
+#: src/features/billing/credits.ts
+msgid "Import with AI"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your name. Build from there."
 msgstr "ଆପଣଙ୍କ ବର୍ତ୍ତମାନର ରିଜ୍ୟୁମ୍ ଆମଦାନି କରନ୍ତୁ। ଆମେ ପ୍ରତ୍ୟେକ ବିଭାଗ ସଜାଇଦେବୁ, ଯାହାକୁ ଆପଣ ସୁଧାରିପାରିବେ। କିମ୍ବା ନୂଆରୁ ଆରମ୍ଭ କରନ୍ତୁ। ଆପଣଙ୍କ ନାମରୁ ଆରମ୍ଭ କରି ଆଗକୁ ବଢ଼ନ୍ତୁ।"
@@ -5988,6 +6041,10 @@ msgstr "ମନୋନୀତ ରେଖା ଉନ୍ନତ କରନ୍ତୁ |"
 #: src/features/resume/editor/write/improve.tsx
 msgid "Improving…"
 msgstr "ଉନ୍ନତି…"
+
+#: src/features/billing/credits.ts
+msgid "In progress"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Included"
@@ -6069,6 +6126,10 @@ msgstr "ସାକ୍ଷାତକାର ଟିପ୍ପଣୀ"
 
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Interview practice"
 msgstr ""
 
 #: src/features/homepage/plans.ts
@@ -7601,6 +7662,14 @@ msgstr "କୌଣସି ସଂଶୋଧନ ନାହିଁ"
 msgid "No country matches."
 msgstr "କୌଣସି ମେଳ ଖାଉଥିବା ଦେଶ ମିଳିଲା ନାହିଁ।"
 
+#: src/features/billing/plan-page.tsx
+msgid "No credit activity yet."
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "No credits to spend right now"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "କୌଣସି ତାରିଖ ମିଳିଲା ନାହିଁ।"
@@ -8909,6 +8978,10 @@ msgstr "ଗୋପନୀୟତା ନୀତି"
 msgid "Private. Only you can see it."
 msgstr "ବ୍ୟକ୍ତିଗତ କେବଳ ଆପଣ ଏହାକୁ ଦେଖିପାରିବେ |"
 
+#: src/features/billing/credits.ts
+msgid "Pro AI credits"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
 msgid "Product"
 msgstr "ଉତ୍ପାଦ"
@@ -9304,6 +9377,10 @@ msgstr "କାରଣ"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "ମନେ ପକାଯାଇଥିବା"
+
+#: src/features/billing/plan-page.tsx
+msgid "Recent activity"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9752,10 +9829,18 @@ msgstr ""
 msgid "Resume page"
 msgstr "ରେଜୁମ୍ ପୃଷ୍ଠା |"
 
+#: src/features/billing/credits.ts
+msgid "Resume review"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Resume submitted (optional)"
 msgstr "ରେଜୁମ୍ ଦାଖଲ (ବ al କଳ୍ପିକ)"
+
+#: src/features/billing/credits.ts
+msgid "Resume tailoring"
+msgstr ""
 
 #: src/libs/seo.ts
 msgid "Resume templates with PDF examples"
@@ -9807,6 +9892,10 @@ msgstr "ପୁନର୍ବାର ସଞ୍ଚୟ କରନ୍ତୁ |"
 #: src/features/documents/library-error.tsx
 msgid "Retrying…"
 msgstr "ପୁଣି ଚେଷ୍ଟା ହେଉଛି…"
+
+#: src/features/billing/credits.ts
+msgid "Returned: no usable result"
+msgstr ""
 
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
@@ -9873,6 +9962,10 @@ msgstr "Rezumi - ହୋମ୍ପେଜ୍‌କୁ ଯାଆନ୍ତୁ"
 #: src/routes/dashboard/settings/route.tsx
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
+
+#: src/features/billing/plan-page.tsx
+msgid "Rezumi AI credits"
+msgstr ""
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
@@ -10626,6 +10719,10 @@ msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Short Link and Domain"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Short text help"
 msgstr ""
 
 #: src/features/career/workspace/apply.tsx
@@ -11434,6 +11531,15 @@ msgstr ""
 #: src/features/applications/components/insights-view.tsx
 msgid "Tailored vs. base resume"
 msgstr "ଆଡାପ୍ଟଟେଡ୍ ବନାମ ବେସ୍ ରେଜୁମ୍ |"
+
+#: src/features/billing/credits.ts
+msgid "Taken away on {at}"
+msgstr ""
+
+#. placeholder {0}: formatDate(entry.revokedAt)
+#: src/features/billing/credits.ts
+msgid "Taken back on {0}"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Tamil"
@@ -12345,6 +12451,11 @@ msgstr "ଆବର୍ଜନା"
 msgid "Trash is empty"
 msgstr "ଆବର୍ଜନା ଖାଲି ଅଛି |"
 
+#: src/features/billing/credits.ts
+#: src/features/billing/plan-page.tsx
+msgid "Trial credits"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Trimming words"
 msgstr "ଶବ୍ଦ କମାଉଛି"
@@ -12831,6 +12942,10 @@ msgstr "{used} ବ୍ୟବହୃତ"
 #: src/features/career/knowledge/facts.tsx
 msgid "Used in coaching"
 msgstr "କୋଚିଂରେ ବ୍ୟବହୃତ"
+
+#: src/features/billing/credits.ts
+msgid "Used on {at}"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."

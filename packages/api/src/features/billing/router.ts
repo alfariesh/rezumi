@@ -1,8 +1,9 @@
 import z from "zod";
-import { paidPlanIdSchema, planIdSchema } from "@rezumi/schema/billing";
+import { creditSourceSchema, paidPlanIdSchema, planIdSchema } from "@rezumi/schema/billing";
 import { protectedProcedure } from "../../context";
 import { assertBillingAdmin, billingAdmin } from "./admin";
-import { getEntitlements } from "./entitlements";
+import { getCreditBalance, listCreditHistory } from "./credits";
+import { getEntitlements, isBillingAppliedTo } from "./entitlements";
 import { countActiveDocuments } from "./limits";
 
 const route = { tags: ["Internal"] };
@@ -19,6 +20,40 @@ const period = z.object({
 	startsAt: z.date(),
 	endsAt: z.date(),
 });
+
+const credits = z.object({
+	balance: z.number().int().describe("Rezumi AI credits that can be spent now."),
+	nextExpiry: z
+		.object({ credits: z.number().int(), at: z.date() })
+		.nullable()
+		.describe("The soonest expiry among those credits, and how many expire then."),
+	trial: z.object({
+		available: z.boolean().describe("Whether the trial credits come with the first use of Rezumi AI."),
+		grantedAt: z.date().nullable(),
+		expiresAt: z.date().nullable(),
+	}),
+});
+
+const creditHistoryEntry = z.discriminatedUnion("type", [
+	z.object({
+		type: z.literal("grant"),
+		id: z.string(),
+		at: z.date(),
+		source: creditSourceSchema,
+		amount: z.number().int(),
+		remaining: z.number().int(),
+		expiresAt: z.date(),
+		revokedAt: z.date().nullable(),
+	}),
+	z.object({
+		type: z.literal("usage"),
+		id: z.string(),
+		at: z.date(),
+		action: z.string().describe("The kind of Rezumi AI work, or admin-adjustment for a correction."),
+		credits: z.number().int(),
+		status: z.enum(["reserved", "committed", "released"]),
+	}),
+]);
 
 const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
 	await assertBillingAdmin(context.authentication);
@@ -43,11 +78,13 @@ export const billingRouter = {
 					customFonts: z.boolean(),
 					automationApi: z.boolean(),
 				}),
+				credits: credits.nullable().describe("Rezumi AI credits; null while plans don't apply to the account."),
 			}),
 		)
 		.handler(async ({ context }) => {
+			const now = new Date();
 			const [entitlements, used] = await Promise.all([
-				getEntitlements(context.user.id),
+				getEntitlements(context.user.id, now),
 				countActiveDocuments(context.user.id),
 			]);
 			return {
@@ -60,7 +97,24 @@ export const billingRouter = {
 					activeCoverLetters: { used: used.activeCoverLetters, max: entitlements.limits.activeCoverLetters },
 				},
 				features: entitlements.features,
+				credits: entitlements.enabled ? await getCreditBalance(context.user.id, now) : null,
 			};
+		}),
+
+	creditHistory: protectedProcedure
+		.route({ ...route, method: "GET", path: "/billing/credits/history" })
+		.input(
+			z
+				.object({
+					limit: z.number().int().min(1).max(50).optional().describe("Maximum entries (1–50). Defaults to 20."),
+					offset: z.number().int().min(0).max(5000).optional().describe("Zero-based offset. Defaults to 0."),
+				})
+				.optional(),
+		)
+		.output(z.object({ items: z.array(creditHistoryEntry), hasMore: z.boolean() }))
+		.handler(async ({ context, input }) => {
+			if (!(await isBillingAppliedTo(context.user.id))) return { items: [], hasMore: false };
+			return listCreditHistory(context.user.id, { limit: input?.limit ?? 20, offset: input?.offset ?? 0 });
 		}),
 
 	admin: {
@@ -81,6 +135,39 @@ export const billingRouter = {
 			)
 			.output(period)
 			.handler(({ context, input }) => billingAdmin.grantPeriod({ ...input, actorUserId: context.user.id })),
+
+		adjustCredits: adminProcedure
+			.route({ ...route, method: "POST", path: "/billing/admin/credits" })
+			.input(
+				z
+					.object({
+						userId: z.string().min(1).optional(),
+						email: z.email().optional(),
+						amount: z
+							.number()
+							.int()
+							.min(-10_000)
+							.max(10_000)
+							.refine((amount) => amount !== 0, { message: "Give a positive or negative amount." }),
+						expiresInDays: z.number().int().min(1).max(366).optional(),
+						reason: z.string().trim().min(3).max(500),
+					})
+					.refine((input) => (input.userId === undefined) !== (input.email === undefined), {
+						message: "Give either userId or email.",
+					})
+					.refine((input) => input.amount < 0 || input.expiresInDays !== undefined, {
+						message: "Say in how many days added credits expire.",
+					}),
+			)
+			.output(
+				z.object({
+					userId: z.string(),
+					amount: z.number().int(),
+					balance: z.number().int(),
+					expiresAt: z.date().nullable(),
+				}),
+			)
+			.handler(({ context, input }) => billingAdmin.adjustCredits({ ...input, actorUserId: context.user.id })),
 
 		revokePeriod: adminProcedure
 			.route({ ...route, method: "POST", path: "/billing/admin/periods/{periodId}/revoke" })

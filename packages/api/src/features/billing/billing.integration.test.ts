@@ -214,6 +214,7 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 				customFonts: true,
 				automationApi: true,
 			},
+			credits: null,
 		});
 	});
 

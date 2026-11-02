@@ -323,10 +323,22 @@ msgstr "{0} at {1}"
 msgid "{0} closed"
 msgstr "{0} closed"
 
+#. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
+#. placeholder {1}: TRIAL_CREDITS.validDays
+#: src/features/billing/plan-page.tsx
+msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
+msgstr "{0} come with your first use of Rezumi AI, valid for {1} days."
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
 msgstr "{0} edits applied"
+
+#. placeholder {0}: creditCount(nextExpiry.credits)
+#. placeholder {1}: formatDate(nextExpiry.at)
+#: src/features/billing/plan-page.tsx
+msgid "{0} expire on {1}"
+msgstr "{0} expire on {1}"
 
 #. placeholder {0}: semantics.dates.length
 #: src/features/resume/editor/check/parser-view.tsx
@@ -523,6 +535,10 @@ msgstr "{cost} a year"
 msgid "{cost} the first year"
 msgstr "{cost} the first year"
 
+#: src/features/billing/credits.ts
+msgid "{count, plural, one {# credit} other {# credits}}"
+msgstr "{count, plural, one {# credit} other {# credits}}"
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {# entry} other {# entries}}"
@@ -632,6 +648,10 @@ msgstr "{kind} interview"
 #: src/features/career/coach-thread.tsx
 msgid "{label} connection"
 msgstr "{label} connection"
+
+#: src/features/billing/credits.ts
+msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
+msgstr "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
 
 #: src/features/career/workspace/debrief.tsx
 msgid "{length}m"
@@ -1478,6 +1498,10 @@ msgstr "Add your name"
 msgid "Added {0} at {1}"
 msgstr "Added {0} at {1}"
 
+#: src/features/billing/credits.ts
+msgid "Added by Rezumi"
+msgstr "Added by Rezumi"
+
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/shared.tsx
 msgid "Added by you"
@@ -1733,6 +1757,10 @@ msgstr "Answer by"
 #: src/features/career/coach-chat.tsx
 msgid "Answer copied"
 msgstr "Answer copied"
+
+#: src/features/billing/credits.ts
+msgid "Answer draft"
+msgstr "Answer draft"
 
 #: src/features/assistant/conversation.tsx
 msgid "Answer in your own words"
@@ -2816,6 +2844,7 @@ msgstr "Closed"
 msgid "Closed applications are hidden. Turn on Show closed to see them."
 msgstr "Closed applications are hidden. Turn on Show closed to see them."
 
+#: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -3230,6 +3259,10 @@ msgstr "Correct this fact"
 #: src/features/career/knowledge/facts.tsx
 msgid "Corrected {correctedOn} · original kept"
 msgstr "Corrected {correctedOn} · original kept"
+
+#: src/features/billing/credits.ts
+msgid "Correction by Rezumi"
+msgstr "Correction by Rezumi"
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't add that fact. Try again."
@@ -3837,6 +3870,10 @@ msgstr "Cover Letter"
 msgid "Cover letter — {0}"
 msgstr "Cover letter — {0}"
 
+#: src/features/billing/credits.ts
+msgid "Cover letter draft"
+msgstr "Cover letter draft"
+
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Cover letter file"
 msgstr "Cover letter file"
@@ -3917,6 +3954,10 @@ msgstr "Created {created}"
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
 msgstr "Created and linked to {0}"
+
+#: src/features/billing/plan-page.tsx
+msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 
 #: src/features/homepage/faq.tsx
 msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
@@ -5007,6 +5048,10 @@ msgstr "Experience"
 msgid "Experience, Education and more"
 msgstr "Experience, Education and more"
 
+#: src/features/billing/credits.ts
+msgid "Expired on {expires}"
+msgstr "Expired on {expires}"
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires"
 msgstr "Expires"
@@ -5014,6 +5059,10 @@ msgstr "Expires"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires {expiry}"
 msgstr "Expires {expiry}"
+
+#: src/features/billing/credits.ts
+msgid "Expires on {expires}"
+msgstr "Expires on {expires}"
 
 #: src/features/settings/account/data.tsx
 #: src/libs/resume/section.tsx
@@ -5950,6 +5999,10 @@ msgstr "Import steps"
 msgid "Import this file into a free Rezumi. Every issue is waiting for you in Check."
 msgstr "Import this file into a free Rezumi. Every issue is waiting for you in Check."
 
+#: src/features/billing/credits.ts
+msgid "Import with AI"
+msgstr "Import with AI"
+
 #: src/features/documents/documents-page.tsx
 msgid "Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your name. Build from there."
 msgstr "Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your name. Build from there."
@@ -5982,6 +6035,10 @@ msgstr "Improve selected line"
 #: src/features/resume/editor/write/improve.tsx
 msgid "Improving…"
 msgstr "Improving…"
+
+#: src/features/billing/credits.ts
+msgid "In progress"
+msgstr "In progress"
 
 #: src/features/billing/plan-page.tsx
 msgid "Included"
@@ -6064,6 +6121,10 @@ msgstr "Interview notes"
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
 msgstr "Interview now ends at {endTime}"
+
+#: src/features/billing/credits.ts
+msgid "Interview practice"
+msgstr "Interview practice"
 
 #: src/features/homepage/plans.ts
 msgid "Interview practice with feedback"
@@ -7595,6 +7656,14 @@ msgstr "No corrections"
 msgid "No country matches."
 msgstr "No country matches."
 
+#: src/features/billing/plan-page.tsx
+msgid "No credit activity yet."
+msgstr "No credit activity yet."
+
+#: src/features/billing/plan-page.tsx
+msgid "No credits to spend right now"
+msgstr "No credits to spend right now"
+
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "No dates were found."
@@ -8902,6 +8971,10 @@ msgstr "Privacy policy"
 msgid "Private. Only you can see it."
 msgstr "Private. Only you can see it."
 
+#: src/features/billing/credits.ts
+msgid "Pro AI credits"
+msgstr "Pro AI credits"
+
 #: src/features/homepage/footer.tsx
 msgid "Product"
 msgstr "Product"
@@ -9297,6 +9370,10 @@ msgstr "Reason"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "Recalled"
+
+#: src/features/billing/plan-page.tsx
+msgid "Recent activity"
+msgstr "Recent activity"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9745,10 +9822,18 @@ msgstr "Resume Match"
 msgid "Resume page"
 msgstr "Resume page"
 
+#: src/features/billing/credits.ts
+msgid "Resume review"
+msgstr "Resume review"
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Resume submitted (optional)"
 msgstr "Resume submitted (optional)"
+
+#: src/features/billing/credits.ts
+msgid "Resume tailoring"
+msgstr "Resume tailoring"
 
 #: src/libs/seo.ts
 msgid "Resume templates with PDF examples"
@@ -9800,6 +9885,10 @@ msgstr "Retry saving"
 #: src/features/documents/library-error.tsx
 msgid "Retrying…"
 msgstr "Retrying…"
+
+#: src/features/billing/credits.ts
+msgid "Returned: no usable result"
+msgstr "Returned: no usable result"
 
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
@@ -9866,6 +9955,10 @@ msgstr "Rezumi - Go to homepage"
 #: src/routes/dashboard/settings/route.tsx
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
+
+#: src/features/billing/plan-page.tsx
+msgid "Rezumi AI credits"
+msgstr "Rezumi AI credits"
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
@@ -10620,6 +10713,10 @@ msgstr "Short link"
 #: src/features/resume/share/share-panel.tsx
 msgid "Short Link and Domain"
 msgstr "Short Link and Domain"
+
+#: src/features/billing/credits.ts
+msgid "Short text help"
+msgstr "Short text help"
 
 #: src/features/career/workspace/apply.tsx
 msgid "Shorten questions to 2,000 characters and answers to 6,000 characters before marking this applied."
@@ -11427,6 +11524,15 @@ msgstr "Tailored to the posting"
 #: src/features/applications/components/insights-view.tsx
 msgid "Tailored vs. base resume"
 msgstr "Tailored vs. base resume"
+
+#: src/features/billing/credits.ts
+msgid "Taken away on {at}"
+msgstr "Taken away on {at}"
+
+#. placeholder {0}: formatDate(entry.revokedAt)
+#: src/features/billing/credits.ts
+msgid "Taken back on {0}"
+msgstr "Taken back on {0}"
 
 #: src/libs/locale.ts
 msgid "Tamil"
@@ -12338,6 +12444,11 @@ msgstr "Trash"
 msgid "Trash is empty"
 msgstr "Trash is empty"
 
+#: src/features/billing/credits.ts
+#: src/features/billing/plan-page.tsx
+msgid "Trial credits"
+msgstr "Trial credits"
+
 #: src/features/career/shared.tsx
 msgid "Trimming words"
 msgstr "Trimming words"
@@ -12823,6 +12934,10 @@ msgstr "used {used}"
 #: src/features/career/knowledge/facts.tsx
 msgid "Used in coaching"
 msgstr "Used in coaching"
+
+#: src/features/billing/credits.ts
+msgid "Used on {at}"
+msgstr "Used on {at}"
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."

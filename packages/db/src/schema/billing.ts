@@ -1,4 +1,4 @@
-import type { PaidPlanId } from "@rezumi/schema/billing";
+import type { CreditSource, PaidPlanId } from "@rezumi/schema/billing";
 import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
 import { generateId } from "@rezumi/utils/string";
@@ -80,4 +80,81 @@ export const billingAuditLog = pg.pgTable(
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	},
 	(t) => [pg.index().on(t.targetUserId, t.createdAt)],
+);
+
+/** Rezumi AI credits that came in: the trial, a Pro AI purchase, or an administrator. Spent soonest-expiring first. */
+export const aiCreditGrant = pg.pgTable(
+	"ai_credit_grant",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		userId: pg
+			.text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		source: pg.text("source").notNull().$type<CreditSource>(),
+		// The payment that bought them. Payments arrive in membership phase 06, which adds the foreign key.
+		paymentId: pg.text("payment_id"),
+		amount: pg.integer("amount").notNull(),
+		// What is left to spend. Reserving takes from it; a released reservation gives it back.
+		remaining: pg.integer("remaining").notNull(),
+		expiresAt: pg.timestamp("expires_at", { withTimezone: true }).notNull(),
+		revokedAt: pg.timestamp("revoked_at", { withTimezone: true }),
+		note: pg.text("note"),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+	},
+	(t) => [
+		pg.index().on(t.userId, t.expiresAt),
+		pg.check("ai_credit_grant_amount_positive", sql`${t.amount} > 0`),
+		pg.check("ai_credit_grant_source", sql`${t.source} IN ('trial', 'plan', 'admin')`),
+		pg.check("ai_credit_grant_remaining_in_range", sql`${t.remaining} >= 0 AND ${t.remaining} <= ${t.amount}`),
+	],
+);
+
+export type CreditUsageStatus = "reserved" | "committed" | "released";
+
+/** Which grants a usage took its credits from, so a release gives each back. */
+export type CreditAllocation = { grantId: string; credits: number };
+
+/**
+ * Rezumi AI credits reserved before a piece of work runs, then committed when it gives a usable result or released
+ * when it doesn't. An administrator's correction downward is recorded here too, already committed.
+ */
+export const aiCreditUsage = pg.pgTable(
+	"ai_credit_usage",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		userId: pg
+			.text("user_id")
+			.notNull()
+			.references(() => user.id, { onDelete: "cascade" }),
+		// `<userId>:<action>:<idempotencyKey>`: a double click or a network retry finds the first reservation.
+		operationKey: pg.text("operation_key").notNull().unique(),
+		// A CREDIT_COSTS key, or admin-adjustment.
+		action: pg.text("action").notNull(),
+		credits: pg.integer("credits").notNull(),
+		status: pg.text("status").notNull().$type<CreditUsageStatus>(),
+		allocations: pg.jsonb("allocations").notNull().$type<CreditAllocation[]>().default([]),
+		provider: pg.text("provider"),
+		model: pg.text("model"),
+		inputTokens: pg.integer("input_tokens"),
+		outputTokens: pg.integer("output_tokens"),
+		costUsdMicros: pg.bigint("cost_usd_micros", { mode: "number" }),
+		errorCode: pg.text("error_code"),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		settledAt: pg.timestamp("settled_at", { withTimezone: true }),
+	},
+	(t) => [
+		pg.index().on(t.userId, t.createdAt),
+		pg.index().on(t.status, t.createdAt),
+		pg.check("ai_credit_usage_credits_positive", sql`${t.credits} > 0`),
+		pg.check("ai_credit_usage_status", sql`${t.status} IN ('reserved', 'committed', 'released')`),
+	],
 );

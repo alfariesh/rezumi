@@ -328,10 +328,22 @@ msgstr ""
 msgid "{0} closed"
 msgstr "{0} 已关闭"
 
+#. placeholder {0}: creditCount(TRIAL_CREDITS.amount)
+#. placeholder {1}: TRIAL_CREDITS.validDays
+#: src/features/billing/plan-page.tsx
+msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
 msgstr "{0} 编辑已应用"
+
+#. placeholder {0}: creditCount(nextExpiry.credits)
+#. placeholder {1}: formatDate(nextExpiry.at)
+#: src/features/billing/plan-page.tsx
+msgid "{0} expire on {1}"
+msgstr ""
 
 #. placeholder {0}: semantics.dates.length
 #: src/features/resume/editor/check/parser-view.tsx
@@ -528,6 +540,10 @@ msgstr "每年 {cost}"
 msgid "{cost} the first year"
 msgstr "首年 {cost}"
 
+#: src/features/billing/credits.ts
+msgid "{count, plural, one {# credit} other {# credits}}"
+msgstr ""
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{count, plural, one {# entry} other {# entries}}"
 msgstr "{count, plural, one {#条目} other {# 条目}}"
@@ -637,6 +653,10 @@ msgstr "{kind}采访"
 #: src/features/career/coach-thread.tsx
 msgid "{label} connection"
 msgstr "{label} 连接"
+
+#: src/features/billing/credits.ts
+msgid "{left, plural, one {# left, expires on {expires}} other {# left, expires on {expires}}}"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "{length}m"
@@ -1483,6 +1503,10 @@ msgstr "添加您的名字"
 msgid "Added {0} at {1}"
 msgstr "在 {1} 添加了 {0}"
 
+#: src/features/billing/credits.ts
+msgid "Added by Rezumi"
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/shared.tsx
 msgid "Added by you"
@@ -1738,6 +1762,10 @@ msgstr "回答方式"
 #: src/features/career/coach-chat.tsx
 msgid "Answer copied"
 msgstr "回答已复制"
+
+#: src/features/billing/credits.ts
+msgid "Answer draft"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 msgid "Answer in your own words"
@@ -2821,6 +2849,7 @@ msgstr "关闭"
 msgid "Closed applications are hidden. Turn on Show closed to see them."
 msgstr ""
 
+#: src/features/billing/credits.ts
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -3235,6 +3264,10 @@ msgstr "更正这个事实"
 #: src/features/career/knowledge/facts.tsx
 msgid "Corrected {correctedOn} · original kept"
 msgstr "已于 {correctedOn} 更正 · 保留原始内容"
+
+#: src/features/billing/credits.ts
+msgid "Correction by Rezumi"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "Couldn't add that fact. Try again."
@@ -3842,6 +3875,10 @@ msgstr "求职信"
 msgid "Cover letter — {0}"
 msgstr "求职信 — {0}"
 
+#: src/features/billing/credits.ts
+msgid "Cover letter draft"
+msgstr ""
+
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Cover letter file"
 msgstr "求职信文件"
@@ -3922,6 +3959,10 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "Created and linked to {0}"
 msgstr "创建并链接到 {0}"
+
+#: src/features/billing/plan-page.tsx
+msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
@@ -5012,12 +5053,20 @@ msgstr "工作经历"
 msgid "Experience, Education and more"
 msgstr ""
 
+#: src/features/billing/credits.ts
+msgid "Expired on {expires}"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires"
 msgstr "过期"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires {expiry}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Expires on {expires}"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -5955,6 +6004,10 @@ msgstr "导入步骤"
 msgid "Import this file into a free Rezumi. Every issue is waiting for you in Check."
 msgstr "将此文件导入到免费的 Rezumi 中。每一个问题都在 Check 中等着您。"
 
+#: src/features/billing/credits.ts
+msgid "Import with AI"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your name. Build from there."
 msgstr "导入现有简历，我们会排好各个部分，供您完善。也可以从零开始。先填写姓名，再逐步完成。"
@@ -5987,6 +6040,10 @@ msgstr "改进选定的线路"
 #: src/features/resume/editor/write/improve.tsx
 msgid "Improving…"
 msgstr "改善…"
+
+#: src/features/billing/credits.ts
+msgid "In progress"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Included"
@@ -6068,6 +6125,10 @@ msgstr "面试备注"
 
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Interview practice"
 msgstr ""
 
 #: src/features/homepage/plans.ts
@@ -7600,6 +7661,14 @@ msgstr "无更正"
 msgid "No country matches."
 msgstr "没有匹配的国家。"
 
+#: src/features/billing/plan-page.tsx
+msgid "No credit activity yet."
+msgstr ""
+
+#: src/features/billing/plan-page.tsx
+msgid "No credits to spend right now"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "未找到任何日期。"
@@ -8907,6 +8976,10 @@ msgstr "隐私政策"
 msgid "Private. Only you can see it."
 msgstr "私人的。只有你能看到它。"
 
+#: src/features/billing/credits.ts
+msgid "Pro AI credits"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
 msgid "Product"
 msgstr "产品"
@@ -9302,6 +9375,10 @@ msgstr "原因"
 #: src/features/career/workspace/practise.tsx
 msgid "Recalled"
 msgstr "回忆"
+
+#: src/features/billing/plan-page.tsx
+msgid "Recent activity"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
@@ -9750,10 +9827,18 @@ msgstr ""
 msgid "Resume page"
 msgstr "简历页"
 
+#: src/features/billing/credits.ts
+msgid "Resume review"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Resume submitted (optional)"
 msgstr "提交简历（可选）"
+
+#: src/features/billing/credits.ts
+msgid "Resume tailoring"
+msgstr ""
 
 #: src/libs/seo.ts
 msgid "Resume templates with PDF examples"
@@ -9805,6 +9890,10 @@ msgstr "重试保存"
 #: src/features/documents/library-error.tsx
 msgid "Retrying…"
 msgstr "正在重试…"
+
+#: src/features/billing/credits.ts
+msgid "Returned: no usable result"
+msgstr ""
 
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
@@ -9871,6 +9960,10 @@ msgstr "Rezumi - 返回首页"
 #: src/routes/dashboard/settings/route.tsx
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
+
+#: src/features/billing/plan-page.tsx
+msgid "Rezumi AI credits"
+msgstr ""
 
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
@@ -10624,6 +10717,10 @@ msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Short Link and Domain"
+msgstr ""
+
+#: src/features/billing/credits.ts
+msgid "Short text help"
 msgstr ""
 
 #: src/features/career/workspace/apply.tsx
@@ -11432,6 +11529,15 @@ msgstr ""
 #: src/features/applications/components/insights-view.tsx
 msgid "Tailored vs. base resume"
 msgstr "改编简历与基础简历"
+
+#: src/features/billing/credits.ts
+msgid "Taken away on {at}"
+msgstr ""
+
+#. placeholder {0}: formatDate(entry.revokedAt)
+#: src/features/billing/credits.ts
+msgid "Taken back on {0}"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Tamil"
@@ -12343,6 +12449,11 @@ msgstr "垃圾箱"
 msgid "Trash is empty"
 msgstr "垃圾箱已空"
 
+#: src/features/billing/credits.ts
+#: src/features/billing/plan-page.tsx
+msgid "Trial credits"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Trimming words"
 msgstr "正在删减字词"
@@ -12828,6 +12939,10 @@ msgstr "使用了 {used}"
 #: src/features/career/knowledge/facts.tsx
 msgid "Used in coaching"
 msgstr "用于辅导"
+
+#: src/features/billing/credits.ts
+msgid "Used on {at}"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Used to check roles and offers. Each is a number, so the coach can compare without guessing."

@@ -15,6 +15,7 @@ import wasm from "@formepdf/core/pkg-web/forme_bg.wasm";
 import { init } from "@formepdf/core/worker";
 import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
+import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
 import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
 import { initializeAuth } from "@rezumi/auth/config";
@@ -224,6 +225,11 @@ export default {
 	},
 	scheduled(_controller: ScheduledController, bindings: CloudflareBindings, ctx: ExecutionContext): void {
 		const { pool, store, run } = createInvocation(bindings, ctx);
-		ctx.waitUntil(run(runCareerJobs).finally(() => closePool(pool, store)));
+		// Billing first: its work is short. A failure there never keeps career jobs from running.
+		const jobs = async () => {
+			await runBillingJobs().catch(() => console.error("[billing] Scheduled work failed; it retries next run."));
+			return runCareerJobs();
+		};
+		ctx.waitUntil(run(jobs).finally(() => closePool(pool, store)));
 	},
 };

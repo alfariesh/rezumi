@@ -31,8 +31,8 @@ vi.mock("@hono/node-server", () => ({
 	}),
 }));
 vi.mock("@rezumi/env/server", () => ({ env: { SERVER_PORT: 0 } }));
-// Scheduled career work has its own test; here it only has to stop when the server does.
-vi.mock("./startup/career-scheduler", () => ({ startCareerScheduler: () => ({ stop: async () => {} }) }));
+// Scheduled billing and career work has its own test; here it only has to stop when the server does.
+vi.mock("./startup/job-scheduler", () => ({ startJobScheduler: () => ({ stop: async () => {} }) }));
 afterEach(() => vi.restoreAllMocks());
 
 describe("server startup", () => {
