@@ -25,6 +25,7 @@ type SingleComboboxProps<TValue extends string | number = string> = {
 	disabled?: boolean;
 	showClear?: boolean;
 	placeholder?: string;
+	"aria-label"?: string;
 	emptyMessage?: React.ReactNode;
 	className?: string;
 	id?: string;
@@ -44,6 +45,7 @@ type MultiComboboxProps<TValue extends string | number = string> = {
 	disabled?: boolean;
 	showClear?: boolean;
 	placeholder?: string;
+	"aria-label"?: string;
 	emptyMessage?: React.ReactNode;
 	className?: string;
 	id?: string;
@@ -111,6 +113,7 @@ function Combobox<TValue extends string | number = string>(props: ComboboxProps<
 
 	return (
 		<Autocomplete
+			{...(props["aria-label"] ? { "aria-label": props["aria-label"] } : {})}
 			fullWidth
 			{...(variant ? { variant } : {})}
 			{...(id ? { id } : {})}

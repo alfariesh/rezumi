@@ -181,20 +181,20 @@ The public homepage in `apps/web/src/features/homepage` is built from HeroUI com
 - **Section bar:** sticky under the introduction, one numbered link per section from `getLandingSections` in `ui.tsx`; the section being read gets accent text and an accent underline, without a background. On phones a compact logomark and brand sit beside a small call to action above the horizontal links; the active link scrolls into view. From `lg` everything sits in one row.
 - **Section headings:** a pill with the section's number and name (`SectionHeading`), then a large statement (`SectionTitle`, 36–48px, weight 600).
 - **Bento grids:** six columns from `lg`, tiles of span 3+3 then 2+2+2 (light) or 4+2 then 2+4 (dark). Tiles are `Card`s with `p-0`; only the grid's outer corners round to 2rem. Each tile draws its feature from the same surfaces as the app (`surface-secondary` fields, `Chip`s, stage dots, paper pages) over a 288px stage that can fade into the card. The second grid sits on a band scoped with the `dark` class, so it reads dark in both themes.
-- **Pricing:** three plans in one `surface-secondary` panel; the featured plan (Pro AI) is raised on the accent with a fading grid. Names, prices and lists start at the same height in every card. Prices come from `plans.ts`: Rupiah in every locale for the Indonesian pilot, formatted with the locale's `Intl.NumberFormat`, the currency set smaller than the figure. Paid plans say they last 30 days and never renew on their own; no plan is ever “coming soon”.
+- **Pricing:** three plans in one `surface-secondary` panel; the featured plan (Pro AI) is raised on a solid accent without a grid. Names, prices and lists start at the same height in every card. Prices come from `plans.ts`: Rupiah in every locale for the Indonesian pilot, formatted with the locale's `Intl.NumberFormat`, the currency set smaller than the figure. Paid plans say they last 30 days and never renew on their own; no plan is ever “coming soon”.
 - **FAQ:** an `Accordion` (`surface`) beside a sticky intro column; the same answers go out as `FAQPage` structured data.
 - **Closing and footer:** the accent panel again, rounded 2–3rem, with the call to action as a `secondary` button. The footer has the logomark, one line, three link columns and the version.
 
 ### Brand and controls
 
 - **Brand:** the 32px logomark from `apps/web/public/icon/{light,dark}.svg` (`BrandIcon variant="icon"`) beside “Rezumi” in 18px semibold.
-- **Call to action:** “Build your resume” (`CtaLink`) in the hero, the section bar and the closing panel, always to `/auth/register`. Plan buttons add `?plan=plus` or `?plan=pro-ai` for checkout after sign-up.
+- **Call to action:** “Build your resume” (`CtaLink`) in the hero, the section bar and the closing panel, always to `/auth/register`. Plan buttons add `?plan=plus` or `?plan=pro-ai` to the sign-up URL; checkout is part of the membership implementation.
 - **No source-code links:** the landing does not link to GitHub, a license or self-hosting.
 - The hero has no separate header. Three collaboration pointers on the example resume identify You, Rezumi Agent and BYOK Agent; only the icons have a white stroke and soft shadow.
 
 ### Motion
 
-Motion is the app's: hover color changes, the bento's template fan spreading on hover (`duration-emphasized`), and the text caret's pulse (`motion-safe` only). No scroll-driven scenes, parallax or entrance animations, so the prerendered page is final at first paint.
+Motion is the app's: hover color changes, the bento's template fan spreading on hover (`duration-emphasized`), and the text caret's pulse (`motion-safe` only). The hero headline slides its words upward with a last-to-first character stagger after hydration, sizes to the active word, stays static with reduced motion, and pauses outside the viewport or in a hidden tab. Mobile keeps three lines; larger screens use two. No scroll-driven scenes, parallax or entrance animations; initial content remains visible in prerendered HTML.
 
 ### Content and delivery
 

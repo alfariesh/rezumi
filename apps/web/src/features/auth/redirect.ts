@@ -21,7 +21,7 @@ function safeCallbackURL(value: unknown): string | undefined {
 export const authSearchSchema = z.object({
 	callbackURL: z.unknown().transform(safeCallbackURL).optional(),
 	reauthenticate: z.boolean().optional().catch(undefined),
-	/** The paid plan picked on the landing page's pricing, kept for checkout after sign-up. */
+	/** The paid plan picked on the landing page's pricing. */
 	plan: z.enum(["plus", "pro-ai"]).optional().catch(undefined),
 });
 

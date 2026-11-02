@@ -25,12 +25,12 @@ const getQuestions = (): Question[] => {
 		{
 			id: "access",
 			question: t`How does a 30-day plan work?`,
-			answer: t`You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free: nothing is deleted, you choose which 3 resumes and 3 letters stay active, and the rest stay readable.`,
+			answer: t`You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document.`,
 		},
 		{
 			id: "credits",
 			question: t`What is an AI credit?`,
-			answer: t`Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes 100 credits every 30 days; the free plan includes 5 to try.`,
+			answer: t`Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes 100 credits. The Free plan includes a one-time trial of 5 credits, valid for 14 days.`,
 		},
 		{
 			id: "own-key",
@@ -40,7 +40,7 @@ const getQuestions = (): Question[] => {
 		{
 			id: "ats",
 			question: t`Will my resume get past applicant tracking systems?`,
-			answer: t`Every template exports a text-based PDF with the words in reading order, which is what applicant tracking systems (ATS) need to parse a resume. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix.`,
+			answer: t`Templates export text-based PDFs. Parsing varies between applicant tracking systems (ATS), so check the exported file for your chosen layout. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix.`,
 			link: { label: t`Try the ATS checker`, to: "/ats-checker" },
 		},
 		{
@@ -78,7 +78,11 @@ export function Faq() {
 	};
 
 	return (
-		<section id="faq" aria-labelledby="faq-title" className="scroll-mt-20 py-20 sm:py-28">
+		<section
+			id="faq"
+			aria-labelledby="faq-title"
+			className="scroll-mt-[calc(var(--landing-nav-height,5rem)+1rem)] py-20 sm:py-28"
+		>
 			<Container className="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
 				<div className="lg:sticky lg:top-32 lg:self-start">
 					<SectionHeading section="faq" id="faq-title" />

@@ -2,7 +2,6 @@ import type { ComponentProps, ReactNode } from "react";
 import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Link } from "@tanstack/react-router";
-import { useId } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
@@ -60,23 +59,6 @@ export function SectionTitle({ children, className }: SectionTitleProps) {
 		<p className={cn("mt-6 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl", className)}>
 			{children}
 		</p>
-	);
-}
-
-type GridPatternProps = { className?: string; size?: number };
-
-/** A hairline grid that tiles its box: the backdrop of the accent panels. Draws in `currentColor`. */
-export function GridPattern({ className, size = 96 }: GridPatternProps) {
-	const patternId = useId();
-	return (
-		<svg aria-hidden="true" className={cn("absolute inset-0 size-full", className)}>
-			<defs>
-				<pattern id={patternId} width={size} height={size} patternUnits="userSpaceOnUse" x="100%" y="100%">
-					<path d={`M0 ${size}V.5H${size}`} fill="none" stroke="currentColor" />
-				</pattern>
-			</defs>
-			<rect width="100%" height="100%" fill={`url(#${patternId})`} />
-		</svg>
 	);
 }
 

@@ -1,4 +1,5 @@
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { useEffect, useRef, useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { cn } from "@rezumi/utils/style";
@@ -9,15 +10,19 @@ import { CtaLink, getLandingSections, landingSectionIds } from "./ui";
  * above a horizontally scrolling row that follows the active section.
  */
 export function SectionNav() {
+	const { i18n } = useLingui();
 	const sections = getLandingSections();
 	const ref = useRef<HTMLDivElement>(null);
 	const navRef = useRef<HTMLElement>(null);
 	const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
 	useEffect(() => {
+		const bar = ref.current;
+		if (!bar) return;
+		const root = bar.closest<HTMLElement>("#top");
+		let frame = 0;
 		const update = () => {
-			const bar = ref.current;
-			if (!bar) return;
+			frame = 0;
 			// At the bottom of the page the last section is current, however short it is.
 			if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
 				setActiveIndex(landingSectionIds.length - 1);
@@ -33,29 +38,46 @@ export function SectionNav() {
 			setActiveIndex(next);
 		};
 
-		const observer = new ResizeObserver(update);
+		const scheduleUpdate = () => {
+			if (!frame) frame = window.requestAnimationFrame(update);
+		};
+		const updateSize = () => {
+			root?.style.setProperty("--landing-nav-height", `${bar.getBoundingClientRect().height}px`);
+			scheduleUpdate();
+		};
+		const observer = new ResizeObserver(updateSize);
+		observer.observe(bar);
 		observer.observe(document.body);
-		update();
-		window.addEventListener("scroll", update, { passive: true });
-		window.addEventListener("resize", update);
+		updateSize();
+		window.addEventListener("scroll", scheduleUpdate, { passive: true });
+		window.addEventListener("resize", updateSize);
 		return () => {
 			observer.disconnect();
-			window.removeEventListener("scroll", update);
-			window.removeEventListener("resize", update);
+			window.cancelAnimationFrame(frame);
+			root?.style.removeProperty("--landing-nav-height");
+			window.removeEventListener("scroll", scheduleUpdate);
+			window.removeEventListener("resize", updateSize);
 		};
 	}, []);
 
 	useEffect(() => {
 		const nav = navRef.current;
-		const active = nav?.querySelector<HTMLElement>('[aria-current="location"]');
-		if (!nav || !active || nav.scrollWidth <= nav.clientWidth) return;
-		const navBounds = nav.getBoundingClientRect();
-		const activeBounds = active.getBoundingClientRect();
-		nav.scrollTo({
-			left: nav.scrollLeft + activeBounds.left - navBounds.left - (nav.clientWidth - activeBounds.width) / 2,
-			behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
-		});
-	}, [activeIndex]);
+		if (!nav) return;
+		const centerActiveLink = () => {
+			const active = nav.querySelector<HTMLElement>('[aria-current="location"]');
+			if (!active || nav.scrollWidth <= nav.clientWidth) return;
+			const navBounds = nav.getBoundingClientRect();
+			const activeBounds = active.getBoundingClientRect();
+			nav.scrollTo({
+				left: nav.scrollLeft + activeBounds.left - navBounds.left - (nav.clientWidth - activeBounds.width) / 2,
+				behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+			});
+		};
+		centerActiveLink();
+		const observer = new ResizeObserver(centerActiveLink);
+		observer.observe(nav);
+		return () => observer.disconnect();
+	}, [activeIndex, i18n.locale]);
 
 	return (
 		<div

@@ -6,7 +6,9 @@ import { BentoCard } from "./bento-card";
 import { Container, SectionHeading, SectionTitle } from "./ui";
 
 /** A resume page in miniature: bars for lines, one of them marked as the line being edited. */
-function MiniPage({ className }: { className?: string }) {
+type MiniPageProps = { className?: string };
+
+function MiniPage({ className }: MiniPageProps) {
 	const widths = ["w-1/2", "w-full", "w-11/12", "w-4/5", "w-full", "w-2/3", "w-11/12", "w-3/4"];
 	return (
 		<div className={cn("light aspect-page rounded-md bg-paper p-4 shadow-page", className)}>
@@ -48,8 +50,14 @@ function WriteGraphic() {
 
 function DesignGraphic() {
 	const fan = [
-		{ id: "azurill", className: "-rotate-8 -translate-x-[70%] group-hover:-translate-x-[85%]" },
-		{ id: "bronzor", className: "rotate-8 translate-x-[70%] group-hover:translate-x-[85%]" },
+		{
+			id: "azurill",
+			className: "-rotate-8 -translate-x-[70%] motion-safe:group-hover:[@media(hover:hover)]:-translate-x-[85%]",
+		},
+		{
+			id: "bronzor",
+			className: "rotate-8 translate-x-[70%] motion-safe:group-hover:[@media(hover:hover)]:translate-x-[85%]",
+		},
 		{ id: "onyx", className: "z-10 -translate-y-2" },
 	];
 	return (
@@ -64,7 +72,7 @@ function DesignGraphic() {
 					loading="lazy"
 					decoding="async"
 					className={cn(
-						"absolute w-36 rounded-md bg-white shadow-page transition-transform duration-emphasized ease-enter",
+						"absolute w-36 rounded-md bg-white shadow-page transition-transform duration-emphasized ease-enter motion-reduce:transition-none",
 						className,
 					)}
 				/>
@@ -239,7 +247,11 @@ function AssistantGraphic() {
  */
 export function Features() {
 	return (
-		<section id="features" aria-labelledby="features-title" className="scroll-mt-20 pt-20 sm:pt-28">
+		<section
+			id="features"
+			aria-labelledby="features-title"
+			className="scroll-mt-[calc(var(--landing-nav-height,5rem)+1rem)] pt-20 sm:pt-28"
+		>
 			<Container>
 				<SectionHeading section="features" id="features-title" />
 				<SectionTitle>{t`Everything you need to reach the interview.`}</SectionTitle>

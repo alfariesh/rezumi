@@ -3,7 +3,7 @@ import { t } from "@lingui/core/macro";
 import { templateSchema } from "@rezumi/schema/templates";
 
 /**
- * The hosted plans as the landing page sells them (proposal: .agents/docs/research/monetisasi-membership-indonesia-*.md).
+ * The hosted plans as the landing page sells them (decisions: .agents/docs/plans/membership/00-keputusan-produk.md).
  * Indonesia is the first market, so every locale prices in Rupiah for now. Paid plans are 30-day passes that never
  * renew on their own.
  */
@@ -40,7 +40,7 @@ export const getPlans = (): Plan[] => {
 				t`${freeTemplateCount} templates`,
 				t`PDF downloads without a watermark`,
 				t`ATS check and basic keyword matching`,
-				t`Job tracker with board and calendar`,
+				t`Job tracker with board, calendar and insights`,
 				t`5 AI credits to try`,
 			],
 			cta: t`Start free`,
@@ -55,7 +55,6 @@ export const getPlans = (): Plan[] => {
 				t`All ${templateCount} templates`,
 				t`Word and ODT downloads`,
 				t`Custom styles and your own fonts`,
-				t`Full job search insights`,
 				t`MCP and API for your own automations`,
 			],
 			cta: t`Choose Plus`,
@@ -67,7 +66,7 @@ export const getPlans = (): Plan[] => {
 			price: 79_000,
 			features: [
 				t`Everything in Plus`,
-				t`100 AI credits every 30 days`,
+				t`100 AI credits per purchase`,
 				t`No API key to set up`,
 				t`Tailor your resume to each posting`,
 				t`Cover letters and recruiter replies`,

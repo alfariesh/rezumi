@@ -19,7 +19,11 @@ export function Templates() {
 	const free = i18n.number(freeTemplates.length);
 
 	return (
-		<section id="templates" aria-labelledby="templates-title" className="scroll-mt-20 py-20 sm:py-28">
+		<section
+			id="templates"
+			aria-labelledby="templates-title"
+			className="scroll-mt-[calc(var(--landing-nav-height,5rem)+1rem)] py-20 sm:py-28"
+		>
 			<Container>
 				<SectionHeading section="templates" id="templates-title" />
 				<SectionTitle>{t`${total} templates. ${free} of them free.`}</SectionTitle>

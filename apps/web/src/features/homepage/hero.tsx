@@ -1,7 +1,9 @@
 import type { SVGProps } from "react";
 import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { Trans } from "@lingui/react/macro";
 import { HeroResume } from "./resume";
+import { RotatingText } from "./rotating-text";
 import { CtaLink } from "./ui";
 
 type StarIconProps = SVGProps<SVGSVGElement>;
@@ -26,9 +28,6 @@ function StarIcon(props: StarIconProps) {
 	);
 }
 
-/** The page's one `h1`. */
-const getHeadline = () => t`Turn your experience into a resume that gets interviews.`;
-
 // Placeholder: replace with a real, attributed quote before launch.
 function HeroTestimonial() {
 	return (
@@ -52,7 +51,7 @@ function HeroTestimonial() {
 
 /**
  * 00 Hero. The accent panel runs off the start edge of the page with the resume standing on it; beside it, a short
- * quote over the headline and the call to action. Everything paints from the prerendered HTML, with no scripts.
+ * quote over the headline and the call to action. The initial content paints from prerendered HTML; the headline rotates after hydration.
  */
 export function Hero() {
 	return (
@@ -72,11 +71,22 @@ export function Hero() {
 
 				<div className="bg-background pt-16 pb-16 lg:col-span-7 lg:bg-transparent lg:ps-16 lg:pt-0 lg:pb-0 xl:ps-20">
 					<div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0">
-						<h1 id="hero-title" className="text-5xl font-bold tracking-tight text-balance sm:text-6xl">
-							{getHeadline()}
+						<h1
+							id="hero-title"
+							className="text-[clamp(2rem,10vw,3rem)] leading-tight font-bold tracking-tight sm:text-4xl xl:text-5xl"
+						>
+							<span className="sr-only">{t`Make your experience, education, skills, and achievements stand out.`}</span>
+							<span aria-hidden="true" dir="auto" className="sm:whitespace-nowrap">
+								<Trans>
+									Make your
+									<br />
+									<RotatingText texts={[t`experience`, t`education`, t`skills`, t`achievements`]} />
+									<br className="sm:hidden" /> stand out.
+								</Trans>
+							</span>
 						</h1>
 						<p className="mt-4 text-xl text-pretty text-muted sm:text-2xl">
-							{t`Write it once, check what applicant tracking systems read, tailor it to every posting and follow each application to the offer.`}
+							{t`Build an ATS-friendly resume, tailor it to each role, and track every application in one place.`}
 						</p>
 						<div className="mt-8 flex flex-wrap gap-3">
 							<CtaLink />

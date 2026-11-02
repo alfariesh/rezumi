@@ -27,17 +27,7 @@ export function Header() {
 				</Link>
 
 				<div className="ml-auto flex items-center gap-x-2">
-					<LocaleCombobox
-						render={
-							<button
-								type="button"
-								className={buttonVariants({ variant: "ghost", isIconOnly: true })}
-								aria-label={t`Change language`}
-							>
-								<Icon name="translate" />
-							</button>
-						}
-					/>
+					<LocaleCombobox aria-label={t`Change language`} />
 
 					<ThemeToggleButton />
 

@@ -6,7 +6,7 @@ import { Link } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { getPlans, planCurrency } from "./plans";
-import { Container, GridPattern, SectionHeading, SectionTitle } from "./ui";
+import { Container, SectionHeading, SectionTitle } from "./ui";
 
 type PlanPriceProps = { price: number; featured: boolean };
 
@@ -27,7 +27,9 @@ function PlanPrice({ price, featured }: PlanPriceProps) {
 	return (
 		<p className="order-first flex items-start gap-1.5 font-bold">
 			<span className={cn("mt-1 text-xl", featured ? "text-accent-foreground/70" : "text-muted")}>{currency}</span>
-			<span className="text-5xl leading-none tracking-tight tabular-nums sm:text-6xl">{amount}</span>
+			<span className="text-5xl leading-none tracking-tight tabular-nums sm:text-6xl lg:text-5xl xl:text-6xl">
+				{amount}
+			</span>
 		</p>
 	);
 }
@@ -45,11 +47,6 @@ function PlanCard({ plan }: PlanCardProps) {
 				featured && "bg-accent text-accent-foreground sm:shadow-overlay",
 			)}
 		>
-			{featured && (
-				<div className="absolute inset-0 overflow-hidden mask-[linear-gradient(white,transparent)] text-accent-foreground/10 sm:rounded-[2rem]">
-					<GridPattern size={64} />
-				</div>
-			)}
 			<div className="relative flex flex-1 flex-col">
 				<h3 className="mt-6 flex items-center gap-2 text-lg font-semibold tracking-tight">
 					{plan.name}
@@ -100,7 +97,11 @@ export function Pricing() {
 	const plans = getPlans();
 
 	return (
-		<section id="pricing" aria-labelledby="pricing-title" className="scroll-mt-20 py-20 sm:py-28">
+		<section
+			id="pricing"
+			aria-labelledby="pricing-title"
+			className="scroll-mt-[calc(var(--landing-nav-height,5rem)+1rem)] py-20 sm:py-28"
+		>
 			<Container>
 				<SectionHeading section="pricing" id="pricing-title" />
 				<SectionTitle>{t`Pay only while you are applying.`}</SectionTitle>

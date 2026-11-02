@@ -5,7 +5,6 @@ import { Link } from "@tanstack/react-router";
 import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
 import { templates } from "@/dialogs/resume/template/data";
 import { freeTemplates } from "@/features/homepage/plans";
-import { renderAsH2 } from "@/libs/typography";
 
 export function TemplateGallery() {
 	const { i18n } = useLingui();
@@ -65,7 +64,7 @@ export function TemplateGallery() {
 										className="mx-auto aspect-[298/420] w-full max-w-74.5 rounded-sm bg-white object-contain shadow-surface"
 									/>
 								</a>
-								<Typography type="h3" render={renderAsH2} className="mt-5">
+								<Typography type="h2" className="mt-5 text-3xl">
 									{name}
 								</Typography>
 								<p className="mt-1 text-sm font-medium text-accent-soft-foreground">
@@ -88,7 +87,7 @@ export function TemplateGallery() {
 				</div>
 
 				<section aria-labelledby="layout-advice" className="my-10 border-y border-separator py-6">
-					<Typography type="h3" render={renderAsH2} id="layout-advice">{t`One column or two?`}</Typography>
+					<Typography type="h2" id="layout-advice" className="text-3xl">{t`One column or two?`}</Typography>
 					<p className="mt-3 max-w-3xl leading-relaxed text-muted">
 						{t`One-column templates give hiring software a simple top-to-bottom reading order. Two-column templates put supporting details in a sidebar and leave more room for visual hierarchy. Choose for your content, then check the exported PDF.`}
 					</p>
@@ -99,11 +98,7 @@ export function TemplateGallery() {
 				</section>
 
 				<section className="mt-16 border-t border-separator pt-8" aria-labelledby="make-it-yours">
-					<Typography
-						type="h2"
-						render={renderAsH2}
-						id="make-it-yours"
-					>{t`Make it yours, then take it with you.`}</Typography>
+					<Typography type="h2" id="make-it-yours">{t`Make it yours, then take it with you.`}</Typography>
 					<p className="mt-3 max-w-2xl leading-relaxed text-muted">{t`Adjust fonts, colors, spacing and sections in the resume builder. Download a PDF without a watermark on every plan, or share a link. Word and ODT downloads are included with Plus and Pro AI. The PDFs above are examples to help you compare designs.`}</p>
 					<Link to="/auth/register" className={buttonVariants({ className: "mt-5" })}>
 						{t`Build your resume`}

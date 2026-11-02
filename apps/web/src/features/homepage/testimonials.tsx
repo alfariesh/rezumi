@@ -81,7 +81,7 @@ export function Testimonials() {
 		<section
 			id="testimonials"
 			aria-labelledby="testimonials-title"
-			className="scroll-mt-20 bg-surface-secondary py-20 sm:py-28"
+			className="scroll-mt-[calc(var(--landing-nav-height,5rem)+1rem)] bg-surface-secondary py-20 sm:py-28"
 		>
 			<Container>
 				<SectionHeading section="testimonials" id="testimonials-title" />

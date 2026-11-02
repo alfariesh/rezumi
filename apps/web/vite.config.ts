@@ -9,7 +9,7 @@ import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "vite-plus";
-import { RESERVED_SEGMENTS } from "@rezumi/utils/app-paths";
+import { publicResumeProxyPattern } from "./src/libs/dev-server-proxy";
 
 const rootPackageJsonPath = new URL("../../package.json", import.meta.url);
 const rootPackageJson = JSON.parse(readFileSync(rootPackageJsonPath, "utf-8")) as { version: string | undefined };
@@ -113,17 +113,6 @@ const phosphorWeightsPlugin = (): Plugin => ({
 const linguiPlugin = () =>
 	lingui({ macroTransform: { parser: { syntax: "typescript", tsx: true, decorators: true } } });
 
-// First path segments that are never a username: the app's own, plus Vite's in development. `.well-known` needs its dot
-// escaped; the lookahead takes regex fragments.
-const ownSegments = [
-	...RESERVED_SEGMENTS.map((segment) => segment.replaceAll(".", "\\.")),
-	"assets",
-	"src",
-	"node_modules",
-	"@[a-z-]+",
-	"__[^/]*",
-].join("|");
-
 const serverPaths = [
 	"/api",
 	"/mcp",
@@ -134,7 +123,7 @@ const serverPaths = [
 	"/cards",
 	// A resume's web page, `/<username>` (the primary resume) or `/<username>/<slug>`, is rendered by the server: any
 	// one- or two-segment address outside the app's own sections, without a file extension.
-	`^/(?!(?:${ownSegments})(?:/|$))[^/.]+(?:/[^/.]+)?/?(?:\\?.*)?$`,
+	publicResumeProxyPattern,
 ] as const;
 
 const serverProxy = serverPaths.reduce(
