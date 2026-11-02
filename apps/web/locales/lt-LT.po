@@ -472,6 +472,10 @@ msgstr "{0}. Problema išspręsta."
 msgid "{accepted} of {0} applied"
 msgstr "Pritaikyta {accepted} iš {0}"
 
+#: src/features/homepage/plans.ts
+msgid "{activeResumes} active resumes and {activeCoverLetters} cover letters"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "{authored, plural, =1 {Fit to one page} other {Fit to # pages}}"
 msgstr "{authored, plural, =1 {Sutalpinti į vieną puslapį} one {Sutalpinti į # puslapį} few {Sutalpinti į # puslapius} many {Sutalpinti į # puslapio} other {Sutalpinti į # puslapių}}"
@@ -724,6 +728,10 @@ msgstr "{passedRules} arba {totalRules} patikrinimai praeina."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# siūlomas redagavimas šiame puslapyje · niekas nepasikeis, kol nepriimsite} other {# siūlomi šio puslapio pakeitimai · niekas nepasikeis, kol nepriimsite}}"
 
+#: src/features/homepage/plans.ts
+msgid "{proCredits} AI credits per purchase"
+msgstr ""
+
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {Pasiūlytas #} other {Pasiūlytas #}}"
@@ -785,6 +793,10 @@ msgstr "{toCheck, plural, one {# patikrinti} other {# patikrinti}}"
 msgid "{total} templates. {free} of them free."
 msgstr ""
 
+#: src/features/homepage/plans.ts
+msgid "{trialCredits} AI credits to try"
+msgstr ""
+
 #. placeholder {0}: formatRelativeTime(document.updatedAt, i18n.locale)
 #: src/features/documents/document-card.tsx
 msgid "{type} · Edited {0}"
@@ -841,10 +853,6 @@ msgstr "10 minučių atmintinė"
 msgid "10–11 recommended"
 msgstr "Rekomenduojama 10–11"
 
-#: src/features/homepage/plans.ts
-msgid "100 AI credits per purchase"
-msgstr ""
-
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "2 files"
 msgstr "2 failai"
@@ -871,10 +879,6 @@ msgstr ""
 msgid "24 hours before"
 msgstr "Prieš 24 valandas"
 
-#: src/features/homepage/plans.ts
-msgid "3 active resumes and 3 cover letters"
-msgstr ""
-
 #: src/features/homepage/features.tsx
 msgid "3 of 5 keywords on your resume"
 msgstr ""
@@ -883,16 +887,8 @@ msgstr ""
 msgid "30 days"
 msgstr "30 dienų"
 
-#: src/features/homepage/plans.ts
-msgid "5 AI credits to try"
-msgstr ""
-
 #: src/features/homepage/features.tsx
 msgid "5 credits"
-msgstr ""
-
-#: src/features/homepage/plans.ts
-msgid "50 active resumes and 50 cover letters"
 msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
@@ -3862,7 +3858,7 @@ msgid "Created and linked to {0}"
 msgstr "Sukurta ir susieta su {0}"
 
 #: src/features/homepage/faq.tsx
-msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes 100 credits. The Free plan includes a one-time trial of 5 credits, valid for 14 days."
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
 msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -13283,7 +13279,7 @@ msgid "Yes. Import a PDF, a LinkedIn data export or a JSON Resume file, then pic
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. The free plan covers 3 active resumes and 3 cover letters, {freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up."
+msgid "Yes. The free plan covers {freeResumes} active resumes and {freeCoverLetters} cover letters, {freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up."
 msgstr ""
 
 #: src/features/career/coach-thread.tsx

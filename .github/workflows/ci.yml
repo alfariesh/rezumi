@@ -39,8 +39,9 @@ jobs:
       LOCAL_STORAGE_PATH: /tmp/rezumi-e2e-storage
       # The assistant spec talks to a scripted provider on 127.0.0.1.
       FLAG_ALLOW_UNSAFE_AI_BASE_URL: "true"
-      # Real-database unit suites. The cover-letter suite works in its own schema; the OAuth flow suite writes
-      # signing keys under its own secret, so it gets a database the e2e server never reads.
+      # Real-database unit suites. The billing and cover-letter suites work in their own schemas; the OAuth flow suite
+      # writes signing keys under its own secret, so it gets a database the e2e server never reads.
+      BILLING_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
       COVER_LETTER_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
       INTEGRATIONS_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
       OAUTH_TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/oauth_test

@@ -214,6 +214,8 @@ export const env = createEnv({
 		FLAG_ALLOW_UNSAFE_AI_BASE_URL: z.stringbool().default(false),
 		FLAG_ALLOW_UNSAFE_OAUTH_REDIRECT_URI: z.stringbool().default(false),
 		FLAG_OLACV_SUGGESTION: z.stringbool().default(false),
+		// Paid plans: off (nothing changes), admins (only accounts with the admin role see and are bound by them), on.
+		BILLING_MODE: z.enum(["off", "admins", "on"]).default("off"),
 	},
 	runtimeEnv: deploymentEnvironment(process.env),
 	emptyStringAsUndefined: true,

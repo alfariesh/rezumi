@@ -58572,6 +58572,10 @@
 										"olacvSuggestion": {
 											"type": "boolean",
 											"description": "Whether accounts without a custom domain see a suggestion to register one at OlaCV."
+										},
+										"billing": {
+											"type": "boolean",
+											"description": "Whether paid plans and their limits apply to every account on this instance."
 										}
 									},
 									"required": [
@@ -58582,7 +58586,8 @@
 										"careerSchedulingEnabled",
 										"appUrl",
 										"customDomains",
-										"olacvSuggestion"
+										"olacvSuggestion",
+										"billing"
 									]
 								}
 							}
