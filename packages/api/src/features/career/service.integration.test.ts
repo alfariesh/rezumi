@@ -27,6 +27,9 @@ vi.mock("../ai-providers/service", () => ({
 	aiProvidersService: {
 		getRunnableById: async () => ({ id: "fixture", provider: "openai", model: "fixture", apiKey: "synthetic" }),
 		getDefaultRunnable: async () => ({ id: "fixture", provider: "openai", model: "fixture", apiKey: "synthetic" }),
+		// Plans don't apply here, so Rezumi AI never comes into it.
+		isManagedId: () => false,
+		offersChoice: async () => false,
 	},
 }));
 vi.mock("../ai/service", () => ({ getModel: () => ({}) }));
