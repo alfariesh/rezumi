@@ -350,6 +350,20 @@ describe.skipIf(!databaseUrl)("Rezumi AI metering", () => {
 			await expect(addOwnConnection()).rejects.toMatchObject({ code: "FORBIDDEN" });
 		});
 
+		it("keeps working when plans stop applying to an account whose own connection is its default, and keeps that default for later", async () => {
+			const own = await addOwnConnection();
+			await providers.setDefault({ id: own.id, userId: "owner" });
+			fixture.mode = "off";
+			const list = await providers.list({ userId: "owner" });
+			expect(list.map((item) => [item.managed, item.isDefault])).toEqual([[true, true]]);
+			await expect(providers.getDefaultRunnable({ userId: "owner" })).resolves.toMatchObject({ managed: true });
+			await clientOf(aiRouter).improve(improve);
+			expect(fixture.calls.map((call) => call.model)).toEqual(["server-model"]);
+			// Plans apply again: the account's own choice is still the default, never switched to Rezumi AI.
+			fixture.mode = "on";
+			expect((await providers.list({ userId: "owner" }))[0]).toMatchObject({ id: own.id, isDefault: true });
+		});
+
 		it("applies to admins only in admins mode", async () => {
 			fixture.mode = "admins";
 			await clientOf(aiRouter).improve({ ...improve, aiSource: "rezumi" });
