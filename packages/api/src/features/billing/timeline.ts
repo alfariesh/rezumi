@@ -16,7 +16,7 @@ export type ScheduledPeriod = {
 
 export type PeriodUpdate = { id: string; startsAt: Date; endsAt: Date };
 
-export type PeriodInsert<P extends ScheduledPeriod> = {
+type PeriodInsert<P extends ScheduledPeriod> = {
 	planId: PaidPlanId;
 	startsAt: Date;
 	endsAt: Date;
