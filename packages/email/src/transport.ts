@@ -102,6 +102,35 @@ export const sendEmail = async ({ to, subject, react }: SendEmailOptions) => {
 	}
 };
 
+export type EmailDelivery = "sent" | "logged" | "unconfigured";
+
+/**
+ * Sends an email the caller keeps track of, such as a payment receipt. Unlike sendEmail it says what happened and
+ * throws when the provider refuses it, so the caller can try again later. Without email set up, development logs the
+ * subject and text (never the recipient) and production answers unconfigured.
+ */
+export async function deliverEmail({ to, subject, react }: SendEmailOptions): Promise<EmailDelivery> {
+	const html = await render(react);
+	const text = await render(react, { plainText: true });
+	try {
+		if (emailBinding && env.SMTP_FROM) {
+			await emailBinding.send({ to, from: parseFrom(env.SMTP_FROM), subject, html, text });
+			return "sent";
+		}
+		const transport = getTransport();
+		if (!transport) {
+			if (process.env.NODE_ENV === "production") return "unconfigured";
+			console.info("SMTP not configured; skipping email send.", { subject, text });
+			return "logged";
+		}
+		await transport.sendMail({ to, from: env.SMTP_FROM, subject, html, text });
+		return "sent";
+	} catch (error) {
+		const { name, code } = errorSummary(error);
+		throw new Error(`The email could not be delivered (${code ?? name}).`);
+	}
+}
+
 type SendCareerNotificationOptions = { to: string; subject: string; text: string; url: string; key: string };
 
 /** Owner-only notifications: missing SMTP never logs personal career content. */

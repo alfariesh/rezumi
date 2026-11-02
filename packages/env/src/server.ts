@@ -36,6 +36,20 @@ const commaList = (item: z.ZodType<string, string>) =>
 		.pipe(z.array(item))
 		.default([]);
 
+/**
+ * Snap payment codes Rezumi can offer: QRIS, the e-wallets and the virtual accounts open to an individual seller.
+ * Cards stay out until 3-D Secure is wired (membership backlog).
+ */
+export const MIDTRANS_PAYMENT_CODES = [
+	"other_qris",
+	"gopay",
+	"shopeepay",
+	"bni_va",
+	"bri_va",
+	"echannel",
+	"permata_va",
+] as const;
+
 const REDIS_URL_USERINFO_MESSAGE =
 	"REDIS_URL userinfo has no password field. For password-only auth (redis --requirepass) use " +
 	"redis://:<password>@<host>; for ACL users use redis://<user>:<password>@<host> (default is the built-in user; " +
@@ -219,6 +233,25 @@ export const env = createEnv({
 		FLAG_OLACV_SUGGESTION: z.stringbool().default(false),
 		// Paid plans: off (nothing changes), admins (only accounts with the admin role see and are bound by them), on.
 		BILLING_MODE: z.enum(["off", "admins", "on"]).default("off"),
+		// Closes new purchases for a while; passes and credits already bought keep working.
+		BILLING_CHECKOUT_PAUSED: z.stringbool().default(false),
+		// Midtrans Snap payments. Without the server key checkout is unavailable and the notification endpoint is a 404.
+		MIDTRANS_ENVIRONMENT: z.enum(["sandbox", "production"]).optional(),
+		MIDTRANS_SERVER_KEY: z.string().trim().min(1).optional(),
+		// Accounts on Midtrans' newer credentials sign notifications with a separate "Signature Secret Key"
+		// (Settings → Access Keys). Without it, notifications are checked against the server key only.
+		MIDTRANS_SIGNATURE_KEY: z.string().trim().min(1).optional(),
+		// Snap payment codes, comma-separated. Redirect checkout shows only these, so list the methods active on the account.
+		MIDTRANS_ENABLED_PAYMENTS: z
+			.string()
+			.default("other_qris")
+			.transform((value) =>
+				value
+					.split(",")
+					.map((code) => code.trim())
+					.filter(Boolean),
+			)
+			.pipe(z.array(z.enum(MIDTRANS_PAYMENT_CODES)).min(1, "MIDTRANS_ENABLED_PAYMENTS needs at least one method")),
 	},
 	runtimeEnv: deploymentEnvironment(process.env),
 	emptyStringAsUndefined: true,
@@ -252,6 +285,23 @@ if (process.env.NODE_ENV === "production") {
 		if (value?.startsWith("change-me-to-a-secure-"))
 			throw new Error(`${name} still has the example value from .env.example. Set a random one: openssl rand -hex 32`);
 	}
+}
+
+// A sandbox key against production (or the reverse) fails every payment call; stop at startup instead.
+if (env.MIDTRANS_SERVER_KEY) {
+	if (!env.MIDTRANS_ENVIRONMENT)
+		throw new Error("MIDTRANS_SERVER_KEY needs MIDTRANS_ENVIRONMENT set to sandbox or production.");
+	if (env.MIDTRANS_ENVIRONMENT === "sandbox" && !env.MIDTRANS_SERVER_KEY.startsWith("SB-Mid-server-"))
+		throw new Error("MIDTRANS_ENVIRONMENT is sandbox, but MIDTRANS_SERVER_KEY is not a sandbox server key.");
+	if (env.MIDTRANS_ENVIRONMENT === "production" && env.MIDTRANS_SERVER_KEY.startsWith("SB-"))
+		throw new Error("MIDTRANS_ENVIRONMENT is production, but MIDTRANS_SERVER_KEY is a sandbox key.");
+	if (
+		env.MIDTRANS_SIGNATURE_KEY &&
+		env.MIDTRANS_SIGNATURE_KEY.startsWith("SB-") !== (env.MIDTRANS_ENVIRONMENT === "sandbox")
+	)
+		throw new Error(`MIDTRANS_SIGNATURE_KEY doesn't belong to the ${env.MIDTRANS_ENVIRONMENT} environment.`);
+} else if (env.MIDTRANS_SIGNATURE_KEY) {
+	throw new Error("MIDTRANS_SIGNATURE_KEY is set without MIDTRANS_SERVER_KEY.");
 }
 
 if (env.AI_PROVIDER === "openai-compatible" && !env.AI_BASE_URL) {

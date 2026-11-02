@@ -1,7 +1,19 @@
+import type { RequestAuthentication } from "../../context";
+import { ORPCError } from "@orpc/server";
 import z from "zod";
+import { BILLING_PAYMENT_STATUSES } from "@rezumi/db/schema";
 import { creditSourceSchema, paidPlanIdSchema, planIdSchema } from "@rezumi/schema/billing";
 import { protectedProcedure } from "../../context";
+import { checkoutRateLimit } from "../../middleware/rate-limit";
 import { assertBillingAdmin, billingAdmin } from "./admin";
+import {
+	changePaymentMethod,
+	checkout,
+	getPayment,
+	getPendingPayment,
+	listPayments,
+	purchaseBlocker,
+} from "./checkout";
 import { getCreditBalance, listCreditHistory } from "./credits";
 import { getEntitlements, isBillingAppliedTo } from "./entitlements";
 import { countActiveDocuments } from "./limits";
@@ -55,6 +67,46 @@ const creditHistoryEntry = z.discriminatedUnion("type", [
 	}),
 ]);
 
+const payment = z.object({
+	id: z.string(),
+	orderId: z.string().describe("The order number Midtrans and the receipt show."),
+	planId: paidPlanIdSchema,
+	amount: z.number().int().describe("Whole Rupiah."),
+	currency: z.string(),
+	durationDays: z.number().int(),
+	credits: z.number().int().describe("Rezumi AI credits that come with it."),
+	status: z.enum(BILLING_PAYMENT_STATUSES),
+	paymentType: z.string().nullable().describe("The Midtrans method used, once chosen."),
+	createdAt: z.date(),
+	expiresAt: z.date().nullable().describe("When it can no longer be paid."),
+	paidAt: z.date().nullable(),
+	refundedAmount: z.number().int(),
+	redirectUrl: z
+		.string()
+		.nullable()
+		.describe("Where to continue paying: web sessions only, while the payment is open."),
+});
+
+const checkoutResult = z.object({
+	paymentId: z.string(),
+	redirectUrl: z.string().describe("The Midtrans payment page to send the browser to."),
+	expiresAt: z.date(),
+	reused: z.boolean().describe("Whether this is an open payment from before rather than a new one."),
+});
+
+const idempotencyKey = z
+	.string()
+	.trim()
+	.min(1)
+	.max(200)
+	.describe("A new random key per click; repeating it returns the same payment.");
+
+/** How the request signed in; buying depends on it. A protected procedure always has one. */
+function authenticationOf(context: { authentication?: RequestAuthentication | null | undefined }) {
+	if (!context.authentication) throw new ORPCError("UNAUTHORIZED");
+	return context.authentication;
+}
+
 const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
 	await assertBillingAdmin(context.authentication);
 	return next();
@@ -79,13 +131,21 @@ export const billingRouter = {
 					automationApi: z.boolean(),
 				}),
 				credits: credits.nullable().describe("Rezumi AI credits; null while plans don't apply to the account."),
+				canPurchase: z.boolean().describe("Whether this session can buy a pass now (web sessions only)."),
+				purchaseBlockedBy: z
+					.enum(["unavailable", "paused", "web_only", "guest", "email_not_verified"])
+					.nullable()
+					.describe("Why it can't, when it can't."),
+				pendingPayment: payment.nullable().describe("The newest payment that can still be paid; web sessions only."),
 			}),
 		)
 		.handler(async ({ context }) => {
 			const now = new Date();
-			const [entitlements, used] = await Promise.all([
+			const authentication = authenticationOf(context);
+			const [entitlements, used, blocker] = await Promise.all([
 				getEntitlements(context.user.id, now),
 				countActiveDocuments(context.user.id),
+				purchaseBlocker(authentication),
 			]);
 			return {
 				enabled: entitlements.enabled,
@@ -98,8 +158,60 @@ export const billingRouter = {
 				},
 				features: entitlements.features,
 				credits: entitlements.enabled ? await getCreditBalance(context.user.id, now) : null,
+				canPurchase: blocker === null,
+				purchaseBlockedBy: blocker,
+				pendingPayment: entitlements.enabled ? await getPendingPayment(authentication, now) : null,
 			};
 		}),
+
+	checkout: protectedProcedure
+		.route({ ...route, method: "POST", path: "/billing/checkout" })
+		.use(checkoutRateLimit)
+		.input(z.object({ planId: paidPlanIdSchema, idempotencyKey }))
+		.output(checkoutResult)
+		.handler(({ context, input }) =>
+			checkout({
+				authentication: authenticationOf(context),
+				planId: input.planId,
+				idempotencyKey: input.idempotencyKey,
+			}),
+		),
+
+	changePaymentMethod: protectedProcedure
+		.route({ ...route, method: "POST", path: "/billing/payments/{paymentId}/change-method" })
+		.use(checkoutRateLimit)
+		.input(z.object({ paymentId: z.string().min(1).max(100) }))
+		.output(checkoutResult)
+		.handler(({ context, input }) =>
+			changePaymentMethod({
+				authentication: authenticationOf(context),
+				paymentId: input.paymentId,
+			}),
+		),
+
+	payment: protectedProcedure
+		.route({ ...route, method: "GET", path: "/billing/payments/{id}" })
+		.input(z.object({ id: z.string().min(1).max(100) }))
+		.output(payment)
+		.handler(({ context, input }) => getPayment(authenticationOf(context), input.id)),
+
+	payments: protectedProcedure
+		.route({ ...route, method: "GET", path: "/billing/payments" })
+		.input(
+			z
+				.object({
+					cursor: z.string().min(1).max(100).optional().describe("The nextCursor of the previous page."),
+					limit: z.number().int().min(1).max(50).optional().describe("Maximum payments (1–50). Defaults to 20."),
+				})
+				.optional(),
+		)
+		.output(z.object({ items: z.array(payment), nextCursor: z.string().nullable() }))
+		.handler(({ context, input }) =>
+			listPayments(authenticationOf(context), {
+				cursor: input?.cursor,
+				limit: input?.limit ?? 20,
+			}),
+		),
 
 	creditHistory: protectedProcedure
 		.route({ ...route, method: "GET", path: "/billing/credits/history" })

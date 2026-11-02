@@ -29,6 +29,9 @@ const summary = (enabled: boolean, paid: boolean): PlanSummary => ({
 		automationApi: paid,
 	},
 	credits: null,
+	canPurchase: false,
+	purchaseBlockedBy: "unavailable",
+	pendingPayment: null,
 });
 
 describe("plan features", () => {

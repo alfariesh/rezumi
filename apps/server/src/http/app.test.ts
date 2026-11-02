@@ -26,6 +26,7 @@ const mocks = vi.hoisted(() => ({
 	handleLlms: vi.fn(),
 	serveWebDistStatic: vi.fn(),
 	handleWebApp: vi.fn(),
+	handleMidtransPaymentNotification: vi.fn(),
 }));
 
 vi.mock("@rezumi/env/server", async (original) => {
@@ -89,6 +90,10 @@ vi.mock("./resume-pdf", () => ({
 
 vi.mock("./public-resume-pdf", () => ({
 	handlePublicResumePdf: mocks.handlePublicResumePdf,
+}));
+
+vi.mock("./midtrans", () => ({
+	handleMidtransPaymentNotification: mocks.handleMidtransPaymentNotification,
 }));
 
 const transportEnv = (remoteAddress: string) =>
@@ -285,6 +290,7 @@ it.each([
 	{ path: "/api/openapi/files", limit: 40 * 1024 * 1024, handler: mocks.handleOpenApi },
 	{ path: "/api/rpc/resume/import", limit: 160 * 1024 * 1024, handler: mocks.handleRpc },
 	{ path: "/api/auth/oauth2/register", limit: 1024 * 1024, handler: mocks.handleAuth },
+	{ path: "/api/payments/midtrans/notification", limit: 64 * 1024, handler: mocks.handleMidtransPaymentNotification },
 ])("rejects oversized bodies for $path before parsing them", async ({ path, limit, handler }) => {
 	const { createApp } = await import("./app");
 	const response = await createApp().request(`http://localhost:3000${path}`, {
@@ -296,4 +302,18 @@ it.each([
 	expect(await response.json()).toMatchObject({ code: "PAYLOAD_TOO_LARGE", status: 413 });
 	expect(response.headers.get("cache-control")).toBe("no-store");
 	expect(handler).not.toHaveBeenCalled();
+});
+
+it("hands Midtrans payment notifications to the billing handler without a redirect", async () => {
+	mocks.handleMidtransPaymentNotification.mockResolvedValue(new Response(null, { status: 200 }));
+	const { createApp } = await import("./app");
+	const response = await createApp().request("http://localhost:3000/api/payments/midtrans/notification", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ order_id: "RZ-test" }),
+	});
+	expect(response.status).toBe(200);
+	expect(mocks.handleMidtransPaymentNotification).toHaveBeenCalledOnce();
+	const [request] = mocks.handleMidtransPaymentNotification.mock.calls[0] as [Request];
+	expect(await request.json()).toEqual({ order_id: "RZ-test" });
 });

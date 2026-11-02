@@ -45,6 +45,8 @@ export const membershipPeriod = pg.pgTable(
 		startsAt: pg.timestamp("starts_at", { withTimezone: true }).notNull(),
 		endsAt: pg.timestamp("ends_at", { withTimezone: true }).notNull(),
 		source: pg.text("source").notNull().$type<MembershipPeriodSource>(),
+		// The payment that bought it, when `source` is payment. The rest of a pushed-back pass keeps it.
+		paymentId: pg.text("payment_id").references((): pg.AnyPgColumn => billingPayment.id, { onDelete: "set null" }),
 		// The admin who granted it, when `source` is admin.
 		grantedBy: pg.text("granted_by").references(() => user.id, { onDelete: "set null" }),
 		revokedAt: pg.timestamp("revoked_at", { withTimezone: true }),
@@ -55,6 +57,7 @@ export const membershipPeriod = pg.pgTable(
 	},
 	(t) => [
 		pg.index().on(t.userId, t.endsAt),
+		pg.index().on(t.paymentId),
 		pg.check("membership_period_ends_after_start", sql`${t.endsAt} > ${t.startsAt}`),
 	],
 );
@@ -96,8 +99,8 @@ export const aiCreditGrant = pg.pgTable(
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
 		source: pg.text("source").notNull().$type<CreditSource>(),
-		// The payment that bought them. Payments arrive in membership phase 06, which adds the foreign key.
-		paymentId: pg.text("payment_id"),
+		// The Pro AI payment that bought them.
+		paymentId: pg.text("payment_id").references((): pg.AnyPgColumn => billingPayment.id, { onDelete: "set null" }),
 		amount: pg.integer("amount").notNull(),
 		// What is left to spend. Reserving takes from it; a released reservation gives it back.
 		remaining: pg.integer("remaining").notNull(),
@@ -108,6 +111,7 @@ export const aiCreditGrant = pg.pgTable(
 	},
 	(t) => [
 		pg.index().on(t.userId, t.expiresAt),
+		pg.index().on(t.paymentId),
 		pg.check("ai_credit_grant_amount_positive", sql`${t.amount} > 0`),
 		pg.check("ai_credit_grant_source", sql`${t.source} IN ('trial', 'plan', 'admin')`),
 		pg.check("ai_credit_grant_remaining_in_range", sql`${t.remaining} >= 0 AND ${t.remaining} <= ${t.amount}`),
@@ -157,4 +161,135 @@ export const aiCreditUsage = pg.pgTable(
 		pg.check("ai_credit_usage_credits_positive", sql`${t.credits} > 0`),
 		pg.check("ai_credit_usage_status", sql`${t.status} IN ('reserved', 'committed', 'released')`),
 	],
+);
+
+export const BILLING_PAYMENT_STATUSES = [
+	"creating",
+	"pending",
+	"paid",
+	"failed",
+	"expired",
+	"cancelled",
+	"partially_refunded",
+	"refunded",
+	"reversed",
+] as const;
+
+/**
+ * Where a payment stands. `creating` is committed before Snap is called; `pending` has a Snap page to pay on. Only a
+ * verified Midtrans status moves it on from there, and `paid` never goes back: only to a refund or a reversal.
+ */
+export type BillingPaymentStatus = (typeof BILLING_PAYMENT_STATUSES)[number];
+
+const statusList = (values: readonly string[]) => sql.raw(values.map((value) => `'${value}'`).join(", "));
+
+/**
+ * One attempt to pay for a pass: one Midtrans `order_id`. Paying again after it expired or failed is a new row. The
+ * price, length and credits are copied from the catalog at checkout, so a later price change never touches it. Kept,
+ * without its owner, after the account is deleted: it is a bookkeeping record.
+ */
+export const billingPayment = pg.pgTable(
+	"billing_payment",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		userId: pg.text("user_id").references(() => user.id, { onDelete: "set null" }),
+		provider: pg.text("provider").notNull().default("midtrans").$type<"midtrans">(),
+		// `transaction_details.order_id`: RZ-<id>.
+		providerOrderId: pg.text("provider_order_id").notNull().unique(),
+		// The key the checkout request carried; repeating it returns this payment instead of a second one.
+		idempotencyKey: pg.text("idempotency_key"),
+		planId: pg.text("plan_id").notNull().$type<PaidPlanId>(),
+		catalogVersion: pg.integer("catalog_version").notNull(),
+		// Whole Rupiah, the `gross_amount` sent.
+		amount: pg.integer("amount").notNull(),
+		durationDays: pg.integer("duration_days").notNull(),
+		credits: pg.integer("credits").notNull(),
+		currency: pg.text("currency").notNull().default("IDR"),
+		status: pg.text("status").notNull().$type<BillingPaymentStatus>(),
+		// Where it was bought: the website, for now.
+		channel: pg.text("channel").notNull().default("web").$type<"web">(),
+		// To go back to the Snap page after a refresh. Never logged.
+		snapToken: pg.text("snap_token"),
+		redirectUrl: pg.text("redirect_url"),
+		// The end of the payment window sent to Midtrans.
+		expiresAt: pg.timestamp("expires_at", { withTimezone: true }),
+		paymentType: pg.text("payment_type"),
+		transactionId: pg.text("transaction_id"),
+		// The last verified `transaction_status` and `fraud_status`.
+		providerStatus: pg.text("provider_status"),
+		fraudStatus: pg.text("fraud_status"),
+		paidAt: pg.timestamp("paid_at", { withTimezone: true }),
+		// Set once the pass and credits are granted; it keeps fulfilment to exactly once.
+		fulfilledAt: pg.timestamp("fulfilled_at", { withTimezone: true }),
+		refundedAmount: pg.integer("refunded_amount").notNull().default(0),
+		// Set once the receipt email went out; the billing job retries a few times until then.
+		receiptSentAt: pg.timestamp("receipt_sent_at", { withTimezone: true }),
+		receiptAttempts: pg.integer("receipt_attempts").notNull().default(0),
+		// When the last send started: another sender leaves it alone for a while, so a receipt goes out once.
+		receiptAttemptedAt: pg.timestamp("receipt_attempted_at", { withTimezone: true }),
+		// Backoff for the status checks the billing job makes.
+		lastCheckedAt: pg.timestamp("last_checked_at", { withTimezone: true }),
+		checkAttempts: pg.integer("check_attempts").notNull().default(0),
+		// A short code that is safe to show and log, never a provider payload.
+		failureReason: pg.text("failure_reason"),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: pg
+			.timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [
+		pg.index().on(t.status, t.createdAt),
+		pg.index().on(t.userId, t.createdAt),
+		pg.uniqueIndex().on(t.userId, t.idempotencyKey),
+		pg.check("billing_payment_status", sql`${t.status} IN (${statusList(BILLING_PAYMENT_STATUSES)})`),
+		pg.check("billing_payment_amount_positive", sql`${t.amount} > 0`),
+		pg.check("billing_payment_refunded_in_range", sql`${t.refundedAmount} >= 0 AND ${t.refundedAmount} <= ${t.amount}`),
+	],
+);
+
+export type BillingPaymentEventSource = "notification" | "status_check" | "admin";
+
+export type BillingPaymentEventOutcome =
+	| "applied"
+	| "duplicate"
+	| "stale"
+	| "rejected_signature"
+	| "unknown_order"
+	| "amount_mismatch"
+	| "error";
+
+/**
+ * Every Midtrans notification and every status check that found something, with what it did. The record for support
+ * and investigations: Workers keep only a sample of logs. `payload` holds an allowlist of safe fields.
+ */
+export const billingPaymentEvent = pg.pgTable(
+	"billing_payment_event",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		// Null when the order is not one of Rezumi's.
+		paymentId: pg.text("payment_id").references(() => billingPayment.id, { onDelete: "set null" }),
+		providerOrderId: pg.text("provider_order_id").notNull(),
+		source: pg.text("source").notNull().$type<BillingPaymentEventSource>(),
+		// Midtrans' values as they came, strings included.
+		transactionStatus: pg.text("transaction_status"),
+		statusCode: pg.text("status_code"),
+		fraudStatus: pg.text("fraud_status"),
+		grossAmount: pg.text("gross_amount"),
+		// Notifications only.
+		signatureValid: pg.boolean("signature_valid"),
+		outcome: pg.text("outcome").notNull().$type<BillingPaymentEventOutcome>(),
+		payload: pg.jsonb("payload").notNull().$type<Record<string, unknown>>().default({}),
+		receivedAt: pg.timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
+	},
+	(t) => [pg.index().on(t.providerOrderId, t.receivedAt), pg.index().on(t.paymentId)],
 );

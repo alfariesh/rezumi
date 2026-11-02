@@ -31,10 +31,19 @@ async function applyChanges(tx: Transaction, userId: string, changes: ScheduleCh
 			.set({ startsAt, endsAt })
 			.where(and(eq(schema.membershipPeriod.id, id), eq(schema.membershipPeriod.userId, userId)));
 	}
-	// The rest of a pushed-back pass is still that pass: same origin, same purchase time.
+	// The rest of a pushed-back pass is still that pass: same origin, same payment, same purchase time.
 	const rests = changes.inserts.flatMap(({ restOf, ...times }) =>
 		restOf
-			? [{ ...times, userId, source: restOf.source, grantedBy: restOf.grantedBy, createdAt: restOf.createdAt }]
+			? [
+					{
+						...times,
+						userId,
+						source: restOf.source,
+						paymentId: restOf.paymentId,
+						grantedBy: restOf.grantedBy,
+						createdAt: restOf.createdAt,
+					},
+				]
 			: [],
 	);
 	if (rests.length) await tx.insert(schema.membershipPeriod).values(rests);
@@ -48,6 +57,7 @@ export async function grantMembershipPeriod(
 		planId: PaidPlanId;
 		durationMs: number;
 		source: MembershipPeriodSource;
+		paymentId?: string | null;
 		grantedBy?: string | null;
 		now?: Date;
 	},
@@ -70,6 +80,7 @@ export async function grantMembershipPeriod(
 			startsAt: purchase.startsAt,
 			endsAt: purchase.endsAt,
 			source: input.source,
+			paymentId: input.paymentId ?? null,
 			grantedBy: input.grantedBy ?? null,
 		})
 		.returning();

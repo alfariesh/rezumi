@@ -215,6 +215,9 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 				automationApi: true,
 			},
 			credits: null,
+			canPurchase: false,
+			purchaseBlockedBy: "unavailable",
+			pendingPayment: null,
 		});
 	});
 

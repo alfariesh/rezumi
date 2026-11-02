@@ -129,9 +129,27 @@ async function assertPersonalProvidersAllowed(userId: string) {
 		});
 }
 
+/** Whether the account made one of its own connections its default, at a time it could choose. */
+async function hasOwnDefault(userId: string) {
+	const [own] = await db
+		.select({ id: schema.aiProvider.id })
+		.from(schema.aiProvider)
+		.where(
+			and(
+				eq(schema.aiProvider.userId, userId),
+				eq(schema.aiProvider.isDefault, true),
+				ne(schema.aiProvider.id, serverProviderId(userId)),
+			),
+		)
+		.limit(1);
+	return Boolean(own);
+}
+
 /**
  * A persisted reference keeps Assistant thread foreign keys valid; server credentials stay in the environment. Without
- * a choice of connections it's always the default; as Rezumi AI it stays the default only while the user keeps it so.
+ * a choice of connections it's the only one, so it answers as the default; as Rezumi AI it stays the default only
+ * while the user keeps it so. An own default from a time plans applied keeps its row flag (one default per account):
+ * when plans apply again it is still the default, never silently Rezumi AI.
  */
 async function serverProvider(userId: string, options: { choice: boolean }) {
 	if (!env.AI_PROVIDER || !env.AI_MODEL) return null;
@@ -148,16 +166,22 @@ async function serverProvider(userId: string, options: { choice: boolean }) {
 		apiKeyHash: "",
 		apiKeyPreview: "",
 	};
+	const takesDefault = !options.choice && !(await hasOwnDefault(userId));
 	const [row] = await db
 		.insert(schema.aiProvider)
-		.values({ id: serverProviderId(userId), ...values, isDefault: !options.choice })
+		.values({ id: serverProviderId(userId), ...values, isDefault: takesDefault })
 		.onConflictDoUpdate({
 			target: schema.aiProvider.id,
-			set: options.choice ? values : { ...values, isDefault: true },
+			set: takesDefault ? { ...values, isDefault: true } : values,
 		})
 		.returning();
 	if (!row) throw new Error("SERVER_AI_PROVIDER_UNAVAILABLE");
-	return { ...toResponse(row), apiKey: env.AI_API_KEY ?? "", baseURL: env.AI_BASE_URL ?? "" };
+	return {
+		...toResponse(row),
+		...(!options.choice && { isDefault: true }),
+		apiKey: env.AI_API_KEY ?? "",
+		baseURL: env.AI_BASE_URL ?? "",
+	};
 }
 
 function toRunnable(provider: AiProviderRecord) {
