@@ -73,9 +73,9 @@ msgstr "\"{value}\" starter efter i dag. Tjek året, eller marker det som aktuel
 msgid "“{written}” added to Skills"
 msgstr "\"{written}\" føjet til Skills"
 
-#: src/features/homepage/prepare.tsx
-msgid "“How did you measure the onboarding redesign?”"
-msgstr "\"Hvordan målte du redesignet af onboarding?\""
+#: src/features/homepage/hero.tsx
+msgid "“I tailored my resume for three roles in one evening and had two interview calls that week.”"
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
@@ -368,10 +368,8 @@ msgstr ""
 msgid "{0} is larger than {1}."
 msgstr ""
 
-#. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
-#: src/features/homepage/prepare.tsx
 msgid "{0} min"
 msgstr "{0} min"
 
@@ -571,10 +569,6 @@ msgstr "{done} af {count} udført"
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} af {total} min"
 
-#: src/features/homepage/prepare.tsx
-msgid "{earlier} · typed"
-msgstr "{earlier} · skrevet"
-
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{entries, plural, one {# entry} other {# entries}}"
 msgstr "{entries, plural, one {# indgang} other {# poster}}"
@@ -602,6 +596,10 @@ msgstr "{failing, plural, one {# at gennemgå} other {# at gennemgå}}"
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
 msgstr "{filled} af 5 dele"
+
+#: src/features/homepage/plans.ts
+msgid "{freeTemplateCount} templates"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "{issues, plural, one {# issue could cost you a match.} other {# issues could cost you a match.}}"
@@ -676,6 +674,7 @@ msgstr "{name} flyttet til hovedkolonnen"
 msgid "{name} never prints"
 msgstr "{name} udskriver aldrig"
 
+#: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
 msgid "{name} resume template preview"
 msgstr "{name} forhåndsvisning af CV-skabelon"
@@ -691,10 +690,6 @@ msgstr "{name} bruger én kolonne"
 #: src/features/resume/editor/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} kommer sidst i teksten. De fleste systemer finder dem stadig; nogle gør ikke."
-
-#: src/features/homepage/prepare.tsx
-msgid "{now} · typed"
-msgstr "{now} · skrevet"
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{open, plural, one {# thing to review.} other {# things to review.}}"
@@ -749,14 +744,6 @@ msgstr "{size} pt"
 msgid "{skipped, plural, one {# row had no company or role and was skipped.} other {# rows had no company or role and were skipped.}}"
 msgstr "{skipped, plural, one {# række havde ingen virksomhed eller stilling og blev sprunget over.} other {# rækker havde ingen virksomhed eller stilling og blev sprunget over.}}"
 
-#: src/components/input/github-stars-button.tsx
-msgid "{starCount, plural, one {Star us on GitHub, currently # star (opens in new tab)} other {Star us on GitHub, currently # stars (opens in new tab)}}"
-msgstr "{starCount, plural, one {Giv os en stjerne på GitHub, i øjeblikket # stjerne (åbner i ny fane)} other {Giv os en stjerne på GitHub, i øjeblikket # stjerner (åbner i ny fane)}}"
-
-#: src/features/homepage/header.tsx
-msgid "{stars, plural, one {Star Rezumi on GitHub, # star} other {Star Rezumi on GitHub, # stars}}"
-msgstr "{stars, plural, one {Giv Rezumi en stjerne på GitHub, # stjerne} other {Giv Rezumi en stjerne på GitHub, # stjerner}}"
-
 #: src/features/career/workspace/saved.tsx
 msgid "{stories, plural, one {# story} other {# stories}}"
 msgstr "{stories, plural, one {# historie} other {# historier}}"
@@ -768,14 +755,6 @@ msgstr "{summary}. Åbner i Karriere → Tilbud."
 #: src/features/career/workspace/fit.tsx
 msgid "{supported} supported"
 msgstr ""
-
-#: src/features/homepage/design.tsx
-msgid "{templateCount} free resume templates."
-msgstr "{templateCount} gratis CV-skabeloner."
-
-#: src/features/homepage/prepare.tsx
-msgid "{time} · Video call · 45 min"
-msgstr "{time} · Videoopkald · 45 min"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{title} cleared"
@@ -801,6 +780,10 @@ msgstr "{toCheck, plural, one {#-feltet skal ses.} other {# felter skal ses.}}"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# for at kontrollere} other {# for at kontrollere}}"
+
+#: src/features/homepage/templates.tsx
+msgid "{total} templates. {free} of them free."
+msgstr ""
 
 #. placeholder {0}: formatRelativeTime(document.updatedAt, i18n.locale)
 #: src/features/documents/document-card.tsx
@@ -836,10 +819,6 @@ msgstr "/ måned"
 msgid "/ year"
 msgstr "/ år"
 
-#: src/features/homepage/hero.tsx
-msgid "+13 pts activation"
-msgstr "+13 point aktivering"
-
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "<0>Nothing to fix.</0> Every check passes."
 msgstr "<0>Intet at rette.</0> Alle kontroller er bestået."
@@ -849,11 +828,6 @@ msgstr "<0>Intet at rette.</0> Alle kontroller er bestået."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Indsendt {0}.</0> De versioner, du sendte, gemmes under Gemt. Ændringer her ændrer ikke det, {1} modtog."
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "06/2017 – 2021"
-msgstr "06/2017 – 2021"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
@@ -866,6 +840,10 @@ msgstr "10-minutters briefing"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "10–11 recommended"
 msgstr "10-11 anbefales"
+
+#: src/features/homepage/plans.ts
+msgid "100 AI credits every 30 days"
+msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "2 files"
@@ -880,51 +858,50 @@ msgstr "2 timer før"
 msgid "2–3 sentences reads best"
 msgstr "2-3 sætninger lyder bedst"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "2013 – 2017"
-msgstr "2013 – 2017"
+#: src/features/homepage/resume.tsx
+msgid "2019 – 2022"
+msgstr ""
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "2017 – 2021"
-msgstr "2017 – 2021"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "2021 – Present"
-msgstr "2021 – nu"
+#: src/features/homepage/resume.tsx
+msgid "2022 – Present"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
 msgid "24 hours before"
 msgstr "24 timer før"
 
-#: src/features/homepage/prepare.tsx
-msgid "3 supported · 1 partly · 1 missing"
-msgstr "3 underbygget · 1 delvist · 1 mangler"
+#: src/features/homepage/plans.ts
+msgid "3 active resumes and 3 cover letters"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "3 of 5 keywords on your resume"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 dage"
 
-#: src/features/homepage/hero.tsx
-msgid "40% faster reviews"
-msgstr "40 % hurtigere anmeldelser"
+#: src/features/homepage/plans.ts
+msgid "5 AI credits to try"
+msgstr ""
 
-#: src/features/homepage/faq.tsx
-msgid "9 short answers to what people ask before they start. Anything else, ask on <0>Discord</0>."
-msgstr "9 korte svar på det, folk spørger om, før de går i gang. Har du andre spørgsmål, så spørg på <0>Discord</0>."
+#: src/features/homepage/features.tsx
+msgid "5 credits"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "50 active resumes and 50 cover letters"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90 dage"
 
-#: src/features/homepage/remember.tsx
-msgid "A"
-msgstr "H"
+#: src/features/homepage/resume.tsx
+msgid "94 of 100 checks passed"
+msgstr ""
 
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "A accepts and R rejects the focused edit. ↑ and ↓ move between edits."
@@ -970,10 +947,6 @@ msgstr "Et faktum er ændret. Gennemgå denne historie."
 msgid "A fact you've since forgotten"
 msgstr "Et faktum, du siden har glemt"
 
-#: src/features/homepage/prepare.tsx
-msgid "A focused 30-minute plan"
-msgstr "En fokuseret plan på 30 minutter"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A focused plan for this round"
 msgstr "En fokuseret plan til denne runde"
@@ -981,11 +954,6 @@ msgstr "En fokuseret plan til denne runde"
 #: src/features/ats-checker/messages.ts
 msgid "A font is referenced but not embedded."
 msgstr "En skrifttype refereres, men er ikke indlejret."
-
-#. Hero headline, line 1 of 4: A free, open-source / resume builder / and / career manager.
-#: src/features/homepage/hero.tsx
-msgid "A free, open-source"
-msgstr "Et gratis open source-værktøj"
 
 #: src/features/ats-checker/messages.ts
 msgid "A full-height gap splits this page into two columns."
@@ -995,10 +963,6 @@ msgstr "Et mellemrum i fuld højde deler denne side i to kolonner."
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "Et hul i tidslinjen er ikke et problem. Tilføj en enkelt linje som forklaring, hvis du ønsker det; mange stærke CV'er gør det slet ikke."
 
-#: src/features/homepage/prepare.tsx
-msgid "A high bar for accessibility"
-msgstr "Høje krav til tilgængelighed"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "A link isn't a full address"
 msgstr "Et link er ikke en fuldstændig adresse"
@@ -1006,6 +970,10 @@ msgstr "Et link er ikke en fuldstændig adresse"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Et link peger et andet sted hen end den adresse, det viser."
+
+#: src/features/homepage/features.tsx
+msgid "A live page beside every edit"
+msgstr ""
 
 #: src/features/assistant/attachment-limits.ts
 msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
@@ -1031,9 +999,17 @@ msgstr "En side er roteret."
 msgid "A pasted posting can be saved as an application afterwards."
 msgstr "Et indsat jobopslag kan efterfølgende gemmes som en jobansøgning."
 
+#: src/features/homepage/testimonials.tsx
+msgid "A recruiter asked for a Word file at the last minute. I downloaded one in the same design and sent it right away."
+msgstr ""
+
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "En påmindelse om at tjekke ind, vist som næste trin, indtil du gør det."
+
+#: src/features/homepage/plans.ts
+msgid "A resume ready to send, and a place to start applying."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "A role has no description"
@@ -1055,10 +1031,6 @@ msgstr "En kort opfølgning er normalt fint nu"
 msgid "A story you've since deleted"
 msgstr "En historie, du siden har slettet"
 
-#: src/features/homepage/prepare.tsx
-msgid "A strong match, with one question to resolve"
-msgstr "Et stærkt match med ét spørgsmål, der skal afklares"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A timed plan, your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "En plan med tider, din indledning, de historier, du skal have med, og spørgsmål, du kan stille. Den bliver din tjekliste 10 minutter før samtalen."
@@ -1067,7 +1039,10 @@ msgstr "En plan med tider, din indledning, de historier, du skal have med, og sp
 msgid "A web address is written without https://."
 msgstr "En webadresse er skrevet uden https://."
 
-#: src/features/homepage/footer.tsx
+#: src/features/homepage/features.tsx
+msgid "A/B testing"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "Om denne app"
@@ -1089,7 +1064,6 @@ msgid "Accent is used for headings, icons and the header band. Body text stays n
 msgstr "Accent bruges til overskrifter, ikoner og hovedbåndet. Brødtekst forbliver næsten sort til print og ATS."
 
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Accept"
 msgstr "Acceptere"
@@ -1097,10 +1071,6 @@ msgstr "Acceptere"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Accept all"
 msgstr "Accepter alle"
-
-#: src/features/homepage/write.tsx
-msgid "Accepted"
-msgstr "Accepteret"
 
 #: src/features/applications/stages.ts
 msgid "Accepted another offer"
@@ -1122,9 +1092,7 @@ msgstr "Der gives adgang til"
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "Få adgang til din konto via API, inklusive læsning, ændring og sletning af dine dokumenter og jobansøgninger."
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
 msgid "Accessibility"
 msgstr "Tilgængelighed"
 
@@ -1141,25 +1109,12 @@ msgid "Account"
 msgstr "Konto"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Action"
 msgstr "Handling"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Actions"
 msgstr "Handlinger"
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31% to 44% in one quarter, measured across new teams."
-msgstr "Aktiveringen steg fra 31 % til 44 % på ét kvartal, målt på tværs af nye teams."
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31% to 44% in one quarter."
-msgstr "Aktiveringen steg fra 31 % til 44 % på ét kvartal."
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31%…"
-msgstr "Aktiveringen steg fra 31 %…"
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
@@ -1548,10 +1503,6 @@ msgstr "Efter det adfærdsbaserede interview"
 msgid "After the interview"
 msgstr "Efter interviewet"
 
-#: src/features/homepage/prepare.tsx
-msgid "After the interview · Today"
-msgstr "Efter interviewet · I dag"
-
 #: src/features/career/workspace/debrief.tsx
 msgid "After the onsite"
 msgstr "Efter interviewet på stedet"
@@ -1613,14 +1564,13 @@ msgstr "AI-udbydere kunne ikke indlæses. Genindlæs for at prøve igen."
 msgid "AI review"
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "AI that works on your real documents"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Albanian"
 msgstr "Albansk"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Alex Morgan"
-msgstr "Alex Morgan"
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Align center"
@@ -1640,6 +1590,10 @@ msgstr "Højrejustér"
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
 msgstr "Alle"
+
+#: src/features/homepage/plans.ts
+msgid "All {templateCount} templates"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "All applications"
@@ -1699,10 +1653,6 @@ msgstr "Download også følgebrevet {0}"
 msgid "Also email {0}"
 msgstr "Send også e-mail til {0}"
 
-#: src/features/homepage/sections.tsx
-msgid "Also on mobile"
-msgstr "Også på mobilen"
-
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Also shows the icons on skills, profiles and interests."
 msgstr "Viser også ikonerne på færdigheder, profiler og interesser."
@@ -1727,20 +1677,10 @@ msgstr "en fejl"
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "En uventet fejl forhindrede indlæsningen af denne side. Prøv igen, eller gå til dashboardet."
 
-#. Hero headline, line 3 of 4: A free, open-source / resume builder / and / career manager.
-#: src/features/homepage/hero.tsx
-msgctxt "hero headline"
-msgid "and"
-msgstr "og"
-
 #. placeholder {0}: others.length
 #: src/features/applications/components/detail/contacts.tsx
 msgid "and {0} more"
 msgstr "og {0} mere"
-
-#: src/features/homepage/sections.tsx
-msgid "and counting"
-msgstr "og tæller"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
@@ -1751,7 +1691,6 @@ msgid "Another resume already uses this address. Choose a different one."
 msgstr "Et andet CV bruger allerede denne adresse. Vælg en anden."
 
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/remember.tsx
 msgid "Answer"
 msgstr "Svar"
 
@@ -1876,10 +1815,6 @@ msgstr "Ansøgning"
 msgid "Application added"
 msgstr "Ansøgning tilføjet"
 
-#: src/features/homepage/remember.tsx
-msgid "Application answer"
-msgstr "Ansøgningssvar"
-
 #: src/features/applications/use-application-actions.ts
 msgid "Application closed"
 msgstr "Jobansøgning lukket"
@@ -1908,10 +1843,6 @@ msgstr "Ansøgningsdetaljer"
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Application options"
 msgstr "Jobansøgningsmuligheder"
-
-#: src/features/homepage/prepare.tsx
-msgid "Application tabs"
-msgstr "Ansøgningsfaner"
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/career/workspace/messages.tsx
@@ -1944,14 +1875,11 @@ msgstr "Ansøgninger, der skal eksporteres"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/stages.ts
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Applied"
 msgstr "Ansøgt"
 
 #: src/features/career/workspace/messages.tsx
-#: src/features/homepage/prepare.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -1976,17 +1904,8 @@ msgid "Applied. The application is updated."
 msgstr "Gennemført. Ansøgningen er opdateret."
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Apply"
 msgstr "Ansøg"
-
-#: src/features/homepage/remember.tsx
-msgid "Apply · Describe a product improvement you led."
-msgstr "Ansøg · Beskriv en produktforbedring, du har stået i spidsen for."
-
-#: src/features/homepage/prepare.tsx
-msgid "Apply 1 change"
-msgstr "Anvend 1 ændring"
 
 #: src/libs/locale.ts
 msgid "Arabic"
@@ -2042,6 +1961,10 @@ msgstr "Spørg begge"
 msgid "Ask first"
 msgstr "Spørg først"
 
+#: src/features/homepage/features.tsx
+msgid "Ask for a tailored version, a cover letter or interview practice. Pro AI includes the credits; any plan can use your own key."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask for something else…"
 msgstr "Bed om noget andet..."
@@ -2071,12 +1994,8 @@ msgid "Ask, or describe a change…"
 msgstr "Spørg eller beskriv en ændring..."
 
 #: src/features/homepage/faq.tsx
-msgid "Asked and <0>answered.</0>"
-msgstr "Spørgsmål og <0>svar.</0>"
-
-#: src/features/homepage/prepare.tsx
-msgid "Asks for an example of your onboarding work."
-msgstr "Beder om et eksempel på dit onboarding-arbejde."
+msgid "Asked and answered."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Aspect ratio"
@@ -2086,7 +2005,7 @@ msgstr "Billedformat"
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
 msgid "Assistant"
 msgstr "Assistent"
 
@@ -2098,22 +2017,18 @@ msgstr "Assistent samtaler"
 msgid "Assistant."
 msgstr "Assistent."
 
-#: src/features/homepage/prepare.tsx
-msgid "At Northwind Labs I led research for our onboarding redesign. I interviewed 14 customers, found three drop-off points, and we shipped a shorter setup. Activation rose from 31% to 44%."
-msgstr "Hos Northwind Labs ledte jeg researchen til vores redesign af onboarding. Jeg interviewede 14 kunder, fandt tre steder, hvor folk faldt fra, og vi lancerede en kortere opsætning. Aktiveringen steg fra 31 % til 44 %."
-
-#: src/features/homepage/remember.tsx
-msgid "At Northwind Labs, most new teams stalled before they finished setup."
-msgstr "Hos Northwind Labs gik de fleste nye teams i stå, før de var færdige med opsætningen."
+#: src/features/homepage/plans.ts
+msgid "ATS check and basic keyword matching"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/footer.tsx
 msgid "ATS checker"
 msgstr "ATS brik"
 
-#: src/features/homepage/check.tsx
-msgid "ATS readability"
-msgstr "ATS læsbarhed"
+#: src/features/homepage/resume.tsx
+msgid "ATS readable"
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "ATS-safe"
@@ -2176,11 +2091,9 @@ msgstr "Priser"
 msgid "Azerbaijani"
 msgstr "Aserbajdsjansk"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-msgid "BA, Communication Design"
-msgstr "BA, Kommunikationsdesign"
+#: src/features/homepage/resume.tsx
+msgid "BA, Visual Communication Design · Nusantara Institute of Design"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/routes/dashboard/settings/route.tsx
@@ -2226,9 +2139,12 @@ msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/remember.tsx
 msgid "Backed by"
 msgstr "Bygger på"
+
+#: src/features/homepage/testimonials.tsx
+msgid "Backend Engineer"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Background color"
@@ -2247,18 +2163,10 @@ msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
 msgstr ""
 
-#: src/features/homepage/sheet.tsx
-msgid "Banner"
-msgstr "Banner"
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a bar beside the header"
 msgid "Bar"
 msgstr ""
-
-#: src/features/homepage/hero.tsx
-msgid "Barista, 2012"
-msgstr "Barista, 2012"
 
 #: src/features/career/offers.tsx
 msgid "Base salary"
@@ -2292,6 +2200,10 @@ msgstr "Bengali"
 #: src/features/resume/share/download-tab.tsx
 msgid "Best for applying"
 msgstr "Bedst til at ansøge"
+
+#: src/features/homepage/features.tsx
+msgid "Beyond the resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Blocker"
@@ -2346,6 +2258,10 @@ msgstr "Kantbredde"
 msgid "Both offers cover everything compared here."
 msgstr "Begge tilbud dækker alt, der sammenlignes her."
 
+#: src/features/homepage/features.tsx
+msgid "Brand Designer"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "Del CV'et op i de sædvanlige afsnit, så det kan segmenteres."
@@ -2372,6 +2288,10 @@ msgstr "Opdatering af briefing er slået til · {0}"
 msgid "Briefing refresh paused"
 msgstr "Opdatering af briefing er sat på pause"
 
+#: src/features/homepage/templates.tsx
+msgid "Browse all {total} templates"
+msgstr ""
+
 #: src/features/ats-checker/page.tsx
 msgid "Browse free resume templates and sample PDFs"
 msgstr "Gennemse gratis CV-skabeloner og eksempler på PDF-filer"
@@ -2380,26 +2300,18 @@ msgstr "Gennemse gratis CV-skabeloner og eksempler på PDF-filer"
 msgid "Browse free resume templates, compare one-column and two-column layouts, and download sample PDFs. Customize your resume and export to PDF or Word."
 msgstr "Gennemse gratis CV-skabeloner, sammenlign layouter med en kolonne og to kolonner, og download eksempler på PDF-filer. Tilpas dit CV og eksporter til PDF eller Microsoft Word."
 
-#: src/features/homepage/hero.tsx
-msgid "Build a professional resume, download it as PDF or Word, and manage your job search in one place. Free templates, no ads, no paywall."
-msgstr "Byg et professionelt CV, download det som PDF eller Microsoft Word, og administrer din jobsøgning ét sted. Gratis skabeloner, ingen annoncer, ingen betalingsmur."
+#: src/libs/seo.ts
+msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
+msgstr ""
 
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
 msgstr "Byg dit CV"
 
-#: src/features/homepage/sheet.tsx
-msgid "Built a shared design system used by six product teams, cutting UI review time by 40%."
-msgstr "Byggede et delt designsystem brugt af seks produktteams, hvilket reducerede UI-gennemgangstid med 40 %."
-
-#: src/features/homepage/prepare.tsx
-msgid "Built a shared design system used by six product teams."
-msgstr "Byggede et fælles designsystem, der bruges af seks produktteams."
-
-#: src/features/homepage/prepare.tsx
-msgid "Built from the posting, Sam’s message and your two strongest stories."
-msgstr "Bygget ud fra jobopslaget, Sams besked og dine to stærkeste historier."
+#: src/features/homepage/resume.tsx
+msgid "Built the design system used by six product teams."
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Built-in reader"
@@ -2419,10 +2331,6 @@ msgstr "listepost {n}"
 msgid "Bulleted list"
 msgstr "Punktopstilling"
 
-#: src/features/homepage/footer.tsx
-msgid "By the community, for the community."
-msgstr "Af fællesskabet, for fællesskabet."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Kalender"
@@ -2432,16 +2340,12 @@ msgid "Calendar view"
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Can I host it myself?"
-msgstr "Kan jeg hoste det selv?"
-
-#: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Kan jeg importere et cv, jeg allerede har?"
 
 #: src/features/homepage/faq.tsx
-msgid "Can it help me prepare for interviews?"
-msgstr "Kan det hjælpe mig med at forberede mig til interviews?"
+msgid "Can I use my own AI key?"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
@@ -2474,11 +2378,6 @@ msgstr "Annuller"
 msgid "Career"
 msgstr "Karriere"
 
-#. Hero headline, line 4 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.
-#: src/features/homepage/hero.tsx
-msgid "career manager."
-msgstr "til at styre din karriere."
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "Katalansk"
@@ -2503,6 +2402,7 @@ msgstr "Skift forbindelse"
 msgid "Change it in Design."
 msgstr "Skift det i Design."
 
+#: src/features/homepage/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Change language"
 msgstr "Skift sprog"
@@ -2564,8 +2464,7 @@ msgstr "Ændring af det sender en bekræftelse til den nye adresse. Dit brugerna
 msgid "Changing your password…"
 msgstr "Skifter din adgangskode…"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
+#: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Check"
@@ -2587,10 +2486,6 @@ msgstr "Tjek igen"
 msgid "Check another file"
 msgstr "Tjek en anden fil"
 
-#: src/features/homepage/check.tsx
-msgid "Check any PDF, no account needed"
-msgstr "Tjek enhver PDF, ingen konto nødvendig"
-
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Check DNS"
@@ -2611,10 +2506,6 @@ msgstr "Tjek det er nøjagtigt."
 #: src/features/career/workspace/practise.tsx
 msgid "check numbers and names before using it"
 msgstr "tjek tal og navne, før du bruger det"
-
-#: src/features/homepage/check.tsx
-msgid "Check reads your resume the way hiring software does and explains what to fix in plain words. It runs in your browser, so the file stays with you: 0 uploads."
-msgstr "Tjek-funktionen læser dit CV, som rekrutteringssoftware gør, og forklarer, hvad der skal rettes med enkle ord. Den kører i din browser, så din fil forbliver på din enhed: 0 uploads."
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Check the details"
@@ -2653,7 +2544,6 @@ msgstr "Tjek din e-mail for et link til at nulstille din adgangskode."
 msgid "Check your email for a link to verify your account."
 msgstr "Tjek din e-mail for et link til at verificere din konto."
 
-#: src/features/homepage/check.tsx
 #: src/features/templates/gallery.tsx
 msgid "Check your resume’s ATS readability"
 msgstr "Tjek dit CV's ATS-læsbarhed"
@@ -2744,6 +2634,14 @@ msgstr "Vælg en anden fil"
 msgid "Choose color"
 msgstr "Vælg farve"
 
+#: src/features/homepage/plans.ts
+msgid "Choose Plus"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "Choose Pro AI"
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Circle"
 msgstr "Cirkel"
@@ -2751,10 +2649,6 @@ msgstr "Cirkel"
 #: src/features/career/workspace/fit.tsx
 msgid "Clarify"
 msgstr "Afklar"
-
-#: src/features/homepage/sheet.tsx
-msgid "Classic"
-msgstr "Klassisk"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Claude Desktop"
@@ -2786,6 +2680,10 @@ msgstr "Ryd sektion"
 #: src/features/documents/documents-page.tsx
 msgid "Clear selection"
 msgstr "Ryd valg"
+
+#: src/features/homepage/features.tsx
+msgid "Clear structure"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Clear the greeting or sign-off to omit it. Clearing the sign-off also removes the automatic signature."
@@ -2902,10 +2800,6 @@ msgstr "Kolonner"
 msgid "Columns can scramble the order text is read in."
 msgstr "Kolonner kan forvrænge den rækkefølge, hvor teksten læses ind."
 
-#: src/features/homepage/sections.tsx
-msgid "Coming soon"
-msgstr "Kommer snart"
-
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "Kommende"
@@ -2921,10 +2815,6 @@ msgstr "Kommandopalet"
 msgid "Command palette: {currentPage}"
 msgstr "Kommandopalet: {currentPage}"
 
-#: src/features/homepage/footer.tsx
-msgid "Community"
-msgstr "Fællesskab"
-
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Compact"
@@ -2938,6 +2828,7 @@ msgstr ""
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -2960,6 +2851,10 @@ msgstr "Sammenlign rigtige CV-layouts, før du tilmelder dig. Hver skabelon er g
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Compare your resume with the job's keywords, then make a version just for it."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -3013,10 +2908,6 @@ msgstr "Bekræft tidspunktet med {contact}, før du tilføjer et nyt interview."
 #: src/features/career/workspace/prepare.tsx
 msgid "Confirm the time, link and who you'll meet. Glance at the resume and letter you sent."
 msgstr "Bekræft tidspunkt, link og hvem du skal møde. Kast et blik på det CV og brev, du sendte."
-
-#: src/features/homepage/prepare.tsx
-msgid "Confirms {time} today, by video."
-msgstr "Bekræfter {time} i dag, via video."
 
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
@@ -3098,6 +2989,7 @@ msgid "Connections bill speech separately and may use tokens on your account. Yo
 msgstr "Forbindelser afregner tale separat og kan bruge tokens på din konto. Din browsers talegenkendelse er gratis, men browserens udvikler kan behandle lyden. Serveren gemmer transskriptioner, aldrig optagelser."
 
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "Kontakte"
 
@@ -3106,7 +2998,7 @@ msgstr "Kontakte"
 msgid "Contact details"
 msgstr "Kontaktoplysninger"
 
-#: src/features/homepage/check.tsx
+#: src/features/homepage/features.tsx
 msgid "Contact details found"
 msgstr "Kontaktoplysninger fundet"
 
@@ -3164,14 +3056,6 @@ msgstr "Fortsæt som gæst"
 msgid "Contrast on white:"
 msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Contribution clear"
-msgstr "Tydeligt bidrag"
-
-#: src/features/homepage/prepare.tsx
-msgid "Contribution unclear"
-msgstr "Uklart bidrag"
-
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
 msgid "Conversation"
@@ -3195,7 +3079,6 @@ msgstr "Samtalens navn"
 msgid "Conversations"
 msgstr "Samtaler"
 
-#: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3239,7 +3122,6 @@ msgstr "Kopiér til et job..."
 msgid "Copy it now. For your security, it won't be shown again."
 msgstr "Kopier det nu. For din sikkerhed vil den ikke blive vist igen."
 
-#: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "Kopiér link"
@@ -3899,10 +3781,6 @@ msgstr "Følgebrev"
 msgid "Cover letter — {0}"
 msgstr "Følgebrev — {0}"
 
-#: src/features/homepage/tailor.tsx
-msgid "Cover letter · Fieldnote"
-msgstr "Følgebrev · Fieldnote"
-
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Cover letter file"
 msgstr "Følgebrevsmappe"
@@ -3919,6 +3797,14 @@ msgstr "Følgebrev indsendt (valgfrit)"
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Cover letters"
 msgstr "Følgebreve"
+
+#: src/features/homepage/plans.ts
+msgid "Cover letters and recruiter replies"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Cover letters that match"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Create"
@@ -3976,6 +3862,10 @@ msgstr ""
 msgid "Created and linked to {0}"
 msgstr "Oprettet og knyttet til {0}"
 
+#: src/features/homepage/faq.tsx
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes 100 credits every 30 days; the free plan includes 5 to try."
+msgstr ""
+
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Crop and upload"
 msgstr "Beskær og upload"
@@ -3983,10 +3873,6 @@ msgstr "Beskær og upload"
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Crop photo"
 msgstr "Beskær billede"
-
-#: src/features/homepage/sheet.tsx
-msgid "Cross-functional leadership"
-msgstr "Tværfunktionel ledelse"
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "CSV data"
@@ -4041,6 +3927,10 @@ msgstr "Brugerdefinerede afsnit"
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "Brugerdefinerede stilarter"
+
+#: src/features/homepage/plans.ts
+msgid "Custom styles and your own fonts"
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
@@ -4105,10 +3995,6 @@ msgstr "Datoer løber baglæns"
 msgid "Dates start in the future"
 msgstr "Datoer starter i fremtiden"
 
-#: src/features/homepage/check.tsx
-msgid "Dates use one format"
-msgstr "Datoer bruger ét format"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Datoer læses ikke"
@@ -4121,23 +4007,15 @@ msgstr ""
 msgid "Dear {name},"
 msgstr "Kære {name},"
 
-#: src/features/homepage/tailor.tsx
-msgid "Dear Fieldnote team,"
-msgstr "Kære Fieldnote team,"
-
+#: src/features/homepage/features.tsx
 #: src/features/letters/compose.ts
 msgid "Dear hiring team,"
 msgstr "Kære ansættelsesteam,"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Debrief"
 msgstr "Opsamling"
-
-#: src/features/homepage/prepare.tsx
-msgid "Deep breath."
-msgstr "Træk vejret dybt."
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/providers.tsx
@@ -4306,8 +4184,7 @@ msgstr "Beskrivelse"
 msgid "Description of role {0}"
 msgstr "Beskrivelse af rolle {0}"
 
-#: src/features/homepage/design.tsx
-#: src/features/homepage/header.tsx
+#: src/features/homepage/features.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -4322,17 +4199,16 @@ msgstr "Design"
 msgid "Design groups"
 msgstr "Design grupper"
 
+#: src/features/homepage/features.tsx
+msgid "Design Lead"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design reset to defaults"
 msgstr "Design nulstillet til standardindstillinger"
 
-#: src/features/homepage/prepare.tsx
-msgid "Design system trade-offs"
-msgstr "Afvejninger i designsystemer"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Design systems"
 msgstr "Designsystemer"
 
@@ -4356,10 +4232,6 @@ msgstr "Dikteringen stoppede ved grænsen på 2 minutter."
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Didn't land"
-msgstr "Gik ikke hjem"
-
-#: src/features/homepage/prepare.tsx
-msgid "Didn’t land"
 msgstr "Gik ikke hjem"
 
 #: src/features/career/offers.tsx
@@ -4417,10 +4289,6 @@ msgstr "Dokumentmenu: {name}"
 msgid "Document type"
 msgstr "Dokumenttype"
 
-#: src/features/homepage/footer.tsx
-msgid "Documentation"
-msgstr "Dokumentation"
-
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4439,10 +4307,6 @@ msgstr "Dokumenter til dette job"
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
 msgstr "Dokumenter, du flytter hertil, bliver her i 30 dage."
-
-#: src/features/homepage/faq.tsx
-msgid "Does it use AI?"
-msgstr "Bruger den AI?"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Domain connected"
@@ -4466,6 +4330,10 @@ msgstr "Færdig"
 #: src/features/career/today.tsx
 msgid "Done · {0}"
 msgstr "Udført · {0}"
+
+#: src/features/homepage/features.tsx
+msgid "Done. I rewrote 6 bullets around design systems and prototyping and kept your numbers. Review the changes before you save."
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Double-checking"
@@ -4547,6 +4415,10 @@ msgstr "Downloadede dit CV og dette brev"
 msgid "downloads"
 msgstr "downloads"
 
+#: src/features/homepage/features.tsx
+msgid "Downloads"
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Draft"
@@ -4579,10 +4451,6 @@ msgstr "Udkast fra stillingsopslaget"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from your resume"
 msgstr "Kladde fra dit CV"
-
-#: src/features/homepage/remember.tsx
-msgid "Draft it as"
-msgstr "Lav udkast som"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft kept. Edit anything you like."
@@ -4820,12 +4688,7 @@ msgstr "Editor-tilstand"
 msgid "Editor views"
 msgstr "Editor visninger"
 
-#: src/features/homepage/sheet.tsx
-msgid "Editorial"
-msgstr "Redaktionel"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Education"
 msgstr "Uddannelse"
@@ -4876,11 +4739,6 @@ msgstr "Ende"
 #: src/libs/locale.ts
 msgid "English"
 msgstr "Engelsk"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "English (native)"
-msgstr "engelsk (modersmål)"
 
 #: src/libs/locale.ts
 msgid "English (United Kingdom)"
@@ -5004,6 +4862,10 @@ msgstr "Hver 3. dag"
 msgid "Every application is a step closer."
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "Every application on one board"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
 msgstr "Hver dag"
@@ -5015,6 +4877,10 @@ msgstr "Hver post har datoer i en formular, der er læst, i rækkefølge, og ing
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Hver rolle siger, hvad du gjorde. Udtalelser om formulering lever i fanen Skrivning."
+
+#: src/features/homepage/templates.tsx
+msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Every template exports a text-based PDF with the words in reading order, which is what applicant tracking systems (ATS) need to parse a resume. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix."
@@ -5028,19 +4894,25 @@ msgstr "Hvert udtryk, jobopslaget understreger, er der allerede."
 msgid "Every week"
 msgstr "Hver uge"
 
+#: src/features/homepage/plans.ts
+msgid "Everything in Plus"
+msgstr ""
+
 #. placeholder {0}: application.company
 #: src/features/career/workspace/saved.tsx
 msgid "Everything the coach wrote for {0}, newest first."
 msgstr "Alt, hvad coachen har skrevet om {0}, nyeste først."
+
+#: src/features/homepage/features.tsx
+msgid "Everything you need to reach the interview."
+msgstr ""
 
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Exit focus mode"
 msgstr "Afslut fokustilstand"
 
 #: src/features/career/knowledge/facts.tsx
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Experience"
 msgstr "Erfaring"
@@ -5056,10 +4928,6 @@ msgstr "Udløber"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires {expiry}"
 msgstr ""
-
-#: src/features/homepage/prepare.tsx
-msgid "explain one limit of the measurement clearly, without underselling the work."
-msgstr "forklar én begrænsning ved målingen tydeligt uden at undervurdere arbejdet."
 
 #: src/features/settings/account/data.tsx
 #: src/libs/resume/section.tsx
@@ -5128,10 +4996,6 @@ msgctxt "Entry header layout"
 msgid "Eyebrow"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "Fact · Accomplishment"
-msgstr "Faktum · Præstation"
-
 #: src/features/career/knowledge/facts.tsx
 msgid "Fact forgotten"
 msgstr "Faktum glemt"
@@ -5153,7 +5017,12 @@ msgstr "Fakta, historier og præferencer, der er slået til i Viden"
 msgid "Failed"
 msgstr "Mislykkedes"
 
+#: src/features/homepage/ui.tsx
+msgid "FAQ"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
 msgid "Features"
 msgstr "Funktioner"
 
@@ -5165,33 +5034,14 @@ msgstr "Feedback"
 msgid "Feedback needs an AI connection. <0>Add one in Settings</0>. Nothing is sent until you ask."
 msgstr "Feedback kræver en AI-forbindelse. <0>Tilføj en i Indstillinger</0>. Intet sendes, før du beder om det."
 
-#: src/features/homepage/prepare.tsx
-msgid "Fewer support tickets isn’t backed by a number yet. Say it as something you noticed."
-msgstr "Færre supporthenvendelser er endnu ikke underbygget af et tal. Sig det som noget, du har bemærket."
-
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Field {0}"
 msgstr "Felt {0}"
 
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
-msgid "Fieldnote"
-msgstr "Fieldnote"
-
-#: src/features/homepage/tailor.tsx
-msgid "Fieldnote · Remote, EU"
-msgstr "Fieldnote · Fjernbetjening, EU"
-
-#: src/features/homepage/hero.tsx
+#: src/features/homepage/resume.tsx
 msgid "Figma"
 msgstr "Figma"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Figma, HTML and CSS"
-msgstr "Figma, HTML og CSS"
 
 #: src/features/resume/share/download-tab.tsx
 msgid "File name"
@@ -5230,9 +5080,9 @@ msgstr "Udfyldning af poster"
 msgid "Filter by tag"
 msgstr "Filtrer efter tag"
 
-#: src/features/homepage/remember.tsx
-msgid "Find out why, and shorten setup without adding support work."
-msgstr "Find ud af hvorfor, og gør opsætningen kortere uden at skabe mere supportarbejde."
+#: src/features/homepage/testimonials.tsx
+msgid "Finance Analyst"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
@@ -5265,7 +5115,6 @@ msgstr "Tilpasning"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgctxt "Application workspace tab: how well a job fits your experience"
 msgid "Fit"
 msgstr "Match"
@@ -5298,10 +5147,6 @@ msgstr "Ret disse i editoren"
 msgid "Fix these values in the CSV, or leave their columns out, before importing."
 msgstr "Ret disse værdier i CSV-filen, eller udelad deres kolonner, før du importerer."
 
-#: src/features/homepage/remember.tsx
-msgid "Fixing onboarding drop-off at Northwind Labs"
-msgstr "Løsning af frafald i onboarding hos Northwind Labs"
-
 #: src/features/ats-checker/messages.ts
 msgid "Flatten the form so the text is part of the page."
 msgstr "Fladgør formularen, så teksten bliver en del af siden."
@@ -5313,6 +5158,14 @@ msgstr "Flydende niveau"
 #: src/features/career/workspace/prepare.tsx
 msgid "Focus, experience, why this role"
 msgstr "Fokus, erfaring, hvorfor stillingen"
+
+#: src/features/homepage/features.tsx
+msgid "Follow every application all the way to the offer."
+msgstr ""
+
+#: src/features/homepage/introduction.tsx
+msgid "Follow every application from saved to offer"
+msgstr ""
 
 #: src/features/applications/next-step.ts
 msgid "Follow up"
@@ -5366,6 +5219,10 @@ msgstr "Skrifttyperne kunne ikke indlæses. Prøv igen."
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "For"
 msgstr "For"
+
+#: src/features/homepage/pricing.tsx
+msgid "For 30 days, no automatic renewal"
+msgstr ""
 
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
@@ -5457,13 +5314,18 @@ msgstr "Fundet i dag"
 msgid "Found yesterday"
 msgstr "Fundet i går"
 
+#: src/features/homepage/plans.ts
+#: src/features/homepage/templates.tsx
+msgid "Free"
+msgstr ""
+
 #: src/libs/seo.ts
 msgid "Free ATS resume checker"
 msgstr "Gratis ATS CV-tjek"
 
-#: src/libs/seo.ts
-msgid "Free resume builder with PDF & Word downloads"
-msgstr "Gratis CV-builder med PDF- og Word-download"
+#: src/features/homepage/hero.tsx
+msgid "Free plan, no card needed. PDF downloads without a watermark."
+msgstr ""
 
 #: src/libs/seo.ts
 msgid "Free resume templates with PDF examples"
@@ -5475,16 +5337,15 @@ msgstr "Gratis CV-skabeloner med PDF-eksempler"
 msgid "Free-form"
 msgstr "Frit format"
 
-#: src/libs/seo.ts
-msgid "Free, open-source resume builder. Create, update, and share your resume, with PDF and Word downloads, no ads and no paywall."
-msgstr "Gratis, open source CV-bygger. Opret, opdater og del dit CV med PDF og Word downloads, ingen annoncer og ingen betalingsmur."
-
 #: src/libs/locale.ts
 msgid "French"
 msgstr "Fransk"
 
+#: src/features/homepage/testimonials.tsx
+msgid "Fresh graduate, Informatics"
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
-#: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "Fra"
@@ -5497,10 +5358,6 @@ msgstr "Fra en opsamling"
 msgid "From a document you attached"
 msgstr "Fra et dokument, du vedhæftede"
 
-#: src/features/homepage/sections.tsx
-msgid "from developers who back it"
-msgstr "fra udviklere, der bakker op om det"
-
 #: src/features/career/workspace/fit.tsx
 msgid "From Fit"
 msgstr "Fra Match"
@@ -5508,6 +5365,10 @@ msgstr "Fra Match"
 #: src/features/resume/share/format.ts
 msgid "from the assistant or API"
 msgstr "fra assistenten eller API"
+
+#: src/features/homepage/features.tsx
+msgid "From the first line to the shared link, every step of the resume lives in one editor."
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From your cover letter"
@@ -5528,6 +5389,10 @@ msgstr "Fra dit CV"
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "Ud fra din tidszone"
+
+#: src/features/homepage/plans.ts
+msgid "Full job search insights"
+msgstr ""
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Full name"
@@ -5560,10 +5425,6 @@ msgstr "Tysk"
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
 msgstr "Få en nøgle på <0>{0}</0>. Den gemmes krypteret og bruges kun til dine anmodninger."
 
-#: src/features/homepage/prepare.tsx
-msgid "Get a plan for the interview, built from the posting and your own stories. Practice out loud, then write down how it went."
-msgstr "Få en plan for interviewet, bygget ud fra jobopslaget og dine egne historier. Øv dig højt, og skriv bagefter ned, hvordan det gik."
-
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback"
 msgstr "Få feedback"
@@ -5572,17 +5433,13 @@ msgstr "Få feedback"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "\"Få feedback\" sender spørgsmålet, dit svar, dette jobopslag og dine historier til {providerName}."
 
-#: src/features/homepage/sections.tsx
-msgid "Get it on"
-msgstr "Hent i"
+#: src/features/homepage/closing.tsx
+msgid "Get it on Google Play"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Få nye stillinger her hver morgen"
-
-#: src/features/homepage/footer.tsx
-msgid "Get started"
-msgstr "Kom godt i gang"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -5661,9 +5518,9 @@ msgstr "Hilsen"
 msgid "Grid"
 msgstr "Gitter"
 
-#: src/features/homepage/remember.tsx
-msgid "Happy to walk you through it on our call."
-msgstr "Jeg gennemgår det gerne på vores opkald."
+#: src/features/homepage/footer.tsx
+msgid "Guides"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -5708,7 +5565,6 @@ msgid "Headline"
 msgstr "Overskrift"
 
 #: src/features/career/workspace/practise.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Hear it"
 msgstr "Hør det"
 
@@ -5719,6 +5575,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Hebrew"
 msgstr "Hebraisk"
+
+#: src/features/homepage/footer.tsx
+msgid "Help"
+msgstr ""
 
 #: src/features/settings/root.tsx
 msgid "Help & docs"
@@ -5731,10 +5591,6 @@ msgstr "Hjælp mig med at gøre en præstation til en historie med situation, op
 #: src/components/input/color-picker.tsx
 msgid "Hex color"
 msgstr ""
-
-#: src/features/homepage/prepare.tsx
-msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
-msgstr "Hej Alex, vi bekræfter gerne: Du møder vores designteam i dag kl. {time} via video. Kan du tage et eksempel på dit onboarding-arbejde med?"
 
 #: src/components/level/combobox.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -5791,6 +5647,7 @@ msgstr "Skjul billedet"
 msgid "High"
 msgstr "Høj"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Highlight"
 msgstr "Fremhævning"
@@ -5840,9 +5697,12 @@ msgid "How did it go?"
 msgstr "Hvordan gik det?"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "How did it land?"
 msgstr "Hvordan blev det modtaget?"
+
+#: src/features/homepage/faq.tsx
+msgid "How does a 30-day plan work?"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "How far applications get"
@@ -5876,6 +5736,10 @@ msgstr "Sådan viser du filen"
 msgid "How well do I fit this role?"
 msgstr "Hvor godt passer jeg denne rolle?"
 
+#: src/features/homepage/testimonials.tsx
+msgid "HR Generalist"
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Hue"
@@ -5898,9 +5762,9 @@ msgstr "Jeg kan se dette {kind} og jobopslaget fra {0}. Forslag kommer tilbage s
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "Jeg kan se denne {kind}. Forslag kommer tilbage som redigeringer, du kan acceptere én efter én."
 
-#: src/features/homepage/remember.tsx
-msgid "I interviewed 14 customers, mapped three drop-off points and prototyped a shorter setup with engineering."
-msgstr "Jeg interviewede 14 kunder, kortlagde tre steder, hvor folk faldt fra, og lavede en prototype på en kortere opsætning sammen med udviklerne."
+#: src/features/homepage/testimonials.tsx
+msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
+msgstr ""
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -5922,10 +5786,6 @@ msgstr "Ikon..."
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Icons in contact line"
 msgstr "Ikoner i kontaktlinjen"
-
-#: src/features/homepage/remember.tsx
-msgid "If I did it again, I’d agree on the measure before the first prototype."
-msgstr "Hvis jeg gjorde det igen, ville jeg aftale målet før den første prototype."
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -6037,10 +5897,6 @@ msgstr "Forbedre den valgte linje"
 msgid "Improving…"
 msgstr "Forbedrer..."
 
-#: src/features/homepage/sections.tsx
-msgid "In good company"
-msgstr "I godt selskab"
-
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "Øg linjeafstanden, så to linjer ikke smelter sammen til én."
@@ -6052,6 +5908,10 @@ msgstr "Øg indrykning"
 #: src/libs/locale.ts
 msgid "Indonesian"
 msgstr "Indonesisk"
+
+#: src/features/homepage/resume.tsx
+msgid "Indonesian (native) · English (professional)"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
@@ -6087,9 +5947,7 @@ msgstr "Kun grænseflade. Hvert CV sætter sit eget sprog i Design."
 
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "Interview"
 
@@ -6100,15 +5958,6 @@ msgstr "Opsamling på interview"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview deleted"
 msgstr "Interview slettet"
-
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-msgid "Interview done"
-msgstr "Interview afholdt"
-
-#: src/features/homepage/prepare.tsx
-msgid "Interview in {duration}"
-msgstr "Interview om {duration}"
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview is in another timezone"
@@ -6122,17 +5971,13 @@ msgstr ""
 msgid "Interview notes"
 msgstr "Interviewnoter"
 
-#: src/features/homepage/prepare.tsx
-msgid "Interview now"
-msgstr "Interview nu"
-
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "Interview opening"
-msgstr "Indledning til interview"
+#: src/features/homepage/plans.ts
+msgid "Interview practice with feedback"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
@@ -6156,25 +6001,25 @@ msgstr "Interviewtidspunkter, påmindelser og tidsplaner i Karriere bruger den."
 msgid "Interview timezone"
 msgstr "Interviewets tidszone"
 
-#: src/features/homepage/remember.tsx
-msgid "Interviewed 14 customers, mapped three drop-off points and prototyped a shorter setup with engineering."
-msgstr "Interviewede 14 kunder, kortlagde tre steder, hvor folk faldt fra, og lavede en prototype på en kortere opsætning sammen med udviklerne."
-
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Interviewer"
 msgstr "Interviewer"
+
+#: src/features/homepage/introduction.tsx
+msgid "Introduction"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Is equity part of the offer?"
 msgstr "Indgår aktier i tilbuddet?"
 
-#: src/features/homepage/faq.tsx
-msgid "Is Rezumi really free?"
-msgstr "Er Rezumi virkelig gratis?"
-
 #: src/features/career/offers.tsx
 msgid "Is there a bonus, and what does it depend on?"
 msgstr "Er der en bonus, og hvad afhænger den af?"
+
+#: src/features/homepage/faq.tsx
+msgid "Is there a free plan?"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Is there a learning budget?"
@@ -6286,11 +6131,11 @@ msgstr "Jobbeskrivelse"
 msgid "Job link or posting text"
 msgstr "Joblink eller jobopslagstekst"
 
-#: src/features/homepage/tailor.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Job match"
 msgstr "Jobmatch"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Job posting"
 msgstr "Jobopslag"
@@ -6310,6 +6155,10 @@ msgstr "Jobsøgning mislykkedes. Prøv igen, eller indsæt et jobopslagslink."
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
 msgstr "Jobsøgningspipeline"
+
+#: src/features/homepage/plans.ts
+msgid "Job tracker with board and calendar"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Jobs"
@@ -6371,7 +6220,6 @@ msgstr "Hold det ærligt"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Hold den under 2,5 MB, som regel ved at fjerne eller formindske billeder."
 
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "Behold min"
@@ -6391,10 +6239,6 @@ msgstr "Behold CV-indhold som rigtig tekst frem for som billeder af tekst."
 #: src/features/ats-checker/messages.ts
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "Hold sidehoveder korte, eller drop dem. De gentages også i den udtrukne tekst."
-
-#: src/features/homepage/prepare.tsx
-msgid "Keep the evidence precise"
-msgstr "Hold belægget præcist"
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Keep the panel beside the page"
@@ -6424,10 +6268,6 @@ msgstr "Beholder de mest specifikke dele"
 #: src/features/resume/editor/check/actions.ts
 msgid "Kept as it is"
 msgstr "Gemt som det er"
-
-#: src/features/homepage/write.tsx
-msgid "Kept yours"
-msgstr "Beholdt din"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Key ends in {ending}"
@@ -6461,16 +6301,11 @@ msgstr "Khmer"
 msgid "Kind regards,"
 msgstr "Venlig hilsen,"
 
-#: src/features/homepage/remember.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "Viden"
-
-#: src/features/homepage/prepare.tsx
-msgid "Knowledge doesn’t mention mentoring."
-msgstr "Viden nævner ikke mentoring."
 
 #: src/libs/locale.ts
 msgid "Korean"
@@ -6494,6 +6329,7 @@ msgstr "Liggende"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
+#: src/features/homepage/header.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/general.tsx
@@ -6501,8 +6337,7 @@ msgstr "Liggende"
 msgid "Language"
 msgstr "Sprog"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Languages"
 msgstr "Sprog"
@@ -6549,20 +6384,17 @@ msgstr "Læg teksten vandret. Roterede tekstforløb bliver ofte droppet eller fe
 msgid "Layout"
 msgstr "Layout"
 
-#: src/features/homepage/prepare.tsx
-msgid "Lead across functions"
-msgstr "Lede på tværs af funktioner"
+#: src/features/homepage/features.tsx
+msgid "Lead Designer"
+msgstr ""
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Lead Product Designer"
-msgstr "Ledende produktdesigner"
+#: src/features/homepage/features.tsx
+msgid "Lead Designer · Northwind"
+msgstr ""
 
-#: src/features/homepage/write.tsx
-msgid "Lead with the result and give it a scale."
-msgstr "Bly med resultatet og giv det en skala."
+#: src/features/homepage/resume.tsx
+msgid "Lead Designer, Northwind"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Leads with why you fit"
@@ -6596,13 +6428,13 @@ msgstr "Lad feltet være tomt for at bruge den oprindelige titel."
 msgid "Leave out"
 msgstr "Lad være"
 
-#: src/features/homepage/sheet.tsx
-msgid "Led <0>user research</0> for the onboarding redesign; activation rose from 31% to 44%."
-msgstr "Ledte <0>brugerundersøgelser</0> til et nyt introduktionsforløb; aktiveringen steg fra 31 % til 44 %."
+#: src/features/homepage/features.tsx
+msgid "Led the checkout redesign"
+msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Led research for the onboarding redesign; activation rose from 31% to 44%."
-msgstr "Ledte researchen til redesignet af onboarding; aktiveringen steg fra 31 % til 44 %."
+#: src/features/homepage/resume.tsx
+msgid "Led the redesign of checkout, lifting conversion by 18% in two quarters."
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Left"
@@ -6691,6 +6523,10 @@ msgstr "Brevside"
 msgid "Letters"
 msgstr "Breve"
 
+#: src/features/homepage/features.tsx
+msgid "Letters share your resume's design and live beside the job they are for."
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Level"
@@ -6700,10 +6536,6 @@ msgstr "Niveau"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "Niveau {level} ud af 5"
-
-#: src/features/homepage/footer.tsx
-msgid "Licensed under <0>MIT</0>"
-msgstr "Licenseret under <0>MIT</0>"
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6827,15 +6659,6 @@ msgstr "Linker..."
 msgid "Links"
 msgstr "Links"
 
-#: src/features/homepage/hero.tsx
-msgid "Lisbon"
-msgstr "Lisbon"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Lisbon, Portugal"
-msgstr "Lisbon, Portugal"
-
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "List"
@@ -6865,10 +6688,6 @@ msgstr "Live · opdateringer, mens du redigerer"
 #: src/features/resume/share/address-field.tsx
 msgid "Live at {0}"
 msgstr "Live på {0}"
-
-#: src/features/homepage/sections.tsx
-msgid "Live totals, refreshed every 6 hours."
-msgstr "Livetotaler, opdateres hver 6. time."
 
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
@@ -6932,10 +6751,6 @@ msgstr "Indlæser gemt version…"
 msgid "Loading stylesheet editor…"
 msgstr "Indlæser stylesheet-editor…"
 
-#: src/features/homepage/sections.tsx
-msgid "Loading the total"
-msgstr "Indlæser totalen"
-
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Indlæser arbejdsområde…"
@@ -6977,6 +6792,10 @@ msgstr "Låst"
 msgid "Locked. Unlock to edit."
 msgstr "Låst. Lås op for at redigere."
 
+#: src/features/homepage/header.tsx
+msgid "Log in"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
 msgstr "Lange stræk er sat med versaler."
@@ -7014,10 +6833,6 @@ msgstr "Hovedafsnit"
 #: src/routes/_home/-sections/header.tsx
 msgid "Main navigation"
 msgstr "Hovednavigation"
-
-#: src/features/homepage/design.tsx
-msgid "Make any of them yours."
-msgstr "Gør nogen af ​​dem til dine."
 
 #: src/features/settings/ai/providers.tsx
 msgid "Make default"
@@ -7084,6 +6899,10 @@ msgstr "Administreret af din server"
 msgid "Many bullets start with the same phrase."
 msgstr "Mange punkter starter med den samme frase."
 
+#: src/features/homepage/plans.ts
+msgid "Many versions of your application, in every format."
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Mar 2022"
 msgstr "marts 2022"
@@ -7137,6 +6956,10 @@ msgstr "Markeret som ansøgt. De versioner, du sendte, er gemt."
 msgid "Marked as read"
 msgstr "Markeret som læst"
 
+#: src/features/homepage/hero.tsx
+msgid "Marketing Associate"
+msgstr ""
+
 #. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Match “{0}”"
@@ -7145,6 +6968,10 @@ msgstr "Match \"{0}\""
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Match against a job"
 msgstr "Match mod et job"
+
+#: src/features/homepage/features.tsx
+msgid "Match every posting"
+msgstr ""
 
 #: src/features/command-palette/pages/preferences/theme.tsx
 msgid "Match system theme"
@@ -7170,6 +6997,10 @@ msgstr "Måske ledigt"
 msgid "MCP"
 msgstr "MCP"
 
+#: src/features/homepage/plans.ts
+msgid "MCP and API for your own automations"
+msgstr ""
+
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP server"
@@ -7186,10 +7017,6 @@ msgstr ""
 msgid "Medium"
 msgstr "Medium"
 
-#: src/features/homepage/prepare.tsx
-msgid "Mentor other designers"
-msgstr "Være mentor for andre designere"
-
 #: src/features/assistant/conversation.tsx
 msgid "Message the assistant"
 msgstr "Send besked til assistenten"
@@ -7199,17 +7026,8 @@ msgid "Message the coach"
 msgstr "Skriv til coachen"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Messages"
 msgstr "Beskeder"
-
-#: src/features/homepage/prepare.tsx
-msgid "Messages · Pasted from your email"
-msgstr "Beskeder · Indsat fra din e-mail"
-
-#: src/features/homepage/remember.tsx
-msgid "Messages · Reply to Sam at Fieldnote"
-msgstr "Beskeder · Svar til Sam hos Fieldnote"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
@@ -7219,22 +7037,9 @@ msgstr "Mikrofonen er blokeret. Tillad den i browserens indstillinger, eller skr
 msgid "Minimum base salary"
 msgstr "Mindste grundløn"
 
-#: src/features/homepage/prepare.tsx
-msgid "Missing evidence means your notes don’t show it yet, not that you lack it."
-msgstr "Manglende belæg betyder, at dine noter ikke viser det endnu, ikke at du mangler det."
-
-#: src/features/homepage/footer.tsx
-msgid "MIT License"
-msgstr "MIT-licens"
-
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Mixed"
 msgstr "Blandet"
-
-#: src/features/homepage/check.tsx
-msgid "mixed format"
-msgstr "blandet format"
 
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
@@ -7252,10 +7057,6 @@ msgstr "Modelforslag er ikke tilgængelige. Du kan stadig indtaste ethvert model
 #: src/features/assistant/assistant-panel.tsx
 msgid "Model: {label}"
 msgstr "Model: {label}"
-
-#: src/features/homepage/sheet.tsx
-msgid "Mono"
-msgstr "Mono"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
@@ -7303,13 +7104,13 @@ msgstr "De fleste punkter åbner med fyldord frem for noget, du gjorde."
 msgid "Most entries have no dates."
 msgstr "De fleste poster har ingen datoer."
 
-#: src/features/homepage/remember.tsx
-msgid "Most new teams at Northwind Labs stalled during setup and never reached activation."
-msgstr "De fleste nye teams hos Northwind Labs gik i stå under opsætningen og nåede aldrig til aktivering."
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
 msgstr "De fleste rekrutterere læser 180-320 ord. Det skraverede bånd viser rækkevidden."
+
+#: src/features/homepage/introduction.tsx
+msgid "Most resume builders stop at the PDF. The work doesn’t: each posting wants a slightly different story, recruiters reply, and interviews need preparing. So Rezumi keeps going with you."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Most systems file candidates by email address."
@@ -7327,6 +7128,10 @@ msgstr "Flyt alt indhold inden for sidens grænser, og eksporter igen."
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Move down"
 msgstr "Flyt ned"
+
+#: src/features/homepage/features.tsx
+msgid "Move each job from saved to offer, with notes, dates and the resume you sent."
+msgstr ""
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Move field up"
@@ -7364,10 +7169,6 @@ msgstr "Flyt til {0}"
 #: src/features/career/workspace/messages.tsx
 msgid "Move to {stage}"
 msgstr "Flyt til {stage}"
-
-#: src/features/homepage/prepare.tsx
-msgid "Move to Interview"
-msgstr "Flyt til Interview"
 
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
@@ -7408,9 +7209,9 @@ msgstr "Flyttet til {0}"
 msgid "Moves the application from {0}."
 msgstr "Flytter ansøgningen fra {0}."
 
-#: src/features/homepage/remember.tsx
-msgid "My job was to find out why, without adding support work."
-msgstr "Min opgave var at finde ud af hvorfor uden at skabe mere supportarbejde."
+#: src/features/homepage/testimonials.tsx
+msgid "My internships and campus projects finally read like real experience. The ATS check showed me what to fix."
+msgstr ""
 
 #. Label for full name input on registration form
 #: src/dialogs/resume/index.tsx
@@ -7442,10 +7243,6 @@ msgstr "Navn på person {0}"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Name or team"
 msgstr "Navn eller hold"
-
-#: src/features/homepage/prepare.tsx
-msgid "Name the problem, what you led and how activation was measured."
-msgstr "Nævn problemet, hvad du ledte, og hvordan aktiveringen blev målt."
 
 #: src/dialogs/resume/index.tsx
 msgid "Name the resume after the position you are applying for."
@@ -7577,10 +7374,6 @@ msgstr "Nyt afsnit"
 msgid "New story"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "New teams at Northwind were stalling in setup; most never got through."
-msgstr "Nye teams hos Northwind gik i stå under opsætningen; de fleste kom aldrig igennem."
-
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr ""
@@ -7613,10 +7406,6 @@ msgstr "Næste skridt: {0}"
 msgid "Next step: {0}. Adds a reminder to Today."
 msgstr "Næste skridt: {0}. Tilføjer en påmindelse under I dag."
 
-#: src/features/homepage/remember.tsx
-msgid "Next time, I’d agree how to measure success before the first prototype."
-msgstr "Næste gang ville jeg aftale, hvordan succes skulle måles, før den første prototype."
-
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next week"
 msgstr ""
@@ -7627,6 +7416,10 @@ msgstr "Ingen aktive jobansøgninger."
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "No activity yet"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "No API key to set up"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -7654,6 +7447,10 @@ msgstr "Ingen jobansøgninger endnu. Tilføj først en i jobansøgninger."
 #: src/features/ats-checker/messages.ts
 msgid "No bullet lists were found."
 msgstr "Der blev ikke fundet nogen punktlister."
+
+#: src/features/homepage/pricing.tsx
+msgid "No card needed"
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "No change needed. It's already at {stage}."
@@ -7713,8 +7510,6 @@ msgid "No email address was found."
 msgstr "Der blev ikke fundet nogen e-mailadresse."
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/remember.tsx
 msgid "No evidence yet"
 msgstr "Intet belæg endnu"
 
@@ -7856,10 +7651,6 @@ msgstr "Ingen erhvervserfaring viser"
 msgid "No work-experience section was found."
 msgstr "Der blev ikke fundet noget arbejdserfaringsafsnit."
 
-#: src/features/homepage/design.tsx
-msgid "No. {number} · {name}"
-msgstr "nr. {number} · {name}"
-
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
@@ -7879,15 +7670,6 @@ msgstr "Normal"
 #: src/features/resume/editor/design/fit.ts
 msgid "normal margins"
 msgstr "normale marginer"
-
-#: src/features/homepage/check.tsx
-msgid "Northwind Labs"
-msgstr "Northwind Labs"
-
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Northwind Labs · Lisbon"
-msgstr "Northwind Labs · Lisbon"
 
 #: src/libs/locale.ts
 msgid "Norwegian"
@@ -8072,7 +7854,6 @@ msgid "Notice period"
 msgstr "Opsigelsesvarsel"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
 msgstr "Nu"
@@ -8082,7 +7863,6 @@ msgid "Numbered list"
 msgstr "Nummereret liste"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Observation"
 msgstr "Observation"
 
@@ -8094,10 +7874,6 @@ msgstr "Odia"
 msgid "Off"
 msgstr "Slukket"
 
-#: src/features/homepage/remember.tsx
-msgid "Off: the coach won’t see it or claim it."
-msgstr "Slået fra: coachen ser det ikke og påstår det ikke."
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Off. Let recruiters find you on Google by turning this on."
 msgstr "Fra. Slå dette til, så rekrutterere kan finde dig på Google."
@@ -8108,8 +7884,7 @@ msgstr "Slukket. Brevet opbevarer sin egen kopi af dine oplysninger."
 
 #: src/features/applications/stages.ts
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Offer"
 msgstr "Tilbud"
 
@@ -8142,10 +7917,6 @@ msgstr ""
 msgid "On. Anyone with the link can see your web page."
 msgstr "Til. Alle med linket kan se din webside."
 
-#: src/features/homepage/remember.tsx
-msgid "Onboarding story"
-msgstr "Onboarding-historie"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "Når en runde er planlagt, laver Forbered en plan med tider, din indledning og de spørgsmål, du kan stille."
@@ -8153,6 +7924,10 @@ msgstr "Når en runde er planlagt, laver Forbered en plan med tider, din indledn
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
 msgstr "Når du har sendt et par jobansøgninger, viser dette, hvor langt de når, og hvor hurtigt folk svarer."
+
+#: src/features/homepage/features.tsx
+msgid "One address that always shows your latest version, public or behind a password."
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -8171,10 +7946,6 @@ msgstr "Én kolonne med et foto ved siden af ​​overskriften og veldefinerede
 msgid "One column with labeled section rows and subtle dividers. A compact layout for experience, education and supporting details."
 msgstr "Én kolonne med mærkede sektionsrækker og subtile skillelinjer. Et kompakt layout til erfaring, uddannelse og understøttende detaljer."
 
-#: src/features/homepage/check.tsx
-msgid "one format"
-msgstr "ét format"
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
@@ -8192,10 +7963,6 @@ msgstr "Tillad kun applikationer, du har tillid til. Denne applikation vil kunne
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Only applies when the section fits on a single page."
 msgstr "Gælder kun, når afsnittet passer på en enkelt side."
-
-#: src/features/homepage/faq.tsx
-msgid "Only if you want it to. Add your own key from OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama or another provider for sharper lines, tailoring to a job posting, coaching for applications and interviews, and reading Word files. Without a key, nothing is sent to an AI service."
-msgstr "Kun hvis du vil. Tilføj din egen nøgle fra OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama eller en anden udbyder for skarpere formuleringer, tilpasning til et jobopslag, coaching til ansøgninger og interviews og læsning af Word-filer. Uden en nøgle sendes intet til en AI-tjeneste."
 
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
@@ -8318,9 +8085,9 @@ msgstr "Åbn webside"
 msgid "Open workspace"
 msgstr "Åbn arbejdsområde"
 
-#: src/features/homepage/remember.tsx
-msgid "Opening"
-msgstr "Indledning"
+#: src/features/homepage/resume.tsx
+msgid "Opened 12 times this week"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Opening the file"
@@ -8444,10 +8211,6 @@ msgstr "Forældet: teksten er ændret siden."
 msgid "Outdent"
 msgstr "Formindsk indrykning"
 
-#: src/features/homepage/prepare.tsx
-msgid "Own and evolve a design system"
-msgstr "Eje og videreudvikle et designsystem"
-
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -8504,18 +8267,7 @@ msgstr "Afsnit"
 msgid "paragraph {n}"
 msgstr "afsnit {n}"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-msgid "Parcel & Co."
-msgstr "Parcel & Co."
-
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Parcel & Co. · Porto"
-msgstr "Parcel & Co. · Porto"
-
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Partly supported"
 msgstr "Delvist underbygget"
 
@@ -8539,7 +8291,6 @@ msgstr "Nøgler"
 #: src/features/auth/pages/login.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/homepage/share.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/share/web-page-text.ts
 #: src/features/settings/account/auth-hooks.ts
@@ -8570,10 +8321,6 @@ msgstr "Tidligere samtaler"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Paste a job link. We'll save the posting so Check, the assistant and your letter can use it."
 msgstr "Indsæt et joblink. Vi gemmer stillingsopslaget, så Check, assistenten og dit brev kan bruge det."
-
-#: src/features/homepage/tailor.tsx
-msgid "Paste a job posting once. It feeds a tailored copy of your resume, a match score, a cover letter draft and a place to track the role."
-msgstr "Indsæt et jobopslag én gang. Det giver en tilpasset kopi af dit CV, en matchscore, et udkast til følgebrev og et sted at følge stillingen."
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Paste a job posting…"
@@ -8629,10 +8376,6 @@ msgstr "Indsat stillingsopslag"
 msgid "Pasting fills the fields automatically."
 msgstr "Indsættelse udfylder felterne automatisk."
 
-#: src/features/homepage/sections.tsx
-msgid "Pause the list of languages"
-msgstr "Sæt listen over sprog på pause"
-
 #: src/features/career/today.tsx
 msgid "Paused · {line}"
 msgstr "På pause · {line}"
@@ -8641,25 +8384,37 @@ msgstr "På pause · {line}"
 msgid "Paused schedules keep their settings."
 msgstr "Tidsplaner på pause beholder deres indstillinger."
 
+#: src/features/homepage/pricing.tsx
+msgid "Pay only while you are applying."
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "Lønperiode"
+
+#: src/features/homepage/plans.ts
+msgid "PDF downloads without a watermark"
+msgstr ""
+
+#: src/features/homepage/faq.tsx
+msgid "PDF on every plan, along with Markdown and JSON. Word (DOCX) and ODT come with Plus and Pro AI. You can export all of your data at any time, whatever your plan."
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "PDF styles support a subset of CSS. Rotation, dashed and dotted borders, and some layout properties are ignored."
 msgstr "PDF-stile understøtter en undergruppe af CSS. Rotation, stiplede og stiplede kanter og nogle layoutegenskaber ignoreres."
 
-#: src/features/homepage/faq.tsx
-msgid "PDF, Word (DOCX), Markdown and JSON. The JSON export imports back into any Rezumi, including one you host yourself, so your data is never locked in."
-msgstr "PDF, Word (DOCX), Markdown og JSON. JSON-eksporten importerer tilbage til enhver Rezumi, inklusive en du selv hoster, så dine data aldrig er låst ind."
-
 #: src/features/documents/documents-page.tsx
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word eller JSON. Vi bygger et CV ud fra det."
 
-#: src/features/homepage/sections.tsx
-msgid "People using it"
-msgstr "Folk der bruger det"
+#: src/features/homepage/testimonials.tsx
+msgid "People reaching the interview with Rezumi."
+msgstr ""
+
+#: src/features/homepage/testimonials.tsx
+msgid "People using Rezumi"
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Permanently removes everything. Export first if you want a copy."
@@ -8699,10 +8454,6 @@ msgstr "Vælg et tidspunkt efter nu."
 #: src/components/input/icon-picker.tsx
 msgid "Pick an icon"
 msgstr "Vælg et ikon"
-
-#: src/features/homepage/design.tsx
-msgid "Pick from {templateCount} templates, then set the type, color and spacing. The words stay put, so try as many looks as you like."
-msgstr "Vælg mellem {templateCount} skabeloner, og indstil derefter skrifttyper, farve og afstand. Din tekst forbliver den samme, så prøv så mange designs, som du vil."
 
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
@@ -8748,10 +8499,6 @@ msgstr "Planlæg, hvad du vil spørge om"
 msgid "Planning your week"
 msgstr "Planlægger din uge"
 
-#: src/features/homepage/sections.tsx
-msgid "Play the list of languages"
-msgstr "Afspil listen over sprog"
-
 #: src/libs/locale.ts
 msgid "Polish"
 msgstr "Polsk"
@@ -8769,15 +8516,11 @@ msgstr "Stående"
 msgid "Portuguese (Brazil)"
 msgstr "Portugisisk (Brasilien)"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Portuguese (native)"
-msgstr "portugisisk (indfødt)"
-
 #: src/libs/locale.ts
 msgid "Portuguese (Portugal)"
 msgstr "Portugisisk (Portugal)"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Position"
@@ -8789,7 +8532,6 @@ msgstr "jobopslag"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
-#: src/features/homepage/tailor.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "Jobopslag"
@@ -8812,7 +8554,6 @@ msgstr "Udtryk fra jobopslaget i dit CV"
 
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice"
 msgstr "Øvelse"
 
@@ -8827,35 +8568,33 @@ msgctxt "Button: rehearse interview answers"
 msgid "Practice"
 msgstr "Øv"
 
-#: src/features/homepage/remember.tsx
-msgid "Practice · Your opening, about 40 seconds aloud"
-msgstr "Øv · Din indledning, ca. 40 sekunder højt"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Practice another question"
 msgstr "Øv et andet spørgsmål"
+
+#: src/features/homepage/features.tsx
+msgid "Practice answers from stories you wrote once, then debrief after each round."
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Practice for your {company} interviews."
 msgstr "Øv dig til dine interviews hos {company}."
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice priorities, not conclusions about why an employer decided anything."
 msgstr "Prioriteter for øvelse, ikke konklusioner om, hvorfor en arbejdsgiver traf en beslutning."
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice priority:"
 msgstr "Øv dig først på:"
 
-#: src/features/homepage/prepare.tsx
-msgid "Practice questions are simulated, not from Fieldnote."
-msgstr "Øvespørgsmål er simulerede og kommer ikke fra Fieldnote."
+#: src/features/homepage/features.tsx
+msgid "Practice question"
+msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Practice your introduction once. Keep it to about 90 seconds."
-msgstr "Øv din præsentation én gang. Hold den på ca. 90 sekunder."
+#: src/features/homepage/testimonials.tsx
+msgid "Practicing answers from my own stories made the second interview feel like a conversation."
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Practicing your story: {storyTitle}"
@@ -8881,9 +8620,7 @@ msgstr "Præferencer"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/prepare.tsx
+#: src/features/homepage/features.tsx
 msgid "Prepare"
 msgstr "Forbered"
 
@@ -8894,6 +8631,10 @@ msgstr "Forbered en briefing"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Prepare a resume"
 msgstr "Forbered et CV"
+
+#: src/features/homepage/introduction.tsx
+msgid "Prepare for interviews from stories you wrote once"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Prepare me for the interview"
@@ -8970,6 +8711,15 @@ msgstr "Forrige måned"
 msgid "Previous week"
 msgstr ""
 
+#: src/features/homepage/pricing.tsx
+msgid "Prices in Indonesian Rupiah. Access starts once payment is confirmed and lasts 30 days. When it ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgstr ""
+
+#: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
+msgid "Pricing"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
 msgstr "Primær farve"
@@ -8994,10 +8744,6 @@ msgstr "Privatliv"
 msgid "Privacy policy"
 msgstr "Privatlivspolitik"
 
-#: src/features/homepage/share.tsx
-msgid "Private"
-msgstr "Privat"
-
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Private. Only you can see it."
 msgstr "Privat. Kun du kan se det."
@@ -9006,23 +8752,25 @@ msgstr "Privat. Kun du kan se det."
 msgid "Product"
 msgstr "Produkt"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
+#: src/features/homepage/testimonials.tsx
 msgid "Product Designer"
 msgstr "Produktdesigner"
 
-#: src/features/homepage/sheet.tsx
-msgid "Product designer with nine years of experience building <0>design systems</0> and research-led products for B2B teams."
-msgstr "Produktdesigner med ni års erfaring med at udvikle <0>designsystemer</0> og forskningsbaserede produkter til B2B-teams."
+#: src/features/homepage/resume.tsx
+msgid "Product Designer · Jakarta"
+msgstr ""
+
+#: src/features/homepage/resume.tsx
+msgid "Product designer with seven years of experience turning complex flows into simple, measurable products."
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Proficiency"
 msgstr "Kompetenceniveau"
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
 #: src/features/settings/account/profile.tsx
 msgid "Profile"
 msgstr "Profil"
@@ -9052,10 +8800,6 @@ msgstr "Statuslinje"
 msgid "Projects"
 msgstr "Projekter"
 
-#: src/features/homepage/hero.tsx
-msgid "Promoted to lead, 2021"
-msgstr "Forfremmet til leder, 2021"
-
 #: src/features/career/workspace/messages.tsx
 msgid "Proposed changes"
 msgstr "Foreslåede ændringer"
@@ -9068,9 +8812,8 @@ msgstr "Foreslåede ændringer"
 msgid "Protect your resume with a password"
 msgstr "Beskyt dit CV med en adgangskode"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Prototyping"
 msgstr "Prototypeudvikling"
 
@@ -9086,7 +8829,6 @@ msgstr "Udbyder"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "Public"
@@ -9148,10 +8890,6 @@ msgstr "Lilla"
 msgid "Put a plain email address near the top of the first page. It is what most systems file you under."
 msgstr "Placer en almindelig e-mailadresse nær toppen af den første side. Det er den, de fleste systemer arkiverer dig under."
 
-#: src/features/homepage/sections.tsx
-msgid "Put it all on <0>one page.</0>"
-msgstr "Saml det hele på <0>én side.</0>"
-
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Put the caret in a line to improve it"
 msgstr "Sæt karet i en linje for at forbedre det"
@@ -9177,10 +8915,6 @@ msgstr ""
 msgid "Question {position} of {total}"
 msgstr "Spørgsmål {position} af {total}"
 
-#: src/features/homepage/prepare.tsx
-msgid "Question 1 of 4 · Practice"
-msgstr "Spørgsmål 1 af 4 · Øvelse"
-
 #: src/features/career/workspace/apply.tsx
 msgid "Question from the form"
 msgstr "Spørgsmål fra formularen"
@@ -9193,26 +8927,21 @@ msgstr "Indstillinger for spørgsmål"
 msgid "Question removed"
 msgstr "Spørgsmål fjernet"
 
-#: src/features/homepage/faq.tsx
-msgid "Questions"
-msgstr "Spørgsmål"
-
 #: src/features/career/offers.tsx
 msgid "Questions copied"
 msgstr "Spørgsmål kopieret"
 
 #: src/features/career/workspace/prepare.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Questions to ask"
 msgstr "Spørgsmål at stille"
-
-#: src/features/homepage/remember.tsx
-msgid "R"
-msgstr "R"
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Raise the design sheet"
 msgstr "Hæv designarket"
+
+#: src/features/homepage/hero.tsx
+msgid "Rated 5 out of 5"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Re-export from a single-column layout, then copy the text out and check it reads top to bottom."
@@ -9238,10 +8967,6 @@ msgstr "Eksporter igen med indlejrede skrifttyper, og tjek at teksten kopieres u
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Eksporter igen med indlejrede skrifttyper, åbn derefter filen, og tjek at teksten kopieres ud rent."
 
-#: src/features/homepage/prepare.tsx
-msgid "Re: Senior Product Designer"
-msgstr "Sv: Senior produktdesigner"
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Reached"
 msgstr ""
@@ -9265,7 +8990,6 @@ msgid "Read briefing"
 msgstr "Læs briefing"
 
 #: src/features/career/workspace/messages.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Read it for me"
 msgstr "Læs den for mig"
 
@@ -9305,10 +9029,6 @@ msgstr "Læs siden"
 #: src/features/assistant/conversation.tsx
 msgid "Read the resume"
 msgstr "Læste CV'et"
-
-#: src/features/homepage/faq.tsx
-msgid "Read the self-hosting guide"
-msgstr "Læs guiden til selvvært"
 
 #: src/features/auth/pages/consent.tsx
 msgid "Read your email address."
@@ -9428,6 +9148,10 @@ msgstr "Fra interviewet"
 msgid "Recipient"
 msgstr "Modtager"
 
+#: src/features/homepage/pricing.tsx
+msgid "Recommended"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "Optag igen"
@@ -9459,10 +9183,6 @@ msgstr "Optagetid"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Recruiter"
 msgstr "Rekrutterer"
-
-#: src/features/homepage/remember.tsx
-msgid "Recruiter reply"
-msgstr "Svar fra rekrutterer"
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "Recruiters see this name. Your name plus “Cover Letter” works well."
@@ -9501,7 +9221,6 @@ msgid "Referred by…, things to emphasize, etc."
 msgstr "Henvist af…, ting at fremhæve osv."
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Reflection"
 msgstr "Refleksion"
 
@@ -9529,10 +9248,6 @@ msgstr "Øv højt"
 msgid "Rehearse one answer aloud"
 msgstr "Øv ét svar højt"
 
-#: src/features/homepage/prepare.tsx
-msgid "Rehearse one disagreement with engineering and how it ended."
-msgstr "Øv dig på én uenighed med udviklerne, og hvordan den endte."
-
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Reject"
 msgstr "Afvise"
@@ -9550,9 +9265,6 @@ msgid "Reload"
 msgstr "Genindlæs"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/remember.tsx
 msgid "Remember"
 msgstr "Husk"
 
@@ -9742,7 +9454,6 @@ msgid "Replaces “{current}” on the application."
 msgstr "Erstatter \"{current}\" på ansøgningen."
 
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/remember.tsx
 msgid "Reply"
 msgstr "Svar"
 
@@ -9750,7 +9461,6 @@ msgstr "Svar"
 msgid "Reply copied"
 msgstr "Svaret er kopieret"
 
-#: src/features/homepage/footer.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Report a bug"
 msgstr "Rapportér en fejl"
@@ -9793,17 +9503,9 @@ msgstr "Nulstil din adgangskode"
 msgid "Resetting your password..."
 msgstr "Nulstiller din adgangskode..."
 
-#: src/features/homepage/footer.tsx
-msgid "Resources"
-msgstr "Ressourcer"
-
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "Svarfrist"
-
-#: src/features/homepage/write.tsx
-msgid "Responsible for the design system and helping other teams with their designs."
-msgstr "Ansvarlig for designsystemet og hjælpe andre teams med deres designs."
 
 #: src/features/documents/document-actions.tsx
 msgid "Restore"
@@ -9832,13 +9534,8 @@ msgid "Restored the version from {0}. Your previous state is saved as “Before 
 msgstr "Gendannet versionen fra {0}. Din tidligere tilstand gemmes som \"Før gendannelse\"."
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Result"
 msgstr "Resultat"
-
-#: src/features/homepage/remember.tsx
-msgid "Result left out: no fact backs it. Switch it on, or add one, and it comes back."
-msgstr "Resultat udeladt: intet faktum underbygger det. Slå et til, eller tilføj et, så kommer det tilbage."
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "resume"
@@ -9869,14 +9566,9 @@ msgstr "CV (valgfrit)"
 msgid "Resume + letter"
 msgstr "CV + brev"
 
-#: src/features/homepage/tailor.tsx
-msgid "Resume attached"
-msgstr "CV vedhæftet"
-
-#. Hero headline, line 2 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.
-#: src/features/homepage/hero.tsx
-msgid "resume builder"
-msgstr "til at oprette CV'er"
+#: src/libs/seo.ts
+msgid "Resume builder with ATS check and AI tailoring"
+msgstr ""
 
 #: src/features/resume/preview/preview.browser.tsx
 msgid "Resume content"
@@ -9913,7 +9605,7 @@ msgstr "CV'er"
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "CV'er gengives altid på hvidt papir, uanset temaet."
 
-#: src/features/homepage/sections.tsx
+#: src/features/homepage/testimonials.tsx
 msgid "Resumes created"
 msgstr "cv'er oprettet"
 
@@ -10016,6 +9708,15 @@ msgstr "Rezumi - Gå til startside"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#: src/features/homepage/introduction.tsx
+msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/homepage/header.tsx
+#: src/features/homepage/section-nav.tsx
+msgid "Rezumi, back to top"
+msgstr ""
+
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Right"
 msgstr "Højre"
@@ -10097,10 +9798,6 @@ msgstr ""
 msgid "Run again"
 msgstr "Kør igen"
 
-#: src/features/homepage/prepare.tsx
-msgid "Run research with customers"
-msgstr "Lave research med kunder"
-
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Runs onto page {next}"
 msgstr "Kører på side {next}"
@@ -10108,10 +9805,6 @@ msgstr "Kører på side {next}"
 #: src/libs/locale.ts
 msgid "Russian"
 msgstr "Russisk"
-
-#: src/features/homepage/remember.tsx
-msgid "S"
-msgstr "S"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -10127,17 +9820,9 @@ msgstr "Løn ikke oplyst"
 msgid "Salary range"
 msgstr "Løninterval"
 
-#: src/features/homepage/prepare.tsx
-msgid "Sam"
-msgstr "Sam"
-
-#: src/features/homepage/prepare.tsx
-msgid "Sam, Fieldnote"
-msgstr "Sam, Fieldnote"
-
-#: src/features/homepage/remember.tsx
-msgid "Same you. Less starting over."
-msgstr "Samme dig. Mindre at starte forfra på."
+#: src/features/homepage/testimonials.tsx
+msgid "Sales Executive"
+msgstr ""
 
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
@@ -10256,22 +9941,16 @@ msgstr "gemt"
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/knowledge/preferences.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Saved"
 msgstr "Gemt"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "Gemt"
-
-#: src/features/homepage/write.tsx
-msgid "Saved · version {version}"
-msgstr "Gemt · version {version}"
 
 #: src/features/resume/share/history-tab.tsx
 msgid "Saved “{trimmed}”"
@@ -10343,10 +10022,6 @@ msgstr "Det tager længere tid end forventet at gemme. Dine ændringer er der st
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Saving…"
 msgstr "Gemmer…"
-
-#: src/features/homepage/prepare.tsx
-msgid "Say it aloud"
-msgstr "Sig det højt"
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Scan the QR code with your authenticator app, or copy the secret and paste it into the app."
@@ -10526,6 +10201,7 @@ msgid "Section headings"
 msgstr "Afsnitsoverskrifter"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/homepage/section-nav.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
@@ -10538,6 +10214,18 @@ msgstr "Afsnit bruger overskrifter, som systemer genkender, og arbejdserfaring f
 #: src/features/career/workspace/prepare.tsx
 msgid "See below"
 msgstr "Se nedenfor"
+
+#: src/features/homepage/introduction.tsx
+msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/homepage/hero.tsx
+msgid "See pricing"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "See what ATS software reads"
+msgstr ""
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
@@ -10577,10 +10265,6 @@ msgstr "Valgte dokumenter"
 msgid "Selection"
 msgstr ""
 
-#: src/features/homepage/footer.tsx
-msgid "Self-hosting"
-msgstr "Selvvært"
-
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
 msgstr "Semantisk CSS-stilark"
@@ -10589,6 +10273,10 @@ msgstr "Semantisk CSS-stilark"
 #: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "Sende"
+
+#: src/features/homepage/features.tsx
+msgid "Send a link, not an attachment"
+msgstr ""
 
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
@@ -10607,6 +10295,10 @@ msgstr ""
 msgid "Sender details copied into the letter"
 msgstr "Afsenderoplysninger kopieret til brevet"
 
+#: src/features/homepage/testimonials.tsx
+msgid "Sending a link instead of a PDF means recruiters always see the latest version."
+msgstr ""
+
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Sending password reset email..."
 msgstr "Sender e-mail til nulstilling af adgangskode..."
@@ -10624,10 +10316,6 @@ msgstr "Sender jobopslaget, noterne og dokumenterne for denne ansøgning samt de
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "Sender jobopslaget, noterne og dokumenterne for denne ansøgning samt den Viden, der er slået til, til denne forbindelse. Din udbyder kan tage betaling for det."
 
-#: src/features/homepage/remember.tsx
-msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
-msgstr "Sender denne historie og de fakta, der er slået til, til din AI-forbindelse. Uden en forbindelse sendes intet."
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
 msgstr "Sender din besked, denne ansøgning (jobopslag, noter, sendte dokumenter) og den Viden, der er slået til, til {connection}."
@@ -10638,9 +10326,8 @@ msgstr "Sender din besked, denne ansøgning (jobopslag, noter, sendte dokumenter
 msgid "Sends your resume's text only to {0} · {1}, with your key."
 msgstr "Sender kun dit CV's tekst til {0} · {1} med din nøgle."
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Senior Product Designer"
 msgstr "Senior produktdesigner"
 
@@ -10713,9 +10400,7 @@ msgstr "Skyggefarve"
 msgid "Shadow width"
 msgstr "Skyggebredde"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/share.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -10723,9 +10408,9 @@ msgstr "Skyggebredde"
 msgid "Share"
 msgstr "Dele"
 
-#: src/features/homepage/share.tsx
-msgid "Share a public link, add a password or keep it private. Choose from 3 visibility options. Export to PDF or Word, or take all your data with you as JSON."
-msgstr "Del et offentligt link, tilføj en adgangskode, eller hold det privat. Vælg mellem 3 synlighedsmuligheder. Eksporter til PDF eller Word, eller tag alle dine data med dig som JSON."
+#: src/features/homepage/introduction.tsx
+msgid "Share a live link that is always the latest version"
+msgstr ""
 
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
@@ -10734,6 +10419,10 @@ msgstr "Del sektioner"
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
 msgstr "Del via…"
+
+#: src/features/homepage/resume.tsx
+msgid "Shared at your link"
+msgstr ""
 
 #: src/features/documents/documents-page.tsx
 #: src/libs/resume/section.tsx
@@ -10745,17 +10434,9 @@ msgstr "Deling"
 msgid "Sharpening the opening"
 msgstr "Skærper indledningen"
 
-#: src/features/homepage/sheet.tsx
-msgid "Shipped <0>accessible</0> checkout flows for web and iOS, meeting WCAG 2.1 AA."
-msgstr "Udviklede <0>tilgængelige</0> betalingsforløb til web og iOS, som opfylder WCAG 2.1 AA."
-
-#: src/features/homepage/prepare.tsx
-msgid "Shipped checkout flows that meet WCAG 2.1 AA."
-msgstr "Lancerede checkout-forløb, der opfylder WCAG 2.1 AA."
-
-#: src/features/homepage/hero.tsx
-msgid "Shipped checkout for iOS"
-msgstr "Afsendt kassen for iOS"
+#: src/features/homepage/resume.tsx
+msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Short and direct. Fine if the posting asks for brevity."
@@ -10881,7 +10562,6 @@ msgid "Shows the tags they all share. Tags you add go on every document; tags yo
 msgstr "Viser de tags, de alle har til fælles. Tags, du tilføjer, kommer på alle dokumenter; tags, du fjerner, fjernes fra dem alle. Låste dokumenter forbliver uændrede."
 
 #. Layout editor column label for the secondary sidebar area
-#: src/features/homepage/sheet.tsx
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -11000,7 +10680,6 @@ msgid "Single-column; polished and serious for senior or enterprise-level positi
 msgstr "Enkeltkolonne; poleret og seriøs til senior- eller enterprise-stillinger."
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Situation"
 msgstr "Situation"
 
@@ -11012,10 +10691,6 @@ msgstr "Situation, handling, resultat"
 msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
 msgstr "Situation, opgave, handling, resultat, refleksion. Knyt hver historie til fakta, du kan underbygge; lad ukendte resultater stå tomme."
 
-#: src/features/homepage/hero.tsx
-msgid "Six product teams"
-msgstr "Seks produktteams"
-
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
 msgstr "Størrelse"
@@ -11024,8 +10699,7 @@ msgstr "Størrelse"
 msgid "Skill"
 msgstr "Færdighed"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Skills"
 msgstr "Færdigheder"
@@ -11072,10 +10746,6 @@ msgstr "Små tal, men værd at bemærke."
 msgid "Small steps, every day, add up."
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
-msgstr "Så jeg talte med 14 kunder, fandt de tre steder, hvor folk faldt fra, og vi lavede en prototype på en kortere opsætning."
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Some application systems ask for one before you can apply."
 msgstr "Nogle jobansøgningssystemer beder om et, før du kan ansøge."
@@ -11120,6 +10790,10 @@ msgstr "Noget tekst falder uden for siden."
 msgid "Some text is rotated."
 msgstr "Noget tekst er roteret."
 
+#: src/features/homepage/faq.tsx
+msgid "Something else on your mind? Write to us at"
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "Noget gik galt. Prøv venligst igen."
@@ -11144,10 +10818,6 @@ msgstr ""
 msgid "Source"
 msgstr "Kilde"
 
-#: src/features/homepage/footer.tsx
-msgid "Source code"
-msgstr "Kildekode"
-
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
@@ -11158,22 +10828,9 @@ msgstr "Kilder"
 msgid "Spanish"
 msgstr "Spansk"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Spanish (B2)"
-msgstr "Spansk (B2)"
-
-#: src/features/homepage/hero.tsx
-msgid "Spanish, B2"
-msgstr "Spansk, B2"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Speak"
 msgstr "Tal"
-
-#: src/features/homepage/sections.tsx
-msgid "Speaks your language"
-msgstr "Taler dit sprog"
 
 #: src/features/ats-checker/messages.ts
 msgid "Spell the month, as in \"Mar 2022\"."
@@ -11226,21 +10883,13 @@ msgstr "Fasen forbliver {stage}"
 msgid "Stages"
 msgstr "Stadier"
 
-#: src/features/homepage/check.tsx
+#: src/features/homepage/features.tsx
+msgid "Stakeholders"
+msgstr ""
+
+#: src/features/homepage/features.tsx
 msgid "Standard section headings"
 msgstr "Standardafsnitsoverskrifter"
-
-#: src/features/homepage/header.tsx
-msgid "Star Rezumi on GitHub"
-msgstr "Stjerne Rezumi på GitHub"
-
-#: src/components/input/github-stars-button.tsx
-msgid "Star us on GitHub (opens in new tab)"
-msgstr "Giv os en stjerne på GitHub (åbner i ny fane)"
-
-#: src/features/homepage/sections.tsx
-msgid "Stars on GitHub"
-msgstr "Stjerner på GitHub"
 
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Start"
@@ -11263,6 +10912,14 @@ msgstr "Startdatoen skal være den samme som eller ligge før slutdatoen."
 msgid "Start each one with a concrete verb: built, led, reduced, migrated."
 msgstr "Start hver med et konkret udsagnsord: byggede, ledte, reducerede, migrerede."
 
+#: src/features/homepage/plans.ts
+msgid "Start free"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Start from"
 msgstr "Start fra"
@@ -11271,9 +10928,9 @@ msgstr "Start fra"
 msgid "Start from one you have and link the application."
 msgstr "Start fra en du har og link jobansøgningen."
 
-#: src/features/homepage/sections.tsx
-msgid "Start from scratch or import what you have. It takes a few minutes, and you can come back to it anytime."
-msgstr "Start fra bunden, eller importér det, du har. Det tager et par minutter, og du kan altid vende tilbage til det."
+#: src/features/homepage/closing.tsx
+msgid "Start from scratch or import the one you have. The free plan is yours for as long as you need it."
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Start on a new page"
@@ -11303,6 +10960,10 @@ msgstr "Begynd at skrive, eller udkast fra det, vi kender: dit CV."
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, link a resume or an application first."
 msgstr "Begynd at skrive. For at udarbejde et udkast skal du først linke et CV eller en jobansøgning."
+
+#: src/features/homepage/introduction.tsx
+msgid "Start with the free plan"
+msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Start with the sections most resumes have."
@@ -11338,7 +10999,6 @@ msgid "Stay here"
 msgstr "Bliv her"
 
 #: src/features/assistant/prompt-box.tsx
-#: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
 msgstr "Stop"
@@ -11387,13 +11047,8 @@ msgid "Stories to bring"
 msgstr "Historier at tage med"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Historie"
-
-#: src/features/homepage/remember.tsx
-msgid "Story · 5 of 5 parts"
-msgstr "Historie · 5 af 5 dele"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Story deleted"
@@ -11418,10 +11073,6 @@ msgstr "Stærkere verbum"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "Stylesheet-editor"
-
-#: src/features/homepage/prepare.tsx
-msgid "Subject"
-msgstr "Emne"
 
 #: src/features/career/workspace/apply.tsx
 msgid "Submit through the employer's application page yourself."
@@ -11465,6 +11116,7 @@ msgstr "Foreslår nedskæringer, sletter aldrig af sig selv"
 msgid "Summaries of your open applications"
 msgstr "Resuméer af dine åbne ansøgninger"
 
+#: src/features/homepage/resume.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -11472,7 +11124,6 @@ msgstr "Opsummering"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Supported"
 msgstr "Underbygget"
 
@@ -11500,27 +11151,17 @@ msgstr "Skift start- og slutdatoer."
 msgid "Swedish"
 msgstr "Svensk"
 
-#: src/features/homepage/remember.tsx
-msgid "Switch it off"
-msgstr "Slå det fra"
-
 #: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "Skift model"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-msgid "Switch to dark mode"
-msgstr "Skift til mørk tilstand"
+#: src/features/homepage/features.tsx
+msgid "Switch templates without rewriting"
+msgstr ""
 
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to dark theme"
 msgstr "Skift til mørkt tema"
-
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-msgid "Switch to light mode"
-msgstr "Skift til lystilstand"
 
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to light theme"
@@ -11549,10 +11190,6 @@ msgstr "Systemer arkiverer dig under navnet øverst på siden."
 #: src/features/resume/editor/check/issues.ts
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "Systemer leder efter en oplevelsessektion. Projekter eller frivilligt arbejde kan vise den samme historie."
-
-#: src/features/homepage/remember.tsx
-msgid "T"
-msgstr "O"
 
 #: src/features/applications/components/list-view.tsx
 msgid "Tag"
@@ -11588,15 +11225,30 @@ msgstr "Tags, adskilt af kommaer"
 msgid "Tags…"
 msgstr "Tags..."
 
-#: src/features/homepage/header.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Tailor"
 msgstr "Tilpas til jobbeskrivelse"
+
+#: src/features/homepage/plans.ts
+msgid "Tailor applications and prepare for interviews with AI."
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Tailor my resume to the Northwind posting."
+msgstr ""
 
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-panel.tsx
 msgid "Tailor to the {0} posting"
 msgstr "Tilpas til jobopslaget fra {0}"
+
+#: src/features/homepage/plans.ts
+msgid "Tailor your resume to each posting"
+msgstr ""
+
+#: src/features/homepage/resume.tsx
+msgid "Tailored to the posting"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Tailored vs. base resume"
@@ -11611,7 +11263,6 @@ msgid "Target roles"
 msgstr "Ønskede stillinger"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Task"
 msgstr "Opgave"
 
@@ -11632,13 +11283,13 @@ msgstr "Fortæl om et stykke arbejde, du er stolt af."
 msgid "Tell me about a piece of work you're proud of. What was your part in it, and how did you measure success?"
 msgstr "Fortæl om et stykke arbejde, du er stolt af. Hvad var din rolle i det, og hvordan målte du succes?"
 
-#: src/features/homepage/prepare.tsx
-msgid "Tell me about a product improvement you led. What was your contribution, and how did you measure success?"
-msgstr "Fortæl om en produktforbedring, du har stået i spidsen for. Hvad var dit bidrag, og hvordan målte du succes?"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "Fortæl om en gang, hvor du var uenig med en kollega. Hvordan løste I det?"
+
+#: src/features/homepage/features.tsx
+msgid "Tell me about a time you led a redesign."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Telugu"
@@ -11660,8 +11311,8 @@ msgstr "Skabelon ændret til {0}"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Skabelon, type og farver følger cv'et, så parret altid matcher."
 
-#: src/features/homepage/design.tsx
 #: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
 msgid "Templates"
 msgstr "Skabeloner"
 
@@ -11684,6 +11335,10 @@ msgstr "Test søgefunktionen"
 #: src/features/settings/ai/web-access.tsx
 msgid "Tested with {connectedProvider}. Only this service was tested."
 msgstr "Testet med {connectedProvider}. Kun denne service blev testet."
+
+#: src/features/homepage/ui.tsx
+msgid "Testimonials"
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Testing search and reading with {connectedProvider}…"
@@ -11723,9 +11378,9 @@ msgstr "Tekstfarve"
 msgid "Text comes out in the order a person reads it, at a size and spacing that survive."
 msgstr "Tekst kommer ud i den rækkefølge, en person læser den, i en størrelse og en afstand, der overlever."
 
-#: src/features/homepage/check.tsx
-msgid "Text is selectable"
-msgstr "Tekst kan vælges"
+#: src/features/homepage/features.tsx
+msgid "Text in reading order"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Text is written one character at a time."
@@ -11767,10 +11422,6 @@ msgstr "Tekst under {minimum} pt kan læses forkert, når et system gengiver den
 msgid "Thai"
 msgstr "Thai"
 
-#: src/features/homepage/remember.tsx
-msgid "Thanks, Sam. Here’s one: at Northwind Labs I led the onboarding redesign, from 14 customer interviews to a shorter setup."
-msgstr "Tak, Sam. Her er et: Hos Northwind Labs ledte jeg redesignet af onboarding, fra 14 kundeinterviews til en kortere opsætning."
-
 #: src/features/ats-checker/checker.tsx
 msgid "That file couldn't be read as a PDF. Choose a PDF file and try again."
 msgstr "Filen kunne ikke læses som en PDF. Vælg en PDF-fil, og prøv igen."
@@ -11811,17 +11462,9 @@ msgstr "Den loginudbyder er ikke længere tilgængelig på denne server. Brug en
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
 msgstr "{label}-filen kunne ikke genereres. Prøv igen, eller download PDF i stedet."
 
-#: src/features/homepage/prepare.tsx
-msgid "The 13-point activation lift. Knowledge has the before and after."
-msgstr "Løftet på 13 point i aktivering. Viden har før- og efter-tallene."
-
 #: src/libs/error-message.ts
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "Adressen må kun indeholde små bogstaver og tal, adskilt af enkelte bindestreger."
-
-#: src/features/homepage/faq.tsx
-msgid "The app is translated into {languages} languages by volunteers, and a resume can be written in any language, including right-to-left scripts like Arabic and Hebrew."
-msgstr "Appen er oversat til {languages}-sprog af frivillige, og et CV kan skrives på ethvert sprog, inklusive højre-til-venstre-scripts som arabisk og hebraisk."
 
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
@@ -11842,6 +11485,10 @@ msgstr "Assistenten bruger din egen nøgle. Der sendes intet nogen steder, før 
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "Den indbyggede læser forbliver aktiv."
+
+#: src/features/homepage/features.tsx
+msgid "The checker shows the text a parser extracts and what to fix first."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -11874,6 +11521,10 @@ msgstr "Kopien er knyttet til jobansøgningen, så Check og assistenten bruger s
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "Slutningen er før starten."
+
+#: src/features/homepage/testimonials.tsx
+msgid "The English and Indonesian versions share one design, so switching languages took minutes, not an afternoon."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF"
@@ -12012,6 +11663,10 @@ msgstr "cv'et"
 msgid "The resume as it is"
 msgstr "CV'et som det er"
 
+#: src/features/homepage/footer.tsx
+msgid "The resume builder that stays with you until the offer."
+msgstr ""
+
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The review couldn't finish. Try again."
 msgstr "Anmeldelsen kunne ikke afsluttes. Prøv igen."
@@ -12111,10 +11766,6 @@ msgstr "De og deres tidslinjer slettes permanent. Dette kan ikke fortrydes."
 #: src/features/resume/editor/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
 msgstr "De leder efter overskrifter som Erfaring, Uddannelse og Færdigheder."
-
-#: src/features/homepage/prepare.tsx
-msgid "They’ve confirmed your interview for today"
-msgstr "De har bekræftet dit interview i dag"
 
 #: src/features/career/shared.tsx
 msgid "Thinking"
@@ -12453,6 +12104,10 @@ msgstr ""
 msgid "Totals aren't added up on purpose."
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "Track"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Track a job you're applying to and link the resume you sent."
 msgstr "Spor et job, du søger, og link det CV, du har sendt."
@@ -12484,10 +12139,6 @@ msgstr "Afskrift kopieret"
 #: src/routes/dashboard/settings/route.tsx
 msgid "Translate"
 msgstr "Oversætte"
-
-#: src/features/homepage/sections.tsx
-msgid "Translated into {languageCount} languages."
-msgstr "Oversat til {languageCount} sprog."
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -12585,6 +12236,10 @@ msgstr "Slå to-trins verifikation til"
 msgid "Turn this schedule on"
 msgstr "Slå denne tidsplan til"
 
+#: src/features/homepage/hero.tsx
+msgid "Turn your experience into a resume that gets interviews."
+msgstr ""
+
 #: src/dialogs/auth/disable-two-factor.tsx
 msgid "Turning off two-step verification…"
 msgstr "Slår to-trins verifikation fra…"
@@ -12592,6 +12247,10 @@ msgstr "Slår to-trins verifikation fra…"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turning on two-step verification…"
 msgstr "Slår to-trins verifikation til…"
+
+#: src/features/homepage/features.tsx
+msgid "Two bullets run over two lines"
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -12601,10 +12260,6 @@ msgstr "To kolonner"
 #: src/dialogs/resume/template/data.ts
 msgid "Two columns beneath a colored header band. Keep experience in the main column and supporting details in the sidebar."
 msgstr "To kolonner under et farvet overskriftsbånd. Hold erfaring i hovedspalten og understøttende detaljer i sidebjælken."
-
-#: src/features/homepage/check.tsx
-msgid "Two date formats found"
-msgstr "To datoformater fundet"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Two stories"
@@ -12675,6 +12330,10 @@ msgstr "Indtast <0>{CONFIRMATION}</0> for at bekræfte"
 msgid "Type a command or search…"
 msgstr "Skriv en kommando eller søg…"
 
+#: src/features/homepage/features.tsx
+msgid "Type in the form and watch the page update. Undo anything, and pick up on any device."
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Type instead"
 msgstr "Skriv i stedet"
@@ -12708,7 +12367,6 @@ msgstr "Understreg links"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
@@ -12726,12 +12384,6 @@ msgstr "Fortryd"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Undo resume change"
 msgstr "Fortryd ændring af CV"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-msgid "University of Porto"
-msgstr "University of Porto"
 
 #: src/features/career/offers.tsx
 msgid "Unknown"
@@ -12985,7 +12637,6 @@ msgid "used {used}"
 msgstr "brugte {used}"
 
 #: src/features/career/knowledge/facts.tsx
-#: src/features/homepage/remember.tsx
 msgid "Used in coaching"
 msgstr "Bruges i coaching"
 
@@ -12997,8 +12648,7 @@ msgstr "Bruges til at tjekke stillinger og tilbud. Hver er et tal, så coachen k
 msgid "Used when {connectedProvider} can't read a page. No account needed."
 msgstr "Bruges, når {connectedProvider} ikke kan læse en side. Ingen konto nødvendig."
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 msgid "User research"
 msgstr "Brugerresearch"
 
@@ -13030,9 +12680,9 @@ msgstr "Bruger din skabelon {0} og dit design og passer til enhver skærm. Skift
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "Bruger din AI-udbyders egen websøgning, hvor understøttet, og læser links med den indbyggede læser."
 
-#: src/features/homepage/prepare.tsx
-msgid "Uses your browser’s voice"
-msgstr "Bruger din browsers stemme"
+#: src/features/homepage/features.tsx
+msgid "UX Designer"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Uzbek"
@@ -13156,13 +12806,13 @@ msgstr "Se stillingsopslaget"
 msgid "Viewing {0} · {1} · read-only"
 msgstr "Viser {0} · {1} · skrivebeskyttet"
 
+#: src/features/homepage/features.tsx
+msgid "Views"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "visninger · 30 dage"
-
-#: src/features/homepage/share.tsx
-msgid "Visibility"
-msgstr "Sigtbarhed"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -13192,13 +12842,13 @@ msgstr "Venter på dig"
 msgid "Waiting to hear back"
 msgstr "Venter på at høre tilbage"
 
+#: src/features/homepage/features.tsx
+msgid "Walk in ready"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Warning"
 msgstr "Advarsel"
-
-#: src/features/homepage/hero.tsx
-msgid "WCAG 2.1 AA"
-msgstr "WCAG 2.1 AA"
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "We read the page and save the posting for Check, the assistant and your letter."
@@ -13268,7 +12918,6 @@ msgid "Weighing each requirement"
 msgstr "Vejer hvert krav"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Went well"
 msgstr "Gik godt"
 
@@ -13289,7 +12938,6 @@ msgid "What changed? Leave blank if you can’t support it."
 msgstr "Hvad ændrede sig? Lad feltet stå tomt, hvis du ikke kan underbygge det."
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "What did they ask?"
 msgstr "Hvad spurgte de om?"
 
@@ -13312,6 +12960,10 @@ msgstr "Hvad går der i det?"
 #: src/features/career/coach.tsx
 msgid "What interview answers should I practice?"
 msgstr "Hvilke interviewsvar skal jeg øve?"
+
+#: src/features/homepage/faq.tsx
+msgid "What is an AI credit?"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "What is the base salary, and is it negotiable?"
@@ -13352,10 +13004,6 @@ msgstr "Hvad skal køre"
 #: src/features/assistant/assistant-panel.tsx
 msgid "What should we work on?"
 msgstr "Hvad skal vi arbejde med?"
-
-#: src/features/homepage/check.tsx
-msgid "What software reads"
-msgstr "Hvilken software læser"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "What success looks like, which challenge matters most, and the next step."
@@ -13459,10 +13107,6 @@ msgstr "Om CV'et er segmenteret, som programmer forventer."
 msgid "Whether your timeline can be reconstructed."
 msgstr "Om din tidslinje kan genskabes."
 
-#: src/features/homepage/faq.tsx
-msgid "Which languages does it speak?"
-msgstr "Hvilke sprog taler den?"
-
 #: src/features/career/coach.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "Hvilke muligheder passer bedst til mine prioriteter?"
@@ -13474,10 +13118,6 @@ msgstr "Hvilke andre goder følger med, f.eks. pension eller tillæg?"
 #: src/features/homepage/faq.tsx
 msgid "Who can see my resume?"
 msgstr "Hvem kan se mit CV?"
-
-#: src/features/homepage/prepare.tsx
-msgid "Who owns the design system today? What does success look like in 90 days?"
-msgstr "Hvem ejer designsystemet i dag? Hvordan ser succes ud om 90 dage?"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/shell.tsx
@@ -13504,13 +13144,13 @@ msgstr "Bredde"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "Vil mit CV komme forbi ansøgersporingssystemer?"
 
-#: src/features/homepage/remember.tsx
-msgid "Within a quarter, activation went from 31% to 44%."
-msgstr "På et kvartal gik aktiveringen fra 31 % til 44 %."
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "Uden en udfylder du selv modtageren, og udarbejdelsen bruger kun dit CV."
+
+#: src/features/homepage/plans.ts
+msgid "Word and ODT downloads"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
@@ -13533,9 +13173,7 @@ msgstr "Værd at spørge om"
 msgid "Worth asking {0}"
 msgstr "Værd at spørge {0} om"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13550,14 +13188,6 @@ msgstr "Skriv \"Nuværende\" som slutdato for din nuværende rolle."
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Write a letter"
 msgstr "Skriv et brev"
-
-#: src/features/homepage/remember.tsx
-msgid "Write a story once, with the facts behind it, and the coach uses it in 3 places. Switch a fact off and nothing leans on it."
-msgstr "Skriv en historie én gang med fakta bag, og coachen bruger den 3 steder. Slå et faktum fra, og intet læner sig op ad det."
-
-#: src/features/homepage/write.tsx
-msgid "Write beside a live page. It saves as you type and keeps every version. Ask the assistant for a sharper line: it suggests, you decide."
-msgstr "Skriv ved siden af en live side. Den gemmer, mens du skriver, og bevarer hver version. Bed assistenten om en skarpere formulering: den foreslår, du bestemmer."
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
@@ -13575,13 +13205,21 @@ msgstr "Skriv det som ét uafbrudt stykke uden særlig mellemrumsformatering."
 msgid "Write it down while it's fresh"
 msgstr "Skriv det ned, mens det er frisk"
 
-#: src/features/homepage/prepare.tsx
-msgid "Write it down while it’s fresh"
-msgstr "Skriv det ned, mens det er frisk"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr "Skriv det selv"
+
+#: src/features/homepage/hero.tsx
+msgid "Write it once, check what applicant tracking systems read, tailor it to every posting and follow each application to the offer."
+msgstr ""
+
+#: src/features/homepage/introduction.tsx
+msgid "Write it once, then tailor a version for every posting"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Write letters"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Write numbers as digits"
@@ -13603,10 +13241,6 @@ msgstr "Skriv, hvad du gjorde."
 msgid "Write your answer, or draft one from your Knowledge."
 msgstr "Skriv dit svar, eller lav et udkast ud fra din Viden."
 
-#: src/features/homepage/write.tsx
-msgid "Write your professional resume"
-msgstr "Skriv dit professionelle CV"
-
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -13622,28 +13256,20 @@ msgstr "Skriver et svar…"
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Skrivehjælp, skræddersyede forslag og assistenten. Standardudbyderen bruges overalt, hvor du ikke vælger en. Dine nøgler forbliver krypterede."
 
-#: src/features/homepage/sections.tsx
-msgid "writing, tailoring and sending"
-msgstr "skrive, tilpasse og sende"
-
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "Skriftligt tilbud"
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Every feature is free: all {templates} templates, PDF and Word downloads, the ATS checker, cover letters and the job tracker. There are no ads, no tracking and no paid tier."
+msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Every job you track gets its own workspace: check your fit against the posting, draft answers from stories you wrote once, get a short plan before the interview, practice out loud with feedback and debrief afterwards. When offers arrive, compare them side by side. The coaching uses your own AI key; the comparison doesn’t need one."
-msgstr "Ja. Hvert job, du følger, får sit eget arbejdsområde: tjek dit match med jobopslaget, lav udkast til svar ud fra historier, du har skrevet én gang, få en kort plan før interviewet, øv dig højt med feedback, og lav en opsamling bagefter. Når tilbuddene kommer, kan du sammenligne dem side om side. Coachingen bruger din egen AI-nøgle; sammenligningen kræver ingen."
+msgid "Yes. Import a PDF, a LinkedIn data export or a JSON Resume file, then pick up where it left off."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Import a PDF, a LinkedIn data export, a JSON Resume file or a Rezumi export, then pick up where it left off. With an AI provider set up, Word documents work too."
-msgstr "Ja. Importer en PDF, en LinkedIn dataeksport, en JSON Resume fil eller en Rezumi eksport, og fortsæt derefter, hvor det slap. Med en AI-udbyder opsat fungerer Word-dokumenter også."
-
-#: src/features/homepage/faq.tsx
-msgid "Yes. Rezumi is open source under the MIT License and can run on your own Cloudflare account with your own database and storage."
+msgid "Yes. The free plan covers 3 active resumes and 3 cover letters, {freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up."
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
@@ -13657,6 +13283,7 @@ msgstr "I går {time}"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach.tsx
+#: src/features/homepage/resume.tsx
 msgid "You"
 msgstr "Du"
 
@@ -13701,9 +13328,9 @@ msgstr "Du har glemt dette før, så det blev ikke gemt igen."
 msgid "You only need one yes."
 msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "You partnered with engineering. How you led the work isn’t described yet."
-msgstr "Du samarbejdede med udviklerne. Hvordan du ledte arbejdet, er ikke beskrevet endnu."
+#: src/features/homepage/faq.tsx
+msgid "You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free: nothing is deleted, you choose which 3 resumes and 3 letters stay active, and the rest stay readable."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "You said: “{said}” Ask before deciding."
@@ -13728,10 +13355,6 @@ msgstr "Du indsender selv på arbejdsgiverens side. Når du markerer den som ans
 #: src/features/career/schedule-sheet.tsx
 msgid "You'll always see it in Today. Email depends on your server's mail setup."
 msgstr "Du kan altid se den under I dag. E-mail afhænger af din servers mailopsætning."
-
-#: src/features/homepage/tailor.tsx
-msgid "You’ll own our <0>design systems</0>, run <1>user research</1> with customers and hold a high bar for <2>accessibility</2>, working in a <3>cross-functional</3> team."
-msgstr "Du får ansvaret for vores <0>designsystemer</0>, gennemfører <1>brugerundersøgelser</1> med kunder og stiller høje krav til <2>tilgængelighed</2> i et <3>tværfagligt</3> team."
 
 #: src/features/career/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
@@ -13772,7 +13395,6 @@ msgid "Your answer"
 msgstr "Dit svar"
 
 #: src/features/career/workspace/practise.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Your attempts"
 msgstr "Dine forsøg"
 
@@ -13921,13 +13543,13 @@ msgstr "Dit navn mangler"
 msgid "Your next opportunity is already looking for you."
 msgstr ""
 
+#: src/features/homepage/closing.tsx
+msgid "Your next resume is a few minutes away."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
 msgstr "dine noter"
-
-#: src/features/homepage/prepare.tsx
-msgid "Your onboarding story"
-msgstr "Din onboarding-historie"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening"
@@ -13982,10 +13604,6 @@ msgstr "Dit CV er blevet opdateret."
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "Dit CV bruger \"jeg\" og \"min\"."
 
-#: src/features/homepage/share.tsx
-msgid "Your resume, live at"
-msgstr "Dit CV, live kl"
-
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Din valgte skrifttype kan ikke vise nogle tegn. De vises som “?”. Under Design kan du vælge en skrifttype, der har dem."
@@ -14019,10 +13637,6 @@ msgstr "Din historie kunne ikke indlæses."
 msgid "Your story is worth telling well."
 msgstr ""
 
-#: src/features/homepage/sections.tsx
-msgid "Your turn"
-msgstr "Din tur"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "Din præsentation på to minutter"
@@ -14031,18 +13645,13 @@ msgstr "Din præsentation på to minutter"
 msgid "Your web page is live"
 msgstr "Din webside er online"
 
+#: src/features/homepage/features.tsx
+msgid "Your words stay put while the layout, fonts and colors change around them."
+msgstr ""
+
 #: src/features/auth/components/guest-banner.tsx
 msgid "Your work is lost when you sign out or the session ends. Create an account or sign in to keep your resumes, cover letters and applications."
 msgstr "Dit arbejde går tabt, når du logger ud, eller sessionen udløber. Opret en konto eller log ind for at beholde dine CV'er, følgebreve og ansøgninger."
-
-#: src/features/homepage/sections.tsx
-msgid "Yours"
-msgstr "Din"
-
-#. placeholder {0}: templateNames[step] ?? ""
-#: src/features/homepage/design.tsx
-msgid "Yours · {0}"
-msgstr "Din · {0}"
 
 #: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx

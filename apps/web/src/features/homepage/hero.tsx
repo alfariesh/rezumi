@@ -1,267 +1,91 @@
-import type { CSSProperties } from "react";
+import type { SVGProps } from "react";
+import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { useLingui } from "@lingui/react";
-import { useEffect, useRef } from "react";
-import { cn } from "@rezumi/utils/style";
-import { prefersReducedMotion, SCENE } from "./scroll";
-import { Sheet } from "./sheet";
-import { CtaLink, Doodle } from "./ui";
+import { HeroResume } from "./resume";
+import { CtaLink } from "./ui";
 
-const fragmentKind = {
-	display: "font-display leading-none",
-	serif: "font-display leading-none",
-	mono: "font-sans text-[12px] leading-none",
-	pill: "rounded-sm px-3.5 py-[9px] font-semibold font-sans text-[15px] leading-none",
-};
+type StarIconProps = SVGProps<SVGSVGElement>;
 
-// The field is dimmed to 78%, so the light pills take a deeper green to keep their text at 4.5:1.
-const pillAccent = "bg-accent-soft text-[oklch(0.36_0.1_150)] dark:text-accent-text";
+function StarIcon(props: StarIconProps) {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			width={24}
+			height={24}
+			className="text-accent"
+			fill="none"
+			aria-hidden="true"
+			{...props}
+		>
+			<path
+				d="M22.7476 9.90039C22.7475 10.3143 22.5924 10.7114 22.3159 11.0156C21.2835 12.1509 20.1756 13.4082 18.5396 14.8633C18.7963 16.0317 19.1947 18.0206 19.438 20.3438C19.5465 21.3797 18.7242 22.25 17.7085 22.25C17.6648 22.25 17.6118 22.2489 17.5522 22.2432L17.3579 22.209C16.919 22.0978 16.2148 21.7611 15.3062 21.2637C14.4501 20.795 13.3492 20.1463 11.9995 19.3135C10.6499 20.1463 9.54966 20.795 8.69385 21.2637C7.7853 21.7612 7.08102 22.0978 6.64209 22.209C6.50303 22.2442 6.37862 22.25 6.2915 22.25C5.27581 22.25 4.45354 21.3797 4.56201 20.3438C4.80518 18.0213 5.20274 16.0328 5.45947 14.8643C3.82346 13.4092 2.7165 12.1509 1.68408 11.0156C1.40763 10.7114 1.25252 10.3143 1.25244 9.90039C1.25244 9.17156 1.73546 8.50716 2.4751 8.32617C3.40907 8.09763 5.26407 7.7019 7.83447 7.41504C8.79903 5.34207 9.91815 3.44735 10.5845 2.47949C10.917 1.99643 11.4591 1.75012 11.9995 1.75C12.54 1.75 13.0819 1.99651 13.4146 2.47949C14.0809 3.44726 15.2 5.34214 16.1646 7.41504C18.7355 7.7019 20.5908 8.0976 21.5249 8.32617C22.2645 8.50716 22.7476 9.17156 22.7476 9.90039Z"
+				fill="currentColor"
+			/>
+		</svg>
+	);
+}
 
-/** The four lines of the headline; the footer repeats them. Lines 2 and 4 are highlighted. */
-export const getHeadline = () =>
-	[
-		t({
-			message: "A free, open-source",
-			comment: "Hero headline, line 1 of 4: A free, open-source / resume builder / and / career manager.",
-		}),
-		t({
-			message: "resume builder",
-			comment:
-				"Hero headline, line 2 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.",
-		}),
-		t({
-			message: "and",
-			context: "hero headline",
-			comment: "Hero headline, line 3 of 4: A free, open-source / resume builder / and / career manager.",
-		}),
-		t({
-			message: "career manager.",
-			comment:
-				"Hero headline, line 4 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.",
-		}),
-	] as const;
+/** The page's one `h1`. */
+const getHeadline = () => t`Turn your experience into a resume that gets interviews.`;
 
-/**
- * The eighteen career fragments that converge into the page. Each starts at (x, y), drifts to (tx, ty) and scales
- * down as it lands; z is its depth, for the mouse parallax.
- */
-const getFragments = () => [
-	{
-		text: t`Lead Product Designer`,
-		at: ["-30vw", "-28vh", "-6vw", "-14vh", "-4deg", 1, 0.9],
-		className: cn(fragmentKind.display, "text-[2.3vw] text-ink-2"),
-	},
-	{
-		text: t`Design systems`,
-		at: ["-39vw", "4vh", "-4vw", "2vh", "-8deg", 1.1, 1.2],
-		className: cn(fragmentKind.pill, pillAccent),
-	},
-	{
-		text: t`Lisbon`,
-		at: ["41vw", "20vh", "6vw", "10vh", "-3deg", 1, 0.5],
-		className: cn(fragmentKind.serif, "text-[2.8vw] text-ink-3"),
-	},
-	{
-		text: t`+13 pts activation`,
-		at: ["-17vw", "33vh", "-2vw", "12vh", "4deg", 1, 1],
-		className: cn(fragmentKind.display, "text-[2.8vw] font-light text-accent-text font-stretch-[92%]"),
-	},
-	{
-		text: t`Figma`,
-		at: ["21vw", "37vh", "4vw", "14vh", "10deg", 1.1, 1.3],
-		className: cn(fragmentKind.pill, "bg-raised text-ink shadow-e2"),
-	},
-	{
-		text: t`WCAG 2.1 AA`,
-		at: ["-44vw", "-12vh", "-7vw", "-4vh", "0deg", 1, 0.3],
-		className: cn(fragmentKind.mono, "text-ink-3"),
-	},
-	{
-		text: t`BA, Communication Design`,
-		at: ["10vw", "-40vh", "1vw", "-11vh", "-2deg", 1, 0.6],
-		className: cn(fragmentKind.serif, "text-[1.5vw] text-ink-2"),
-	},
-	{
-		text: t`University of Porto`,
-		at: ["-9vw", "-43vh", "-3vw", "-16vh", "2deg", 1, 0.35],
-		className: cn(fragmentKind.mono, "text-ink-3"),
-	},
-	{
-		text: t`Parcel & Co.`,
-		at: ["39vw", "3vh", "5vw", "1vh", "-6deg", 1, 0.8],
-		className: cn(fragmentKind.display, "text-[1.9vw] text-ink-2 font-stretch-[108%]"),
-	},
-	{
-		text: t`Shipped checkout for iOS`,
-		at: ["-27vw", "23vh", "-5vw", "8vh", "3deg", 1, 0.7],
-		className: cn(fragmentKind.serif, "text-[1.7vw] text-ink-2 italic"),
-	},
-	{
-		text: t`Prototyping`,
-		at: ["6vw", "42vh", "0vw", "16vh", "-5deg", 1.1, 1.1],
-		className: cn(fragmentKind.pill, pillAccent),
-	},
-	{
-		text: "alex@morgan.design",
-		at: ["25vw", "29vh", "4vw", "9vh", "2deg", 1, 0.4],
-		className: cn(fragmentKind.mono, "text-ink-3"),
-	},
-	{
-		text: t`Barista, 2012`,
-		at: ["-44vw", "38vh", "-6vw", "15vh", "-7deg", 1, 0.8],
-		className: cn(fragmentKind.serif, "text-[2.2vw] text-ink-3 italic"),
-	},
-	{
-		text: t`40% faster reviews`,
-		at: ["44vw", "38vh", "6vw", "13vh", "-4deg", 1, 1],
-		className: cn(fragmentKind.display, "text-[2.4vw] font-light text-ink-2 font-stretch-[94%]"),
-	},
-	{
-		text: t`Promoted to lead, 2021`,
-		at: ["-38vw", "-38vh", "-5vw", "-13vh", "4deg", 1, 0.5],
-		className: cn(fragmentKind.serif, "text-[1.7vw] text-ink-2"),
-	},
-	{
-		text: t`Spanish, B2`,
-		at: ["-26vw", "43vh", "-3vw", "16vh", "0deg", 1, 0.3],
-		className: cn(fragmentKind.mono, "text-ink-3"),
-	},
-	{
-		text: t`Six product teams`,
-		at: ["30vw", "45vh", "5vw", "17vh", "-2deg", 1, 0.6],
-		className: cn(fragmentKind.display, "text-[1.5vw] text-ink-3 font-stretch-[110%]"),
-	},
-	{
-		text: t`Accessibility`,
-		at: ["-13vw", "-33vh", "-2vw", "-10vh", "7deg", 1.1, 1.2],
-		className: cn(fragmentKind.pill, pillAccent),
-	},
-];
+// Placeholder: replace with a real, attributed quote before launch.
+function HeroTestimonial() {
+	return (
+		<figure className="relative mx-auto max-w-md text-center lg:mx-0 lg:text-start">
+			<div className="flex justify-center gap-0.5 lg:justify-start" role="img" aria-label={t`Rated 5 out of 5`}>
+				{Array.from({ length: 5 }, (_, index) => (
+					<StarIcon key={index} />
+				))}
+			</div>
+			<blockquote className="mt-2">
+				<p className="text-xl font-medium text-pretty">
+					{t`“I tailored my resume for three roles in one evening and had two interview calls that week.”`}
+				</p>
+			</blockquote>
+			<figcaption className="mt-2 text-sm text-muted">
+				<strong className="font-semibold text-accent">Rina Wulandari</strong>, {t`Marketing Associate`}
+			</figcaption>
+		</figure>
+	);
+}
 
 /**
- * 00 Hero, "Everything you've done, on one page." Career fragments float in, converge and become a page; the
- * headline splits to either side of it. The paragraph and CTA paint first, with no dependency on the scroll engine.
+ * 00 Hero. The accent panel runs off the start edge of the page with the resume standing on it; beside it, a short
+ * quote over the headline and the call to action. Everything paints from the prerendered HTML, with no scripts.
  */
 export function Hero() {
-	const { i18n } = useLingui();
-	const ref = useRef<HTMLElement>(null);
-
-	// The pencil guides draw in once, shortly after load.
-	useEffect(() => {
-		const section = ref.current;
-		if (!section) return;
-		if (prefersReducedMotion()) return void section.style.setProperty("--ld", "1");
-		const timer = window.setTimeout(() => section.style.setProperty("--ld", "1"), 120);
-		return () => window.clearTimeout(timer);
-	}, []);
-
-	const headline = getHeadline();
-
 	return (
-		<section
-			ref={ref}
-			id="top"
-			data-scene={SCENE.hero}
-			data-pin
-			aria-labelledby="hero-title"
-			className="relative h-[170vh] motion-reduce:h-svh min-[900px]:h-[220vh]"
-		>
-			{/* --pt is the page's centre. Below 900px it sits under the stacked headline (128px + three 10vw lines). */}
-			<div className="sticky top-0 h-svh overflow-clip [--e2:clamp(0,(var(--p)-.16)/.6,1)] [--e:clamp(0,(var(--p)-.03)/.5,1)] [--pt:calc(144px+30vw+var(--pw)*.647)] [--pw:min(46vw,30vh)] motion-reduce:[--ld:1] min-[900px]:[--pt:50%] min-[900px]:[--pw:min(24vw,46vh)] min-[900px]:short:[--pw:min(24vw,40vh)]">
-				<svg aria-hidden="true" width="0" height="0" className="absolute">
-					<filter id="landing-pencil" x="-5%" y="-5%" width="110%" height="110%">
-						<feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves={2} seed={4} />
-						<feDisplacementMap in="SourceGraphic" scale={3.5} />
-					</filter>
-				</svg>
-
-				{/* Construction guides, drawn in pencil around where the page will land. */}
-				<div
-					aria-hidden="true"
-					className="pointer-events-none absolute inset-0 text-graphite min-[900px]:[filter:url(#landing-pencil)]"
-				>
-					<span className="absolute top-[7vh] bottom-[7vh] left-[calc(50%-var(--pw)/2)] w-px [transform:scaleY(var(--ld,0))] bg-current [transition:transform_1.6s_var(--ease)_.2s]" />
-					<span className="absolute top-[7vh] bottom-[7vh] left-[calc(50%+var(--pw)/2)] w-px [transform:scaleY(var(--ld,0))] bg-current [transition:transform_1.6s_var(--ease)_.35s]" />
-					<span className="absolute inset-x-[3vw] top-[calc(var(--pt)-var(--pw)*.647)] h-px [transform:scaleX(var(--ld,0))] bg-current [transition:transform_1.8s_var(--ease)_.5s]" />
-					<span className="absolute inset-x-[3vw] top-[calc(var(--pt)+var(--pw)*.647)] h-px [transform:scaleX(var(--ld,0))] bg-current [transition:transform_1.8s_var(--ease)_.65s]" />
-					<span className="absolute top-(--pt) left-1/2 aspect-square w-[calc(var(--pw)*2.1)] [transform:translate(-50%,-50%)_scale(calc(.9+var(--ld,0)*.1))] rounded-full border border-current opacity-[calc(var(--ld,0)*.7)] [transition:opacity_2.4s_ease_1s,transform_2.4s_var(--ease)_1s]" />
+		<section aria-labelledby="hero-title" className="overflow-hidden bg-surface-secondary lg:bg-transparent lg:px-5">
+			<div className="mx-auto grid max-w-6xl grid-cols-1 grid-rows-[auto_1fr] gap-y-16 pt-16 md:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pt-20 lg:pb-36 xl:py-32">
+				<div className="relative flex items-end lg:col-span-5 lg:row-span-2">
+					<div className="absolute start-0 end-1/2 -top-20 -bottom-12 z-10 rounded-ee-[4rem] bg-accent md:bottom-8 lg:-inset-y-32 lg:-start-[100vw] lg:end-full lg:-me-40" />
+					<div className="relative z-10 mx-auto w-full px-6 pt-8 sm:w-auto sm:px-0 sm:pt-0 lg:w-full">
+						<HeroResume />
+					</div>
 				</div>
 
-				{/* Outside the filtered layer: a filter makes the browser count this label as a screen-sized paint. */}
-				<span
-					aria-hidden="true"
-					className="pointer-events-none absolute top-[calc(var(--pt)-var(--pw)*.647-20px)] left-[calc(50%+var(--pw)/2+10px)] font-sans text-[10.5px] leading-none tracking-[.06em] text-graphite opacity-[var(--ld,0)] transition-opacity delay-[1.4s] duration-1000"
-				>
-					{i18n.number(612)} × {i18n.number(792)}
-				</span>
-
-				<Doodle
-					name="pencil"
-					eager
-					wipe="var(--ld, 0)"
-					sizes="12vw"
-					className="start-[74vw] top-[max(15vh,110px)] w-[12vw] [transform:translate(calc(var(--mx,0)*-22px),calc(var(--my,0)*-14px))_rotate(calc(-22deg+var(--mx,0)*3deg))_translateY(calc(var(--p)*-20px))] [transition:mask-position_1.8s_var(--ease)_.9s,transform_.9s_var(--ease)]"
-				/>
-				<Doodle
-					name="paperclip"
-					eager
-					wipe="var(--ld, 0)"
-					sizes="(min-width: 900px) 6vw, 1px"
-					className="start-[4vw] top-[61%] w-[6vw] [transform:translate(calc(var(--mx,0)*22px),calc(var(--my,0)*16px))_rotate(calc(16deg+var(--mx,0)*-4deg))_translateY(calc(var(--p)*-30px))] [transition:mask-position_1.4s_var(--ease)_1.3s,transform_1.1s_var(--ease)] max-[900px]:hidden"
-				/>
-
-				<div
-					aria-hidden="true"
-					className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent_0,transparent_120px,#000_200px,#000_calc(100%-250px),transparent_calc(100%-170px))] opacity-78 max-[900px]:[mask-image:linear-gradient(to_bottom,transparent_0,transparent_260px,#000_330px,#000_calc(100%-250px),transparent_calc(100%-170px))]"
-				>
-					{getFragments().map(({ text, at: [x, y, tx, ty, r, s, z], className }) => (
-						<span
-							key={text}
-							className={cn("hero-fragment", className)}
-							style={{ "--x": x, "--y": y, "--tx": tx, "--ty": ty, "--r": r, "--s": s, "--z": z } as CSSProperties}
-						>
-							{text}
-						</span>
-					))}
+				<div className="relative px-4 sm:px-6 lg:col-span-7 lg:ps-16 lg:pe-0 lg:pb-14 xl:ps-20">
+					<div className="hidden lg:absolute lg:-start-[100vw] lg:-end-[100vw] lg:-top-32 lg:bottom-0 lg:block lg:bg-surface-secondary" />
+					<HeroTestimonial />
 				</div>
 
-				<div className="absolute top-(--pt) left-1/2 aspect-[612/792] w-(--pw) hero-page rounded-sm shadow-paper">
-					<Sheet />
-				</div>
-
-				<h1
-					id="hero-title"
-					className="absolute inset-x-(--gutter) top-32 font-display text-[8vw] leading-[1.05] font-light text-ink min-[900px]:sr-only"
-				>
-					{headline[0]} <br className="min-[900px]:hidden" />
-					<em className="text-accent-text">{headline[1]}</em> <br className="min-[900px]:hidden" />
-					{headline[2]} <em className="text-accent-text">{headline[3]}</em>
-				</h1>
-
-				{/* The headline, drawn as two halves either side of the page (below 900px, stacked above it). Both halves share one
-				    size; a translation too long for its side wraps instead of running off screen. */}
-				<div
-					aria-hidden="true"
-					className="absolute end-[calc(50%+var(--pw)/2+2.6vw)] top-1/2 hidden max-w-[calc(50vw-var(--pw)/2-2.6vw-var(--gutter))] hero-headline-start text-end text-[3.4vw] leading-none text-balance text-ink min-[900px]:block"
-				>
-					<span className="block font-display font-light tracking-[-.025em] [font-stretch:calc(112%-var(--e)*12%)]">
-						{headline[0]}
-					</span>
-					<span className="block font-display tracking-[-.02em] text-accent-text italic">{headline[1]}</span>
-				</div>
-				<div
-					aria-hidden="true"
-					className="absolute start-[calc(50%+var(--pw)/2+2.6vw)] top-1/2 hidden max-w-[calc(50vw-var(--pw)/2-2.6vw-var(--gutter))] [transform:translate(calc(var(--dir)*(1-var(--e))*6vw),-50%)] text-[3.4vw] leading-none text-balance opacity-[clamp(0,(var(--e)-.5)*3,1)] [transition:transform_.45s_var(--ease)] min-[900px]:block"
-				>
-					<span className="block font-display tracking-[-.025em] text-ink">{headline[2]}</span>
-					<span className="block font-display tracking-[-.02em] text-accent-text italic">{headline[3]}</span>
-				</div>
-
-				<div className="absolute inset-x-(--gutter) bottom-[clamp(20px,4vh,40px)] z-2 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
-					<p className="max-w-full font-display text-base leading-[1.45] text-pretty text-ink-2 min-[900px]:max-w-[min(25em,calc(50vw-var(--pw)/2-5vw))] min-[900px]:text-[clamp(17px,1.3vw,20px)]">
-						{t`Build a professional resume, download it as PDF or Word, and manage your job search in one place. Free templates, no ads, no paywall.`}
-					</p>
-					<CtaLink size="hero" />
+				<div className="bg-background pt-16 pb-16 lg:col-span-7 lg:bg-transparent lg:ps-16 lg:pt-0 lg:pb-0 xl:ps-20">
+					<div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0">
+						<h1 id="hero-title" className="text-5xl font-bold tracking-tight text-balance sm:text-6xl">
+							{getHeadline()}
+						</h1>
+						<p className="mt-4 text-xl text-pretty text-muted sm:text-2xl">
+							{t`Write it once, check what applicant tracking systems read, tailor it to every posting and follow each application to the offer.`}
+						</p>
+						<div className="mt-8 flex flex-wrap gap-3">
+							<CtaLink />
+							<a href="#pricing" className={buttonVariants({ variant: "outline", size: "lg" })}>
+								{t`See pricing`}
+							</a>
+						</div>
+						<p className="mt-4 text-sm text-muted">{t`Free plan, no card needed. PDF downloads without a watermark.`}</p>
+					</div>
 				</div>
 			</div>
 		</section>

@@ -1,53 +1,38 @@
 import { t } from "@lingui/core/macro";
-import { useRef } from "react";
-import { LandingBackground } from "./background";
-import { Check } from "./check";
-import { Design } from "./design";
+import { Closing } from "./closing";
 import { Faq } from "./faq";
+import { Features } from "./features";
 import { LandingFooter } from "./footer";
-import { LandingHeader, ThemeCord } from "./header";
 import { Hero } from "./hero";
-import { Prepare } from "./prepare";
-import { Remember } from "./remember";
-import { useScrollScenes } from "./scroll";
-import { Closing, Languages, Numbers } from "./sections";
-import { Share } from "./share";
-import { Tailor } from "./tailor";
-import { Write } from "./write";
+import { Introduction } from "./introduction";
+import { Pricing } from "./pricing";
+import { SectionNav } from "./section-nav";
+import { Templates } from "./templates";
+import { Testimonials } from "./testimonials";
 
 /**
- * The public landing page: one scroll-driven story, "Everything you've done, on one page." A single resume page is
- * assembled, written, restyled, checked, tailored and sent as the visitor scrolls. The reply that comes back turns
- * into interview day in the application's folder, and the story behind it is told once and reused. Then community
- * proof, languages, common questions, a closing call to action and the footer. The server prerenders it
- * (prerender.tsx), so every word is in the first response.
+ * The public landing page, built from HeroUI surfaces and tokens: a hero with an example resume on the accent panel,
+ * a short introduction, then numbered sections under a sticky bar (features as bento grids, templates, testimonials,
+ * pricing, questions) and a closing call to action. The server prerenders it (prerender.tsx), so every word is in the
+ * first response.
  */
 export function Homepage() {
-	const root = useRef<HTMLDivElement>(null);
-	useScrollScenes(root);
-
 	return (
-		<div ref={root} className="landing relative isolate overflow-x-clip bg-bg font-sans text-ink">
-			<LandingBackground />
+		<div id="top" className="relative isolate overflow-x-clip bg-background text-foreground">
 			<a
 				href="#main"
-				className="fixed start-4 top-2.5 z-100 -translate-y-[160%] rounded-md bg-ink px-3.5 py-2.5 font-sans text-sm font-semibold text-bg transition-transform focus:translate-y-0"
+				className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-100 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-overlay focus:ring-2 focus:ring-accent"
 			>
 				{t`Skip to content`}
 			</a>
-			<LandingHeader />
-			<ThemeCord />
 			<main id="main">
 				<Hero />
-				<Write />
-				<Design />
-				<Check />
-				<Tailor />
-				<Share />
-				<Prepare />
-				<Remember />
-				<Numbers />
-				<Languages />
+				<Introduction />
+				<SectionNav />
+				<Features />
+				<Templates />
+				<Testimonials />
+				<Pricing />
 				<Faq />
 				<Closing />
 			</main>

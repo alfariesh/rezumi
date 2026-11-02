@@ -73,9 +73,9 @@ msgstr "„{value}” începe după astăzi. Verificați anul sau marcați-l ca 
 msgid "“{written}” added to Skills"
 msgstr "„{written}” a fost adăugat la Abilități"
 
-#: src/features/homepage/prepare.tsx
-msgid "“How did you measure the onboarding redesign?”"
-msgstr "„Cum ați măsurat reproiectarea onboardingului?”"
+#: src/features/homepage/hero.tsx
+msgid "“I tailored my resume for three roles in one evening and had two interview calls that week.”"
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
@@ -368,10 +368,8 @@ msgstr ""
 msgid "{0} is larger than {1}."
 msgstr ""
 
-#. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
-#: src/features/homepage/prepare.tsx
 msgid "{0} min"
 msgstr "{0} min"
 
@@ -571,10 +569,6 @@ msgstr "{done} din {count} finalizate"
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes} din {total} min"
 
-#: src/features/homepage/prepare.tsx
-msgid "{earlier} · typed"
-msgstr "{earlier} · scris"
-
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{entries, plural, one {# entry} other {# entries}}"
 msgstr "{entries, plural, one {# intrare} other {# intrări}}"
@@ -602,6 +596,10 @@ msgstr "{failing, plural, one {# de revizuit} other {# de revizuit}}"
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
 msgstr "{filled} din 5 părți"
+
+#: src/features/homepage/plans.ts
+msgid "{freeTemplateCount} templates"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "{issues, plural, one {# issue could cost you a match.} other {# issues could cost you a match.}}"
@@ -676,6 +674,7 @@ msgstr "{name} a fost mutat în coloana principală"
 msgid "{name} never prints"
 msgstr "{name} nu tipărește niciodată"
 
+#: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
 msgid "{name} resume template preview"
 msgstr "Previzualizarea șablonului de CV {name}"
@@ -691,10 +690,6 @@ msgstr "{name} utilizează o coloană"
 #: src/features/resume/editor/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} este ultimul în text. Majoritatea sistemelor încă le găsesc; unii nu."
-
-#: src/features/homepage/prepare.tsx
-msgid "{now} · typed"
-msgstr "{now} · scris"
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{open, plural, one {# thing to review.} other {# things to review.}}"
@@ -749,14 +744,6 @@ msgstr "{size} pct"
 msgid "{skipped, plural, one {# row had no company or role and was skipped.} other {# rows had no company or role and were skipped.}}"
 msgstr "{skipped, plural, one {# rând nu avea companie sau rol și a fost omis.} few {# rânduri nu aveau companie sau rol și au fost omise.} other {# de rânduri nu aveau companie sau rol și au fost omise.}}"
 
-#: src/components/input/github-stars-button.tsx
-msgid "{starCount, plural, one {Star us on GitHub, currently # star (opens in new tab)} other {Star us on GitHub, currently # stars (opens in new tab)}}"
-msgstr "{starCount, plural, one {Dă-ne o stea pe GitHub, în prezent # stea (se deschide într-o filă nouă)} few {Dă-ne o stea pe GitHub, în prezent # stele (se deschide într-o filă nouă)} other {Dă-ne o stea pe GitHub, în prezent # de stele (se deschide într-o filă nouă)}}"
-
-#: src/features/homepage/header.tsx
-msgid "{stars, plural, one {Star Rezumi on GitHub, # star} other {Star Rezumi on GitHub, # stars}}"
-msgstr "{stars, plural, one {Dă o stea pentru Rezumi pe GitHub, # stea} few {Dă o stea pentru Rezumi pe GitHub, # stele} other {Dă o stea pentru Rezumi pe GitHub, # de stele}}"
-
 #: src/features/career/workspace/saved.tsx
 msgid "{stories, plural, one {# story} other {# stories}}"
 msgstr "{stories, plural, one {# poveste} few {# povești} other {# de povești}}"
@@ -768,14 +755,6 @@ msgstr "{summary}. Se deschide în Carieră → Oferte."
 #: src/features/career/workspace/fit.tsx
 msgid "{supported} supported"
 msgstr ""
-
-#: src/features/homepage/design.tsx
-msgid "{templateCount} free resume templates."
-msgstr "{templateCount} șabloane gratuite de CV."
-
-#: src/features/homepage/prepare.tsx
-msgid "{time} · Video call · 45 min"
-msgstr "{time} · Apel video · 45 min"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{title} cleared"
@@ -801,6 +780,10 @@ msgstr "{toCheck, plural, one {Câmpul # are nevoie de o privire.} other {Câmpu
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {# de verificat} other {# de verificat}}"
+
+#: src/features/homepage/templates.tsx
+msgid "{total} templates. {free} of them free."
+msgstr ""
 
 #. placeholder {0}: formatRelativeTime(document.updatedAt, i18n.locale)
 #: src/features/documents/document-card.tsx
@@ -836,10 +819,6 @@ msgstr "/ lună"
 msgid "/ year"
 msgstr "/ an"
 
-#: src/features/homepage/hero.tsx
-msgid "+13 pts activation"
-msgstr "+13 puncte de activare"
-
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "<0>Nothing to fix.</0> Every check passes."
 msgstr "<0>Nimic de remediat.</0> Fiecare cec trece."
@@ -849,11 +828,6 @@ msgstr "<0>Nimic de remediat.</0> Fiecare cec trece."
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>Trimisă pe {0}.</0> Versiunile trimise sunt păstrate în Salvat. Modificările de aici nu schimbă ce a primit {1}."
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "06/2017 – 2021"
-msgstr "06/2017 – 2021"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
@@ -866,6 +840,10 @@ msgstr "Briefing de 10 minute"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "10–11 recommended"
 msgstr "10-11 recomandat"
+
+#: src/features/homepage/plans.ts
+msgid "100 AI credits every 30 days"
+msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "2 files"
@@ -880,51 +858,50 @@ msgstr "Cu 2 ore înainte"
 msgid "2–3 sentences reads best"
 msgstr "2-3 propoziții se citesc cel mai bine"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "2013 – 2017"
-msgstr "2013 – 2017"
+#: src/features/homepage/resume.tsx
+msgid "2019 – 2022"
+msgstr ""
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "2017 – 2021"
-msgstr "2017 – 2021"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "2021 – Present"
-msgstr "2021 – Prezent"
+#: src/features/homepage/resume.tsx
+msgid "2022 – Present"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
 msgid "24 hours before"
 msgstr "Cu 24 de ore înainte"
 
-#: src/features/homepage/prepare.tsx
-msgid "3 supported · 1 partly · 1 missing"
-msgstr "3 susținute · 1 parțial · 1 lipsă"
+#: src/features/homepage/plans.ts
+msgid "3 active resumes and 3 cover letters"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "3 of 5 keywords on your resume"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 de zile"
 
-#: src/features/homepage/hero.tsx
-msgid "40% faster reviews"
-msgstr "Recenzii cu 40% mai rapide"
+#: src/features/homepage/plans.ts
+msgid "5 AI credits to try"
+msgstr ""
 
-#: src/features/homepage/faq.tsx
-msgid "9 short answers to what people ask before they start. Anything else, ask on <0>Discord</0>."
-msgstr "9 răspunsuri scurte la ce întreabă oamenii înainte să înceapă. Pentru orice altceva, întrebați pe <0>Discord</0>."
+#: src/features/homepage/features.tsx
+msgid "5 credits"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "50 active resumes and 50 cover letters"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90 de zile"
 
-#: src/features/homepage/remember.tsx
-msgid "A"
-msgstr "A"
+#: src/features/homepage/resume.tsx
+msgid "94 of 100 checks passed"
+msgstr ""
 
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "A accepts and R rejects the focused edit. ↑ and ↓ move between edits."
@@ -970,10 +947,6 @@ msgstr "Un fapt s-a schimbat. Revizuiți această poveste."
 msgid "A fact you've since forgotten"
 msgstr "Un fapt pe care l-ați uitat între timp"
 
-#: src/features/homepage/prepare.tsx
-msgid "A focused 30-minute plan"
-msgstr "Un plan concentrat de 30 de minute"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A focused plan for this round"
 msgstr "Un plan concentrat pentru această rundă"
@@ -981,11 +954,6 @@ msgstr "Un plan concentrat pentru această rundă"
 #: src/features/ats-checker/messages.ts
 msgid "A font is referenced but not embedded."
 msgstr "Un font este referențiat, dar nu este încorporat."
-
-#. Hero headline, line 1 of 4: A free, open-source / resume builder / and / career manager.
-#: src/features/homepage/hero.tsx
-msgid "A free, open-source"
-msgstr "Un instrument gratuit, cu sursă deschisă"
 
 #: src/features/ats-checker/messages.ts
 msgid "A full-height gap splits this page into two columns."
@@ -995,10 +963,6 @@ msgstr "Un spațiu pe toată înălțimea împarte această pagină în două co
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "O pauză în activitate nu este o problemă. Adăugați o explicație de o linie dacă doriți; multe CV-uri puternice pur și simplu nu o fac."
 
-#: src/features/homepage/prepare.tsx
-msgid "A high bar for accessibility"
-msgstr "Standarde înalte de accesibilitate"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "A link isn't a full address"
 msgstr "Un link nu este o adresă completă"
@@ -1006,6 +970,10 @@ msgstr "Un link nu este o adresă completă"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "Un link duce în altă parte decât adresa afișată."
+
+#: src/features/homepage/features.tsx
+msgid "A live page beside every edit"
+msgstr ""
 
 #: src/features/assistant/attachment-limits.ts
 msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
@@ -1031,9 +999,17 @@ msgstr "O pagină este rotită."
 msgid "A pasted posting can be saved as an application afterwards."
 msgstr "O postare de angajare lipită poate fi salvată ulterior ca cerere de angajare."
 
+#: src/features/homepage/testimonials.tsx
+msgid "A recruiter asked for a Word file at the last minute. I downloaded one in the same design and sent it right away."
+msgstr ""
+
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "Un memento pentru a vă înregistra, afișat ca pas următor până când o faceți."
+
+#: src/features/homepage/plans.ts
+msgid "A resume ready to send, and a place to start applying."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "A role has no description"
@@ -1055,10 +1031,6 @@ msgstr "O scurtă urmărire este de obicei bine acum"
 msgid "A story you've since deleted"
 msgstr "O poveste pe care ați șters-o între timp"
 
-#: src/features/homepage/prepare.tsx
-msgid "A strong match, with one question to resolve"
-msgstr "O potrivire bună, cu o întrebare de lămurit"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A timed plan, your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "Un plan cronometrat, deschiderea dvs., poveștile de pregătit și întrebările de pus. Devine lista dvs. de verificare cu 10 minute înainte de apel."
@@ -1067,7 +1039,10 @@ msgstr "Un plan cronometrat, deschiderea dvs., poveștile de pregătit și într
 msgid "A web address is written without https://."
 msgstr "O adresă web este scrisă fără https://."
 
-#: src/features/homepage/footer.tsx
+#: src/features/homepage/features.tsx
+msgid "A/B testing"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "Despre această aplicație"
@@ -1089,7 +1064,6 @@ msgid "Accent is used for headings, icons and the header band. Body text stays n
 msgstr "Accentul este folosit pentru titluri, pictograme și banda de antet. Textul corpului rămâne aproape negru pentru imprimare și ATS."
 
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Accept"
 msgstr "Accepta"
@@ -1097,10 +1071,6 @@ msgstr "Accepta"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Accept all"
 msgstr "Acceptați totul"
-
-#: src/features/homepage/write.tsx
-msgid "Accepted"
-msgstr "Acceptat"
 
 #: src/features/applications/stages.ts
 msgid "Accepted another offer"
@@ -1122,9 +1092,7 @@ msgstr "Accesul este acordat"
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "Accesați-vă contul prin API, inclusiv citirea, modificarea și ștergerea documentelor și a cererilor de angajare."
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
 msgid "Accessibility"
 msgstr "Accesibilitate"
 
@@ -1141,25 +1109,12 @@ msgid "Account"
 msgstr "Cont"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Action"
 msgstr "Acțiune"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Actions"
 msgstr "Acțiuni"
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31% to 44% in one quarter, measured across new teams."
-msgstr "Activarea a crescut de la 31% la 44% într-un trimestru, măsurată pe toate echipele noi."
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31% to 44% in one quarter."
-msgstr "Activarea a crescut de la 31% la 44% într-un trimestru."
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31%…"
-msgstr "Activarea a crescut de la 31%…"
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
@@ -1548,10 +1503,6 @@ msgstr "După interviul comportamental"
 msgid "After the interview"
 msgstr "După interviu"
 
-#: src/features/homepage/prepare.tsx
-msgid "After the interview · Today"
-msgstr "După interviu · Astăzi"
-
 #: src/features/career/workspace/debrief.tsx
 msgid "After the onsite"
 msgstr "După interviul la sediu"
@@ -1613,14 +1564,13 @@ msgstr "Furnizorii de inteligență artificială nu au putut fi încărcați. Re
 msgid "AI review"
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "AI that works on your real documents"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Albanian"
 msgstr "Albaneză"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Alex Morgan"
-msgstr "Alex Morgan"
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Align center"
@@ -1640,6 +1590,10 @@ msgstr "Aliniere la dreapta"
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
 msgstr "Toate"
+
+#: src/features/homepage/plans.ts
+msgid "All {templateCount} templates"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "All applications"
@@ -1699,10 +1653,6 @@ msgstr "Descarcă, de asemenea, scrisoarea de intenție {0}"
 msgid "Also email {0}"
 msgstr "Trimiteți și pe e-mail la {0}"
 
-#: src/features/homepage/sections.tsx
-msgid "Also on mobile"
-msgstr "Și pe mobil"
-
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Also shows the icons on skills, profiles and interests."
 msgstr "Afișează, de asemenea, pictogramele despre competențe, profiluri și interese."
@@ -1727,20 +1677,10 @@ msgstr "o eroare"
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "O eroare neașteptată a împiedicat încărcarea acestei pagini. Încearcă din nou sau mergi la panoul de control."
 
-#. Hero headline, line 3 of 4: A free, open-source / resume builder / and / career manager.
-#: src/features/homepage/hero.tsx
-msgctxt "hero headline"
-msgid "and"
-msgstr "și"
-
 #. placeholder {0}: others.length
 #: src/features/applications/components/detail/contacts.tsx
 msgid "and {0} more"
 msgstr "și {0} mai mult"
-
-#: src/features/homepage/sections.tsx
-msgid "and counting"
-msgstr "și numărând"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
@@ -1751,7 +1691,6 @@ msgid "Another resume already uses this address. Choose a different one."
 msgstr "Alt CV folosește deja această adresă. Alege alta."
 
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/remember.tsx
 msgid "Answer"
 msgstr "Răspuns"
 
@@ -1876,10 +1815,6 @@ msgstr "Candidatură"
 msgid "Application added"
 msgstr "Candidatură adăugată"
 
-#: src/features/homepage/remember.tsx
-msgid "Application answer"
-msgstr "Răspuns din candidatură"
-
 #: src/features/applications/use-application-actions.ts
 msgid "Application closed"
 msgstr "cerere de angajare închisă"
@@ -1908,10 +1843,6 @@ msgstr "Detaliile candidaturii"
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Application options"
 msgstr "Opțiunile candidaturii"
-
-#: src/features/homepage/prepare.tsx
-msgid "Application tabs"
-msgstr "Filele candidaturii"
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/career/workspace/messages.tsx
@@ -1944,14 +1875,11 @@ msgstr "Candidaturi de exportat"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/stages.ts
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Applied"
 msgstr "Candidatură trimisă"
 
 #: src/features/career/workspace/messages.tsx
-#: src/features/homepage/prepare.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -1976,17 +1904,8 @@ msgid "Applied. The application is updated."
 msgstr "Aplicat. Candidatura a fost actualizată."
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Apply"
 msgstr "Candidatare"
-
-#: src/features/homepage/remember.tsx
-msgid "Apply · Describe a product improvement you led."
-msgstr "Candidatare · Descrieți o îmbunătățire de produs pe care ați condus-o."
-
-#: src/features/homepage/prepare.tsx
-msgid "Apply 1 change"
-msgstr "Aplicați 1 modificare"
 
 #: src/libs/locale.ts
 msgid "Arabic"
@@ -2042,6 +1961,10 @@ msgstr "Întrebați-le pe amândouă"
 msgid "Ask first"
 msgstr "Întreabă mai întâi"
 
+#: src/features/homepage/features.tsx
+msgid "Ask for a tailored version, a cover letter or interview practice. Pro AI includes the credits; any plan can use your own key."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask for something else…"
 msgstr "Cere altceva..."
@@ -2071,12 +1994,8 @@ msgid "Ask, or describe a change…"
 msgstr "Întrebați sau descrieți o schimbare..."
 
 #: src/features/homepage/faq.tsx
-msgid "Asked and <0>answered.</0>"
-msgstr "Întrebat și <0>răspuns.</0>"
-
-#: src/features/homepage/prepare.tsx
-msgid "Asks for an example of your onboarding work."
-msgstr "Cere un exemplu din munca dvs. de onboarding."
+msgid "Asked and answered."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Aspect ratio"
@@ -2086,7 +2005,7 @@ msgstr "Raport de aspect"
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
 msgid "Assistant"
 msgstr "Asistent"
 
@@ -2098,22 +2017,18 @@ msgstr "Conversații cu asistent"
 msgid "Assistant."
 msgstr "Asistent."
 
-#: src/features/homepage/prepare.tsx
-msgid "At Northwind Labs I led research for our onboarding redesign. I interviewed 14 customers, found three drop-off points, and we shipped a shorter setup. Activation rose from 31% to 44%."
-msgstr "La Northwind Labs am condus cercetarea pentru reproiectarea onboardingului. Am intervievat 14 clienți, am găsit trei puncte de abandon și am lansat o configurare mai scurtă. Activarea a crescut de la 31% la 44%."
-
-#: src/features/homepage/remember.tsx
-msgid "At Northwind Labs, most new teams stalled before they finished setup."
-msgstr "La Northwind Labs, majoritatea echipelor noi se blocau înainte de a termina configurarea."
+#: src/features/homepage/plans.ts
+msgid "ATS check and basic keyword matching"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/footer.tsx
 msgid "ATS checker"
 msgstr "Verificator ATS"
 
-#: src/features/homepage/check.tsx
-msgid "ATS readability"
-msgstr "Lizibilitatea ATS"
+#: src/features/homepage/resume.tsx
+msgid "ATS readable"
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "ATS-safe"
@@ -2176,11 +2091,9 @@ msgstr "Distincții"
 msgid "Azerbaijani"
 msgstr "Azeră"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-msgid "BA, Communication Design"
-msgstr "BA, Design de comunicare"
+#: src/features/homepage/resume.tsx
+msgid "BA, Visual Communication Design · Nusantara Institute of Design"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/routes/dashboard/settings/route.tsx
@@ -2226,9 +2139,12 @@ msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/remember.tsx
 msgid "Backed by"
 msgstr "Susținut de"
+
+#: src/features/homepage/testimonials.tsx
+msgid "Backend Engineer"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Background color"
@@ -2247,18 +2163,10 @@ msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
 msgstr ""
 
-#: src/features/homepage/sheet.tsx
-msgid "Banner"
-msgstr "Banner"
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a bar beside the header"
 msgid "Bar"
 msgstr ""
-
-#: src/features/homepage/hero.tsx
-msgid "Barista, 2012"
-msgstr "Barista, 2012"
 
 #: src/features/career/offers.tsx
 msgid "Base salary"
@@ -2292,6 +2200,10 @@ msgstr "Bengaleză"
 #: src/features/resume/share/download-tab.tsx
 msgid "Best for applying"
 msgstr "Cel mai bun pentru candidaturi"
+
+#: src/features/homepage/features.tsx
+msgid "Beyond the resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Blocker"
@@ -2346,6 +2258,10 @@ msgstr "Lățime chenar"
 msgid "Both offers cover everything compared here."
 msgstr "Ambele oferte acoperă tot ce se compară aici."
 
+#: src/features/homepage/features.tsx
+msgid "Brand Designer"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "Împărțiți CV-ul în secțiunile obișnuite pentru a putea fi segmentat."
@@ -2372,6 +2288,10 @@ msgstr "Actualizarea briefingului este activă · {0}"
 msgid "Briefing refresh paused"
 msgstr "Actualizarea briefingului este în pauză"
 
+#: src/features/homepage/templates.tsx
+msgid "Browse all {total} templates"
+msgstr ""
+
 #: src/features/ats-checker/page.tsx
 msgid "Browse free resume templates and sample PDFs"
 msgstr "Răsfoiți șabloane gratuite de CV și mostre de fișiere PDF"
@@ -2380,26 +2300,18 @@ msgstr "Răsfoiți șabloane gratuite de CV și mostre de fișiere PDF"
 msgid "Browse free resume templates, compare one-column and two-column layouts, and download sample PDFs. Customize your resume and export to PDF or Word."
 msgstr "Răsfoiți șabloane gratuite de CV, comparați machetele cu o coloană și două coloane și descărcați exemple de fișiere PDF. Personalizați-vă CV-ul și exportați-l în PDF sau Microsoft Word."
 
-#: src/features/homepage/hero.tsx
-msgid "Build a professional resume, download it as PDF or Word, and manage your job search in one place. Free templates, no ads, no paywall."
-msgstr "Creați un CV profesional, descărcați-l ca PDF sau Microsoft Word și gestionați-vă căutarea unui loc de muncă într-un singur loc. Șabloane gratuite, fără reclame, fără paywall."
+#: src/libs/seo.ts
+msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
+msgstr ""
 
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
 msgstr "Construiește-ți CV-ul"
 
-#: src/features/homepage/sheet.tsx
-msgid "Built a shared design system used by six product teams, cutting UI review time by 40%."
-msgstr "Am construit un sistem de proiectare partajat utilizat de șase echipe de produse, reducând timpul de revizuire a UI cu 40%."
-
-#: src/features/homepage/prepare.tsx
-msgid "Built a shared design system used by six product teams."
-msgstr "Am construit un design system comun, folosit de șase echipe de produs."
-
-#: src/features/homepage/prepare.tsx
-msgid "Built from the posting, Sam’s message and your two strongest stories."
-msgstr "Construit din anunț, mesajul lui Sam și cele mai puternice două povești ale dvs."
+#: src/features/homepage/resume.tsx
+msgid "Built the design system used by six product teams."
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Built-in reader"
@@ -2419,10 +2331,6 @@ msgstr "intrare din listă {n}"
 msgid "Bulleted list"
 msgstr "Listă cu marcatori"
 
-#: src/features/homepage/footer.tsx
-msgid "By the community, for the community."
-msgstr "Construit de comunitate, pentru comunitate."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Calendaristic"
@@ -2432,16 +2340,12 @@ msgid "Calendar view"
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Can I host it myself?"
-msgstr "Pot să-l găzduiesc eu?"
-
-#: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "Pot importa un CV pe care îl am deja?"
 
 #: src/features/homepage/faq.tsx
-msgid "Can it help me prepare for interviews?"
-msgstr "Mă poate ajuta să mă pregătesc pentru interviuri?"
+msgid "Can I use my own AI key?"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
@@ -2474,11 +2378,6 @@ msgstr "Anulează"
 msgid "Career"
 msgstr "Carieră"
 
-#. Hero headline, line 4 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.
-#: src/features/homepage/hero.tsx
-msgid "career manager."
-msgstr "pentru gestionarea carierei."
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "Catalană"
@@ -2503,6 +2402,7 @@ msgstr "Schimbați conexiunea"
 msgid "Change it in Design."
 msgstr "Schimbați-l în Design."
 
+#: src/features/homepage/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Change language"
 msgstr "Schimbă limba"
@@ -2564,8 +2464,7 @@ msgstr "Schimbarea acestuia trimite o confirmare la noua adresă. Numele dvs. de
 msgid "Changing your password…"
 msgstr "Se schimbă parola…"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
+#: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Check"
@@ -2587,10 +2486,6 @@ msgstr "Verificați din nou"
 msgid "Check another file"
 msgstr "Verificați alt fișier"
 
-#: src/features/homepage/check.tsx
-msgid "Check any PDF, no account needed"
-msgstr "Verificați orice PDF, nu este nevoie de cont"
-
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Check DNS"
@@ -2611,10 +2506,6 @@ msgstr "Verificați dacă este corect."
 #: src/features/career/workspace/practise.tsx
 msgid "check numbers and names before using it"
 msgstr "verificați cifrele și numele înainte de a-l folosi"
-
-#: src/features/homepage/check.tsx
-msgid "Check reads your resume the way hiring software does and explains what to fix in plain words. It runs in your browser, so the file stays with you: 0 uploads."
-msgstr "Caracteristica Verificare citește CV-ul dvs. așa cum face software-ul de recrutare și explică ce trebuie remediat în cuvinte simple. Se rulează în browser, așa că fișierul rămâne pe dispozitiv: 0 încărcări."
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Check the details"
@@ -2653,7 +2544,6 @@ msgstr "Verificați-vă e-mailul pentru un link de resetare a parolei."
 msgid "Check your email for a link to verify your account."
 msgstr "Verificați-vă e-mailul pentru un link de verificare a contului."
 
-#: src/features/homepage/check.tsx
 #: src/features/templates/gallery.tsx
 msgid "Check your resume’s ATS readability"
 msgstr "Verificați lizibilitatea ATS a CV-ului dvs"
@@ -2744,6 +2634,14 @@ msgstr "Alege alt fișier"
 msgid "Choose color"
 msgstr "Alege culoarea"
 
+#: src/features/homepage/plans.ts
+msgid "Choose Plus"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "Choose Pro AI"
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Circle"
 msgstr "Cerc"
@@ -2751,10 +2649,6 @@ msgstr "Cerc"
 #: src/features/career/workspace/fit.tsx
 msgid "Clarify"
 msgstr "Clarificați"
-
-#: src/features/homepage/sheet.tsx
-msgid "Classic"
-msgstr "Clasic"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Claude Desktop"
@@ -2786,6 +2680,10 @@ msgstr "Ștergeți secțiunea"
 #: src/features/documents/documents-page.tsx
 msgid "Clear selection"
 msgstr "Ștergeți selecția"
+
+#: src/features/homepage/features.tsx
+msgid "Clear structure"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Clear the greeting or sign-off to omit it. Clearing the sign-off also removes the automatic signature."
@@ -2902,10 +2800,6 @@ msgstr "Coloane"
 msgid "Columns can scramble the order text is read in."
 msgstr "Coloanele pot amesteca ordinea în care este citit textul."
 
-#: src/features/homepage/sections.tsx
-msgid "Coming soon"
-msgstr "În curând"
-
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "Urmează"
@@ -2921,10 +2815,6 @@ msgstr "Paleta de comenzi"
 msgid "Command palette: {currentPage}"
 msgstr "Paleta de comenzi: {currentPage}"
 
-#: src/features/homepage/footer.tsx
-msgid "Community"
-msgstr "Comunitate"
-
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Compact"
@@ -2938,6 +2828,7 @@ msgstr ""
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -2960,6 +2851,10 @@ msgstr "Comparați aspectele reale ale CV-urilor înainte de a vă înscrie. Fie
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Compare your resume with the job's keywords, then make a version just for it."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -3013,10 +2908,6 @@ msgstr "Confirmați ora cu {contact} înainte de a adăuga un interviu nou."
 #: src/features/career/workspace/prepare.tsx
 msgid "Confirm the time, link and who you'll meet. Glance at the resume and letter you sent."
 msgstr "Confirmați ora, linkul și cu cine vă întâlniți. Aruncați o privire pe CV-ul și scrisoarea trimise."
-
-#: src/features/homepage/prepare.tsx
-msgid "Confirms {time} today, by video."
-msgstr "Confirmă astăzi la {time}, prin video."
 
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
@@ -3098,6 +2989,7 @@ msgid "Connections bill speech separately and may use tokens on your account. Yo
 msgstr "Conexiunile taxează vocea separat și pot folosi tokeni din contul dvs. Vocea browserului este gratuită, dar producătorul acestuia poate procesa sunetul. Serverul păstrează transcrierile, niciodată înregistrările."
 
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "Contact"
 
@@ -3106,7 +2998,7 @@ msgstr "Contact"
 msgid "Contact details"
 msgstr "Date de contact"
 
-#: src/features/homepage/check.tsx
+#: src/features/homepage/features.tsx
 msgid "Contact details found"
 msgstr "S-au găsit detalii de contact"
 
@@ -3164,14 +3056,6 @@ msgstr "Continuă ca invitat"
 msgid "Contrast on white:"
 msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Contribution clear"
-msgstr "Contribuție clară"
-
-#: src/features/homepage/prepare.tsx
-msgid "Contribution unclear"
-msgstr "Contribuție neclară"
-
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
 msgid "Conversation"
@@ -3195,7 +3079,6 @@ msgstr "Numele conversației"
 msgid "Conversations"
 msgstr "Conversații"
 
-#: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3239,7 +3122,6 @@ msgstr "Copie pentru un job..."
 msgid "Copy it now. For your security, it won't be shown again."
 msgstr "Copiați-l acum. Pentru securitatea dvs., nu va fi afișat din nou."
 
-#: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "Copiați linkul"
@@ -3899,10 +3781,6 @@ msgstr "Scrisoare de intenție"
 msgid "Cover letter — {0}"
 msgstr "Scrisoarea de intenție — {0}"
 
-#: src/features/homepage/tailor.tsx
-msgid "Cover letter · Fieldnote"
-msgstr "Scrisoare de intenție · Fieldnote"
-
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Cover letter file"
 msgstr "Fișierul scrisorii de intenție"
@@ -3919,6 +3797,14 @@ msgstr "Scrisoarea de intenție trimisă (opțional)"
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Cover letters"
 msgstr "Scrisori de intenție"
+
+#: src/features/homepage/plans.ts
+msgid "Cover letters and recruiter replies"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Cover letters that match"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Create"
@@ -3976,6 +3862,10 @@ msgstr ""
 msgid "Created and linked to {0}"
 msgstr "Creat și conectat la {0}"
 
+#: src/features/homepage/faq.tsx
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes 100 credits every 30 days; the free plan includes 5 to try."
+msgstr ""
+
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Crop and upload"
 msgstr "Decupează și încarcă"
@@ -3983,10 +3873,6 @@ msgstr "Decupează și încarcă"
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Crop photo"
 msgstr "Decupează fotografia"
-
-#: src/features/homepage/sheet.tsx
-msgid "Cross-functional leadership"
-msgstr "Conducere interfuncțională"
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "CSV data"
@@ -4041,6 +3927,10 @@ msgstr "Secțiuni personalizate"
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "Stiluri personalizate"
+
+#: src/features/homepage/plans.ts
+msgid "Custom styles and your own fonts"
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
@@ -4105,10 +3995,6 @@ msgstr "Datele merg înapoi"
 msgid "Dates start in the future"
 msgstr "Datele încep în viitor"
 
-#: src/features/homepage/check.tsx
-msgid "Dates use one format"
-msgstr "Datele folosesc un singur format"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Dates won't be read"
 msgstr "Datele nu vor fi citite"
@@ -4121,23 +4007,15 @@ msgstr ""
 msgid "Dear {name},"
 msgstr "Stimate {name},"
 
-#: src/features/homepage/tailor.tsx
-msgid "Dear Fieldnote team,"
-msgstr "Dragă echipă Fieldnote,"
-
+#: src/features/homepage/features.tsx
 #: src/features/letters/compose.ts
 msgid "Dear hiring team,"
 msgstr "Dragă echipă de angajare,"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Debrief"
 msgstr "Bilanț"
-
-#: src/features/homepage/prepare.tsx
-msgid "Deep breath."
-msgstr "Respirați adânc."
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/providers.tsx
@@ -4306,8 +4184,7 @@ msgstr "Descriere"
 msgid "Description of role {0}"
 msgstr "Descrierea rolului {0}"
 
-#: src/features/homepage/design.tsx
-#: src/features/homepage/header.tsx
+#: src/features/homepage/features.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -4322,17 +4199,16 @@ msgstr "Design"
 msgid "Design groups"
 msgstr "Grupuri de proiectare"
 
+#: src/features/homepage/features.tsx
+msgid "Design Lead"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design reset to defaults"
 msgstr "Design resetat la valorile implicite"
 
-#: src/features/homepage/prepare.tsx
-msgid "Design system trade-offs"
-msgstr "Compromisuri în design system"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Design systems"
 msgstr "Sisteme de design"
 
@@ -4356,10 +4232,6 @@ msgstr "Dictarea s-a oprit la limita de 2 minute."
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Didn't land"
-msgstr "Nu a convins"
-
-#: src/features/homepage/prepare.tsx
-msgid "Didn’t land"
 msgstr "Nu a convins"
 
 #: src/features/career/offers.tsx
@@ -4417,10 +4289,6 @@ msgstr "Meniul document: {name}"
 msgid "Document type"
 msgstr "Tip document"
 
-#: src/features/homepage/footer.tsx
-msgid "Documentation"
-msgstr "Documentație"
-
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4439,10 +4307,6 @@ msgstr "Documente pentru acest job"
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
 msgstr "Documentele pe care le muți aici rămân timp de 30 de zile."
-
-#: src/features/homepage/faq.tsx
-msgid "Does it use AI?"
-msgstr "Folosește AI?"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Domain connected"
@@ -4466,6 +4330,10 @@ msgstr "Făcut"
 #: src/features/career/today.tsx
 msgid "Done · {0}"
 msgstr "Gata · {0}"
+
+#: src/features/homepage/features.tsx
+msgid "Done. I rewrote 6 bullets around design systems and prototyping and kept your numbers. Review the changes before you save."
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Double-checking"
@@ -4547,6 +4415,10 @@ msgstr "Ți-am descărcat CV-ul și această scrisoare"
 msgid "downloads"
 msgstr "descărcări"
 
+#: src/features/homepage/features.tsx
+msgid "Downloads"
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Draft"
@@ -4579,10 +4451,6 @@ msgstr "Ciornă din anunțul de locuri de muncă"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from your resume"
 msgstr "Schiță din CV-ul dvs"
-
-#: src/features/homepage/remember.tsx
-msgid "Draft it as"
-msgstr "Redactați ca"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft kept. Edit anything you like."
@@ -4820,12 +4688,7 @@ msgstr "Modul editor"
 msgid "Editor views"
 msgstr "Vizualizări ale editorului"
 
-#: src/features/homepage/sheet.tsx
-msgid "Editorial"
-msgstr "Editorial"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Education"
 msgstr "Educație"
@@ -4876,11 +4739,6 @@ msgstr "Sfârşit"
 #: src/libs/locale.ts
 msgid "English"
 msgstr "Engleză"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "English (native)"
-msgstr "engleză (nativ)"
 
 #: src/libs/locale.ts
 msgid "English (United Kingdom)"
@@ -5004,6 +4862,10 @@ msgstr "La fiecare 3 zile"
 msgid "Every application is a step closer."
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "Every application on one board"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
 msgstr "În fiecare zi"
@@ -5015,6 +4877,10 @@ msgstr "Fiecare intrare are date într-o formă citită de sisteme, în ordine, 
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Fiecare rol spune ce ai făcut. Opinii despre formulare live în fila Scriere."
+
+#: src/features/homepage/templates.tsx
+msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Every template exports a text-based PDF with the words in reading order, which is what applicant tracking systems (ATS) need to parse a resume. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix."
@@ -5028,19 +4894,25 @@ msgstr "Fiecare termen pe care îl subliniază postarea de locuri de muncă exis
 msgid "Every week"
 msgstr "În fiecare săptămână"
 
+#: src/features/homepage/plans.ts
+msgid "Everything in Plus"
+msgstr ""
+
 #. placeholder {0}: application.company
 #: src/features/career/workspace/saved.tsx
 msgid "Everything the coach wrote for {0}, newest first."
 msgstr "Tot ce a scris coach-ul pentru {0}, cele mai noi primele."
+
+#: src/features/homepage/features.tsx
+msgid "Everything you need to reach the interview."
+msgstr ""
 
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Exit focus mode"
 msgstr "Ieșiți din modul de focalizare"
 
 #: src/features/career/knowledge/facts.tsx
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Experience"
 msgstr "Experiență"
@@ -5056,10 +4928,6 @@ msgstr "Expiră"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires {expiry}"
 msgstr ""
-
-#: src/features/homepage/prepare.tsx
-msgid "explain one limit of the measurement clearly, without underselling the work."
-msgstr "explicați clar o limită a măsurării, fără a subevalua munca."
 
 #: src/features/settings/account/data.tsx
 #: src/libs/resume/section.tsx
@@ -5128,10 +4996,6 @@ msgctxt "Entry header layout"
 msgid "Eyebrow"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "Fact · Accomplishment"
-msgstr "Fapt · Realizare"
-
 #: src/features/career/knowledge/facts.tsx
 msgid "Fact forgotten"
 msgstr "Fapt uitat"
@@ -5153,7 +5017,12 @@ msgstr "Fapte, povești și preferințe activate în Cunoștințe"
 msgid "Failed"
 msgstr "A eșuat"
 
+#: src/features/homepage/ui.tsx
+msgid "FAQ"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
 msgid "Features"
 msgstr "Funcții"
 
@@ -5165,33 +5034,14 @@ msgstr "Feedback"
 msgid "Feedback needs an AI connection. <0>Add one in Settings</0>. Nothing is sent until you ask."
 msgstr "Feedbackul necesită o conexiune AI. <0>Adăugați una în Setări</0>. Nu se trimite nimic până nu cereți."
 
-#: src/features/homepage/prepare.tsx
-msgid "Fewer support tickets isn’t backed by a number yet. Say it as something you noticed."
-msgstr "Reducerea tichetelor de suport nu este încă susținută de o cifră. Prezentați-o ca pe ceva ce ați observat."
-
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Field {0}"
 msgstr "Câmpul {0}"
 
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
-msgid "Fieldnote"
-msgstr "Fieldnote"
-
-#: src/features/homepage/tailor.tsx
-msgid "Fieldnote · Remote, EU"
-msgstr "Fieldnote · Telecomandă, UE"
-
-#: src/features/homepage/hero.tsx
+#: src/features/homepage/resume.tsx
 msgid "Figma"
 msgstr "Figma"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Figma, HTML and CSS"
-msgstr "Figma, HTML și CSS"
 
 #: src/features/resume/share/download-tab.tsx
 msgid "File name"
@@ -5230,9 +5080,9 @@ msgstr "Completarea intrărilor"
 msgid "Filter by tag"
 msgstr "Filtrați după etichetă"
 
-#: src/features/homepage/remember.tsx
-msgid "Find out why, and shorten setup without adding support work."
-msgstr "Aflarea cauzei și scurtarea configurării, fără muncă în plus pentru suport."
+#: src/features/homepage/testimonials.tsx
+msgid "Finance Analyst"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
@@ -5265,7 +5115,6 @@ msgstr "Potrivire"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgctxt "Application workspace tab: how well a job fits your experience"
 msgid "Fit"
 msgstr "Potrivire"
@@ -5298,10 +5147,6 @@ msgstr "Remediați-le în editor"
 msgid "Fix these values in the CSV, or leave their columns out, before importing."
 msgstr "Corectați aceste valori în CSV sau omiteți coloanele lor înainte de import."
 
-#: src/features/homepage/remember.tsx
-msgid "Fixing onboarding drop-off at Northwind Labs"
-msgstr "Reducerea abandonului la onboarding la Northwind Labs"
-
 #: src/features/ats-checker/messages.ts
 msgid "Flatten the form so the text is part of the page."
 msgstr "Aplatizați formularul astfel încât textul să facă parte din pagină."
@@ -5313,6 +5158,14 @@ msgstr "Fluență"
 #: src/features/career/workspace/prepare.tsx
 msgid "Focus, experience, why this role"
 msgstr "Focus, experiență, de ce acest post"
+
+#: src/features/homepage/features.tsx
+msgid "Follow every application all the way to the offer."
+msgstr ""
+
+#: src/features/homepage/introduction.tsx
+msgid "Follow every application from saved to offer"
+msgstr ""
 
 #: src/features/applications/next-step.ts
 msgid "Follow up"
@@ -5366,6 +5219,10 @@ msgstr "Fonturile nu au putut fi încărcate. Încercați din nou."
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "For"
 msgstr "Pentru"
+
+#: src/features/homepage/pricing.tsx
+msgid "For 30 days, no automatic renewal"
+msgstr ""
 
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
@@ -5457,13 +5314,18 @@ msgstr "Găsit astăzi"
 msgid "Found yesterday"
 msgstr "Găsit ieri"
 
+#: src/features/homepage/plans.ts
+#: src/features/homepage/templates.tsx
+msgid "Free"
+msgstr ""
+
 #: src/libs/seo.ts
 msgid "Free ATS resume checker"
 msgstr "Verificator gratuit de CV ATS"
 
-#: src/libs/seo.ts
-msgid "Free resume builder with PDF & Word downloads"
-msgstr "Creator de CV gratuit cu descărcări PDF și Microsoft Word"
+#: src/features/homepage/hero.tsx
+msgid "Free plan, no card needed. PDF downloads without a watermark."
+msgstr ""
 
 #: src/libs/seo.ts
 msgid "Free resume templates with PDF examples"
@@ -5475,16 +5337,15 @@ msgstr "Șabloane de CV gratuite cu exemple PDF"
 msgid "Free-form"
 msgstr "Formă liberă"
 
-#: src/libs/seo.ts
-msgid "Free, open-source resume builder. Create, update, and share your resume, with PDF and Word downloads, no ads and no paywall."
-msgstr "Generator de CV gratuit, open-source. Creați, actualizați și distribuiți CV-ul dvs., cu descărcări PDF și Word, fără anunțuri și fără paywall."
-
 #: src/libs/locale.ts
 msgid "French"
 msgstr "Franceză"
 
+#: src/features/homepage/testimonials.tsx
+msgid "Fresh graduate, Informatics"
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
-#: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "Din"
@@ -5497,10 +5358,6 @@ msgstr "Dintr-un bilanț"
 msgid "From a document you attached"
 msgstr "Dintr-un document atașat de dvs."
 
-#: src/features/homepage/sections.tsx
-msgid "from developers who back it"
-msgstr "de la dezvoltatori care îl susțin"
-
 #: src/features/career/workspace/fit.tsx
 msgid "From Fit"
 msgstr "Din Potrivire"
@@ -5508,6 +5365,10 @@ msgstr "Din Potrivire"
 #: src/features/resume/share/format.ts
 msgid "from the assistant or API"
 msgstr "de la asistent sau API"
+
+#: src/features/homepage/features.tsx
+msgid "From the first line to the shared link, every step of the resume lives in one editor."
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From your cover letter"
@@ -5528,6 +5389,10 @@ msgstr "Din CV-ul dvs."
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "Pe baza fusului dvs. orar"
+
+#: src/features/homepage/plans.ts
+msgid "Full job search insights"
+msgstr ""
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Full name"
@@ -5560,10 +5425,6 @@ msgstr "Germană"
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
 msgstr "Obțineți o cheie la <0>{0}</0>. Este stocat criptat și folosit numai pentru solicitările dvs."
 
-#: src/features/homepage/prepare.tsx
-msgid "Get a plan for the interview, built from the posting and your own stories. Practice out loud, then write down how it went."
-msgstr "Primiți un plan pentru interviu, construit din anunț și din propriile povești. Exersați cu voce tare, apoi notați cum a mers."
-
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback"
 msgstr "Obțineți feedback"
@@ -5572,17 +5433,13 @@ msgstr "Obțineți feedback"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "„Obțineți feedback” trimite întrebarea, răspunsul dvs., acest anunț și poveștile dvs. către {providerName}."
 
-#: src/features/homepage/sections.tsx
-msgid "Get it on"
-msgstr "Descarcă de pe"
+#: src/features/homepage/closing.tsx
+msgid "Get it on Google Play"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "Primiți aici posturi noi în fiecare dimineață"
-
-#: src/features/homepage/footer.tsx
-msgid "Get started"
-msgstr "Începeți"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -5661,9 +5518,9 @@ msgstr "Formulă de adresare"
 msgid "Grid"
 msgstr "Grilă"
 
-#: src/features/homepage/remember.tsx
-msgid "Happy to walk you through it on our call."
-msgstr "Vă pot explica în detaliu la apelul nostru."
+#: src/features/homepage/footer.tsx
+msgid "Guides"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -5708,7 +5565,6 @@ msgid "Headline"
 msgstr "Headline"
 
 #: src/features/career/workspace/practise.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Hear it"
 msgstr "Ascultați"
 
@@ -5719,6 +5575,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Hebrew"
 msgstr "Ebraică"
+
+#: src/features/homepage/footer.tsx
+msgid "Help"
+msgstr ""
 
 #: src/features/settings/root.tsx
 msgid "Help & docs"
@@ -5731,10 +5591,6 @@ msgstr "Ajută-mă să transform o realizare într-o poveste cu Situație, Sarci
 #: src/components/input/color-picker.tsx
 msgid "Hex color"
 msgstr ""
-
-#: src/features/homepage/prepare.tsx
-msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
-msgstr "Bună, Alex, confirmăm: vă veți întâlni astăzi cu echipa noastră de design la {time}, prin video. Ați putea aduce un exemplu din munca dvs. de onboarding?"
 
 #: src/components/level/combobox.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -5791,6 +5647,7 @@ msgstr "Ascunde fotografia"
 msgid "High"
 msgstr "Ridicat"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Highlight"
 msgstr "Evidențiere"
@@ -5840,9 +5697,12 @@ msgid "How did it go?"
 msgstr "Cum a mers?"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "How did it land?"
 msgstr "Cum a fost primit?"
+
+#: src/features/homepage/faq.tsx
+msgid "How does a 30-day plan work?"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "How far applications get"
@@ -5876,6 +5736,10 @@ msgstr "Cum să afișați fișierul"
 msgid "How well do I fit this role?"
 msgstr "Cât de bine mă potrivesc acestui rol?"
 
+#: src/features/homepage/testimonials.tsx
+msgid "HR Generalist"
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Hue"
@@ -5898,9 +5762,9 @@ msgstr "Pot vedea acest {kind} și anunțul {0}. Sugestiile vin sub formă de mo
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "Pot vedea acest {kind}. Sugestiile revin pe măsură ce modificările pe care le puteți accepta una câte una."
 
-#: src/features/homepage/remember.tsx
-msgid "I interviewed 14 customers, mapped three drop-off points and prototyped a shorter setup with engineering."
-msgstr "Am intervievat 14 clienți, am identificat trei puncte de abandon și am prototipat cu inginerii o configurare mai scurtă."
+#: src/features/homepage/testimonials.tsx
+msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
+msgstr ""
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -5922,10 +5786,6 @@ msgstr "Pictograma…"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Icons in contact line"
 msgstr "Pictograme în linia de contact"
-
-#: src/features/homepage/remember.tsx
-msgid "If I did it again, I’d agree on the measure before the first prototype."
-msgstr "Dacă aș face-o din nou, aș stabili metrica înainte de primul prototip."
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -6037,10 +5897,6 @@ msgstr "Îmbunătățiți linia selectată"
 msgid "Improving…"
 msgstr "Se îmbunătățește…"
 
-#: src/features/homepage/sections.tsx
-msgid "In good company"
-msgstr "În companie bună"
-
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "Măriți spațierea între rânduri, astfel încât două rânduri să nu se contopească într-unul singur."
@@ -6052,6 +5908,10 @@ msgstr "Mărire indentare"
 #: src/libs/locale.ts
 msgid "Indonesian"
 msgstr "Indoneziană"
+
+#: src/features/homepage/resume.tsx
+msgid "Indonesian (native) · English (professional)"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
@@ -6087,9 +5947,7 @@ msgstr "Doar interfață. Fiecare CV își stabilește propriul limbaj în Desig
 
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "Interviu"
 
@@ -6100,15 +5958,6 @@ msgstr "Bilanțul interviului"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview deleted"
 msgstr "Interviu șters"
-
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-msgid "Interview done"
-msgstr "Interviu încheiat"
-
-#: src/features/homepage/prepare.tsx
-msgid "Interview in {duration}"
-msgstr "Interviu în {duration}"
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview is in another timezone"
@@ -6122,17 +5971,13 @@ msgstr ""
 msgid "Interview notes"
 msgstr "Notițe de interviu"
 
-#: src/features/homepage/prepare.tsx
-msgid "Interview now"
-msgstr "Interviu acum"
-
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "Interview opening"
-msgstr "Deschiderea interviului"
+#: src/features/homepage/plans.ts
+msgid "Interview practice with feedback"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
@@ -6156,25 +6001,25 @@ msgstr "Orele interviurilor, mementourile și programările din Carieră îl fol
 msgid "Interview timezone"
 msgstr "Fusul orar al interviului"
 
-#: src/features/homepage/remember.tsx
-msgid "Interviewed 14 customers, mapped three drop-off points and prototyped a shorter setup with engineering."
-msgstr "Am intervievat 14 clienți, am identificat trei puncte de abandon și am prototipat cu inginerii o configurare mai scurtă."
-
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Interviewer"
 msgstr "Intervievator"
+
+#: src/features/homepage/introduction.tsx
+msgid "Introduction"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Is equity part of the offer?"
 msgstr "Acțiunile fac parte din ofertă?"
 
-#: src/features/homepage/faq.tsx
-msgid "Is Rezumi really free?"
-msgstr "Este Rezumi cu adevărat gratuit?"
-
 #: src/features/career/offers.tsx
 msgid "Is there a bonus, and what does it depend on?"
 msgstr "Există un bonus și de ce depinde?"
+
+#: src/features/homepage/faq.tsx
+msgid "Is there a free plan?"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Is there a learning budget?"
@@ -6286,11 +6131,11 @@ msgstr "Descrierea postului"
 msgid "Job link or posting text"
 msgstr "Link pentru locuri de muncă sau text pentru postarea unui loc de muncă"
 
-#: src/features/homepage/tailor.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Job match"
 msgstr "Potrivire de locuri de muncă"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Job posting"
 msgstr "Anunț de angajare"
@@ -6310,6 +6155,10 @@ msgstr "Căutarea unui loc de muncă a eșuat. Încercați din nou sau inserați
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
 msgstr "Fluxul căutării de joburi"
+
+#: src/features/homepage/plans.ts
+msgid "Job tracker with board and calendar"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Jobs"
@@ -6371,7 +6220,6 @@ msgstr "Păstrați onestitatea"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "Păstrați-l sub 2,5 MB, de obicei prin eliminarea sau micșorarea imaginilor."
 
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "Păstrează-l pe al meu"
@@ -6391,10 +6239,6 @@ msgstr "Păstrați conținutul CV-ului ca text real, nu ca imagini de text."
 #: src/features/ats-checker/messages.ts
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "Păstrați antetele repetate scurte, sau renunțați la ele. Se repetă și în textul extras."
-
-#: src/features/homepage/prepare.tsx
-msgid "Keep the evidence precise"
-msgstr "Păstrați dovezile precise"
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Keep the panel beside the page"
@@ -6424,10 +6268,6 @@ msgstr "Păstrează cele mai specifice părți"
 #: src/features/resume/editor/check/actions.ts
 msgid "Kept as it is"
 msgstr "Păstrată așa cum este"
-
-#: src/features/homepage/write.tsx
-msgid "Kept yours"
-msgstr "Varianta dvs., păstrată"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Key ends in {ending}"
@@ -6461,16 +6301,11 @@ msgstr "Khmer"
 msgid "Kind regards,"
 msgstr "Salutări calde,"
 
-#: src/features/homepage/remember.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "Cunoștințe"
-
-#: src/features/homepage/prepare.tsx
-msgid "Knowledge doesn’t mention mentoring."
-msgstr "Cunoștințele nu menționează mentoratul."
 
 #: src/libs/locale.ts
 msgid "Korean"
@@ -6494,6 +6329,7 @@ msgstr "Landscape"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
+#: src/features/homepage/header.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/general.tsx
@@ -6501,8 +6337,7 @@ msgstr "Landscape"
 msgid "Language"
 msgstr "Limbă"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Languages"
 msgstr "Limbi"
@@ -6549,20 +6384,17 @@ msgstr "Dispuneți textul pe orizontală. Porțiunile rotite sunt adesea elimina
 msgid "Layout"
 msgstr "Layout"
 
-#: src/features/homepage/prepare.tsx
-msgid "Lead across functions"
-msgstr "Leadership interfuncțional"
+#: src/features/homepage/features.tsx
+msgid "Lead Designer"
+msgstr ""
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Lead Product Designer"
-msgstr "Designer principal de produs"
+#: src/features/homepage/features.tsx
+msgid "Lead Designer · Northwind"
+msgstr ""
 
-#: src/features/homepage/write.tsx
-msgid "Lead with the result and give it a scale."
-msgstr "Conduceți cu rezultatul și acordați-i o scară."
+#: src/features/homepage/resume.tsx
+msgid "Lead Designer, Northwind"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Leads with why you fit"
@@ -6596,13 +6428,13 @@ msgstr "Lasă gol pentru a folosi titlul original."
 msgid "Leave out"
 msgstr "Lasă afară"
 
-#: src/features/homepage/sheet.tsx
-msgid "Led <0>user research</0> for the onboarding redesign; activation rose from 31% to 44%."
-msgstr "Am coordonat <0>cercetarea utilizatorilor</0> pentru reproiectarea experienței inițiale; activarea a crescut de la 31% la 44%."
+#: src/features/homepage/features.tsx
+msgid "Led the checkout redesign"
+msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Led research for the onboarding redesign; activation rose from 31% to 44%."
-msgstr "Am condus cercetarea pentru reproiectarea onboardingului; activarea a crescut de la 31% la 44%."
+#: src/features/homepage/resume.tsx
+msgid "Led the redesign of checkout, lifting conversion by 18% in two quarters."
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Left"
@@ -6691,6 +6523,10 @@ msgstr "Pagina de scrisori"
 msgid "Letters"
 msgstr "Scrisori"
 
+#: src/features/homepage/features.tsx
+msgid "Letters share your resume's design and live beside the job they are for."
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Level"
@@ -6700,10 +6536,6 @@ msgstr "Nivel"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "Nivel {level} din 5"
-
-#: src/features/homepage/footer.tsx
-msgid "Licensed under <0>MIT</0>"
-msgstr "Licențiat sub <0>MIT</0>"
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6827,15 +6659,6 @@ msgstr "Se leagă..."
 msgid "Links"
 msgstr "Legături"
 
-#: src/features/homepage/hero.tsx
-msgid "Lisbon"
-msgstr "Lisbon"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Lisbon, Portugal"
-msgstr "Lisbon, Portugal"
-
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "List"
@@ -6865,10 +6688,6 @@ msgstr "Actualizări live · pe măsură ce editați"
 #: src/features/resume/share/address-field.tsx
 msgid "Live at {0}"
 msgstr "Live la {0}"
-
-#: src/features/homepage/sections.tsx
-msgid "Live totals, refreshed every 6 hours."
-msgstr "Totaluri live, reîmprospătate la fiecare 6 ore."
 
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
@@ -6932,10 +6751,6 @@ msgstr "Se încarcă versiunea salvată…"
 msgid "Loading stylesheet editor…"
 msgstr "Se încarcă editorul de stiluri…"
 
-#: src/features/homepage/sections.tsx
-msgid "Loading the total"
-msgstr "Se încarcă totalul"
-
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Se încarcă spațiul de lucru…"
@@ -6977,6 +6792,10 @@ msgstr "Blocat"
 msgid "Locked. Unlock to edit."
 msgstr "Blocat. Deblocați pentru a edita."
 
+#: src/features/homepage/header.tsx
+msgid "Log in"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
 msgstr "Porțiuni lungi sunt scrise cu majuscule."
@@ -7014,10 +6833,6 @@ msgstr "Principal"
 #: src/routes/_home/-sections/header.tsx
 msgid "Main navigation"
 msgstr "Navigare principală"
-
-#: src/features/homepage/design.tsx
-msgid "Make any of them yours."
-msgstr "Fă-ți oricare dintre ele."
 
 #: src/features/settings/ai/providers.tsx
 msgid "Make default"
@@ -7084,6 +6899,10 @@ msgstr "Gestionat de serverul dvs"
 msgid "Many bullets start with the same phrase."
 msgstr "Multe puncte încep cu aceeași expresie."
 
+#: src/features/homepage/plans.ts
+msgid "Many versions of your application, in every format."
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Mar 2022"
 msgstr "martie 2022"
@@ -7137,6 +6956,10 @@ msgstr "Marcată ca trimisă. Versiunile trimise sunt păstrate."
 msgid "Marked as read"
 msgstr "Marcat ca citit"
 
+#: src/features/homepage/hero.tsx
+msgid "Marketing Associate"
+msgstr ""
+
 #. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Match “{0}”"
@@ -7145,6 +6968,10 @@ msgstr "Potriviți „{0}”"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Match against a job"
 msgstr "Meci împotriva unui loc de muncă"
+
+#: src/features/homepage/features.tsx
+msgid "Match every posting"
+msgstr ""
 
 #: src/features/command-palette/pages/preferences/theme.tsx
 msgid "Match system theme"
@@ -7170,6 +6997,10 @@ msgstr "Ar putea fi disponibil"
 msgid "MCP"
 msgstr "MCP"
 
+#: src/features/homepage/plans.ts
+msgid "MCP and API for your own automations"
+msgstr ""
+
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "Server MCP"
@@ -7186,10 +7017,6 @@ msgstr ""
 msgid "Medium"
 msgstr "Mediu"
 
-#: src/features/homepage/prepare.tsx
-msgid "Mentor other designers"
-msgstr "Îndrumarea altor designeri"
-
 #: src/features/assistant/conversation.tsx
 msgid "Message the assistant"
 msgstr "Trimite un mesaj asistentului"
@@ -7199,17 +7026,8 @@ msgid "Message the coach"
 msgstr "Scrieți coach-ului"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Messages"
 msgstr "Mesaje"
-
-#: src/features/homepage/prepare.tsx
-msgid "Messages · Pasted from your email"
-msgstr "Mesaje · Lipit din e-mailul dvs."
-
-#: src/features/homepage/remember.tsx
-msgid "Messages · Reply to Sam at Fieldnote"
-msgstr "Mesaje · Răspuns pentru Sam de la Fieldnote"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
@@ -7219,22 +7037,9 @@ msgstr "Microfon blocat. Permiteți-l din setările browserului sau scrieți ră
 msgid "Minimum base salary"
 msgstr "Salariu de bază minim"
 
-#: src/features/homepage/prepare.tsx
-msgid "Missing evidence means your notes don’t show it yet, not that you lack it."
-msgstr "Dovezi lipsă înseamnă că notițele dvs. nu o arată încă, nu că v-ar lipsi."
-
-#: src/features/homepage/footer.tsx
-msgid "MIT License"
-msgstr "Licența MIT"
-
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Mixed"
 msgstr "Mixt"
-
-#: src/features/homepage/check.tsx
-msgid "mixed format"
-msgstr "format mixt"
 
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
@@ -7252,10 +7057,6 @@ msgstr "Sugestiile de modele nu sunt disponibile. Puteți introduce în continua
 #: src/features/assistant/assistant-panel.tsx
 msgid "Model: {label}"
 msgstr "Model: {label}"
-
-#: src/features/homepage/sheet.tsx
-msgid "Mono"
-msgstr "Mono"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
@@ -7303,13 +7104,13 @@ msgstr "Majoritatea punctelor încep cu umplutură, în loc de ceva ce ați făc
 msgid "Most entries have no dates."
 msgstr "Majoritatea intrărilor nu au date."
 
-#: src/features/homepage/remember.tsx
-msgid "Most new teams at Northwind Labs stalled during setup and never reached activation."
-msgstr "Majoritatea echipelor noi de la Northwind Labs se blocau la configurare și nu ajungeau niciodată la activare."
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
 msgstr "Majoritatea recrutorilor citesc 180-320 de cuvinte. Banda umbrită arată intervalul."
+
+#: src/features/homepage/introduction.tsx
+msgid "Most resume builders stop at the PDF. The work doesn’t: each posting wants a slightly different story, recruiters reply, and interviews need preparing. So Rezumi keeps going with you."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Most systems file candidates by email address."
@@ -7327,6 +7128,10 @@ msgstr "Mutați tot conținutul în interiorul marginilor paginii și exportați
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Move down"
 msgstr "Deplasați-vă în jos"
+
+#: src/features/homepage/features.tsx
+msgid "Move each job from saved to offer, with notes, dates and the resume you sent."
+msgstr ""
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Move field up"
@@ -7364,10 +7169,6 @@ msgstr "Mutați la {0}"
 #: src/features/career/workspace/messages.tsx
 msgid "Move to {stage}"
 msgstr "Mutați în {stage}"
-
-#: src/features/homepage/prepare.tsx
-msgid "Move to Interview"
-msgstr "Mutați în Interviu"
 
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
@@ -7408,9 +7209,9 @@ msgstr "Mutat în {0}"
 msgid "Moves the application from {0}."
 msgstr "Mută candidatura din {0}."
 
-#: src/features/homepage/remember.tsx
-msgid "My job was to find out why, without adding support work."
-msgstr "Sarcina mea era să aflu de ce, fără a adăuga muncă pentru suport."
+#: src/features/homepage/testimonials.tsx
+msgid "My internships and campus projects finally read like real experience. The ATS check showed me what to fix."
+msgstr ""
 
 #. Label for full name input on registration form
 #: src/dialogs/resume/index.tsx
@@ -7442,10 +7243,6 @@ msgstr "Numele persoanei {0}"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Name or team"
 msgstr "Nume sau echipa"
-
-#: src/features/homepage/prepare.tsx
-msgid "Name the problem, what you led and how activation was measured."
-msgstr "Numiți problema, ce ați condus și cum a fost măsurată activarea."
 
 #: src/dialogs/resume/index.tsx
 msgid "Name the resume after the position you are applying for."
@@ -7577,10 +7374,6 @@ msgstr "Secțiune nouă"
 msgid "New story"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "New teams at Northwind were stalling in setup; most never got through."
-msgstr "Echipele noi de la Northwind se blocau la configurare; majoritatea nu o terminau."
-
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr ""
@@ -7613,10 +7406,6 @@ msgstr "Următorul pas: {0}"
 msgid "Next step: {0}. Adds a reminder to Today."
 msgstr "Următorul pas: {0}. Adaugă un memento în Astăzi."
 
-#: src/features/homepage/remember.tsx
-msgid "Next time, I’d agree how to measure success before the first prototype."
-msgstr "Data viitoare aș stabili cum măsurăm succesul înainte de primul prototip."
-
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next week"
 msgstr ""
@@ -7627,6 +7416,10 @@ msgstr "Nicio candidatură activă."
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "No activity yet"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "No API key to set up"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -7654,6 +7447,10 @@ msgstr "Nicio candidatură încă. Adăugați mai întâi una în Candidaturi."
 #: src/features/ats-checker/messages.ts
 msgid "No bullet lists were found."
 msgstr "Nu a fost găsită nicio listă cu puncte."
+
+#: src/features/homepage/pricing.tsx
+msgid "No card needed"
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "No change needed. It's already at {stage}."
@@ -7713,8 +7510,6 @@ msgid "No email address was found."
 msgstr "Nu a fost găsită nicio adresă de e-mail."
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/remember.tsx
 msgid "No evidence yet"
 msgstr "Încă fără dovezi"
 
@@ -7856,10 +7651,6 @@ msgstr "Nu există experiență de lucru"
 msgid "No work-experience section was found."
 msgstr "Nu a fost găsită nicio secțiune de experiență de muncă."
 
-#: src/features/homepage/design.tsx
-msgid "No. {number} · {name}"
-msgstr "Nr. {number} · {name}"
-
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
@@ -7879,15 +7670,6 @@ msgstr "Normal"
 #: src/features/resume/editor/design/fit.ts
 msgid "normal margins"
 msgstr "marginile normale"
-
-#: src/features/homepage/check.tsx
-msgid "Northwind Labs"
-msgstr "Northwind Labs"
-
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Northwind Labs · Lisbon"
-msgstr "Northwind Labs · Lisbon"
 
 #: src/libs/locale.ts
 msgid "Norwegian"
@@ -8072,7 +7854,6 @@ msgid "Notice period"
 msgstr "Perioadă de preaviz"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
 msgstr "Acum"
@@ -8082,7 +7863,6 @@ msgid "Numbered list"
 msgstr "Lista numerotata"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Observation"
 msgstr "Observație"
 
@@ -8094,10 +7874,6 @@ msgstr "Odia"
 msgid "Off"
 msgstr "Oprit"
 
-#: src/features/homepage/remember.tsx
-msgid "Off: the coach won’t see it or claim it."
-msgstr "Dezactivat: coach-ul nu îl vede și nu îl afirmă."
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Off. Let recruiters find you on Google by turning this on."
 msgstr "Dezactivat. Activează opțiunea ca recrutorii să te poată găsi pe Google."
@@ -8108,8 +7884,7 @@ msgstr "Oprit. Scrisoarea își păstrează propria copie a datelor dumneavoastr
 
 #: src/features/applications/stages.ts
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Offer"
 msgstr "Ofertă"
 
@@ -8142,10 +7917,6 @@ msgstr ""
 msgid "On. Anyone with the link can see your web page."
 msgstr "Activat. Oricine are linkul îți poate vedea pagina web."
 
-#: src/features/homepage/remember.tsx
-msgid "Onboarding story"
-msgstr "Povestea despre onboarding"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "După ce o rundă este programată, Pregătire creează un plan cronometrat, deschiderea dvs. și întrebările de pus."
@@ -8153,6 +7924,10 @@ msgstr "După ce o rundă este programată, Pregătire creează un plan cronomet
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
 msgstr "După ce ați trimis câteva cereri de angajare, aceasta arată cât de departe ajung și cât de repede răspund oamenii."
+
+#: src/features/homepage/features.tsx
+msgid "One address that always shows your latest version, public or behind a password."
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -8171,10 +7946,6 @@ msgstr "O coloană cu o fotografie lângă antet și titluri de secțiuni bine d
 msgid "One column with labeled section rows and subtle dividers. A compact layout for experience, education and supporting details."
 msgstr "O coloană cu rânduri de secțiuni etichetate și separatoare subtile. Un aspect compact pentru experiență, educație și detalii de sprijin."
 
-#: src/features/homepage/check.tsx
-msgid "one format"
-msgstr "un singur format"
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
@@ -8192,10 +7963,6 @@ msgstr "Permite accesul doar aplicațiilor în care ai încredere. Această apli
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Only applies when the section fits on a single page."
 msgstr "Se aplică numai atunci când secțiunea încape pe o singură pagină."
-
-#: src/features/homepage/faq.tsx
-msgid "Only if you want it to. Add your own key from OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama or another provider for sharper lines, tailoring to a job posting, coaching for applications and interviews, and reading Word files. Without a key, nothing is sent to an AI service."
-msgstr "Doar dacă doriți. Adăugați propria cheie de la OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama sau alt furnizor pentru formulări mai clare, adaptare la un anunț de angajare, coaching pentru candidaturi și interviuri și citirea fișierelor Word. Fără cheie, nu se trimite nimic către un serviciu AI."
 
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
@@ -8318,9 +8085,9 @@ msgstr "Deschide pagina web"
 msgid "Open workspace"
 msgstr "Deschideți spațiul de lucru"
 
-#: src/features/homepage/remember.tsx
-msgid "Opening"
-msgstr "Deschidere"
+#: src/features/homepage/resume.tsx
+msgid "Opened 12 times this week"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Opening the file"
@@ -8444,10 +8211,6 @@ msgstr "Învechit: textul s-a schimbat de atunci."
 msgid "Outdent"
 msgstr "Micșorare indentare"
 
-#: src/features/homepage/prepare.tsx
-msgid "Own and evolve a design system"
-msgstr "Gestionarea și dezvoltarea unui design system"
-
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -8504,18 +8267,7 @@ msgstr "Paragraf"
 msgid "paragraph {n}"
 msgstr "paragraful {n}"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-msgid "Parcel & Co."
-msgstr "Parcel & Co."
-
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Parcel & Co. · Porto"
-msgstr "Parcel & Co. · Porto"
-
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Partly supported"
 msgstr "Parțial susținut"
 
@@ -8539,7 +8291,6 @@ msgstr "Chei de acces"
 #: src/features/auth/pages/login.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/homepage/share.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/share/web-page-text.ts
 #: src/features/settings/account/auth-hooks.ts
@@ -8570,10 +8321,6 @@ msgstr "Conversații din trecut"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Paste a job link. We'll save the posting so Check, the assistant and your letter can use it."
 msgstr "Lipiți un link de job. Vom salva anunțul de locuri de muncă, astfel încât Check, asistentul și scrisoarea dvs. să o poată folosi."
-
-#: src/features/homepage/tailor.tsx
-msgid "Paste a job posting once. It feeds a tailored copy of your resume, a match score, a cover letter draft and a place to track the role."
-msgstr "Lipiți o singură dată un anunț de angajare. Acesta alimentează o copie adaptată a CV-ului, un scor de potrivire, o ciornă de scrisoare de intenție și un loc pentru urmărirea postului."
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Paste a job posting…"
@@ -8629,10 +8376,6 @@ msgstr "Postare de locuri de muncă lipită"
 msgid "Pasting fills the fields automatically."
 msgstr "Lipirea completează automat câmpurile."
 
-#: src/features/homepage/sections.tsx
-msgid "Pause the list of languages"
-msgstr "Întrerupeți lista de limbi"
-
 #: src/features/career/today.tsx
 msgid "Paused · {line}"
 msgstr "În pauză · {line}"
@@ -8641,25 +8384,37 @@ msgstr "În pauză · {line}"
 msgid "Paused schedules keep their settings."
 msgstr "Programările puse pe pauză își păstrează setările."
 
+#: src/features/homepage/pricing.tsx
+msgid "Pay only while you are applying."
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "Perioadă de plată"
+
+#: src/features/homepage/plans.ts
+msgid "PDF downloads without a watermark"
+msgstr ""
+
+#: src/features/homepage/faq.tsx
+msgid "PDF on every plan, along with Markdown and JSON. Word (DOCX) and ODT come with Plus and Pro AI. You can export all of your data at any time, whatever your plan."
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "PDF styles support a subset of CSS. Rotation, dashed and dotted borders, and some layout properties are ignored."
 msgstr "Stilurile PDF acceptă un subset de CSS. Rotația, marginile punctate și punctate și unele proprietăți de aspect sunt ignorate."
 
-#: src/features/homepage/faq.tsx
-msgid "PDF, Word (DOCX), Markdown and JSON. The JSON export imports back into any Rezumi, including one you host yourself, so your data is never locked in."
-msgstr "PDF, Word (DOCX), Markdown și JSON. Exportul JSON se importă înapoi în orice Rezumi, inclusiv unul pe care îl găzduiți dvs., astfel încât datele dvs. să nu fie niciodată blocate."
-
 #: src/features/documents/documents-page.tsx
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF, Word sau JSON. Vom construi un CV din el."
 
-#: src/features/homepage/sections.tsx
-msgid "People using it"
-msgstr "Oamenii care îl folosesc"
+#: src/features/homepage/testimonials.tsx
+msgid "People reaching the interview with Rezumi."
+msgstr ""
+
+#: src/features/homepage/testimonials.tsx
+msgid "People using Rezumi"
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Permanently removes everything. Export first if you want a copy."
@@ -8699,10 +8454,6 @@ msgstr "Alegeți o oră ulterioară momentului actual."
 #: src/components/input/icon-picker.tsx
 msgid "Pick an icon"
 msgstr "Alegeți o pictogramă"
-
-#: src/features/homepage/design.tsx
-msgid "Pick from {templateCount} templates, then set the type, color and spacing. The words stay put, so try as many looks as you like."
-msgstr "Alegeți dintre {templateCount} șabloane, apoi setați fonturile, culoarea și spațierea. Textul dvs. rămâne același, așa că încercați câte modele doriți."
 
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
@@ -8748,10 +8499,6 @@ msgstr "Planificați ce să întrebați"
 msgid "Planning your week"
 msgstr "Se planifică săptămâna dvs."
 
-#: src/features/homepage/sections.tsx
-msgid "Play the list of languages"
-msgstr "Redați lista de limbi"
-
 #: src/libs/locale.ts
 msgid "Polish"
 msgstr "Poloneză"
@@ -8769,15 +8516,11 @@ msgstr "Portret"
 msgid "Portuguese (Brazil)"
 msgstr "Portugheză (Brazilia)"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Portuguese (native)"
-msgstr "portugheză (nativ)"
-
 #: src/libs/locale.ts
 msgid "Portuguese (Portugal)"
 msgstr "Portugheză (Portugalia)"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Position"
@@ -8789,7 +8532,6 @@ msgstr "anunț"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
-#: src/features/homepage/tailor.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "Anunț de angajare"
@@ -8812,7 +8554,6 @@ msgstr "Termeni din anunț în CV-ul dvs."
 
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice"
 msgstr "Exersare"
 
@@ -8827,35 +8568,33 @@ msgctxt "Button: rehearse interview answers"
 msgid "Practice"
 msgstr "Exersează"
 
-#: src/features/homepage/remember.tsx
-msgid "Practice · Your opening, about 40 seconds aloud"
-msgstr "Exersare · Deschiderea dvs., cam 40 de secunde cu voce tare"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Practice another question"
 msgstr "Exersați altă întrebare"
+
+#: src/features/homepage/features.tsx
+msgid "Practice answers from stories you wrote once, then debrief after each round."
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Practice for your {company} interviews."
 msgstr "Exersați pentru interviurile de la {company}."
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice priorities, not conclusions about why an employer decided anything."
 msgstr "Priorități de exersare, nu concluzii despre motivele deciziilor unui angajator."
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice priority:"
 msgstr "Prioritate de exersare:"
 
-#: src/features/homepage/prepare.tsx
-msgid "Practice questions are simulated, not from Fieldnote."
-msgstr "Întrebările de exersare sunt simulate, nu provin de la Fieldnote."
+#: src/features/homepage/features.tsx
+msgid "Practice question"
+msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Practice your introduction once. Keep it to about 90 seconds."
-msgstr "Exersați-vă prezentarea o dată. Încadrați-vă în aproximativ 90 de secunde."
+#: src/features/homepage/testimonials.tsx
+msgid "Practicing answers from my own stories made the second interview feel like a conversation."
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Practicing your story: {storyTitle}"
@@ -8881,9 +8620,7 @@ msgstr "Preferințe"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/prepare.tsx
+#: src/features/homepage/features.tsx
 msgid "Prepare"
 msgstr "Pregătire"
 
@@ -8894,6 +8631,10 @@ msgstr "Pregătiți un briefing"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Prepare a resume"
 msgstr "Pregătiți un CV"
+
+#: src/features/homepage/introduction.tsx
+msgid "Prepare for interviews from stories you wrote once"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Prepare me for the interview"
@@ -8970,6 +8711,15 @@ msgstr "Luna anterioară"
 msgid "Previous week"
 msgstr ""
 
+#: src/features/homepage/pricing.tsx
+msgid "Prices in Indonesian Rupiah. Access starts once payment is confirmed and lasts 30 days. When it ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgstr ""
+
+#: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
+msgid "Pricing"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
 msgstr "Culoare primară"
@@ -8994,10 +8744,6 @@ msgstr "Confidențialitate"
 msgid "Privacy policy"
 msgstr "Politica de confidențialitate"
 
-#: src/features/homepage/share.tsx
-msgid "Private"
-msgstr "Privat"
-
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Private. Only you can see it."
 msgstr "Privat. Numai tu o poți vedea."
@@ -9006,23 +8752,25 @@ msgstr "Privat. Numai tu o poți vedea."
 msgid "Product"
 msgstr "Produs"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
+#: src/features/homepage/testimonials.tsx
 msgid "Product Designer"
 msgstr "Designer de produs"
 
-#: src/features/homepage/sheet.tsx
-msgid "Product designer with nine years of experience building <0>design systems</0> and research-led products for B2B teams."
-msgstr "Designer de produs cu nouă ani de experiență în crearea de <0>sisteme de design</0> și produse bazate pe cercetare pentru echipe B2B."
+#: src/features/homepage/resume.tsx
+msgid "Product Designer · Jakarta"
+msgstr ""
+
+#: src/features/homepage/resume.tsx
+msgid "Product designer with seven years of experience turning complex flows into simple, measurable products."
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Proficiency"
 msgstr "Nivel de competență"
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
 #: src/features/settings/account/profile.tsx
 msgid "Profile"
 msgstr "Profil"
@@ -9052,10 +8800,6 @@ msgstr "Bară de progres"
 msgid "Projects"
 msgstr "Proiecte"
 
-#: src/features/homepage/hero.tsx
-msgid "Promoted to lead, 2021"
-msgstr "Promovat la conducere, 2021"
-
 #: src/features/career/workspace/messages.tsx
 msgid "Proposed changes"
 msgstr "Modificări propuse"
@@ -9068,9 +8812,8 @@ msgstr "Modificări propuse"
 msgid "Protect your resume with a password"
 msgstr "Protejați-vă CV-ul cu o parolă"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Prototyping"
 msgstr "Prototipare"
 
@@ -9086,7 +8829,6 @@ msgstr "Furnizor"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "Public"
@@ -9148,10 +8890,6 @@ msgstr "Violet"
 msgid "Put a plain email address near the top of the first page. It is what most systems file you under."
 msgstr "Puneți o adresă de e-mail simplă lângă partea de sus a primei pagini. Este ceea ce folosesc majoritatea sistemelor pentru a vă clasifica."
 
-#: src/features/homepage/sections.tsx
-msgid "Put it all on <0>one page.</0>"
-msgstr "Pune totul pe <0>o singură pagină.</0>"
-
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Put the caret in a line to improve it"
 msgstr "Puneți marcajul într-o linie pentru a o îmbunătăți"
@@ -9177,10 +8915,6 @@ msgstr ""
 msgid "Question {position} of {total}"
 msgstr "Întrebarea {position} din {total}"
 
-#: src/features/homepage/prepare.tsx
-msgid "Question 1 of 4 · Practice"
-msgstr "Întrebarea 1 din 4 · Exersare"
-
 #: src/features/career/workspace/apply.tsx
 msgid "Question from the form"
 msgstr "Întrebare din formular"
@@ -9193,26 +8927,21 @@ msgstr "Opțiunile întrebării"
 msgid "Question removed"
 msgstr "Întrebare eliminată"
 
-#: src/features/homepage/faq.tsx
-msgid "Questions"
-msgstr "Întrebări"
-
 #: src/features/career/offers.tsx
 msgid "Questions copied"
 msgstr "Întrebări copiate"
 
 #: src/features/career/workspace/prepare.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Questions to ask"
 msgstr "Întrebări de pus"
-
-#: src/features/homepage/remember.tsx
-msgid "R"
-msgstr "R"
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Raise the design sheet"
 msgstr "Ridicați foaia de proiectare"
+
+#: src/features/homepage/hero.tsx
+msgid "Rated 5 out of 5"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Re-export from a single-column layout, then copy the text out and check it reads top to bottom."
@@ -9238,10 +8967,6 @@ msgstr "Exportați din nou cu fonturile încorporate și verificați dacă textu
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "Exportați din nou cu fonturile încorporate, apoi deschideți fișierul și verificați dacă textul se copiază corect."
 
-#: src/features/homepage/prepare.tsx
-msgid "Re: Senior Product Designer"
-msgstr "Re: Senior Product Designer"
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Reached"
 msgstr ""
@@ -9265,7 +8990,6 @@ msgid "Read briefing"
 msgstr "Citiți briefingul"
 
 #: src/features/career/workspace/messages.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Read it for me"
 msgstr "Citește-l în locul meu"
 
@@ -9305,10 +9029,6 @@ msgstr "Citiți pagina"
 #: src/features/assistant/conversation.tsx
 msgid "Read the resume"
 msgstr "A citit CV-ul"
-
-#: src/features/homepage/faq.tsx
-msgid "Read the self-hosting guide"
-msgstr "Citiți ghidul de auto-găzduire"
 
 #: src/features/auth/pages/consent.tsx
 msgid "Read your email address."
@@ -9428,6 +9148,10 @@ msgstr "Din memorie"
 msgid "Recipient"
 msgstr "Destinatar"
 
+#: src/features/homepage/pricing.tsx
+msgid "Recommended"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "Înregistrați din nou"
@@ -9459,10 +9183,6 @@ msgstr "Timp de înregistrare"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Recruiter"
 msgstr "Recruter"
-
-#: src/features/homepage/remember.tsx
-msgid "Recruiter reply"
-msgstr "Răspuns către recrutor"
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "Recruiters see this name. Your name plus “Cover Letter” works well."
@@ -9501,7 +9221,6 @@ msgid "Referred by…, things to emphasize, etc."
 msgstr "Referit de..., lucruri de subliniat etc."
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Reflection"
 msgstr "Reflecție"
 
@@ -9529,10 +9248,6 @@ msgstr "Repetați cu voce tare"
 msgid "Rehearse one answer aloud"
 msgstr "Repetați un răspuns cu voce tare"
 
-#: src/features/homepage/prepare.tsx
-msgid "Rehearse one disagreement with engineering and how it ended."
-msgstr "Repetați un dezacord cu inginerii și cum s-a încheiat."
-
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Reject"
 msgstr "Respinge"
@@ -9550,9 +9265,6 @@ msgid "Reload"
 msgstr "Reîncărcați"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/remember.tsx
 msgid "Remember"
 msgstr "Rețineți"
 
@@ -9742,7 +9454,6 @@ msgid "Replaces “{current}” on the application."
 msgstr "Înlocuiește „{current}” în candidatură."
 
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/remember.tsx
 msgid "Reply"
 msgstr "Răspuns"
 
@@ -9750,7 +9461,6 @@ msgstr "Răspuns"
 msgid "Reply copied"
 msgstr "Răspuns copiat"
 
-#: src/features/homepage/footer.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Report a bug"
 msgstr "Raportează o eroare"
@@ -9793,17 +9503,9 @@ msgstr "Resetați-vă parola"
 msgid "Resetting your password..."
 msgstr "Se resetează parola..."
 
-#: src/features/homepage/footer.tsx
-msgid "Resources"
-msgstr "Resurse"
-
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "Răspuns până la"
-
-#: src/features/homepage/write.tsx
-msgid "Responsible for the design system and helping other teams with their designs."
-msgstr "Responsabil pentru sistemul de proiectare și pentru a ajuta alte echipe cu proiectele lor."
 
 #: src/features/documents/document-actions.tsx
 msgid "Restore"
@@ -9832,13 +9534,8 @@ msgid "Restored the version from {0}. Your previous state is saved as “Before 
 msgstr "Versiunea a fost restaurată de la {0}. Starea anterioară este salvată ca „Înainte de restaurare”."
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Result"
 msgstr "Rezultat"
-
-#: src/features/homepage/remember.tsx
-msgid "Result left out: no fact backs it. Switch it on, or add one, and it comes back."
-msgstr "Rezultat omis: niciun fapt nu îl susține. Activați-l sau adăugați unul și va reapărea."
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "resume"
@@ -9869,14 +9566,9 @@ msgstr "CV (opțional)"
 msgid "Resume + letter"
 msgstr "CV + scrisoare"
 
-#: src/features/homepage/tailor.tsx
-msgid "Resume attached"
-msgstr "CV atașat"
-
-#. Hero headline, line 2 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.
-#: src/features/homepage/hero.tsx
-msgid "resume builder"
-msgstr "pentru crearea CV-urilor"
+#: src/libs/seo.ts
+msgid "Resume builder with ATS check and AI tailoring"
+msgstr ""
 
 #: src/features/resume/preview/preview.browser.tsx
 msgid "Resume content"
@@ -9913,7 +9605,7 @@ msgstr "CV-uri"
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "CV-urile se redau întotdeauna pe hârtie albă, indiferent de temă."
 
-#: src/features/homepage/sections.tsx
+#: src/features/homepage/testimonials.tsx
 msgid "Resumes created"
 msgstr "CV-urile create"
 
@@ -10016,6 +9708,15 @@ msgstr "Rezumi - Mergi la pagina principală"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#: src/features/homepage/introduction.tsx
+msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/homepage/header.tsx
+#: src/features/homepage/section-nav.tsx
+msgid "Rezumi, back to top"
+msgstr ""
+
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Right"
 msgstr "Corect"
@@ -10097,10 +9798,6 @@ msgstr ""
 msgid "Run again"
 msgstr "Executați din nou"
 
-#: src/features/homepage/prepare.tsx
-msgid "Run research with customers"
-msgstr "Cercetare cu clienții"
-
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Runs onto page {next}"
 msgstr "Se rulează pe pagina {next}"
@@ -10108,10 +9805,6 @@ msgstr "Se rulează pe pagina {next}"
 #: src/libs/locale.ts
 msgid "Russian"
 msgstr "Rusă"
-
-#: src/features/homepage/remember.tsx
-msgid "S"
-msgstr "S"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -10127,17 +9820,9 @@ msgstr "Salariu nespecificat"
 msgid "Salary range"
 msgstr "Gama de salariu"
 
-#: src/features/homepage/prepare.tsx
-msgid "Sam"
-msgstr "Sam"
-
-#: src/features/homepage/prepare.tsx
-msgid "Sam, Fieldnote"
-msgstr "Sam, Fieldnote"
-
-#: src/features/homepage/remember.tsx
-msgid "Same you. Less starting over."
-msgstr "Aceeași persoană. Mai puțin de luat de la capăt."
+#: src/features/homepage/testimonials.tsx
+msgid "Sales Executive"
+msgstr ""
 
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
@@ -10256,22 +9941,16 @@ msgstr "salvat"
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/knowledge/preferences.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Saved"
 msgstr "Salvat"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "Salvat"
-
-#: src/features/homepage/write.tsx
-msgid "Saved · version {version}"
-msgstr "Salvat · versiunea {version}"
 
 #: src/features/resume/share/history-tab.tsx
 msgid "Saved “{trimmed}”"
@@ -10343,10 +10022,6 @@ msgstr "Salvarea durează mai mult decât se aștepta. Modificările tale sunt �
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Saving…"
 msgstr "Salvarea…"
-
-#: src/features/homepage/prepare.tsx
-msgid "Say it aloud"
-msgstr "Spuneți-o cu voce tare"
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Scan the QR code with your authenticator app, or copy the secret and paste it into the app."
@@ -10526,6 +10201,7 @@ msgid "Section headings"
 msgstr "Titluri de secțiuni"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/homepage/section-nav.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
@@ -10538,6 +10214,18 @@ msgstr "Secțiunile folosesc titluri pe care sistemele le recunosc, iar experien
 #: src/features/career/workspace/prepare.tsx
 msgid "See below"
 msgstr "Vedeți mai jos"
+
+#: src/features/homepage/introduction.tsx
+msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/homepage/hero.tsx
+msgid "See pricing"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "See what ATS software reads"
+msgstr ""
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
@@ -10577,10 +10265,6 @@ msgstr "Documente selectate"
 msgid "Selection"
 msgstr ""
 
-#: src/features/homepage/footer.tsx
-msgid "Self-hosting"
-msgstr "Auto-găzduire"
-
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
 msgstr "Foaie de stil CSS semantică"
@@ -10589,6 +10273,10 @@ msgstr "Foaie de stil CSS semantică"
 #: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "Trimite"
+
+#: src/features/homepage/features.tsx
+msgid "Send a link, not an attachment"
+msgstr ""
 
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
@@ -10607,6 +10295,10 @@ msgstr ""
 msgid "Sender details copied into the letter"
 msgstr "Detaliile expeditorului au fost copiate în scrisoare"
 
+#: src/features/homepage/testimonials.tsx
+msgid "Sending a link instead of a PDF means recruiters always see the latest version."
+msgstr ""
+
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Sending password reset email..."
 msgstr "Se trimite e-mailul de resetare a parolei..."
@@ -10624,10 +10316,6 @@ msgstr "Trimite anunțul, notițele și documentele acestei candidaturi, plus Cu
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "Trimite anunțul, notițele și documentele acestei candidaturi, plus Cunoștințele activate, către această conexiune. Furnizorul dvs. poate percepe o taxă."
 
-#: src/features/homepage/remember.tsx
-msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
-msgstr "Trimite această poveste și faptele activate către conexiunea dvs. AI. Fără una, nu se trimite nimic."
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
 msgstr "Trimite mesajul dvs., această candidatură (anunț, notițe, documente trimise) și Cunoștințele activate către {connection}."
@@ -10638,9 +10326,8 @@ msgstr "Trimite mesajul dvs., această candidatură (anunț, notițe, documente 
 msgid "Sends your resume's text only to {0} · {1}, with your key."
 msgstr "Trimite textul CV-ului dvs. numai către {0} · {1}, cu cheia dvs."
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Senior Product Designer"
 msgstr "Designer de produs senior"
 
@@ -10713,9 +10400,7 @@ msgstr "Culoare umbră"
 msgid "Shadow width"
 msgstr "Lățime umbră"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/share.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -10723,9 +10408,9 @@ msgstr "Lățime umbră"
 msgid "Share"
 msgstr "Distribuie"
 
-#: src/features/homepage/share.tsx
-msgid "Share a public link, add a password or keep it private. Choose from 3 visibility options. Export to PDF or Word, or take all your data with you as JSON."
-msgstr "Partajați un link public, adăugați o parolă sau păstrați-l privat. Alegeți dintre 3 opțiuni de vizibilitate. Exportați în PDF sau Word sau luați toate datele cu dvs. ca JSON."
+#: src/features/homepage/introduction.tsx
+msgid "Share a live link that is always the latest version"
+msgstr ""
 
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
@@ -10734,6 +10419,10 @@ msgstr "Partajați secțiuni"
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
 msgstr "Distribuie prin..."
+
+#: src/features/homepage/resume.tsx
+msgid "Shared at your link"
+msgstr ""
 
 #: src/features/documents/documents-page.tsx
 #: src/libs/resume/section.tsx
@@ -10745,17 +10434,9 @@ msgstr "Partajarea"
 msgid "Sharpening the opening"
 msgstr "Se șlefuiește deschiderea"
 
-#: src/features/homepage/sheet.tsx
-msgid "Shipped <0>accessible</0> checkout flows for web and iOS, meeting WCAG 2.1 AA."
-msgstr "Am implementat fluxuri de plată <0>accesibile</0> pentru web și iOS, conforme cu WCAG 2.1 AA."
-
-#: src/features/homepage/prepare.tsx
-msgid "Shipped checkout flows that meet WCAG 2.1 AA."
-msgstr "Am lansat fluxuri de checkout conforme cu WCAG 2.1 AA."
-
-#: src/features/homepage/hero.tsx
-msgid "Shipped checkout for iOS"
-msgstr "Comanda expediată pentru iOS"
+#: src/features/homepage/resume.tsx
+msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Short and direct. Fine if the posting asks for brevity."
@@ -10881,7 +10562,6 @@ msgid "Shows the tags they all share. Tags you add go on every document; tags yo
 msgstr "Afișează etichetele comune tuturor. Etichetele pe care le adăugați se aplică fiecărui document; cele pe care le eliminați sunt scoase din toate. Documentele blocate rămân neschimbate."
 
 #. Layout editor column label for the secondary sidebar area
-#: src/features/homepage/sheet.tsx
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -11000,7 +10680,6 @@ msgid "Single-column; polished and serious for senior or enterprise-level positi
 msgstr "O singură coloană; finisat și serios pentru poziții de nivel senior sau enterprise."
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Situation"
 msgstr "Situație"
 
@@ -11012,10 +10691,6 @@ msgstr "Situație, acțiune, rezultat"
 msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
 msgstr "Situație, Sarcină, Acțiune, Rezultat, Reflecție. Asociați fiecare poveste cu fapte pe care le puteți susține; lăsați necompletate rezultatele necunoscute."
 
-#: src/features/homepage/hero.tsx
-msgid "Six product teams"
-msgstr "Șase echipe de produse"
-
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
 msgstr "Dimensiune"
@@ -11024,8 +10699,7 @@ msgstr "Dimensiune"
 msgid "Skill"
 msgstr "Abilitate"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Skills"
 msgstr "Abilități"
@@ -11072,10 +10746,6 @@ msgstr "Cifre mici, dar demne de remarcat."
 msgid "Small steps, every day, add up."
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
-msgstr "Așa că am vorbit cu 14 clienți, am găsit cele trei puncte în care oamenii renunțau și am prototipat o configurare mai scurtă."
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Some application systems ask for one before you can apply."
 msgstr "Unele sisteme de cerere de angajare solicită unul înainte de a putea aplica."
@@ -11120,6 +10790,10 @@ msgstr "O parte din text cade în afara paginii."
 msgid "Some text is rotated."
 msgstr "O parte din text este rotită."
 
+#: src/features/homepage/faq.tsx
+msgid "Something else on your mind? Write to us at"
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "Ceva nu a funcționat. Vă rugăm să încercați din nou."
@@ -11144,10 +10818,6 @@ msgstr ""
 msgid "Source"
 msgstr "Sursă"
 
-#: src/features/homepage/footer.tsx
-msgid "Source code"
-msgstr "Cod sursă"
-
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
@@ -11158,22 +10828,9 @@ msgstr "Surse"
 msgid "Spanish"
 msgstr "Spaniolă"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Spanish (B2)"
-msgstr "spaniolă (B2)"
-
-#: src/features/homepage/hero.tsx
-msgid "Spanish, B2"
-msgstr "spaniolă, B2"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Speak"
 msgstr "Vorbiți"
-
-#: src/features/homepage/sections.tsx
-msgid "Speaks your language"
-msgstr "Vorbește limba ta"
 
 #: src/features/ats-checker/messages.ts
 msgid "Spell the month, as in \"Mar 2022\"."
@@ -11226,21 +10883,13 @@ msgstr "Etapa rămâne {stage}"
 msgid "Stages"
 msgstr "Etape"
 
-#: src/features/homepage/check.tsx
+#: src/features/homepage/features.tsx
+msgid "Stakeholders"
+msgstr ""
+
+#: src/features/homepage/features.tsx
 msgid "Standard section headings"
 msgstr "Titluri de secțiuni standard"
-
-#: src/features/homepage/header.tsx
-msgid "Star Rezumi on GitHub"
-msgstr "Steaua Rezumi pe GitHub"
-
-#: src/components/input/github-stars-button.tsx
-msgid "Star us on GitHub (opens in new tab)"
-msgstr "Adăugați o steluță pentru noi pe GitHub (se deschide într-o filă nouă)"
-
-#: src/features/homepage/sections.tsx
-msgid "Stars on GitHub"
-msgstr "Stele pe GitHub"
 
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Start"
@@ -11263,6 +10912,14 @@ msgstr "Data de început trebuie să fie anterioară sau egală cu data de sfâr
 msgid "Start each one with a concrete verb: built, led, reduced, migrated."
 msgstr "Începeți fiecare cu un verb concret: a construit, a condus, a redus, a migrat."
 
+#: src/features/homepage/plans.ts
+msgid "Start free"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Start from"
 msgstr "Începe de la"
@@ -11271,9 +10928,9 @@ msgstr "Începe de la"
 msgid "Start from one you have and link the application."
 msgstr "Începeți de la unul pe care îl aveți și conectați cererea de angajare."
 
-#: src/features/homepage/sections.tsx
-msgid "Start from scratch or import what you have. It takes a few minutes, and you can come back to it anytime."
-msgstr "Începeți de la zero sau importați ce aveți. Durează câteva minute și puteți reveni oricând."
+#: src/features/homepage/closing.tsx
+msgid "Start from scratch or import the one you have. The free plan is yours for as long as you need it."
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Start on a new page"
@@ -11303,6 +10960,10 @@ msgstr "Începeți să scrieți sau să scrieți din ceea ce știm: CV-ul dvs."
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, link a resume or an application first."
 msgstr "Începeți să tastați. Pentru a crea unul, conectați mai întâi un CV sau o cerere de angajare."
+
+#: src/features/homepage/introduction.tsx
+msgid "Start with the free plan"
+msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Start with the sections most resumes have."
@@ -11338,7 +10999,6 @@ msgid "Stay here"
 msgstr "Stai aici"
 
 #: src/features/assistant/prompt-box.tsx
-#: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
 msgstr "Oprește"
@@ -11387,13 +11047,8 @@ msgid "Stories to bring"
 msgstr "Povești de pregătit"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "Poveste"
-
-#: src/features/homepage/remember.tsx
-msgid "Story · 5 of 5 parts"
-msgstr "Poveste · 5 din 5 părți"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Story deleted"
@@ -11418,10 +11073,6 @@ msgstr "Verb mai puternic"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "Editor de foi de stil"
-
-#: src/features/homepage/prepare.tsx
-msgid "Subject"
-msgstr "Subiect"
 
 #: src/features/career/workspace/apply.tsx
 msgid "Submit through the employer's application page yourself."
@@ -11465,6 +11116,7 @@ msgstr "Sugerează tăieturi, nu se șterge niciodată singur"
 msgid "Summaries of your open applications"
 msgstr "Rezumatele candidaturilor dvs. deschise"
 
+#: src/features/homepage/resume.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -11472,7 +11124,6 @@ msgstr "Sumar"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Supported"
 msgstr "Susținut"
 
@@ -11500,27 +11151,17 @@ msgstr "Schimbați datele de început și de sfârșit."
 msgid "Swedish"
 msgstr "Suedeză"
 
-#: src/features/homepage/remember.tsx
-msgid "Switch it off"
-msgstr "Dezactivați-l"
-
 #: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "Schimbați modelul"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-msgid "Switch to dark mode"
-msgstr "Comutați la modul întunecat"
+#: src/features/homepage/features.tsx
+msgid "Switch templates without rewriting"
+msgstr ""
 
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to dark theme"
 msgstr "Comutați la tema întunecată"
-
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-msgid "Switch to light mode"
-msgstr "Comutați în modul de lumină"
 
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to light theme"
@@ -11549,10 +11190,6 @@ msgstr "Sistemele vă înregistrează sub numele din partea de sus a paginii."
 #: src/features/resume/editor/check/issues.ts
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "Sistemele caută o secțiune de experiență. Proiectele sau voluntariatul pot arăta aceeași istorie."
-
-#: src/features/homepage/remember.tsx
-msgid "T"
-msgstr "T"
 
 #: src/features/applications/components/list-view.tsx
 msgid "Tag"
@@ -11588,15 +11225,30 @@ msgstr "Etichete, separate prin virgule"
 msgid "Tags…"
 msgstr "Etichete…"
 
-#: src/features/homepage/header.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Tailor"
 msgstr "Adaptați-vă la fișa postului"
+
+#: src/features/homepage/plans.ts
+msgid "Tailor applications and prepare for interviews with AI."
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Tailor my resume to the Northwind posting."
+msgstr ""
 
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-panel.tsx
 msgid "Tailor to the {0} posting"
 msgstr "Adaptați la anunțul {0}"
+
+#: src/features/homepage/plans.ts
+msgid "Tailor your resume to each posting"
+msgstr ""
+
+#: src/features/homepage/resume.tsx
+msgid "Tailored to the posting"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Tailored vs. base resume"
@@ -11611,7 +11263,6 @@ msgid "Target roles"
 msgstr "Posturi vizate"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Task"
 msgstr "Sarcină"
 
@@ -11632,13 +11283,13 @@ msgstr "Povestiți-mi despre o lucrare de care sunteți mândru."
 msgid "Tell me about a piece of work you're proud of. What was your part in it, and how did you measure success?"
 msgstr "Povestiți-mi despre o lucrare de care sunteți mândru. Care a fost rolul dvs. și cum ați măsurat succesul?"
 
-#: src/features/homepage/prepare.tsx
-msgid "Tell me about a product improvement you led. What was your contribution, and how did you measure success?"
-msgstr "Povestiți-mi despre o îmbunătățire de produs pe care ați condus-o. Care a fost contribuția dvs. și cum ați măsurat succesul?"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "Povestiți-mi despre o situație în care nu ați fost de acord cu un coleg. Cum ați rezolvat-o?"
+
+#: src/features/homepage/features.tsx
+msgid "Tell me about a time you led a redesign."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Telugu"
@@ -11660,8 +11311,8 @@ msgstr "Șablonul a fost schimbat în {0}"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "Șablonul, tipul și culorile urmează CV-ului, astfel încât perechea se potrivește întotdeauna."
 
-#: src/features/homepage/design.tsx
 #: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
 msgid "Templates"
 msgstr "Șabloane"
 
@@ -11684,6 +11335,10 @@ msgstr "Testați funcția de căutare"
 #: src/features/settings/ai/web-access.tsx
 msgid "Tested with {connectedProvider}. Only this service was tested."
 msgstr "Testat cu {connectedProvider}. Doar acest serviciu a fost testat."
+
+#: src/features/homepage/ui.tsx
+msgid "Testimonials"
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Testing search and reading with {connectedProvider}…"
@@ -11723,9 +11378,9 @@ msgstr "Culoarea textului"
 msgid "Text comes out in the order a person reads it, at a size and spacing that survive."
 msgstr "Textul apare în ordinea în care o persoană îl citește, la o dimensiune și o spațiere care supraviețuiesc."
 
-#: src/features/homepage/check.tsx
-msgid "Text is selectable"
-msgstr "Textul este selectabil"
+#: src/features/homepage/features.tsx
+msgid "Text in reading order"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Text is written one character at a time."
@@ -11767,10 +11422,6 @@ msgstr "Textul de sub {minimum} pt poate fi citit greșit atunci când un sistem
 msgid "Thai"
 msgstr "Thailandeză"
 
-#: src/features/homepage/remember.tsx
-msgid "Thanks, Sam. Here’s one: at Northwind Labs I led the onboarding redesign, from 14 customer interviews to a shorter setup."
-msgstr "Mulțumesc, Sam. Iată unul: la Northwind Labs am condus reproiectarea onboardingului, de la 14 interviuri cu clienți la o configurare mai scurtă."
-
 #: src/features/ats-checker/checker.tsx
 msgid "That file couldn't be read as a PDF. Choose a PDF file and try again."
 msgstr "Fișierul nu a putut fi citit ca PDF. Alege un fișier PDF și încearcă din nou."
@@ -11811,17 +11462,9 @@ msgstr "Acel furnizor de conectare nu mai este disponibil pe acest server. Folos
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
 msgstr "Fișierul {label} nu a putut fi generat. Încercați din nou sau descărcați PDF."
 
-#: src/features/homepage/prepare.tsx
-msgid "The 13-point activation lift. Knowledge has the before and after."
-msgstr "Creșterea de 13 puncte a activării. Cunoștințele au valorile dinainte și de după."
-
 #: src/libs/error-message.ts
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "Adresa trebuie să conțină doar litere mici și cifre, separate prin liniuțe simple."
-
-#: src/features/homepage/faq.tsx
-msgid "The app is translated into {languages} languages by volunteers, and a resume can be written in any language, including right-to-left scripts like Arabic and Hebrew."
-msgstr "Aplicația este tradusă în limbile {languages} de către voluntari, iar un CV poate fi scris în orice limbă, inclusiv scripturi de la dreapta la stânga, cum ar fi arabă și ebraică."
 
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
@@ -11842,6 +11485,10 @@ msgstr "Asistentul folosește propria ta cheie. Nimic nu este trimis nicăieri p
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "Cititorul încorporat rămâne activ."
+
+#: src/features/homepage/features.tsx
+msgid "The checker shows the text a parser extracts and what to fix first."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -11874,6 +11521,10 @@ msgstr "Copia este legată de cererea de angajare, așa că Check și asistentul
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "Sfârșitul este înainte de început."
+
+#: src/features/homepage/testimonials.tsx
+msgid "The English and Indonesian versions share one design, so switching languages took minutes, not an afternoon."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF"
@@ -12012,6 +11663,10 @@ msgstr "CV-ul"
 msgid "The resume as it is"
 msgstr "CV-ul așa cum este"
 
+#: src/features/homepage/footer.tsx
+msgid "The resume builder that stays with you until the offer."
+msgstr ""
+
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The review couldn't finish. Try again."
 msgstr "Revizuirea nu s-a putut termina. Încearcă din nou."
@@ -12111,10 +11766,6 @@ msgstr "Ei și cronologia lor sunt șterse definitiv. Acest lucru nu poate fi an
 #: src/features/resume/editor/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
 msgstr "Ei caută rubrici precum Experiență, Educație și Abilități."
-
-#: src/features/homepage/prepare.tsx
-msgid "They’ve confirmed your interview for today"
-msgstr "V-au confirmat interviul pentru astăzi"
 
 #: src/features/career/shared.tsx
 msgid "Thinking"
@@ -12453,6 +12104,10 @@ msgstr ""
 msgid "Totals aren't added up on purpose."
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "Track"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Track a job you're applying to and link the resume you sent."
 msgstr "Urmăriți un loc de muncă la care aplicați și conectați CV-ul pe care l-ați trimis."
@@ -12484,10 +12139,6 @@ msgstr "S-a copiat transcrierea"
 #: src/routes/dashboard/settings/route.tsx
 msgid "Translate"
 msgstr "Traduce"
-
-#: src/features/homepage/sections.tsx
-msgid "Translated into {languageCount} languages."
-msgstr "Tradus în {languageCount} de limbi."
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -12585,6 +12236,10 @@ msgstr "Activează verificarea în doi pași"
 msgid "Turn this schedule on"
 msgstr "Activați această programare"
 
+#: src/features/homepage/hero.tsx
+msgid "Turn your experience into a resume that gets interviews."
+msgstr ""
+
 #: src/dialogs/auth/disable-two-factor.tsx
 msgid "Turning off two-step verification…"
 msgstr "Se dezactivează verificarea în doi pași…"
@@ -12592,6 +12247,10 @@ msgstr "Se dezactivează verificarea în doi pași…"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turning on two-step verification…"
 msgstr "Se activează verificarea în doi pași…"
+
+#: src/features/homepage/features.tsx
+msgid "Two bullets run over two lines"
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -12601,10 +12260,6 @@ msgstr "Două coloane"
 #: src/dialogs/resume/template/data.ts
 msgid "Two columns beneath a colored header band. Keep experience in the main column and supporting details in the sidebar."
 msgstr "Două coloane sub o bandă de antet colorată. Păstrați experiența în coloana principală și detaliile secundare în bara laterală."
-
-#: src/features/homepage/check.tsx
-msgid "Two date formats found"
-msgstr "S-au găsit două formate de dată"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Two stories"
@@ -12675,6 +12330,10 @@ msgstr "Tastați <0>{CONFIRMATION}</0> pentru a confirma"
 msgid "Type a command or search…"
 msgstr "Tastați o comandă sau căutați…"
 
+#: src/features/homepage/features.tsx
+msgid "Type in the form and watch the page update. Undo anything, and pick up on any device."
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Type instead"
 msgstr "Scrieți în schimb"
@@ -12708,7 +12367,6 @@ msgstr "Subliniați linkurile"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
@@ -12726,12 +12384,6 @@ msgstr "Anula"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Undo resume change"
 msgstr "Anulați modificarea CV-ului"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-msgid "University of Porto"
-msgstr "University of Porto"
 
 #: src/features/career/offers.tsx
 msgid "Unknown"
@@ -12985,7 +12637,6 @@ msgid "used {used}"
 msgstr "a folosit {used}"
 
 #: src/features/career/knowledge/facts.tsx
-#: src/features/homepage/remember.tsx
 msgid "Used in coaching"
 msgstr "Folosit în coaching"
 
@@ -12997,8 +12648,7 @@ msgstr "Folosite pentru a verifica posturile și ofertele. Fiecare este un numă
 msgid "Used when {connectedProvider} can't read a page. No account needed."
 msgstr "Folosit atunci când {connectedProvider} nu poate citi o pagină. Nu este nevoie de cont."
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 msgid "User research"
 msgstr "Cercetare cu utilizatorii"
 
@@ -13030,9 +12680,9 @@ msgstr "Folosește șablonul tău {0} și setările din Design și se adaptează
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "Utilizează propria căutare pe web a furnizorului dvs. de inteligență artificială, acolo unde este acceptată, și citește link-uri cu cititorul încorporat."
 
-#: src/features/homepage/prepare.tsx
-msgid "Uses your browser’s voice"
-msgstr "Folosește vocea browserului"
+#: src/features/homepage/features.tsx
+msgid "UX Designer"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Uzbek"
@@ -13156,13 +12806,13 @@ msgstr "Vizualizați postarea de locuri de muncă"
 msgid "Viewing {0} · {1} · read-only"
 msgstr "Vizualizarea {0} · {1} · numai pentru citire"
 
+#: src/features/homepage/features.tsx
+msgid "Views"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "vizualizări · 30 de zile"
-
-#: src/features/homepage/share.tsx
-msgid "Visibility"
-msgstr "Vizibilitate"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -13192,13 +12842,13 @@ msgstr "Vă așteaptă"
 msgid "Waiting to hear back"
 msgstr "Asteptam un raspuns"
 
+#: src/features/homepage/features.tsx
+msgid "Walk in ready"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Warning"
 msgstr "Avertisment"
-
-#: src/features/homepage/hero.tsx
-msgid "WCAG 2.1 AA"
-msgstr "WCAG 2.1 AA"
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "We read the page and save the posting for Check, the assistant and your letter."
@@ -13268,7 +12918,6 @@ msgid "Weighing each requirement"
 msgstr "Se cântărește fiecare cerință"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Went well"
 msgstr "A mers bine"
 
@@ -13289,7 +12938,6 @@ msgid "What changed? Leave blank if you can’t support it."
 msgstr "Ce s-a schimbat? Lăsați necompletat dacă nu puteți susține."
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "What did they ask?"
 msgstr "Ce v-au întrebat?"
 
@@ -13312,6 +12960,10 @@ msgstr "Ce intră în ea?"
 #: src/features/career/coach.tsx
 msgid "What interview answers should I practice?"
 msgstr "Ce răspunsuri de interviu ar trebui să exersez?"
+
+#: src/features/homepage/faq.tsx
+msgid "What is an AI credit?"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "What is the base salary, and is it negotiable?"
@@ -13352,10 +13004,6 @@ msgstr "Ce ar trebui să ruleze"
 #: src/features/assistant/assistant-panel.tsx
 msgid "What should we work on?"
 msgstr "La ce ar trebui să lucrăm?"
-
-#: src/features/homepage/check.tsx
-msgid "What software reads"
-msgstr "Ce software citește"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "What success looks like, which challenge matters most, and the next step."
@@ -13459,10 +13107,6 @@ msgstr "Dacă CV-ul este segmentat așa cum se așteaptă programul."
 msgid "Whether your timeline can be reconstructed."
 msgstr "Dacă cronologia dvs. poate fi reconstruită."
 
-#: src/features/homepage/faq.tsx
-msgid "Which languages does it speak?"
-msgstr "Ce limbi vorbeste?"
-
 #: src/features/career/coach.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "Ce oportunități se potrivesc cel mai bine cu prioritățile mele?"
@@ -13474,10 +13118,6 @@ msgstr "Ce alte beneficii include, cum ar fi pensia sau indemnizațiile?"
 #: src/features/homepage/faq.tsx
 msgid "Who can see my resume?"
 msgstr "Cine îmi poate vedea CV-ul?"
-
-#: src/features/homepage/prepare.tsx
-msgid "Who owns the design system today? What does success look like in 90 days?"
-msgstr "Cine răspunde de design system astăzi? Cum arată succesul în 90 de zile?"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/shell.tsx
@@ -13504,13 +13144,13 @@ msgstr "Lăţime"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "CV-ul meu va trece peste sistemele de urmărire a solicitanților?"
 
-#: src/features/homepage/remember.tsx
-msgid "Within a quarter, activation went from 31% to 44%."
-msgstr "Într-un trimestru, activarea a urcat de la 31% la 44%."
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "Fără unul, completezi singur destinatarul, iar redactarea folosește doar CV-ul tău."
+
+#: src/features/homepage/plans.ts
+msgid "Word and ODT downloads"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
@@ -13533,9 +13173,7 @@ msgstr "Merită întrebat"
 msgid "Worth asking {0}"
 msgstr "Merită întrebat: {0}"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13550,14 +13188,6 @@ msgstr "Scrieți „Prezent” ca dată de final a rolului dvs. actual."
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Write a letter"
 msgstr "Scrie o scrisoare"
-
-#: src/features/homepage/remember.tsx
-msgid "Write a story once, with the facts behind it, and the coach uses it in 3 places. Switch a fact off and nothing leans on it."
-msgstr "Scrieți o poveste o singură dată, cu faptele din spatele ei, iar coach-ul o folosește în 3 locuri. Dezactivați un fapt și nimic nu se mai bazează pe el."
-
-#: src/features/homepage/write.tsx
-msgid "Write beside a live page. It saves as you type and keeps every version. Ask the assistant for a sharper line: it suggests, you decide."
-msgstr "Scrieți lângă o pagină live. Se salvează în timp ce scrieți și păstrează fiecare versiune. Cereți asistentului o formulare mai bună: el sugerează, dvs. decideți."
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
@@ -13575,13 +13205,21 @@ msgstr "Scrieți-l ca un bloc neîntrerupt, fără spațiere specială."
 msgid "Write it down while it's fresh"
 msgstr "Notați cât încă e proaspăt"
 
-#: src/features/homepage/prepare.tsx
-msgid "Write it down while it’s fresh"
-msgstr "Notați cât încă e proaspăt"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr "Scrie-l eu"
+
+#: src/features/homepage/hero.tsx
+msgid "Write it once, check what applicant tracking systems read, tailor it to every posting and follow each application to the offer."
+msgstr ""
+
+#: src/features/homepage/introduction.tsx
+msgid "Write it once, then tailor a version for every posting"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Write letters"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Write numbers as digits"
@@ -13603,10 +13241,6 @@ msgstr "Scrieți ce ați făcut."
 msgid "Write your answer, or draft one from your Knowledge."
 msgstr "Scrieți răspunsul sau redactați unul din Cunoștințele dvs."
 
-#: src/features/homepage/write.tsx
-msgid "Write your professional resume"
-msgstr "Scrie-ți CV-ul profesional"
-
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -13622,28 +13256,20 @@ msgstr "Se scrie un răspuns…"
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Ajutor la scriere, sugestii adaptate și asistentul. Furnizorul implicit este folosit oriunde nu alegeți altul. Cheile dvs. rămân criptate."
 
-#: src/features/homepage/sections.tsx
-msgid "writing, tailoring and sending"
-msgstr "scriere, adaptare și trimitere"
-
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "Ofertă scrisă"
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Every feature is free: all {templates} templates, PDF and Word downloads, the ATS checker, cover letters and the job tracker. There are no ads, no tracking and no paid tier."
+msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Every job you track gets its own workspace: check your fit against the posting, draft answers from stories you wrote once, get a short plan before the interview, practice out loud with feedback and debrief afterwards. When offers arrive, compare them side by side. The coaching uses your own AI key; the comparison doesn’t need one."
-msgstr "Da. Fiecare post pe care îl urmăriți are propriul spațiu de lucru: verificați potrivirea cu anunțul, redactați răspunsuri din povești scrise o singură dată, primiți un plan scurt înainte de interviu, exersați cu voce tare cu feedback și faceți bilanțul după. Când sosesc ofertele, comparați-le una lângă alta. Coachingul folosește propria dvs. cheie AI; comparația nu are nevoie de una."
+msgid "Yes. Import a PDF, a LinkedIn data export or a JSON Resume file, then pick up where it left off."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Import a PDF, a LinkedIn data export, a JSON Resume file or a Rezumi export, then pick up where it left off. With an AI provider set up, Word documents work too."
-msgstr "Da. Importați un PDF, un export de date LinkedIn, un fișier JSON Resume sau un export Rezumi, apoi reluați de unde a rămas. Cu un furnizor AI configurat, și documentele Word funcționează."
-
-#: src/features/homepage/faq.tsx
-msgid "Yes. Rezumi is open source under the MIT License and can run on your own Cloudflare account with your own database and storage."
+msgid "Yes. The free plan covers 3 active resumes and 3 cover letters, {freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up."
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
@@ -13657,6 +13283,7 @@ msgstr "Ieri {time}"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach.tsx
+#: src/features/homepage/resume.tsx
 msgid "You"
 msgstr "Tu"
 
@@ -13701,9 +13328,9 @@ msgstr "Ați cerut anterior să fie uitat, așa că nu a fost salvat din nou."
 msgid "You only need one yes."
 msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "You partnered with engineering. How you led the work isn’t described yet."
-msgstr "Ați colaborat cu inginerii. Cum ați condus munca nu este încă descris."
+#: src/features/homepage/faq.tsx
+msgid "You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free: nothing is deleted, you choose which 3 resumes and 3 letters stay active, and the rest stay readable."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "You said: “{said}” Ask before deciding."
@@ -13728,10 +13355,6 @@ msgstr "Trimiteți personal candidatura pe site-ul angajatorului. Marcarea ca tr
 #: src/features/career/schedule-sheet.tsx
 msgid "You'll always see it in Today. Email depends on your server's mail setup."
 msgstr "O veți vedea mereu în Astăzi. E-mailul depinde de configurarea de e-mail a serverului."
-
-#: src/features/homepage/tailor.tsx
-msgid "You’ll own our <0>design systems</0>, run <1>user research</1> with customers and hold a high bar for <2>accessibility</2>, working in a <3>cross-functional</3> team."
-msgstr "Vei răspunde de <0>sistemele noastre de design</0>, vei desfășura <1>cercetări cu utilizatorii</1> alături de clienți și vei menține standarde ridicate de <2>accesibilitate</2>, lucrând într-o echipă <3>multidisciplinară</3>."
 
 #: src/features/career/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
@@ -13772,7 +13395,6 @@ msgid "Your answer"
 msgstr "Răspunsul dvs."
 
 #: src/features/career/workspace/practise.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Your attempts"
 msgstr "Încercările dvs."
 
@@ -13921,13 +13543,13 @@ msgstr "Numele tău lipsește"
 msgid "Your next opportunity is already looking for you."
 msgstr ""
 
+#: src/features/homepage/closing.tsx
+msgid "Your next resume is a few minutes away."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
 msgstr "notițele dvs."
-
-#: src/features/homepage/prepare.tsx
-msgid "Your onboarding story"
-msgstr "Povestea dvs. despre onboarding"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening"
@@ -13982,10 +13604,6 @@ msgstr "CV-ul dumneavoastră a fost actualizat."
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "CV-ul dvs. folosește „eu” și „al meu”."
 
-#: src/features/homepage/share.tsx
-msgid "Your resume, live at"
-msgstr "CV-ul tău, live la"
-
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "Fontul selectat nu poate afișa unele caractere. Apar ca “?”. În Design, alegeți un font care le conține."
@@ -14019,10 +13637,6 @@ msgstr "Povestea dvs. nu a putut fi încărcată."
 msgid "Your story is worth telling well."
 msgstr ""
 
-#: src/features/homepage/sections.tsx
-msgid "Your turn"
-msgstr "Rândul tău"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "Prezentarea dvs. de două minute"
@@ -14031,18 +13645,13 @@ msgstr "Prezentarea dvs. de două minute"
 msgid "Your web page is live"
 msgstr "Pagina ta web este publicată"
 
+#: src/features/homepage/features.tsx
+msgid "Your words stay put while the layout, fonts and colors change around them."
+msgstr ""
+
 #: src/features/auth/components/guest-banner.tsx
 msgid "Your work is lost when you sign out or the session ends. Create an account or sign in to keep your resumes, cover letters and applications."
 msgstr "Munca ta se pierde când te deconectezi sau când sesiunea expiră. Creează un cont sau autentifică-te pentru a-ți păstra CV-urile, scrisorile de intenție și candidaturile."
-
-#: src/features/homepage/sections.tsx
-msgid "Yours"
-msgstr "Al dvs."
-
-#. placeholder {0}: templateNames[step] ?? ""
-#: src/features/homepage/design.tsx
-msgid "Yours · {0}"
-msgstr "Al dvs. · {0}"
 
 #: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx

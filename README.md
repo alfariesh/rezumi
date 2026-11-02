@@ -9,7 +9,7 @@
 
   <h1>Rezumi</h1>
 
-  <p>Rezumi is a free and open-source resume builder for writing resumes and cover letters, checking your work, and tracking job applications.</p>
+  <p>Rezumi is a resume builder for writing resumes and cover letters, checking your work, and tracking job applications.</p>
 
   <p>
     <a href="https://rezumi.app"><strong>Get Started</strong></a>
@@ -19,7 +19,6 @@
 
   <p>
     <img src="https://img.shields.io/github/package-json/v/alfariesh/rezumi?style=flat-square" alt="Rezumi Version">
-    <img src="https://img.shields.io/github/stars/alfariesh/rezumi?style=flat-square" alt="GitHub Stars">
     <img src="https://img.shields.io/github/license/alfariesh/rezumi?style=flat-square" alt="License" />
   </p>
 </div>
@@ -28,7 +27,7 @@
 
 Create a free account, import an existing resume or start fresh, and see the finished page as you write. Download a PDF, Word, Markdown, or JSON file, or share your resume with a public link. You can also run the whole application on your own infrastructure.
 
-You own your data. The codebase is open source under the MIT license, with no tracking, no ads, and no paid tier. Optional AI features use a provider you connect; hosting and provider usage may have their own costs.
+You own your data: no tracking, no ads, and a full data export on every plan. The hosted app at [rezumi.app](https://rezumi.app) starts on a free plan; Plus (Rp29.000) and Pro AI (Rp79.000) are 30-day passes that never renew on their own. AI features use the credits included with Pro AI or a provider key you connect.
 
 ![Rezumi v6 editor with Write, Design, and Check modes and a live PDF preview](docs/images/getting-started/editor-overview.webp)
 
@@ -262,15 +261,6 @@ The application needs:
 ### Configuration
 
 Every setting is listed in the [environment variables reference](https://docs.rezumi.app/self-hosting/environment-variables). Self-hosters can also configure [shared AI and job-search services](https://docs.rezumi.app/self-hosting/job-search-and-ai) and [single sign-on](https://docs.rezumi.app/self-hosting/sso).
-
-## Support
-
-Rezumi is and always will be free and open source. Ways to help:
-
-- Star this repository
-- Report reproducible bugs and suggest actionable features
-- Help other users in [GitHub Discussions](https://github.com/alfariesh/rezumi/discussions/categories/q-a)
-- Improve documentation
 
 ## Contributing
 

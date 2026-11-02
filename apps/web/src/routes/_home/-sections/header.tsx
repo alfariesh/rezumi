@@ -5,7 +5,6 @@ import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
-import { GithubStarsButton } from "@/components/input/github-stars-button";
 import { LocaleCombobox } from "@/features/locale/combobox";
 import { ThemeToggleButton } from "@/features/theme/toggle-button";
 
@@ -43,8 +42,6 @@ export function Header() {
 					<ThemeToggleButton />
 
 					<div className="hidden items-center gap-x-4 sm:flex">
-						<GithubStarsButton />
-
 						<Link to="/dashboard" aria-label={t`Go to dashboard`} className={buttonVariants({ isIconOnly: true })}>
 							<Icon name="arrow-right" />
 						</Link>

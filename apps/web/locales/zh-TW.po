@@ -73,9 +73,9 @@ msgstr "「{value}」從今天開始。檢查年份，或將其標記為當前�
 msgid "“{written}” added to Skills"
 msgstr "技能中加入“{written}”"
 
-#: src/features/homepage/prepare.tsx
-msgid "“How did you measure the onboarding redesign?”"
-msgstr "「您是如何衡量新手引導改版成效的？」"
+#: src/features/homepage/hero.tsx
+msgid "“I tailored my resume for three roles in one evening and had two interview calls that week.”"
+msgstr ""
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "(no header)"
@@ -368,10 +368,8 @@ msgstr ""
 msgid "{0} is larger than {1}."
 msgstr ""
 
-#. placeholder {0}: i18n.number(row.minutes)
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
-#: src/features/homepage/prepare.tsx
 msgid "{0} min"
 msgstr "{0} 分鐘"
 
@@ -571,10 +569,6 @@ msgstr "已完成 {done}/{count}"
 msgid "{doneMinutes} of {total} min"
 msgstr "{doneMinutes}/{total} 分鐘"
 
-#: src/features/homepage/prepare.tsx
-msgid "{earlier} · typed"
-msgstr "{earlier} · 文字"
-
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{entries, plural, one {# entry} other {# entries}}"
 msgstr "{entries, plural, one {#條目} other {# 條目}}"
@@ -602,6 +596,10 @@ msgstr "{failing, plural, one {# 待審核} other {# 待審核}}"
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
 msgstr "{filled}/5 部分"
+
+#: src/features/homepage/plans.ts
+msgid "{freeTemplateCount} templates"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "{issues, plural, one {# issue could cost you a match.} other {# issues could cost you a match.}}"
@@ -676,6 +674,7 @@ msgstr "{name} 移至主欄"
 msgid "{name} never prints"
 msgstr "{name} 從不列印"
 
+#: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
 msgid "{name} resume template preview"
 msgstr "{name} 履歷範本預覽"
@@ -691,10 +690,6 @@ msgstr "{name} 使用一根立柱"
 #: src/features/resume/editor/check/issues.ts
 msgid "{names} come last in the text. Most systems still find them; some don't."
 msgstr "{names} 在文本中排在最後。大多數系統仍然可以找到它們；有些則不然。"
-
-#: src/features/homepage/prepare.tsx
-msgid "{now} · typed"
-msgstr "{now} · 文字"
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{open, plural, one {# thing to review.} other {# things to review.}}"
@@ -749,14 +744,6 @@ msgstr "{size} pt"
 msgid "{skipped, plural, one {# row had no company or role and was skipped.} other {# rows had no company or role and were skipped.}}"
 msgstr "{skipped, plural, other {# 列沒有公司或職位，已略過。}}"
 
-#: src/components/input/github-stars-button.tsx
-msgid "{starCount, plural, one {Star us on GitHub, currently # star (opens in new tab)} other {Star us on GitHub, currently # stars (opens in new tab)}}"
-msgstr "{starCount, plural, other {在 GitHub 上為我們加星，目前 # 顆星（在新分頁中開啟）}}"
-
-#: src/features/homepage/header.tsx
-msgid "{stars, plural, one {Star Rezumi on GitHub, # star} other {Star Rezumi on GitHub, # stars}}"
-msgstr "{stars, plural, other {在 GitHub 上為 Rezumi 加星，# 顆星}}"
-
 #: src/features/career/workspace/saved.tsx
 msgid "{stories, plural, one {# story} other {# stories}}"
 msgstr "{stories, plural, other {# 個故事}}"
@@ -768,14 +755,6 @@ msgstr "{summary}。在「職涯 → 錄取通知」中開啟。"
 #: src/features/career/workspace/fit.tsx
 msgid "{supported} supported"
 msgstr ""
-
-#: src/features/homepage/design.tsx
-msgid "{templateCount} free resume templates."
-msgstr "{templateCount} 個免費履歷範本。"
-
-#: src/features/homepage/prepare.tsx
-msgid "{time} · Video call · 45 min"
-msgstr "{time} · 視訊通話 · 45 分鐘"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{title} cleared"
@@ -801,6 +780,10 @@ msgstr "{toCheck, plural, one {# 欄位需要查看。} other {# 欄位需要查
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {#檢查} other {#檢查}}"
+
+#: src/features/homepage/templates.tsx
+msgid "{total} templates. {free} of them free."
+msgstr ""
 
 #. placeholder {0}: formatRelativeTime(document.updatedAt, i18n.locale)
 #: src/features/documents/document-card.tsx
@@ -836,10 +819,6 @@ msgstr "/ 月"
 msgid "/ year"
 msgstr "/ 年"
 
-#: src/features/homepage/hero.tsx
-msgid "+13 pts activation"
-msgstr "+13 點激活"
-
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "<0>Nothing to fix.</0> Every check passes."
 msgstr "<0>無需修復。 </0> 每項檢查均通過。"
@@ -849,11 +828,6 @@ msgstr "<0>無需修復。 </0> 每項檢查均通過。"
 #: src/features/career/workspace/apply.tsx
 msgid "<0>Submitted on {0}.</0> The versions you sent are kept in Saved. Edits here don't change what {1} received."
 msgstr "<0>已於 {0} 送出。</0>您寄出的版本保存在「已儲存」中。在此編輯不會改變 {1} 收到的內容。"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "06/2017 – 2021"
-msgstr "06/2017 – 2021"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
@@ -866,6 +840,10 @@ msgstr "10 分鐘簡報"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "10–11 recommended"
 msgstr "建議 10–11"
+
+#: src/features/homepage/plans.ts
+msgid "100 AI credits every 30 days"
+msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "2 files"
@@ -880,51 +858,50 @@ msgstr "提前 2 小時"
 msgid "2–3 sentences reads best"
 msgstr "2-3 句話閱讀效果最佳"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "2013 – 2017"
-msgstr "2013 – 2017"
+#: src/features/homepage/resume.tsx
+msgid "2019 – 2022"
+msgstr ""
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "2017 – 2021"
-msgstr "2017 – 2021"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "2021 – Present"
-msgstr "2021 年 – 至今"
+#: src/features/homepage/resume.tsx
+msgid "2022 – Present"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
 msgid "24 hours before"
 msgstr "提前 24 小時"
 
-#: src/features/homepage/prepare.tsx
-msgid "3 supported · 1 partly · 1 missing"
-msgstr "3 項有證據 · 1 項部分 · 1 項缺少"
+#: src/features/homepage/plans.ts
+msgid "3 active resumes and 3 cover letters"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "3 of 5 keywords on your resume"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30天"
 
-#: src/features/homepage/hero.tsx
-msgid "40% faster reviews"
-msgstr "審核速度提升 40%"
+#: src/features/homepage/plans.ts
+msgid "5 AI credits to try"
+msgstr ""
 
-#: src/features/homepage/faq.tsx
-msgid "9 short answers to what people ask before they start. Anything else, ask on <0>Discord</0>."
-msgstr "9 個簡短回答，解答大家開始前常問的問題。其他問題請到 <0>Discord</0> 發問。"
+#: src/features/homepage/features.tsx
+msgid "5 credits"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "50 active resumes and 50 cover letters"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90天"
 
-#: src/features/homepage/remember.tsx
-msgid "A"
-msgstr "A"
+#: src/features/homepage/resume.tsx
+msgid "94 of 100 checks passed"
+msgstr ""
 
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "A accepts and R rejects the focused edit. ↑ and ↓ move between edits."
@@ -970,10 +947,6 @@ msgstr "某個事實已變更。請檢查這個故事。"
 msgid "A fact you've since forgotten"
 msgstr "您後來選擇忘記的事實"
 
-#: src/features/homepage/prepare.tsx
-msgid "A focused 30-minute plan"
-msgstr "專注的 30 分鐘計畫"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A focused plan for this round"
 msgstr "這一輪的重點計畫"
@@ -981,11 +954,6 @@ msgstr "這一輪的重點計畫"
 #: src/features/ats-checker/messages.ts
 msgid "A font is referenced but not embedded."
 msgstr "有一款字體被引用但未嵌入。"
-
-#. Hero headline, line 1 of 4: A free, open-source / resume builder / and / career manager.
-#: src/features/homepage/hero.tsx
-msgid "A free, open-source"
-msgstr "免費、開源的"
 
 #: src/features/ats-checker/messages.ts
 msgid "A full-height gap splits this page into two columns."
@@ -995,10 +963,6 @@ msgstr "一道貫穿整頁的空白把這一頁分成了兩欄。"
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "空檔本身不是問題。想的話可以加一行說明；許多出色的履歷根本沒有說明。"
 
-#: src/features/homepage/prepare.tsx
-msgid "A high bar for accessibility"
-msgstr "對無障礙設計要求很高"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "A link isn't a full address"
 msgstr "連結不是完整地址"
@@ -1006,6 +970,10 @@ msgstr "連結不是完整地址"
 #: src/features/ats-checker/messages.ts
 msgid "A link points somewhere other than the address it shows."
 msgstr "有一個連結指向的位址和它顯示的位址不一致。"
+
+#: src/features/homepage/features.tsx
+msgid "A live page beside every edit"
+msgstr ""
 
 #: src/features/assistant/attachment-limits.ts
 msgid "A message takes up to {MAX_ATTACHMENTS_PER_MESSAGE} files."
@@ -1031,9 +999,17 @@ msgstr "有一頁被旋轉了。"
 msgid "A pasted posting can be saved as an application afterwards."
 msgstr "貼上的職位發布之後可以保存為職位申請。"
 
+#: src/features/homepage/testimonials.tsx
+msgid "A recruiter asked for a Word file at the last minute. I downloaded one in the same design and sent it right away."
+msgstr ""
+
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "A reminder to check in, shown as the next step until you do."
 msgstr "簽到提醒，在您簽到之前顯示為下一步。"
+
+#: src/features/homepage/plans.ts
+msgid "A resume ready to send, and a place to start applying."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "A role has no description"
@@ -1055,10 +1031,6 @@ msgstr "現在通常進行簡短的跟進就可以了"
 msgid "A story you've since deleted"
 msgstr "您後來刪除的故事"
 
-#: src/features/homepage/prepare.tsx
-msgid "A strong match, with one question to resolve"
-msgstr "高度契合，還有一個問題待釐清"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "A timed plan, your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "依時間分配的計畫、您的開場白、要準備的故事和要提出的問題。通話前 10 分鐘，它會變成您的檢查清單。"
@@ -1067,7 +1039,10 @@ msgstr "依時間分配的計畫、您的開場白、要準備的故事和要提
 msgid "A web address is written without https://."
 msgstr "有一個網址沒有寫 https://。"
 
-#: src/features/homepage/footer.tsx
+#: src/features/homepage/features.tsx
+msgid "A/B testing"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "About"
 msgstr "關於"
@@ -1089,7 +1064,6 @@ msgid "Accent is used for headings, icons and the header band. Body text stays n
 msgstr "重音用於標題、圖示和標題帶。對於列印和 ATS，正文保持接近黑色。"
 
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Accept"
 msgstr "接受"
@@ -1097,10 +1071,6 @@ msgstr "接受"
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Accept all"
 msgstr "全部接受"
-
-#: src/features/homepage/write.tsx
-msgid "Accepted"
-msgstr "公認"
 
 #: src/features/applications/stages.ts
 msgid "Accepted another offer"
@@ -1122,9 +1092,7 @@ msgstr "存取權限授予對象"
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "透過 API 存取您的帳戶，包括讀取、修改和刪除您的文件及求職申請。"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
 msgid "Accessibility"
 msgstr "無障礙設計"
 
@@ -1141,25 +1109,12 @@ msgid "Account"
 msgstr "帳戶"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Action"
 msgstr "行動"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Actions"
 msgstr "行動"
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31% to 44% in one quarter, measured across new teams."
-msgstr "一季內啟用率從 31% 提升到 44%，以新團隊為衡量對象。"
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31% to 44% in one quarter."
-msgstr "一季內啟用率從 31% 提升到 44%。"
-
-#: src/features/homepage/remember.tsx
-msgid "Activation rose from 31%…"
-msgstr "啟用率從 31% 提升到…"
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
@@ -1548,10 +1503,6 @@ msgstr "行為面試之後"
 msgid "After the interview"
 msgstr "面試之後"
 
-#: src/features/homepage/prepare.tsx
-msgid "After the interview · Today"
-msgstr "面試之後 · 今天"
-
 #: src/features/career/workspace/debrief.tsx
 msgid "After the onsite"
 msgstr "現場面試之後"
@@ -1613,14 +1564,13 @@ msgstr "無法載入 AI 提供者。重新加載再試一次。"
 msgid "AI review"
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "AI that works on your real documents"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Albanian"
 msgstr "阿爾巴尼亞語"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Alex Morgan"
-msgstr "Alex Morgan"
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Align center"
@@ -1640,6 +1590,10 @@ msgstr "靠右對齊"
 #: src/features/resume/editor/design/template-group.tsx
 msgid "All"
 msgstr "全部"
+
+#: src/features/homepage/plans.ts
+msgid "All {templateCount} templates"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "All applications"
@@ -1699,10 +1653,6 @@ msgstr "另請下載 {0} 求職信"
 msgid "Also email {0}"
 msgstr "同時寄送電子郵件至 {0}"
 
-#: src/features/homepage/sections.tsx
-msgid "Also on mobile"
-msgstr "行動裝置也能使用"
-
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Also shows the icons on skills, profiles and interests."
 msgstr "也顯示技能、個人資料和興趣的圖示。"
@@ -1727,20 +1677,10 @@ msgstr "一個錯誤"
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "頁面載入出現意外錯誤。請再試一次，或前往控制台。"
 
-#. Hero headline, line 3 of 4: A free, open-source / resume builder / and / career manager.
-#: src/features/homepage/hero.tsx
-msgctxt "hero headline"
-msgid "and"
-msgstr "與"
-
 #. placeholder {0}: others.length
 #: src/features/applications/components/detail/contacts.tsx
 msgid "and {0} more"
 msgstr "和 {0} 更多"
-
-#: src/features/homepage/sections.tsx
-msgid "and counting"
-msgstr "並計數"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
@@ -1751,7 +1691,6 @@ msgid "Another resume already uses this address. Choose a different one."
 msgstr "另一份履歷已在使用此網址。請選擇其他網址。"
 
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/remember.tsx
 msgid "Answer"
 msgstr "回答"
 
@@ -1876,10 +1815,6 @@ msgstr "應徵紀錄"
 msgid "Application added"
 msgstr "應徵紀錄已新增"
 
-#: src/features/homepage/remember.tsx
-msgid "Application answer"
-msgstr "應徵回答"
-
 #: src/features/applications/use-application-actions.ts
 msgid "Application closed"
 msgstr "工作申請已關閉"
@@ -1908,10 +1843,6 @@ msgstr "應徵詳細資料"
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Application options"
 msgstr "工作申請選項"
-
-#: src/features/homepage/prepare.tsx
-msgid "Application tabs"
-msgstr "應徵紀錄分頁"
 
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/career/workspace/messages.tsx
@@ -1944,14 +1875,11 @@ msgstr "待匯出的應徵紀錄"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/stages.ts
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Applied"
 msgstr "已申請"
 
 #: src/features/career/workspace/messages.tsx
-#: src/features/homepage/prepare.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgctxt "A proposed change has been applied"
 msgid "Applied"
@@ -1976,17 +1904,8 @@ msgid "Applied. The application is updated."
 msgstr "已套用。應徵紀錄已更新。"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Apply"
 msgstr "投遞"
-
-#: src/features/homepage/remember.tsx
-msgid "Apply · Describe a product improvement you led."
-msgstr "投遞 · 描述一項由您主導的產品改善。"
-
-#: src/features/homepage/prepare.tsx
-msgid "Apply 1 change"
-msgstr "套用 1 項變更"
 
 #: src/libs/locale.ts
 msgid "Arabic"
@@ -2042,6 +1961,10 @@ msgstr "兩家都問"
 msgid "Ask first"
 msgstr "先詢問"
 
+#: src/features/homepage/features.tsx
+msgid "Ask for a tailored version, a cover letter or interview practice. Pro AI includes the credits; any plan can use your own key."
+msgstr ""
+
 #: src/features/resume/editor/write/improve.tsx
 msgid "Ask for something else…"
 msgstr "求點別的東西…"
@@ -2071,12 +1994,8 @@ msgid "Ask, or describe a change…"
 msgstr "詢問或描述更改..."
 
 #: src/features/homepage/faq.tsx
-msgid "Asked and <0>answered.</0>"
-msgstr "有問<0>必答。</0>"
-
-#: src/features/homepage/prepare.tsx
-msgid "Asks for an example of your onboarding work."
-msgstr "希望看到您在新手引導方面的工作範例。"
+msgid "Asked and answered."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Aspect ratio"
@@ -2086,7 +2005,7 @@ msgstr "顯示比例"
 #: src/features/assistant/assistant-panel.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/command-palette/pages/resumes.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
 msgid "Assistant"
 msgstr "助理"
 
@@ -2098,22 +2017,18 @@ msgstr "助理對話"
 msgid "Assistant."
 msgstr "助手。"
 
-#: src/features/homepage/prepare.tsx
-msgid "At Northwind Labs I led research for our onboarding redesign. I interviewed 14 customers, found three drop-off points, and we shipped a shorter setup. Activation rose from 31% to 44%."
-msgstr "在 Northwind Labs，我主導了新手引導改版的使用者研究。我訪談了 14 位客戶，找出三個流失點，我們推出了更短的設定流程。啟用率從 31% 提升到 44%。"
-
-#: src/features/homepage/remember.tsx
-msgid "At Northwind Labs, most new teams stalled before they finished setup."
-msgstr "在 Northwind Labs，大多數新團隊還沒完成設定就停滯了。"
+#: src/features/homepage/plans.ts
+msgid "ATS check and basic keyword matching"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/homepage/footer.tsx
 msgid "ATS checker"
 msgstr "ATS檢查器"
 
-#: src/features/homepage/check.tsx
-msgid "ATS readability"
-msgstr "ATS可讀性"
+#: src/features/homepage/resume.tsx
+msgid "ATS readable"
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "ATS-safe"
@@ -2176,11 +2091,9 @@ msgstr "獎項"
 msgid "Azerbaijani"
 msgstr "亞塞拜然語"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-msgid "BA, Communication Design"
-msgstr "傳播設計學士"
+#: src/features/homepage/resume.tsx
+msgid "BA, Visual Communication Design · Nusantara Institute of Design"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/routes/dashboard/settings/route.tsx
@@ -2226,9 +2139,12 @@ msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
-#: src/features/homepage/remember.tsx
 msgid "Backed by"
 msgstr "依據"
+
+#: src/features/homepage/testimonials.tsx
+msgid "Backend Engineer"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Background color"
@@ -2247,18 +2163,10 @@ msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
 msgstr ""
 
-#: src/features/homepage/sheet.tsx
-msgid "Banner"
-msgstr "橫幅"
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a bar beside the header"
 msgid "Bar"
 msgstr ""
-
-#: src/features/homepage/hero.tsx
-msgid "Barista, 2012"
-msgstr "咖啡師，2012"
 
 #: src/features/career/offers.tsx
 msgid "Base salary"
@@ -2292,6 +2200,10 @@ msgstr "孟加拉語"
 #: src/features/resume/share/download-tab.tsx
 msgid "Best for applying"
 msgstr "最適合申請"
+
+#: src/features/homepage/features.tsx
+msgid "Beyond the resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Blocker"
@@ -2346,6 +2258,10 @@ msgstr "邊框寬度"
 msgid "Both offers cover everything compared here."
 msgstr "兩份錄取通知都涵蓋了這裡比較的所有項目。"
 
+#: src/features/homepage/features.tsx
+msgid "Brand Designer"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Break the resume into the usual sections so it can be segmented."
 msgstr "把履歷拆分成常見的幾個部分，方便系統進行分段。"
@@ -2372,6 +2288,10 @@ msgstr "簡報自動更新已開啟 · {0}"
 msgid "Briefing refresh paused"
 msgstr "簡報自動更新已暫停"
 
+#: src/features/homepage/templates.tsx
+msgid "Browse all {total} templates"
+msgstr ""
+
 #: src/features/ats-checker/page.tsx
 msgid "Browse free resume templates and sample PDFs"
 msgstr "瀏覽免費的履歷範本和範例 PDF 文件"
@@ -2380,26 +2300,18 @@ msgstr "瀏覽免費的履歷範本和範例 PDF 文件"
 msgid "Browse free resume templates, compare one-column and two-column layouts, and download sample PDFs. Customize your resume and export to PDF or Word."
 msgstr "瀏覽免費的履歷範本，比較一欄和兩欄版面，並下載範例 PDF 檔案。自訂您的履歷並匯出為 PDF 或 Microsoft Word。"
 
-#: src/features/homepage/hero.tsx
-msgid "Build a professional resume, download it as PDF or Word, and manage your job search in one place. Free templates, no ads, no paywall."
-msgstr "製作一份專業的履歷，將其下載為 PDF 或 Microsoft Word，然後在一個地方管理您的求職。免費範本，無廣告，無付費專區。"
+#: src/libs/seo.ts
+msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
+msgstr ""
 
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
 msgstr "建立你的履歷"
 
-#: src/features/homepage/sheet.tsx
-msgid "Built a shared design system used by six product teams, cutting UI review time by 40%."
-msgstr "建構了六個產品團隊使用的共享設計系統，將 UI 審核時間縮短了 40%。"
-
-#: src/features/homepage/prepare.tsx
-msgid "Built a shared design system used by six product teams."
-msgstr "建立了六個產品團隊共用的設計系統。"
-
-#: src/features/homepage/prepare.tsx
-msgid "Built from the posting, Sam’s message and your two strongest stories."
-msgstr "根據職缺公告、Sam 的訊息和您最有力的兩個故事產生。"
+#: src/features/homepage/resume.tsx
+msgid "Built the design system used by six product teams."
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Built-in reader"
@@ -2419,10 +2331,6 @@ msgstr "清單條目 {n}"
 msgid "Bulleted list"
 msgstr "項目符號清單"
 
-#: src/features/homepage/footer.tsx
-msgid "By the community, for the community."
-msgstr "來自社區，服務社區。"
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "日曆"
@@ -2432,16 +2340,12 @@ msgid "Calendar view"
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Can I host it myself?"
-msgstr "我可以自己主持嗎？"
-
-#: src/features/homepage/faq.tsx
 msgid "Can I import a resume I already have?"
 msgstr "我可以匯入已有的履歷嗎？"
 
 #: src/features/homepage/faq.tsx
-msgid "Can it help me prepare for interviews?"
-msgstr "它能幫我準備面試嗎？"
+msgid "Can I use my own AI key?"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Can software read your resume?"
@@ -2474,11 +2378,6 @@ msgstr "取消"
 msgid "Career"
 msgstr "職涯"
 
-#. Hero headline, line 4 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.
-#: src/features/homepage/hero.tsx
-msgid "career manager."
-msgstr "職涯管理工具。"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "加泰隆尼亞語"
@@ -2503,6 +2402,7 @@ msgstr "變更連接"
 msgid "Change it in Design."
 msgstr "在設計中更改它。"
 
+#: src/features/homepage/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Change language"
 msgstr "變更語言"
@@ -2564,8 +2464,7 @@ msgstr "更改它會向新地址發送確認訊息。您的用戶名是每個公
 msgid "Changing your password…"
 msgstr "正在變更您的密碼…"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
+#: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Check"
@@ -2587,10 +2486,6 @@ msgstr "重新檢查"
 msgid "Check another file"
 msgstr "檢查另一個文件"
 
-#: src/features/homepage/check.tsx
-msgid "Check any PDF, no account needed"
-msgstr "查詢任PDF，無需帳戶"
-
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Check DNS"
@@ -2611,10 +2506,6 @@ msgstr "檢查一下是否準確。"
 #: src/features/career/workspace/practise.tsx
 msgid "check numbers and names before using it"
 msgstr "使用前請核對數字和名稱"
-
-#: src/features/homepage/check.tsx
-msgid "Check reads your resume the way hiring software does and explains what to fix in plain words. It runs in your browser, so the file stays with you: 0 uploads."
-msgstr "檢查功能會像招募軟體一樣讀取您的履歷，並用淺顯的文字說明需要改進的地方。它在您的瀏覽器中執行，檔案始終留在您的裝置上：上傳次數為 0。"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Check the details"
@@ -2653,7 +2544,6 @@ msgstr "請到電子郵件收件匣查看重設密碼的連結。"
 msgid "Check your email for a link to verify your account."
 msgstr "請到電子郵件收件匣查看用於驗證帳戶的連結。"
 
-#: src/features/homepage/check.tsx
 #: src/features/templates/gallery.tsx
 msgid "Check your resume’s ATS readability"
 msgstr "檢查您的履歷的 ATS 可讀性"
@@ -2744,6 +2634,14 @@ msgstr "選擇另一個文件"
 msgid "Choose color"
 msgstr "選擇顏色"
 
+#: src/features/homepage/plans.ts
+msgid "Choose Plus"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "Choose Pro AI"
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Circle"
 msgstr "圓形"
@@ -2751,10 +2649,6 @@ msgstr "圓形"
 #: src/features/career/workspace/fit.tsx
 msgid "Clarify"
 msgstr "釐清"
-
-#: src/features/homepage/sheet.tsx
-msgid "Classic"
-msgstr "經典的"
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Claude Desktop"
@@ -2786,6 +2680,10 @@ msgstr "清除部分"
 #: src/features/documents/documents-page.tsx
 msgid "Clear selection"
 msgstr "清除選擇"
+
+#: src/features/homepage/features.tsx
+msgid "Clear structure"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Clear the greeting or sign-off to omit it. Clearing the sign-off also removes the automatic signature."
@@ -2902,10 +2800,6 @@ msgstr "欄"
 msgid "Columns can scramble the order text is read in."
 msgstr "列可以打亂文字的讀入順序。"
 
-#: src/features/homepage/sections.tsx
-msgid "Coming soon"
-msgstr "即將推出"
-
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "即將到來"
@@ -2921,10 +2815,6 @@ msgstr "指令選項板"
 msgid "Command palette: {currentPage}"
 msgstr "指令選項板：{currentPage}"
 
-#: src/features/homepage/footer.tsx
-msgid "Community"
-msgstr "社群"
-
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Compact"
@@ -2938,6 +2828,7 @@ msgstr ""
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -2960,6 +2851,10 @@ msgstr "在註冊之前比較真實的履歷版面。每個範本都可以免費
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Compare your resume with the job's keywords, then make a version just for it."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -3013,10 +2908,6 @@ msgstr "新增面試前，請先與 {contact} 確認時間。"
 #: src/features/career/workspace/prepare.tsx
 msgid "Confirm the time, link and who you'll meet. Glance at the resume and letter you sent."
 msgstr "確認時間、連結和面試官。瀏覽一下您寄出的履歷和求職信。"
-
-#: src/features/homepage/prepare.tsx
-msgid "Confirms {time} today, by video."
-msgstr "確認今天 {time} 進行視訊面試。"
 
 #: src/features/assistant/provider-setup.tsx
 #: src/features/resume/share/custom-domain-field.tsx
@@ -3098,6 +2989,7 @@ msgid "Connections bill speech separately and may use tokens on your account. Yo
 msgstr "連線會另外對語音計費，並可能使用您帳戶中的 token。瀏覽器語音免費，但瀏覽器開發商可能會處理音訊。伺服器只保存逐字稿，從不保存錄音。"
 
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "接觸"
 
@@ -3106,7 +2998,7 @@ msgstr "接觸"
 msgid "Contact details"
 msgstr "聯絡資訊"
 
-#: src/features/homepage/check.tsx
+#: src/features/homepage/features.tsx
 msgid "Contact details found"
 msgstr "找到聯絡方式"
 
@@ -3164,14 +3056,6 @@ msgstr "以訪客身分繼續"
 msgid "Contrast on white:"
 msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Contribution clear"
-msgstr "貢獻清楚"
-
-#: src/features/homepage/prepare.tsx
-msgid "Contribution unclear"
-msgstr "貢獻不清楚"
-
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
 msgid "Conversation"
@@ -3195,7 +3079,6 @@ msgstr "對話名稱"
 msgid "Conversations"
 msgstr "對話"
 
-#: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3239,7 +3122,6 @@ msgstr "影印一份工作..."
 msgid "Copy it now. For your security, it won't be shown again."
 msgstr "現在複製它。為了您的安全，它不會再次顯示。"
 
-#: src/features/homepage/share.tsx
 #: src/features/resume/share/copy-link-button.tsx
 msgid "Copy link"
 msgstr "複製連結"
@@ -3899,10 +3781,6 @@ msgstr "求職信"
 msgid "Cover letter — {0}"
 msgstr "求職信 — {0}"
 
-#: src/features/homepage/tailor.tsx
-msgid "Cover letter · Fieldnote"
-msgstr "求職信·Fieldnote"
-
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Cover letter file"
 msgstr "求職信文件"
@@ -3919,6 +3797,14 @@ msgstr "提交求職信（可選）"
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Cover letters"
 msgstr "求職信"
+
+#: src/features/homepage/plans.ts
+msgid "Cover letters and recruiter replies"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Cover letters that match"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Create"
@@ -3976,6 +3862,10 @@ msgstr ""
 msgid "Created and linked to {0}"
 msgstr "建立並連結到 {0}"
 
+#: src/features/homepage/faq.tsx
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes 100 credits every 30 days; the free plan includes 5 to try."
+msgstr ""
+
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Crop and upload"
 msgstr "裁切並上傳"
@@ -3983,10 +3873,6 @@ msgstr "裁切並上傳"
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Crop photo"
 msgstr "裁切照片"
-
-#: src/features/homepage/sheet.tsx
-msgid "Cross-functional leadership"
-msgstr "跨職能領導"
 
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "CSV data"
@@ -4041,6 +3927,10 @@ msgstr "自訂段落"
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "自訂樣式"
+
+#: src/features/homepage/plans.ts
+msgid "Custom styles and your own fonts"
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
@@ -4105,10 +3995,6 @@ msgstr "日期向後運行"
 msgid "Dates start in the future"
 msgstr "日期從未來開始"
 
-#: src/features/homepage/check.tsx
-msgid "Dates use one format"
-msgstr "日期使用一種格式"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Dates won't be read"
 msgstr "日期不會被讀取"
@@ -4121,23 +4007,15 @@ msgstr ""
 msgid "Dear {name},"
 msgstr "親愛的{name}，"
 
-#: src/features/homepage/tailor.tsx
-msgid "Dear Fieldnote team,"
-msgstr "親愛的Fieldnote團隊，"
-
+#: src/features/homepage/features.tsx
 #: src/features/letters/compose.ts
 msgid "Dear hiring team,"
 msgstr "親愛的招募團隊，"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Debrief"
 msgstr "回顧"
-
-#: src/features/homepage/prepare.tsx
-msgid "Deep breath."
-msgstr "深呼吸。"
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/providers.tsx
@@ -4306,8 +4184,7 @@ msgstr "詳細資訊"
 msgid "Description of role {0}"
 msgstr "角色描述 {0}"
 
-#: src/features/homepage/design.tsx
-#: src/features/homepage/header.tsx
+#: src/features/homepage/features.tsx
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
@@ -4322,17 +4199,16 @@ msgstr "設計"
 msgid "Design groups"
 msgstr "設計組"
 
+#: src/features/homepage/features.tsx
+msgid "Design Lead"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Design reset to defaults"
 msgstr "設計重設為預設值"
 
-#: src/features/homepage/prepare.tsx
-msgid "Design system trade-offs"
-msgstr "設計系統中的取捨"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Design systems"
 msgstr "設計系統"
 
@@ -4356,10 +4232,6 @@ msgstr "已達 2 分鐘上限，聽寫已停止。"
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Didn't land"
-msgstr "不理想"
-
-#: src/features/homepage/prepare.tsx
-msgid "Didn’t land"
 msgstr "不理想"
 
 #: src/features/career/offers.tsx
@@ -4417,10 +4289,6 @@ msgstr "文件選單：{name}"
 msgid "Document type"
 msgstr "文件類型"
 
-#: src/features/homepage/footer.tsx
-msgid "Documentation"
-msgstr "文件"
-
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4439,10 +4307,6 @@ msgstr "這份工作的文件"
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
 msgstr "您移至此處的文件會保留 30 天。"
-
-#: src/features/homepage/faq.tsx
-msgid "Does it use AI?"
-msgstr "會使用 AI 嗎？"
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Domain connected"
@@ -4466,6 +4330,10 @@ msgstr "完畢"
 #: src/features/career/today.tsx
 msgid "Done · {0}"
 msgstr "已完成 · {0}"
+
+#: src/features/homepage/features.tsx
+msgid "Done. I rewrote 6 bullets around design systems and prototyping and kept your numbers. Review the changes before you save."
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Double-checking"
@@ -4547,6 +4415,10 @@ msgstr "已下載你的履歷及這封求職信"
 msgid "downloads"
 msgstr "下載"
 
+#: src/features/homepage/features.tsx
+msgid "Downloads"
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Draft"
@@ -4579,10 +4451,6 @@ msgstr "根據職缺公告起草"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft from your resume"
 msgstr "履歷草稿"
-
-#: src/features/homepage/remember.tsx
-msgid "Draft it as"
-msgstr "擬稿為"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Draft kept. Edit anything you like."
@@ -4820,12 +4688,7 @@ msgstr "編輯器模式"
 msgid "Editor views"
 msgstr "編輯觀點"
 
-#: src/features/homepage/sheet.tsx
-msgid "Editorial"
-msgstr "社論"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Education"
 msgstr "學歷"
@@ -4876,11 +4739,6 @@ msgstr "結尾"
 #: src/libs/locale.ts
 msgid "English"
 msgstr "英文"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "English (native)"
-msgstr "英語（母語）"
 
 #: src/libs/locale.ts
 msgid "English (United Kingdom)"
@@ -5004,6 +4862,10 @@ msgstr "每 3 天"
 msgid "Every application is a step closer."
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "Every application on one board"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every day"
 msgstr "每天"
@@ -5015,6 +4877,10 @@ msgstr "每個條目都有系統讀取的表單中的日期（按順序），並
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "每個角色都說明了你所做的事情。關於措辭的意見存在於“寫作”選項卡中。"
+
+#: src/features/homepage/templates.tsx
+msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Every template exports a text-based PDF with the words in reading order, which is what applicant tracking systems (ATS) need to parse a resume. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix."
@@ -5028,19 +4894,25 @@ msgstr "招聘啟事強調的每個術語都已經存在。"
 msgid "Every week"
 msgstr "每週"
 
+#: src/features/homepage/plans.ts
+msgid "Everything in Plus"
+msgstr ""
+
 #. placeholder {0}: application.company
 #: src/features/career/workspace/saved.tsx
 msgid "Everything the coach wrote for {0}, newest first."
 msgstr "教練為 {0} 撰寫的所有內容，最新的在前。"
+
+#: src/features/homepage/features.tsx
+msgid "Everything you need to reach the interview."
+msgstr ""
 
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Exit focus mode"
 msgstr "退出對焦模式"
 
 #: src/features/career/knowledge/facts.tsx
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Experience"
 msgstr "經歷"
@@ -5056,10 +4928,6 @@ msgstr "過期"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Expires {expiry}"
 msgstr ""
-
-#: src/features/homepage/prepare.tsx
-msgid "explain one limit of the measurement clearly, without underselling the work."
-msgstr "清楚說明衡量方式的一項限制，同時不要低估這項工作。"
 
 #: src/features/settings/account/data.tsx
 #: src/libs/resume/section.tsx
@@ -5128,10 +4996,6 @@ msgctxt "Entry header layout"
 msgid "Eyebrow"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "Fact · Accomplishment"
-msgstr "事實 · 成就"
-
 #: src/features/career/knowledge/facts.tsx
 msgid "Fact forgotten"
 msgstr "已忘記事實"
@@ -5153,7 +5017,12 @@ msgstr "知識庫中已開啟的事實、故事和偏好"
 msgid "Failed"
 msgstr "失敗的"
 
+#: src/features/homepage/ui.tsx
+msgid "FAQ"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
 msgid "Features"
 msgstr "功能"
 
@@ -5165,33 +5034,14 @@ msgstr "回饋"
 msgid "Feedback needs an AI connection. <0>Add one in Settings</0>. Nothing is sent until you ask."
 msgstr "回饋需要 AI 連線。<0>在設定中新增</0>。在您提出要求之前，不會傳送任何內容。"
 
-#: src/features/homepage/prepare.tsx
-msgid "Fewer support tickets isn’t backed by a number yet. Say it as something you noticed."
-msgstr "客服工單減少尚無數據佐證。請把它說成您觀察到的現象。"
-
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Field {0}"
 msgstr "字段 {0}"
 
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
-msgid "Fieldnote"
-msgstr "Fieldnote"
-
-#: src/features/homepage/tailor.tsx
-msgid "Fieldnote · Remote, EU"
-msgstr "Fieldnote · 遠程，歐盟"
-
-#: src/features/homepage/hero.tsx
+#: src/features/homepage/resume.tsx
 msgid "Figma"
 msgstr "Figma"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Figma, HTML and CSS"
-msgstr "Figma、HTML 和 CSS"
 
 #: src/features/resume/share/download-tab.tsx
 msgid "File name"
@@ -5230,9 +5080,9 @@ msgstr "填寫條目"
 msgid "Filter by tag"
 msgstr "按標籤過濾"
 
-#: src/features/homepage/remember.tsx
-msgid "Find out why, and shorten setup without adding support work."
-msgstr "找出原因，並在不增加客服工作的前提下縮短設定流程。"
+#: src/features/homepage/testimonials.tsx
+msgid "Finance Analyst"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Find roles"
@@ -5265,7 +5115,6 @@ msgstr "顯示方式"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgctxt "Application workspace tab: how well a job fits your experience"
 msgid "Fit"
 msgstr "契合度"
@@ -5298,10 +5147,6 @@ msgstr "在編輯器中修復這些問題"
 msgid "Fix these values in the CSV, or leave their columns out, before importing."
 msgstr "匯入前，請在 CSV 中修正這些值，或移除對應的欄位。"
 
-#: src/features/homepage/remember.tsx
-msgid "Fixing onboarding drop-off at Northwind Labs"
-msgstr "解決 Northwind Labs 的新手引導流失問題"
-
 #: src/features/ats-checker/messages.ts
 msgid "Flatten the form so the text is part of the page."
 msgstr "將表單平面化，使文字成為頁面的一部分。"
@@ -5313,6 +5158,14 @@ msgstr "流利程度"
 #: src/features/career/workspace/prepare.tsx
 msgid "Focus, experience, why this role"
 msgstr "重點、經驗、為何選擇這個職位"
+
+#: src/features/homepage/features.tsx
+msgid "Follow every application all the way to the offer."
+msgstr ""
+
+#: src/features/homepage/introduction.tsx
+msgid "Follow every application from saved to offer"
+msgstr ""
 
 #: src/features/applications/next-step.ts
 msgid "Follow up"
@@ -5366,6 +5219,10 @@ msgstr "無法載入字體。請再試一次。"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "For"
 msgstr "為了"
+
+#: src/features/homepage/pricing.tsx
+msgid "For 30 days, no automatic renewal"
+msgstr ""
 
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
@@ -5457,13 +5314,18 @@ msgstr "今天找到"
 msgid "Found yesterday"
 msgstr "昨天找到"
 
+#: src/features/homepage/plans.ts
+#: src/features/homepage/templates.tsx
+msgid "Free"
+msgstr ""
+
 #: src/libs/seo.ts
 msgid "Free ATS resume checker"
 msgstr "免費 ATS 履歷檢查器"
 
-#: src/libs/seo.ts
-msgid "Free resume builder with PDF & Word downloads"
-msgstr "免費履歷產生器，可下載 PDF 和 Microsoft Word"
+#: src/features/homepage/hero.tsx
+msgid "Free plan, no card needed. PDF downloads without a watermark."
+msgstr ""
 
 #: src/libs/seo.ts
 msgid "Free resume templates with PDF examples"
@@ -5475,16 +5337,15 @@ msgstr "附 PDF 範例的免費履歷範本"
 msgid "Free-form"
 msgstr "自由形式"
 
-#: src/libs/seo.ts
-msgid "Free, open-source resume builder. Create, update, and share your resume, with PDF and Word downloads, no ads and no paywall."
-msgstr "免費、開源的履歷製作工具。建立、更新和分享您的履歷，支援 PDF 和 Word 下載，無廣告，無付費限制。"
-
 #: src/libs/locale.ts
 msgid "French"
 msgstr "法文"
 
+#: src/features/homepage/testimonials.tsx
+msgid "Fresh graduate, Informatics"
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
-#: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "從"
@@ -5497,10 +5358,6 @@ msgstr "來自回顧"
 msgid "From a document you attached"
 msgstr "來自您附加的文件"
 
-#: src/features/homepage/sections.tsx
-msgid "from developers who back it"
-msgstr "來自支持它的開發者"
-
 #: src/features/career/workspace/fit.tsx
 msgid "From Fit"
 msgstr "來自契合度檢查"
@@ -5508,6 +5365,10 @@ msgstr "來自契合度檢查"
 #: src/features/resume/share/format.ts
 msgid "from the assistant or API"
 msgstr "來自助理或 API"
+
+#: src/features/homepage/features.tsx
+msgid "From the first line to the shared link, every step of the resume lives in one editor."
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From your cover letter"
@@ -5528,6 +5389,10 @@ msgstr "來自您的履歷"
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "From your timezone"
 msgstr "根據您的時區"
+
+#: src/features/homepage/plans.ts
+msgid "Full job search insights"
+msgstr ""
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Full name"
@@ -5560,10 +5425,6 @@ msgstr "德文"
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
 msgstr "在 <0>{0}</0> 取得金鑰。它被加密儲存並且僅用於您的請求。"
 
-#: src/features/homepage/prepare.tsx
-msgid "Get a plan for the interview, built from the posting and your own stories. Practice out loud, then write down how it went."
-msgstr "根據職缺公告和您自己的故事取得面試計畫。大聲練習，然後記下面試的情況。"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback"
 msgstr "取得回饋"
@@ -5572,17 +5433,13 @@ msgstr "取得回饋"
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "「取得回饋」會將問題、您的回答、此職缺公告和您的故事傳送給 {providerName}。"
 
-#: src/features/homepage/sections.tsx
-msgid "Get it on"
-msgstr "立即下載"
+#: src/features/homepage/closing.tsx
+msgid "Get it on Google Play"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
 msgstr "每天早上在這裡取得新職缺"
-
-#: src/features/homepage/footer.tsx
-msgid "Get started"
-msgstr "開始使用"
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Getting long. Try “Shorter”, or cut the least specific paragraph."
@@ -5661,9 +5518,9 @@ msgstr "稱呼"
 msgid "Grid"
 msgstr "網格"
 
-#: src/features/homepage/remember.tsx
-msgid "Happy to walk you through it on our call."
-msgstr "很樂意在通話中詳細說明。"
+#: src/features/homepage/footer.tsx
+msgid "Guides"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -5708,7 +5565,6 @@ msgid "Headline"
 msgstr "標題"
 
 #: src/features/career/workspace/practise.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Hear it"
 msgstr "收聽"
 
@@ -5719,6 +5575,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Hebrew"
 msgstr "希伯來語"
+
+#: src/features/homepage/footer.tsx
+msgid "Help"
+msgstr ""
 
 #: src/features/settings/root.tsx
 msgid "Help & docs"
@@ -5731,10 +5591,6 @@ msgstr "幫我把一項成就整理成包含情境、任務、行動、結果和
 #: src/components/input/color-picker.tsx
 msgid "Hex color"
 msgstr ""
-
-#: src/features/homepage/prepare.tsx
-msgid "Hi Alex, great to confirm: you’ll meet our design team today at {time}, by video. Could you bring an example of your onboarding work?"
-msgstr "Alex 您好，跟您確認：今天 {time} 您將透過視訊與我們的設計團隊見面。可以帶一個您在新手引導方面的工作範例嗎？"
 
 #: src/components/level/combobox.tsx
 #: src/features/resume/editor/write/entries.tsx
@@ -5791,6 +5647,7 @@ msgstr "隱藏照片"
 msgid "High"
 msgstr "高的"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Highlight"
 msgstr "醒目提示"
@@ -5840,9 +5697,12 @@ msgid "How did it go?"
 msgstr "進行得如何？"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "How did it land?"
 msgstr "效果如何？"
+
+#: src/features/homepage/faq.tsx
+msgid "How does a 30-day plan work?"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "How far applications get"
@@ -5876,6 +5736,10 @@ msgstr "如何顯示文件"
 msgid "How well do I fit this role?"
 msgstr "我有多適合這個角色？"
 
+#: src/features/homepage/testimonials.tsx
+msgid "HR Generalist"
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Hue"
@@ -5898,9 +5762,9 @@ msgstr "我可以看到此 {kind} 和 {0} 職位發布。建議以編輯形式�
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "我可以看到這個{kind}。建議以編輯形式返回，您可以一一接受。"
 
-#: src/features/homepage/remember.tsx
-msgid "I interviewed 14 customers, mapped three drop-off points and prototyped a shorter setup with engineering."
-msgstr "我訪談了 14 位客戶，找出三個流失點，並與工程團隊一起做出更短設定流程的原型。"
+#: src/features/homepage/testimonials.tsx
+msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
+msgstr ""
 
 #: src/features/applications/stages.ts
 msgid "I withdrew"
@@ -5922,10 +5786,6 @@ msgstr "圖示…"
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Icons in contact line"
 msgstr "聯繫線中的圖標"
-
-#: src/features/homepage/remember.tsx
-msgid "If I did it again, I’d agree on the measure before the first prototype."
-msgstr "如果重來一次，我會在做第一個原型之前就先講定衡量指標。"
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -6037,10 +5897,6 @@ msgstr "改進選定的線路"
 msgid "Improving…"
 msgstr "改善…"
 
-#: src/features/homepage/sections.tsx
-msgid "In good company"
-msgstr "在好的公司裡"
-
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "增加行距，避免兩行文字被合併成一行。"
@@ -6052,6 +5908,10 @@ msgstr "增加縮排"
 #: src/libs/locale.ts
 msgid "Indonesian"
 msgstr "印尼語"
+
+#: src/features/homepage/resume.tsx
+msgid "Indonesian (native) · English (professional)"
+msgstr ""
 
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
@@ -6087,9 +5947,7 @@ msgstr "僅接口。每份履歷都有自己的設計語言。"
 
 #: src/features/applications/stages.ts
 #: src/features/career/schedule-sheet.tsx
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Interview"
 msgstr "面試"
 
@@ -6100,15 +5958,6 @@ msgstr "面試回顧"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview deleted"
 msgstr "已刪除面試"
-
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/sections.tsx
-msgid "Interview done"
-msgstr "面試已完成"
-
-#: src/features/homepage/prepare.tsx
-msgid "Interview in {duration}"
-msgstr "{duration} 後面試"
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Interview is in another timezone"
@@ -6122,17 +5971,13 @@ msgstr ""
 msgid "Interview notes"
 msgstr "面試備註"
 
-#: src/features/homepage/prepare.tsx
-msgid "Interview now"
-msgstr "正在面試"
-
 #: src/features/applications/use-reschedule-interview.ts
 msgid "Interview now ends at {endTime}"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "Interview opening"
-msgstr "面試開場白"
+#: src/features/homepage/plans.ts
+msgid "Interview practice with feedback"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
@@ -6156,25 +6001,25 @@ msgstr "「職涯」中的面試時間、提醒和排程都會使用它。"
 msgid "Interview timezone"
 msgstr "面試時區"
 
-#: src/features/homepage/remember.tsx
-msgid "Interviewed 14 customers, mapped three drop-off points and prototyped a shorter setup with engineering."
-msgstr "訪談了 14 位客戶，找出三個流失點，並與工程團隊一起做出更短設定流程的原型。"
-
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Interviewer"
 msgstr "面試官"
+
+#: src/features/homepage/introduction.tsx
+msgid "Introduction"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Is equity part of the offer?"
 msgstr "錄取條件中包含股權嗎？"
 
-#: src/features/homepage/faq.tsx
-msgid "Is Rezumi really free?"
-msgstr "Rezumi真的免費嗎？"
-
 #: src/features/career/offers.tsx
 msgid "Is there a bonus, and what does it depend on?"
 msgstr "有獎金嗎？取決於什麼？"
+
+#: src/features/homepage/faq.tsx
+msgid "Is there a free plan?"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Is there a learning budget?"
@@ -6286,11 +6131,11 @@ msgstr "職缺描述"
 msgid "Job link or posting text"
 msgstr "職位連結或職位發布文本"
 
-#: src/features/homepage/tailor.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Job match"
 msgstr "職位匹配"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Job posting"
 msgstr "職缺公告"
@@ -6310,6 +6155,10 @@ msgstr "職缺搜尋失敗。請重試或貼上職缺公告連結。"
 #: src/features/applications/components/insights-view.tsx
 msgid "Job search pipeline"
 msgstr "求職流程"
+
+#: src/features/homepage/plans.ts
+msgid "Job tracker with board and calendar"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Jobs"
@@ -6371,7 +6220,6 @@ msgstr "保持誠實"
 msgid "Keep it under 2.5 MB, usually by removing or shrinking images."
 msgstr "將檔案控制在 2.5 MB 以內，通常可透過移除或縮小圖片來達成。"
 
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/write/improve.tsx
 msgid "Keep mine"
 msgstr "保留我的"
@@ -6391,10 +6239,6 @@ msgstr "讓履歷內容保持為真實文字，而不是文字的圖片。"
 #: src/features/ats-checker/messages.ts
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "將頁首文字保持簡短，或乾脆去掉。它們也會在擷取出的文字中重複出現。"
-
-#: src/features/homepage/prepare.tsx
-msgid "Keep the evidence precise"
-msgstr "證據要精確"
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Keep the panel beside the page"
@@ -6424,10 +6268,6 @@ msgstr "保留最具體的部分"
 #: src/features/resume/editor/check/actions.ts
 msgid "Kept as it is"
 msgstr "保持原樣"
-
-#: src/features/homepage/write.tsx
-msgid "Kept yours"
-msgstr "已保留您的版本"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Key ends in {ending}"
@@ -6461,16 +6301,11 @@ msgstr "高棉語"
 msgid "Kind regards,"
 msgstr "親切的問候，"
 
-#: src/features/homepage/remember.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "知識庫"
-
-#: src/features/homepage/prepare.tsx
-msgid "Knowledge doesn’t mention mentoring."
-msgstr "知識庫中沒有提到指導經驗。"
 
 #: src/libs/locale.ts
 msgid "Korean"
@@ -6494,6 +6329,7 @@ msgstr "橫向"
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/language.tsx
+#: src/features/homepage/header.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/general.tsx
@@ -6501,8 +6337,7 @@ msgstr "橫向"
 msgid "Language"
 msgstr "語言"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Languages"
 msgstr "語言"
@@ -6549,20 +6384,17 @@ msgstr "將文字水平排列。旋轉的文字段落常常會遺失或錯位。
 msgid "Layout"
 msgstr "版面配置"
 
-#: src/features/homepage/prepare.tsx
-msgid "Lead across functions"
-msgstr "跨職能領導"
+#: src/features/homepage/features.tsx
+msgid "Lead Designer"
+msgstr ""
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Lead Product Designer"
-msgstr "首席產品設計師"
+#: src/features/homepage/features.tsx
+msgid "Lead Designer · Northwind"
+msgstr ""
 
-#: src/features/homepage/write.tsx
-msgid "Lead with the result and give it a scale."
-msgstr "以結果為主導並給出一個尺度。"
+#: src/features/homepage/resume.tsx
+msgid "Lead Designer, Northwind"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Leads with why you fit"
@@ -6596,13 +6428,13 @@ msgstr "留空則使用原始標題。"
 msgid "Leave out"
 msgstr "省略"
 
-#: src/features/homepage/sheet.tsx
-msgid "Led <0>user research</0> for the onboarding redesign; activation rose from 31% to 44%."
-msgstr "為新使用者入門體驗的重新設計主導<0>使用者研究</0>；啟用率從31%提高至44%。"
+#: src/features/homepage/features.tsx
+msgid "Led the checkout redesign"
+msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Led research for the onboarding redesign; activation rose from 31% to 44%."
-msgstr "主導了新手引導改版的使用者研究；啟用率從 31% 提升到 44%。"
+#: src/features/homepage/resume.tsx
+msgid "Led the redesign of checkout, lifting conversion by 18% in two quarters."
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Left"
@@ -6691,6 +6523,10 @@ msgstr "信頁"
 msgid "Letters"
 msgstr "信件"
 
+#: src/features/homepage/features.tsx
+msgid "Letters share your resume's design and live beside the job they are for."
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Level"
@@ -6700,10 +6536,6 @@ msgstr "等級"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "5 個等級中的第 {level} 級"
-
-#: src/features/homepage/footer.tsx
-msgid "Licensed under <0>MIT</0>"
-msgstr "採用 <0>MIT</0> 授權"
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6827,15 +6659,6 @@ msgstr "正在連結…"
 msgid "Links"
 msgstr "連結"
 
-#: src/features/homepage/hero.tsx
-msgid "Lisbon"
-msgstr "Lisbon"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Lisbon, Portugal"
-msgstr "Lisbon, Portugal"
-
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "List"
@@ -6865,10 +6688,6 @@ msgstr "編輯時即時更新"
 #: src/features/resume/share/address-field.tsx
 msgid "Live at {0}"
 msgstr "現場直播：{0}"
-
-#: src/features/homepage/sections.tsx
-msgid "Live totals, refreshed every 6 hours."
-msgstr "即時統計，每 6 小時更新一次。"
 
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
@@ -6932,10 +6751,6 @@ msgstr "正在載入已儲存的版本…"
 msgid "Loading stylesheet editor…"
 msgstr "正在載入樣式表編輯器…"
 
-#: src/features/homepage/sections.tsx
-msgid "Loading the total"
-msgstr "加載總數"
-
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "正在載入工作區…"
@@ -6977,6 +6792,10 @@ msgstr "鎖定"
 msgid "Locked. Unlock to edit."
 msgstr "鎖定。解鎖即可編輯。"
 
+#: src/features/homepage/header.tsx
+msgid "Log in"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Long stretches are set in capitals."
 msgstr "有大段文字使用了全大寫。"
@@ -7014,10 +6833,6 @@ msgstr "主要"
 #: src/routes/_home/-sections/header.tsx
 msgid "Main navigation"
 msgstr "主導覽"
-
-#: src/features/homepage/design.tsx
-msgid "Make any of them yours."
-msgstr "讓其中任何一個成為您的。"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Make default"
@@ -7084,6 +6899,10 @@ msgstr "由您的伺服器管理"
 msgid "Many bullets start with the same phrase."
 msgstr "很多重點都以相同的詞句開頭。"
 
+#: src/features/homepage/plans.ts
+msgid "Many versions of your application, in every format."
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Mar 2022"
 msgstr "2022 年 3 月"
@@ -7137,6 +6956,10 @@ msgstr "已標記為已申請。您寄出的版本已保留。"
 msgid "Marked as read"
 msgstr "已標記為已讀"
 
+#: src/features/homepage/hero.tsx
+msgid "Marketing Associate"
+msgstr ""
+
 #. placeholder {0}: resume?.name ?? t`the resume`
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Match “{0}”"
@@ -7145,6 +6968,10 @@ msgstr "匹配“{0}”"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Match against a job"
 msgstr "與工作匹配"
+
+#: src/features/homepage/features.tsx
+msgid "Match every posting"
+msgstr ""
 
 #: src/features/command-palette/pages/preferences/theme.tsx
 msgid "Match system theme"
@@ -7170,6 +6997,10 @@ msgstr "可能可註冊"
 msgid "MCP"
 msgstr "MCP"
 
+#: src/features/homepage/plans.ts
+msgid "MCP and API for your own automations"
+msgstr ""
+
 #: src/features/settings/ai/mcp.tsx
 msgid "MCP server"
 msgstr "MCP伺服器"
@@ -7186,10 +7017,6 @@ msgstr ""
 msgid "Medium"
 msgstr "中等的"
 
-#: src/features/homepage/prepare.tsx
-msgid "Mentor other designers"
-msgstr "指導其他設計師"
-
 #: src/features/assistant/conversation.tsx
 msgid "Message the assistant"
 msgstr "給助理留言"
@@ -7199,17 +7026,8 @@ msgid "Message the coach"
 msgstr "傳訊息給教練"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Messages"
 msgstr "訊息"
-
-#: src/features/homepage/prepare.tsx
-msgid "Messages · Pasted from your email"
-msgstr "訊息 · 從您的電子郵件貼上"
-
-#: src/features/homepage/remember.tsx
-msgid "Messages · Reply to Sam at Fieldnote"
-msgstr "訊息 · 回覆 Fieldnote 的 Sam"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
@@ -7219,22 +7037,9 @@ msgstr "麥克風已被封鎖。請在瀏覽器設定中允許，或輸入您的
 msgid "Minimum base salary"
 msgstr "最低底薪"
 
-#: src/features/homepage/prepare.tsx
-msgid "Missing evidence means your notes don’t show it yet, not that you lack it."
-msgstr "缺少證據只表示您的筆記中尚未呈現，並不代表您不具備。"
-
-#: src/features/homepage/footer.tsx
-msgid "MIT License"
-msgstr "MIT 授權"
-
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Mixed"
 msgstr "普通"
-
-#: src/features/homepage/check.tsx
-msgid "mixed format"
-msgstr "混合格式"
 
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
@@ -7252,10 +7057,6 @@ msgstr "模型建議不可用。您仍然可以輸入任何型號 ID。"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Model: {label}"
 msgstr "型號：{label}"
-
-#: src/features/homepage/sheet.tsx
-msgid "Mono"
-msgstr "單核白血球增多症"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
@@ -7303,13 +7104,13 @@ msgstr "大多數重點都以無意義的填充詞開頭，而不是您做過的
 msgid "Most entries have no dates."
 msgstr "大多數條目沒有日期。"
 
-#: src/features/homepage/remember.tsx
-msgid "Most new teams at Northwind Labs stalled during setup and never reached activation."
-msgstr "Northwind Labs 的大多數新團隊在設定階段就停滯了，始終沒有達到啟用。"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Most recruiters read 180–320 words. The shaded band shows the range."
 msgstr "大多數招聘人員會閱讀 180-320 個單字。陰影帶顯示範圍。"
+
+#: src/features/homepage/introduction.tsx
+msgid "Most resume builders stop at the PDF. The work doesn’t: each posting wants a slightly different story, recruiters reply, and interviews need preparing. So Rezumi keeps going with you."
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Most systems file candidates by email address."
@@ -7327,6 +7128,10 @@ msgstr "把所有內容移到頁面邊界之內，然後重新匯出。"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Move down"
 msgstr "下移"
+
+#: src/features/homepage/features.tsx
+msgid "Move each job from saved to offer, with notes, dates and the resume you sent."
+msgstr ""
 
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Move field up"
@@ -7364,10 +7169,6 @@ msgstr "移至{0}"
 #: src/features/career/workspace/messages.tsx
 msgid "Move to {stage}"
 msgstr "移至「{stage}」"
-
-#: src/features/homepage/prepare.tsx
-msgid "Move to Interview"
-msgstr "移至面試"
 
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
@@ -7408,9 +7209,9 @@ msgstr "移至{0}"
 msgid "Moves the application from {0}."
 msgstr "將應徵紀錄從「{0}」移出。"
 
-#: src/features/homepage/remember.tsx
-msgid "My job was to find out why, without adding support work."
-msgstr "我的任務是找出原因，同時不增加客服工作。"
+#: src/features/homepage/testimonials.tsx
+msgid "My internships and campus projects finally read like real experience. The ATS check showed me what to fix."
+msgstr ""
 
 #. Label for full name input on registration form
 #: src/dialogs/resume/index.tsx
@@ -7442,10 +7243,6 @@ msgstr "第 {0} 位人員的姓名"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Name or team"
 msgstr "姓名或團隊"
-
-#: src/features/homepage/prepare.tsx
-msgid "Name the problem, what you led and how activation was measured."
-msgstr "說明問題、您主導的內容，以及啟用率是如何衡量的。"
 
 #: src/dialogs/resume/index.tsx
 msgid "Name the resume after the position you are applying for."
@@ -7577,10 +7374,6 @@ msgstr "新版塊"
 msgid "New story"
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "New teams at Northwind were stalling in setup; most never got through."
-msgstr "Northwind 的新團隊常卡在設定階段，多數沒能完成。"
-
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr ""
@@ -7613,10 +7406,6 @@ msgstr "下一步：{0}"
 msgid "Next step: {0}. Adds a reminder to Today."
 msgstr "下一步：{0}。會在「今天」中新增提醒。"
 
-#: src/features/homepage/remember.tsx
-msgid "Next time, I’d agree how to measure success before the first prototype."
-msgstr "下次，我會在第一個原型之前就先講定如何衡量成功。"
-
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next week"
 msgstr ""
@@ -7627,6 +7416,10 @@ msgstr "沒有有效的工作申請。"
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "No activity yet"
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "No API key to set up"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -7654,6 +7447,10 @@ msgstr "還沒有工作申請。首先在工作申請中新增一個。"
 #: src/features/ats-checker/messages.ts
 msgid "No bullet lists were found."
 msgstr "未找到項目符號清單。"
+
+#: src/features/homepage/pricing.tsx
+msgid "No card needed"
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "No change needed. It's already at {stage}."
@@ -7713,8 +7510,6 @@ msgid "No email address was found."
 msgstr "未找到電子郵件地址。"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
-#: src/features/homepage/remember.tsx
 msgid "No evidence yet"
 msgstr "尚無證據"
 
@@ -7856,10 +7651,6 @@ msgstr "沒有工作經驗顯示"
 msgid "No work-experience section was found."
 msgstr "未找到工作經歷部分。"
 
-#: src/features/homepage/design.tsx
-msgid "No. {number} · {name}"
-msgstr "編號：{number}·{name}"
-
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
@@ -7879,15 +7670,6 @@ msgstr "普通的"
 #: src/features/resume/editor/design/fit.ts
 msgid "normal margins"
 msgstr "正常邊距"
-
-#: src/features/homepage/check.tsx
-msgid "Northwind Labs"
-msgstr "Northwind Labs"
-
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Northwind Labs · Lisbon"
-msgstr "Northwind Labs · Lisbon"
 
 #: src/libs/locale.ts
 msgid "Norwegian"
@@ -8072,7 +7854,6 @@ msgid "Notice period"
 msgstr "離職預告期"
 
 #: src/features/career/coach-thread.tsx
-#: src/features/homepage/prepare.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
 msgstr "現在"
@@ -8082,7 +7863,6 @@ msgid "Numbered list"
 msgstr "編號列表"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Observation"
 msgstr "觀察"
 
@@ -8094,10 +7874,6 @@ msgstr "歐利亞語"
 msgid "Off"
 msgstr "離開"
 
-#: src/features/homepage/remember.tsx
-msgid "Off: the coach won’t see it or claim it."
-msgstr "關閉：教練不會看到，也不會據此提出主張。"
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Off. Let recruiters find you on Google by turning this on."
 msgstr "已關閉。開啟後，招募人員就能在 Google 上找到您。"
@@ -8108,8 +7884,7 @@ msgstr "離開。這封信保留了您的詳細資料的單獨副本。"
 
 #: src/features/applications/stages.ts
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Offer"
 msgstr "錄取"
 
@@ -8142,10 +7917,6 @@ msgstr ""
 msgid "On. Anyone with the link can see your web page."
 msgstr "已開啟。任何擁有連結的人都能查看您的網頁。"
 
-#: src/features/homepage/remember.tsx
-msgid "Onboarding story"
-msgstr "新手引導故事"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "安排好一輪面試後，「準備」會產生依時間分配的計畫、您的開場白和要提出的問題。"
@@ -8153,6 +7924,10 @@ msgstr "安排好一輪面試後，「準備」會產生依時間分配的計畫
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
 msgstr "一旦您發送了幾份工作申請，這會顯示他們的進展以及人們回覆的速度。"
+
+#: src/features/homepage/features.tsx
+msgid "One address that always shows your latest version, public or behind a password."
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -8171,10 +7946,6 @@ msgstr "單欄版面，頁首旁附有照片，各區塊標題清晰。以簡潔
 msgid "One column with labeled section rows and subtle dividers. A compact layout for experience, education and supporting details."
 msgstr "單欄版面，各區塊附有標題和細緻的分隔線。以精簡的版面呈現工作經歷、學歷及補充資訊。"
 
-#: src/features/homepage/check.tsx
-msgid "one format"
-msgstr "格式一致"
-
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
@@ -8192,10 +7963,6 @@ msgstr "請只允許您信任的應用程式。此應用程式將能夠："
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Only applies when the section fits on a single page."
 msgstr "僅適用於該部分內容能夠完整顯示在一頁上的情況。"
-
-#: src/features/homepage/faq.tsx
-msgid "Only if you want it to. Add your own key from OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama or another provider for sharper lines, tailoring to a job posting, coaching for applications and interviews, and reading Word files. Without a key, nothing is sent to an AI service."
-msgstr "只在您需要時使用。新增您自己的 OpenAI、Anthropic、Google Gemini、OpenRouter、Ollama 或其他提供者的金鑰，即可獲得更精煉的措辭、依職缺公告調整、應徵和面試輔導，以及讀取 Word 檔案。沒有金鑰時，不會傳送任何內容給 AI 服務。"
 
 #: src/features/ats-checker/messages.ts
 msgid "Only one recognizable section heading was found."
@@ -8318,9 +8085,9 @@ msgstr "開啟網頁"
 msgid "Open workspace"
 msgstr "開啟工作區"
 
-#: src/features/homepage/remember.tsx
-msgid "Opening"
-msgstr "開場白"
+#: src/features/homepage/resume.tsx
+msgid "Opened 12 times this week"
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "Opening the file"
@@ -8444,10 +8211,6 @@ msgstr "已過時：此後文字已更改。"
 msgid "Outdent"
 msgstr "減少縮排"
 
-#: src/features/homepage/prepare.tsx
-msgid "Own and evolve a design system"
-msgstr "負責並發展設計系統"
-
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -8504,18 +8267,7 @@ msgstr "段落"
 msgid "paragraph {n}"
 msgstr "第{n}款"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-msgid "Parcel & Co."
-msgstr "Parcel & Co."
-
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
-msgid "Parcel & Co. · Porto"
-msgstr "Parcel & Co. · Porto"
-
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Partly supported"
 msgstr "部分有證據"
 
@@ -8539,7 +8291,6 @@ msgstr "通行金鑰"
 #: src/features/auth/pages/login.tsx
 #: src/features/auth/pages/register.tsx
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/homepage/share.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/share/web-page-text.ts
 #: src/features/settings/account/auth-hooks.ts
@@ -8570,10 +8321,6 @@ msgstr "過去的談話"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Paste a job link. We'll save the posting so Check, the assistant and your letter can use it."
 msgstr "貼上職位連結。我們將保存招聘訊息，以便檢查、助理和您的信件可以使用它。"
-
-#: src/features/homepage/tailor.tsx
-msgid "Paste a job posting once. It feeds a tailored copy of your resume, a match score, a cover letter draft and a place to track the role."
-msgstr "只要貼上一次職缺公告，就能產生客製化履歷、契合度分數、求職信草稿，以及追蹤該職缺的位置。"
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Paste a job posting…"
@@ -8629,10 +8376,6 @@ msgstr "已貼上招募訊息"
 msgid "Pasting fills the fields automatically."
 msgstr "貼上後會自動填入各欄位。"
 
-#: src/features/homepage/sections.tsx
-msgid "Pause the list of languages"
-msgstr "暫停語言列表"
-
 #: src/features/career/today.tsx
 msgid "Paused · {line}"
 msgstr "已暫停 · {line}"
@@ -8641,25 +8384,37 @@ msgstr "已暫停 · {line}"
 msgid "Paused schedules keep their settings."
 msgstr "暫停的排程會保留其設定。"
 
+#: src/features/homepage/pricing.tsx
+msgid "Pay only while you are applying."
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "發薪週期"
+
+#: src/features/homepage/plans.ts
+msgid "PDF downloads without a watermark"
+msgstr ""
+
+#: src/features/homepage/faq.tsx
+msgid "PDF on every plan, along with Markdown and JSON. Word (DOCX) and ODT come with Plus and Pro AI. You can export all of your data at any time, whatever your plan."
+msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "PDF styles support a subset of CSS. Rotation, dashed and dotted borders, and some layout properties are ignored."
 msgstr "PDF 樣式支援 CSS 的子集。旋轉、虛線和點線邊框以及某些佈局屬性將被忽略。"
 
-#: src/features/homepage/faq.tsx
-msgid "PDF, Word (DOCX), Markdown and JSON. The JSON export imports back into any Rezumi, including one you host yourself, so your data is never locked in."
-msgstr "PDF, Word （DOCX), Markdown 和 JSON。這 JSON 出口進口回到任何 Rezumi，包括您自己託管的數據，因此您的數據永遠不會被鎖定。"
-
 #: src/features/documents/documents-page.tsx
 msgid "PDF, Word or JSON. We'll build a resume from it."
 msgstr "PDF、Word 或 JSON。我們將根據它建立一份簡歷。"
 
-#: src/features/homepage/sections.tsx
-msgid "People using it"
-msgstr "使用它的人"
+#: src/features/homepage/testimonials.tsx
+msgid "People reaching the interview with Rezumi."
+msgstr ""
+
+#: src/features/homepage/testimonials.tsx
+msgid "People using Rezumi"
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Permanently removes everything. Export first if you want a copy."
@@ -8699,10 +8454,6 @@ msgstr "請選擇晚於現在的時間。"
 #: src/components/input/icon-picker.tsx
 msgid "Pick an icon"
 msgstr "選擇一個圖標"
-
-#: src/features/homepage/design.tsx
-msgid "Pick from {templateCount} templates, then set the type, color and spacing. The words stay put, so try as many looks as you like."
-msgstr "從 {templateCount} 款範本中選擇，再設定字型、顏色和間距。文字內容保持不變，您可以隨意嘗試各種樣式。"
 
 #: src/features/ats-checker/messages.ts
 msgid "Pick one format and use it everywhere."
@@ -8748,10 +8499,6 @@ msgstr "規劃要問的問題"
 msgid "Planning your week"
 msgstr "正在規劃您的這一週"
 
-#: src/features/homepage/sections.tsx
-msgid "Play the list of languages"
-msgstr "播放語言列表"
-
 #: src/libs/locale.ts
 msgid "Polish"
 msgstr "波蘭語"
@@ -8769,15 +8516,11 @@ msgstr "直向"
 msgid "Portuguese (Brazil)"
 msgstr "葡萄牙語（巴西）"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Portuguese (native)"
-msgstr "葡萄牙語（母語）"
-
 #: src/libs/locale.ts
 msgid "Portuguese (Portugal)"
 msgstr "葡萄牙語（葡萄牙）"
 
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Position"
@@ -8789,7 +8532,6 @@ msgstr "職缺公告"
 
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
-#: src/features/homepage/tailor.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
 msgstr "職缺公告"
@@ -8812,7 +8554,6 @@ msgstr "履歷表中的職缺發布條款"
 
 #: src/features/career/workspace/practise.tsx
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice"
 msgstr "練習"
 
@@ -8827,35 +8568,33 @@ msgctxt "Button: rehearse interview answers"
 msgid "Practice"
 msgstr "練習"
 
-#: src/features/homepage/remember.tsx
-msgid "Practice · Your opening, about 40 seconds aloud"
-msgstr "練習 · 您的開場白，大聲說約 40 秒"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Practice another question"
 msgstr "練習另一個問題"
+
+#: src/features/homepage/features.tsx
+msgid "Practice answers from stories you wrote once, then debrief after each round."
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Practice for your {company} interviews."
 msgstr "為您在 {company} 的面試做練習。"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice priorities, not conclusions about why an employer decided anything."
 msgstr "這是練習重點，而非對雇主決策原因的結論。"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Practice priority:"
 msgstr "練習重點："
 
-#: src/features/homepage/prepare.tsx
-msgid "Practice questions are simulated, not from Fieldnote."
-msgstr "練習問題為模擬產生，並非來自 Fieldnote。"
+#: src/features/homepage/features.tsx
+msgid "Practice question"
+msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "Practice your introduction once. Keep it to about 90 seconds."
-msgstr "練習一次自我介紹，控制在 90 秒左右。"
+#: src/features/homepage/testimonials.tsx
+msgid "Practicing answers from my own stories made the second interview feel like a conversation."
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Practicing your story: {storyTitle}"
@@ -8881,9 +8620,7 @@ msgstr "偏好"
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/prepare.tsx
+#: src/features/homepage/features.tsx
 msgid "Prepare"
 msgstr "準備"
 
@@ -8894,6 +8631,10 @@ msgstr "準備簡報"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Prepare a resume"
 msgstr "準備一份履歷"
+
+#: src/features/homepage/introduction.tsx
+msgid "Prepare for interviews from stories you wrote once"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "Prepare me for the interview"
@@ -8970,6 +8711,15 @@ msgstr "上個月"
 msgid "Previous week"
 msgstr ""
 
+#: src/features/homepage/pricing.tsx
+msgid "Prices in Indonesian Rupiah. Access starts once payment is confirmed and lasts 30 days. When it ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgstr ""
+
+#: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
+msgid "Pricing"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
 msgid "Primary color"
 msgstr "主要顏色"
@@ -8994,10 +8744,6 @@ msgstr "隱私"
 msgid "Privacy policy"
 msgstr "隱私權政策"
 
-#: src/features/homepage/share.tsx
-msgid "Private"
-msgstr "私密"
-
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Private. Only you can see it."
 msgstr "私人的。只有你能看到它。"
@@ -9006,23 +8752,25 @@ msgstr "私人的。只有你能看到它。"
 msgid "Product"
 msgstr "產品"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
+#: src/features/homepage/testimonials.tsx
 msgid "Product Designer"
 msgstr "產品設計師"
 
-#: src/features/homepage/sheet.tsx
-msgid "Product designer with nine years of experience building <0>design systems</0> and research-led products for B2B teams."
-msgstr "產品設計師，擁有九年為 B2B 團隊打造研究導向產品和<0>設計系統</0>的經驗。"
+#: src/features/homepage/resume.tsx
+msgid "Product Designer · Jakarta"
+msgstr ""
+
+#: src/features/homepage/resume.tsx
+msgid "Product designer with seven years of experience turning complex flows into simple, measurable products."
+msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Proficiency"
 msgstr "熟練度"
 
 #: src/features/command-palette/pages/navigation.tsx
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
 #: src/features/settings/account/profile.tsx
 msgid "Profile"
 msgstr "個人設置"
@@ -9052,10 +8800,6 @@ msgstr "進度條"
 msgid "Projects"
 msgstr "專案"
 
-#: src/features/homepage/hero.tsx
-msgid "Promoted to lead, 2021"
-msgstr "2021 年晉升領導"
-
 #: src/features/career/workspace/messages.tsx
 msgid "Proposed changes"
 msgstr "建議的變更"
@@ -9068,9 +8812,8 @@ msgstr "提議的編輯"
 msgid "Protect your resume with a password"
 msgstr "用密碼保護您的履歷"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Prototyping"
 msgstr "原型製作"
 
@@ -9086,7 +8829,6 @@ msgstr "服務提供者"
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
-#: src/features/homepage/share.tsx
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "Public"
@@ -9148,10 +8890,6 @@ msgstr "紫色"
 msgid "Put a plain email address near the top of the first page. It is what most systems file you under."
 msgstr "在第一頁頂部附近放一個純文字的電子郵件地址。大多數系統正是用它來歸檔您的資料。"
 
-#: src/features/homepage/sections.tsx
-msgid "Put it all on <0>one page.</0>"
-msgstr "把所有內容放在<0>一頁紙上。</0>"
-
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Put the caret in a line to improve it"
 msgstr "將插入符排成一行以改進它"
@@ -9177,10 +8915,6 @@ msgstr ""
 msgid "Question {position} of {total}"
 msgstr "第 {position} 題，共 {total} 題"
 
-#: src/features/homepage/prepare.tsx
-msgid "Question 1 of 4 · Practice"
-msgstr "第 1 題，共 4 題 · 練習"
-
 #: src/features/career/workspace/apply.tsx
 msgid "Question from the form"
 msgstr "表單中的問題"
@@ -9193,26 +8927,21 @@ msgstr "問題選項"
 msgid "Question removed"
 msgstr "已移除問題"
 
-#: src/features/homepage/faq.tsx
-msgid "Questions"
-msgstr "問題"
-
 #: src/features/career/offers.tsx
 msgid "Questions copied"
 msgstr "已複製問題"
 
 #: src/features/career/workspace/prepare.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Questions to ask"
 msgstr "要提出的問題"
-
-#: src/features/homepage/remember.tsx
-msgid "R"
-msgstr "R"
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Raise the design sheet"
 msgstr "升起設計單"
+
+#: src/features/homepage/hero.tsx
+msgid "Rated 5 out of 5"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Re-export from a single-column layout, then copy the text out and check it reads top to bottom."
@@ -9238,10 +8967,6 @@ msgstr "重新匯出並嵌入字體，然後檢查文字複製出來是否乾淨
 msgid "Re-export with fonts embedded, then open the file and check that the text copies out cleanly."
 msgstr "重新匯出並嵌入字體，然後開啟檔案檢查文字複製出來是否乾淨無誤。"
 
-#: src/features/homepage/prepare.tsx
-msgid "Re: Senior Product Designer"
-msgstr "Re: 高級產品設計師"
-
 #: src/features/applications/components/insights-view.tsx
 msgid "Reached"
 msgstr ""
@@ -9265,7 +8990,6 @@ msgid "Read briefing"
 msgstr "閱讀簡報"
 
 #: src/features/career/workspace/messages.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Read it for me"
 msgstr "幫我讀一下"
 
@@ -9305,10 +9029,6 @@ msgstr "閱讀頁面"
 #: src/features/assistant/conversation.tsx
 msgid "Read the resume"
 msgstr "讀取簡歷"
-
-#: src/features/homepage/faq.tsx
-msgid "Read the self-hosting guide"
-msgstr "閱讀自架指南"
 
 #: src/features/auth/pages/consent.tsx
 msgid "Read your email address."
@@ -9428,6 +9148,10 @@ msgstr "回想"
 msgid "Recipient"
 msgstr "收件人"
 
+#: src/features/homepage/pricing.tsx
+msgid "Recommended"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "重新錄音"
@@ -9459,10 +9183,6 @@ msgstr "錄音時間"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Recruiter"
 msgstr "招募人員"
-
-#: src/features/homepage/remember.tsx
-msgid "Recruiter reply"
-msgstr "回覆招募人員"
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "Recruiters see this name. Your name plus “Cover Letter” works well."
@@ -9501,7 +9221,6 @@ msgid "Referred by…, things to emphasize, etc."
 msgstr "推薦人…、要強調的事項等"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Reflection"
 msgstr "反思"
 
@@ -9529,10 +9248,6 @@ msgstr "大聲演練"
 msgid "Rehearse one answer aloud"
 msgstr "大聲演練一個回答"
 
-#: src/features/homepage/prepare.tsx
-msgid "Rehearse one disagreement with engineering and how it ended."
-msgstr "大聲演練一次與工程團隊意見不合的經歷，以及最後的結果。"
-
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "Reject"
 msgstr "拒絕"
@@ -9550,9 +9265,6 @@ msgid "Reload"
 msgstr "重新載入"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/remember.tsx
 msgid "Remember"
 msgstr "記住"
 
@@ -9742,7 +9454,6 @@ msgid "Replaces “{current}” on the application."
 msgstr "取代應徵紀錄中的「{current}」。"
 
 #: src/features/career/workspace/saved.tsx
-#: src/features/homepage/remember.tsx
 msgid "Reply"
 msgstr "回覆"
 
@@ -9750,7 +9461,6 @@ msgstr "回覆"
 msgid "Reply copied"
 msgstr "已複製回覆"
 
-#: src/features/homepage/footer.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Report a bug"
 msgstr "回報問題"
@@ -9793,17 +9503,9 @@ msgstr "重設您的密碼"
 msgid "Resetting your password..."
 msgstr "正在重設您的密碼…"
 
-#: src/features/homepage/footer.tsx
-msgid "Resources"
-msgstr "資源"
-
 #: src/features/career/offers.tsx
 msgid "Respond by"
 msgstr "答覆期限"
-
-#: src/features/homepage/write.tsx
-msgid "Responsible for the design system and helping other teams with their designs."
-msgstr "負責設計系統並幫助其他團隊進行設計。"
 
 #: src/features/documents/document-actions.tsx
 msgid "Restore"
@@ -9832,13 +9534,8 @@ msgid "Restored the version from {0}. Your previous state is saved as “Before 
 msgstr "恢復了{0}的版本。您之前的狀態儲存為「恢復之前」。"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Result"
 msgstr "結果"
-
-#: src/features/homepage/remember.tsx
-msgid "Result left out: no fact backs it. Switch it on, or add one, and it comes back."
-msgstr "已省略結果：沒有事實佐證。開啟或新增一個事實，它就會回來。"
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "resume"
@@ -9869,14 +9566,9 @@ msgstr "履歷（可選）"
 msgid "Resume + letter"
 msgstr "履歷+信件"
 
-#: src/features/homepage/tailor.tsx
-msgid "Resume attached"
-msgstr "已附上履歷"
-
-#. Hero headline, line 2 of 4: A free, open-source / resume builder / and / career manager. Lines 2 and 4 are highlighted: keep each a complete phrase.
-#: src/features/homepage/hero.tsx
-msgid "resume builder"
-msgstr "履歷製作"
+#: src/libs/seo.ts
+msgid "Resume builder with ATS check and AI tailoring"
+msgstr ""
 
 #: src/features/resume/preview/preview.browser.tsx
 msgid "Resume content"
@@ -9913,7 +9605,7 @@ msgstr "履歷"
 msgid "Resumes always render on white paper, whatever the theme."
 msgstr "無論主題是什麼，履歷總是呈現在白紙上。"
 
-#: src/features/homepage/sections.tsx
+#: src/features/homepage/testimonials.tsx
 msgid "Resumes created"
 msgstr "創建的簡歷"
 
@@ -10016,6 +9708,15 @@ msgstr "Rezumi - 前往首頁"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#: src/features/homepage/introduction.tsx
+msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+msgstr ""
+
+#: src/features/homepage/header.tsx
+#: src/features/homepage/section-nav.tsx
+msgid "Rezumi, back to top"
+msgstr ""
+
 #: src/features/resume/editor/design/template-group.tsx
 msgid "Right"
 msgstr "正確的"
@@ -10097,10 +9798,6 @@ msgstr ""
 msgid "Run again"
 msgstr "重新執行"
 
-#: src/features/homepage/prepare.tsx
-msgid "Run research with customers"
-msgstr "與客戶進行研究"
-
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Runs onto page {next}"
 msgstr "運行到頁面 {next}"
@@ -10108,10 +9805,6 @@ msgstr "運行到頁面 {next}"
 #: src/libs/locale.ts
 msgid "Russian"
 msgstr "俄文"
-
-#: src/features/homepage/remember.tsx
-msgid "S"
-msgstr "S"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -10127,17 +9820,9 @@ msgstr "未列出薪資"
 msgid "Salary range"
 msgstr "薪資範圍"
 
-#: src/features/homepage/prepare.tsx
-msgid "Sam"
-msgstr "Sam"
-
-#: src/features/homepage/prepare.tsx
-msgid "Sam, Fieldnote"
-msgstr "Sam，Fieldnote"
-
-#: src/features/homepage/remember.tsx
-msgid "Same you. Less starting over."
-msgstr "還是您，少一點從頭來過。"
+#: src/features/homepage/testimonials.tsx
+msgid "Sales Executive"
+msgstr ""
 
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
@@ -10256,22 +9941,16 @@ msgstr "已儲存"
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/stages.ts
 #: src/features/career/knowledge/preferences.tsx
-#: src/features/homepage/sections.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Saved"
 msgstr "已儲存"
 
 #: src/features/career/shared.tsx
-#: src/features/homepage/prepare.tsx
 msgctxt "Application workspace tab: earlier results kept for this job"
 msgid "Saved"
 msgstr "已儲存"
-
-#: src/features/homepage/write.tsx
-msgid "Saved · version {version}"
-msgstr "已儲存·版本 {version}"
 
 #: src/features/resume/share/history-tab.tsx
 msgid "Saved “{trimmed}”"
@@ -10343,10 +10022,6 @@ msgstr "儲存時間比預期更久。您的變更仍然保留。"
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Saving…"
 msgstr "正在儲存…"
-
-#: src/features/homepage/prepare.tsx
-msgid "Say it aloud"
-msgstr "大聲說出來"
 
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Scan the QR code with your authenticator app, or copy the secret and paste it into the app."
@@ -10526,6 +10201,7 @@ msgid "Section headings"
 msgstr "章節標題"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/homepage/section-nav.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
@@ -10538,6 +10214,18 @@ msgstr "各區塊使用系統能辨識的標題，且工作經歷已顯示。"
 #: src/features/career/workspace/prepare.tsx
 msgid "See below"
 msgstr "請見下方"
+
+#: src/features/homepage/introduction.tsx
+msgid "See exactly what applicant tracking systems read"
+msgstr ""
+
+#: src/features/homepage/hero.tsx
+msgid "See pricing"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "See what ATS software reads"
+msgstr ""
 
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-actions.tsx
@@ -10577,10 +10265,6 @@ msgstr "所選文件"
 msgid "Selection"
 msgstr ""
 
-#: src/features/homepage/footer.tsx
-msgid "Self-hosting"
-msgstr "自託管"
-
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
 msgstr "語意化 CSS 樣式表"
@@ -10589,6 +10273,10 @@ msgstr "語意化 CSS 樣式表"
 #: src/features/assistant/prompt-box.tsx
 msgid "Send"
 msgstr "傳送"
+
+#: src/features/homepage/features.tsx
+msgid "Send a link, not an attachment"
+msgstr ""
 
 #. Primary action button label on forgot-password form
 #: src/features/auth/pages/forgot-password.tsx
@@ -10607,6 +10295,10 @@ msgstr ""
 msgid "Sender details copied into the letter"
 msgstr "寄件者詳細資料複製到信件中"
 
+#: src/features/homepage/testimonials.tsx
+msgid "Sending a link instead of a PDF means recruiters always see the latest version."
+msgstr ""
+
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Sending password reset email..."
 msgstr "正在傳送重設密碼電子郵件…"
@@ -10624,10 +10316,6 @@ msgstr "將這筆應徵的職缺公告、備註和文件，以及已開啟的知
 msgid "Sends this application's posting, notes and documents, plus Knowledge that's switched on, to this connection. Your provider may charge for it."
 msgstr "將這筆應徵的職缺公告、備註和文件，以及已開啟的知識庫內容傳送到此連線。您的提供者可能會收費。"
 
-#: src/features/homepage/remember.tsx
-msgid "Sends this story and the facts switched on to your AI connection. Without one, nothing is sent."
-msgstr "將此故事和已開啟的事實傳送到您的 AI 連線。沒有連線時不會傳送任何內容。"
-
 #: src/features/career/workspace/coach-sheet.tsx
 msgid "Sends your message, this application (posting, notes, documents sent) and Knowledge that's switched on to {connection}."
 msgstr "將您的訊息、這筆應徵（職缺公告、備註、已寄出的文件）和已開啟的知識庫內容傳送給 {connection}。"
@@ -10638,9 +10326,8 @@ msgstr "將您的訊息、這筆應徵（職缺公告、備註、已寄出的文
 msgid "Sends your resume's text only to {0} · {1}, with your key."
 msgstr "使用您的金鑰將您的履歷文字僅發送至 {0} · {1}。"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
+#: src/features/homepage/resume.tsx
 msgid "Senior Product Designer"
 msgstr "高級產品設計師"
 
@@ -10713,9 +10400,7 @@ msgstr "陰影顏色"
 msgid "Shadow width"
 msgstr "陰影寬度"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/share.tsx
+#: src/features/homepage/features.tsx
 #: src/features/resume/share/web-page-text.ts
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -10723,9 +10408,9 @@ msgstr "陰影寬度"
 msgid "Share"
 msgstr "分享"
 
-#: src/features/homepage/share.tsx
-msgid "Share a public link, add a password or keep it private. Choose from 3 visibility options. Export to PDF or Word, or take all your data with you as JSON."
-msgstr "分享公開連結、設定密碼或保持私密。從 3 種可見性選項中選擇。匯出為 PDF 或 Word，或以 JSON 格式帶走全部資料。"
+#: src/features/homepage/introduction.tsx
+msgid "Share a live link that is always the latest version"
+msgstr ""
 
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
@@ -10734,6 +10419,10 @@ msgstr "分享部分"
 #: src/features/resume/share/address-field.tsx
 msgid "Share via…"
 msgstr "分享透過..."
+
+#: src/features/homepage/resume.tsx
+msgid "Shared at your link"
+msgstr ""
 
 #: src/features/documents/documents-page.tsx
 #: src/libs/resume/section.tsx
@@ -10745,17 +10434,9 @@ msgstr "分享"
 msgid "Sharpening the opening"
 msgstr "正在打磨開場白"
 
-#: src/features/homepage/sheet.tsx
-msgid "Shipped <0>accessible</0> checkout flows for web and iOS, meeting WCAG 2.1 AA."
-msgstr "推出符合 WCAG 2.1 AA 標準的 Web 和 iOS <0>無障礙</0>結帳流程。"
-
-#: src/features/homepage/prepare.tsx
-msgid "Shipped checkout flows that meet WCAG 2.1 AA."
-msgstr "推出符合 WCAG 2.1 AA 標準的結帳流程。"
-
-#: src/features/homepage/hero.tsx
-msgid "Shipped checkout for iOS"
-msgstr "iOS 已出貨結帳"
+#: src/features/homepage/resume.tsx
+msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Short and direct. Fine if the posting asks for brevity."
@@ -10881,7 +10562,6 @@ msgid "Shows the tags they all share. Tags you add go on every document; tags yo
 msgstr "顯示所有文件共有的標籤。您新增的標籤會套用到每份文件；您移除的標籤會從每份文件中移除。鎖定的文件維持不變。"
 
 #. Layout editor column label for the secondary sidebar area
-#: src/features/homepage/sheet.tsx
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/resume/editor/write/outline.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -11000,7 +10680,6 @@ msgid "Single-column; polished and serious for senior or enterprise-level positi
 msgstr "單欄版面，風格精緻嚴謹，適合資深或企業級職位。"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Situation"
 msgstr "情境"
 
@@ -11012,10 +10691,6 @@ msgstr "情境、行動、結果"
 msgid "Situation, Task, Action, Result, Reflection. Link each story to facts you can support; leave unknown outcomes blank."
 msgstr "情境、任務、行動、結果、反思。將每個故事連結到您能佐證的事實；未知的結果請留空。"
 
-#: src/features/homepage/hero.tsx
-msgid "Six product teams"
-msgstr "六大產品團隊"
-
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Size"
 msgstr "尺寸"
@@ -11024,8 +10699,7 @@ msgstr "尺寸"
 msgid "Skill"
 msgstr "技能"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 #: src/libs/resume/section.tsx
 msgid "Skills"
 msgstr "技能"
@@ -11072,10 +10746,6 @@ msgstr "數字雖小，但值得注意。"
 msgid "Small steps, every day, add up."
 msgstr ""
 
-#: src/features/homepage/remember.tsx
-msgid "So I talked to 14 customers, found the three places people dropped off, and we prototyped a shorter setup."
-msgstr "於是我和 14 位客戶聊了聊，找到使用者流失的三個環節，我們做出了更短設定流程的原型。"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "Some application systems ask for one before you can apply."
 msgstr "有些職缺應徵系統會要求先填寫電話號碼才能申請。"
@@ -11120,6 +10790,10 @@ msgstr "有些文字落在頁面之外。"
 msgid "Some text is rotated."
 msgstr "有些文字被旋轉了。"
 
+#: src/features/homepage/faq.tsx
+msgid "Something else on your mind? Write to us at"
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "發生錯誤。請再試一次。"
@@ -11144,10 +10818,6 @@ msgstr ""
 msgid "Source"
 msgstr "來源"
 
-#: src/features/homepage/footer.tsx
-msgid "Source code"
-msgstr "原始碼"
-
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
 #: src/features/career/coach.tsx
@@ -11158,22 +10828,9 @@ msgstr "來源"
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
-msgid "Spanish (B2)"
-msgstr "西班牙語（B2）"
-
-#: src/features/homepage/hero.tsx
-msgid "Spanish, B2"
-msgstr "西班牙語，B2"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Speak"
 msgstr "語音"
-
-#: src/features/homepage/sections.tsx
-msgid "Speaks your language"
-msgstr "說您的語言"
 
 #: src/features/ats-checker/messages.ts
 msgid "Spell the month, as in \"Mar 2022\"."
@@ -11226,21 +10883,13 @@ msgstr "階段維持為「{stage}」"
 msgid "Stages"
 msgstr "階段"
 
-#: src/features/homepage/check.tsx
+#: src/features/homepage/features.tsx
+msgid "Stakeholders"
+msgstr ""
+
+#: src/features/homepage/features.tsx
 msgid "Standard section headings"
 msgstr "標準章節標題"
-
-#: src/features/homepage/header.tsx
-msgid "Star Rezumi on GitHub"
-msgstr "GitHub 上的明星 Rezumi"
-
-#: src/components/input/github-stars-button.tsx
-msgid "Star us on GitHub (opens in new tab)"
-msgstr "在 GitHub 上為我們加星（在新分頁中開啟）"
-
-#: src/features/homepage/sections.tsx
-msgid "Stars on GitHub"
-msgstr "GitHub 星星"
 
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "Start"
@@ -11263,6 +10912,14 @@ msgstr "開始日期必須早於或等於結束日期。"
 msgid "Start each one with a concrete verb: built, led, reduced, migrated."
 msgstr "每一條都以具體的動詞開頭：建置、領導、降低、遷移。"
 
+#: src/features/homepage/plans.ts
+msgid "Start free"
+msgstr ""
+
+#: src/features/homepage/pricing.tsx
+msgid "Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Start from"
 msgstr "開始於"
@@ -11271,9 +10928,9 @@ msgstr "開始於"
 msgid "Start from one you have and link the application."
 msgstr "從您擁有的一份工作申請開始並連結該工作申請。"
 
-#: src/features/homepage/sections.tsx
-msgid "Start from scratch or import what you have. It takes a few minutes, and you can come back to it anytime."
-msgstr "從頭開始，或匯入現有內容。只需幾分鐘，隨時都能回來繼續。"
+#: src/features/homepage/closing.tsx
+msgid "Start from scratch or import the one you have. The free plan is yours for as long as you need it."
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Start on a new page"
@@ -11303,6 +10960,10 @@ msgstr "開始打字，或根據我們所知道的內容起草：您的履歷。
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Start typing. To draft one, link a resume or an application first."
 msgstr "開始打字。要起草一份，請先連結簡歷或工作申請。"
+
+#: src/features/homepage/introduction.tsx
+msgid "Start with the free plan"
+msgstr ""
 
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Start with the sections most resumes have."
@@ -11338,7 +10999,6 @@ msgid "Stay here"
 msgstr "留在這裡"
 
 #: src/features/assistant/prompt-box.tsx
-#: src/features/homepage/prepare.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Stop"
 msgstr "停止"
@@ -11387,13 +11047,8 @@ msgid "Stories to bring"
 msgstr "要準備的故事"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/header.tsx
 msgid "Story"
 msgstr "故事"
-
-#: src/features/homepage/remember.tsx
-msgid "Story · 5 of 5 parts"
-msgstr "故事 · 5/5 部分"
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Story deleted"
@@ -11418,10 +11073,6 @@ msgstr "更強的動詞"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "樣式表編輯器"
-
-#: src/features/homepage/prepare.tsx
-msgid "Subject"
-msgstr "主旨"
 
 #: src/features/career/workspace/apply.tsx
 msgid "Submit through the employer's application page yourself."
@@ -11465,6 +11116,7 @@ msgstr "建議剪切，切勿自行刪除"
 msgid "Summaries of your open applications"
 msgstr "您進行中應徵的摘要"
 
+#: src/features/homepage/resume.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -11472,7 +11124,6 @@ msgstr "摘要"
 
 #: src/features/career/shared.tsx
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Supported"
 msgstr "有證據"
 
@@ -11500,27 +11151,17 @@ msgstr "交換開始日期和結束日期。 」"
 msgid "Swedish"
 msgstr "瑞典語"
 
-#: src/features/homepage/remember.tsx
-msgid "Switch it off"
-msgstr "關閉它"
-
 #: src/features/assistant/conversation.tsx
 msgid "Switch model"
 msgstr "開關型號"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-msgid "Switch to dark mode"
-msgstr "切換到深色模式"
+#: src/features/homepage/features.tsx
+msgid "Switch templates without rewriting"
+msgstr ""
 
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to dark theme"
 msgstr "切換至深色主題"
-
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-msgid "Switch to light mode"
-msgstr "切換到燈光模式"
 
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to light theme"
@@ -11549,10 +11190,6 @@ msgstr "系統會根據頁面頂部的姓名對您進行歸檔。"
 #: src/features/resume/editor/check/issues.ts
 msgid "Systems look for an experience section. Projects or volunteering can show the same history."
 msgstr "系統尋找體驗部分。專案或志願服務可以展示同樣的歷史。"
-
-#: src/features/homepage/remember.tsx
-msgid "T"
-msgstr "T"
 
 #: src/features/applications/components/list-view.tsx
 msgid "Tag"
@@ -11588,15 +11225,30 @@ msgstr "標籤，以逗號分隔"
 msgid "Tags…"
 msgstr "標籤..."
 
-#: src/features/homepage/header.tsx
-#: src/features/homepage/tailor.tsx
+#: src/features/homepage/features.tsx
 msgid "Tailor"
 msgstr "適應職位描述"
+
+#: src/features/homepage/plans.ts
+msgid "Tailor applications and prepare for interviews with AI."
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Tailor my resume to the Northwind posting."
+msgstr ""
 
 #. placeholder {0}: document.posting.company
 #: src/features/assistant/assistant-panel.tsx
 msgid "Tailor to the {0} posting"
 msgstr "適應{0}職缺發布"
+
+#: src/features/homepage/plans.ts
+msgid "Tailor your resume to each posting"
+msgstr ""
+
+#: src/features/homepage/resume.tsx
+msgid "Tailored to the posting"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Tailored vs. base resume"
@@ -11611,7 +11263,6 @@ msgid "Target roles"
 msgstr "目標職位"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/homepage/remember.tsx
 msgid "Task"
 msgstr "任務"
 
@@ -11632,13 +11283,13 @@ msgstr "請談談一項讓您自豪的工作。"
 msgid "Tell me about a piece of work you're proud of. What was your part in it, and how did you measure success?"
 msgstr "請談談一項讓您自豪的工作。您在其中扮演什麼角色？您如何衡量成功？"
 
-#: src/features/homepage/prepare.tsx
-msgid "Tell me about a product improvement you led. What was your contribution, and how did you measure success?"
-msgstr "請談談一項由您主導的產品改善。您的貢獻是什麼？您如何衡量成功？"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Tell me about a time you disagreed with a colleague. How did you resolve it?"
 msgstr "請談談您與同事意見不合的一次經驗。您是如何解決的？"
+
+#: src/features/homepage/features.tsx
+msgid "Tell me about a time you led a redesign."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Telugu"
@@ -11660,8 +11311,8 @@ msgstr "範本更改為{0}"
 msgid "Template, type and colors follow the resume, so the pair always matches."
 msgstr "模板、類型和顏色遵循簡歷，因此兩者始終匹配。"
 
-#: src/features/homepage/design.tsx
 #: src/features/homepage/footer.tsx
+#: src/features/homepage/ui.tsx
 msgid "Templates"
 msgstr "範本"
 
@@ -11684,6 +11335,10 @@ msgstr "測試搜尋功能"
 #: src/features/settings/ai/web-access.tsx
 msgid "Tested with {connectedProvider}. Only this service was tested."
 msgstr "使用 {connectedProvider} 進行測試。僅測試了此服務。"
+
+#: src/features/homepage/ui.tsx
+msgid "Testimonials"
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Testing search and reading with {connectedProvider}…"
@@ -11723,9 +11378,9 @@ msgstr "字型色彩"
 msgid "Text comes out in the order a person reads it, at a size and spacing that survive."
 msgstr "文字按照人們閱讀的順序顯示，其大小和間距也能保留下來。"
 
-#: src/features/homepage/check.tsx
-msgid "Text is selectable"
-msgstr "文字可選擇"
+#: src/features/homepage/features.tsx
+msgid "Text in reading order"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Text is written one character at a time."
@@ -11767,10 +11422,6 @@ msgstr "當系統重新渲染時，{minimum} pt 下的文字可能會被誤讀�
 msgid "Thai"
 msgstr "泰文"
 
-#: src/features/homepage/remember.tsx
-msgid "Thanks, Sam. Here’s one: at Northwind Labs I led the onboarding redesign, from 14 customer interviews to a shorter setup."
-msgstr "謝謝 Sam。舉個例子：在 Northwind Labs，我主導了新手引導改版，從 14 次客戶訪談到更短的設定流程。"
-
 #: src/features/ats-checker/checker.tsx
 msgid "That file couldn't be read as a PDF. Choose a PDF file and try again."
 msgstr "無法將該檔案讀取為 PDF。請選擇 PDF 檔案後再試一次。"
@@ -11811,17 +11462,9 @@ msgstr "該登入提供者在此伺服器上已無法使用。請使用其他登
 msgid "The {label} file couldn't be generated. Try again, or download PDF instead."
 msgstr "無法產生 {label} 檔案。再試一次，或下載 PDF。"
 
-#: src/features/homepage/prepare.tsx
-msgid "The 13-point activation lift. Knowledge has the before and after."
-msgstr "啟用率提升了 13 個百分點。知識庫裡有前後數據。"
-
 #: src/libs/error-message.ts
 msgid "The address must contain only lowercase letters and numbers, separated by single dashes."
 msgstr "網址只能包含小寫字母和數字，並以單連字號分隔。"
-
-#: src/features/homepage/faq.tsx
-msgid "The app is translated into {languages} languages by volunteers, and a resume can be written in any language, including right-to-left scripts like Arabic and Hebrew."
-msgstr "該應用程式由志願者翻譯成 {languages} 語言，簡歷可以用任何語言編寫，包括從右到左的腳本，如阿拉伯語和希伯來語。"
 
 #: src/features/auth/pages/error.tsx
 msgid "The application that sent you here made an invalid authorization request. Return to the application and try again."
@@ -11842,6 +11485,10 @@ msgstr "助手使用您自己的密鑰。在您連接之前，不會向任何地
 #: src/features/settings/ai/web-access.tsx
 msgid "The built-in reader remains active."
 msgstr "內建閱讀器保持活動狀態。"
+
+#: src/features/homepage/features.tsx
+msgid "The checker shows the text a parser extracts and what to fix first."
+msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -11874,6 +11521,10 @@ msgstr "該副本連結到職位申請，因此 Check 和助理可以使用其�
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "結束在開始之前。"
+
+#: src/features/homepage/testimonials.tsx
+msgid "The English and Indonesian versions share one design, so switching languages took minutes, not an afternoon."
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF"
@@ -12012,6 +11663,10 @@ msgstr "履歷"
 msgid "The resume as it is"
 msgstr "履歷原樣"
 
+#: src/features/homepage/footer.tsx
+msgid "The resume builder that stays with you until the offer."
+msgstr ""
+
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The review couldn't finish. Try again."
 msgstr "審核無法完成。再試一次。"
@@ -12111,10 +11766,6 @@ msgstr "他們和他們的時間線將永久刪除。這無法撤消。"
 #: src/features/resume/editor/check/issues.ts
 msgid "They look for headings such as Experience, Education and Skills."
 msgstr "他們尋找諸如經驗、教育和技能等標題。"
-
-#: src/features/homepage/prepare.tsx
-msgid "They’ve confirmed your interview for today"
-msgstr "對方已確認您今天的面試"
 
 #: src/features/career/shared.tsx
 msgid "Thinking"
@@ -12453,6 +12104,10 @@ msgstr ""
 msgid "Totals aren't added up on purpose."
 msgstr ""
 
+#: src/features/homepage/features.tsx
+msgid "Track"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Track a job you're applying to and link the resume you sent."
 msgstr "追蹤你正在應徵的職缺並連結已送出的履歷。"
@@ -12484,10 +12139,6 @@ msgstr "複製成績單"
 #: src/routes/dashboard/settings/route.tsx
 msgid "Translate"
 msgstr "翻譯"
-
-#: src/features/homepage/sections.tsx
-msgid "Translated into {languageCount} languages."
-msgstr "已翻譯成 {languageCount} 種語言。"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -12585,6 +12236,10 @@ msgstr "開啟兩步驟驗證"
 msgid "Turn this schedule on"
 msgstr "開啟此排程"
 
+#: src/features/homepage/hero.tsx
+msgid "Turn your experience into a resume that gets interviews."
+msgstr ""
+
 #: src/dialogs/auth/disable-two-factor.tsx
 msgid "Turning off two-step verification…"
 msgstr "正在關閉兩步驟驗證…"
@@ -12592,6 +12247,10 @@ msgstr "正在關閉兩步驟驗證…"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Turning on two-step verification…"
 msgstr "正在開啟兩步驟驗證…"
+
+#: src/features/homepage/features.tsx
+msgid "Two bullets run over two lines"
+msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
@@ -12601,10 +12260,6 @@ msgstr "兩列"
 #: src/dialogs/resume/template/data.ts
 msgid "Two columns beneath a colored header band. Keep experience in the main column and supporting details in the sidebar."
 msgstr "彩色頁首下方採用雙欄版面。將工作經歷放在主欄，補充資訊放在側欄。"
-
-#: src/features/homepage/check.tsx
-msgid "Two date formats found"
-msgstr "找到兩種日期格式"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Two stories"
@@ -12675,6 +12330,10 @@ msgstr "輸入 <0>{CONFIRMATION}</0> 進行確認"
 msgid "Type a command or search…"
 msgstr "輸入指令或搜尋…"
 
+#: src/features/homepage/features.tsx
+msgid "Type in the form and watch the page update. Undo anything, and pick up on any device."
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Type instead"
 msgstr "改用輸入"
@@ -12708,7 +12367,6 @@ msgstr "底線連結"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
-#: src/features/homepage/write.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
@@ -12726,12 +12384,6 @@ msgstr "撤銷"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Undo resume change"
 msgstr "撤銷履歷更改"
-
-#: src/features/homepage/check.tsx
-#: src/features/homepage/hero.tsx
-#: src/features/homepage/sheet.tsx
-msgid "University of Porto"
-msgstr "University of Porto"
 
 #: src/features/career/offers.tsx
 msgid "Unknown"
@@ -12985,7 +12637,6 @@ msgid "used {used}"
 msgstr "使用了 {used}"
 
 #: src/features/career/knowledge/facts.tsx
-#: src/features/homepage/remember.tsx
 msgid "Used in coaching"
 msgstr "用於輔導"
 
@@ -12997,8 +12648,7 @@ msgstr "用於評估職缺和錄取通知。每項都是數字，教練可以直
 msgid "Used when {connectedProvider} can't read a page. No account needed."
 msgstr "當{connectedProvider}無法讀取頁面時使用。無需帳戶。"
 
-#: src/features/homepage/check.tsx
-#: src/features/homepage/sheet.tsx
+#: src/features/homepage/resume.tsx
 msgid "User research"
 msgstr "使用者研究"
 
@@ -13030,9 +12680,9 @@ msgstr "使用您的 {0} 範本和設計，並適應任何螢幕。可在「設�
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "在支援的情況下使用人工智慧提供者自己的網路搜索，並使用內建閱讀器讀取連結。"
 
-#: src/features/homepage/prepare.tsx
-msgid "Uses your browser’s voice"
-msgstr "使用瀏覽器語音"
+#: src/features/homepage/features.tsx
+msgid "UX Designer"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Uzbek"
@@ -13156,13 +12806,13 @@ msgstr "查看職缺發布"
 msgid "Viewing {0} · {1} · read-only"
 msgstr "看 {0} · {1} · 只讀"
 
+#: src/features/homepage/features.tsx
+msgid "Views"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "觀看次數 · 30 天"
-
-#: src/features/homepage/share.tsx
-msgid "Visibility"
-msgstr "能見度"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -13192,13 +12842,13 @@ msgstr "等待您處理"
 msgid "Waiting to hear back"
 msgstr "等待回音"
 
+#: src/features/homepage/features.tsx
+msgid "Walk in ready"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Warning"
 msgstr "警告”"
-
-#: src/features/homepage/hero.tsx
-msgid "WCAG 2.1 AA"
-msgstr "WCAG 2.1 AA"
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "We read the page and save the posting for Check, the assistant and your letter."
@@ -13268,7 +12918,6 @@ msgid "Weighing each requirement"
 msgstr "正在權衡每項條件"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Went well"
 msgstr "順利"
 
@@ -13289,7 +12938,6 @@ msgid "What changed? Leave blank if you can’t support it."
 msgstr "有什麼改變？如果無法佐證，請留空。"
 
 #: src/features/career/workspace/debrief.tsx
-#: src/features/homepage/prepare.tsx
 msgid "What did they ask?"
 msgstr "他們問了什麼？"
 
@@ -13312,6 +12960,10 @@ msgstr "裡面有什麼？"
 #: src/features/career/coach.tsx
 msgid "What interview answers should I practice?"
 msgstr "我應該練習哪些面試回答？"
+
+#: src/features/homepage/faq.tsx
+msgid "What is an AI credit?"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "What is the base salary, and is it negotiable?"
@@ -13352,10 +13004,6 @@ msgstr "要執行的工作"
 #: src/features/assistant/assistant-panel.tsx
 msgid "What should we work on?"
 msgstr "我們該做什麼工作？"
-
-#: src/features/homepage/check.tsx
-msgid "What software reads"
-msgstr "用什麼軟體讀取"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "What success looks like, which challenge matters most, and the next step."
@@ -13459,10 +13107,6 @@ msgstr "履歷的分段方式是否符合軟體的預期。"
 msgid "Whether your timeline can be reconstructed."
 msgstr "您的時間軸是否能夠被還原出來。"
 
-#: src/features/homepage/faq.tsx
-msgid "Which languages does it speak?"
-msgstr "它說哪幾種語言？"
-
 #: src/features/career/coach.tsx
 msgid "Which opportunities best match my priorities?"
 msgstr "哪些機會最符合我的優先事項？"
@@ -13474,10 +13118,6 @@ msgstr "還有哪些其他福利，例如退休金或津貼？"
 #: src/features/homepage/faq.tsx
 msgid "Who can see my resume?"
 msgstr "誰可以看到我的履歷？"
-
-#: src/features/homepage/prepare.tsx
-msgid "Who owns the design system today? What does success look like in 90 days?"
-msgstr "目前誰負責設計系統？90 天內的成功是什麼樣子？"
 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/shell.tsx
@@ -13504,13 +13144,13 @@ msgstr "寬度"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "我的履歷會透過申請人追蹤系統嗎？"
 
-#: src/features/homepage/remember.tsx
-msgid "Within a quarter, activation went from 31% to 44%."
-msgstr "一季內，啟用率從 31% 提升到 44%。"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "如果沒有，您需要自己填寫收件人，並且在起草時僅使用您的履歷。"
+
+#: src/features/homepage/plans.ts
+msgid "Word and ODT downloads"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
@@ -13533,9 +13173,7 @@ msgstr "值得一問"
 msgid "Worth asking {0}"
 msgstr "值得問問 {0}"
 
-#: src/features/homepage/footer.tsx
-#: src/features/homepage/header.tsx
-#: src/features/homepage/write.tsx
+#: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13550,14 +13188,6 @@ msgstr "把您目前這份工作的結束日期寫成「現在」。"
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "Write a letter"
 msgstr "寫信"
-
-#: src/features/homepage/remember.tsx
-msgid "Write a story once, with the facts behind it, and the coach uses it in 3 places. Switch a fact off and nothing leans on it."
-msgstr "故事只需寫一次，附上背後的事實，教練就會在 3 個地方用到它。關閉某個事實，就不會再有內容依賴它。"
-
-#: src/features/homepage/write.tsx
-msgid "Write beside a live page. It saves as you type and keeps every version. Ask the assistant for a sharper line: it suggests, you decide."
-msgstr "在即時頁面旁撰寫。輸入時自動儲存，並保留每個版本。請助理給出更好的措辭：它提出建議，由您決定。"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."
@@ -13575,13 +13205,21 @@ msgstr "把它寫成一段連續不間斷的文字，不要使用特殊間距。
 msgid "Write it down while it's fresh"
 msgstr "趁記憶猶新，寫下來"
 
-#: src/features/homepage/prepare.tsx
-msgid "Write it down while it’s fresh"
-msgstr "趁記憶猶新，寫下來"
-
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Write it myself"
 msgstr "我自己寫的"
+
+#: src/features/homepage/hero.tsx
+msgid "Write it once, check what applicant tracking systems read, tailor it to every posting and follow each application to the offer."
+msgstr ""
+
+#: src/features/homepage/introduction.tsx
+msgid "Write it once, then tailor a version for every posting"
+msgstr ""
+
+#: src/features/homepage/features.tsx
+msgid "Write letters"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Write numbers as digits"
@@ -13603,10 +13241,6 @@ msgstr "寫下您做了什麼。"
 msgid "Write your answer, or draft one from your Knowledge."
 msgstr "寫下您的回答，或根據知識庫擬一份草稿。"
 
-#: src/features/homepage/write.tsx
-msgid "Write your professional resume"
-msgstr "撰寫您的專業履歷"
-
 #: src/features/ats-checker/messages.ts
 #: src/features/career/coach.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -13622,28 +13256,20 @@ msgstr "正在撰寫回答…"
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "寫作協助、量身建議和助理。未另外選擇提供者的地方都會使用預設提供者。您的金鑰會加密保存。"
 
-#: src/features/homepage/sections.tsx
-msgid "writing, tailoring and sending"
-msgstr "寫作、改編和發送"
-
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "書面錄取"
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Every feature is free: all {templates} templates, PDF and Word downloads, the ATS checker, cover letters and the job tracker. There are no ads, no tracking and no paid tier."
+msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Every job you track gets its own workspace: check your fit against the posting, draft answers from stories you wrote once, get a short plan before the interview, practice out loud with feedback and debrief afterwards. When offers arrive, compare them side by side. The coaching uses your own AI key; the comparison doesn’t need one."
-msgstr "可以。您追蹤的每個職缺都有自己的工作區：對照職缺公告檢查契合度，用寫過一次的故事擬定回答，在面試前取得簡短計畫，大聲練習並獲得回饋，事後進行回顧。收到錄取通知時，可以並排比較。輔導使用您自己的 AI 金鑰；比較功能則不需要。"
+msgid "Yes. Import a PDF, a LinkedIn data export or a JSON Resume file, then pick up where it left off."
+msgstr ""
 
 #: src/features/homepage/faq.tsx
-msgid "Yes. Import a PDF, a LinkedIn data export, a JSON Resume file or a Rezumi export, then pick up where it left off. With an AI provider set up, Word documents work too."
-msgstr "是的。匯入 PDF、LinkedIn 資料匯出、JSON Resume 檔案或 Rezumi 匯出，然後從中斷繼續。設定 AI 提供者後，Word 文件也可以運作。"
-
-#: src/features/homepage/faq.tsx
-msgid "Yes. Rezumi is open source under the MIT License and can run on your own Cloudflare account with your own database and storage."
+msgid "Yes. The free plan covers 3 active resumes and 3 cover letters, {freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up."
 msgstr ""
 
 #: src/features/career/coach-thread.tsx
@@ -13657,6 +13283,7 @@ msgstr "昨天 {time}"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach.tsx
+#: src/features/homepage/resume.tsx
 msgid "You"
 msgstr "你"
 
@@ -13701,9 +13328,9 @@ msgstr "您先前忘記過這項，所以沒有再次儲存。"
 msgid "You only need one yes."
 msgstr ""
 
-#: src/features/homepage/prepare.tsx
-msgid "You partnered with engineering. How you led the work isn’t described yet."
-msgstr "您與工程團隊合作。您如何主導這項工作尚未描述。"
+#: src/features/homepage/faq.tsx
+msgid "You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free: nothing is deleted, you choose which 3 resumes and 3 letters stay active, and the rest stay readable."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "You said: “{said}” Ask before deciding."
@@ -13728,10 +13355,6 @@ msgstr "您需要自行在雇主網站上送出。標記為已申請會保留您
 #: src/features/career/schedule-sheet.tsx
 msgid "You'll always see it in Today. Email depends on your server's mail setup."
 msgstr "您一定能在「今天」中看到它。電子郵件取決於伺服器的郵件設定。"
-
-#: src/features/homepage/tailor.tsx
-msgid "You’ll own our <0>design systems</0>, run <1>user research</1> with customers and hold a high bar for <2>accessibility</2>, working in a <3>cross-functional</3> team."
-msgstr "你將負責我們的<0>設計系統</0>，與客戶進行<1>使用者研究</1>，並在<3>跨職能</3>團隊中工作，維持<2>無障礙設計</2>的高標準。"
 
 #: src/features/career/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
@@ -13772,7 +13395,6 @@ msgid "Your answer"
 msgstr "您的回答"
 
 #: src/features/career/workspace/practise.tsx
-#: src/features/homepage/prepare.tsx
 msgid "Your attempts"
 msgstr "您的嘗試"
 
@@ -13921,13 +13543,13 @@ msgstr "你的名字不見了"
 msgid "Your next opportunity is already looking for you."
 msgstr ""
 
+#: src/features/homepage/closing.tsx
+msgid "Your next resume is a few minutes away."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "your notes"
 msgstr "您的筆記"
-
-#: src/features/homepage/prepare.tsx
-msgid "Your onboarding story"
-msgstr "您的新手引導故事"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening"
@@ -13982,10 +13604,6 @@ msgstr "已更新您的履歷。"
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "您的履歷使用了「我」和「我的」這類詞。"
 
-#: src/features/homepage/share.tsx
-msgid "Your resume, live at"
-msgstr "您的履歷，居住地址"
-
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
 msgstr "您選擇的字體無法顯示部分字元，它們會顯示為“?”。請在「設計」中選擇包含這些字元的字體。"
@@ -14019,10 +13637,6 @@ msgstr "無法載入您的故事。"
 msgid "Your story is worth telling well."
 msgstr ""
 
-#: src/features/homepage/sections.tsx
-msgid "Your turn"
-msgstr "輪到你了"
-
 #: src/features/career/workspace/prepare.tsx
 msgid "Your two-minute introduction"
 msgstr "兩分鐘自我介紹"
@@ -14031,18 +13645,13 @@ msgstr "兩分鐘自我介紹"
 msgid "Your web page is live"
 msgstr "您的網頁已上線"
 
+#: src/features/homepage/features.tsx
+msgid "Your words stay put while the layout, fonts and colors change around them."
+msgstr ""
+
 #: src/features/auth/components/guest-banner.tsx
 msgid "Your work is lost when you sign out or the session ends. Create an account or sign in to keep your resumes, cover letters and applications."
 msgstr "登出或工作階段結束後，你的內容將會遺失。建立帳戶或登入即可保留你的履歷、求職信和應徵紀錄。"
-
-#: src/features/homepage/sections.tsx
-msgid "Yours"
-msgstr "您的"
-
-#. placeholder {0}: templateNames[step] ?? ""
-#: src/features/homepage/design.tsx
-msgid "Yours · {0}"
-msgstr "您的履歷 · {0}"
 
 #: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx

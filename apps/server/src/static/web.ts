@@ -145,12 +145,11 @@ function htmlResponse(html: string, headers: Record<string, string>, template = 
 	});
 }
 
-const githubUrl = "https://github.com/alfariesh/rezumi";
 // The English copy, for a build without prerendered pages; a prerendered page carries its own locale's title and
 // description, and the social cards reuse them.
-const ROOT_TITLE = "Free resume builder with PDF &amp; Word downloads | Rezumi";
+const ROOT_TITLE = "Resume builder with ATS check and AI tailoring | Rezumi";
 const ROOT_DESCRIPTION =
-	"Free, open-source resume builder. Create, update, and share your resume, with PDF and Word downloads, no ads and no paywall.";
+	"Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI.";
 const ATS_CHECKER_TITLE = "Free ATS resume checker | Rezumi";
 const ATS_CHECKER_DESCRIPTION =
 	"Check whether software can read your resume PDF. Runs entirely in your browser, so your file is never uploaded.";
@@ -169,7 +168,6 @@ function organization(origin: string): StructuredData {
 		url: `${origin}/`,
 		contactPoint: { "@type": "ContactPoint", contactType: "support", email: "hi@rezumi.app" },
 		logo: { "@type": "ImageObject", url: `${origin}/pwa-512x512.png`, width: 512, height: 512 },
-		sameAs: [githubUrl],
 	};
 }
 
@@ -194,8 +192,12 @@ function homepageStructuredData(origin: string): StructuredData {
 				applicationCategory: "BusinessApplication",
 				operatingSystem: "Web",
 				isAccessibleForFree: true,
-				offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-				license: `${githubUrl}/blob/main/LICENSE`,
+				// The hosted plans, priced in Rupiah for the Indonesian pilot (features/homepage/plans.ts in the web app).
+				offers: [
+					{ "@type": "Offer", name: "Free", price: "0", priceCurrency: "IDR" },
+					{ "@type": "Offer", name: "Plus", price: "29000", priceCurrency: "IDR", description: "30 days of access" },
+					{ "@type": "Offer", name: "Pro AI", price: "79000", priceCurrency: "IDR", description: "30 days of access" },
+				],
 				publisher: { "@id": `${origin}/#organization` },
 				featureList: [
 					"Resume editor with a live page preview",
@@ -205,8 +207,7 @@ function homepageStructuredData(origin: string): StructuredData {
 					"ATS readability checker",
 					"Public or password-protected sharing links",
 					"Cover letters and a job application tracker",
-					"Optional AI assistant with your own API key",
-					"Self-hosting on Cloudflare",
+					"AI assistant with included credits or your own API key",
 				],
 			},
 		],
