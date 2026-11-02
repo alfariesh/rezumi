@@ -1,6 +1,18 @@
 import type { DocumentSort, DocumentSummary, DocumentTypeFilter } from "./filter";
 import { ActionBar, EmptyState, Segment } from "@heroui-pro/react";
-import { Button, Chip, Dropdown, InputGroup, Kbd, Label, Separator, Skeleton, Tag, TagGroup } from "@heroui/react";
+import {
+	Button,
+	Chip,
+	Dropdown,
+	InputGroup,
+	Kbd,
+	Label,
+	Separator,
+	Skeleton,
+	Tag,
+	TagGroup,
+	Typography,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -19,6 +31,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { useDialogStore } from "@/dialogs/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 export type DocumentsSearch = {
 	type: DocumentTypeFilter;
@@ -301,9 +314,9 @@ function FirstRun({ onChooseFile }: { onChooseFile: () => void }) {
 
 	return (
 		<section className="grid max-w-xl gap-4 pt-4 transition-[opacity,translate] duration-emphasized ease-enter starting:translate-y-2 starting:opacity-0">
-			<h2 className="text-2xl font-semibold text-foreground">
+			<Typography type="h3" render={renderAsH2}>
 				<Trans>Let's start with what you have</Trans>
-			</h2>
+			</Typography>
 			<p className="leading-6 text-muted">
 				<Trans>
 					Import your current resume and we'll lay out every section for you to refine. Or start fresh. Start with your

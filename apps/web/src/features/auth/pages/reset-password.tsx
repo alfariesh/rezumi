@@ -1,4 +1,4 @@
-import { Button } from "@heroui/react";
+import { Button, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -9,6 +9,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { PasswordInput } from "@/components/input/password-input";
 import { authClient } from "@/libs/auth/client";
 import { useAppForm } from "@/libs/tanstack-form";
+import { renderAsH1 } from "@/libs/typography";
 
 const formSchema = z.object({
 	password: z
@@ -61,9 +62,9 @@ export function ResetPasswordPage({ token }: Props) {
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<Typography type="h3" render={renderAsH1}>
 					<Trans>Reset your password</Trans>
-				</h1>
+				</Typography>
 
 				<div className="text-muted">
 					<Trans>Enter a new password for your account.</Trans>

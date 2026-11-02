@@ -6,7 +6,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
 /** A UI label: section kickers, scene numbers, small caps metadata. */
-export const labelClass = "font-martian font-medium text-[13px] leading-[1.4]";
+export const labelClass = "font-sans font-medium text-[13px] leading-[1.4]";
 
 type CtaLinkProps = { size: "header" | "hero" | "closing"; className?: string };
 
@@ -16,7 +16,7 @@ export function CtaLink({ size, className }: CtaLinkProps) {
 		<Link
 			to="/auth/register"
 			className={cn(
-				"inline-flex shrink-0 items-center rounded-sm bg-accent font-ui font-semibold text-on-accent transition-[background-color,transform] duration-[160ms] ease-out-strong hover:bg-accent-hover motion-safe:active:[transform:scale(.97)]",
+				"inline-flex shrink-0 items-center rounded-sm bg-accent font-sans font-semibold text-on-accent transition-[background-color,transform] duration-[160ms] ease-out-strong hover:bg-accent-hover motion-safe:active:[transform:scale(.97)]",
 				size === "header" && "h-[38px] px-4 text-sm",
 				size === "hero" && "h-[54px] gap-2.5 px-6 text-base shadow-e2",
 				size === "closing" && "h-14 gap-2.5 px-7 text-[17px] shadow-e2",
@@ -169,7 +169,7 @@ export function Stamp({ tone, children, stamp, className }: StampProps) {
 	return (
 		<span
 			className={cn(
-				"inline-flex h-[2em] shrink-0 [transform:scale(calc(1.7-var(--s)*.7))_rotate(calc(-5deg-(1-var(--s))*10deg))] items-center rounded-sm border-2 border-current px-[.6em] font-martian text-[.72em] font-bold whitespace-nowrap opacity-[calc(var(--s)*.88)] mix-blend-multiply [filter:url(#landing-pencil)] [transition:transform_.2s_var(--ease-out-strong)] dark:mix-blend-normal",
+				"inline-flex h-[2em] shrink-0 [transform:scale(calc(1.7-var(--s)*.7))_rotate(calc(-5deg-(1-var(--s))*10deg))] items-center rounded-sm border-2 border-current px-[.6em] font-sans text-[.72em] font-bold whitespace-nowrap opacity-[calc(var(--s)*.88)] mix-blend-multiply [filter:url(#landing-pencil)] [transition:transform_.2s_var(--ease-out-strong)] dark:mix-blend-normal",
 				tone === "supported" && "text-[oklch(0.48_0.11_150)]",
 				tone === "partial" && "text-[oklch(0.55_0.12_70)]",
 				tone === "missing" && "text-[oklch(0.5_0.01_95)]",

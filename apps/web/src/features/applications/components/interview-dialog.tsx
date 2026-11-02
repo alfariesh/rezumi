@@ -316,7 +316,7 @@ export function InterviewDialog({
 						<Modal.Heading>
 							{editing ? <Trans>Edit interview</Trans> : <Trans>Schedule an interview</Trans>}
 						</Modal.Heading>
-						<p id={`${id}-description`} className="text-[13px] leading-[18px] text-muted">
+						<p id={`${id}-description`} className="text-sm text-muted">
 							{application ? (
 								<>
 									{application.role} · {application.company}

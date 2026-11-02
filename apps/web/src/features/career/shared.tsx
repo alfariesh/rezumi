@@ -394,7 +394,7 @@ export function PrivacyLine({
 			</Alert>
 		);
 	return (
-		<p className={cn("flex gap-1.5 text-xs leading-[17px] text-muted", className)}>
+		<p className={cn("flex gap-1.5 text-xs text-muted", className)}>
 			<Icon name="lock" size={15} className="shrink-0" />
 			<span>{children}</span>
 		</p>
@@ -450,7 +450,7 @@ export function MemoryProposal(props: MemoryProposalProps) {
 			) : (
 				<div className="flex flex-wrap items-center gap-3 rounded-2xl bg-surface-secondary px-3.5 py-3">
 					<Icon name="bookmark-simple" className="shrink-0 text-accent" />
-					<div className="grid min-w-0 flex-1 basis-60 gap-1 text-[13px] leading-[19px]">
+					<div className="grid min-w-0 flex-1 basis-60 gap-1 text-sm">
 						<p className="font-semibold">{props.question}</p>
 						{props.facts.length === 1 ? (
 							<q className="text-muted">{props.facts[0]}</q>

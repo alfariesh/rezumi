@@ -121,7 +121,7 @@ export function Remember() {
 					<span className={cn(labelClass, "text-accent-text")}>07 / {remember}</span>
 					<h2
 						id="remember-title"
-						className="font-anybody text-[15vw] leading-[.9] font-light tracking-[-.03em] text-ink [font-stretch:calc(86%+var(--rin)*14%)] [transition:font-stretch_.3s] min-[900px]:text-[clamp(72px,9vw,160px)]"
+						className="font-display text-[15vw] leading-[.9] font-light tracking-[-.03em] text-ink [font-stretch:calc(86%+var(--rin)*14%)] [transition:font-stretch_.3s] min-[900px]:text-[clamp(72px,9vw,160px)]"
 					>
 						{remember}
 						<span className="text-accent">.</span>
@@ -142,7 +142,7 @@ export function Remember() {
 				<div className="relative flex [transform:translateY(calc((1-var(--rin))*8vh))_rotate(calc(-1.2deg-(1-var(--rin))*3deg))] flex-col opacity-[clamp(0,var(--rin)*3,1)] [transition:transform_.5s_var(--ease)]">
 					<span className={cn(labelClass, "mb-3 text-ink-3")}>{t`Knowledge`}</span>
 					<div className="rounded-md bg-paper px-[clamp(18px,2vw,30px)] py-[clamp(18px,2vw,26px)] on-paper shadow-paper">
-						<span className="flex items-center gap-2 font-martian text-xs font-medium text-accent-text">
+						<span className="flex items-center gap-2 font-sans text-xs font-medium text-accent-text">
 							<Icon name="book-open" size={15} />
 							{t`Story · 5 of 5 parts`}
 						</span>
@@ -150,7 +150,7 @@ export function Remember() {
 							{t`Fixing onboarding drop-off at Northwind Labs`}
 						</h3>
 						{/* Below 1000px only the five tiles show, so the switch and the draft it changes share the screen. */}
-						<ul className="mt-4 flex flex-col divide-y divide-line font-ui text-[14px] leading-[1.5] max-[999px]:mt-3 max-[999px]:flex-row max-[999px]:gap-1.5 max-[999px]:divide-y-0">
+						<ul className="mt-4 flex flex-col divide-y divide-line font-sans text-[14px] leading-[1.5] max-[999px]:mt-3 max-[999px]:flex-row max-[999px]:gap-1.5 max-[999px]:divide-y-0">
 							{story.map((part) => {
 								const missing = part.part === "r" && !withResult;
 								const used = draft.parts.includes(part.part);
@@ -208,10 +208,10 @@ export function Remember() {
 								withResult ? "ring-transparent" : "ring-[oklch(0.75_0.09_70/.6)]",
 							)}
 						>
-							<span className="flex items-center gap-2 font-martian text-xs font-medium text-ink-3">
+							<span className="flex items-center gap-2 font-sans text-xs font-medium text-ink-3">
 								{t`Fact · Accomplishment`}
 							</span>
-							<p className="mt-1.5 font-ui text-[14px] leading-[1.5] text-ink">
+							<p className="mt-1.5 font-sans text-[14px] leading-[1.5] text-ink">
 								{t`Activation rose from 31% to 44% in one quarter, measured across new teams.`}
 							</p>
 							<SwitchRow
@@ -268,7 +268,7 @@ export function Remember() {
 							<Segment.Item
 								key={item.value}
 								id={item.value}
-								className="h-9 w-auto flex-none rounded-sm px-3.5 font-ui text-[13.5px] duration-300 data-selected:text-bg"
+								className="h-9 w-auto flex-none rounded-sm px-3.5 font-sans text-[13.5px] duration-300 data-selected:text-bg"
 							>
 								<span className="max-[520px]:hidden">{item.label}</span>
 								<span className="min-[521px]:hidden">{item.short}</span>
@@ -277,7 +277,7 @@ export function Remember() {
 					</Segment>
 
 					<div className="relative rotate-[.5deg] rounded-md bg-paper px-[clamp(20px,3.4vw,52px)] py-[clamp(22px,3vw,44px)] on-paper shadow-paper">
-						<span className="font-martian text-xs font-medium text-accent-text">{draft.context}</span>
+						<span className="font-sans text-xs font-medium text-accent-text">{draft.context}</span>
 						<p
 							key={`${destination}-${withResult}`}
 							aria-live="polite"
@@ -301,13 +301,13 @@ export function Remember() {
 							))}
 						</p>
 						{!withResult && (
-							<p className="mt-3 inline-flex remember-settle items-start gap-2 rounded-md border border-dashed border-[oklch(0.75_0.09_70)] px-3 py-2 font-ui text-[13.5px] text-warn-text">
+							<p className="mt-3 inline-flex remember-settle items-start gap-2 rounded-md border border-dashed border-[oklch(0.75_0.09_70)] px-3 py-2 font-sans text-[13.5px] text-warn-text">
 								<Icon name="question" size={16} className="mt-0.5 shrink-0" />
 								{t`Result left out: no fact backs it. Switch it on, or add one, and it comes back.`}
 							</p>
 						)}
 
-						<div className="mt-6 flex flex-col gap-3 border-t border-line pt-4 font-ui text-[13px] text-ink-3">
+						<div className="mt-6 flex flex-col gap-3 border-t border-line pt-4 font-sans text-[13px] text-ink-3">
 							<span className="flex flex-wrap items-center gap-1.5">
 								{t`Backed by`}
 								<span className="inline-flex h-7 items-center gap-1.5 rounded-md border border-line px-2 text-ink-2">

@@ -76,7 +76,7 @@ export function DocumentDetails({ descriptionId }: DocumentDetailsProps) {
 									href={url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="mt-0.5 block truncate font-mono text-[13px] text-accent underline-offset-2 hover:underline"
+									className="mt-0.5 block truncate font-mono text-sm text-accent underline-offset-2 hover:underline"
 								>
 									{url.replace(/^https?:\/\//, "")}
 								</a>

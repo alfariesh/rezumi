@@ -68,7 +68,7 @@ export function Write() {
 
 				<h2
 					id="write-title"
-					className="absolute start-(--gutter) top-[10vh] max-w-[90vw] font-anybody text-[10vw] leading-[.95] font-light tracking-[-.03em] text-balance text-ink min-[900px]:top-[11vh] min-[900px]:max-w-[34vw] min-[900px]:text-[clamp(48px,4.5vw,80px)]"
+					className="absolute start-(--gutter) top-[10vh] max-w-[90vw] font-display text-[10vw] leading-[.95] font-light tracking-[-.03em] text-balance text-ink min-[900px]:top-[11vh] min-[900px]:max-w-[34vw] min-[900px]:text-[clamp(48px,4.5vw,80px)]"
 				>
 					{t`Write your professional resume`}
 					<span className="text-accent">.</span>
@@ -82,7 +82,7 @@ export function Write() {
 					{t`Write beside a live page. It saves as you type and keeps every version. Ask the assistant for a sharper line: it suggests, you decide.`}
 				</SceneCaption>
 
-				<div className="absolute start-[5vw] top-[calc(10vh+17vw+150px)] h-[120vh] w-[90vw] origin-top-left [transform:translateY(calc((1-var(--in))*14vh))_rotate(-1.2deg)_scale(calc(.94+var(--in)*.06))] rounded-md bg-paper p-[6vw] font-ui text-[14px] leading-[1.55] text-[oklch(0.28_0.01_95)] shadow-paper [transition:transform_.5s_var(--ease)] min-[900px]:start-[42vw] min-[900px]:top-[14vh] min-[900px]:w-[53vw] min-[900px]:px-[3vw] min-[900px]:py-[3.5vw] min-[900px]:text-[clamp(14px,1.3vw,20px)] min-[900px]:opacity-[clamp(0,var(--p)*20,1)] rtl:origin-top-right">
+				<div className="absolute start-[5vw] top-[calc(10vh+17vw+150px)] h-[120vh] w-[90vw] origin-top-left [transform:translateY(calc((1-var(--in))*14vh))_rotate(-1.2deg)_scale(calc(.94+var(--in)*.06))] rounded-md bg-paper p-[6vw] font-sans text-[14px] leading-[1.55] text-[oklch(0.28_0.01_95)] shadow-paper [transition:transform_.5s_var(--ease)] min-[900px]:start-[42vw] min-[900px]:top-[14vh] min-[900px]:w-[53vw] min-[900px]:px-[3vw] min-[900px]:py-[3.5vw] min-[900px]:text-[clamp(14px,1.3vw,20px)] min-[900px]:opacity-[clamp(0,var(--p)*20,1)] rtl:origin-top-right">
 					<div className="absolute end-[2vw] top-[1.6vw] flex h-7 items-center gap-1.5 rounded-sm bg-[oklch(0.95_0.006_95)] ps-2 pe-[11px] text-[12px] font-medium text-[oklch(0.42_0.01_95)] opacity-(--cl)">
 						<Icon name="cloud-check" size={16} className="text-[oklch(0.42_0.1_150)]" />
 						{t`Saved · version ${version}`}
@@ -96,12 +96,12 @@ export function Write() {
 					 */}
 					<div className="grid grid-cols-[minmax(0,1fr)] items-start gap-x-[3vw] gap-y-[.5em] [--row-off:calc(max(var(--oh,0px)+var(--nh,0px),var(--cmh-side,0px))-max(var(--wov)+var(--wnv),var(--cmh-side,0px))+var(--cmh-inline,0px)-var(--wcv))] [--wcv:min(var(--cmh-inline,0px),calc(var(--cm)*16em))] [--wnv:min(var(--nh,0px),calc(clamp(0,var(--ti)*40,1)*(1.6em+var(--ti)*6.4em)))] [--wov:min(var(--oh,0px),calc((1-var(--oc))*(1.6em+var(--ta)*6.4em)))] min-[1280px]:grid-cols-[minmax(0,1fr)_minmax(0,max(15vw,210px))]">
 						<div className="col-start-1 flex flex-col gap-[.25em]">
-							<span className="mb-[.8em] border-b border-[oklch(0.45_0.1_150/.35)] pb-[.6em] font-martian text-[.7em] leading-[1.4] text-[oklch(0.45_0.1_150)]">
+							<span className="mb-[.8em] border-b border-[oklch(0.45_0.1_150/.35)] pb-[.6em] font-sans text-[.7em] leading-[1.4] text-[oklch(0.45_0.1_150)]">
 								{t`Experience`}
 							</span>
 							<div className="flex items-baseline justify-between gap-[1em]">
 								<b className="font-display text-[1.55em] leading-[1.1] font-medium">{t`Lead Product Designer`}</b>
-								<span className="font-martian text-[.72em] whitespace-nowrap text-[oklch(0.5_0.01_95)]">
+								<span className="font-sans text-[.72em] whitespace-nowrap text-[oklch(0.5_0.01_95)]">
 									{t`2021 – Present`}
 								</span>
 							</div>
@@ -134,7 +134,7 @@ export function Write() {
 							data-write-comment
 							className={cn(
 								// Below 1280px the comment stays inline so the resume keeps a readable column width.
-								"relative col-start-1 grid min-w-0 [transform:translateX(calc(var(--dir)*(1-var(--cm))*30px))] font-ui text-[13px] leading-[1.45] text-[oklch(0.25_0.01_95)] opacity-(--cm) [transition:transform_.4s_var(--ease)] max-[1280px]:[translate:0_calc(var(--wov)+var(--wnv)-var(--oh,0px)-var(--nh,0px))] max-[1280px]:[clip-path:inset(0_0_calc(100%-var(--wcv))_0)] min-[1280px]:col-start-2 min-[1280px]:row-start-2",
+								"relative col-start-1 grid min-w-0 [transform:translateX(calc(var(--dir)*(1-var(--cm))*30px))] font-sans text-[13px] leading-[1.45] text-[oklch(0.25_0.01_95)] opacity-(--cm) [transition:transform_.4s_var(--ease)] max-[1280px]:[translate:0_calc(var(--wov)+var(--wnv)-var(--oh,0px)-var(--nh,0px))] max-[1280px]:[clip-path:inset(0_0_calc(100%-var(--wcv))_0)] min-[1280px]:col-start-2 min-[1280px]:row-start-2",
 								!active && "pointer-events-none",
 							)}
 						>
@@ -203,7 +203,7 @@ export function Write() {
 						<div className="col-start-1 mt-[1.2em] flex [translate:0_calc(-1*var(--row-off))] flex-col gap-[.25em]">
 							<div className="flex items-baseline justify-between gap-[1em]">
 								<b className="font-display text-[1.55em] leading-[1.1] font-medium">{t`Product Designer`}</b>
-								<span className="font-martian text-[.72em] whitespace-nowrap text-[oklch(0.5_0.01_95)]">{t`2017 – 2021`}</span>
+								<span className="font-sans text-[.72em] whitespace-nowrap text-[oklch(0.5_0.01_95)]">{t`2017 – 2021`}</span>
 							</div>
 							<span className="text-[oklch(0.45_0.01_95)]">{t`Parcel & Co. · Porto`}</span>
 							<ul className="mt-[.3em] list-disc ps-[1.1em]">

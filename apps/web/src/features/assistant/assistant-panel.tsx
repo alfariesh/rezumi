@@ -4,7 +4,7 @@ import type { RouterOutput } from "@/libs/orpc/client";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { ChatListView, PromptSuggestion } from "@heroui-pro/react";
-import { Button, Description, Dropdown, Label, Separator, Spinner } from "@heroui/react";
+import { Button, Description, Dropdown, Label, Separator, Spinner, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -27,6 +27,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS, stagger } from "@/libs/motion";
 import { client, orpc } from "@/libs/orpc/client";
+import { renderAsH2, renderAsH3 } from "@/libs/typography";
 
 type UsableProvider = ReturnType<typeof useHasUsableAiProvider>["usableProviders"][number];
 type ThreadSummary = RouterOutput["agent"]["threads"]["list"][number];
@@ -140,9 +141,9 @@ export function AssistantPanel({ document, onClose }: AssistantPanelProps) {
 		<section aria-label={t`Assistant`} className="flex h-full min-h-0 flex-col">
 			<header className="flex h-[52px] shrink-0 items-center gap-1 rounded-2xl bg-surface-secondary ps-4 pe-2">
 				<Icon name="sparkle" size={20} className="text-accent" />
-				<h2 className="me-auto text-[15px] font-semibold">
+				<Typography type="h6" render={renderAsH2} className="me-auto">
 					<Trans>Assistant</Trans>
-				</h2>
+				</Typography>
 
 				{usable.length > 0 && (
 					<ModelMenu
@@ -427,9 +428,9 @@ function EmptyState({ document, disabled, onPick }: EmptyStateProps) {
 	return (
 		<div className="grid min-h-0 flex-1 content-start gap-4 overflow-y-auto p-4">
 			<div className="grid gap-1.5">
-				<h3 className="text-xl leading-7 font-semibold">
+				<Typography type="h4" render={renderAsH3}>
 					<Trans>What should we work on?</Trans>
-				</h3>
+				</Typography>
 				<p className="text-sm text-muted">
 					{document.posting ? (
 						<Trans>

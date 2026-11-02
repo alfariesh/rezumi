@@ -85,7 +85,7 @@ type FaqItemProps = { item: Question; index: number };
 function FaqItem({ item, index }: FaqItemProps) {
 	const number = String(index + 1).padStart(2, "0");
 	const linkClass =
-		"mt-3 inline-flex items-center gap-1 font-medium font-ui text-[14px] text-[oklch(0.42_0.1_150)] underline underline-offset-[3px] transition-colors hover:text-[oklch(0.32_0.1_150)]";
+		"mt-3 inline-flex items-center gap-1 font-medium font-sans text-[14px] text-[oklch(0.42_0.1_150)] underline underline-offset-[3px] transition-colors hover:text-[oklch(0.32_0.1_150)]";
 
 	return (
 		<details name="faq" className="faq-item border-b border-line">
@@ -101,7 +101,7 @@ function FaqItem({ item, index }: FaqItemProps) {
 						<path data-stroke="circle" pathLength={1} d={circlePath} strokeWidth={2.6} />
 					</svg>
 				</span>
-				<h3 className="flex-1 font-anybody text-[clamp(21px,2vw,30px)] leading-[1.2] font-light tracking-[-.015em] text-pretty text-ink">
+				<h3 className="flex-1 font-display text-[clamp(21px,2vw,30px)] leading-[1.2] font-light tracking-[-.015em] text-pretty text-ink">
 					{/* Shrink-wrapped, so the underline runs under the words rather than the whole row. */}
 					<span className="relative inline-block pb-1.5">
 						{item.question}
@@ -172,7 +172,7 @@ export function Faq() {
 				<span className={cn(labelClass, "text-ink-3")}>{t`Questions`}</span>
 				<h2
 					id="faq-title"
-					className="font-anybody text-[clamp(48px,5.6vw,100px)] leading-[.98] font-light tracking-[-.03em] text-ink"
+					className="font-display text-[clamp(48px,5.6vw,100px)] leading-[.98] font-light tracking-[-.03em] text-ink"
 				>
 					<Trans>
 						Asked and <em className="font-display font-normal text-accent-text italic">answered.</em>

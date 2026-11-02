@@ -1,6 +1,6 @@
 import type { AIProvider } from "@rezumi/ai/types";
 import type { IconName } from "@rezumi/ui/components/icon";
-import { Accordion, Alert, Button, Description, Input, Label, Spinner, TextField } from "@heroui/react";
+import { Accordion, Alert, Button, Description, Input, Label, Spinner, TextField, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
+import { renderAsH3 } from "@/libs/typography";
 
 type Choice = { provider: AIProvider; label: string; model: string; icon: IconName; needsBaseURL?: boolean };
 
@@ -29,9 +30,9 @@ export function ProviderSetup() {
 	return (
 		<div className="grid gap-5 p-4">
 			<div className="grid gap-1">
-				<h3 className="text-base font-semibold">
+				<Typography type="h6" render={renderAsH3}>
 					<Trans>Connect an AI provider</Trans>
-				</h3>
+				</Typography>
 				<p className="text-sm text-muted">
 					<Trans>The assistant uses your own key. Nothing is sent anywhere until you connect one.</Trans>
 				</p>

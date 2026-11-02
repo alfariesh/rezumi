@@ -251,7 +251,7 @@ const ApplicationRow = memo(function ApplicationRow({
 	const initial = (
 		<span
 			aria-hidden="true"
-			className="grid size-8 shrink-0 place-items-center rounded-xl bg-default text-[13px] font-semibold text-muted"
+			className="grid size-8 shrink-0 place-items-center rounded-xl bg-default text-sm font-semibold text-muted"
 		>
 			{application.company.slice(0, 1).toUpperCase()}
 		</span>

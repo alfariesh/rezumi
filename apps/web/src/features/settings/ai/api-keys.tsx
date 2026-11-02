@@ -173,7 +173,7 @@ export function ApiKeysSection() {
 				<DataGrid
 					aria-label={t`API keys`}
 					variant="secondary"
-					className="w-full text-[13px] [&_td]:border-separator-tertiary/25"
+					className="w-full text-sm [&_td]:border-separator-tertiary/25"
 					contentClassName="table-fixed"
 					columns={columns}
 					data={keys}
@@ -271,7 +271,7 @@ function NewKeyDialog({ open, onOpenChange, onCreated }: NewKeyDialogProps) {
 								</Alert>
 								<TextField fullWidth isReadOnly value={key} aria-label={t`API key`}>
 									<InputGroup variant="secondary" fullWidth>
-										<InputGroup.Input spellCheck={false} className="truncate font-mono text-[13px]" />
+										<InputGroup.Input spellCheck={false} className="truncate font-mono text-sm" />
 										<InputGroup.Suffix className="pe-1">
 											<Button
 												size="sm"

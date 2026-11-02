@@ -5,7 +5,18 @@ import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { EmptyState } from "@heroui-pro/react";
-import { Alert, Button, buttonVariants, Checkbox, Chip, Modal, Separator, Skeleton, Spinner } from "@heroui/react";
+import {
+	Alert,
+	Button,
+	buttonVariants,
+	Checkbox,
+	Chip,
+	Modal,
+	Separator,
+	Skeleton,
+	Spinner,
+	Typography,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -32,6 +43,7 @@ import { interviewTypeLabel } from "@/features/applications/components/interview
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 type Briefing = SavedItem & { data: SavedData<"briefing"> };
 
@@ -220,7 +232,9 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 		<div className="grid items-start gap-6 @3xl:grid-cols-[minmax(0,1fr)_280px] @5xl:grid-cols-[minmax(0,1fr)_340px]">
 			<div className="grid gap-6">
 				<div className="grid min-w-0 gap-1">
-					<h2 className="text-xl leading-7 font-semibold">{data.headline}</h2>
+					<Typography type="h4" render={renderAsH2}>
+						{data.headline}
+					</Typography>
 					<p className="text-sm text-muted">{data.summary}</p>
 				</div>
 
@@ -480,7 +494,7 @@ function BriefingNotes({ briefing }: { briefing: Briefing }) {
 				.map((item) => (
 					<div key={item.label} className="grid gap-1">
 						<dt className="text-sm font-semibold text-muted">{item.label}</dt>
-						<dd className={cn("text-sm leading-[21px] whitespace-pre-line", item.italic && "italic")}>{item.text}</dd>
+						<dd className={cn("text-sm whitespace-pre-line", item.italic && "italic")}>{item.text}</dd>
 					</div>
 				))}
 		</dl>
@@ -599,7 +613,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 								<span className="grid gap-0.5">
 									<span
 										className={cn(
-											"text-[15px] font-semibold transition-colors duration-quick",
+											"text-base font-semibold transition-colors duration-quick",
 											on && "text-muted line-through",
 										)}
 									>

@@ -40,7 +40,7 @@ export function DnsRecordsDialog({ domain, open, onOpenChange, checking, onCheck
 					<Modal.Body className="space-y-4">
 						<Table variant="secondary">
 							<Table.ScrollContainer>
-								<Table.Content aria-label={t`DNS records`} dir="ltr" className="text-[13px]">
+								<Table.Content aria-label={t`DNS records`} dir="ltr" className="text-sm">
 									<Table.Header>
 										<Table.Column className="w-16">
 											<Trans context="DNS record">Type</Trans>

@@ -215,7 +215,7 @@ function AddressesSection({ origin, username, setting }: AddressesSectionProps) 
 					<Trans>Short link</Trans>
 				</Label>
 				<InputGroup variant="secondary" fullWidth>
-					<InputGroup.Input dir="ltr" className="font-mono text-[13px]" />
+					<InputGroup.Input dir="ltr" className="font-mono text-sm" />
 					<InputGroup.Suffix className="pe-1">
 						<CopyLinkButton url={shortLink} />
 					</InputGroup.Suffix>

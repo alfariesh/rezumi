@@ -549,7 +549,7 @@ type ReadStatusProps = {
 
 /** What reading the posting found, or why the fields need filling in by hand. */
 function ReadStatus({ text, link, readable, pending, error, parsed, ai }: ReadStatusProps) {
-	const base = "flex items-start gap-1.5 text-xs leading-[17px]";
+	const base = "flex items-start gap-1.5 text-xs";
 
 	if (!text) {
 		return (

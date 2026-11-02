@@ -1,8 +1,9 @@
-import { linkVariants } from "@heroui/react";
+import { linkVariants, Typography } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { androidCallbackIntent } from "@/features/auth/native-callback";
+import { renderAsH1 } from "@/libs/typography";
 
 export const Route = createFileRoute("/auth/native-callback")({
 	component: NativeCallbackPage,
@@ -24,9 +25,9 @@ function NativeCallbackPage() {
 
 	return (
 		<div className="space-y-4 text-center">
-			<h1 className="text-2xl font-semibold tracking-tight">
+			<Typography type="h3" render={renderAsH1}>
 				<Trans>Open the Rezumi app</Trans>
-			</h1>
+			</Typography>
 			<p className="text-sm text-muted">
 				<Trans>If the app did not open, try again on a device where it is installed.</Trans>
 			</p>

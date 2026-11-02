@@ -119,7 +119,7 @@ export function RenameInput({ document, onDone }: RenameInputProps) {
 /** A letter's page, drawn from lines: letters have no thumbnail render. */
 function LetterThumbnail({ name }: { name: string }) {
 	return (
-		<div aria-hidden="true" className="flex size-full flex-col gap-1.5 bg-white p-[14%] text-[0]">
+		<div aria-hidden="true" className="flex size-full flex-col gap-1.5 bg-white p-[14%]">
 			<span className="h-1.5 w-2/5 rounded-sm bg-[#c9c9c9]" />
 			<span className="mb-3 h-1 w-3/5 rounded-sm bg-[#e2e2e2]" />
 			<span className="h-1 w-1/3 rounded-sm bg-[#d4d4d4]" />

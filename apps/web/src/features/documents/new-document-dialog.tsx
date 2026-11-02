@@ -263,10 +263,10 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 								<Icon name="file-arrow-up" size={24} />
 							</span>
 							<span className="grid gap-1">
-								<span className="text-[15px] font-semibold">
+								<span className="text-base font-semibold">
 									<Trans>Import a resume</Trans>
 								</span>
-								<span className="text-[13px] leading-[19px] text-muted">
+								<span className="text-sm text-muted">
 									<Trans>
 										Drop a file here or browse. PDF, Word, Rezumi or JSON Resume. We fill in every section and flag
 										anything we're unsure of.
@@ -291,7 +291,7 @@ export function NewDocumentDialog({ data }: { data?: NewDocumentDialogData | und
 							/>
 						</div>
 
-						<div className="flex flex-wrap items-center justify-between gap-2 border-t border-separator pt-4 text-[13px]">
+						<div className="flex flex-wrap items-center justify-between gap-2 border-t border-separator pt-4 text-sm">
 							<button
 								type="button"
 								className="flex items-center gap-1.5 text-muted hover:text-foreground"
@@ -394,7 +394,7 @@ function ImportStep({ step, creating, onCancel, onStartBlank, onChooseFile, onCl
 
 			{step.name === "imported" && (
 				<>
-					<p role="status" className={cn(ENTER_CLASS, "flex gap-2 text-[13px] leading-[19px]")}>
+					<p role="status" className={cn(ENTER_CLASS, "flex gap-2 text-sm")}>
 						<Icon
 							name="check-circle"
 							size={20}
@@ -447,7 +447,7 @@ function ChoiceTile({ icon, title, description, onClick, disabled }: ChoiceTileP
 			<Icon name={icon} size={22} className="mt-0.5 text-muted" />
 			<span className="grid gap-0.5">
 				<span className="text-sm font-semibold">{title}</span>
-				<span className="text-[13px] leading-[18px] text-muted">{description}</span>
+				<span className="text-sm text-muted">{description}</span>
 			</span>
 		</button>
 	);

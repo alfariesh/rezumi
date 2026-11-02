@@ -1,4 +1,4 @@
-import { Button, buttonVariants, Input, linkVariants } from "@heroui/react";
+import { Button, buttonVariants, Input, linkVariants, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -12,6 +12,7 @@ import { cn } from "@rezumi/utils/style";
 import { authClient } from "@/libs/auth/client";
 import { ENTER_CLASS } from "@/libs/motion";
 import { useAppForm } from "@/libs/tanstack-form";
+import { renderAsH1 } from "@/libs/typography";
 
 const formSchema = z.object({
 	email: z.email({ error: () => t`Enter a valid email address.` }),
@@ -57,9 +58,9 @@ export function ForgotPasswordPage() {
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<Typography type="h3" render={renderAsH1}>
 					<Trans>Forgot your password?</Trans>
-				</h1>
+				</Typography>
 
 				<div className="text-muted">
 					<Trans>
@@ -119,9 +120,9 @@ function PostForgotPasswordScreen() {
 		// Replaces the form in place: fades up into the auth column, with the layout's 24px gap.
 		<div className={cn(ENTER_CLASS, "grid gap-y-6")}>
 			<div className="space-y-1 text-center">
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<Typography type="h3" render={renderAsH1}>
 					<Trans>Check your email</Trans>
-				</h1>
+				</Typography>
 				<p className="text-muted">
 					<Trans>Check your email for a link to reset your password.</Trans>
 				</p>

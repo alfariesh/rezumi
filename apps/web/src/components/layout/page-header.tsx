@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import { Typography } from "@heroui/react";
+import { renderAsH1 } from "@/libs/typography";
 
 type PageHeaderProps = {
 	title: ReactNode;
@@ -19,7 +21,9 @@ export function PageHeader({ title, description, back, actions, children }: Page
 			<header className="flex flex-wrap items-center justify-between gap-3">
 				<div className="grid min-w-0 gap-1">
 					{back && <div className="mb-2">{back}</div>}
-					<h1 className="text-[30px] leading-9 font-semibold tracking-tight">{title}</h1>
+					<Typography type="h2" render={renderAsH1}>
+						{title}
+					</Typography>
 					{description && <p className="text-sm text-muted">{description}</p>}
 				</div>
 				{actions && <div className="flex items-center gap-2">{actions}</div>}

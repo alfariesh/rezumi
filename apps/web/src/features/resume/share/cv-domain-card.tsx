@@ -27,7 +27,7 @@ export function CvDomainCard({ suggestion: { domain, checked, price }, connectin
 	return (
 		<div className="grid gap-3 rounded-xl bg-surface-secondary p-4 fields-on-card">
 			<div className="grid gap-0.5">
-				<p className="truncate font-mono text-[15px] leading-5 font-medium" dir="ltr">
+				<p className="truncate font-mono text-base leading-5 font-medium" dir="ltr">
 					{domain}
 				</p>
 				<p className="text-xs text-muted tabular-nums">

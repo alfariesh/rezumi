@@ -128,7 +128,7 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 					)}
 				>
 					<span className="flex max-w-full items-center gap-2">
-						<span className={cn("truncate text-[13px] leading-[18px] font-semibold", !title && "text-muted")}>
+						<span className={cn("truncate text-sm font-semibold", !title && "text-muted")}>
 							{title || <Trans>Untitled</Trans>}
 						</span>
 						{draft && (

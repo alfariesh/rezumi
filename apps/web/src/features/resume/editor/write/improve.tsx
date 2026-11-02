@@ -83,7 +83,7 @@ export function ImprovePanel({ editor, line, where, onClose }: ImprovePanelProps
 
 			{improve.data ? (
 				<div className="grid gap-2 rounded-xl bg-surface p-2.5">
-					<p role="status" className="w-fit rounded-sm bg-accent-soft px-1 py-0.5 text-[13px] leading-[19px]">
+					<p role="status" className="w-fit rounded-sm bg-accent-soft px-1 py-0.5 text-sm">
 						{improve.data.text}
 					</p>
 					<p className="text-xs text-muted">

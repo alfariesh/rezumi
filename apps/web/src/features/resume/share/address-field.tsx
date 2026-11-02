@@ -119,7 +119,7 @@ export function AddressField({ url, username, update }: AddressFieldProps) {
 				<InputGroup variant="secondary" fullWidth>
 					{/* A long host or username truncates, so the part being edited stays visible. */}
 					<InputGroup.Prefix className="max-w-[55%] pe-0">
-						<span className="truncate font-mono text-[13px] text-muted" dir="ltr">
+						<span className="truncate font-mono text-sm text-muted" dir="ltr">
 							{new URL(url).host}/{username}/
 						</span>
 					</InputGroup.Prefix>
@@ -127,7 +127,7 @@ export function AddressField({ url, username, update }: AddressFieldProps) {
 						spellCheck={false}
 						// Set explicitly so a valid address reads aria-invalid="false", not a missing attribute.
 						aria-invalid={invalid}
-						className="font-mono text-[13px]"
+						className="font-mono text-sm"
 					/>
 					<InputGroup.Suffix className="gap-1 pe-1">
 						{isPublic && slug && (

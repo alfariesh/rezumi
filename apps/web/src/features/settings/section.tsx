@@ -96,7 +96,7 @@ export function SettingsRow({
 				</RowIcon>
 				<div className="grid min-w-0 gap-0.5">
 					<span className="text-sm font-medium break-words">{title}</span>
-					{description && <span className="text-[13px] break-words text-muted">{description}</span>}
+					{description && <span className="text-sm break-words text-muted">{description}</span>}
 				</div>
 			</div>
 			{children &&

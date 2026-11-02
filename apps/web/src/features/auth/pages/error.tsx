@@ -1,8 +1,9 @@
-import { buttonVariants, Alert } from "@heroui/react";
+import { buttonVariants, Alert, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
+import { renderAsH1 } from "@/libs/typography";
 
 function getErrorMessage(code: string | undefined): string {
 	switch (code) {
@@ -59,11 +60,11 @@ export function AuthErrorPage({ code, description }: AuthErrorPageProps) {
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<Typography type="h3" render={renderAsH1}>
 					<Trans comment="Title on the page shown after a failed or cancelled OAuth sign-in">
 						Sign-in didn't complete
 					</Trans>
-				</h1>
+				</Typography>
 			</div>
 
 			<Alert status="danger" role="alert" className="bg-surface-secondary">

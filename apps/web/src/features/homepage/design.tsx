@@ -33,7 +33,7 @@ function pageNumber(value: number, name: string) {
 	const number = i18n.number(value, { minimumIntegerDigits: 2 });
 	return t`No. ${number} · ${name}`;
 }
-const pageLabel = "font-martian font-medium text-[calc(var(--pw)*.045)] leading-none tracking-[.06em] text-ink-3";
+const pageLabel = "font-sans font-medium text-[calc(var(--pw)*.045)] leading-none tracking-[.06em] text-ink-3";
 
 /**
  * 02 Design. The word "Design." changes its type as five looks wipe across the page in turn, then the scene zooms out
@@ -88,7 +88,7 @@ export function Design() {
 					<span
 						aria-hidden="true"
 						data-text={`${design}.`}
-						className="absolute inset-0 text-center font-ui text-[.9em] leading-[1.1] font-medium tracking-[-.04em] text-[oklch(0.5_0.11_250)] opacity-[calc(clamp(0,(var(--w1)-.35)*3.4,1)*(1-clamp(0,(var(--w2)-.35)*3.4,1)))] before:content-[attr(data-text)] dark:text-[oklch(0.74_0.11_250)]"
+						className="absolute inset-0 text-center font-sans text-[.9em] leading-[1.1] font-medium tracking-[-.04em] text-[oklch(0.5_0.11_250)] opacity-[calc(clamp(0,(var(--w1)-.35)*3.4,1)*(1-clamp(0,(var(--w2)-.35)*3.4,1)))] before:content-[attr(data-text)] dark:text-[oklch(0.74_0.11_250)]"
 					/>
 					<span
 						aria-hidden="true"
@@ -98,12 +98,12 @@ export function Design() {
 					<span
 						aria-hidden="true"
 						data-text={`${design}_`}
-						className="absolute inset-0 text-center font-martian text-[.66em] leading-[1.5] font-light tracking-[-.02em] uppercase opacity-[calc(clamp(0,(var(--w3)-.35)*3.4,1)*(1-clamp(0,(var(--w4)-.35)*3.4,1)))] before:content-[attr(data-text)]"
+						className="absolute inset-0 text-center font-sans text-[.66em] leading-[1.5] tracking-[-.02em] uppercase opacity-[calc(clamp(0,(var(--w3)-.35)*3.4,1)*(1-clamp(0,(var(--w4)-.35)*3.4,1)))] before:content-[attr(data-text)]"
 					/>
 					<span
 						aria-hidden="true"
 						data-text={`${design}.`}
-						className="absolute inset-0 text-center font-anybody leading-none font-light tracking-[-.03em] uppercase font-stretch-[90%] opacity-[clamp(0,(var(--w4)-.35)*3.4,1)] before:content-[attr(data-text)]"
+						className="absolute inset-0 text-center font-display leading-none font-light tracking-[-.03em] uppercase font-stretch-[90%] opacity-[clamp(0,(var(--w4)-.35)*3.4,1)] before:content-[attr(data-text)]"
 					/>
 				</div>
 
@@ -162,7 +162,7 @@ export function Design() {
 									aria-hidden="true"
 									className="absolute -top-[6%] -bottom-[6%] left-0 -ml-px w-0.5 [transform:translateX(calc((1-var(--w))*var(--pw)))] bg-ink opacity-[calc(clamp(0,var(--w)*30,1)*clamp(0,(1-var(--w))*30,1))] will-change-[transform,opacity]"
 								>
-									<span className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full rounded-sm bg-ink px-[9px] py-[5px] font-martian text-[10.5px] leading-none font-medium tracking-[.06em] whitespace-nowrap text-bg">
+									<span className="absolute -top-1 left-1/2 -translate-x-1/2 -translate-y-full rounded-sm bg-ink px-[9px] py-[5px] font-sans text-[10.5px] leading-none font-medium tracking-[.06em] whitespace-nowrap text-bg">
 										{pageNumber(index + 1, templateNames[index] ?? "")}
 									</span>
 								</div>
@@ -195,7 +195,7 @@ export function Design() {
 						<Segment.Item
 							key={name}
 							id={index}
-							className="h-8 w-auto flex-none rounded-sm px-3 font-ui duration-300 data-selected:text-bg min-[900px]:px-[13px]"
+							className="h-8 w-auto flex-none rounded-sm px-3 font-sans duration-300 data-selected:text-bg min-[900px]:px-[13px]"
 						>
 							{name}
 						</Segment.Item>
@@ -215,7 +215,7 @@ export function Design() {
 					className="pointer-events-none absolute inset-x-(--gutter) top-[12vh] bottom-[8vh] [transform:translateY(calc((1-var(--z))*30px))] text-center text-[8vw] leading-none font-normal text-balance opacity-(--z) will-change-[transform,opacity] min-[900px]:bottom-[5vh] min-[900px]:text-[clamp(36px,4vw,72px)]"
 				>
 					<Link to="/resume-templates" inert={!zoomed} className="flex h-full flex-col justify-between">
-						<span className="pointer-events-auto font-anybody font-light tracking-[-.02em] text-ink">
+						<span className="pointer-events-auto font-display font-light tracking-[-.02em] text-ink">
 							{t`${templateCount} free resume templates.`}
 						</span>
 						<span className="pointer-events-auto font-display tracking-[-.02em] text-accent-text italic">

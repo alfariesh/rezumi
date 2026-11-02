@@ -71,7 +71,7 @@ export function CanvasStatusPill({ icon, children }: CanvasStatusPillProps) {
 	return (
 		<span
 			role="status"
-			className="flex h-8 items-center gap-2 rounded-full bg-foreground ps-2.5 pe-3.5 text-[13px] font-medium text-background shadow-overlay"
+			className="flex h-8 items-center gap-2 rounded-full bg-foreground ps-2.5 pe-3.5 text-sm font-medium text-background shadow-overlay"
 		>
 			<Icon name={icon} size={18} />
 			{children}

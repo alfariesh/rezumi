@@ -113,7 +113,7 @@ export function WebAccessSection() {
 							</Chip.Label>
 						</Chip>
 					</div>
-					<p className="text-[13px] leading-5 text-muted">
+					<p className="text-sm leading-5 text-muted">
 						{connectedProvider ? (
 							<Trans>Used when {connectedProvider} can't read a page. No account needed.</Trans>
 						) : (
@@ -147,7 +147,7 @@ export function WebAccessSection() {
 								</Chip>
 							)}
 						</div>
-						<p className="max-w-[58ch] text-[13px] leading-5 text-muted">
+						<p className="max-w-[58ch] text-sm leading-5 text-muted">
 							{serverSearch ? (
 								<Trans>
 									Your server provides search for Applications and the assistant. Connect a service to read pages the
@@ -271,7 +271,7 @@ export function WebAccessSection() {
 							</Button>
 						)}
 						{test.isPending && (
-							<p role="status" className="text-[13px] text-muted">
+							<p role="status" className="text-sm text-muted">
 								{!serverSearch ? (
 									<Trans>Testing search and reading with {connectedProvider}…</Trans>
 								) : connectedProvider ? (
@@ -282,7 +282,7 @@ export function WebAccessSection() {
 							</p>
 						)}
 						{test.data && (
-							<div role="status" className="grid gap-2 text-[13px] leading-5">
+							<div role="status" className="grid gap-2 text-sm leading-5">
 								{[
 									{ result: test.data.search, label: test.data.search.success ? t`Search works` : t`Search failed` },
 									// Without a connection only the built-in reader reads, and the test doesn't cover it.

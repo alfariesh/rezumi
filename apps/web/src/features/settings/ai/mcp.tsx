@@ -21,7 +21,7 @@ export function McpSection() {
 		>
 			<TextField fullWidth isReadOnly value={address} aria-label={t`MCP server address`}>
 				<InputGroup variant="secondary" fullWidth>
-					<InputGroup.Input spellCheck={false} dir="ltr" className="truncate font-mono text-[13px] font-medium" />
+					<InputGroup.Input spellCheck={false} dir="ltr" className="truncate font-mono text-sm font-medium" />
 					<InputGroup.Suffix className="pe-1">
 						<Button
 							size="sm"

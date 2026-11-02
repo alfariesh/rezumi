@@ -78,7 +78,7 @@ export function ParserView() {
 	});
 
 	return (
-		<div className="mx-auto grid min-h-[792px] w-[612px] max-w-full content-start gap-[18px] rounded-2xl bg-surface px-8 py-7 font-mono text-[12px] leading-[19px] shadow-surface max-sm:px-4">
+		<div className="mx-auto grid min-h-[792px] w-[612px] max-w-full content-start gap-[18px] rounded-2xl bg-surface px-8 py-7 font-mono text-xs leading-relaxed shadow-surface max-sm:px-4">
 			{isError ? (
 				<p className="font-sans text-sm text-danger">
 					<Trans>The page's PDF couldn't be read. Edit anything to render it again.</Trans>

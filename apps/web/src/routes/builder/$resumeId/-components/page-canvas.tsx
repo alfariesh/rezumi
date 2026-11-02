@@ -219,7 +219,7 @@ function ResumePageCaption(props: ResumePageCaptionProps) {
 	if (overflow && pageNumber > overflow.authored) {
 		return (
 			<figcaption className="relative mb-2.5 border-t-[1.5px] border-dashed border-warning">
-				<span className="absolute end-0 -top-2.5 rounded-full bg-background px-2 text-[11px] font-semibold text-warning tabular-nums">
+				<span className="absolute end-0 -top-2.5 rounded-full bg-background px-2 text-xs font-semibold text-warning tabular-nums">
 					<Trans>Page {pageNumber}</Trans>
 				</span>
 			</figcaption>
@@ -241,7 +241,7 @@ function OverflowChip({ authored, lines }: OverflowChipProps) {
 	const next = authored + 1;
 
 	return (
-		<span className="flex min-h-8 items-center gap-2 rounded-full bg-warning-soft py-1 ps-3 pe-1 text-[13px] text-warning-soft-foreground">
+		<span className="flex min-h-8 items-center gap-2 rounded-full bg-warning-soft py-1 ps-3 pe-1 text-sm text-warning-soft-foreground">
 			<Icon name="square-split-horizontal" size={18} />
 			{lines ? (
 				<Plural

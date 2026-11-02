@@ -6,7 +6,17 @@ import type { WorkspaceTab } from "@rezumi/schema/career";
 import type { ReactNode } from "react";
 import { EmptyState } from "@heroui-pro/react";
 import { Segment } from "@heroui-pro/react";
-import { Alert, Avatar, Button, buttonVariants, Chip, Disclosure, Link as TextLink, Spinner } from "@heroui/react";
+import {
+	Alert,
+	Avatar,
+	Button,
+	buttonVariants,
+	Chip,
+	Disclosure,
+	Link as TextLink,
+	Spinner,
+	Typography,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -40,6 +50,7 @@ import { describeNextStep, getNextStep } from "@/features/applications/next-step
 import { getStageLabel, PIPELINE } from "@/features/applications/stages";
 import { D1, EASE } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsH1 } from "@/libs/typography";
 
 export type WorkspaceSearch = {
 	coach?: CoachConversation | undefined;
@@ -432,9 +443,9 @@ function WorkspaceHeader({ application, onAskCoach }: WorkspaceHeaderProps) {
 			</TextLink>
 			<div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
 				<div className="grid min-w-0 gap-2">
-					<h1 className="text-2xl leading-8 font-semibold tracking-tight md:text-[28px] md:leading-9">
+					<Typography type="h2" render={renderAsH1}>
 						{application.role} · {application.company}
-					</h1>
+					</Typography>
 					<p className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-sm text-muted">
 						<Chip size="sm" variant="soft" className="gap-1.5">
 							<span aria-hidden="true" className={cn("size-1.5 rounded-full", stageDot[application.status])} />

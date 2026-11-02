@@ -3,7 +3,19 @@ import type { WorkspaceTabProps } from "./shell";
 import type { Application } from "@/features/applications/types";
 import type { InterviewKind, InterviewTimelineEntry } from "@rezumi/schema/applications/data";
 import { EmptyState, Segment, Widget } from "@heroui-pro/react";
-import { Button, Checkbox, Chip, Input, Label, Separator, Skeleton, Spinner, TextArea, TextField } from "@heroui/react";
+import {
+	Button,
+	Checkbox,
+	Chip,
+	Input,
+	Label,
+	Separator,
+	Skeleton,
+	Spinner,
+	TextArea,
+	TextField,
+	Typography,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -21,6 +33,7 @@ import { AiProviderLoadState } from "@/features/settings/integrations/ai-provide
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 type Debrief = SavedData<"debrief">;
 type Review = Pick<SavedItem, "id" | "interviewId" | "evidence"> & { data: Debrief };
@@ -290,7 +303,9 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 
 	return (
 		<CareerWidget title={t`Review`} icon="sparkle" className={ENTER_CLASS} contentClassName="gap-4">
-			<h2 className="text-base font-semibold">{data.title}</h2>
+			<Typography type="h6" render={renderAsH2}>
+				{data.title}
+			</Typography>
 			{data.verdicts.length > 0 && (
 				<ul className="grid gap-3">
 					{data.verdicts.map((verdict) => (
@@ -303,7 +318,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 							>
 								{verdict.tag === "supported" ? t`Supported` : t`Observation`}
 							</Chip>
-							<span className="text-sm leading-[21px]">{readable(verdict.text)}</span>
+							<span className="text-sm">{readable(verdict.text)}</span>
 						</li>
 					))}
 				</ul>
@@ -311,7 +326,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 			{(data.nextRound || data.priority) && (
 				<div className="grid gap-3 rounded-xl bg-default p-4">
 					{data.nextRound && (
-						<p className="text-sm leading-[21px]">
+						<p className="text-sm">
 							<strong className="font-semibold">
 								<Trans>For the next round:</Trans>
 							</strong>{" "}
@@ -319,7 +334,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 						</p>
 					)}
 					{data.priority && (
-						<p className="text-sm leading-[21px]">
+						<p className="text-sm">
 							<strong className="font-semibold">
 								<Trans>Practice priority:</Trans>
 							</strong>{" "}
@@ -479,7 +494,7 @@ function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 						<Trans>Add to calendar</Trans>
 					</Button>
 				)}
-				<p className="text-xs leading-[17px] text-muted">
+				<p className="text-xs text-muted">
 					<Trans>Practice priorities, not conclusions about why an employer decided anything.</Trans>
 				</p>
 			</Widget.Content>

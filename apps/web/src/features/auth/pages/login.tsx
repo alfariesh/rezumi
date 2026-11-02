@@ -1,5 +1,5 @@
 import type { QueryClient } from "@tanstack/react-query";
-import { Button, Input, linkVariants, Spinner } from "@heroui/react";
+import { Button, Input, linkVariants, Spinner, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
@@ -17,6 +17,7 @@ import { authClient } from "@/libs/auth/client";
 import { orpc } from "@/libs/orpc/client";
 import { sessionQueryKey } from "@/libs/root-context";
 import { useAppForm } from "@/libs/tanstack-form";
+import { renderAsH1 } from "@/libs/typography";
 
 const formSchema = z.object({
 	identifier: z.string().trim().toLowerCase(),
@@ -153,9 +154,9 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<Typography type="h3" render={renderAsH1}>
 					<Trans comment="Title on the login page">Sign in to your account</Trans>
-				</h1>
+				</Typography>
 
 				{!disableSignups && (
 					<div className="text-muted">

@@ -407,7 +407,7 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 					) : (
 						<p
 							className={cn(
-								"text-sm leading-[21px] text-pretty transition-colors duration-quick",
+								"text-sm text-pretty transition-colors duration-quick",
 								on ? "text-foreground" : "text-muted",
 							)}
 						>
@@ -439,7 +439,7 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 								exit={{ height: 0, opacity: 0, transition: { duration: D2 * EXIT, ease: EASE } }}
 								className="overflow-hidden"
 							>
-								<div className="grid gap-1 rounded-xl bg-default px-3.5 py-3 text-xs leading-[17px] text-muted">
+								<div className="grid gap-1 rounded-xl bg-default px-3.5 py-3 text-xs text-muted">
 									<p className="font-semibold text-foreground">
 										{sourceLabel(fact)} · {date(fact.createdAt)}
 									</p>

@@ -13,6 +13,7 @@ import {
 	TextArea,
 	Tooltip,
 	Skeleton,
+	Typography,
 } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -31,6 +32,7 @@ import { AiNotice } from "./fit";
 import { useInvalidateApplications } from "@/features/applications/use-application-actions";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
+import { renderAsH2 } from "@/libs/typography";
 
 type Answer = CareerWorkspace["answers"][number];
 type CountUnit = "words" | "characters";
@@ -354,16 +356,18 @@ function AnswerCard({
 						flushQuestion();
 						if (question.trim()) setEditingQuestion(false);
 					}}
-					className="field-sizing-content min-h-0 w-full min-w-0 resize-none text-[15px] leading-[22px] font-semibold"
+					className="field-sizing-content min-h-0 w-full min-w-0 resize-none text-base font-semibold"
 				/>
 			) : (
-				<h2 className="min-w-0 text-[15px] leading-[22px] font-semibold">{question}</h2>
+				<Typography type="h6" render={renderAsH2} className="min-w-0">
+					{question}
+				</Typography>
 			)}
 
 			<Swap id={proposal ? "diff" : "text"}>
 				{proposal ? (
 					<div className="grid gap-3">
-						<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-[22px]">
+						<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-relaxed">
 							{diffWords(text, proposal.text).map((part, index) => (
 								<span
 									key={index}
@@ -396,7 +400,7 @@ function AnswerCard({
 						</div>
 					</div>
 				) : readOnly ? (
-					<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-[22px] whitespace-pre-wrap text-muted">
+					<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-relaxed whitespace-pre-wrap text-muted">
 						{text}
 					</p>
 				) : (
@@ -675,7 +679,7 @@ function Checklist({
 					</Dropdown.Popover>
 				</Dropdown>
 			</div>
-			<p className="text-xs leading-[17px] text-muted">
+			<p className="text-xs text-muted">
 				<Trans>You submit on the employer's site yourself. Marking it applied keeps the exact versions you sent.</Trans>
 			</p>
 		</CareerWidget>

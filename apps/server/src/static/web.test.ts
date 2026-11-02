@@ -167,12 +167,12 @@ describe("web app fallback classification", () => {
 		const response = await handleWebApp(
 			new Request("https://example.com/"),
 			async () =>
-				'<html><head><link rel="icon" href="/favicon.ico"><link rel="stylesheet" crossorigin href="/assets/index-a.css"><link rel="preload" as="font" type="font/woff2" href="/assets/figtree-b.woff2" crossorigin></head><body><div id="app"></div></body></html>',
+				'<html><head><link rel="icon" href="/favicon.ico"><link rel="stylesheet" crossorigin href="/assets/index-a.css"><link rel="preload" as="font" type="font/woff2" href="/assets/google-sans-b.woff2" crossorigin></head><body><div id="app"></div></body></html>',
 		);
 
 		expect(response.headers.get("Cache-Tag")).toBe("html");
 		expect(response.headers.get("Link")).toBe(
-			`${searchLink}, </assets/index-a.css>; rel=preload; as=style; crossorigin, </assets/figtree-b.woff2>; rel=preload; as=font; crossorigin`,
+			`${searchLink}, </assets/index-a.css>; rel=preload; as=style; crossorigin, </assets/google-sans-b.woff2>; rel=preload; as=font; crossorigin`,
 		);
 	});
 

@@ -109,7 +109,7 @@ export function LandingFooter() {
 						<nav
 							key={column.id}
 							aria-labelledby={`footer-${column.id}`}
-							className="flex min-w-0 flex-col gap-2.5 font-ui text-sm"
+							className="flex min-w-0 flex-col gap-2.5 font-sans text-sm"
 						>
 							<h2 id={`footer-${column.id}`} className={cn(labelClass, "mb-1 text-ink-3")}>
 								{column.title}
@@ -126,7 +126,7 @@ export function LandingFooter() {
 				</div>
 			</div>
 
-			<div className="relative z-1 mx-auto mt-16 flex max-w-[1440px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-(--gutter) font-ui text-[13px] leading-normal text-ink-3">
+			<div className="relative z-1 mx-auto mt-16 flex max-w-[1440px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-(--gutter) font-sans text-[13px] leading-normal text-ink-3">
 				{/* Narrow enough to wrap into two balanced lines in any language, without splitting the translation. */}
 				<p className="max-w-[20ch] text-balance">{t`By the community, for the community.`}</p>
 				<p className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -177,7 +177,7 @@ const spotClass = "group/spot absolute rounded-lg outline-none max-[700px]:hidde
 const spotWashClass =
 	"absolute inset-0 rounded-lg outline-[1.5px] outline-transparent transition-[background-color,outline-color] duration-standard outline-solid group-hover/spot:bg-[oklch(0.5_0.1_150/0.08)] group-hover/spot:outline-accent group-focus-visible/spot:bg-[oklch(0.5_0.1_150/0.08)] group-focus-visible/spot:outline-accent";
 const spotLabelClass =
-	"pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 flex -translate-x-1/2 translate-y-1 items-center gap-1.5 rounded-sm bg-ink px-2 py-1 font-ui text-xs font-medium whitespace-nowrap text-bg opacity-0 shadow-e2 transition-[opacity,translate] duration-standard ease-enter group-hover/spot:translate-y-0 group-hover/spot:opacity-100 group-focus-visible/spot:translate-y-0 group-focus-visible/spot:opacity-100";
+	"pointer-events-none absolute bottom-[calc(100%+8px)] left-1/2 flex -translate-x-1/2 translate-y-1 items-center gap-1.5 rounded-sm bg-ink px-2 py-1 font-sans text-xs font-medium whitespace-nowrap text-bg opacity-0 shadow-e2 transition-[opacity,translate] duration-standard ease-enter group-hover/spot:translate-y-0 group-hover/spot:opacity-100 group-focus-visible/spot:translate-y-0 group-focus-visible/spot:opacity-100";
 
 // Phones crop the 3:1 drawing to a 16:10 box (object-fit: cover), so it renders at 1.875× the viewport width there.
 const deskSizes = "(max-width: 699px) 188vw, (min-width: 1800px) 1800px, 100vw";

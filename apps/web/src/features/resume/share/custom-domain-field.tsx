@@ -77,7 +77,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 							spellCheck={false}
 							autoCapitalize="none"
 							dir="ltr"
-							className="font-mono text-[13px]"
+							className="font-mono text-sm"
 						/>
 					</TextField>
 					<Button type="submit" variant="secondary" isPending={set.isPending} isDisabled={!hostname.trim()}>
@@ -103,7 +103,7 @@ export function CustomDomainField({ suggest }: CustomDomainFieldProps) {
 					size={18}
 					className={domain.verified ? "text-success" : "text-warning"}
 				/>
-				<span className="min-w-0 flex-1 truncate font-mono text-[13px] font-medium" dir="ltr">
+				<span className="min-w-0 flex-1 truncate font-mono text-sm font-medium" dir="ltr">
 					{domain.hostname}
 				</span>
 				<Button
