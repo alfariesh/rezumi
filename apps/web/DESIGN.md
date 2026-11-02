@@ -1,7 +1,7 @@
 ---
 version: 7.0.0
 name: Rezumi · HeroUI
-description: The app is HeroUI's default system as shipped: its palette, radius, focus ring and type scale, set in Google Sans, with HeroUI Pro for the shell and the data-heavy surfaces. Rezumi adds paper, application stages and a few layout and motion tokens. The homepage keeps its own Desk & Paper look.
+description: The app is HeroUI's default system as shipped: its palette, radius, Google Sans typography and focus ring, with HeroUI Pro for the shell and the data-heavy surfaces. Rezumi adds paper, application stages and a few layout and motion tokens. The homepage uses the same system.
 colors:
   paper: "#FFFFFF"
   stages:
@@ -31,41 +31,11 @@ motion:
   easing: cubic-bezier(0.2, 0.8, 0.2, 1)
   exit: 70% of the entering duration
   movement-easing: cubic-bezier(0.77, 0, 0.175, 1)
-marketing:
-  typography:
-    display: { fontFamily: Instrument Serif, fontWeight: 400 }
-    write-title: { fontFamily: Instrument Serif, fontSize: "clamp(72px, 9vw, 160px)", lineHeight: 0.9, fontWeight: 300 }
-    numeral:
-      {
-        fontFamily: Instrument Serif,
-        fontSize: "clamp(56px, 7.5vw, 136px)",
-        fontWeight: 300,
-        fontVariantNumeric: tabular-nums,
-      }
-    body: { fontFamily: Instrument Serif, fontSize: "16–21px", lineHeight: "1.45–1.5", fontWeight: 400 }
-    accent: { fontFamily: Instrument Serif, fontStyle: italic, color: accent-text }
-    label: { fontFamily: Google Sans, fontSize: 13px, fontWeight: 500 }
-  colors:
-    graphite: { light: "oklch(0.38 0.01 95 / .3)", dark: "oklch(0.9 0.01 95 / .18)" }
-    night-1: "oklch(0.24 0.03 265)"
-    night-2: "oklch(0.15 0.02 265)"
-    night-accent: "oklch(0.8 0.13 150)"
-    star: "oklch(0.72 0.14 80)"
-    receipt: "#FDFCF8"
-    bulb-glass: "oklch(0.95 0.11 92)"
-    bulb-filament: "oklch(0.7 0.16 60)"
-  shadow:
-    paper:
-      light: "0 1px 2px oklch(0.2 0.01 95 / 0.12), 0 40px 80px -30px oklch(0.2 0.01 95 / 0.5), 0 0 0 1px oklch(0.2 0.01 95 / 0.04)"
-      dark: "0 1px 2px oklch(0 0 0 / 0.5), 0 40px 80px -30px oklch(0 0 0 / 0.8)"
-  motion:
-    pull-easing: cubic-bezier(0.3, 1.7, 0.5, 1)
-  doodles: { opacity: { light: 0.92, dark: 0.8 }, darkFilter: "brightness(0.92)" }
 ---
 
 ## Overview
 
-Rezumi's app is HeroUI's default theme, used as shipped: its blue accent (the logo's `#00BAFF` family), light gray desk, white surfaces, 0.5rem radius, focus ring and type scale, set in Google Sans. We restyle nothing HeroUI already draws. A bright resume or letter sits in the middle of that quiet interface and is the one thing that is not themed.
+Rezumi's app is HeroUI's default theme, used as shipped: its blue accent (the logo's `#00BAFF` family), light gray desk, white surfaces, 0.5rem radius, system font and focus ring. We restyle nothing HeroUI already draws. A bright resume or letter sits in the middle of that quiet interface and is the one thing that is not themed.
 
 Components come from `@heroui/react` and, where the base library has none, `@heroui-pro/react` (the shell, widgets, grids, charts, chat, command palette and sheets). Where neither has one, `packages/ui` and the owning feature build it from HeroUI tokens and BEM-style class names, so it reads as HeroUI. Check `apps/web/PRODUCT.md` for who the product is for. The decisions behind this system, and what changed from the earlier Desk & Paper look, are in `.agents/docs/plans/heroui-migration.md`.
 
@@ -94,7 +64,7 @@ Resume templates keep their Pokémon names, fonts and palettes. App typography a
 - **Paper:** `--paper` stays white in both themes. Switching the theme must not invert documents.
 - **Stages:** `stage-saved`, `stage-applied`, `stage-screening`, `stage-interview`, `stage-offer` and `stage-closed` identify application stages. Use small dots or stepper bars beside the stage name, never the color alone.
 
-Use semantic tokens in app code. No arbitrary colors and no palette classes such as `amber-600`; the old Desk & Paper names (`ink`, `line`, `raised`, `sunken`, `warn`, `shadow-e1`) exist only inside the homepage's `.landing` scope.
+Use semantic tokens in app code. No arbitrary colors and no palette classes such as `amber-600`. The old Desk & Paper names (`ink`, `line`, `raised`, `sunken`, `warn`, `shadow-e1`) are gone, the homepage's included.
 
 ## Typography
 
@@ -157,7 +127,7 @@ Icons inside resumes are Phosphor names stored in resume data, drawn by the Phos
 - Reduced motion sets the duration tokens to 1ms and collapses CSS transitions and animations. Status spinners continue turning.
 - `apps/web/src/libs/motion.ts` mirrors the CSS timings for Motion. `MotionConfig reducedMotion="user"` and `followReducedMotion()` make Motion animations respect the preference.
 
-The homepage has separate motion rules below.
+The homepage follows these rules too; its few extra ones are below.
 
 ## Components
 
@@ -202,59 +172,34 @@ The shared `theme` cookie stores `light`, `dark` or `system` (the default). Syst
 
 ## Marketing site
 
-The public homepage in `apps/web/src/features/homepage` keeps the earlier Desk & Paper look, scoped to the `.landing` wrapper: its own palette, typography, illustrations and motion. It shares the app's theme switch (the `.dark` class) and the app's Google Sans and Google Sans Code, and nothing else. `landing.css` defines the palette (below), the Instrument Serif and IBM Plex Mono faces, the names its utilities use (`bg-bg`, `text-ink`, `text-ink-2`, `text-ink-3`, `border-line`, `accent-text`, `shadow-e1` to `shadow-e3` and the rest), the graphite color, paper shadows and ambient animations. Illustration colors in the front matter are scene values, not tokens. The other public pages under `routes/_home` (templates, the ATS checker) are app surfaces and use HeroUI tokens.
+The public homepage in `apps/web/src/features/homepage` is built from HeroUI components and tokens like the app, in both themes. Its layout follows a book-launch page: a hero split around an accent panel, a short introduction, then numbered sections under a sticky section bar, a closing panel and the footer. The other public pages under `routes/_home` (templates, the ATS checker) are app surfaces with the shared marketing header.
 
-### Palette
+### Layout
 
-OKLCH values live in `.landing` and `.dark .landing`; light sRGB approximations: `bg` #F8F7F3, `surface` #FEFDFC, `raised` #FFFFFF, `sunken` #F0EFEB, `line` #DFDEDA, `line-2` #C5C4BE, `ink` #1C1B15, `ink-2` #4F4D47, `ink-3` #6D6C65, `accent` moss #337344, `accent-text` #195C2E, `accent-soft` #DCF2DF. Dark: `bg` #100F0C, `surface` #171613, `ink` #EFEEEB, `accent` #6FC082. Radius is 4px, with 2px for small marks; nothing is rounder, and there are no pills.
+- **Column:** every section sits in `Container` (`max-w-6xl`, 16/24/32px gutters). The introduction narrows to `max-w-3xl`.
+- **Hero:** the accent panel (`bg-accent`, without a grid pattern) runs off the start edge of the page, rounded only at its end-bottom corner (`rounded-ee-[4rem]`). The example resume (`resume.tsx`) stands on it: a `light`-scoped paper page with `shadow-page`, so it stays light in the dark theme, and three floating callouts (`bg-overlay`, `shadow-overlay`) for the ATS check, a tailored line and the shared link. A `surface-secondary` band behind the quote runs to the end edge. The headline is the page's only `h1`.
+- **Section bar:** sticky under the introduction, one numbered link per section from `getLandingSections` in `ui.tsx`; the section being read gets accent text and an accent underline, without a background. On phones a compact logomark and brand sit beside a small call to action above the horizontal links; the active link scrolls into view. From `lg` everything sits in one row.
+- **Section headings:** a pill with the section's number and name (`SectionHeading`), then a large statement (`SectionTitle`, 36–48px, weight 600).
+- **Bento grids:** six columns from `lg`, tiles of span 3+3 then 2+2+2 (light) or 4+2 then 2+4 (dark). Tiles are `Card`s with `p-0`; only the grid's outer corners round to 2rem. Each tile draws its feature from the same surfaces as the app (`surface-secondary` fields, `Chip`s, stage dots, paper pages) over a 288px stage that can fade into the card. The second grid sits on a band scoped with the `dark` class, so it reads dark in both themes.
+- **Pricing:** three plans in one `surface-secondary` panel; the featured plan (Pro AI) is raised on a solid accent without a grid. Names, prices and lists start at the same height in every card. Prices come from `plans.ts`: Rupiah in every locale for the Indonesian pilot, formatted with the locale's `Intl.NumberFormat`, the currency set smaller than the figure. Paid plans say they last 30 days and never renew on their own; no plan is ever “coming soon”.
+- **FAQ:** an `Accordion` (`surface`) beside a sticky intro column; the same answers go out as `FAQPage` structured data.
+- **Closing and footer:** the accent panel again, rounded 2–3rem, with the call to action as a `secondary` button. The footer has the logomark, one line, three link columns and the version.
 
-### Brand and type
+### Brand and controls
 
-- **Header:** a 30px logomark from `apps/web/public/icon/{light,dark}.svg`. Keep “Rezumi” as visually hidden text inside the home link.
-- **Footer:** a 140px logo from `apps/web/public/logo/{light,dark}.svg` above the hero's promise (its two highlighted phrases in `accent-text`), the link columns, then a line of community, MIT license and version copy.
-- **Footer desk:** two drawings of the same writing desk in front of an open window, day (`apps/web/public/illustrations/footer-desk-light.webp`, moss and charcoal on white) and night (`footer-desk-dark.webp`, silver and amber on black). The light one multiplies and the dark one lightens into the page, so their white or black wall vanishes and the desk seems to stand on the footer; their far edges fade out. As the desk scrolls into view it paints itself in from the window down, just ahead of the fold, while it rises and settles from a 4% zoom; it completes exactly when the page ends (`--dp`, written by `scroll.ts`; 1 under reduced motion). In the light theme a soft morning glow rises behind the window with it. Its objects are links back into the story, each showing its scene number and name on hover or focus: the resume to Write, the glasses to Check, the letters to Share, the calendar to Prepare, the window to Remember. The lamp switches the theme, like the header's cord. Below 700px the desk crops to its middle and the hotspots hide (the columns carry the same links). Hotspot boxes are percentages of the drawing (`getDeskSpots` in `footer.tsx`): re-measure them if the drawing changes. The wall must be pure white in the day drawing and pure black in the night one: multiply and lighten only make those disappear, and any tint shows as a band. Flatten with `magick in.png -background white -alpha remove -alpha off flat.png` (black for the night one); if the wall came back tinted, lift it to white per channel (e.g. `-channel R -level 0,97% -channel G -level 0,96.6% -channel B -level 0,95% +channel` for a #F8F7F3 wall), then `cwebp -q 74 -m 6 -sharp_yuv flat.png -o out.webp`. The 3200px drawing also ships at 1600px and 2400px (`footer-desk-<theme>-1600.webp`, `-2400.webp`; `magick -filter Lanczos -resize 1600x`, same `cwebp` settings), listed in the images' `srcSet`.
-- **Instrument Serif (`font-display`):** hero and closing headlines, selected scene titles, and large numerals.
-- **Instrument Serif:** body copy, italic accents, and serif title treatments in the Design scene.
-- **Labels (`font-sans`):** Google Sans 13px, weight 500, sentence case (`labelClass`).
-- **Google Sans (`font-sans`):** buttons and mock app UI. The receipt keeps IBM Plex Mono (`font-receipt`, `public/fonts`). Sizes here are fluid and tied to the illustrations (`cqw`, `vw`, `clamp`, `em`), so the scale rules above do not apply; the families still come from the tokens.
-
-### Controls
-
-- Repeat the same primary CTA, “Build your resume,” in the header, hero, and closing section. Buttons have 2px corners, in Google Sans 600, at 38px, 54px, and 56px respectively.
-- Scene navigation appears from 1240px. Sentence-case labels use `ink` when active and `ink-3` when inactive; a 6px accent dot marks the active scene. The Share night scene uses its own light inks.
-- The GitHub link appears from 1024px, with the GitHub mark, a duotone gold star, and a live compact count. Format counts with the locale's `Intl.NumberFormat`; include the full count in the accessible name.
-- The homepage theme control is a fixed 30px pull-cord button at the top end corner. Its height is 92px at rest, 112px on hover, and 124px during a pull. It uses a 450ms spring curve, toggles the shared theme after 170ms, and sways every seven seconds until first activated. The bulb glows in dark mode.
+- **Brand:** the 32px logomark from `apps/web/public/icon/{light,dark}.svg` (`BrandIcon variant="icon"`) beside “Rezumi” in 18px semibold.
+- **Call to action:** “Build your resume” (`CtaLink`) in the hero, the section bar and the closing panel, always to `/auth/register`. Plan buttons add `?plan=plus` or `?plan=pro-ai` to the sign-up URL; checkout is part of the membership implementation.
+- **No source-code links:** the landing does not link to GitHub, a license or self-hosting.
+- The hero has no separate header. Three collaboration pointers on the example resume identify You, Rezumi Agent and BYOK Agent; only the icons have a white stroke and soft shadow.
 
 ### Motion
 
-Pinned scenes contain a sticky `100svh` stage. Scroll progress is `p = clamp(0, −top / max(1, height − viewportHeight), 1)`; `scroll.ts` writes it to `--p` through one animation-frame-throttled scroll listener. CSS derives continuous motion from progress; React receives only coarse scene and step changes.
-
-| Scene  | Below 900px | From 900px |
-| ------ | ----------- | ---------- |
-| Hero   | 190vh       | 260vh      |
-| Write  | 280vh       | 330vh      |
-| Design | 380vh       | 440vh      |
-| Check  | 260vh       | 320vh      |
-| Tailor | 280vh       | 330vh      |
-| Share  | 240vh       | 300vh      |
-
-Light mode combines breathing window light (16 seconds), a drifting mullion shadow (90 seconds), and 18 dust motes. Dark mode adds a neutral 620px cursor glow at 6% opacity. These are decorative and must not obscure text.
-
-Scroll performance (Firefox and phones dropped frames here): the mullion shadow's softness is drawn into its gradients, never `filter: blur()`; backdrop blur uses the `blur-ok` variant (fine pointer, non-Gecko only) and falls back to the plain tinted backdrop; components that follow fast-changing scroll steps (Check's score, Prepare's clock and countdown) subscribe to `useLanding` on their own so the scene around them doesn't re-render.
-
-Reduced motion fixes scenes at their end state and collapses pinned sections to `100svh`. Disable scroll scrubbing, parallax, ambient movement, cord sway, and count animations. The Languages word rotation has a pause control and stays still with reduced motion.
-
-### Illustration
-
-- Nine watercolour doodles live in `apps/web/public/doodles/` as transparent WebP (up to 800px, plus a half-size `-small` and a quarter-size `-tiny`, each resized from the full file with `magick -filter Lanczos` and encoded with the same `cwebp` settings): pencil, paperclip, eraser, curve, magnifier, scissors, plane, globe, and note. They share the footer desk's style: soft washes, thin blue-grey pen lines, cream, sage, moss, slate blue, terracotta and ochre. Prompts and references for regenerating them are kept outside the repo; each is trimmed to its content and its faint background alpha cleaned (`-channel A -level 4%,100%`) before encoding losslessly in alpha (`cwebp -q 82 -alpha_q 100 -exact`), and its size goes in `doodleSizes` (`ui.tsx`). The magnifier is not trimmed: its empty glass is the Check lens, so `check.tsx` positions it from the lens's measured centre and radius in the 1024px source.
-- Doodles appear through a 110° mask wipe with subtle parallax. They keep their colours in both themes: opacity 0.92 in light mode, 0.8 and slightly dimmed (`brightness(0.92)`) in dark. No drop shadows: a hard shadow draws the image's box against the paper texture. The Share plane fades in with the night sky.
-- Most doodles hide below 900px; pencil and plane remain. Keep them decorative, noninteractive, and clear of readable text.
-- Construction guides use `graphite` lines with an SVG turbulence filter for a pencil effect.
+Motion is the app's: hover color changes, the bento's template fan spreading on hover (`duration-emphasized`), and the text caret's pulse (`motion-safe` only). The hero headline slides its words upward with a last-to-first character stagger after hydration, sizes to the active word, stays static with reduced motion, and pauses outside the viewport or in a hidden tab. Mobile keeps three lines; larger screens use two. No scroll-driven scenes, parallax or entrance animations; initial content remains visible in prerendered HTML.
 
 ### Content and delivery
 
 - Prerender the homepage and public ATS checker per locale at build time through `prerender.tsx` and `apps/web/vite.config.ts`. The app is a client-rendered SPA; `apps/server/src/static/web.ts` serves the generated HTML and adds canonical, Open Graph, `hreflang`, and structured data. Keep headings and body copy in the initial HTML. Prerendered pages start the app's JavaScript only after the first contentful paint (the loader in `vite.config.ts`), so their first screen must not depend on it, and must not fade in on load: the largest paint would wait for the fade.
-- Include title and description metadata and `SoftwareApplication` structured data with a zero-price offer.
+- Include title and description metadata and `SoftwareApplication` structured data with one offer per plan, in Rupiah.
 - **Template previews** come from each template's sample PDF (`apps/web/public/templates/pdf/<id>.pdf`), never at print resolution: `templates/jpg/<id>.jpg` at 600×848 (builder and letter cards, the mobile picker and the README; old mobile builds load this URL, so it stays a JPEG), and `templates/thumb/<id>.webp` at 596×843 with a 300×424 `<id>-small.webp` (homepage and gallery). Regenerate them with the server's sharp:
 
   ```sh
@@ -271,8 +216,8 @@ Reduced motion fixes scenes at their end state and collapses pinned sections to 
   ' "$id")
   ```
 
-- Use one `h1`, section headings, landmarks, and a skip link. Animated character treatments expose the complete string once to assistive technology. Nothing relies on hover alone.
-- Translate copy, accessible labels, and demo resume text through Lingui. Names and addresses may stay literal; the Languages display intentionally preserves native words and language names. Allow text expansion and RTL layouts.
+- Use one `h1`, section headings, landmarks, and a skip link. Drawings inside the hero and bento tiles are decorative (`aria-hidden`); the words beside them carry the meaning. Nothing relies on hover alone.
+- Translate copy, accessible labels, and demo resume text through Lingui. Names, companies and addresses may stay literal. Allow text expansion and RTL layouts.
 
 ## Do and don't
 

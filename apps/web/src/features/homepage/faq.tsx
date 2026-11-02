@@ -1,13 +1,9 @@
-import type { CSSProperties } from "react";
+import { Accordion } from "@heroui/react";
 import { t } from "@lingui/core/macro";
-import { useLingui } from "@lingui/react";
-import { Trans } from "@lingui/react/macro";
 import { Link } from "@tanstack/react-router";
-import { templateSchema } from "@rezumi/schema/templates";
-import { localeSchema } from "@rezumi/utils/locale";
-import { cn } from "@rezumi/utils/style";
-import { SCENE } from "./scroll";
-import { Doodle, labelClass } from "./ui";
+import { Icon } from "@rezumi/ui/components/icon";
+import { freeTemplates } from "./plans";
+import { Container, SectionHeading, SectionTitle } from "./ui";
 import { serializeJsonLd } from "@/libs/seo";
 
 type Question = {
@@ -15,25 +11,36 @@ type Question = {
 	question: string;
 	/** Plain text: it is also the structured data's answer, which has to match what the page shows. */
 	answer: string;
-	link?: { label: string } & ({ href: string } | { to: "/ats-checker" });
+	link?: { label: string; to: "/ats-checker" };
 };
 
-function useQuestions(): Question[] {
-	const { i18n } = useLingui();
-	const templates = i18n.number(templateSchema.options.length);
-	// Every locale but Lingui's pseudo-locale, which only exists to test layouts.
-	const languages = i18n.number(localeSchema.options.length - 1);
-
+const getQuestions = (): Question[] => {
+	const freeTemplateCount = freeTemplates.length;
 	return [
 		{
 			id: "free",
-			question: t`Is Rezumi really free?`,
-			answer: t`Yes. Every feature is free: all ${templates} templates, PDF and Word downloads, the ATS checker, cover letters and the job tracker. There are no ads, no tracking and no paid tier.`,
+			question: t`Is there a free plan?`,
+			answer: t`Yes. The free plan covers 3 active resumes and 3 cover letters, ${freeTemplateCount} templates, PDF downloads without a watermark, the ATS check and the job tracker. No card is needed to sign up.`,
+		},
+		{
+			id: "access",
+			question: t`How does a 30-day plan work?`,
+			answer: t`You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document.`,
+		},
+		{
+			id: "credits",
+			question: t`What is an AI credit?`,
+			answer: t`Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes 100 credits. The Free plan includes a one-time trial of 5 credits, valid for 14 days.`,
+		},
+		{
+			id: "own-key",
+			question: t`Can I use my own AI key?`,
+			answer: t`Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service.`,
 		},
 		{
 			id: "ats",
 			question: t`Will my resume get past applicant tracking systems?`,
-			answer: t`Every template exports a text-based PDF with the words in reading order, which is what applicant tracking systems (ATS) need to parse a resume. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix.`,
+			answer: t`Templates export text-based PDFs. Parsing varies between applicant tracking systems (ATS), so check the exported file for your chosen layout. To test any PDF, including one made elsewhere, the free ATS checker shows the text software extracts and what to fix.`,
 			link: { label: t`Try the ATS checker`, to: "/ats-checker" },
 		},
 		{
@@ -44,113 +51,22 @@ function useQuestions(): Question[] {
 		{
 			id: "import",
 			question: t`Can I import a resume I already have?`,
-			answer: t`Yes. Import a PDF, a LinkedIn data export, a JSON Resume file or a Rezumi export, then pick up where it left off. With an AI provider set up, Word documents work too.`,
+			answer: t`Yes. Import a PDF, a LinkedIn data export or a JSON Resume file, then pick up where it left off.`,
 		},
 		{
 			id: "export",
 			question: t`What formats can I download?`,
-			answer: t`PDF, Word (DOCX), Markdown and JSON. The JSON export imports back into any Rezumi, including one you host yourself, so your data is never locked in.`,
-		},
-		{
-			id: "ai",
-			question: t`Does it use AI?`,
-			answer: t`Only if you want it to. Add your own key from OpenAI, Anthropic, Google Gemini, OpenRouter, Ollama or another provider for sharper lines, tailoring to a job posting, coaching for applications and interviews, and reading Word files. Without a key, nothing is sent to an AI service.`,
-		},
-		{
-			id: "interviews",
-			question: t`Can it help me prepare for interviews?`,
-			answer: t`Yes. Every job you track gets its own workspace: check your fit against the posting, draft answers from stories you wrote once, get a short plan before the interview, practice out loud with feedback and debrief afterwards. When offers arrive, compare them side by side. The coaching uses your own AI key; the comparison doesn’t need one.`,
-		},
-		{
-			id: "self-host",
-			question: t`Can I host it myself?`,
-			answer: t`Yes. Rezumi is open source under the MIT License and can run on your own Cloudflare account with your own database and storage.`,
-			link: { label: t`Read the self-hosting guide`, href: "https://docs.rezumi.app/self-hosting/cloudflare" },
-		},
-		{
-			id: "languages",
-			question: t`Which languages does it speak?`,
-			answer: t`The app is translated into ${languages} languages by volunteers, and a resume can be written in any language, including right-to-left scripts like Arabic and Hebrew.`,
+			answer: t`PDF on every plan, along with Markdown and JSON. Word (DOCX) and ODT come with Plus and Pro AI. You can export all of your data at any time, whatever your plan.`,
 		},
 	];
-}
-
-// A pencil circling the question's number: it overshoots its start, the way a hand-drawn loop does.
-const circlePath = "M18 44C6 38 3 24 14 14C28 3 66 2 84 10C99 17 99 33 86 41C70 50 32 51 14 42C6 37 7 27 16 20";
-// The pencil underline under the question, a little uneven.
-const underlinePath = "M2 7C30 4 58 9 96 6S160 3 196 7S262 9 298 5";
-
-type FaqItemProps = { item: Question; index: number };
-
-function FaqItem({ item, index }: FaqItemProps) {
-	const number = String(index + 1).padStart(2, "0");
-	const linkClass =
-		"mt-3 inline-flex items-center gap-1 font-medium font-sans text-[14px] text-[oklch(0.42_0.1_150)] underline underline-offset-[3px] transition-colors hover:text-[oklch(0.32_0.1_150)]";
-
-	return (
-		<details name="faq" className="faq-item border-b border-line">
-			<summary className="flex cursor-pointer list-none items-start gap-5 rounded-sm py-6 outline-offset-4 focus-visible:outline-2 focus-visible:outline-accent [&::-webkit-details-marker]:hidden">
-				<span className={cn(labelClass, "relative mt-[.7em] w-8 shrink-0 text-center text-ink-3")}>
-					{number}
-					<svg
-						aria-hidden="true"
-						viewBox="0 0 100 52"
-						preserveAspectRatio="none"
-						className="pointer-events-none absolute -inset-x-2.5 -inset-y-2.5 size-[calc(100%+20px)] overflow-visible text-accent"
-					>
-						<path data-stroke="circle" pathLength={1} d={circlePath} strokeWidth={2.6} />
-					</svg>
-				</span>
-				<h3 className="flex-1 font-display text-[clamp(21px,2vw,30px)] leading-[1.2] font-light tracking-[-.015em] text-pretty text-ink">
-					{/* Shrink-wrapped, so the underline runs under the words rather than the whole row. */}
-					<span className="relative inline-block pb-1.5">
-						{item.question}
-						<svg
-							aria-hidden="true"
-							viewBox="0 0 300 12"
-							preserveAspectRatio="none"
-							className="pointer-events-none absolute inset-x-0 -bottom-1 h-2.5 w-full overflow-visible text-ink-3"
-						>
-							<path data-stroke="underline" pathLength={1} d={underlinePath} strokeWidth={1.6} />
-						</svg>
-					</span>
-				</h3>
-				<span aria-hidden="true" data-plus className="relative mt-[.55em] size-5 shrink-0 text-ink-2">
-					<span className="absolute inset-x-0 top-1/2 h-[1.5px] -translate-y-1/2 rounded-full bg-current" />
-					<span className="absolute inset-y-0 left-1/2 w-[1.5px] -translate-x-1/2 rounded-full bg-current" />
-				</span>
-			</summary>
-
-			<div className="ps-13 pe-2 pb-8">
-				<div
-					data-note
-					className="relative rounded-md bg-paper px-6 py-5 text-[oklch(0.28_0.01_95)] shadow-[0_1px_2px_oklch(0.2_0.01_95/.12),0_18px_36px_-18px_oklch(0.2_0.01_95/.4)]"
-					style={{ "--tilt": `${index % 2 === 0 ? -0.5 : 0.4}deg` } as CSSProperties}
-				>
-					<p className="font-display text-[clamp(17px,1.3vw,20px)] leading-normal text-pretty">{item.answer}</p>
-					{item.link &&
-						("to" in item.link ? (
-							<Link to={item.link.to} className={linkClass}>
-								{item.link.label} <span aria-hidden="true">→</span>
-							</Link>
-						) : (
-							<a href={item.link.href} className={linkClass}>
-								{item.link.label} <span aria-hidden="true">→</span>
-							</a>
-						))}
-				</div>
-			</div>
-		</details>
-	);
-}
+};
 
 /**
- * 11 Questions: the answers people look for before they start, as folded notes. Opening a question circles its number
- * in pencil, underlines it and unfolds the answer; only one stays open. The same answers go out as FAQPage structured
- * data, so search engines and assistants can quote them.
+ * 05 FAQ: the answers people look for before they start, one open at a time. The same answers go out as FAQPage
+ * structured data, so search engines and assistants can quote them.
  */
 export function Faq() {
-	const questions = useQuestions();
+	const questions = getQuestions();
 	const structuredData = {
 		"@context": "https://schema.org",
 		"@type": "FAQPage",
@@ -164,47 +80,48 @@ export function Faq() {
 	return (
 		<section
 			id="faq"
-			data-scene={SCENE.faq}
 			aria-labelledby="faq-title"
-			className="relative mx-auto grid max-w-[1440px] items-start gap-x-16 gap-y-10 border-t border-line px-(--gutter) pt-[12vh] pb-[14vh] min-[900px]:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
+			className="scroll-mt-[calc(var(--landing-nav-height,5rem)+1rem)] py-20 sm:py-28"
 		>
-			<div className="flex flex-col gap-[22px] min-[900px]:sticky min-[900px]:top-[14vh]">
-				<span className={cn(labelClass, "text-ink-3")}>{t`Questions`}</span>
-				<h2
-					id="faq-title"
-					className="font-display text-[clamp(48px,5.6vw,100px)] leading-[.98] font-light tracking-[-.03em] text-ink"
-				>
-					<Trans>
-						Asked and <em className="font-display font-normal text-accent-text italic">answered.</em>
-					</Trans>
-				</h2>
-				<p className="max-w-[24em] font-display text-[clamp(17px,1.4vw,21px)] leading-normal text-pretty text-ink-2">
-					<Trans>
-						9 short answers to what people ask before they start. Anything else, ask on{" "}
-						<a
-							href="https://discord.gg/jSVSJyWd2k"
-							className="text-accent-text italic underline underline-offset-[3px] transition-colors hover:text-accent-hover"
-						>
-							Discord
+			<Container className="grid gap-x-16 gap-y-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+				<div className="lg:sticky lg:top-32 lg:self-start">
+					<SectionHeading section="faq" id="faq-title" />
+					<SectionTitle className="sm:text-4xl">{t`Asked and answered.`}</SectionTitle>
+					<p className="mt-4 text-lg text-pretty text-muted">
+						{t`Something else on your mind? Write to us at`}{" "}
+						<a href="mailto:hi@rezumi.app" className="font-medium text-accent hover:underline hover:underline-offset-4">
+							hi@rezumi.app
 						</a>
-						.
-					</Trans>
-				</p>
-				{/* In the sticky column, so it travels with the heading instead of crossing it. */}
-				<div aria-hidden="true" className="relative mt-4 aspect-[800/746] w-[11vw] max-[900px]:hidden">
-					<Doodle
-						name="note"
-						wipe="clamp(0, (var(--p) - .1) / .2, 1)"
-						className="start-0 top-0 w-full rotate-[-6deg]"
-					/>
+					</p>
 				</div>
-			</div>
 
-			<div className="border-t border-line">
-				{questions.map((item, index) => (
-					<FaqItem key={item.id} item={item} index={index} />
-				))}
-			</div>
+				<Accordion variant="surface">
+					{questions.map((item) => (
+						<Accordion.Item key={item.id} id={item.id}>
+							<Accordion.Heading>
+								<Accordion.Trigger className="text-start text-base font-medium">
+									{item.question}
+									<Accordion.Indicator />
+								</Accordion.Trigger>
+							</Accordion.Heading>
+							<Accordion.Panel>
+								<Accordion.Body className="text-pretty text-muted">
+									<p>{item.answer}</p>
+									{item.link && (
+										<Link
+											to={item.link.to}
+											className="mt-3 inline-flex items-center gap-1.5 font-medium text-accent hover:underline hover:underline-offset-4"
+										>
+											{item.link.label}
+											<Icon name="arrow-right" size={16} />
+										</Link>
+									)}
+								</Accordion.Body>
+							</Accordion.Panel>
+						</Accordion.Item>
+					))}
+				</Accordion>
+			</Container>
 
 			{/* oxlint-disable-next-line react/no-danger -- structured data, serialized so no answer can close the script. */}
 			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(structuredData) }} />

@@ -1,6 +1,6 @@
 import type { Plugin, ProxyOptions } from "vite-plus";
 import { readFileSync } from "node:fs";
-import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { lingui } from "@lingui/vite-plugin";
 import babel from "@rolldown/plugin-babel";
@@ -9,7 +9,7 @@ import { devtools } from "@tanstack/devtools-vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { defineConfig } from "vite-plus";
-import { RESERVED_SEGMENTS } from "@rezumi/utils/app-paths";
+import { publicResumeProxyPattern } from "./src/libs/dev-server-proxy";
 
 const rootPackageJsonPath = new URL("../../package.json", import.meta.url);
 const rootPackageJson = JSON.parse(readFileSync(rootPackageJsonPath, "utf-8")) as { version: string | undefined };
@@ -35,15 +35,6 @@ async function prerenderPages() {
 		pathToFileURL(`${prerenderBundleDir}/prerender.js`).href
 	);
 	const shell = await readFile(`${webRoot}dist/index.html`, "utf8");
-	const assets = await readdir(`${webRoot}dist/assets`);
-	// These fonts paint the first screen. Discover the build's hashed URLs before CSS would request them.
-	const fontPreloads = ["google-sans-latin-wght-normal-", "instrument-serif-latin-400-normal-"]
-		.map((prefix) => {
-			const asset = assets.find((name) => name.startsWith(prefix) && name.endsWith(".woff2"));
-			if (!asset) throw new Error(`Missing marketing font: ${prefix}`);
-			return `<link rel="preload" as="font" type="font/woff2" href="/assets/${asset}" crossorigin>`;
-		})
-		.join("");
 
 	// The page is readable before any script runs, so the app's JavaScript starts after the first contentful paint: the
 	// stylesheet, fonts and images get the bandwidth first, and lab tools stop counting the scripts toward that paint.
@@ -82,7 +73,6 @@ async function prerenderPages() {
 		for (const locale of locales) {
 			const page = await renderPage(name, locale);
 			const html = pageShell
-				.replace("</head>", `${fontPreloads}</head>`)
 				.replace(/<html lang="[^"]*">/, () => `<html lang="${locale}" dir="${page.dir}">`)
 				.replace(/<title>[^<]*<\/title>/, () => `<title>${escapeHtml(page.title)}</title>`)
 				.replace(
@@ -123,17 +113,6 @@ const phosphorWeightsPlugin = (): Plugin => ({
 const linguiPlugin = () =>
 	lingui({ macroTransform: { parser: { syntax: "typescript", tsx: true, decorators: true } } });
 
-// First path segments that are never a username: the app's own, plus Vite's in development. `.well-known` needs its dot
-// escaped; the lookahead takes regex fragments.
-const ownSegments = [
-	...RESERVED_SEGMENTS.map((segment) => segment.replaceAll(".", "\\.")),
-	"assets",
-	"src",
-	"node_modules",
-	"@[a-z-]+",
-	"__[^/]*",
-].join("|");
-
 const serverPaths = [
 	"/api",
 	"/mcp",
@@ -144,7 +123,7 @@ const serverPaths = [
 	"/cards",
 	// A resume's web page, `/<username>` (the primary resume) or `/<username>/<slug>`, is rendered by the server: any
 	// one- or two-segment address outside the app's own sections, without a file extension.
-	`^/(?!(?:${ownSegments})(?:/|$))[^/.]+(?:/[^/.]+)?/?(?:\\?.*)?$`,
+	publicResumeProxyPattern,
 ] as const;
 
 const serverProxy = serverPaths.reduce(

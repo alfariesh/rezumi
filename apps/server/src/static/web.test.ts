@@ -62,10 +62,10 @@ describe("web app fallback classification", () => {
 			<!doctype html>
 			<html>
 				<head>
-					<title>Rezumi — A free and open-source resume builder</title>
+					<title>Rezumi — Resume builder</title>
 					<meta
 						name="description"
-						content="Rezumi is a free and open-source resume builder that makes it easy to create, update, and share your resume."
+						content="Rezumi is a resume builder that makes it easy to create, update, and share your resume."
 					>
 				</head>
 				<body><div id="app"></div></body>
@@ -79,7 +79,7 @@ describe("web app fallback classification", () => {
 		expect(html).toContain('<meta property="og:url" content="https://rezumi.app/">');
 		expect(html).toContain('<script type="application/ld+json">');
 		expect(html).toContain(
-			'<meta property="og:description" content="Rezumi is a free and open-source resume builder that makes it easy to create, update, and share your resume.">',
+			'<meta property="og:description" content="Rezumi is a resume builder that makes it easy to create, update, and share your resume.">',
 		);
 		expect(html).toContain('"contactType":"support","email":"hi@rezumi.app"');
 		expect(html).not.toContain("utm_source");
@@ -112,7 +112,7 @@ describe("web app fallback classification", () => {
 	});
 
 	describe.each(["ats-checker", "resume-templates"])("the %s page", (path) => {
-		const shell = `<html><head><title>Rezumi — A free and open-source resume builder</title><meta name="description" content="Marketing copy."></head><body></body></html>`;
+		const shell = `<html><head><title>Rezumi — Resume builder</title><meta name="description" content="Marketing copy."></head><body></body></html>`;
 
 		it("serves an indexable shell rather than a 404", async () => {
 			vi.mocked(fs.readFile).mockResolvedValue(shell);

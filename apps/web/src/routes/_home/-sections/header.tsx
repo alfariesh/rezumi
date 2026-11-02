@@ -5,7 +5,6 @@ import { useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
-import { GithubStarsButton } from "@/components/input/github-stars-button";
 import { LocaleCombobox } from "@/features/locale/combobox";
 import { ThemeToggleButton } from "@/features/theme/toggle-button";
 
@@ -28,23 +27,11 @@ export function Header() {
 				</Link>
 
 				<div className="ml-auto flex items-center gap-x-2">
-					<LocaleCombobox
-						render={
-							<button
-								type="button"
-								className={buttonVariants({ variant: "ghost", isIconOnly: true })}
-								aria-label={t`Change language`}
-							>
-								<Icon name="translate" />
-							</button>
-						}
-					/>
+					<LocaleCombobox aria-label={t`Change language`} />
 
 					<ThemeToggleButton />
 
 					<div className="hidden items-center gap-x-4 sm:flex">
-						<GithubStarsButton />
-
 						<Link to="/dashboard" aria-label={t`Go to dashboard`} className={buttonVariants({ isIconOnly: true })}>
 							<Icon name="arrow-right" />
 						</Link>
