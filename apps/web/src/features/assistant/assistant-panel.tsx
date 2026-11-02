@@ -20,6 +20,7 @@ import { Composer, Conversation } from "./conversation";
 import { PendingTurn } from "./pending-turn";
 import { ProviderSetup } from "./provider-setup";
 import { creditCost, useAiSource } from "@/features/billing/ai-source";
+import { REZUMI_AI_TEXT } from "@/features/billing/ai-source-menu";
 import { creditCount } from "@/features/billing/credits";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { formatVersionTime } from "@/features/resume/share/format";
@@ -358,7 +359,9 @@ function ModelMenu({ open, onOpenChange, providers, current, label, onChoose }: 
 						{providers.map((item) => (
 							<Dropdown.Item key={item.id} id={item.id} textValue={`${item.label} ${item.model}`}>
 								<span className="grid min-w-0 flex-1">
-									<Label className="truncate">{item.label}</Label>
+									<Label className={cn("truncate", item.managed && credits !== null && REZUMI_AI_TEXT)}>
+										{item.label}
+									</Label>
 									<Description className="truncate">
 										{item.managed && credits !== null ? <Trans>{creditCount(credits)} per reply</Trans> : item.model}
 									</Description>

@@ -10,6 +10,10 @@ import { cn } from "@rezumi/utils/style";
 import { chooseAiSource, creditCost, useAiSource } from "./ai-source";
 import { creditCount } from "./credits";
 
+/** Rezumi AI's text, wherever it names its source or cost: a blue-to-purple gradient, lighter in dark mode. */
+export const REZUMI_AI_TEXT =
+	"bg-linear-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-violet-400";
+
 type AiSourceMenuProps = {
 	/** The kind of work the action next to it is, for its cost on Rezumi AI. */
 	action: CreditAction;
@@ -35,8 +39,18 @@ export function AiSourceMenu({ action, className }: AiSourceMenuProps) {
 					source === "rezumi" ? t`Runs on Rezumi AI for ${cost}. Change` : t`Runs on your AI connection. Change`
 				}
 			>
-				<Icon name="sparkle" size={14} />
-				{source === "rezumi" ? <Trans>Rezumi AI · {cost}</Trans> : <Trans>Your AI connection</Trans>}
+				<Icon
+					name="sparkle"
+					size={14}
+					className={source === "rezumi" ? "text-violet-600 dark:text-violet-400" : undefined}
+				/>
+				{source === "rezumi" ? (
+					<span className={REZUMI_AI_TEXT}>
+						<Trans>Rezumi AI · {cost}</Trans>
+					</span>
+				) : (
+					<Trans>Your AI connection</Trans>
+				)}
 				<Icon name="caret-down" size={12} />
 			</Button>
 			<Dropdown.Popover placement="bottom end" className="w-72">
@@ -49,7 +63,7 @@ export function AiSourceMenu({ action, className }: AiSourceMenuProps) {
 				>
 					<Dropdown.Item id="rezumi" textValue="Rezumi AI">
 						<span className="grid min-w-0 flex-1">
-							<Label>Rezumi AI</Label>
+							<Label className={REZUMI_AI_TEXT}>Rezumi AI</Label>
 							<Description>
 								<Trans>
 									{cost} each time · {creditCount(balance)} left
@@ -88,7 +102,7 @@ export function AiCostNote({ action, providerId, className }: AiCostNoteProps) {
 	if (!choice || !managed || providerId !== managed.id) return null;
 	const cost = creditCount(creditCost(action));
 	return (
-		<span className={cn("text-xs text-muted", className)}>
+		<span className={cn("text-xs", REZUMI_AI_TEXT, className)}>
 			<Trans>
 				Rezumi AI · {cost} · {creditCount(balance)} left
 			</Trans>

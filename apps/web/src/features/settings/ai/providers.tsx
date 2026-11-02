@@ -36,6 +36,7 @@ import {
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
 import { Combobox } from "@/components/ui/combobox";
 import { useAiSource } from "@/features/billing/ai-source";
+import { REZUMI_AI_TEXT } from "@/features/billing/ai-source-menu";
 import { creditCount } from "@/features/billing/credits";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -262,7 +263,7 @@ function ProviderRow({ provider, balance, isDefault, onMakeDefault, makingDefaul
 				</RowIcon>
 				<span className="grid min-w-0 flex-1 gap-0.5">
 					<span className="flex flex-wrap items-center gap-2 text-sm font-semibold">
-						<span className="break-words">{provider.label}</span>
+						<span className={cn("break-words", rezumi && REZUMI_AI_TEXT)}>{provider.label}</span>
 						<Chip
 							size="sm"
 							variant="soft"
