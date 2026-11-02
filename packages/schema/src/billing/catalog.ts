@@ -56,6 +56,20 @@ export const BILLING_CURRENCY = "IDR";
 /** The templates on the free plan: three one-column, ATS-safe layouts and one two-column. */
 export const FREE_TEMPLATES = ["bronzor", "onyx", "rhyhorn", "azurill"] as const satisfies readonly Template[];
 
+/** Whether a template is one of the free plan's; the others need `premiumTemplates`. */
+export function isFreeTemplate(template: Template): boolean {
+	return (FREE_TEMPLATES as readonly Template[]).includes(template);
+}
+
+/** The billing features a plan names, in the order the apps list them. */
+export const PLAN_FEATURE_KEYS = [
+	"premiumTemplates",
+	"wordOdtExport",
+	"customStyles",
+	"customFonts",
+	"automationApi",
+] as const satisfies readonly (keyof PlanFeatures)[];
+
 /** The one-time Rezumi AI trial: granted on first use to a registered account with a verified email. */
 export const TRIAL_CREDITS = { amount: 5, validDays: 14 } as const;
 

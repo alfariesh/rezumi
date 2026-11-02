@@ -12,6 +12,11 @@ vi.mock("@tanstack/react-query", () => ({ useQuery: () => ({ data: [] }) }));
 vi.mock("@/features/applications/queries", () => ({ applicationsListQueryOptions: () => ({}) }));
 vi.mock("@/features/letters/export", () => ({ createLetterFile: vi.fn(), letterFileName: vi.fn() }));
 vi.mock("@/libs/orpc/client", () => ({ client: {} }));
+// Plans don't apply in these tests: everything is open, as with billing off.
+vi.mock("@/features/billing/plan", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@/features/billing/plan")>()),
+	usePlan: () => undefined,
+}));
 vi.mock("@rezumi/ui/components/toast", () => ({ toast: { add: mocks.toast } }));
 vi.mock("@rezumi/utils/file", () => ({ downloadWithAnchor: mocks.download }));
 vi.mock("@/features/resume/export/use-resume-export", () => ({

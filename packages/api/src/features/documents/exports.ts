@@ -8,6 +8,7 @@ import { buildMarkdown } from "@rezumi/resume/markdown";
 import { generateFilename } from "@rezumi/utils/file";
 import { protectedProcedure } from "../../context";
 import { pdfExportRateLimit } from "../../middleware/rate-limit";
+import { assertFeature } from "../billing/limits";
 import { coverLetterService } from "../cover-letters/service";
 import { resumeService } from "../resume/service";
 
@@ -16,6 +17,11 @@ const exportInput = z.object({
 	format: z.enum(["pdf", "docx", "odt", "md", "json"]),
 });
 const exportOutput = z.object({ headers: z.object({ "content-disposition": z.string() }), body: z.file() });
+
+/** New Word and ODT files need the plan's `wordOdtExport`; PDF, Markdown and JSON are always open. */
+async function assertFormatAllowed(userId: string, format: z.infer<typeof exportInput>["format"]) {
+	if (format === "docx" || format === "odt") await assertFeature(userId, "wordOdtExport");
+}
 
 /** Builds the download response (headers + body) for a resume or cover letter in the requested format. */
 async function fileResponse(
@@ -71,6 +77,7 @@ export const documentExports = {
 		.output(exportOutput)
 		.use(pdfExportRateLimit)
 		.handler(async ({ context, input }) => {
+			await assertFormatAllowed(context.user.id, input.format);
 			const resume = await resumeService.getById({ id: input.id, userId: context.user.id });
 			return fileResponse(getResumeExportData(resume.data, "resume"), resume.name, input.format, resume.data);
 		}),
@@ -100,6 +107,7 @@ export const documentExports = {
 		.output(exportOutput)
 		.use(pdfExportRateLimit)
 		.handler(async ({ context, input }) => {
+			await assertFormatAllowed(context.user.id, input.format);
 			const letter = await coverLetterService.getById({ id: input.id, userId: context.user.id });
 			const words = input.words ?? {
 				greeting: "Dear {name},",

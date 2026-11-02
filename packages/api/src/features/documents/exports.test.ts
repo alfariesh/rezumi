@@ -4,7 +4,17 @@ import { unzipSync, strFromU8 } from "fflate";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const getResume = vi.hoisted(() => vi.fn());
+const plan = vi.hoisted(() => ({ free: false }));
 vi.mock("../resume/service", () => ({ resumeService: { getById: getResume } }));
+vi.mock("../billing/entitlements", async () => {
+	const actual = await vi.importActual<typeof import("../billing/entitlements")>("../billing/entitlements");
+	// The free plan as it applies once billing is on; otherwise unlimited, as with billing off.
+	return {
+		...actual,
+		getEntitlements: (userId: string) =>
+			plan.free ? Promise.resolve(actual.resolveEntitlements([], new Date())) : actual.getEntitlements(userId),
+	};
+});
 vi.mock("@rezumi/auth/config", () => ({
 	auth: { api: { getSession: vi.fn().mockResolvedValue({ user: { id: "owner" } }) } },
 	verifyOAuthToken: vi.fn(),
@@ -15,6 +25,7 @@ vi.mock("@rezumi/db/client", () => ({
 const { documentExports } = await import("./exports");
 const context = { locale: "en-US" as const, reqHeaders: new Headers() };
 beforeEach(() => {
+	plan.free = false;
 	const data = structuredClone(defaultResumeData);
 	data.basics.name = "Ada Lovelace";
 	data.summary.content = "<p>Builds analytical engines.</p>";
@@ -47,4 +58,22 @@ it("exports an editable OpenDocument Text file", async () => {
 	const xml = strFromU8(content);
 	expect(xml).toContain("Ada Lovelace");
 	expect(xml).toContain("Builds analytical engines.");
+});
+
+it("refuses new Word and ODT files without the plan feature, and keeps Markdown and JSON open", async () => {
+	plan.free = true;
+	for (const format of ["docx", "odt"] as const) {
+		await expect(call(documentExports.resume, { id: "resume-1", format }, { context })).rejects.toMatchObject({
+			code: "PLAN_FEATURE_REQUIRED",
+			data: { feature: "wordOdtExport", planId: "free" },
+		});
+		await expect(call(documentExports.letter, { id: "letter-1", format }, { context })).rejects.toMatchObject({
+			code: "PLAN_FEATURE_REQUIRED",
+		});
+	}
+	expect(getResume).not.toHaveBeenCalled();
+	const markdown = await call(documentExports.resume, { id: "resume-1", format: "md" }, { context });
+	expect(await markdown.body.text()).toContain("Builds analytical engines.");
+	const json = await call(documentExports.resume, { id: "resume-1", format: "json" }, { context });
+	expect(JSON.parse(await json.body.text())).toMatchObject({ basics: { name: "Ada Lovelace" } });
 });

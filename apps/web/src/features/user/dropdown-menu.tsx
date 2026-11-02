@@ -7,6 +7,7 @@ import { useRouter } from "@tanstack/react-router";
 import { Pressable } from "react-aria-components/Pressable";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
+import { usePlan } from "@/features/billing/plan";
 import { clearAccountData } from "@/libs/auth/clear-account-data";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";
@@ -15,11 +16,15 @@ type Props = {
 	children: ({ session }: { session: AuthSession }) => React.ComponentProps<typeof Pressable>["children"];
 };
 
-/** The account menu: Account and Settings are pages; theme and language live in Settings and the command bar. */
+/**
+ * The account menu: Account, Plan (while plans apply to the account) and Settings are pages; theme and language live
+ * in Settings and the command bar.
+ */
 export function UserDropdownMenu({ children }: Props) {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 	const { data: session } = authClient.useSession();
+	const plan = usePlan();
 
 	const handleLogout = async () => {
 		const toastId = toast.add({ type: "loading", description: t`Signing out...` });
@@ -66,6 +71,18 @@ export function UserDropdownMenu({ children }: Props) {
 							<Trans>Account</Trans>
 						</Label>
 					</Dropdown.Item>
+					{plan?.enabled && (
+						<Dropdown.Item
+							id="plan"
+							textValue={t`Plan`}
+							onAction={() => void router.navigate({ to: "/dashboard/settings/billing" })}
+						>
+							<Icon name="seal-check" size={16} />
+							<Label>
+								<Trans>Plan</Trans>
+							</Label>
+						</Dropdown.Item>
+					)}
 					<Dropdown.Item
 						id="settings"
 						textValue={t`Settings`}

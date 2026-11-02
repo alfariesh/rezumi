@@ -34,7 +34,8 @@ const unlimited = (): Entitlements => ({
 });
 
 export function getBillingMode(): BillingMode {
-	return env.BILLING_MODE;
+	// The env schema defaults it; a missing value (a partial env in tests) still means off.
+	return env.BILLING_MODE ?? "off";
 }
 
 /** Whether plans apply to an account: everyone when on, only admins while testing, nobody when off. */

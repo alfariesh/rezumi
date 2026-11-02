@@ -3,6 +3,8 @@ import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import { openBrowserAsync } from "expo-web-browser";
 import { View } from "react-native";
+import { LEGAL_URLS } from "@rezumi/schema/billing";
+import { canShowPlans, getPlanName, usePlan } from "@/features/billing/plan";
 import { SettingsGroup, SettingsPage } from "@/features/settings/layout";
 import { useProfile } from "@/features/settings/queries";
 import { SignOutRow } from "@/features/settings/sign-out";
@@ -14,6 +16,7 @@ export default function SettingsScreen() {
 	const { t } = useLingui();
 	const { space } = useTheme();
 	const profile = useProfile();
+	const plan = usePlan();
 	const openLink = (url: string) => {
 		void openBrowserAsync(url).catch(() => showToast({ message: t`Couldn't open the browser. Try again.` }));
 	};
@@ -39,6 +42,16 @@ export default function SettingsScreen() {
 					onPress={() => router.push(routes.settings("preferences"))}
 				/>
 				<ListRow title={t`AI & developer`} leading="robot" chevron onPress={() => router.push(routes.settings("ai"))} />
+				{/* Android shows the plan without selling it; iOS shows nothing about plans (store rules). */}
+				{canShowPlans() && plan?.enabled ? (
+					<ListRow
+						title={t`Plan`}
+						leading="seal-check"
+						value={getPlanName(plan.planId)}
+						chevron
+						onPress={() => router.push(routes.settings("membership"))}
+					/>
+				) : null}
 			</SettingsGroup>
 			<SettingsGroup>
 				<SignOutRow switchServer />
@@ -51,16 +64,10 @@ export default function SettingsScreen() {
 					onPress={() => openLink("https://docs.rezumi.app")}
 				/>
 				<ListRow
-					title={t`Report an issue`}
-					leading="bug"
+					title={t`Contact & complaints`}
+					leading="question"
 					external
-					onPress={() => openLink("https://github.com/alfariesh/rezumi/issues/new/choose")}
-				/>
-				<ListRow
-					title={t`Source code on GitHub`}
-					leading="github-logo"
-					external
-					onPress={() => openLink("https://github.com/alfariesh/rezumi")}
+					onPress={() => openLink(LEGAL_URLS.contact)}
 				/>
 			</SettingsGroup>
 			<SettingsGroup title={t`Legal`}>
@@ -68,20 +75,11 @@ export default function SettingsScreen() {
 					title={t`Privacy policy`}
 					leading="shield-check"
 					external
-					onPress={() => openLink("https://docs.rezumi.app/legal/privacy-policy")}
+					onPress={() => openLink(LEGAL_URLS.privacy)}
 				/>
-				<ListRow
-					title={t`Terms of service`}
-					leading="scroll"
-					external
-					onPress={() => openLink("https://docs.rezumi.app/legal/terms-of-service")}
-				/>
-				<ListRow
-					title={t`MIT License`}
-					leading="scales"
-					external
-					onPress={() => openLink("https://github.com/alfariesh/rezumi/blob/main/LICENSE")}
-				/>
+				<ListRow title={t`Terms of service`} leading="scroll" external onPress={() => openLink(LEGAL_URLS.terms)} />
+				<ListRow title={t`Refund policy`} leading="scroll" external onPress={() => openLink(LEGAL_URLS.refund)} />
+				<ListRow title={t`MIT License`} leading="scales" external onPress={() => openLink(LEGAL_URLS.license)} />
 				<ListRow
 					title={t`Open-source licenses`}
 					leading="file-text"

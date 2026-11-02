@@ -15,6 +15,8 @@ import { useNewDocumentsStore } from "./new-documents";
 import { useStartDocument } from "./use-start-document";
 import { useDialogStore } from "@/dialogs/store";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
+import { describeImportedDesign, usePlan } from "@/features/billing/plan";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { detectImportKind, ImportError, readResumeFile, summarizeImport } from "@/features/resume/import/read-file";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
@@ -64,7 +66,13 @@ function useResumeImport(
 	const markNew = useNewDocumentsStore((state) => state.markNew);
 	const providerState = useHasUsableAiProvider();
 	const { hasUsableProvider } = providerState;
+	const plan = usePlan();
 	const run = useRef(0);
+	// The server fits an imported design to the plan; say what changed.
+	const noteImportedDesign = (design: Parameters<typeof describeImportedDesign>[1]) => {
+		const notice = describeImportedDesign(plan, design);
+		if (notice) toast.add({ type: "info", description: notice });
+	};
 	const refreshDocuments = () => queryClient.invalidateQueries({ queryKey: orpc.documents.key() });
 
 	const importFile = async (file: File) => {
@@ -84,8 +92,10 @@ function useResumeImport(
 			const kind = requireImportKind(await detectImportKind(file));
 
 			if (kind === "cover-letter-json") {
-				const letter = await client.coverLetters.import({ document: JSON.parse(await file.text()) });
+				const document = JSON.parse(await file.text());
+				const letter = await client.coverLetters.import({ document });
 				if (!current()) return;
+				if (document?.style?.metadata?.template) noteImportedDesign(document.style.metadata);
 				markNew(letter.id);
 				void refreshDocuments();
 				toast.add({ description: t`Cover letter imported` });
@@ -117,6 +127,7 @@ function useResumeImport(
 
 			const resumeId = await client.resume.import({ data: resume });
 			if (!current()) return;
+			noteImportedDesign(resume.metadata);
 			if (applicationId) await client.documents.linkApplication({ type: "resume", id: resumeId, applicationId });
 			if (!current()) return;
 			markNew(resumeId);
@@ -124,6 +135,7 @@ function useResumeImport(
 			setStep({ name: "imported", file, resumeId, ...summary });
 		} catch (error) {
 			if (!current()) return;
+			openPlanDialogForError(error);
 			const message =
 				error instanceof ImportError
 					? error.message

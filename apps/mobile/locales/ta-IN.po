@@ -334,6 +334,11 @@ msgstr "{0} (என்னுடையது)"
 msgid "{0} → {1}: {2}{3}"
 msgstr "{0} → {1}: {2}{3}"
 
+#. placeholder {0}: freeTemplateList()
+#: src/features/billing/plan-alert.ts
+msgid "{0} are available, and documents that already use another template keep it."
+msgstr ""
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -381,7 +386,7 @@ msgid "{0} more"
 msgstr "{0} அதிகம்"
 
 #. placeholder {0}: shown.length
-#. placeholder {1}: TEMPLATES.length
+#. placeholder {1}: listed.length
 #: src/features/design/template-group.tsx
 msgid "{0} of {1} shown"
 msgstr "{1} இன் {0} காட்டப்பட்டுள்ளது"
@@ -582,6 +587,10 @@ msgstr "{minutes} நிமி"
 msgid "{name} added to page 1"
 msgstr "{name} பக்கம் 1 இல் சேர்க்கப்பட்டது"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't available, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/workspace/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} பதிலளிக்கவில்லை. எதுவும் மாற்றப்படவில்லை; மீண்டும் முயற்சிக்கவும்."
@@ -589,6 +598,10 @@ msgstr "{name} பதிலளிக்கவில்லை. எதுவும
 #: src/features/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} {columns} நெடுவரிசைகளாக பிரிக்கப்பட்டுள்ளது"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't available, so the imported document uses {free}."
+msgstr ""
 
 #: src/features/check/issues.ts
 msgid "{name} moved to the main column"
@@ -673,6 +686,14 @@ msgstr "{toCheck, plural, one {# புலத்தைப் பார்க்�
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
 msgstr "{toCheck, plural, one {சரிபார்க்க #} other {சரிபார்க்க #}}"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} in use"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} of {max}"
+msgstr ""
 
 #: src/features/letters/write.tsx
 #: src/features/workspace/tabs/apply.tsx
@@ -878,6 +899,19 @@ msgstr "{1} இல் {0}க்கான செயல்கள்"
 #: src/features/ai/web-access.tsx
 msgid "Active"
 msgstr "செயலில்"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "Active until {0}"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 #: src/features/write/basics-screen.tsx
@@ -1424,6 +1458,18 @@ msgstr "இந்த வேலையைப் பற்றி நினைவி
 msgid "Anywhere"
 msgstr "எங்கும்"
 
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/web-access.tsx
 msgid "API key"
@@ -1437,6 +1483,10 @@ msgstr "API விசை திரும்பப் பெறப்பட்ட
 #: src/features/settings/api-keys.tsx
 msgid "API keys"
 msgstr "API விசைகள்"
+
+#: src/features/settings/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr ""
 
 #: app/(tabs)/settings/preferences.tsx
 msgid "Appearance"
@@ -2227,6 +2277,10 @@ msgstr "ஆடியோ கோப்பைத் தேர்ந்தெடு�
 msgid "Choose another file"
 msgstr "மற்றொரு கோப்பைத் தேர்ந்தெடுக்கவும்"
 
+#: src/features/billing/plan-alert.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Choose date"
 msgstr "தேதியைத் தேர்ந்தெடுக்கவும்"
@@ -2506,6 +2560,10 @@ msgstr "இணைப்புகளைக் கண்டறிகிறது"
 #: src/features/ai/web-access.tsx
 msgid "Connection saved"
 msgstr "இணைப்பு சேமிக்கப்பட்டது"
+
+#: app/(tabs)/settings/index.tsx
+msgid "Contact & complaints"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/check/issues.ts
@@ -3200,6 +3258,7 @@ msgstr "தனிப்பயன் புலங்கள்"
 msgid "Custom section"
 msgstr "தனிப்பயன் பிரிவு"
 
+#: app/(tabs)/settings/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3208,6 +3267,26 @@ msgstr "தனிப்பயன் பாணிகள்"
 #: src/features/design/advanced.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "தனிப்பயன் பாணிகள் பயன்படுத்தப்படவில்லை. அவற்றைப் பயன்படுத்த, இந்தப் பிழைகளைச் சரிசெய்யவும்:"
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't available"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't available. Styles already saved keep working on the page."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr ""
 
 #: src/features/settings/locale-names.ts
 msgid "Czech"
@@ -3548,6 +3627,7 @@ msgid "Document type"
 msgstr "ஆவண வகை"
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/settings/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
 msgid "Documents"
@@ -3560,6 +3640,10 @@ msgstr "ஆவணங்கள் 30 நாட்களுக்குப் ப�
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
 msgstr "இந்த வேலைக்கான ஆவணங்கள்"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Documents in Trash don't count."
+msgstr ""
 
 #: src/features/documents/library.tsx
 msgid "Documents you move here stay for 30 days."
@@ -3619,6 +3703,10 @@ msgstr "பதிவிறக்கம் {0}"
 #: src/shell/builder-chrome.tsx
 msgid "Download & history"
 msgstr "பதிவிறக்கம் & வரலாறு"
+
+#: src/features/billing/plan-alert.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON are available too."
+msgstr ""
 
 #: src/features/letters/share.tsx
 msgid "Download both PDFs"
@@ -3983,6 +4071,10 @@ msgstr "ஒவ்வொரு பதிவிற்கும் ஒரு பட
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "ஒவ்வொரு பாத்திரமும் நீங்கள் செய்ததைச் சொல்கிறது. ரைட்டிங் டேப்பில் வார்த்தைகள் குறித்த கருத்துகள் நேரலையில் இருக்கும்."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "வேலை இடுகை வலியுறுத்தும் ஒவ்வொரு சொல்லும் ஏற்கனவே உள்ளது."
@@ -4285,6 +4377,10 @@ msgstr "வடிவமைத்தல்"
 msgid "Found {0}"
 msgstr "{0} அன்று கண்டறியப்பட்டது"
 
+#: src/features/billing/plan.ts
+msgid "Free"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Free-form"
@@ -4297,6 +4393,12 @@ msgstr "பிரெஞ்சு"
 #: src/features/letters/write.tsx
 msgid "From"
 msgstr "இருந்து"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "From {0} until {1}"
+msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
 msgid "From Fit"
@@ -4702,6 +4804,10 @@ msgstr "தேர்ந்தெடுக்கப்பட்ட வரிய�
 #: src/features/write/improve.tsx
 msgid "Improving…"
 msgstr "மேம்படுத்துகிறது…"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Included"
+msgstr ""
 
 #: src/features/applications/list-screen.tsx
 msgid "Including closed"
@@ -6087,6 +6193,10 @@ msgstr "மின்னஞ்சல் முகவரி இல்லை"
 msgid "No email address was found."
 msgstr "மின்னஞ்சல் முகவரி எதுவும் காணப்படவில்லை."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "No evidence yet"
 msgstr "இன்னும் சான்று இல்லை"
@@ -6185,6 +6295,14 @@ msgstr "ரெஸ்யூம் இல்லை"
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
 msgstr "இந்த முகவரியில் Rezumi சேவையகம் இல்லை. எழுத்துப்பிழையைச் சரிபார்க்கவும் அல்லது ஆப்ஸ் உள்நுழைவைச் சேவையகம் அனுமதிக்கிறதா என்று உங்கள் நிர்வாகியிடம் கேட்கவும்."
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another resume"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -6285,6 +6403,10 @@ msgstr "காணப்படவில்லை:"
 #: src/features/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "உங்கள் ரெஸ்யூமில் இல்லை · உண்மை என்றால் மட்டும் சேர்க்கவும்"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Not included"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 #: src/features/workspace/tabs/debrief.tsx
@@ -6445,6 +6567,10 @@ msgstr "ஆஃப்லைன் · இந்தச் சாதனத்தி�
 #: app/(tabs)/_layout.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
 msgstr "ஆஃப்லைன். இந்தச் சாதனத்தில் திருத்தங்கள் சேமிக்கப்பட்டு மீண்டும் இணைக்கப்படும்போது ஒத்திசைக்கப்படும்."
+
+#: src/features/billing/plan-alert.ts
+msgid "OK"
+msgstr ""
 
 #: src/features/career/today.tsx
 msgid "On"
@@ -6680,6 +6806,10 @@ msgstr "அசல் அட்டவணை வடிவமைப்பு பா
 #: src/features/applications/next-step.ts
 msgid "Other"
 msgstr "மற்றவை"
+
+#: src/features/settings/api-keys.tsx
+msgid "Other apps can't connect with API keys on this account. This app always works."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Other benefits"
@@ -6954,6 +7084,11 @@ msgstr "எளிய உரை (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "தலைப்புகளுடன் கூடிய எளிய உரை. வேலை விண்ணப்பப் படிவங்கள் மற்றும் குறிப்புகளில் ஒட்டவும்."
 
+#: app/(tabs)/settings/index.tsx
+#: app/(tabs)/settings/membership.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Plan again"
 msgstr "மீண்டும் திட்டமிடு"
@@ -6969,6 +7104,15 @@ msgstr "என்ன கேட்பது எனத் திட்டமிட
 #: src/features/workspace/parts.tsx
 msgid "Planning your week"
 msgstr "உங்கள் வாரத்தைத் திட்டமிடுகிறது"
+
+#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Plans can be bought on the rezumi.app website."
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "Play recording"
@@ -7544,6 +7688,10 @@ msgstr "24 மணி நேரத்திற்கு முன் சுரு
 msgid "Refresh the briefing on the morning of"
 msgstr "நேர்காணல் நாளன்று காலை சுருக்கக் குறிப்பைப் புதுப்பி"
 
+#: app/(tabs)/settings/index.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Register at OlaCV"
 msgstr "OlaCV-இல் பதிவுசெய்"
@@ -7760,10 +7908,6 @@ msgstr "அறிக்கை"
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
 msgstr "AI உள்ளடக்கத்தைப் புகாரளிக்கவும்"
-
-#: app/(tabs)/settings/index.tsx
-msgid "Report an issue"
-msgstr "ஒரு பிரச்சினையை அறிக்கையிடவும்"
 
 #: src/features/ai/report-content.tsx
 msgid "Report received by your server operator. Thank you."
@@ -9046,10 +9190,6 @@ msgstr "ஆதாரம்"
 msgid "Source and correction history"
 msgstr "மூல மற்றும் திருத்த வரலாறு"
 
-#: app/(tabs)/settings/index.tsx
-msgid "Source code on GitHub"
-msgstr "GitHub இல் மூலக் குறியீடு"
-
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
@@ -9224,6 +9364,10 @@ msgstr "அடித்தல்"
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
 msgstr "வலுவான வினைச்சொல்"
+
+#: src/features/billing/plan-alert.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "Submit through the employer's application page yourself."
@@ -9773,6 +9917,11 @@ msgstr "நீங்கள் அனுப்பிய பதிப்புக�
 msgid "Theme"
 msgstr "தீம்"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: app/(tabs)/settings/membership.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "There is a gap between two dated roles."
 msgstr "தேதியிடப்பட்ட இரண்டு பணிகளுக்கு இடையே ஒரு இடைவெளி உள்ளது."
@@ -9808,6 +9957,10 @@ msgstr "சிந்திக்கிறது…"
 #: app/(tabs)/settings/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
 msgstr "மூன்றாம் தரப்பு மென்பொருள் அறிவிப்புகள். ஒரு சார்பின் உரிமத்தைப் படிக்க அதைத் தட்டவும்."
+
+#: src/features/billing/plan-alert.ts
+msgid "This app always works. Other apps and assistants that connect with an API key need more."
+msgstr ""
 
 #: src/features/application-detail/detail-screen.tsx
 #: src/features/workspace/shell.tsx
@@ -9902,6 +10055,10 @@ msgstr "இந்தக் கோப்பு எந்த மொழியைய
 #: src/features/ats-checker/messages.ts
 msgid "This file has no accessibility tags."
 msgstr "இந்தக் கோப்பில் அணுகல்தன்மைக் குறிச்சொற்கள் இல்லை."
+
+#: src/features/billing/plan-alert.ts
+msgid "This file holds a resume and its cover letters, and they're saved together."
+msgstr ""
 
 #: src/features/ats-checker/checker.tsx
 msgid "This file is {megabytes} MB. Imports take files up to 10 MB."
@@ -10062,6 +10219,14 @@ msgstr "இந்த உள்நுழைவு முயற்சி கால
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "இந்தக் கதை கிடைக்கவில்லை, அல்லது அணைக்கப்பட்ட உண்மைகளைப் பயன்படுத்துகிறது."
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't in your plan"
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 #: src/features/applications-board/reschedule-sheet.tsx
@@ -10923,9 +11088,17 @@ msgstr "நீங்கள் அனுப்பியது"
 msgid "What you're looking for"
 msgstr "நீங்கள் தேடுவது"
 
+#: app/(tabs)/settings/membership.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "What's working"
 msgstr "என்ன வேலை செய்கிறது"
+
+#: app/(tabs)/settings/membership.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "When do you need a decision?"
@@ -10984,6 +11157,10 @@ msgstr "அகலம்"
 msgid "Within your office-day limit."
 msgstr "உங்கள் அலுவலக நாள் வரம்பிற்குள்."
 
+#: src/features/settings/api-keys.tsx
+msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "ஒன்று இல்லாமல், பெறுநரை நீங்களே நிரப்பி, வரைவு உங்கள் விண்ணப்பத்தை மட்டுமே பயன்படுத்துகிறது."
@@ -10992,6 +11169,18 @@ msgstr "ஒன்று இல்லாமல், பெறுநரை நீ�
 #: src/features/share/download.tsx
 msgid "Word"
 msgstr "Word"
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT aren't available"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT downloads aren't in your plan"
+msgstr ""
 
 #: src/features/ai/provider-list.tsx
 msgid "Word import, Improve, the assistant, letter drafts, Career coaching and generation, and voice practice need one. Editing, Design, the readability checks and downloads work without one."
@@ -11100,6 +11289,14 @@ msgstr "நீங்கள் பதிலளித்தீர்கள்: {an
 #: src/shell/builder-chrome.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
 msgstr "நீங்கள் தொடர்ந்து திருத்தலாம். நீங்கள் மீண்டும் ஆன்லைனில் இருக்கும்போது மாற்றங்கள் ஒத்திசைக்கப்படும். PDF பகிர்வு தற்காலிக சேமிப்பு எழுத்துருக்கள் மற்றும் படங்களுடன் வேலை செய்கிறது."
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
 msgid "You can keep up to 30 application questions."
@@ -11310,9 +11507,25 @@ msgstr "உங்கள் தொடக்க உரை"
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "உங்கள் தொடக்க உரை, கொண்டுசெல்ல வேண்டிய கதைகள், கேட்க வேண்டிய கேள்விகள். அழைப்புக்கு 10 நிமிடங்களுக்கு முன் இது உங்கள் சரிபார்ப்புப் பட்டியலாக மாறும்."
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "உங்கள் தொலைபேசி எண் அசாதாரண வடிவத்தில் எழுதப்பட்டுள்ளது."
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Your plan"
+msgstr ""
 
 #: src/features/assistant/coach-screen.tsx
 msgid "your preferences"

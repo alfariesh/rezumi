@@ -40,6 +40,13 @@ test("AI imports retain the selecting account through parsing", async () => {
 			},
 		},
 		"@rezumi/schema/cover-letter/data": {},
+		"@rezumi/schema/templates": { templateSchema: { safeParse: () => ({ success: false }) } },
+		"@orpc/client": { ORPCError: class extends Error {} },
+		"@/features/billing/plan-alert": {
+			describePlanProblem: () => ({ title: "", message: "" }),
+			getPlanProblem: () => null,
+			showPlanAlert: () => {},
+		},
 		"@/auth/session": { getAccountScope: () => scope },
 		"@/api/client": {
 			SessionChangedError,

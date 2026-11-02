@@ -13,6 +13,7 @@ import { icons } from "@rezumi/schema/icons";
 import { Field, Stepper, SwitchRow } from "./controls";
 import { DATE_FORMATS, parseColorInput, resetDesign, rgbaToHex } from "./presets";
 import { useResumeStore } from "@/draft";
+import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { Button, Chip, Icon, ListRow, SelectSheet, Text, showToast, useTheme, type IconName } from "@/ui";
 
 export type AdvancedId = "typography" | "colours" | "page" | "layout" | "styles";
@@ -29,7 +30,10 @@ export function AdvancedGroup({ data, write, disabled, open, onOpenChange, onPus
 	const { colors, space, size } = useTheme();
 	const { metadata } = data;
 	const css = metadata.stylesheet?.source.text.trim() ?? "";
-	const rows: { id: AdvancedId; icon: IconName; title: string; value: string }[] = [
+	// iOS lists only what the account can use; Android keeps Custom styles, read-only without the plan's feature.
+	const plan = usePlan();
+	const stylesHidden = !canShowPlans() && !hasPlanFeature(plan, "customStyles");
+	const allRows: { id: AdvancedId; icon: IconName; title: string; value: string }[] = [
 		{
 			id: "typography",
 			icon: "text-aa",
@@ -46,6 +50,7 @@ export function AdvancedGroup({ data, write, disabled, open, onOpenChange, onPus
 		},
 		{ id: "styles", icon: "code", title: t`Custom styles`, value: css ? t`Custom` : t`None` },
 	];
+	const rows = stylesHidden ? allRows.filter((row) => row.id !== "styles") : allRows;
 
 	const reset = () => {
 		write("reset", (draft) => resetDesign(draft.metadata), true);
@@ -468,9 +473,12 @@ export function AdvancedPageScreen({ data, write, disabled }: GroupProps) {
 const COMPILE_DELAY_MS = 500;
 
 /** Advanced → Custom styles: the semantic CSS stylesheet in a monospace field, with its errors and Copy. */
-export function StylesScreen({ data, write, disabled }: GroupProps) {
+export function StylesScreen({ data, write, disabled: documentDisabled }: GroupProps) {
 	const { t } = useLingui();
 	const { colors, radius, space, type } = useTheme();
+	// Without custom styles in the plan, saved styles keep rendering but can't be edited here.
+	const planLocked = !hasPlanFeature(usePlan(), "customStyles");
+	const disabled = documentDisabled || planLocked;
 	const source = data.metadata.stylesheet?.source ?? { languageVersion: 1, text: "" };
 	const { languageVersion, text: raw } = source;
 	// Stylesheets saved before the version moved out of the text start with `@version 1;`; it isn't shown (web).
@@ -493,6 +501,17 @@ export function StylesScreen({ data, write, disabled }: GroupProps) {
 
 	return (
 		<View style={{ gap: space.s3 }}>
+			{planLocked ? (
+				<ListRow
+					title={
+						canShowPlans()
+							? t`Custom styles aren't in your plan. Styles already saved keep working on the page.`
+							: t`Custom styles aren't available. Styles already saved keep working on the page.`
+					}
+					leading="lock"
+					onPress={() => showPlanAlert({ kind: "feature", feature: "customStyles" })}
+				/>
+			) : null}
 			<TextInput
 				accessibilityLabel={t`Semantic CSS stylesheet`}
 				editable={!disabled}

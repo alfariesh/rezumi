@@ -9,6 +9,7 @@ const authMock = vi.hoisted(() => ({
 	},
 }));
 const verifyOAuthTokenMock = vi.hoisted(() => vi.fn());
+const assertAutomationAccessMock = vi.hoisted(() => vi.fn());
 
 const dbMock = vi.hoisted(() => ({
 	select: vi.fn(),
@@ -19,6 +20,7 @@ vi.mock("@rezumi/auth/config", () => ({
 	verifyOAuthToken: verifyOAuthTokenMock,
 }));
 vi.mock("@rezumi/db/client", () => ({ db: dbMock }));
+vi.mock("./features/billing/automation", () => ({ assertAutomationAccess: assertAutomationAccessMock }));
 vi.mock("@rezumi/db/schema", () => ({ user: { __table: "user" } }));
 vi.mock("drizzle-orm", () => ({ eq: () => "EQ" }));
 vi.mock("@rezumi/env/server", async (importOriginal) => {
@@ -44,6 +46,7 @@ const reset = () => {
 	authMock.api.verifyApiKey.mockReset();
 	verifyOAuthTokenMock.mockReset();
 	dbMock.select.mockReset();
+	assertAutomationAccessMock.mockReset();
 };
 
 describe("resolveUserFromRequestHeaders", () => {
@@ -199,5 +202,40 @@ describe("credential authorization", () => {
 		);
 		await expect(operation(undefined)).rejects.toMatchObject({ code: "FORBIDDEN" });
 		expect(authMock.api.getSession).not.toHaveBeenCalled();
+	});
+});
+
+describe("plan access for apps", () => {
+	it("hands every authenticated call, with the token's OAuth client, to the plan check", async () => {
+		reset();
+		verifyOAuthTokenMock.mockResolvedValue({ sub: "owner", azp: "client-1" });
+		setupDbResolves({ id: "owner" });
+		const operation = createProcedureClient(
+			protectedProcedure.route({ method: "GET" }).handler(() => "executed"),
+			{ context: { locale: "en-US", reqHeaders: new Headers({ authorization: "Bearer token" }) } },
+		);
+		await expect(operation(undefined)).resolves.toBe("executed");
+		expect(assertAutomationAccessMock).toHaveBeenCalledWith(
+			expect.objectContaining({
+				method: "bearer",
+				clientId: "client-1",
+				user: expect.objectContaining({ id: "owner" }),
+			}),
+		);
+	});
+
+	it("stops the call before its handler when the plan refuses the credential", async () => {
+		reset();
+		authMock.api.verifyApiKey.mockResolvedValue({ valid: true, key: { referenceId: "owner", permissions: null } });
+		setupDbResolves({ id: "owner" });
+		assertAutomationAccessMock.mockRejectedValue(
+			Object.assign(new Error("Needs a plan"), { code: "PLAN_FEATURE_REQUIRED" }),
+		);
+		const handler = vi.fn(() => "executed");
+		const operation = createProcedureClient(protectedProcedure.route({ method: "GET" }).handler(handler), {
+			context: { locale: "en-US", reqHeaders: new Headers({ "x-api-key": "key" }) },
+		});
+		await expect(operation(undefined)).rejects.toMatchObject({ code: "PLAN_FEATURE_REQUIRED" });
+		expect(handler).not.toHaveBeenCalled();
 	});
 });

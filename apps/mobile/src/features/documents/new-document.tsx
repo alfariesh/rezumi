@@ -16,8 +16,9 @@ import { documentError, useDocumentRefresh, useDocuments } from "./queries";
 import { client, orpc } from "@/api/client";
 import { getServer, useSession } from "@/auth/session";
 import { AIProviderSetupSheet, useHasAIProvider } from "@/features/ai/providers";
+import { describeImportedDesign, usePlan } from "@/features/billing/plan";
 import { routes } from "@/routes";
-import { Banner, Button, Card, ListRow, Screen, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui";
+import { Banner, Button, Card, ListRow, Screen, SelectSheet, Switch, Text, TextField, showToast, useTheme } from "@/ui";
 
 type Step = "choose" | "copy" | "import";
 
@@ -30,6 +31,7 @@ export function NewDocument() {
 	const documents = useDocuments();
 	const refresh = useDocumentRefresh();
 	const ai = useHasAIProvider();
+	const plan = usePlan();
 	const [setup, setSetup] = useState(false);
 	const [step, setStep] = useState<Step>(params.step === "copy" ? "copy" : "choose");
 	const [sourceId, setSourceId] = useState<string | null>(params.sourceResumeId ?? null);
@@ -172,6 +174,9 @@ export function NewDocument() {
 			setProgress(t`Reading the file and finding sections…`);
 			const document = await importDocument(picked, ai.hasAIProvider, aiPdf ?? ai.hasAIProvider, signal);
 			if (!current(signal)) return;
+			// The server fits an imported design to the plan; say what changed.
+			const notice = document.design ? describeImportedDesign(plan, document.design) : null;
+			if (notice) showToast({ message: notice });
 			setCreated(document);
 			useNewDocuments.getState().markNew(document);
 			cleanupFile();

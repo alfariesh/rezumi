@@ -282,6 +282,11 @@ msgstr "{0, plural, one {Started # minute ago} other {Started # minutes ago}}"
 msgid "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 msgstr "{0, plural, one {Tags for # document} other {Tags for # documents}}"
 
+#. placeholder {0}: requested.coverLetters
+#: src/features/billing/plan.ts
+msgid "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+msgstr "{0, plural, one {This file holds a resume and # cover letter, and they're saved together.} other {This file holds a resume and # cover letters, and they're saved together.}}"
+
 #. placeholder {0}: steps.length
 #: src/features/assistant/conversation.tsx
 msgid "{0, plural, one {Took # step} other {Took # steps}}"
@@ -345,6 +350,11 @@ msgstr "{0} h"
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{0} in {1} is {2} in your timezone ({preferredZone})."
 
+#. placeholder {0}: usage.used
+#: src/features/billing/plan-page.tsx
+msgid "{0} in use"
+msgstr "{0} in use"
+
 #. placeholder {0}: interviewKindOf(upcoming.kind)?.label ?? ""
 #. placeholder {0}: kind?.label ?? entry.kind
 #: src/features/applications/components/detail/activity.tsx
@@ -372,6 +382,12 @@ msgstr "{0} min"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} more"
+
+#. placeholder {0}: usage.used
+#. placeholder {1}: usage.max
+#: src/features/billing/plan-page.tsx
+msgid "{0} of {1}"
+msgstr "{0} of {1}"
 
 #. placeholder {0}: report.passedChecks
 #. placeholder {1}: report.applicableChecks
@@ -657,6 +673,10 @@ msgstr "{monthCount, plural, =0 {No interviews} one {# interview} other {# inter
 msgid "{name} added to page 1"
 msgstr "{name} added to page 1"
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+msgstr "{name} and custom styles aren't in your plan, so the imported document uses {free} without the file's styles."
+
 #: src/features/career/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} didn't respond. Nothing was changed; try again."
@@ -664,6 +684,10 @@ msgstr "{name} didn't respond. Nothing was changed; try again."
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} is split into {columns} columns"
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't in your plan, so the imported document uses {free}."
+msgstr "{name} isn't in your plan, so the imported document uses {free}."
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} moved to the main column"
@@ -1114,6 +1138,19 @@ msgstr "Actions"
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Active"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active cover letters"
+msgstr "Active cover letters"
+
+#: src/features/billing/plan-page.tsx
+msgid "Active resumes"
+msgstr "Active resumes"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Active until {0}"
+msgstr "Active until {0}"
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1737,6 +1774,14 @@ msgstr "Anything to remember about this job"
 msgid "Anywhere"
 msgstr "Anywhere"
 
+#: src/features/billing/plan.ts
+msgid "API and MCP access isn't in your plan"
+msgstr "API and MCP access isn't in your plan"
+
+#: src/features/billing/plan-page.tsx
+msgid "API and MCP for other apps"
+msgstr "API and MCP for other apps"
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/api-keys.tsx
 #: src/features/settings/ai/providers.tsx
@@ -1748,6 +1793,10 @@ msgstr "API key"
 #: src/features/settings/ai/api-keys.tsx
 msgid "API keys"
 msgstr "API keys"
+
+#: src/features/settings/ai/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
+msgstr "API keys need the Plus or Pro AI plan"
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "App"
@@ -2624,6 +2673,10 @@ msgstr "Choose an offer"
 msgid "Choose another file"
 msgstr "Choose another file"
 
+#: src/features/billing/plan.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr "Choose any of the fonts in Design instead."
+
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "Choose color"
@@ -2705,6 +2758,7 @@ msgstr "Client ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/plan-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -2794,6 +2848,10 @@ msgstr "Columns"
 msgid "Columns can scramble the order text is read in."
 msgstr "Columns can scramble the order text is read in."
 
+#: src/features/homepage/pricing.tsx
+msgid "Coming soon"
+msgstr "Coming soon"
+
 #: src/features/career/today.tsx
 msgid "Coming up"
 msgstr "Coming up"
@@ -2838,6 +2896,10 @@ msgstr "Compare attempts to see what improved. Practice questions are simulated,
 #: src/features/career/workspace/shell.tsx
 msgid "Compare offers"
 msgstr "Compare offers"
+
+#: src/features/billing/plan-page.tsx
+msgid "Compare plans"
+msgstr "Compare plans"
 
 #: src/routes/dashboard/career/route.tsx
 msgid "Compare two saved offers side by side, and decide what to ask."
@@ -2982,6 +3044,10 @@ msgstr "Connections bill speech separately and may use tokens on your account. Y
 #: src/features/homepage/footer.tsx
 msgid "Contact"
 msgstr "Contact"
+
+#: src/routes/dashboard/settings/route.tsx
+msgid "Contact & complaints"
+msgstr "Contact & complaints"
 
 #: src/features/ats-checker/messages.ts
 #: src/features/resume/editor/check/issues.ts
@@ -3914,6 +3980,7 @@ msgstr "Custom section"
 msgid "Custom sections"
 msgstr "Custom sections"
 
+#: src/features/billing/plan-page.tsx
 #: src/libs/resume/section.tsx
 msgid "Custom styles"
 msgstr "Custom styles"
@@ -3925,6 +3992,18 @@ msgstr "Custom styles and your own fonts"
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
 msgstr "Custom styles aren't applied. Fix these errors to apply them:"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan"
+msgstr "Custom styles aren't in your plan"
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+msgstr "Custom styles aren't in your plan, so the imported document leaves the file's styles out."
+
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
+msgstr "Custom styles aren't in your plan. Styles already saved keep working on the page."
 
 #: src/libs/locale.ts
 msgid "Czech"
@@ -4279,6 +4358,7 @@ msgstr "Document menu: {name}"
 msgid "Document type"
 msgstr "Document type"
 
+#: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/documents-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -4293,6 +4373,10 @@ msgstr "Documents are deleted permanently after 30 days."
 #: src/features/career/workspace/shell.tsx
 msgid "Documents for this job"
 msgstr "Documents for this job"
+
+#: src/features/billing/plan-page.tsx
+msgid "Documents in Trash don't count."
+msgstr "Documents in Trash don't count."
 
 #: src/features/documents/trash-page.tsx
 msgid "Documents you move here stay for 30 days."
@@ -4348,6 +4432,10 @@ msgstr "Download {name} sample PDF"
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Download & history"
 msgstr "Download & history"
+
+#: src/features/billing/plan.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
+msgstr "Download a PDF instead: it keeps your design exactly. Markdown and JSON downloads are included too."
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Download application details, contacts, notes, and timeline history as CSV."
@@ -4872,6 +4960,10 @@ msgstr "Every entry has dates in a form systems read, in order, and none in the 
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Every role says what you did. Opinions on wording live in the Writing tab."
 
+#: src/features/billing/plan-page.tsx
+msgid "Every template"
+msgstr "Every template"
+
 #: src/features/homepage/templates.tsx
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
@@ -5308,6 +5400,7 @@ msgstr "Found today"
 msgid "Found yesterday"
 msgstr "Found yesterday"
 
+#: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
 #: src/features/templates/gallery.tsx
@@ -5340,6 +5433,12 @@ msgstr "Fresh graduate, Informatics"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "From"
 msgstr "From"
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: src/features/billing/plan-page.tsx
+msgid "From {0} until {1}"
+msgstr "From {0} until {1}"
 
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
@@ -5884,6 +5983,10 @@ msgstr "Improve selected line"
 msgid "Improving…"
 msgstr "Improving…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Included"
+msgstr "Included"
+
 #: src/features/ats-checker/messages.ts
 msgid "Increase line spacing so two lines are not merged into one."
 msgstr "Increase line spacing so two lines are not merged into one."
@@ -6386,6 +6489,10 @@ msgstr "Lead Designer, Northwind"
 msgid "Leads with why you fit"
 msgstr "Leads with why you fit"
 
+#: src/features/resume/stylesheet/editor.tsx
+msgid "Learn more"
+msgstr "Learn more"
+
 #: src/features/career/offers.tsx
 msgid "Learning budget"
 msgstr "Learning budget"
@@ -6522,6 +6629,11 @@ msgstr "Level"
 #: src/components/level/display.tsx
 msgid "Level {level} of 5"
 msgstr "Level {level} of 5"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Licenses"
+msgstr "Licenses"
 
 #: src/features/ats-checker/messages.ts
 msgid "Ligatures can drop letters out of words such as \"workflow\"."
@@ -6741,6 +6853,10 @@ msgstr "Loading stylesheet editor…"
 msgid "Loading workspace…"
 msgstr "Loading workspace…"
 
+#: src/features/billing/plan-page.tsx
+msgid "Loading your plan…"
+msgstr "Loading your plan…"
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/command-palette/index.tsx
 #: src/features/command-palette/pages/resumes.tsx
@@ -6804,8 +6920,8 @@ msgid "Lower the design sheet"
 msgstr "Lower the design sheet"
 
 #: src/features/resume/share/web-page-text.ts
-msgid "Made with Rezumi, free and open source"
-msgstr "Made with Rezumi, free and open source"
+msgid "Made with Rezumi"
+msgstr "Made with Rezumi"
 
 #. Layout editor column label for the primary content area
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -7499,6 +7615,10 @@ msgstr "No email address"
 msgid "No email address was found."
 msgstr "No email address was found."
 
+#: src/features/billing/plan-page.tsx
+msgid "No end date"
+msgstr "No end date"
+
 #: src/features/career/shared.tsx
 msgid "No evidence yet"
 msgstr "No evidence yet"
@@ -7591,6 +7711,14 @@ msgstr "No resume"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "No resumes yet."
+
+#: src/features/billing/plan.ts
+msgid "No room for another cover letter"
+msgstr "No room for another cover letter"
+
+#: src/features/billing/plan.ts
+msgid "No room for another resume"
+msgstr "No room for another resume"
 
 #: src/features/ats-checker/messages.ts
 msgid "No skills section was found."
@@ -7706,6 +7834,11 @@ msgstr "Not in either offer yet"
 msgid "Not in the offer · ask {company}"
 msgstr "Not in the offer · ask {company}"
 
+#: src/features/resume/editor/design/template-group.tsx
+#: src/features/resume/share/download-tab.tsx
+msgid "Not in your plan"
+msgstr "Not in your plan"
+
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Not in your resume"
 msgstr "Not in your resume"
@@ -7713,6 +7846,10 @@ msgstr "Not in your resume"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Not in your resume · add only if true"
 msgstr "Not in your resume · add only if true"
+
+#: src/features/billing/plan-page.tsx
+msgid "Not included"
+msgstr "Not included"
 
 #: src/features/career/shared.tsx
 msgid "Not now"
@@ -8473,6 +8610,12 @@ msgstr "Plain text (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Plain text with headings. Paste into application forms and notes."
 
+#: src/features/billing/plan-page.tsx
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Plan"
+msgstr "Plan"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan again"
 msgstr "Plan again"
@@ -8489,9 +8632,17 @@ msgstr "Plan what to ask"
 msgid "Planning your week"
 msgstr "Planning your week"
 
+#: src/features/billing/plan-page.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
+msgstr "Plans don't apply to your account yet, so everything is open."
+
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
 msgstr "Plus / Pro AI"
+
+#: src/features/homepage/pricing.tsx
+msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 
 #: src/libs/locale.ts
 msgid "Polish"
@@ -8743,6 +8894,7 @@ msgid "Privacy"
 msgstr "Privacy"
 
 #: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
 msgid "Privacy policy"
 msgstr "Privacy policy"
 
@@ -9238,6 +9390,11 @@ msgstr "Refresh the briefing 24 hours before"
 msgid "Refresh the briefing on the morning of"
 msgstr "Refresh the briefing on the morning of"
 
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Refund policy"
+msgstr "Refund policy"
+
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
 msgstr "Register at OlaCV"
@@ -9462,10 +9619,6 @@ msgstr "Reply"
 #: src/features/career/workspace/messages.tsx
 msgid "Reply copied"
 msgstr "Reply copied"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Report a bug"
-msgstr "Report a bug"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Require a password"
@@ -9717,6 +9870,10 @@ msgstr "Rezumi {__APP_VERSION__} · MIT"
 #: src/features/homepage/introduction.tsx
 msgid "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
 msgstr "Rezumi keeps your whole job search in one place: the resume, the letters, every application and the interviews that follow."
+
+#: src/features/billing/plan.ts
+msgid "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
+msgstr "Rezumi on the web and on your phone always works. Other apps and assistants that connect with an API key or OAuth need a paid plan."
 
 #: src/features/homepage/section-nav.tsx
 msgid "Rezumi, back to top"
@@ -10223,6 +10380,11 @@ msgstr "See below"
 #: src/features/homepage/introduction.tsx
 msgid "See exactly what applicant tracking systems read"
 msgstr "See exactly what applicant tracking systems read"
+
+#: src/features/billing/plan-dialog.tsx
+#: src/features/settings/ai/api-keys.tsx
+msgid "See plans"
+msgstr "See plans"
 
 #: src/features/homepage/hero.tsx
 msgid "See pricing"
@@ -10823,7 +10985,6 @@ msgstr "sortable"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/career/knowledge/facts.tsx
-#: src/routes/dashboard/settings/route.tsx
 msgid "Source"
 msgstr "Source"
 
@@ -11079,6 +11240,10 @@ msgstr "Strikethrough"
 msgid "Stronger verb"
 msgstr "Stronger verb"
 
+#: src/features/billing/plan.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+msgstr "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "Stylesheet editor"
@@ -11332,6 +11497,11 @@ msgstr "Templates export text-based PDFs. Parsing varies between applicant track
 #: src/features/ats-checker/checker.tsx
 msgid "Terms from the posting"
 msgstr "Terms from the posting"
+
+#: src/features/homepage/footer.tsx
+#: src/routes/dashboard/settings/route.tsx
+msgid "Terms of service"
+msgstr "Terms of service"
 
 #: src/features/settings/ai/providers.tsx
 msgid "Test"
@@ -11752,6 +11922,11 @@ msgstr "The top of the first page does not look like a name."
 msgid "Theme"
 msgstr "Theme"
 
+#. placeholder {0}: getPlanName(next.planId)
+#: src/features/billing/plan-page.tsx
+msgid "Then {0}"
+msgstr "Then {0}"
+
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Then enter the 6-digit code from the app."
 msgstr "Then enter the 6-digit code from the app."
@@ -12002,6 +12177,10 @@ msgstr "This step is optional, but recommended."
 msgid "This story is unavailable or uses facts that are switched off."
 msgstr "This story is unavailable or uses facts that are switched off."
 
+#: src/features/billing/plan.ts
+msgid "This template isn't in your plan"
+msgstr "This template isn't in your plan"
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "This time does not exist in the selected timezone. Choose another time."
 msgstr "This time does not exist in the selected timezone. Choose another time."
@@ -12148,10 +12327,6 @@ msgstr "Transcribing with {model}…"
 #: src/features/assistant/conversation.tsx
 msgid "Transcript copied"
 msgstr "Transcript copied"
-
-#: src/routes/dashboard/settings/route.tsx
-msgid "Translate"
-msgstr "Translate"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
@@ -13064,6 +13239,10 @@ msgstr "What you sent · {0}"
 msgid "What you're looking for"
 msgstr "What you're looking for"
 
+#: src/features/billing/plan-page.tsx
+msgid "What's included"
+msgstr "What's included"
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "What's it for?"
 msgstr "What's it for?"
@@ -13071,6 +13250,10 @@ msgstr "What's it for?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "What's working"
+
+#: src/features/billing/plan-page.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
+msgstr "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 
 #: src/features/career/offers.tsx
 msgid "When do they need your answer?"
@@ -13153,13 +13336,22 @@ msgstr "Width"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "Will my resume get past applicant tracking systems?"
 
+#: src/features/settings/ai/api-keys.tsx
+msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+msgstr "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr "Without one, you fill in the recipient yourself and drafting uses only your resume."
 
+#: src/features/billing/plan-page.tsx
 #: src/features/homepage/plans.ts
 msgid "Word and ODT downloads"
 msgstr "Word and ODT downloads"
+
+#: src/features/billing/plan.ts
+msgid "Word and ODT downloads aren't in your plan"
+msgstr "Word and ODT downloads aren't in your plan"
 
 #: src/features/ats-checker/messages.ts
 msgid "Words run together when the text is extracted."
@@ -13316,6 +13508,10 @@ msgstr "You can keep up to 30 application questions."
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "You can no longer sign in with this passkey."
+
+#: src/features/billing/plan.ts
+msgid "You can preview every template. {free} are included, and documents that already use another template keep it."
+msgstr "You can preview every template. {free} are included, and documents that already use another template keep it."
 
 #: src/features/auth/pages/error.tsx
 msgid "You canceled the sign-in before it finished. Try again when you're ready."
@@ -13568,6 +13764,14 @@ msgstr "Your opening, the stories to bring and questions to ask. It becomes your
 msgid "Your own endpoint"
 msgstr "Your own endpoint"
 
+#: src/features/billing/plan-page.tsx
+msgid "Your own fonts"
+msgstr "Your own fonts"
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan"
+msgstr "Your own fonts aren't in your plan"
+
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."
 msgstr "Your phone number changed on the resume. The letter updated too."
@@ -13575,6 +13779,18 @@ msgstr "Your phone number changed on the resume. The letter updated too."
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
 msgstr "Your phone number is written in an unusual shape."
+
+#: src/features/billing/plan-page.tsx
+msgid "Your plan"
+msgstr "Your plan"
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+
+#: src/features/billing/plan.ts
+msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"

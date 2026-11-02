@@ -1,4 +1,5 @@
 import type { CoverLetterListInput, CoverLetterUpdateInput } from "../../dto/cover-letter";
+import type { Transaction } from "../billing/account";
 import type { DbOrTx } from "@rezumi/db/client";
 import type {
 	CoverLetter,
@@ -19,6 +20,7 @@ import {
 } from "@rezumi/schema/cover-letter/data";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { assertDesignChange, assertDocumentCapacity, fitImportedDesign } from "../billing/limits";
 import { lockUser } from "../documents/ownership";
 import { resumeService } from "../resume/service";
 import { sanitizeCoverLetterHtml } from "./html";
@@ -173,14 +175,15 @@ async function insert(
 		senderLinked?: boolean;
 		designLinked?: boolean;
 	},
-	client: DbOrTx = db,
+	client?: Transaction,
 ): Promise<CoverLetter> {
-	if (client === db)
+	if (!client)
 		return db.transaction(async (tx) => {
 			await lockUser(tx, input.userId);
 			return insert(input, tx);
 		});
 	const content = coverLetterContentSchema.parse(input);
+	await assertDocumentCapacity(client, input.userId, { coverLetters: 1 });
 	const [row] = await client
 		.insert(schema.coverLetter)
 		.values({
@@ -263,6 +266,8 @@ export const coverLetterService = {
 	 * and linked to their resume's sender details and design. A letter given a recipient block stays freeform.
 	 */
 	create: async (input: CreateInput) => {
+		// A letter takes its resume's design as it is; only a template chosen for it here needs the plan.
+		if (input.template) await assertDesignChange(input.userId, null, { template: input.template });
 		const application = await getOwnedApplication(input.userId, input.applicationId);
 		const style = await getResumeStyle(input.userId, input.resumeId);
 		if (input.template) style.metadata.template = input.template;
@@ -330,6 +335,7 @@ export const coverLetterService = {
 		changes.designLinked = designLinked;
 
 		if (input.template) {
+			await assertDesignChange(input.userId, stored.style.metadata, { template: input.template });
 			const style = changes.style ?? stored.style;
 			changes.style = { ...style, metadata: { ...style.metadata, template: input.template } };
 		}
@@ -458,8 +464,10 @@ export const coverLetterService = {
 		const letter = await getById(input);
 		return writeLetterVersion(db, { letter, userId: input.userId, kind: "sent", name: input.company });
 	},
-	import: (input: { userId: string; document: CoverLetterDocument }) => {
+	import: async (input: { userId: string; document: CoverLetterDocument }) => {
 		const document = coverLetterDocumentSchema.parse(input.document);
+		// The file's design comes from elsewhere: fit it to the plan, as resume imports do.
+		await fitImportedDesign(input.userId, document.style.metadata);
 		return insert({ ...document, userId: input.userId });
 	},
 };

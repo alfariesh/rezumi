@@ -1,5 +1,6 @@
+import type { Transaction } from "../billing/account";
+import type { StoredDesign } from "../billing/limits";
 import type { ResumeUpdatedEvent } from "./events";
-import type { DbOrTx } from "@rezumi/db/client";
 import type { JsonPatchOperation } from "@rezumi/resume/patch";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Locale } from "@rezumi/utils/locale";
@@ -15,6 +16,7 @@ import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { isValidSlug } from "@rezumi/schema/resume/slug";
 import { generateId } from "@rezumi/utils/string";
 import { consumeResumePasswordLimit } from "../../middleware/rate-limit";
+import { assertDesignChange, assertDocumentCapacity, fitImportedDesign } from "../billing/limits";
 import { adoptEmbeddedLetters } from "../cover-letters/embedded";
 import { lockUser } from "../documents/ownership";
 import { getStorageService } from "../storage/service";
@@ -121,7 +123,7 @@ const resumeColumns = {
 };
 
 async function applyResumePatchTx(
-	client: DbOrTx,
+	client: Transaction,
 	input: {
 		id: string;
 		userId: string;
@@ -167,6 +169,7 @@ async function applyResumePatchTx(
 	}
 
 	patchedData = parseWritableResumeData(patchedData);
+	await assertDesignChange(input.userId, storedData.metadata, patchedData.metadata, client);
 	await adoptEmbeddedLetters(client, {
 		userId: input.userId,
 		resumeId: input.id,
@@ -455,6 +458,7 @@ export const resumeService = {
 				userId: input.userId,
 				data: version.data,
 				skipAutoSnapshot: true,
+				restoringVersion: true,
 			});
 
 			await writeVersion(db, {
@@ -576,6 +580,8 @@ export const resumeService = {
 		const id = input.id ?? generateId();
 		const data = parseWritableResumeData(structuredClone(input.data ?? defaultResumeData));
 		data.metadata.page.locale = input.locale;
+		// A file brings a design from elsewhere: fit it to the plan. Copies of the user's own documents keep theirs.
+		if (input.origin === "import") await fitImportedDesign(input.userId, data.metadata);
 
 		if (input.slug !== undefined && !isValidSlug(input.slug)) {
 			throw new ORPCError("INVALID_SLUG", { status: 400 });
@@ -586,7 +592,9 @@ export const resumeService = {
 			await db.transaction(async (tx) => {
 				// The resume row comes first: letters an imported file carried are saved linked to it.
 				const stored = structuredClone(data);
-				detachEmbeddedLetters(stored);
+				const letters = detachEmbeddedLetters(stored);
+				// The resume and the letters it carries count together, so an import over the limit adds nothing.
+				await assertDocumentCapacity(tx, input.userId, { resumes: 1, coverLetters: letters.length });
 				await tx.insert(schema.resume).values({
 					id,
 					name: input.name,
@@ -596,7 +604,13 @@ export const resumeService = {
 					userId: input.userId,
 					data: stored,
 				});
-				await adoptEmbeddedLetters(tx, { userId: input.userId, resumeId: id, resumeName: input.name, data });
+				await adoptEmbeddedLetters(tx, {
+					userId: input.userId,
+					resumeId: id,
+					resumeName: input.name,
+					data,
+					capacityChecked: true,
+				});
 			});
 
 			// History is never empty: its first entry is where the document came from (best effort).
@@ -643,6 +657,8 @@ export const resumeService = {
 		skipAutoSnapshot?: boolean;
 		/** The editor visit this save belongs to; its autosaves share one version. */
 		sessionId?: string;
+		/** A restored version brings back the resume's own earlier design, which the plan leaves as it was. */
+		restoringVersion?: boolean;
 	}) => {
 		const resume = await db
 			.transaction(async (tx) => {
@@ -679,6 +695,13 @@ export const resumeService = {
 				}
 
 				const normalizedData = input.data ? parseWritableResumeData(input.data) : undefined;
+				if (normalizedData && !input.restoringVersion)
+					await assertDesignChange(
+						input.userId,
+						(existing.data as { metadata?: StoredDesign } | null)?.metadata,
+						normalizedData.metadata,
+						tx,
+					);
 				if (normalizedData)
 					await adoptEmbeddedLetters(tx, {
 						userId: input.userId,

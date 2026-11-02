@@ -1,3 +1,4 @@
+import type { PlanSummary } from "@/features/billing/plan";
 import type { Resume } from "@/features/resume/builder/draft";
 import type { ExportFormat } from "@/features/resume/export/use-resume-export";
 import type { IconName } from "@rezumi/ui/components/icon";
@@ -12,6 +13,8 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
+import { hasPlanFeature, usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useCurrentResume } from "@/features/resume/builder/draft";
 import { useOpenIssueCount } from "@/features/resume/editor/check/use-check";
@@ -32,45 +35,53 @@ export type DownloadFormat<Id extends string = ExportFormat> = {
 	icon: IconName;
 	description: string;
 	disabled?: boolean;
+	/** The plan doesn't include it: it stays listed, and choosing it explains the plan. */
+	locked?: boolean;
 };
 
-export const getExportFormats = (): DownloadFormat[] => [
-	{
-		id: "pdf",
-		label: "PDF",
-		extension: ".pdf",
-		icon: "file-pdf",
-		description: t`Looks exactly like the page. Use it for applications and email.`,
-	},
-	{
-		id: "docx",
-		label: "Word",
-		extension: ".docx",
-		icon: "file-text",
-		description: t`For portals or recruiters who ask for Word. Layout is simplified.`,
-	},
-	{
-		id: "odt",
-		label: "OpenDocument",
-		extension: ".odt",
-		icon: "file-doc",
-		description: t`For LibreOffice and other open-source editors. Layout is simplified.`,
-	},
-	{
-		id: "md",
-		label: "Markdown",
-		extension: ".md",
-		icon: "text-align-left",
-		description: t`Plain text with headings. Paste into application forms and notes.`,
-	},
-	{
-		id: "json",
-		label: "JSON",
-		extension: ".json",
-		icon: "brackets-curly",
-		description: t`Complete data backup. Imports back into Rezumi or JSON Resume tools.`,
-	},
-];
+/** Every download format; Word and ODT are locked while the plan lacks them. */
+export const getExportFormats = (plan?: PlanSummary): DownloadFormat[] => {
+	const wordLocked = !hasPlanFeature(plan, "wordOdtExport");
+	return [
+		{
+			id: "pdf",
+			label: "PDF",
+			extension: ".pdf",
+			icon: "file-pdf",
+			description: t`Looks exactly like the page. Use it for applications and email.`,
+		},
+		{
+			id: "docx",
+			label: "Word",
+			extension: ".docx",
+			icon: "file-text",
+			description: t`For portals or recruiters who ask for Word. Layout is simplified.`,
+			locked: wordLocked,
+		},
+		{
+			id: "odt",
+			label: "OpenDocument",
+			extension: ".odt",
+			icon: "file-doc",
+			description: t`For LibreOffice and other open-source editors. Layout is simplified.`,
+			locked: wordLocked,
+		},
+		{
+			id: "md",
+			label: "Markdown",
+			extension: ".md",
+			icon: "text-align-left",
+			description: t`Plain text with headings. Paste into application forms and notes.`,
+		},
+		{
+			id: "json",
+			label: "JSON",
+			extension: ".json",
+			icon: "brackets-curly",
+			description: t`Complete data backup. Imports back into Rezumi or JSON Resume tools.`,
+		},
+	];
+};
 
 type FormatRadioGroupProps<Id extends string> = {
 	formats: DownloadFormat<Id>[];
@@ -85,7 +96,11 @@ export function FormatRadioGroup<Id extends string>({ formats, value, onChange }
 			variant="secondary"
 			aria-label={t`Format`}
 			value={value}
-			onChange={(next) => onChange(next as Id)}
+			onChange={(next) => {
+				if (formats.find((option) => option.id === next)?.locked)
+					return openPlanDialog({ kind: "feature", feature: "wordOdtExport" });
+				onChange(next as Id);
+			}}
 			// Picking a format usually comes next: start loading the DOCX and ODT builders.
 			onPointerEnter={preloadDocumentExport}
 			onFocus={preloadDocumentExport}
@@ -108,6 +123,13 @@ export function FormatRadioGroup<Id extends string>({ formats, value, onChange }
 							{option.id === "pdf" && (
 								<Chip size="sm" color="accent" variant="soft">
 									<Trans>Best for applying</Trans>
+								</Chip>
+							)}
+							{option.locked && (
+								<Chip size="sm" variant="soft">
+									<Icon name="lock" size={12} aria-hidden />
+									Plus
+									<span className="sr-only">{t`Not in your plan`}</span>
 								</Chip>
 							)}
 						</span>
@@ -227,11 +249,14 @@ export function DownloadTab({ onReview }: DownloadTabProps) {
 	const [fileName, setFileName] = useState<string | null>(null);
 	const [state, setState] = useState<DownloadState>("idle");
 
-	const formats = getExportFormats();
+	const formats = getExportFormats(usePlan());
 	const selected = formats.find((option) => option.id === format) ?? (formats[0] as DownloadFormat);
 	const name = fileName ?? getDefaultFileName(resume);
 
 	const download = async (as: ExportFormat) => {
+		// The plan may have loaded after the format was picked.
+		if (formats.find((option) => option.id === as)?.locked)
+			return openPlanDialog({ kind: "feature", feature: "wordOdtExport" });
 		const extension = formats.find((option) => option.id === as)?.extension ?? ".pdf";
 		const file = `${sanitizeFileName(name) || getDefaultFileName(resume)}${extension}`;
 		const letterId = withLetter ? linkedLetter?.id : undefined;

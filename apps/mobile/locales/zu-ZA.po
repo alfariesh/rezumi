@@ -334,6 +334,11 @@ msgstr ""
 msgid "{0} → {1}: {2}{3}"
 msgstr ""
 
+#. placeholder {0}: freeTemplateList()
+#: src/features/billing/plan-alert.ts
+msgid "{0} are available, and documents that already use another template keep it."
+msgstr ""
+
 #. placeholder {0}: draft.time
 #. placeholder {1}: draft.timezone
 #. placeholder {2}: when(at)
@@ -381,7 +386,7 @@ msgid "{0} more"
 msgstr ""
 
 #. placeholder {0}: shown.length
-#. placeholder {1}: TEMPLATES.length
+#. placeholder {1}: listed.length
 #: src/features/design/template-group.tsx
 msgid "{0} of {1} shown"
 msgstr ""
@@ -582,12 +587,20 @@ msgstr ""
 msgid "{name} added to page 1"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "{name} and custom styles aren't available, so the imported document uses {free} without the file's styles."
+msgstr ""
+
 #: src/features/workspace/hooks.ts
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr ""
 
 #: src/features/check/issues.ts
 msgid "{name} is split into {columns} columns"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "{name} isn't available, so the imported document uses {free}."
 msgstr ""
 
 #: src/features/check/issues.ts
@@ -672,6 +685,14 @@ msgstr ""
 
 #: src/features/write/outline.tsx
 msgid "{toCheck, plural, one {# to check} other {# to check}}"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} in use"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "{used} of {max}"
 msgstr ""
 
 #: src/features/letters/write.tsx
@@ -877,6 +898,19 @@ msgstr ""
 
 #: src/features/ai/web-access.tsx
 msgid "Active"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active cover letters"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Active resumes"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "Active until {0}"
 msgstr ""
 
 #: src/features/application-detail/sections.tsx
@@ -1424,6 +1458,18 @@ msgstr ""
 msgid "Anywhere"
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "API and MCP access isn't in your plan"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "API and MCP for other apps"
+msgstr ""
+
 #: src/features/ai/provider-editor.tsx
 #: src/features/ai/web-access.tsx
 msgid "API key"
@@ -1436,6 +1482,10 @@ msgstr ""
 #: src/features/search/search-screen.tsx
 #: src/features/settings/api-keys.tsx
 msgid "API keys"
+msgstr ""
+
+#: src/features/settings/api-keys.tsx
+msgid "API keys need the Plus or Pro AI plan"
 msgstr ""
 
 #: app/(tabs)/settings/preferences.tsx
@@ -2227,6 +2277,10 @@ msgstr ""
 msgid "Choose another file"
 msgstr ""
 
+#: src/features/billing/plan-alert.ts
+msgid "Choose any of the fonts in Design instead."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Choose date"
 msgstr ""
@@ -2505,6 +2559,10 @@ msgstr ""
 
 #: src/features/ai/web-access.tsx
 msgid "Connection saved"
+msgstr ""
+
+#: app/(tabs)/settings/index.tsx
+msgid "Contact & complaints"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -3200,6 +3258,7 @@ msgstr ""
 msgid "Custom section"
 msgstr ""
 
+#: app/(tabs)/settings/membership.tsx
 #: src/features/design/advanced.tsx
 #: src/features/design/design-pane.tsx
 msgid "Custom styles"
@@ -3207,6 +3266,26 @@ msgstr ""
 
 #: src/features/design/advanced.tsx
 msgid "Custom styles aren't applied. Fix these errors to apply them:"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't available"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Custom styles aren't available, so the imported document leaves the file's styles out."
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't available. Styles already saved keep working on the page."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Custom styles aren't in your plan"
+msgstr ""
+
+#: src/features/design/advanced.tsx
+msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
 msgstr ""
 
 #: src/features/settings/locale-names.ts
@@ -3548,6 +3627,7 @@ msgid "Document type"
 msgstr ""
 
 #: app/(tabs)/_layout.tsx
+#: app/(tabs)/settings/membership.tsx
 #: src/features/documents/library.tsx
 #: src/features/search/search-screen.tsx
 msgid "Documents"
@@ -3559,6 +3639,10 @@ msgstr ""
 
 #: src/features/application-detail/sections.tsx
 msgid "Documents for this job"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Documents in Trash don't count."
 msgstr ""
 
 #: src/features/documents/library.tsx
@@ -3618,6 +3702,10 @@ msgstr ""
 #: src/features/share/export-screen.tsx
 #: src/shell/builder-chrome.tsx
 msgid "Download & history"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Download a PDF instead: it keeps your design exactly. Markdown and JSON are available too."
 msgstr ""
 
 #: src/features/letters/share.tsx
@@ -3983,6 +4071,10 @@ msgstr ""
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr ""
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Every template"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr ""
@@ -4285,6 +4377,10 @@ msgstr ""
 msgid "Found {0}"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Free"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Free-form"
@@ -4296,6 +4392,12 @@ msgstr ""
 
 #: src/features/letters/write.tsx
 msgid "From"
+msgstr ""
+
+#. placeholder {0}: formatDate(next.startsAt)
+#. placeholder {1}: formatDate(next.endsAt)
+#: app/(tabs)/settings/membership.tsx
+msgid "From {0} until {1}"
 msgstr ""
 
 #: src/features/workspace/tabs/fit.tsx
@@ -4701,6 +4803,10 @@ msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Improving…"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Included"
 msgstr ""
 
 #: src/features/applications/list-screen.tsx
@@ -6087,6 +6193,10 @@ msgstr ""
 msgid "No email address was found."
 msgstr ""
 
+#: app/(tabs)/settings/membership.tsx
+msgid "No end date"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "No evidence yet"
 msgstr ""
@@ -6184,6 +6294,14 @@ msgstr ""
 
 #: src/auth/messages.ts
 msgid "No Rezumi server answered at this address. Check the spelling, or ask your administrator whether the server allows app sign-in."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another cover letter"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "No room for another resume"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -6284,6 +6402,10 @@ msgstr ""
 
 #: src/features/check/job-match.tsx
 msgid "Not in your resume · add only if true"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Not included"
 msgstr ""
 
 #: src/features/assistant/messages.tsx
@@ -6444,6 +6566,10 @@ msgstr ""
 
 #: app/(tabs)/_layout.tsx
 msgid "Offline. Edits are saved on this device and sync when you reconnect."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "OK"
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -6679,6 +6805,10 @@ msgstr ""
 #: src/features/application-detail/hooks.ts
 #: src/features/applications/next-step.ts
 msgid "Other"
+msgstr ""
+
+#: src/features/settings/api-keys.tsx
+msgid "Other apps can't connect with API keys on this account. This app always works."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -6954,6 +7084,11 @@ msgstr ""
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr ""
 
+#: app/(tabs)/settings/index.tsx
+#: app/(tabs)/settings/membership.tsx
+msgid "Plan"
+msgstr ""
+
 #: src/features/workspace/tabs/prepare.tsx
 msgid "Plan again"
 msgstr ""
@@ -6968,6 +7103,15 @@ msgstr ""
 
 #: src/features/workspace/parts.tsx
 msgid "Planning your week"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+#: src/features/billing/plan-alert.ts
+msgid "Plans can be bought on the rezumi.app website."
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
@@ -7544,6 +7688,10 @@ msgstr ""
 msgid "Refresh the briefing on the morning of"
 msgstr ""
 
+#: app/(tabs)/settings/index.tsx
+msgid "Refund policy"
+msgstr ""
+
 #: src/features/share/custom-domain.tsx
 msgid "Register at OlaCV"
 msgstr ""
@@ -7759,10 +7907,6 @@ msgstr ""
 #: app/(tabs)/settings/ai.tsx
 #: src/features/ai/report-content.tsx
 msgid "Report AI content"
-msgstr ""
-
-#: app/(tabs)/settings/index.tsx
-msgid "Report an issue"
 msgstr ""
 
 #: src/features/ai/report-content.tsx
@@ -9046,10 +9190,6 @@ msgstr ""
 msgid "Source and correction history"
 msgstr ""
 
-#: app/(tabs)/settings/index.tsx
-msgid "Source code on GitHub"
-msgstr ""
-
 #: src/features/assistant/chat-view.tsx
 #: src/features/assistant/messages.tsx
 msgid "Sources"
@@ -9223,6 +9363,10 @@ msgstr ""
 
 #: src/features/write/improve.tsx
 msgid "Stronger verb"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Styles you already saved keep working. Design covers templates, fonts, colors and spacing."
 msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
@@ -9773,6 +9917,11 @@ msgstr ""
 msgid "Theme"
 msgstr ""
 
+#. placeholder {0}: getPlanName(next.planId)
+#: app/(tabs)/settings/membership.tsx
+msgid "Then {0}"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "There is a gap between two dated roles."
 msgstr ""
@@ -9807,6 +9956,10 @@ msgstr ""
 
 #: app/(tabs)/settings/licences.tsx
 msgid "Third-party software notices. Tap a dependency to read its license."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "This app always works. Other apps and assistants that connect with an API key need more."
 msgstr ""
 
 #: src/features/application-detail/detail-screen.tsx
@@ -9901,6 +10054,10 @@ msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This file has no accessibility tags."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "This file holds a resume and its cover letters, and they're saved together."
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -10061,6 +10218,14 @@ msgstr ""
 
 #: src/features/workspace/tabs/practise.tsx
 msgid "This story is unavailable or uses facts that are switched off."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "This template isn't in your plan"
 msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
@@ -10923,8 +11088,16 @@ msgstr ""
 msgid "What you're looking for"
 msgstr ""
 
+#: app/(tabs)/settings/membership.tsx
+msgid "What's included"
+msgstr ""
+
 #: src/features/check/writing.tsx
 msgid "What's working"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -10984,6 +11157,10 @@ msgstr ""
 msgid "Within your office-day limit."
 msgstr ""
 
+#: src/features/settings/api-keys.tsx
+msgid "Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website."
+msgstr ""
+
 #: src/features/letters/write.tsx
 msgid "Without one, you fill in the recipient yourself and drafting uses only your resume."
 msgstr ""
@@ -10991,6 +11168,18 @@ msgstr ""
 #: src/features/letters/share.tsx
 #: src/features/share/download.tsx
 msgid "Word"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT aren't available"
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Word and ODT downloads"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Word and ODT downloads aren't in your plan"
 msgstr ""
 
 #: src/features/ai/provider-list.tsx
@@ -11099,6 +11288,14 @@ msgstr ""
 
 #: src/shell/builder-chrome.tsx
 msgid "You can keep editing. Changes sync when you're back online. PDF sharing works with cached fonts and images."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "You can keep up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
 msgstr ""
 
 #: src/features/workspace/tabs/apply.tsx
@@ -11310,8 +11507,24 @@ msgstr ""
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr ""
 
+#: app/(tabs)/settings/membership.tsx
+msgid "Your own fonts"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't available"
+msgstr ""
+
+#: src/features/billing/plan-alert.ts
+msgid "Your own fonts aren't in your plan"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."
+msgstr ""
+
+#: app/(tabs)/settings/membership.tsx
+msgid "Your plan"
 msgstr ""
 
 #: src/features/assistant/coach-screen.tsx

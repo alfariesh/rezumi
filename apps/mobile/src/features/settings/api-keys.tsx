@@ -6,6 +6,7 @@ import { openAccountSettings } from "./browser";
 import { SettingsGroup } from "./layout";
 import { client, orpc } from "@/api/client";
 import { useSession } from "@/auth/session";
+import { canShowPlans, hasPlanFeature, usePlan } from "@/features/billing/plan";
 import {
 	Banner,
 	ConfirmDialog,
@@ -24,6 +25,10 @@ export function ApiKeys({ userId }: ApiKeysProps) {
 	const { server } = useSession();
 	const queryClient = useQueryClient();
 	const [selected, setSelected] = useState<{ id: string; name: string } | null>(null);
+	// Without API access in the plan the API refuses every key. Android says so; iOS stays neutral and, listing only
+	// what the account can use, leaves out making a key (store rules, 00-keputusan-produk.md §6).
+	const apiLocked = !hasPlanFeature(usePlan(), "automationApi");
+	const android = canShowPlans();
 	const keys = useQuery(
 		orpc.auth.apiKeys.list.queryOptions({ queryKey: [...orpc.auth.apiKeys.list.key(), server, userId], retry: false }),
 	);
@@ -50,15 +55,29 @@ export function ApiKeys({ userId }: ApiKeysProps) {
 			title={t`API keys`}
 			note={t`Keys act as you and can access your documents. New keys are created in your browser account settings.`}
 		>
-			<ListRow
-				title={t`New API key`}
-				leading="arrow-square-out"
-				onPress={() => {
-					void openAccountSettings("/dashboard/settings/app#api-keys")
-						.then(() => keys.refetch())
-						.catch(() => showToast({ message: t`Couldn't open the browser. Try again.` }));
-				}}
-			/>
+			{apiLocked ? (
+				<Banner
+					tone="warn"
+					icon="lock"
+					{...(android ? { title: t`API keys need the Plus or Pro AI plan` } : {})}
+					message={
+						android
+							? t`Without it, apps you connect with a key won't work yet. This app always works. Plans can be bought on the rezumi.app website.`
+							: t`Other apps can't connect with API keys on this account. This app always works.`
+					}
+				/>
+			) : null}
+			{android || !apiLocked ? (
+				<ListRow
+					title={t`New API key`}
+					leading="arrow-square-out"
+					onPress={() => {
+						void openAccountSettings("/dashboard/settings/app#api-keys")
+							.then(() => keys.refetch())
+							.catch(() => showToast({ message: t`Couldn't open the browser. Try again.` }));
+					}}
+				/>
+			) : null}
 			{keys.isPending ? <ListRow title={t`Loading API keys…`} /> : null}
 			{keys.isError ? (
 				<Banner

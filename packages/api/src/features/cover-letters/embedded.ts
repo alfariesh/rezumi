@@ -1,10 +1,11 @@
-import type { DbOrTx } from "@rezumi/db/client";
+import type { Transaction } from "../billing/account";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { ORPCError } from "@orpc/client";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import * as schema from "@rezumi/db/schema";
 import { copyCoverLetterStyle, detachEmbeddedLetters } from "@rezumi/resume/cover-letter";
 import { coverLetterSchema } from "@rezumi/schema/cover-letter/data";
+import { assertDocumentCapacity } from "../billing/limits";
 import { sanitizeCoverLetterHtml } from "./html";
 import { writeLetterVersion } from "./versions";
 
@@ -15,11 +16,12 @@ import { writeLetterVersion } from "./versions";
  * keeps none. Run it in the transaction that writes the resume, so the letters and the resume save together.
  *
  * A letter already saved from the same item with the same text isn't saved twice, so a client that keeps sending
- * the section creates one letter. Mutates `data`.
+ * the section creates one letter. New letters count against the plan's limit, unless the caller already counted them
+ * (`capacityChecked`). Mutates `data`.
  */
 export async function adoptEmbeddedLetters(
-	client: DbOrTx,
-	input: { userId: string; resumeId: string; resumeName: string; data: ResumeData },
+	client: Transaction,
+	input: { userId: string; resumeId: string; resumeName: string; data: ResumeData; capacityChecked?: boolean },
 ) {
 	const sections = input.data.customSections.filter((section) => section.type === "cover-letter");
 	if (sections.length === 0) return;
@@ -59,11 +61,13 @@ export async function adoptEmbeddedLetters(
 		contents.add(sanitizeCoverLetterHtml(row.content));
 		existingContents.set(row.itemId, contents);
 	}
-	for (const letter of letters) {
-		const content = sanitizeCoverLetterHtml(letter.content);
-		// Letters the migration moved are stored as they were written, so both sides are compared cleaned.
-		if (existingContents.get(letter.itemId)?.has(content)) continue;
+	// Letters the migration moved are stored as they were written, so both sides are compared cleaned.
+	const added = letters
+		.map((letter) => ({ letter, content: sanitizeCoverLetterHtml(letter.content) }))
+		.filter(({ letter, content }) => !existingContents.get(letter.itemId)?.has(content));
+	if (!input.capacityChecked) await assertDocumentCapacity(client, input.userId, { coverLetters: added.length });
 
+	for (const { letter, content } of added) {
 		const name = `${input.resumeName.trim() || "Resume"} — ${letter.title.trim() || "Cover letter"}`.slice(0, 100);
 		const [row] = await client
 			.insert(schema.coverLetter)

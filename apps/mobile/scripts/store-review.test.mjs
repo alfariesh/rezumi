@@ -30,6 +30,8 @@ const sessions = {
 };
 const modules = {
 	"@/auth/session": sessions,
+	// The API client shows plan alerts; none of these calls is refused by a plan.
+	"@/features/billing/plan-alert": { showPlanAlertForError: () => false },
 	"@lingui/core/macro": { t: (parts, ...values) => String.raw({ raw: parts }, ...values) },
 	"react-native": {
 		Alert: {

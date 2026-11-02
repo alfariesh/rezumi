@@ -1,9 +1,21 @@
 import type { DataGridColumn } from "@heroui-pro/react";
 import { DataGrid, EmptyState, NativeSelect, Segment } from "@heroui-pro/react";
-import { Alert, Button, Input, InputGroup, Label, Modal, Skeleton, Spinner, TextField } from "@heroui/react";
+import {
+	Alert,
+	Button,
+	buttonVariants,
+	Input,
+	InputGroup,
+	Label,
+	Modal,
+	Skeleton,
+	Spinner,
+	TextField,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useId, useState } from "react";
 import { useCopyToClipboard } from "usehooks-ts";
 import { Icon } from "@rezumi/ui/components/icon";
@@ -12,6 +24,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { SettingsSection } from "../section";
+import { usePlanFeature } from "@/features/billing/plan";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
@@ -35,6 +48,8 @@ const shortDate = (date: Date) =>
 export function ApiKeysSection() {
 	const queryClient = useQueryClient();
 	const phone = useBreakpoint() === "mobile";
+	// Keys can still be made without API access in the plan; the API refuses them until the plan includes it.
+	const apiLocked = !usePlanFeature("automationApi");
 	const [creating, setCreating] = useState(false);
 	const { data: keys = [], isLoading } = useQuery({
 		queryKey: KEYS,
@@ -156,6 +171,27 @@ export function ApiKeysSection() {
 				</Button>
 			}
 		>
+			{apiLocked && (
+				<Alert status="warning">
+					<Alert.Indicator>
+						<Icon name="lock" />
+					</Alert.Indicator>
+					<Alert.Content>
+						<Alert.Title>
+							<Trans>API keys need the Plus or Pro AI plan</Trans>
+						</Alert.Title>
+						<Alert.Description>
+							<Trans>
+								Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start
+								working once your plan includes API access. Rezumi on the web and on your phone always works.
+							</Trans>
+						</Alert.Description>
+					</Alert.Content>
+					<Link to="/dashboard/settings/billing" className={buttonVariants({ size: "sm", variant: "secondary" })}>
+						<Trans>See plans</Trans>
+					</Link>
+				</Alert>
+			)}
 			{isLoading ? (
 				<Skeleton className="h-14 rounded-xl" />
 			) : keys.length === 0 ? (

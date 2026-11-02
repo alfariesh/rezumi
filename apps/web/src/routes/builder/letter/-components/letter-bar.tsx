@@ -10,6 +10,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { createLetterFile, letterFileName } from "@/features/letters/export";
 import { useLetterEditorStore } from "@/features/letters/store";
 import { useLetterMode } from "@/features/letters/use-letter-mode";
@@ -133,6 +134,7 @@ function LetterMenu() {
 			toast.add({ description: t`Letter duplicated` });
 			void navigate({ to: "/builder/letter/$coverLetterId", params: { coverLetterId: copy.id } });
 		} catch (error) {
+			openPlanDialogForError(error);
 			failed(error);
 		}
 	};

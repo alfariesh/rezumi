@@ -24,6 +24,7 @@ import { useResumes } from "./queries";
 import { relinkLetter } from "./save";
 import { relinked } from "./write";
 import { useLetterStore } from "@/draft";
+import { isLabelledTemplate, isLockedTemplate, listedTemplates, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { applyTextSize } from "@/features/design/presets";
 import { routes } from "@/routes";
 import { Button, IconButton, ListRow, Segmented, SelectSheet, Switch, Text, TextField, useTheme } from "@/ui";
@@ -115,6 +116,7 @@ export function LetterDesign({ id }: { id: string }) {
 function OwnDesign({ letter, disabled }: { letter: LetterDocument; disabled: boolean }) {
 	const { t, i18n } = useLingui();
 	const { colors, radius, size, space } = useTheme();
+	const plan = usePlan();
 	const metadata = letter.style.metadata;
 	const primary = rgbaToHex(metadata.design.colors.primary);
 	const [hex, setHex] = useState(primary ?? "");
@@ -131,16 +133,23 @@ function OwnDesign({ letter, disabled }: { letter: LetterDocument; disabled: boo
 				<SelectSheet
 					label={t`Template`}
 					value={metadata.template}
-					options={templateSchema.options.map((id) => ({ value: id, label: templateName(id) }))}
-					onChange={(template) =>
+					// iOS lists only the templates the account can use; Android lists all, the locked ones labelled.
+					options={listedTemplates(plan, templateSchema.options, metadata.template).map((id) => ({
+						value: id,
+						label: templateName(id),
+						...(isLabelledTemplate(plan, id) ? { description: "Plus" } : {}),
+					}))}
+					onChange={(template) => {
+						if (template !== metadata.template && isLockedTemplate(plan, template))
+							return showPlanAlert({ kind: "feature", feature: "premiumTemplates" });
 						useLetterStore.getState().update(
 							(draft) => {
 								draft.designLinked = false;
 								draft.style.metadata.template = template;
 							},
 							{ newStep: true },
-						)
-					}
+						);
+					}}
 				/>
 			</Group>
 			<Group title={t`Type`}>

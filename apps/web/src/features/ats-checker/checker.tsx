@@ -18,6 +18,7 @@ import { getPdfCategoryDescription, getPdfCategoryLabel, getPdfFindingMessage } 
 import { savePendingImport, takePendingImport } from "./pending-import";
 import { runAtsCheck } from "./run-ats-check";
 import { RollingNumber } from "@/components/ui/rolling-number";
+import { openPlanDialogForError } from "@/features/billing/plan-dialog";
 import { getOrpcErrorMessage } from "@/libs/error-message";
 import { ENTER_CLASS, POP_CLASS, stagger } from "@/libs/motion";
 import { client } from "@/libs/orpc/client";
@@ -91,6 +92,7 @@ export function AtsChecker({ signedIn, importPending }: AtsCheckerProps) {
 			const resumeId = await client.resume.import({ data });
 			await navigate({ to: "/builder/$resumeId", params: { resumeId }, search: { mode: "check" } });
 		} catch (error) {
+			openPlanDialogForError(error);
 			setState({
 				name: "idle",
 				error:
