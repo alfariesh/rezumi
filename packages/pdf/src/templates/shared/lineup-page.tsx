@@ -17,7 +17,7 @@ import { TemplateHeader, useTemplateBase } from "./template-base";
 import { createDesignTokens, createLineupStyles } from "./tokens";
 
 /** The slots a lineup template's header and page take, on top of the shared section slots. */
-export type LineupStyles = Omit<TemplateStyleSlots, "page"> & {
+type LineupStyles = Omit<TemplateStyleSlots, "page"> & {
 	page: Style;
 	header: Style;
 	picture: Style;
@@ -53,7 +53,7 @@ type OneColumnLayoutProps = TemplatePageProps & {
 };
 
 /** The shared header of the lineup: picture, name, headline and contact list, styled by the template. */
-export const LineupHeader = ({
+const LineupHeader = ({
 	styles,
 	contactListOutsideTitle = false,
 }: {

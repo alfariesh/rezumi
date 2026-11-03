@@ -40,7 +40,7 @@ const contrast = (a: string, b: string) => {
 };
 
 /** White or the ink colour, whichever reads better on `background`. */
-export const readableOn = (background: string, ink: string): string =>
+const readableOn = (background: string, ink: string): string =>
 	contrast("#ffffff", background) >= contrast(ink, background) ? "#ffffff" : ink;
 
 /**

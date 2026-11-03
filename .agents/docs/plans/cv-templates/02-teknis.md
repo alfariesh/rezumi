@@ -76,8 +76,7 @@ Halaman web publik (`packages/pdf/src/html`) memakai pohon template yang sama; c
 ## 6. Cara mengecek desain
 
 ```sh
-cd tooling
-pnpm exec tsx --tsconfig ../tsconfig.json templates/preview.ts --out <folder> --photo meridian sterling
+pnpm --filter @rezumi/tooling templates:preview --out <folder> --photo meridian sterling
 sips -s format png --resampleWidth 1240 <folder>/meridian.pdf --out <folder>/meridian.png   # macOS
 ```
 

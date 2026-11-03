@@ -1,7 +1,7 @@
 /**
  * Renders resume templates with the sample resume to PDF files, for checking template designs by eye.
  *
- *   pnpm --filter @rezumi/tooling exec tsx --tsconfig ../tsconfig.json templates/preview.ts --out <dir> [templates…]
+ *   pnpm --filter @rezumi/tooling templates:preview --out <dir> [templates…]
  *
  * Each template gets its preset look (`templatePresets`) unless `--no-preset` is passed. Options: `--photo` adds the
  * sample picture, `--locale id-ID` prints Indonesian section titles, `--set path=json`
