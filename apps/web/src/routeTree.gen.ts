@@ -48,7 +48,6 @@ import { Route as DashboardSettingsAccountRouteImport } from "./routes/dashboard
 import { Route as DashboardSettingsAiRouteImport } from "./routes/dashboard/settings/ai";
 import { Route as DashboardSettingsApiKeysRouteImport } from "./routes/dashboard/settings/api-keys";
 import { Route as DashboardSettingsAppRouteImport } from "./routes/dashboard/settings/app";
-import { Route as DashboardSettingsBillingRouteImport } from "./routes/dashboard/settings/billing";
 import { Route as DashboardSettingsIntegrationsRouteRouteImport } from "./routes/dashboard/settings/integrations/route";
 import { Route as DashboardSettingsJobSearchRouteImport } from "./routes/dashboard/settings/job-search";
 import { Route as DashboardSettingsPreferencesRouteImport } from "./routes/dashboard/settings/preferences";
@@ -58,7 +57,10 @@ import { Route as DashboardCareerCoachChar123ConversationIdChar125RouteImport } 
 import { Route as DashboardCareerKnowledgeFactsRouteImport } from "./routes/dashboard/career/knowledge/facts";
 import { Route as DashboardCareerKnowledgePreferencesRouteImport } from "./routes/dashboard/career/knowledge/preferences";
 import { Route as DashboardSettingsAuthenticationIndexRouteImport } from "./routes/dashboard/settings/authentication/index";
+import { Route as DashboardSettingsBillingIndexRouteImport } from "./routes/dashboard/settings/billing/index";
 import { Route as DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport } from "./routes/dashboard/career/knowledge/stories.{-$storyId}";
+import { Route as DashboardSettingsBillingReceiptPaymentIdRouteImport } from "./routes/dashboard/settings/billing/receipt.$paymentId";
+import { Route as DashboardSettingsBillingReturnChar123PaymentIdChar125RouteImport } from "./routes/dashboard/settings/billing/return.{-$paymentId}";
 
 const HomeRouteRoute = HomeRouteRouteImport.update({
   id: "/_home",
@@ -260,12 +262,6 @@ const DashboardSettingsAppRoute = DashboardSettingsAppRouteImport.update({
   path: "/app",
   getParentRoute: () => DashboardSettingsRouteRoute,
 } as any);
-const DashboardSettingsBillingRoute =
-  DashboardSettingsBillingRouteImport.update({
-    id: "/billing",
-    path: "/billing",
-    getParentRoute: () => DashboardSettingsRouteRoute,
-  } as any);
 const DashboardSettingsIntegrationsRouteRoute =
   DashboardSettingsIntegrationsRouteRouteImport.update({
     id: "/integrations",
@@ -320,11 +316,29 @@ const DashboardSettingsAuthenticationIndexRoute =
     path: "/authentication/",
     getParentRoute: () => DashboardSettingsRouteRoute,
   } as any);
+const DashboardSettingsBillingIndexRoute =
+  DashboardSettingsBillingIndexRouteImport.update({
+    id: "/billing/",
+    path: "/billing/",
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any);
 const DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route =
   DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport.update({
     id: "/stories/{-$storyId}",
     path: "/stories/{-$storyId}",
     getParentRoute: () => DashboardCareerKnowledgeRouteRoute,
+  } as any);
+const DashboardSettingsBillingReceiptPaymentIdRoute =
+  DashboardSettingsBillingReceiptPaymentIdRouteImport.update({
+    id: "/billing/receipt/$paymentId",
+    path: "/billing/receipt/$paymentId",
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any);
+const DashboardSettingsBillingReturnChar123PaymentIdChar125Route =
+  DashboardSettingsBillingReturnChar123PaymentIdChar125RouteImport.update({
+    id: "/billing/return/{-$paymentId}",
+    path: "/billing/return/{-$paymentId}",
+    getParentRoute: () => DashboardSettingsRouteRoute,
   } as any);
 
 export interface FileRoutesByFullPath {
@@ -362,7 +376,6 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/ai": typeof DashboardSettingsAiRoute;
   "/dashboard/settings/api-keys": typeof DashboardSettingsApiKeysRoute;
   "/dashboard/settings/app": typeof DashboardSettingsAppRoute;
-  "/dashboard/settings/billing": typeof DashboardSettingsBillingRoute;
   "/dashboard/settings/job-search": typeof DashboardSettingsJobSearchRoute;
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
@@ -376,7 +389,10 @@ export interface FileRoutesByFullPath {
   "/dashboard/career/knowledge/facts": typeof DashboardCareerKnowledgeFactsRoute;
   "/dashboard/career/knowledge/preferences": typeof DashboardCareerKnowledgePreferencesRoute;
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
+  "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
+  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
+  "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRoutesByTo {
   "/ats-checker": typeof HomeAtsCheckerRoute;
@@ -407,7 +423,6 @@ export interface FileRoutesByTo {
   "/dashboard/settings/ai": typeof DashboardSettingsAiRoute;
   "/dashboard/settings/api-keys": typeof DashboardSettingsApiKeysRoute;
   "/dashboard/settings/app": typeof DashboardSettingsAppRoute;
-  "/dashboard/settings/billing": typeof DashboardSettingsBillingRoute;
   "/dashboard/settings/job-search": typeof DashboardSettingsJobSearchRoute;
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
@@ -421,7 +436,10 @@ export interface FileRoutesByTo {
   "/dashboard/career/knowledge/facts": typeof DashboardCareerKnowledgeFactsRoute;
   "/dashboard/career/knowledge/preferences": typeof DashboardCareerKnowledgePreferencesRoute;
   "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
+  "/dashboard/settings/billing": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
+  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
+  "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -460,7 +478,6 @@ export interface FileRoutesById {
   "/dashboard/settings/ai": typeof DashboardSettingsAiRoute;
   "/dashboard/settings/api-keys": typeof DashboardSettingsApiKeysRoute;
   "/dashboard/settings/app": typeof DashboardSettingsAppRoute;
-  "/dashboard/settings/billing": typeof DashboardSettingsBillingRoute;
   "/dashboard/settings/job-search": typeof DashboardSettingsJobSearchRoute;
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
@@ -474,7 +491,10 @@ export interface FileRoutesById {
   "/dashboard/career/knowledge/facts": typeof DashboardCareerKnowledgeFactsRoute;
   "/dashboard/career/knowledge/preferences": typeof DashboardCareerKnowledgePreferencesRoute;
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
+  "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
+  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
+  "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
@@ -513,7 +533,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/ai"
     | "/dashboard/settings/api-keys"
     | "/dashboard/settings/app"
-    | "/dashboard/settings/billing"
     | "/dashboard/settings/job-search"
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
@@ -527,7 +546,10 @@ export interface FileRouteTypes {
     | "/dashboard/career/knowledge/facts"
     | "/dashboard/career/knowledge/preferences"
     | "/dashboard/settings/authentication/"
-    | "/dashboard/career/knowledge/stories/{-$storyId}";
+    | "/dashboard/settings/billing/"
+    | "/dashboard/career/knowledge/stories/{-$storyId}"
+    | "/dashboard/settings/billing/receipt/$paymentId"
+    | "/dashboard/settings/billing/return/{-$paymentId}";
   fileRoutesByTo: FileRoutesByTo;
   to:
     | "/ats-checker"
@@ -558,7 +580,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/ai"
     | "/dashboard/settings/api-keys"
     | "/dashboard/settings/app"
-    | "/dashboard/settings/billing"
     | "/dashboard/settings/job-search"
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
@@ -572,7 +593,10 @@ export interface FileRouteTypes {
     | "/dashboard/career/knowledge/facts"
     | "/dashboard/career/knowledge/preferences"
     | "/dashboard/settings/authentication"
-    | "/dashboard/career/knowledge/stories/{-$storyId}";
+    | "/dashboard/settings/billing"
+    | "/dashboard/career/knowledge/stories/{-$storyId}"
+    | "/dashboard/settings/billing/receipt/$paymentId"
+    | "/dashboard/settings/billing/return/{-$paymentId}";
   id:
     | "__root__"
     | "/_home"
@@ -610,7 +634,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/ai"
     | "/dashboard/settings/api-keys"
     | "/dashboard/settings/app"
-    | "/dashboard/settings/billing"
     | "/dashboard/settings/job-search"
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
@@ -624,7 +647,10 @@ export interface FileRouteTypes {
     | "/dashboard/career/knowledge/facts"
     | "/dashboard/career/knowledge/preferences"
     | "/dashboard/settings/authentication/"
-    | "/dashboard/career/knowledge/stories/{-$storyId}";
+    | "/dashboard/settings/billing/"
+    | "/dashboard/career/knowledge/stories/{-$storyId}"
+    | "/dashboard/settings/billing/receipt/$paymentId"
+    | "/dashboard/settings/billing/return/{-$paymentId}";
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -911,13 +937,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardSettingsAppRouteImport;
       parentRoute: typeof DashboardSettingsRouteRoute;
     };
-    "/dashboard/settings/billing": {
-      id: "/dashboard/settings/billing";
-      path: "/billing";
-      fullPath: "/dashboard/settings/billing";
-      preLoaderRoute: typeof DashboardSettingsBillingRouteImport;
-      parentRoute: typeof DashboardSettingsRouteRoute;
-    };
     "/dashboard/settings/integrations": {
       id: "/dashboard/settings/integrations";
       path: "/integrations";
@@ -981,12 +1000,33 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardSettingsAuthenticationIndexRouteImport;
       parentRoute: typeof DashboardSettingsRouteRoute;
     };
+    "/dashboard/settings/billing/": {
+      id: "/dashboard/settings/billing/";
+      path: "/billing";
+      fullPath: "/dashboard/settings/billing/";
+      preLoaderRoute: typeof DashboardSettingsBillingIndexRouteImport;
+      parentRoute: typeof DashboardSettingsRouteRoute;
+    };
     "/dashboard/career/knowledge/stories/{-$storyId}": {
       id: "/dashboard/career/knowledge/stories/{-$storyId}";
       path: "/stories/{-$storyId}";
       fullPath: "/dashboard/career/knowledge/stories/{-$storyId}";
       preLoaderRoute: typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport;
       parentRoute: typeof DashboardCareerKnowledgeRouteRoute;
+    };
+    "/dashboard/settings/billing/receipt/$paymentId": {
+      id: "/dashboard/settings/billing/receipt/$paymentId";
+      path: "/billing/receipt/$paymentId";
+      fullPath: "/dashboard/settings/billing/receipt/$paymentId";
+      preLoaderRoute: typeof DashboardSettingsBillingReceiptPaymentIdRouteImport;
+      parentRoute: typeof DashboardSettingsRouteRoute;
+    };
+    "/dashboard/settings/billing/return/{-$paymentId}": {
+      id: "/dashboard/settings/billing/return/{-$paymentId}";
+      path: "/billing/return/{-$paymentId}";
+      fullPath: "/dashboard/settings/billing/return/{-$paymentId}";
+      preLoaderRoute: typeof DashboardSettingsBillingReturnChar123PaymentIdChar125RouteImport;
+      parentRoute: typeof DashboardSettingsRouteRoute;
     };
   }
 }
@@ -1098,12 +1138,14 @@ interface DashboardSettingsRouteRouteChildren {
   DashboardSettingsAiRoute: typeof DashboardSettingsAiRoute;
   DashboardSettingsApiKeysRoute: typeof DashboardSettingsApiKeysRoute;
   DashboardSettingsAppRoute: typeof DashboardSettingsAppRoute;
-  DashboardSettingsBillingRoute: typeof DashboardSettingsBillingRoute;
   DashboardSettingsJobSearchRoute: typeof DashboardSettingsJobSearchRoute;
   DashboardSettingsPreferencesRoute: typeof DashboardSettingsPreferencesRoute;
   DashboardSettingsProfileRoute: typeof DashboardSettingsProfileRoute;
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute;
   DashboardSettingsAuthenticationIndexRoute: typeof DashboardSettingsAuthenticationIndexRoute;
+  DashboardSettingsBillingIndexRoute: typeof DashboardSettingsBillingIndexRoute;
+  DashboardSettingsBillingReceiptPaymentIdRoute: typeof DashboardSettingsBillingReceiptPaymentIdRoute;
+  DashboardSettingsBillingReturnChar123PaymentIdChar125Route: typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 
 const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
@@ -1114,13 +1156,17 @@ const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
     DashboardSettingsAiRoute: DashboardSettingsAiRoute,
     DashboardSettingsApiKeysRoute: DashboardSettingsApiKeysRoute,
     DashboardSettingsAppRoute: DashboardSettingsAppRoute,
-    DashboardSettingsBillingRoute: DashboardSettingsBillingRoute,
     DashboardSettingsJobSearchRoute: DashboardSettingsJobSearchRoute,
     DashboardSettingsPreferencesRoute: DashboardSettingsPreferencesRoute,
     DashboardSettingsProfileRoute: DashboardSettingsProfileRoute,
     DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
     DashboardSettingsAuthenticationIndexRoute:
       DashboardSettingsAuthenticationIndexRoute,
+    DashboardSettingsBillingIndexRoute: DashboardSettingsBillingIndexRoute,
+    DashboardSettingsBillingReceiptPaymentIdRoute:
+      DashboardSettingsBillingReceiptPaymentIdRoute,
+    DashboardSettingsBillingReturnChar123PaymentIdChar125Route:
+      DashboardSettingsBillingReturnChar123PaymentIdChar125Route,
   };
 
 const DashboardSettingsRouteRouteWithChildren =

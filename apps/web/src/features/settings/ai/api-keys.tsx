@@ -187,7 +187,11 @@ export function ApiKeysSection() {
 							</Trans>
 						</Alert.Description>
 					</Alert.Content>
-					<Link to="/dashboard/settings/billing" className={buttonVariants({ size: "sm", variant: "secondary" })}>
+					<Link
+						to="/dashboard/settings/billing"
+						search={{ plan: "plus" }}
+						className={buttonVariants({ size: "sm", variant: "secondary" })}
+					>
 						<Trans>See plans</Trans>
 					</Link>
 				</Alert>

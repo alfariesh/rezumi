@@ -719,6 +719,44 @@ describe.skipIf(!databaseUrl)("Midtrans payments", () => {
 			expect(left.filter((period) => period.endsAt > new Date()).map((period) => period.planId)).toEqual(["pro-ai"]);
 		});
 
+		it("previews a purchase the way paying for it then lays it out, and shows each payment's paid time", async () => {
+			await expect(as("buyer").previewPurchase({ planId: "pro-ai" })).resolves.toMatchObject({
+				planId: "pro-ai",
+				amount: 79_000,
+				durationDays: 30,
+				credits: 100,
+				schedule: [{ planId: "pro-ai", purchase: true }],
+			});
+			const plus = await startCheckout("plus");
+			await expect(as("buyer").payment({ id: plus.id })).resolves.toMatchObject({ access: null });
+			midtransSays(plus.providerOrderId, "settlement", { gross_amount: "29000.00" });
+			await notify({ order_id: plus.providerOrderId, gross_amount: "29000.00" });
+
+			const preview = await as("buyer").previewPurchase({ planId: "pro-ai" });
+			expect(preview.schedule.map((stretch) => [stretch.planId, stretch.purchase])).toEqual([
+				["pro-ai", true],
+				["plus", false],
+			]);
+			const pro = await startCheckout("pro-ai");
+			midtransSays(pro.providerOrderId, "settlement");
+			await notify({ order_id: pro.providerOrderId });
+
+			const proAccess = (await as("buyer").payment({ id: pro.id })).access;
+			const plusAccess = (await as("buyer").payment({ id: plus.id })).access;
+			const plusAfter = preview.schedule[1];
+			if (!proAccess || !plusAccess || !plusAfter) throw new Error("Both payments should have paid time.");
+			expect(+proAccess.endsAt - +proAccess.startsAt).toBe(30 * DAY_MS);
+			// Plus ran until the upgrade and picks up again after Pro AI: its span covers both passes.
+			expect(+plusAccess.endsAt - +plusAccess.startsAt).toBe(60 * DAY_MS);
+			expect(+plusAccess.endsAt).toBeGreaterThan(+proAccess.endsAt);
+			expect(Math.abs(+plusAfter.endsAt - +plusAccess.endsAt)).toBeLessThan(60_000);
+		});
+
+		it("refuses a preview while plans don't apply to the account", async () => {
+			fixture.mode = "off";
+			await expectCode(as("buyer").previewPurchase({ planId: "plus" }), "BILLING_UNAVAILABLE");
+		});
+
 		it("lists the account's payments newest first, a page at a time", async () => {
 			const first = await startCheckout("plus");
 			const second = await startCheckout("pro-ai");

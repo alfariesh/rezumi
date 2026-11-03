@@ -87,7 +87,8 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 				) : (
 					<Link
 						to="/auth/register"
-						search={plan.id === "free" ? {} : { plan: plan.id }}
+						// A paid plan goes on to the Plan page with it marked; signed-in visitors skip straight there.
+						search={plan.id === "free" ? {} : { callbackURL: `/dashboard/settings/billing?plan=${plan.id}` }}
 						className={cn(buttonVariants({ variant: featured ? "secondary" : "primary", fullWidth: true }), "mt-8")}
 					>
 						{plan.cta}

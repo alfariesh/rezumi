@@ -46,7 +46,13 @@ export function PlanDialog() {
 						<Button slot="close" variant="tertiary">
 							<Trans>Close</Trans>
 						</Button>
-						<Link to="/dashboard/settings/billing" className={buttonVariants()} onClick={close}>
+						{/* Plus covers every document limit and feature. */}
+						<Link
+							to="/dashboard/settings/billing"
+							search={{ plan: "plus" }}
+							className={buttonVariants()}
+							onClick={close}
+						>
 							<Trans>See plans</Trans>
 						</Link>
 					</AlertDialog.Footer>

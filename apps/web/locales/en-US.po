@@ -312,6 +312,11 @@ msgstr "{0} · {providerLabel}. Sends this application and your Knowledge; your 
 msgid "{0} (copy)"
 msgstr "{0} (copy)"
 
+#. placeholder {0}: creditCount(payment.credits)
+#: src/features/billing/payment-return.tsx
+msgid "{0} added for Rezumi AI."
+msgstr "{0} added for Rezumi AI."
+
 #. placeholder {0}: application.role
 #. placeholder {1}: application.company
 #: src/features/applications/components/board.tsx
@@ -339,6 +344,11 @@ msgstr "{0} edits applied"
 #: src/features/billing/plan-page.tsx
 msgid "{0} expire on {1}"
 msgstr "{0} expire on {1}"
+
+#. placeholder {0}: creditCount(credits)
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} for Rezumi AI come with it."
+msgstr "{0} for Rezumi AI come with it."
 
 #. placeholder {0}: semantics.dates.length
 #: src/features/resume/editor/check/parser-view.tsx
@@ -479,6 +489,17 @@ msgstr "{0} supported, {1} partly supported, {2} with no evidence yet. {3}"
 msgid "{0} to fix"
 msgstr "{0} to fix"
 
+#. placeholder {0}: formatDate(payment.access.startsAt)
+#. placeholder {1}: formatDate(payment.access.endsAt)
+#: src/features/billing/receipt.tsx
+msgid "{0} until {1}"
+msgstr "{0} until {1}"
+
+#. placeholder {0}: getPaymentMethodName(payment.paymentType)
+#: src/features/billing/receipt.tsx
+msgid "{0} via Midtrans"
+msgstr "{0} via Midtrans"
+
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: index + 1
 #: src/features/resume/editor/write/entry-card.tsx
@@ -500,6 +521,7 @@ msgstr "{0}. Issue resolved."
 msgid "{accepted} of {0} applied"
 msgstr "{accepted} of {0} applied"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "{activeResumes} active resumes and {activeCoverLetters} cover letters"
 msgstr "{activeResumes} active resumes and {activeCoverLetters} cover letters"
@@ -592,6 +614,10 @@ msgstr "{days, plural, one {# office day, under your limit} other {# office days
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{days} days of access, paid once. It doesn't renew on its own."
+msgstr "{days} days of access, paid once. It doesn't renew on its own."
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -711,6 +737,10 @@ msgstr "{name} and custom styles aren't in your plan, so the imported document u
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} didn't respond. Nothing was changed; try again."
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} ends"
+msgstr "{name} ends"
+
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} is split into {columns} columns"
@@ -735,6 +765,10 @@ msgstr "{name} resume template preview"
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} sits in the sidebar"
 msgstr "{name} sits in the sidebar"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts"
+msgstr "{name} starts"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} uses one column"
@@ -777,6 +811,26 @@ msgstr "{passedRules} of {totalRules} checks pass."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 
+#. placeholder {0}: formatDate(access.endsAt)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is active until {0}."
+msgstr "{plan} is active until {0}."
+
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is being added to your account."
+msgstr "{plan} is being added to your account."
+
+#. placeholder {0}: formatDate(access.startsAt)
+#. placeholder {1}: formatDate(access.endsAt)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} starts on {0} and runs until {1}."
+msgstr "{plan} starts on {0} and runs until {1}."
+
+#: src/features/billing/pending-payment.tsx
+msgid "{price}, payable until {deadline}. A bank transfer can still be paid any time before then."
+msgstr "{price}, payable until {deadline}. A bank transfer can still be paid any time before then."
+
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "{proCredits} AI credits per purchase"
 msgstr "{proCredits} AI credits per purchase"
@@ -784,6 +838,10 @@ msgstr "{proCredits} AI credits per purchase"
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {# proposed} other {# proposed}}"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{rest} ends"
+msgstr "{rest} ends"
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
@@ -1132,6 +1190,10 @@ msgstr "Access"
 #: src/features/auth/pages/consent.tsx
 msgid "Access is sent to"
 msgstr "Access is sent to"
+
+#: src/features/billing/receipt.tsx
+msgid "Access period"
+msgstr "Access period"
 
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
@@ -1589,6 +1651,11 @@ msgstr "After the screening"
 msgid "After the technical interview"
 msgstr "After the technical interview"
 
+#. placeholder {0}: getPlanName(waitsFor.planId)
+#: src/features/billing/purchase-dialog.tsx
+msgid "After your {0} time ends."
+msgstr "After your {0} time ends."
+
 #: src/features/career/workspace/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "After your first review, a light plan for this week appears here."
@@ -1734,6 +1801,10 @@ msgstr "Also shows the icons on skills, profiles and interests."
 #: src/libs/locale.ts
 msgid "Amharic"
 msgstr "Amharic"
+
+#: src/features/billing/payment-history.tsx
+msgid "Amount"
+msgstr "Amount"
 
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
@@ -2227,6 +2298,11 @@ msgstr "Back to stories"
 msgid "Back to the chat"
 msgstr "Back to the chat"
 
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/receipt.tsx
+msgid "Back to your plan"
+msgstr "Back to your plan"
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 msgid "Backed by"
@@ -2421,6 +2497,26 @@ msgstr "bullet {n}"
 msgid "Bulleted list"
 msgstr "Bulleted list"
 
+#: src/features/billing/purchase.ts
+msgid "Buy {name}"
+msgstr "Buy {name}"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Buy a pass"
+msgstr "Buy a pass"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Buying is paused for now"
+msgstr "Buying is paused for now"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Buying isn't available right now. Try again later."
+msgstr "Buying isn't available right now. Try again later."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr "By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Calendar"
@@ -2450,6 +2546,7 @@ msgstr "Can software read your resume?"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -2463,6 +2560,14 @@ msgstr "Can software read your resume?"
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/features/billing/purchase.ts
+msgid "Cancelled"
+msgstr "Cancelled"
+
+#: src/features/billing/purchase.ts
+msgid "Card"
+msgstr "Card"
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Career"
@@ -2504,6 +2609,10 @@ msgstr "Change language to…"
 #: src/dialogs/auth/change-password.tsx
 msgid "Change password"
 msgstr "Change password"
+
+#: src/features/billing/pending-payment.tsx
+msgid "Change payment method"
+msgstr "Change payment method"
 
 #: src/features/settings/account/profile.tsx
 msgid "Change photo"
@@ -2567,6 +2676,7 @@ msgstr "Check a PDF"
 msgid "Check a sample file"
 msgstr "Check a sample file"
 
+#: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Check again"
 msgstr "Check again"
@@ -2620,6 +2730,10 @@ msgstr "Check whether software can read your resume PDF. Runs entirely in your b
 msgid "Check your connection and try again."
 msgstr "Check your connection and try again."
 
+#: src/features/billing/payment-return.tsx
+msgid "Check your connection and try again. If you paid, the payment isn't lost."
+msgstr "Check your connection and try again. If you paid, the payment isn't lost."
+
 #: src/features/auth/pages/forgot-password.tsx
 #: src/features/auth/pages/register.tsx
 msgid "Check your email"
@@ -2653,6 +2767,14 @@ msgstr "Checking layout and content"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Checking the exported PDF…"
 msgstr "Checking the exported PDF…"
+
+#: src/features/billing/payment-return.tsx
+msgid "Checking with Midtrans…"
+msgstr "Checking with Midtrans…"
+
+#: src/features/billing/payment-return.tsx
+msgid "Checking your payment…"
+msgstr "Checking your payment…"
 
 #: src/features/career/shared.tsx
 msgid "Checking your preferences"
@@ -2806,6 +2928,7 @@ msgstr "Client ID"
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -3155,6 +3278,15 @@ msgstr "Continue"
 #: src/features/auth/pages/login.tsx
 msgid "Continue as guest"
 msgstr "Continue as guest"
+
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/pending-payment.tsx
+msgid "Continue payment"
+msgstr "Continue payment"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Continue to payment"
+msgstr "Continue to payment"
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Contrast on white:"
@@ -3703,6 +3835,7 @@ msgstr "Couldn't save. Try again."
 msgid "Couldn't schedule the interview. Try again."
 msgstr "Couldn't schedule the interview. Try again."
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/settings/account/profile.tsx
 msgid "Couldn't send the email. Try again."
 msgstr "Couldn't send the email. Try again."
@@ -3942,6 +4075,14 @@ msgstr "Create a resume first, then ask about it."
 msgid "Create account"
 msgstr "Create account"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Create an account"
+msgstr "Create an account"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Create an account to buy a pass"
+msgstr "Create an account to buy a pass"
+
 #: src/features/auth/pages/consent.tsx
 msgid "Create and change your documents and job applications, seeing each one it changes in full, and change your profile and username."
 msgstr "Create and change your documents and job applications, seeing each one it changes in full, and change your profile and username."
@@ -3981,6 +4122,10 @@ msgstr "Credits"
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
 msgstr "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Credits left from this pass expire with it."
+msgstr "Credits left from this pass expire with it."
 
 #: src/features/homepage/faq.tsx
 msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
@@ -4069,6 +4214,10 @@ msgstr "Custom styles aren't in your plan, so the imported document leaves the f
 msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
 msgstr "Custom styles aren't in your plan. Styles already saved keep working on the page."
 
+#: src/features/billing/buy-plans.tsx
+msgid "Custom styles, your own fonts, API and MCP"
+msgstr "Custom styles, your own fonts, API and MCP"
+
 #: src/libs/locale.ts
 msgid "Czech"
 msgstr "Czech"
@@ -4098,6 +4247,7 @@ msgstr "Dark theme"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/payment-history.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/dates-field.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -4706,6 +4856,10 @@ msgstr "Dutch"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Each answer you get feedback on is kept here, newest first."
 
+#: src/features/billing/buy-plans.tsx
+msgid "Each pass is 30 days of access, paid once. Nothing renews on its own."
+msgstr "Each pass is 30 days of access, paid once. Nothing renews on its own."
+
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
@@ -4865,6 +5019,10 @@ msgstr "Email address"
 #: src/features/resume/editor/check/issues.ts
 msgid "Email address won't be recognized"
 msgstr "Email address won't be recognized"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Email delivery isn't set up on this server, so the address can't be verified."
+msgstr "Email delivery isn't set up on this server, so the address can't be verified."
 
 #: src/features/settings/account/profile.tsx
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
@@ -5032,6 +5190,10 @@ msgstr "Every template"
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 
+#: src/features/billing/buy-plans.tsx
+msgid "Every template, with Word and ODT downloads"
+msgstr "Every template, with Word and ODT downloads"
+
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "Every term the posting stresses is already there."
@@ -5040,6 +5202,7 @@ msgstr "Every term the posting stresses is already there."
 msgid "Every week"
 msgstr "Every week"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "Everything in Plus"
 msgstr "Everything in Plus"
@@ -5070,6 +5233,10 @@ msgstr "Experience"
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Experience, Education and more"
 msgstr "Experience, Education and more"
+
+#: src/features/billing/purchase.ts
+msgid "Expired"
+msgstr "Expired"
 
 #: src/features/billing/credits.ts
 msgid "Expired on {expires}"
@@ -5141,6 +5308,10 @@ msgstr "Exported PDF: {0}"
 msgid "Exported pipeline-flow.png"
 msgstr "Exported pipeline-flow.png"
 
+#: src/features/billing/purchase.ts
+msgid "Extend {days} days"
+msgstr "Extend {days} days"
+
 #: src/features/resume/import/read-file.ts
 msgid "Extract this account archive, then import a JSON file from its resumes or letters folder."
 msgstr "Extract this account archive, then import a JSON file from its resumes or letters folder."
@@ -5171,6 +5342,7 @@ msgstr "Facts"
 msgid "Facts, stories and preferences that are switched on in Knowledge"
 msgstr "Facts, stories and preferences that are switched on in Knowledge"
 
+#: src/features/billing/purchase.ts
 #: src/features/settings/ai/providers.tsx
 msgid "Failed"
 msgstr "Failed"
@@ -5378,6 +5550,7 @@ msgstr "Fonts could not be loaded. Try again."
 msgid "For"
 msgstr "For"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/pricing.tsx
 msgid "For 30 days, no automatic renewal"
 msgstr "For 30 days, no automatic renewal"
@@ -5636,6 +5809,10 @@ msgstr "Go home"
 #: src/routes/_home/-sections/header.tsx
 msgid "Go to dashboard"
 msgstr "Go to dashboard"
+
+#: src/features/billing/payment-return.tsx
+msgid "Go to your plan"
+msgstr "Go to your plan"
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Go to…"
@@ -5965,6 +6142,18 @@ msgstr "If the app did not open, try again on a device where it is installed."
 msgid "If you close this dialog, your changes are lost."
 msgstr "If you close this dialog, your changes are lost."
 
+#: src/features/billing/payment-return.tsx
+msgid "If you paid just now, it shows here within a few minutes. Otherwise, start a new payment."
+msgstr "If you paid just now, it shows here within a few minutes. Otherwise, start a new payment."
+
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds."
+msgstr "If you've paid, this page updates by itself in a few seconds."
+
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can still be paid any time until {deadline}."
+msgstr "If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can still be paid any time until {deadline}."
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Ignore"
 msgstr "Ignore"
@@ -6247,6 +6436,10 @@ msgstr "Issues and Job match still work without AI."
 msgid "It has entries but isn't placed on a page."
 msgstr "It has entries but isn't placed on a page."
 
+#: src/features/billing/payment-return.tsx
+msgid "It isn't one of this account's payments. If you paid while signed in to another account, sign in to that one. Your plan page lists every payment you started."
+msgstr "It isn't one of this account's payments. If you paid while signed in to another account, sign in to that one. Your plan page lists every payment you started."
+
 #: src/features/career/knowledge/stories.tsx
 msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "It may have been deleted. Choose another story or add a new one."
@@ -6270,6 +6463,10 @@ msgstr "Italian"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "Italic"
+
+#: src/features/billing/receipt.tsx
+msgid "Item"
+msgstr "Item"
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -6933,6 +7130,10 @@ msgstr "Loading saved version…"
 msgid "Loading stylesheet editor…"
 msgstr "Loading stylesheet editor…"
 
+#: src/features/billing/receipt.tsx
+msgid "Loading the receipt…"
+msgstr "Loading the receipt…"
+
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Loading workspace…"
@@ -7218,6 +7419,10 @@ msgstr "Message the coach"
 #: src/features/career/shared.tsx
 msgid "Messages"
 msgstr "Messages"
+
+#: src/features/billing/payment-history.tsx
+msgid "Method"
+msgstr "Method"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
@@ -7613,6 +7818,7 @@ msgstr "No activity yet"
 msgid "No API key needed. Each action shows its cost in credits first · {0} left"
 msgstr "No API key needed. Each action shows its cost in credits first · {0} left"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "No API key to set up"
 msgstr "No API key to set up"
@@ -8073,6 +8279,10 @@ msgstr "Nothing to review."
 msgid "Nothing to suggest."
 msgstr "Nothing to suggest."
 
+#: src/features/billing/payment-return.tsx
+msgid "Nothing was charged for it. You can start a new {plan} payment."
+msgstr "Nothing was charged for it. You can start a new {plan} payment."
+
 #: src/features/career/workspace/practise.tsx
 msgid "Nothing was heard. Try again, or type your answer."
 msgstr "Nothing was heard. Try again, or type your answer."
@@ -8081,6 +8291,7 @@ msgstr "Nothing was heard. Try again, or type your answer."
 msgid "Notice period"
 msgstr "Notice period"
 
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8141,6 +8352,14 @@ msgstr "Offline · saved on this device"
 msgid "Older"
 msgstr "Older"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
+msgstr "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
+msgstr "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "On. Anyone with the link can see your web page."
@@ -8148,6 +8367,10 @@ msgstr "On. Anyone with the link can see your web page."
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Once paid"
+msgstr "Once paid"
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
@@ -8296,6 +8519,10 @@ msgstr "Open story"
 msgid "Open the exported file and confirm you can select and copy every part of it."
 msgstr "Open the exported file and confirm you can select and copy every part of it."
 
+#: src/features/billing/buy-plans.tsx
+msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr "Open the link we sent to {email}. Your receipt goes there too."
+
 #: src/routes/auth/native-callback.tsx
 msgid "Open the Rezumi app"
 msgstr "Open the Rezumi app"
@@ -8393,6 +8620,10 @@ msgstr "Or upload a resume PDF"
 msgid "Orange"
 msgstr "Orange"
 
+#: src/features/billing/receipt.tsx
+msgid "Order number"
+msgstr "Order number"
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "Organization"
@@ -8482,6 +8713,18 @@ msgstr "Page reading didn't finish."
 msgid "Page view"
 msgstr "Page view"
 
+#: src/features/billing/purchase.ts
+msgid "Paid"
+msgstr "Paid"
+
+#: src/features/billing/receipt.tsx
+msgid "Paid by"
+msgstr "Paid by"
+
+#: src/features/billing/receipt.tsx
+msgid "Paid on"
+msgstr "Paid on"
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Paper"
 msgstr "Paper"
@@ -8495,9 +8738,17 @@ msgstr "Paragraph"
 msgid "paragraph {n}"
 msgstr "paragraph {n}"
 
+#: src/features/billing/purchase.ts
+msgid "Partly refunded"
+msgstr "Partly refunded"
+
 #: src/features/career/shared.tsx
 msgid "Partly supported"
 msgstr "Partly supported"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Passes belong to an account with an email address. Your guest work moves with you."
+msgstr "Passes belong to an account with an email address. Your guest work moves with you."
 
 #. Authentication provider display name in account settings
 #. Label for passkey sign-in button
@@ -8612,6 +8863,10 @@ msgstr "Paused · {line}"
 msgid "Paused schedules keep their settings."
 msgstr "Paused schedules keep their settings."
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Pay"
+msgstr "Pay"
+
 #: src/features/homepage/pricing.tsx
 msgid "Pay only while you are applying."
 msgstr "Pay only while you are applying."
@@ -8619,6 +8874,26 @@ msgstr "Pay only while you are applying."
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "Pay period"
+
+#: src/features/billing/payment-return.tsx
+msgid "Payment"
+msgstr "Payment"
+
+#: src/features/billing/receipt.tsx
+msgid "Payment method"
+msgstr "Payment method"
+
+#: src/features/billing/receipt.tsx
+msgid "Payment receipt"
+msgstr "Payment receipt"
+
+#: src/features/billing/payment-return.tsx
+msgid "Payment received"
+msgstr "Payment received"
+
+#: src/features/billing/payment-history.tsx
+msgid "Payments"
+msgstr "Payments"
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "PDF and Word files are read with"
@@ -8715,6 +8990,8 @@ msgstr "Plain text (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Plain text with headings. Paste into application forms and notes."
 
+#: src/features/billing/back-link.tsx
+#: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -8890,6 +9167,10 @@ msgstr "Prepare for interviews from stories you wrote once"
 msgid "Prepare me for the interview"
 msgstr "Prepare me for the interview"
 
+#: src/features/billing/purchase.ts
+msgid "Preparing"
+msgstr "Preparing"
+
 #: src/features/resume/share/download-tab.tsx
 msgid "Preparing {label} file…"
 msgstr "Preparing {label} file…"
@@ -8993,6 +9274,10 @@ msgstr "Print"
 #: src/features/ats-checker/messages.ts
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "Print or export the form to a flat PDF before sending it."
+
+#: src/features/billing/receipt.tsx
+msgid "Print or save as PDF"
+msgstr "Print or save as PDF"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
@@ -9407,6 +9692,15 @@ msgstr "Reason"
 msgid "Recalled"
 msgstr "Recalled"
 
+#: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
+msgid "Receipt"
+msgstr "Receipt"
+
+#: src/features/billing/payment-history.tsx
+msgid "Receipts are proof of payment, not tax invoices."
+msgstr "Receipts are proof of payment, not tax invoices."
+
 #: src/features/billing/plan-page.tsx
 msgid "Recent activity"
 msgstr "Recent activity"
@@ -9507,6 +9801,11 @@ msgstr "Refresh the briefing on the morning of"
 #: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
 msgstr "Refund policy"
+
+#: src/features/billing/purchase.ts
+#: src/features/billing/receipt.tsx
+msgid "Refunded"
+msgstr "Refunded"
 
 #: src/features/resume/share/cv-domain-card.tsx
 msgid "Register at OlaCV"
@@ -9750,6 +10049,10 @@ msgstr "Requirements"
 msgid "Requirements and your evidence"
 msgstr "Requirements and your evidence"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Resend the link"
+msgstr "Resend the link"
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
@@ -9926,6 +10229,10 @@ msgstr "Retrying…"
 msgid "Returned: no usable result"
 msgstr "Returned: no usable result"
 
+#: src/features/billing/purchase.ts
+msgid "Reversed by the bank"
+msgstr "Reversed by the bank"
+
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -9992,6 +10299,12 @@ msgstr "Rezumi - Go to homepage"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#. placeholder {0}: getPlanName(payment.planId)
+#. placeholder {1}: payment.durationDays
+#: src/features/billing/receipt.tsx
+msgid "Rezumi {0}, {1} days of access"
+msgstr "Rezumi {0}, {1} days of access"
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr "Rezumi AI · {cost}"
@@ -10002,6 +10315,7 @@ msgid "Rezumi AI · {cost} · {0} left"
 msgstr "Rezumi AI · {cost} · {0} left"
 
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr "Rezumi AI credits"
 
@@ -10574,6 +10888,10 @@ msgstr "Select an AI provider"
 msgid "Select..."
 msgstr "Select..."
 
+#: src/features/billing/buy-plans.tsx
+msgid "Selected"
+msgstr "Selected"
+
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "Selected documents"
@@ -10581,6 +10899,10 @@ msgstr "Selected documents"
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Selection"
 msgstr "Selection"
+
+#: src/features/billing/receipt.tsx
+msgid "Seller"
+msgstr "Seller"
 
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
@@ -10843,6 +11165,10 @@ msgstr "Show in search engines"
 #: src/features/resume/editor/write/fields.tsx
 msgid "Show link in title"
 msgstr "Show link in title"
+
+#: src/features/billing/payment-history.tsx
+msgid "Show older payments"
+msgstr "Show older payments"
 
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -11302,6 +11628,10 @@ msgstr "Start with the sections most resumes have."
 msgid "Started"
 msgstr "Started"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Starts after your Pro AI time ends."
+msgstr "Starts after your Pro AI time ends."
+
 #: src/features/career/shared.tsx
 msgid "Starts in {minutes} minutes"
 msgstr "Starts in {minutes} minutes"
@@ -11319,6 +11649,8 @@ msgstr "Starts now"
 msgid "Statistics"
 msgstr "Statistics"
 
+#: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "Status"
@@ -11961,6 +12293,18 @@ msgstr "The page's PDF couldn't be read. Edit anything to render it again."
 msgid "The pages are pictures, with no text behind them."
 msgstr "The pages are pictures, with no text behind them."
 
+#: src/features/billing/payment-return.tsx
+msgid "The pass it bought has been taken back. Your documents stay as they are."
+msgstr "The pass it bought has been taken back. Your documents stay as they are."
+
+#: src/features/billing/pending-payment.tsx
+msgid "The payment method couldn't be changed. Try again in a moment."
+msgstr "The payment method couldn't be changed. Try again in a moment."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "The payment page couldn't be opened. Try again in a moment."
+msgstr "The payment page couldn't be opened. Try again in a moment."
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "The posting asks for “{label}”. If it's true for me, work it into my resume where it fits. Ask me first."
 msgstr "The posting asks for “{label}”. If it's true for me, work it into my resume where it fits. Ask me first."
@@ -11972,6 +12316,10 @@ msgstr "The posting couldn't be read. Fill in the role and company."
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "The posting saved with this application."
+
+#: src/features/billing/receipt.tsx
+msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
+msgstr "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
 
 #: src/features/assistant/provider-setup.tsx
 msgid "The provider didn't answer. Check the key and the model."
@@ -12079,6 +12427,10 @@ msgstr "The test didn't run. Try again."
 msgid "The text comes out unreadable."
 msgstr "The text comes out unreadable."
 
+#: src/features/billing/payment-return.tsx
+msgid "The time to pay has run out"
+msgstr "The time to pay has run out"
+
 #: src/features/ats-checker/messages.ts
 msgid "The top of the first page does not look like a name."
 msgstr "The top of the first page does not look like a name."
@@ -12110,6 +12462,10 @@ msgstr "There is no link to a profile, portfolio or repository."
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "There is no summary paragraph."
+
+#: src/features/billing/receipt.tsx
+msgid "There's no receipt yet: this payment hasn't been paid."
+msgstr "There's no receipt yet: this payment hasn't been paid."
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -12249,6 +12605,10 @@ msgstr "This letter is locked. Unlock it from its menu to edit."
 msgid "This letter keeps its recipient as written."
 msgstr "This letter keeps its recipient as written."
 
+#: src/features/billing/payment-return.tsx
+msgid "This link doesn't say which payment it is. Your plan page lists every payment you started."
+msgstr "This link doesn't say which payment it is. Your plan page lists every payment you started."
+
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
@@ -12273,6 +12633,22 @@ msgstr "This page is in columns, and the text extracts out of order."
 msgid "This page is very densely packed."
 msgstr "This page is very densely packed."
 
+#: src/features/billing/payment-return.tsx
+msgid "This payment didn't go through"
+msgstr "This payment didn't go through"
+
+#: src/features/billing/payment-return.tsx
+msgid "This payment expired"
+msgstr "This payment expired"
+
+#: src/features/billing/payment-return.tsx
+msgid "This payment was refunded"
+msgstr "This payment was refunded"
+
+#: src/features/billing/pending-payment.tsx
+msgid "This payment went through, so there's nothing to change."
+msgstr "This payment went through, so there's nothing to change."
+
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "This PDF has no text layer, so a parser reads nothing from it."
@@ -12284,6 +12660,10 @@ msgstr "This PDF is a scanned image. There's no text to read. Try the Word versi
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "This PDF is password protected. Save an unprotected copy and try again."
+
+#: src/features/billing/receipt.tsx
+msgid "This receipt isn't available. It may belong to another account."
+msgstr "This receipt isn't available. It may belong to another account."
 
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
@@ -12394,6 +12774,10 @@ msgstr "Time · {0}"
 msgid "Time · {timeZone}"
 msgstr "Time · {timeZone}"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Time you already have is never lost."
+msgstr "Time you already have is never lost."
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Time, link, who, what you sent"
 msgstr "Time, link, who, what you sent"
@@ -12405,6 +12789,16 @@ msgstr "Timed plan"
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Times are shown in {timeZone}."
+
+#. placeholder {0}: zoneName(split.pass.endsAt)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Times in {0}, estimated for paying now."
+msgstr "Times in {0}, estimated for paying now."
+
+#. placeholder {0}: zoneName(split.pass.startsAt)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Times in {0}."
+msgstr "Times in {0}."
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/general.tsx
@@ -12460,9 +12854,17 @@ msgstr "Too light for headings on white. It may be hard to read and print faintl
 msgid "Too many requests. Try again later."
 msgstr "Too many requests. Try again later."
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Too many tries in a row. Wait a few minutes, then try again."
+msgstr "Too many tries in a row. Wait a few minutes, then try again."
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
 msgstr "Toolbar"
+
+#: src/features/billing/receipt.tsx
+msgid "Total paid"
+msgstr "Total paid"
 
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up on purpose."
@@ -12534,6 +12936,7 @@ msgstr "Try a sample"
 
 #: src/components/layout/error-screen.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/billing/payment-return.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/load-state.tsx
 #: src/features/career/workspace/practise.tsx
@@ -12547,6 +12950,10 @@ msgstr "Try a sample"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
 msgstr "Try again"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Try again later. Your current pass and credits aren't affected."
+msgstr "Try again later. Your current pass and credits aren't affected."
 
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
@@ -12832,6 +13239,10 @@ msgstr "Updated {done} of {total}. Locked documents, and letters for public link
 msgid "Updating your resume..."
 msgstr "Updating your resume..."
 
+#: src/features/billing/purchase.ts
+msgid "Upgrade to {name}"
+msgstr "Upgrade to {name}"
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Upload .csv"
 msgstr "Upload .csv"
@@ -13092,9 +13503,17 @@ msgstr "Verify"
 msgid "Verify with a backup code"
 msgstr "Verify with a backup code"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Verify your email address first, then try again."
+msgstr "Verify your email address first, then try again."
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Verify your email in Settings first"
 msgstr "Verify your email in Settings first"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Verify your email to buy a pass"
+msgstr "Verify your email to buy a pass"
 
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verifying backup code..."
@@ -13165,6 +13584,10 @@ msgstr "View application"
 msgid "View posting"
 msgstr "View posting"
 
+#: src/features/billing/payment-return.tsx
+msgid "View receipt"
+msgstr "View receipt"
+
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -13182,6 +13605,10 @@ msgstr "Views"
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "views · 30 days"
+
+#: src/features/billing/purchase.ts
+msgid "Virtual account"
+msgstr "Virtual account"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -13203,9 +13630,17 @@ msgstr "Voice settings"
 msgid "Volunteer"
 msgstr "Volunteer"
 
+#: src/features/billing/purchase.ts
+msgid "Waiting for payment"
+msgstr "Waiting for payment"
+
 #: src/features/career/workspace/messages.tsx
 msgid "Waiting for you"
 msgstr "Waiting for you"
+
+#: src/features/billing/payment-return.tsx
+msgid "Waiting for your payment"
+msgstr "Waiting for your payment"
 
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
@@ -13218,6 +13653,18 @@ msgstr "Walk in ready"
 #: src/features/ats-checker/messages.ts
 msgid "Warning"
 msgstr "Warning"
+
+#: src/features/billing/payment-return.tsx
+msgid "We couldn't check this payment"
+msgstr "We couldn't check this payment"
+
+#: src/features/billing/payment-return.tsx
+msgid "We couldn't find this payment"
+msgstr "We couldn't find this payment"
+
+#: src/features/billing/payment-return.tsx
+msgid "We email the receipt to you as well."
+msgstr "We email the receipt to you as well."
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "We read the page and save the posting for Check, the assistant and your letter."
@@ -13235,6 +13682,10 @@ msgstr "We sent a link to {currentEmail} to approve the change. Then open the li
 #: src/features/settings/account/profile.tsx
 msgid "We sent a new verification link to {0}."
 msgstr "We sent a new verification link to {0}."
+
+#: src/features/billing/buy-plans.tsx
+msgid "We sent a new verification link to {email}."
+msgstr "We sent a new verification link to {email}."
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
@@ -13757,6 +14208,14 @@ msgstr "You're up to date"
 #: src/features/auth/components/guest-banner.tsx
 msgid "You're using a guest account"
 msgstr "You're using a guest account"
+
+#: src/features/billing/pending-payment.tsx
+msgid "Your {plan} payment isn't finished"
+msgstr "Your {plan} payment isn't finished"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your {rest} time picks up again"
+msgstr "Your {rest} time picks up again"
 
 #: src/features/settings/account/data.tsx
 msgid "Your account was deleted."
