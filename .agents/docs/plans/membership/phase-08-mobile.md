@@ -23,6 +23,7 @@
 ### Konteks
 
 - Phase 03, 04, 05 sudah menambah UI mobile (halaman Paket baca-saja, dialog batas, label template, sumber AI). Phase ini **memastikan semuanya mengikuti aturan per platform**, merapikan yang tertinggal dari Phase 07 (paritas tampilan riwayat/status), dan mencatat pengecualian.
+- **Dari Phase 07 (web, 2026-11-03):** riwayat pembayaran dan bukti bayar web ada di `apps/web/src/features/billing/payment-history.tsx` dan `receipt.tsx`; samakan isinya di layar Android (tanggal, paket, nominal, metode, status; bukti bayar: penjual dari `BILLING_SELLER`, nomor pesanan, waktu bayar, masa aktif dari `billing.payment.access`, kredit, metode, status, "bukan faktur pajak"). Label status dan nama metode ada di `apps/web/src/features/billing/purchase.ts` (`getPaymentStatusLabel`, `getPaymentMethodName`); terjemahan id-ID sudah ada di katalog web. `billing.payment(s)` mengembalikan `redirectUrl: null` untuk app, dan `summary.pendingPayment` selalu `null` untuk app; jangan tampilkan banner "pembayaran belum selesai" atau `billing.previewPurchase` di mobile. Tanggal billing web memakai bahasa aplikasi dan zona akun (WIB bila `UTC`).
 - App mobile memakai OAuth bearer sebagai klien resmi (`apps/mobile/src/auth/oauth.ts`); aturan API/MCP tidak boleh memblokirnya (Phase 03).
 - Belum ada app yang dirilis di toko (`.agents/docs/mobile-release-handoff.md`: "Not ready for store submission yet").
 

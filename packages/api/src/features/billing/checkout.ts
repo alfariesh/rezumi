@@ -1,7 +1,8 @@
+import type { PlannedStretch } from "./timeline";
 import type { BillingPaymentStatus } from "@rezumi/db/schema";
 import type { PaidPlanId } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/server";
-import { and, desc, eq, gt, isNotNull, lt, sql } from "drizzle-orm";
+import { and, desc, eq, gt, isNotNull, isNull, lt, max, min, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
@@ -20,6 +21,7 @@ import {
 import { getMidtransConfig } from "./midtrans/config";
 import { buildSnapPayload, providerOrderIdFor, windowEnd, windowStart } from "./midtrans/payload";
 import { syncPaymentStatus } from "./reconcile";
+import { DAY_MS, previewPurchase as previewSchedule } from "./timeline";
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
 type Authentication = { user: { id: string }; method: "apiKey" | "bearer" | "session" };
@@ -292,12 +294,71 @@ export async function changePaymentMethod(input: {
 	});
 }
 
+/** What buying a pass now would cost and do to the account's paid time, before checkout. */
+export type PurchasePreview = {
+	planId: PaidPlanId;
+	amount: number;
+	currency: string;
+	durationDays: number;
+	credits: number;
+	schedule: PlannedStretch[];
+};
+
+/**
+ * The catalog price and, if the pass were paid now, where it would sit in the account's schedule: the same layout the
+ * payment applies once it is verified. Read without the billing lock; it only informs the confirmation.
+ */
+export async function previewPurchase(userId: string, planId: PaidPlanId, now = new Date()): Promise<PurchasePreview> {
+	if (!(await isBillingAppliedTo(userId))) throw BLOCKER_ERRORS.unavailable();
+	const plan = PLANS[planId];
+	const periods = await db
+		.select({
+			id: schema.membershipPeriod.id,
+			planId: schema.membershipPeriod.planId,
+			startsAt: schema.membershipPeriod.startsAt,
+			endsAt: schema.membershipPeriod.endsAt,
+			createdAt: schema.membershipPeriod.createdAt,
+		})
+		.from(schema.membershipPeriod)
+		.where(
+			and(
+				eq(schema.membershipPeriod.userId, userId),
+				isNull(schema.membershipPeriod.revokedAt),
+				gt(schema.membershipPeriod.endsAt, now),
+			),
+		);
+	return {
+		planId: plan.id,
+		amount: plan.priceIdr,
+		currency: BILLING_CURRENCY,
+		durationDays: plan.durationDays,
+		credits: plan.creditsPerPurchase,
+		schedule: previewSchedule(periods, { planId: plan.id, durationMs: plan.durationDays * DAY_MS }, now),
+	};
+}
+
+/** A payment with the paid time it bought: from its first day to its last, null until it is granted. */
+export type PaymentDetail = PaymentView & { access: { startsAt: Date; endsAt: Date } | null };
+
+async function withAccess(view: PaymentView): Promise<PaymentDetail> {
+	// A pass pushed back by a higher plan is split in two rows; the receipt shows its whole span, as the email does.
+	const [range] = await db
+		.select({ startsAt: min(schema.membershipPeriod.startsAt), endsAt: max(schema.membershipPeriod.endsAt) })
+		.from(schema.membershipPeriod)
+		.where(eq(schema.membershipPeriod.paymentId, view.id));
+	return {
+		...view,
+		access: range?.startsAt && range.endsAt ? { startsAt: range.startsAt, endsAt: range.endsAt } : null,
+	};
+}
+
 /** One of the account's payments, checked with Midtrans first while it is still open (at most every 10 seconds). */
-export async function getPayment(authentication: Authentication, paymentId: string): Promise<PaymentView> {
+export async function getPayment(authentication: Authentication, paymentId: string): Promise<PaymentDetail> {
 	const payment = await ownPayment(authentication.user.id, paymentId);
-	if (payment.status !== "pending" && payment.status !== "creating") return toPaymentView(payment, authentication);
+	if (payment.status !== "pending" && payment.status !== "creating")
+		return withAccess(toPaymentView(payment, authentication));
 	await syncPaymentStatus(payment.id);
-	return toPaymentView(await ownPayment(authentication.user.id, paymentId), authentication);
+	return withAccess(toPaymentView(await ownPayment(authentication.user.id, paymentId), authentication));
 }
 
 /** The account's payments, newest first. IDs are UUIDv7, so the cursor is the last ID seen. */

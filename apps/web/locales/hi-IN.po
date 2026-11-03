@@ -317,6 +317,11 @@ msgstr "{0} · {providerLabel}। यह आवेदन और आपका ज
 msgid "{0} (copy)"
 msgstr "{0} (कॉपी)"
 
+#. placeholder {0}: creditCount(payment.credits)
+#: src/features/billing/payment-return.tsx
+msgid "{0} added for Rezumi AI."
+msgstr ""
+
 #. placeholder {0}: application.role
 #. placeholder {1}: application.company
 #: src/features/applications/components/board.tsx
@@ -343,6 +348,11 @@ msgstr "{0} संपादन लागू किये गये"
 #. placeholder {1}: formatDate(nextExpiry.at)
 #: src/features/billing/plan-page.tsx
 msgid "{0} expire on {1}"
+msgstr ""
+
+#. placeholder {0}: creditCount(credits)
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} for Rezumi AI come with it."
 msgstr ""
 
 #. placeholder {0}: semantics.dates.length
@@ -484,6 +494,17 @@ msgstr "{0} समर्थित, {1} आंशिक रूप से सम�
 msgid "{0} to fix"
 msgstr "{0} ठीक करने हेतु"
 
+#. placeholder {0}: formatDate(payment.access.startsAt)
+#. placeholder {1}: formatDate(payment.access.endsAt)
+#: src/features/billing/receipt.tsx
+msgid "{0} until {1}"
+msgstr ""
+
+#. placeholder {0}: getPaymentMethodName(payment.paymentType)
+#: src/features/billing/receipt.tsx
+msgid "{0} via Midtrans"
+msgstr ""
+
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: index + 1
 #: src/features/resume/editor/write/entry-card.tsx
@@ -505,6 +526,7 @@ msgstr "{0}. मसला सुलझ गया."
 msgid "{accepted} of {0} applied"
 msgstr "{0} में से {accepted} लागू किए गए"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "{activeResumes} active resumes and {activeCoverLetters} cover letters"
 msgstr ""
@@ -597,6 +619,10 @@ msgstr "{days, plural, one {# दिन ऑफ़िस, आपकी सीम�
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, one {# दिन ऑफ़िस, ठीक आपकी सीमा} other {# दिन ऑफ़िस, ठीक आपकी सीमा}}"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{days} days of access, paid once. It doesn't renew on its own."
+msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -716,6 +742,10 @@ msgstr ""
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} ने जवाब नहीं दिया। कुछ भी नहीं बदला गया; फिर से प्रयास करें।"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} ends"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} को {columns} कॉलम में विभाजित किया गया है"
@@ -740,6 +770,10 @@ msgstr "{name} सीवी टेम्पलेट पूर्वावलो
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} sits in the sidebar"
 msgstr "{name} साइडबार में बैठता है"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} uses one column"
@@ -782,6 +816,26 @@ msgstr "{totalRules} का {passedRules} चेक पास हो गया�
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# ने इस पृष्ठ पर प्रस्तावित संपादन · जब तक आप स्वीकार नहीं करते तब तक कुछ भी नहीं बदलता} other {# ने इस पृष्ठ पर संपादन प्रस्तावित किया · जब तक आप स्वीकार नहीं करते तब तक कुछ भी नहीं बदलता}}"
 
+#. placeholder {0}: formatDate(access.endsAt)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is active until {0}."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is being added to your account."
+msgstr ""
+
+#. placeholder {0}: formatDate(access.startsAt)
+#. placeholder {1}: formatDate(access.endsAt)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} starts on {0} and runs until {1}."
+msgstr ""
+
+#: src/features/billing/pending-payment.tsx
+msgid "{price}, payable until {deadline}. A bank transfer can still be paid any time before then."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "{proCredits} AI credits per purchase"
 msgstr ""
@@ -789,6 +843,10 @@ msgstr ""
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {# प्रस्तावित} other {# प्रस्तावित}}"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{rest} ends"
+msgstr ""
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
@@ -1137,6 +1195,10 @@ msgstr "पहुँच"
 #: src/features/auth/pages/consent.tsx
 msgid "Access is sent to"
 msgstr "पहुँच का प्राप्तकर्ता"
+
+#: src/features/billing/receipt.tsx
+msgid "Access period"
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
@@ -1594,6 +1656,11 @@ msgstr "स्क्रीनिंग के बाद"
 msgid "After the technical interview"
 msgstr "तकनीकी साक्षात्कार के बाद"
 
+#. placeholder {0}: getPlanName(waitsFor.planId)
+#: src/features/billing/purchase-dialog.tsx
+msgid "After your {0} time ends."
+msgstr ""
+
 #: src/features/career/workspace/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "आपकी पहली समीक्षा के बाद, इस सप्ताह की एक हल्की योजना यहाँ दिखाई देगी।"
@@ -1739,6 +1806,10 @@ msgstr "कौशल, प्रोफाइल और रुचियों प�
 #: src/libs/locale.ts
 msgid "Amharic"
 msgstr "अमहारी"
+
+#: src/features/billing/payment-history.tsx
+msgid "Amount"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
@@ -2232,6 +2303,11 @@ msgstr "कहानियों पर वापस जाएँ"
 msgid "Back to the chat"
 msgstr ""
 
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/receipt.tsx
+msgid "Back to your plan"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 msgid "Backed by"
@@ -2426,6 +2502,26 @@ msgstr "सूची प्रविष्टि {n}"
 msgid "Bulleted list"
 msgstr "बुलेटेड सूची"
 
+#: src/features/billing/purchase.ts
+msgid "Buy {name}"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Buy a pass"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Buying is paused for now"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Buying isn't available right now. Try again later."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "कैलेंडर"
@@ -2455,6 +2551,7 @@ msgstr "क्या सॉफ़्टवेयर आपका बायोड
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -2468,6 +2565,14 @@ msgstr "क्या सॉफ़्टवेयर आपका बायोड
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "रद्द करें"
+
+#: src/features/billing/purchase.ts
+msgid "Cancelled"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Card"
+msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Career"
@@ -2509,6 +2614,10 @@ msgstr "भाषा बदलें…"
 #: src/dialogs/auth/change-password.tsx
 msgid "Change password"
 msgstr "पासवर्ड बदलें"
+
+#: src/features/billing/pending-payment.tsx
+msgid "Change payment method"
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Change photo"
@@ -2572,6 +2681,7 @@ msgstr "एक PDF की जाँच करें"
 msgid "Check a sample file"
 msgstr "एक नमूना फ़ाइल की जाँच करें"
 
+#: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Check again"
 msgstr "फिर से जाँचें"
@@ -2625,6 +2735,10 @@ msgstr "जांचें कि सॉफ़्टवेयर आपका �
 msgid "Check your connection and try again."
 msgstr "अपना कनेक्शन जांचें और पुनः प्रयास करें।"
 
+#: src/features/billing/payment-return.tsx
+msgid "Check your connection and try again. If you paid, the payment isn't lost."
+msgstr ""
+
 #: src/features/auth/pages/forgot-password.tsx
 #: src/features/auth/pages/register.tsx
 msgid "Check your email"
@@ -2658,6 +2772,14 @@ msgstr "लेआउट और सामग्री की जाँच कर�
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Checking the exported PDF…"
 msgstr "निर्यातित PDF की जाँच हो रही है..."
+
+#: src/features/billing/payment-return.tsx
+msgid "Checking with Midtrans…"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Checking your payment…"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Checking your preferences"
@@ -2811,6 +2933,7 @@ msgstr "ग्राहक आईडी"
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -3160,6 +3283,15 @@ msgstr "जारी रखें"
 #: src/features/auth/pages/login.tsx
 msgid "Continue as guest"
 msgstr "अतिथि के रूप में जारी रखें"
+
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/pending-payment.tsx
+msgid "Continue payment"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Continue to payment"
+msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Contrast on white:"
@@ -3708,6 +3840,7 @@ msgstr "सहेजा नहीं जा सका. पुनः प्रय
 msgid "Couldn't schedule the interview. Try again."
 msgstr "साक्षात्कार शेड्यूल नहीं किया जा सका। पुनः प्रयास करें।"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/settings/account/profile.tsx
 msgid "Couldn't send the email. Try again."
 msgstr "ईमेल नहीं भेजा जा सका. पुनः प्रयास करें।"
@@ -3947,6 +4080,14 @@ msgstr "पहले एक बायोडाटा बनाएं, फिर 
 msgid "Create account"
 msgstr "खाता बनाएँ"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Create an account"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Create an account to buy a pass"
+msgstr ""
+
 #: src/features/auth/pages/consent.tsx
 msgid "Create and change your documents and job applications, seeing each one it changes in full, and change your profile and username."
 msgstr "यह एप्लिकेशन आपके दस्तावेज़ और नौकरी एप्लिकेशन बना और संपादित कर सकता है। यह अपने द्वारा संपादित प्रत्येक दस्तावेज़ या नौकरी आवेदन की पूरी सामग्री पढ़ सकता है। यह आपकी प्रोफ़ाइल और उपयोगकर्ता नाम भी बदल सकता है।"
@@ -3985,6 +4126,10 @@ msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Credits left from this pass expire with it."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
@@ -4074,6 +4219,10 @@ msgstr ""
 msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
+msgid "Custom styles, your own fonts, API and MCP"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Czech"
 msgstr "चेक"
@@ -4103,6 +4252,7 @@ msgstr "डार्क थीम"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/payment-history.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/dates-field.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -4711,6 +4861,10 @@ msgstr "डच"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "जिस भी जवाब पर आपको फ़ीडबैक मिलता है, वह यहाँ रखा जाता है, सबसे नया पहले।"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Each pass is 30 days of access, paid once. Nothing renews on its own."
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "पोस्टिंग की हर आवश्यकता को आपके ज्ञानकोश के तथ्यों और कहानियों से मिलाकर जाँचा जाता है। कमियाँ अनुपलब्ध प्रमाण के रूप में दिखती हैं, कभी भी क्षमता की कमी के रूप में नहीं।"
@@ -4870,6 +5024,10 @@ msgstr "ईमेल पता"
 #: src/features/resume/editor/check/issues.ts
 msgid "Email address won't be recognized"
 msgstr "ईमेल पता पहचाना नहीं जाएगा"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Email delivery isn't set up on this server, so the address can't be verified."
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
@@ -5037,6 +5195,10 @@ msgstr ""
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
+msgid "Every template, with Word and ODT downloads"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "हर टर्म में जॉब पोस्टिंग का तनाव पहले से ही मौजूद होता है।"
@@ -5045,6 +5207,7 @@ msgstr "हर टर्म में जॉब पोस्टिंग का 
 msgid "Every week"
 msgstr "हर सप्ताह"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "Everything in Plus"
 msgstr ""
@@ -5074,6 +5237,10 @@ msgstr "अनुभव"
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Experience, Education and more"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Expired"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -5146,6 +5313,10 @@ msgstr "निर्यातित PDF: {0}"
 msgid "Exported pipeline-flow.png"
 msgstr "pipeline-flow.png निर्यात किया गया"
 
+#: src/features/billing/purchase.ts
+msgid "Extend {days} days"
+msgstr ""
+
 #: src/features/resume/import/read-file.ts
 msgid "Extract this account archive, then import a JSON file from its resumes or letters folder."
 msgstr "इस खाते का संग्रह निकालें, फिर इसके बायोडाटा या अक्षर फ़ोल्डर से एक JSON फ़ाइल आयात करें।"
@@ -5176,6 +5347,7 @@ msgstr "तथ्य"
 msgid "Facts, stories and preferences that are switched on in Knowledge"
 msgstr "ज्ञानकोश में चालू तथ्य, कहानियाँ और प्राथमिकताएँ"
 
+#: src/features/billing/purchase.ts
 #: src/features/settings/ai/providers.tsx
 msgid "Failed"
 msgstr "असफल"
@@ -5383,6 +5555,7 @@ msgstr "फ़ॉन्ट लोड नहीं हो सके। फिर 
 msgid "For"
 msgstr "के लिए"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/pricing.tsx
 msgid "For 30 days, no automatic renewal"
 msgstr ""
@@ -5641,6 +5814,10 @@ msgstr "घर जाओ"
 #: src/routes/_home/-sections/header.tsx
 msgid "Go to dashboard"
 msgstr "डैशबोर्ड पर जाएँ"
+
+#: src/features/billing/payment-return.tsx
+msgid "Go to your plan"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Go to…"
@@ -5970,6 +6147,18 @@ msgstr "यदि ऐप नहीं खुलता है, तो उस ड�
 msgid "If you close this dialog, your changes are lost."
 msgstr "अगर आप यह डायलॉग बंद करते हैं, तो आपके बदलाव खो जाएँगे।"
 
+#: src/features/billing/payment-return.tsx
+msgid "If you paid just now, it shows here within a few minutes. Otherwise, start a new payment."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can still be paid any time until {deadline}."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Ignore"
 msgstr "अनदेखा करना"
@@ -6252,6 +6441,10 @@ msgstr "मुद्दे और जॉब मैच अभी भी एआई
 msgid "It has entries but isn't placed on a page."
 msgstr "इसमें प्रविष्टियाँ हैं लेकिन किसी पृष्ठ पर नहीं रखी गई हैं।"
 
+#: src/features/billing/payment-return.tsx
+msgid "It isn't one of this account's payments. If you paid while signed in to another account, sign in to that one. Your plan page lists every payment you started."
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "हो सकता है इसे हटा दिया गया हो। कोई दूसरी कहानी चुनें या नई जोड़ें।"
@@ -6275,6 +6468,10 @@ msgstr "इतालवी"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "इटैलिक"
+
+#: src/features/billing/receipt.tsx
+msgid "Item"
+msgstr ""
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -6938,6 +7135,10 @@ msgstr "सहेजा गया संस्करण लोड हो रह�
 msgid "Loading stylesheet editor…"
 msgstr "स्टाइलशीट संपादक लोड हो रहा है…"
 
+#: src/features/billing/receipt.tsx
+msgid "Loading the receipt…"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "वर्कस्पेस लोड हो रहा है…"
@@ -7223,6 +7424,10 @@ msgstr "कोच को संदेश भेजें"
 #: src/features/career/shared.tsx
 msgid "Messages"
 msgstr "संदेश"
+
+#: src/features/billing/payment-history.tsx
+msgid "Method"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
@@ -7618,6 +7823,7 @@ msgstr ""
 msgid "No API key needed. Each action shows its cost in credits first · {0} left"
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "No API key to set up"
 msgstr ""
@@ -8078,6 +8284,10 @@ msgstr "समीक्षा करने के लिए कुछ भी न
 msgid "Nothing to suggest."
 msgstr "सुझाने के लिए कुछ नहीं।"
 
+#: src/features/billing/payment-return.tsx
+msgid "Nothing was charged for it. You can start a new {plan} payment."
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Nothing was heard. Try again, or type your answer."
 msgstr "कुछ सुनाई नहीं दिया। फिर से प्रयास करें, या अपना जवाब टाइप करें।"
@@ -8086,6 +8296,7 @@ msgstr "कुछ सुनाई नहीं दिया। फिर से 
 msgid "Notice period"
 msgstr "नोटिस अवधि"
 
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8146,6 +8357,14 @@ msgstr "ऑफ़लाइन · इस डिवाइस पर सहेज�
 msgid "Older"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "चालू। लिंक वाला कोई भी व्यक्ति आपका वेब पेज देख सकता है।"
@@ -8153,6 +8372,10 @@ msgstr "चालू। लिंक वाला कोई भी व्यक�
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "राउंड शेड्यूल होते ही \"तैयारी\" एक समयबद्ध योजना, आपकी शुरुआत और पूछने के लिए सवाल बनाती है।"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Once paid"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
@@ -8301,6 +8524,10 @@ msgstr "कहानी खोलें"
 msgid "Open the exported file and confirm you can select and copy every part of it."
 msgstr "एक्सपोर्ट की गई फ़ाइल खोलें और पुष्टि करें कि आप इसके हर हिस्से को चुन और कॉपी कर सकते हैं।"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr ""
+
 #: src/routes/auth/native-callback.tsx
 msgid "Open the Rezumi app"
 msgstr "Rezumi ऐप खोलें"
@@ -8398,6 +8625,10 @@ msgstr "या रेज़्यूमे PDF अपलोड करें"
 msgid "Orange"
 msgstr "नारंगी"
 
+#: src/features/billing/receipt.tsx
+msgid "Order number"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "संगठन"
@@ -8487,6 +8718,18 @@ msgstr "पेज पढ़ना ख़त्म नहीं हुआ."
 msgid "Page view"
 msgstr "पृष्ठ का दृश्य"
 
+#: src/features/billing/purchase.ts
+msgid "Paid"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Paid by"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Paid on"
+msgstr ""
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Paper"
 msgstr "कागज़"
@@ -8500,9 +8743,17 @@ msgstr "अनुच्छेद"
 msgid "paragraph {n}"
 msgstr "अनुच्छेद {n}"
 
+#: src/features/billing/purchase.ts
+msgid "Partly refunded"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Partly supported"
 msgstr "आंशिक रूप से समर्थित"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Passes belong to an account with an email address. Your guest work moves with you."
+msgstr ""
 
 #. Authentication provider display name in account settings
 #. Label for passkey sign-in button
@@ -8617,6 +8868,10 @@ msgstr "रुका हुआ · {line}"
 msgid "Paused schedules keep their settings."
 msgstr "रुके हुए शेड्यूल अपनी सेटिंग्स बनाए रखते हैं।"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Pay"
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
 msgid "Pay only while you are applying."
 msgstr ""
@@ -8624,6 +8879,26 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "भुगतान अवधि"
+
+#: src/features/billing/payment-return.tsx
+msgid "Payment"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Payment method"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Payment receipt"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Payment received"
+msgstr ""
+
+#: src/features/billing/payment-history.tsx
+msgid "Payments"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "PDF and Word files are read with"
@@ -8720,6 +8995,8 @@ msgstr "सादा टेक्स्ट (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "शीर्षकों के साथ सादा पाठ. नौकरी के आवेदन पत्र और नोट्स में चिपकाएँ।"
 
+#: src/features/billing/back-link.tsx
+#: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -8895,6 +9172,10 @@ msgstr ""
 msgid "Prepare me for the interview"
 msgstr "मुझे साक्षात्कार के लिए तैयार करो"
 
+#: src/features/billing/purchase.ts
+msgid "Preparing"
+msgstr ""
+
 #: src/features/resume/share/download-tab.tsx
 msgid "Preparing {label} file…"
 msgstr "{label} फ़ाइल तैयार की जा रही है…"
@@ -8998,6 +9279,10 @@ msgstr "छाप"
 #: src/features/ats-checker/messages.ts
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "भेजने से पहले फ़ॉर्म को प्रिंट करें या फ़्लैट PDF के रूप में एक्सपोर्ट करें।"
+
+#: src/features/billing/receipt.tsx
+msgid "Print or save as PDF"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
@@ -9412,6 +9697,15 @@ msgstr "कारण"
 msgid "Recalled"
 msgstr "याद से"
 
+#: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
+msgid "Receipt"
+msgstr ""
+
+#: src/features/billing/payment-history.tsx
+msgid "Receipts are proof of payment, not tax invoices."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Recent activity"
 msgstr ""
@@ -9511,6 +9805,11 @@ msgstr "ब्रीफ़िंग उसी दिन सुबह रीफ�
 #: src/features/homepage/footer.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+#: src/features/billing/receipt.tsx
+msgid "Refunded"
 msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
@@ -9755,6 +10054,10 @@ msgstr "ज़रूरतें"
 msgid "Requirements and your evidence"
 msgstr "आवश्यकताएँ और आपके प्रमाण"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Resend the link"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "कैपिटल को केवल छोटे शीर्षकों के लिए रखें। ये पढ़ने की गति धीमी करते हैं और केस-सेंसिटिव खोज को विफल कर सकते हैं।"
@@ -9931,6 +10234,10 @@ msgstr "पुनः प्रयास किया जा रहा है..."
 msgid "Returned: no usable result"
 msgstr ""
 
+#: src/features/billing/purchase.ts
+msgid "Reversed by the bank"
+msgstr ""
+
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -9997,6 +10304,12 @@ msgstr "Rezumi - होमपेज पर जाएँ"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#. placeholder {0}: getPlanName(payment.planId)
+#. placeholder {1}: payment.durationDays
+#: src/features/billing/receipt.tsx
+msgid "Rezumi {0}, {1} days of access"
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr ""
@@ -10007,6 +10320,7 @@ msgid "Rezumi AI · {cost} · {0} left"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -10579,12 +10893,20 @@ msgstr "एक एआई प्रदाता का चयन करें"
 msgid "Select..."
 msgstr "चुनें..."
 
+#: src/features/billing/buy-plans.tsx
+msgid "Selected"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "चुने गए दस्तावेज़"
 
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Selection"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Seller"
 msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
@@ -10848,6 +11170,10 @@ msgstr "सर्च इंजन में दिखाएँ"
 #: src/features/resume/editor/write/fields.tsx
 msgid "Show link in title"
 msgstr "शीर्षक में लिंक दिखाएं"
+
+#: src/features/billing/payment-history.tsx
+msgid "Show older payments"
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -11307,6 +11633,10 @@ msgstr "उन अनुभागों से प्रारंभ करे�
 msgid "Started"
 msgstr "शुरू हो गया"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Starts after your Pro AI time ends."
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Starts in {minutes} minutes"
 msgstr "{minutes} मिनट में शुरू"
@@ -11324,6 +11654,8 @@ msgstr "अभी शुरू"
 msgid "Statistics"
 msgstr "आंकड़े"
 
+#: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "स्टेटस"
@@ -11966,6 +12298,18 @@ msgstr "पेज का PDF पढ़ा नहीं जा सका। क�
 msgid "The pages are pictures, with no text behind them."
 msgstr "पेज तस्वीरें हैं, जिनके पीछे कोई टेक्स्ट नहीं है।"
 
+#: src/features/billing/payment-return.tsx
+msgid "The pass it bought has been taken back. Your documents stay as they are."
+msgstr ""
+
+#: src/features/billing/pending-payment.tsx
+msgid "The payment method couldn't be changed. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "The payment page couldn't be opened. Try again in a moment."
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "The posting asks for “{label}”. If it's true for me, work it into my resume where it fits. Ask me first."
 msgstr "नौकरी की पोस्टिंग में \"{label}\" पूछा जाता है। यदि यह मेरे लिए सच है, तो इसे मेरे बायोडाटा में शामिल करें जहां यह फिट बैठता है। पहले मुझसे पूछो."
@@ -11977,6 +12321,10 @@ msgstr "नौकरी की पोस्टिंग पढ़ी नही�
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "इस नौकरी आवेदन के साथ नौकरी पोस्टिंग सहेजी गई।"
+
+#: src/features/billing/receipt.tsx
+msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "The provider didn't answer. Check the key and the model."
@@ -12084,6 +12432,10 @@ msgstr "परीक्षण नहीं चला। पुनः प्र�
 msgid "The text comes out unreadable."
 msgstr "टेक्स्ट अपठनीय निकलता है।"
 
+#: src/features/billing/payment-return.tsx
+msgid "The time to pay has run out"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The top of the first page does not look like a name."
 msgstr "पहले पेज के ऊपरी हिस्से में नाम जैसा कुछ नहीं दिखता।"
@@ -12115,6 +12467,10 @@ msgstr "किसी प्रोफ़ाइल, पोर्टफ़ोलि
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "कोई सारांश पैराग्राफ नहीं है।"
+
+#: src/features/billing/receipt.tsx
+msgid "There's no receipt yet: this payment hasn't been paid."
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -12254,6 +12610,10 @@ msgstr "यह पत्र बंद है. संपादित करने
 msgid "This letter keeps its recipient as written."
 msgstr "यह पत्र अपने प्राप्तकर्ता को लिखित रूप में रखता है।"
 
+#: src/features/billing/payment-return.tsx
+msgid "This link doesn't say which payment it is. Your plan page lists every payment you started."
+msgstr ""
+
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "यह मापता है कि सॉफ़्टवेयर इस फ़ाइल का टेक्स्ट कितनी सफ़ाई से निकाल पाता है। यह नहीं बताता कि कोई आवेदन अस्वीकार होगा या नहीं, और कोई टूल यह बता भी नहीं सकता। आपकी फ़ाइल इसी ब्राउज़र में पढ़ी गई और कभी अपलोड नहीं हुई।"
@@ -12278,6 +12638,22 @@ msgstr "यह पेज कॉलम में है, और टेक्स�
 msgid "This page is very densely packed."
 msgstr "यह पेज बहुत घना भरा हुआ है।"
 
+#: src/features/billing/payment-return.tsx
+msgid "This payment didn't go through"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "This payment expired"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "This payment was refunded"
+msgstr ""
+
+#: src/features/billing/pending-payment.tsx
+msgid "This payment went through, so there's nothing to change."
+msgstr ""
+
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "इस PDF में कोई टेक्स्ट परत नहीं है, इसलिए पार्सर इसमें से कुछ भी नहीं पढ़ता है।"
@@ -12289,6 +12665,10 @@ msgstr "यह PDF एक स्कैन की गई छवि है। प�
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "यह PDF पासवर्ड से सुरक्षित है। एक असुरक्षित प्रति सहेजें और फिर कोशिश करें।"
+
+#: src/features/billing/receipt.tsx
+msgid "This receipt isn't available. It may belong to another account."
+msgstr ""
 
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
@@ -12399,6 +12779,10 @@ msgstr "समय · {0}"
 msgid "Time · {timeZone}"
 msgstr "समय · {timeZone}"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Time you already have is never lost."
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Time, link, who, what you sent"
 msgstr "समय, लिंक, कौन, आपने क्या भेजा"
@@ -12410,6 +12794,16 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "समय {timeZone} में दिखाए जाते हैं।"
+
+#. placeholder {0}: zoneName(split.pass.endsAt)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Times in {0}, estimated for paying now."
+msgstr ""
+
+#. placeholder {0}: zoneName(split.pass.startsAt)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Times in {0}."
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/general.tsx
@@ -12465,8 +12859,16 @@ msgstr "सफ़ेद पर शीर्षकों के लिए बह�
 msgid "Too many requests. Try again later."
 msgstr "बहुत सारे अनुरोध. बाद में पुन: प्रयास।"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Too many tries in a row. Wait a few minutes, then try again."
+msgstr ""
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Total paid"
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -12539,6 +12941,7 @@ msgstr "एक नमूना आज़माएँ"
 
 #: src/components/layout/error-screen.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/billing/payment-return.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/load-state.tsx
 #: src/features/career/workspace/practise.tsx
@@ -12552,6 +12955,10 @@ msgstr "एक नमूना आज़माएँ"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
 msgstr "पुनः प्रयास करें"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Try again later. Your current pass and credits aren't affected."
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
@@ -12837,6 +13244,10 @@ msgstr "{total} में से {done} अपडेट किए गए। ल�
 msgid "Updating your resume..."
 msgstr "आपका रेज़्यूमे अपडेट किया जा रहा है..."
 
+#: src/features/billing/purchase.ts
+msgid "Upgrade to {name}"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Upload .csv"
 msgstr ".csv अपलोड करें"
@@ -13097,9 +13508,17 @@ msgstr "सत्यापित करें"
 msgid "Verify with a backup code"
 msgstr "बैकअप कोड से सत्यापित करें"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Verify your email address first, then try again."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Verify your email in Settings first"
 msgstr "पहले सेटिंग्स में अपना ईमेल सत्यापित करें"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Verify your email to buy a pass"
+msgstr ""
 
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verifying backup code..."
@@ -13170,6 +13589,10 @@ msgstr "नौकरी आवेदन देखें"
 msgid "View posting"
 msgstr "नौकरी पोस्टिंग देखें"
 
+#: src/features/billing/payment-return.tsx
+msgid "View receipt"
+msgstr ""
+
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -13187,6 +13610,10 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "दृश्य · 30 दिन"
+
+#: src/features/billing/purchase.ts
+msgid "Virtual account"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -13208,9 +13635,17 @@ msgstr "आवाज़ सेटिंग्स"
 msgid "Volunteer"
 msgstr "स्वयंसेवा"
 
+#: src/features/billing/purchase.ts
+msgid "Waiting for payment"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "Waiting for you"
 msgstr "आपका इंतज़ार है"
+
+#: src/features/billing/payment-return.tsx
+msgid "Waiting for your payment"
+msgstr ""
 
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
@@ -13223,6 +13658,18 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Warning"
 msgstr "चेतावनी"
+
+#: src/features/billing/payment-return.tsx
+msgid "We couldn't check this payment"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "We couldn't find this payment"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "We email the receipt to you as well."
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "We read the page and save the posting for Check, the assistant and your letter."
@@ -13240,6 +13687,10 @@ msgstr "हमने बदलाव को मंज़ूरी देने �
 #: src/features/settings/account/profile.tsx
 msgid "We sent a new verification link to {0}."
 msgstr "हमने {0} पर एक नया सत्यापन लिंक भेजा।"
+
+#: src/features/billing/buy-plans.tsx
+msgid "We sent a new verification link to {email}."
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
@@ -13762,6 +14213,14 @@ msgstr "सब कुछ अप-टू-डेट है"
 #: src/features/auth/components/guest-banner.tsx
 msgid "You're using a guest account"
 msgstr "आप अतिथि खाते का उपयोग कर रहे हैं"
+
+#: src/features/billing/pending-payment.tsx
+msgid "Your {plan} payment isn't finished"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your {rest} time picks up again"
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your account was deleted."

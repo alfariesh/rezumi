@@ -1,26 +1,25 @@
 import type { PlanFeature, PlanSummary } from "./plan";
-import type { PlanId } from "@rezumi/schema/billing";
+import type { PaidPlanId, PlanId } from "@rezumi/schema/billing";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { TextShimmer, Widget } from "@heroui-pro/react";
-import { ProgressBar, Skeleton } from "@heroui/react";
+import { ProgressCircle, Skeleton } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
-import { useRouteContext } from "@tanstack/react-router";
 import { useId } from "react";
 import { PLAN_FEATURE_KEYS, TRIAL_CREDITS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { BuyPlansSection } from "./buy-plans";
 import { creditCount, describeCreditEntry } from "./credits";
+import { PaymentHistorySection } from "./payment-history";
+import { PendingPaymentBanner } from "./pending-payment";
 import { getPlanName } from "./plan";
+import { usePlanDates } from "./purchase";
 import { PageHeader } from "@/components/layout/page-header";
 import { SettingsRow, SettingsRows, SettingsSection } from "@/features/settings/section";
 import { orpc } from "@/libs/orpc/client";
-
-// The account's timezone; until one is chosen it reads UTC, and Rezumi sells in Indonesia, so dates show in WIB.
-const planTimeZone = (timezone: string | null | undefined) =>
-	timezone && timezone !== "UTC" ? timezone : "Asia/Jakarta";
 
 const featureCopy = (): Record<PlanFeature, { icon: IconName; label: string }> => ({
 	premiumTemplates: { icon: "squares-four", label: t`Every template` },
@@ -36,16 +35,18 @@ function UsageRow({ icon, label, usage }: UsageRowProps) {
 	const max = usage.max ?? usage.used;
 	return (
 		<SettingsRow
+			inline
 			icon={icon}
 			title={label}
 			description={usage.max === null ? t`${usage.used} in use` : t`${usage.used} of ${usage.max}`}
 		>
 			{usage.max !== null && (
-				<ProgressBar aria-label={label} value={Math.min(usage.used, max)} maxValue={Math.max(max, 1)} className="w-32">
-					<ProgressBar.Track>
-						<ProgressBar.Fill />
-					</ProgressBar.Track>
-				</ProgressBar>
+				<ProgressCircle aria-label={label} value={Math.min(usage.used, max)} maxValue={Math.max(max, 1)} size="lg">
+					<ProgressCircle.Track>
+						<ProgressCircle.TrackCircle />
+						<ProgressCircle.FillCircle />
+					</ProgressCircle.Track>
+				</ProgressCircle>
 			)}
 		</SettingsRow>
 	);
@@ -246,26 +247,18 @@ function CreditsSection({ credits, formatDate, formatDay }: CreditsSectionProps)
 	);
 }
 
+type PlanSettingsProps = {
+	/** The plan a link asked for (`?plan=`): an upgrade prompt, the credits dialog or the landing page's pricing. */
+	selectedPlan?: PaidPlanId | undefined;
+};
+
 /**
- * Plan: what the account has now, until when, what comes next, how much of its limits it uses, what's included and
- * its Rezumi AI credits. Read-only: buying comes later, from the web only.
+ * Plan: a payment still to finish, what the account has now, until when and what comes next, the passes to buy, how
+ * much of its limits it uses, its Rezumi AI credits, what's included and its payments. Buying happens on the web only.
  */
-export function PlanSettings() {
-	const { session } = useRouteContext({ from: "/dashboard" });
+export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 	const { data: plan, isPending } = useQuery(orpc.billing.summary.queryOptions());
-	const timeZone = planTimeZone(session.user.timezone);
-	const formatDate = (date: Date) =>
-		date.toLocaleString(undefined, {
-			day: "numeric",
-			month: "long",
-			year: "numeric",
-			hour: "2-digit",
-			minute: "2-digit",
-			timeZone,
-			timeZoneName: "short",
-		});
-	const formatDay = (date: Date) =>
-		date.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric", timeZone });
+	const { formatDate, formatDay } = usePlanDates();
 
 	if (isPending) return <Skeleton role="status" aria-label={t`Loading your plan…`} className="h-64 rounded-2xl" />;
 
@@ -287,6 +280,8 @@ export function PlanSettings() {
 		<>
 			<PageHeader title={<Trans>Plan</Trans>} />
 
+			{plan.pendingPayment && <PendingPaymentBanner payment={plan.pendingPayment} formatDate={formatDate} />}
+
 			<div className="grid gap-2">
 				<YourPlanSection plan={plan} formatDate={formatDate} />
 				<p className="px-1 text-sm text-muted">
@@ -296,6 +291,8 @@ export function PlanSettings() {
 					</Trans>
 				</p>
 			</div>
+
+			<BuyPlansSection plan={plan} selected={selectedPlan} />
 
 			<SettingsSection
 				divided
@@ -321,7 +318,7 @@ export function PlanSettings() {
 					{PLAN_FEATURE_KEYS.map((feature) => {
 						const included = plan.features[feature];
 						return (
-							<li key={feature} className="flex items-center gap-3 text-sm">
+							<li key={feature} className="flex items-center gap-3 py-0.5 text-sm">
 								<Icon name={features[feature].icon} size={20} className="text-muted" />
 								<span className="flex-1">{features[feature].label}</span>
 								<span className={included ? "text-success" : "text-muted"}>
@@ -333,6 +330,8 @@ export function PlanSettings() {
 					})}
 				</ul>
 			</SettingsSection>
+
+			<PaymentHistorySection formatDay={formatDay} />
 		</>
 	);
 }

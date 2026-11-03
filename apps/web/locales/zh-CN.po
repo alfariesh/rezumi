@@ -317,6 +317,11 @@ msgstr "{0} · {providerLabel}。将发送此申请和您的知识库；您的�
 msgid "{0} (copy)"
 msgstr "{0}（副本）"
 
+#. placeholder {0}: creditCount(payment.credits)
+#: src/features/billing/payment-return.tsx
+msgid "{0} added for Rezumi AI."
+msgstr ""
+
 #. placeholder {0}: application.role
 #. placeholder {1}: application.company
 #: src/features/applications/components/board.tsx
@@ -343,6 +348,11 @@ msgstr "{0} 编辑已应用"
 #. placeholder {1}: formatDate(nextExpiry.at)
 #: src/features/billing/plan-page.tsx
 msgid "{0} expire on {1}"
+msgstr ""
+
+#. placeholder {0}: creditCount(credits)
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} for Rezumi AI come with it."
 msgstr ""
 
 #. placeholder {0}: semantics.dates.length
@@ -484,6 +494,17 @@ msgstr "{0} 项有证据，{1} 项部分有证据，{2} 项暂无证据。{3}"
 msgid "{0} to fix"
 msgstr "{0} 项待修复"
 
+#. placeholder {0}: formatDate(payment.access.startsAt)
+#. placeholder {1}: formatDate(payment.access.endsAt)
+#: src/features/billing/receipt.tsx
+msgid "{0} until {1}"
+msgstr ""
+
+#. placeholder {0}: getPaymentMethodName(payment.paymentType)
+#: src/features/billing/receipt.tsx
+msgid "{0} via Midtrans"
+msgstr ""
+
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: index + 1
 #: src/features/resume/editor/write/entry-card.tsx
@@ -505,6 +526,7 @@ msgstr "{0}。问题已解决。"
 msgid "{accepted} of {0} applied"
 msgstr "{0} 项中已应用 {accepted} 项"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "{activeResumes} active resumes and {activeCoverLetters} cover letters"
 msgstr ""
@@ -597,6 +619,10 @@ msgstr "{days, plural, other {到办公室 # 天，低于您的上限}}"
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, other {到办公室 # 天，正好是您的上限}}"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{days} days of access, paid once. It doesn't renew on its own."
+msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -716,6 +742,10 @@ msgstr ""
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} 没有响应。未做任何更改，请重试。"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} ends"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} 分为 {columns} 列"
@@ -740,6 +770,10 @@ msgstr "{name} 简历模板预览"
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} sits in the sidebar"
 msgstr "{name} 位于侧边栏"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{name} starts"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} uses one column"
@@ -782,6 +816,26 @@ msgstr "{totalRules}的{passedRules}检查通过。"
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# 建议在此页面进行编辑 · 在您接受之前不会发生任何变化} other {# 在此页面上建议的编辑 · 在您接受之前不会发生任何变化}}"
 
+#. placeholder {0}: formatDate(access.endsAt)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is active until {0}."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is being added to your account."
+msgstr ""
+
+#. placeholder {0}: formatDate(access.startsAt)
+#. placeholder {1}: formatDate(access.endsAt)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} starts on {0} and runs until {1}."
+msgstr ""
+
+#: src/features/billing/pending-payment.tsx
+msgid "{price}, payable until {deadline}. A bank transfer can still be paid any time before then."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "{proCredits} AI credits per purchase"
 msgstr ""
@@ -789,6 +843,10 @@ msgstr ""
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {# 提议} other {# 提议}}"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "{rest} ends"
+msgstr ""
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
@@ -1137,6 +1195,10 @@ msgstr "访问权限"
 #: src/features/auth/pages/consent.tsx
 msgid "Access is sent to"
 msgstr "访问权限授予对象"
+
+#: src/features/billing/receipt.tsx
+msgid "Access period"
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
@@ -1594,6 +1656,11 @@ msgstr "初筛之后"
 msgid "After the technical interview"
 msgstr "技术面试之后"
 
+#. placeholder {0}: getPlanName(waitsFor.planId)
+#: src/features/billing/purchase-dialog.tsx
+msgid "After your {0} time ends."
+msgstr ""
+
 #: src/features/career/workspace/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "完成第一次复盘后，本周的轻量计划会显示在这里。"
@@ -1739,6 +1806,10 @@ msgstr "还显示技能、个人资料和兴趣的图标。"
 #: src/libs/locale.ts
 msgid "Amharic"
 msgstr "阿姆哈拉语"
+
+#: src/features/billing/payment-history.tsx
+msgid "Amount"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "An embedded font could not be read."
@@ -2232,6 +2303,11 @@ msgstr "返回故事"
 msgid "Back to the chat"
 msgstr ""
 
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/receipt.tsx
+msgid "Back to your plan"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/workspace/apply.tsx
 msgid "Backed by"
@@ -2426,6 +2502,26 @@ msgstr "列表条目 {n}"
 msgid "Bulleted list"
 msgstr "项目符号列表"
 
+#: src/features/billing/purchase.ts
+msgid "Buy {name}"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Buy a pass"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Buying is paused for now"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Buying isn't available right now. Try again later."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "日历"
@@ -2455,6 +2551,7 @@ msgstr "软件可以读取您的简历吗？"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/knowledge/stories.tsx
 #: src/features/career/schedule-sheet.tsx
@@ -2468,6 +2565,14 @@ msgstr "软件可以读取您的简历吗？"
 #: src/hooks/use-confirm.tsx
 msgid "Cancel"
 msgstr "取消"
+
+#: src/features/billing/purchase.ts
+msgid "Cancelled"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Card"
+msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Career"
@@ -2509,6 +2614,10 @@ msgstr "将语言更改为…"
 #: src/dialogs/auth/change-password.tsx
 msgid "Change password"
 msgstr "更改密码"
+
+#: src/features/billing/pending-payment.tsx
+msgid "Change payment method"
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Change photo"
@@ -2572,6 +2681,7 @@ msgstr "检查 PDF"
 msgid "Check a sample file"
 msgstr "检查示例文件"
 
+#: src/features/billing/payment-return.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Check again"
 msgstr "重新检查"
@@ -2625,6 +2735,10 @@ msgstr "检查软件是否可以读取您的简历PDF。完全在您的浏览器
 msgid "Check your connection and try again."
 msgstr "请检查网络连接后重试。"
 
+#: src/features/billing/payment-return.tsx
+msgid "Check your connection and try again. If you paid, the payment isn't lost."
+msgstr ""
+
 #: src/features/auth/pages/forgot-password.tsx
 #: src/features/auth/pages/register.tsx
 msgid "Check your email"
@@ -2658,6 +2772,14 @@ msgstr "检查布局和内容"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Checking the exported PDF…"
 msgstr "检查导出的 PDF..."
+
+#: src/features/billing/payment-return.tsx
+msgid "Checking with Midtrans…"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Checking your payment…"
+msgstr ""
 
 #: src/features/career/shared.tsx
 msgid "Checking your preferences"
@@ -2811,6 +2933,7 @@ msgstr "客户端 ID"
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -3160,6 +3283,15 @@ msgstr "继续"
 #: src/features/auth/pages/login.tsx
 msgid "Continue as guest"
 msgstr "以访客身份继续"
+
+#: src/features/billing/payment-return.tsx
+#: src/features/billing/pending-payment.tsx
+msgid "Continue payment"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Continue to payment"
+msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Contrast on white:"
@@ -3708,6 +3840,7 @@ msgstr "无法保存。再试一次。"
 msgid "Couldn't schedule the interview. Try again."
 msgstr "无法安排面试。请重试。"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/settings/account/profile.tsx
 msgid "Couldn't send the email. Try again."
 msgstr "无法发送电子邮件。再试一次。"
@@ -3947,6 +4080,14 @@ msgstr "首先创建一份简历，然后询问。"
 msgid "Create account"
 msgstr "创建账户"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Create an account"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Create an account to buy a pass"
+msgstr ""
+
 #: src/features/auth/pages/consent.tsx
 msgid "Create and change your documents and job applications, seeing each one it changes in full, and change your profile and username."
 msgstr "该应用程序可以创建和编辑您的文档和工作申请。它可以读取其编辑的每个文档或工作申请的完整内容。它还可以更改您的个人资料和用户名。"
@@ -3985,6 +4126,10 @@ msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Credits left from this pass expire with it."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
@@ -4074,6 +4219,10 @@ msgstr ""
 msgid "Custom styles aren't in your plan. Styles already saved keep working on the page."
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
+msgid "Custom styles, your own fonts, API and MCP"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Czech"
 msgstr "捷克语"
@@ -4103,6 +4252,7 @@ msgstr "深色主题"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/next-step-card.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/payment-history.tsx
 #: src/features/resume/editor/design/entries-group.tsx
 #: src/features/resume/editor/write/dates-field.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -4711,6 +4861,10 @@ msgstr "荷兰语"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "每个获得反馈的回答都保存在这里，最新的在前。"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Each pass is 30 days of access, paid once. Nothing renews on its own."
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "职位公告中的每项要求都会与您知识库中的事实和故事对照。差距显示为缺少证据，而绝不是缺少能力。"
@@ -4870,6 +5024,10 @@ msgstr "电子邮箱地址"
 #: src/features/resume/editor/check/issues.ts
 msgid "Email address won't be recognized"
 msgstr "电子邮件地址将无法被识别"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Email delivery isn't set up on this server, so the address can't be verified."
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
@@ -5037,6 +5195,10 @@ msgstr ""
 msgid "Every template exports a text-based PDF that applicant tracking systems can read. Start with the free ones and switch any time; your content stays the same."
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
+msgid "Every template, with Word and ODT downloads"
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Every term the posting stresses is already there."
 msgstr "招聘启事强调的每个术语都已经存在。"
@@ -5045,6 +5207,7 @@ msgstr "招聘启事强调的每个术语都已经存在。"
 msgid "Every week"
 msgstr "每周"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "Everything in Plus"
 msgstr ""
@@ -5074,6 +5237,10 @@ msgstr "工作经历"
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Experience, Education and more"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Expired"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -5146,6 +5313,10 @@ msgstr "导出 PDF：{0}"
 msgid "Exported pipeline-flow.png"
 msgstr "已导出 pipeline-flow.png"
 
+#: src/features/billing/purchase.ts
+msgid "Extend {days} days"
+msgstr ""
+
 #: src/features/resume/import/read-file.ts
 msgid "Extract this account archive, then import a JSON file from its resumes or letters folder."
 msgstr "提取此帐户存档，然后从其简历或信件文件夹中导入 JSON 文件。"
@@ -5176,6 +5347,7 @@ msgstr "事实"
 msgid "Facts, stories and preferences that are switched on in Knowledge"
 msgstr "知识库中已开启的事实、故事和偏好"
 
+#: src/features/billing/purchase.ts
 #: src/features/settings/ai/providers.tsx
 msgid "Failed"
 msgstr "失败的"
@@ -5383,6 +5555,7 @@ msgstr "无法加载字体。请重试。"
 msgid "For"
 msgstr "为了"
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/pricing.tsx
 msgid "For 30 days, no automatic renewal"
 msgstr ""
@@ -5641,6 +5814,10 @@ msgstr "回家"
 #: src/routes/_home/-sections/header.tsx
 msgid "Go to dashboard"
 msgstr "转到仪表板"
+
+#: src/features/billing/payment-return.tsx
+msgid "Go to your plan"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Go to…"
@@ -5970,6 +6147,18 @@ msgstr "如果该应用程序未打开，请在安装该应用程序的设备上
 msgid "If you close this dialog, your changes are lost."
 msgstr "如果关闭此对话框，你的更改将会丢失。"
 
+#: src/features/billing/payment-return.tsx
+msgid "If you paid just now, it shows here within a few minutes. Otherwise, start a new payment."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can still be paid any time until {deadline}."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Ignore"
 msgstr "忽略"
@@ -6252,6 +6441,10 @@ msgstr "在没有人工智能的情况下，问题和工作匹配仍然有效。
 msgid "It has entries but isn't placed on a page."
 msgstr "它有条目但未放置在页面上。"
 
+#: src/features/billing/payment-return.tsx
+msgid "It isn't one of this account's payments. If you paid while signed in to another account, sign in to that one. Your plan page lists every payment you started."
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "它可能已被删除。请选择其他故事或新增一个。"
@@ -6275,6 +6468,10 @@ msgstr "意大利语"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "斜体"
+
+#: src/features/billing/receipt.tsx
+msgid "Item"
+msgstr ""
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -6938,6 +7135,10 @@ msgstr "正在加载已保存的版本…"
 msgid "Loading stylesheet editor…"
 msgstr "正在加载样式表编辑器…"
 
+#: src/features/billing/receipt.tsx
+msgid "Loading the receipt…"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "正在加载工作区…"
@@ -7223,6 +7424,10 @@ msgstr "给教练发消息"
 #: src/features/career/shared.tsx
 msgid "Messages"
 msgstr "消息"
+
+#: src/features/billing/payment-history.tsx
+msgid "Method"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
@@ -7618,6 +7823,7 @@ msgstr ""
 msgid "No API key needed. Each action shows its cost in credits first · {0} left"
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "No API key to set up"
 msgstr ""
@@ -8078,6 +8284,10 @@ msgstr "没什么可评论的。"
 msgid "Nothing to suggest."
 msgstr "没有可提供的建议。"
 
+#: src/features/billing/payment-return.tsx
+msgid "Nothing was charged for it. You can start a new {plan} payment."
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Nothing was heard. Try again, or type your answer."
 msgstr "没有听到声音。请重试，或输入您的回答。"
@@ -8086,6 +8296,7 @@ msgstr "没有听到声音。请重试，或输入您的回答。"
 msgid "Notice period"
 msgstr "离职通知期"
 
+#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -8146,6 +8357,14 @@ msgstr "离线 · 已保存在此设备上"
 msgid "Older"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "已开启。任何拥有链接的人都可以查看您的网页。"
@@ -8153,6 +8372,10 @@ msgstr "已开启。任何拥有链接的人都可以查看您的网页。"
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "安排好一轮面试后，“准备”会生成按时间分配的计划、您的开场白和要提的问题。"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Once paid"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
@@ -8301,6 +8524,10 @@ msgstr "打开故事"
 msgid "Open the exported file and confirm you can select and copy every part of it."
 msgstr "打开导出的文件，确认你可以选取并复制其中的每一部分。"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr ""
+
 #: src/routes/auth/native-callback.tsx
 msgid "Open the Rezumi app"
 msgstr "打开Rezumi应用程序"
@@ -8398,6 +8625,10 @@ msgstr "或上传简历 PDF"
 msgid "Orange"
 msgstr "橙色"
 
+#: src/features/billing/receipt.tsx
+msgid "Order number"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "组织"
@@ -8487,6 +8718,18 @@ msgstr "页面阅读未完成。"
 msgid "Page view"
 msgstr "页面浏览量"
 
+#: src/features/billing/purchase.ts
+msgid "Paid"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Paid by"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Paid on"
+msgstr ""
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Paper"
 msgstr "纸"
@@ -8500,9 +8743,17 @@ msgstr "段落"
 msgid "paragraph {n}"
 msgstr "第{n}款"
 
+#: src/features/billing/purchase.ts
+msgid "Partly refunded"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Partly supported"
 msgstr "部分有证据"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Passes belong to an account with an email address. Your guest work moves with you."
+msgstr ""
 
 #. Authentication provider display name in account settings
 #. Label for passkey sign-in button
@@ -8617,6 +8868,10 @@ msgstr "已暂停 · {line}"
 msgid "Paused schedules keep their settings."
 msgstr "暂停的定时任务会保留其设置。"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Pay"
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
 msgid "Pay only while you are applying."
 msgstr ""
@@ -8624,6 +8879,26 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Pay period"
 msgstr "发薪周期"
+
+#: src/features/billing/payment-return.tsx
+msgid "Payment"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Payment method"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Payment receipt"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Payment received"
+msgstr ""
+
+#: src/features/billing/payment-history.tsx
+msgid "Payments"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "PDF and Word files are read with"
@@ -8720,6 +8995,8 @@ msgstr "纯文本 (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "带标题的纯文本。粘贴到工作申请表和注释中。"
 
+#: src/features/billing/back-link.tsx
+#: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
@@ -8895,6 +9172,10 @@ msgstr ""
 msgid "Prepare me for the interview"
 msgstr "为我的面试做准备"
 
+#: src/features/billing/purchase.ts
+msgid "Preparing"
+msgstr ""
+
 #: src/features/resume/share/download-tab.tsx
 msgid "Preparing {label} file…"
 msgstr "正在准备 {label} 文件..."
@@ -8998,6 +9279,10 @@ msgstr "打印"
 #: src/features/ats-checker/messages.ts
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "在发送之前，把表单打印或导出为扁平化的 PDF。"
+
+#: src/features/billing/receipt.tsx
+msgid "Print or save as PDF"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
@@ -9412,6 +9697,15 @@ msgstr "原因"
 msgid "Recalled"
 msgstr "回忆"
 
+#: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
+msgid "Receipt"
+msgstr ""
+
+#: src/features/billing/payment-history.tsx
+msgid "Receipts are proof of payment, not tax invoices."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Recent activity"
 msgstr ""
@@ -9511,6 +9805,11 @@ msgstr "当天早上刷新简报"
 #: src/features/homepage/footer.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
+msgstr ""
+
+#: src/features/billing/purchase.ts
+#: src/features/billing/receipt.tsx
+msgid "Refunded"
 msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
@@ -9755,6 +10054,10 @@ msgstr "要求"
 msgid "Requirements and your evidence"
 msgstr "要求与您的证据"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Resend the link"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Reserve capitals for short headings. They slow reading and can defeat case-sensitive search."
 msgstr "全大写只用于简短的标题。它会拖慢阅读速度，还可能让区分大小写的搜索失效。"
@@ -9931,6 +10234,10 @@ msgstr "正在重试…"
 msgid "Returned: no usable result"
 msgstr ""
 
+#: src/features/billing/purchase.ts
+msgid "Reversed by the bank"
+msgstr ""
+
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -9997,6 +10304,12 @@ msgstr "Rezumi - 返回首页"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
+#. placeholder {0}: getPlanName(payment.planId)
+#. placeholder {1}: payment.durationDays
+#: src/features/billing/receipt.tsx
+msgid "Rezumi {0}, {1} days of access"
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr ""
@@ -10007,6 +10320,7 @@ msgid "Rezumi AI · {cost} · {0} left"
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -10579,12 +10893,20 @@ msgstr "选择一家人工智能提供商"
 msgid "Select..."
 msgstr "选择..."
 
+#: src/features/billing/buy-plans.tsx
+msgid "Selected"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Selected documents"
 msgstr "所选文件"
 
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
 msgid "Selection"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Seller"
 msgstr ""
 
 #: src/features/resume/stylesheet/editor.tsx
@@ -10848,6 +11170,10 @@ msgstr "在搜索引擎中显示"
 #: src/features/resume/editor/write/fields.tsx
 msgid "Show link in title"
 msgstr "在标题中显示链接"
+
+#: src/features/billing/payment-history.tsx
+msgid "Show older payments"
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -11307,6 +11633,10 @@ msgstr "从大多数简历都有的部分开始。"
 msgid "Started"
 msgstr "已开始"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Starts after your Pro AI time ends."
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Starts in {minutes} minutes"
 msgstr "{minutes} 分钟后开始"
@@ -11324,6 +11654,8 @@ msgstr "现在开始"
 msgid "Statistics"
 msgstr "统计数据"
 
+#: src/features/billing/payment-history.tsx
+#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "状态"
@@ -11966,6 +12298,18 @@ msgstr "无法读取页面的 PDF。编辑任何内容以再次渲染它。"
 msgid "The pages are pictures, with no text behind them."
 msgstr "这些页面是图片，背后没有文字。"
 
+#: src/features/billing/payment-return.tsx
+msgid "The pass it bought has been taken back. Your documents stay as they are."
+msgstr ""
+
+#: src/features/billing/pending-payment.tsx
+msgid "The payment method couldn't be changed. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "The payment page couldn't be opened. Try again in a moment."
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "The posting asks for “{label}”. If it's true for me, work it into my resume where it fits. Ask me first."
 msgstr "招聘启事要求“{label}”。如果这对我来说是正确的，请将其写入我的简历中合适的位置。先问我吧。"
@@ -11977,6 +12321,10 @@ msgstr "无法阅读招聘信息。填写角色和公司。"
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "职位发布与此职位申请一起保存。"
+
+#: src/features/billing/receipt.tsx
+msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "The provider didn't answer. Check the key and the model."
@@ -12084,6 +12432,10 @@ msgstr "测试没有运行。请重试。"
 msgid "The text comes out unreadable."
 msgstr "提取出的文字无法阅读。"
 
+#: src/features/billing/payment-return.tsx
+msgid "The time to pay has run out"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "The top of the first page does not look like a name."
 msgstr "第一页顶部的内容看起来不像是姓名。"
@@ -12115,6 +12467,10 @@ msgstr "没有指向个人主页、作品集或代码仓库的链接。"
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "没有个人简介段落。"
+
+#: src/features/billing/receipt.tsx
+msgid "There's no receipt yet: this payment hasn't been paid."
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -12254,6 +12610,10 @@ msgstr "这封信被锁了。从菜单中将其解锁以进行编辑。"
 msgid "This letter keeps its recipient as written."
 msgstr "这封信将保留其收件人所写的内容。"
 
+#: src/features/billing/payment-return.tsx
+msgid "This link doesn't say which payment it is. Your plan page lists every payment you started."
+msgstr ""
+
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "这项指标衡量的是软件能多忠实地提取出这个文件中的文字。它不预测申请是否会被拒绝，也没有工具能做到。你的文件是在这个浏览器中读取的，从未上传。"
@@ -12278,6 +12638,22 @@ msgstr "此页面采用分栏排版，提取出的文字顺序错乱。"
 msgid "This page is very densely packed."
 msgstr "此页面排得非常密集。"
 
+#: src/features/billing/payment-return.tsx
+msgid "This payment didn't go through"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "This payment expired"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "This payment was refunded"
+msgstr ""
+
+#: src/features/billing/pending-payment.tsx
+msgid "This payment went through, so there's nothing to change."
+msgstr ""
+
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "此 PDF 没有文本层，因此解析器不会从中读取任何内容。"
@@ -12289,6 +12665,10 @@ msgstr "此 PDF 是扫描图像。没有文字可读。尝试 Word 版本，或�
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "此 PDF 受密码保护。请保存一份不受保护的副本后重试。"
+
+#: src/features/billing/receipt.tsx
+msgid "This receipt isn't available. It may belong to another account."
+msgstr ""
 
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
@@ -12399,6 +12779,10 @@ msgstr "时间 · {0}"
 msgid "Time · {timeZone}"
 msgstr "时间 · {timeZone}"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Time you already have is never lost."
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Time, link, who, what you sent"
 msgstr "时间、链接、面试官、您发送的内容"
@@ -12410,6 +12794,16 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "时间按 {timeZone} 显示。"
+
+#. placeholder {0}: zoneName(split.pass.endsAt)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Times in {0}, estimated for paying now."
+msgstr ""
+
+#. placeholder {0}: zoneName(split.pass.startsAt)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Times in {0}."
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/general.tsx
@@ -12465,8 +12859,16 @@ msgstr "对于白色标题来说太亮了。微弱地阅读和打印可能会很
 msgid "Too many requests. Try again later."
 msgstr "请求太多。稍后再试。"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Too many tries in a row. Wait a few minutes, then try again."
+msgstr ""
+
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/billing/receipt.tsx
+msgid "Total paid"
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -12539,6 +12941,7 @@ msgstr "尝试样品"
 
 #: src/components/layout/error-screen.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/billing/payment-return.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/load-state.tsx
 #: src/features/career/workspace/practise.tsx
@@ -12552,6 +12955,10 @@ msgstr "尝试样品"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Try again"
 msgstr "再试一次"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Try again later. Your current pass and credits aren't affected."
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
@@ -12837,6 +13244,10 @@ msgstr "已更新 {total} 个中的 {done} 个。已跳过锁定的文件，公�
 msgid "Updating your resume..."
 msgstr "正在更新你的简历…"
 
+#: src/features/billing/purchase.ts
+msgid "Upgrade to {name}"
+msgstr ""
+
 #: src/features/applications/components/import-applications-sheet.tsx
 msgid "Upload .csv"
 msgstr "上传 .csv"
@@ -13097,9 +13508,17 @@ msgstr "验证"
 msgid "Verify with a backup code"
 msgstr "使用备份码验证"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Verify your email address first, then try again."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Verify your email in Settings first"
 msgstr "请先在设置中验证您的邮箱"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Verify your email to buy a pass"
+msgstr ""
 
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verifying backup code..."
@@ -13170,6 +13589,10 @@ msgstr "查看职位申请"
 msgid "View posting"
 msgstr "查看职位发布"
 
+#: src/features/billing/payment-return.tsx
+msgid "View receipt"
+msgstr ""
+
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -13187,6 +13610,10 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "观看次数 · 30 天"
+
+#: src/features/billing/purchase.ts
+msgid "Virtual account"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -13208,9 +13635,17 @@ msgstr "语音设置"
 msgid "Volunteer"
 msgstr "志愿者经历"
 
+#: src/features/billing/purchase.ts
+msgid "Waiting for payment"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "Waiting for you"
 msgstr "等待您处理"
+
+#: src/features/billing/payment-return.tsx
+msgid "Waiting for your payment"
+msgstr ""
 
 #: src/features/applications/next-step.ts
 msgid "Waiting to hear back"
@@ -13223,6 +13658,18 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "Warning"
 msgstr "警告”"
+
+#: src/features/billing/payment-return.tsx
+msgid "We couldn't check this payment"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "We couldn't find this payment"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "We email the receipt to you as well."
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "We read the page and save the posting for Check, the assistant and your letter."
@@ -13240,6 +13687,10 @@ msgstr "我们已向 {currentEmail} 发送链接以批准此更改。然后请�
 #: src/features/settings/account/profile.tsx
 msgid "We sent a new verification link to {0}."
 msgstr "我们向 {0} 发送了新的验证链接。"
+
+#: src/features/billing/buy-plans.tsx
+msgid "We sent a new verification link to {email}."
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/ai/web-access.tsx
@@ -13762,6 +14213,14 @@ msgstr "已全部看完"
 #: src/features/auth/components/guest-banner.tsx
 msgid "You're using a guest account"
 msgstr "你正在使用访客账户"
+
+#: src/features/billing/pending-payment.tsx
+msgid "Your {plan} payment isn't finished"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your {rest} time picks up again"
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "Your account was deleted."

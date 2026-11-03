@@ -33,24 +33,30 @@ function slotOf<P extends ScheduledPeriod>(period: P, now: Date): Slot<P> {
 	return { planId: period.planId, remainingMs, order: period.createdAt.getTime(), period };
 }
 
-/**
- * Lays the remaining time out back to back from now, higher plans first and then in purchase order, and returns the
- * fewest row changes that get there. A running period that stays in front is untouched. One pushed back ends now, so
- * the part already used stays as history, and its rest becomes a new row. Queued periods move.
- */
-function layout<P extends ScheduledPeriod>(slots: Slot<P>[], now: Date): ScheduleChanges<P> {
+/** The remaining time laid out back to back from now: higher plans first, then in purchase order. */
+function arrange<P extends ScheduledPeriod>(slots: Slot<P>[], now: Date) {
 	const sorted = slots.toSorted(
 		(a, b) =>
 			PLANS[b.planId].rank - PLANS[a.planId].rank ||
 			a.order - b.order ||
 			(a.period?.id ?? "").localeCompare(b.period?.id ?? ""),
 	);
-	const changes: ScheduleChanges<P> = { updates: [], inserts: [] };
 	let cursor = now.getTime();
-	for (const { planId, remainingMs, period } of sorted) {
+	return sorted.map((slot) => {
 		const startsAt = new Date(cursor);
-		const endsAt = new Date(cursor + remainingMs);
-		cursor = endsAt.getTime();
+		cursor += slot.remainingMs;
+		return { ...slot, startsAt, endsAt: new Date(cursor) };
+	});
+}
+
+/**
+ * Lays the remaining time out back to back from now and returns the fewest row changes that get there. A running
+ * period that stays in front is untouched. One pushed back ends now, so the part already used stays as history, and
+ * its rest becomes a new row. Queued periods move.
+ */
+function layout<P extends ScheduledPeriod>(slots: Slot<P>[], now: Date): ScheduleChanges<P> {
+	const changes: ScheduleChanges<P> = { updates: [], inserts: [] };
+	for (const { planId, startsAt, endsAt, period } of arrange(slots, now)) {
 		if (!period) {
 			changes.inserts.push({ planId, startsAt, endsAt, restOf: null });
 		} else if (period.startsAt < now) {
@@ -73,6 +79,14 @@ export function schedulePurchase<P extends ScheduledPeriod>(
 	purchase: { planId: PaidPlanId; durationMs: number },
 	now: Date,
 ): ScheduleChanges<P> {
+	return layout(purchaseSlots(periods, purchase, now), now);
+}
+
+function purchaseSlots<P extends ScheduledPeriod>(
+	periods: readonly P[],
+	purchase: { planId: PaidPlanId; durationMs: number },
+	now: Date,
+): Slot<P>[] {
 	if (!Number.isInteger(purchase.durationMs) || purchase.durationMs <= 0)
 		throw new RangeError("A pass must last a positive number of milliseconds.");
 	const slots = periods.filter((period) => period.endsAt > now).map((period) => slotOf(period, now));
@@ -82,7 +96,27 @@ export function schedulePurchase<P extends ScheduledPeriod>(
 		order: Number.POSITIVE_INFINITY,
 		period: null,
 	});
-	return layout(slots, now);
+	return slots;
+}
+
+/** One stretch of paid time as it will be used; `purchase` marks the pass being bought. */
+export type PlannedStretch = { planId: PaidPlanId; startsAt: Date; endsAt: Date; purchase: boolean };
+
+/**
+ * The paid time an account would have if a pass were bought now, in the order it is used: the same layout
+ * `schedulePurchase` applies, for showing before checkout what a purchase does to the current pass.
+ */
+export function previewPurchase<P extends ScheduledPeriod>(
+	periods: readonly P[],
+	purchase: { planId: PaidPlanId; durationMs: number },
+	now: Date,
+): PlannedStretch[] {
+	return arrange(purchaseSlots(periods, purchase, now), now).map(({ planId, startsAt, endsAt, period }) => ({
+		planId,
+		startsAt,
+		endsAt,
+		purchase: period === null,
+	}));
 }
 
 /**

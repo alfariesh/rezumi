@@ -184,7 +184,12 @@ export function CreditsDialog() {
 								<Trans>Add my connection</Trans>
 							</Link>
 						)}
-						<Link to="/dashboard/settings/billing" className={cn(buttonVariants(), "flex-1")} onClick={close}>
+						<Link
+							to="/dashboard/settings/billing"
+							search={{ plan: "pro-ai" }}
+							className={cn(buttonVariants(), "flex-1")}
+							onClick={close}
+						>
 							<Trans>See Pro AI</Trans>
 						</Link>
 					</AlertDialog.Footer>

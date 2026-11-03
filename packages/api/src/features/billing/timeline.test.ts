@@ -1,7 +1,7 @@
 import type { ScheduleChanges, ScheduledPeriod } from "./timeline";
 import type { PaidPlanId } from "@rezumi/schema/billing";
 import { describe, expect, it } from "vite-plus/test";
-import { DAY_MS, revokePeriod, schedulePurchase } from "./timeline";
+import { DAY_MS, previewPurchase, revokePeriod, schedulePurchase } from "./timeline";
 
 type Row = ScheduledPeriod & { revokedAt?: Date };
 
@@ -174,6 +174,51 @@ describe("schedulePurchase", () => {
 	it("rejects a pass without a positive whole duration", () => {
 		expect(() => schedulePurchase([], { planId: "plus", durationMs: 0 }, t0)).toThrow(RangeError);
 		expect(() => schedulePurchase([], { planId: "plus", durationMs: 1.5 }, t0)).toThrow(RangeError);
+	});
+});
+
+describe("previewPurchase", () => {
+	const stretches = (rows: Row[], planId: PaidPlanId, now: Date) =>
+		previewPurchase(scheduled(rows, now), { planId, durationMs: D }, now).map((stretch) => [
+			stretch.planId,
+			(+stretch.startsAt - +t0) / DAY_MS,
+			(+stretch.endsAt - +t0) / DAY_MS,
+			stretch.purchase,
+		]);
+
+	it("starts a first pass now", () => {
+		expect(stretches([], "pro-ai", t0)).toEqual([["pro-ai", 0, 30, true]]);
+	});
+
+	it("shows an upgrade starting now, with the rest of Plus after it", () => {
+		const now = at(days(10));
+		expect(stretches([row("plus", t0, at(D))], "pro-ai", now)).toEqual([
+			["pro-ai", 10, 40, true],
+			["plus", 40, 60, false],
+		]);
+	});
+
+	it("shows a renewal and a lower plan after the running pass", () => {
+		const now = at(days(5));
+		const pro = row("pro-ai", t0, at(D));
+		expect(stretches([pro], "pro-ai", now)).toEqual([
+			["pro-ai", 5, 30, false],
+			["pro-ai", 30, 60, true],
+		]);
+		expect(stretches([pro], "plus", now)).toEqual([
+			["pro-ai", 5, 30, false],
+			["plus", 30, 60, true],
+		]);
+	});
+
+	it("lays the stretches out exactly as the purchase then schedules them", () => {
+		const now = at(days(3));
+		const rows = [row("plus", t0, at(D)), row("plus", at(D), at(2 * D), at(days(1)))];
+		const preview = stretches(rows, "pro-ai", now);
+		expect(preview.map(([, , , purchase]) => purchase)).toEqual([true, false, false]);
+		expect(preview.map(([planId, startsAt, endsAt]) => [planId, startsAt, endsAt])).toEqual(
+			timeline(buy(rows, "pro-ai", now), now),
+		);
 	});
 });
 

@@ -35,11 +35,16 @@ describe("public pricing availability", () => {
 		expect(screen.getByText(/Paid plan limits are not active yet/)).toBeTruthy();
 	});
 
-	it("offers registration with plan intent only when billing is enabled", () => {
+	it("sends paid plans through sign-up to the Plan page with the plan marked, only when billing is enabled", () => {
 		renderPricing(true);
 		expect(screen.queryByRole("button", { name: "Coming soon" })).toBeNull();
-		expect(screen.getByRole("link", { name: "Choose Plus" }).getAttribute("href")).toContain("plan=plus");
-		expect(screen.getByRole("link", { name: "Choose Pro AI" }).getAttribute("href")).toContain("plan=pro-ai");
+		const callbackOf = (name: string) => {
+			const url = new URL(screen.getByRole("link", { name }).getAttribute("href") ?? "", "https://rezumi.test");
+			return [url.pathname, url.searchParams.get("callbackURL")];
+		};
+		expect(callbackOf("Choose Plus")).toEqual(["/auth/register", "/dashboard/settings/billing?plan=plus"]);
+		expect(callbackOf("Choose Pro AI")).toEqual(["/auth/register", "/dashboard/settings/billing?plan=pro-ai"]);
+		expect(screen.getByRole("link", { name: "Start free" }).getAttribute("href")).toBe("/auth/register");
 		expect(screen.queryByText(/Paid plan limits are not active yet/)).toBeNull();
 	});
 });

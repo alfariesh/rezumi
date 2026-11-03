@@ -12,6 +12,7 @@ import {
 	getPayment,
 	getPendingPayment,
 	listPayments,
+	previewPurchase,
 	purchaseBlocker,
 } from "./checkout";
 import { getCreditBalance, listCreditHistory } from "./credits";
@@ -85,6 +86,26 @@ const payment = z.object({
 		.string()
 		.nullable()
 		.describe("Where to continue paying: web sessions only, while the payment is open."),
+});
+
+const paymentDetail = payment.extend({
+	access: z
+		.object({ startsAt: z.date(), endsAt: z.date() })
+		.nullable()
+		.describe("When the pass it bought runs, first day to last; null until it is granted."),
+});
+
+const purchasePreview = z.object({
+	planId: paidPlanIdSchema,
+	amount: z.number().int().describe("Whole Rupiah, as checkout would charge now."),
+	currency: z.string(),
+	durationDays: z.number().int(),
+	credits: z.number().int().describe("Rezumi AI credits that come with it."),
+	schedule: z
+		.array(z.object({ planId: paidPlanIdSchema, startsAt: z.date(), endsAt: z.date(), purchase: z.boolean() }))
+		.describe(
+			"The account's paid time if this pass were paid now, in the order it is used; purchase marks the new pass.",
+		),
 });
 
 const checkoutResult = z.object({
@@ -164,6 +185,12 @@ export const billingRouter = {
 			};
 		}),
 
+	previewPurchase: protectedProcedure
+		.route({ ...route, method: "GET", path: "/billing/purchase-preview" })
+		.input(z.object({ planId: paidPlanIdSchema }))
+		.output(purchasePreview)
+		.handler(({ context, input }) => previewPurchase(context.user.id, input.planId)),
+
 	checkout: protectedProcedure
 		.route({ ...route, method: "POST", path: "/billing/checkout" })
 		.use(checkoutRateLimit)
@@ -192,7 +219,7 @@ export const billingRouter = {
 	payment: protectedProcedure
 		.route({ ...route, method: "GET", path: "/billing/payments/{id}" })
 		.input(z.object({ id: z.string().min(1).max(100) }))
-		.output(payment)
+		.output(paymentDetail)
 		.handler(({ context, input }) => getPayment(authenticationOf(context), input.id)),
 
 	payments: protectedProcedure
