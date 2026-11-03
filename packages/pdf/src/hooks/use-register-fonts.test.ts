@@ -5,7 +5,12 @@ import { join } from "node:path";
 import { describe, expect, it } from "vite-plus/test";
 import { getWebFontSource } from "@rezumi/fonts";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { resolvePdfFonts, resumeContentScripts, resumeUsesItalic } from "./use-register-fonts";
+import {
+	resolvePdfFonts,
+	resolveTypographyBoldWeight,
+	resumeContentScripts,
+	resumeUsesItalic,
+} from "./use-register-fonts";
 
 const typography = {
 	body: {
@@ -290,5 +295,49 @@ describe("italic faces", () => {
 			/fontStyle:\s*["']italic["']/.test(readFileSync(join(templates, file), "utf8")),
 		);
 		expect(italic).toEqual([]);
+	});
+});
+
+describe("uploaded fonts", () => {
+	const upload = (name: string) => `https://rezumi.app/api/uploads/member/fonts/${name}`;
+	const brand = {
+		...typography,
+		body: { ...typography.body, fontFamily: "Brand Sans", fontWeights: ["400"] },
+		customFonts: [
+			{ family: "Brand Sans", weight: "400", italic: false, url: upload("regular.ttf") },
+			{ family: "Brand Sans", weight: "700", italic: false, url: upload("bold.ttf") },
+			{ family: "Brand Sans", weight: "400", italic: true, url: upload("italic.otf") },
+			{ family: "Stolen", weight: "400", italic: false, url: "https://evil.example/stolen.ttf" },
+		],
+	} satisfies Typography;
+
+	it("draws an uploaded family with its own files, including its true Bold", () => {
+		const { typography: pdfTypography, fonts } = resolvePdfFonts(brand, "en-US", new Set(), true);
+		// Characters the file lacks still fall back per glyph.
+		expect(pdfTypography.body.fontFamily).toEqual(["Brand Sans", "Noto Sans"]);
+		expect(pdfTypography.body.fontWeights).toEqual(["400"]);
+		expect(fonts.filter((font) => font.family === "Brand Sans")).toEqual([
+			{ family: "Brand Sans", weight: 400, italic: false, src: upload("regular.ttf") },
+			{ family: "Brand Sans", weight: 700, italic: false, src: upload("bold.ttf") },
+			{ family: "Brand Sans", weight: 400, italic: true, src: upload("italic.otf") },
+		]);
+		expect(resolveTypographyBoldWeight(brand)).toBe("700");
+	});
+
+	it("uses the nearest uploaded weight and keeps only weights it has", () => {
+		const heavy = { ...brand, body: { ...brand.body, fontWeights: ["300", "600"] } } satisfies Typography;
+		const { typography: pdfTypography, fonts } = resolvePdfFonts(heavy, "en-US", new Set(), false);
+		expect(pdfTypography.body.fontWeights).toEqual(["400", "700"]);
+		expect(fonts.filter((font) => font.family === "Brand Sans").map((font) => font.src)).toEqual([
+			upload("regular.ttf"),
+			upload("bold.ttf"),
+		]);
+	});
+
+	it("never draws with a font at any other address", () => {
+		const stolen = { ...brand, body: { ...brand.body, fontFamily: "Stolen" } } satisfies Typography;
+		const { typography: pdfTypography, fonts } = resolvePdfFonts(stolen, "en-US", new Set(), false);
+		expect(pdfTypography.body.fontFamily).toEqual(["IBM Plex Serif", "Noto Serif"]);
+		expect(fonts.some((font) => font.src.includes("evil.example"))).toBe(false);
 	});
 });

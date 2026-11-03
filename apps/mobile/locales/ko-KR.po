@@ -387,6 +387,16 @@ msgstr "{0} 인터뷰 · {1}"
 msgid "{0} interview · {1} min"
 msgstr "{0} 인터뷰 · {1}분"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr ""
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -2254,6 +2264,10 @@ msgstr "날짜를 선택하세요"
 msgid "Choose a file"
 msgstr "파일을 선택하세요"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "PDF를 선택하세요"
@@ -3158,6 +3172,10 @@ msgstr "타임라인을 업데이트할 수 없습니다. 다시 시도해 보�
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "파일을 업로드할 수 없습니다. 다시 시도해 보세요."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4352,6 +4370,10 @@ msgstr "후속 연락 알림"
 #: src/features/design/advanced.tsx
 msgid "Font family"
 msgstr "글꼴 패밀리"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
@@ -7857,6 +7879,7 @@ msgstr "알림은 여기에 표시됩니다. 이메일 사본은 선택 사항�
 msgid "Remote"
 msgstr "원격"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7866,6 +7889,11 @@ msgstr "제거하다"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "{0} 제거"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7886,6 +7914,10 @@ msgstr "필드 삭제"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "파일 제거"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -9756,6 +9788,10 @@ msgstr "텍스트가 한 글자씩 개별적으로 작성되어 있습니다."
 msgid "Text only"
 msgstr "텍스트만"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "텍스트가 머리글 또는 바닥글 영역에 있습니다."
@@ -10204,6 +10240,10 @@ msgstr "이력서치고 파일 크기가 큽니다."
 msgid "This file is larger than many application forms accept."
 msgstr "이 파일이 많은 지원서 양식이 허용하는 크기보다 큽니다."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "이 파일이 매우 다양한 폰트를 사용하고 있습니다."
@@ -10215,6 +10255,10 @@ msgstr "이 파일은 문자 대신 그림 정보를 담는 Type 3 폰트를 사
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "이 파일의 크기를 읽을 수 없습니다. 다른 PDF를 선택하세요."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10756,9 +10800,21 @@ msgstr "미리보기 업데이트 중…"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "PDF를 업로드하고 지원자 추적 시스템에서 추출한 텍스트(누락된 내용, 잘못된 내용 및 수정 방법)를 확인하세요. 무료이며 계정이 필요하지 않습니다."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "사진 업로드"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11599,6 +11655,10 @@ msgstr "사실, 이야기, 환경 설정을 관리합니다. 지식을 편집해
 msgid "Your focus"
 msgstr "내 집중 분야"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "제목이 본문 텍스트와 동일하게 보입니다."
@@ -11664,8 +11724,16 @@ msgstr ""
 msgid "Your own fonts aren't available"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts

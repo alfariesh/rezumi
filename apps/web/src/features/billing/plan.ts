@@ -126,6 +126,21 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
  */
 export function describeImportedDesign(
 	plan: PlanSummary | undefined,
+	design: {
+		template: Template;
+		stylesheet?: { source: { text: string } } | undefined;
+		typography?: { customFonts?: unknown[] | undefined } | undefined;
+	},
+): string | null {
+	const fonts = Boolean(design.typography?.customFonts?.length) && !hasPlanFeature(plan, "customFonts");
+	const notice = describeImportedTemplateAndStyles(plan, design);
+	if (!fonts) return notice;
+	const fontsNotice = t`Your own fonts aren't in your plan, so the imported document uses a standard font.`;
+	return notice ? `${notice} ${fontsNotice}` : fontsNotice;
+}
+
+function describeImportedTemplateAndStyles(
+	plan: PlanSummary | undefined,
 	design: { template: Template; stylesheet?: { source: { text: string } } | undefined },
 ): string | null {
 	const template = isLockedTemplate(plan, design.template);

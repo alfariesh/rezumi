@@ -1,5 +1,5 @@
 import type { FontWeight } from "@rezumi/fonts";
-import type { ResumeData, Typography } from "@rezumi/schema/resume/data";
+import type { CustomFontFace, ResumeData, Typography } from "@rezumi/schema/resume/data";
 import type { Locale, Script } from "@rezumi/utils/locale";
 import {
 	getFont,
@@ -11,6 +11,7 @@ import {
 	resolveLegacyFontAlias,
 	sortFontWeights,
 } from "@rezumi/fonts";
+import { parseUploadedFontUrl, uploadedFontWeights } from "@rezumi/fonts/uploaded";
 
 type FontWeightRange = {
 	lowest: number;
@@ -76,9 +77,57 @@ const getFallbackFontWeights = (availableWeights: FontWeight[]): FontWeight[] =>
 	return sortedAvailableWeights.slice(0, 2);
 };
 
-const resolvePdfFontWeights = (family: string, fontWeights: string[]): FontWeight[] => {
+/** A document's uploaded faces by family; only faces at an uploaded-font address count. */
+type CustomFonts = Map<string, CustomFontFace[]>;
+
+const collectCustomFonts = (typography: Typography): CustomFonts => {
+	const families: CustomFonts = new Map();
+	for (const face of typography.customFonts ?? []) {
+		if (!parseUploadedFontUrl(face.url)) continue;
+		families.set(face.family, [...(families.get(face.family) ?? []), face]);
+	}
+	return families;
+};
+
+const customFontWeights = (faces: CustomFontFace[] | undefined): FontWeight[] | undefined =>
+	faces?.[0] ? (uploadedFontWeights(faces, faces[0].family) ?? undefined) : undefined;
+
+// The face that draws `weight`: the exact one, else the nearest in the same style (the lighter on a tie).
+const nearestCustomFace = (faces: CustomFontFace[], weight: number, italic: boolean) => {
+	let nearest: CustomFontFace | undefined;
+	for (const face of faces) {
+		if (face.italic !== italic) continue;
+		const distance = Math.abs(Number(face.weight) - weight);
+		const best = nearest ? Math.abs(Number(nearest.weight) - weight) : Number.POSITIVE_INFINITY;
+		if (distance < best || (distance === best && nearest && Number(face.weight) < Number(nearest.weight)))
+			nearest = face;
+	}
+	return nearest;
+};
+
+// An uploaded family's Bold: the heaviest stored bold-class weight, its 700 face, or its heaviest from 600 up.
+const customBoldFontWeight = (faces: CustomFontFace[], storedWeights: readonly string[]): FontWeight | null => {
+	const weights = customFontWeights(faces) ?? [];
+	const deliberate = weights.filter((weight) => storedWeights.includes(weight) && Number(weight) >= 700);
+	if (deliberate.length > 0) return deliberate.at(-1) ?? null;
+	if (weights.includes("700")) return "700";
+	return weights.filter((weight) => Number(weight) >= 600).at(-1) ?? null;
+};
+
+/**
+ * The weight bold text uses with the body font: the family's true Bold face (#3310), counting uploaded faces too, or
+ * null when it has none. `fontFamily` may already be a fallback stack; its first family decides.
+ */
+export const resolveTypographyBoldWeight = (typography: Pick<Typography, "body" | "customFonts">) => {
+	const { fontFamily, fontWeights } = typography.body as PdfTypography["body"];
+	const primary = Array.isArray(fontFamily) ? fontFamily[0] : fontFamily;
+	const faces = primary ? collectCustomFonts(typography as Typography).get(primary) : undefined;
+	return faces ? customBoldFontWeight(faces, fontWeights) : resolveBoldFontWeight(fontFamily, fontWeights);
+};
+
+const resolvePdfFontWeights = (family: string, fontWeights: string[], customFonts?: CustomFonts): FontWeight[] => {
 	const requestedWeights = uniqueSortedFontWeights(fontWeights.filter(isFontWeight));
-	const availableWeights = getFont(family)?.weights;
+	const availableWeights = customFontWeights(customFonts?.get(family)) ?? getFont(family)?.weights;
 
 	if (!availableWeights || availableWeights.length === 0) {
 		return requestedWeights.length > 0 ? requestedWeights : ["400", "700"];
@@ -106,8 +155,9 @@ const toFontWeight = (weight: number): FontWeight => {
 };
 
 // Resolves the user-stored family to the one we hand to Font.register:
-// direct match → legacy alias (#2989) → IBM Plex Serif fallback.
-const resolvePdfFontFamily = (family: string) => {
+// uploaded family → direct match → legacy alias (#2989) → IBM Plex Serif fallback.
+const resolvePdfFontFamily = (family: string, customFonts?: CustomFonts) => {
+	if (customFonts?.has(family)) return family;
 	if (getFont(family)) {
 		const alias = resolveLegacyFontAlias(family);
 		return alias ?? family;
@@ -115,11 +165,11 @@ const resolvePdfFontFamily = (family: string) => {
 	return fallbackFontFamily;
 };
 
-const resolvePdfTypography = (typography: Typography): Typography => {
-	const bodyFontFamily = resolvePdfFontFamily(typography.body.fontFamily);
-	const headingFontFamily = resolvePdfFontFamily(typography.heading.fontFamily);
-	const bodyFontWeights = resolvePdfFontWeights(bodyFontFamily, typography.body.fontWeights);
-	const headingFontWeights = resolvePdfFontWeights(headingFontFamily, typography.heading.fontWeights);
+const resolvePdfTypography = (typography: Typography, customFonts?: CustomFonts): Typography => {
+	const bodyFontFamily = resolvePdfFontFamily(typography.body.fontFamily, customFonts);
+	const headingFontFamily = resolvePdfFontFamily(typography.heading.fontFamily, customFonts);
+	const bodyFontWeights = resolvePdfFontWeights(bodyFontFamily, typography.body.fontWeights, customFonts);
+	const headingFontWeights = resolvePdfFontWeights(headingFontFamily, typography.heading.fontWeights, customFonts);
 
 	return {
 		...typography,
@@ -222,7 +272,8 @@ export const resolvePdfFonts = (
 	usesItalic = true,
 ): { typography: PdfTypography; fonts: PdfFontRequest[] } => {
 	const fonts = new Map<string, PdfFontRequest>();
-	const pdfTypography = resolvePdfTypography(typography);
+	const customFonts = collectCustomFonts(typography);
+	const pdfTypography = resolvePdfTypography(typography, customFonts);
 	const bodyFontFamily = pdfTypography.body.fontFamily;
 	const headingFontFamily = pdfTypography.heading.fontFamily;
 	const bodyRange = getFontWeightRange(pdfTypography.body.fontWeights);
@@ -231,9 +282,20 @@ export const resolvePdfFonts = (
 	// (#3310), which can be heavier than the stored weight range (e.g.
 	// ["400", "600"] for Open Sans) — make sure that face is registered or
 	// @react-pdf/renderer would silently fall back to the nearest one.
-	const bodyBoldWeight = resolveBoldFontWeight(bodyFontFamily, pdfTypography.body.fontWeights);
+	const bodyCustomFaces = customFonts.get(bodyFontFamily);
+	const bodyBoldWeight = bodyCustomFaces
+		? customBoldFontWeight(bodyCustomFaces, pdfTypography.body.fontWeights)
+		: resolveBoldFontWeight(bodyFontFamily, pdfTypography.body.fontWeights);
 
 	const registerFont = (family: string, weight: number, italic = false) => {
+		const customFaces = customFonts.get(family);
+		if (customFaces) {
+			// An uploaded family draws only with its own files; a missing italic draws upright.
+			const face = nearestCustomFace(customFaces, weight, italic);
+			const key = `${family}:${face?.weight}:${italic}`;
+			if (face && !fonts.has(key)) fonts.set(key, { family, weight: Number(face.weight), italic, src: face.url });
+			return;
+		}
 		if (isStandardPdfFontFamily(family)) return;
 
 		// A CJK face is 10–15 MB, so CJK families get Regular and Bold only; Forme draws other weights with the

@@ -2,8 +2,8 @@ import type { Style } from "../../forme/style-types";
 import type { getTemplateMetrics } from "./metrics";
 import type { createRtlStyleHelpers } from "./rtl";
 import type { Picture, ResumeData } from "@rezumi/schema/resume/data";
-import { resolveBoldFontWeight } from "@rezumi/fonts";
 import { rgbaStringToHex } from "@rezumi/utils/color";
+import { resolveTypographyBoldWeight } from "../../hooks/use-register-fonts";
 
 type BaseTemplateStylesInput = {
 	metadata: ResumeData["metadata"];
@@ -86,9 +86,7 @@ export function createBaseTemplateStyles({
 		/** True Bold face when the family has one (#3310); falls back to the last stored weight. scizor overrides color only. */
 		bold: {
 			fontWeight:
-				resolveBoldFontWeight(metadata.typography.body.fontFamily, metadata.typography.body.fontWeights) ??
-				metadata.typography.body.fontWeights.at(-1) ??
-				"600",
+				resolveTypographyBoldWeight(metadata.typography) ?? metadata.typography.body.fontWeights.at(-1) ?? "600",
 		} satisfies Style,
 
 		richParagraph: {

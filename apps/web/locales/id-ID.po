@@ -421,6 +421,11 @@ msgstr ""
 msgid "{0} is larger than {1}."
 msgstr ""
 
+#. placeholder {0}: face.weight
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr "{0} miring"
+
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
 msgid "{0} min"
@@ -696,6 +701,10 @@ msgstr "{facts, plural, other {# fakta}}"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{failing, plural, one {# to review} other {# to review}}"
 msgstr "{failing, plural, one {# untuk ditinjau} other {# untuk ditinjau}}"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{family} is ready. Choose it under Font family."
+msgstr "{family} siap dipakai. Pilih di Keluarga font."
 
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
@@ -4130,6 +4139,10 @@ msgstr "Tidak dapat memperbarui garis waktu. Coba lagi."
 msgid "Couldn't update this letter's versions. Try again."
 msgstr "Tidak dapat memperbarui versi surat ini. Coba lagi."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr "Font gagal diunggah. Coba lagi."
+
 #. Fallback toast when uploading profile picture for resume fails
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/account/profile.tsx
@@ -5781,6 +5794,10 @@ msgstr "Pengingat tindak lanjut"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font family"
 msgstr "Keluarga font"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr "Batas font tercapai"
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Font pairing"
@@ -10553,6 +10570,14 @@ msgstr "Hapus {chip}"
 msgid "Remove {country}"
 msgstr "Hapus {country}"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}"
+msgstr "Hapus {family}"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}?"
+msgstr "Hapus {family}?"
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "Hapus {value}"
@@ -10568,6 +10593,10 @@ msgstr "Hapus bidang"
 #: src/features/applications/components/file-attachment-field.tsx
 msgid "Remove file"
 msgstr "Hapus file"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr "Hapus font"
 
 #: src/features/settings/account/security.tsx
 msgid "Remove passkey"
@@ -12790,6 +12819,10 @@ msgstr "lapisan teks ✓ · 2 kolom"
 msgid "text layer found"
 msgstr "lapisan teks ditemukan"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr "Teks yang memakainya kembali ke font bawaan. Kamu bisa mengunggah font ini lagi nanti."
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "Teks berada di area kepala atau kaki halaman."
@@ -13303,6 +13336,10 @@ msgstr "File ini besar untuk ukuran sebuah resume."
 msgid "This file is larger than many application forms accept."
 msgstr "File ini lebih besar dari yang diterima banyak formulir lamaran."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr "File ini bukan font yang bisa dibaca Rezumi. Unggah file TTF atau OTF."
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "Jenis file ini tidak dapat diimpor. Gunakan file PDF, Word, Rezumi atau JSON Resume, atau ekspor LinkedIn (.zip)."
@@ -13314,6 +13351,10 @@ msgstr "File ini menggunakan banyak font yang berbeda."
 #: src/features/ats-checker/messages.ts
 msgid "This file uses Type 3 fonts, which carry drawings instead of characters."
 msgstr "File ini menggunakan font Type 3, yang memuat gambar, bukan karakter."
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr "Lisensi font ini tidak mengizinkan font disematkan ke dokumen, jadi tidak bisa dipakai di PDF."
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -14016,9 +14057,21 @@ msgstr "Unggah .csv"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "Unggah PDF dan lihat teks yang diekstraksi oleh sistem pelacakan pelamar: apa yang hilang, apa yang rusak, dan cara memperbaikinya. Gratis, tidak perlu akun."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr "Unggah satu file TTF atau OTF. Font web (WOFF, WOFF2) dan kumpulan font (TTC) tidak bisa dipakai."
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr "Unggah font"
+
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Upload photo"
 msgstr "Unggah foto"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr "Unggah file TTF atau OTF yang boleh kamu pakai, satu file untuk setiap ketebalan atau gaya. Siapa pun yang membuka tautan bagikan dokumen ini bisa mengunduhnya."
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Uploading photo…"
@@ -15129,6 +15182,14 @@ msgstr "berkas Anda"
 msgid "Your focus"
 msgstr "Fokus Anda"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr "Font kamu"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts are ready. Choose them under Font family."
+msgstr "Font kamu siap dipakai. Pilih di Keluarga font."
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "Judul Anda terlihat sama seperti teks isi."
@@ -15200,6 +15261,14 @@ msgstr "Font sendiri"
 #: src/features/billing/plan.ts
 msgid "Your own fonts aren't in your plan"
 msgstr "Font sendiri tidak termasuk dalam paketmu"
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan, so the imported document uses a standard font."
+msgstr "Font sendiri tidak termasuk dalam paketmu, jadi dokumen hasil impor memakai font standar."
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgstr "Font sendiri tidak termasuk dalam paketmu. Font yang sudah ditambahkan tetap tampil di halaman."
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
 msgid "Your phone number changed on the resume. The letter updated too."

@@ -36,3 +36,39 @@ it.each([
 		requested.filter((url) => url.includes("/font/Bright/")).every((url) => url.startsWith(`${expectedBase}/`)),
 	).toBe(true);
 });
+
+it("reads uploaded fonts from storage and never fetches a font address a document names", async () => {
+	const requested: string[] = [];
+	vi.stubGlobal("fetch", (source: URL | string) => {
+		requested.push(String(source));
+		return Promise.resolve(new Response(new Uint8Array([1, 2, 3])));
+	});
+	const read: string[] = [];
+	const own = "https://rezumi.app/api/uploads/member/fonts/0b6c3f4e.ttf";
+	const foreign = "https://internal.example/api/uploads/member/fonts/0b6c3f4e.ttf";
+	const data = structuredClone(defaultResumeData);
+	data.metadata.typography.body.fontFamily = "Brand Sans";
+	data.metadata.typography.heading.fontFamily = "Other Sans";
+	data.metadata.typography.customFonts = [
+		{ family: "Brand Sans", weight: "400", italic: false, url: own },
+		{ family: "Other Sans", weight: "400", italic: false, url: foreign },
+	];
+	const render = () =>
+		act(() =>
+			createResumePdfFile({
+				data,
+				filename: "fonts.pdf",
+				uploadOrigin: "https://rezumi.app",
+				readUploadedFont: (key) => {
+					read.push(key);
+					return Promise.resolve(new Uint8Array([0, 1, 0, 0]));
+				},
+			}),
+		);
+	// A font on another origin is refused, not fetched, so the export says which font failed.
+	await expect(render()).rejects.toThrow("Fonts could not be loaded: Other Sans");
+	data.metadata.typography.heading.fontFamily = "Brand Sans";
+	await render();
+	expect(read).toEqual(["uploads/member/fonts/0b6c3f4e.ttf", "uploads/member/fonts/0b6c3f4e.ttf"]);
+	expect(requested.some((url) => url.includes("/api/uploads/"))).toBe(false);
+});

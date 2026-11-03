@@ -4639,7 +4639,7 @@ The complete schema, generated from the source code of this version.
 							"properties": {
 								"fontFamily": {
 									"type": "string",
-									"description": "The family of the font to use. Must be a supported resume font."
+									"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 								},
 								"fontWeights": {
 									"default": [
@@ -4690,7 +4690,7 @@ The complete schema, generated from the source code of this version.
 							"properties": {
 								"fontFamily": {
 									"type": "string",
-									"description": "The family of the font to use. Must be a supported resume font."
+									"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 								},
 								"fontWeights": {
 									"default": [
@@ -4735,6 +4735,53 @@ The complete schema, generated from the source code of this version.
 								"lineHeight"
 							],
 							"description": "The typography for the headings of the resume."
+						},
+						"customFonts": {
+							"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font.",
+							"maxItems": 24,
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"family": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 64,
+										"description": "The family name the face belongs to, as read from the file."
+									},
+									"weight": {
+										"type": "string",
+										"enum": [
+											"100",
+											"200",
+											"300",
+											"400",
+											"500",
+											"600",
+											"700",
+											"800",
+											"900"
+										],
+										"description": "The weight of this face."
+									},
+									"italic": {
+										"default": false,
+										"description": "Whether this face is italic.",
+										"type": "boolean"
+									},
+									"url": {
+										"type": "string",
+										"maxLength": 500,
+										"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+									}
+								},
+								"required": [
+									"family",
+									"weight",
+									"italic",
+									"url"
+								]
+							}
 						},
 						"hyphenation": {
 							"description": "Enable automatic PDF hyphenation using the resume language. Defaults to false.",

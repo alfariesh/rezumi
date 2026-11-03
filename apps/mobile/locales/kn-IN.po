@@ -387,6 +387,16 @@ msgstr "{0} ಸಂದರ್ಶನ · {1}"
 msgid "{0} interview · {1} min"
 msgstr "{0} ಸಂದರ್ಶನ · {1} ನಿಮಿಷ"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr ""
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -2254,6 +2264,10 @@ msgstr "ದಿನಾಂಕವನ್ನು ಆರಿಸಿ"
 msgid "Choose a file"
 msgstr "ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "PDF ಆಯ್ಕೆಮಾಡಿ"
@@ -3158,6 +3172,10 @@ msgstr "ಟೈಮ್‌ಲೈನ್ ಅನ್ನು ನವೀಕರಿಸಲು 
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "ಫೈಲ್ ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4352,6 +4370,10 @@ msgstr "ಫಾಲೋ-ಅಪ್ ಜ್ಞಾಪನೆ"
 #: src/features/design/advanced.tsx
 msgid "Font family"
 msgstr "ಫಾಂಟ್ ಕುಟುಂಬ"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
@@ -7857,6 +7879,7 @@ msgstr "ಜ್ಞಾಪನೆಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್�
 msgid "Remote"
 msgstr "ರಿಮೋಟ್"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7866,6 +7889,11 @@ msgstr "ತೆಗೆದುಹಾಕಿ"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "{0} ತೆಗೆದುಹಾಕಿ"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7886,6 +7914,10 @@ msgstr "ಕ್ಷೇತ್ರವನ್ನು ತೆಗೆದುಹಾಕಿ"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "ಫೈಲ್ ತೆಗೆದುಹಾಕಿ"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -9756,6 +9788,10 @@ msgstr "ಪಠ್ಯವನ್ನು ಒಂದೊಂದೇ ಅಕ್ಷರವಾ�
 msgid "Text only"
 msgstr "ಪಠ್ಯ ಮಾತ್ರ"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "ಪಠ್ಯವು ಹೆಡರ್ ಅಥವಾ ಫುಟರ್ ಪ್ರದೇಶದಲ್ಲಿದೆ."
@@ -10204,6 +10240,10 @@ msgstr "ಈ ಫೈಲ್ ರೆಸ್ಯೂಮೆಗೆ ದೊಡ್ಡದಾಗ
 msgid "This file is larger than many application forms accept."
 msgstr "ಈ ಫೈಲ್ ಅನೇಕ ಅರ್ಜಿ ನಮೂನೆಗಳು ಸ್ವೀಕರಿಸುವುದಕ್ಕಿಂತ ದೊಡ್ಡದಾಗಿದೆ."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "ಈ ಫೈಲ್ ಹಲವಾರು ವಿಭಿನ್ನ ಫಾಂಟ್‌ಗಳನ್ನು ಬಳಸುತ್ತದೆ."
@@ -10215,6 +10255,10 @@ msgstr "ಈ ಫೈಲ್ Type 3 ಫಾಂಟ್‌ಗಳನ್ನು ಬಳಸ�
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "ಈ ಫೈಲ್‌ನ ಗಾತ್ರವನ್ನು ಓದಲಾಗಲಿಲ್ಲ. ಇನ್ನೊಂದು PDF ಆಯ್ಕೆಮಾಡಿ."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10756,9 +10800,21 @@ msgstr "ಪೂರ್ವವೀಕ್ಷಣೆಯನ್ನು ನವೀಕರಿ�
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "PDF ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು ಅರ್ಜಿದಾರರ ಟ್ರ್ಯಾಕಿಂಗ್ ಸಿಸ್ಟಮ್ ಹೊರತೆಗೆಯುವ ಪಠ್ಯವನ್ನು ನೋಡಿ: ಏನು ಕಾಣೆಯಾಗಿದೆ, ಯಾವುದು ಕ್ರಮಬದ್ಧವಾಗಿಲ್ಲ ಮತ್ತು ಅದನ್ನು ಹೇಗೆ ಸರಿಪಡಿಸುವುದು. ಉಚಿತ, ಯಾವುದೇ ಖಾತೆಯ ಅಗತ್ಯವಿಲ್ಲ."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11599,6 +11655,10 @@ msgstr "ನಿಮ್ಮ ಸಂಗತಿಗಳು, ಕಥೆಗಳು ಮತ್�
 msgid "Your focus"
 msgstr "ನಿಮ್ಮ ಗಮನ"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "ನಿಮ್ಮ ಶೀರ್ಷಿಕೆಗಳು ನಿಮ್ಮ ಮುಖ್ಯ ಪಠ್ಯದಂತೆಯೇ ಕಾಣುತ್ತವೆ."
@@ -11664,8 +11724,16 @@ msgstr ""
 msgid "Your own fonts aren't available"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts

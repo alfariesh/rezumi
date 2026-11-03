@@ -7,6 +7,7 @@ import { and, count, eq, isNull } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { parseUploadedFontUrl } from "@rezumi/fonts/uploaded";
 import { FREE_TEMPLATES, isFreeTemplate } from "@rezumi/schema/billing";
 import { lockBillingAccount } from "./account";
 import { getBillingMode, getEntitlements } from "./entitlements";
@@ -138,26 +139,49 @@ export async function precheckDocumentCapacity(userId: string, request: Document
 export type PlanDesign = {
 	template: Template;
 	stylesheet?: { source: { text: string } } | undefined;
+	typography?: { customFonts?: { url: string }[] | undefined } | undefined;
 };
 
 /** A design as stored, before validation: older rows may hold anything. */
-export type StoredDesign = { template?: unknown; stylesheet?: unknown } | null | undefined;
+export type StoredDesign = { template?: unknown; stylesheet?: unknown; typography?: unknown } | null | undefined;
 
 function stylesheetText(design: StoredDesign) {
 	const source = (design?.stylesheet as { source?: { text?: unknown } } | null | undefined)?.source;
 	return typeof source?.text === "string" ? source.text.trim() : "";
 }
 
+function customFontUrls(design: StoredDesign): Set<string> {
+	const faces = (design?.typography as { customFonts?: unknown } | null | undefined)?.customFonts;
+	if (!Array.isArray(faces)) return new Set();
+	return new Set(faces.flatMap((face) => (typeof face?.url === "string" ? [face.url as string] : [])));
+}
+
+/** Uploaded font faces the design has and `before` didn't. */
+function addedFontUrls(before: StoredDesign, after: PlanDesign) {
+	const kept = customFontUrls(before);
+	return [...customFontUrls(after)].filter((url) => !kept.has(url));
+}
+
 /**
- * The features a design change needs: a premium template chosen anew, or custom styles added or changed. Keeping a
- * premium template or saved styles, removing styles, and moving to a free template need nothing.
+ * The features a design change needs: a premium template chosen anew, custom styles added or changed, or an uploaded
+ * font added. Keeping a premium template, saved styles or fonts, removing them, and moving to a free template need
+ * nothing.
  */
 export function designFeaturesNeeded(before: StoredDesign, after: PlanDesign): PlanFeature[] {
 	const needed: PlanFeature[] = [];
 	if (!isFreeTemplate(after.template) && after.template !== before?.template) needed.push("premiumTemplates");
 	const styles = stylesheetText(after);
 	if (styles && styles !== stylesheetText(before)) needed.push("customStyles");
+	if (addedFontUrls(before, after).length > 0) needed.push("customFonts");
 	return needed;
+}
+
+/** A document may only gain fonts its owner uploaded: never another account's files or an arbitrary address. */
+function assertOwnFonts(userId: string, before: StoredDesign, after: PlanDesign) {
+	for (const url of addedFontUrls(before, after)) {
+		if (parseUploadedFontUrl(url, env.APP_URL)?.userId !== userId)
+			throw new ORPCError("BAD_REQUEST", { message: "Fonts must be uploaded to your own account before use." });
+	}
 }
 
 /** Throws PLAN_FEATURE_REQUIRED when a write changes the design in a way the plan doesn't include. */
@@ -167,6 +191,7 @@ export async function assertDesignChange(
 	after: PlanDesign,
 	database: DbOrTx = db,
 ) {
+	assertOwnFonts(userId, before, after);
 	const needed = designFeaturesNeeded(before, after);
 	if (needed.length === 0) return;
 	const entitlements = await getEntitlements(userId, new Date(), database);
@@ -176,11 +201,20 @@ export async function assertDesignChange(
 }
 
 /**
- * An imported file's design, fitted to the plan: a premium template becomes the first free one and custom styles are
- * left out, so the import still succeeds. Returns what changed, for the app to tell the user. Mutates `design`.
+ * An imported file's design, fitted to the plan: a premium template becomes the first free one, and custom styles and
+ * uploaded fonts are left out, so the import still succeeds. Fonts from another account are always left out. Returns
+ * what changed, for the app to tell the user. Mutates `design`.
  */
 export async function fitImportedDesign(userId: string, design: PlanDesign, database: DbOrTx = db) {
-	const changed = { template: false, stylesheet: false };
+	const changed = { template: false, stylesheet: false, fonts: false };
+	const fonts = design.typography?.customFonts;
+	if (design.typography && fonts) {
+		const own = fonts.filter((face) => parseUploadedFontUrl(face.url, env.APP_URL)?.userId === userId);
+		if (own.length !== fonts.length) {
+			design.typography.customFonts = own;
+			changed.fonts = true;
+		}
+	}
 	const needed = designFeaturesNeeded(null, design);
 	if (needed.length === 0) return changed;
 	const entitlements = await getEntitlements(userId, new Date(), database);
@@ -192,6 +226,10 @@ export async function fitImportedDesign(userId: string, design: PlanDesign, data
 	if (needed.includes("customStyles") && !entitlements.features.customStyles) {
 		delete design.stylesheet;
 		changed.stylesheet = true;
+	}
+	if (needed.includes("customFonts") && !entitlements.features.customFonts && design.typography) {
+		design.typography.customFonts = [];
+		changed.fonts = true;
 	}
 	return changed;
 }

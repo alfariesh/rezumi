@@ -421,6 +421,11 @@ msgstr ""
 msgid "{0} is larger than {1}."
 msgstr ""
 
+#. placeholder {0}: face.weight
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
 msgid "{0} min"
@@ -696,6 +701,10 @@ msgstr "{facts, plural, one {# உண்மை} other {# உண்மைகள�
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{failing, plural, one {# to review} other {# to review}}"
 msgstr "{failing, plural, one {மதிப்பாய்வு செய்ய #} other {மதிப்பாய்வு செய்ய #}}"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{family} is ready. Choose it under Font family."
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
@@ -4130,6 +4139,10 @@ msgstr "காலவரிசையைப் புதுப்பிக்க �
 msgid "Couldn't update this letter's versions. Try again."
 msgstr "இந்தக் கடிதத்தின் பதிப்புகளைப் புதுப்பிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
+
 #. Fallback toast when uploading profile picture for resume fails
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/account/profile.tsx
@@ -5781,6 +5794,10 @@ msgstr "பின்தொடர்தல் நினைவூட்டல்"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font family"
 msgstr "எழுத்துரு குடும்பம்"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Font pairing"
@@ -10553,6 +10570,14 @@ msgstr "நீக்கவும் {chip}"
 msgid "Remove {country}"
 msgstr "அகற்று {country}"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}"
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}?"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "{value} ஐ அகற்று"
@@ -10568,6 +10593,10 @@ msgstr "புலத்தை அகற்று"
 #: src/features/applications/components/file-attachment-field.tsx
 msgid "Remove file"
 msgstr "கோப்பை அகற்று"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/settings/account/security.tsx
 msgid "Remove passkey"
@@ -12790,6 +12819,10 @@ msgstr "உரை அடுக்கு ✓ · 2 நெடுவரிசைக�
 msgid "text layer found"
 msgstr "உரை அடுக்கு கண்டறியப்பட்டது"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "உரை மேல்தலைப்பு அல்லது அடிக்குறிப்பு பகுதியில் உள்ளது."
@@ -13303,6 +13336,10 @@ msgstr "இது ஒரு ரெஸ்யூமிற்கு பெரிய
 msgid "This file is larger than many application forms accept."
 msgstr "இந்தக் கோப்பு பல விண்ணப்பப் படிவங்கள் ஏற்கும் அளவை விட பெரியது."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "இந்தக் கோப்பு வகையை இறக்குமதி செய்ய முடியாது. PDF, Word, Rezumi அல்லது JSON Resume கோப்பை அல்லது LinkedIn ஏற்றுமதியைப் (.zip) பயன்படுத்தவும்."
@@ -13314,6 +13351,10 @@ msgstr "இந்தக் கோப்பு நிறைய வெவ்வே
 #: src/features/ats-checker/messages.ts
 msgid "This file uses Type 3 fonts, which carry drawings instead of characters."
 msgstr "இந்தக் கோப்பு Type 3 எழுத்துருக்களைப் பயன்படுத்துகிறது, அவை எழுத்துக்களுக்குப் பதிலாக வரைபடங்களைக் கொண்டுள்ளன."
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -14016,9 +14057,21 @@ msgstr "பதிவேற்ற .csv"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "PDF ஐப் பதிவேற்றி, விண்ணப்பதாரர் கண்காணிப்பு அமைப்பு பிரித்தெடுக்கும் உரையைப் பார்க்கவும்: என்ன காணவில்லை, எது ஒழுங்கற்றது மற்றும் அதை எவ்வாறு சரிசெய்வது. இலவசம், கணக்கு தேவையில்லை."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Upload photo"
 msgstr "புகைப்படத்தைப் பதிவேற்று"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Uploading photo…"
@@ -15129,6 +15182,14 @@ msgstr "உங்கள் கோப்பு"
 msgid "Your focus"
 msgstr "உங்கள் கவனம்"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts are ready. Choose them under Font family."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "உங்கள் தலைப்புகள் உங்கள் உள்ளடக்க உரையைப் போலவே தெரிகின்றன."
@@ -15199,6 +15260,14 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan, so the imported document uses a standard font."
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx

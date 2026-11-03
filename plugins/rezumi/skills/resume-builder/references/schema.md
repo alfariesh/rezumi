@@ -868,17 +868,23 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `metadata.design.entry.accent` | `string` | yes | enum: ["none","rule","bar","band"]; default: "none" | Decoration in the accent color around each entry header: 'none', 'rule' (a line under it), 'bar' (a bar beside it) or 'band' (a tinted background). |
 | `metadata.typography` | `object` | yes | — | The typography settings of the resume. Determines the fonts and sizes of the body and headings of the resume. |
 | `metadata.typography.body` | `object` | yes | — | The typography for the body of the resume. |
-| `metadata.typography.body.fontFamily` | `string` | yes | — | The family of the font to use. Must be a supported resume font. |
+| `metadata.typography.body.fontFamily` | `string` | yes | — | The family of the font to use. Must be a supported resume font or a family in customFonts. |
 | `metadata.typography.body.fontWeights` | `array` | yes | default: ["400"] | The weight of the font, defined as a number between 100 and 900. Default to 400 when unsure if the weight is available in the font. |
 | `metadata.typography.body.fontWeights[]` | `string` | — | enum: ["100","200","300","400","500","600","700","800","900"] | — |
 | `metadata.typography.body.fontSize` | `number` | yes | minimum: 6; maximum: 24; default: 11 | The size of the font to use, defined in points (pt). |
 | `metadata.typography.body.lineHeight` | `number` | yes | minimum: 0.5; maximum: 4; default: 1.5 | The line height of the font to use, defined as a multiplier of the font size (e.g. 1.5 for 1.5x). |
 | `metadata.typography.heading` | `object` | yes | — | The typography for the headings of the resume. |
-| `metadata.typography.heading.fontFamily` | `string` | yes | — | The family of the font to use. Must be a supported resume font. |
+| `metadata.typography.heading.fontFamily` | `string` | yes | — | The family of the font to use. Must be a supported resume font or a family in customFonts. |
 | `metadata.typography.heading.fontWeights` | `array` | yes | default: ["400"] | The weight of the font, defined as a number between 100 and 900. Default to 400 when unsure if the weight is available in the font. |
 | `metadata.typography.heading.fontWeights[]` | `string` | — | enum: ["100","200","300","400","500","600","700","800","900"] | — |
 | `metadata.typography.heading.fontSize` | `number` | yes | minimum: 6; maximum: 24; default: 11 | The size of the font to use, defined in points (pt). |
 | `metadata.typography.heading.lineHeight` | `number` | yes | minimum: 0.5; maximum: 4; default: 1.5 | The line height of the font to use, defined as a multiplier of the font size (e.g. 1.5 for 1.5x). |
+| `metadata.typography.customFonts` | `array` | no | — | Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font. |
+| `metadata.typography.customFonts[]` | `object` | — | — | — |
+| `metadata.typography.customFonts[].family` | `string` | yes | minLength: 1; maxLength: 64 | The family name the face belongs to, as read from the file. |
+| `metadata.typography.customFonts[].weight` | `string` | yes | enum: ["100","200","300","400","500","600","700","800","900"] | The weight of this face. |
+| `metadata.typography.customFonts[].italic` | `boolean` | yes | default: false | Whether this face is italic. |
+| `metadata.typography.customFonts[].url` | `string` | yes | maxLength: 500 | Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL. |
 | `metadata.typography.hyphenation` | `boolean` | no | — | Enable automatic PDF hyphenation using the resume language. Defaults to false. |
 | `metadata.notes` | `string` | yes | — | Personal notes for the resume. Can be used to add any additional information or instructions for the resume. These notes are not displayed on the resume, they are only visible to the author of the resume when editing the resume. This should be a HTML-formatted string. |
 | `metadata.styleRules` | `array` | yes | — | Structured style rules that target semantic resume sections and slots for PDF rendering. |

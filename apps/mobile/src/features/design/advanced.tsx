@@ -8,10 +8,12 @@ import * as Clipboard from "expo-clipboard";
 import { useEffect, useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
 import { fontList, getFont, getFontDisplayName, sortFontWeights } from "@rezumi/fonts";
+import { uploadedFontFamilies, uploadedFontWeights } from "@rezumi/fonts/uploaded";
 import { compileStylesheet, isFatalStylesheetDiagnostic } from "@rezumi/resume/stylesheet";
 import { icons } from "@rezumi/schema/icons";
 import { Field, Stepper, SwitchRow } from "./controls";
 import { DATE_FORMATS, parseColorInput, resetDesign, rgbaToHex } from "./presets";
+import { UploadedFonts } from "./uploaded-fonts";
 import { useResumeStore } from "@/draft";
 import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { Button, Chip, Icon, ListRow, SelectSheet, Text, showToast, useTheme, type IconName } from "@/ui";
@@ -119,9 +121,12 @@ export function AdvancedGroup({ data, write, disabled, open, onOpenChange, onPus
 
 type FontPrefix = "body" | "heading";
 
-/** Web get-next-weights: body gets a regular and a bold weight, the heading one weight (600 when available). */
-function nextWeights(family: string, single: boolean): FontWeight[] | null {
-	const weights = [...new Set(getFont(family)?.weights ?? [])];
+/**
+ * Web get-next-weights: body gets a regular and a bold weight, the heading one weight (600 when available).
+ * `available` overrides the catalog's weights (an uploaded family's).
+ */
+function nextWeights(family: string, single: boolean, available?: readonly FontWeight[] | null): FontWeight[] | null {
+	const weights = [...new Set(available ?? getFont(family)?.weights ?? [])];
 	if (weights.length === 0) return null;
 	if (single) return [weights.includes("600") ? "600" : (weights.at(-1) ?? "400")];
 	const chosen = (["400", "700"] as const).filter((weight) => weights.includes(weight)) as FontWeight[];
@@ -141,10 +146,19 @@ export function TypographyScreen({ data, write, disabled, pick }: GroupProps) {
 	const { typography } = data.metadata;
 	const set = (key: string, mutate: (value: ResumeData["metadata"]["typography"]) => void, discrete = false) =>
 		write(`typography.${key}`, (draft) => mutate(draft.metadata.typography), discrete);
+	// Uploaded families come first and use their own weights.
+	const uploaded = uploadedFontFamilies(typography.customFonts);
+	const fontOptions = [
+		...uploaded.map((family) => ({ value: family, label: family })),
+		...FONT_OPTIONS.filter((option) => !uploaded.includes(option.value)),
+	];
+	const uploadedWeights = (family: string) => uploadedFontWeights(typography.customFonts, family);
 
 	const group = (prefix: FontPrefix) => {
 		const item = typography[prefix];
-		const available = sortFontWeights([...new Set(getFont(item.fontFamily)?.weights ?? item.fontWeights)]);
+		const available = sortFontWeights([
+			...new Set(uploadedWeights(item.fontFamily) ?? getFont(item.fontFamily)?.weights ?? item.fontWeights),
+		]);
 		return (
 			<View style={{ gap: space.s3 }}>
 				<Text variant="label" color="ink2">
@@ -154,20 +168,20 @@ export function TypographyScreen({ data, write, disabled, pick }: GroupProps) {
 				</Text>
 				<ListRow
 					title={t`Font family`}
-					subtitle={getFontDisplayName(item.fontFamily)}
+					subtitle={uploaded.includes(item.fontFamily) ? item.fontFamily : getFontDisplayName(item.fontFamily)}
 					chevron
 					disabled={disabled}
 					onPress={() =>
 						pick({
 							title: t`Font family`,
 							value: item.fontFamily,
-							options: FONT_OPTIONS,
+							options: fontOptions,
 							onPick: (family) =>
 								set(
 									`${prefix}.family`,
 									(draft) => {
 										draft[prefix].fontFamily = family;
-										const weights = nextWeights(family, prefix === "heading");
+										const weights = nextWeights(family, prefix === "heading", uploadedWeights(family));
 										if (weights) draft[prefix].fontWeights = weights;
 									},
 									true,
@@ -248,6 +262,7 @@ export function TypographyScreen({ data, write, disabled, pick }: GroupProps) {
 
 	return (
 		<View style={{ gap: space.s6 }}>
+			<UploadedFonts data={data} write={write} disabled={disabled} />
 			{group("body")}
 			{group("heading")}
 			<SwitchRow

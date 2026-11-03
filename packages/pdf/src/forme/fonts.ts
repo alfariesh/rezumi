@@ -1,5 +1,6 @@
 import type { PdfFontRequest } from "../hooks/use-register-fonts";
 import type { FormeFont } from "@formepdf/react";
+import { parseUploadedFontUrl } from "@rezumi/fonts/uploaded";
 import { prepareFontBytes } from "./font-bytes";
 
 // One download per font file for the life of the page or server process.
@@ -125,10 +126,13 @@ const load = (src: string) => {
  * The font faces a document needs, as bytes Forme can embed. A face that fails to load is left out and listed in
  * `missing`; Forme falls back to its built-in fonts for that text.
  * An explicit mirror base rewrites only Computer Modern downloads, leaving catalog sources unchanged.
+ * `readUploadedFont` reads fonts users uploaded, uncached (the server reads its own storage); without it they download
+ * like any other face.
  */
 export async function loadFonts(
 	requests: readonly PdfFontRequest[],
 	webFontBaseUrl?: string,
+	readUploadedFont?: (source: string) => Promise<Uint8Array>,
 ): Promise<{ fonts: FormeFont[]; warnings: string[]; missing: string[] }> {
 	const mirrorBase = webFontBaseUrl?.trim().replace(/\/+$/, "");
 	const computerModernBase = "https://cdn.jsdelivr.net/gh/bitmaks/cm-web-fonts@latest";
@@ -141,7 +145,11 @@ export async function loadFonts(
 					mirrorBase && request.src.startsWith(computerModernBase)
 						? mirrorBase + request.src.slice(computerModernBase.length)
 						: request.src;
-				return { family: request.family, weight: request.weight, italic: request.italic, src: await load(source) };
+				const bytes =
+					readUploadedFont && parseUploadedFontUrl(source)
+						? await readUploadedFont(source).then(prepareFontBytes)
+						: await load(source);
+				return { family: request.family, weight: request.weight, italic: request.italic, src: bytes };
 			} catch (error) {
 				warnings.push(error instanceof Error ? error.message : `Font ${request.src} could not be loaded.`);
 				missing.push(request.family);

@@ -109,8 +109,11 @@ async function renderAndStore(
 	storage: StorageService | undefined,
 	{ data, filename, folder, key }: { data: ResumeData; filename: string; folder: string; key: string },
 ): Promise<Uint8Array> {
-	const { createResumePdfFile } = await import("@rezumi/pdf/server");
-	const file = await createResumePdfFile({ data, filename, uploadOrigin: env.APP_URL });
+	const [{ createResumePdfFile }, { readUploadedFont }] = await Promise.all([
+		import("@rezumi/pdf/server"),
+		import("../storage/service"),
+	]);
+	const file = await createResumePdfFile({ data, filename, uploadOrigin: env.APP_URL, readUploadedFont });
 	const bytes = new Uint8Array(await file.arrayBuffer());
 	await storage
 		?.write({ key, data: bytes, contentType: "application/pdf" })

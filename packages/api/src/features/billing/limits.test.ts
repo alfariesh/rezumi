@@ -17,8 +17,15 @@ vi.mock("@rezumi/db/client", () => ({
 	),
 }));
 
-const { designFeaturesNeeded, planFeatureRequired, planLimitReached, assertFeature, precheckDocumentCapacity } =
-	await import("./limits");
+const {
+	designFeaturesNeeded,
+	planFeatureRequired,
+	planLimitReached,
+	assertFeature,
+	assertDesignChange,
+	fitImportedDesign,
+	precheckDocumentCapacity,
+} = await import("./limits");
 const { firstPartyRedirectUris, assertAutomationAccess } = await import("./automation");
 
 const css = (text: string) => ({ source: { text } });
@@ -43,6 +50,19 @@ describe("designFeaturesNeeded", () => {
 		expect(designFeaturesNeeded(before, { template: "onyx" })).toEqual([]);
 		expect(designFeaturesNeeded(before, { template: "onyx", stylesheet: css("a { b: d }") })).toEqual(["customStyles"]);
 		expect(designFeaturesNeeded(null, { template: "onyx", stylesheet: css("   ") })).toEqual([]);
+	});
+
+	it("asks for your own fonts only when a face is added, not kept or removed", () => {
+		const font = (url: string) => ({ typography: { customFonts: [{ url }] } });
+		const a = "https://rezumi.app/api/uploads/member/fonts/a.ttf";
+		const b = "https://rezumi.app/api/uploads/member/fonts/b.otf";
+		expect(designFeaturesNeeded(null, { template: "onyx", ...font(a) })).toEqual(["customFonts"]);
+		expect(designFeaturesNeeded({ template: "onyx", ...font(a) }, { template: "onyx", ...font(a) })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "onyx", ...font(a) }, { template: "onyx" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "onyx", ...font(a) }, { template: "onyx", ...font(b) })).toEqual([
+			"customFonts",
+		]);
+		expect(designFeaturesNeeded({ template: "onyx", typography: "nonsense" }, { template: "onyx" })).toEqual([]);
 	});
 
 	it("reads stored designs of any shape", () => {
@@ -99,6 +119,33 @@ describe("while billing is off", () => {
 		await precheckDocumentCapacity("member", { resumes: 10 });
 		await assertAutomationAccess({ user: { id: "member" }, method: "apiKey" });
 		await assertAutomationAccess({ user: { id: "member" }, method: "bearer", clientId: "anything" });
+	});
+
+	it("still only lets a document gain fonts its owner uploaded", async () => {
+		const design = (url: string) => ({ template: "onyx" as const, typography: { customFonts: [{ url }] } });
+		const own = "https://rezumi.app/api/uploads/member/fonts/a.ttf";
+		await assertDesignChange("member", null, design(own));
+		await assertDesignChange("member", design("https://evil.example/x.ttf"), design("https://evil.example/x.ttf"));
+		for (const url of [
+			"https://rezumi.app/api/uploads/someone-else/fonts/a.ttf",
+			"https://evil.example/api/uploads/member/fonts/a.ttf",
+			"http://169.254.169.254/latest",
+		])
+			await expect(assertDesignChange("member", null, design(url))).rejects.toMatchObject({ code: "BAD_REQUEST" });
+	});
+
+	it("leaves another account's fonts out of an import", async () => {
+		const imported = {
+			template: "onyx" as const,
+			typography: {
+				customFonts: [
+					{ url: "https://rezumi.app/api/uploads/member/fonts/a.ttf" },
+					{ url: "https://rezumi.app/api/uploads/someone-else/fonts/b.ttf" },
+				],
+			},
+		};
+		expect(await fitImportedDesign("member", imported)).toEqual({ template: false, stylesheet: false, fonts: true });
+		expect(imported.typography.customFonts).toEqual([{ url: "https://rezumi.app/api/uploads/member/fonts/a.ttf" }]);
 	});
 });
 

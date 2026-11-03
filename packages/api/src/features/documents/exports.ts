@@ -36,11 +36,15 @@ async function fileResponse(
 	try {
 		if (format === "json") body = new File([JSON.stringify(json, null, 2)], filename, { type: "application/json" });
 		else if (format === "pdf") {
-			const { createResumePdfFile } = await import("@rezumi/pdf/server");
+			const [{ createResumePdfFile }, { readUploadedFont }] = await Promise.all([
+				import("@rezumi/pdf/server"),
+				import("../storage/service"),
+			]);
 			body = await createResumePdfFile({
 				data,
 				filename,
 				uploadOrigin: env.APP_URL,
+				readUploadedFont,
 				renderOptions: { includeCoverLetterHeader },
 			});
 		} else {

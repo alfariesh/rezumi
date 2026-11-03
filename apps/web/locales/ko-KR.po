@@ -421,6 +421,11 @@ msgstr ""
 msgid "{0} is larger than {1}."
 msgstr ""
 
+#. placeholder {0}: face.weight
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
 msgid "{0} min"
@@ -696,6 +701,10 @@ msgstr "{facts, plural, other {사실 #개}}"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{failing, plural, one {# to review} other {# to review}}"
 msgstr "{failing, plural, one {# 검토} other {# 검토}}"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{family} is ready. Choose it under Font family."
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
@@ -4130,6 +4139,10 @@ msgstr "타임라인을 업데이트할 수 없습니다. 다시 시도해 보�
 msgid "Couldn't update this letter's versions. Try again."
 msgstr "이 레터의 버전을 업데이트할 수 없습니다. 다시 시도해 보세요."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
+
 #. Fallback toast when uploading profile picture for resume fails
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/account/profile.tsx
@@ -5781,6 +5794,10 @@ msgstr "후속 연락 알림"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font family"
 msgstr "글꼴 패밀리"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Font pairing"
@@ -10553,6 +10570,14 @@ msgstr "{chip} 제거"
 msgid "Remove {country}"
 msgstr "{country} 제거"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}"
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}?"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "{value} 제거"
@@ -10568,6 +10593,10 @@ msgstr "필드 삭제"
 #: src/features/applications/components/file-attachment-field.tsx
 msgid "Remove file"
 msgstr "파일 제거"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/settings/account/security.tsx
 msgid "Remove passkey"
@@ -12790,6 +12819,10 @@ msgstr "텍스트 레이어 ✓ · 2열"
 msgid "text layer found"
 msgstr "텍스트 레이어를 찾았습니다"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "텍스트가 머리글 또는 바닥글 영역에 있습니다."
@@ -13303,6 +13336,10 @@ msgstr "이력서치고 파일 크기가 큽니다."
 msgid "This file is larger than many application forms accept."
 msgstr "이 파일이 많은 지원서 양식이 허용하는 크기보다 큽니다."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "이 파일 형식은 가져올 수 없습니다. PDF, Word, Rezumi 또는 JSON Resume 파일이나 LinkedIn 내보내기(.zip)를 사용하세요."
@@ -13314,6 +13351,10 @@ msgstr "이 파일이 매우 다양한 폰트를 사용하고 있습니다."
 #: src/features/ats-checker/messages.ts
 msgid "This file uses Type 3 fonts, which carry drawings instead of characters."
 msgstr "이 파일은 문자 대신 그림 정보를 담는 Type 3 폰트를 사용하고 있습니다."
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -14016,9 +14057,21 @@ msgstr ".csv 업로드"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "PDF를 업로드하고 지원자 추적 시스템에서 추출한 텍스트(누락된 내용, 잘못된 내용 및 수정 방법)를 확인하세요. 무료이며 계정이 필요하지 않습니다."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Upload photo"
 msgstr "사진 업로드"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Uploading photo…"
@@ -15129,6 +15182,14 @@ msgstr "귀하의 파일"
 msgid "Your focus"
 msgstr "내 집중 분야"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts are ready. Choose them under Font family."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "제목이 본문 텍스트와 동일하게 보입니다."
@@ -15199,6 +15260,14 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan, so the imported document uses a standard font."
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx
