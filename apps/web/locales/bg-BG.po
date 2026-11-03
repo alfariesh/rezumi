@@ -1868,6 +1868,10 @@ msgstr "Всички кандидатури"
 msgid "All applications (including closed)"
 msgstr "Всички кандидатури за работа (включително затворени)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Всички документи и кандидатури за работа като JSON, в един цип"
@@ -2142,6 +2146,7 @@ msgstr "Дата на кандидатстване до"
 msgid "Application deleted"
 msgstr "Кандидатурата е изтрита"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Подробности за кандидатурата"
@@ -2726,10 +2731,6 @@ msgstr ""
 msgid "Card: up to 6 months after the payment."
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Кариера"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "Каталонски"
@@ -2997,6 +2998,10 @@ msgstr "Изберете резюме в Write, което да съответс
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Изберете файл WebM, MP4, MP3, WAV или Ogg до 2 MB."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3790,6 +3795,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Свързаните приложения не можаха да бъдат заредени. Опреснете страницата, за да опитате отново."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Документите не можаха да се заредят"
 
@@ -4184,6 +4190,7 @@ msgstr "Запълване"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Мотивационно писмо"
@@ -6287,7 +6294,9 @@ msgstr "История"
 msgid "Hold to delete"
 msgstr "Задръжте за изтриване"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Начало"
 
@@ -7366,6 +7375,7 @@ msgstr "На живо в {0}"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Зареждане"
 
@@ -8093,6 +8103,7 @@ msgstr "Вместо това ново мотивационно писмо"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Нов документ"
 
@@ -8275,6 +8286,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Не бяха открити дати."
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10278,6 +10293,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Получател"
@@ -10773,6 +10792,7 @@ msgstr "резюме"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10866,6 +10886,7 @@ msgstr "Изтеглено {0}. Свежестта на произхода е н
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13579,8 +13600,6 @@ msgstr "до"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Днес"
 
@@ -14603,7 +14622,7 @@ msgstr "Какво е важно"
 msgid "What matters to you"
 msgstr "Какво е важно за вас"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 

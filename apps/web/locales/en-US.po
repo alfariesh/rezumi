@@ -1863,6 +1863,10 @@ msgstr "All applications"
 msgid "All applications (including closed)"
 msgstr "All applications (including closed)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr "All documents"
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "All documents and applications as JSON, in one zip"
@@ -2137,6 +2141,7 @@ msgstr "Application date to"
 msgid "Application deleted"
 msgstr "Application deleted"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Application details"
@@ -2721,10 +2726,6 @@ msgstr "Card"
 msgid "Card: up to 6 months after the payment."
 msgstr "Card: up to 6 months after the payment."
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Career"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "Catalan"
@@ -2992,6 +2993,10 @@ msgstr "Choose a resume in Write to match its design. Until then, the letter has
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr "Choose an application to see its next step, what you sent and its activity here."
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3785,6 +3790,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Couldn't load connected applications. Refresh the page to try again."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Couldn't load documents"
 
@@ -4179,6 +4185,7 @@ msgstr "Cover"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Cover letter"
@@ -6282,7 +6289,9 @@ msgstr "History"
 msgid "Hold to delete"
 msgstr "Hold to delete"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Home"
 
@@ -7361,6 +7370,7 @@ msgstr "Live at {0}"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Loading"
 
@@ -8088,6 +8098,7 @@ msgstr "New cover letter instead"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "New document"
 
@@ -8270,6 +8281,10 @@ msgstr "No credits to spend right now"
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "No dates were found."
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr "No documents yet."
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10273,6 +10288,10 @@ msgstr "Receipts are proof of payment, not tax invoices."
 msgid "Recent activity"
 msgstr "Recent activity"
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr "Recent documents"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Recipient"
@@ -10768,6 +10787,7 @@ msgstr "resume"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10861,6 +10881,7 @@ msgstr "Retrieved {0}. Origin freshness is unknown unless reported."
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13574,8 +13595,6 @@ msgstr "To"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Today"
 
@@ -14598,7 +14617,7 @@ msgstr "What matters"
 msgid "What matters to you"
 msgstr "What matters to you"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr "What needs you, new roles from your search, your next interview and your schedules."
 

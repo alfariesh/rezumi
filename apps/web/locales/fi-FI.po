@@ -1868,6 +1868,10 @@ msgstr "Kaikki hakemukset"
 msgid "All applications (including closed)"
 msgstr "Kaikki työhakemukset (myös suljetut)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Kaikki asiakirjat ja työhakemukset muodossa JSON, yhdessä vetoketjussa"
@@ -2142,6 +2146,7 @@ msgstr "Hakemuksen päivämäärä päättyen"
 msgid "Application deleted"
 msgstr "työhakemus poistettu"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Hakemuksen tiedot"
@@ -2726,10 +2731,6 @@ msgstr ""
 msgid "Card: up to 6 months after the payment."
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Ura"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "katalaani"
@@ -2997,6 +2998,10 @@ msgstr "Valitse Write-sovelluksessa ansioluettelo, joka vastaa sen suunnittelua.
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Valitse WebM-, MP4-, MP3-, WAV- tai Ogg-tiedosto, enintään 2 Mt."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3790,6 +3795,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Yhdistettyjä sovelluksia ei voitu ladata. Päivitä sivu ja yritä uudelleen."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Asiakirjoja ei voitu ladata"
 
@@ -4184,6 +4190,7 @@ msgstr "Täytä"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Saatekirje"
@@ -6287,7 +6294,9 @@ msgstr "Historia"
 msgid "Hold to delete"
 msgstr "Poista pitämällä painettuna"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Etusivu"
 
@@ -7366,6 +7375,7 @@ msgstr "Live osoitteessa {0}"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Ladataan"
 
@@ -8093,6 +8103,7 @@ msgstr "Uusi saatekirje tilalle"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Uusi asiakirja"
 
@@ -8275,6 +8286,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Päivämääriä ei löytynyt."
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10278,6 +10293,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Vastaanottaja"
@@ -10773,6 +10792,7 @@ msgstr "jatkaa"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10866,6 +10886,7 @@ msgstr "Haettu {0}. Alkuperän tuoreus on tuntematon, ellei sitä ilmoiteta."
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13579,8 +13600,6 @@ msgstr "Vastaanottaja"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Tänään"
 
@@ -14603,7 +14622,7 @@ msgstr "Mikä on tärkeää"
 msgid "What matters to you"
 msgstr "Mikä sinulle on tärkeää"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 

@@ -1868,6 +1868,10 @@ msgstr "모든 지원 내역"
 msgid "All applications (including closed)"
 msgstr "모든 채용 지원서(마감된 포함)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON 형식의 모든 문서 및 입사 지원서는 하나의 zip으로 제공됩니다."
@@ -2142,6 +2146,7 @@ msgstr "지원일 종료"
 msgid "Application deleted"
 msgstr "채용 지원서가 삭제되었습니다."
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "지원 세부 정보"
@@ -2726,10 +2731,6 @@ msgstr ""
 msgid "Card: up to 6 months after the payment."
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "커리어"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "카탈루냐어"
@@ -2997,6 +2998,10 @@ msgstr "디자인에 어울리는 이력서를 Write에서 선택하세요. 그�
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2MB 이하의 WebM, MP4, MP3, WAV 또는 Ogg 파일을 선택하세요."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3790,6 +3795,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "연결된 애플리케이션을 불러올 수 없습니다. 페이지를 새로고침하여 다시 시도해 보세요."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "문서를 로드할 수 없습니다."
 
@@ -4184,6 +4190,7 @@ msgstr "채우기"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "커버레터"
@@ -6287,7 +6294,9 @@ msgstr "기록"
 msgid "Hold to delete"
 msgstr "길게 눌러 삭제"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "홈"
 
@@ -7366,6 +7375,7 @@ msgstr "{0}에서 라이브"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "불러오는 중"
 
@@ -8093,6 +8103,7 @@ msgstr "대신 새 자기 소개서"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "새 문서"
 
@@ -8275,6 +8286,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "날짜를 찾을 수 없습니다."
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10278,6 +10293,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "수신인"
@@ -10773,6 +10792,7 @@ msgstr "재개하다"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10866,6 +10886,7 @@ msgstr "{0}를 검색했습니다. 보고되지 않는 한 원산지 신선도�
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13579,8 +13600,6 @@ msgstr "에게"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "오늘"
 
@@ -14603,7 +14622,7 @@ msgstr "중요한 것"
 msgid "What matters to you"
 msgstr "나에게 중요한 것"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 

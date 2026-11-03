@@ -1868,6 +1868,10 @@ msgstr "Wszystkie aplikacje"
 msgid "All applications (including closed)"
 msgstr "Wszystkie podania o pracę (w tym zamknięte)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Wszystkie dokumenty i podania o pracę jako JSON, w jednym zipie"
@@ -2142,6 +2146,7 @@ msgstr "Data złożenia wniosku do"
 msgid "Application deleted"
 msgstr "podanie o pracę usunięte"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Szczegóły aplikacji"
@@ -2726,10 +2731,6 @@ msgstr ""
 msgid "Card: up to 6 months after the payment."
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Kariera"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "Kataloński"
@@ -2997,6 +2998,10 @@ msgstr "Wybierz CV w Write, aby pasowało do jego projektu. Do tego czasu list m
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Wybierz plik WebM, MP4, MP3, WAV lub Ogg do 2 MB."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3790,6 +3795,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Nie udało się wczytać połączonych aplikacji. Odśwież stronę, aby spróbować ponownie."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Nie udało się wczytać dokumentów"
 
@@ -4184,6 +4190,7 @@ msgstr "Wypełnij"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "List motywacyjny"
@@ -6287,7 +6294,9 @@ msgstr "Historia"
 msgid "Hold to delete"
 msgstr "Przytrzymaj, aby usunąć"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Strona główna"
 
@@ -7366,6 +7375,7 @@ msgstr "Na żywo w {0}"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Ładowanie"
 
@@ -8093,6 +8103,7 @@ msgstr "Zamiast tego nowy list motywacyjny"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Nowy dokument"
 
@@ -8275,6 +8286,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Nie znaleziono dat."
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10278,6 +10293,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Odbiorca"
@@ -10773,6 +10792,7 @@ msgstr "wznawiać"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10866,6 +10886,7 @@ msgstr "Znaleziono {0}. Świeżość pochodzenia nie jest znana, chyba że zosta
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13579,8 +13600,6 @@ msgstr "Do"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Dzisiaj"
 
@@ -14603,7 +14622,7 @@ msgstr "Co jest ważne"
 msgid "What matters to you"
 msgstr "Co jest dla Ciebie ważne"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 

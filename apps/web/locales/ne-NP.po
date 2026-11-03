@@ -1868,6 +1868,10 @@ msgstr "सबै आवेदनहरू"
 msgid "All applications (including closed)"
 msgstr "सबै रोजगार आवेदनहरू (बन्द सहित)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON को रूपमा सबै कागजातहरू र जागिरका आवेदनहरू, एउटै जिपमा"
@@ -2142,6 +2146,7 @@ msgstr "को लागी आवेदन मिति"
 msgid "Application deleted"
 msgstr "जागिर आवेदन मेटाइयो"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "आवेदन विवरण"
@@ -2726,10 +2731,6 @@ msgstr ""
 msgid "Card: up to 6 months after the payment."
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "करियर"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "क्याटालान"
@@ -2997,6 +2998,10 @@ msgstr "यसको डिजाइन मिलाउन Write मा रि�
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB सम्मको WebM, MP4, MP3, WAV वा Ogg फाइल छान्नुहोस्।"
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3790,6 +3795,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "जडान गरिएका एप्लिकेसनहरू लोड गर्न सकिएन। पुन: प्रयास गर्न पृष्ठ रिफ्रेस गर्नुहोस्।"
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "कागजातहरू लोड गर्न सकिएन"
 
@@ -4184,6 +4190,7 @@ msgstr "फ्रेम भर्नुहोस्"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "आवरण पत्र"
@@ -6287,7 +6294,9 @@ msgstr "इतिहास"
 msgid "Hold to delete"
 msgstr "मेटाउन थिचिराख्नुहोस्"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "गृह पृष्ठ"
 
@@ -7366,6 +7375,7 @@ msgstr "{0} मा लाइभ"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "लोड गर्दै"
 
@@ -8093,6 +8103,7 @@ msgstr "बरु नयाँ आवरण पत्र"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "नयाँ कागजात"
 
@@ -8275,6 +8286,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "कुनै मिति फेला परेन।"
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10278,6 +10293,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "प्राप्तकर्ता"
@@ -10773,6 +10792,7 @@ msgstr "पुन: सुरु"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10866,6 +10886,7 @@ msgstr "पुनःप्राप्त {0}। रिपोर्ट नभए
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13579,8 +13600,6 @@ msgstr "को"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "आज"
 
@@ -14603,7 +14622,7 @@ msgstr "के महत्त्वपूर्ण छ"
 msgid "What matters to you"
 msgstr "तपाईंका लागि के महत्त्वपूर्ण छ"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 

@@ -1868,6 +1868,10 @@ msgstr "എല്ലാ അപേക്ഷകളും"
 msgid "All applications (including closed)"
 msgstr "എല്ലാ ജോലി അപേക്ഷകളും (അടച്ചത് ഉൾപ്പെടെ)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON ആയി എല്ലാ രേഖകളും ജോലി അപേക്ഷകളും ഒരു സിപ്പിൽ"
@@ -2142,6 +2146,7 @@ msgstr "അപേക്ഷ തീയതി വരെ"
 msgid "Application deleted"
 msgstr "ജോലി അപേക്ഷ ഇല്ലാതാക്കി"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "അപേക്ഷയുടെ വിശദാംശങ്ങൾ"
@@ -2726,10 +2731,6 @@ msgstr ""
 msgid "Card: up to 6 months after the payment."
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "കരിയർ"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "കറ്റലാൻ"
@@ -2997,6 +2998,10 @@ msgstr "അതിൻ്റെ ഡിസൈനുമായി പൊരുത്�
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB വരെയുള്ള WebM, MP4, MP3, WAV അല്ലെങ്കിൽ Ogg ഫയൽ തിരഞ്ഞെടുക്കുക."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3790,6 +3795,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "ബന്ധിപ്പിച്ച ആപ്ലിക്കേഷനുകൾ ലോഡ് ചെയ്യാനായില്ല. വീണ്ടും ശ്രമിക്കാൻ പേജ് പുതുക്കുക."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "പ്രമാണങ്ങൾ ലോഡ് ചെയ്യാനായില്ല"
 
@@ -4184,6 +4190,7 @@ msgstr "ഫ്രെയിം നിറയ്ക്കുക"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "കവർ ലെറ്റർ"
@@ -6287,7 +6294,9 @@ msgstr "ചരിത്രം"
 msgid "Hold to delete"
 msgstr "ഇല്ലാതാക്കാൻ അമർത്തിപ്പിടിക്കുക"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "ഹോം"
 
@@ -7366,6 +7375,7 @@ msgstr "{0}-ൽ തത്സമയം"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "ലോഡ് ചെയ്യുന്നു"
 
@@ -8093,6 +8103,7 @@ msgstr "പകരം പുതിയ കവർ ലെറ്റർ"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "പുതിയ പ്രമാണം"
 
@@ -8275,6 +8286,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "തീയതികളൊന്നും കണ്ടെത്തിയില്ല."
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10278,6 +10293,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "സ്വീകർത്താവ്"
@@ -10773,6 +10792,7 @@ msgstr "പുനരാരംഭിക്കുക"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10866,6 +10886,7 @@ msgstr "{0} വീണ്ടെടുത്തു. റിപ്പോർട്ട
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13579,8 +13600,6 @@ msgstr "ലേക്ക്"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "ഇന്ന്"
 
@@ -14603,7 +14622,7 @@ msgstr "പ്രധാനപ്പെട്ടത്"
 msgid "What matters to you"
 msgstr "നിങ്ങൾക്ക് പ്രധാനപ്പെട്ടത്"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 

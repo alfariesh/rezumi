@@ -1868,6 +1868,10 @@ msgstr "అన్ని దరఖాస్తులు"
 msgid "All applications (including closed)"
 msgstr "అన్ని ఉద్యోగ దరఖాస్తులు (మూసివేయబడిన వాటితో సహా)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON వలె అన్ని డాక్యుమెంట్‌లు మరియు జాబ్ అప్లికేషన్‌లు, ఒకే జిప్‌లో"
@@ -2142,6 +2146,7 @@ msgstr "దరఖాస్తు తేదీ వరకు"
 msgid "Application deleted"
 msgstr "ఉద్యోగ దరఖాస్తు తొలగించబడింది"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "దరఖాస్తు వివరాలు"
@@ -2726,10 +2731,6 @@ msgstr ""
 msgid "Card: up to 6 months after the payment."
 msgstr ""
 
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "కెరీర్"
-
 #: src/libs/locale.ts
 msgid "Catalan"
 msgstr "కాటలాన్"
@@ -2997,6 +2998,10 @@ msgstr "దాని డిజైన్‌తో సరిపోలడాని�
 #: src/features/career/workspace/practise.tsx
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB వరకు ఉన్న WebM, MP4, MP3, WAV లేదా Ogg ఫైల్‌ను ఎంచుకోండి."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
@@ -3790,6 +3795,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "కనెక్ట్ చేయబడిన అప్లికేషన్‌లను లోడ్ చేయడం సాధ్యపడలేదు. మళ్ళీ ప్రయత్నించడానికి పేజీని రిఫ్రెష్ చేయండి."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "పత్రాలను లోడ్ చేయడం సాధ్యపడలేదు"
 
@@ -4184,6 +4190,7 @@ msgstr "నింపు"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "కవర్ లెటర్"
@@ -6287,7 +6294,9 @@ msgstr "చరిత్ర"
 msgid "Hold to delete"
 msgstr "తొలగించడానికి నొక్కి పట్టుకోండి"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "హోమ్"
 
@@ -7366,6 +7375,7 @@ msgstr "{0}లో నివసిస్తున్నారు"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "లోడ్ అవుతోంది"
 
@@ -8093,6 +8103,7 @@ msgstr "బదులుగా కొత్త కవర్ లెటర్"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "కొత్త పత్రం"
 
@@ -8275,6 +8286,10 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "తేదీలు కనుగొనబడలేదు."
+
+#: src/features/documents/recent-documents.tsx
+msgid "No documents yet."
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10278,6 +10293,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "గ్రహీత"
@@ -10773,6 +10792,7 @@ msgstr "పునఃప్రారంభం"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10866,6 +10886,7 @@ msgstr "{0} తిరిగి పొందబడింది. నివేద�
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -13579,8 +13600,6 @@ msgstr "కు"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "ఈరోజు"
 
@@ -14603,7 +14622,7 @@ msgstr "ముఖ్యమైనవి"
 msgid "What matters to you"
 msgstr "మీకు ముఖ్యమైనవి"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
