@@ -32,41 +32,47 @@ const css = (text: string) => ({ source: { text } });
 
 describe("designFeaturesNeeded", () => {
 	it("asks for premium templates only when one is chosen anew", () => {
-		expect(designFeaturesNeeded(null, { template: "onyx" })).toEqual([]);
-		expect(designFeaturesNeeded(null, { template: "pikachu" })).toEqual(["premiumTemplates"]);
-		expect(designFeaturesNeeded({ template: "onyx" }, { template: "pikachu" })).toEqual(["premiumTemplates"]);
-		expect(designFeaturesNeeded({ template: "pikachu" }, { template: "pikachu" })).toEqual([]);
-		expect(designFeaturesNeeded({ template: "pikachu" }, { template: "onyx" })).toEqual([]);
-		expect(designFeaturesNeeded({ template: "gengar" }, { template: "pikachu" })).toEqual(["premiumTemplates"]);
+		expect(designFeaturesNeeded(null, { template: "meridian" })).toEqual([]);
+		expect(designFeaturesNeeded(null, { template: "senja" })).toEqual(["premiumTemplates"]);
+		expect(designFeaturesNeeded({ template: "meridian" }, { template: "senja" })).toEqual(["premiumTemplates"]);
+		expect(designFeaturesNeeded({ template: "senja" }, { template: "senja" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "senja" }, { template: "meridian" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "gengar" }, { template: "senja" })).toEqual(["premiumTemplates"]);
 	});
 
 	it("asks for custom styles only when they're added or changed, not kept or removed", () => {
-		expect(designFeaturesNeeded({ template: "onyx" }, { template: "onyx", stylesheet: css("a { b: c }") })).toEqual([
+		expect(
+			designFeaturesNeeded({ template: "meridian" }, { template: "meridian", stylesheet: css("a { b: c }") }),
+		).toEqual(["customStyles"]);
+		const before = { template: "meridian", stylesheet: css("a { b: c }") };
+		expect(designFeaturesNeeded(before, { template: "meridian", stylesheet: css("  a { b: c }\n") })).toEqual([]);
+		expect(designFeaturesNeeded(before, { template: "meridian", stylesheet: css("") })).toEqual([]);
+		expect(designFeaturesNeeded(before, { template: "meridian" })).toEqual([]);
+		expect(designFeaturesNeeded(before, { template: "meridian", stylesheet: css("a { b: d }") })).toEqual([
 			"customStyles",
 		]);
-		const before = { template: "onyx", stylesheet: css("a { b: c }") };
-		expect(designFeaturesNeeded(before, { template: "onyx", stylesheet: css("  a { b: c }\n") })).toEqual([]);
-		expect(designFeaturesNeeded(before, { template: "onyx", stylesheet: css("") })).toEqual([]);
-		expect(designFeaturesNeeded(before, { template: "onyx" })).toEqual([]);
-		expect(designFeaturesNeeded(before, { template: "onyx", stylesheet: css("a { b: d }") })).toEqual(["customStyles"]);
-		expect(designFeaturesNeeded(null, { template: "onyx", stylesheet: css("   ") })).toEqual([]);
+		expect(designFeaturesNeeded(null, { template: "meridian", stylesheet: css("   ") })).toEqual([]);
 	});
 
 	it("asks for your own fonts only when a face is added, not kept or removed", () => {
 		const font = (url: string) => ({ typography: { customFonts: [{ url }] } });
 		const a = "https://rezumi.app/api/uploads/member/fonts/a.ttf";
 		const b = "https://rezumi.app/api/uploads/member/fonts/b.otf";
-		expect(designFeaturesNeeded(null, { template: "onyx", ...font(a) })).toEqual(["customFonts"]);
-		expect(designFeaturesNeeded({ template: "onyx", ...font(a) }, { template: "onyx", ...font(a) })).toEqual([]);
-		expect(designFeaturesNeeded({ template: "onyx", ...font(a) }, { template: "onyx" })).toEqual([]);
-		expect(designFeaturesNeeded({ template: "onyx", ...font(a) }, { template: "onyx", ...font(b) })).toEqual([
+		expect(designFeaturesNeeded(null, { template: "meridian", ...font(a) })).toEqual(["customFonts"]);
+		expect(designFeaturesNeeded({ template: "meridian", ...font(a) }, { template: "meridian", ...font(a) })).toEqual(
+			[],
+		);
+		expect(designFeaturesNeeded({ template: "meridian", ...font(a) }, { template: "meridian" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "meridian", ...font(a) }, { template: "meridian", ...font(b) })).toEqual([
 			"customFonts",
 		]);
-		expect(designFeaturesNeeded({ template: "onyx", typography: "nonsense" }, { template: "onyx" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "meridian", typography: "nonsense" }, { template: "meridian" })).toEqual(
+			[],
+		);
 	});
 
 	it("reads stored designs of any shape", () => {
-		expect(designFeaturesNeeded({ template: 42, stylesheet: "nonsense" }, { template: "onyx" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: 42, stylesheet: "nonsense" }, { template: "meridian" })).toEqual([]);
 		expect(designFeaturesNeeded(undefined, { template: "gengar", stylesheet: css("x {}") })).toEqual([
 			"premiumTemplates",
 			"customStyles",
@@ -109,7 +115,9 @@ describe("plan errors", () => {
 			if (feature === "automationApi") expect(error.message).toContain("https://rezumi.app/dashboard/settings/billing");
 			else expect(error.message).not.toMatch(/Rp|\d+\.\d{3}|https?:|\bbuy\b|upgrade|purchase|price/i);
 		}
-		expect(planFeatureRequired("premiumTemplates", "free").message).toContain("Bronzor, Onyx, Rhyhorn or Azurill");
+		expect(planFeatureRequired("premiumTemplates", "free").message).toContain(
+			"Meridian, Sterling, Tunas, Wibawa or Kirana",
+		);
 	});
 });
 
@@ -122,7 +130,7 @@ describe("while billing is off", () => {
 	});
 
 	it("still only lets a document gain fonts its owner uploaded", async () => {
-		const design = (url: string) => ({ template: "onyx" as const, typography: { customFonts: [{ url }] } });
+		const design = (url: string) => ({ template: "meridian" as const, typography: { customFonts: [{ url }] } });
 		const own = "https://rezumi.app/api/uploads/member/fonts/a.ttf";
 		await assertDesignChange("member", null, design(own));
 		await assertDesignChange("member", design("https://evil.example/x.ttf"), design("https://evil.example/x.ttf"));
@@ -136,7 +144,7 @@ describe("while billing is off", () => {
 
 	it("leaves another account's fonts out of an import", async () => {
 		const imported = {
-			template: "onyx" as const,
+			template: "meridian" as const,
 			typography: {
 				customFonts: [
 					{ url: "https://rezumi.app/api/uploads/member/fonts/a.ttf" },

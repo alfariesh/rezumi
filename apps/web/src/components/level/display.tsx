@@ -2,6 +2,7 @@ import type { levelDesignSchema } from "@rezumi/schema/resume/data";
 import type z from "zod";
 import { t } from "@lingui/core/macro";
 import { cn } from "@rezumi/utils/style";
+import { ResumeIconGlyph } from "@/components/input/resume-icon";
 
 type Props = z.infer<typeof levelDesignSchema> &
 	React.ComponentProps<"div"> & {
@@ -62,13 +63,13 @@ export function LevelDisplay({ icon, type, level, className, decorationSizePx, i
 
 				if (type === "icon") {
 					return (
-						<i
+						<ResumeIconGlyph
 							key={itemKey}
+							name={icon}
 							style={iconStyle}
 							className={cn(
-								"ph text-(--page-primary-color)",
+								"text-(--page-primary-color)",
 								resolvedIconSizePx === undefined && defaultDecorationClassName,
-								`ph-${icon}`,
 								!isActive && "opacity-40",
 							)}
 						/>

@@ -1,10 +1,13 @@
 import type { Style } from "../../forme/style-types";
+import type { IconRole } from "../../icon-visibility";
 import type { StyleInput } from "./styles";
 import type { ComponentProps, ReactNode } from "react";
 import { Children, isValidElement } from "react";
+import { iconDesignOf } from "@rezumi/schema/resume/data";
 import { Image, View } from "#react-pdf-renderer";
 import { useRender } from "../../context";
-import { PhosphorIcon } from "../../forme/icons";
+import { ResumeIcon } from "../../forme/icons";
+import { showsIcons } from "../../icon-visibility";
 import { HEADING_NODE_PROP } from "../../page-map";
 import { resolvedPdfFlowProps, resolvedPdfTextProps } from "../../semantic/adapter";
 import {
@@ -238,9 +241,21 @@ export const Icon = ({
 	style,
 	size: sizeProp,
 	nodeKey,
+	iconRole = "item",
 	...props
-}: ComponentProps<typeof PhosphorIcon> & { nodeKey?: string | undefined }) => {
-	const { style: iconStyle, size: templateSize, ...iconProps } = useTemplateIconSlot("icon");
+}: ComponentProps<typeof ResumeIcon> & {
+	nodeKey?: string | undefined;
+	/** Which of the resume's icon switches shows this icon. */
+	iconRole?: IconRole | undefined;
+}) => {
+	const { metadata } = useRender();
+	const itemSlot = useTemplateIconSlot("icon");
+	const contactSlot = useTemplateIconSlot("contactIcon");
+	const {
+		style: iconStyle,
+		size: templateSize,
+		...iconProps
+	} = iconRole === "contact" && Object.keys(contactSlot).length > 0 ? contactSlot : itemSlot;
 	const composedStyle = composeStyles(asStyleInput(iconStyle), asStyleInput(style));
 	const templateIconSize =
 		typeof templateSize === "number" || typeof templateSize === "string" ? templateSize : undefined;
@@ -257,10 +272,11 @@ export const Icon = ({
 			styles: [asStyleInput(style), resolved.style],
 		}) ?? templateIconSize;
 
-	if (iconProps.display === "none" || !visible) return null;
+	if (iconProps.display === "none" || !visible || !showsIcons(metadata, iconRole)) return null;
 
 	return (
-		<PhosphorIcon
+		<ResumeIcon
+			variant={iconDesignOf(metadata.design).style}
 			{...iconProps}
 			{...props}
 			{...(resolvedSize === undefined ? {} : { size: resolvedSize })}
@@ -495,7 +511,7 @@ export const SectionHeadingIcon = ({
 	nodeKey,
 	titleLineHeight,
 	...props
-}: ComponentProps<typeof PhosphorIcon> & {
+}: ComponentProps<typeof ResumeIcon> & {
 	nodeKey?: string | undefined;
 	/** Height in points of a line of the title beside the icon, which the icon is centred on. */
 	titleLineHeight?: number | undefined;
@@ -509,8 +525,8 @@ export const SectionHeadingIcon = ({
 	const iconStyle = hasSlot ? sectionIconStyle : fallbackIconStyle;
 	const iconProps = hasSlot ? sectionIconProps : fallbackIconProps;
 
-	// Section heading icon visibility is controlled by hideSectionIcons (in SectionShell),
-	// NOT by the item-level hideIcons toggle. Ignore the "display: none" from item icon slot.
+	// Section heading icons follow the section icon switch (in SectionShell), not the item one: ignore the item
+	// slot's "display: none".
 	const { display: _, size: templateSize, ...iconPropsWithoutDisplay } = iconProps;
 	const templateIconSize =
 		hasSlot && (typeof templateSize === "number" || typeof templateSize === "string") ? templateSize : undefined;
@@ -536,7 +552,8 @@ export const SectionHeadingIcon = ({
 	if (!visible) return null;
 
 	return (
-		<PhosphorIcon
+		<ResumeIcon
+			variant={iconDesignOf(data.metadata.design).style}
 			{...iconPropsWithoutDisplay}
 			{...props}
 			size={resolvedSize}

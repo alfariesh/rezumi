@@ -121,12 +121,13 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `basics.customFields` | `array` | yes | — | The custom fields to display on the resume. |
 | `basics.customFields[]` | `object` | — | — | — |
 | `basics.customFields[].id` | `string` | yes | — | The unique identifier for the custom field. Usually generated as a UUID. |
-| `basics.customFields[].icon` | `string` | yes | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `basics.customFields[].icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
+| `basics.customFields[].label` | `string` | no | — | An optional label for the field, such as 'Date of birth' or 'Nationality'. Templates with a personal details table print it beside the text; leave blank for a plain contact line. |
 | `basics.customFields[].text` | `string` | yes | — | The text to display for the custom field. |
 | `basics.customFields[].link` | `string` | yes | default: "" | If the custom field should be a link, the URL to link to. |
 | `summary` | `object` | yes | — | Summary section of the resume, useful for a short bio or introduction |
 | `summary.title` | `string` | yes | — | The title of the summary of the resume. |
-| `summary.icon` | `string` | yes | default: "" | Phosphor icon name to display before the summary section title in the PDF output. Empty string uses the default summary icon; 'none' hides the icon. |
+| `summary.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the summary section title when section icons are on. Empty string uses the default summary icon; 'none' hides the icon. |
 | `summary.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the summary should span across. |
 | `summary.hidden` | `boolean` | yes | — | Whether to hide the summary from the resume. |
 | `summary.showHeading` | `boolean` | no | default: true | Whether to show the summary heading, icon, and decoration while retaining summary content. |
@@ -136,7 +137,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections` | `object` | yes | — | Various sections of the resume, such as experience, education, projects, etc. |
 | `sections.profiles` | `object` | yes | — | The section to display the profiles of the author. |
 | `sections.profiles.title` | `string` | yes | — | The title of the section. |
-| `sections.profiles.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.profiles.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.profiles.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.profiles.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.profiles.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -146,7 +147,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.profiles.items[]` | `object` | — | — | — |
 | `sections.profiles.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
 | `sections.profiles.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
-| `sections.profiles.items[].icon` | `string` | yes | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `sections.profiles.items[].icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `sections.profiles.items[].iconColor` | `string` | yes | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
 | `sections.profiles.items[].network` | `string` | yes | — | The name of the network or platform. Empty while the entry is a draft, which isn't printed. |
 | `sections.profiles.items[].username` | `string` | yes | — | The username of the author on the network or platform. |
@@ -156,7 +157,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.profiles.items[].website.inlineLink` | `boolean` | yes | default: false | If true, the website URL is rendered as a hyperlink on the title instead of a separate link at the bottom. |
 | `sections.experience` | `object` | yes | — | The section to display the experience of the author. |
 | `sections.experience.title` | `string` | yes | — | The title of the section. |
-| `sections.experience.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.experience.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.experience.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.experience.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.experience.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -201,7 +202,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.experience.items[].roles[].description` | `string` | yes | — | The description of this specific role. This should be a HTML-formatted string. |
 | `sections.education` | `object` | yes | — | The section to display the education of the author. |
 | `sections.education.title` | `string` | yes | — | The title of the section. |
-| `sections.education.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.education.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.education.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.education.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.education.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -233,7 +234,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.education.items[].description` | `string` | yes | — | The description of the education. This should be a HTML-formatted string. |
 | `sections.projects` | `object` | yes | — | The section to display the projects of the author. |
 | `sections.projects.title` | `string` | yes | — | The title of the section. |
-| `sections.projects.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.projects.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.projects.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.projects.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.projects.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -261,7 +262,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.projects.items[].description` | `string` | yes | — | The description of the project. This should be a HTML-formatted string. |
 | `sections.skills` | `object` | yes | — | The section to display the skills of the author. |
 | `sections.skills.title` | `string` | yes | — | The title of the section. |
-| `sections.skills.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.skills.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.skills.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.skills.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.skills.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -271,18 +272,18 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.skills.items[]` | `object` | — | — | — |
 | `sections.skills.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
 | `sections.skills.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
-| `sections.skills.items[].icon` | `string` | yes | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `sections.skills.items[].icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `sections.skills.items[].iconColor` | `string` | yes | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
 | `sections.skills.items[].name` | `string` | yes | — | The name of the skill. Empty while the entry is a draft, which isn't printed. |
 | `sections.skills.items[].proficiency` | `string` | yes | — | The proficiency level of the skill. Can be any text, such as 'Beginner', 'Intermediate', 'Advanced', etc. |
 | `sections.skills.items[].level` | `number` | yes | minimum: 0; maximum: 5; default: 0 | The proficiency level of the skill, defined as a number between 0 and 5. If set to 0, the icons displaying the level will be hidden. |
 | `sections.skills.items[].keywords` | `array` | yes | default: [] | The keywords associated with the skill, if any. These are displayed as tags below the name. |
 | `sections.skills.items[].keywords[]` | `string` | — | — | — |
-| `sections.skills.keywordLayout` | `string` | no | enum: ["inline","list"]; default: "inline" | How skill keywords are displayed: inline separated by commas, or one bullet per keyword. |
+| `sections.skills.keywordLayout` | `string` | no | enum: ["inline","list","tags"]; default: "inline" | How skill keywords are displayed: inline separated by commas, one bullet per keyword, or 'tags' (small chips). |
 | `sections.skills.layout` | `string` | no | enum: ["default","inline"]; default: "default" | The layout style for skill items. 'inline' places item fields next to name |
 | `sections.languages` | `object` | yes | — | The section to display the languages of the author. |
 | `sections.languages.title` | `string` | yes | — | The title of the section. |
-| `sections.languages.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.languages.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.languages.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.languages.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.languages.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -297,7 +298,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.languages.items[].level` | `number` | yes | minimum: 0; maximum: 5; default: 0 | The proficiency level of the language, defined as a number between 0 and 5. If set to 0, the icons displaying the level will be hidden. |
 | `sections.interests` | `object` | yes | — | The section to display the interests of the author. |
 | `sections.interests.title` | `string` | yes | — | The title of the section. |
-| `sections.interests.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.interests.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.interests.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.interests.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.interests.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -307,14 +308,14 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.interests.items[]` | `object` | — | — | — |
 | `sections.interests.items[].id` | `string` | yes | — | The unique identifier for the item. Usually generated as a UUID. |
 | `sections.interests.items[].hidden` | `boolean` | yes | — | Whether to hide the item from the resume. |
-| `sections.interests.items[].icon` | `string` | yes | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `sections.interests.items[].icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `sections.interests.items[].iconColor` | `string` | yes | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
 | `sections.interests.items[].name` | `string` | yes | — | The name of the interest/hobby. Empty while the entry is a draft, which isn't printed. |
 | `sections.interests.items[].keywords` | `array` | yes | default: [] | The keywords associated with the interest/hobby, if any. These are displayed as tags below the name. |
 | `sections.interests.items[].keywords[]` | `string` | — | — | — |
 | `sections.awards` | `object` | yes | — | The section to display the awards of the author. |
 | `sections.awards.title` | `string` | yes | — | The title of the section. |
-| `sections.awards.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.awards.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.awards.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.awards.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.awards.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -343,7 +344,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.awards.items[].description` | `string` | yes | — | The description of the award. This should be a HTML-formatted string. |
 | `sections.certifications` | `object` | yes | — | The section to display the certifications of the author. |
 | `sections.certifications.title` | `string` | yes | — | The title of the section. |
-| `sections.certifications.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.certifications.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.certifications.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.certifications.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.certifications.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -372,7 +373,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.certifications.items[].description` | `string` | yes | — | The description of the certification. This should be a HTML-formatted string. |
 | `sections.publications` | `object` | yes | — | The section to display the publications of the author. |
 | `sections.publications.title` | `string` | yes | — | The title of the section. |
-| `sections.publications.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.publications.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.publications.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.publications.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.publications.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -401,7 +402,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.publications.items[].description` | `string` | yes | — | The description of the publication. This should be a HTML-formatted string. |
 | `sections.volunteer` | `object` | yes | — | The section to display the volunteer experience of the author. |
 | `sections.volunteer.title` | `string` | yes | — | The title of the section. |
-| `sections.volunteer.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.volunteer.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.volunteer.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.volunteer.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.volunteer.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -430,7 +431,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `sections.volunteer.items[].description` | `string` | yes | — | The description of the volunteer experience. This should be a HTML-formatted string. |
 | `sections.references` | `object` | yes | — | The section to display the references of the author. |
 | `sections.references.title` | `string` | yes | — | The title of the section. |
-| `sections.references.icon` | `string` | yes | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `sections.references.icon` | `string` | yes | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `sections.references.columns` | `integer` | yes | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `sections.references.hidden` | `boolean` | yes | — | Whether to hide the section from the resume. |
 | `sections.references.showHeading` | `boolean` | no | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -452,7 +453,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[]` | `object or object or object or object or object or object or object or object or object or object or object or object or object or object` | — | — | — |
 | `customSections[]` | `object` | — (type summary, schema summaryItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type summary, schema summaryItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type summary, schema summaryItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type summary, schema summaryItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -468,7 +469,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].content` | `string` | yes (type summary, schema summaryItemSchema at customSections[]) | — | The rich text content of the summary item. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type profiles, schema profileItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type profiles, schema profileItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type profiles, schema profileItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type profiles, schema profileItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -481,7 +482,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[]` | `object` | — (type profiles, schema profileItemSchema at customSections[]) | — | — |
 | `customSections[].items[].id` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type profiles, schema profileItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
-| `customSections[].items[].icon` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `customSections[].items[].icon` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `customSections[].items[].iconColor` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
 | `customSections[].items[].network` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The name of the network or platform. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].username` | `string` | yes (type profiles, schema profileItemSchema at customSections[]) | — | The username of the author on the network or platform. |
@@ -491,7 +492,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].website.inlineLink` | `boolean` | yes (type profiles, schema profileItemSchema at customSections[]) | default: false | If true, the website URL is rendered as a hyperlink on the title instead of a separate link at the bottom. |
 | `customSections[]` | `object` | — (type experience, schema experienceItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type experience, schema experienceItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type experience, schema experienceItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type experience, schema experienceItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -539,7 +540,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].roles[].description` | `string` | yes (type experience, schema experienceItemSchema at customSections[]) | — | The description of this specific role. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type education, schema educationItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type education, schema educationItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type education, schema educationItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type education, schema educationItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type education, schema educationItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type education, schema educationItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -574,7 +575,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type education, schema educationItemSchema at customSections[]) | — | The description of the education. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type projects, schema projectItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type projects, schema projectItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type projects, schema projectItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type projects, schema projectItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -605,20 +606,20 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type projects, schema projectItemSchema at customSections[]) | — | The description of the project. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type skills, schema skillItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type skills, schema skillItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type skills, schema skillItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type skills, schema skillItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
 | `customSections[].keepTogether` | `boolean` | yes (type skills, schema skillItemSchema at customSections[]) | default: false | If true, the section is kept on a single page instead of splitting across a page break. |
 | `customSections[].startOnNewPage` | `boolean` | yes (type skills, schema skillItemSchema at customSections[]) | default: false | If true, the section always begins on a new page. |
-| `customSections[].keywordLayout` | `string` | no (type skills, schema skillItemSchema at customSections[]) | enum: ["inline","list"]; default: "inline" | How skill keywords are displayed: inline separated by commas, or one bullet per keyword. |
+| `customSections[].keywordLayout` | `string` | no (type skills, schema skillItemSchema at customSections[]) | enum: ["inline","list","tags"]; default: "inline" | How skill keywords are displayed: inline separated by commas, one bullet per keyword, or 'tags' (small chips). |
 | `customSections[].id` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The unique identifier for the custom section. Usually generated as a UUID. |
 | `customSections[].type` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The type of items this custom section contains. Determines which item schema and form fields to use. |
 | `customSections[].items` | `array` | yes (type skills, schema skillItemSchema at customSections[]) | — | The items to display in the custom section. Items follow the schema of the section type. |
 | `customSections[].items[]` | `object` | — (type skills, schema skillItemSchema at customSections[]) | — | — |
 | `customSections[].items[].id` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type skills, schema skillItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
-| `customSections[].items[].icon` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `customSections[].items[].icon` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `customSections[].items[].iconColor` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
 | `customSections[].items[].name` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The name of the skill. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].proficiency` | `string` | yes (type skills, schema skillItemSchema at customSections[]) | — | The proficiency level of the skill. Can be any text, such as 'Beginner', 'Intermediate', 'Advanced', etc. |
@@ -627,7 +628,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].keywords[]` | `string` | — (type skills, schema skillItemSchema at customSections[]) | — | — |
 | `customSections[]` | `object` | — (type languages, schema languageItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type languages, schema languageItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type languages, schema languageItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type languages, schema languageItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type languages, schema languageItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -645,7 +646,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].level` | `number` | yes (type languages, schema languageItemSchema at customSections[]) | minimum: 0; maximum: 5; default: 0 | The proficiency level of the language, defined as a number between 0 and 5. If set to 0, the icons displaying the level will be hidden. |
 | `customSections[]` | `object` | — (type interests, schema interestItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type interests, schema interestItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type interests, schema interestItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type interests, schema interestItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -658,14 +659,14 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[]` | `object` | — (type interests, schema interestItemSchema at customSections[]) | — | — |
 | `customSections[].items[].id` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The unique identifier for the item. Usually generated as a UUID. |
 | `customSections[].items[].hidden` | `boolean` | yes (type interests, schema interestItemSchema at customSections[]) | — | Whether to hide the item from the resume. |
-| `customSections[].items[].icon` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `customSections[].items[].icon` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `customSections[].items[].iconColor` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | default: "" | Custom color for the icon, defined as rgba(r, g, b, a). Leave blank to use the template default icon color. |
 | `customSections[].items[].name` | `string` | yes (type interests, schema interestItemSchema at customSections[]) | — | The name of the interest/hobby. Empty while the entry is a draft, which isn't printed. |
 | `customSections[].items[].keywords` | `array` | yes (type interests, schema interestItemSchema at customSections[]) | default: [] | The keywords associated with the interest/hobby, if any. These are displayed as tags below the name. |
 | `customSections[].items[].keywords[]` | `string` | — (type interests, schema interestItemSchema at customSections[]) | — | — |
 | `customSections[]` | `object` | — (type awards, schema awardItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type awards, schema awardItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type awards, schema awardItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type awards, schema awardItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -697,7 +698,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type awards, schema awardItemSchema at customSections[]) | — | The description of the award. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type certifications, schema certificationItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type certifications, schema certificationItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type certifications, schema certificationItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -729,7 +730,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type certifications, schema certificationItemSchema at customSections[]) | — | The description of the certification. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type publications, schema publicationItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type publications, schema publicationItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type publications, schema publicationItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type publications, schema publicationItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -761,7 +762,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type publications, schema publicationItemSchema at customSections[]) | — | The description of the publication. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type volunteer, schema volunteerItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type volunteer, schema volunteerItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -793,7 +794,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type volunteer, schema volunteerItemSchema at customSections[]) | — | The description of the volunteer experience. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type references, schema referenceItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type references, schema referenceItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type references, schema referenceItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type references, schema referenceItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -816,7 +817,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].description` | `string` | yes (type references, schema referenceItemSchema at customSections[]) | — | The description of the reference. Can be used to display a quote, a testimonial, etc. This should be a HTML-formatted string. |
 | `customSections[]` | `object` | — (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | — |
 | `customSections[].title` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The title of the section. |
-| `customSections[].icon` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | default: "" | Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon. |
+| `customSections[].icon` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | default: "" | Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon. |
 | `customSections[].columns` | `integer` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | minimum: 1; maximum: 6; default: 1 | The number of columns the section should span across. |
 | `customSections[].hidden` | `boolean` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | Whether to hide the section from the resume. |
 | `customSections[].showHeading` | `boolean` | no (type cover-letter, schema coverLetterItemSchema at customSections[]) | default: true | Whether to show the section heading, icon, and decoration while retaining section content. |
@@ -832,7 +833,7 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `customSections[].items[].recipient` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The recipient's address block as HTML (name, title, company, address, email). |
 | `customSections[].items[].content` | `string` | yes (type cover-letter, schema coverLetterItemSchema at customSections[]) | — | The cover letter body as HTML (salutation, paragraphs, closing, signature). |
 | `metadata` | `object` | yes | — | Metadata for the resume, such as template, layout, typography, etc. This section describes the overall design and appearance of the resume. |
-| `metadata.template` | `string` | yes | enum: ["azurill","bronzor","chikorita","ditgar","ditto","gengar","glalie","kakuna","lapras","leafish","meowth","onyx","persian","pikachu","porygon","rhyhorn","scizor","smeargle"]; default: "onyx" | The template to use for the resume. Determines the overall design and appearance of the resume. |
+| `metadata.template` | `string` | yes | enum: ["aksara","atlas","azurill","bronzor","cendekia","chikorita","ditgar","ditto","gengar","glalie","horizon","jejak","kakuna","kirana","lapras","leafish","linen","meowth","meridian","onyx","persian","pikachu","porygon","purnama","rhyhorn","scizor","senja","smeargle","sterling","summit","tenun","tunas","vector","wibawa"]; default: "meridian" | The template to use for the resume. Determines the overall design and appearance of the resume. |
 | `metadata.layout` | `object` | yes | — | The layout of the resume. Determines the structure and arrangement of the sections on the resume. |
 | `metadata.layout.sidebarWidth` | `number` | yes | minimum: 10; maximum: 50; default: 35 | The width of the sidebar column, defined as a percentage of the page width. |
 | `metadata.layout.sidebarSide` | `string` | no | enum: ["left","right"] | Which side of the page the sidebar column sits on in two-column templates. When unset, each template uses its own side (and right-to-left resumes mirror it). |
@@ -846,17 +847,15 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `metadata.page` | `object` | yes | — | The page settings of the resume. Determines the margins, format, and locale of the resume. |
 | `metadata.page.gapX` | `number` | yes | minimum: 0 | The horizontal gap between the sections of the page, defined in points (pt). |
 | `metadata.page.gapY` | `number` | yes | minimum: 0 | The vertical gap between the sections of the page, defined in points (pt). |
-| `metadata.page.marginX` | `number` | yes | minimum: 0; maximum: 100; default: 14 | The horizontal margin of the page, defined in points (pt). |
-| `metadata.page.marginY` | `number` | yes | minimum: 0; maximum: 100; default: 12 | The vertical margin of the page, defined in points (pt). |
+| `metadata.page.marginX` | `number` | yes | minimum: 0; maximum: 100; default: 36 | The horizontal margin of the page, defined in points (pt). |
+| `metadata.page.marginY` | `number` | yes | minimum: 0; maximum: 100; default: 32 | The vertical margin of the page, defined in points (pt). |
 | `metadata.page.format` | `string` | yes | enum: ["a4","letter","free-form"]; default: "a4" | The format of the page. Can be 'a4', 'letter', or 'free-form'. |
 | `metadata.page.locale` | `string` | yes | default: "en-US" | The locale of the page. Used for displaying pre-translated section headings, if not overridden. |
 | `metadata.page.dateFormat` | `string` | no | enum: ["short","long","numeric","iso"] | How dates print: 'short' (Mar 2022), 'long' (March 2022), 'numeric' (03/2022) or 'iso' (2022-03). When missing, it's read from how the dates were typed. |
 | `metadata.page.hideLinkUnderline` | `boolean` | yes | default: false | Whether to hide the underlines of the links. |
-| `metadata.page.hideIcons` | `boolean` | yes | default: false | Whether to hide the item-level icons (skills, profiles, interests). |
-| `metadata.page.hideSectionIcons` | `boolean` | yes | default: true | Whether to hide the section heading icons displayed before section titles. |
 | `metadata.design` | `object` | yes | — | The design settings of the resume. Determines the colors, level designs, and typography of the resume. |
 | `metadata.design.level` | `object` | yes | — | — |
-| `metadata.design.level.icon` | `string` | yes | — | The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available. |
+| `metadata.design.level.icon` | `string` | yes | — | The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available. |
 | `metadata.design.level.type` | `string` | yes | enum: ["hidden","circle","square","rectangle","rectangle-full","progress-bar","icon"] | The type of the level design. 'hidden' will hide the level design, 'circle' will display a circle, 'square' will display a square, 'rectangle' will display a rectangle, 'rectangle-full' will display a full rectangle, 'progress-bar' will display a progress bar, and 'icon' will display an icon. If 'icon' is selected, the icon to display should be specified in the 'icon' field. |
 | `metadata.design.colors` | `object` | yes | — | — |
 | `metadata.design.colors.primary` | `string` | yes | — | The primary color of the design, defined as rgba(r, g, b, a). |
@@ -866,6 +865,13 @@ Choose one coherent shape for each union value. Required fields are local to tha
 | `metadata.design.entry.layout` | `string` | yes | enum: ["stacked","inline","compact","date-column","eyebrow"]; default: "stacked" | How the header of each Experience, Education and Volunteer entry is arranged. 'stacked' is two rows (name and location, then role and date), 'inline' puts everything on one row, 'compact' puts the lead and the date on top with the rest grouped below, 'date-column' sets dates in a column on the left, and 'eyebrow' puts a small line above a larger lead. Dates also move to the left column for Projects, Awards, Certifications and Publications with 'date-column'. |
 | `metadata.design.entry.lead` | `string` | yes | enum: ["organization","role"]; default: "organization" | Which comes first in Experience and Education entries: the organization (company, school) or the role (position, field of study). |
 | `metadata.design.entry.accent` | `string` | yes | enum: ["none","rule","bar","band"]; default: "none" | Decoration in the accent color around each entry header: 'none', 'rule' (a line under it), 'bar' (a bar beside it) or 'band' (a tinted background). |
+| `metadata.design.icons` | `object` | no | — | Which icons the resume shows, and in which style. When missing, the defaults apply. |
+| `metadata.design.icons.enabled` | `boolean` | yes | default: true | Whether the resume shows icons at all. False hides every icon. |
+| `metadata.design.icons.style` | `string` | yes | enum: ["standard","rounded","sharp"]; default: "standard" | How every icon on the resume is drawn: 'standard', 'rounded' (softer ends) or 'sharp' (square corners). |
+| `metadata.design.icons.contact` | `boolean` | yes | default: true | Whether icons show before the email, phone, location, website and custom fields. |
+| `metadata.design.icons.sections` | `boolean` | yes | default: false | Whether icons show before section titles. |
+| `metadata.design.icons.items` | `boolean` | yes | default: true | Whether the icons chosen for skills, interests and profiles (network logos) show. |
+| `metadata.design.icons.logos` | `boolean` | yes | default: false | Whether logos of known tools and technologies (React, Python, Figma, …) show beside skills that name them. The skill text always prints. |
 | `metadata.typography` | `object` | yes | — | The typography settings of the resume. Determines the fonts and sizes of the body and headings of the resume. |
 | `metadata.typography.body` | `object` | yes | — | The typography for the body of the resume. |
 | `metadata.typography.body.fontFamily` | `string` | yes | — | The family of the font to use. Must be a supported resume font or a family in customFonts. |

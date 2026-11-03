@@ -48,6 +48,16 @@ export function buildMcpServerCard(appVersion: string) {
 			mimeType: "application/json",
 		},
 		{
+			name: "resume-design",
+			title: "Resume Design Catalog",
+			uri: "resume://_meta/design",
+			description: [
+				"The templates on offer, the resume icon set by category with the icon settings, and how logos appear.",
+				"Read before setting the template, icon settings or icon fields.",
+			].join(" "),
+			mimeType: "application/json",
+		},
+		{
 			name: "resume",
 			title: "Resume Data",
 			uri: "resume://{id}",

@@ -25,7 +25,7 @@ describe("billing catalog", () => {
 	it("tells free templates from premium ones", () => {
 		for (const id of templateSchema.options)
 			expect(isFreeTemplate(id)).toBe((FREE_TEMPLATES as readonly string[]).includes(id));
-		expect(isFreeTemplate("onyx")).toBe(true);
+		expect(isFreeTemplate("meridian")).toBe(true);
 		expect(isFreeTemplate("pikachu")).toBe(false);
 	});
 
@@ -57,7 +57,7 @@ describe("billing catalog", () => {
 	});
 
 	it("matches the launch decisions", () => {
-		expect(BILLING_CATALOG_VERSION).toBe(1);
+		expect(BILLING_CATALOG_VERSION).toBe(2);
 		expect(PLANS.plus.priceIdr).toBe(29_000);
 		expect(PLANS["pro-ai"].priceIdr).toBe(79_000);
 		expect(PLANS.free.limits).toEqual({ activeResumes: 3, activeCoverLetters: 3 });

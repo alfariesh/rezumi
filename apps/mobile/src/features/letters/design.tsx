@@ -6,7 +6,7 @@ import { useLingui } from "@lingui/react/macro";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateLineup } from "@rezumi/schema/templates";
 import {
 	ACCENTS,
 	FONT_PAIRINGS,
@@ -134,7 +134,7 @@ function OwnDesign({ letter, disabled }: { letter: LetterDocument; disabled: boo
 					label={t`Template`}
 					value={metadata.template}
 					// iOS lists only the templates the account can use; Android lists all, the locked ones labelled.
-					options={listedTemplates(plan, templateSchema.options, metadata.template).map((id) => ({
+					options={listedTemplates(plan, templateLineup, metadata.template).map((id) => ({
 						value: id,
 						label: templateName(id),
 						...(isLabelledTemplate(plan, id) ? { description: "Plus" } : {}),

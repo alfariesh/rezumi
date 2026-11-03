@@ -1,6 +1,7 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { createElement } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../document";
 import { pdf } from "../forme/testing";
@@ -194,7 +195,7 @@ describe("semantic issue fixtures", () => {
 	it("preserves the first character of a section heading with a leading text padding (#3380)", async () => {
 		const data = buildIssueFixture();
 		data.sections.experience.title = "Experience";
-		data.metadata.page.hideSectionIcons = false;
+		data.metadata.design.icons = { ...defaultIconDesign, sections: true };
 
 		const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
 		const instance = pdf(element);

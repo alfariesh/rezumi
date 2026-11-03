@@ -6,6 +6,7 @@ import { resolvedPdfFlowProps } from "../../semantic/adapter";
 import { useResolvedNode, useSemanticNodeKey, useSemanticNodeVisible } from "../../semantic/context";
 import { semanticNodeKeys } from "../../semantic/node-keys";
 import { getCustomFieldLinkUrl, getWebsiteDisplayText } from "./contact";
+import { useTemplateStyle } from "./context";
 import { Icon, Link, Text } from "./primitives";
 import { composeStyles } from "./styles";
 
@@ -58,7 +59,12 @@ export const WebsiteContactItem = ({
 
 	return (
 		<Link nodeKey={keys.primitiveNodeKey} src={website.url} {...(style ? { style } : {})}>
-			<Icon nodeKey={keys.iconNodeKey} name="globe" {...(iconColor ? { color: iconColor } : {})} />
+			<Icon
+				iconRole="contact"
+				nodeKey={keys.iconNodeKey}
+				name="globe-02"
+				{...(iconColor ? { color: iconColor } : {})}
+			/>
 			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
 				{getWebsiteDisplayText(website)}
 			</Text>
@@ -75,11 +81,22 @@ export const CustomFieldContactItem = ({
 }: CustomFieldContactItemProps) => {
 	const linkUrl = getCustomFieldLinkUrl(field);
 	const keys = useContactNodeKeys("custom", field.id, primitiveNodeKey);
+	const labelStyle = useTemplateStyle("contactLabel");
 	const resolved = useResolvedNode(keys.primitiveNodeKey);
 	const visible = useSemanticNodeVisible(keys.primitiveNodeKey);
 	const children = (
 		<>
-			<Icon nodeKey={keys.iconNodeKey} name={field.icon as IconName} {...(iconColor ? { color: iconColor } : {})} />
+			<Icon
+				iconRole="contact"
+				nodeKey={keys.iconNodeKey}
+				name={field.icon as IconName}
+				{...(iconColor ? { color: iconColor } : {})}
+			/>
+			{field.label && (
+				<Text bindSemanticNode={false} style={composeStyles(textStyle, labelStyle)}>
+					{`${field.label}:`}
+				</Text>
+			)}
 			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
 				{field.text}
 			</Text>
@@ -107,7 +124,7 @@ type EmailContactItemProps = {
 	style?: ContactStyle;
 	textStyle?: ContactStyle | undefined;
 	iconColor?: string;
-	/** Override icon; defaults to "envelope". ditgar uses "at". */
+	/** Override icon; defaults to "mail-01". */
 	iconName?: IconName;
 	primitiveNodeKey?: string | undefined;
 };
@@ -117,7 +134,7 @@ export const EmailContactItem = ({
 	style,
 	textStyle,
 	iconColor,
-	iconName = "envelope",
+	iconName = "mail-01",
 	primitiveNodeKey,
 }: EmailContactItemProps) => {
 	const keys = useContactNodeKeys("email", undefined, primitiveNodeKey);
@@ -125,7 +142,12 @@ export const EmailContactItem = ({
 	if (!email || !visible) return null;
 	return (
 		<Link nodeKey={keys.primitiveNodeKey} src={`mailto:${email}`} {...(style ? { style } : {})}>
-			<Icon nodeKey={keys.iconNodeKey} name={iconName} {...(iconColor ? { color: iconColor } : {})} />
+			<Icon
+				iconRole="contact"
+				nodeKey={keys.iconNodeKey}
+				name={iconName}
+				{...(iconColor ? { color: iconColor } : {})}
+			/>
 			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
 				{email}
 			</Text>
@@ -147,7 +169,7 @@ export const PhoneContactItem = ({ phone, style, textStyle, iconColor, primitive
 	if (!phone || !visible) return null;
 	return (
 		<Link nodeKey={keys.primitiveNodeKey} src={`tel:${phone}`} {...(style ? { style } : {})}>
-			<Icon nodeKey={keys.iconNodeKey} name="phone" {...(iconColor ? { color: iconColor } : {})} />
+			<Icon iconRole="contact" nodeKey={keys.iconNodeKey} name="call-02" {...(iconColor ? { color: iconColor } : {})} />
 			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
 				{phone}
 			</Text>
@@ -176,7 +198,12 @@ export const LocationContactItem = ({
 	if (!location || !visible) return null;
 	return (
 		<View {...resolvedPdfFlowProps(resolved)} style={composeStyles(style, resolved.style)}>
-			<Icon nodeKey={keys.iconNodeKey} name="map-pin" {...(iconColor ? { color: iconColor } : {})} />
+			<Icon
+				iconRole="contact"
+				nodeKey={keys.iconNodeKey}
+				name="location-01"
+				{...(iconColor ? { color: iconColor } : {})}
+			/>
 			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
 				{location}
 			</Text>

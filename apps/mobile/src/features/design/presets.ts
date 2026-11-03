@@ -4,7 +4,7 @@ import type { DateFormat } from "@rezumi/schema/resume/dates";
 import type { Template } from "@rezumi/schema/templates";
 import type { WritableDraft } from "immer";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
+import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { contrastOnWhite } from "@rezumi/utils/color";
 
 type Metadata = ResumeData["metadata"];
@@ -201,13 +201,13 @@ export function resetDesign(metadata: WritableDraft<Metadata>) {
 	metadata.typography = structuredClone(defaults.typography);
 	metadata.design = structuredClone(defaults.design);
 	metadata.layout.sidebarWidth = defaults.layout.sidebarWidth;
-	const { gapX, gapY, marginX, marginY, hideIcons, hideLinkUnderline, hideSectionIcons } = defaults.page;
-	Object.assign(metadata.page, { gapX, gapY, marginX, marginY, hideIcons, hideLinkUnderline, hideSectionIcons });
+	const { gapX, gapY, marginX, marginY, hideLinkUnderline } = defaults.page;
+	Object.assign(metadata.page, { gapX, gapY, marginX, marginY, hideLinkUnderline });
 }
 
 export type TemplateFilter = "all" | "one" | "two" | "ats";
 
-export const TEMPLATES: readonly Template[] = templateSchema.options;
+export const TEMPLATES: readonly Template[] = templateLineup;
 
 export const templateName = (id: Template) => id.charAt(0).toUpperCase() + id.slice(1);
 

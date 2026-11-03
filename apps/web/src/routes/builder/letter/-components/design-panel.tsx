@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { produce } from "immer";
 import { useEffect, useMemo } from "react";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
@@ -139,7 +139,7 @@ export function LetterDesignPanel() {
 						<legend className="sr-only">
 							<Trans>Template</Trans>
 						</legend>
-						{templateSchema.options.map((id) => {
+						{templateLineup.map((id) => {
 							const selected = id === current;
 							const locked = isLockedTemplate(plan, id);
 							// A thumbnail that previews on hover and applies on click: custom, like the resume's template strip.

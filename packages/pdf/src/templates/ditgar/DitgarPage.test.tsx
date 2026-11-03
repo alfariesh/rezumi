@@ -2,6 +2,7 @@ import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
@@ -15,7 +16,7 @@ function fixture({ columns, gapX }: FixtureOptions): ResumeData {
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";
 	data.metadata.page.gapX = gapX;
-	data.metadata.page.hideIcons = true;
+	data.metadata.design.icons = { ...defaultIconDesign, contact: false, items: false };
 	data.metadata.layout.pages = [{ fullWidth: false, main: ["projects"], sidebar: [] }];
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
 	data.sections.projects.columns = columns;

@@ -167,7 +167,7 @@ const Header = ({ styles, colors }: DitgarHeaderProps) => {
 					style={styles.contactItem}
 					textStyle={styles.headerText}
 					iconColor={colors.background}
-					iconName="at"
+					iconName="at-sign"
 				/>
 				<PhoneContactItem
 					phone={basics.phone}
@@ -338,7 +338,6 @@ const useDitgarTemplate = (): DitgarTemplate => {
 				levelItem: (context) => ({ borderColor: accentFor(context) }),
 				levelItemActive: (context) => ({ backgroundColor: accentFor(context) }),
 				icon: (context) => ({
-					display: metadata.page.hideIcons ? "none" : "flex",
 					size: metadata.typography.body.fontSize,
 					color: context.placement === "sidebar" ? foreground : primary,
 				}),

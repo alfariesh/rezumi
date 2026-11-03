@@ -106,7 +106,8 @@ export function IconPickerSheet({ open, value, onClose, onChange }: IconPickerSh
 					>
 						{name ? (
 							<SvgXml
-								xml={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="${colors.ink}">${(iconPaths as Record<string, string>)[name]}</svg>`}
+								xml={`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">${(iconPaths as Record<string, string>)[name]}</svg>`}
+								color={colors.ink}
 								width={size.icon.toolbar}
 								height={size.icon.toolbar}
 							/>

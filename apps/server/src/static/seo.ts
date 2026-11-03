@@ -1,6 +1,6 @@
 import { env } from "@rezumi/env/server";
 import { publicResumeUrl } from "@rezumi/resume/sharing";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateLineup } from "@rezumi/schema/templates";
 import { getLocaleAlternates } from "@rezumi/utils/locale";
 
 const DOCS_URL = "https://docs.rezumi.app";
@@ -112,7 +112,7 @@ export function handleLlms() {
 	const body = [
 		"# Rezumi",
 		"",
-		`> Rezumi is a resume builder and job search workspace. Write a resume in an editor beside a live page, pick one of ${templateSchema.options.length} templates, check that applicant tracking systems can read it, tailor it to a job posting, and share it at a public link or download it. Start on the free plan; paid plans are 30-day passes that never renew on their own.`,
+		`> Rezumi is a resume builder and job search workspace. Write a resume in an editor beside a live page, pick one of ${templateLineup.length} templates, check that applicant tracking systems can read it, tailor it to a job posting, and share it at a public link or download it. Start on the free plan; paid plans are 30-day passes that never renew on their own.`,
 		"",
 		"## Search",
 		"",
@@ -121,7 +121,7 @@ export function handleLlms() {
 		"## Product",
 		"",
 		`- [Homepage](${baseUrl}/): what Rezumi does, with answers to common questions.`,
-		`- [Resume templates](${baseUrl}/resume-templates): browse all ${templateSchema.options.length} templates, compare layouts and download sample PDFs.`,
+		`- [Resume templates](${baseUrl}/resume-templates): browse all ${templateLineup.length} templates, compare layouts and download sample PDFs.`,
 		`- [ATS checker](${baseUrl}/ats-checker): a free tool that shows the text applicant tracking systems extract from a resume PDF and what to fix. It runs in the browser; the file is never uploaded.`,
 		`- [Get started](${baseUrl}/dashboard): create an account and a first resume.`,
 		"",

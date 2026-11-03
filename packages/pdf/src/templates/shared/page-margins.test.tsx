@@ -15,6 +15,8 @@ const renderOverflow = async (
 	explicitPage?: { fullWidth: boolean },
 ) => {
 	const data = structuredClone(defaultResumeData);
+	// The band tints below were measured on the red accent resumes had before November 2026.
+	data.metadata.design.colors.primary = "rgba(220, 38, 38, 1)";
 	data.basics.name = "Margin Audit";
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
 	data.metadata.typography.body.fontFamily = "Helvetica";

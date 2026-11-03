@@ -3,7 +3,7 @@ import { Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
@@ -15,7 +15,7 @@ const shown: Template[] = [...freeTemplates, "chikorita", "ditto"];
 /** 02 Templates: the free ones beside a taste of the rest, each marked with the plan it comes with. */
 export function Templates() {
 	const { i18n } = useLingui();
-	const total = i18n.number(templateSchema.options.length);
+	const total = i18n.number(templateLineup.length);
 	const free = i18n.number(freeTemplates.length);
 
 	return (

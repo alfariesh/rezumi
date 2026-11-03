@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act, createElement } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
@@ -10,7 +11,7 @@ const renderHeading = async (css: string, hideSectionIcons = false) => {
 	data.basics.name = "Audit";
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";
-	data.metadata.page.hideSectionIcons = hideSectionIcons;
+	data.metadata.design.icons = { ...defaultIconDesign, sections: !hideSectionIcons };
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["skills", "summary"], sidebar: [] }];
 	data.summary.content = "<p>Summary body</p>";
 	data.summary.title = "Heading";

@@ -4,6 +4,7 @@ import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
@@ -39,6 +40,8 @@ const gengarFixture = ({
 	custom = false,
 }: GengarFixtureOptions = {}): ResumeData => {
 	const data = structuredClone(defaultResumeData);
+	// The geometry below was measured with the margins resumes had before November 2026.
+	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
 	const sectionId = custom ? "custom-skills" : "skills";
 	const section = {
 		...data.sections.skills,
@@ -65,7 +68,7 @@ const gengarFixture = ({
 	data.metadata.template = "gengar";
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";
-	data.metadata.page.hideIcons = true;
+	data.metadata.design.icons = { ...defaultIconDesign, contact: false, items: false };
 	data.metadata.design.colors.primary = "rgba(255, 0, 0, 1)";
 	data.metadata.design.level = { type: design, icon: "star" };
 	data.metadata.layout.pages = [

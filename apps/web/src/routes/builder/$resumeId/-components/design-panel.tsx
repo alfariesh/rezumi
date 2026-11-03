@@ -19,7 +19,7 @@ import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useIsResumeLocked, useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { ExpandingLabel } from "@/features/resume/editor/chrome/mode-switch";
 import { EntriesGroup } from "@/features/resume/editor/design/entries-group";
-import { ColorGroup, PageGroup, TypeGroup } from "@/features/resume/editor/design/style-groups";
+import { ColorGroup, IconsGroup, PageGroup, TypeGroup } from "@/features/resume/editor/design/style-groups";
 import { TemplateGroup } from "@/features/resume/editor/design/template-group";
 import { OfflineBanner } from "@/features/resume/editor/save-status";
 import { getScrollBehavior } from "@/features/resume/editor/write/reveal";
@@ -30,6 +30,7 @@ const GROUPS = [
 	{ id: "entries", icon: "rows", label: () => t`Entries` },
 	{ id: "type", icon: "text-aa", label: () => t`Type` },
 	{ id: "color", icon: "palette", label: () => t`Color` },
+	{ id: "icons", icon: "star", label: () => t`Icons` },
 	{ id: "page", icon: "file", label: () => t`Page` },
 	{ id: "advanced", icon: "sliders-horizontal", label: () => t`Advanced` },
 ] as const satisfies readonly { id: string; icon: IconName; label: () => string }[];
@@ -217,6 +218,9 @@ export function DesignPanel() {
 				<DesignWidget group="color">
 					<ColorGroup />
 				</DesignWidget>
+				<DesignWidget group="icons">
+					<IconsGroup />
+				</DesignWidget>
 				<DesignWidget group="page">
 					<PageGroup />
 				</DesignWidget>
@@ -226,7 +230,7 @@ export function DesignPanel() {
 	);
 }
 
-type SheetTab = "template" | "entries" | "type" | "color" | "page";
+type SheetTab = "template" | "entries" | "type" | "color" | "icons" | "page";
 
 /**
  * Phones: Design is a sheet over the lower half of the page, so every change shows above it. The handle
@@ -308,6 +312,11 @@ export function DesignSheet() {
 						{tab === "color" && (
 							<DesignWidget group="color">
 								<ColorGroup />
+							</DesignWidget>
+						)}
+						{tab === "icons" && (
+							<DesignWidget group="icons">
+								<IconsGroup />
 							</DesignWidget>
 						)}
 						{tab === "page" && (
@@ -403,16 +412,8 @@ function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
 				draft.metadata.design = structuredClone(defaults.design);
 				draft.metadata.layout.sidebarWidth = defaults.layout.sidebarWidth;
 				// Paper, language, date format, section placement and custom CSS are the user's, not the look's; they stay.
-				const { gapX, gapY, marginX, marginY, hideIcons, hideLinkUnderline, hideSectionIcons } = defaults.page;
-				Object.assign(draft.metadata.page, {
-					gapX,
-					gapY,
-					marginX,
-					marginY,
-					hideIcons,
-					hideLinkUnderline,
-					hideSectionIcons,
-				});
+				const { gapX, gapY, marginX, marginY, hideLinkUnderline } = defaults.page;
+				Object.assign(draft.metadata.page, { gapX, gapY, marginX, marginY, hideLinkUnderline });
 			},
 			{ newStep: true },
 		);

@@ -50,12 +50,18 @@ export type PlanDefinition = {
 	creditsPerPurchase: number;
 };
 
-export const BILLING_CATALOG_VERSION = 1;
+export const BILLING_CATALOG_VERSION = 2;
 
 export const BILLING_CURRENCY = "IDR";
 
-/** The templates on the free plan: three one-column, ATS-safe layouts and one two-column. */
-export const FREE_TEMPLATES = ["bronzor", "onyx", "rhyhorn", "azurill"] as const satisfies readonly Template[];
+/** The templates on the free plan: four one-column, ATS-safe layouts and one two-column. */
+export const FREE_TEMPLATES = [
+	"meridian",
+	"sterling",
+	"tunas",
+	"wibawa",
+	"kirana",
+] as const satisfies readonly Template[];
 
 /** Whether a template is one of the free plan's; the others need `premiumTemplates`. */
 export function isFreeTemplate(template: Template): boolean {

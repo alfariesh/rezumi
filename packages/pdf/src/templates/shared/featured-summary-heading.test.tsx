@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
@@ -15,7 +16,7 @@ for (const template of ["ditgar", "gengar", "leafish"] as const) {
 			const data = structuredClone(defaultResumeData);
 			data.metadata.typography.body.fontFamily = "Helvetica";
 			data.metadata.typography.heading.fontFamily = "Helvetica";
-			data.metadata.page.hideIcons = true;
+			data.metadata.design.icons = { ...defaultIconDesign, contact: false, items: false };
 			data.basics.name = "Ada Lovelace";
 			data.summary.title = "Summary";
 			data.summary.content = "<p>Seasoned engineer shipping reliable systems.</p>";

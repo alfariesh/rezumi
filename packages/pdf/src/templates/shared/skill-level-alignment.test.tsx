@@ -2,6 +2,7 @@ import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
@@ -20,9 +21,11 @@ function setCss(data: ResumeData, css: string) {
 
 async function renderRatings({ columns, count, configure }: FixtureOptions) {
 	const data = structuredClone(defaultResumeData);
+	// The geometry below was measured with the margins resumes had before November 2026.
+	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";
-	data.metadata.page.hideIcons = true;
+	data.metadata.design.icons = { ...defaultIconDesign, contact: false, items: false };
 	data.metadata.design.colors.primary = "rgba(255, 0, 0, 1)";
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["skills"], sidebar: [] }];
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };

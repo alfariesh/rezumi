@@ -1,7 +1,7 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { ORPCError } from "@orpc/client";
 import { SEMANTIC_CSS_LIMITS_V1 } from "@rezumi/resume/stylesheet";
-import { parseResumeData } from "@rezumi/schema/resume/data";
+import { parseResumeData, upgradeResumeDesign } from "@rezumi/schema/resume/data";
 import { syncResumeDates, upgradeResumeDates } from "@rezumi/schema/resume/dates";
 import { parseResumeDataForWrite } from "@rezumi/schema/resume/write";
 
@@ -27,6 +27,8 @@ export const parseWritableResumeData = (data: unknown) => {
 	const parsed = parseApiResumeData(data, "BAD_REQUEST", "Resume data does not match the canonical schema.");
 	upgradeResumeDates(parsed);
 	syncResumeDates(parsed);
+	// Stored data names only lineup templates and resume icon set icons, whatever an older client or an agent sent.
+	upgradeResumeDesign(parsed, data);
 	return parsed;
 };
 

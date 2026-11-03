@@ -3,6 +3,7 @@ import type { RouterClient } from "@orpc/server";
 import type router from "@rezumi/api/routers";
 import { ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ORPCError } from "@orpc/server";
+import { createDesignCatalog } from "@rezumi/resume/design-catalog";
 import { createResumeDataJsonSchema } from "@rezumi/schema/resume/json-schema";
 import { MCP_TOOL_NAME as T } from "./mcp-tool-names";
 import { safeMcpError } from "./results";
@@ -80,6 +81,37 @@ export function registerResources(server: McpServer, client: RouterClient<typeof
 				};
 			} catch (error) {
 				throw safeMcpError(error, "reading resume schema resource");
+			}
+		},
+	);
+
+	// ── Resource: resume://_meta/design ───────────────────────────
+	// Static resource: the templates, icon set and logo rules, so agents choose real names instead of guessing.
+	server.registerResource(
+		"resume-design",
+		"resume://_meta/design",
+		{
+			title: "Resume Design Catalog",
+			mimeType: "application/json",
+			description: [
+				"The templates on offer (lineup with summaries, layout, plan and preset look), the resume icon set by",
+				"category with the icon settings, and how profile and tool logos appear.",
+				"Read it before setting /metadata/template, /metadata/design/icons or any `icon` field.",
+			].join(" "),
+		},
+		(uri: URL) => {
+			try {
+				return {
+					contents: [
+						{
+							uri: uri.href,
+							mimeType: "application/json" as const,
+							text: JSON.stringify(createDesignCatalog(), null, 2),
+						},
+					],
+				};
+			} catch (error) {
+				throw safeMcpError(error, "reading resume design resource");
 			}
 		},
 	);

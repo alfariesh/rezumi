@@ -53,11 +53,7 @@ function PageSectionForm() {
 		{ name: "gapY" as const, label: <Trans>Vertical spacing</Trans>, min: 0, max: undefined },
 	];
 
-	const pageSwitchFields = [
-		{ name: "hideLinkUnderline" as const, label: <Trans>Underline links</Trans> },
-		{ name: "hideIcons" as const, label: <Trans>Show icons</Trans> },
-		{ name: "hideSectionIcons" as const, label: <Trans>Show section icons</Trans> },
-	];
+	const pageSwitchFields = [{ name: "hideLinkUnderline" as const, label: <Trans>Underline links</Trans> }];
 
 	return (
 		<div className="grid grid-cols-1 gap-4 @md:grid-cols-2">

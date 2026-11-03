@@ -13,6 +13,23 @@ context.fillRect(0, 0, 100, 100);
 
 async function picturePixels(template: "onyx" | "ditto" | "glalie", borderWidth: number, shadowWidth = 0) {
 	const data = structuredClone(defaultResumeData);
+	// Measured with the defaults resumes had before November 2026 (Onyx, 14 × 12 pt margins, 10 pt IBM Plex Serif).
+	data.metadata.template = "onyx";
+	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
+	// Blue pixels count as shadow below, so the header rule keeps the former red accent.
+	data.metadata.design.colors.primary = "rgba(220, 38, 38, 1)";
+	data.metadata.typography.body = {
+		fontFamily: "IBM Plex Serif",
+		fontWeights: ["400", "500"],
+		fontSize: 10,
+		lineHeight: 1.5,
+	};
+	data.metadata.typography.heading = {
+		fontFamily: "IBM Plex Serif",
+		fontWeights: ["600"],
+		fontSize: 14,
+		lineHeight: 1.5,
+	};
 	data.basics.name = "Picture";
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";

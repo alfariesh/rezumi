@@ -20,6 +20,7 @@ import {
 } from "@rezumi/schema/cover-letter/data";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { upgradeTemplateId } from "@rezumi/schema/templates";
 import { assertDesignChange, assertDocumentCapacity, fitImportedDesign } from "../billing/limits";
 import { lockUser } from "../documents/ownership";
 import { resumeService } from "../resume/service";
@@ -270,7 +271,7 @@ export const coverLetterService = {
 		if (input.template) await assertDesignChange(input.userId, null, { template: input.template });
 		const application = await getOwnedApplication(input.userId, input.applicationId);
 		const style = await getResumeStyle(input.userId, input.resumeId);
-		if (input.template) style.metadata.template = input.template;
+		if (input.template) style.metadata.template = upgradeTemplateId(input.template);
 		const linked = Boolean(input.resumeId) && !input.template;
 		const letter = await db.transaction(async (tx) => {
 			await lockUser(tx, input.userId);
@@ -337,7 +338,7 @@ export const coverLetterService = {
 		if (input.template) {
 			await assertDesignChange(input.userId, stored.style.metadata, { template: input.template });
 			const style = changes.style ?? stored.style;
-			changes.style = { ...style, metadata: { ...style.metadata, template: input.template } };
+			changes.style = { ...style, metadata: { ...style.metadata, template: upgradeTemplateId(input.template) } };
 		}
 		if (input.metadata) {
 			const style = changes.style ?? stored.style;

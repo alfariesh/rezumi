@@ -57,7 +57,11 @@ For each section the user wants to include, gather specific details. Never inven
 
 Ask about preferences:
 
-- Template preference (18 available: azurill, bronzor, chikorita, ditto, ditgar, gengar, glalie, kakuna, lapras, leafish, meowth, onyx, persian, pikachu, porygon, rhyhorn, scizor, smeargle)
+- Template preference. 16 templates; read the `resume://_meta/design` MCP resource for who each one suits, its layout, whether it needs a paid plan, and the look it was designed with:
+  - One column (ATS-safe): meridian (default), sterling, aksara, atlas, tunas, summit, cendekia, wibawa, tenun, vector
+  - Two columns: kirana, linen, horizon, jejak, purnama, senja
+  - Free plan: meridian, sterling, tunas, wibawa, kirana. Former IDs (azurill, onyx, …) are accepted and saved as their successor.
+- Icons (`metadata.design.icons`): on or off (`enabled`), a style for all of them (`standard`, `rounded`, `sharp`), and groups (`contact`, `sections`, `items`). Icon fields take names from the resume icon set listed in `resume://_meta/design`; never invent names. Profiles get their network's logo automatically; `logos: true` shows tool logos (React, Python, Figma, …) beside matching skills. Text always prints, so icons and logos never replace words.
 - Page format: A4 or Letter
 - Which sections to include and their order
 
@@ -99,7 +103,7 @@ Example minimal structure:
   "summary": { "title": "Summary", "columns": 1, "hidden": false, "content": "" },
   "sections": { ... },
   "customSections": [],
-  "metadata": { "template": "onyx", "layout": { ... }, ... }
+  "metadata": { "template": "meridian", "layout": { ... }, ... }
 }
 ```
 

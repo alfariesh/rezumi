@@ -7,7 +7,7 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useInView } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
-import { templateLayouts } from "@rezumi/schema/templates";
+import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
@@ -22,7 +22,8 @@ import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/r
 
 type Filter = "all" | "one" | "two" | "ats";
 
-const TEMPLATE_IDS = Object.keys(templates) as Template[];
+// The lineup only: a resume on a former template keeps it, but it is no longer offered.
+const TEMPLATE_IDS: readonly Template[] = templateLineup;
 
 const matchesFilter = (id: Template, filter: Filter) => {
 	const layout = templateLayouts[id];

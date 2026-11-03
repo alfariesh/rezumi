@@ -1,7 +1,7 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import z, { ZodError } from "zod";
-import { resumeDataSchema } from "@rezumi/schema/resume/data";
+import { defaultIconDesign, resumeDataSchema } from "@rezumi/schema/resume/data";
 import { templateSchema } from "@rezumi/schema/templates";
 import { parseColorString } from "@rezumi/utils/color";
 import { generateId } from "@rezumi/utils/string";
@@ -496,8 +496,6 @@ export function parseReactiveResumeV4JSON(json: string): ResumeData {
 					format: v4Data.metadata.page?.format ?? "a4",
 					locale: "en-US",
 					hideLinkUnderline: v4Data.metadata.typography?.underlineLinks === false,
-					hideIcons: v4Data.metadata.typography?.hideIcons ?? false,
-					hideSectionIcons: true,
 				},
 				design: {
 					colors: {
@@ -512,6 +510,11 @@ export function parseReactiveResumeV4JSON(json: string): ResumeData {
 					level: {
 						icon: "star",
 						type: "circle",
+					},
+					icons: {
+						...defaultIconDesign,
+						contact: v4Data.metadata.typography?.hideIcons !== true,
+						items: v4Data.metadata.typography?.hideIcons !== true,
 					},
 				},
 				typography: {

@@ -1413,10 +1413,6 @@ msgstr "نامهٔ پوششی را نیز دانلود کنید"
 msgid "Also email a copy"
 msgstr "همچنین یک کپی را ایمیل کنید"
 
-#: src/features/design/style-groups.tsx
-msgid "Also shows the icons on skills, profiles and interests."
-msgstr "همچنین نمادهای مربوط به مهارت ها، پروفایل ها و علایق را نشان می دهد."
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
 msgstr "همیشه در امروز ظاهر می شود. ایمیل نیاز به یک آدرس تأیید شده و تنظیم ایمیل سرور دارد. هیچ اعلان فشاری ارسال نمی شود."
@@ -1912,9 +1908,17 @@ msgstr "قبل از مصاحبه"
 msgid "Before restore"
 msgstr "قبل از بازیابی"
 
+#: src/features/design/style-groups.tsx
+msgid "Before titles such as Education, Skills and Certifications."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Before you submit"
 msgstr "پیش از ارسال"
+
+#: src/features/design/style-groups.tsx
+msgid "Before your email, phone, location, website and custom fields."
+msgstr ""
 
 #: src/features/application-detail/hooks.ts
 #: src/features/applications/next-step.ts
@@ -2614,6 +2618,10 @@ msgstr ""
 #: src/features/check/issues.ts
 msgid "Contact details"
 msgstr "اطلاعات تماس"
+
+#: src/features/design/style-groups.tsx
+msgid "Contact line"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 #: src/features/application-detail/sheets.tsx
@@ -4789,13 +4797,17 @@ msgstr "آیکون"
 msgid "Icon color"
 msgstr "رنگ آیکون"
 
+#: src/features/design/style-groups.tsx
+msgid "Icon style"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Icon…"
 msgstr "نماد…"
 
-#: src/features/design/style-groups.tsx
-msgid "Icons in contact line"
-msgstr "نمادها در خط تماس"
+#: src/features/design/design-pane.tsx
+msgid "Icons"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -5619,6 +5631,10 @@ msgstr "اسناد قفل شده نادیده گرفته شد. ابتدا قفل
 #: src/features/write/outline.tsx
 msgid "Locked. Unlock to edit."
 msgstr "قفل شده است. برای ویرایش قفل را باز کنید."
+
+#: src/features/design/style-groups.tsx
+msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
@@ -8376,6 +8392,10 @@ msgid "Rotation isn't supported by PDF rendering."
 msgstr "چرخش توسط رندر PDF پشتیبانی نمی‌شود."
 
 #: src/features/design/style-groups.tsx
+msgid "Rounded"
+msgstr ""
+
+#: src/features/design/style-groups.tsx
 msgid "Row order"
 msgstr ""
 
@@ -8717,6 +8737,10 @@ msgstr "پیشنهاد دوم"
 msgid "Section headings"
 msgstr "سرفصل های بخش"
 
+#: src/features/design/style-groups.tsx
+msgid "Section titles"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Sections"
 msgstr "بخش‌ها"
@@ -8945,6 +8969,10 @@ msgstr "اشتراک گذاری از طریق…"
 msgid "Sharing"
 msgstr "اشتراک‌گذاری"
 
+#: src/features/design/style-groups.tsx
+msgid "Sharp"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Sharpening the opening"
 msgstr "در حال بهتر کردن شروع صحبت"
@@ -9018,7 +9046,7 @@ msgstr "نمایش عنوان"
 msgid "Show hidden terms again"
 msgstr "دوباره عبارات پنهان را نشان دهید"
 
-#: src/features/design/advanced.tsx
+#: src/features/design/style-groups.tsx
 msgid "Show icons"
 msgstr "نمایش آیکون‌ها"
 
@@ -9053,10 +9081,6 @@ msgstr "نمایش عکس"
 #: src/features/career/today.tsx
 msgid "Show read"
 msgstr "نمایش خوانده‌شده‌ها"
-
-#: src/features/design/advanced.tsx
-msgid "Show section icons"
-msgstr "نمایش آیکون‌های بخش"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9227,6 +9251,10 @@ msgstr "مهارت"
 msgid "Skills"
 msgstr "مهارت‌ها"
 
+#: src/features/design/style-groups.tsx
+msgid "Skills, interests and profiles"
+msgstr ""
+
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
@@ -9390,6 +9418,10 @@ msgstr "مرحله"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Stage stays {stage}"
 msgstr "مرحله {stage} می‌ماند"
+
+#: src/features/design/style-groups.tsx
+msgid "Standard"
+msgstr ""
 
 #: src/features/write/date-field.tsx
 msgid "Start"
@@ -9929,6 +9961,10 @@ msgstr "پیگیری ذخیره می شود. برای دریافت یادآور�
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "سلام به دنبال نام است."
+
+#: src/features/design/style-groups.tsx
+msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "The interview is saved. To get a reminder, allow notifications in your device settings."
@@ -10526,6 +10562,10 @@ msgstr "برای سرفصل های روی سفید خیلی سبک است. مم�
 msgid "Too many requests. Try again later."
 msgstr "درخواست های خیلی زیاد بعداً دوباره امتحان کنید."
 
+#: src/features/design/style-groups.tsx
+msgid "Tool logos in skills"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "مجموع جمع نمی شود. پاداش و حقوق صاحبان سهام به شرایط بستگی دارد. ارزش حقوق صاحبان سهام نامشخص است اسناد پیشنهاد اصلی را بخوانید."
@@ -10640,6 +10680,10 @@ msgstr "ترکی"
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
 msgstr "هنگام خروجی گرفتن، لیگاچرهای اختیاری را غیرفعال کنید."
+
+#: src/features/design/style-groups.tsx
+msgid "Turn off for a text-only resume."
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Turn on the link to choose an address."

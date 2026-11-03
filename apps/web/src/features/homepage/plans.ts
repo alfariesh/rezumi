@@ -2,7 +2,7 @@ import type { PlanId, PlanLimits } from "@rezumi/schema/billing";
 import type { Template } from "@rezumi/schema/templates";
 import { t } from "@lingui/core/macro";
 import { BILLING_CURRENCY, FREE_TEMPLATES, PLANS, TRIAL_CREDITS } from "@rezumi/schema/billing";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateLineup } from "@rezumi/schema/templates";
 
 /**
  * The hosted plans as the landing page sells them. Prices, limits and credits come from the catalog the server
@@ -31,7 +31,7 @@ const documentLimits = ({ activeResumes, activeCoverLetters }: PlanLimits) =>
 
 export const getPlans = (): Plan[] => {
 	const freeTemplateCount = freeTemplates.length;
-	const templateCount = templateSchema.options.length;
+	const templateCount = templateLineup.length;
 	const trialCredits = TRIAL_CREDITS.amount;
 	const proCredits = PLANS["pro-ai"].creditsPerPurchase;
 	return [

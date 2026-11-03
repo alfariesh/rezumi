@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
@@ -13,7 +14,7 @@ async function renderList({ font, rtl = false, count = 102, nested = false }: Op
 	const data = structuredClone(defaultResumeData);
 	data.metadata.typography.body.fontFamily = font;
 	data.metadata.typography.heading.fontFamily = "Helvetica";
-	data.metadata.page.hideIcons = true;
+	data.metadata.design.icons = { ...defaultIconDesign, contact: false, items: false };
 	if (rtl) data.metadata.page.locale = "ar-SA";
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["projects"], sidebar: [] }];
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
