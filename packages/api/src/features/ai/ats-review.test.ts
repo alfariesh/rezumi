@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
+import { atsReviewSystemPrompt } from "@rezumi/ai/prompts";
 import { atsReviewOutputSchema } from "./ats-review";
 
 describe("atsReviewOutputSchema", () => {
@@ -17,5 +18,12 @@ describe("atsReviewOutputSchema", () => {
 		expect(parsed.suggestions[0]?.impact).toBe("medium");
 		expect(parsed.strengths).toEqual(["Good"]);
 		expect(parsed.jdAlignment?.missingConcepts).toEqual(["kubernetes"]);
+	});
+});
+
+describe("atsReviewSystemPrompt", () => {
+	// Without it, reviews of Indonesian resumes came back in English (Rezumi AI benchmark, 2026-11-03).
+	it("asks for the whole review in the resume's language", () => {
+		expect(atsReviewSystemPrompt).toContain("Write in the resume's language.");
 	});
 });
