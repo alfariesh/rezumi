@@ -11,6 +11,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
+import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { AddApplicationDialog } from "@/features/applications/components/add-application-dialog";
 import { ApplicationDetailSheet } from "@/features/applications/components/application-detail-sheet";
@@ -194,7 +195,7 @@ function RouteComponent() {
 	};
 
 	return (
-		<div className="mx-auto grid w-full max-w-[1180px] content-start gap-5 px-8 py-8 max-sm:px-4 max-sm:py-5">
+		<Page width="wide">
 			<PageHeader
 				title={<Trans>Applications</Trans>}
 				actions={
@@ -387,7 +388,7 @@ function RouteComponent() {
 					setEditing(application);
 				}}
 			/>
-		</div>
+		</Page>
 	);
 }
 

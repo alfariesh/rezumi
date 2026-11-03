@@ -7,6 +7,7 @@ import { Link } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
 import { DocumentList } from "./document-list";
 import { LibraryError } from "./library-error";
+import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { orpc } from "@/libs/orpc/client";
 
@@ -23,7 +24,7 @@ export function TrashPage() {
 	} = useQuery(orpc.documents.list.queryOptions({ input: { trashed: true } }));
 
 	return (
-		<div className="mx-auto grid w-full max-w-[1180px] content-start gap-5 px-8 py-8 max-sm:px-4 max-sm:py-5">
+		<Page width="wide">
 			<PageHeader
 				back={
 					<Link
@@ -57,6 +58,6 @@ export function TrashPage() {
 			) : (
 				<DocumentList documents={documents ?? []} label={t`Trash`} inTrash onTags={noop} onLink={noop} />
 			)}
-		</div>
+		</Page>
 	);
 }

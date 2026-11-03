@@ -1,18 +1,21 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { AppLayout, Navbar, Sidebar, useSidebar } from "@heroui-pro/react";
-import { Button, Kbd } from "@heroui/react";
+import { Breadcrumbs, Button, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useMatchRoute, useNavigate } from "@tanstack/react-router";
+import { Link, useMatchRoute, useNavigate, useRouterState } from "@tanstack/react-router";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { ShellPendingContext } from "@/components/layout/loading-screen";
+import { PAGE_GUTTER } from "@/components/layout/page";
 import { useDialogStore } from "@/dialogs/store";
+import { applicationDetailQueryOptions } from "@/features/applications/queries";
 import { GuestBanner } from "@/features/auth/components/guest-banner";
 import { useCommandPaletteStore } from "@/features/command-palette/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
@@ -152,33 +155,130 @@ export function AppShell({ children }: AppShellProps) {
 			</a>
 			<div id="main-content" tabIndex={-1} className="min-w-0 outline-none">
 				<GuestBanner />
-				{children}
+				<ShellPendingContext value>{children}</ShellPendingContext>
 			</div>
 		</AppLayout>
 	);
 }
 
-/** The bar above every page: the phone menu button, the sidebar toggle, and on phones search and New. */
+type Crumb = { label: ReactNode; href?: string };
+
+/**
+ * Where the page sits: the section, then the page within it (Career › Knowledge › Stories). Read from the address, so
+ * it is right from the first frame; the last crumb is the current page.
+ */
+function useCrumbs(): Crumb[] {
+	const pathname = useRouterState({ select: (state) => state.location.pathname.replace(/\/$/, "") });
+	const [section, page, subpage] = pathname.split("/").slice(2);
+	const career: Crumb = { label: t`Career`, href: "/dashboard/career" };
+	const knowledge: Record<string, string> = {
+		facts: t`Facts`,
+		stories: t`Stories`,
+		preferences: t({
+			message: "Preferences",
+			context: "Career preferences: the roles, places, pay and ways of working you want",
+		}),
+	};
+
+	switch (section) {
+		case undefined:
+			return [{ label: t`Documents` }];
+		case "trash":
+			return [{ label: t`Documents`, href: "/dashboard" }, { label: t`Trash` }];
+		case "applications":
+			return page
+				? [{ label: t`Applications`, href: "/dashboard/applications" }, { label: <ApplicationCrumb id={page} /> }]
+				: [{ label: t`Applications` }];
+		case "coach":
+			return [{ label: t`Coach` }];
+		case "career": {
+			if (page === "knowledge") {
+				const current = subpage ? knowledge[subpage] : undefined;
+				return [
+					career,
+					current ? { label: t`Knowledge`, href: "/dashboard/career/knowledge/facts" } : { label: t`Knowledge` },
+					...(current ? [{ label: current }] : []),
+				];
+			}
+			if (page === "offers") return [career, { label: t`Offers` }];
+			return [career, { label: t`Today` }];
+		}
+		case "settings":
+			if (page === "account") return [{ label: t`Account` }];
+			if (page === "billing") return [{ label: t`Plan` }];
+			return [{ label: t`Settings` }];
+		case "admin":
+			return [{ label: t`Billing admin` }];
+		default:
+			return [];
+	}
+}
+
+type ApplicationCrumbProps = { id: string };
+
+/** The open application's role, from the workspace's own query (already loading or cached). */
+function ApplicationCrumb({ id }: ApplicationCrumbProps) {
+	const { data } = useQuery(applicationDetailQueryOptions(id));
+	return <span className="block max-w-64 truncate">{data ? data.role : <Trans>Application</Trans>}</span>;
+}
+
+/**
+ * The bar above every page. Phones: the menu button, the brand, then search and New. Wider screens: the sidebar
+ * toggle and where you are, then search (⌘K), which has no other visible entry there. Its side margins match the
+ * page's (`PAGE_GUTTER`), so the bar's edges line up with the content under it.
+ */
 function AppNavbar() {
 	const openPalette = useCommandPaletteStore((state) => state.setOpen);
 	const openDialog = useDialogStore((state) => state.openDialog);
+	const crumbs = useCrumbs();
 
 	return (
-		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`}>
-			<Navbar.Header>
+		<Navbar maxWidth="full" size="sm" aria-label={t`Toolbar`} className="[view-transition-name:app-bar]">
+			<Navbar.Header className={PAGE_GUTTER}>
 				<AppLayout.MenuToggle aria-label={t`Open navigation`} />
 				<Sidebar.Trigger aria-label={t`Toggle sidebar`} />
 				<Link to="/" aria-label="Rezumi" className="md:hidden">
 					<BrandIcon variant="icon" alt="" className="size-6" />
 				</Link>
+				{crumbs.length > 0 && (
+					<Breadcrumbs className="ms-1 min-w-0 max-md:hidden">
+						{crumbs.map((crumb, index) => (
+							// Only the last crumb has no link, so the link (or "current") is a unique key.
+							<Breadcrumbs.Item
+								key={crumb.href ?? "current"}
+								{...(crumb.href && index < crumbs.length - 1 ? { href: crumb.href } : {})}
+							>
+								{crumb.label}
+							</Breadcrumbs.Item>
+						))}
+					</Breadcrumbs>
+				)}
 				<Navbar.Spacer />
-				<Navbar.Content className="md:hidden">
-					<IconButton icon="magnifying-glass" label={t`Search…`} size="sm" onPress={() => openPalette(true)} />
+				<Navbar.Content>
+					<Button
+						variant="tertiary"
+						size="sm"
+						aria-keyshortcuts="Meta+K Control+K"
+						className="gap-2 text-muted max-md:hidden"
+						onPress={() => openPalette(true)}
+					>
+						<Icon name="magnifying-glass" size={16} />
+						<Trans>Search</Trans>
+						<Kbd>⌘K</Kbd>
+					</Button>
+					<IconButton
+						icon="magnifying-glass"
+						label={t`Search…`}
+						size="sm"
+						className="md:hidden"
+						onPress={() => openPalette(true)}
+					/>
 					<IconButton
 						icon="plus"
 						label={t`New`}
 						size="sm"
 						variant="primary"
+						className="md:hidden"
 						onPress={() => openDialog("document.new", undefined)}
 					/>
 				</Navbar.Content>

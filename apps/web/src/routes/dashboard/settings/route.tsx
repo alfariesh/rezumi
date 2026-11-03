@@ -4,6 +4,7 @@ import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-r
 import { Fragment } from "react";
 import { LEGAL_URLS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
+import { Page } from "@/components/layout/page";
 import { popTransition } from "@/features/settings/root";
 
 // Help and legal documents for the hosted service.
@@ -24,7 +25,8 @@ function RouteComponent() {
 	const isRoot = pathname.replace(/\/$/, "") === "/dashboard/settings";
 
 	return (
-		<div className="mx-auto flex min-h-svh w-full max-w-[720px] flex-col gap-8 px-8 py-8 max-sm:px-4 max-sm:py-5">
+		// At least the height under the 48px navbar, so the links sit at the bottom without making a short page scroll.
+		<Page width="narrow" className="min-h-[calc(100svh-3rem)] gap-8">
 			{!isRoot && (
 				<Link
 					to="/dashboard/settings"
@@ -48,6 +50,6 @@ function RouteComponent() {
 					</Fragment>
 				))}
 			</p>
-		</div>
+		</Page>
 	);
 }
