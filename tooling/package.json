@@ -12,7 +12,9 @@
 		"icons:pdf": "tsx icons/phosphor-pdf.ts",
 		"icons:sync": "tsx icons/hugeicons-sync.ts",
 		"seed:dev": "tsx seed/dev-seed.ts",
-		"seed:career": "tsx seed/career-seed.ts"
+		"seed:career": "tsx seed/career-seed.ts",
+		"benchmark:ai": "tsx --tsconfig ../tsconfig.json benchmark/rezumi-ai.ts",
+		"benchmark:ai:report": "tsx benchmark/report.ts"
 	},
 	"dependencies": {
 		"@rezumi/pdf": "workspace:*",
@@ -20,8 +22,12 @@
 	},
 	"devDependencies": {
 		"@lingui/format-po": "^6.10.1",
+		"@orpc/client": "catalog:",
+		"@orpc/server": "catalog:",
 		"@phosphor-icons/core": "^2.1.1",
+		"@rezumi/api": "workspace:*",
 		"@rezumi/config": "workspace:*",
+		"@rezumi/docx": "workspace:*",
 		"@rezumi/resume": "workspace:*",
 		"@rezumi/utils": "workspace:*",
 		"@types/pg": "catalog:",
