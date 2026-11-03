@@ -13,6 +13,7 @@ import {
 	getPaymentStatusLabel,
 	hasReceipt,
 } from "./purchase";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
 type PaymentHistorySectionProps = { formatDay: (date: Date) => string };
@@ -34,14 +35,12 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 		// The HeroUI Pro table-in-widget pattern: rows run edge to edge on the white content, column names for screen
 		// readers only.
 		<Widget role="region" aria-labelledby={titleId}>
-			<Widget.Header className="grid gap-0.5">
-				<Widget.Title id={titleId} role="heading" aria-level={2}>
-					<Trans>Payments</Trans>
-				</Widget.Title>
-				<Widget.Description className="text-xs text-muted">
-					<Trans>Receipts are proof of payment, not tax invoices.</Trans>
-				</Widget.Description>
-			</Widget.Header>
+			<WidgetHeading
+				icon="clipboard-text"
+				id={titleId}
+				title={<Trans>Payments</Trans>}
+				description={<Trans>Receipts are proof of payment, not tax invoices.</Trans>}
+			/>
 			<Widget.Content className="flex flex-col gap-0 p-0">
 				<Table variant="secondary">
 					<Table.ScrollContainer>

@@ -17,6 +17,7 @@ import { cn } from "@rezumi/utils/style";
 import { CareerLoadError } from "./load-state";
 import { defaultPair, formatMoney, matchingPlace, meetsMinimum, moneyDifference, sameTerms } from "./offer-compare";
 import { CareerWidget, useCareerTime, useNow } from "./shared";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
 type Offer = SavedItem & { data: SavedData<"offer"> };
@@ -114,6 +115,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 	return (
 		<div className="grid gap-4">
 			<CareerWidget
+				icon="scales"
 				title={<Trans>Offer comparison</Trans>}
 				trailing={
 					<div className="flex items-center gap-1.5">
@@ -124,8 +126,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 							isDisabled={!left || !right}
 							onPress={() => setPair({ a: b, b: a })}
 						/>
-						<Button
-							size="sm"
+						<WidgetAction
 							onPress={() =>
 								void navigate({
 									to: "/dashboard/coach/{-$conversationId}",
@@ -135,7 +136,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 							}
 						>
 							<Trans>Plan what to ask</Trans>
-						</Button>
+						</WidgetAction>
 					</div>
 				}
 				contentClassName="gap-0 p-0"
@@ -224,7 +225,7 @@ function ComparisonTable({ offers, left, right, onChoose }: ComparisonTableProps
 											onChoose={(id) => onChoose(side, id)}
 										/>
 									) : (
-										<div className="grid gap-1 rounded-xl bg-default p-4">
+										<div className="grid gap-1 rounded-xl bg-surface-secondary p-4">
 											<p className="text-sm font-semibold">
 												<Trans>Save another offer to compare</Trans>
 											</p>
@@ -581,7 +582,7 @@ function OpenQuestions({ offers }: OpenQuestionsProps) {
 	};
 
 	return (
-		<CareerWidget title={<Trans>Not in either offer yet</Trans>} contentClassName="gap-3 p-4">
+		<CareerWidget icon="question" title={<Trans>Not in either offer yet</Trans>} contentClassName="gap-3 p-4">
 			{questions.length === 0 ? (
 				<p className="text-sm text-muted">
 					<Trans>Both offers cover everything compared here.</Trans>

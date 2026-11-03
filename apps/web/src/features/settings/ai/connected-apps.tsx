@@ -39,6 +39,7 @@ export function ConnectedAppsSection() {
 
 	return (
 		<SettingsSection
+			icon="plugs-connected"
 			id="connected-apps"
 			title={<Trans>Connected applications</Trans>}
 			description={<Trans>Revoke an application's access to your account.</Trans>}

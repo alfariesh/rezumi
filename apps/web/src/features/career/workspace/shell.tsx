@@ -596,7 +596,7 @@ function ContextColumn({ application, interview, now, onEdit }: ContextColumnPro
 						<Eyebrow>
 							<Trans>Interview notes</Trans>
 						</Eyebrow>
-						<p className="rounded-xl bg-default px-3 py-2.5 text-sm leading-5 whitespace-pre-wrap text-muted">
+						<p className="rounded-xl bg-surface-secondary px-3 py-2.5 text-sm leading-5 whitespace-pre-wrap text-muted">
 							{upcoming.notes}
 						</p>
 					</section>

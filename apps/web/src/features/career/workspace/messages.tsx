@@ -76,7 +76,7 @@ function PasteBox({ application, initial, readOnly, onSave }: PasteBoxProps) {
 	const flush = useDebouncedSave(message, initial, onSave);
 
 	return (
-		<CareerWidget title={t`Paste a message from ${application.company}`}>
+		<CareerWidget icon="envelope-simple" title={t`Paste a message from ${application.company}`}>
 			<TextArea
 				fullWidth
 				variant="secondary"
@@ -129,7 +129,7 @@ function ReplyCard({ reply, readOnly }: ReplyCardProps) {
 	};
 
 	return (
-		<CareerWidget title={reply.data.title}>
+		<CareerWidget icon="envelope" title={reply.data.title}>
 			{(reply.data.asks.length > 0 || reply.data.unconfirmed.length > 0) && (
 				<ul className="grid gap-2">
 					{reply.data.asks.map((ask) => (
@@ -299,7 +299,10 @@ function ProposalCard({ reply, application, now, readOnly }: ProposalCardProps) 
 					const isFixed = fixed(index);
 					const id = `${reply.id}-change-${index}`;
 					return (
-						<li key={id} className={cn("flex gap-2.5 rounded-xl bg-default px-3 py-2.5", isFixed && "opacity-70")}>
+						<li
+							key={id}
+							className={cn("flex gap-2.5 rounded-xl bg-surface-secondary px-3 py-2.5", isFixed && "opacity-70")}
+						>
 							<Checkbox
 								variant="secondary"
 								id={id}

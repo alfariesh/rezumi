@@ -34,6 +34,7 @@ import {
 	providerOptions,
 } from "./catalog";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import { Combobox } from "@/components/ui/combobox";
 import { useAiSource } from "@/features/billing/ai-source";
 import { REZUMI_AI_TEXT } from "@/features/billing/ai-source-menu";
@@ -70,6 +71,7 @@ export function ProvidersSection() {
 
 	return (
 		<SettingsSection
+			icon="sparkle"
 			id="ai-providers"
 			title={<Trans>AI providers</Trans>}
 			description={
@@ -81,10 +83,10 @@ export function ProvidersSection() {
 			action={
 				// Only with a list to add to; the empty state has its own button.
 				!managed && !error && !isLoading && (providers?.length ?? 0) > 0 ? (
-					<Button size="sm" variant="secondary" onPress={() => setAdding(true)}>
-						<Icon name="plus" size={18} />
+					<WidgetAction onPress={() => setAdding(true)}>
+						<Icon name="plus" size={16} />
 						<Trans>Add provider</Trans>
-					</Button>
+					</WidgetAction>
 				) : undefined
 			}
 		>

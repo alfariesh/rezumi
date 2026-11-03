@@ -5,6 +5,7 @@ import { useId } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { RowIcon } from "@/components/layout/icon-row";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 
 /**
  * Rows split by a hairline that starts under the text: past the 40px icon tile and the 12px gap (52px). The line is
@@ -16,10 +17,11 @@ const DIVIDED =
 type SettingsSectionProps = {
 	/** The anchor other pages link to, e.g. `ai-providers`. */
 	id?: string;
+	icon: IconName;
 	title: ReactNode;
 	/** A short line under the title, in the header. */
 	description?: ReactNode;
-	/** Sits at the right of the header, e.g. "New key". */
+	/** Sits at the right of the header: one `WidgetAction`, e.g. "New key". */
 	action?: ReactNode;
 	children: ReactNode;
 	/** A quiet note under the content, in the widget's footer. */
@@ -35,6 +37,7 @@ type SettingsSectionProps = {
  */
 export function SettingsSection({
 	id,
+	icon,
 	title,
 	description,
 	action,
@@ -46,15 +49,7 @@ export function SettingsSection({
 
 	return (
 		<Widget id={id} role="region" aria-labelledby={titleId} className="scroll-mt-16">
-			<Widget.Header className="flex-wrap items-start gap-x-3 gap-y-2">
-				<div className="grid min-w-0 flex-1 basis-60 gap-0.5">
-					<Widget.Title id={titleId} role="heading" aria-level={2}>
-						{title}
-					</Widget.Title>
-					{description && <Widget.Description className="text-xs text-muted">{description}</Widget.Description>}
-				</div>
-				{action}
-			</Widget.Header>
+			<WidgetHeading id={titleId} icon={icon} title={title} description={description} action={action} />
 			<Widget.Content className={cn("grid gap-3", divided && DIVIDED)}>{children}</Widget.Content>
 			{footer && <Widget.Footer>{footer}</Widget.Footer>}
 		</Widget>

@@ -1,4 +1,5 @@
 import type { Application } from "../types";
+import { Widget } from "@heroui-pro/react";
 import { TextArea } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
@@ -6,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useId, useState } from "react";
 import { toast } from "@rezumi/ui/components/toast";
 import { useInvalidateApplications } from "../use-application-actions";
+import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
 type ApplicationNotesProps = { application: Pick<Application, "id" | "notes"> };
@@ -62,32 +64,36 @@ export function ApplicationNotes({ application }: ApplicationNotesProps) {
 	);
 
 	return (
-		<section className="grid gap-2">
-			<label htmlFor={id} className="text-xs font-semibold text-muted">
-				<Trans>Notes</Trans>
-			</label>
+		<Widget role="region" aria-labelledby={`${id}-title`}>
+			<WidgetHeading
+				id={`${id}-title`}
+				icon="note-pencil"
+				title={<Trans>Notes</Trans>}
+				action={
+					isError && (
+						<WidgetAction
+							onPress={() => {
+								void save();
+							}}
+						>
+							<Trans>Retry save</Trans>
+						</WidgetAction>
+					)
+				}
+			/>
+			{/* The area is the widget's content: the white `widget__content` surface, with no frame inside it. */}
 			<TextArea
-				fullWidth
 				id={id}
-				rows={3}
+				aria-labelledby={`${id}-title`}
+				rows={4}
 				value={notes}
 				placeholder={t`Anything to remember about this job`}
+				className="widget__content mt-0 block w-[calc(100%-0.75rem)] resize-none rounded-xl border-0 bg-surface shadow-none"
 				onChange={(event) => {
 					drafts.set(application.id, event.target.value);
 					setNotes(event.target.value);
 				}}
 			/>
-			{isError && (
-				<button
-					type="button"
-					onClick={() => {
-						void save();
-					}}
-					className="justify-self-start text-sm underline"
-				>
-					<Trans>Retry save</Trans>
-				</button>
-			)}
-		</section>
+		</Widget>
 	);
 }

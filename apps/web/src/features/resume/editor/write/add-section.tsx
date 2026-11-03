@@ -4,6 +4,7 @@ import { Widget } from "@heroui-pro/react";
 import { Button, Dropdown, Header, Label, Link, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { useId } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useEditorStore } from "../store";
 import { openEntry } from "./actions";
@@ -14,6 +15,7 @@ import {
 	CUSTOM_SECTION_TYPES,
 	isSectionInUse,
 } from "./model";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useCurrentBuilderResumeSelector, useResumeStore } from "@/features/resume/builder/draft";
 import { getSectionTitle } from "@/libs/resume/section";
 
@@ -140,16 +142,11 @@ const SUGGESTED: ("summary" | SectionType)[] = ["experience", "education", "skil
 
 /** A blank resume: the first sections to add, as + chips, and an offer to import instead. */
 export function StartSuggestions({ onImport }: { onImport: () => void }) {
+	const titleId = useId();
+
 	return (
-		<Widget role="region" aria-label={t`Sections`}>
-			<Widget.Header>
-				<span className="flex min-w-0 items-center gap-2">
-					<Icon name="rows" size={16} className="shrink-0 text-muted" />
-					<Widget.Title>
-						<Trans>Sections</Trans>
-					</Widget.Title>
-				</span>
-			</Widget.Header>
+		<Widget role="region" aria-labelledby={titleId}>
+			<WidgetHeading id={titleId} icon="rows" title={<Trans>Sections</Trans>} />
 			<Widget.Content className="grid gap-3">
 				<p className="text-sm text-muted">
 					<Trans>Start with the sections most resumes have.</Trans>

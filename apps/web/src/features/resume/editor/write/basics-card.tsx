@@ -55,7 +55,7 @@ export function BasicsCard({ locked }: { locked: boolean }) {
 				<Widget.Header>
 					<Disclosure.Heading className="min-w-0 flex-1">
 						<Disclosure.Trigger className="flex min-h-8 w-full cursor-(--cursor-interactive) items-center gap-2 rounded-lg text-start outline-none focus-visible:ring-2 focus-visible:ring-focus">
-							<Icon name="user-circle" size={16} className="shrink-0 text-muted" />
+							<Icon name="user-circle" size={20} className="shrink-0 text-muted" />
 							<Widget.Title className="shrink-0">
 								<Trans>About</Trans>
 							</Widget.Title>

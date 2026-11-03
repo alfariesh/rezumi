@@ -1328,7 +1328,6 @@ msgstr "Fəaliyyət"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/career/knowledge/facts.tsx
 #: src/features/career/today.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add"
@@ -1339,13 +1338,17 @@ msgstr "Əlavə et"
 msgid "Add “{0}”"
 msgstr "“{0}” əlavə edin"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Add a contact"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Add a country"
 msgstr "Ölkə əlavə edin"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Add a fact, for example “I mentored two associate PMs in 2025”"
-msgstr "Fakt əlavə edin, məsələn, “2025-ci ildə iki kiçik PM-ə mentorluq etdim”"
+msgid "Add a fact"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Add a keyword..."
@@ -1400,6 +1403,10 @@ msgstr "Axtarmaq üçün vəzifə və ya şirkət əlavə edin."
 msgid "Add a role, then Enter"
 msgstr "Vəzifə əlavə edin, sonra Enter"
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a salary"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "\"Təhsil\" başlıqlı bölmə əlavə edin. Bir çox sistemlərdə təhsil sahəsi məcburidir."
@@ -1407,6 +1414,10 @@ msgstr "\"Təhsil\" başlıqlı bölmə əlavə edin. Bir çox sistemlərdə tə
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "\"Təcrübə\" və ya \"İş Təcrübəsi\" başlıqlı bölmə əlavə edin. Bu, əksər sistemlərin sıralama etdiyi sahədir."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a source"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Add a story"
@@ -1423,6 +1434,10 @@ msgstr "Etiket əlavə edin"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Etiket əlavə edin və Enter basın…"
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a tag, then Enter"
+msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1499,6 +1514,10 @@ msgstr "Sübut əlavə et"
 msgid "Add experience"
 msgstr "Təcrübə əlavə edin"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Add fact"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add field"
 msgstr "Sahə əlavə edin"
@@ -1525,10 +1544,6 @@ msgstr "Dil əlavə edin"
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add my connection"
-msgstr ""
-
-#: src/features/career/knowledge/facts.tsx
-msgid "Add one above."
 msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
@@ -1955,11 +1970,6 @@ msgstr "səhv"
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "Gözlənilməz xəta bu səhifənin yüklənməsinə mane oldu. Yenidən cəhd edin və ya idarə panelinə keçin."
 
-#. placeholder {0}: others.length
-#: src/features/applications/components/detail/contacts.tsx
-msgid "and {0} more"
-msgstr "və daha çox {0}"
-
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
 msgstr "CV-lərinizdən digəri bu ünvandan istifadə edir."
@@ -2328,25 +2338,17 @@ msgstr ""
 msgid "ATS-safe"
 msgstr "ATS-təhlükəsiz"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Attach"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Attach a cover letter (PDF)"
 msgstr "Müraciət məktubu (PDF) əlavə edin"
 
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a cover letter file (PDF)"
-msgstr "Qapaq məktubu faylı əlavə edin (PDF)"
-
 #: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "Fayl əlavə edin"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a file instead"
-msgstr "Əvəzinə fayl əlavə edin"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a resume file (PDF)"
-msgstr "CV faylı əlavə edin (PDF)"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -3094,6 +3096,7 @@ msgstr "Müştəri ID"
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -4203,6 +4206,10 @@ msgstr "Qapaq məktubu faylı"
 msgid "Cover letter imported"
 msgstr "Əhatə məktubu idxal edildi"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Cover letter PDF"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Cover letter submitted (optional)"
@@ -4701,6 +4708,7 @@ msgstr "Dizayn standartlarına sıfırlanır"
 msgid "Design systems"
 msgstr "Dizayn sistemləri"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
@@ -5564,12 +5572,12 @@ msgid "Eyebrow"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact forgotten"
-msgstr "Fakt unuduldu"
+msgid "Fact"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact type"
-msgstr "Fakt növü"
+msgid "Fact forgotten"
+msgstr "Fakt unuduldu"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
@@ -6798,6 +6806,10 @@ msgstr "İş axtarışı uğursuz oldu. Yenidən cəhd edin və ya iş elanı li
 msgid "Job search pipeline"
 msgstr "İş axtarışı prosesi"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Job title (optional)"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Job tracker with board, calendar and insights"
 msgstr ""
@@ -6962,10 +6974,6 @@ msgstr "Koreya"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Label"
 msgstr "Etiket"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Label, e.g. Recruiter"
-msgstr "Etiket, məs. İşə götürən"
 
 #. Preset button for setting picture aspect ratio to landscape orientation
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -8083,10 +8091,6 @@ msgstr "Əvəzində yeni örtük məktubu"
 msgid "New document"
 msgstr "Yeni sənəd"
 
-#: src/features/career/knowledge/facts.tsx
-msgid "New fact"
-msgstr "Yeni fakt"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "Yeni açar"
@@ -8232,8 +8236,8 @@ msgid "No connected applications yet. Apps you allow to access your account appe
 msgstr "Hələ qoşulmuş tətbiq yoxdur. Hesabınıza giriş icazəsi verdiyiniz tətbiqlər burada görünür."
 
 #: src/features/applications/components/detail/contacts.tsx
-msgid "No contacts yet."
-msgstr "Hələ kontakt yoxdur."
+msgid "No contacts yet"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No conventional section headings were found."
@@ -8364,6 +8368,10 @@ msgstr ""
 msgid "No payments."
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "No PDF attached"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr "Telefon nömrəsi yoxdur"
@@ -8485,6 +8493,7 @@ msgstr "Norveç"
 msgid "Not applied"
 msgstr "Tətbiq edilməyib"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "Hələ müraciət edilməyib"
@@ -8551,6 +8560,10 @@ msgstr ""
 msgid "Not now"
 msgstr "İndi yox"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not prepared yet"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
 msgstr "Hələ qeydə alınmayıb. Dəstəkləyə bilənə qədər boş saxlayın."
@@ -8600,6 +8613,10 @@ msgstr "Kouçinqdə istifadə olunmur, ona görə də hekayəni dəstəkləyə b
 #: src/features/settings/account/profile.tsx
 msgid "Not verified yet. Resend the link"
 msgstr "Hələ təsdiqlənməyib. Linki yenidən göndərin"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not written yet"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Note"
@@ -8935,6 +8952,10 @@ msgstr "İxrac edilmiş faylı açın və onun hər hissəsini seçib kopyalaya 
 
 #: src/features/billing/buy-plans.tsx
 msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr ""
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Open the posting"
 msgstr ""
 
 #: src/routes/auth/native-callback.tsx
@@ -9382,6 +9403,10 @@ msgstr ""
 msgid "PDF and Word files are read with"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "PDF attached"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
 msgstr ""
@@ -9559,7 +9584,6 @@ msgstr "Vəzifə"
 msgid "posting"
 msgstr "iş elanı"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
@@ -9647,6 +9671,7 @@ msgctxt "Career preferences: the roles, places, pay and ways of working you want
 msgid "Preferences"
 msgstr "Tərcihlər"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
 #: src/features/homepage/features.tsx
@@ -9656,10 +9681,6 @@ msgstr "Hazırlıq"
 #: src/features/career/schedule-sheet.tsx
 msgid "Prepare a briefing"
 msgstr "Brifinq hazırla"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Prepare a resume"
-msgstr "CV hazırlayın"
 
 #: src/features/homepage/introduction.tsx
 msgid "Prepare for interviews from stories you wrote once"
@@ -10310,6 +10331,10 @@ msgstr "İşə götürənlər bu adı görürlər. Adınız üstəgəl “Cover 
 msgid "Recruiters see this name. Your name plus “Resume” works well."
 msgstr "İşə götürənlər bu adı görürlər. Adınız və \"CV\" yaxşı işləyir."
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Recruiters, interviewers and referrals for this job."
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Rectangle"
 msgstr "Düzbucaqlı"
@@ -10512,6 +10537,7 @@ msgstr "“{name}” silinsin?"
 #. placeholder {0}: contact.name
 #. placeholder {0}: passkey.name || t`Unnamed passkey`
 #: src/features/applications/components/detail/contacts.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/settings/account/security.tsx
@@ -10735,6 +10761,7 @@ msgid "resume"
 msgstr "rezyume"
 
 #: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
@@ -10782,6 +10809,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
 msgstr "resume səhifəsi"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Resume PDF"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Resume review"
@@ -10987,10 +11018,6 @@ msgstr "Elə indi"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Vəzifə"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Role (optional)"
-msgstr "Rol (könüllü)"
 
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/entries.tsx
@@ -12110,6 +12137,10 @@ msgstr "Bəzi mətn döndərilib."
 msgid "Something else on your mind? Write to us at"
 msgstr ""
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "Xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin."
@@ -12194,7 +12225,7 @@ msgstr "Mərhələ tarixi"
 msgid "Stage stays {stage}"
 msgstr "Mərhələ dəyişmir: {stage}"
 
-#: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/detail/stage-stepper.tsx
 msgid "Stages"
 msgstr "Mərhələlər"
 
@@ -13805,6 +13836,7 @@ msgid "Two-step verification turned on"
 msgstr "İki addımlı doğrulama yandırıldı"
 
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -14045,6 +14077,10 @@ msgstr "Ardıcıl oxunmalı olan hər şey üçün tək sütun istifadə edin."
 #: src/features/ats-checker/messages.ts
 msgid "Use A4 or US Letter so the layout survives being re-rendered."
 msgstr "Düzənin yenidən render edildikdə qorunması üçün A4 və ya US Letter istifadə edin."
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Use Add fact to start."
+msgstr ""
 
 #: src/features/auth/pages/register.tsx
 msgid "Use at least 3 characters."
@@ -14762,6 +14798,7 @@ msgstr "Soruşmağa dəyər"
 msgid "Worth asking {0}"
 msgstr "Soruşmağa dəyər: {0}"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -14773,10 +14810,6 @@ msgstr "Yaz"
 #: src/features/ats-checker/messages.ts
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "Hazırkı vəzifənizin bitmə tarixi kimi \"Present\" yazın."
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Write a letter"
-msgstr "Məktub yaz"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."

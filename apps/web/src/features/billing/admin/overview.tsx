@@ -183,6 +183,7 @@ function SalesCard({ metrics }: MetricsProps) {
 	const plus = plan("plus");
 	return (
 		<AdminCard
+			icon="chart-line-up"
 			title={<Trans>Sales</Trans>}
 			action={
 				<div className="flex items-center gap-3">
@@ -226,6 +227,7 @@ function CheckoutCard({ metrics }: MetricsProps) {
 	const { checkouts } = metrics;
 	return (
 		<AdminCard
+			icon="list-checks"
 			title={<Trans>Checkouts</Trans>}
 			action={
 				<div className="flex items-center gap-3">
@@ -272,7 +274,7 @@ function MethodsCard({ metrics }: MetricsProps) {
 	const total = methods.reduce((sum, method) => sum + method.revenue, 0);
 	const colorAt = (index: number) => CHART_COLORS[index % CHART_COLORS.length] ?? "currentColor";
 	return (
-		<AdminCard title={<Trans>Payment methods</Trans>} description={<Trans>Share of revenue.</Trans>}>
+		<AdminCard icon="scales" title={<Trans>Payment methods</Trans>} description={<Trans>Share of revenue.</Trans>}>
 			{total === 0 ? (
 				<p className="py-10 text-center text-sm text-muted">
 					<Trans>No payments in this period.</Trans>
@@ -328,7 +330,11 @@ function AiCard({ metrics }: MetricsProps) {
 	// Without AI_COST_* rates the server records tokens only, so there is no cost to show.
 	const priced = metrics.ai.some((row) => row.p50UsdMicros !== null && row.costUsdMicros > 0);
 	return (
-		<AdminCard title="Rezumi AI" description={<Trans>Credits charged, and what the AI provider cost.</Trans>}>
+		<AdminCard
+			icon="sparkle"
+			title="Rezumi AI"
+			description={<Trans>Credits charged, and what the AI provider cost.</Trans>}
+		>
 			<div className="flex flex-wrap items-center gap-x-6 gap-y-3">
 				<MiniStat value={metrics.credits.used} label={t`Credits used`} />
 				<MiniStat value={metrics.credits.trialsGranted} label={t`Trials given`} />
@@ -379,7 +385,7 @@ function AttentionCard() {
 		<AdminCard
 			tone="warning"
 			contentClassName="p-0"
-			icon={<Icon name="warning" size={20} />}
+			icon="warning"
 			title={<Trans>Needs attention</Trans>}
 			description={
 				<Trans>Alerts from the last 7 days, one per kind per hour. The owner's runbook has the steps.</Trans>

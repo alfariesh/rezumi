@@ -1,7 +1,7 @@
 import type { Application, ApplicationSummary } from "../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
-import { Sheet } from "@heroui-pro/react";
-import { Button, buttonVariants, Chip, Dropdown, Input, Label, Modal, Separator } from "@heroui/react";
+import { Sheet, Widget } from "@heroui-pro/react";
+import { Button, ButtonGroup, Chip, Dropdown, Input, Label, Modal, ScrollShadow, Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -15,15 +15,18 @@ import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { daysInStage } from "../next-step";
 import { applicationDetailQueryOptions, getInitialApplicationDetail } from "../queries";
-import { getClosedReasonLabel, getNextStage, getStageColor, getStageLabel, PIPELINE } from "../stages";
+import { getClosedReasonLabel, getNextStage, getStageColor, getStageLabel } from "../stages";
 import { useApplicationActions, useInvalidateApplications } from "../use-application-actions";
 import { ApplicationNotes } from "./application-notes";
 import { Activity } from "./detail/activity";
 import { CloseDialog } from "./detail/close-dialog";
 import { Contacts } from "./detail/contacts";
+import { FIELD_CLASS, INPUT_CLASS } from "./detail/field-style";
 import { NextStepCard } from "./detail/next-step-card";
 import { SentDocuments } from "./detail/sent-documents";
+import { StageStepper } from "./detail/stage-stepper";
 import { InterviewDialog } from "./interview-dialog";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useClosingValue } from "@/hooks/use-closing-value";
 import { useConfirm } from "@/hooks/use-confirm";
 import { getOrpcErrorMessage } from "@/libs/error-message";
@@ -63,7 +66,7 @@ export function ApplicationDetailSheet({ application, onOpenChange, onEditDetail
 		>
 			<Sheet.Backdrop>
 				<Sheet.Content className={phone ? "h-svh" : "w-full sm:max-w-[480px]"}>
-					<Sheet.Dialog>
+					<Sheet.Dialog className="bg-background">
 						{phone && <Sheet.Handle />}
 						<Sheet.CloseTrigger aria-label={t`Close`} />
 						{current ? (
@@ -112,7 +115,6 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 	const [applying, setApplying] = useState(false);
 
 	const next = getNextStage(application.status);
-	const reached = PIPELINE.indexOf(application.status);
 	const since = daysInStage(application);
 	const closed = application.status === "closed";
 
@@ -127,170 +129,149 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 
 	return (
 		<>
-			<Sheet.Body className="min-h-0 flex-1 p-0">
-				<header className="grid gap-4 border-b border-separator px-5 pt-5 pb-4">
-					<div className="flex items-start gap-3 pe-8">
-						<span
-							aria-hidden="true"
-							className="grid size-10 shrink-0 place-items-center rounded-xl bg-default font-semibold text-muted"
-						>
-							{application.company.slice(0, 1).toUpperCase()}
-						</span>
-						<div className="grid min-w-0 flex-1 gap-0.5">
-							<Sheet.Heading>{application.role}</Sheet.Heading>
-							<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-muted">
-								<span>{[application.company, application.location].filter(Boolean).join(" · ")}</span>
-								{(application.sourceUrl || application.jobDescription) && (
-									<>
-										<span aria-hidden="true">·</span>
-										{application.sourceUrl && !application.jobDescription ? (
-											<a
-												href={application.sourceUrl}
-												target="_blank"
-												rel="noreferrer"
-												className="font-medium text-accent-soft-foreground hover:underline"
-											>
-												<Trans>View posting</Trans>
-											</a>
+			<Sheet.Body className="min-h-0 flex-1 overflow-hidden p-0">
+				<ScrollShadow hideScrollBar className="h-full overflow-y-auto">
+					<header className="grid gap-4 px-5 pt-5 pb-4">
+						<div className="flex items-start gap-3 pe-8">
+							<span
+								aria-hidden="true"
+								className="grid size-10 shrink-0 place-items-center rounded-xl bg-default font-semibold text-muted"
+							>
+								{application.company.slice(0, 1).toUpperCase()}
+							</span>
+							<div className="grid min-w-0 flex-1 gap-0.5">
+								<Sheet.Heading>{application.role}</Sheet.Heading>
+								<div className="flex flex-wrap items-center gap-x-1.5 text-sm text-muted">
+									<span>{[application.company, application.location].filter(Boolean).join(" · ")}</span>
+									{(application.sourceUrl || application.jobDescription) && (
+										<>
+											<span aria-hidden="true">·</span>
+											{application.sourceUrl && !application.jobDescription ? (
+												<a
+													href={application.sourceUrl}
+													target="_blank"
+													rel="noreferrer"
+													className="font-medium text-accent-soft-foreground hover:underline"
+												>
+													<Trans>View posting</Trans>
+												</a>
+											) : (
+												<button
+													type="button"
+													onClick={() => setPostingOpen(true)}
+													className="font-medium text-accent-soft-foreground hover:underline"
+												>
+													<Trans>View posting</Trans>
+												</button>
+											)}
+										</>
+									)}
+								</div>
+							</div>
+							<Dropdown>
+								<IconButton icon="dots-three" size="sm" label={t`Application options`} />
+								<Dropdown.Popover placement="bottom end">
+									<Dropdown.Menu>
+										<Dropdown.Item id="edit" textValue={t`Edit details…`} onAction={() => onEditDetails(application)}>
+											<Icon name="pencil-simple" size={18} />
+											<Label>
+												<Trans>Edit details…</Trans>
+											</Label>
+										</Dropdown.Item>
+										<Separator />
+										<Dropdown.Item id="delete" textValue={t`Delete…`} variant="danger" onAction={onDelete}>
+											<Icon name="trash" size={18} />
+											<Label>
+												<Trans>Delete…</Trans>
+											</Label>
+										</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown.Popover>
+							</Dropdown>
+						</div>
+
+						<div className="grid gap-2.5">
+							<StageStepper
+								application={application}
+								onSelect={(stage) => {
+									if (application.status === "saved" && stage === "applied") setApplying(true);
+									else moveTo(application, stage);
+								}}
+							/>
+							<div className="flex flex-wrap items-center justify-between gap-2">
+								<span className="flex items-center gap-1.5 text-sm">
+									<span
+										aria-hidden="true"
+										className="size-2 rounded-sm"
+										style={{ background: getStageColor(application.status) }}
+									/>
+									<strong className="font-semibold">{getStageLabel(application.status)}</strong>
+									<span className="text-muted">
+										{closed && application.closedReason ? (
+											<>· {getClosedReasonLabel(application.closedReason)}</>
 										) : (
-											<button
-												type="button"
-												onClick={() => setPostingOpen(true)}
-												className="font-medium text-accent-soft-foreground hover:underline"
-											>
-												<Trans>View posting</Trans>
-											</button>
+											<>
+												· <Plural value={since} _0="since today" one="for # day" other="for # days" />
+											</>
 										)}
-									</>
+									</span>
+								</span>
+								{next && !closed && (
+									<Button
+										size="sm"
+										variant="secondary"
+										onPress={() => (application.status === "saved" ? setApplying(true) : moveTo(application, next))}
+									>
+										{application.status === "saved" ? (
+											<Trans>Mark as applied</Trans>
+										) : (
+											<Trans>Move to {getStageLabel(next)}</Trans>
+										)}
+										<Icon name="arrow-right" size={16} />
+									</Button>
 								)}
 							</div>
 						</div>
-						<Dropdown>
-							<IconButton icon="dots-three" size="sm" label={t`Application options`} />
-							<Dropdown.Popover placement="bottom end">
-								<Dropdown.Menu>
-									<Dropdown.Item id="edit" textValue={t`Edit details…`} onAction={() => onEditDetails(application)}>
-										<Icon name="pencil-simple" size={18} />
-										<Label>
-											<Trans>Edit details…</Trans>
-										</Label>
-									</Dropdown.Item>
-									<Separator />
-									<Dropdown.Item id="delete" textValue={t`Delete…`} variant="danger" onAction={onDelete}>
-										<Icon name="trash" size={18} />
-										<Label>
-											<Trans>Delete…</Trans>
-										</Label>
-									</Dropdown.Item>
-								</Dropdown.Menu>
-							</Dropdown.Popover>
-						</Dropdown>
-					</div>
+					</header>
 
-					<div className="grid gap-2.5">
-						<ol aria-label={t`Stages`} className="grid grid-cols-5 gap-1.5">
-							{PIPELINE.map((stage, index) => (
-								<li key={stage}>
-									<button
-										type="button"
-										aria-current={stage === application.status ? "step" : undefined}
-										onClick={() => {
-											if (stage === application.status) return;
-											if (application.status === "saved" && stage === "applied") setApplying(true);
-											else moveTo(application, stage);
-										}}
-										className="grid w-full gap-1.5 text-start"
-									>
-										<span
-											className="h-1.5 rounded-sm transition-colors duration-standard"
-											style={{
-												background: !closed && index <= reached ? getStageColor(stage) : "var(--separator)",
-											}}
-										/>
-										<span
-											className={cn(
-												"truncate text-xs",
-												stage === application.status ? "font-semibold text-foreground" : "text-muted",
-											)}
-										>
-											{getStageLabel(stage)}
-										</span>
-									</button>
-								</li>
-							))}
-						</ol>
-						<div className="flex flex-wrap items-center justify-between gap-2">
-							<span className="flex items-center gap-1.5 text-sm">
-								<span
-									aria-hidden="true"
-									className="size-2 rounded-sm"
-									style={{ background: getStageColor(application.status) }}
-								/>
-								<strong className="font-semibold">{getStageLabel(application.status)}</strong>
-								<span className="text-muted">
-									{closed && application.closedReason ? (
-										<>· {getClosedReasonLabel(application.closedReason)}</>
-									) : (
-										<>
-											· <Plural value={since} _0="since today" one="for # day" other="for # days" />
-										</>
-									)}
-								</span>
-							</span>
-							{next && !closed && (
-								<Button
-									size="sm"
-									variant="secondary"
-									onPress={() => (application.status === "saved" ? setApplying(true) : moveTo(application, next))}
-								>
-									{application.status === "saved" ? (
-										<Trans>Mark as applied</Trans>
-									) : (
-										<Trans>Move to {getStageLabel(next)}</Trans>
-									)}
-									<Icon name="arrow-right" size={16} />
-								</Button>
-							)}
-						</div>
+					<div className="grid gap-3 px-4 pb-4">
+						<NextStepCard
+							application={application}
+							onScheduleInterview={(entry) => setInterview({ open: true, entry })}
+						/>
+						<SentDocuments application={application} disabled={remove.isPending} />
+						<Details application={application} locale={i18n.locale} />
+						<ApplicationNotes application={application} />
+						<Activity application={application} onOpenInterview={(entry) => setInterview({ open: true, entry })} />
 					</div>
-				</header>
-
-				<div className="grid gap-6 p-5">
-					<NextStepCard
-						application={application}
-						onScheduleInterview={(entry) => setInterview({ open: true, entry })}
-					/>
-					<SentDocuments application={application} disabled={remove.isPending} />
-					<Facts application={application} locale={i18n.locale} />
-					<Tags application={application} />
-					<ApplicationNotes application={application} />
-					<Activity application={application} onOpenInterview={(entry) => setInterview({ open: true, entry })} />
-				</div>
+				</ScrollShadow>
 			</Sheet.Body>
 
-			<footer className="flex shrink-0 flex-wrap items-center gap-2 border-t border-separator bg-surface px-5 py-3">
+			<footer className="shrink-0 bg-background px-4 pt-2 pb-4">
 				{!closed ? (
-					<>
-						<Button variant="secondary" onPress={() => setClosing(true)}>
-							<Trans>Close application…</Trans>
+					<ButtonGroup variant="secondary" fullWidth>
+						<Button isIconOnly aria-label={t`Close application…`} onPress={() => setClosing(true)}>
+							<Icon name="prohibit" size={18} />
 						</Button>
 						{application.sourceUrl && (
-							<a
-								href={application.sourceUrl}
-								target="_blank"
-								rel="noreferrer"
-								className={buttonVariants({ variant: "ghost" })}
+							<Button
+								isIconOnly
+								aria-label={t`Open the posting`}
+								onPress={() => window.open(application.sourceUrl ?? "", "_blank", "noopener,noreferrer")}
 							>
-								<Trans>Posting</Trans>
-								<Icon name="arrow-square-out" size={16} />
-							</a>
+								<ButtonGroup.Separator />
+								<Icon name="arrow-square-out" size={18} />
+							</Button>
 						)}
 						<OpenWorkspaceButton application={application} />
-					</>
+					</ButtonGroup>
 				) : (
-					<Button variant="secondary" onPress={() => moveTo(application, "applied")}>
-						<Trans>Reopen</Trans>
-					</Button>
+					<ButtonGroup variant="secondary" fullWidth>
+						<Button className="min-w-0 flex-1 px-3" onPress={() => moveTo(application, "applied")}>
+							<Icon name="arrow-counter-clockwise" size={16} />
+							<Trans>Reopen</Trans>
+						</Button>
+					</ButtonGroup>
 				)}
 			</footer>
 
@@ -307,8 +288,9 @@ function Detail({ application, onEditDetails, onDeleted }: DetailProps) {
 	);
 }
 
-/** Salary, Source, Applied and Contact. Salary and source edit in place. */
-function Facts({ application, locale }: { application: Application; locale: string }) {
+/** Salary, Source, Applied, Contact and Tags. Each value looks like its input, so editing in place doesn't jump. */
+function Details({ application, locale }: { application: Application; locale: string }) {
+	const titleId = useId();
 	const invalidate = useInvalidateApplications();
 	const update = useMutation({
 		...orpc.applications.update.mutationOptions(),
@@ -322,43 +304,58 @@ function Facts({ application, locale }: { application: Application; locale: stri
 	});
 
 	return (
-		<dl className="grid grid-cols-2 gap-x-4 gap-y-3">
-			<InlineFact
-				label={t`Salary`}
-				value={application.salary}
-				onSave={(salary) => update.mutate({ id: application.id, salary })}
-			/>
-			<InlineFact
-				label={t`Source`}
-				value={application.source}
-				onSave={(source) => update.mutate({ id: application.id, source })}
-			/>
-			<div className="grid gap-0.5">
-				<dt className="text-xs font-semibold text-muted">
-					<Trans>Applied</Trans>
-				</dt>
-				<dd className="text-sm font-medium">{application.status === "saved" ? "—" : applied}</dd>
-			</div>
-			<div className="grid gap-0.5">
-				<dt className="text-xs font-semibold text-muted">
-					<Trans>Contact</Trans>
-				</dt>
-				<dd className="min-w-0">
-					<Contacts
-						contacts={application.contacts}
-						disabled={update.isPending}
-						onChange={(contacts) => update.mutate({ id: application.id, contacts })}
+		<Widget role="region" aria-labelledby={titleId}>
+			<WidgetHeading id={titleId} icon="list-bullets" title={<Trans>Details</Trans>} />
+			<Widget.Content className="grid gap-4">
+				<dl className="grid grid-cols-2 gap-x-3 gap-y-4">
+					<InlineFact
+						label={t`Salary`}
+						placeholder={t`Add a salary`}
+						value={application.salary}
+						onSave={(salary) => update.mutate({ id: application.id, salary })}
 					/>
-				</dd>
-			</div>
-		</dl>
+					<InlineFact
+						label={t`Source`}
+						placeholder={t`Add a source`}
+						value={application.source}
+						onSave={(source) => update.mutate({ id: application.id, source })}
+					/>
+					<div className="grid gap-1.5">
+						<dt className="text-xs font-semibold text-muted">
+							<Trans>Applied</Trans>
+						</dt>
+						<dd className={cn(FIELD_CLASS, application.status === "saved" && "font-normal text-muted")}>
+							{application.status === "saved" ? <Trans>Not applied yet</Trans> : applied}
+						</dd>
+					</div>
+					<div className="grid gap-1.5">
+						<dt className="text-xs font-semibold text-muted">
+							<Trans>Contact</Trans>
+						</dt>
+						<dd className="min-w-0">
+							<Contacts
+								contacts={application.contacts}
+								disabled={update.isPending}
+								onChange={(contacts) => update.mutate({ id: application.id, contacts })}
+							/>
+						</dd>
+					</div>
+				</dl>
+				<Tags application={application} />
+			</Widget.Content>
+		</Widget>
 	);
 }
 
-type InlineFactProps = { label: string; value: string | null; onSave: (value: string | null) => void };
+type InlineFactProps = {
+	label: string;
+	placeholder: string;
+	value: string | null;
+	onSave: (value: string | null) => void;
+};
 
 /** A fact that edits in place: click to type, Enter or leaving saves, Esc cancels. */
-function InlineFact({ label, value, onSave }: InlineFactProps) {
+function InlineFact({ label, placeholder, value, onSave }: InlineFactProps) {
 	const id = useId();
 	const [draft, setDraft] = useState<string | null>(null);
 
@@ -370,7 +367,7 @@ function InlineFact({ label, value, onSave }: InlineFactProps) {
 	};
 
 	return (
-		<div className="grid gap-0.5">
+		<div className="grid gap-1.5">
 			<dt className="text-xs font-semibold text-muted">
 				<label htmlFor={id}>{label}</label>
 			</dt>
@@ -380,16 +377,23 @@ function InlineFact({ label, value, onSave }: InlineFactProps) {
 						id={id}
 						type="button"
 						onClick={() => setDraft(value ?? "")}
-						className="w-full truncate rounded-lg text-start text-sm font-medium hover:bg-default"
+						className={cn(
+							FIELD_CLASS,
+							"cursor-text transition-colors hover:bg-default",
+							!value && "font-normal text-muted",
+						)}
 					>
-						{value || "—"}
+						<span className="truncate">{value || placeholder}</span>
 					</button>
 				) : (
 					<Input
 						fullWidth
 						id={id}
+						variant="secondary"
 						autoFocus
 						value={draft}
+						placeholder={placeholder}
+						className={cn(INPUT_CLASS, "font-medium")}
 						onChange={(event) => setDraft(event.target.value)}
 						onBlur={commit}
 						onKeyDown={(event) => {
@@ -418,7 +422,7 @@ function Tags({ application }: { application: Application }) {
 	const save = (tags: string[]) => update.mutate({ id: application.id, tags });
 
 	return (
-		<section aria-labelledby="application-tags" className="grid gap-2">
+		<section aria-labelledby="application-tags" className="grid gap-1.5">
 			<h3 id="application-tags" className="text-xs font-semibold text-muted">
 				<Trans>Tags</Trans>
 			</h3>
@@ -437,6 +441,7 @@ function Tags({ application }: { application: Application }) {
 					</Chip>
 				))}
 				<form
+					className="min-w-28 flex-1"
 					onSubmit={(event) => {
 						event.preventDefault();
 						const value = tag.trim();
@@ -446,10 +451,12 @@ function Tags({ application }: { application: Application }) {
 					}}
 				>
 					<Input
+						fullWidth
+						variant="secondary"
 						aria-label={t`Add a tag`}
-						placeholder={t`Add a tag`}
+						placeholder={application.tags.length === 0 ? t`Add a tag, then Enter` : t`Add a tag`}
 						value={tag}
-						className="w-28 text-xs"
+						className={INPUT_CLASS}
 						onChange={(event) => setTag(event.target.value)}
 					/>
 				</form>
@@ -681,7 +688,8 @@ function OpenWorkspaceButton({ application }: { application: Application }) {
 	const navigate = useNavigate();
 	return (
 		<Button
-			className="ms-auto"
+			variant="primary"
+			className="min-w-0 flex-1 px-3"
 			onPress={() =>
 				void navigate({
 					to: "/dashboard/applications/$applicationId/{-$tab}",
@@ -689,7 +697,8 @@ function OpenWorkspaceButton({ application }: { application: Application }) {
 				})
 			}
 		>
-			<Icon name="arrow-right" size={18} />
+			<ButtonGroup.Separator />
+			<Icon name="arrow-right" size={16} />
 			<Trans>Open workspace</Trans>
 		</Button>
 	);

@@ -1,5 +1,6 @@
 import type { Application } from "../../types";
 import type { InterviewTimelineEntry } from "@rezumi/schema/applications/data";
+import { Widget } from "@heroui-pro/react";
 import { Button, Dropdown, Input, Label, Modal } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
@@ -15,6 +16,7 @@ import { dayKey } from "../../interviews";
 import { describeNextStep, getNextStep } from "../../next-step";
 import { useInvalidateApplications } from "../../use-application-actions";
 import { RowIcon } from "@/components/layout/icon-row";
+import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
 type NextStepCardProps = {
@@ -23,7 +25,7 @@ type NextStepCardProps = {
 };
 
 /**
- * NEXT STEP: what the application needs, with Edit (schedule an interview or set the follow-up). Dated steps can go
+ * Next step: what the application needs, with Edit (schedule an interview or set the follow-up). Dated steps can go
  * to a calendar as an .ics file. Overdue steps are in warn.
  */
 export function NextStepCard({ application, onScheduleInterview }: NextStepCardProps) {
@@ -32,6 +34,7 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 	const step = getNextStep(application);
 	const text = describeNextStep(step, application, i18n.locale);
 	const warn = text.tone === "warn";
+	const titleId = useId();
 
 	const addToCalendar = () => {
 		if (step.kind !== "interview" && step.kind !== "follow-up") return;
@@ -50,70 +53,81 @@ export function NextStepCard({ application, onScheduleInterview }: NextStepCardP
 	};
 
 	return (
-		<section aria-labelledby="application-next-step" className="grid gap-2">
-			<h3 id="application-next-step" className="text-xs font-semibold text-muted">
-				<Trans>Next step</Trans>
-			</h3>
-			<div className={cn("grid gap-2", warn && "rounded-2xl border border-warning bg-warning-soft p-3")}>
-				<div className="flex items-center gap-3">
-					<RowIcon className={cn(warn && "bg-warning/20 text-warning-soft-foreground")}>
-						<Icon name={text.icon} size={20} />
-					</RowIcon>
-					<div className="grid min-w-0 flex-1">
-						<strong className="text-sm font-semibold">{text.title}</strong>
-						{text.sub && <span className="text-xs text-muted">{text.sub}</span>}
-					</div>
-					{step.kind !== "closed" && (
-						<Dropdown>
-							<Button variant="secondary" size="sm">
-								<Trans>Edit</Trans>
-							</Button>
-							<Dropdown.Popover placement="bottom end">
-								<Dropdown.Menu>
-									{step.kind === "interview" ? (
+		<>
+			<Widget role="region" aria-labelledby={titleId}>
+				<WidgetHeading
+					id={titleId}
+					icon="clock"
+					title={<Trans>Next step</Trans>}
+					action={
+						step.kind !== "closed" && (
+							<Dropdown>
+								<WidgetAction>
+									<Icon name="pencil-simple" size={16} />
+									<Trans>Edit</Trans>
+								</WidgetAction>
+								<Dropdown.Popover placement="bottom end">
+									<Dropdown.Menu>
+										{step.kind === "interview" ? (
+											<Dropdown.Item
+												id="edit-interview"
+												textValue={t`Edit this interview…`}
+												onAction={() => onScheduleInterview(step.interview)}
+											>
+												<Label>
+													<Trans>Edit this interview…</Trans>
+												</Label>
+											</Dropdown.Item>
+										) : null}
 										<Dropdown.Item
-											id="edit-interview"
-											textValue={t`Edit this interview…`}
-											onAction={() => onScheduleInterview(step.interview)}
+											id="schedule"
+											textValue={t`Schedule an interview…`}
+											onAction={() => onScheduleInterview(null)}
 										>
 											<Label>
-												<Trans>Edit this interview…</Trans>
+												<Trans>Schedule an interview…</Trans>
 											</Label>
 										</Dropdown.Item>
-									) : null}
-									<Dropdown.Item
-										id="schedule"
-										textValue={t`Schedule an interview…`}
-										onAction={() => onScheduleInterview(null)}
-									>
-										<Label>
-											<Trans>Schedule an interview…</Trans>
-										</Label>
-									</Dropdown.Item>
-									<Dropdown.Item
-										id="follow-up"
-										textValue={application.followUpAt ? t`Change the follow-up…` : t`Set a follow-up…`}
-										onAction={() => setFollowUpOpen(true)}
-									>
-										<Label>
-											{application.followUpAt ? <Trans>Change the follow-up…</Trans> : <Trans>Set a follow-up…</Trans>}
-										</Label>
-									</Dropdown.Item>
-								</Dropdown.Menu>
-							</Dropdown.Popover>
-						</Dropdown>
+										<Dropdown.Item
+											id="follow-up"
+											textValue={application.followUpAt ? t`Change the follow-up…` : t`Set a follow-up…`}
+											onAction={() => setFollowUpOpen(true)}
+										>
+											<Label>
+												{application.followUpAt ? (
+													<Trans>Change the follow-up…</Trans>
+												) : (
+													<Trans>Set a follow-up…</Trans>
+												)}
+											</Label>
+										</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown.Popover>
+							</Dropdown>
+						)
+					}
+				/>
+				<Widget.Content className={cn("grid gap-3", warn && "bg-warning-soft")}>
+					<div className="flex items-center gap-3">
+						<RowIcon className={cn(warn && "bg-warning/20 text-warning-soft-foreground")}>
+							<Icon name={text.icon} size={20} />
+						</RowIcon>
+						<div className="grid min-w-0 flex-1">
+							<strong className="text-sm font-semibold">{text.title}</strong>
+							{text.sub && <span className="text-sm text-muted">{text.sub}</span>}
+						</div>
+					</div>
+					{(step.kind === "interview" || step.kind === "follow-up") && (
+						<Button size="sm" variant="secondary" className="ms-row-indent w-fit" onPress={addToCalendar}>
+							<Icon name="calendar-dots" size={16} />
+							<Trans>Add to calendar</Trans>
+						</Button>
 					)}
-				</div>
-				{(step.kind === "interview" || step.kind === "follow-up") && (
-					<Button size="sm" variant="ghost" className="ms-row-indent w-fit" onPress={addToCalendar}>
-						<Icon name="calendar-dots" size={16} />
-						<Trans>Add to calendar</Trans>
-					</Button>
-				)}
-			</div>
+				</Widget.Content>
+			</Widget>
 
 			<FollowUpDialog application={application} open={followUpOpen} onOpenChange={setFollowUpOpen} />
-		</section>
+		</>
 	);
 }
 

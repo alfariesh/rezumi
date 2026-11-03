@@ -2,13 +2,13 @@ import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Widget } from "@heroui-pro/react";
 import { useId } from "react";
-import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 
 type CheckWidgetProps = {
 	icon: IconName;
 	title: ReactNode;
-	/** The header's trailing slot: a short description, a count or one small action. */
+	/** The header's trailing slot: a short description, a count or one `WidgetAction`. */
 	trailing?: ReactNode | undefined;
 	contentClassName?: string | undefined;
 	children: ReactNode;
@@ -23,15 +23,7 @@ export function CheckWidget({ icon, title, trailing, contentClassName, children 
 
 	return (
 		<Widget role="region" aria-labelledby={titleId}>
-			<Widget.Header>
-				<span className="flex min-w-0 items-center gap-2">
-					<Icon name={icon} size={16} className="shrink-0 text-muted" />
-					<Widget.Title id={titleId} className="truncate">
-						{title}
-					</Widget.Title>
-				</span>
-				{trailing}
-			</Widget.Header>
+			<WidgetHeading id={titleId} icon={icon} title={title} action={trailing} />
 			<Widget.Content className={cn("grid gap-4", contentClassName)}>{children}</Widget.Content>
 		</Widget>
 	);

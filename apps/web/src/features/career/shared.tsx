@@ -12,6 +12,7 @@ import { useEffect, useId, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { D2, EASE, EXIT } from "@/libs/motion";
 
 // ---- Time: always in the user's timezone, "Thu 8 Oct, 17:58". Relative time is secondary text. ----
@@ -245,10 +246,12 @@ export function Eyebrow({ children, className }: EyebrowProps) {
 type CareerWidgetProps = {
 	title: ReactNode;
 	/** A leading icon for the title; keep it muted, the title carries the meaning. */
-	icon?: IconName | undefined;
+	icon: IconName;
 	/** A count shown as a quiet chip after the title. */
 	count?: number | undefined;
-	/** The header's trailing slot: one short note or one small action. */
+	/** One muted line under the title. */
+	description?: ReactNode;
+	/** The header's trailing slot: one short note or one `WidgetAction`. */
 	trailing?: ReactNode;
 	className?: string | undefined;
 	contentClassName?: string | undefined;
@@ -265,6 +268,7 @@ export function CareerWidget({
 	title,
 	icon,
 	count,
+	description,
 	trailing,
 	className,
 	contentClassName,
@@ -274,20 +278,7 @@ export function CareerWidget({
 	const titleId = useId();
 	return (
 		<Widget id={id} role="region" aria-labelledby={titleId} className={cn(className)}>
-			<Widget.Header>
-				<span className="flex min-w-0 items-center gap-2">
-					{icon && <Icon name={icon} size={16} className="shrink-0 text-muted" />}
-					<Widget.Title id={titleId} role="heading" aria-level={2} className="truncate">
-						{title}
-					</Widget.Title>
-					{count !== undefined && (
-						<Chip size="sm" variant="soft" className="tabular-nums">
-							{count}
-						</Chip>
-					)}
-				</span>
-				{trailing}
-			</Widget.Header>
+			<WidgetHeading id={titleId} icon={icon} title={title} count={count} description={description} action={trailing} />
 			<Widget.Content className={cn("grid gap-3", contentClassName)}>{children}</Widget.Content>
 		</Widget>
 	);

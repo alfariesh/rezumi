@@ -1328,7 +1328,6 @@ msgstr "Aktivitas"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/career/knowledge/facts.tsx
 #: src/features/career/today.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add"
@@ -1339,13 +1338,17 @@ msgstr "Tambah"
 msgid "Add “{0}”"
 msgstr "Tambahkan “{0}”"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Add a contact"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Add a country"
 msgstr "Tambahkan negara"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Add a fact, for example “I mentored two associate PMs in 2025”"
-msgstr "Tambahkan fakta, misalnya “Saya membimbing dua associate PM pada 2025”"
+msgid "Add a fact"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Add a keyword..."
@@ -1400,6 +1403,10 @@ msgstr "Tambahkan posisi atau perusahaan yang dicari."
 msgid "Add a role, then Enter"
 msgstr "Tambahkan posisi, lalu Enter"
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a salary"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "Tambahkan bagian berjudul \"Education\". Banyak sistem memiliki kolom pendidikan yang wajib diisi."
@@ -1407,6 +1414,10 @@ msgstr "Tambahkan bagian berjudul \"Education\". Banyak sistem memiliki kolom pe
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "Tambahkan bagian berjudul \"Experience\" atau \"Work Experience\". Ini adalah kolom yang paling banyak dijadikan acuan peringkat oleh sistem."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a source"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Add a story"
@@ -1423,6 +1434,10 @@ msgstr "Tambahkan tanda"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Tambahkan tag lalu tekan Enter…"
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a tag, then Enter"
+msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1499,6 +1514,10 @@ msgstr "Tambah bukti"
 msgid "Add experience"
 msgstr "Tambahkan pengalaman"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Add fact"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add field"
 msgstr "Tambahkan bidang"
@@ -1526,10 +1545,6 @@ msgstr "Tambahkan bahasa"
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add my connection"
 msgstr "Tambah koneksi saya"
-
-#: src/features/career/knowledge/facts.tsx
-msgid "Add one above."
-msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add one in Settings to use it without credits"
@@ -1955,11 +1970,6 @@ msgstr "sebuah kesalahan"
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "Terjadi kesalahan tak terduga yang menyebabkan halaman ini gagal dimuat. Coba lagi, atau buka dasbor."
 
-#. placeholder {0}: others.length
-#: src/features/applications/components/detail/contacts.tsx
-msgid "and {0} more"
-msgstr "dan {0} lainnya"
-
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
 msgstr "Resume Anda yang lain menggunakan alamat ini."
@@ -2328,25 +2338,17 @@ msgstr "Terbaca ATS"
 msgid "ATS-safe"
 msgstr "ATS-aman"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Attach"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Attach a cover letter (PDF)"
 msgstr "Lampirkan surat lamaran (PDF)"
 
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a cover letter file (PDF)"
-msgstr "Lampirkan file surat lamaran (PDF)"
-
 #: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "Lampirkan file"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a file instead"
-msgstr "Lampirkan file sebagai gantinya"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a resume file (PDF)"
-msgstr "Lampirkan file resume (PDF)"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -3094,6 +3096,7 @@ msgstr "ID Klien"
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -4203,6 +4206,10 @@ msgstr "Berkas surat lamaran"
 msgid "Cover letter imported"
 msgstr "Surat lamaran diimpor"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Cover letter PDF"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Cover letter submitted (optional)"
@@ -4701,6 +4708,7 @@ msgstr "Desain disetel ulang ke default"
 msgid "Design systems"
 msgstr "Desain sistem"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
@@ -5564,12 +5572,12 @@ msgid "Eyebrow"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact forgotten"
-msgstr "Fakta dilupakan"
+msgid "Fact"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact type"
-msgstr "Jenis fakta"
+msgid "Fact forgotten"
+msgstr "Fakta dilupakan"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
@@ -6798,6 +6806,10 @@ msgstr "Pencarian pekerjaan gagal. Coba lagi atau tempelkan tautan postingan pek
 msgid "Job search pipeline"
 msgstr "Alur pencarian kerja"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Job title (optional)"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Job tracker with board, calendar and insights"
 msgstr "Pelacak lamaran dengan papan, kalender, dan insight"
@@ -6962,10 +6974,6 @@ msgstr "Korea"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Label"
 msgstr "Label"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Label, e.g. Recruiter"
-msgstr "Label, mis. Perekrut"
 
 #. Preset button for setting picture aspect ratio to landscape orientation
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -8083,10 +8091,6 @@ msgstr "Surat lamaran baru sebagai gantinya"
 msgid "New document"
 msgstr "Dokumen baru"
 
-#: src/features/career/knowledge/facts.tsx
-msgid "New fact"
-msgstr "Fakta baru"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "Kunci baru"
@@ -8232,8 +8236,8 @@ msgid "No connected applications yet. Apps you allow to access your account appe
 msgstr "Belum ada aplikasi yang terhubung. Aplikasi yang Anda izinkan mengakses akun Anda akan muncul di sini."
 
 #: src/features/applications/components/detail/contacts.tsx
-msgid "No contacts yet."
-msgstr "Belum ada kontak."
+msgid "No contacts yet"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No conventional section headings were found."
@@ -8364,6 +8368,10 @@ msgstr "Tidak ada pembayaran di periode ini."
 msgid "No payments."
 msgstr "Belum ada pembayaran."
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "No PDF attached"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr "Tidak ada nomor telepon"
@@ -8485,6 +8493,7 @@ msgstr "Norwegia"
 msgid "Not applied"
 msgstr "Tidak diterapkan"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "Belum melamar"
@@ -8551,6 +8560,10 @@ msgstr "Tidak termasuk"
 msgid "Not now"
 msgstr "Jangan sekarang"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not prepared yet"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
 msgstr "Belum dicatat. Biarkan kosong sampai Anda bisa mendukungnya."
@@ -8600,6 +8613,10 @@ msgstr "Tidak dipakai dalam coaching, jadi tidak bisa mendukung cerita."
 #: src/features/settings/account/profile.tsx
 msgid "Not verified yet. Resend the link"
 msgstr "Belum diverifikasi. Kirim ulang tautannya"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not written yet"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Note"
@@ -8936,6 +8953,10 @@ msgstr "Buka file yang diekspor dan pastikan Anda dapat memilih dan menyalin set
 #: src/features/billing/buy-plans.tsx
 msgid "Open the link we sent to {email}. Your receipt goes there too."
 msgstr "Buka tautan yang kami kirim ke {email}. Bukti pembayaran juga dikirim ke sana."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Open the posting"
+msgstr ""
 
 #: src/routes/auth/native-callback.tsx
 msgid "Open the Rezumi app"
@@ -9382,6 +9403,10 @@ msgstr "Pembayaran"
 msgid "PDF and Word files are read with"
 msgstr "File PDF dan Word dibaca dengan"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "PDF attached"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
 msgstr "Unduh PDF tanpa watermark"
@@ -9559,7 +9584,6 @@ msgstr "Posisi"
 msgid "posting"
 msgstr "lowongan"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
@@ -9647,6 +9671,7 @@ msgctxt "Career preferences: the roles, places, pay and ways of working you want
 msgid "Preferences"
 msgstr "Preferensi"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
 #: src/features/homepage/features.tsx
@@ -9656,10 +9681,6 @@ msgstr "Persiapan"
 #: src/features/career/schedule-sheet.tsx
 msgid "Prepare a briefing"
 msgstr "Siapkan briefing"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Prepare a resume"
-msgstr "Siapkan resume"
 
 #: src/features/homepage/introduction.tsx
 msgid "Prepare for interviews from stories you wrote once"
@@ -10310,6 +10331,10 @@ msgstr "Perekrut melihat nama ini. Nama Anda ditambah “Surat Pengantar” berf
 msgid "Recruiters see this name. Your name plus “Resume” works well."
 msgstr "Perekrut melihat nama ini. Nama Anda ditambah “resume” berfungsi dengan baik."
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Recruiters, interviewers and referrals for this job."
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Rectangle"
 msgstr "Persegi Panjang"
@@ -10512,6 +10537,7 @@ msgstr "Hapus “{name}”?"
 #. placeholder {0}: contact.name
 #. placeholder {0}: passkey.name || t`Unnamed passkey`
 #: src/features/applications/components/detail/contacts.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/settings/account/security.tsx
@@ -10735,6 +10761,7 @@ msgid "resume"
 msgstr "melanjutkan"
 
 #: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
@@ -10782,6 +10809,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
 msgstr "halaman resume"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Resume PDF"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Resume review"
@@ -10987,10 +11018,6 @@ msgstr "Sekarang"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Posisi"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Role (optional)"
-msgstr "Peran (opsional)"
 
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/entries.tsx
@@ -12110,6 +12137,10 @@ msgstr "Beberapa teks diputar."
 msgid "Something else on your mind? Write to us at"
 msgstr "Ada pertanyaan lain? Kirim email ke"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "Terjadi kesalahan. Silakan coba lagi."
@@ -12194,7 +12225,7 @@ msgstr "Tanggal tahap"
 msgid "Stage stays {stage}"
 msgstr "Tahap tetap {stage}"
 
-#: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/detail/stage-stepper.tsx
 msgid "Stages"
 msgstr "Tahapan"
 
@@ -13805,6 +13836,7 @@ msgid "Two-step verification turned on"
 msgstr "Verifikasi dua langkah diaktifkan"
 
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -14045,6 +14077,10 @@ msgstr "Gunakan satu kolom untuk apa pun yang harus dibaca secara berurutan."
 #: src/features/ats-checker/messages.ts
 msgid "Use A4 or US Letter so the layout survives being re-rendered."
 msgstr "Gunakan ukuran A4 atau US Letter agar tata letak tetap utuh saat dirender ulang."
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Use Add fact to start."
+msgstr ""
 
 #: src/features/auth/pages/register.tsx
 msgid "Use at least 3 characters."
@@ -14762,6 +14798,7 @@ msgstr "Layak ditanyakan"
 msgid "Worth asking {0}"
 msgstr "Layak ditanyakan ke {0}"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -14773,10 +14810,6 @@ msgstr "Tulis"
 #: src/features/ats-checker/messages.ts
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "Tulis \"Present\" sebagai tanggal akhir untuk peran Anda saat ini."
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Write a letter"
-msgstr "Tulis surat"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."

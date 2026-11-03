@@ -215,7 +215,7 @@ export function FitTab({ application, version }: WorkspaceTabProps) {
 			{(item.data.checks.length > 0 || item.data.ask) && (
 				<div className="grid items-start gap-4 @xl:grid-cols-2">
 					{item.data.checks.length > 0 && (
-						<CareerWidget title={<Trans>Against your requirements</Trans>}>
+						<CareerWidget icon="list-checks" title={<Trans>Against your requirements</Trans>}>
 							<ul className="grid gap-2.5">
 								{item.data.checks.map((entry) => (
 									<li key={entry.label} className="flex gap-2 text-sm leading-5">
@@ -369,6 +369,7 @@ function WorthAsking({ ask, applicationId, readOnly }: WorthAskingProps) {
 
 	return (
 		<CareerWidget
+			icon="chat-text"
 			title={ask.person ? t`Worth asking ${ask.person}` : t`Worth asking`}
 			contentClassName="justify-items-start"
 		>

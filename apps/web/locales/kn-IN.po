@@ -1328,7 +1328,6 @@ msgstr "ಚಟುವಟಿಕೆ"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/career/knowledge/facts.tsx
 #: src/features/career/today.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add"
@@ -1339,13 +1338,17 @@ msgstr "ಸೇರಿಸಿ"
 msgid "Add “{0}”"
 msgstr "\"{0}\" ಸೇರಿಸಿ"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Add a contact"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Add a country"
 msgstr "ದೇಶವನ್ನು ಸೇರಿಸಿ"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Add a fact, for example “I mentored two associate PMs in 2025”"
-msgstr "ಒಂದು ಸಂಗತಿಯನ್ನು ಸೇರಿಸಿ, ಉದಾಹರಣೆಗೆ “ನಾನು 2025 ರಲ್ಲಿ ಇಬ್ಬರು ಅಸೋಸಿಯೇಟ್ PM ಗಳಿಗೆ ಮಾರ್ಗದರ್ಶನ ನೀಡಿದೆ”"
+msgid "Add a fact"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Add a keyword..."
@@ -1400,6 +1403,10 @@ msgstr "ಹುಡುಕಬೇಕಾದ ಹುದ್ದೆ ಅಥವಾ ಕಂಪ
 msgid "Add a role, then Enter"
 msgstr "ಹುದ್ದೆಯನ್ನು ಸೇರಿಸಿ, ನಂತರ Enter ಒತ್ತಿ"
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a salary"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "\"Education\" ಎಂಬ ಶೀರ್ಷಿಕೆಯ ವಿಭಾಗವನ್ನು ಸೇರಿಸಿ. ಅನೇಕ ಸಿಸ್ಟಂಗಳಲ್ಲಿ ಶಿಕ್ಷಣ ಕ್ಷೇತ್ರ ಕಡ್ಡಾಯವಾಗಿರುತ್ತದೆ."
@@ -1407,6 +1414,10 @@ msgstr "\"Education\" ಎಂಬ ಶೀರ್ಷಿಕೆಯ ವಿಭಾಗವ�
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "\"Experience\" ಅಥವಾ \"Work Experience\" ಎಂಬ ಶೀರ್ಷಿಕೆಯ ವಿಭಾಗವನ್ನು ಸೇರಿಸಿ. ಇದು ಹೆಚ್ಚಿನ ಸಿಸ್ಟಂಗಳು ಶ್ರೇಣೀಕರಿಸುವ ಕ್ಷೇತ್ರವಾಗಿದೆ."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a source"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Add a story"
@@ -1423,6 +1434,10 @@ msgstr "ಟ್ಯಾಗ್ ಸೇರಿಸಿ"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "ಟ್ಯಾಗ್ ಸೇರಿಸಿ ಮತ್ತು Enter ಒತ್ತಿ…"
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a tag, then Enter"
+msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1499,6 +1514,10 @@ msgstr "ಪುರಾವೆ ಸೇರಿಸಿ"
 msgid "Add experience"
 msgstr "ಅನುಭವವನ್ನು ಸೇರಿಸಿ"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Add fact"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add field"
 msgstr "ಕ್ಷೇತ್ರವನ್ನು ಸೇರಿಸಿ"
@@ -1525,10 +1544,6 @@ msgstr "ಭಾಷೆಯನ್ನು ಸೇರಿಸಿ"
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add my connection"
-msgstr ""
-
-#: src/features/career/knowledge/facts.tsx
-msgid "Add one above."
 msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
@@ -1955,11 +1970,6 @@ msgstr "ಒಂದು ದೋಷ"
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "ಅನಿರೀಕ್ಷಿತ ದೋಷದಿಂದಾಗಿ ಈ ಪುಟ ಲೋಡ್ ಆಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಹೋಗಿ."
 
-#. placeholder {0}: others.length
-#: src/features/applications/components/detail/contacts.tsx
-msgid "and {0} more"
-msgstr "ಮತ್ತು {0} ಹೆಚ್ಚು"
-
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
 msgstr "ನಿಮ್ಮ ಇನ್ನೊಂದು ರೆಸ್ಯೂಮೆ ಈ ವಿಳಾಸವನ್ನು ಬಳಸುತ್ತದೆ."
@@ -2328,25 +2338,17 @@ msgstr ""
 msgid "ATS-safe"
 msgstr "ATS-ಸುರಕ್ಷಿತ"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Attach"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Attach a cover letter (PDF)"
 msgstr "ಕವರ್ ಲೆಟರ್ ಲಗತ್ತಿಸಿ (PDF)"
 
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a cover letter file (PDF)"
-msgstr "ಕವರ್ ಲೆಟರ್ ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ (PDF)"
-
 #: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a file instead"
-msgstr "ಬದಲಿಗೆ ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a resume file (PDF)"
-msgstr "ರೆಸ್ಯೂಮ್ ಫೈಲ್ ಲಗತ್ತಿಸಿ (PDF)"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -3094,6 +3096,7 @@ msgstr "ಗ್ರಾಹಕ ID"
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -4203,6 +4206,10 @@ msgstr "ಕವರ್ ಲೆಟರ್ ಫೈಲ್"
 msgid "Cover letter imported"
 msgstr "ಕವರ್ ಲೆಟರ್ ಆಮದು ಮಾಡಲಾಗಿದೆ"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Cover letter PDF"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Cover letter submitted (optional)"
@@ -4701,6 +4708,7 @@ msgstr "ವಿನ್ಯಾಸವನ್ನು ಡೀಫಾಲ್ಟ್‌ಗೆ �
 msgid "Design systems"
 msgstr "ವಿನ್ಯಾಸ ವ್ಯವಸ್ಥೆಗಳು"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
@@ -5564,12 +5572,12 @@ msgid "Eyebrow"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact forgotten"
-msgstr "ಸಂಗತಿಯನ್ನು ಮರೆಯಲಾಗಿದೆ"
+msgid "Fact"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact type"
-msgstr "ಸಂಗತಿಯ ಪ್ರಕಾರ"
+msgid "Fact forgotten"
+msgstr "ಸಂಗತಿಯನ್ನು ಮರೆಯಲಾಗಿದೆ"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
@@ -6798,6 +6806,10 @@ msgstr "ಉದ್ಯೋಗ ಹುಡುಕಾಟ ವಿಫಲವಾಗಿದೆ.
 msgid "Job search pipeline"
 msgstr "ಉದ್ಯೋಗ ಹುಡುಕಾಟ ಪೈಪ್‌ಲೈನ್"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Job title (optional)"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Job tracker with board, calendar and insights"
 msgstr ""
@@ -6962,10 +6974,6 @@ msgstr "ಕೊರಿಯನ್"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Label"
 msgstr "ಲೇಬಲ್"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Label, e.g. Recruiter"
-msgstr "ಲೇಬಲ್, ಉದಾ. ನೇಮಕಾತಿ"
 
 #. Preset button for setting picture aspect ratio to landscape orientation
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -8083,10 +8091,6 @@ msgstr "ಬದಲಿಗೆ ಹೊಸ ಕವರ್ ಲೆಟರ್"
 msgid "New document"
 msgstr "ಹೊಸ ಡಾಕ್ಯುಮೆಂಟ್"
 
-#: src/features/career/knowledge/facts.tsx
-msgid "New fact"
-msgstr "ಹೊಸ ಸಂಗತಿ"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "ಹೊಸ ಕೀ"
@@ -8232,8 +8236,8 @@ msgid "No connected applications yet. Apps you allow to access your account appe
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಸಂಪರ್ಕಿತ ಅಪ್ಲಿಕೇಶನ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಖಾತೆಗೆ ಪ್ರವೇಶಿಸಲು ನೀವು ಅನುಮತಿಸುವ ಅಪ್ಲಿಕೇಶನ್‌ಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ."
 
 #: src/features/applications/components/detail/contacts.tsx
-msgid "No contacts yet."
-msgstr "ಇನ್ನೂ ಯಾವುದೇ ಸಂಪರ್ಕಗಳಿಲ್ಲ."
+msgid "No contacts yet"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No conventional section headings were found."
@@ -8364,6 +8368,10 @@ msgstr ""
 msgid "No payments."
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "No PDF attached"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr "ಫೋನ್ ಸಂಖ್ಯೆ ಇಲ್ಲ"
@@ -8485,6 +8493,7 @@ msgstr "ನಾರ್ವೇಜಿಯನ್"
 msgid "Not applied"
 msgstr "ಅನ್ವಯಿಸಲಾಗಿಲ್ಲ"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "ಇನ್ನೂ ಅರ್ಜಿ ಸಲ್ಲಿಸಿಲ್ಲ"
@@ -8551,6 +8560,10 @@ msgstr ""
 msgid "Not now"
 msgstr "ಈಗ ಬೇಡ"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not prepared yet"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
 msgstr "ಇನ್ನೂ ದಾಖಲಿಸಿಲ್ಲ. ನೀವು ಅದನ್ನು ಬೆಂಬಲಿಸುವವರೆಗೆ ಖಾಲಿ ಬಿಡಿ."
@@ -8600,6 +8613,10 @@ msgstr "ಕೋಚಿಂಗ್‌ನಲ್ಲಿ ಬಳಸಲಾಗಿಲ್ಲ, 
 #: src/features/settings/account/profile.tsx
 msgid "Not verified yet. Resend the link"
 msgstr "ಇನ್ನೂ ಪರಿಶೀಲಿಸಲಾಗಿಲ್ಲ. ಲಿಂಕ್ ಅನ್ನು ಮರುಕಳುಹಿಸಿ"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not written yet"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Note"
@@ -8935,6 +8952,10 @@ msgstr "ಎಕ್ಸ್‌ಪೋರ್ಟ್ ಮಾಡಿದ ಫೈಲ್ ತೆ
 
 #: src/features/billing/buy-plans.tsx
 msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr ""
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Open the posting"
 msgstr ""
 
 #: src/routes/auth/native-callback.tsx
@@ -9382,6 +9403,10 @@ msgstr ""
 msgid "PDF and Word files are read with"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "PDF attached"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
 msgstr ""
@@ -9559,7 +9584,6 @@ msgstr "ಸ್ಥಾನ"
 msgid "posting"
 msgstr "ಉದ್ಯೋಗ ಜಾಹೀರಾತು"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
@@ -9647,6 +9671,7 @@ msgctxt "Career preferences: the roles, places, pay and ways of working you want
 msgid "Preferences"
 msgstr "ಆದ್ಯತೆಗಳು"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
 #: src/features/homepage/features.tsx
@@ -9656,10 +9681,6 @@ msgstr "ಸಿದ್ಧತೆ"
 #: src/features/career/schedule-sheet.tsx
 msgid "Prepare a briefing"
 msgstr "ಬ್ರೀಫಿಂಗ್ ಸಿದ್ಧಪಡಿಸಿ"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Prepare a resume"
-msgstr "ರೆಸ್ಯೂಮೆ ತಯಾರಿಸಿ"
 
 #: src/features/homepage/introduction.tsx
 msgid "Prepare for interviews from stories you wrote once"
@@ -10310,6 +10331,10 @@ msgstr "ನೇಮಕಾತಿ ಮಾಡುವವರು ಈ ಹೆಸರನ್ನ
 msgid "Recruiters see this name. Your name plus “Resume” works well."
 msgstr "ನೇಮಕಾತಿ ಮಾಡುವವರು ಈ ಹೆಸರನ್ನು ನೋಡುತ್ತಾರೆ. ನಿಮ್ಮ ಹೆಸರು ಜೊತೆಗೆ “ರೆಸ್ಯೂಮೆ” ಚೆನ್ನಾಗಿ ಕೆಲಸ ಮಾಡುತ್ತದೆ."
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Recruiters, interviewers and referrals for this job."
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Rectangle"
 msgstr "ಆಯತ"
@@ -10512,6 +10537,7 @@ msgstr "“{name}” ತೆಗೆದುಹಾಕುವುದೇ?"
 #. placeholder {0}: contact.name
 #. placeholder {0}: passkey.name || t`Unnamed passkey`
 #: src/features/applications/components/detail/contacts.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/settings/account/security.tsx
@@ -10735,6 +10761,7 @@ msgid "resume"
 msgstr "ರೆಸ್ಯೂಮೆ"
 
 #: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
@@ -10782,6 +10809,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
 msgstr "ರೆಸ್ಯೂಮ್ ಪುಟ"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Resume PDF"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Resume review"
@@ -10987,10 +11018,6 @@ msgstr "ಈಗಲೇ"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "ಹುದ್ದೆ"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Role (optional)"
-msgstr "ಪಾತ್ರ (ಐಚ್ಛಿಕ)"
 
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/entries.tsx
@@ -12110,6 +12137,10 @@ msgstr "ಕೆಲವು ಪಠ್ಯ ತಿರುಗಿಸಲ್ಪಟ್ಟಿ�
 msgid "Something else on your mind? Write to us at"
 msgstr ""
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -12194,7 +12225,7 @@ msgstr "ಹಂತದ ದಿನಾಂಕ"
 msgid "Stage stays {stage}"
 msgstr "ಹಂತ {stage} ಆಗಿಯೇ ಉಳಿಯುತ್ತದೆ"
 
-#: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/detail/stage-stepper.tsx
 msgid "Stages"
 msgstr "ಹಂತಗಳು"
 
@@ -13805,6 +13836,7 @@ msgid "Two-step verification turned on"
 msgstr "ಎರಡು ಹಂತದ ಪರಿಶೀಲನೆಯನ್ನು ಆನ್ ಮಾಡಲಾಗಿದೆ"
 
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -14045,6 +14077,10 @@ msgstr "ಕ್ರಮವಾಗಿ ಓದಬೇಕಾದ ಯಾವುದೇ ವಿ
 #: src/features/ats-checker/messages.ts
 msgid "Use A4 or US Letter so the layout survives being re-rendered."
 msgstr "ವಿನ್ಯಾಸ ಮರು-ರೆಂಡರ್ ಆದಾಗಲೂ ಉಳಿಯುವಂತೆ A4 ಅಥವಾ US Letter ಬಳಸಿ."
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Use Add fact to start."
+msgstr ""
 
 #: src/features/auth/pages/register.tsx
 msgid "Use at least 3 characters."
@@ -14762,6 +14798,7 @@ msgstr "ಕೇಳಲು ಯೋಗ್ಯ"
 msgid "Worth asking {0}"
 msgstr "{0} ಅವರನ್ನು ಕೇಳಲು ಯೋಗ್ಯ"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -14773,10 +14810,6 @@ msgstr "ಬರೆಯಿರಿ"
 #: src/features/ats-checker/messages.ts
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಪಾತ್ರದ ಅಂತಿಮ ದಿನಾಂಕವಾಗಿ \"Present\" ಎಂದು ಬರೆಯಿರಿ."
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Write a letter"
-msgstr "ಪತ್ರ ಬರೆಯಿರಿ"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."

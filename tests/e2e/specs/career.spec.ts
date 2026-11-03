@@ -94,8 +94,10 @@ test("knowledge corrections persist and the workspace opens without an AI provid
 	const corrected = "I reduced packing errors by 8 percent.";
 
 	await page.goto("/dashboard/career/knowledge/facts");
-	await page.getByLabel("New fact").fill(original);
-	await page.getByLabel("New fact").press("Enter");
+	await page.getByRole("button", { name: "Add fact", exact: true }).click();
+	const addFact = page.getByRole("dialog", { name: "Add a fact" });
+	await addFact.getByLabel("Fact", { exact: true }).fill(original);
+	await addFact.getByRole("button", { name: "Add fact", exact: true }).click();
 	await expect(page.getByText(original, { exact: true })).toBeVisible();
 	await page.getByRole("button", { name: "Correct", exact: true }).click();
 	await page.getByLabel("Correct this fact").fill(corrected);

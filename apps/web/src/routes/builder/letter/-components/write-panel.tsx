@@ -17,6 +17,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
+import { WidgetHeading, WidgetAction } from "@/components/layout/widget-heading";
 import { templates } from "@/dialogs/resume/template/data";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { getStageColor, getStageLabel } from "@/features/applications/stages";
@@ -60,7 +61,7 @@ type LetterWidgetProps = {
 	id: string;
 	icon: IconName;
 	title: ReactNode;
-	/** Trailing header content: a count chip or a small ghost action. */
+	/** Trailing header content: a count chip or one `WidgetAction`. */
 	aside?: ReactNode;
 	contentClassName?: string;
 	children: ReactNode;
@@ -70,15 +71,7 @@ type LetterWidgetProps = {
 export function LetterWidget({ id, icon, title, aside, contentClassName, children }: LetterWidgetProps) {
 	return (
 		<Widget id={id} role="region" aria-labelledby={`${id}-title`} className="scroll-mt-3">
-			<Widget.Header className="gap-3">
-				<span className="flex min-w-0 items-center gap-2">
-					<Icon name={icon} size={16} className="shrink-0 text-muted" />
-					<Widget.Title id={`${id}-title`} role="heading" aria-level={2} className="truncate">
-						{title}
-					</Widget.Title>
-				</span>
-				{aside}
-			</Widget.Header>
+			<WidgetHeading id={`${id}-title`} icon={icon} title={title} action={aside} />
 			<Widget.Content className={cn("grid min-w-0 gap-4", contentClassName)}>{children}</Widget.Content>
 		</Widget>
 	);
@@ -188,9 +181,9 @@ function ForSection({ letter, application, applications, disabled }: ForSectionP
 			aside={
 				application &&
 				menu(
-					<Button variant="ghost" size="sm" className="shrink-0" isDisabled={disabled}>
+					<WidgetAction isDisabled={disabled}>
 						<Trans>Change</Trans>
-					</Button>,
+					</WidgetAction>,
 				)
 			}
 		>

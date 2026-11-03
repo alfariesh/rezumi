@@ -17,6 +17,7 @@ import { getEntries, getOutlineRows, getSectionKind, getSectionType, moveSection
 import { SectionRow } from "./section-row";
 import { SummaryEditor } from "./summary-editor";
 import { SortableProvider } from "@/components/input/sortable";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useCurrentBuilderResumeSelector, useUpdateResumeData } from "@/features/resume/builder/draft";
 
 const ADD_LABELS: Record<CustomSectionType, MessageDescriptor> = {
@@ -119,19 +120,18 @@ function PageWidget({ pageNumber, hint, children }: PageWidgetProps) {
 
 	return (
 		<Widget role="region" aria-labelledby={titleId}>
-			<Widget.Header>
-				<span className="flex min-w-0 items-center gap-2">
-					<Icon name="file-text" size={16} className="shrink-0 text-muted" />
-					<Widget.Title id={titleId} className="truncate">
-						<Trans>Page {pageNumber}</Trans>
-					</Widget.Title>
-				</span>
-				{hint && (
-					<Widget.Description className="whitespace-nowrap max-sm:hidden">
-						<Trans>drag · ⌥↑↓</Trans>
-					</Widget.Description>
-				)}
-			</Widget.Header>
+			<WidgetHeading
+				id={titleId}
+				icon="file-text"
+				title={<Trans>Page {pageNumber}</Trans>}
+				action={
+					hint && (
+						<Widget.Description className="whitespace-nowrap max-sm:hidden">
+							<Trans>drag · ⌥↑↓</Trans>
+						</Widget.Description>
+					)
+				}
+			/>
 			<Widget.Content className="grid gap-0.5 p-1.5">{children}</Widget.Content>
 		</Widget>
 	);
