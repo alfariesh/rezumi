@@ -1,8 +1,8 @@
 # Phase 11 — Staging, uji menyeluruh, dan go-live
 
-| Dikerjakan       | Ukuran                | Bergantung pada     | Perlu dari pemilik                                                                                                                           |
-| ---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Claude + pemilik | Besar (bisa 2–3 sesi) | Phase 00–10 selesai | Akses dashboard Cloudflare, Neon, dan Midtrans; server key produksi; key AI produksi; ±2–3 jam untuk uji; satu pembayaran sungguhan Rp29.000 |
+| Dikerjakan       | Ukuran                | Bergantung pada                                                 | Perlu dari pemilik                                                                                                                           |
+| ---------------- | --------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude + pemilik | Besar (bisa 2–3 sesi) | Phase 00–10 selesai (08 boleh ditunda selama app belum di toko) | Akses dashboard Cloudflare, Neon, dan Midtrans; server key produksi; key AI produksi; ±2–3 jam untuk uji; satu pembayaran sungguhan Rp29.000 |
 
 ## Untuk pemilik
 

@@ -1,5 +1,7 @@
 # Phase 08 — Mobile: paket, kuota, dan kredit (tanpa pembelian di app)
 
+> **Ditunda (keputusan pemilik 2026-11-03).** App mobile belum dirilis di toko. Kerjakan phase ini **sebelum pengajuan pertama ke App Store/Play Store**; go-live web (Phase 11) tidak menunggunya.
+
 | Dikerjakan | Ukuran | Bergantung pada  | Perlu dari pemilik |
 | ---------- | ------ | ---------------- | ------------------ |
 | Claude     | Sedang | Phase 03, 05, 07 | —                  |
