@@ -421,6 +421,11 @@ msgstr ""
 msgid "{0} is larger than {1}."
 msgstr ""
 
+#. placeholder {0}: face.weight
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
 msgid "{0} min"
@@ -696,6 +701,10 @@ msgstr "{facts, plural, one {# واقعیت} other {# واقعیت}}"
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "{failing, plural, one {# to review} other {# to review}}"
 msgstr "{failing, plural, one {# برای بررسی} other {# برای بررسی}}"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "{family} is ready. Choose it under Font family."
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
@@ -4130,6 +4139,10 @@ msgstr "جدول زمانی به‌روزرسانی نشد. دوباره امت�
 msgid "Couldn't update this letter's versions. Try again."
 msgstr "به‌روزرسانی نسخه‌های این نامه ممکن نشد. دوباره امتحان کنید."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
+
 #. Fallback toast when uploading profile picture for resume fails
 #: src/features/resume/editor/write/picture-settings.tsx
 #: src/features/settings/account/profile.tsx
@@ -5781,6 +5794,10 @@ msgstr "یادآور پیگیری"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font family"
 msgstr "خانواده فونت"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Font pairing"
@@ -10553,6 +10570,14 @@ msgstr "حذف {chip}"
 msgid "Remove {country}"
 msgstr "حذف {country}"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}"
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove {family}?"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Remove {value}"
 msgstr "{value} را حذف کنید"
@@ -10568,6 +10593,10 @@ msgstr "حذف فیلد"
 #: src/features/applications/components/file-attachment-field.tsx
 msgid "Remove file"
 msgstr "حذف فایل"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/settings/account/security.tsx
 msgid "Remove passkey"
@@ -12790,6 +12819,10 @@ msgstr "لایه متن ✓ · 2 ستون"
 msgid "text layer found"
 msgstr "لایه متن پیدا شد"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "متن در ناحیهٔ سربرگ یا پاورقی قرار گرفته است."
@@ -13303,6 +13336,10 @@ msgstr "این فایل برای یک رزومه بزرگ است."
 msgid "This file is larger than many application forms accept."
 msgstr "این فایل بزرگ‌تر از حدی است که بسیاری از فرم‌های درخواست می‌پذیرند."
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "این نوع فایل را نمی توان وارد کرد. از یک فایل PDF، Word، Rezumi یا JSON Resume یا یک فایل صادراتی LinkedIn (.zip) استفاده کنید."
@@ -13314,6 +13351,10 @@ msgstr "این فایل از فونت‌های متفاوت زیادی استف�
 #: src/features/ats-checker/messages.ts
 msgid "This file uses Type 3 fonts, which carry drawings instead of characters."
 msgstr "این فایل از فونت‌های Type 3 استفاده می‌کند که به‌جای نویسه، تصویر حمل می‌کنند."
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -14016,9 +14057,21 @@ msgstr "بارگذاری .csv"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "یک PDF را آپلود کنید و متنی را که یک سیستم ردیابی متقاضی استخراج می‌کند، ببینید: چه چیزی کم است، چه چیزی نامرتب است، و چگونه آن را تعمیر کنیم. رایگان، بدون نیاز به حساب کاربری"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Upload photo"
 msgstr "بارگذاری عکس"
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Uploading photo…"
@@ -15129,6 +15182,14 @@ msgstr "فایل شما"
 msgid "Your focus"
 msgstr "تمرکز شما"
 
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your fonts are ready. Choose them under Font family."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "عنوان‌های شما شبیه متن اصلی به‌نظر می‌رسند."
@@ -15199,6 +15260,14 @@ msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't in your plan, so the imported document uses a standard font."
+msgstr ""
+
+#: src/features/resume/editor/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/routes/builder/letter/-components/letter-shell.tsx

@@ -1,7 +1,7 @@
 import type { ResolvedNodeStyle, SemanticNode } from "@rezumi/resume/stylesheet";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
-import { resolveBoldFontWeight } from "@rezumi/fonts";
+import { resolveTypographyBoldWeight } from "../hooks/use-register-fonts";
 import { findSection } from "../section-title";
 import { getTemplatePageSize } from "../templates/shared/page-size";
 
@@ -44,7 +44,7 @@ export function buildPdfBaseStyles({
 	const bodyWeight = body.fontWeights[0] ?? "400";
 	// Bold must use the family's true Bold face when one exists; the last
 	// stored weight is only a fallback (#3310).
-	const boldWeight = resolveBoldFontWeight(body.fontFamily, body.fontWeights) ?? body.fontWeights.at(-1) ?? "600";
+	const boldWeight = resolveTypographyBoldWeight(data.metadata.typography) ?? body.fontWeights.at(-1) ?? "600";
 	const headingWeight = heading.fontWeights.at(-1) ?? "600";
 
 	const visit = (node: SemanticNode) => {

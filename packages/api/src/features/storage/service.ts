@@ -11,6 +11,12 @@ import {
 import { ORPCError } from "@orpc/server";
 import sharp from "sharp";
 import { env } from "@rezumi/env/server";
+import {
+	MAX_UPLOADED_FONT_BYTES,
+	readFontFile,
+	UPLOADED_FONT_CONTENT_TYPES,
+	uploadedFontKey,
+} from "@rezumi/fonts/uploaded";
 import { getLocalDataDirectory } from "@rezumi/utils/monorepo.node";
 import { BlobStorageService } from "./blob";
 
@@ -52,6 +58,8 @@ const CONTENT_TYPE_MAP: Record<string, string> = {
 	".gif": "image/gif",
 	".svg": "image/svg+xml",
 	".pdf": "application/pdf",
+	".ttf": "font/ttf",
+	".otf": "font/otf",
 };
 
 const DEFAULT_CONTENT_TYPE = "application/octet-stream";
@@ -415,6 +423,41 @@ export async function uploadFile(input: UploadFileInput): Promise<UploadFileResu
 	const key = buildFileKey(input.userId, input.contentType);
 	await getStorageService().write({ key, data: input.data, contentType: input.contentType });
 	return { key, url: buildPublicUrl(key) };
+}
+
+const fontProblemMessages = {
+	"unsupported-format":
+		"Upload a single TTF or OTF font file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used.",
+	invalid: "This file isn't a font Rezumi can read. Upload a TTF or OTF font file.",
+	"no-embedding": "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF.",
+} as const;
+
+/**
+ * Stores a font file a user uploaded, after reading what it is from its own bytes (the declared type and name are
+ * never trusted). Font files are public at an unguessable address, like pictures, so shared resumes draw with them.
+ */
+export async function uploadFontFile(userId: string, file: File) {
+	if (file.size > MAX_UPLOADED_FONT_BYTES)
+		throw new ORPCError("BAD_REQUEST", { message: "Font files must be smaller than 8 MB." });
+	const data = new Uint8Array(await file.arrayBuffer());
+	const result = readFontFile(data);
+	// `data.problem` lets the apps say it in the user's language.
+	if (!result.ok)
+		throw new ORPCError("BAD_REQUEST", {
+			message: fontProblemMessages[result.problem],
+			data: { problem: result.problem },
+		});
+	const { format } = result.font;
+	const key = uploadedFontKey(userId, randomUUID(), format);
+	await getStorageService().write({ key, data, contentType: UPLOADED_FONT_CONTENT_TYPES[format] });
+	return { ...result.font, url: buildPublicUrl(key), path: key };
+}
+
+/** An uploaded font's bytes, for the server's PDF renderer. `key` comes from `parseUploadedFontUrl`. */
+export async function readUploadedFont(key: string): Promise<Uint8Array> {
+	const file = await getStorageService().read(key);
+	if (!file || file.size > MAX_UPLOADED_FONT_BYTES) throw new Error("Uploaded font unavailable");
+	return file.data;
 }
 
 /** Copy before linking; caller runs returned cleanup only after ownership commits. */

@@ -1,10 +1,11 @@
 import { call } from "@orpc/server";
 import z from "zod";
+import { MAX_UPLOADED_FONT_BYTES } from "@rezumi/fonts/uploaded";
 import { protectedProcedure } from "../context";
 import { documentExports } from "../features/documents/exports";
 import { checkResume, checkPdf, matchResume } from "../features/resume/checks";
 import { importResumeFile } from "../features/resume/imports";
-import { uploadFileOutputSchema } from "../features/storage/router";
+import { uploadFileOutputSchema, uploadFontOutputSchema } from "../features/storage/router";
 import router from "./index";
 
 // Add resource-oriented aliases without changing the routes existing clients use.
@@ -189,6 +190,19 @@ export const restAliases = {
 		.input(z.object({ file: z.file().max(10 * 1024 * 1024) }))
 		.output(uploadFileOutputSchema)
 		.handler(({ input, context }) => call(router.storage.uploadFile, input.file, { context })),
+	fontUpload: protectedProcedure
+		.route({
+			method: "POST",
+			path: "/fonts",
+			tags: ["Files"],
+			operationId: "createFont",
+			summary: "Upload a font",
+			description:
+				"Send a multipart form with a file field holding one TrueType or OpenType face (maximum 8 MiB). Returns its public URL and the family, weight and style read from the file, ready for a document's typography.customFonts. Needs a plan that includes your own fonts. Requires authentication.",
+		})
+		.input(z.object({ file: z.file().max(MAX_UPLOADED_FONT_BYTES) }))
+		.output(uploadFontOutputSchema)
+		.handler(({ input, context }) => call(router.storage.uploadFont, input.file, { context })),
 	fileDelete: router.storage.deleteFile.route({
 		method: "DELETE",
 		path: "/files",

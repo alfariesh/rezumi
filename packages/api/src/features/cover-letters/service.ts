@@ -343,6 +343,8 @@ export const coverLetterService = {
 			const style = changes.style ?? stored.style;
 			const set = Object.fromEntries(Object.entries(input.metadata).filter(([, value]) => value !== undefined));
 			changes.style = { ...style, metadata: { ...style.metadata, ...(set as Partial<typeof style.metadata>) } };
+			// Typography can bring uploaded fonts, which need the plan and the user's own files.
+			await assertDesignChange(input.userId, stored.style.metadata, changes.style.metadata);
 		}
 		if (input.name !== undefined) changes.name = coverLetterContentSchema.shape.name.parse(input.name);
 		if (input.recipient !== undefined)

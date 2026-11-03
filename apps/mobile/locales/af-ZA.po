@@ -387,6 +387,16 @@ msgstr "{0} onderhoud · {1}"
 msgid "{0} interview · {1} min"
 msgstr "{0} onderhoud · {1} min"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr ""
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -2254,6 +2264,10 @@ msgstr "Kies 'n datum"
 msgid "Choose a file"
 msgstr "Kies 'n lêer"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "Kies 'n PDF"
@@ -3158,6 +3172,10 @@ msgstr "Kon nie die tydlyn opdateer nie. Probeer weer."
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "Kon nie die lêer oplaai nie. Probeer weer."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4352,6 +4370,10 @@ msgstr "Opvolgherinnering"
 #: src/features/design/advanced.tsx
 msgid "Font family"
 msgstr "Lettertipefamilie"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
@@ -7857,6 +7879,7 @@ msgstr "Herinneringe verskyn hier. E-poskopieë is opsioneel en het 'n geverifie
 msgid "Remote"
 msgstr "Afstandwerk"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7866,6 +7889,11 @@ msgstr "Verwyder"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "Verwyder {0}"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7886,6 +7914,10 @@ msgstr "Verwyder veld"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "Verwyder lêer"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -9756,6 +9788,10 @@ msgstr "Teks word een karakter op 'n slag geskryf."
 msgid "Text only"
 msgstr "Slegs teks"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "Teks sit in die opskrif- of voetskrifarea."
@@ -10204,6 +10240,10 @@ msgstr "Hierdie lêer is groot vir 'n CV."
 msgid "This file is larger than many application forms accept."
 msgstr "Hierdie lêer is groter as wat baie aansoekvorms aanvaar."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "Hierdie lêer gebruik baie verskillende lettertipes."
@@ -10215,6 +10255,10 @@ msgstr "Hierdie lêer gebruik Tipe 3-lettertipes, wat tekeninge eerder as karakt
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "Hierdie lêer se grootte kon nie gelees word nie. Kies 'n ander PDF."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10756,9 +10800,21 @@ msgstr "Dateer tans voorskou op …"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "Laai 'n PDF op en sien die teks wat 'n aansoeker-opsporingstelsel uittrek: wat ontbreek, wat buite werking is, en hoe om dit reg te stel. Gratis, geen rekening nodig nie."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "Laai foto op"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11599,6 +11655,10 @@ msgstr "Jou feite, stories en voorkeure. Om Kennis te wysig stuur niks na 'n KI-
 msgid "Your focus"
 msgstr "Jou fokus"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "Jou opskrifte lyk dieselfde as jou lyfteks."
@@ -11664,8 +11724,16 @@ msgstr ""
 msgid "Your own fonts aren't available"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts

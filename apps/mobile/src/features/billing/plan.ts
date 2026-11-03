@@ -51,6 +51,21 @@ export const getPlanName = (planId: PlanId) => (planId === "free" ? t`Free` : pl
 /** What an import changed to fit the plan, as the server does it. Null when the file fits. */
 export function describeImportedDesign(
 	plan: PlanSummary | undefined,
+	design: {
+		template: Template;
+		stylesheet?: { source: { text: string } } | undefined;
+		typography?: { customFonts?: unknown[] | undefined } | undefined;
+	},
+): string | null {
+	const fonts = Boolean(design.typography?.customFonts?.length) && !hasPlanFeature(plan, "customFonts");
+	const notice = describeImportedTemplateAndStyles(plan, design);
+	if (!fonts) return notice;
+	const fontsNotice = t`Your own fonts aren't available, so the imported document uses a standard font.`;
+	return notice ? `${notice} ${fontsNotice}` : fontsNotice;
+}
+
+function describeImportedTemplateAndStyles(
+	plan: PlanSummary | undefined,
 	design: { template: Template; stylesheet?: { source: { text: string } } | undefined },
 ): string | null {
 	const template = isLockedTemplate(plan, design.template);

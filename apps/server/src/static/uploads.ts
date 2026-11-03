@@ -6,6 +6,8 @@ import { matchesIfNoneMatch } from "@rezumi/utils/http";
 // Uploads share the app origin and S3/Blob hand back the client-declared type, so only raster
 // images render inline. Anything else (HTML, SVG, PDF, unknown) downloads, whatever was stored.
 const INLINE_CONTENT_TYPES = new Set(["image/gif", "image/jpeg", "image/png", "image/webp"]);
+// Uploaded fonts are public too, so shared resumes draw with them; they're served as fonts, never inline documents.
+const PUBLIC_FONT_CONTENT_TYPES = new Set(["font/ttf", "font/otf"]);
 // Short enough that a deleted picture, or one whose owner was banned, leaves shared caches within the hour.
 const PUBLIC_PICTURE_CACHE_CONTROL = "public, max-age=3600";
 
@@ -19,7 +21,9 @@ export async function handleUpload(request: Request) {
 	if (segments[0] === "agent") return new Response("Not Found", { status: 404 });
 
 	const filename = filePath.split("/").pop() ?? filePath;
-	const publicPicturePath = filePath.startsWith("pictures/") && INLINE_CONTENT_TYPES.has(inferContentType(filename));
+	const publicPicturePath =
+		(filePath.startsWith("pictures/") && INLINE_CONTENT_TYPES.has(inferContentType(filename))) ||
+		(filePath.startsWith("fonts/") && PUBLIC_FONT_CONTENT_TYPES.has(inferContentType(filename)));
 	let privateAccess = false;
 	if (!publicPicturePath) {
 		const { resolveAuthenticationFromRequestHeaders } = await import("@rezumi/api/context");
@@ -35,7 +39,8 @@ export async function handleUpload(request: Request) {
 	if (!storedFile) return new Response("Not Found", { status: 404 });
 
 	const contentType = storedFile.contentType ?? inferContentType(filename);
-	const isPublicPicture = publicPicturePath && INLINE_CONTENT_TYPES.has(contentType);
+	const isPublicFont = publicPicturePath && PUBLIC_FONT_CONTENT_TYPES.has(contentType);
+	const isPublicPicture = publicPicturePath && (INLINE_CONTENT_TYPES.has(contentType) || isPublicFont);
 	if (!isPublicPicture && !privateAccess) {
 		const { resolveAuthenticationFromRequestHeaders } = await import("@rezumi/api/context");
 		const authentication = await resolveAuthenticationFromRequestHeaders(request.headers).catch(() => null);
@@ -47,7 +52,7 @@ export async function handleUpload(request: Request) {
 	if (isPublicPicture && matchesIfNoneMatch(request.headers.get("If-None-Match"), etag))
 		return new Response(null, { status: 304, headers: { ETag: etag, "Cache-Control": PUBLIC_PICTURE_CACHE_CONTROL } });
 
-	const shouldForceDownload = !INLINE_CONTENT_TYPES.has(contentType);
+	const shouldForceDownload = !INLINE_CONTENT_TYPES.has(contentType) && !isPublicFont;
 
 	const headers = new Headers();
 	headers.set("Content-Type", shouldForceDownload ? "application/octet-stream" : contentType);

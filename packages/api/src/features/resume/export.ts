@@ -25,8 +25,11 @@ export async function createResumePdfDownload(input: CreateResumePdfDownloadInpu
 		// Lazy-load the PDF renderer (@rezumi/pdf → the Forme WASM engine and
 		// the icon drawings) only when a PDF is actually exported, instead of at server
 		// boot. Keeps cold starts light on constrained/slow-disk hosts.
-		const { createResumePdfFile } = await import("@rezumi/pdf/server");
-		const body = await createResumePdfFile({ data, filename, uploadOrigin: env.APP_URL });
+		const [{ createResumePdfFile }, { readUploadedFont }] = await Promise.all([
+			import("@rezumi/pdf/server"),
+			import("../storage/service"),
+		]);
+		const body = await createResumePdfFile({ data, filename, uploadOrigin: env.APP_URL, readUploadedFont });
 
 		return {
 			headers: {

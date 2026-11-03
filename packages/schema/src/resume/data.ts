@@ -488,7 +488,9 @@ const customSectionsSchema = z.array(customSectionSchema);
 const fontWeightSchema = z.enum(["100", "200", "300", "400", "500", "600", "700", "800", "900"]);
 
 const typographyItemSchema = z.object({
-	fontFamily: z.string().describe("The family of the font to use. Must be a supported resume font."),
+	fontFamily: z
+		.string()
+		.describe("The family of the font to use. Must be a supported resume font or a family in customFonts."),
 	fontWeights: z
 		.array(fontWeightSchema)
 		.catch(["400"])
@@ -630,9 +632,29 @@ const designSchema = z.object({
 		.describe("How entry headers are arranged and decorated. When missing, entries use the stacked layout."),
 });
 
+export const customFontFaceSchema = z.object({
+	family: z.string().trim().min(1).max(64).describe("The family name the face belongs to, as read from the file."),
+	weight: fontWeightSchema.describe("The weight of this face."),
+	italic: z.boolean().catch(false).describe("Whether this face is italic."),
+	url: z
+		.string()
+		.max(500)
+		.describe("Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."),
+});
+
+export type CustomFontFace = z.infer<typeof customFontFaceSchema>;
+
 export const typographySchema = z.object({
 	body: typographyItemSchema.describe("The typography for the body of the resume."),
 	heading: typographyItemSchema.describe("The typography for the headings of the resume."),
+	customFonts: z
+		.array(customFontFaceSchema)
+		.max(24)
+		.optional()
+		.catch(undefined)
+		.describe(
+			"Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font.",
+		),
 	hyphenation: z
 		.boolean()
 		.optional()

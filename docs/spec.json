@@ -4530,7 +4530,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -4576,7 +4576,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -4616,6 +4616,52 @@
 																"lineHeight"
 															],
 															"description": "The typography for the headings of the resume."
+														},
+														"customFonts": {
+															"type": "array",
+															"maxItems": 24,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"family": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 64,
+																		"description": "The family name the face belongs to, as read from the file."
+																	},
+																	"weight": {
+																		"enum": [
+																			"100",
+																			"200",
+																			"300",
+																			"400",
+																			"500",
+																			"600",
+																			"700",
+																			"800",
+																			"900"
+																		],
+																		"type": "string",
+																		"description": "The weight of this face."
+																	},
+																	"italic": {
+																		"type": "boolean",
+																		"description": "Whether this face is italic."
+																	},
+																	"url": {
+																		"type": "string",
+																		"maxLength": 500,
+																		"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																	}
+																},
+																"required": [
+																	"family",
+																	"weight",
+																	"italic",
+																	"url"
+																]
+															},
+															"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 														},
 														"hyphenation": {
 															"type": "boolean",
@@ -9055,7 +9101,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -9101,7 +9147,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -9141,6 +9187,52 @@
 																"lineHeight"
 															],
 															"description": "The typography for the headings of the resume."
+														},
+														"customFonts": {
+															"type": "array",
+															"maxItems": 24,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"family": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 64,
+																		"description": "The family name the face belongs to, as read from the file."
+																	},
+																	"weight": {
+																		"enum": [
+																			"100",
+																			"200",
+																			"300",
+																			"400",
+																			"500",
+																			"600",
+																			"700",
+																			"800",
+																			"900"
+																		],
+																		"type": "string",
+																		"description": "The weight of this face."
+																	},
+																	"italic": {
+																		"type": "boolean",
+																		"description": "Whether this face is italic."
+																	},
+																	"url": {
+																		"type": "string",
+																		"maxLength": 500,
+																		"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																	}
+																},
+																"required": [
+																	"family",
+																	"weight",
+																	"italic",
+																	"url"
+																]
+															},
+															"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 														},
 														"hyphenation": {
 															"type": "boolean",
@@ -34607,7 +34699,7 @@
 																				"properties": {
 																					"fontFamily": {
 																						"type": "string",
-																						"description": "The family of the font to use. Must be a supported resume font."
+																						"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																					},
 																					"fontWeights": {
 																						"type": "array",
@@ -34653,7 +34745,7 @@
 																				"properties": {
 																					"fontFamily": {
 																						"type": "string",
-																						"description": "The family of the font to use. Must be a supported resume font."
+																						"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																					},
 																					"fontWeights": {
 																						"type": "array",
@@ -34693,6 +34785,52 @@
 																					"lineHeight"
 																				],
 																				"description": "The typography for the headings of the resume."
+																			},
+																			"customFonts": {
+																				"type": "array",
+																				"maxItems": 24,
+																				"items": {
+																					"type": "object",
+																					"properties": {
+																						"family": {
+																							"type": "string",
+																							"minLength": 1,
+																							"maxLength": 64,
+																							"description": "The family name the face belongs to, as read from the file."
+																						},
+																						"weight": {
+																							"enum": [
+																								"100",
+																								"200",
+																								"300",
+																								"400",
+																								"500",
+																								"600",
+																								"700",
+																								"800",
+																								"900"
+																							],
+																							"type": "string",
+																							"description": "The weight of this face."
+																						},
+																						"italic": {
+																							"type": "boolean",
+																							"description": "Whether this face is italic."
+																						},
+																						"url": {
+																							"type": "string",
+																							"maxLength": 500,
+																							"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																						}
+																					},
+																					"required": [
+																						"family",
+																						"weight",
+																						"italic",
+																						"url"
+																					]
+																				},
+																				"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																			},
 																			"hyphenation": {
 																				"type": "boolean",
@@ -35250,7 +35388,7 @@
 																				"properties": {
 																					"fontFamily": {
 																						"type": "string",
-																						"description": "The family of the font to use. Must be a supported resume font."
+																						"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																					},
 																					"fontWeights": {
 																						"type": "array",
@@ -35296,7 +35434,7 @@
 																				"properties": {
 																					"fontFamily": {
 																						"type": "string",
-																						"description": "The family of the font to use. Must be a supported resume font."
+																						"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																					},
 																					"fontWeights": {
 																						"type": "array",
@@ -35336,6 +35474,52 @@
 																					"lineHeight"
 																				],
 																				"description": "The typography for the headings of the resume."
+																			},
+																			"customFonts": {
+																				"type": "array",
+																				"maxItems": 24,
+																				"items": {
+																					"type": "object",
+																					"properties": {
+																						"family": {
+																							"type": "string",
+																							"minLength": 1,
+																							"maxLength": 64,
+																							"description": "The family name the face belongs to, as read from the file."
+																						},
+																						"weight": {
+																							"enum": [
+																								"100",
+																								"200",
+																								"300",
+																								"400",
+																								"500",
+																								"600",
+																								"700",
+																								"800",
+																								"900"
+																							],
+																							"type": "string",
+																							"description": "The weight of this face."
+																						},
+																						"italic": {
+																							"type": "boolean",
+																							"description": "Whether this face is italic."
+																						},
+																						"url": {
+																							"type": "string",
+																							"maxLength": 500,
+																							"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																						}
+																					},
+																					"required": [
+																						"family",
+																						"weight",
+																						"italic",
+																						"url"
+																					]
+																				},
+																				"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																			},
 																			"hyphenation": {
 																				"type": "boolean",
@@ -46365,7 +46549,7 @@
 																				"properties": {
 																					"fontFamily": {
 																						"type": "string",
-																						"description": "The family of the font to use. Must be a supported resume font."
+																						"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																					},
 																					"fontWeights": {
 																						"type": "array",
@@ -46411,7 +46595,7 @@
 																				"properties": {
 																					"fontFamily": {
 																						"type": "string",
-																						"description": "The family of the font to use. Must be a supported resume font."
+																						"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																					},
 																					"fontWeights": {
 																						"type": "array",
@@ -46451,6 +46635,52 @@
 																					"lineHeight"
 																				],
 																				"description": "The typography for the headings of the resume."
+																			},
+																			"customFonts": {
+																				"type": "array",
+																				"maxItems": 24,
+																				"items": {
+																					"type": "object",
+																					"properties": {
+																						"family": {
+																							"type": "string",
+																							"minLength": 1,
+																							"maxLength": 64,
+																							"description": "The family name the face belongs to, as read from the file."
+																						},
+																						"weight": {
+																							"enum": [
+																								"100",
+																								"200",
+																								"300",
+																								"400",
+																								"500",
+																								"600",
+																								"700",
+																								"800",
+																								"900"
+																							],
+																							"type": "string",
+																							"description": "The weight of this face."
+																						},
+																						"italic": {
+																							"type": "boolean",
+																							"description": "Whether this face is italic."
+																						},
+																						"url": {
+																							"type": "string",
+																							"maxLength": 500,
+																							"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																						}
+																					},
+																					"required": [
+																						"family",
+																						"weight",
+																						"italic",
+																						"url"
+																					]
+																				},
+																				"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																			},
 																			"hyphenation": {
 																				"type": "boolean",
@@ -47264,7 +47494,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -47310,7 +47540,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -47350,6 +47580,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -48053,7 +48329,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -48099,7 +48375,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -48139,6 +48415,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -48506,7 +48828,7 @@
 														"properties": {
 															"fontFamily": {
 																"type": "string",
-																"description": "The family of the font to use. Must be a supported resume font."
+																"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 															},
 															"fontWeights": {
 																"type": "array",
@@ -48552,7 +48874,7 @@
 														"properties": {
 															"fontFamily": {
 																"type": "string",
-																"description": "The family of the font to use. Must be a supported resume font."
+																"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 															},
 															"fontWeights": {
 																"type": "array",
@@ -48592,6 +48914,52 @@
 															"lineHeight"
 														],
 														"description": "The typography for the headings of the resume."
+													},
+													"customFonts": {
+														"type": "array",
+														"maxItems": 24,
+														"items": {
+															"type": "object",
+															"properties": {
+																"family": {
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64,
+																	"description": "The family name the face belongs to, as read from the file."
+																},
+																"weight": {
+																	"enum": [
+																		"100",
+																		"200",
+																		"300",
+																		"400",
+																		"500",
+																		"600",
+																		"700",
+																		"800",
+																		"900"
+																	],
+																	"type": "string",
+																	"description": "The weight of this face."
+																},
+																"italic": {
+																	"type": "boolean",
+																	"description": "Whether this face is italic."
+																},
+																"url": {
+																	"type": "string",
+																	"maxLength": 500,
+																	"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																}
+															},
+															"required": [
+																"family",
+																"weight",
+																"italic",
+																"url"
+															]
+														},
+														"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 													},
 													"hyphenation": {
 														"type": "boolean",
@@ -49260,7 +49628,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -49306,7 +49674,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -49346,6 +49714,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -49806,7 +50220,7 @@
 														"properties": {
 															"fontFamily": {
 																"type": "string",
-																"description": "The family of the font to use. Must be a supported resume font."
+																"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 															},
 															"fontWeights": {
 																"type": "array",
@@ -49852,7 +50266,7 @@
 														"properties": {
 															"fontFamily": {
 																"type": "string",
-																"description": "The family of the font to use. Must be a supported resume font."
+																"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 															},
 															"fontWeights": {
 																"type": "array",
@@ -49892,6 +50306,52 @@
 															"lineHeight"
 														],
 														"description": "The typography for the headings of the resume."
+													},
+													"customFonts": {
+														"type": "array",
+														"maxItems": 24,
+														"items": {
+															"type": "object",
+															"properties": {
+																"family": {
+																	"type": "string",
+																	"minLength": 1,
+																	"maxLength": 64,
+																	"description": "The family name the face belongs to, as read from the file."
+																},
+																"weight": {
+																	"enum": [
+																		"100",
+																		"200",
+																		"300",
+																		"400",
+																		"500",
+																		"600",
+																		"700",
+																		"800",
+																		"900"
+																	],
+																	"type": "string",
+																	"description": "The weight of this face."
+																},
+																"italic": {
+																	"type": "boolean",
+																	"description": "Whether this face is italic."
+																},
+																"url": {
+																	"type": "string",
+																	"maxLength": 500,
+																	"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																}
+															},
+															"required": [
+																"family",
+																"weight",
+																"italic",
+																"url"
+															]
+														},
+														"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 													},
 													"hyphenation": {
 														"type": "boolean",
@@ -50560,7 +51020,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -50606,7 +51066,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -50646,6 +51106,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -51374,7 +51880,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -51420,7 +51926,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -51460,6 +51966,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -52180,7 +52732,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -52226,7 +52778,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -52266,6 +52818,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -52969,7 +53567,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -53015,7 +53613,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -53055,6 +53653,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -53698,7 +54342,7 @@
 																		"properties": {
 																			"fontFamily": {
 																				"type": "string",
-																				"description": "The family of the font to use. Must be a supported resume font."
+																				"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																			},
 																			"fontWeights": {
 																				"type": "array",
@@ -53744,7 +54388,7 @@
 																		"properties": {
 																			"fontFamily": {
 																				"type": "string",
-																				"description": "The family of the font to use. Must be a supported resume font."
+																				"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																			},
 																			"fontWeights": {
 																				"type": "array",
@@ -53784,6 +54428,52 @@
 																			"lineHeight"
 																		],
 																		"description": "The typography for the headings of the resume."
+																	},
+																	"customFonts": {
+																		"type": "array",
+																		"maxItems": 24,
+																		"items": {
+																			"type": "object",
+																			"properties": {
+																				"family": {
+																					"type": "string",
+																					"minLength": 1,
+																					"maxLength": 64,
+																					"description": "The family name the face belongs to, as read from the file."
+																				},
+																				"weight": {
+																					"enum": [
+																						"100",
+																						"200",
+																						"300",
+																						"400",
+																						"500",
+																						"600",
+																						"700",
+																						"800",
+																						"900"
+																					],
+																					"type": "string",
+																					"description": "The weight of this face."
+																				},
+																				"italic": {
+																					"type": "boolean",
+																					"description": "Whether this face is italic."
+																				},
+																				"url": {
+																					"type": "string",
+																					"maxLength": 500,
+																					"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																				}
+																			},
+																			"required": [
+																				"family",
+																				"weight",
+																				"italic",
+																				"url"
+																			]
+																		},
+																		"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																	},
 																	"hyphenation": {
 																		"type": "boolean",
@@ -54373,7 +55063,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -54419,7 +55109,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -54459,6 +55149,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -55508,7 +56244,7 @@
 																			"properties": {
 																				"fontFamily": {
 																					"type": "string",
-																					"description": "The family of the font to use. Must be a supported resume font."
+																					"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																				},
 																				"fontWeights": {
 																					"type": "array",
@@ -55554,7 +56290,7 @@
 																			"properties": {
 																				"fontFamily": {
 																					"type": "string",
-																					"description": "The family of the font to use. Must be a supported resume font."
+																					"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																				},
 																				"fontWeights": {
 																					"type": "array",
@@ -55594,6 +56330,52 @@
 																				"lineHeight"
 																			],
 																			"description": "The typography for the headings of the resume."
+																		},
+																		"customFonts": {
+																			"type": "array",
+																			"maxItems": 24,
+																			"items": {
+																				"type": "object",
+																				"properties": {
+																					"family": {
+																						"type": "string",
+																						"minLength": 1,
+																						"maxLength": 64,
+																						"description": "The family name the face belongs to, as read from the file."
+																					},
+																					"weight": {
+																						"enum": [
+																							"100",
+																							"200",
+																							"300",
+																							"400",
+																							"500",
+																							"600",
+																							"700",
+																							"800",
+																							"900"
+																						],
+																						"type": "string",
+																						"description": "The weight of this face."
+																					},
+																					"italic": {
+																						"type": "boolean",
+																						"description": "Whether this face is italic."
+																					},
+																					"url": {
+																						"type": "string",
+																						"maxLength": 500,
+																						"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																					}
+																				},
+																				"required": [
+																					"family",
+																					"weight",
+																					"italic",
+																					"url"
+																				]
+																			},
+																			"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																		},
 																		"hyphenation": {
 																			"type": "boolean",
@@ -56481,7 +57263,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -56527,7 +57309,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -56567,6 +57349,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -64351,7 +65179,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -64397,7 +65225,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -64437,6 +65265,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -68862,7 +69736,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -68908,7 +69782,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -68948,6 +69822,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -73661,7 +74581,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -73707,7 +74627,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -73747,6 +74667,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -78416,7 +79382,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -78462,7 +79428,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -78502,6 +79468,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -84329,7 +85341,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -84375,7 +85387,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -84415,6 +85427,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -88989,7 +90047,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -89035,7 +90093,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -89075,6 +90133,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -96332,7 +97436,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -96378,7 +97482,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -96418,6 +97522,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -101417,7 +102567,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -101463,7 +102613,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -101503,6 +102653,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -102456,7 +103652,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -102502,7 +103698,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -102542,6 +103738,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -103236,7 +104478,7 @@
 																		"properties": {
 																			"fontFamily": {
 																				"type": "string",
-																				"description": "The family of the font to use. Must be a supported resume font."
+																				"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																			},
 																			"fontWeights": {
 																				"type": "array",
@@ -103282,7 +104524,7 @@
 																		"properties": {
 																			"fontFamily": {
 																				"type": "string",
-																				"description": "The family of the font to use. Must be a supported resume font."
+																				"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																			},
 																			"fontWeights": {
 																				"type": "array",
@@ -103322,6 +104564,52 @@
 																			"lineHeight"
 																		],
 																		"description": "The typography for the headings of the resume."
+																	},
+																	"customFonts": {
+																		"type": "array",
+																		"maxItems": 24,
+																		"items": {
+																			"type": "object",
+																			"properties": {
+																				"family": {
+																					"type": "string",
+																					"minLength": 1,
+																					"maxLength": 64,
+																					"description": "The family name the face belongs to, as read from the file."
+																				},
+																				"weight": {
+																					"enum": [
+																						"100",
+																						"200",
+																						"300",
+																						"400",
+																						"500",
+																						"600",
+																						"700",
+																						"800",
+																						"900"
+																					],
+																					"type": "string",
+																					"description": "The weight of this face."
+																				},
+																				"italic": {
+																					"type": "boolean",
+																					"description": "Whether this face is italic."
+																				},
+																				"url": {
+																					"type": "string",
+																					"maxLength": 500,
+																					"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																				}
+																			},
+																			"required": [
+																				"family",
+																				"weight",
+																				"italic",
+																				"url"
+																			]
+																		},
+																		"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																	},
 																	"hyphenation": {
 																		"type": "boolean",
@@ -103911,7 +105199,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -103957,7 +105245,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -103997,6 +105285,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -104725,7 +106059,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -104771,7 +106105,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -104811,6 +106145,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -105705,7 +107085,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -105751,7 +107131,7 @@
 																	"properties": {
 																		"fontFamily": {
 																			"type": "string",
-																			"description": "The family of the font to use. Must be a supported resume font."
+																			"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																		},
 																		"fontWeights": {
 																			"type": "array",
@@ -105791,6 +107171,52 @@
 																		"lineHeight"
 																	],
 																	"description": "The typography for the headings of the resume."
+																},
+																"customFonts": {
+																	"type": "array",
+																	"maxItems": 24,
+																	"items": {
+																		"type": "object",
+																		"properties": {
+																			"family": {
+																				"type": "string",
+																				"minLength": 1,
+																				"maxLength": 64,
+																				"description": "The family name the face belongs to, as read from the file."
+																			},
+																			"weight": {
+																				"enum": [
+																					"100",
+																					"200",
+																					"300",
+																					"400",
+																					"500",
+																					"600",
+																					"700",
+																					"800",
+																					"900"
+																				],
+																				"type": "string",
+																				"description": "The weight of this face."
+																			},
+																			"italic": {
+																				"type": "boolean",
+																				"description": "Whether this face is italic."
+																			},
+																			"url": {
+																				"type": "string",
+																				"maxLength": 500,
+																				"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																			}
+																		},
+																		"required": [
+																			"family",
+																			"weight",
+																			"italic",
+																			"url"
+																		]
+																	},
+																	"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 																},
 																"hyphenation": {
 																	"type": "boolean",
@@ -114578,7 +116004,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -114624,7 +116050,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -114664,6 +116090,52 @@
 																"lineHeight"
 															],
 															"description": "The typography for the headings of the resume."
+														},
+														"customFonts": {
+															"type": "array",
+															"maxItems": 24,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"family": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 64,
+																		"description": "The family name the face belongs to, as read from the file."
+																	},
+																	"weight": {
+																		"enum": [
+																			"100",
+																			"200",
+																			"300",
+																			"400",
+																			"500",
+																			"600",
+																			"700",
+																			"800",
+																			"900"
+																		],
+																		"type": "string",
+																		"description": "The weight of this face."
+																	},
+																	"italic": {
+																		"type": "boolean",
+																		"description": "Whether this face is italic."
+																	},
+																	"url": {
+																		"type": "string",
+																		"maxLength": 500,
+																		"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																	}
+																},
+																"required": [
+																	"family",
+																	"weight",
+																	"italic",
+																	"url"
+																]
+															},
+															"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 														},
 														"hyphenation": {
 															"type": "boolean",
@@ -119103,7 +120575,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -119149,7 +120621,7 @@
 															"properties": {
 																"fontFamily": {
 																	"type": "string",
-																	"description": "The family of the font to use. Must be a supported resume font."
+																	"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 																},
 																"fontWeights": {
 																	"type": "array",
@@ -119189,6 +120661,52 @@
 																"lineHeight"
 															],
 															"description": "The typography for the headings of the resume."
+														},
+														"customFonts": {
+															"type": "array",
+															"maxItems": 24,
+															"items": {
+																"type": "object",
+																"properties": {
+																	"family": {
+																		"type": "string",
+																		"minLength": 1,
+																		"maxLength": 64,
+																		"description": "The family name the face belongs to, as read from the file."
+																	},
+																	"weight": {
+																		"enum": [
+																			"100",
+																			"200",
+																			"300",
+																			"400",
+																			"500",
+																			"600",
+																			"700",
+																			"800",
+																			"900"
+																		],
+																		"type": "string",
+																		"description": "The weight of this face."
+																	},
+																	"italic": {
+																		"type": "boolean",
+																		"description": "Whether this face is italic."
+																	},
+																	"url": {
+																		"type": "string",
+																		"maxLength": 500,
+																		"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+																	}
+																},
+																"required": [
+																	"family",
+																	"weight",
+																	"italic",
+																	"url"
+																]
+															},
+															"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font."
 														},
 														"hyphenation": {
 															"type": "boolean",
@@ -120375,6 +121893,145 @@
 						"lang": "bash",
 						"label": "cURL",
 						"source": "curl --request DELETE \"https://rezumi.app/api/openapi/files\" --header \"x-api-key: <api-key>\" --header \"Content-Type: application/json\" --data '{\n  \"filename\": \"<string>\"\n}'"
+					}
+				]
+			}
+		},
+		"/fonts": {
+			"post": {
+				"operationId": "createFont",
+				"summary": "Upload a font",
+				"description": "Send a multipart form with a file field holding one TrueType or OpenType face (maximum 8 MiB). Returns its public URL and the family, weight and style read from the file, ready for a document's typography.customFonts. Needs a plan that includes your own fonts. Requires authentication.",
+				"tags": [
+					"Files"
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"file": {
+										"type": "string",
+										"contentMediaType": "*/*"
+									}
+								},
+								"required": [
+									"file"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"url": {
+											"type": "string",
+											"description": "The public download URL of the font file."
+										},
+										"path": {
+											"type": "string",
+											"description": "The storage path of the uploaded file."
+										},
+										"family": {
+											"type": "string",
+											"description": "The font's family name, read from the file."
+										},
+										"weight": {
+											"enum": [
+												"100",
+												"200",
+												"300",
+												"400",
+												"500",
+												"600",
+												"700",
+												"800",
+												"900"
+											],
+											"type": "string",
+											"description": "The face's weight."
+										},
+										"italic": {
+											"type": "boolean",
+											"description": "Whether the face is italic."
+										},
+										"format": {
+											"enum": [
+												"ttf",
+												"otf"
+											],
+											"type": "string",
+											"description": "The file's format."
+										}
+									},
+									"required": [
+										"url",
+										"path",
+										"family",
+										"weight",
+										"italic",
+										"format"
+									]
+								}
+							}
+						}
+					},
+					"default": {
+						"description": "Structured API error. See status and code; do not branch on message text.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"required": [
+										"defined",
+										"code",
+										"status",
+										"message"
+									],
+									"properties": {
+										"defined": {
+											"type": "boolean"
+										},
+										"code": {
+											"type": "string"
+										},
+										"status": {
+											"type": "integer"
+										},
+										"message": {
+											"type": "string"
+										},
+										"data": {}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"apiKey": []
+					},
+					{
+						"bearerAuth": []
+					},
+					{
+						"cookieAuth": []
+					}
+				],
+				"x-codeSamples": [
+					{
+						"lang": "bash",
+						"label": "cURL",
+						"source": "curl --request POST \"https://rezumi.app/api/openapi/fonts\" --header \"x-api-key: <api-key>\" --form \"file=@<file>\""
 					}
 				]
 			}
@@ -124911,7 +126568,7 @@
 										"properties": {
 											"fontFamily": {
 												"type": "string",
-												"description": "The family of the font to use. Must be a supported resume font."
+												"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 											},
 											"fontWeights": {
 												"default": [
@@ -124962,7 +126619,7 @@
 										"properties": {
 											"fontFamily": {
 												"type": "string",
-												"description": "The family of the font to use. Must be a supported resume font."
+												"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 											},
 											"fontWeights": {
 												"default": [
@@ -125007,6 +126664,53 @@
 											"lineHeight"
 										],
 										"description": "The typography for the headings of the resume."
+									},
+									"customFonts": {
+										"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font.",
+										"maxItems": 24,
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"family": {
+													"type": "string",
+													"minLength": 1,
+													"maxLength": 64,
+													"description": "The family name the face belongs to, as read from the file."
+												},
+												"weight": {
+													"type": "string",
+													"enum": [
+														"100",
+														"200",
+														"300",
+														"400",
+														"500",
+														"600",
+														"700",
+														"800",
+														"900"
+													],
+													"description": "The weight of this face."
+												},
+												"italic": {
+													"default": false,
+													"description": "Whether this face is italic.",
+													"type": "boolean"
+												},
+												"url": {
+													"type": "string",
+													"maxLength": 500,
+													"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+												}
+											},
+											"required": [
+												"family",
+												"weight",
+												"italic",
+												"url"
+											]
+										}
 									},
 									"hyphenation": {
 										"description": "Enable automatic PDF hyphenation using the resume language. Defaults to false.",

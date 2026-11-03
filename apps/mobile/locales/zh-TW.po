@@ -387,6 +387,16 @@ msgstr "{0}面試 · {1}"
 msgid "{0} interview · {1} min"
 msgstr "{0}面試 · {1} 分鐘"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr ""
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -2254,6 +2264,10 @@ msgstr "選擇日期"
 msgid "Choose a file"
 msgstr "選擇一個文件"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "選擇PDF"
@@ -3158,6 +3172,10 @@ msgstr "無法更新時間表。再試一次。"
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "無法上傳檔案。再試一次。"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4352,6 +4370,10 @@ msgstr "跟進提醒"
 #: src/features/design/advanced.tsx
 msgid "Font family"
 msgstr "字體"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
 
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
@@ -7857,6 +7879,7 @@ msgstr "提醒會顯示在這裡。電子郵件副本為選用功能，需要已
 msgid "Remote"
 msgstr "遠端"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7866,6 +7889,11 @@ msgstr "消除"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "刪除 {0}"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7886,6 +7914,10 @@ msgstr "刪除字段"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "移除檔案"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -9756,6 +9788,10 @@ msgstr "文字是逐個字元單獨寫入的。"
 msgid "Text only"
 msgstr "純文字"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "文字位於頁首或頁尾區域。"
@@ -10204,6 +10240,10 @@ msgstr "作為一份履歷來說，這個檔案偏大。"
 msgid "This file is larger than many application forms accept."
 msgstr "該檔案的大小超過了許多申請表單允許的上限。"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "該檔案使用了許多不同的字體。"
@@ -10215,6 +10255,10 @@ msgstr "該檔案使用了 Type 3 字體，這種字體攜帶的是圖形而非�
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "無法讀取檔案大小。請選擇其他 PDF。"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10756,9 +10800,21 @@ msgstr "正在更新預覽…"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "上傳 PDF 並查看申請人追蹤系統提取的文字：缺少什麼、有什麼問題以及如何修復。免費，無需帳戶。"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "上傳照片"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11599,6 +11655,10 @@ msgstr "您的事實、故事和偏好設定。編輯知識庫不會傳送任何
 msgid "Your focus"
 msgstr "您的重點"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "您的標題看起來和內文一模一樣。"
@@ -11664,8 +11724,16 @@ msgstr ""
 msgid "Your own fonts aren't available"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts

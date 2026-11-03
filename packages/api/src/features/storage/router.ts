@@ -1,8 +1,10 @@
 import { ORPCError } from "@orpc/server";
 import z from "zod";
+import { MAX_UPLOADED_FONT_BYTES } from "@rezumi/fonts/uploaded";
 import { protectedProcedure } from "../../context";
 import { storageDeleteRateLimit, storageUploadRateLimit } from "../../middleware/rate-limit";
-import { getStorageService, isImageFile, processImageForUpload, uploadFile } from "./service";
+import { assertFeature } from "../billing/limits";
+import { getStorageService, isImageFile, processImageForUpload, uploadFile, uploadFontFile } from "./service";
 
 const fileSchema = z.file().max(10 * 1024 * 1024, "File size must be less than 10MB");
 
@@ -24,7 +26,33 @@ export const uploadFileOutputSchema = z.object({
 	contentType: z.string().describe("The MIME type of the uploaded file."),
 });
 
+export const uploadFontOutputSchema = z.object({
+	url: z.string().describe("The public download URL of the font file."),
+	path: z.string().describe("The storage path of the uploaded file."),
+	family: z.string().describe("The font's family name, read from the file."),
+	weight: z.enum(["100", "200", "300", "400", "500", "600", "700", "800", "900"]).describe("The face's weight."),
+	italic: z.boolean().describe("Whether the face is italic."),
+	format: z.enum(["ttf", "otf"]).describe("The file's format."),
+});
+
 export const storageRouter = {
+	uploadFont: protectedProcedure
+		.route({
+			tags: ["Internal"],
+			operationId: "uploadFont",
+			summary: "Upload a font",
+			description:
+				"Uploads one TrueType or OpenType font face for use in documents and returns its family, weight and style as read from the file. Fonts whose licence forbids embedding are refused. Maximum file size is 8MB. Needs a plan that includes your own fonts. Requires authentication.",
+			successDescription: "The font was uploaded successfully.",
+		})
+		.input(z.file().max(MAX_UPLOADED_FONT_BYTES, "Font files must be smaller than 8 MB."))
+		.use(storageUploadRateLimit)
+		.output(uploadFontOutputSchema)
+		.handler(async ({ context, input: file }) => {
+			await assertFeature(context.user.id, "customFonts");
+			return uploadFontFile(context.user.id, file);
+		}),
+
 	uploadFile: protectedProcedure
 		.route({
 			tags: ["Internal"],
