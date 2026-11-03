@@ -309,8 +309,10 @@ function storeView(view: "grid" | "list") {
 	}
 }
 
-/** The first visit: import is the filled button here, and only here. */
-function FirstRun({ onChooseFile }: { onChooseFile: () => void }) {
+type FirstRunProps = { onChooseFile: () => void };
+
+/** The first visit, here and on Home until there is a document: import is the filled button here, and only here. */
+export function FirstRun({ onChooseFile }: FirstRunProps) {
 	const { startBlank, trySample, creating } = useStartDocument();
 
 	return (
@@ -553,7 +555,8 @@ function LibrarySkeleton({ view }: { view: "grid" | "list" }) {
 }
 
 /** A file dragged anywhere over the page shows the drop target, and dropping it starts the import. */
-function DropToImport() {
+/** A file dropped anywhere on the page opens New with it; mounted where import is offered (Documents, a first Home). */
+export function DropToImport() {
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const [dragging, setDragging] = useState(false);
 

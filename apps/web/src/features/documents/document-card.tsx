@@ -44,7 +44,7 @@ export const documentHref = (document: DocumentSummary) =>
 	document.type === "resume" ? `/builder/${document.id}` : `/builder/letter/${document.id}`;
 
 /** Opens the document in its editor: resumes and letters share the editor shell. */
-function OpenLink({
+export function OpenLink({
 	document,
 	className,
 	children,

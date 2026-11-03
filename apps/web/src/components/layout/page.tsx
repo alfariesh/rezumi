@@ -8,7 +8,7 @@ import { cn } from "@rezumi/utils/style";
  * - `default` (1440px): pages of widgets, wide enough for a main column beside a side column.
  * - `wide` (1920px): data that uses the room it gets: document grids and lists, the board, the calendar, charts.
  */
-export type PageWidth = "narrow" | "default" | "wide";
+type PageWidth = "narrow" | "default" | "wide";
 
 const WIDTHS: Record<PageWidth, string> = {
 	narrow: "max-w-[720px]",

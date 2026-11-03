@@ -27,7 +27,7 @@ test("round-trips a JSON backup and splits a legacy embedded letter on import", 
 	await writeFile(downloadPath, JSON.stringify(exportedData));
 
 	// New → Import a resume: picking the file detects the format and imports it in three steps.
-	await page.goto("/dashboard");
+	await page.goto("/dashboard/documents");
 	await page.getByRole("button", { name: "New", exact: true }).click();
 	const dialog = page.getByRole("dialog", { name: "New document" });
 	await dialog.getByLabel("Choose a file to import").setInputFiles(downloadPath);
@@ -53,14 +53,14 @@ test("round-trips a JSON backup and splits a legacy embedded letter on import", 
 	const path = testInfo.outputPath("with-letter.json");
 	await writeFile(path, JSON.stringify(exportedData));
 
-	await page.goto("/dashboard");
+	await page.goto("/dashboard/documents");
 	await page.getByRole("button", { name: "New", exact: true }).click();
 	await page.getByRole("dialog", { name: "New document" }).getByLabel("Choose a file to import").setInputFiles(path);
 	await page.getByRole("button", { name: "Open in editor" }).click();
 	await page.waitForURL(/\/builder\/.+/);
 	await expect(page.getByText("Dear Globex team,")).toHaveCount(0);
 
-	await page.goto("/dashboard");
+	await page.goto("/dashboard/documents");
 	// The type filter is a segmented control: its options are radios.
 	await page.getByRole("radio", { name: /^Letters/ }).click();
 	await expect(page.getByRole("heading", { name: /— Letter to Globex$/ })).toHaveCount(1);

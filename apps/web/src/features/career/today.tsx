@@ -29,7 +29,10 @@ import {
 	withUndo,
 } from "./shared";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
+import { Page } from "@/components/layout/page";
+import { PageHeader } from "@/components/layout/page-header";
 import { WidgetAction } from "@/components/layout/widget-heading";
+import { useDialogStore } from "@/dialogs/store";
 import {
 	collectInterviews,
 	formatDuration,
@@ -37,6 +40,8 @@ import {
 	upcomingInterviews,
 } from "@/features/applications/interviews";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
+import { DropToImport, FirstRun } from "@/features/documents/documents-page";
+import { RecentDocuments } from "@/features/documents/recent-documents";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 import { renderAsH3 } from "@/libs/typography";
@@ -44,14 +49,18 @@ import { renderAsH3 } from "@/libs/typography";
 type Notification = RouterOutput["career"]["notifications"][number];
 type Opportunity = RouterOutput["career"]["opportunities"][number];
 
-type TodayPageProps = { schedule: string | undefined; onScheduleChange: (schedule: string | undefined) => void };
+type HomePageProps = { schedule: string | undefined; onScheduleChange: (schedule: string | undefined) => void };
 
 /**
- * Career → Today: what needs you, roles found by discovery, the next interview and the schedules that produce them.
- * Below 1024px it's one column: Coming up, Needs you, New roles, Schedules.
+ * Home, the first page after signing in: what needs you and roles found by discovery in the main column; the next
+ * interview, the documents edited last and the schedules beside it. Below 1024px it's one column, most urgent first:
+ * Coming up, Needs you, Recent documents, New roles, Schedules.
  */
-export function TodayPage({ schedule, onScheduleChange }: TodayPageProps) {
+export function HomePage({ schedule, onScheduleChange }: HomePageProps) {
 	const now = useNow();
+	const openDialog = useDialogStore((state) => state.openDialog);
+	const documents = useQuery(orpc.documents.list.queryOptions({ input: { trashed: false } }));
+	const firstRun = documents.data?.length === 0;
 	const rolesRef = useRef<HTMLDivElement>(null);
 	// Deleted schedules stay hidden locally until the Undo toast closes; any mutation refetches every query.
 	const [deleted, setDeleted] = useState<string[]>([]);
@@ -81,23 +90,37 @@ export function TodayPage({ schedule, onScheduleChange }: TodayPageProps) {
 	};
 
 	return (
-		<div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
-			<div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-7">
-				<NeedsYou now={now} onReview={reviewRoles} className="order-2 lg:order-none" />
-				<NewRoles
-					ref={rolesRef}
-					now={now}
-					deleted={deleted}
-					onOpenSchedule={onScheduleChange}
-					className="order-3 scroll-mt-6 lg:order-none"
-				/>
-			</div>
-			<div className="contents lg:flex lg:flex-col lg:gap-[18px]">
-				<ComingUp now={now} className="order-1 lg:order-none" />
-				<Schedules deleted={deleted} onOpenSchedule={onScheduleChange} className="order-4 lg:order-none" />
+		<Page>
+			<PageHeader
+				title={<Trans>Home</Trans>}
+				description={<Trans>What needs you, new roles from your search, your next interview and your schedules.</Trans>}
+			/>
+			{/* Until the first document exists, starting one leads the page, as it does on Documents. */}
+			{firstRun && (
+				<>
+					<FirstRun onChooseFile={() => openDialog("document.new", undefined)} />
+					<DropToImport />
+				</>
+			)}
+			<div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
+				<div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-7">
+					<NeedsYou now={now} onReview={reviewRoles} className="order-2 lg:order-none" />
+					<NewRoles
+						ref={rolesRef}
+						now={now}
+						deleted={deleted}
+						onOpenSchedule={onScheduleChange}
+						className="order-4 scroll-mt-6 lg:order-none"
+					/>
+				</div>
+				<div className="contents lg:flex lg:flex-col lg:gap-[18px]">
+					<ComingUp now={now} className="order-1 lg:order-none" />
+					{!firstRun && <RecentDocuments className="order-3 lg:order-none" />}
+					<Schedules deleted={deleted} onOpenSchedule={onScheduleChange} className="order-5 lg:order-none" />
+				</div>
 			</div>
 			<ScheduleSheet schedule={schedule} onScheduleChange={onScheduleChange} onDelete={deleteSchedule} />
-		</div>
+		</Page>
 	);
 }
 
