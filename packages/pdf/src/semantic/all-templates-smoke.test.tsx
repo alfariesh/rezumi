@@ -18,8 +18,7 @@ describe("Semantic CSS all-template smoke", () => {
 			const placed = new Set(pageMap.nodes.flatMap((node) => (node.kind === "section" ? [node.sectionId] : [])));
 			for (const page of data.metadata.layout.pages) {
 				const sections = filterSections([...page.main, ...(page.fullWidth ? [] : page.sidebar)], data);
-				// The summary prints in the header or a featured region on some templates, outside a section box.
-				for (const id of sections) if (id !== "summary") expect(placed, `${template}: ${id}`).toContain(id);
+				for (const id of sections) expect(placed, `${template}: ${id}`).toContain(id);
 			}
 		},
 		30_000,

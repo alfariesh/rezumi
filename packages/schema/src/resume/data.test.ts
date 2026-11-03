@@ -125,3 +125,22 @@ describe("skillsSectionSchema", () => {
 		expect(result.columns).toBe(2);
 	});
 });
+
+describe("parseResumeData templates", () => {
+	const withTemplate = (template: unknown) => ({
+		...defaultResumeData,
+		metadata: { ...defaultResumeData.metadata, template },
+	});
+
+	it("reads a former template ID as its successor", () => {
+		expect(parseResumeData(withTemplate("onyx")).metadata.template).toBe("meridian");
+		expect(parseResumeData(withTemplate("azurill")).metadata.template).toBe("jejak");
+		expect(parseResumeData(withTemplate("glalie")).metadata.template).toBe("kirana");
+		expect(parseResumeData(withTemplate("vector")).metadata.template).toBe("vector");
+	});
+
+	it("falls back to the default template for an unreadable one instead of failing the resume", () => {
+		expect(parseResumeData(withTemplate("nosepass")).metadata.template).toBe("meridian");
+		expect(parseResumeData(withTemplate(undefined)).metadata.template).toBe("meridian");
+	});
+});

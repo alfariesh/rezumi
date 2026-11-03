@@ -317,7 +317,7 @@ describe("layout rules", () => {
 	it("flags a two-column template printing a sidebar, naming its sections", () => {
 		const data = makeResume((resume) => {
 			resume.sections.skills.items = [skillItem()];
-			resume.metadata.template = "azurill";
+			resume.metadata.template = "jejak";
 			resume.metadata.layout.pages = [{ fullWidth: false, main: ["experience"], sidebar: ["skills"] }];
 		});
 
@@ -334,9 +334,9 @@ describe("layout rules", () => {
 				resume.metadata.layout.pages = [{ fullWidth, main: ["experience"], sidebar: ["skills"] }];
 			});
 
-		expect(codesOf(withSidebar("onyx", false))).not.toContain("TWO_COLUMN_LAYOUT");
-		expect(codesOf(withSidebar("azurill", true))).not.toContain("TWO_COLUMN_LAYOUT");
-		expect(codesOf(withSidebar("azurill", false, false))).not.toContain("TWO_COLUMN_LAYOUT");
+		expect(codesOf(withSidebar("meridian", false))).not.toContain("TWO_COLUMN_LAYOUT");
+		expect(codesOf(withSidebar("jejak", true))).not.toContain("TWO_COLUMN_LAYOUT");
+		expect(codesOf(withSidebar("jejak", false, false))).not.toContain("TWO_COLUMN_LAYOUT");
 	});
 
 	it("leaves short-list sections in the sidebar alone", () => {

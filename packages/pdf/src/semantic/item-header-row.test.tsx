@@ -3,6 +3,7 @@ import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { createElement } from "react";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { templateLineup } from "@rezumi/schema/templates";
 import { ResumeDocument } from "../document";
 import { pdf } from "../forme/testing";
 import { resolveResumeRuntime } from "./resolve";
@@ -80,7 +81,7 @@ const renderTitleRowStyles = async (template: Template, stylesheet?: string) => 
 describe("item-header-row template part", () => {
 	// The row ships with `flex-wrap: wrap`, which drops a long title's date onto its own line. This
 	// is the whole point of exposing the part, so assert the override reaches the rendered row.
-	it.each(["onyx", "ditgar", "meowth"] as const)("lets %s stylesheets turn off the row wrap", async (template) => {
+	it.each(templateLineup)("lets %s stylesheets turn off the row wrap", async (template) => {
 		expect(await renderTitleRowStyles(template)).toMatchObject({ flexWrap: "wrap" });
 		expect(await renderTitleRowStyles(template, NOWRAP_STYLESHEET)).toMatchObject({ flexWrap: "nowrap" });
 	});

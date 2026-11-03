@@ -63,10 +63,10 @@ const NO_BORDERS = {
 // Sidebar and header placement come from `templateLayouts`, as in the PDF; only the sidebar's background is DOCX's
 // own: "solid" fills it with the primary colour (text inverts), "tint" with 20% of it.
 const SIDEBAR_BACKGROUND: Partial<Record<Template, "solid" | "tint">> = {
-	chikorita: "solid",
-	ditgar: "tint",
-	gengar: "tint",
-	glalie: "tint",
+	// Purnama's sidebar is the full accent with light text; Kirana's is a soft tint of it. The other two-column
+	// templates keep a white sidebar.
+	kirana: "tint",
+	purnama: "solid",
 };
 
 type PagePlan = { kind: "single"; sections: string[] } | { kind: "split" };

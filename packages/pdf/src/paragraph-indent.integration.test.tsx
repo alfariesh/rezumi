@@ -13,14 +13,14 @@ async function readParagraphs(content: string, locale = "en-US", sidebarWidth?: 
 	const data = structuredClone(defaultResumeData);
 	data.picture.hidden = true;
 	data.basics.name = "Jane Doe";
-	data.metadata.template = "onyx";
+	data.metadata.template = "meridian";
 	data.metadata.page.locale = locale;
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];
 	data.summary.content = content;
 	if (sidebarWidth) {
-		data.metadata.template = "chikorita";
+		data.metadata.template = "linen";
 		data.metadata.layout.sidebarWidth = sidebarWidth;
 		data.metadata.layout.pages = [{ fullWidth: false, main: [], sidebar: ["summary"] }];
 	}

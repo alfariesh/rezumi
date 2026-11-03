@@ -32,7 +32,7 @@ function makeResume(mutate: (data: ResumeData) => void = () => undefined): Resum
 				roles: [],
 			} as ResumeData["sections"]["experience"]["items"][number],
 		];
-		data.metadata.template = "onyx";
+		data.metadata.template = "meridian";
 		data.metadata.layout.pages = [{ fullWidth: false, main: ["experience"], sidebar: [] }];
 		mutate(data);
 	});
@@ -86,7 +86,7 @@ describe("buildIssues", () => {
 
 	it("switches a two-column page to one column without losing its sidebar sections", () => {
 		const data = makeResume((resume) => {
-			resume.metadata.template = "azurill";
+			resume.metadata.template = "jejak";
 			resume.sections.skills.items = [
 				{ id: "s1", hidden: false, icon: "", iconColor: "", name: "Figma", proficiency: "", level: 0, keywords: [] },
 			];

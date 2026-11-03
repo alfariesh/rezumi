@@ -27,7 +27,7 @@ function load(os) {
 		"@lingui/core/macro": { t: tag },
 		"@orpc/client": { ORPCError },
 		"react-native": { Platform: { OS: os }, Alert: { alert: (title, message) => alerts.push({ title, message }) } },
-		"@rezumi/schema/billing": { FREE_TEMPLATES: ["bronzor", "onyx", "rhyhorn", "azurill"] },
+		"@rezumi/schema/billing": { FREE_TEMPLATES: ["meridian", "sterling", "tunas", "wibawa", "kirana"] },
 		"@/features/design/presets": { templateName: (id) => id.charAt(0).toUpperCase() + id.slice(1) },
 	};
 	new Function("require", "module", "exports", code)(

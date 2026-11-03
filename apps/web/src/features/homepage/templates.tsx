@@ -9,8 +9,8 @@ import { freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
 import { templates } from "@/dialogs/resume/template/data";
 
-// The free four first, then two of the layouts Plus adds.
-const shown: Template[] = [...freeTemplates, "chikorita", "ditto"];
+// The free five first, then one of the layouts Plus adds.
+const shown: Template[] = [...freeTemplates, "horizon"];
 
 /** 02 Templates: the free ones beside a taste of the rest, each marked with the plan it comes with. */
 export function Templates() {

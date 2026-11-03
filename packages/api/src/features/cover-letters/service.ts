@@ -20,7 +20,6 @@ import {
 } from "@rezumi/schema/cover-letter/data";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
-import { upgradeTemplateId } from "@rezumi/schema/templates";
 import { assertDesignChange, assertDocumentCapacity, fitImportedDesign } from "../billing/limits";
 import { lockUser } from "../documents/ownership";
 import { resumeService } from "../resume/service";
@@ -268,7 +267,7 @@ export const coverLetterService = {
 	 */
 	create: async (input: CreateInput) => {
 		// A letter takes its resume's design as it is; only a template chosen for it here needs the plan.
-		const template = input.template && upgradeTemplateId(input.template);
+		const { template } = input;
 		if (template) await assertDesignChange(input.userId, null, { template });
 		const application = await getOwnedApplication(input.userId, input.applicationId);
 		const style = await getResumeStyle(input.userId, input.resumeId);
@@ -337,7 +336,7 @@ export const coverLetterService = {
 		changes.designLinked = designLinked;
 
 		if (input.template) {
-			const template = upgradeTemplateId(input.template);
+			const { template } = input;
 			await assertDesignChange(input.userId, stored.style.metadata, { template });
 			const style = changes.style ?? stored.style;
 			changes.style = { ...style, metadata: { ...style.metadata, template } };

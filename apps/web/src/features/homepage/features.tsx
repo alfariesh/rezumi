@@ -51,14 +51,14 @@ function WriteGraphic() {
 function DesignGraphic() {
 	const fan = [
 		{
-			id: "azurill",
+			id: "jejak",
 			className: "-rotate-8 -translate-x-[70%] motion-safe:group-hover:[@media(hover:hover)]:-translate-x-[85%]",
 		},
 		{
-			id: "bronzor",
+			id: "atlas",
 			className: "rotate-8 translate-x-[70%] motion-safe:group-hover:[@media(hover:hover)]:translate-x-[85%]",
 		},
-		{ id: "onyx", className: "z-10 -translate-y-2" },
+		{ id: "meridian", className: "z-10 -translate-y-2" },
 	];
 	return (
 		<div className="absolute inset-0 flex items-start justify-center pt-10">

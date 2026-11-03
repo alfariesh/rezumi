@@ -6,7 +6,7 @@ Run from repository root (Node 24; generated Forme binaries required):
 TSX_TSCONFIG_PATH=packages/pdf/tsconfig.json node --import ./apps/server/node_modules/tsx/dist/loader.mjs apps/mobile/scripts/parity/host.mts
 ```
 
-Host renders the unchanged sample with all 17 templates through `@rezumi/pdf/server`, plus an Azurill free-form case to exercise a measured second pass. Only the picture source changes to the repository JPEG data URI, identically on both sides. PDF.js independently extracts page count and exact concatenated text per page from the Node and uploaded native PDFs. Results contain counts, timings and booleans, never document text or font/image bytes.
+Host renders the unchanged sample with all 16 templates through `@rezumi/pdf/server`, plus a Jejak free-form case to exercise a measured second pass. Only the picture source changes to the repository JPEG data URI, identically on both sides. PDF.js independently extracts page count and exact concatenated text per page from the Node and uploaded native PDFs. Results contain counts, timings and booleans, never document text or font/image bytes.
 
 Launch the dev build on a dedicated device with Metro on 8086, then open:
 

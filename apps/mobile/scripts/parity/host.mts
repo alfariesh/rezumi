@@ -45,7 +45,7 @@ const cases = [...templateSchema.options, "free-form"];
 for (const name of cases) {
 	const data = structuredClone(fixture);
 	if (name === "free-form") data.metadata.page.format = "free-form";
-	const template = name === "free-form" ? "azurill" : templateSchema.parse(name);
+	const template = name === "free-form" ? "jejak" : templateSchema.parse(name);
 	const file = await createResumePdfFile({ data, template, filename: `${name}.pdf` });
 	const baseline = await extract(new Uint8Array(await file.arrayBuffer()));
 	baselines.set(name, baseline);

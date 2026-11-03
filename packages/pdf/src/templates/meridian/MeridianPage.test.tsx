@@ -25,7 +25,7 @@ const renderHeader = async (locale: string, hasPicture: boolean) => {
 	data.metadata.typography.heading.fontFamily = "Helvetica";
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
 	data.metadata.layout.pages = [{ fullWidth: true, main: [], sidebar: [] }];
-	const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<
+	const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<
 		typeof renderToBuffer
 	>[0];
 	let bytes: Uint8Array = new Uint8Array();
@@ -45,8 +45,11 @@ const renderHeader = async (locale: string, hasPicture: boolean) => {
 	}
 };
 
-describe("Onyx headline width (#3339)", () => {
-	it.each([{ locale: "en-US", hasPicture: true }])(
+describe("Meridian headline width (#3339)", () => {
+	it.each([
+		{ locale: "en-US", hasPicture: true },
+		{ locale: "en-US", hasPicture: false },
+	])(
 		"keeps the complete headline within page margins ($locale, picture: $hasPicture)",
 		async ({ locale, hasPicture }) => {
 			const lines = await renderHeader(locale, hasPicture);
@@ -56,14 +59,15 @@ describe("Onyx headline width (#3339)", () => {
 					.join(" ")
 					.replace(/\s+/g, " "),
 			).toBe(HEADLINE);
+			// The 100pt photo sits at the trailing edge of the header, followed by the configured 4pt gap, and the
+			// headline wraps before it.
+			const limit = hasPicture ? 565.38 - 100 - 4 : 565.38;
 			for (const line of lines) {
 				expect(line.transform[4]).toBeGreaterThanOrEqual(29.9);
-				expect(line.transform[4] + line.width).toBeLessThanOrEqual(565.38);
+				expect(line.transform[4] + line.width).toBeLessThanOrEqual(limit);
 			}
-			if (locale === "en-US" && hasPicture) {
-				// The 100pt photo keeps its width, followed by the configured 4pt gap.
-				expect(lines[0]?.transform[4]).toBeCloseTo(134, 1);
-			}
+			// Meridian's header is left aligned, so every wrapped line starts at the margin.
+			for (const line of lines) expect(line.transform[4]).toBeCloseTo(30, 1);
 		},
 	);
 });

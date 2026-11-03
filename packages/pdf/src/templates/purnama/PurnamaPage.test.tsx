@@ -34,7 +34,7 @@ function fixture({ columns, gapX }: FixtureOptions): ResumeData {
 }
 
 async function renderText(options: FixtureOptions): Promise<TextRun[]> {
-	const bytes = await act(() => renderToBuffer(<ResumeDocument data={fixture(options)} template="ditgar" />));
+	const bytes = await act(() => renderToBuffer(<ResumeDocument data={fixture(options)} template="purnama" />));
 	const loading = getDocument({ data: new Uint8Array(bytes), useSystemFonts: true });
 	try {
 		const document = await loading.promise;
@@ -60,7 +60,7 @@ function assertAligned(runs: TextRun[]) {
 	}
 }
 
-describe("Ditgar item-header alignment (#3068)", () => {
+describe("Purnama item-header alignment (#3068)", () => {
 	it("aligns Projects in 1 columns at gapX 4", async () => {
 		assertAligned(await renderText({ columns: 1, gapX: 4 }));
 	});

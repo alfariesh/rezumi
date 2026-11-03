@@ -1,5 +1,5 @@
 import z from "zod";
-import { templateSchema, upgradeTemplateId } from "../templates";
+import { readableTemplateSchema } from "../templates";
 import { dateFormatSchema, resumeDatesSchema, syncResumeDates, upgradeResumeDates } from "./dates";
 import { upgradeResumeIcons } from "./icon-names";
 import { semanticStylesheetSchema } from "./stylesheet";
@@ -835,9 +835,9 @@ export type StyleRule = z.infer<typeof styleRuleSchema>;
 export type StyleRuleTarget = z.infer<typeof styleRuleTargetSchema>;
 
 export const metadataSchema = z.object({
-	template: templateSchema
-		.catch("meridian")
-		.describe("The template to use for the resume. Determines the overall design and appearance of the resume."),
+	template: readableTemplateSchema.describe(
+		"The template to use for the resume. Determines the overall design and appearance of the resume.",
+	),
 	layout: layoutSchema.describe(
 		"The layout of the resume. Determines the structure and arrangement of the sections on the resume.",
 	),
@@ -913,12 +913,12 @@ export const parseResumeData = (data: unknown): ResumeData => {
 };
 
 /**
- * Brings a parsed resume's design up to date: a former template becomes its successor, former icon names their
- * resume icon set match, and the icon switches once kept under `metadata.page` (read from the unparsed `source`)
- * become `metadata.design.icons`. Every read and write of resume data goes through it.
+ * Brings a parsed resume's design up to date: former icon names become their resume icon set match, and the icon
+ * switches once kept under `metadata.page` (read from the unparsed `source`) become `metadata.design.icons`. A former
+ * template ID is already its successor by now (`readableTemplateSchema`). Every read and write of resume data goes
+ * through it.
  */
 export const upgradeResumeDesign = (parsed: ResumeData, source: unknown) => {
-	parsed.metadata.template = upgradeTemplateId(parsed.metadata.template);
 	upgradeResumeIcons(parsed, (source as { metadata?: { page?: Record<string, unknown> } } | null)?.metadata?.page);
 };
 

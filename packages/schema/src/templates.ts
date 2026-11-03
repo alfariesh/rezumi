@@ -1,48 +1,6 @@
 import z from "zod";
 
-export const templateSchema = z.enum([
-	"aksara",
-	"atlas",
-	"azurill",
-	"bronzor",
-	"cendekia",
-	"chikorita",
-	"ditgar",
-	"ditto",
-	"gengar",
-	"glalie",
-	"horizon",
-	"jejak",
-	"kakuna",
-	"kirana",
-	"lapras",
-	"leafish",
-	"linen",
-	"meowth",
-	"meridian",
-	"onyx",
-	"persian",
-	"pikachu",
-	"porygon",
-	"purnama",
-	"rhyhorn",
-	"scizor",
-	"senja",
-	"smeargle",
-	"sterling",
-	"summit",
-	"tenun",
-	"tunas",
-	"vector",
-	"wibawa",
-]);
-
-export type Template = z.infer<typeof templateSchema>;
-
-/**
- * The templates offered for new choices: the November 2026 lineup, in gallery order. The former templates still
- * render the documents that use them until they are removed (.agents/docs/plans/cv-templates).
- */
+/** The templates, in gallery order. */
 export const templateLineup = [
 	"meridian",
 	"sterling",
@@ -60,13 +18,20 @@ export const templateLineup = [
 	"jejak",
 	"purnama",
 	"senja",
-] as const satisfies readonly Template[];
+] as const;
 
-export type LineupTemplate = (typeof templateLineup)[number];
+/** The only template IDs the apps, the API and the JSON Schema for agents name. */
+export const templateSchema = z.enum(templateLineup);
+
+export type Template = z.infer<typeof templateSchema>;
+
+/** The template a new resume starts with, and the one an unreadable ID falls back to. */
+export const defaultTemplate = "meridian" as const satisfies Template;
 
 /**
- * The template that took each former template's place (see `.agents/docs/plans/cv-templates/00-keputusan.md`). Data
- * naming a former template is read and saved with its successor, so no resume or letter is drawn the old way.
+ * The template that took each former template's place (see `.agents/docs/plans/cv-templates/00-keputusan.md`). The
+ * former templates no longer exist; data naming one (a saved resume, a Reactive Resume export, an older API client)
+ * is read and saved with its successor, so no resume or letter is drawn the old way.
  */
 export const legacyTemplateSuccessors = {
 	azurill: "jejak",
@@ -87,11 +52,34 @@ export const legacyTemplateSuccessors = {
 	rhyhorn: "meridian",
 	scizor: "summit",
 	smeargle: "aksara",
-} as const satisfies Record<Exclude<Template, LineupTemplate>, LineupTemplate>;
+} as const satisfies Record<string, Template>;
 
-/** The lineup template to use for `template`: itself, or a former template's successor. */
-export const upgradeTemplateId = (template: Template): LineupTemplate =>
-	(legacyTemplateSuccessors as Partial<Record<Template, LineupTemplate>>)[template] ?? (template as LineupTemplate);
+export type LegacyTemplate = keyof typeof legacyTemplateSuccessors;
+
+/** The successor of a former template ID, or undefined for anything else. */
+export const formerTemplateSuccessor = (template: unknown): Template | undefined =>
+	typeof template === "string" && Object.hasOwn(legacyTemplateSuccessors, template)
+		? legacyTemplateSuccessors[template as LegacyTemplate]
+		: undefined;
+
+/** `template` itself, a former template's successor, or the default for anything else. */
+export const upgradeTemplateId = (template: unknown): Template => {
+	const parsed = templateSchema.safeParse(template);
+	return formerTemplateSuccessor(template) ?? (parsed.success ? parsed.data : defaultTemplate);
+};
+
+/**
+ * For API inputs: a template ID, with a former one accepted and replaced by its successor. Anything else is rejected.
+ * The JSON Schema for agents lists only the templates (a preprocessed schema documents its output).
+ */
+export const templateInputSchema = z.preprocess((value) => formerTemplateSuccessor(value) ?? value, templateSchema);
+
+/**
+ * For stored and imported data: a template ID, a former one included. Anything unreadable becomes the default
+ * template instead of failing the whole document. The fallback is a fixed value because the JSON Schema cannot
+ * describe a computed one.
+ */
+export const readableTemplateSchema = templateInputSchema.catch(defaultTemplate);
 
 /** Who each lineup template is for, in a line, for AI agents choosing one (the apps have their own translated copy). */
 export const templateSummaries = {
@@ -112,7 +100,7 @@ export const templateSummaries = {
 	jejak: "Two columns with experience and education as a timeline; career stories.",
 	purnama: "Two columns: deep dark sidebar with the name and portrait in light text; elegant.",
 	senja: "Two columns, creative: accent block framing the portrait beside an oversized name.",
-} as const satisfies Record<LineupTemplate, string>;
+} as const satisfies Record<Template, string>;
 
 /** How a template lays out the page. The single source for the gallery filters, the Check layout rule and DOCX. */
 export type TemplateLayout = {
@@ -129,35 +117,16 @@ export type TemplateLayout = {
 const oneColumn: TemplateLayout = { columns: 1, sidebarSide: null, headerPlacement: "full-width", atsSafe: true };
 
 export const templateLayouts = {
+	meridian: oneColumn,
+	sterling: oneColumn,
 	aksara: oneColumn,
 	atlas: oneColumn,
-	azurill: { columns: 2, sidebarSide: "left", headerPlacement: "full-width", atsSafe: false },
-	// Bronzor prints sidebar sections as labelled rows inside one column.
-	bronzor: oneColumn,
-	cendekia: oneColumn,
-	chikorita: { columns: 2, sidebarSide: "right", headerPlacement: "main-only", atsSafe: false },
-	ditgar: { columns: 2, sidebarSide: "left", headerPlacement: "sidebar-only", atsSafe: false },
-	ditto: { columns: 2, sidebarSide: "left", headerPlacement: "full-width", atsSafe: false },
-	gengar: { columns: 2, sidebarSide: "left", headerPlacement: "sidebar-only", atsSafe: false },
-	glalie: { columns: 2, sidebarSide: "left", headerPlacement: "sidebar-only", atsSafe: false },
-	kakuna: oneColumn,
-	lapras: oneColumn,
-	leafish: { columns: 2, sidebarSide: "right", headerPlacement: "full-width", atsSafe: false },
-	meowth: oneColumn,
-	meridian: oneColumn,
-	onyx: oneColumn,
-	persian: oneColumn,
-	pikachu: { columns: 2, sidebarSide: "left", headerPlacement: "main-only", atsSafe: false },
-	porygon: oneColumn,
-	rhyhorn: oneColumn,
-	scizor: oneColumn,
-	smeargle: oneColumn,
-	sterling: oneColumn,
-	summit: oneColumn,
-	tenun: oneColumn,
 	tunas: oneColumn,
-	vector: oneColumn,
+	summit: oneColumn,
+	cendekia: oneColumn,
 	wibawa: oneColumn,
+	tenun: oneColumn,
+	vector: oneColumn,
 	kirana: { columns: 2, sidebarSide: "left", headerPlacement: "main-only", atsSafe: false },
 	linen: { columns: 2, sidebarSide: "right", headerPlacement: "full-width", atsSafe: false },
 	horizon: { columns: 2, sidebarSide: "right", headerPlacement: "full-width", atsSafe: false },
@@ -166,11 +135,6 @@ export const templateLayouts = {
 	senja: { columns: 2, sidebarSide: "right", headerPlacement: "full-width", atsSafe: false },
 } as const satisfies Record<Template, TemplateLayout>;
 
-/**
- * The look a template was designed with: fonts, accent, entry layout and picture shape. Gallery samples and new
- * resumes start from it, and Design can apply it on request; switching templates alone keeps the user's own choices.
- * Only the November 2026 lineup has presets.
- */
 type FontWeight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
 
 export type TemplatePreset = {
@@ -198,7 +162,11 @@ const preset = (
 	...extra,
 });
 
-export const templatePresets: Partial<Record<Template, TemplatePreset>> = {
+/**
+ * The look a template was designed with: fonts, accent, entry layout and picture shape. Gallery samples and new
+ * resumes start from it, and Design can apply it on request; switching templates alone keeps the user's own choices.
+ */
+export const templatePresets: Record<Template, TemplatePreset> = {
 	meridian: preset(["Plus Jakarta Sans", "700", 13], ["Plus Jakarta Sans", 9.5, 1.45], "rgba(31, 58, 104, 1)"),
 	sterling: preset(["EB Garamond", "600", 13], ["EB Garamond", 10.5, 1.4], "rgba(28, 32, 41, 1)", {
 		picture: { radius: 0.5, aspectRatio: 1 },

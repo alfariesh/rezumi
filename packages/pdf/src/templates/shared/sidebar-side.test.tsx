@@ -36,17 +36,21 @@ const columnEdges = async (template: Template, sidebarSide?: "left" | "right", l
 };
 
 describe("sidebar side", () => {
-	it.each(["azurill"] as const)("puts %s's sidebar on the side chosen", { timeout: 60_000 }, async (template) => {
-		const left = await columnEdges(template, "left");
-		const right = await columnEdges(template, "right");
+	it.each(["jejak", "kirana", "linen", "horizon", "senja"] as const)(
+		"puts %s's sidebar on the side chosen",
+		{ timeout: 60_000 },
+		async (template) => {
+			const left = await columnEdges(template, "left");
+			const right = await columnEdges(template, "right");
 
-		expect(left.sidebar).toBeLessThan(left.main);
-		expect(right.sidebar).toBeGreaterThan(right.main);
-	});
+			expect(left.sidebar).toBeLessThan(left.main);
+			expect(right.sidebar).toBeGreaterThan(right.main);
+		},
+	);
 
 	it("keeps a chosen side on a right-to-left page, and mirrors the template's own side without a choice", async () => {
-		const chosen = await columnEdges("azurill", "left", "ar-SA");
-		const own = await columnEdges("azurill", undefined, "ar-SA");
+		const chosen = await columnEdges("jejak", "left", "ar-SA");
+		const own = await columnEdges("jejak", undefined, "ar-SA");
 
 		expect(chosen.sidebar).toBeLessThan(chosen.main);
 		expect(own.sidebar).toBeGreaterThan(own.main);

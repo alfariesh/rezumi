@@ -92,8 +92,8 @@ const renderTexts = async (template: Template, data: ResumeData) => {
 const cases = entryHeaderLayouts.flatMap((layout) =>
 	(["organization", "role"] as const).flatMap((lead) =>
 		[
-			["onyx", "main"],
-			["chikorita", "sidebar"],
+			["meridian", "main"],
+			["linen", "sidebar"],
 		].map(([template, placement]) => ({ layout, lead, template: template as Template, placement })),
 	),
 );
@@ -132,7 +132,7 @@ describe("entry header layouts", () => {
 			const data = fixture({ layout: "inline", lead, accent: "none" }, "main");
 			const page = data.metadata.layout.pages[0];
 			if (!page) throw new Error("Missing page");
-			const tree = buildSemanticTree({ data, template: "onyx", page, pageNumber: 1, showHeader: true });
+			const tree = buildSemanticTree({ data, template: "meridian", page, pageNumber: 1, showHeader: true });
 			const partsOf = (node: SemanticNode): string[][] => [
 				...(node.kind === "item-header"
 					? [node.children.flatMap((child) => (child.kind === "template-part" ? [child.attributes.name ?? ""] : []))]

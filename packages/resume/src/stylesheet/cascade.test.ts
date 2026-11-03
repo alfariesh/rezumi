@@ -24,7 +24,7 @@ const items = node("items-experience", "section-items", {
 	children: [node("item-1", "item"), node("item-2", "item"), node("item-3", "item")],
 });
 const tree = node("resume", "resume", {
-	attributes: { template: "onyx" },
+	attributes: { template: "meridian" },
 	children: [
 		node("page-1", "page", {
 			attributes: { "page-number": "1" },

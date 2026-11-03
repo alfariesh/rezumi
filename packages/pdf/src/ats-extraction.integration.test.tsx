@@ -8,6 +8,7 @@ import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { createElement } from "react";
 import { analyzePdfResume, harvestPdfDocument, PDF_OPS } from "@rezumi/resume/ats-pdf";
 import { sampleResumeData } from "@rezumi/schema/resume/sample";
+import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { ResumeDocument } from "./document";
 import { renderToBuffer } from "./forme/testing";
 
@@ -16,7 +17,7 @@ const NOW = new Date("2024-06-15T00:00:00Z");
 const fixture = (name: string) =>
 	new Uint8Array(readFileSync(fileURLToPath(new URL(`../fixtures/ats/${name}`, import.meta.url))));
 
-async function renderResume(data: ResumeData, template: Template = "onyx"): Promise<Uint8Array> {
+async function renderResume(data: ResumeData, template: Template = "meridian"): Promise<Uint8Array> {
 	const element = createElement(ResumeDocument, { data, template }) as unknown as Parameters<typeof renderToBuffer>[0];
 	return new Uint8Array(await renderToBuffer(element));
 }
@@ -61,17 +62,45 @@ describe("PDF operator numbers", () => {
 
 describe("a resume rendered by this app", () => {
 	/**
-	 * The regression guard for this whole feature: the app's own default single-column export has
-	 * to come out clean. Anything the checker reports here, it reports to every user of this app,
-	 * so a false positive shows up as a failing assertion rather than as lost trust.
+	 * The regression guard for this whole feature: the app's own single-column exports have to come out clean.
+	 * Anything the checker reports here, it reports to every user of this app, so a false positive shows up as a
+	 * failing assertion rather than as lost trust.
+	 *
+	 * Meridian and Sterling set their name and section titles in tracked capitals, which pdf.js reads back one letter
+	 * at a time ("E D U C A T I O N"), so the checker does not find those sections. That is what each reports today;
+	 * the ATS text-extraction pass (Phase 07 in .agents/docs/plans/cv-templates) is to bring both to nothing, and
+	 * this table then shrinks with them.
 	 */
-	it("reports nothing that would cost a single-column export points", { timeout: 60_000 }, async () => {
-		const { raw, report } = await analyze(await renderResume(sampleResumeData, "onyx"));
+	const expected: Record<string, { findings: string[]; score: number }> = {
+		meridian: { findings: ["NO_EDUCATION_SECTION"], score: 98 },
+		sterling: { findings: ["NO_EDUCATION_SECTION", "NO_SKILLS_SECTION", "NO_NAME_LINE"], score: 94 },
+		aksara: { findings: [], score: 100 },
+		atlas: { findings: [], score: 100 },
+		tunas: { findings: [], score: 100 },
+		summit: { findings: [], score: 100 },
+		cendekia: { findings: [], score: 100 },
+		wibawa: { findings: [], score: 100 },
+		tenun: { findings: [], score: 100 },
+		vector: { findings: [], score: 100 },
+	};
 
-		expect(raw.pages.length).toBeGreaterThan(0);
-		expect(raw.operatorsAvailable).toBe(true);
-		expect(report.findings.map((finding) => finding.code)).toEqual([]);
-		expect(report.score).toBe(100);
+	it.each(Object.keys(expected))(
+		"reports only what is known for %s, a single-column export",
+		{ timeout: 60_000 },
+		async (template) => {
+			expect(templateLayouts[template as Template].columns).toBe(1);
+			const { raw, report } = await analyze(await renderResume(sampleResumeData, template as Template));
+
+			expect(raw.pages.length).toBeGreaterThan(0);
+			expect(raw.operatorsAvailable).toBe(true);
+			expect(report.findings.map((finding) => finding.code)).toEqual(expected[template]?.findings);
+			expect(report.score).toBe(expected[template]?.score);
+		},
+	);
+
+	it("covers every single-column template", () => {
+		const oneColumn = templateLineup.filter((template) => templateLayouts[template].columns === 1);
+		expect(Object.keys(expected).toSorted()).toEqual(oneColumn.toSorted());
 	});
 });
 

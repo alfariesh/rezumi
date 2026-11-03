@@ -1,8 +1,7 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import type { Template } from "@rezumi/schema/templates";
 import z, { ZodError } from "zod";
 import { defaultIconDesign, resumeDataSchema } from "@rezumi/schema/resume/data";
-import { templateSchema } from "@rezumi/schema/templates";
+import { upgradeTemplateId } from "@rezumi/schema/templates";
 import { parseColorString } from "@rezumi/utils/color";
 import { generateId } from "@rezumi/utils/string";
 import { rethrowAsImportError } from "./error";
@@ -473,9 +472,8 @@ export function parseReactiveResumeV4JSON(json: string): ResumeData {
 				}),
 			})),
 			metadata: {
-				template: (templateSchema.safeParse(v4Data.metadata.template).success
-					? v4Data.metadata.template
-					: "onyx") as Template,
+				// Reactive Resume's templates (Onyx, Pikachu, …) are mapped to their successors here.
+				template: upgradeTemplateId(v4Data.metadata.template),
 				layout: {
 					sidebarWidth: 35,
 					pages: (v4Data.metadata.layout ?? []).map((page) => {

@@ -71,7 +71,7 @@ const list = (items: string[]) =>
 	items.length ? `<ul>${items.map((item) => `<li><p>${escape(item)}</p></li>`).join("")}</ul>` : "";
 const noLink = { url: "", label: "", inlineLink: false };
 
-/** The fixture as resume data, in the shape the editor saves: one-column Onyx, A4, in the resume's language. */
+/** The fixture as resume data, in the shape the editor saves: one-column Meridian, A4, in the resume's language. */
 export function toResumeData(resume: ResumeFixture): ResumeData {
 	const base = structuredClone(defaultResumeData);
 	const data: ResumeData = {

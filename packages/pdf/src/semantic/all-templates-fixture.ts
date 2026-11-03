@@ -14,7 +14,7 @@ rich-text list-item > list-item-content { line-height: 1.25; }
 region[placement="sidebar"] section { background-color: rgba(0, 0, 0, 0.04); }
 section[type="projects"] { break-inside: avoid; -resume-min-presence-ahead: 24pt; }
 @media (max-width: 600pt) { region[placement="sidebar"] section-heading { font-size: 9pt; } }
-resume[template="azurill"] template-part[name="timeline-dot"] { background-color: var(--accent); }
+resume[template="jejak"] template-part[name="timeline-dot"] { background-color: var(--accent); }
 `,
 } as const;
 

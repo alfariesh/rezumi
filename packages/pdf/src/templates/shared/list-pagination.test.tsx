@@ -8,23 +8,16 @@ import { resolveResumeRuntime } from "../../semantic/resolve";
 
 async function listPages(margin: number, repeats = 5, options: { html?: string } = {}) {
 	const data = structuredClone(defaultResumeData);
-	// Measured with the defaults resumes had before November 2026 (Onyx, 14 × 12 pt margins, 10 pt IBM Plex Serif).
-	data.metadata.template = "onyx";
+	// The page, margins and type are fixed here so the thresholds below only move with the template (Meridian).
+	data.metadata.template = "meridian";
 	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
 	data.metadata.typography.body = {
-		fontFamily: "IBM Plex Serif",
+		fontFamily: "Helvetica",
 		fontWeights: ["400", "500"],
 		fontSize: 10,
 		lineHeight: 1.5,
 	};
-	data.metadata.typography.heading = {
-		fontFamily: "IBM Plex Serif",
-		fontWeights: ["600"],
-		fontSize: 14,
-		lineHeight: 1.5,
-	};
-	data.metadata.typography.body.fontFamily = "Helvetica";
-	data.metadata.typography.heading.fontFamily = "Helvetica";
+	data.metadata.typography.heading = { fontFamily: "Helvetica", fontWeights: ["600"], fontSize: 14, lineHeight: 1.5 };
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];
 	data.summary.title = "Summary";
 	data.summary.content =
@@ -37,9 +30,9 @@ async function listPages(margin: number, repeats = 5, options: { html?: string }
 			text: `@version 1; page { size: 300pt 300pt; } rich-text { margin-top: ${margin}pt; }`,
 		},
 	};
-	const runtime = resolveResumeRuntime({ data, template: "onyx" });
+	const runtime = resolveResumeRuntime({ data, template: "meridian" });
 	expect(runtime.diagnostics).toEqual([]);
-	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="onyx" />));
+	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="meridian" />));
 	const task = getDocument({ data: new Uint8Array(bytes), useSystemFonts: true });
 	try {
 		const doc = await task.promise;
@@ -71,12 +64,12 @@ async function listPages(margin: number, repeats = 5, options: { html?: string }
 // again with that item starting the next page.
 describe("list marker pagination (#3344)", () => {
 	it("keeps content on the current page when the first paragraph can start", async () => {
-		const result = await listPages(192);
+		const result = await listPages(188);
 		expect(result.first).toBe(0);
 		expect(result.marker).toBe(result.first);
 	});
 	it("allows a long list item to continue across pages", async () => {
-		const result = await listPages(194, 30);
+		const result = await listPages(190, 30);
 		expect(result.first).toBe(1);
 		expect(result.marker).toBe(result.first);
 		expect(result.last).toBeGreaterThan(result.first);

@@ -38,9 +38,8 @@ AI provider names are brand names and stay in English: OpenAI, Anthropic Claude,
 Gemini, Vercel AI Gateway, OpenRouter, Mistral AI, Cohere, xAI Grok, Groq, DeepSeek, Together.ai,
 Fireworks, Cerebras, Perplexity, Ollama.
 
-Template names are proper nouns and are never translated: Azurill, Bronzor, Chikorita, Ditgar,
-Ditto, Gengar, Glalie, Kakuna, Lapras, Leafish, Meowth, Onyx, Pikachu, Porygon, Rhyhorn, Scizor,
-Smeargle.
+Template names are proper nouns and are never translated: Meridian, Sterling, Aksara, Atlas, Tunas,
+Summit, Cendekia, Wibawa, Tenun, Vector, Kirana, Linen, Horizon, Jejak, Purnama, Senja.
 
 ## The document
 

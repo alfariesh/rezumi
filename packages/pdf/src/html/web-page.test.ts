@@ -43,7 +43,7 @@ describe("renderResumeWebPage", () => {
 
 	it("puts the main column before the sidebar when the page folds on a phone", async () => {
 		const data = structuredClone(sampleResumeData);
-		data.metadata.template = "gengar";
+		data.metadata.template = "kirana";
 		const { html, css } = await renderResumeWebPage({ data });
 
 		expect(html).toMatch(/data-split[\s\S]*data-part="(?:header-sidebar|sidebar)"[\s\S]*data-part="main"/);

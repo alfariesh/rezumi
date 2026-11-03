@@ -29,8 +29,8 @@ async function renderList({ font, rtl = false, count = 102, nested = false }: Op
 			description: `${nested ? "<ul><li>Outer" : ""}<ol>${Array.from({ length: count }, (_, index) => `<li><strong>ITEM0_${String(index + 1).padStart(3, "0")}</strong></li>`).join("")}</ol>${nested ? "</li></ul>" : ""}`,
 		},
 	];
-	expect(resolveResumeRuntime({ data, template: "rhyhorn" }).diagnostics).toEqual([]);
-	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="rhyhorn" />));
+	expect(resolveResumeRuntime({ data, template: "meridian" }).diagnostics).toEqual([]);
+	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="meridian" />));
 	const loading = getDocument({ data: new Uint8Array(bytes), useSystemFonts: true });
 	try {
 		const document = await loading.promise;

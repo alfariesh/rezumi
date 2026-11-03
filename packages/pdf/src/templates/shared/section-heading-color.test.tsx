@@ -1,3 +1,4 @@
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act, createElement } from "react";
@@ -6,7 +7,7 @@ import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
 
-const renderHeading = async (css: string, hideSectionIcons = false) => {
+const renderHeading = async (template: Template, css: string, hideSectionIcons = false) => {
 	const data = structuredClone(defaultResumeData);
 	data.basics.name = "Audit";
 	data.metadata.typography.body.fontFamily = "Helvetica";
@@ -22,7 +23,7 @@ const renderHeading = async (css: string, hideSectionIcons = false) => {
 	];
 	const element = createElement(ResumeDocument, {
 		data,
-		template: "scizor",
+		template,
 	}) as unknown as Parameters<typeof renderToBuffer>[0];
 	let bytes: Uint8Array = new Uint8Array();
 	await act(async () => {
@@ -55,13 +56,18 @@ const renderHeading = async (css: string, hideSectionIcons = false) => {
 	}
 };
 
-describe("Semantic section heading colors (#3348)", () => {
+// Summit prints the other section heading as typed; Atlas prints it in capitals.
+describe.each([
+	["summit", "Heading"],
+	["atlas", "HEADING"],
+] as const)("Semantic section heading colors in %s (#3348)", (template, printed) => {
 	it("applies heading color and text styles with section icons visible", async () => {
 		const { text, sizes } = await renderHeading(
+			template,
 			"section-heading { color: #1234ef; } section[type='skills'] section-heading { font-size: 21pt; text-transform: lowercase; }",
 		);
 		expect(text).toContainEqual({ value: "heading", fill: "#1234ef" });
-		expect(text).toContainEqual({ value: "HEADING", fill: "#1234ef" });
+		expect(text).toContainEqual({ value: printed, fill: "#1234ef" });
 		expect(sizes).toContainEqual({ value: "heading", size: 21 });
 	});
 });

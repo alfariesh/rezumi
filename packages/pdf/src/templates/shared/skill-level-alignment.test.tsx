@@ -15,20 +15,26 @@ type FixtureOptions = {
 	configure?: (data: ResumeData) => void;
 };
 
+// Meridian prints section titles in the accent colour; blacking them out leaves only the rating circles red.
+const TITLE_INK = "section-heading { color: #000000; }";
+
 function setCss(data: ResumeData, css: string) {
-	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: `@version 1; ${css}` } };
+	data.metadata.stylesheet = {
+		mode: "semantic",
+		source: { languageVersion: 1, text: `@version 1; ${TITLE_INK} ${css}` },
+	};
 }
 
 async function renderRatings({ columns, count, configure }: FixtureOptions) {
 	const data = structuredClone(defaultResumeData);
-	// The geometry below was measured with the margins resumes had before November 2026.
+	// The margins are fixed here so the geometry below only moves with the template (Meridian).
 	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";
 	data.metadata.design.icons = { ...defaultIconDesign, contact: false, items: false };
 	data.metadata.design.colors.primary = "rgba(255, 0, 0, 1)";
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["skills"], sidebar: [] }];
-	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
+	setCss(data, "");
 	data.sections.skills.columns = columns;
 	data.sections.skills.items = Array.from({ length: count }, (_, index) => ({
 		id: `skill-${index}`,
@@ -41,8 +47,8 @@ async function renderRatings({ columns, count, configure }: FixtureOptions) {
 		keywords: index === 1 ? Array.from({ length: 12 }, (_, word) => `Keyword${word}`) : ["Short"],
 	}));
 	configure?.(data);
-	expect(resolveResumeRuntime({ data, template: "onyx" }).diagnostics).toEqual([]);
-	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="onyx" />));
+	expect(resolveResumeRuntime({ data, template: "meridian" }).diagnostics).toEqual([]);
+	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="meridian" />));
 	const pages = await rasterizePdf(new Uint8Array(bytes));
 	const loading = getDocument({ data: new Uint8Array(bytes) });
 	const text: string[] = [];
@@ -77,7 +83,7 @@ async function renderRatings({ columns, count, configure }: FixtureOptions) {
 				previous.circles = Math.max(previous.circles, segments);
 			} else rows.push({ top: y, bottom: y, circles: segments });
 		}
-		// Onyx's thin section separator is red too; retain only the circle bands.
+		// Meridian's section rule is accent red too; retain only the circle bands.
 		return rows.filter((row) => row.bottom - row.top > 5);
 	});
 	return { rows, text: text.join(" ") };

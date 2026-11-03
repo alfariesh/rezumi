@@ -81,10 +81,10 @@ export function rgbaToHex(color: string): string | null {
 		.toUpperCase()}`;
 }
 
-/** "onyx" → "Onyx": web's template names are the ids, capitalised. */
+/** "meridian" → "Meridian": web's template names are the ids, capitalised. */
 export const templateName = (id: Template) => id.charAt(0).toUpperCase() + id.slice(1);
 
-/** "Onyx, Balanced type, Moss" for the Write pane's design note; `typeLabel` words the pairing ("Balanced type"). */
+/** "Meridian, Balanced type, Moss" for the Write pane's design note; `typeLabel` words the pairing ("Balanced type"). */
 export function designSummary(metadata: Metadata, i18n: I18n, typeLabel: (pairing: string) => string) {
 	const pairing = matchFontPairing(metadata)?.label;
 	const accent = ACCENTS.find((option) => option.hex === rgbaToHex(metadata.design.colors.primary))?.label;

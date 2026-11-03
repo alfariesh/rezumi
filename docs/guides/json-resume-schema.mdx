@@ -81,7 +81,7 @@ A skill item has no `description` field. Use `keywords` for tools or topics, and
 - **Rich text is HTML.** Fields such as `description` and `summary.content` hold HTML strings.
 - **IDs.** Every item and custom section needs a unique `id`. Use a UUID.
 - **Cover letters.** The schema still accepts custom sections of type `cover-letter` so older exports stay valid. When you save or import such a resume, Rezumi moves each letter into a cover letter of its own and removes the section. See [Writing a cover letter](/guides/writing-a-cover-letter).
-- **Templates.** `metadata.template` is one of the 18 templates: `azurill`, `bronzor`, `chikorita`, `ditgar`, `ditto`, `gengar`, `glalie`, `kakuna`, `lapras`, `leafish`, `meowth`, `onyx`, `persian`, `pikachu`, `porygon`, `rhyhorn`, `scizor` or `smeargle`.
+- **Templates.** `metadata.template` is one of the 16 templates: `meridian`, `sterling`, `aksara`, `atlas`, `tunas`, `summit`, `cendekia`, `wibawa`, `tenun`, `vector`, `kirana`, `linen`, `horizon`, `jejak`, `purnama` or `senja`. An ID from the earlier template set, such as `onyx` or `azurill`, is still read and saved as the template that replaced it.
 - **No version field.** Resume objects have no top-level `version` or `$schema` property. Don't add one; point your tools at the schema URL instead.
 
 ## Validate resume data
@@ -4374,44 +4374,25 @@ The complete schema, generated from the source code of this version.
 			"type": "object",
 			"properties": {
 				"template": {
-					"default": "meridian",
 					"description": "The template to use for the resume. Determines the overall design and appearance of the resume.",
 					"type": "string",
 					"enum": [
+						"meridian",
+						"sterling",
 						"aksara",
 						"atlas",
-						"azurill",
-						"bronzor",
+						"tunas",
+						"summit",
 						"cendekia",
-						"chikorita",
-						"ditgar",
-						"ditto",
-						"gengar",
-						"glalie",
+						"wibawa",
+						"tenun",
+						"vector",
+						"kirana",
+						"linen",
 						"horizon",
 						"jejak",
-						"kakuna",
-						"kirana",
-						"lapras",
-						"leafish",
-						"linen",
-						"meowth",
-						"meridian",
-						"onyx",
-						"persian",
-						"pikachu",
-						"porygon",
 						"purnama",
-						"rhyhorn",
-						"scizor",
-						"senja",
-						"smeargle",
-						"sterling",
-						"summit",
-						"tenun",
-						"tunas",
-						"vector",
-						"wibawa"
+						"senja"
 					]
 				},
 				"layout": {
