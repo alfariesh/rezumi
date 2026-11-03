@@ -60,7 +60,7 @@ export function AuthErrorPage({ code, description }: AuthErrorPageProps) {
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans comment="Title on the page shown after a failed or cancelled OAuth sign-in">
 						Sign-in didn't complete
 					</Trans>

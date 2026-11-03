@@ -179,7 +179,7 @@ function TrackerGraphic() {
 						<span className="truncate">{column.label}</span>
 					</p>
 					{column.cards.map(([company, role]) => (
-						<div key={company} className="rounded-xl bg-surface-secondary p-3">
+						<div key={company} className="rounded-xl bg-foreground/10 p-3">
 							<p className="truncate text-sm font-medium">{company}</p>
 							<p className="truncate text-xs text-muted">{role}</p>
 						</div>
@@ -208,7 +208,7 @@ function LetterGraphic() {
 function InterviewGraphic() {
 	return (
 		<div className="absolute inset-0 flex flex-col justify-center gap-3 px-8">
-			<div className="rounded-2xl bg-surface-secondary p-4">
+			<div className="rounded-2xl bg-surface-tertiary p-4">
 				<p className="text-xs text-muted">{t`Practice question`}</p>
 				<p className="mt-1 text-sm font-medium text-pretty">{t`Tell me about a time you led a redesign.`}</p>
 			</div>
@@ -231,7 +231,7 @@ function AssistantGraphic() {
 			<p className="max-w-[80%] self-end rounded-2xl rounded-ee-md bg-accent px-4 py-2.5 text-accent-foreground">
 				{t`Tailor my resume to the Northwind posting.`}
 			</p>
-			<div className="flex max-w-[85%] flex-col items-start gap-2 self-start rounded-2xl rounded-es-md bg-surface-secondary px-4 py-3">
+			<div className="flex max-w-[85%] flex-col items-start gap-2 self-start rounded-2xl rounded-es-md bg-surface-tertiary px-4 py-3">
 				<p className="text-pretty">
 					{t`Done. I rewrote 6 bullets around design systems and prototyping and kept your numbers. Review the changes before you save.`}
 				</p>
@@ -300,7 +300,7 @@ export function Features() {
 				</div>
 			</Container>
 
-			<div className="dark mt-20 bg-background py-20 text-foreground sm:mt-28 sm:py-28">
+			<div className="dark mt-20 bg-surface py-20 text-foreground sm:mt-28 sm:py-28">
 				<Container>
 					<p className="text-sm font-semibold text-accent">{t`Beyond the resume`}</p>
 					<p className="mt-2 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
@@ -309,6 +309,7 @@ export function Features() {
 
 					<div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6">
 						<BentoCard
+							raised
 							eyebrow={t`Track`}
 							title={t`Every application on one board`}
 							description={t`Move each job from saved to offer, with notes, dates and the resume you sent.`}
@@ -317,6 +318,7 @@ export function Features() {
 							className="max-lg:rounded-t-[2rem] lg:col-span-4 lg:rounded-ss-[2rem]"
 						/>
 						<BentoCard
+							raised
 							eyebrow={t`Write letters`}
 							title={t`Cover letters that match`}
 							description={t`Letters share your resume's design and live beside the job they are for.`}
@@ -324,6 +326,7 @@ export function Features() {
 							className="lg:col-span-2 lg:rounded-se-[2rem]"
 						/>
 						<BentoCard
+							raised
 							eyebrow={t`Prepare`}
 							title={t`Walk in ready`}
 							description={t`Practice answers from stories you wrote once, then debrief after each round.`}
@@ -331,6 +334,7 @@ export function Features() {
 							className="lg:col-span-2 lg:rounded-es-[2rem]"
 						/>
 						<BentoCard
+							raised
 							eyebrow={t`Assistant`}
 							title={t`AI that works on your real documents`}
 							description={t`Ask for a tailored version, a cover letter or interview practice. Pro AI includes the credits; any plan can use your own key.`}

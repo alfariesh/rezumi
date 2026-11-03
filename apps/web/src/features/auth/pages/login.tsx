@@ -154,21 +154,20 @@ export function LoginPage({ disableEmailAuth, disableSignups, allowGuestLogin }:
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans comment="Title on the login page">Sign in to your account</Trans>
 				</Typography>
 
 				{!disableSignups && (
 					<div className="text-muted">
-						<Trans>
+						<Trans comment="Call-to-action link from login page to account registration page">
 							Don't have an account?{" "}
 							<Link
 								to="/auth/register"
 								search={{ callbackURL, reauthenticate }}
 								className={linkVariants().base({ className: "gap-1.5 px-1" })}
 							>
-								<Trans comment="Call-to-action link from login page to account registration page">Create one now</Trans>{" "}
-								<Icon name="arrow-right" size={16} />
+								Create one now <Icon name="arrow-right" size={16} />
 							</Link>
 						</Trans>
 					</div>

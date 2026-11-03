@@ -1,8 +1,7 @@
 import { t } from "@lingui/core/macro";
-import { Icon } from "@rezumi/ui/components/icon";
 import { Container, CtaLink } from "./ui";
 
-/** The closing call to action: one more invitation on the accent panel, and the Android app beside it. */
+/** The closing call to action: one more invitation on the accent panel. */
 export function Closing() {
 	return (
 		<section aria-labelledby="closing-title" className="pb-20 sm:pb-28">
@@ -15,15 +14,8 @@ export function Closing() {
 						<p className="mt-4 text-lg text-pretty text-accent-foreground/80">
 							{t`Start from scratch or import the one you have. The free plan is yours for as long as you need it.`}
 						</p>
-						<div className="mt-8 flex flex-wrap items-center gap-3">
+						<div className="mt-8">
 							<CtaLink variant="secondary" />
-							<a
-								href="https://play.google.com/store/apps/details?id=app.rezumi"
-								className="inline-flex min-h-11 items-center gap-2 rounded-full px-4 font-medium text-accent-foreground hover:bg-accent-foreground/10"
-							>
-								<Icon name="google-play-logo" size={20} />
-								{t`Get it on Google Play`}
-							</a>
 						</div>
 					</div>
 				</div>

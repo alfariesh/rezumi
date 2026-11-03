@@ -58,16 +58,15 @@ export function ForgotPasswordPage() {
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans>Forgot your password?</Trans>
 				</Typography>
 
 				<div className="text-muted">
-					<Trans>
+					<Trans comment="Call-to-action link from forgot-password page to login page">
 						Remember your password?{" "}
 						<Link to="/auth/login" className={linkVariants().base({ className: "gap-1.5 px-1" })}>
-							<Trans comment="Call-to-action link from forgot-password page to login page">Sign in now</Trans>{" "}
-							<Icon name="arrow-right" size={16} />
+							Sign in now <Icon name="arrow-right" size={16} />
 						</Link>
 					</Trans>
 				</div>
@@ -120,7 +119,7 @@ function PostForgotPasswordScreen() {
 		// Replaces the form in place: fades up into the auth column, with the layout's 24px gap.
 		<div className={cn(ENTER_CLASS, "grid gap-y-6")}>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans>Check your email</Trans>
 				</Typography>
 				<p className="text-muted">
