@@ -1,13 +1,13 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
-import { Avatar, Separator } from "@heroui/react";
+import { Separator } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { Icon } from "@rezumi/ui/components/icon";
-import { getInitials } from "@rezumi/utils/string";
 import { PageHeader } from "@/components/layout/page-header";
 import { usePlan } from "@/features/billing/plan";
+import { UserAvatar } from "@/features/user/avatar";
 
 // Phones: a section pushes in from the end and Back returns from the start (styles in index.css, after the page
 // transition). Browsers without view-transition types swap instantly, as for every other navigation.
@@ -39,10 +39,7 @@ export function SettingsRoot() {
 		<div className="grid gap-4">
 			<PageHeader title={<Trans>Settings</Trans>} />
 			<div className="flex items-center gap-3">
-				<Avatar color="accent" variant="soft" className="size-12">
-					{session.user.image && <Avatar.Image src={session.user.image} alt="" />}
-					<Avatar.Fallback className="font-semibold">{getInitials(session.user.name)}</Avatar.Fallback>
-				</Avatar>
+				<UserAvatar name={session.user.name} image={session.user.image} className="size-12" />
 				<span className="grid min-w-0">
 					<b className="truncate text-lg font-semibold">{session.user.name}</b>
 					<span className="truncate text-sm text-muted">{session.user.email}</span>

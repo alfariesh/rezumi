@@ -1,7 +1,7 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { AppLayout, Navbar, Sidebar, useSidebar } from "@heroui-pro/react";
-import { Avatar, Button, Kbd } from "@heroui/react";
+import { Button, Kbd } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useHotkey } from "@tanstack/react-hotkeys";
@@ -12,11 +12,11 @@ import { useState } from "react";
 import { BrandIcon } from "@rezumi/ui/components/brand-icon";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
-import { getInitials } from "@rezumi/utils/string";
 import { useDialogStore } from "@/dialogs/store";
 import { GuestBanner } from "@/features/auth/components/guest-banner";
 import { useCommandPaletteStore } from "@/features/command-palette/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
+import { UserAvatar } from "@/features/user/avatar";
 import { UserDropdownMenu } from "@/features/user/dropdown-menu";
 import { orpc } from "@/libs/orpc/client";
 
@@ -187,13 +187,12 @@ function AppNavbar() {
 	);
 }
 
-/** Brand, search, destinations, New and the account menu; shared by the desktop sidebar and the phone sheet. */
+/** Brand, destinations, New and the account menu; shared by the desktop sidebar and the phone sheet. */
 function NavigationContent() {
 	const { items, career, trash } = useNavItems();
 	const isCurrent = useIsCurrent();
 	const isCareerCurrent = useIsCareerCurrent();
 	const navigate = useNavigate();
-	const openPalette = useCommandPaletteStore((state) => state.setOpen);
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const { isOpen, isMobile } = useSidebar();
 	const expanded = isOpen || isMobile;
@@ -225,24 +224,6 @@ function NavigationContent() {
 						Rezumi
 					</span>
 				</Link>
-				<Sidebar.Menu aria-label={t`Search`} className="w-full">
-					<Sidebar.MenuItem
-						id="search"
-						className="sidebar-search"
-						textValue={t`Search…`}
-						onAction={() => openPalette(true)}
-					>
-						<Sidebar.MenuIcon>
-							<Icon name="magnifying-glass" size={18} />
-						</Sidebar.MenuIcon>
-						<Sidebar.MenuLabel>
-							<Trans>Search…</Trans>
-						</Sidebar.MenuLabel>
-						<Sidebar.MenuChip>
-							<Kbd>⌘K</Kbd>
-						</Sidebar.MenuChip>
-					</Sidebar.MenuItem>
-				</Sidebar.Menu>
 			</Sidebar.Header>
 
 			<Sidebar.Content>
@@ -317,10 +298,13 @@ function NavigationContent() {
 							aria-label={expanded ? undefined : t`Account`}
 							className="flex h-11 items-center gap-2.5 rounded-2xl px-1.5 text-start transition-colors hover:bg-default"
 						>
-							<Avatar size="sm" className="size-7 shrink-0">
-								{session.user.image && <Avatar.Image src={session.user.image} alt="" />}
-								<Avatar.Fallback className="text-xs">{getInitials(session.user.name)}</Avatar.Fallback>
-							</Avatar>
+							<UserAvatar
+								name={session.user.name}
+								image={session.user.image}
+								size="sm"
+								className="size-7 shrink-0"
+								fallbackClassName="text-xs"
+							/>
 							{expanded && (
 								<span className="grid min-w-0">
 									<span className="truncate text-sm font-medium">{session.user.name}</span>

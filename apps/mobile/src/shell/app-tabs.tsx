@@ -14,7 +14,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { routes } from "@/routes";
-import { Button, Icon, IconButton, Text, haptics, useReducedMotion, useTheme } from "@/ui";
+import { Button, Icon, Text, haptics, useReducedMotion, useTheme } from "@/ui";
 import { useKeyboardVisible } from "@/ui/keyboard";
 
 /** The tab routes of `app/(tabs)`, in tab-bar order. `create` is the raised "+" that opens New. */
@@ -368,7 +368,7 @@ function SidebarItem({
 }
 
 /**
- * The tablet sidebar (app.html `side`, 240 pt): brand, Search or run…, the four sections, then Trash, New and the
+ * The tablet sidebar (app.html `side`, 240 pt): brand, the four sections, then Trash, New and the
  * account row at the bottom. Section counts come from each tab's `tabBarBadge` option.
  */
 export function AppSidebar(props: BottomTabBarProps) {
@@ -376,7 +376,7 @@ export function AppSidebar(props: BottomTabBarProps) {
 	const { t } = useLingui();
 	const { state, insets } = props;
 	const pathname = usePathname();
-	const { colors, radius, size, space, type } = useTheme();
+	const { colors, size, space, type } = useTheme();
 	const { width, fontScale } = useWindowDimensions();
 	const compact = width - insets.left - insets.right < 1000;
 	const railWidth = (size.hit + space.s8 * 2) * Math.max(1, Math.min(fontScale, type.micro.maxFontSizeMultiplier));
@@ -408,35 +408,6 @@ export function AppSidebar(props: BottomTabBarProps) {
 			>
 				{compact ? "Rx" : "Rezumi"}
 			</Text>
-			{compact ? (
-				<View style={{ alignItems: "center" }}>
-					<IconButton icon="magnifying-glass" label={t`Search or run…`} onPress={() => router.push(routes.search())} />
-				</View>
-			) : (
-				<Pressable
-					accessibilityRole="button"
-					accessibilityLabel={t`Search or run…`}
-					onPress={() => router.push(routes.search())}
-					style={{
-						flexDirection: "row",
-						alignItems: "center",
-						gap: space.s2,
-						minHeight: size.hit,
-						paddingHorizontal: space.s3,
-						marginBottom: space.s2,
-						borderRadius: radius.rLg,
-						backgroundColor: colors.sunken,
-					}}
-				>
-					<Icon name="magnifying-glass" size={size.icon.meta} color={colors.ink3} />
-					<Text variant="callout" color="ink3" numberOfLines={1} style={{ flex: 1 }}>
-						{t`Search or run…`}
-					</Text>
-					<Text variant="caption" color="ink3">
-						⌘K
-					</Text>
-				</Pressable>
-			)}
 			<ScrollView contentContainerStyle={{ flexGrow: 1, gap: space.s0 }} showsVerticalScrollIndicator={false}>
 				{state.routes.map((route, index) => {
 					const icon = appTabIcons[route.name];
