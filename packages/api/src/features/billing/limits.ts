@@ -9,6 +9,7 @@ import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
 import { parseUploadedFontUrl } from "@rezumi/fonts/uploaded";
 import { FREE_TEMPLATES, isFreeTemplate } from "@rezumi/schema/billing";
+import { templateSchema, upgradeTemplateId } from "@rezumi/schema/templates";
 import { lockBillingAccount } from "./account";
 import { getBillingMode, getEntitlements } from "./entitlements";
 
@@ -169,7 +170,11 @@ function addedFontUrls(before: StoredDesign, after: PlanDesign) {
  */
 export function designFeaturesNeeded(before: StoredDesign, after: PlanDesign): PlanFeature[] {
 	const needed: PlanFeature[] = [];
-	if (!isFreeTemplate(after.template) && after.template !== before?.template) needed.push("premiumTemplates");
+	// Former template IDs count as their successor on both sides: a document keeps the template it already had.
+	const template = upgradeTemplateId(after.template);
+	const stored = templateSchema.safeParse(before?.template);
+	const storedTemplate = stored.success ? upgradeTemplateId(stored.data) : undefined;
+	if (!isFreeTemplate(template) && template !== storedTemplate) needed.push("premiumTemplates");
 	const styles = stylesheetText(after);
 	if (styles && styles !== stylesheetText(before)) needed.push("customStyles");
 	if (addedFontUrls(before, after).length > 0) needed.push("customFonts");

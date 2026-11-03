@@ -48,7 +48,12 @@ const baseSettings: BaseSettingsSnapshot = {
 	picture: defaultResumeData.picture,
 	template: defaultResumeData.metadata.template,
 	design: defaultResumeData.metadata.design,
-	typography: defaultResumeData.metadata.typography,
+	// The lengths below were worked out on the 10 pt body and 14 pt headings resumes had before November 2026.
+	typography: {
+		...defaultResumeData.metadata.typography,
+		body: { ...defaultResumeData.metadata.typography.body, fontSize: 10 },
+		heading: { ...defaultResumeData.metadata.typography.heading, fontSize: 14 },
+	},
 	page: defaultResumeData.metadata.page,
 	layout: { sidebarWidth: defaultResumeData.metadata.layout.sidebarWidth },
 };

@@ -5,6 +5,7 @@ import * as forme from "@formepdf/core";
 import { encode } from "fast-png";
 import { getDocument, OPS } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { sampleResumeData } from "@rezumi/schema/resume/sample";
 import { renderResume } from "../../forme/render";
 
@@ -18,7 +19,7 @@ function fixture() {
 	data.metadata.typography.heading.fontFamily = "Times-Roman";
 	data.metadata.page.marginX = 30;
 	data.metadata.page.marginY = 30;
-	data.metadata.page.hideSectionIcons = true;
+	data.metadata.design.icons = { ...defaultIconDesign, sections: false };
 	data.metadata.layout.pages = [
 		{ fullWidth: false, main: ["experience", "education", "projects"], sidebar: ["skills"] },
 	];

@@ -314,7 +314,6 @@ const useGengarTemplate = (): GengarTemplate => {
 				levelItem: (context) => ({ borderColor: accentFor(context) }),
 				levelItemActive: (context) => ({ backgroundColor: accentFor(context) }),
 				icon: (context) => ({
-					display: metadata.page.hideIcons ? "none" : "flex",
 					size: metadata.typography.body.fontSize,
 					color: context.placement === "sidebar" ? foreground : primary,
 				}),

@@ -1,6 +1,6 @@
 import type { DensityId, FontPairingId, MarginId } from "./presets";
 import type { Color } from "@heroui/react";
-import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { IconDesign, IconStyle, ResumeData } from "@rezumi/schema/resume/data";
 import type { WritableDraft } from "immer";
 import { RadioButtonGroup, Segment } from "@heroui-pro/react";
 import {
@@ -18,6 +18,7 @@ import {
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createContext, useContext, useId, useState } from "react";
+import { iconDesignOf } from "@rezumi/schema/resume/data";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { contrastOnWhite } from "@rezumi/utils/color";
@@ -405,20 +406,6 @@ export function PageGroup() {
 
 			<div className="grid">
 				<SwitchRow
-					label={t`Icons in contact line`}
-					description={t`Also shows the icons on skills, profiles and interests.`}
-					isSelected={!page.hideIcons}
-					onChange={(checked) =>
-						write(
-							"icons",
-							(draft) => {
-								draft.page.hideIcons = !checked;
-							},
-							true,
-						)
-					}
-				/>
-				<SwitchRow
 					label={t`Underline links`}
 					isSelected={!page.hideLinkUnderline}
 					onChange={(checked) =>
@@ -431,6 +418,94 @@ export function PageGroup() {
 						)
 					}
 				/>
+			</div>
+		</div>
+	);
+}
+
+/**
+ * Icons: one switch for all of them, the style every icon is drawn in, and the groups that show. Tool logos sit beside
+ * the text they stand for, which applicant tracking systems read either way.
+ */
+export function IconsGroup() {
+	const { metadata, write } = useDesign();
+	if (!metadata) return null;
+
+	const icons = iconDesignOf(metadata.design);
+	const set = (key: keyof IconDesign, patch: Partial<IconDesign>) =>
+		write(
+			`icons.${key}`,
+			(draft) => {
+				draft.design.icons = { ...iconDesignOf(draft.design), ...patch };
+			},
+			true,
+		);
+	const groups: { key: "contact" | "sections" | "items" | "logos"; label: string; description: string }[] = [
+		{
+			key: "contact",
+			label: t`Contact line`,
+			description: t`Before your email, phone, location, website and custom fields.`,
+		},
+		{
+			key: "sections",
+			label: t`Section titles`,
+			description: t`Before titles such as Education, Skills and Certifications.`,
+		},
+		{
+			key: "items",
+			label: t`Skills, interests and profiles`,
+			description: t`The icons you pick, and network logos such as LinkedIn and GitHub.`,
+		},
+		{
+			key: "logos",
+			label: t`Tool logos in skills`,
+			description: t`Logos beside the tools a skill names, such as React, Python or Figma. The words always print.`,
+		},
+	];
+
+	return (
+		<div className="grid gap-4">
+			<SwitchRow
+				label={t`Show icons`}
+				description={t`Turn off for a text-only resume.`}
+				isSelected={icons.enabled}
+				onChange={(enabled) => set("enabled", { enabled })}
+			/>
+
+			<div className="grid gap-2">
+				<span className="text-sm font-medium">
+					<Trans>Icon style</Trans>
+				</span>
+				<Segment
+					aria-label={t`Icon style`}
+					selectedKey={icons.style}
+					isDisabled={!icons.enabled}
+					onSelectionChange={(key) => set("style", { style: key as IconStyle })}
+					className="w-full"
+				>
+					<Segment.Item id="standard" className={SEGMENT_ITEM}>
+						<Trans>Standard</Trans>
+					</Segment.Item>
+					<Segment.Item id="rounded" className={SEGMENT_ITEM}>
+						<Trans>Rounded</Trans>
+					</Segment.Item>
+					<Segment.Item id="sharp" className={SEGMENT_ITEM}>
+						<Trans>Sharp</Trans>
+					</Segment.Item>
+				</Segment>
+			</div>
+
+			<div className="grid">
+				{groups.map(({ key, label, description }) => (
+					<SwitchRow
+						key={key}
+						label={label}
+						description={description}
+						isSelected={icons[key]}
+						isDisabled={!icons.enabled}
+						onChange={(checked) => set(key, { [key]: checked })}
+					/>
+				))}
 			</div>
 		</div>
 	);

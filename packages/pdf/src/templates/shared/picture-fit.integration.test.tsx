@@ -67,6 +67,8 @@ function markedImage(orientation: Orientation) {
 
 async function rasterPicture(orientation: Orientation, fit: Fit, template: Template = "onyx", aspectRatio = 1) {
 	const data = structuredClone(defaultResumeData);
+	// The geometry below was measured with the margins resumes had before November 2026.
+	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
 	data.basics.name = "Picture fit";
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";

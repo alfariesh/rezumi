@@ -2,14 +2,14 @@ import type { DesignWrite } from "./draft";
 import type { PickerSpec } from "./picker";
 import type { DensityId, FontPairingId, MarginId } from "./presets";
 import type { MessageDescriptor } from "@lingui/core";
-import type { EntryHeader, ResumeData } from "@rezumi/schema/resume/data";
+import type { EntryHeader, IconDesign, IconStyle, ResumeData } from "@rezumi/schema/resume/data";
 import type { Locale } from "@rezumi/utils/locale";
 import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react/macro";
 import { useState } from "react";
 import { Pressable, TextInput, View } from "react-native";
 import Animated from "react-native-reanimated";
-import { entryHeaderLayouts, entryHeaderOf } from "@rezumi/schema/resume/data";
+import { entryHeaderLayouts, entryHeaderOf, iconDesignOf } from "@rezumi/schema/resume/data";
 import { localeSchema } from "@rezumi/utils/locale";
 import { Field, Slider, SwitchRow } from "./controls";
 import {
@@ -577,17 +577,6 @@ export function PageGroup({ data, write, disabled, pick }: GroupProps) {
 
 			<View>
 				<SwitchRow
-					label={t`Icons in contact line`}
-					description={t`Also shows the icons on skills, profiles and interests.`}
-					value={!page.hideIcons}
-					disabled={disabled}
-					onChange={(checked) =>
-						set("icons", (draft) => {
-							draft.hideIcons = !checked;
-						})
-					}
-				/>
-				<SwitchRow
 					label={t`Underline links`}
 					value={!page.hideLinkUnderline}
 					disabled={disabled}
@@ -597,6 +586,84 @@ export function PageGroup({ data, write, disabled, pick }: GroupProps) {
 						})
 					}
 				/>
+			</View>
+		</View>
+	);
+}
+
+/**
+ * Icons: one switch for all of them, the style every icon is drawn in, and the groups that show. Same controls as the
+ * web's Design → Icons.
+ */
+export function IconsGroup({ data, write, disabled }: GroupProps) {
+	const { t } = useLingui();
+	const { space } = useTheme();
+	const icons = iconDesignOf(data.metadata.design);
+	const set = (key: keyof IconDesign, patch: Partial<IconDesign>) =>
+		write(
+			`icons.${key}`,
+			(draft) => {
+				draft.metadata.design.icons = { ...iconDesignOf(draft.metadata.design), ...patch };
+			},
+			true,
+		);
+	const groups: { key: "contact" | "sections" | "items" | "logos"; label: string; description: string }[] = [
+		{
+			key: "contact",
+			label: t`Contact line`,
+			description: t`Before your email, phone, location, website and custom fields.`,
+		},
+		{
+			key: "sections",
+			label: t`Section titles`,
+			description: t`Before titles such as Education, Skills and Certifications.`,
+		},
+		{
+			key: "items",
+			label: t`Skills, interests and profiles`,
+			description: t`The icons you pick, and network logos such as LinkedIn and GitHub.`,
+		},
+		{
+			key: "logos",
+			label: t`Tool logos in skills`,
+			description: t`Logos beside the tools a skill names, such as React, Python or Figma. The words always print.`,
+		},
+	];
+
+	return (
+		<View style={{ gap: space.s4 }}>
+			<SwitchRow
+				label={t`Show icons`}
+				description={t`Turn off for a text-only resume.`}
+				value={icons.enabled}
+				disabled={disabled}
+				onChange={(enabled) => set("enabled", { enabled })}
+			/>
+			<Field label={t`Icon style`}>
+				<Segmented<IconStyle>
+					label={t`Icon style`}
+					value={icons.style}
+					options={[
+						{ value: "standard", label: t`Standard` },
+						{ value: "rounded", label: t`Rounded` },
+						{ value: "sharp", label: t`Sharp` },
+					]}
+					onChange={(style) => {
+						if (!disabled && icons.enabled && style) set("style", { style });
+					}}
+				/>
+			</Field>
+			<View>
+				{groups.map(({ key, label, description }) => (
+					<SwitchRow
+						key={key}
+						label={label}
+						description={description}
+						value={icons[key]}
+						disabled={disabled || !icons.enabled}
+						onChange={(checked) => set(key, { [key]: checked })}
+					/>
+				))}
 			</View>
 		</View>
 	);

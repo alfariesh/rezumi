@@ -171,7 +171,6 @@ const useBronzorTemplate = (): BronzorTemplate => {
 				columnGap: metrics.gapX(0.25),
 			},
 			icon: {
-				display: metadata.page.hideIcons ? "none" : "flex",
 				size: metadata.typography.body.fontSize,
 				color: primary,
 			},

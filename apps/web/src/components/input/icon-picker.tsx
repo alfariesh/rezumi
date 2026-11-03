@@ -3,6 +3,7 @@ import { t } from "@lingui/core/macro";
 import { lazyRouteComponent } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
 import { cn } from "@rezumi/utils/style";
+import { ResumeIconGlyph } from "./resume-icon";
 
 // The icon list, its search index and the virtual grid load when the picker is about to open.
 const IconPickerGrid = lazyRouteComponent(() => import("./icon-picker-grid"), "IconPickerGrid");
@@ -36,7 +37,7 @@ export function IconPicker({ value, onChange, popoverProps, className, ...props 
 				onFocus={preloadGrid}
 				{...props}
 			>
-				<i className={cn("ph size-4 text-base", `ph-${value}`)} />
+				<ResumeIconGlyph name={value} className="size-4" />
 			</Button>
 
 			<Popover.Content placement="bottom start" className="h-[326px] w-[290px] p-0">

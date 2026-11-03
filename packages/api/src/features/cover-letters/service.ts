@@ -20,6 +20,7 @@ import {
 } from "@rezumi/schema/cover-letter/data";
 import { resumeDataSchema } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { upgradeTemplateId } from "@rezumi/schema/templates";
 import { assertDesignChange, assertDocumentCapacity, fitImportedDesign } from "../billing/limits";
 import { lockUser } from "../documents/ownership";
 import { resumeService } from "../resume/service";
@@ -267,10 +268,11 @@ export const coverLetterService = {
 	 */
 	create: async (input: CreateInput) => {
 		// A letter takes its resume's design as it is; only a template chosen for it here needs the plan.
-		if (input.template) await assertDesignChange(input.userId, null, { template: input.template });
+		const template = input.template && upgradeTemplateId(input.template);
+		if (template) await assertDesignChange(input.userId, null, { template });
 		const application = await getOwnedApplication(input.userId, input.applicationId);
 		const style = await getResumeStyle(input.userId, input.resumeId);
-		if (input.template) style.metadata.template = input.template;
+		if (template) style.metadata.template = template;
 		const linked = Boolean(input.resumeId) && !input.template;
 		const letter = await db.transaction(async (tx) => {
 			await lockUser(tx, input.userId);
@@ -335,9 +337,10 @@ export const coverLetterService = {
 		changes.designLinked = designLinked;
 
 		if (input.template) {
-			await assertDesignChange(input.userId, stored.style.metadata, { template: input.template });
+			const template = upgradeTemplateId(input.template);
+			await assertDesignChange(input.userId, stored.style.metadata, { template });
 			const style = changes.style ?? stored.style;
-			changes.style = { ...style, metadata: { ...style.metadata, template: input.template } };
+			changes.style = { ...style, metadata: { ...style.metadata, template } };
 		}
 		if (input.metadata) {
 			const style = changes.style ?? stored.style;

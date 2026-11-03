@@ -2,6 +2,7 @@ import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { createElement } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../document";
 import { pdf } from "../forme/testing";
@@ -93,8 +94,7 @@ const buildFixture = (
 			description: "",
 		},
 	];
-	data.metadata.page.hideSectionIcons = false;
-	data.metadata.page.hideIcons = false;
+	data.metadata.design.icons = { ...defaultIconDesign, sections: true };
 	data.metadata.layout.pages = [{ fullWidth: true, main: [section], sidebar: [] }];
 	const stylesheet = { languageVersion: 1, text: `@version 1; ${text}` };
 	data.metadata.stylesheet = { mode: "semantic", source: stylesheet };

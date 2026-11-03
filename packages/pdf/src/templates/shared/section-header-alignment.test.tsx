@@ -3,12 +3,28 @@ import type { TextItem } from "pdfjs-dist/types/src/display/api";
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act, createElement } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
 
 const fixture = (): ResumeData => {
 	const data = structuredClone(defaultResumeData);
+	// Measured with the defaults resumes had before November 2026 (Onyx, 14 × 12 pt margins, 10 pt IBM Plex Serif).
+	data.metadata.template = "onyx";
+	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
+	data.metadata.typography.body = {
+		fontFamily: "IBM Plex Serif",
+		fontWeights: ["400", "500"],
+		fontSize: 10,
+		lineHeight: 1.5,
+	};
+	data.metadata.typography.heading = {
+		fontFamily: "IBM Plex Serif",
+		fontWeights: ["600"],
+		fontSize: 14,
+		lineHeight: 1.5,
+	};
 	data.picture.hidden = true;
 	data.metadata.page.marginX = 30;
 	data.metadata.typography.body.fontFamily = "Helvetica";
@@ -89,7 +105,7 @@ describe.each(["persian", "onyx"] as const)("%s section heading direction", (tem
 			const data = fixture();
 			data.metadata.template = template;
 			data.metadata.page.locale = locale;
-			data.metadata.page.hideSectionIcons = hideSectionIcons;
+			data.metadata.design.icons = { ...defaultIconDesign, sections: !hideSectionIcons };
 			data.sections.experience.title = "Experience";
 			data.sections.education.title = "Education";
 			const items = await renderText(data);

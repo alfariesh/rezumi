@@ -28,31 +28,31 @@ export const sampleResumeData: ResumeData = {
 		customFields: [
 			{
 				id: "019bef5a-0477-77e0-968b-5d0e2ecb34e3",
-				icon: "github-logo",
+				icon: "github",
 				text: "github.com/dkowalski-dev",
 				link: "https://github.com/dkowalski-dev",
 			},
 			{
 				id: "019bef5a-93e4-7746-ad39-3a132360f823",
-				icon: "game-controller",
+				icon: "",
 				text: "itch.io/dkowalski",
 				link: "https://itch.io/dkowalski",
 			},
 		],
 	},
 	summary: {
-		...sectionDefaults("article"),
+		...sectionDefaults("newspaper"),
 		content:
 			"<p><strong>Passionate game developer with 5+ years of professional experience</strong> creating engaging gameplay systems and polished player experiences across multiple platforms. Specialized in Unity and Unreal Engine with strong expertise in C#, C++, and game design principles. Proven ability to collaborate effectively with cross-functional teams including designers, artists, and QA to deliver high-quality games on time and within scope.</p>",
 	},
 	sections: {
 		profiles: {
-			...sectionDefaults("messenger-logo"),
+			...sectionDefaults("link-01"),
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-3d42ddc9b4d8",
 					hidden: false,
-					icon: "github-logo",
+					icon: "github",
 					iconColor: "",
 					network: "GitHub",
 					username: "dkowalski-dev",
@@ -65,7 +65,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-43c470b77f4a",
 					hidden: false,
-					icon: "linkedin-logo",
+					icon: "linkedin-02",
 					iconColor: "",
 					network: "LinkedIn",
 					username: "davidkowalski",
@@ -78,7 +78,7 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		experience: {
-			...sectionDefaults("briefcase"),
+			...sectionDefaults("briefcase-01"),
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-44d8cec98ca4",
@@ -99,7 +99,7 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		education: {
-			...sectionDefaults("graduation-cap"),
+			...sectionDefaults("mortarboard-01"),
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-48455f6cef9e",
@@ -121,7 +121,7 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		projects: {
-			...sectionDefaults("code-simple"),
+			...sectionDefaults("source-code"),
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-4d2603fe2801",
@@ -165,14 +165,14 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		skills: {
-			...sectionDefaults("compass-tool"),
+			...sectionDefaults("drafting-compass"),
 			layout: "default",
 			keywordLayout: "inline",
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-5a52dcf50ed4",
 					hidden: false,
-					icon: "code",
+					icon: "source-code",
 					iconColor: "",
 					name: "Unity Engine",
 					proficiency: "Expert",
@@ -182,7 +182,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-5e8bb7cacbc8",
 					hidden: false,
-					icon: "brackets-curly",
+					icon: "code-square",
 					iconColor: "",
 					name: "Unreal Engine",
 					proficiency: "Advanced",
@@ -192,7 +192,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-622f9d41da55",
 					hidden: false,
-					icon: "cpu",
+					icon: "laptop-programming",
 					iconColor: "",
 					name: "Programming Languages",
 					proficiency: "Expert",
@@ -212,7 +212,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-6a8e22bec684",
 					hidden: false,
-					icon: "shooting-star",
+					icon: "star",
 					iconColor: "",
 					name: "Physics & Mathematics",
 					proficiency: "Advanced",
@@ -222,7 +222,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-6d8bf7be7514",
 					hidden: true,
-					icon: "chart-line-up",
+					icon: "chart-increase",
 					iconColor: "",
 					name: "Performance Optimization",
 					proficiency: "Advanced",
@@ -256,7 +256,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-7821b4de95f7",
 					hidden: false,
-					icon: "game-controller",
+					icon: "",
 					iconColor: "",
 					name: "Game Design",
 					keywords: ["Mechanics", "Level Design", "Player Psychology"],
@@ -264,7 +264,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-7c64c1a607d3",
 					hidden: false,
-					icon: "robot",
+					icon: "bot",
 					iconColor: "",
 					name: "AI & Procedural Generation",
 					keywords: ["PCG", "Machine Learning", "Emergent Gameplay"],
@@ -272,7 +272,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-80bccce3c0ef",
 					hidden: false,
-					icon: "book-open",
+					icon: "book-open-01",
 					iconColor: "",
 					name: "Indie Game Development",
 					keywords: ["Solo Dev", "Game Jams", "Community"],
@@ -280,7 +280,7 @@ export const sampleResumeData: ResumeData = {
 				{
 					id: "019bef5a-93e4-7746-ad39-84bb7e9af005",
 					hidden: false,
-					icon: "pen-nib",
+					icon: "pencil",
 					iconColor: "",
 					name: "Technical Art",
 					keywords: ["Shaders", "VFX", "Optimization"],
@@ -321,7 +321,7 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		certifications: {
-			...sectionDefaults("certificate"),
+			...sectionDefaults("certificate-01"),
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-91fe8a4dfea6",
@@ -352,7 +352,7 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		publications: {
-			...sectionDefaults("books"),
+			...sectionDefaults("library"),
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-9816f0081895",
@@ -419,7 +419,7 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		references: {
-			...sectionDefaults("phone"),
+			...sectionDefaults("call-02"),
 			items: [
 				{
 					id: "019bef5a-93e4-7746-ad39-a945c0f42dd5",
@@ -439,7 +439,7 @@ export const sampleResumeData: ResumeData = {
 	},
 	customSections: [
 		{
-			...sectionDefaults("briefcase"),
+			...sectionDefaults("briefcase-01"),
 			title: "Earlier experience",
 			id: "019becaf-0b87-769d-98a6-46ccf558c0e8",
 			type: "experience",
@@ -480,7 +480,7 @@ export const sampleResumeData: ResumeData = {
 		},
 	],
 	metadata: {
-		template: "azurill",
+		template: "meridian",
 		layout: {
 			sidebarWidth: 30,
 			pages: [
@@ -502,15 +502,13 @@ export const sampleResumeData: ResumeData = {
 			],
 		},
 		page: {
-			gapX: 12,
-			gapY: 8,
-			marginX: 16,
-			marginY: 16,
+			gapX: 4,
+			gapY: 6,
+			marginX: 36,
+			marginY: 32,
 			format: "a4",
 			locale: "en-US",
-			hideLinkUnderline: false,
-			hideIcons: false,
-			hideSectionIcons: false,
+			hideLinkUnderline: true,
 		},
 		design: {
 			level: {

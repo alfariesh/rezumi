@@ -2,14 +2,14 @@ import { buttonVariants, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { templateLayouts, templateSchema } from "@rezumi/schema/templates";
+import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { templates } from "@/dialogs/resume/template/data";
 import { freeTemplates } from "@/features/homepage/plans";
 
 export function TemplateGallery() {
 	const { i18n } = useLingui();
-	const count = i18n.number(templateSchema.options.length);
+	const count = i18n.number(templateLineup.length);
 	const freeCount = i18n.number(freeTemplates.length);
 
 	return (
@@ -39,7 +39,7 @@ export function TemplateGallery() {
 				</div>
 
 				<div className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-					{templateSchema.options.map((id, index) => {
+					{templateLineup.map((id, index) => {
 						const template = templates[id];
 						const name = template.name;
 						const layout = templateLayouts[id];

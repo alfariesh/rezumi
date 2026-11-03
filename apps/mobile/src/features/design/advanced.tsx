@@ -10,7 +10,7 @@ import { Pressable, TextInput, View } from "react-native";
 import { fontList, getFont, getFontDisplayName, sortFontWeights } from "@rezumi/fonts";
 import { uploadedFontFamilies, uploadedFontWeights } from "@rezumi/fonts/uploaded";
 import { compileStylesheet, isFatalStylesheetDiagnostic } from "@rezumi/resume/stylesheet";
-import { icons } from "@rezumi/schema/icons";
+import { icons as iconNames } from "@rezumi/schema/icons";
 import { Field, Stepper, SwitchRow } from "./controls";
 import { DATE_FORMATS, parseColorInput, resetDesign, rgbaToHex } from "./presets";
 import { UploadedFonts } from "./uploaded-fonts";
@@ -338,7 +338,7 @@ function ColorField({ label, value, disabled, onChange }: ColorFieldProps) {
 
 const LEVEL_TYPES = ["hidden", "circle", "square", "rectangle", "rectangle-full", "progress-bar", "icon"] as const;
 type LevelType = (typeof LEVEL_TYPES)[number];
-const ICON_OPTIONS = icons.filter(Boolean).map((name) => ({ value: name, label: name }));
+const ICON_OPTIONS = iconNames.filter(Boolean).map((name) => ({ value: name, label: name }));
 
 /** Advanced → Design: primary, text and background colours, and how skill and language levels draw. */
 export function ColoursScreen({ data, write, disabled, pick }: GroupProps) {
@@ -427,18 +427,14 @@ export function AdvancedPageScreen({ data, write, disabled }: GroupProps) {
 	const { space } = useTheme();
 	const { page } = data.metadata;
 	type NumberKey = "marginX" | "marginY" | "gapX" | "gapY";
-	type SwitchKey = "hideLinkUnderline" | "hideIcons" | "hideSectionIcons";
+	type SwitchKey = "hideLinkUnderline";
 	const numbers: { key: NumberKey; label: string; max?: number }[] = [
 		{ key: "marginX", label: t`Horizontal margin`, max: 100 },
 		{ key: "marginY", label: t`Vertical margin`, max: 100 },
 		{ key: "gapX", label: t`Horizontal spacing` },
 		{ key: "gapY", label: t`Vertical spacing` },
 	];
-	const switches: { key: SwitchKey; label: string }[] = [
-		{ key: "hideLinkUnderline", label: t`Underline links` },
-		{ key: "hideIcons", label: t`Show icons` },
-		{ key: "hideSectionIcons", label: t`Show section icons` },
-	];
+	const switches: { key: SwitchKey; label: string }[] = [{ key: "hideLinkUnderline", label: t`Underline links` }];
 	return (
 		<View style={{ gap: space.s2 }}>
 			{numbers.map(({ key, label, max }) => (

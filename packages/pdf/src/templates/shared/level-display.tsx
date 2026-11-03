@@ -76,6 +76,7 @@ export const LevelDisplay = ({ level }: LevelDisplayProps) => {
 					return (
 						<Icon
 							key={itemKey}
+							iconRole="level"
 							nodeKey={decorationNodeKey}
 							{...(levelIconExplicitSize === undefined ? {} : { size: levelIconExplicitSize })}
 							name={levelDesign.icon as IconName}

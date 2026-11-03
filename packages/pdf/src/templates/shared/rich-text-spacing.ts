@@ -68,6 +68,8 @@ export const createRichTextProseSpacing = (bodyLineHeight: number | undefined): 
 	if (bodyLineHeight === undefined) return { paragraph: {}, listItem: {} };
 
 	const sideMargin = bodyLineHeight * 0.2;
+	// Bullets of one list read as one block: half the space paragraphs get.
+	const listItemMargin = bodyLineHeight * 0.1;
 
 	return {
 		paragraph: {
@@ -75,8 +77,8 @@ export const createRichTextProseSpacing = (bodyLineHeight: number | undefined): 
 			marginBottom: sideMargin,
 		},
 		listItem: {
-			marginTop: sideMargin,
-			marginBottom: sideMargin,
+			marginTop: listItemMargin,
+			marginBottom: listItemMargin,
 		},
 	};
 };

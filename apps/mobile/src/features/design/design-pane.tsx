@@ -18,7 +18,7 @@ import {
 import { LayoutScreen } from "./layout-screen";
 import { Picker } from "./picker";
 import { TemplatePreviewCaption } from "./preview-caption";
-import { ColorGroup, EntriesGroup, PageGroup, TypeGroup } from "./style-groups";
+import { ColorGroup, EntriesGroup, IconsGroup, PageGroup, TypeGroup } from "./style-groups";
 import { TemplateGroup, useSheetScroll } from "./template-group";
 import { client } from "@/api/client";
 import { useSession } from "@/auth/session";
@@ -29,7 +29,7 @@ import { useIsTablet } from "@/shell/use-is-tablet";
 import { Banner, IconButton, Skeleton, Text, haptics, showToast, useReducedMotion, useTheme } from "@/ui";
 import { useKeyboardScrollSpace } from "@/ui/keyboard";
 
-type Tab = "template" | "entries" | "type" | "color" | "page";
+type Tab = "template" | "entries" | "type" | "color" | "icons" | "page";
 type Entry = { kind: "advanced"; id: AdvancedId } | { kind: "picker"; spec: PickerSpec };
 
 const SCROLL_STEP = 100;
@@ -88,6 +88,7 @@ export function DesignPane({ id }: { id: string }) {
 		{ id: "entries", label: t`Entries` },
 		{ id: "type", label: t`Type` },
 		{ id: "color", label: t`Color` },
+		{ id: "icons", label: t`Icons` },
 		{ id: "page", label: t`Page` },
 	];
 
@@ -134,6 +135,7 @@ export function DesignPane({ id }: { id: string }) {
 			);
 		if (tab === "entries") return <EntriesGroup {...props} />;
 		if (tab === "color") return <ColorGroup {...props} />;
+		if (tab === "icons") return <IconsGroup {...props} />;
 		return (
 			<View style={{ gap: space.s6 }}>
 				<PageGroup {...props} />

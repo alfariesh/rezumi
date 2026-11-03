@@ -1,0 +1,215 @@
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+/**
+ * Writes the resume icons from `packages/icons` (the `cv` set, staged by `icons:sync`):
+ *
+ *  - `packages/pdf/src/forme/hugeicons/<style>/{common,rest}.json`: each icon's markup inside its 24×24 viewBox, per
+ *    resume icon style. The PDF engine loads the common file of the style a resume uses first, the rest only when a
+ *    render draws one of them.
+ *  - `packages/schema/src/icons.ts`: the icon names, for the schema, the AI tools and the icon pickers.
+ *
+ * Every element gets an explicit `fill` (Forme fills a shape the SVG leaves unset) and keeps `currentColor`, which the
+ * renderer swaps for the icon's colour. Numbers keep two decimals and the commonest paint attribute runs are stored as
+ * one character each (see `expandIcon`), which keeps the files, bundled in the mobile app too, small.
+ */
+
+type Catalog = { icons: Record<string, { category: string; sets: string[]; styles: string[] }> };
+
+const STYLES = { standard: "stroke-standard", rounded: "stroke-rounded", sharp: "stroke-sharp" } as const;
+
+const iconsRoot = fileURLToPath(new URL("../../packages/icons/", import.meta.url));
+const pdfTarget = fileURLToPath(new URL("../../packages/pdf/src/forme/hugeicons/", import.meta.url));
+const schemaTarget = fileURLToPath(new URL("../../packages/schema/src/icons.ts", import.meta.url));
+
+// Icons most resumes draw, loaded as one file per style: section defaults, contact icons, network logos and the
+// level star. A name missing here still draws; it just loads with the rest.
+const COMMON = new Set<string>([
+	"newspaper",
+	"briefcase-01",
+	"mortarboard-01",
+	"source-code",
+	"drafting-compass",
+	"translate",
+	"football",
+	"trophy",
+	"certificate-01",
+	"library",
+	"hand-heart",
+	"call-02",
+	"mail-01",
+	"mail-02",
+	"location-01",
+	"globe-02",
+	"link-01",
+	"at-sign",
+	"star",
+	"linkedin-02",
+	"github-01",
+	"new-twitter",
+	"instagram",
+	"facebook-01",
+	"youtube",
+	"medium",
+	"behance-01",
+	"dribbble",
+	"messenger",
+]);
+
+const ELEMENT = /<(path|circle|rect|ellipse)\b([^>]*?)\s*\/>/g;
+const SVG_WRAPPER = /^\s*<svg[^>]*>|<\/svg>\s*$/g;
+
+// Forme once misread path numbers written back to back ("-21.11-.13-.06"), so every number and command gets its own
+// space-separated token. Two decimals of a 24-unit box are a hundredth of a point at resume sizes: invisible, and a
+// third smaller.
+const NUMBER = /[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?/g;
+const round = (value: string) => {
+	const rounded = Number(Number(value).toFixed(2));
+	return Object.is(rounded, -0) ? "0" : String(rounded);
+};
+const spacePathData = (data: string) =>
+	(data.match(/[a-zA-Z]|[-+]?(?:\d*\.\d+|\d+\.?)(?:[eE][-+]?\d+)?/g) ?? [])
+		.map((token) => (/[a-zA-Z]/.test(token) ? token : round(token)))
+		.join(" ");
+
+const PAINT = new Set([
+	"fill",
+	"fill-rule",
+	"clip-rule",
+	"stroke",
+	"stroke-width",
+	"stroke-linecap",
+	"stroke-linejoin",
+]);
+const ATTRIBUTE = /\s([a-z-]+)="([^"]*)"/g;
+
+/** An element as its shape attributes and its paint attributes (always with a fill: Forme fills a shape left without). */
+type Element = { tag: string; shape: string; paint: string };
+
+function elements(name: string, svg: string): Element[] {
+	const inner = svg.replace(SVG_WRAPPER, "").trim();
+	// Anything but these four shapes would need new handling in the PDF engine: fail loudly instead.
+	if (inner.replace(ELEMENT, "").trim() !== "") throw new Error(`Unexpected markup in ${name}.svg: ${inner}`);
+	return [...inner.matchAll(ELEMENT)].map(([, tag = "path", raw = ""]) => {
+		let shape = "";
+		let paint = "";
+		let filled = false;
+		for (const [, attribute = "", value = ""] of raw.matchAll(ATTRIBUTE)) {
+			if (PAINT.has(attribute)) {
+				if (attribute === "fill") filled = true;
+				paint += ` ${attribute}="${value}"`;
+			} else {
+				const compact = attribute === "d" ? spacePathData(value) : value.replace(NUMBER, round);
+				shape += ` ${attribute}="${compact}"`;
+			}
+		}
+		return { tag, shape, paint: filled ? paint : ` fill="none"${paint}` };
+	});
+}
+
+// The commonest paint attribute runs, each written as one character (none of them occurs in shape attributes). The
+// renderer and the pickers expand them with `expandIcon`. "~" stays first, so "^" never opens the character class.
+const TOKENS = ["~", "^", "`", "|", "!", "*", "@", "$"];
+
+const catalog = JSON.parse(await readFile(join(iconsRoot, "catalog.json"), "utf8")) as Catalog;
+const names = Object.entries(catalog.icons)
+	.filter(([, entry]) => entry.sets.includes("cv") && Object.values(STYLES).every((s) => entry.styles.includes(s)))
+	.map(([name]) => name)
+	.sort();
+
+for (const name of COMMON) if (!names.includes(name)) throw new Error(`Common icon "${name}" is not in the cv set.`);
+
+await rm(pdfTarget, { recursive: true, force: true });
+const json = (value: unknown) => `${JSON.stringify(value, null, "\t")}\n`;
+const header = "// Generated by `pnpm --filter @rezumi/tooling icons:pdf`. Do not edit by hand.\n";
+
+const shapes: Record<string, Record<string, Element[]>> = {};
+const paintCounts = new Map<string, number>();
+for (const [style, folder] of Object.entries(STYLES)) {
+	shapes[style] = {};
+	for (const name of names) {
+		const svg = await readFile(join(iconsRoot, "svg", folder, `${name}.svg`), "utf8");
+		const parsed = elements(`${folder}/${name}`, svg);
+		shapes[style][name] = parsed;
+		for (const { paint } of parsed) paintCounts.set(paint, (paintCounts.get(paint) ?? 0) + 1);
+	}
+}
+const paintTokens = Object.fromEntries(
+	[...paintCounts]
+		.sort(([, a], [, b]) => b - a)
+		.slice(0, TOKENS.length)
+		.map(([paint], index) => [TOKENS[index] as string, paint]),
+);
+const tokenOf = new Map(Object.entries(paintTokens).map(([token, paint]) => [paint, token]));
+const encode = (parsed: Element[]) =>
+	parsed.map(({ tag, shape, paint }) => `<${tag}${shape}${tokenOf.get(paint) ?? paint}></${tag}>`).join("");
+
+for (const style of Object.keys(STYLES)) {
+	const common: Record<string, string> = {};
+	const rest: Record<string, string> = {};
+	for (const name of names) (COMMON.has(name) ? common : rest)[name] = encode(shapes[style]?.[name] ?? []);
+	await mkdir(join(pdfTarget, style), { recursive: true });
+	await writeFile(join(pdfTarget, style, "common.json"), json(common));
+	await writeFile(join(pdfTarget, style, "rest.json"), json(rest));
+}
+
+const loaders = Object.keys(STYLES)
+	.map(
+		(style) =>
+			`\t${style}: {\n\t\tcommon: (): Promise<IconFile> => import("./${style}/common.json"),\n\t\trest: (): Promise<IconFile> => import("./${style}/rest.json"),\n\t},`,
+	)
+	.join("\n");
+
+await writeFile(
+	join(pdfTarget, "index.ts"),
+	`${header}
+type IconFile = { default: Record<string, string> };
+
+/** Icons most resumes draw, in each style's \`common.json\`. */
+export const commonIcons: ReadonlySet<string> = new Set(${JSON.stringify([...COMMON].sort(), null, "\t")});
+
+/** Icon markup as stored, one style and part per file; draw it through \`expandIcon\`. */
+export const iconFiles = {
+${loaders}
+};
+
+// The commonest paint attribute runs, written as one character each in the files.
+const paintTokens: Readonly<Record<string, string>> = ${JSON.stringify(paintTokens, null, "\t")};
+
+/** A stored icon's SVG markup, with its paint attributes written out. */
+export const expandIcon = (markup: string): string => markup.replace(/[${TOKENS.join("")}]/g, (token) => paintTokens[token] ?? "");
+`,
+);
+// Every icon at once in the standard style, for icon pickers.
+await writeFile(
+	join(pdfTarget, "all.ts"),
+	`${header}import { expandIcon } from "./index";
+import common from "./standard/common.json";
+import rest from "./standard/rest.json";
+
+const icons: Record<string, string> = Object.fromEntries(
+	Object.entries({ ...common, ...rest }).map(([name, markup]) => [name, expandIcon(markup)]),
+);
+
+export default icons;
+`,
+);
+
+const categories: Record<string, string[]> = {};
+for (const name of names) (categories[catalog.icons[name]?.category ?? "other"] ??= []).push(name);
+
+await writeFile(
+	schemaTarget,
+	`${header}
+/** Resume icon names (Hugeicons, \`cv\` set), drawn in the resume's icon style. "" draws no icon. */
+export const icons = ${JSON.stringify(["", ...names], null, "\t").replace(/\n]$/, ",\n] as const")};
+
+export type IconName = (typeof icons)[number];
+
+/** The same names by Hugeicons category, for icon pickers. */
+export const iconCategories: Readonly<Record<string, readonly IconName[]>> = ${JSON.stringify(categories, null, "\t")};
+`,
+);
+
+console.log(`Wrote ${names.length} icons (${COMMON.size} common) in ${Object.keys(STYLES).length} styles`);

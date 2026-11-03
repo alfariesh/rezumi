@@ -22,9 +22,13 @@ import type {
 } from "@rezumi/schema/resume/data";
 import type { ReactNode } from "react";
 import { Children, createContext, Fragment, isValidElement, use } from "react";
+import { getBrandIcon } from "@rezumi/resume/icons";
 import { entryHeaderOf } from "@rezumi/schema/resume/data";
+import { iconDesignOf } from "@rezumi/schema/resume/data";
 import { View } from "#react-pdf-renderer";
 import { useRender } from "../../context";
+import { ResumeIcon } from "../../forme/icons";
+import { showsIcons } from "../../icon-visibility";
 import { HEADING_NODE_PROP } from "../../page-map";
 import { getResumeSectionIcon } from "../../section-icon";
 import { findSection, getResumeSectionTitle } from "../../section-title";
@@ -58,6 +62,7 @@ import {
 import { entryLayoutOf, leadsWithRole } from "./entry-header";
 import { filterItems, hasVisibleItems, isSectionVisible, isVisibleSummary } from "./filtering";
 import { parseStyleFontSize } from "./icon-size";
+import { itemIcon } from "./item-icons";
 import { LevelDisplay } from "./level-display";
 import { getTemplateMetrics } from "./metrics";
 import {
@@ -352,6 +357,8 @@ const SectionShell = ({ sectionId, title, showHeading = true, children }: Sectio
 	const headingStyle = useTemplateStyle("heading");
 	const sectionHeadingStyle = useTemplateStyle("sectionHeading");
 	const sectionHeadingContainerStyle = useTemplateStyle("sectionHeadingContainer");
+	const sectionHeadingMarkerStyle = useTemplateStyle("sectionHeadingMarker");
+	const sectionHeadingRuleStyle = useTemplateStyle("sectionHeadingRule");
 	const sectionTitle = getResumeSectionTitle(data, sectionId, title);
 	const section = findSection(data, sectionId);
 	const sectionHeadingEnabled = section?.showHeading !== false;
@@ -359,7 +366,7 @@ const SectionShell = ({ sectionId, title, showHeading = true, children }: Sectio
 	const sectionHeadingResolved = useResolvedNode(sectionHeadingNodeKey);
 	const sectionHeadingVisible = useSemanticNodeVisible(sectionHeadingNodeKey);
 	const sectionIcon = getResumeSectionIcon(data, sectionId);
-	const showIcon = Boolean(sectionIcon) && !data.metadata.page.hideSectionIcons;
+	const showIcon = Boolean(sectionIcon) && showsIcons(data.metadata, "section");
 	const sectionHeadingTextStyle = getSectionHeadingTextStyle(
 		sectionHeadingStyle,
 		sectionHeadingTextOf(sectionHeadingResolved.style),
@@ -381,8 +388,10 @@ const SectionShell = ({ sectionId, title, showHeading = true, children }: Sectio
 	const resolvedSectionStyle = composeStyles(sectionStyle, resolved.style);
 	if (!visible) return null;
 
-	if (!showIcon) {
-		// No icon: render heading exactly as before (no structural change)
+	const decorated = Boolean(sectionHeadingMarkerStyle || sectionHeadingRuleStyle);
+
+	if (!showIcon && !decorated) {
+		// No icon or decoration: the heading is the title text itself.
 		return (
 			<SemanticNodeKeyProvider nodeKey={sectionNodeKey}>
 				<View style={resolvedSectionStyle} {...flowProps} data-resume-node={sectionNodeKey}>
@@ -395,7 +404,7 @@ const SectionShell = ({ sectionId, title, showHeading = true, children }: Sectio
 		);
 	}
 
-	// With icon: wrap in a flex row container that inherits the heading's border/decoration
+	// With an icon or a decoration: a row that carries the heading's border and spacing, around the title text
 	return (
 		<SemanticNodeKeyProvider nodeKey={sectionNodeKey}>
 			<View style={resolvedSectionStyle} {...flowProps} data-resume-node={sectionNodeKey}>
@@ -410,14 +419,20 @@ const SectionShell = ({ sectionId, title, showHeading = true, children }: Sectio
 							sectionHeadingResolved.style,
 						)}
 					>
-						<SectionHeadingIcon
-							nodeKey={semanticNodeKeys.icon(sectionHeadingNodeKey, "section")}
-							name={sectionIcon as IconName}
-							titleLineHeight={titleLineBox}
-						/>
+						{sectionHeadingMarkerStyle && <View style={composeStyles(sectionHeadingMarkerStyle)} />}
+						{showIcon && (
+							<SectionHeadingIcon
+								nodeKey={semanticNodeKeys.icon(sectionHeadingNodeKey, "section")}
+								name={sectionIcon as IconName}
+								titleLineHeight={titleLineBox}
+							/>
+						)}
 						<Heading bindSemanticNode={false} style={sectionHeadingTextStyle}>
 							{sectionTitle}
 						</Heading>
+						{sectionHeadingRuleStyle && (
+							<View style={composeStyles({ flexGrow: 1, flexShrink: 1 }, sectionHeadingRuleStyle)} />
+						)}
 					</View>
 				)}
 				{children}
@@ -981,6 +996,58 @@ const CustomSummarySection = ({ section, showHeading = true }: CustomSummarySect
 	);
 };
 
+/** The icon before an item's title (see `itemIcon`). */
+const ItemIcon = ({ type, item }: { type: string; item: Parameters<typeof itemIcon>[1] }) => {
+	const data = useRender();
+	const { name, role } = itemIcon(type, item, data.metadata);
+	if (!name) return null;
+	return <Icon name={name as IconName} iconRole={role} />;
+};
+
+const defaultTagListStyle = { flexDirection: "row", flexWrap: "wrap", columnGap: 3, rowGap: 3 } satisfies Style;
+
+/** A skill's keywords as small chips, each with its tool's logo when tool logos are on. */
+const KeywordTags = ({ keywords }: { keywords: readonly string[] }) => {
+	const data = useRender();
+	const colors = useTemplateColors();
+	const tagListStyle = useTemplateStyle("tagList");
+	const tagStyle = useTemplateStyle("tag");
+	const smallStyle = mergeStyles(useTemplateStyle("small"));
+	const fontSize = parseStyleFontSize(smallStyle.fontSize) ?? data.metadata.typography.body.fontSize * 0.875;
+	const logos = showsIcons(data.metadata, "logo");
+	const { rtl, row } = createRtlStyleHelpers(data.rtl);
+	const defaultTagStyle = {
+		flexDirection: row,
+		alignItems: "center",
+		columnGap: fontSize * 0.35,
+		paddingHorizontal: fontSize * 0.5,
+		paddingVertical: fontSize * 0.15,
+		borderRadius: fontSize * 0.35,
+		backgroundColor: getPrimaryTint(colors.primary, 0.09),
+	} satisfies Style;
+
+	return (
+		<View style={composeStyles(defaultTagListStyle, rtl ? { flexDirection: "row-reverse" } : undefined, tagListStyle)}>
+			{keywords.map((keyword, index) => {
+				const logo = logos ? getBrandIcon(keyword) : "";
+				return (
+					<View key={index} style={composeStyles(defaultTagStyle, tagStyle)}>
+						{logo && (
+							<ResumeIcon
+								name={logo}
+								size={fontSize}
+								color={colors.primary}
+								variant={iconDesignOf(data.metadata.design).style}
+							/>
+						)}
+						<Small semanticField="keywords">{keyword}</Small>
+					</View>
+				);
+			})}
+		</View>
+	);
+};
+
 const ProfileSection = ({ sectionId = "profiles", sectionData }: ItemSectionProps<ProfileItem> = {}) => {
 	const data = useRender();
 	const profiles = sectionData ?? data.sections.profiles;
@@ -996,7 +1063,7 @@ const ProfileSection = ({ sectionId = "profiles", sectionData }: ItemSectionProp
 					<SectionItem key={item.id} itemId={item.id}>
 						<SectionItemHeader>
 							<View style={composeStyles(inlineStyle)}>
-								<Icon name={item.icon as IconName} />
+								<ItemIcon type="profiles" item={item} />
 								<Bold semanticField="network">{item.network}</Bold>
 							</View>
 						</SectionItemHeader>
@@ -1535,7 +1602,7 @@ const SkillsSection = ({ sectionId = "skills", sectionData }: ItemSectionProps<S
 					<SectionItem key={item.id} itemId={item.id} style={getSkillsItemStyle(isInlineSkillsItem, item, metrics)}>
 						<SectionItemHeader>
 							<View style={composeStyles(inlineStyle)}>
-								<Icon name={item.icon as IconName} />
+								<ItemIcon type="skills" item={item} />
 								<Bold semanticField="name" style={composeStyles(isInlineSkillsItem ? undefined : { flex: 1 })}>
 									{item.name}
 								</Bold>
@@ -1545,7 +1612,9 @@ const SkillsSection = ({ sectionId = "skills", sectionData }: ItemSectionProps<S
 						{skillLevelAfterName && <LevelDisplay level={item.level} />}
 						<View style={{ flexGrow: skills.columns > 1 ? 1 : 0 }}>
 							{hasSplitRowText(item.proficiency) && <Text semanticField="proficiency">{item.proficiency}</Text>}
-							{"keywordLayout" in skills && skills.keywordLayout === "list" ? (
+							{"keywordLayout" in skills && skills.keywordLayout === "tags" ? (
+								item.keywords.length > 0 && <KeywordTags keywords={item.keywords} />
+							) : "keywordLayout" in skills && skills.keywordLayout === "list" ? (
 								item.keywords.map((keyword, index) => (
 									<Small key={index} semanticField="keywords">{`• ${keyword}`}</Small>
 								))

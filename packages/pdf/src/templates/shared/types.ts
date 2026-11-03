@@ -1,4 +1,4 @@
-import type { PhosphorIcon } from "../../forme/icons";
+import type { ResumeIcon } from "../../forme/icons";
 import type { StyleInput, TemplatePlacement } from "./styles";
 import type { CustomSection as SchemaCustomSection } from "@rezumi/schema/resume/data";
 import type { ComponentProps } from "react";
@@ -18,7 +18,7 @@ export type TemplateStyleContext = {
 
 export type TemplateStyleSlot = StyleInput | ((context: TemplateStyleContext) => StyleInput);
 
-export type TemplateIconProps = Omit<ComponentProps<typeof PhosphorIcon>, "name">;
+export type TemplateIconProps = Omit<ComponentProps<typeof ResumeIcon>, "name">;
 
 export type TemplateIconSlot =
 	| Partial<TemplateIconProps>
@@ -67,6 +67,15 @@ export type TemplateStyleSlots = {
 	sectionHeading?: TemplateStyleSlot;
 	sectionHeadingContainer?: TemplateStyleSlot;
 	sectionHeadingIcon?: TemplateIconSlot;
+	/** A shape drawn before the section title, such as a short accent bar. */
+	sectionHeadingMarker?: TemplateStyleSlot;
+	/** A rule drawn after the section title, filling the rest of its line. */
+	sectionHeadingRule?: TemplateStyleSlot;
+	/** The row of a skill's keyword chips, and each chip (Skills → keywords as tags). */
+	tagList?: TemplateStyleSlot;
+	tag?: TemplateStyleSlot;
+	/** The label of a labelled custom contact field ("Date of birth"). */
+	contactLabel?: TemplateStyleSlot;
 	sectionItems?: TemplateStyleSlot;
 	item?: TemplateStyleSlot;
 	levelContainer?: TemplateStyleSlot;
@@ -74,6 +83,8 @@ export type TemplateStyleSlots = {
 	levelItemActive?: TemplateStyleSlot;
 	levelItemInactive?: TemplateStyleSlot;
 	icon?: TemplateIconSlot;
+	/** Icons of the contact line, when they need another look than the item icons (a header band). */
+	contactIcon?: TemplateIconSlot;
 };
 
 export type ItemSection<T> = {

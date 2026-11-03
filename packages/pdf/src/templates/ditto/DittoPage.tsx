@@ -289,7 +289,6 @@ const useDittoTemplate = (): DittoTemplate => {
 					...(context.placement === "sidebar" ? { textAlign: "left" } : {}),
 				}),
 				icon: {
-					display: metadata.page.hideIcons ? "none" : "flex",
 					size: metadata.typography.body.fontSize,
 					color: primary,
 				},

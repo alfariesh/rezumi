@@ -551,7 +551,7 @@ describe("builder resume undo/redo", () => {
 
 		expect(store().undoStack).toHaveLength(1);
 		store().undo();
-		expect(store().resume?.data.metadata.page).toMatchObject({ gapY: 6, marginX: 14 });
+		expect(store().resume?.data.metadata.page).toMatchObject({ gapY: 6, marginX: 36 });
 	});
 
 	it("restores the exact authored Experience order with one undo after a one-shot sort", () => {
