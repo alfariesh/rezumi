@@ -1,5 +1,5 @@
 import type { AuthSession } from "@rezumi/auth/types";
-import { Avatar, Button, Description, FieldError, Input, InputGroup, Label, Spinner, TextField } from "@heroui/react";
+import { Button, Description, FieldError, Input, InputGroup, Label, Spinner, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -7,9 +7,9 @@ import { useRouteContext, useRouter } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import z from "zod";
 import { toast } from "@rezumi/ui/components/toast";
-import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { SettingsSection } from "../section";
+import { UserAvatar } from "@/features/user/avatar";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { isImeComposing } from "@/libs/keyboard";
@@ -244,10 +244,7 @@ function ProfilePhoto({ name, image, onChange }: ProfilePhotoProps) {
 
 	return (
 		<div className="flex items-center gap-3.5">
-			<Avatar color="accent" variant="soft" className="size-14">
-				{image && <Avatar.Image src={image} alt="" />}
-				<Avatar.Fallback className="text-lg font-semibold">{getInitials(name)}</Avatar.Fallback>
-			</Avatar>
+			<UserAvatar name={name} image={image} className="size-14" fallbackClassName="text-lg" />
 			<input
 				ref={input}
 				type="file"

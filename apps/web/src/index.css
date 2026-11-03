@@ -62,20 +62,6 @@
 	--default-hover: var(--field-hover);
 }
 
-/* The sidebar's search row sits on the surface (white) instead of the sidebar's gray; it greys on hover like the rest. */
-@utility sidebar-search {
-	& [data-slot="sidebar-menu-item-content"] {
-		background-color: var(--surface);
-	}
-
-	@media (hover: hover) {
-		&:hover [data-slot="sidebar-menu-item-content"],
-		&[data-hovered="true"] [data-slot="sidebar-menu-item-content"] {
-			background-color: var(--default);
-		}
-	}
-}
-
 /*
  * Gray controls inside a section's collapsible body take the page's own `background` instead of the default fill.
  * Cards nested in it (`fields-on-card`) set their own pair again, so their fields stay white.

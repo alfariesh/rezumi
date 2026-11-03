@@ -37,17 +37,15 @@ export function Templates() {
 						const isFree = freeTemplates.includes(id);
 						return (
 							<li key={id}>
-								<div className="rounded-2xl bg-surface-secondary p-3">
-									<img
-										src={`/templates/thumb/${id}-small.webp`}
-										alt={t`${name} resume template preview`}
-										width={300}
-										height={424}
-										loading="lazy"
-										decoding="async"
-										className="aspect-[300/424] w-full rounded-md bg-white object-contain shadow-surface"
-									/>
-								</div>
+								<img
+									src={`/templates/thumb/${id}-small.webp`}
+									alt={t`${name} resume template preview`}
+									width={300}
+									height={424}
+									loading="lazy"
+									decoding="async"
+									className="aspect-[300/424] w-full rounded-lg bg-white object-contain shadow-surface"
+								/>
 								<div className="mt-3 flex items-center justify-between gap-2">
 									<p className="font-medium">{name}</p>
 									<Chip size="sm" variant="soft" color={isFree ? "success" : "accent"}>

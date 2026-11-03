@@ -27,6 +27,8 @@ import { useTheme } from "./theme";
 
 const android = Platform.OS === "android";
 
+const avatarPlaceholder = require("../../assets/avatar-placeholder.webp") as number;
+
 export type ListRowProps = {
 	title: string;
 	subtitle?: string | undefined;
@@ -443,7 +445,7 @@ export type AvatarProps = {
 };
 
 export function Avatar({ name, uri, size = 40 }: AvatarProps) {
-	const { colors, fonts, motion, radius } = useTheme();
+	const { fonts, motion, radius } = useTheme();
 	// Array.from keeps surrogate pairs whole, so a name starting with an emoji or a supplementary-plane letter
 	// does not show half a character.
 	const initials = name
@@ -467,20 +469,23 @@ export function Avatar({ name, uri, size = 40 }: AvatarProps) {
 		);
 
 	return (
-		<View
-			accessible
-			accessibilityRole="image"
-			accessibilityLabel={name}
-			style={[circle, { alignItems: "center", justifyContent: "center", backgroundColor: colors.accentSoft }]}
-		>
-			{/* Initials scale with the circle (mockups: 14 at 36, 26 at 72), not with the font-size setting. */}
-			<Text
-				allowFontScaling={false}
-				color="accentText"
-				style={{ fontFamily: fonts.ui[700], fontSize: Math.round(size * 0.37), lineHeight: Math.round(size * 0.5) }}
-			>
-				{initials}
-			</Text>
+		<View accessible accessibilityRole="image" accessibilityLabel={name} style={[circle, { overflow: "hidden" }]}>
+			{/* The placeholder image fills the circle; the initials sit on it in white in every theme. */}
+			<Image source={avatarPlaceholder} style={StyleSheet.absoluteFill} accessible={false} />
+			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+				{/* Initials scale with the circle (mockups: 14 at 36, 26 at 72), not with the font-size setting. */}
+				<Text
+					allowFontScaling={false}
+					style={{
+						color: "#FFFFFF",
+						fontFamily: fonts.ui[700],
+						fontSize: Math.round(size * 0.37),
+						lineHeight: Math.round(size * 0.5),
+					}}
+				>
+					{initials}
+				</Text>
+			</View>
 		</View>
 	);
 }
