@@ -14,7 +14,11 @@ import { cn } from "@rezumi/utils/style";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { AddApplicationDialog } from "@/features/applications/components/add-application-dialog";
-import { ApplicationDetailSheet } from "@/features/applications/components/application-detail-sheet";
+import {
+	ApplicationDetailPane,
+	ApplicationDetailPanePlaceholder,
+	ApplicationDetailSheet,
+} from "@/features/applications/components/application-detail-sheet";
 import { ApplicationFormSheet } from "@/features/applications/components/application-form-sheet";
 import { ApplicationBoard } from "@/features/applications/components/board";
 import { ApplicationCalendar } from "@/features/applications/components/calendar-view";
@@ -29,6 +33,7 @@ import {
 	applicationsListQueryOptions,
 	hydrateApplicationDetail,
 } from "@/features/applications/queries";
+import { useMinWidth } from "@/hooks/use-min-width";
 import { toastError } from "@/libs/error-message";
 import { ENTER_CLASS } from "@/libs/motion";
 
@@ -172,6 +177,13 @@ function RouteComponent() {
 	const selected = applications?.find((application) => application.id === selectedId) ?? null;
 	// The board needs room to drag: phones get the list instead.
 	const shown: View = phone && (view === "board" || view === "calendar") ? "list" : view;
+	// From 1536px the list keeps the open application in a pane beside it, so moving between rows needs no closing.
+	// Narrower, and on the board and calendar (which need the width), it opens in the sheet.
+	const split = useMinWidth(1536) && shown === "list";
+	const editDetails = (application: Application) => {
+		setSelectedId(null);
+		setEditing(application);
+	};
 	const empty = !!applications && applications.length === 0;
 	// Hoisted so the compiler keeps one function; inline, it changes with every keystroke and re-renders each row.
 	const openApplication = (application: ApplicationSummary) => {
@@ -236,6 +248,8 @@ function RouteComponent() {
 							selectedKey={shown}
 							onSelectionChange={(key) => {
 								setViewSwitched(true);
+								// The pane closes with the list; the sheet shouldn't pop open over the board instead.
+								setSelectedId(null);
 								setSearch({ view: String(key) as View });
 							}}
 						>
@@ -342,12 +356,24 @@ function RouteComponent() {
 							)}
 						>
 							{shown === "list" && (
-								<ApplicationList
-									applications={filtered}
-									showClosed={closed}
-									selectedId={selectedId}
-									onOpen={openApplication}
-								/>
+								<div className={cn(split && "grid grid-cols-[minmax(0,1fr)_420px] items-start gap-6")}>
+									<ApplicationList
+										applications={filtered}
+										showClosed={closed}
+										selectedId={selectedId}
+										onOpen={openApplication}
+									/>
+									{split &&
+										(selected ? (
+											<ApplicationDetailPane
+												application={selected}
+												onClose={() => setSelectedId(null)}
+												onEditDetails={editDetails}
+											/>
+										) : (
+											<ApplicationDetailPanePlaceholder />
+										))}
+								</div>
 							)}
 							{shown === "board" && (
 								<div className="h-[calc(100svh-230px)] min-h-96">
@@ -381,12 +407,9 @@ function RouteComponent() {
 				filtered={filteredFullApplications.filter((application) => closed || application.status !== "closed")}
 			/>
 			<ApplicationDetailSheet
-				application={selected}
+				application={split ? null : selected}
 				onOpenChange={(open) => !open && setSelectedId(null)}
-				onEditDetails={(application) => {
-					setSelectedId(null);
-					setEditing(application);
-				}}
+				onEditDetails={editDetails}
 			/>
 		</Page>
 	);
