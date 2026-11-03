@@ -37,7 +37,7 @@ describe("designFeaturesNeeded", () => {
 		expect(designFeaturesNeeded({ template: "meridian" }, { template: "senja" })).toEqual(["premiumTemplates"]);
 		expect(designFeaturesNeeded({ template: "senja" }, { template: "senja" })).toEqual([]);
 		expect(designFeaturesNeeded({ template: "senja" }, { template: "meridian" })).toEqual([]);
-		expect(designFeaturesNeeded({ template: "gengar" }, { template: "senja" })).toEqual(["premiumTemplates"]);
+		expect(designFeaturesNeeded({ template: "linen" }, { template: "senja" })).toEqual(["premiumTemplates"]);
 	});
 
 	it("asks for custom styles only when they're added or changed, not kept or removed", () => {
@@ -73,7 +73,7 @@ describe("designFeaturesNeeded", () => {
 
 	it("reads stored designs of any shape", () => {
 		expect(designFeaturesNeeded({ template: 42, stylesheet: "nonsense" }, { template: "meridian" })).toEqual([]);
-		expect(designFeaturesNeeded(undefined, { template: "gengar", stylesheet: css("x {}") })).toEqual([
+		expect(designFeaturesNeeded(undefined, { template: "linen", stylesheet: css("x {}") })).toEqual([
 			"premiumTemplates",
 			"customStyles",
 		]);
