@@ -56,3 +56,12 @@
 ### Selesai bila
 
 - Admin, metrik, peringatan, ringkasan, pengingat, ekspor CSV, dan runbook tersedia dan teruji; README diperbarui.
+
+### Catatan implementasi (2026-11-03)
+
+- Refund memakai satu endpoint `POST /v2/{order_id}/refund` untuk semua metode (dokumen Midtrans 2026-11-03 menyarankan ini; Direct Refund tidak dipakai). Detail alur, kunci, dan pemetaan error: `01-arsitektur.md` 6.11.
+- Jejak peringatan, ringkasan, dan pengingat disimpan di satu tabel `billing_notification` (bukan `billing_alert` + `billing_notification_sent`); refund di `billing_refund`. Bahasa pengingat dari `billing_account.locale` yang diisi saat checkout.
+- "Error Midtrans API beruntun" = ≥3 kejadian dalam satu jam (Snap gagal, putaran rekonsiliasi yang semuanya gagal, error Midtrans saat memproses notifikasi). "≥5 `rejected_signature` dalam 1 jam" dihitung per jam UTC.
+- Aktivasi "PDF pertama dalam 7 hari" dari `00-keputusan-produk.md` bagian 9 belum bisa dihitung: unduhan PDF dibuat di browser dan tidak tercatat di server. Perlu pencatatan baru bila angka ini dibutuhkan.
+- **Paritas web–mobile:** halaman admin adalah alat internal pemilik, bukan fitur pengguna, jadi tidak dibuat di mobile (sudah diputuskan di `01-arsitektur.md` bagian 2). Ekspor data akun di mobile otomatis memuat `billing` karena app menyimpan JSON server apa adanya.
+- Panduan `docs/`: baris `billing.json` untuk "Exporting your data" dan bagian pengingat disimpan di [draf-panduan-paket-pembayaran.md](draf-panduan-paket-pembayaran.md) sampai go-live.
