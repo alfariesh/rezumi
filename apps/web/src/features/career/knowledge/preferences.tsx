@@ -1,7 +1,7 @@
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { KeyboardEvent } from "react";
 import { Segment } from "@heroui-pro/react";
-import { FieldError, Input, InputGroup, Label, TextArea, TextField } from "@heroui/react";
+import { FieldError, Input, InputGroup, Label, Skeleton, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -11,7 +11,7 @@ import { useId, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useDebouncedSave } from "../hooks";
-import { CareerLoadError, CareerLoading } from "../load-state";
+import { CareerLoadError } from "../load-state";
 import { CareerWidget, useCareerTime, useNow } from "../shared";
 import { parseAmount } from "./amount";
 import { SearchRegionsField } from "./search-regions-field";
@@ -47,7 +47,28 @@ export function PreferencesPage() {
 	const profile = query.data;
 	if (query.isError && !profile) return <CareerLoadError onRetry={() => void query.refetch()} />;
 	// The form keeps its own draft once loaded, so a background refetch never overwrites what's being typed.
-	return profile ? <PreferencesForm initial={profile} /> : <CareerLoading />;
+	return profile ? <PreferencesForm initial={profile} /> : <PreferencesSkeleton />;
+}
+
+/** The form's two widgets with placeholder fields (a label over a field), so the page doesn't jump when it loads. */
+function PreferencesSkeleton() {
+	const field = (key: number) => (
+		<div key={key} className="grid gap-2">
+			<Skeleton className="h-4 w-28 rounded-md" />
+			<Skeleton className="h-10 rounded-xl" />
+		</div>
+	);
+	return (
+		<div role="status" className="grid max-w-[820px] gap-4">
+			<span className="sr-only">{t`Loading`}</span>
+			<CareerWidget icon="compass" title={<Trans>What you're looking for</Trans>} contentClassName="gap-5 p-4">
+				<div className="grid gap-5 sm:grid-cols-2">{[0, 1, 2, 3].map(field)}</div>
+			</CareerWidget>
+			<CareerWidget icon="list-checks" title={<Trans>Requirements</Trans>} contentClassName="gap-5 p-4">
+				<div className="grid gap-5 sm:grid-cols-2">{[0, 1].map(field)}</div>
+			</CareerWidget>
+		</div>
+	);
 }
 
 type PreferencesFormProps = { initial: CareerProfileData };

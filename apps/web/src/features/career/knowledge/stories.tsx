@@ -1,6 +1,17 @@
 import type { Fact, Story } from "../hooks";
 import { EmptyState } from "@heroui-pro/react";
-import { Button, Checkbox, Chip, Input, Separator, Spinner, TextArea, Tooltip, Typography } from "@heroui/react";
+import {
+	Button,
+	Checkbox,
+	Chip,
+	Input,
+	Separator,
+	Skeleton,
+	Spinner,
+	TextArea,
+	Tooltip,
+	Typography,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +22,7 @@ import * as z from "zod";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
-import { CareerLoadError, CareerLoading } from "../load-state";
+import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, Eyebrow, Swap, useNow, withUndo } from "../shared";
 import { WidgetAction, widgetActionClass } from "@/components/layout/widget-heading";
 import { collectInterviews, upcomingInterviews } from "@/features/applications/interviews";
@@ -46,6 +57,24 @@ const factChanged = (story: Story, facts: Map<string, Fact>) =>
 		return at !== undefined && new Date(at) > new Date(story.updatedAt);
 	});
 
+/** The list beside the open story, as the page lays them out, with placeholder stories (a title and a date). */
+function StoriesSkeleton() {
+	return (
+		<div role="status" className="grid items-start gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
+			<span className="sr-only">{t`Loading`}</span>
+			<CareerWidget icon="book-open" title={<Trans>Your stories</Trans>} contentClassName="gap-1 p-2">
+				{[0, 1, 2].map((key) => (
+					<div key={key} className="grid gap-2 px-3 py-2.5">
+						<Skeleton className="h-4 w-3/4 rounded-md" />
+						<Skeleton className="h-3 w-1/3 rounded-md" />
+					</div>
+				))}
+			</CareerWidget>
+			<Skeleton className="h-96 rounded-3xl max-lg:hidden" />
+		</div>
+	);
+}
+
 type StoriesPageProps = { storyId: string | undefined; edit: boolean };
 
 export function StoriesPage({ storyId, edit }: StoriesPageProps) {
@@ -66,7 +95,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 				}}
 			/>
 		);
-	if (!stories || !facts) return <CareerLoading />;
+	if (!stories || !facts) return <StoriesSkeleton />;
 
 	const factsById = new Map((facts ?? []).map((fact) => [fact.id, fact]));
 	const list = stories.filter((story) => !hidden.includes(story.id));

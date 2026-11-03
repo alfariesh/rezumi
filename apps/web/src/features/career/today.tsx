@@ -15,7 +15,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
-import { CareerLoadError } from "./load-state";
+import { CareerLoadError, RowsSkeleton } from "./load-state";
 import { rollForward, ScheduleSheet, scheduleKind } from "./schedule-sheet";
 import {
 	CareerWidget,
@@ -201,7 +201,7 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 					}}
 				/>
 			) : !data ? (
-				<Skeleton className="h-32 rounded-xl" />
+				<RowsSkeleton rows={2} />
 			) : (
 				<Swap id={rows.length > 0 ? "list" : "empty"}>
 					{rows.length > 0 ? (
@@ -762,7 +762,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 					}}
 				/>
 			) : !rows ? (
-				<Skeleton className="h-24 rounded-xl" />
+				<RowsSkeleton rows={2} />
 			) : rows.length === 0 ? (
 				<p className="text-sm text-muted">
 					<Trans>Nothing scheduled yet.</Trans>

@@ -3,7 +3,19 @@ import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
 import { EmptyState, ItemCard, NativeSelect, Segment } from "@heroui-pro/react";
-import { Button, Chip, InputGroup, Label, Modal, Separator, Spinner, Switch, TextArea, TextField } from "@heroui/react";
+import {
+	Button,
+	Chip,
+	InputGroup,
+	Label,
+	Modal,
+	Separator,
+	Skeleton,
+	Spinner,
+	Switch,
+	TextArea,
+	TextField,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,7 +24,7 @@ import { memo, useDeferredValue, useEffect, useId, useRef, useState } from "reac
 import { factCategorySchema } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { CareerLoadError, CareerLoading } from "../load-state";
+import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
 import { useProfile } from "./preferences";
 import { WidgetAction } from "@/components/layout/widget-heading";
@@ -145,13 +157,14 @@ export function FactsPage({ highlight }: FactsPageProps) {
 				</InputGroup>
 			</div>
 
-			{!facts && (factQuery.isError ? <CareerLoadError onRetry={() => void factQuery.refetch()} /> : <CareerLoading />)}
+			{!facts && factQuery.isError && <CareerLoadError onRetry={() => void factQuery.refetch()} />}
 
-			{facts && (
+			{/* The widget shows while facts load, with placeholder rows, so the list lands where its frame already is. */}
+			{!(factQuery.isError && !facts) && (
 				<CareerWidget
 					icon="check-circle"
 					title={<Trans>Your facts</Trans>}
-					count={visible.length}
+					count={facts ? visible.length : undefined}
 					trailing={
 						<WidgetAction onPress={() => setAdding(true)}>
 							<Icon name="plus" size={16} />
@@ -160,43 +173,66 @@ export function FactsPage({ highlight }: FactsPageProps) {
 					}
 					contentClassName="gap-0 p-0"
 				>
-					<div ref={listRef}>
-						<AnimatePresence initial={false}>
-							{visible.map((fact) => (
-								<FactRow
-									key={fact.id}
-									fact={fact}
-									onStatus={setStatus}
-									onCorrect={correct}
-									onShare={share}
-									onForget={forget}
-								/>
-							))}
-						</AnimatePresence>
-						{visible.length === 0 && (
-							<EmptyState size="sm">
-								<EmptyState.Header>
-									<EmptyState.Media variant="icon">
-										<Icon name="list-checks" size={20} />
-									</EmptyState.Media>
-									<EmptyState.Title>{facts.length === 0 ? t`No facts yet` : t`No facts match`}</EmptyState.Title>
-									<EmptyState.Description>
-										{facts.length === 0 ? t`Use Add fact to start.` : t`Try another word or type.`}
-									</EmptyState.Description>
-								</EmptyState.Header>
-								{type !== null && (
-									<EmptyState.Content>
-										<Button variant="secondary" size="sm" onPress={() => setType(null)}>
-											<Trans>Show all types</Trans>
-										</Button>
-									</EmptyState.Content>
-								)}
-							</EmptyState>
-						)}
-					</div>
+					{!facts ? (
+						<FactRowsSkeleton />
+					) : (
+						<div ref={listRef}>
+							<AnimatePresence initial={false}>
+								{visible.map((fact) => (
+									<FactRow
+										key={fact.id}
+										fact={fact}
+										onStatus={setStatus}
+										onCorrect={correct}
+										onShare={share}
+										onForget={forget}
+									/>
+								))}
+							</AnimatePresence>
+							{visible.length === 0 && (
+								<EmptyState size="sm">
+									<EmptyState.Header>
+										<EmptyState.Media variant="icon">
+											<Icon name="list-checks" size={20} />
+										</EmptyState.Media>
+										<EmptyState.Title>{facts.length === 0 ? t`No facts yet` : t`No facts match`}</EmptyState.Title>
+										<EmptyState.Description>
+											{facts.length === 0 ? t`Use Add fact to start.` : t`Try another word or type.`}
+										</EmptyState.Description>
+									</EmptyState.Header>
+									{type !== null && (
+										<EmptyState.Content>
+											<Button variant="secondary" size="sm" onPress={() => setType(null)}>
+												<Trans>Show all types</Trans>
+											</Button>
+										</EmptyState.Content>
+									)}
+								</EmptyState>
+							)}
+						</div>
+					)}
 				</CareerWidget>
 			)}
 			<AddFactDialog open={adding} onOpenChange={setAdding} onAdded={added} />
+		</div>
+	);
+}
+
+/** Fact rows while the list loads: the chips, two lines of text, and the switch at the end, as `FactRow` lays them out. */
+function FactRowsSkeleton() {
+	return (
+		<div role="status">
+			<span className="sr-only">{t`Loading`}</span>
+			{Array.from({ length: 4 }, (_, index) => (
+				<div key={index} className="flex items-start gap-4 border-t border-separator px-4 py-4 first:border-t-0">
+					<div className="grid min-w-0 flex-1 gap-2.5">
+						<Skeleton className="h-5 w-24 rounded-full" />
+						<Skeleton className="h-4 w-4/5 rounded-md" />
+						<Skeleton className="h-4 w-1/2 rounded-md" />
+					</div>
+					<Skeleton className="h-6 w-10 shrink-0 rounded-full" />
+				</div>
+			))}
 		</div>
 	);
 }
@@ -217,7 +253,8 @@ function MemoryCard() {
 		["auto", t`Automatically`],
 		["off", t`Never`],
 	];
-	if (!profile) return isError ? <CareerLoadError onRetry={retry} /> : <CareerLoading />;
+	// While the profile loads the card keeps its shape: the hint is a placeholder line and the choice is disabled.
+	if (!profile && isError) return <CareerLoadError onRetry={retry} />;
 
 	return (
 		<ItemCard className="flex-wrap gap-y-3">
@@ -228,7 +265,11 @@ function MemoryCard() {
 				<ItemCard.Title id={labelId} className="whitespace-normal">
 					<Trans>Remember facts from my messages</Trans>
 				</ItemCard.Title>
-				<ItemCard.Description className="whitespace-normal">{hints[profile.memoryMode]}</ItemCard.Description>
+				{profile ? (
+					<ItemCard.Description className="whitespace-normal">{hints[profile.memoryMode]}</ItemCard.Description>
+				) : (
+					<Skeleton className="mt-1 h-4 w-3/4 rounded-md" />
+				)}
 			</ItemCard.Content>
 			<ItemCard.Action>
 				<Segment
