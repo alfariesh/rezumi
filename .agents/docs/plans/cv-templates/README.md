@@ -36,8 +36,8 @@ Status: ⬜ belum mulai · 🟡 berjalan/sebagian · ✅ selesai · ⛔ diblokir
 | 03    | Enam template dua kolom, hapus template lama         | 02              | 🟡     |
 | 04    | Builder web dan mobile: kontrol ikon, galeri, preset | 01, 03          | 🟡     |
 | 05    | Paket: template gratis baru, fitur logo tools        | 03              | 🟡     |
-| 06    | Contoh galeri, dokumentasi, DOCX, halaman web publik | 03              | 🟡     |
-| 07    | QA akhir: ATS, matriks visual, mobile                | 04, 05, 06      | ⬜     |
+| 06    | Polesan desain, contoh galeri, dokumentasi, DOCX     | 03              | 🟡     |
+| 07    | QA akhir: ATS, matriks visual, mobile, optimasi      | 04, 05, 06      | ⬜     |
 
 ### Phase 01 — Fondasi
 
@@ -49,25 +49,58 @@ Selesai bila: semua template lama merender dengan ikon Hugeicons di ketiga gaya;
 
 Meridian, Sterling, Aksara, Atlas, Tunas, Summit, Cendekia, Wibawa, Tenun, Vector (spesifikasi `01-desain.md`). ID baru ditambahkan di samping ID lama; setiap template punya `semantic.ts`, entri galeri web dan mobile (nama, deskripsi Lingui, tag), entri DOCX, dan preset. Cek matriks visual (`02-teknis.md` bagian 6) untuk tiap template dan simpan gambarnya untuk laporan.
 
-### Phase 03 — Enam template dua kolom, hapus yang lama
+### Phase 03 — Hapus 18 template lama
 
-Kirana, Linen, Horizon, Jejak, Purnama, Senja. Lalu hapus 18 template lama beserta tesnya, pasang `legacyTemplateIds`, jadikan Meridian template default (`default.ts`, `.catch`), dan pindahkan contoh CSS kustom di dokumentasi ke ID baru.
+Sudah (2026-11-03): enam template dua kolom, `legacyTemplateSuccessors` + `upgradeTemplateId` (setiap baca dan tulis), Meridian sebagai default, `templateLineup` di semua pemilih.
+
+Sisa:
+
+- [ ] Hapus folder 18 template lama di `packages/pdf/src/templates/` beserta entri `index.ts`, `semantic/template-manifest.ts`, `apps/web/src/dialogs/resume/template/data.ts`, `templateLayouts`, dan gambar contohnya di `apps/web/public/templates/{pdf,jpg,thumb}`.
+- [ ] `templateSchema` hanya 16 ID; ID lama diterima lewat `.catch`/preprocess yang memanggil `upgradeTemplateId`, dan skema JSON untuk agent hanya menyebut lineup.
+- [ ] Tes yang mengunci geometri ke Onyx/Ditgar/Glalie/Persian/Gengar/Chikorita (cari komentar "defaults resumes had before November 2026" dan `template: "onyx"`) dipindah ke template pengganti dengan nilai ukur baru; tes khusus template lama dihapus atau diganti.
+- [ ] Fixture CSS `packages/pdf/src/semantic/all-templates-fixture.ts` (`resume[template="azurill"]`) dan contoh CSS di `docs/applying-custom-styles.mdx` memakai ID baru.
+- [ ] `docs/spec.json` dan `references/schema.md` dibuat ulang (`pnpm docs:gen`).
 
 ### Phase 04 — Builder web dan mobile
 
-Design → Ikon: saklar utama, gaya (Standar/Rounded/Sharp), kontak, judul bagian, item, logo tools (terkunci untuk Gratis). Pemilih ikon memakai Hugeicons per kategori. Galeri: nama baru, filter (satu kolom, dua kolom, ATS aman, bidang), tombol "Pakai gaya bawaan template". Keahlian: tampilan chip. Data Pribadi: label di kolom kustom. Semua di web **dan** mobile.
+Sudah: grup Design → Ikon (saklar, gaya Standar/Rounded/Sharp, kontak, judul bagian, item, logo tools) di web, web ponsel, dan app mobile; pemilih ikon menggambar Hugeicons; galeri hanya lineup.
+
+Sisa:
+
+- [ ] Pemilih ikon per kategori (`iconCategories` di `@rezumi/schema/icons`) dengan pencarian, digambar dalam gaya ikon resume yang dipilih (bukan selalu Standar). Web dan mobile.
+- [ ] Tombol "Pakai gaya bawaan template" di galeri/Design: menerapkan `templatePresets` (font, ukuran, warna, tata letak entri, `keywordLayout`, bentuk foto) dengan Undo.
+- [ ] Input label untuk kolom kustom (Data Pribadi: "Tempat, tanggal lahir", "Kewarganegaraan") di formulir Basics web dan mobile.
+- [ ] Opsi "Chip" untuk tampilan kata kunci Keahlian (`keywordLayout: "tags"`) di form section Keahlian web dan mobile.
+- [ ] Filter galeri per bidang (Tech, Kreatif, Keuangan, Pemerintahan/BUMN, Akademik, Fresh graduate) dari data template.
 
 ### Phase 05 — Paket
 
-`FREE_TEMPLATES` = Meridian, Sterling, Tunas, Wibawa, Kirana; fitur paket `brandLogos` untuk logo tools (server menolak menyalakan `icons.logos` tanpa fitur; nilai tersimpan tetap dirender). Naikkan `BILLING_CATALOG_VERSION`; perbarui pesan, halaman paket web/mobile, dan dokumen legal/harga yang menyebut template gratis.
+Sudah: `FREE_TEMPLATES` = Meridian, Sterling, Tunas, Wibawa, Kirana; `BILLING_CATALOG_VERSION` = 2; halaman legal menyebut template gratis baru.
 
-### Phase 06 — Contoh, dokumentasi, ekspor
+Sisa:
 
-PDF contoh dan gambar galeri (`apps/web/public/templates/{pdf,jpg,thumb}`) dari `tooling/templates/preview.ts` dengan persona fiktif (versi Indonesia untuk lokal `id`). Perbarui `docs/guides/choosing-a-template.mdx` dan halaman lain yang menyebut template, beranda, DOCX tiap template, dan cek halaman web publik.
+- [ ] Fitur paket `brandLogos` di `packages/schema/src/billing/catalog.ts` (Plus dan Pro AI). Server menolak _menyalakan_ `design.icons.logos` tanpa fitur (`designFeaturesNeeded` di `packages/api/src/features/billing/limits.ts`), nilai yang sudah tersimpan tetap dirender, dan impor file menyesuaikan ke paket.
+- [ ] Saklar "Logo tools" terkunci dengan label paket untuk Gratis (web dan mobile, ikut aturan iOS/Android di `00-keputusan-produk.md` membership), pesan error netral, daftar manfaat paket di halaman paket web/mobile, dan dokumen legal/harga.
 
-### Phase 07 — QA akhir
+### Phase 06 — Polesan desain, contoh galeri, dokumentasi, ekspor
 
-Ekstraksi teks ATS per template, matriks visual lengkap, uji mobile (simulator), dan bersih-bersih sisa Phosphor.
+Sisa:
+
+- [ ] Polesan yang sudah diketahui: Jejak tidak memberi titik timeline pada Ringkasan dan garis tetap tampil untuk satu entri; Wibawa meluruskan label Data Pribadi dengan kolom ikon; Aksara ringkasan sebagai standfirst (lebih besar); Cendekia publikasi bernomor; contoh Vector menampilkan logo tools.
+- [ ] Contoh galeri dengan persona fiktif per template (versi Indonesia untuk lokal `id`, foto berlisensi), lewat skrip `templates:previews` di `tooling` yang membuat PDF + JPG + WebP (ganti prosedur manual di `apps/web/DESIGN.md`).
+- [ ] DOCX setiap template (`SIDEBAR_BACKGROUND` dan gaya per template di `packages/docx/src/builder.ts`).
+- [ ] Cek halaman web publik (`packages/pdf/src/html`) untuk ke-16 template, termasuk tampilan ponsel.
+- [ ] Panduan pengguna: `docs/guides/choosing-a-template.mdx`, halaman lain yang menyebut template lama, beranda (`apps/web/src/features/homepage/features.tsx`), dan panduan ikon/logo baru.
+
+### Phase 07 — QA akhir dan optimasi
+
+Sisa:
+
+- [ ] Tes ekstraksi teks ATS per template (`packages/pdf/src/ats-extraction.integration.test.tsx`): urutan nama, kontak, judul bagian, tanggal; ikon dan logo tidak menghasilkan teks sampah.
+- [ ] Matriks visual setiap template: dengan/tanpa foto, A4/Letter, 2–3 halaman, RTL (`--locale ar`), aksen terang dan gelap, nama sangat panjang, semua ikon menyala dan mati.
+- [ ] App mobile di simulator: Design → Ikon, galeri, render PDF dengan ketiga gaya ikon.
+- [ ] Ukuran bundel mobile: data ikon 3 gaya ±3,7 MB mentah ikut bundel; ukur dan pertimbangkan memuat data pemilih ikon hanya saat dibuka.
+- [ ] Perbaiki tes mobile `scripts/layout.test.mjs` (fixture `avatar-placeholder` hilang, sudah gagal sebelum revamp) dan pasang `poppler` (`brew install poppler`) agar tes `export-text` bisa jalan lokal.
 
 ## Aturan wajib untuk setiap sesi agent
 
