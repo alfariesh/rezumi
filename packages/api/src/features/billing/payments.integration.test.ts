@@ -84,6 +84,8 @@ vi.mock("./midtrans/client", async () => {
 					paymentType: status.payment_type ?? "qris",
 					transactionId: "trx-1",
 					refundAmount: status.refund_amount ?? null,
+					// A JSON list of { refundKey, amount, reason }, as the client parses Midtrans' `refunds`.
+					refunds: status.refunds ? JSON.parse(status.refunds) : [],
 					fields: safeProviderFields({ ...status, order_id: orderId }),
 				},
 			};

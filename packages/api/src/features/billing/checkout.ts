@@ -9,6 +9,7 @@ import { env } from "@rezumi/env/server";
 import { BILLING_CATALOG_VERSION, BILLING_CURRENCY, PLANS } from "@rezumi/schema/billing";
 import { generateId } from "@rezumi/utils/string";
 import { lockBillingAccount } from "./account";
+import { raiseBillingAlertQuietly } from "./alerts";
 import { isBillingAppliedTo } from "./entitlements";
 import { applyVerifiedStatus } from "./fulfillment";
 import {
@@ -124,6 +125,8 @@ export async function checkout(input: {
 	idempotencyKey: string;
 	/** Changing method opens a new page even when another one is open. */
 	reuseOpen?: boolean;
+	/** The app language, kept for later emails about the pass (it ending soon). */
+	locale?: string | undefined;
 	now?: Date;
 }): Promise<CheckoutResult> {
 	await assertCanPurchase(input.authentication);
@@ -134,7 +137,12 @@ export async function checkout(input: {
 	const plan = PLANS[input.planId];
 	const start = windowStart(now);
 	const prepared = await db.transaction(async (tx) => {
-		await lockBillingAccount(tx, userId);
+		const account = await lockBillingAccount(tx, userId);
+		if (input.locale && account.locale !== input.locale)
+			await tx
+				.update(schema.billingAccount)
+				.set({ locale: input.locale })
+				.where(eq(schema.billingAccount.userId, userId));
 		const [same] = await tx
 			.select()
 			.from(schema.billingPayment)
@@ -224,6 +232,8 @@ export async function checkout(input: {
 			.update(schema.billingPayment)
 			.set({ status: "failed", failureReason: code })
 			.where(and(eq(schema.billingPayment.id, created.id), eq(schema.billingPayment.status, "creating")));
+		// One failure is a hiccup; the alert is emailed from the third in an hour.
+		await raiseBillingAlertQuietly({ kind: "midtrans_errors", paymentId: created.id, now });
 		throw unavailable();
 	}
 	// The page exists, so the payment waits for the customer; a status check may have moved it on already.

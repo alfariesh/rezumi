@@ -7,7 +7,8 @@ export type CreditHistoryEntry = RouterOutput["billing"]["creditHistory"]["items
 /** How many Rezumi AI credits, in words. */
 export const creditCount = (count: number) => plural(count, { one: "# credit", other: "# credits" });
 
-function actionName(action: string) {
+/** The kind of Rezumi AI work behind a credit charge, in words. */
+export function getCreditActionName(action: string) {
 	switch (action) {
 		case "short-text":
 			return t`Short text help`;
@@ -52,7 +53,7 @@ export function describeCreditEntry(
 					: t`Expires on ${expires}`;
 		return { icon: "plus-circle", title, detail, amount: `+${entry.amount}` };
 	}
-	const title = actionName(entry.action);
+	const title = getCreditActionName(entry.action);
 	const amount = `−${entry.credits}`;
 	if (entry.status === "reserved") return { icon: "hourglass", title, detail: t`In progress`, amount };
 	if (entry.status === "released")

@@ -10,7 +10,8 @@ const json = (value: unknown) => strToU8(`${JSON.stringify(value, null, 2)}\n`);
 const fileName = (name: string, id: string) => `${slugify(name)}-${id}.json`;
 
 /**
- * "Export everything": account, documents, applications and career records, including source metadata and conversations.
+ * "Export everything": account, documents, applications, career records (including source metadata and
+ * conversations), and payments, passes and Rezumi AI credits.
  * Extract the archive to import individual resumes and letters; the other files are records. Attachments remain references.
  */
 export function buildAccountZip(data: AccountExport): Uint8Array {
@@ -19,6 +20,7 @@ export function buildAccountZip(data: AccountExport): Uint8Array {
 		"applications.json": json(data.applications),
 		"career.json": json(data.career),
 		"ai-content-reports.json": json(data.aiContentReports),
+		"billing.json": json(data.billing),
 	};
 	for (const resume of data.resumes) files[`resumes/${fileName(resume.name, resume.id)}`] = json(resume);
 	for (const letter of data.coverLetters) {

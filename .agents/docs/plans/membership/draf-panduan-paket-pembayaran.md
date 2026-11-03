@@ -86,7 +86,21 @@ Receipts are proof of payment, not tax invoices: the seller isn't registered for
 On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out. Send your account email and the order number from the receipt to the address in [Contact & complaints](/legal/contact). The [refund policy](/legal/refund-policy) has the details.
 
 When a refund is approved, the time and remaining credits from that payment are taken back. Your other passes and your documents stay as they are.
+
+## Before your pass ends
+
+About three days before your last pass ends, Rezumi emails you once: when it ends, and what stays on Free. Passes never renew by themselves, so there's nothing to cancel.
 ```
+
+## `docs/guides/exporting-your-data.mdx` (Phase 09)
+
+Tambahkan baris ini ke tabel **What's in the zip**, di antara `applications.json` dan `resumes/`:
+
+```mdx
+| `billing.json` | Your payments (order number, plan, amount, method, status, refunds), passes, and Rezumi AI credits received and used. Payment page links are not included. |
+```
+
+File `billing.json` sudah ikut di ZIP sejak Phase 09 (isinya daftar kosong selama belum ada pembelian); barisnya baru ditambahkan ke panduan saat go-live agar panduan tidak menyebut paket sebelum dijual.
 
 ## Catatan untuk pemilik
 

@@ -3,7 +3,8 @@ import type { MidtransConfig } from "./midtrans/config";
 import { and, asc, eq, gt, inArray, isNull, lt, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
-import { applyVerifiedStatus } from "./fulfillment";
+import { raiseBillingAlertQuietly } from "./alerts";
+import { alertIfPaidNotApplied, applyVerifiedStatus } from "./fulfillment";
 import { MidtransError, expireTransaction, getTransactionStatus } from "./midtrans/client";
 import { getMidtransConfig } from "./midtrans/config";
 
@@ -50,7 +51,12 @@ async function checkPayment(
 		});
 	const result = await getTransactionStatus(config, payment.providerOrderId);
 	if (result.found)
-		return applyVerifiedStatus({ paymentId: payment.id, verified: result, source: "status_check", now });
+		return applyVerifiedStatus({ paymentId: payment.id, verified: result, source: "status_check", now }).catch(
+			async (error: unknown) => {
+				await alertIfPaidNotApplied(payment.id, result);
+				throw error;
+			},
+		);
 	if (!closed) return null;
 	return applyVerifiedStatus({
 		paymentId: payment.id,
@@ -140,6 +146,7 @@ export async function reconcilePayments(now = new Date()): Promise<number> {
 		return rows;
 	});
 	let checked = 0;
+	let midtransFailures = 0;
 	for (const payment of claimed) {
 		// What's left waits for its next turn.
 		if (Date.now() - started > RECONCILE_BUDGET_MS) break;
@@ -147,11 +154,15 @@ export async function reconcilePayments(now = new Date()): Promise<number> {
 			await checkPayment(config, payment, now);
 			checked++;
 		} catch (error) {
+			if (error instanceof MidtransError) midtransFailures++;
 			console.warn("[billing] Reconciling a payment failed; it is checked again later.", {
 				paymentId: payment.id,
 				error: error instanceof MidtransError ? error.code : "error",
 			});
 		}
 	}
+	// Every check failing at Midtrans, run after run, is an outage or a wrong key: the alert adds them up.
+	if (midtransFailures && !checked)
+		await raiseBillingAlertQuietly({ kind: "midtrans_errors", count: midtransFailures, now });
 	return checked;
 }

@@ -11,7 +11,7 @@ import { safeProviderFields } from "./status";
 const TIMEOUT_MS = 10_000;
 const USER_AGENT = "Rezumi-Billing/1.0";
 
-export type MidtransOperation = "snap.create" | "snap.cancel" | "status" | "cancel" | "expire";
+export type MidtransOperation = "snap.create" | "snap.cancel" | "status" | "cancel" | "expire" | "refund";
 
 /** network and timeout never got an answer; client is a 4xx (a wrong key, a bad request), server a 5xx. */
 export type MidtransErrorKind = "network" | "timeout" | "client" | "server" | "invalid_response";
@@ -62,13 +62,18 @@ export type MidtransTransactionStatus = {
 	grossAmount: string | null;
 	paymentType: string | null;
 	transactionId: string | null;
-	/** Refunded so far, for partial refunds. */
+	/** Refunded so far, in total. */
 	refundAmount: string | null;
+	/** Each refund Midtrans knows about, from the API or its dashboard. */
+	refunds: MidtransRefund[];
 	/** The allowlisted fields, safe to store. */
 	fields: Record<string, string>;
 };
 
 export type MidtransStatusResult = { found: false } | { found: true; status: MidtransTransactionStatus };
+
+/** One refund in a status: its key (ours, RF-…, or one Midtrans made for a dashboard refund) and amount string. */
+export type MidtransRefund = { refundKey: string; amount: string; reason: string | null };
 
 /** What a cancel or expire did: done, nothing to act on yet (no method chosen), or not allowed in its state. */
 export type MidtransActionResult = "done" | "not_found" | "not_allowed";
@@ -168,6 +173,35 @@ export async function cancelSnapSession(config: MidtransConfig, token: string): 
 	return httpStatus >= 200 && httpStatus < 300;
 }
 
+/** The refunds listed in a status or refund answer; entries without a key or amount are left out. */
+function refundsOf(body: Record<string, unknown>): MidtransRefund[] {
+	if (!Array.isArray(body.refunds)) return [];
+	return body.refunds.flatMap((entry: unknown) => {
+		if (!entry || typeof entry !== "object") return [];
+		const refund = entry as Record<string, unknown>;
+		const refundKey = text(refund.refund_key);
+		const amount = text(refund.refund_amount);
+		if (!refundKey || !amount) return [];
+		return [{ refundKey: refundKey.slice(0, 100), amount, reason: text(refund.reason)?.slice(0, 255) ?? null }];
+	});
+}
+
+/** A status-shaped answer (Get Status, or a refund's reply) for the order it must belong to. */
+function transactionOf(orderId: string, body: Record<string, unknown>, transactionStatus: string, statusCode: string) {
+	return {
+		orderId,
+		transactionStatus,
+		statusCode,
+		fraudStatus: text(body.fraud_status),
+		grossAmount: text(body.gross_amount),
+		paymentType: text(body.payment_type),
+		transactionId: text(body.transaction_id),
+		refundAmount: text(body.refund_amount),
+		refunds: refundsOf(body),
+		fields: safeProviderFields(body),
+	} satisfies MidtransTransactionStatus;
+}
+
 /**
  * The transaction behind an order. A Snap order has none until the customer chooses a method, so "not found" is an
  * answer, not an error: Midtrans says it with `status_code` 404 in the body (the HTTP status isn't documented).
@@ -184,20 +218,7 @@ export async function getTransactionStatus(config: MidtransConfig, orderId: stri
 	const transactionStatus = text(body.transaction_status);
 	if (httpStatus !== 200 || !transactionStatus || !statusCode) throw httpError("status", httpStatus, body, statusCode);
 	if (text(body.order_id) !== orderId) throw new MidtransError({ kind: "invalid_response", operation: "status" });
-	return {
-		found: true,
-		status: {
-			orderId,
-			transactionStatus,
-			statusCode,
-			fraudStatus: text(body.fraud_status),
-			grossAmount: text(body.gross_amount),
-			paymentType: text(body.payment_type),
-			transactionId: text(body.transaction_id),
-			refundAmount: text(body.refund_amount),
-			fields: safeProviderFields(body),
-		},
-	};
+	return { found: true, status: transactionOf(orderId, body, transactionStatus, statusCode) };
 }
 
 async function act(
@@ -226,4 +247,52 @@ export function cancelTransaction(config: MidtransConfig, orderId: string) {
 /** Ends a pending transaction's payment window now. */
 export function expireTransaction(config: MidtransConfig, orderId: string) {
 	return act(config, "expire", orderId);
+}
+
+/**
+ * What Midtrans said to a refund: `confirmed` with the transaction after it (`200`), or accepted while the bank still
+ * processes it (`201`, card refunds mostly), which only a later status shows the end of.
+ */
+export type MidtransRefundAnswer = { confirmed: true; status: MidtransTransactionStatus } | { confirmed: false };
+
+/**
+ * Refunds a settled transaction (`POST /v2/{order_id}/refund`, the one endpoint Midtrans now asks for every method).
+ * The refund key makes it idempotent: sending the same key again never refunds twice. No amount means the whole
+ * payment. A refusal throws with Midtrans' `status_code` (412: not refundable in its state, 414: a wrong amount, 406:
+ * the key was already used).
+ */
+export async function refundTransaction(
+	config: MidtransConfig,
+	orderId: string,
+	refund: { refundKey: string; amount?: number | undefined; reason: string },
+): Promise<MidtransRefundAnswer> {
+	const { httpStatus, body } = await call(
+		config,
+		"refund",
+		`${config.coreBaseUrl}/v2/${encodeURIComponent(orderId)}/refund`,
+		{
+			method: "POST",
+			body: JSON.stringify({
+				refund_key: refund.refundKey,
+				...(refund.amount === undefined ? {} : { amount: refund.amount }),
+				reason: refund.reason,
+			}),
+		},
+	);
+	const statusCode = text(body.status_code);
+	const transactionStatus = text(body.transaction_status);
+	const accepted = httpStatus >= 200 && httpStatus < 300;
+	if (accepted && statusCode === "201") return { confirmed: false };
+	if (!accepted || statusCode !== "200" || !transactionStatus) {
+		// Refusals often come as HTTP 200 with the real code in the body; the error carries that code.
+		const code = accepted && /^[45]\d\d$/.test(statusCode ?? "") ? Number(statusCode) : httpStatus;
+		throw httpError("refund", code >= 400 ? code : 502, body, statusCode);
+	}
+	if (text(body.order_id) !== orderId) throw new MidtransError({ kind: "invalid_response", operation: "refund" });
+	const status = transactionOf(orderId, body, transactionStatus, statusCode);
+	// The reply names the refund it made at the top level rather than in a list.
+	const refundKey = text(body.refund_key);
+	const amount = text(body.refund_amount);
+	if (!status.refunds.length && refundKey && amount) status.refunds = [{ refundKey, amount, reason: refund.reason }];
+	return { confirmed: true, status };
 }

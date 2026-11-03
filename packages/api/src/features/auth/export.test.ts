@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
 	predicates: [] as unknown[],
 	getLetter: vi.fn(),
 	exportCareer: vi.fn(),
+	exportBilling: vi.fn(),
 }));
 vi.mock("@rezumi/db/client", () => ({ db: { select: mocks.select } }));
 vi.mock("@rezumi/db/schema", () => ({
@@ -22,6 +23,7 @@ vi.mock("@rezumi/auth/config", () => ({ isCustomOAuthProviderEnabled: () => fals
 vi.mock("../storage/service", () => ({ getStorageService: vi.fn() }));
 vi.mock("../cover-letters/service", () => ({ coverLetterService: { getById: mocks.getLetter } }));
 vi.mock("../career/service", () => ({ careerService: { exportData: mocks.exportCareer } }));
+vi.mock("../billing/export", () => ({ exportBillingData: mocks.exportBilling }));
 const { authService } = await import("./service");
 
 describe("account backup", () => {
@@ -76,6 +78,8 @@ describe("account backup", () => {
 				transcripts: [{ id: "transcript", original: "I lead the migration.", edited: "I led the migration." }],
 			};
 			mocks.exportCareer.mockResolvedValue(career);
+			const billing = { payments: [{ id: "payment", orderId: "RZ-payment", refunds: [] }], passes: [] };
+			mocks.exportBilling.mockResolvedValue(billing);
 			const application = { id: "application", userId: "owner", company: "Lumen", role: "Designer" };
 			for (const rows of [
 				[{ id: "owner", name: "Owner" }],
@@ -100,6 +104,9 @@ describe("account backup", () => {
 			expect(mocks.predicates).toContainEqual({ column: "coverLetter.userId", value: "owner" });
 			expect(mocks.exportCareer).toHaveBeenCalledExactlyOnceWith("owner");
 			expect(exported.career).toEqual(career);
+			// Payments, passes and credits come along too.
+			expect(mocks.exportBilling).toHaveBeenCalledExactlyOnceWith("owner");
+			expect(exported.billing).toEqual(billing);
 			expect(exported.aiContentReports).toEqual([{ id: "report", userId: "owner", content: "Reported output" }]);
 			expect(mocks.predicates).toContainEqual({ column: "aiContentReport.userId", value: "owner" });
 		},

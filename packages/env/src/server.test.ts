@@ -22,6 +22,7 @@ beforeEach(() => {
 		"MIDTRANS_ENABLED_PAYMENTS",
 		"MIDTRANS_SIGNATURE_KEY",
 		"BILLING_CHECKOUT_PAUSED",
+		"BILLING_ALERT_EMAIL",
 	])
 		vi.stubEnv(name, undefined);
 });
@@ -187,6 +188,19 @@ describe("redis url userinfo", () => {
 			expect.any(String),
 			expect.arrayContaining([expect.objectContaining({ code: "invalid_format", format: "url" })]),
 		);
+	});
+});
+
+describe("billing alert address", () => {
+	it.each([undefined, "", "owner@example.com"])("accepts an unset or valid address (%s)", async (value) => {
+		vi.stubEnv("BILLING_ALERT_EMAIL", value);
+		expect((await import("./server")).env.BILLING_ALERT_EMAIL).toBe(value || undefined);
+	});
+
+	it("rejects something that isn't an email address", async () => {
+		vi.stubEnv("BILLING_ALERT_EMAIL", "owner");
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
 	});
 });
 

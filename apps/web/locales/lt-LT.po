@@ -178,11 +178,21 @@ msgstr "{0, plural, one {# laukas pažymėtas greitai peržiūrai redaktoriuje.}
 msgid "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 msgstr "{0, plural, one {# problema ignoruojama.} other {# problemos nepaisomos.}}"
 
+#. placeholder {0}: paid.length
+#: src/features/billing/admin/customer.tsx
+msgid "{0, plural, one {# paid payment, after refunds} other {# paid payments, after refunds}}"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/conversation.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "{0, plural, one {# proposed edit} other {# proposed edits}}"
 msgstr "{0, plural, one {# siūlomas redagavimas} other {# siūlomi pakeitimai}}"
+
+#. placeholder {0}: refunds.filter((refund) => refund.status === "succeeded").length
+#: src/features/billing/admin/customer.tsx
+msgid "{0, plural, one {# refund done} other {# refunds done}}"
+msgstr ""
 
 #. placeholder {0}: result.skipped
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -339,10 +349,21 @@ msgstr "{0} uždarytas"
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
+#. placeholder {0}: row.credits
+#: src/features/billing/admin/overview.tsx
+msgid "{0} credits"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
 msgstr "Pritaikyta pakeitimų: {0}"
+
+#. placeholder {0}: credits.nextExpiry.credits
+#. placeholder {1}: formatShort(credits.nextExpiry.at)
+#: src/features/billing/admin/customer.tsx
+msgid "{0} expire {1}"
+msgstr ""
 
 #. placeholder {0}: creditCount(nextExpiry.credits)
 #. placeholder {1}: formatDate(nextExpiry.at)
@@ -428,6 +449,12 @@ msgstr "{0} iš {1} taikomų patikrų įvykdyta"
 msgid "{0} of {1} applicable checks passed."
 msgstr "{0} iš {1} taikomų patikrų įvykdyta."
 
+#. placeholder {0}: checkouts.paid
+#. placeholder {1}: checkouts.started
+#: src/features/billing/admin/overview.tsx
+msgid "{0} of {1} checkouts paid"
+msgstr ""
+
 #. placeholder {0}: thread.editsAccepted
 #. placeholder {1}: thread.editsProposed
 #: src/features/assistant/assistant-panel.tsx
@@ -498,6 +525,11 @@ msgstr "{0} taisytina"
 #. placeholder {1}: formatDate(payment.access.endsAt)
 #: src/features/billing/receipt.tsx
 msgid "{0} until {1}"
+msgstr ""
+
+#. placeholder {0}: metrics.signups.verified
+#: src/features/billing/admin/overview.tsx
+msgid "{0} verified their email"
 msgstr ""
 
 #. placeholder {0}: getPaymentMethodName(payment.paymentType)
@@ -668,6 +700,11 @@ msgstr "{failing, plural, one {# peržiūrėti} other {# peržiūrėti}}"
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
 msgstr "{filled} iš 5 dalių"
+
+#. placeholder {0}: Math.min(page * PAGE_SIZE, total)
+#: src/features/billing/admin/overview.tsx
+msgid "{first}–{0} of {total}"
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "{freeTemplateCount} templates"
@@ -995,6 +1032,7 @@ msgstr "Prieš 24 valandas"
 msgid "3 of 5 keywords on your resume"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 dienų"
@@ -1003,6 +1041,11 @@ msgstr "30 dienų"
 msgid "5 credits"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "7 days"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90 dienų"
@@ -1095,6 +1138,10 @@ msgstr "Modelio nuomonė, o ne nuosprendis. Tai gali būti neteisinga."
 msgid "A name helps you tell passkeys apart, like “Work laptop”."
 msgstr "Pavadinimas padeda atskirti prieigos raktus, pvz., „Darbo nešiojamasis kompiuteris“."
 
+#: src/features/billing/admin/customer.tsx
+msgid "A negative amount takes credits away, soonest-expiring first, never below zero."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A numeric date reads differently in different countries."
 msgstr "Skaitmeninė data skirtingose šalyse skaitoma skirtingai."
@@ -1122,6 +1169,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "A role has no description"
 msgstr "Vaidmuo neturi aprašymo"
+
+#: src/features/billing/admin/customer.tsx
+msgid "A running pass ends now; a queued one is dropped, and later passes move up."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "A saved offer"
@@ -1220,6 +1271,21 @@ msgstr "Pasiekimas"
 msgid "Account"
 msgstr "Paskyra"
 
+#. placeholder {0}: account.id
+#. placeholder {1}: formatAccountDate(account.createdAt)
+#. placeholder {2}: account.timezone
+#: src/features/billing/admin/customer.tsx
+msgid "Account {0} · created {1} · time zone {2}"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Account deleted"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Accounts"
+msgstr ""
+
 #: src/features/homepage/hero.tsx
 msgid "achievements"
 msgstr ""
@@ -1228,9 +1294,15 @@ msgstr ""
 msgid "Action"
 msgstr "Veiksmas"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Actions"
 msgstr "Veiksmai"
+
+#. placeholder {0}: payment.orderId
+#: src/features/billing/admin/customer.tsx
+msgid "Actions for {0}"
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
@@ -1592,6 +1664,10 @@ msgstr ""
 msgid "Added by you"
 msgstr "Pridėjote jūs"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Added credits expire in (days)"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Added to Knowledge as a preference."
 msgstr "Įtraukta į Žinias kaip pageidavimas."
@@ -1620,8 +1696,24 @@ msgstr "Adresas"
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "Jei iki tol negausite atsakymo, skiltyje „Šiandien“ bus pridėtas priminimas."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Adjust"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Adjust credits"
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Adjust fonts, colors, spacing and sections in the resume builder. Download a PDF without a watermark on every plan, or share a link. Word and ODT downloads are included with Plus and Pro AI. The PDFs above are examples to help you compare designs."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Adjust Rezumi AI credits"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "admin"
 msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -1718,6 +1810,18 @@ msgstr ""
 msgid "Albanian"
 msgstr "Albanų"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Alert"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Alerts"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Alerts from the last 7 days, one per kind per hour. The owner's runbook has the steps."
+msgstr ""
+
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Align center"
 msgstr "Lygiuoti centre"
@@ -1752,6 +1856,10 @@ msgstr "Visos darbo paraiškos (įskaitant uždarytas)"
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Visi dokumentai ir darbo paraiškos kaip JSON, viename užtrauktuku"
+
+#: src/features/billing/admin/overview.tsx
+msgid "All statuses"
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "All your documents, applications, API keys and public links are deleted for good. This can't be undone."
@@ -1803,12 +1911,32 @@ msgstr "Taip pat siųsti el. laišką adresu {0}"
 msgid "Also shows the icons on skills, profiles and interests."
 msgstr "Taip pat rodomos įgūdžių, profilių ir pomėgių piktogramos."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Also take back the pass and remaining credits from this payment"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Amharic"
 msgstr "Amharų"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 msgid "Amount"
+msgstr ""
+
+#. placeholder {0}: formatPrice(left)
+#: src/features/billing/admin/customer.tsx
+msgid "Amount (Rupiah), up to {0}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Amount doesn't match the order"
+msgstr ""
+
+#. placeholder {0}: formatPrice(left)
+#: src/features/billing/admin/customer.tsx
+msgid "Amount transferred (Rupiah), up to {0}"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -2376,6 +2504,16 @@ msgstr "Geriausia teikiant paraiškas"
 msgid "Beyond the resume"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Billing"
+msgstr ""
+
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Billing admin"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Blocker"
 msgstr "Blokuojanti problema"
@@ -2428,6 +2566,10 @@ msgstr "Rėmelio plotis"
 #: src/features/career/offers.tsx
 msgid "Both offers cover everything compared here."
 msgstr "Abu pasiūlymai apima viską, kas čia lyginama."
+
+#: src/features/billing/admin/customer.tsx
+msgid "bought"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "Brand Designer"
@@ -2551,6 +2693,7 @@ msgstr "Ar programinė įranga gali nuskaityti jūsų gyvenimo aprašymą?"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/admin/reason-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/knowledge/stories.tsx
@@ -2572,6 +2715,10 @@ msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Card"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Card: up to 6 months after the payment."
 msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -2711,6 +2858,10 @@ msgstr "Patikrinkite, ar jis tikslus."
 msgid "check numbers and names before using it"
 msgstr "prieš naudodami patikrinkite skaičius ir vardus"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Check status"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Check the details"
 msgstr "Patikrinkite informaciją"
@@ -2792,6 +2943,14 @@ msgstr "Tikrinama... Išsaugojus galima kopijuoti."
 #: src/features/career/workspace/apply.tsx
 msgid "Checklist progress"
 msgstr "Kontrolinio sąrašo eiga"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Checkout conversion"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Checkouts"
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Checks by category"
@@ -2931,6 +3090,7 @@ msgstr "Kliento ID"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/admin/reason-dialog.tsx
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
@@ -3418,6 +3578,10 @@ msgstr "Pataisyta {correctedOn} · originalas išsaugotas"
 
 #: src/features/billing/credits.ts
 msgid "Correction by Rezumi"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Cost (rates not set)"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -4124,8 +4288,24 @@ msgstr "Sukurta ir susieta su {0}"
 msgid "Credits"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Credits (e.g. 20 or -5)"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Credits adjusted"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Credits adjusted."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Credits charged, and what the AI provider cost."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -4134,6 +4314,10 @@ msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Credits used"
 msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -4223,6 +4407,11 @@ msgstr ""
 msgid "Custom styles, your own fonts, API and MCP"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Customer"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Czech"
 msgstr "Čekų"
@@ -4235,6 +4424,10 @@ msgstr "Kasdien {clock} · kitas {next}"
 #: src/features/resume/share/share-panel.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "Dienos peržiūros per 30 dienų, didžiausias {0}"
+
+#: src/features/billing/admin/labels.ts
+msgid "DANA: up to 45 days after settlement."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Danish"
@@ -4289,6 +4482,14 @@ msgstr "Datos nebus skaitomos"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Day"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Days (1–366)"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Days in WIB. Trends compare with the period just before."
 msgstr ""
 
 #: src/features/letters/compose.ts
@@ -4614,6 +4815,7 @@ msgstr ""
 msgid "Don't send {0}"
 msgstr "Nesiųskite {0}"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -4666,6 +4868,7 @@ msgid "Download codes"
 msgstr "Atsisiųsti kodus"
 
 #: src/features/applications/components/export-applications-sheet.tsx
+#: src/features/billing/admin/overview.tsx
 msgid "Download CSV"
 msgstr "Atsisiųskite CSV"
 
@@ -5002,6 +5205,7 @@ msgstr "Išsilavinimas"
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/account/profile.tsx
@@ -5033,17 +5237,38 @@ msgstr ""
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
 msgstr "El. pašto pristatymas šiame serveryje nenustatytas, todėl adresas nėra patvirtintas."
 
+#: src/features/billing/admin/customer.tsx
+msgid "email not verified"
+msgstr ""
+
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Email the recruiter"
 msgstr "El. paštu įdarbintojui"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Email, RZ-… or ID"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Emailed"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "Eksportuodami įterpkite visus šriftus, kad simboliai atvaizduotųsi taip, kaip numatėte."
 
+#. placeholder {0}: formatPrice(left)
+#: src/features/billing/admin/customer.tsx
+msgid "Empty: the rest, {0}"
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "End"
 msgstr "Pabaiga"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Ended"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "English"
@@ -5187,6 +5412,10 @@ msgstr "Kiekviename įraše formų sistemose yra skaitomos datos, skaitomos eil�
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Kiekvienas vaidmuo sako, ką tu padarei. Nuomonės apie formuluotę gyvena skirtuke Rašymas."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Every stretch of paid time, newest first."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Every template"
 msgstr ""
@@ -5210,6 +5439,10 @@ msgstr "Kas savaitę"
 #: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "Everything in Plus"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Everything matching “{query}”, any date."
 msgstr ""
 
 #. placeholder {0}: application.company
@@ -5352,6 +5585,10 @@ msgstr "Faktai, istorijos ir pageidavimai, įjungti Žiniose"
 msgid "Failed"
 msgstr "Nepavyko"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Failed, expired or cancelled"
+msgstr ""
+
 #: src/features/homepage/ui.tsx
 msgid "FAQ"
 msgstr ""
@@ -5417,6 +5654,10 @@ msgstr "Filtruoti pagal žymą"
 
 #: src/features/homepage/testimonials.tsx
 msgid "Finance Analyst"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Find a customer"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -5788,6 +6029,10 @@ msgstr "Ilgėja. Išbandykite „Trumpiau“ arba iškirpkite mažiausiai konkre
 msgid "GitHub"
 msgstr "\"GitHub\""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Give a pass"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
 msgstr "Kiekvienai pareigybei nurodykite laikotarpį, pvz., „Jan 2020 - Present“, kad būtų galima atkurti jūsų laiko juostą."
@@ -5796,9 +6041,17 @@ msgstr "Kiekvienai pareigybei nurodykite laikotarpį, pvz., „Jan 2020 - Presen
 msgid "Give every role and qualification a date range."
 msgstr "Kiekvienai pareigybei ir kvalifikacijai nurodykite datų intervalą."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Give pass"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Give the story a title before you can save."
 msgstr "Kad galėtumėte išsaugoti, suteikite istorijai pavadinimą."
+
+#: src/features/billing/admin/customer.tsx
+msgid "given"
+msgstr ""
 
 #. Secondary navigation button on backup-code verification screen
 #: src/features/auth/pages/verify-2fa.tsx
@@ -5834,6 +6087,10 @@ msgstr ""
 msgid "Google"
 msgstr "\"Google\""
 
+#: src/features/billing/admin/labels.ts
+msgid "GoPay: up to 45 days after settlement."
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Grade"
 msgstr "Pažymys"
@@ -5857,6 +6114,10 @@ msgstr "Kreipinys"
 #: src/features/documents/documents-page.tsx
 msgid "Grid"
 msgstr "Tinklelis"
+
+#: src/features/billing/admin/customer.tsx
+msgid "guest"
+msgstr ""
 
 #: src/features/homepage/footer.tsx
 msgid "Guides"
@@ -6005,6 +6266,7 @@ msgstr "Nuomos vadovas"
 msgid "Hiring team"
 msgstr "Darbo komanda"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-components/download-sheet.tsx
@@ -6031,6 +6293,10 @@ msgstr "Horizontali paraštė"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/page.tsx
 msgid "Horizontal spacing"
 msgstr "Horizontalūs tarpai"
+
+#: src/features/billing/admin/customer.tsx
+msgid "How"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "How did it go?"
@@ -6645,6 +6911,10 @@ msgstr "Išlaiko specifiškiausias dalis"
 msgid "Kept as it is"
 msgstr "Laikytas toks, koks yra"
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "Kept in the audit log with your name. At least 3 characters."
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Key ends in {ending}"
 msgstr ""
@@ -6730,6 +7000,10 @@ msgstr "Paskutinį kartą patikrinta prieš {lastChecked}"
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Last edited"
 msgstr "Paskutinį kartą redaguota"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Last month"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
@@ -7291,6 +7565,10 @@ msgstr "Tvarko serveris"
 msgid "Managed by your server"
 msgstr "Tvarko jūsų serveris"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Manual transfer"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Many bullets start with the same phrase."
 msgstr "Daug punktų prasideda ta pačia fraze."
@@ -7405,6 +7683,11 @@ msgstr "MCP serveris"
 msgid "MCP server address"
 msgstr ""
 
+#. placeholder {0}: formatUsdMicros(row.p50UsdMicros)
+#: src/features/billing/admin/overview.tsx
+msgid "median {0}"
+msgstr ""
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
 msgstr ""
@@ -7425,6 +7708,8 @@ msgstr "Parašyti konsultantui"
 msgid "Messages"
 msgstr "Žinutės"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 msgid "Method"
 msgstr ""
@@ -7432,6 +7717,60 @@ msgstr ""
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "Mikrofonas užblokuotas. Leiskite jį naršyklės nustatymuose arba įveskite atsakymą."
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans amount doesn't match"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans API kept failing"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans can't refund this method: transfer the money to the customer yourself, then record it here."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans events and admin actions, newest first."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans has no transaction yet: no method was chosen."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans hasn't confirmed it yet. Check the status in a moment."
+msgstr ""
+
+#. placeholder {0}: result.transactionStatus ?? "—"
+#. placeholder {1}: getPaymentStatusLabel(result.status)
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans says \"{0}\". Here: {1}."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans status needs a look: {said}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: {said}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: {said} (already handled)"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: late {said}, ignored"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: paid"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: refunded"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Minimum base salary"
@@ -7684,6 +8023,7 @@ msgstr "Siauras"
 msgid "narrow margins"
 msgstr "siauros paraštės"
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Needs attention"
 msgstr "Reikia dėmesio"
@@ -7696,6 +8036,10 @@ msgstr "Reikia jūsų dėmesio"
 msgid "Nepali"
 msgstr "Nepalų"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Net revenue"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Network"
 msgstr "Tinklas"
@@ -7704,6 +8048,10 @@ msgstr "Tinklas"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Niekada"
+
+#: src/features/billing/admin/parts.tsx
+msgid "new"
+msgstr ""
 
 #: src/features/documents/document-card.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -7770,8 +8118,20 @@ msgstr "Naujas tvarkaraštis"
 msgid "New section"
 msgstr "Nauja skiltis"
 
+#: src/features/billing/admin/overview.tsx
+msgid "New sign-ups"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "New story"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Newest first. The menu at the end of a row checks, refunds or resends."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Newest payments started in this period. Search finds any customer."
 msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
@@ -7988,6 +8348,22 @@ msgstr ""
 msgid "No open issues"
 msgstr "Nėra atvirų problemų"
 
+#: src/features/billing/admin/customer.tsx
+msgid "No paid pass running"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "No passes."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "No payments in this period."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "No payments."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr "Nėra telefono numerio"
@@ -8019,6 +8395,10 @@ msgstr "Nėra gyvenimo aprašymo"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "Gyvenimo aprašymų dar nėra."
+
+#: src/features/billing/admin/overview.tsx
+msgid "No Rezumi AI work in this period."
+msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
@@ -8120,6 +8500,10 @@ msgstr "Nesusijungta"
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "Dar neprijungtas. Pridėkite jo DNS įrašus ten, kur valdote domeną, tada patikrinkite."
+
+#: src/features/billing/admin/overview.tsx
+msgid "Not emailed"
+msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Not enough Rezumi AI credits"
@@ -8252,6 +8636,10 @@ msgstr "Niekas neatitinka „{0}“"
 msgid "Nothing matches these filters"
 msgstr "Niekas neatitinka šių filtrų"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Nothing matches."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Nothing saved yet"
 msgstr "Kol kas nieko neišsaugota"
@@ -8292,9 +8680,25 @@ msgstr ""
 msgid "Nothing was heard. Try again, or type your answer."
 msgstr "Nieko neišgirsta. Bandykite dar kartą arba įveskite atsakymą."
 
+#: src/features/billing/admin/customer.tsx
+msgid "Nothing yet."
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Notice period"
 msgstr "Įspėjimo laikotarpis"
+
+#: src/features/billing/admin/customer.tsx
+msgid "notification"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Notification with a bad signature, rejected"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Notifications with a bad signature"
+msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
@@ -8467,6 +8871,7 @@ msgid "Opacity"
 msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
 #: src/routes/dashboard/applications/index.tsx
@@ -8485,6 +8890,10 @@ msgstr "Atidarykite AI nustatymus"
 #: src/features/career/today.tsx
 msgid "Open briefing"
 msgstr "Atidaryti atmintinę"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Open customer"
+msgstr ""
 
 #. Button label to open the user's default email app
 #: src/features/auth/pages/forgot-password.tsx
@@ -8625,6 +9034,11 @@ msgstr "Arba įkelkite gyvenimo aprašymo PDF"
 msgid "Orange"
 msgstr "Oranžinė"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Order"
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "Order number"
 msgstr ""
@@ -8675,6 +9089,10 @@ msgstr "Pasenęs: nuo tada tekstas pasikeitė."
 msgid "Outdent"
 msgstr "Mažinti įtrauką"
 
+#: src/features/billing/admin/labels.ts
+msgid "OVO: full refunds only, within 7 days."
+msgstr ""
+
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -8718,16 +9136,30 @@ msgstr "Puslapio skaitymas nesibaigė."
 msgid "Page view"
 msgstr "Puslapio peržiūra"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Paid"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Paid at Midtrans, not active here"
 msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "Paid by"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Paid in total"
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "Paid on"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Paid payments"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -8750,6 +9182,38 @@ msgstr ""
 #: src/features/career/shared.tsx
 msgid "Partly supported"
 msgstr "Iš dalies pagrįsta"
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass and credits granted"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass and credits taken back"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass given by an admin"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Pass given."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Pass not granted"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass revoked by an admin"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Pass revoked."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Passes"
+msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Passes belong to an account with an email address. Your guest work moves with you."
@@ -8888,6 +9352,10 @@ msgstr ""
 msgid "Payment method"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Payment methods"
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "Payment receipt"
 msgstr ""
@@ -8896,6 +9364,16 @@ msgstr ""
 msgid "Payment received"
 msgstr ""
 
+#: src/features/billing/admin/labels.ts
+msgid "Payment reversed by the bank"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "payments"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 msgid "Payments"
 msgstr ""
@@ -8926,6 +9404,10 @@ msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "People using Rezumi"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Period"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -8995,6 +9477,8 @@ msgstr "Paprastas tekstas (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "Paprastas tekstas su antraštėmis. Įklijuokite į darbo prašymo formas ir pastabas."
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/back-link.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
@@ -9011,6 +9495,10 @@ msgstr "Planuoti iš naujo"
 msgid "Plan my preparation"
 msgstr "Suplanuoti mano pasiruošimą"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Plan now"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Plan what to ask"
 msgstr "Suplanuoti, ko paklausti"
@@ -9021,6 +9509,15 @@ msgstr "Planuojama jūsų savaitė"
 
 #: src/features/billing/plan-page.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Plans don't apply yet (BILLING_MODE)"
+msgstr ""
+
+#. placeholder {0}: plus.payments
+#: src/features/billing/admin/overview.tsx
+msgid "Plus · {0} sold"
 msgstr ""
 
 #: src/features/templates/gallery.tsx
@@ -9297,6 +9794,11 @@ msgstr "Privatumo politika"
 msgid "Private. Only you can see it."
 msgstr "Privatus. Tik tu gali tai pamatyti."
 
+#. placeholder {0}: proAi.payments
+#: src/features/billing/admin/overview.tsx
+msgid "Pro AI · {0} sold"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Pro AI credits"
 msgstr ""
@@ -9379,6 +9881,10 @@ msgstr "Pateikta jūsų serverio: {connectedProvider}."
 msgid "Provider"
 msgstr "Tiekėjas"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Provider cost"
+msgstr ""
+
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
@@ -9460,6 +9966,10 @@ msgstr "QR kodas, skirtas {url}"
 msgid "QR code for two-step verification"
 msgstr "QR kodas dviejų veiksmų patvirtinimui"
 
+#: src/features/billing/admin/labels.ts
+msgid "QRIS: up to 45 days when paid with the acquirer's own app (GoPay), about 7 days from other apps."
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Question {index}"
 msgstr ""
@@ -9487,6 +9997,14 @@ msgstr "Klausimai nukopijuoti"
 #: src/features/career/workspace/prepare.tsx
 msgid "Questions to ask"
 msgstr "Klausimai, kuriuos verta užduoti"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Queued"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Queued like a purchase. No payment and no credits come with it."
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Raise the design sheet"
@@ -9690,6 +10208,8 @@ msgid "Ready"
 msgstr "Paruošta"
 
 #: src/features/applications/components/detail/close-dialog.tsx
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/reason-dialog.tsx
 msgid "Reason"
 msgstr "Priežastis"
 
@@ -9700,6 +10220,26 @@ msgstr "Prisimintas"
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/receipt.tsx
 msgid "Receipt"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Receipt email not delivered"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Receipt not sent"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Receipt sent"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Receipt sent again"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Receipt sent."
 msgstr ""
 
 #: src/features/billing/payment-history.tsx
@@ -9718,6 +10258,10 @@ msgstr "Gavėjas"
 msgid "Recommended"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Record a manual refund"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "Įrašyti iš naujo"
@@ -9725,6 +10269,14 @@ msgstr "Įrašyti iš naujo"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Record application"
 msgstr "Įrašykite darbo paraišką"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Record manual refund"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Record refund"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Record your answer"
@@ -9790,6 +10342,10 @@ msgstr "Rekomendavo…, ką pabrėžti ir pan."
 msgid "Reflection"
 msgstr "Refleksija"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Refresh"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Refresh the briefing 2 hours before"
 msgstr "Atnaujinti atmintinę likus 2 valandoms"
@@ -9802,14 +10358,71 @@ msgstr "Atnaujinti atmintinę likus 24 valandoms"
 msgid "Refresh the briefing on the morning of"
 msgstr "Atnaujinti atmintinę tos dienos rytą"
 
+#. placeholder {0}: formatPrice(refundAmount)
+#: src/features/billing/admin/customer.tsx
+msgid "Refund {0}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refund asked of Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refund not confirmed"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
 msgstr ""
 
+#: src/features/billing/admin/labels.ts
+msgid "Refund recorded"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refund recorded."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refund refused by Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refund through Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/purchase.ts
 #: src/features/billing/receipt.tsx
 msgid "Refunded"
+msgstr ""
+
+#. placeholder {0}: metrics.refunds.refunds
+#: src/features/billing/admin/overview.tsx
+msgid "Refunded · {0}"
+msgstr ""
+
+#. placeholder {0}: formatPrice(result.amount)
+#: src/features/billing/admin/customer.tsx
+msgid "Refunded {0}."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Refunded or reversed"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refunds"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refunds may need to be activated by Midtrans support first, and the Midtrans balance must cover them. A full refund always takes back the pass and the remaining credits."
+msgstr ""
+
+#. placeholder {0}: refund.failureReason ?? "—"
+#: src/features/billing/admin/customer.tsx
+msgid "Refused ({0})"
 msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
@@ -10054,6 +10667,10 @@ msgstr "Reikalavimai"
 msgid "Requirements and your evidence"
 msgstr "Reikalavimai ir jūsų įrodymai"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Resend receipt"
+msgstr ""
+
 #: src/features/billing/buy-plans.tsx
 msgid "Resend the link"
 msgstr ""
@@ -10238,6 +10855,11 @@ msgstr ""
 msgid "Reversed by the bank"
 msgstr ""
 
+#. placeholder {0}: metrics.reversals.payments
+#: src/features/billing/admin/overview.tsx
+msgid "Reversed by the bank · {0}"
+msgstr ""
+
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -10280,6 +10902,11 @@ msgstr "Įvertinimui reikia AI ryšio. <0>Pridėkite jį nustatymuose</0>. Iki t
 msgid "Revoke"
 msgstr "Atšaukti"
 
+#: src/features/billing/admin/customer.tsx
+msgctxt "Taking a paid pass away"
+msgid "Revoke"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Revoke {label}"
 msgstr ""
@@ -10291,6 +10918,14 @@ msgstr "Atšaukti prieigą"
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke an application's access to your account."
 msgstr "Atšaukti programos prieigą prie paskyros."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Revoke this pass"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Revoked"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Revoked “{name}”. Apps using it stop working now."
@@ -10319,6 +10954,7 @@ msgstr ""
 msgid "Rezumi AI · {cost} · {0} left"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
 #: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
@@ -10417,6 +11053,10 @@ msgstr ""
 msgid "Run again"
 msgstr "Vykdyti dar kartą"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Running"
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Runs on Rezumi AI for {cost}. Change"
 msgstr ""
@@ -10446,6 +11086,10 @@ msgstr "Atlyginimas nenurodytas"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Salary range"
 msgstr "Atlyginimo intervalas"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Sales"
+msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "Sales Executive"
@@ -10755,6 +11399,10 @@ msgstr "Ieškokite darbo paraiškų ir asistento bei skaitykite puslapius, kuri�
 msgid "Search job postings"
 msgstr "Ieškokite darbo skelbimų"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Search results"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "Ieškokite vaidmens, įmonės ar kontakto"
@@ -11060,6 +11708,10 @@ msgstr "Dalintis"
 msgid "Share a live link that is always the latest version"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Share of revenue."
+msgstr ""
+
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
 msgstr "Bendrinti skiltis"
@@ -11084,6 +11736,10 @@ msgstr "Tobulinama įžanga"
 
 #: src/features/homepage/resume.tsx
 msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "ShopeePay: full refunds only, between 06.00 and 23.50 WIB."
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -11628,6 +12284,7 @@ msgstr ""
 msgid "Start with the sections most resumes have."
 msgstr "Pradėkite nuo skilčių, kurias turi dauguma gyvenimo aprašymų."
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/career/shared.tsx
 msgid "Started"
 msgstr "Prasidėjo"
@@ -11653,11 +12310,25 @@ msgstr "Prasideda dabar"
 msgid "Statistics"
 msgstr "Statistika"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "Būsena"
+
+#: src/features/billing/admin/customer.tsx
+msgid "status check"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Status checked with Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Status needs a look by hand"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Stay here"
@@ -11847,6 +12518,10 @@ msgstr "Perjungta į vieną stulpelį"
 #: src/features/resume/builder/draft.ts
 msgid "Synced changes made in another tab."
 msgstr "Sinchronizuoti pakeitimai, atlikti kitame skirtuke."
+
+#: src/features/billing/admin/customer.tsx
+msgid "system"
+msgstr ""
 
 #: src/libs/theme.ts
 msgid "System"
@@ -12109,6 +12784,11 @@ msgstr "Tekstas po {minimum} pt gali būti neteisingai perskaitytas, kai sistema
 msgid "Thai"
 msgstr "Tajų"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "That didn't work. Try again."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "That file couldn't be read as a PDF. Choose a PDF file and try again."
 msgstr "To failo nepavyko nuskaityti kaip PDF. Pasirinkite PDF failą ir bandykite dar kartą."
@@ -12213,6 +12893,10 @@ msgstr "Pabaiga yra prieš pradžią."
 msgid "The English and Indonesian versions share one design, so switching languages took minutes, not an afternoon."
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "The export failed. Try again."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF"
 msgstr "Eksportuotas PDF"
@@ -12265,6 +12949,10 @@ msgstr "žinutė"
 msgid "The morning of the interview has passed, so the briefing runs now."
 msgstr "Pokalbio dienos rytas jau praėjo, todėl atmintinė rengiama dabar."
 
+#: src/features/billing/admin/overview.tsx
+msgid "The numbers couldn't load."
+msgstr ""
+
 #: src/features/career/coach.tsx
 msgid "The offers you chose to compare, with their terms"
 msgstr "Pasiūlymai, kuriuos pasirinkote palyginti, su jų sąlygomis"
@@ -12307,6 +12995,10 @@ msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "The payment page couldn't be opened. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "The payments couldn't load."
 msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
@@ -12352,6 +13044,10 @@ msgstr "Nepavyko patikrinti teikėjo atsakymo. Bandykite dar kartą."
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
 msgstr "Priežastis saugoma „Insights“. Susieti dokumentai neliečiami."
+
+#: src/features/billing/admin/customer.tsx
+msgid "The receipt wasn't sent. Check the email settings."
+msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
@@ -12517,6 +13213,10 @@ msgstr "Ši ryšio užklausa neteisinga arba nebegalioja. Pradėkite ryšį iš 
 msgid "This conversation couldn't be opened. Refresh the page to try again."
 msgstr "Šio pokalbio nepavyko atidaryti. Atnaujinkite puslapį ir bandykite dar kartą."
 
+#: src/features/billing/admin/customer.tsx
+msgid "This customer couldn't load."
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The resume keeps the last valid date."
 msgstr "Ši data nebuvo išsaugota. Naudokite mėnesį ir metus, pvz., 2022 m. kovo mėn., arba tik metus. Gyvenimo aprašyme išsaugoma paskutinė galiojanti data."
@@ -12616,6 +13316,10 @@ msgstr ""
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "Tai parodo, kaip tiksliai programinė įranga gali išgauti šio failo tekstą. Tai neprognozuoja, ar paraiška bus atmesta – to negali nė vienas įrankis. Jūsų failas buvo perskaitytas šioje naršyklėje ir niekada nebuvo įkeltas."
+
+#: src/features/billing/admin/overview.tsx
+msgid "This month"
+msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
@@ -12790,6 +13494,10 @@ msgstr "Laikas, nuoroda, su kuo, ką išsiuntėte"
 msgid "Timed plan"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Times"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Laikas rodomas laiko juostoje {timeZone}."
@@ -12906,6 +13614,10 @@ msgstr "Transkribuojama naudojant {model}…"
 msgid "Transcript copied"
 msgstr "Nuorašas nukopijuotas"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Transfer the money to the customer first, then record it here. Nothing is sent to Midtrans."
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -12919,6 +13631,19 @@ msgstr "Šiukšliadėžė tuščia"
 #: src/features/billing/credits.ts
 #: src/features/billing/plan-page.tsx
 msgid "Trial credits"
+msgstr ""
+
+#. placeholder {0}: formatShort(credits.trial.grantedAt)
+#: src/features/billing/admin/customer.tsx
+msgid "Trial given {0}"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Trial not given yet"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Trials given"
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -13193,6 +13918,11 @@ msgstr "raktas be pavadinimo"
 #: src/features/settings/account/security.tsx
 msgid "Unnamed passkey"
 msgstr "Neįvardytas passkey"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "until {0}"
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 #: src/features/resume/stylesheet/targets.ts
@@ -13634,8 +14364,17 @@ msgstr "Balso nustatymai"
 msgid "Volunteer"
 msgstr "Savanorystė"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Waiting for Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Waiting for payment"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Waiting for the bank"
 msgstr ""
 
 #: src/features/career/workspace/messages.tsx
@@ -13644,6 +14383,10 @@ msgstr "Laukia jūsų"
 
 #: src/features/billing/payment-return.tsx
 msgid "Waiting for your payment"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Waiting over an hour, now"
 msgstr ""
 
 #: src/features/applications/next-step.ts
@@ -13890,6 +14633,11 @@ msgstr "Kam jis skirtas?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "Kas veikia"
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "When"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."

@@ -30504,7 +30504,7 @@
 			"get": {
 				"operationId": "exportAccountData",
 				"summary": "Export user account data",
-				"description": "Returns a JSON-serializable export of the authenticated user's profile, documents, applications, career knowledge, preparation, schedules and coaching conversations. Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
+				"description": "Returns a JSON-serializable export of the authenticated user's profile, documents, applications, career knowledge, preparation, schedules, coaching conversations, and payments, passes and Rezumi AI credits. Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
 				"tags": [
 					"Authentication"
 				],
@@ -38530,6 +38530,327 @@
 												"transcripts",
 												"workspaces"
 											]
+										},
+										"billing": {
+											"type": "object",
+											"properties": {
+												"payments": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"id": {
+																"type": "string"
+															},
+															"orderId": {
+																"type": "string"
+															},
+															"planId": {
+																"type": "string"
+															},
+															"amount": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"currency": {
+																"type": "string"
+															},
+															"durationDays": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"credits": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"status": {
+																"type": "string"
+															},
+															"paymentType": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"expiresAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"paidAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"refundedAmount": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"refunds": {
+																"type": "array",
+																"items": {
+																	"type": "object",
+																	"properties": {
+																		"amount": {
+																			"type": "integer",
+																			"minimum": -9007199254740991,
+																			"maximum": 9007199254740991
+																		},
+																		"method": {
+																			"type": "string"
+																		},
+																		"status": {
+																			"type": "string"
+																		},
+																		"reason": {
+																			"type": "string"
+																		},
+																		"createdAt": {
+																			"type": "string",
+																			"format": "date-time",
+																			"x-native-type": "date"
+																		},
+																		"settledAt": {
+																			"anyOf": [
+																				{
+																					"type": "string",
+																					"format": "date-time",
+																					"x-native-type": "date"
+																				},
+																				{
+																					"type": "null"
+																				}
+																			]
+																		}
+																	},
+																	"required": [
+																		"amount",
+																		"method",
+																		"status",
+																		"reason",
+																		"createdAt",
+																		"settledAt"
+																	]
+																}
+															}
+														},
+														"required": [
+															"id",
+															"orderId",
+															"planId",
+															"amount",
+															"currency",
+															"durationDays",
+															"credits",
+															"status",
+															"paymentType",
+															"createdAt",
+															"expiresAt",
+															"paidAt",
+															"refundedAmount",
+															"refunds"
+														]
+													}
+												},
+												"passes": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"planId": {
+																"type": "string"
+															},
+															"startsAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"endsAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"source": {
+																"type": "string"
+															},
+															"paymentId": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"revokedAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															}
+														},
+														"required": [
+															"planId",
+															"startsAt",
+															"endsAt",
+															"source",
+															"paymentId",
+															"revokedAt",
+															"createdAt"
+														]
+													}
+												},
+												"creditGrants": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"source": {
+																"type": "string"
+															},
+															"paymentId": {
+																"anyOf": [
+																	{
+																		"type": "string"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"amount": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"remaining": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"expiresAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"revokedAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															}
+														},
+														"required": [
+															"source",
+															"paymentId",
+															"amount",
+															"remaining",
+															"expiresAt",
+															"revokedAt",
+															"createdAt"
+														]
+													}
+												},
+												"creditUsage": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"action": {
+																"type": "string"
+															},
+															"credits": {
+																"type": "integer",
+																"minimum": -9007199254740991,
+																"maximum": 9007199254740991
+															},
+															"status": {
+																"type": "string"
+															},
+															"createdAt": {
+																"type": "string",
+																"format": "date-time",
+																"x-native-type": "date"
+															},
+															"settledAt": {
+																"anyOf": [
+																	{
+																		"type": "string",
+																		"format": "date-time",
+																		"x-native-type": "date"
+																	},
+																	{
+																		"type": "null"
+																	}
+																]
+															}
+														},
+														"required": [
+															"action",
+															"credits",
+															"status",
+															"createdAt",
+															"settledAt"
+														]
+													}
+												}
+											},
+											"required": [
+												"payments",
+												"passes",
+												"creditGrants",
+												"creditUsage"
+											]
 										}
 									},
 									"required": [
@@ -38539,7 +38860,8 @@
 										"coverLetters",
 										"applications",
 										"aiContentReports",
-										"career"
+										"career",
+										"billing"
 									]
 								}
 							}

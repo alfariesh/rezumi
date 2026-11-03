@@ -17,8 +17,8 @@ type Props = {
 };
 
 /**
- * The account menu: Account, Plan (while plans apply to the account) and Settings are pages; theme and language live
- * in Settings and the command bar.
+ * The account menu: Account, Plan (while plans apply to the account), Settings and, for administrators, Billing admin
+ * are pages; theme and language live in Settings and the command bar.
  */
 export function UserDropdownMenu({ children }: Props) {
 	const router = useRouter();
@@ -93,6 +93,18 @@ export function UserDropdownMenu({ children }: Props) {
 							<Trans>Settings</Trans>
 						</Label>
 					</Dropdown.Item>
+					{session.user.role === "admin" && (
+						<Dropdown.Item
+							id="billing-admin"
+							textValue={t`Billing admin`}
+							onAction={() => void router.navigate({ to: "/dashboard/admin/billing" })}
+						>
+							<Icon name="shield-check" size={16} />
+							<Label>
+								<Trans>Billing admin</Trans>
+							</Label>
+						</Dropdown.Item>
+					)}
 
 					<Separator />
 

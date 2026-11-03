@@ -2,7 +2,8 @@ import type { BillingPaymentEventOutcome } from "@rezumi/db/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
-import { applyVerifiedStatus } from "./fulfillment";
+import { raiseBillingAlertQuietly } from "./alerts";
+import { alertIfPaidNotApplied, applyVerifiedStatus } from "./fulfillment";
 import { MidtransError, getTransactionStatus } from "./midtrans/client";
 import { getMidtransConfig } from "./midtrans/config";
 import { verifyNotificationSignature } from "./midtrans/signature";
@@ -73,7 +74,7 @@ export async function handleMidtransNotification(request: Request): Promise<Resp
 		if (!verifyNotificationSignature(fields, config.signatureKeys)) {
 			// Kept only for one of Rezumi's orders: anyone can post here, and noise shouldn't fill the table.
 			const payment = await findPayment(orderId);
-			if (payment)
+			if (payment) {
 				await recordEvent({
 					paymentId: payment.id,
 					orderId,
@@ -81,6 +82,9 @@ export async function handleMidtransNotification(request: Request): Promise<Resp
 					signatureValid: false,
 					outcome: "rejected_signature",
 				});
+				// Emailed from the fifth in an hour: a key changed on one side, or someone is probing.
+				await raiseBillingAlertQuietly({ kind: "rejected_signatures", paymentId: payment.id });
+			}
 			console.warn("[billing] Rejected a Midtrans notification with a bad signature.", {
 				...(payment && { paymentId: payment.id, orderId }),
 			});
@@ -106,6 +110,9 @@ export async function handleMidtransNotification(request: Request): Promise<Resp
 			verified: result,
 			source: "notification",
 			notification: { transactionStatus: text(fields.transaction_status) },
+		}).catch(async (error: unknown) => {
+			await alertIfPaidNotApplied(payment.id, result);
+			throw error;
 		});
 		console.info("[billing] Handled a Midtrans notification.", {
 			paymentId: payment.id,
@@ -120,6 +127,7 @@ export async function handleMidtransNotification(request: Request): Promise<Resp
 			orderId: orderId.slice(0, 100),
 			error: error instanceof MidtransError ? error.code : "error",
 		});
+		if (error instanceof MidtransError) await raiseBillingAlertQuietly({ kind: "midtrans_errors" });
 		return reply(503);
 	}
 }
