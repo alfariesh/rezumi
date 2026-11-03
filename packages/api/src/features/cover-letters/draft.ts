@@ -102,7 +102,8 @@ export async function* draftLetterBody(
 				wrote ||= part.text.length > 0;
 				yield part.text;
 			} else if (part.type === "abort") stopped = true;
-			else if (part.type === "error") throw unreachable(part.error);
+			// Rezumi AI's own refusals (an answer cut off at its limit) keep their code; the rest are the provider's.
+			else if (part.type === "error") throw part.error instanceof ORPCError ? part.error : unreachable(part.error);
 		}
 		complete = wrote && !stopped && !input.signal?.aborted;
 	} catch (error) {
