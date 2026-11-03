@@ -33,7 +33,7 @@ Next to each AI button, a small label shows where the action runs and what it co
 | Writing review, job match score, fit check                                    |       4 |
 | Tailor a resume, import a PDF or Word file with AI                            |       5 |
 
-- Credits are used only when the action gives a result. If it fails, times out or you stop it, they come back.
+- Credits are used only when the action gives a result. If it fails, times out, stops before finishing its answer, or you stop it, they come back.
 - Each assistant or Coach reply costs one turn, including the reply after you answer its question or approve saving a story.
 - Credits expire with the pass they came with (trial credits after 14 days) and the soonest-expiring credits are used first. See [Plans](/guides/plans) for your balance and history.
 - Voice practice, scheduled preparation and web search in the assistant run only on your own connection.
