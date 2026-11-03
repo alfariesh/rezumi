@@ -13,6 +13,7 @@ export function McpSection() {
 
 	return (
 		<SettingsSection
+			icon="terminal-window"
 			id="mcp"
 			title={<Trans>MCP server</Trans>}
 			description={
@@ -20,7 +21,7 @@ export function McpSection() {
 			}
 		>
 			<TextField fullWidth isReadOnly value={address} aria-label={t`MCP server address`}>
-				<InputGroup variant="secondary" fullWidth>
+				<InputGroup variant="secondary" fullWidth className="bg-surface-secondary">
 					<InputGroup.Input spellCheck={false} dir="ltr" className="truncate font-mono text-sm font-medium" />
 					<InputGroup.Suffix className="pe-1">
 						<Button

@@ -31,18 +31,20 @@ export type AiWorkLimits = {
 };
 
 /**
- * Launch limits per kind of work, far above what a normal request needs and well below what keeps a request's cost
- * open-ended. Calibrated against real costs in membership phase 10.
+ * Limits per kind of work, far above what a normal request needs and well below what keeps a request's cost
+ * open-ended. Output tokens include the model's reasoning, which can take most of them: the 2026-11-03 benchmark
+ * (.agents/docs/research/benchmark-rezumi-ai-2026-11-03.md) found launch limits a quarter to half this size cutting off
+ * letters, reviews and Coach replies, some before any text. Each limit is about twice the largest answer measured.
  */
 export const AI_WORK_LIMITS: Record<CreditAction, AiWorkLimits> = {
-	"short-text": { maxOutputTokens: 1_024, maxInputChars: 60_000, maxSteps: 1 },
-	"draft-answer": { maxOutputTokens: 2_048, maxInputChars: 120_000, maxSteps: 1 },
-	"cover-letter": { maxOutputTokens: 2_048, maxInputChars: 120_000, maxSteps: 1 },
-	"interview-practice": { maxOutputTokens: 4_096, maxInputChars: 120_000, maxSteps: 1 },
-	"coach-turn": { maxOutputTokens: 4_096, maxInputChars: 240_000, maxSteps: 8 },
-	review: { maxOutputTokens: 4_096, maxInputChars: 150_000, maxSteps: 1 },
+	"short-text": { maxOutputTokens: 4_096, maxInputChars: 60_000, maxSteps: 1 },
+	"draft-answer": { maxOutputTokens: 4_096, maxInputChars: 120_000, maxSteps: 1 },
+	"cover-letter": { maxOutputTokens: 8_192, maxInputChars: 120_000, maxSteps: 1 },
+	"interview-practice": { maxOutputTokens: 8_192, maxInputChars: 120_000, maxSteps: 1 },
+	"coach-turn": { maxOutputTokens: 8_192, maxInputChars: 240_000, maxSteps: 8 },
+	review: { maxOutputTokens: 16_384, maxInputChars: 150_000, maxSteps: 1 },
 	"tailor-resume": { maxOutputTokens: 4_096, maxInputChars: 150_000, maxSteps: 1 },
-	"import-document": { maxOutputTokens: 16_384, maxInputChars: 6_000_000, maxSteps: 1 },
+	"import-document": { maxOutputTokens: 32_768, maxInputChars: 6_000_000, maxSteps: 1 },
 };
 
 export type AiRunRequest = AiSourceRequest & {
@@ -101,6 +103,14 @@ function inputTooLarge() {
 	});
 }
 
+/** The answer ran into the work's output limit: cut off, so it isn't kept and costs no credits. */
+function outputLimitReached() {
+	return new ORPCError("AI_OUTPUT_LIMIT", {
+		status: 502,
+		message: "Rezumi AI stopped before finishing its answer. Try again; no credits were used.",
+	});
+}
+
 /** Rough size of what a model call sends: text in characters, files in bytes. */
 export function promptSize(value: unknown): number {
 	if (typeof value === "string") return value.length;
@@ -123,7 +133,11 @@ function tokenCount(value: unknown, parts: string[] = []): number {
 
 type TokenTally = { inputTokens: number; outputTokens: number };
 
-/** Counts every call's tokens into `tally` and holds each call to `limits`. */
+/**
+ * Counts every call's tokens into `tally` and holds each call to `limits`. A call that stops at its output limit fails
+ * the work (an error part, in a stream): what it left is a letter cut off mid-sentence, JSON that doesn't parse, or only
+ * reasoning, and the user shouldn't pay for it.
+ */
 function meterMiddleware(tally: TokenTally, limits: AiWorkLimits): LanguageModelMiddleware {
 	const count = (usage: { inputTokens?: unknown; outputTokens?: unknown } | undefined) => {
 		tally.inputTokens += tokenCount(usage?.inputTokens, ["noCache", "cacheRead", "cacheWrite"]);
@@ -142,6 +156,7 @@ function meterMiddleware(tally: TokenTally, limits: AiWorkLimits): LanguageModel
 		wrapGenerate: async ({ doGenerate }) => {
 			const result = await doGenerate();
 			count(result.usage);
+			if (result.finishReason.unified === "length") throw outputLimitReached();
 			return result;
 		},
 		wrapStream: async ({ doStream }) => {
@@ -151,7 +166,11 @@ function meterMiddleware(tally: TokenTally, limits: AiWorkLimits): LanguageModel
 				stream: stream.pipeThrough(
 					new TransformStream({
 						transform(part, controller) {
-							if (part.type === "finish") count(part.usage);
+							if (part.type === "finish") {
+								count(part.usage);
+								if (part.finishReason.unified === "length")
+									controller.enqueue({ type: "error", error: outputLimitReached() });
+							}
 							controller.enqueue(part);
 						},
 					}),

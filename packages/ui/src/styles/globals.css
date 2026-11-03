@@ -139,6 +139,31 @@
 	}
 }
 
+/*
+ * One header for every Widget. HeroUI's own header is 32px tall with 8px above the title and 6px below it, which reads
+ * crowded next to the 16px at its start and end, and it grows a few pixels whenever an action or a description
+ * joins. Here the header is at least 48px (a lone title is centred with 12px above and below; 16px at its start and end); the title is Typography `h6` (16/24 semibold tight) and the description `body-sm` (14/24, muted).
+ * The trailing action is 32px tall (`WidgetAction`), so it never changes the header's height.
+ */
+@layer components {
+	.widget .widget__header {
+		@apply mt-0 min-h-12 items-center gap-x-3 gap-y-1 px-4 py-2;
+	}
+
+	/* A chip in a header sits on the gray shell, so it takes the white surface to stand out. */
+	.widget .widget__header .chip {
+		@apply bg-surface;
+	}
+
+	.widget .widget__title {
+		@apply text-base font-semibold tracking-tight;
+	}
+
+	.widget .widget__description {
+		@apply text-sm leading-6 text-muted;
+	}
+}
+
 /* Pill Tabs (not `secondary`, which is an underline) follow the same radii as Segment: the container takes the field radius. */
 @layer components {
 	.tabs:not(.tabs--secondary) > .tabs__list-container {

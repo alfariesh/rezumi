@@ -1,17 +1,6 @@
 import type { Fact, Story } from "../hooks";
 import { EmptyState } from "@heroui-pro/react";
-import {
-	Button,
-	buttonVariants,
-	Checkbox,
-	Chip,
-	Input,
-	Separator,
-	Spinner,
-	TextArea,
-	Tooltip,
-	Typography,
-} from "@heroui/react";
+import { Button, Checkbox, Chip, Input, Separator, Spinner, TextArea, Tooltip, Typography } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -24,6 +13,7 @@ import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
 import { CareerLoadError, CareerLoading } from "../load-state";
 import { CareerWidget, CollapseRow, Eyebrow, Swap, useNow, withUndo } from "../shared";
+import { WidgetAction, widgetActionClass } from "@/components/layout/widget-heading";
 import { collectInterviews, upcomingInterviews } from "@/features/applications/interviews";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
 import { toastError } from "@/libs/error-message";
@@ -113,6 +103,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 	return (
 		<div className="grid items-start gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
 			<CareerWidget
+				icon="book-open"
 				title={<Trans>Your stories</Trans>}
 				count={list.length}
 				trailing={
@@ -121,7 +112,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 						params={{ storyId: undefined }}
 						search={{ edit: true }}
 						aria-current={editing && !selected ? "page" : undefined}
-						className={buttonVariants({ variant: editing && !selected ? "primary" : "outline", size: "sm" })}
+						className={widgetActionClass}
 					>
 						<Trans>Add a story</Trans>
 					</Link>
@@ -168,15 +159,16 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 				</EmptyState>
 			) : selected || editing ? (
 				<CareerWidget
+					icon="book-open"
 					title={editing ? selected ? <Trans>Edit story</Trans> : <Trans>New story</Trans> : <Trans>Story</Trans>}
 					trailing={
 						!editing && selected ? (
-							<div className="flex items-center gap-1">
+							<>
 								<PractiseButton storyId={selected.id} />
-								<Button variant="outline" size="sm" onPress={() => open(selected.id, true)}>
+								<WidgetAction onPress={() => open(selected.id, true)}>
 									<Trans>Edit</Trans>
-								</Button>
-							</div>
+								</WidgetAction>
+							</>
 						) : undefined
 					}
 					contentClassName="p-5 sm:p-6"
@@ -233,7 +225,10 @@ const StoryCard = memo(function StoryCard({ story, selected, changed, first }: S
 				to="/dashboard/career/knowledge/stories/{-$storyId}"
 				params={{ storyId: story.id }}
 				aria-current={selected ? "page" : undefined}
-				className={cn("grid gap-2 rounded-xl p-3 text-start", selected ? "bg-default" : "hover:bg-default/60")}
+				className={cn(
+					"grid gap-2 rounded-xl p-3 text-start",
+					selected ? "bg-surface-secondary" : "hover:bg-default/60",
+				)}
 			>
 				<span className="text-sm leading-5 font-semibold">{story.data.title}</span>
 				<span className="text-xs text-muted tabular-nums">
@@ -341,7 +336,7 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 						key={fact.id}
 						to="/dashboard/career/knowledge/facts"
 						search={{ highlight: fact.id }}
-						className="flex items-start gap-2.5 rounded-xl bg-default px-3 py-2.5 text-sm leading-5 hover:bg-default-hover"
+						className="flex items-start gap-2.5 rounded-xl bg-surface-secondary px-3 py-2.5 text-sm leading-5 hover:bg-default"
 					>
 						<Icon name="link-simple-horizontal" size={16} className="mt-0.5 shrink-0 text-accent" />
 						<span className={cn(fact.status !== "active" && "text-muted")}>{fact.text}</span>
@@ -370,25 +365,25 @@ function PractiseButton({ storyId }: PractiseButtonProps) {
 	if (isError)
 		return (
 			<div role="alert">
-				<Button variant="secondary" size="sm" onPress={() => void refetch()}>
+				<WidgetAction onPress={() => void refetch()}>
 					<Trans>Couldn't load interviews. Retry</Trans>
-				</Button>
+				</WidgetAction>
 			</div>
 		);
 	if (isPending)
 		return (
-			<Button variant="ghost" size="sm" isDisabled>
+			<WidgetAction isDisabled>
 				<Trans>Loading interviews…</Trans>
-			</Button>
+			</WidgetAction>
 		);
 
 	if (!next)
 		return (
 			<Tooltip>
 				{/* Focusable while disabled (aria-disabled), so hover and keyboard still reach the tooltip. */}
-				<Button variant="ghost" size="sm" aria-disabled className="cursor-not-allowed text-muted hover:bg-transparent">
+				<WidgetAction aria-disabled className="cursor-not-allowed [--button-fg:var(--muted)] hover:no-underline">
 					{label}
-				</Button>
+				</WidgetAction>
 				<Tooltip.Content>
 					<Trans>Add an interview first</Trans>
 				</Tooltip.Content>
@@ -396,9 +391,7 @@ function PractiseButton({ storyId }: PractiseButtonProps) {
 		);
 
 	return (
-		<Button
-			variant="ghost"
-			size="sm"
+		<WidgetAction
 			onPress={() =>
 				void navigate({
 					to: "/dashboard/applications/$applicationId/{-$tab}",
@@ -408,7 +401,7 @@ function PractiseButton({ storyId }: PractiseButtonProps) {
 			}
 		>
 			{label}
-		</Button>
+		</WidgetAction>
 	);
 }
 

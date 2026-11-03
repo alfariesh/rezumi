@@ -143,7 +143,7 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 			>
 				{payment && (
 					<div className="grid gap-3">
-						<p className="rounded-xl bg-default px-3 py-2 text-sm">{getRefundWindow(payment.paymentType)}</p>
+						<p className="rounded-xl bg-surface-secondary px-3 py-2 text-sm">{getRefundWindow(payment.paymentType)}</p>
 						<p className="text-xs text-muted">
 							<Trans>
 								Refunds may need to be activated by Midtrans support first, and the Midtrans balance must cover them. A
@@ -539,7 +539,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 			</AdminCard>
 
 			{refunds.length > 0 && (
-				<AdminCard plain title={<Trans>Refunds</Trans>}>
+				<AdminCard icon="arrow-counter-clockwise" plain title={<Trans>Refunds</Trans>}>
 					<DataGrid
 						aria-label={t`Refunds`}
 						data={refunds}
@@ -608,7 +608,11 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 			)}
 
 			<div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-				<AdminCard title={<Trans>Passes</Trans>} description={<Trans>Every stretch of paid time, newest first.</Trans>}>
+				<AdminCard
+					icon="tag"
+					title={<Trans>Passes</Trans>}
+					description={<Trans>Every stretch of paid time, newest first.</Trans>}
+				>
 					{data.periods.length === 0 ? (
 						<p className="py-6 text-center text-sm text-muted">
 							<Trans>No passes.</Trans>
@@ -660,6 +664,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				</AdminCard>
 
 				<AdminCard
+					icon="clock-counter-clockwise"
 					title={<Trans>History</Trans>}
 					description={<Trans>Midtrans events and admin actions, newest first.</Trans>}
 				>

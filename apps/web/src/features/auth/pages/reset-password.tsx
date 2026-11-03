@@ -62,7 +62,7 @@ export function ResetPasswordPage({ token }: Props) {
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans>Reset your password</Trans>
 				</Typography>
 

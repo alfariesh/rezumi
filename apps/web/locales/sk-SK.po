@@ -1328,7 +1328,6 @@ msgstr "Aktivita"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/career/knowledge/facts.tsx
 #: src/features/career/today.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add"
@@ -1339,13 +1338,17 @@ msgstr "Pridať"
 msgid "Add “{0}”"
 msgstr "Pridať „{0}“"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Add a contact"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Add a country"
 msgstr "Pridajte krajinu"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Add a fact, for example “I mentored two associate PMs in 2025”"
-msgstr "Pridajte fakt, napríklad „Mentoring dvoch juniorných PM v roku 2025“"
+msgid "Add a fact"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Add a keyword..."
@@ -1400,6 +1403,10 @@ msgstr "Pridajte pozíciu alebo spoločnosť, ktorú hľadať."
 msgid "Add a role, then Enter"
 msgstr "Pridajte pozíciu a stlačte Enter"
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a salary"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "Pridajte sekciu s nadpisom „Education“. Mnohé systémy majú povinné pole pre vzdelanie."
@@ -1407,6 +1414,10 @@ msgstr "Pridajte sekciu s nadpisom „Education“. Mnohé systémy majú povinn
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "Pridajte sekciu s nadpisom „Experience“ alebo „Work Experience“. Práve podľa tohto poľa väčšina systémov hodnotí."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a source"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Add a story"
@@ -1423,6 +1434,10 @@ msgstr "Pridajte značku"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "Pridajte značku a stlačte Enter…"
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a tag, then Enter"
+msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1499,6 +1514,10 @@ msgstr "Pridať dôkaz"
 msgid "Add experience"
 msgstr "Pridajte skúsenosti"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Add fact"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add field"
 msgstr "Pridať pole"
@@ -1525,10 +1544,6 @@ msgstr "Pridať jazyk"
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add my connection"
-msgstr ""
-
-#: src/features/career/knowledge/facts.tsx
-msgid "Add one above."
 msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
@@ -1885,6 +1900,7 @@ msgstr "Už pokryté"
 msgid "Already covered · pick one to find it on the page"
 msgstr "Už pokryté · vyberte jeden a nájdite ho na stránke"
 
+#. Call-to-action link from registration page to login page
 #: src/features/auth/pages/register.tsx
 msgid "Already have an account? <0>Sign in now <1/></0>"
 msgstr ""
@@ -1954,11 +1970,6 @@ msgstr "chyba"
 #: src/components/layout/error-screen.tsx
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "Neočakávaná chyba zabránila načítaniu tejto stránky. Skúste to znova alebo prejdite na nástenku."
-
-#. placeholder {0}: others.length
-#: src/features/applications/components/detail/contacts.tsx
-msgid "and {0} more"
-msgstr "a ďalšie {0}"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
@@ -2328,25 +2339,17 @@ msgstr ""
 msgid "ATS-safe"
 msgstr "ATS-bezpečné"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Attach"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Attach a cover letter (PDF)"
 msgstr "Pripojte sprievodný list (PDF)"
 
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a cover letter file (PDF)"
-msgstr "Pripojte súbor sprievodného listu (PDF)"
-
 #: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "Pripojte súbor"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a file instead"
-msgstr "Namiesto toho pripojte súbor"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a resume file (PDF)"
-msgstr "Priložiť súbor životopisu (PDF)"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -3094,6 +3097,7 @@ msgstr "ID klienta"
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -4203,6 +4207,10 @@ msgstr "Spis so sprievodným listom"
 msgid "Cover letter imported"
 msgstr "Sprievodný list importovaný"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Cover letter PDF"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Cover letter submitted (optional)"
@@ -4701,6 +4709,7 @@ msgstr "Dizajn bol resetovaný na predvolené hodnoty"
 msgid "Design systems"
 msgstr "Dizajnové systémy"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
@@ -4806,6 +4815,7 @@ msgstr "Dokumenty, ktoré sem presuniete, tu zostanú 30 dní."
 msgid "Domain connected"
 msgstr "Doména je pripojená"
 
+#. Call-to-action link from login page to account registration page
 #: src/features/auth/pages/login.tsx
 msgid "Don't have an account? <0>Create one now <1/></0>"
 msgstr ""
@@ -5564,12 +5574,12 @@ msgid "Eyebrow"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact forgotten"
-msgstr "Fakt zabudnutý"
+msgid "Fact"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact type"
-msgstr "Typ faktu"
+msgid "Fact forgotten"
+msgstr "Fakt zabudnutý"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
@@ -6009,10 +6019,6 @@ msgstr "Získať spätnú väzbu"
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "„Získať spätnú väzbu“ odošle otázku, vašu odpoveď, tento inzerát a vaše príbehy do {providerName}."
-
-#: src/features/homepage/closing.tsx
-msgid "Get it on Google Play"
-msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
@@ -6798,6 +6804,10 @@ msgstr "Hľadanie práce zlyhalo. Skúste to znova alebo prilepte odkaz na ponuk
 msgid "Job search pipeline"
 msgstr "Proces hľadania práce"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Job title (optional)"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Job tracker with board, calendar and insights"
 msgstr ""
@@ -6962,10 +6972,6 @@ msgstr "Kórejčina"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Label"
 msgstr "Štítok"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Label, e.g. Recruiter"
-msgstr "Označenie, napr. Náborový pracovník"
 
 #. Preset button for setting picture aspect ratio to landscape orientation
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -8083,10 +8089,6 @@ msgstr "Namiesto toho nový sprievodný list"
 msgid "New document"
 msgstr "Nový dokument"
 
-#: src/features/career/knowledge/facts.tsx
-msgid "New fact"
-msgstr "Nový fakt"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "Nový kľúč"
@@ -8232,8 +8234,8 @@ msgid "No connected applications yet. Apps you allow to access your account appe
 msgstr "Zatiaľ žiadne pripojené aplikácie. Zobrazia sa tu aplikácie, ktorým povolíte prístup k účtu."
 
 #: src/features/applications/components/detail/contacts.tsx
-msgid "No contacts yet."
-msgstr "Zatiaľ žiadne kontakty."
+msgid "No contacts yet"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No conventional section headings were found."
@@ -8364,6 +8366,10 @@ msgstr ""
 msgid "No payments."
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "No PDF attached"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr "Žiadne telefónne číslo"
@@ -8485,6 +8491,7 @@ msgstr "Nórčina"
 msgid "Not applied"
 msgstr "Nepoužité"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "Zatiaľ neodoslané"
@@ -8551,6 +8558,10 @@ msgstr ""
 msgid "Not now"
 msgstr "Teraz nie"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not prepared yet"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
 msgstr "Zatiaľ nezaznamenané. Nechajte prázdne, kým to nebudete vedieť podložiť."
@@ -8600,6 +8611,10 @@ msgstr "Nepoužíva sa v koučingu, takže nemôže podložiť príbeh."
 #: src/features/settings/account/profile.tsx
 msgid "Not verified yet. Resend the link"
 msgstr "Zatiaľ neoverené. Znova odošlite odkaz"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not written yet"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Note"
@@ -8935,6 +8950,10 @@ msgstr "Otvorte exportovaný súbor a overte, že môžete označiť a skopírov
 
 #: src/features/billing/buy-plans.tsx
 msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr ""
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Open the posting"
 msgstr ""
 
 #: src/routes/auth/native-callback.tsx
@@ -9382,6 +9401,10 @@ msgstr ""
 msgid "PDF and Word files are read with"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "PDF attached"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
 msgstr ""
@@ -9559,7 +9582,6 @@ msgstr "Pozícia"
 msgid "posting"
 msgstr "inzerát"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
@@ -9647,6 +9669,7 @@ msgctxt "Career preferences: the roles, places, pay and ways of working you want
 msgid "Preferences"
 msgstr "Predvoľby"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
 #: src/features/homepage/features.tsx
@@ -9656,10 +9679,6 @@ msgstr "Príprava"
 #: src/features/career/schedule-sheet.tsx
 msgid "Prepare a briefing"
 msgstr "Pripraviť brífing"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Prepare a resume"
-msgstr "Pripravte si resumé"
 
 #: src/features/homepage/introduction.tsx
 msgid "Prepare for interviews from stories you wrote once"
@@ -10310,6 +10329,10 @@ msgstr "Toto meno vidia náboroví pracovníci. Vaše meno a „Sprievodný list
 msgid "Recruiters see this name. Your name plus “Resume” works well."
 msgstr "Toto meno vidia náboroví pracovníci. Vaše meno a „resumé“ fungujú dobre."
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Recruiters, interviewers and referrals for this job."
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Rectangle"
 msgstr "Obdĺžnik"
@@ -10470,6 +10493,7 @@ msgstr "Zapamätať len pre {company}?"
 msgid "Remember this for future coaching?"
 msgstr "Zapamätať si to pre budúci koučing?"
 
+#. Call-to-action link from forgot-password page to login page
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Remember your password? <0>Sign in now <1/></0>"
 msgstr ""
@@ -10512,6 +10536,7 @@ msgstr "Odstrániť „{name}“?"
 #. placeholder {0}: contact.name
 #. placeholder {0}: passkey.name || t`Unnamed passkey`
 #: src/features/applications/components/detail/contacts.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/settings/account/security.tsx
@@ -10735,6 +10760,7 @@ msgid "resume"
 msgstr "resumé"
 
 #: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
@@ -10782,6 +10808,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
 msgstr "stránka so životopisom"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Resume PDF"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Resume review"
@@ -10987,10 +11017,6 @@ msgstr "Práve teraz"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "Pozícia"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Role (optional)"
-msgstr "Rola (voliteľné)"
 
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/entries.tsx
@@ -12110,6 +12136,10 @@ msgstr "Časť textu je otočená."
 msgid "Something else on your mind? Write to us at"
 msgstr ""
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "Niečo sa pokazilo. Skúste to znova."
@@ -12194,7 +12224,7 @@ msgstr "Dátum fázy"
 msgid "Stage stays {stage}"
 msgstr "Etapa zostáva {stage}"
 
-#: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/detail/stage-stepper.tsx
 msgid "Stages"
 msgstr "Etapy"
 
@@ -13805,6 +13835,7 @@ msgid "Two-step verification turned on"
 msgstr "Dvojstupňové overenie je zapnuté"
 
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -14045,6 +14076,10 @@ msgstr "Použite jeden stĺpec pre všetko, čo sa musí čítať v poradí."
 #: src/features/ats-checker/messages.ts
 msgid "Use A4 or US Letter so the layout survives being re-rendered."
 msgstr "Použite A4 alebo US Letter, aby rozloženie prežilo opätovné vykreslenie."
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Use Add fact to start."
+msgstr ""
 
 #: src/features/auth/pages/register.tsx
 msgid "Use at least 3 characters."
@@ -14762,6 +14797,7 @@ msgstr "Stojí za otázku"
 msgid "Worth asking {0}"
 msgstr "Stojí za otázku: {0}"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -14773,10 +14809,6 @@ msgstr "Písanie"
 #: src/features/ats-checker/messages.ts
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "Ako dátum ukončenia vašej aktuálnej pozície napíšte „Present“."
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Write a letter"
-msgstr "Napíšte list"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."

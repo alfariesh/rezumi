@@ -3,7 +3,7 @@ import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
 import { EmptyState, ItemCard, NativeSelect, Segment } from "@heroui-pro/react";
-import { Button, Chip, Input, InputGroup, Separator, Spinner, Switch, TextArea } from "@heroui/react";
+import { Button, Chip, InputGroup, Label, Modal, Separator, Spinner, Switch, TextArea, TextField } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,6 +15,7 @@ import { cn } from "@rezumi/utils/style";
 import { CareerLoadError, CareerLoading } from "../load-state";
 import { CareerWidget, CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
 import { useProfile } from "./preferences";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { D2, EASE, EXIT } from "@/libs/motion";
 import { client, orpc } from "@/libs/orpc/client";
@@ -43,6 +44,7 @@ export function FactsPage({ highlight }: FactsPageProps) {
 	const [search, setSearch] = useState("");
 	const [type, setType] = useState<FactCategory | null>(null);
 	const [hidden, setHidden] = useState<string[]>([]);
+	const [adding, setAdding] = useState(false);
 	const listRef = useRef<HTMLDivElement>(null);
 
 	const refresh = () => {
@@ -146,9 +148,18 @@ export function FactsPage({ highlight }: FactsPageProps) {
 			{!facts && (factQuery.isError ? <CareerLoadError onRetry={() => void factQuery.refetch()} /> : <CareerLoading />)}
 
 			{facts && (
-				<CareerWidget title={<Trans>Your facts</Trans>} count={visible.length} contentClassName="gap-0 p-0">
-					<AddFact onAdded={added} />
-					<Separator />
+				<CareerWidget
+					icon="check-circle"
+					title={<Trans>Your facts</Trans>}
+					count={visible.length}
+					trailing={
+						<WidgetAction onPress={() => setAdding(true)}>
+							<Icon name="plus" size={16} />
+							<Trans>Add fact</Trans>
+						</WidgetAction>
+					}
+					contentClassName="gap-0 p-0"
+				>
 					<div ref={listRef}>
 						<AnimatePresence initial={false}>
 							{visible.map((fact) => (
@@ -170,7 +181,7 @@ export function FactsPage({ highlight }: FactsPageProps) {
 									</EmptyState.Media>
 									<EmptyState.Title>{facts.length === 0 ? t`No facts yet` : t`No facts match`}</EmptyState.Title>
 									<EmptyState.Description>
-										{facts.length === 0 ? t`Add one above.` : t`Try another word or type.`}
+										{facts.length === 0 ? t`Use Add fact to start.` : t`Try another word or type.`}
 									</EmptyState.Description>
 								</EmptyState.Header>
 								{type !== null && (
@@ -185,6 +196,7 @@ export function FactsPage({ highlight }: FactsPageProps) {
 					</div>
 				</CareerWidget>
 			)}
+			<AddFactDialog open={adding} onOpenChange={setAdding} onAdded={added} />
 		</div>
 	);
 }
@@ -238,9 +250,10 @@ function MemoryCard() {
 
 // ---- Add ----
 
-type AddFactProps = { onAdded: (fact: Fact) => void };
+type AddFactDialogProps = { open: boolean; onOpenChange: (open: boolean) => void; onAdded: (fact: Fact) => void };
 
-function AddFact({ onAdded }: AddFactProps) {
+function AddFactDialog({ open, onOpenChange, onAdded }: AddFactDialogProps) {
+	const id = useId();
 	const [text, setText] = useState("");
 	const [category, setCategory] = useState<FactCategory>("accomplishment");
 	const ready = text.trim().length >= 4;
@@ -248,6 +261,7 @@ function AddFact({ onAdded }: AddFactProps) {
 		...orpc.career.saveFact.mutationOptions(),
 		onSuccess: (fact) => {
 			setText("");
+			onOpenChange(false);
 			if (fact) onAdded({ ...fact, company: null, usedBy: { stories: 0, savedItems: 0 } });
 		},
 		onError: (error) => toastError(error, t`Couldn't add that fact. Try again.`),
@@ -265,48 +279,74 @@ function AddFact({ onAdded }: AddFactProps) {
 	};
 
 	return (
-		<div className="flex flex-wrap items-center gap-2 p-3">
-			<div className="min-w-0 flex-1 basis-60">
-				<Input
-					fullWidth
-					variant="secondary"
-					value={text}
-					onChange={(event) => setText(event.target.value)}
-					onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
-						if (event.key === "Enter" && !event.nativeEvent.isComposing) add();
-					}}
-					maxLength={2000}
-					placeholder={t`Add a fact, for example “I mentored two associate PMs in 2025”`}
-					aria-label={t`New fact`}
-				/>
-			</div>
-			<div className="flex gap-2">
-				<NativeSelect variant="secondary" className="w-40">
-					<NativeSelect.Trigger
-						aria-label={t`Fact type`}
-						value={category}
-						onChange={(event) => setCategory(event.target.value as FactCategory)}
-					>
-						{CATEGORIES.map((option) => (
-							<option key={option} value={option}>
-								{categoryLabel(option)}
-							</option>
-						))}
-						<NativeSelect.Indicator />
-					</NativeSelect.Trigger>
-				</NativeSelect>
-				<Button
-					variant="secondary"
-					onPress={add}
-					isPending={save.isPending}
-					aria-disabled={!ready}
-					className={cn(!ready && "text-muted")}
-				>
-					{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
-					<Trans>Add</Trans>
-				</Button>
-			</div>
-		</div>
+		<Modal.Backdrop isOpen={open} onOpenChange={onOpenChange}>
+			<Modal.Container size="md">
+				<Modal.Dialog aria-describedby={`${id}-description`}>
+					<Modal.CloseTrigger aria-label={t`Close`} />
+					<Modal.Header>
+						<Modal.Heading>
+							<Trans>Add a fact</Trans>
+						</Modal.Heading>
+						<p id={`${id}-description`} className="text-sm text-muted">
+							<Trans>Something true you can support, such as “I mentored two associate PMs in 2025”.</Trans>
+						</p>
+					</Modal.Header>
+					<Modal.Body>
+						<form
+							className="grid gap-4"
+							onSubmit={(event) => {
+								event.preventDefault();
+								add();
+							}}
+						>
+							<TextField fullWidth value={text} onChange={setText} autoFocus className="gap-1.5">
+								<Label>
+									<Trans>Fact</Trans>
+								</Label>
+								<TextArea
+									variant="secondary"
+									rows={3}
+									maxLength={2000}
+									onKeyDown={(event: KeyboardEvent<HTMLTextAreaElement>) => {
+										if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && !event.nativeEvent.isComposing)
+											add();
+									}}
+								/>
+							</TextField>
+							<div className="grid gap-1.5">
+								<Label htmlFor={`${id}-type`}>
+									<Trans>Type</Trans>
+								</Label>
+								<NativeSelect variant="secondary" fullWidth>
+									<NativeSelect.Trigger
+										id={`${id}-type`}
+										value={category}
+										onChange={(event) => setCategory(event.target.value as FactCategory)}
+										className="pointer-coarse:min-h-11"
+									>
+										{CATEGORIES.map((option) => (
+											<option key={option} value={option}>
+												{categoryLabel(option)}
+											</option>
+										))}
+										<NativeSelect.Indicator />
+									</NativeSelect.Trigger>
+								</NativeSelect>
+							</div>
+							<Modal.Footer className="p-0">
+								<Button variant="secondary" onPress={() => onOpenChange(false)}>
+									<Trans>Cancel</Trans>
+								</Button>
+								<Button type="submit" isDisabled={!ready || save.isPending} isPending={save.isPending}>
+									{save.isPending && <Spinner size="sm" color="current" aria-hidden />}
+									<Trans>Add fact</Trans>
+								</Button>
+							</Modal.Footer>
+						</form>
+					</Modal.Body>
+				</Modal.Dialog>
+			</Modal.Container>
+		</Modal.Backdrop>
 	);
 }
 
@@ -439,7 +479,7 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 								exit={{ height: 0, opacity: 0, transition: { duration: D2 * EXIT, ease: EASE } }}
 								className="overflow-hidden"
 							>
-								<div className="grid gap-1 rounded-xl bg-default px-3.5 py-3 text-xs text-muted">
+								<div className="grid gap-1 rounded-xl bg-surface-secondary px-3.5 py-3 text-xs text-muted">
 									<p className="font-semibold text-foreground">
 										{sourceLabel(fact)} · {date(fact.createdAt)}
 									</p>

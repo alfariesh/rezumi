@@ -34,7 +34,7 @@ export function DataSection({ openDeletion = false }: DataSectionProps) {
 	});
 
 	return (
-		<SettingsSection divided title={<Trans>Your data</Trans>}>
+		<SettingsSection icon="export" divided title={<Trans>Your data</Trans>}>
 			<SettingsRow
 				icon="download-simple"
 				title={<Trans>Export everything</Trans>}

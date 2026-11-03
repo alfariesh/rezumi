@@ -75,9 +75,10 @@ export const PLAN_FEATURE_KEYS = [
 export const TRIAL_CREDITS = { amount: 5, validDays: 14 } as const;
 
 /**
- * Credits each kind of Rezumi AI work costs, as the user sees it before running it. Launch weights from the product
- * decisions, calibrated against real provider costs before selling (membership phase 10); phase 05 maps each AI entry
- * point to one of these keys.
+ * Credits each kind of Rezumi AI work costs, as the user sees it before running it: what the work is worth, not what
+ * it costs. The 2026-11-03 benchmark kept the launch weights, since 100 credits spent in full cost a small part of the
+ * plan's AI budget on Claude Haiku 5.5 (.agents/docs/research/benchmark-rezumi-ai-2026-11-03.md). Phase 05 maps each AI
+ * entry point to one of these keys.
  */
 export const CREDIT_COSTS = {
 	/** Improve one bullet, write a short summary or read a job posting. */

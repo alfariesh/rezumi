@@ -1,7 +1,7 @@
 import type { CareerProfileData } from "@rezumi/schema/career";
 import type { KeyboardEvent } from "react";
 import { Segment } from "@heroui-pro/react";
-import { Button, FieldError, Input, InputGroup, Label, TextArea, TextField } from "@heroui/react";
+import { FieldError, Input, InputGroup, Label, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -16,6 +16,7 @@ import { CareerWidget, useCareerTime, useNow } from "../shared";
 import { parseAmount } from "./amount";
 import { SearchRegionsField } from "./search-regions-field";
 import { Token, TokenFrame, tokenInputClass } from "./token-field";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 
@@ -98,6 +99,7 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 	return (
 		<div className="grid max-w-[820px] gap-4" onBlur={() => flush()}>
 			<CareerWidget
+				icon="compass"
 				title={<Trans>What you're looking for</Trans>}
 				trailing={
 					<span className="flex items-center gap-1.5">
@@ -114,9 +116,9 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 							)}
 						</span>
 						{failed && (
-							<Button variant="ghost" size="sm" className="h-6 px-2 text-xs" onPress={() => flush(true)}>
+							<WidgetAction onPress={() => flush(true)}>
 								<Trans>Retry</Trans>
-							</Button>
+							</WidgetAction>
 						)}
 					</span>
 				}
@@ -157,7 +159,7 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 				</TextField>
 			</CareerWidget>
 
-			<CareerWidget title={<Trans>Requirements</Trans>} contentClassName="gap-5 p-4">
+			<CareerWidget icon="list-checks" title={<Trans>Requirements</Trans>} contentClassName="gap-5 p-4">
 				<p className="text-sm text-muted">
 					<Trans>Used to check roles and offers. Each is a number, so the coach can compare without guessing.</Trans>
 				</p>

@@ -43,6 +43,7 @@ import {
 	speakAloud,
 	writeNumbersAsDigits,
 } from "./recorder";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
 import { useHasUsableAiProvider } from "@/features/settings/integrations/hooks/use-has-usable-ai-provider";
@@ -436,6 +437,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 	return (
 		<div className="grid min-w-0 gap-6">
 			<CareerWidget
+				icon="chat-centered-text"
 				title={t`Question ${position} of ${total}`}
 				trailing={
 					<span className="flex items-center gap-2">
@@ -471,12 +473,12 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 					toggleRecording();
 				}}
 			>
-				<Widget.Header>
-					<Widget.Title id={`${id}-heading`} role="heading" aria-level={2}>
-						<Trans>Your answer</Trans>
-					</Widget.Title>
-					<ModeSwitch value={mode} onChange={chooseMode} />
-				</Widget.Header>
+				<WidgetHeading
+					id={`${id}-heading`}
+					icon="pencil-line"
+					title={<Trans>Your answer</Trans>}
+					action={<ModeSwitch value={mode} onChange={chooseMode} />}
+				/>
 				<Widget.Content className="grid gap-4">
 					{mode === "typed" ? (
 						answerField
@@ -532,7 +534,7 @@ function Session({ applicationId, interviewId, questions, voice, initialMode, st
 					) : step.name === "transcribing" ? (
 						<p
 							role="status"
-							className="flex items-center gap-2.5 rounded-2xl bg-default px-4 py-3.5 text-sm text-muted"
+							className="flex items-center gap-2.5 rounded-2xl bg-surface-secondary px-4 py-3.5 text-sm text-muted"
 						>
 							<Spinner size="sm" color="current" className="text-accent" aria-hidden />
 							<Trans>Transcribing with {model}…</Trans>
@@ -955,7 +957,7 @@ function VoiceSettingsPanel({ voice, audio, disabled }: VoiceSettingsPanelProps)
 			<AnimatePresence initial={false}>
 				{open && (
 					<CollapseRow>
-						<div className="mt-2 grid gap-4 rounded-2xl bg-default p-4">
+						<div className="mt-2 grid gap-4 rounded-2xl bg-surface-secondary p-4">
 							<div className="grid gap-3 sm:grid-cols-2">
 								<VoiceSelect
 									id={`${id}-transcribe`}
@@ -1086,7 +1088,7 @@ function FeedbackCard({ data, children }: FeedbackCardProps) {
 					<p className="text-sm">{data.strengthen}</p>
 				</div>
 			</div>
-			<div className="grid gap-1.5 rounded-xl bg-default p-4">
+			<div className="grid gap-1.5 rounded-xl bg-surface-secondary p-4">
 				<p className="text-xs font-semibold text-muted">
 					<Trans>Try this opening</Trans>
 				</p>
@@ -1101,12 +1103,17 @@ function FeedbackCard({ data, children }: FeedbackCardProps) {
 function SavedAttempt({ item }: { item: Attempt }) {
 	return (
 		<div className="grid min-w-0 gap-6">
-			<CareerWidget title={item.data.origin === "recalled" ? t`Recalled` : t`Practice`} contentClassName="gap-2">
+			<CareerWidget
+				icon="chat-centered-text"
+				title={item.data.origin === "recalled" ? t`Recalled` : t`Practice`}
+				contentClassName="gap-2"
+			>
 				<Typography type="h4" render={renderAsH2}>
 					{item.data.question}
 				</Typography>
 			</CareerWidget>
 			<CareerWidget
+				icon="pencil-line"
 				title={t`Your answer`}
 				trailing={
 					<Chip size="sm" variant="soft" className="gap-1">
@@ -1115,7 +1122,7 @@ function SavedAttempt({ item }: { item: Attempt }) {
 					</Chip>
 				}
 			>
-				<p className="rounded-xl bg-default p-4 text-base whitespace-pre-wrap">{item.data.answer}</p>
+				<p className="rounded-xl bg-surface-secondary p-4 text-base whitespace-pre-wrap">{item.data.answer}</p>
 			</CareerWidget>
 			<FeedbackCard data={item.data} />
 		</div>

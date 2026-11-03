@@ -1328,7 +1328,6 @@ msgstr "പ്രവർത്തനം"
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/career/knowledge/facts.tsx
 #: src/features/career/today.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add"
@@ -1339,13 +1338,17 @@ msgstr "ചേർക്കുക"
 msgid "Add “{0}”"
 msgstr "\"{0}\" ചേർക്കുക"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Add a contact"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Add a country"
 msgstr "ഒരു രാജ്യം ചേർക്കുക"
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Add a fact, for example “I mentored two associate PMs in 2025”"
-msgstr "ഒരു വസ്തുത ചേർക്കുക, ഉദാഹരണത്തിന് “2025-ൽ ഞാൻ രണ്ട് അസോസിയേറ്റ് PM-മാരെ മെന്റർ ചെയ്തു”"
+msgid "Add a fact"
+msgstr ""
 
 #: src/components/input/chip-input.tsx
 msgid "Add a keyword..."
@@ -1400,6 +1403,10 @@ msgstr "തിരയേണ്ട ഒരു റോളോ കമ്പനിയോ
 msgid "Add a role, then Enter"
 msgstr "ഒരു റോൾ ചേർത്ത് Enter അമർത്തുക"
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a salary"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "\"Education\" എന്ന തലക്കെട്ടോടെ ഒരു വിഭാഗം ചേർക്കുക. പല സിസ്റ്റങ്ങൾക്കും വിദ്യാഭ്യാസം നിർബന്ധിത ഫീൽഡാണ്."
@@ -1407,6 +1414,10 @@ msgstr "\"Education\" എന്ന തലക്കെട്ടോടെ ഒര�
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "\"Experience\" അല്ലെങ്കിൽ \"Work Experience\" എന്ന തലക്കെട്ടോടെ ഒരു വിഭാഗം ചേർക്കുക. മിക്ക സിസ്റ്റങ്ങളും റാങ്ക് ചെയ്യുന്ന ഫീൽഡ് ഇതാണ്."
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a source"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Add a story"
@@ -1423,6 +1434,10 @@ msgstr "ഒരു ടാഗ് ചേർക്കുക"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
 msgstr "ഒരു ടാഗ് ചേർത്ത് Enter അമർത്തുക…"
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a tag, then Enter"
+msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
 msgid "Add an @ and the domain, like name@example.com"
@@ -1499,6 +1514,10 @@ msgstr "തെളിവ് ചേർക്കുക"
 msgid "Add experience"
 msgstr "അനുഭവം ചേർക്കുക"
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Add fact"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add field"
 msgstr "ഫീൽഡ് ചേർക്കുക"
@@ -1525,10 +1544,6 @@ msgstr "ഭാഷ ചേർക്കുക"
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add my connection"
-msgstr ""
-
-#: src/features/career/knowledge/facts.tsx
-msgid "Add one above."
 msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
@@ -1885,6 +1900,7 @@ msgstr "ഇതിനകം ഉൾപ്പെടുത്തി"
 msgid "Already covered · pick one to find it on the page"
 msgstr "ഇതിനകം ഉൾപ്പെടുത്തിയിട്ടുണ്ട് · പേജിൽ അത് കണ്ടെത്താൻ ഒരെണ്ണം തിരഞ്ഞെടുക്കുക"
 
+#. Call-to-action link from registration page to login page
 #: src/features/auth/pages/register.tsx
 msgid "Already have an account? <0>Sign in now <1/></0>"
 msgstr ""
@@ -1954,11 +1970,6 @@ msgstr "ഒരു പിശക്"
 #: src/components/layout/error-screen.tsx
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "ഒരു അപ്രതീക്ഷിത പിശക് കാരണം ഈ പേജ് ലോഡ് ആയില്ല. വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ ഡാഷ്‌ബോർഡിലേക്ക് പോകുക."
-
-#. placeholder {0}: others.length
-#: src/features/applications/components/detail/contacts.tsx
-msgid "and {0} more"
-msgstr "കൂടാതെ {0} കൂടുതൽ"
 
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
@@ -2328,25 +2339,17 @@ msgstr ""
 msgid "ATS-safe"
 msgstr "ATS-സുരക്ഷിതം"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Attach"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Attach a cover letter (PDF)"
 msgstr "ഒരു കവർ ലെറ്റർ അറ്റാച്ചുചെയ്യുക (PDF)"
 
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a cover letter file (PDF)"
-msgstr "ഒരു കവർ ലെറ്റർ ഫയൽ അറ്റാച്ചുചെയ്യുക (PDF)"
-
 #: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
 msgstr "ഒരു ഫയൽ അറ്റാച്ചുചെയ്യുക"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a file instead"
-msgstr "പകരം ഒരു ഫയൽ അറ്റാച്ചുചെയ്യുക"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a resume file (PDF)"
-msgstr "ഒരു റെസ്യൂമേ ഫയൽ അറ്റാച്ച് ചെയ്യുക (PDF)"
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-chat.tsx
@@ -3094,6 +3097,7 @@ msgstr "ക്ലയൻ്റ് ഐഡി"
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -4203,6 +4207,10 @@ msgstr "കവർ ലെറ്റർ ഫയൽ"
 msgid "Cover letter imported"
 msgstr "കവർ ലെറ്റർ ഇറക്കുമതി ചെയ്തു"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Cover letter PDF"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Cover letter submitted (optional)"
@@ -4701,6 +4709,7 @@ msgstr "ഡിഫോൾട്ടിലേക്ക് ഡിസൈൻ റീസ�
 msgid "Design systems"
 msgstr "ഡിസൈൻ സംവിധാനങ്ങൾ"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
@@ -4806,6 +4815,7 @@ msgstr "നിങ്ങൾ ഇവിടേക്ക് നീക്കുന്�
 msgid "Domain connected"
 msgstr "ഡൊമെയ്ൻ കണക്റ്റ് ചെയ്തു"
 
+#. Call-to-action link from login page to account registration page
 #: src/features/auth/pages/login.tsx
 msgid "Don't have an account? <0>Create one now <1/></0>"
 msgstr ""
@@ -5564,12 +5574,12 @@ msgid "Eyebrow"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact forgotten"
-msgstr "വസ്തുത മറന്നു"
+msgid "Fact"
+msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact type"
-msgstr "വസ്തുതയുടെ തരം"
+msgid "Fact forgotten"
+msgstr "വസ്തുത മറന്നു"
 
 #: src/features/career/coach-chat.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
@@ -6009,10 +6019,6 @@ msgstr "ഫീഡ്‌ബാക്ക് നേടുക"
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
 msgstr "“ഫീഡ്‌ബാക്ക് നേടുക” ചോദ്യവും നിങ്ങളുടെ ഉത്തരവും ഈ പോസ്റ്റിംഗും നിങ്ങളുടെ കഥകളും {providerName}-ലേക്ക് അയയ്ക്കുന്നു."
-
-#: src/features/homepage/closing.tsx
-msgid "Get it on Google Play"
-msgstr ""
 
 #: src/features/career/today.tsx
 msgid "Get new roles here every morning"
@@ -6798,6 +6804,10 @@ msgstr "ജോലി തിരയൽ പരാജയപ്പെട്ടു. �
 msgid "Job search pipeline"
 msgstr "ജോലി തിരച്ചിൽ പൈപ്പ്‌ലൈൻ"
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Job title (optional)"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Job tracker with board, calendar and insights"
 msgstr ""
@@ -6962,10 +6972,6 @@ msgstr "കൊറിയൻ"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Label"
 msgstr "ലേബൽ"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Label, e.g. Recruiter"
-msgstr "ലേബൽ, ഉദാ. റിക്രൂട്ടർ"
 
 #. Preset button for setting picture aspect ratio to landscape orientation
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -8083,10 +8089,6 @@ msgstr "പകരം പുതിയ കവർ ലെറ്റർ"
 msgid "New document"
 msgstr "പുതിയ പ്രമാണം"
 
-#: src/features/career/knowledge/facts.tsx
-msgid "New fact"
-msgstr "പുതിയ വസ്തുത"
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr "പുതിയ കീ"
@@ -8232,8 +8234,8 @@ msgid "No connected applications yet. Apps you allow to access your account appe
 msgstr "ഇതുവരെ ബന്ധിപ്പിച്ച ആപ്ലിക്കേഷനുകളൊന്നുമില്ല. നിങ്ങളുടെ അക്കൗണ്ട് ആക്സസ് ചെയ്യാൻ നിങ്ങൾ അനുവദിക്കുന്ന ആപ്പുകൾ ഇവിടെ ദൃശ്യമാകും."
 
 #: src/features/applications/components/detail/contacts.tsx
-msgid "No contacts yet."
-msgstr "ഇതുവരെ കോൺടാക്‌റ്റുകളൊന്നുമില്ല."
+msgid "No contacts yet"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "No conventional section headings were found."
@@ -8364,6 +8366,10 @@ msgstr ""
 msgid "No payments."
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "No PDF attached"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr "ഫോൺ നമ്പർ ഇല്ല"
@@ -8485,6 +8491,7 @@ msgstr "നോർവീജിയൻ"
 msgid "Not applied"
 msgstr "പ്രയോഗിച്ചിട്ടില്ല"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr "ഇതുവരെ അപേക്ഷിച്ചിട്ടില്ല"
@@ -8551,6 +8558,10 @@ msgstr ""
 msgid "Not now"
 msgstr "ഇപ്പോൾ വേണ്ട"
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not prepared yet"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
 msgstr "ഇതുവരെ രേഖപ്പെടുത്തിയിട്ടില്ല. പിന്തുണയ്ക്കാൻ കഴിയുന്നത് വരെ ഇത് ശൂന്യമായി വിടുക."
@@ -8600,6 +8611,10 @@ msgstr "കോച്ചിംഗിൽ ഉപയോഗിക്കുന്ന�
 #: src/features/settings/account/profile.tsx
 msgid "Not verified yet. Resend the link"
 msgstr "ഇതുവരെ പരിശോധിച്ചിട്ടില്ല. ലിങ്ക് വീണ്ടും അയക്കുക"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not written yet"
+msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Note"
@@ -8935,6 +8950,10 @@ msgstr "എക്സ്പോർട്ട് ചെയ്ത ഫയൽ തുറ
 
 #: src/features/billing/buy-plans.tsx
 msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr ""
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Open the posting"
 msgstr ""
 
 #: src/routes/auth/native-callback.tsx
@@ -9382,6 +9401,10 @@ msgstr ""
 msgid "PDF and Word files are read with"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "PDF attached"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
 msgstr ""
@@ -9559,7 +9582,6 @@ msgstr "പദവി"
 msgid "posting"
 msgstr "പോസ്റ്റിംഗ്"
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
@@ -9647,6 +9669,7 @@ msgctxt "Career preferences: the roles, places, pay and ways of working you want
 msgid "Preferences"
 msgstr "പ്രിഫറൻസുകൾ"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
 #: src/features/homepage/features.tsx
@@ -9656,10 +9679,6 @@ msgstr "തയ്യാറെടുപ്പ്"
 #: src/features/career/schedule-sheet.tsx
 msgid "Prepare a briefing"
 msgstr "ഒരു ബ്രീഫിംഗ് തയ്യാറാക്കുക"
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Prepare a resume"
-msgstr "ഒരു റെസ്യൂമെ തയ്യാറാക്കുക"
 
 #: src/features/homepage/introduction.tsx
 msgid "Prepare for interviews from stories you wrote once"
@@ -10310,6 +10329,10 @@ msgstr "റിക്രൂട്ടർമാർ ഈ പേര് കാണുന
 msgid "Recruiters see this name. Your name plus “Resume” works well."
 msgstr "റിക്രൂട്ടർമാർ ഈ പേര് കാണുന്നു. നിങ്ങളുടെ പേരും \"റെസ്യൂമെ\"യും നന്നായി പ്രവർത്തിക്കുന്നു."
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Recruiters, interviewers and referrals for this job."
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Rectangle"
 msgstr "ചതുരാകൃതി"
@@ -10470,6 +10493,7 @@ msgstr "{company}-ന് മാത്രമായി ഓർമ്മിക്ക
 msgid "Remember this for future coaching?"
 msgstr "ഭാവിയിലെ കോച്ചിംഗിനായി ഇത് ഓർമ്മിക്കണോ?"
 
+#. Call-to-action link from forgot-password page to login page
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Remember your password? <0>Sign in now <1/></0>"
 msgstr ""
@@ -10512,6 +10536,7 @@ msgstr "“{name}” നീക്കം ചെയ്യണോ?"
 #. placeholder {0}: contact.name
 #. placeholder {0}: passkey.name || t`Unnamed passkey`
 #: src/features/applications/components/detail/contacts.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/settings/account/security.tsx
@@ -10735,6 +10760,7 @@ msgid "resume"
 msgstr "പുനരാരംഭിക്കുക"
 
 #: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
@@ -10782,6 +10808,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
 msgstr "റെസ്യൂമെ പേജ്"
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Resume PDF"
+msgstr ""
 
 #: src/features/billing/credits.ts
 msgid "Resume review"
@@ -10987,10 +11017,6 @@ msgstr "ഇപ്പോൾ"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
 msgstr "തസ്തിക"
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Role (optional)"
-msgstr "റോൾ (ഓപ്ഷണൽ)"
 
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/entries.tsx
@@ -12110,6 +12136,10 @@ msgstr "ചില ടെക്സ്റ്റ് തിരിഞ്ഞിരി�
 msgid "Something else on your mind? Write to us at"
 msgstr ""
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr "എന്തോ കുഴപ്പം സംഭവിച്ചു. ദയവായി വീണ്ടും ശ്രമിക്കുക."
@@ -12194,7 +12224,7 @@ msgstr "ഘട്ട തീയതി"
 msgid "Stage stays {stage}"
 msgstr "ഘട്ടം “{stage}” ആയി തുടരും"
 
-#: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/detail/stage-stepper.tsx
 msgid "Stages"
 msgstr "ഘട്ടങ്ങൾ"
 
@@ -13805,6 +13835,7 @@ msgid "Two-step verification turned on"
 msgstr "രണ്ട്-ഘട്ട സ്ഥിരീകരണം ഓണാക്കി"
 
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -14045,6 +14076,10 @@ msgstr "ക്രമത്തിൽ വായിക്കേണ്ട എന്�
 #: src/features/ats-checker/messages.ts
 msgid "Use A4 or US Letter so the layout survives being re-rendered."
 msgstr "ലേഔട്ട് വീണ്ടും റെൻഡർ ചെയ്യുമ്പോഴും നിലനിൽക്കാൻ A4 അല്ലെങ്കിൽ US Letter ഉപയോഗിക്കുക."
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Use Add fact to start."
+msgstr ""
 
 #: src/features/auth/pages/register.tsx
 msgid "Use at least 3 characters."
@@ -14762,6 +14797,7 @@ msgstr "ചോദിക്കേണ്ടത്"
 msgid "Worth asking {0}"
 msgstr "{0}-നോട് ചോദിക്കേണ്ടത്"
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -14773,10 +14809,6 @@ msgstr "എഴുതുക"
 #: src/features/ats-checker/messages.ts
 msgid "Write \"Present\" as the end date of your current role."
 msgstr "നിങ്ങളുടെ നിലവിലെ റോളിന്റെ അവസാന തീയതിയായി \"Present\" എഴുതുക."
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Write a letter"
-msgstr "ഒരു കത്ത് എഴുതുക"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Write down what they asked while it's fresh. The coach compares your answers with your stories."

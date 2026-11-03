@@ -5,8 +5,8 @@ import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { createRouterClient } from "@orpc/server";
-import { generateText } from "ai";
-import { MockLanguageModelV4 } from "ai/test";
+import { generateText, streamText } from "ai";
+import { convertArrayToReadableStream, MockLanguageModelV4 } from "ai/test";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
@@ -17,10 +17,11 @@ const fixture = vi.hoisted(() => ({
 	mode: "on" as BillingMode,
 	serverAi: true,
 	prices: true,
-	// What the fake provider answers next: text, or an error to throw.
+	// What the fake provider answers next: text (ending at its output limit with `length`), or an error to throw.
 	reply: { text: '{"text":"Led a team of 5","why":"Adds scale","addsFacts":false}' } as {
 		text?: string;
 		error?: Error;
+		finishReason?: "stop" | "length";
 	},
 	calls: [] as { maxOutputTokens: number | undefined; model: string }[],
 }));
@@ -64,23 +65,41 @@ vi.mock("../ai/service", async () => {
 	const actual = await vi.importActual<typeof import("../ai/service")>("../ai/service");
 	return {
 		...actual,
-		getModel: (input: { model: string }) =>
-			new MockLanguageModelV4({
+		getModel: (input: { model: string }) => {
+			const usage = {
+				inputTokens: { total: 1_000, noCache: 1_000, cacheRead: 0, cacheWrite: 0 },
+				outputTokens: { total: 200, text: 150, reasoning: 50 },
+			};
+			const finishReason = () => {
+				const unified = fixture.reply.finishReason ?? "stop";
+				return { unified, raw: unified === "length" ? "max_tokens" : "end_turn" };
+			};
+			return new MockLanguageModelV4({
 				modelId: input.model,
 				doGenerate: async (options) => {
 					fixture.calls.push({ maxOutputTokens: options.maxOutputTokens, model: input.model });
 					if (fixture.reply.error) throw fixture.reply.error;
 					return {
 						content: [{ type: "text", text: fixture.reply.text ?? "" }],
-						finishReason: { unified: "stop", raw: "stop" },
-						usage: {
-							inputTokens: { total: 1_000, noCache: 1_000, cacheRead: 0, cacheWrite: 0 },
-							outputTokens: { total: 200, text: 150, reasoning: 50 },
-						},
+						finishReason: finishReason(),
+						usage,
 						warnings: [],
 					};
 				},
-			}),
+				doStream: async (options) => {
+					fixture.calls.push({ maxOutputTokens: options.maxOutputTokens, model: input.model });
+					return {
+						stream: convertArrayToReadableStream([
+							{ type: "stream-start", warnings: [] },
+							{ type: "text-start", id: "t" },
+							{ type: "text-delta", id: "t", delta: fixture.reply.text ?? "" },
+							{ type: "text-end", id: "t" },
+							{ type: "finish", finishReason: finishReason(), usage },
+						]),
+					};
+				},
+			});
+		},
 	};
 });
 vi.mock("../../context", async () => {
@@ -189,7 +208,7 @@ describe.skipIf(!databaseUrl)("Rezumi AI metering", () => {
 		it("grants the trial on first use, then keeps the credits with the tokens and cost", async () => {
 			const result = await clientOf(aiRouter).improve({ ...improve, aiSource: "rezumi", idempotencyKey: "k1" });
 			expect(result.text).toBe("Led a team of 5");
-			expect(fixture.calls).toEqual([{ maxOutputTokens: 1_024, model: "server-model" }]);
+			expect(fixture.calls).toEqual([{ maxOutputTokens: 4_096, model: "server-model" }]);
 			expect(await balanceOf("owner")).toBe(4);
 			const [usage] = await usagesOf("owner");
 			expect(usage).toMatchObject({
@@ -282,6 +301,39 @@ describe.skipIf(!databaseUrl)("Rezumi AI metering", () => {
 			await expect(run).rejects.toMatchObject({ code: "AI_INPUT_TOO_LARGE" });
 			expect(fixture.calls).toHaveLength(0);
 			expect(await balanceOf("owner")).toBe(5);
+		});
+
+		it("gives the credits back when the answer stops at the work's output limit", async () => {
+			fixture.reply = { text: '{"text":"Led a team', finishReason: "length" };
+			await expect(clientOf(aiRouter).improve({ ...improve, aiSource: "rezumi" })).rejects.toMatchObject({
+				code: "AI_OUTPUT_LIMIT",
+			});
+			expect(await balanceOf("owner")).toBe(5);
+			// The provider was paid for the cut-off answer: its tokens stay on record.
+			expect((await usagesOf("owner"))[0]).toMatchObject({ status: "released", inputTokens: 1_000, outputTokens: 200 });
+		});
+
+		it("ends a stream that stops at the output limit with an error, so the work fails", async () => {
+			fixture.reply = { text: "Dear hiring team, I am writing to", finishReason: "length" };
+			const ai = await metered.startAiRun({ userId: "owner", action: "cover-letter", aiSource: "rezumi" });
+			if (!ai) throw new Error("No run.");
+			const parts: { type: string; error?: unknown }[] = [];
+			for await (const part of streamText({ model: ai.model, prompt: "Write" }).fullStream) parts.push(part);
+			expect(parts.find((part) => part.type === "error")?.error).toMatchObject({ code: "AI_OUTPUT_LIMIT" });
+			expect(fixture.calls).toEqual([{ maxOutputTokens: 8_192, model: "server-model" }]);
+			await ai.fail("stream_error");
+			expect(await balanceOf("owner")).toBe(5);
+		});
+
+		it("keeps a stream that finishes on its own", async () => {
+			fixture.reply = { text: "Dear hiring team, thank you." };
+			const ai = await metered.startAiRun({ userId: "owner", action: "cover-letter", aiSource: "rezumi" });
+			if (!ai) throw new Error("No run.");
+			const parts: { type: string }[] = [];
+			for await (const part of streamText({ model: ai.model, prompt: "Write" }).fullStream) parts.push(part);
+			expect(parts.some((part) => part.type === "error")).toBe(false);
+			await ai.succeed();
+			expect((await usagesOf("owner"))[0]).toMatchObject({ status: "committed", outputTokens: 200 });
 		});
 
 		it("never runs voice or scheduled work", async () => {

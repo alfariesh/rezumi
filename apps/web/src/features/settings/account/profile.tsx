@@ -158,7 +158,7 @@ export function ProfileSection({ session }: ProfileSectionProps) {
 	};
 
 	return (
-		<SettingsSection title={<Trans>Profile</Trans>}>
+		<SettingsSection icon="user-circle" title={<Trans>Profile</Trans>}>
 			<ProfilePhoto name={user.name} image={user.image ?? null} onChange={(image) => updateUser({ image })} />
 
 			<div className="grid gap-3 sm:grid-cols-2">

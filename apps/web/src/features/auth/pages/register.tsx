@@ -104,20 +104,19 @@ export function RegisterPage({ disableEmailAuth }: Props) {
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans>Create a new account</Trans>
 				</Typography>
 
 				<div className="text-muted">
-					<Trans>
+					<Trans comment="Call-to-action link from registration page to login page">
 						Already have an account?{" "}
 						<Link
 							to="/auth/login"
 							search={{ callbackURL, reauthenticate }}
 							className={linkVariants().base({ className: "gap-1.5 px-1" })}
 						>
-							<Trans comment="Call-to-action link from registration page to login page">Sign in now</Trans>{" "}
-							<Icon name="arrow-right" size={16} />
+							Sign in now <Icon name="arrow-right" size={16} />
 						</Link>
 					</Trans>
 				</div>
@@ -263,7 +262,7 @@ function PostSignupScreen() {
 		// Replaces the form in place: fades up into the auth column, with the layout's 24px gap.
 		<div className={cn(ENTER_CLASS, "grid gap-y-6")}>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans>Check your email</Trans>
 				</Typography>
 				<p className="text-muted">

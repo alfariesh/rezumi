@@ -36,7 +36,7 @@ export function SecuritySection() {
 	const social = SOCIAL.filter((provider) => provider in enabledProviders);
 
 	return (
-		<SettingsSection divided title={<Trans>Sign-in & security</Trans>}>
+		<SettingsSection icon="shield-check" divided title={<Trans>Sign-in & security</Trans>}>
 			<SettingsRow
 				icon="lock"
 				title={<Trans>Password</Trans>}

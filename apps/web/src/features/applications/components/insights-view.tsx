@@ -1,8 +1,9 @@
 import type { ApplicationSummary } from "../types";
+import type { IconName } from "@rezumi/ui/components/icon";
 import { ChartTooltip, KPIGroup, Widget } from "@heroui-pro/react";
 import { BarChart } from "@heroui-pro/react/bar-chart";
 import { KPI } from "@heroui-pro/react/kpi";
-import { Button, Skeleton } from "@heroui/react";
+import { Skeleton } from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -14,6 +15,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { computeInsights, computeOutcomes, computeTimeline } from "../insights";
 import { getStageColor, getStageLabel } from "../stages";
+import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
 /** The page's shape while stats load: the funnel, the two figures, then the charts. */
@@ -28,23 +30,17 @@ export function InsightsSkeleton() {
 }
 
 type ChartWidgetProps = {
+	icon: IconName;
 	title: string;
 	description?: string;
 	children: React.ReactNode;
 };
 
-function ChartWidget({ title, description, children }: ChartWidgetProps) {
+function ChartWidget({ icon, title, description, children }: ChartWidgetProps) {
 	const titleId = useId();
 	return (
 		<Widget role="region" aria-labelledby={titleId}>
-			<Widget.Header>
-				<div className="flex flex-col gap-0.5">
-					<Widget.Title id={titleId} role="heading" aria-level={2}>
-						{title}
-					</Widget.Title>
-					{description ? <Widget.Description>{description}</Widget.Description> : null}
-				</div>
-			</Widget.Header>
+			<WidgetHeading id={titleId} icon={icon} title={title} description={description} />
 			<Widget.Content>{children}</Widget.Content>
 		</Widget>
 	);
@@ -96,6 +92,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 	return (
 		<div className="flex max-w-4xl flex-col gap-4 overflow-y-auto pb-6">
 			<ChartWidget
+				icon="graph"
 				title={t`How far applications get`}
 				description={t`Counts every application that reached each stage, including ones now closed.`}
 			>
@@ -195,11 +192,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 
 			{outcomes.tailored.sent + outcomes.base.sent > 0 && (
 				<Widget role="region" aria-labelledby="insights-tailored">
-					<Widget.Header>
-						<Widget.Title id="insights-tailored" role="heading" aria-level={2}>
-							<Trans>Tailored vs. base resume</Trans>
-						</Widget.Title>
-					</Widget.Header>
+					<WidgetHeading id="insights-tailored" icon="file-text" title={<Trans>Tailored vs. base resume</Trans>} />
 					<Widget.Content>
 						<p className="text-sm leading-6 text-muted">
 							<Trans>
@@ -216,7 +209,11 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 
 			<div className="grid gap-4 lg:grid-cols-2">
 				{/* application velocity over time */}
-				<ChartWidget title={t`Applications over time`} description={t`Applications sent per week (last 8 weeks)`}>
+				<ChartWidget
+					icon="chart-line-up"
+					title={t`Applications over time`}
+					description={t`Applications sent per week (last 8 weeks)`}
+				>
 					<BarChart aria-hidden="true" data={timelineData} height={180}>
 						<BarChart.Grid vertical={false} />
 						<BarChart.XAxis dataKey="label" tickMargin={8} />
@@ -240,7 +237,7 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 				</ChartWidget>
 
 				{/* sources */}
-				<ChartWidget title={t`Where applications come from`} description={t`Count by source`}>
+				<ChartWidget icon="map-pin" title={t`Where applications come from`} description={t`Count by source`}>
 					{sourceData.length === 0 ? (
 						<p className="text-sm text-muted">
 							<Trans>No source data yet.</Trans>
@@ -402,15 +399,17 @@ function PipelineFlow({ insights }: { insights: ReturnType<typeof computeInsight
 
 	return (
 		<Widget role="region" aria-labelledby={titleId}>
-			<Widget.Header className="items-start gap-4">
-				<Widget.Title id={titleId} role="heading" aria-level={2}>
-					<Trans>Where your applications went</Trans>
-				</Widget.Title>
-				<Button size="sm" variant="secondary" onPress={() => void exportPng()}>
-					<Icon name="download-simple" size={16} />
-					<Trans>Export PNG</Trans>
-				</Button>
-			</Widget.Header>
+			<WidgetHeading
+				icon="share-network"
+				id={titleId}
+				title={<Trans>Where your applications went</Trans>}
+				action={
+					<WidgetAction onPress={() => void exportPng()}>
+						<Icon name="download-simple" size={16} />
+						<Trans>Export PNG</Trans>
+					</WidgetAction>
+				}
+			/>
 			<Widget.Content>
 				<svg
 					ref={svgRef}

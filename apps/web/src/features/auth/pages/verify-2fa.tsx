@@ -94,7 +94,7 @@ function TwoFactorVerificationPage({ backupCode = false }: TwoFactorVerification
 	return (
 		<>
 			<div className="space-y-1 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					{backupCode ? <Trans>Verify with a backup code</Trans> : <Trans>Two-step verification</Trans>}
 				</Typography>
 				<div className="text-muted">

@@ -14,19 +14,25 @@ type Props = {
 	disabled?: boolean;
 };
 
+/** The PDF picked in a file input, or null with an error toast when it isn't one. Clears the input either way. */
+export function pickPdf(event: React.ChangeEvent<HTMLInputElement>): File | null {
+	const file = event.target.files?.[0];
+	event.target.value = "";
+	if (!file) return null;
+	if (file.type !== "application/pdf") {
+		toast.add({ type: "error", description: t`Choose a PDF file.` });
+		return null;
+	}
+	return file;
+}
+
 // Picking/removing changes only the parent's draft; the application save owns storage.
 export function FileAttachmentField({ value, onChange, attachLabel, disabled }: Props) {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const onSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (!file) return;
-		if (file.type !== "application/pdf") {
-			toast.add({ type: "error", description: t`Choose a PDF file.` });
-			return;
-		}
-		onChange(file);
-		event.target.value = "";
+		const file = pickPdf(event);
+		if (file) onChange(file);
 	};
 
 	return (

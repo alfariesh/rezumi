@@ -284,6 +284,7 @@ function AnswerCard({
 
 	return (
 		<CareerWidget
+			icon="chat-centered-text"
 			title={t`Question ${index}`}
 			trailing={
 				<span className="flex items-center gap-1">
@@ -367,7 +368,7 @@ function AnswerCard({
 			<Swap id={proposal ? "diff" : "text"}>
 				{proposal ? (
 					<div className="grid gap-3">
-						<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-relaxed">
+						<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-sm leading-relaxed">
 							{diffWords(text, proposal.text).map((part, index) => (
 								<span
 									key={index}
@@ -400,7 +401,7 @@ function AnswerCard({
 						</div>
 					</div>
 				) : readOnly ? (
-					<p className="rounded-xl bg-default px-3.5 py-3 text-sm leading-relaxed whitespace-pre-wrap text-muted">
+					<p className="rounded-xl bg-surface-secondary px-3.5 py-3 text-sm leading-relaxed whitespace-pre-wrap text-muted">
 						{text}
 					</p>
 				) : (
@@ -601,6 +602,7 @@ function Checklist({
 
 	return (
 		<CareerWidget
+			icon="check-square"
 			title={<Trans>Before you submit</Trans>}
 			trailing={<span className="text-xs text-muted tabular-nums">{t`${done} of ${items.length}`}</span>}
 			contentClassName="gap-4"

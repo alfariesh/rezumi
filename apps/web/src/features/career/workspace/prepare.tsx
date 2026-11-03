@@ -39,6 +39,7 @@ import {
 	Working,
 	workingSteps,
 } from "../shared";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import { interviewTypeLabel } from "@/features/applications/components/interview-dialog";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
 import { AiProviderLoadState } from "@/features/settings/integrations/ai-provider-load-state";
@@ -252,16 +253,14 @@ function Plan({ application, interview, briefing, readOnly, go }: PlanProps) {
 							</Chip>
 							{/* The interview, posting or Knowledge changed since it was planned: plan again on request. */}
 							{briefing.outdated && !readOnly && provider && interview && (
-								<Button
-									variant="ghost"
-									size="sm"
+								<WidgetAction
 									isPending={generate.isPending}
 									onPress={() =>
 										void generate.run({ task: "briefing", interviewId: interview.id }).catch(() => undefined)
 									}
 								>
 									{generate.isPending ? <Working steps={workingSteps("briefing")} /> : <Trans>Plan again</Trans>}
-								</Button>
+								</WidgetAction>
 							)}
 						</span>
 					}
@@ -606,7 +605,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 							key={row.title}
 							isSelected={on}
 							onChange={(checked) => ticks.toggle(String(index), checked)}
-							className="flex min-h-14 cursor-pointer items-start gap-3 rounded-2xl bg-default px-4 py-3.5"
+							className="flex min-h-14 cursor-pointer items-start gap-3 rounded-2xl bg-surface-secondary px-4 py-3.5"
 						>
 							<Checkbox.Content className="items-start gap-3">
 								<Checkbox.Control className="bg-surface">
@@ -628,7 +627,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 					);
 				})}
 				{briefing?.data.opening && (
-					<div className="grid gap-1.5 rounded-2xl bg-default p-4">
+					<div className="grid gap-1.5 rounded-2xl bg-surface-secondary p-4">
 						<Eyebrow>
 							<Trans>Your opening</Trans>
 						</Eyebrow>
@@ -689,7 +688,7 @@ function Soon({ application, interview, briefing, now, go }: SoonProps) {
 								key={row.title}
 								isSelected={on}
 								onChange={(checked) => ticks.toggle(String(index), checked)}
-								className="flex cursor-pointer items-start gap-3 rounded-xl bg-default px-4 py-3"
+								className="flex cursor-pointer items-start gap-3 rounded-xl bg-surface-secondary px-4 py-3"
 							>
 								<Checkbox.Content className="w-full items-start gap-3">
 									<Checkbox.Control className="mt-px bg-surface">

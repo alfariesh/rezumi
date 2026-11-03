@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
+import { improveSystemPrompt } from "@rezumi/ai/prompts";
 import { improveOutputSchema } from "./improve";
 
 describe("improve", () => {
@@ -9,5 +10,11 @@ describe("improve", () => {
 			addsFacts: true,
 		});
 		expect(() => improveOutputSchema.parse({ text: "  " })).toThrow();
+	});
+});
+
+describe("improveSystemPrompt", () => {
+	it("explains the change in the line's language", () => {
+		expect(improveSystemPrompt).toContain("Write `why` in that language too.");
 	});
 });

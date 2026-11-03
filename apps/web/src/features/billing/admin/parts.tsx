@@ -1,9 +1,11 @@
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { TrendChip, Widget } from "@heroui-pro/react";
 import { AreaChart } from "@heroui-pro/react/area-chart";
 import { Button, Tooltip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useId } from "react";
+import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 
 type AdminCardProps = {
@@ -17,8 +19,8 @@ type AdminCardProps = {
 	plain?: boolean;
 	/** Warning: an orange widget with a white header, for alerts. */
 	tone?: "warning";
-	/** An icon in a tile before the title and description. */
-	icon?: ReactNode;
+	/** The icon in the tile before the title and description; every card except a `plain` one has one. */
+	icon?: IconName;
 	/** Classes for the content area, such as p-0 for a table that runs edge to edge. */
 	contentClassName?: string;
 };
@@ -64,7 +66,7 @@ export function AdminCard({
 								tone === "warning" ? "bg-white/20 text-white" : "bg-default text-muted",
 							)}
 						>
-							{icon}
+							<Icon name={icon} size={20} />
 						</span>
 					)}
 					<div className="grid min-w-0 gap-0.5">
@@ -72,9 +74,7 @@ export function AdminCard({
 							{title}
 						</Widget.Title>
 						{description && (
-							<Widget.Description className={cn("text-xs", tone === "warning" ? "text-white" : "text-muted")}>
-								{description}
-							</Widget.Description>
+							<Widget.Description className={cn(tone === "warning" && "text-white")}>{description}</Widget.Description>
 						)}
 					</div>
 				</div>

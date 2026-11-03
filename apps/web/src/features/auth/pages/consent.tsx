@@ -81,7 +81,7 @@ export function OAuthConsentPage({ oauthQuery, email }: OAuthConsentPageProps) {
 	return (
 		<>
 			<div className="space-y-2 text-center">
-				<Typography type="h3" render={renderAsH1}>
+				<Typography type="h3" align="center" render={renderAsH1}>
 					<Trans>Connect an application</Trans>
 				</Typography>
 				<p className="text-sm wrap-anywhere text-muted">

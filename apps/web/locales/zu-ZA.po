@@ -1323,7 +1323,6 @@ msgstr ""
 #: src/features/applications/components/detail/activity.tsx
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/applications/components/list-view.tsx
-#: src/features/career/knowledge/facts.tsx
 #: src/features/career/today.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add"
@@ -1334,12 +1333,16 @@ msgstr ""
 msgid "Add “{0}”"
 msgstr ""
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Add a contact"
+msgstr ""
+
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "Add a country"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Add a fact, for example “I mentored two associate PMs in 2025”"
+msgid "Add a fact"
 msgstr ""
 
 #: src/components/input/chip-input.tsx
@@ -1395,12 +1398,20 @@ msgstr ""
 msgid "Add a role, then Enter"
 msgstr ""
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a salary"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
+msgstr ""
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a source"
 msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
@@ -1417,6 +1428,10 @@ msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Add a tag and press Enter…"
+msgstr ""
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Add a tag, then Enter"
 msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
@@ -1494,6 +1509,10 @@ msgstr ""
 msgid "Add experience"
 msgstr ""
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Add fact"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Add field"
 msgstr ""
@@ -1520,10 +1539,6 @@ msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Add my connection"
-msgstr ""
-
-#: src/features/career/knowledge/facts.tsx
-msgid "Add one above."
 msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
@@ -1880,6 +1895,7 @@ msgstr ""
 msgid "Already covered · pick one to find it on the page"
 msgstr ""
 
+#. Call-to-action link from registration page to login page
 #: src/features/auth/pages/register.tsx
 msgid "Already have an account? <0>Sign in now <1/></0>"
 msgstr ""
@@ -1948,11 +1964,6 @@ msgstr ""
 
 #: src/components/layout/error-screen.tsx
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
-msgstr ""
-
-#. placeholder {0}: others.length
-#: src/features/applications/components/detail/contacts.tsx
-msgid "and {0} more"
 msgstr ""
 
 #: src/features/resume/share/address-field.tsx
@@ -2323,24 +2334,16 @@ msgstr ""
 msgid "ATS-safe"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Attach"
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Attach a cover letter (PDF)"
 msgstr ""
 
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a cover letter file (PDF)"
-msgstr ""
-
 #: src/features/assistant/prompt-box.tsx
 msgid "Attach a file"
-msgstr ""
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a file instead"
-msgstr ""
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Attach a resume file (PDF)"
 msgstr ""
 
 #: src/features/assistant/conversation.tsx
@@ -3089,6 +3092,7 @@ msgstr ""
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
@@ -4198,6 +4202,10 @@ msgstr ""
 msgid "Cover letter imported"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Cover letter PDF"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Cover letter submitted (optional)"
@@ -4696,6 +4704,7 @@ msgstr ""
 msgid "Design systems"
 msgstr ""
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 msgid "Details"
@@ -4801,6 +4810,7 @@ msgstr ""
 msgid "Domain connected"
 msgstr ""
 
+#. Call-to-action link from login page to account registration page
 #: src/features/auth/pages/login.tsx
 msgid "Don't have an account? <0>Create one now <1/></0>"
 msgstr ""
@@ -5559,11 +5569,11 @@ msgid "Eyebrow"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact forgotten"
+msgid "Fact"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
-msgid "Fact type"
+msgid "Fact forgotten"
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
@@ -6003,10 +6013,6 @@ msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Get feedback sends the question, your answer, this posting and your stories to {providerName}."
-msgstr ""
-
-#: src/features/homepage/closing.tsx
-msgid "Get it on Google Play"
 msgstr ""
 
 #: src/features/career/today.tsx
@@ -6793,6 +6799,10 @@ msgstr ""
 msgid "Job search pipeline"
 msgstr ""
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Job title (optional)"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "Job tracker with board, calendar and insights"
 msgstr ""
@@ -6956,10 +6966,6 @@ msgstr ""
 #: src/components/input/url-input.tsx
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Label"
-msgstr ""
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Label, e.g. Recruiter"
 msgstr ""
 
 #. Preset button for setting picture aspect ratio to landscape orientation
@@ -8078,10 +8084,6 @@ msgstr ""
 msgid "New document"
 msgstr ""
 
-#: src/features/career/knowledge/facts.tsx
-msgid "New fact"
-msgstr ""
-
 #: src/features/settings/ai/api-keys.tsx
 msgid "New key"
 msgstr ""
@@ -8227,7 +8229,7 @@ msgid "No connected applications yet. Apps you allow to access your account appe
 msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
-msgid "No contacts yet."
+msgid "No contacts yet"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -8359,6 +8361,10 @@ msgstr ""
 msgid "No payments."
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "No PDF attached"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr ""
@@ -8480,6 +8486,7 @@ msgstr ""
 msgid "Not applied"
 msgstr ""
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/next-step.ts
 msgid "Not applied yet"
 msgstr ""
@@ -8546,6 +8553,10 @@ msgstr ""
 msgid "Not now"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not prepared yet"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
 msgstr ""
@@ -8594,6 +8605,10 @@ msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Not verified yet. Resend the link"
+msgstr ""
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Not written yet"
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
@@ -8930,6 +8945,10 @@ msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgstr ""
+
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Open the posting"
 msgstr ""
 
 #: src/routes/auth/native-callback.tsx
@@ -9377,6 +9396,10 @@ msgstr ""
 msgid "PDF and Word files are read with"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "PDF attached"
+msgstr ""
+
 #: src/features/homepage/plans.ts
 msgid "PDF downloads without a watermark"
 msgstr ""
@@ -9554,7 +9577,6 @@ msgstr ""
 msgid "posting"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Posting"
@@ -9642,6 +9664,7 @@ msgctxt "Career preferences: the roles, places, pay and ways of working you want
 msgid "Preferences"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/shared.tsx
 #: src/features/homepage/features.tsx
@@ -9650,10 +9673,6 @@ msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "Prepare a briefing"
-msgstr ""
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Prepare a resume"
 msgstr ""
 
 #: src/features/homepage/introduction.tsx
@@ -10305,6 +10324,10 @@ msgstr ""
 msgid "Recruiters see this name. Your name plus “Resume” works well."
 msgstr ""
 
+#: src/features/applications/components/detail/contacts.tsx
+msgid "Recruiters, interviewers and referrals for this job."
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Rectangle"
 msgstr ""
@@ -10465,6 +10488,7 @@ msgstr ""
 msgid "Remember this for future coaching?"
 msgstr ""
 
+#. Call-to-action link from forgot-password page to login page
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Remember your password? <0>Sign in now <1/></0>"
 msgstr ""
@@ -10507,6 +10531,7 @@ msgstr ""
 #. placeholder {0}: contact.name
 #. placeholder {0}: passkey.name || t`Unnamed passkey`
 #: src/features/applications/components/detail/contacts.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/assistant/conversation.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/settings/account/security.tsx
@@ -10730,6 +10755,7 @@ msgid "resume"
 msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
@@ -10776,6 +10802,10 @@ msgstr ""
 
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Resume page"
+msgstr ""
+
+#: src/features/applications/components/detail/sent-documents.tsx
+msgid "Resume PDF"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -10981,10 +11011,6 @@ msgstr ""
 #: src/features/applications/components/list-view.tsx
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Role"
-msgstr ""
-
-#: src/features/applications/components/detail/contacts.tsx
-msgid "Role (optional)"
 msgstr ""
 
 #. placeholder {0}: index + 1
@@ -12105,6 +12131,10 @@ msgstr ""
 msgid "Something else on your mind? Write to us at"
 msgstr ""
 
+#: src/features/career/knowledge/facts.tsx
+msgid "Something true you can support, such as “I mentored two associate PMs in 2025”."
+msgstr ""
+
 #: src/libs/error-message.ts
 msgid "Something went wrong. Please try again."
 msgstr ""
@@ -12189,7 +12219,7 @@ msgstr ""
 msgid "Stage stays {stage}"
 msgstr ""
 
-#: src/features/applications/components/application-detail-sheet.tsx
+#: src/features/applications/components/detail/stage-stepper.tsx
 msgid "Stages"
 msgstr ""
 
@@ -13800,6 +13830,7 @@ msgid "Two-step verification turned on"
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/career/knowledge/facts.tsx
 #: src/features/career/workspace/practise.tsx
 #: src/features/documents/document-list.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -14039,6 +14070,10 @@ msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Use A4 or US Letter so the layout survives being re-rendered."
+msgstr ""
+
+#: src/features/career/knowledge/facts.tsx
+msgid "Use Add fact to start."
 msgstr ""
 
 #: src/features/auth/pages/register.tsx
@@ -14757,6 +14792,7 @@ msgstr ""
 msgid "Worth asking {0}"
 msgstr ""
 
+#: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/homepage/features.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -14767,10 +14803,6 @@ msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Write \"Present\" as the end date of your current role."
-msgstr ""
-
-#: src/features/applications/components/detail/sent-documents.tsx
-msgid "Write a letter"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx

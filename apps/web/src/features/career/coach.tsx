@@ -416,33 +416,29 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 		{ icon: "user-sound", text: t`What interview answers should I practice?` },
 	];
 	return (
-		<div className="grid gap-6 pt-[clamp(0px,6vh,48px)]">
-			<div className="grid gap-3">
+		<div className="grid justify-items-center gap-6 pt-[clamp(0px,6vh,48px)] text-center">
+			<div className="grid max-w-2xl gap-3">
 				<Typography type="h2" render={renderAsH3}>
 					<Trans>What are you working on?</Trans>
 				</Typography>
-				<p className="text-base text-muted">
+				<p className="text-base text-pretty text-muted">
 					<Trans>
 						Ask about your search, or bring an accomplishment you want to explain better. Answers use what's switched on
 						below and say what they relied on.
 					</Trans>
 				</p>
 			</div>
-			<PromptSuggestion variant="card" className="@container">
-				<PromptSuggestion.Items className="grid-cols-1 @xl:grid-cols-3">
+			<PromptSuggestion className="items-center">
+				<PromptSuggestion.Items className="flex flex-col items-center gap-2">
 					{starters.map((starter) => (
-						// In the card variant the item is a plain Card (a div): it takes no onPress or isDisabled, so a button
-						// stretched over the card carries the press, focus and disabled state.
-						<PromptSuggestion.Item key={starter.icon} className="relative cursor-[var(--cursor-interactive)]">
-							<Icon name={starter.icon} size={22} className="text-accent" />
-							<PromptSuggestion.ItemTitle>{starter.text}</PromptSuggestion.ItemTitle>
-							<button
-								type="button"
-								aria-label={starter.text}
-								disabled={disabled}
-								onClick={() => onPick(starter.text)}
-								className="absolute inset-0 rounded-[inherit] focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none disabled:cursor-not-allowed"
-							/>
+						<PromptSuggestion.Item
+							key={starter.icon}
+							isDisabled={disabled}
+							onPress={() => onPick(starter.text)}
+							className="w-fit max-w-full justify-center gap-2 rounded-full border-0 bg-surface px-4 py-2.5 text-start"
+						>
+							<Icon name={starter.icon} size={18} className="shrink-0 text-accent" />
+							<span className="min-w-0 text-pretty">{starter.text}</span>
 						</PromptSuggestion.Item>
 					))}
 				</PromptSuggestion.Items>

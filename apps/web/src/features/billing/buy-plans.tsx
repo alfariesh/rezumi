@@ -127,6 +127,7 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 
 	return (
 		<SettingsSection
+			icon="tag"
 			title={<Trans>Buy a pass</Trans>}
 			description={<Trans>Each pass is 30 days of access, paid once. Nothing renews on its own.</Trans>}
 		>

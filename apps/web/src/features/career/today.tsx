@@ -29,6 +29,7 @@ import {
 	withUndo,
 } from "./shared";
 import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import {
 	collectInterviews,
 	formatDuration,
@@ -747,10 +748,10 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 			icon="clock"
 			className={className}
 			trailing={
-				<Button variant="ghost" size="sm" onPress={() => onOpenSchedule("new")}>
-					<Icon name="plus" size={18} />
+				<WidgetAction onPress={() => onOpenSchedule("new")}>
+					<Icon name="plus" size={16} />
 					<Trans>Add</Trans>
-				</Button>
+				</WidgetAction>
 			}
 		>
 			{isError || applicationQuery.isError ? (

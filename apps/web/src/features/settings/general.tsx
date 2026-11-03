@@ -31,7 +31,7 @@ export function GeneralSection() {
 	const languageId = useId();
 
 	return (
-		<SettingsSection id="general" divided title={<Trans>General</Trans>}>
+		<SettingsSection icon="gear-six" id="general" divided title={<Trans>General</Trans>}>
 			<SettingsRow
 				icon="palette"
 				title={<Trans>Theme</Trans>}

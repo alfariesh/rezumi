@@ -25,7 +25,7 @@ function NativeCallbackPage() {
 
 	return (
 		<div className="space-y-4 text-center">
-			<Typography type="h3" render={renderAsH1}>
+			<Typography type="h3" align="center" render={renderAsH1}>
 				<Trans>Open the Rezumi app</Trans>
 			</Typography>
 			<p className="text-sm text-muted">

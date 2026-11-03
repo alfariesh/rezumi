@@ -60,6 +60,7 @@ export function WebAccessSection() {
 
 	return (
 		<SettingsSection
+			icon="globe-simple"
 			id="web-access"
 			title={<Trans>Web access</Trans>}
 			description={<Trans>Read the job links you save. Saving and preparing jobs works without a connection.</Trans>}

@@ -11,6 +11,7 @@ import { cn } from "@rezumi/utils/style";
 import { CheckWidget } from "../check/check-widget";
 import { useEditorStore } from "../store";
 import { acceptResumeProposals } from "./proposals";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import { useIsResumeLocked } from "@/features/resume/builder/draft";
 import { ENTER_CLASS, POP_CLASS } from "@/libs/motion";
 
@@ -106,12 +107,18 @@ export function ChangeSet(props: ChangeSetProps) {
 	};
 
 	const heading = title ?? <Plural value={proposals.length} one="# proposed edit" other="# proposed edits" />;
-	const acceptAll = pending.length > 1 && (
-		// On the widget's gray header a ghost button reads cleaner than a secondary one.
-		<Button size="sm" variant={widget ? "ghost" : "secondary"} isDisabled={locked} onPress={() => onAccept(pending)}>
-			<Trans>Accept all</Trans>
-		</Button>
-	);
+	const acceptAll =
+		pending.length > 1 &&
+		// In the widget's header it is a link-style action; in the plain section it stays a secondary button.
+		(widget ? (
+			<WidgetAction isDisabled={locked} onPress={() => onAccept(pending)}>
+				<Trans>Accept all</Trans>
+			</WidgetAction>
+		) : (
+			<Button size="sm" variant="secondary" isDisabled={locked} onPress={() => onAccept(pending)}>
+				<Trans>Accept all</Trans>
+			</Button>
+		));
 
 	const list = (
 		<>

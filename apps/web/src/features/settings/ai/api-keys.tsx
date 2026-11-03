@@ -24,6 +24,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
 import { SettingsSection } from "../section";
+import { WidgetAction } from "@/components/layout/widget-heading";
 import { usePlanFeature } from "@/features/billing/plan";
 import { authClient } from "@/libs/auth/client";
 import { getReadableErrorMessage } from "@/libs/error-message";
@@ -159,16 +160,17 @@ export function ApiKeysSection() {
 
 	return (
 		<SettingsSection
+			icon="key"
 			id="api-keys"
 			title={<Trans>API keys</Trans>}
 			description={
 				<Trans>For scripts, extensions and MCP clients. Keys act as you and can read and edit your documents.</Trans>
 			}
 			action={
-				<Button size="sm" variant="secondary" onPress={() => setCreating(true)}>
-					<Icon name="plus" size={18} />
+				<WidgetAction onPress={() => setCreating(true)}>
+					<Icon name="plus" size={16} />
 					<Trans>New key</Trans>
-				</Button>
+				</WidgetAction>
 			}
 		>
 			{apiLocked && (

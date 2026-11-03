@@ -18,6 +18,7 @@ import { PendingPaymentBanner } from "./pending-payment";
 import { getPlanName } from "./plan";
 import { usePlanDates } from "./purchase";
 import { PageHeader } from "@/components/layout/page-header";
+import { WidgetHeading, widgetActionClass } from "@/components/layout/widget-heading";
 import { SettingsRow, SettingsRows, SettingsSection } from "@/features/settings/section";
 import { orpc } from "@/libs/orpc/client";
 
@@ -106,11 +107,7 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 					className="pointer-events-none absolute -top-16 -right-10 size-56 rounded-full bg-fuchsia-400/30 blur-3xl"
 				/>
 			)}
-			<Widget.Header>
-				<Widget.Title id={titleId} role="heading" aria-level={2} className={style.title}>
-					<Trans>Your plan</Trans>
-				</Widget.Title>
-			</Widget.Header>
+			<WidgetHeading id={titleId} icon="seal-check" title={<Trans>Your plan</Trans>} titleClassName={style.title} />
 			<Widget.Content className={cn("relative grid gap-4", style.content)}>
 				{paid ? (
 					<div className="grid gap-6 [&>*+*]:relative [&>*+*]:before:absolute [&>*+*]:before:inset-s-15 [&>*+*]:before:inset-e-0 [&>*+*]:before:-top-3 [&>*+*]:before:h-px [&>*+*]:before:bg-white/20">
@@ -177,7 +174,7 @@ function CreditsSection({ credits, formatDate, formatDay }: CreditsSectionProps)
 
 	return (
 		<div className="grid gap-2">
-			<SettingsSection title={<Trans>Rezumi AI credits</Trans>}>
+			<SettingsSection icon="lightning" title={<Trans>Rezumi AI credits</Trans>}>
 				<SettingsRows>
 					<SettingsRow
 						as="li"
@@ -266,7 +263,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 		return (
 			<>
 				<PageHeader title={<Trans>Plan</Trans>} />
-				<SettingsSection title={<Trans>Your plan</Trans>}>
+				<SettingsSection icon="seal-check" title={<Trans>Your plan</Trans>}>
 					<p className="text-sm text-muted">
 						<Trans>Plans don't apply to your account yet, so everything is open.</Trans>
 					</p>
@@ -295,6 +292,7 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 			<BuyPlansSection plan={plan} selected={selectedPlan} />
 
 			<SettingsSection
+				icon="file-text"
 				divided
 				title={<Trans>Documents</Trans>}
 				description={<Trans>Documents in Trash don't count.</Trans>}
@@ -306,9 +304,10 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 			{plan.credits && <CreditsSection credits={plan.credits} formatDate={formatDate} formatDay={formatDay} />}
 
 			<SettingsSection
+				icon="list-checks"
 				title={<Trans>What's included</Trans>}
 				action={
-					<a href="/#pricing" className="text-sm text-muted underline hover:text-foreground">
+					<a href="/#pricing" className={widgetActionClass}>
 						<Trans>Compare plans</Trans>
 					</a>
 				}

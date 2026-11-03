@@ -27,6 +27,7 @@ import { downloadWithAnchor } from "@rezumi/utils/file";
 import { cn } from "@rezumi/utils/style";
 import { latest, useDefaultProvider, useGenerate, useSavedItems, useTicks } from "../hooks";
 import { CareerWidget, MemoryProposal, PrivacyLine, useCareerTime, Working, workingSteps } from "../shared";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { buildIcs } from "@/features/applications/ics";
 import { isInterview } from "@/features/applications/interviews";
 import { AiSourceMenu } from "@/features/billing/ai-source-menu";
@@ -178,15 +179,21 @@ function DebriefForm({ application, round, from, readOnly, onReviewed }: Debrief
 
 	return (
 		<Widget role="region" aria-labelledby={`${id}-title`}>
-			<Widget.Header>
-				<Widget.Title id={`${id}-title`} role="heading" aria-level={2} className="truncate">
-					{readOnly && !round ? from?.data.round || t`Interview debrief` : afterRound(round?.kind)}
-					{round && ` · ${day(round.at)}`}
-				</Widget.Title>
-				<span className="shrink-0 text-xs text-muted">
-					<Trans>Write it down while it's fresh</Trans>
-				</span>
-			</Widget.Header>
+			<WidgetHeading
+				id={`${id}-title`}
+				icon="note-pencil"
+				title={
+					<>
+						{readOnly && !round ? from?.data.round || t`Interview debrief` : afterRound(round?.kind)}
+						{round && ` · ${day(round.at)}`}
+					</>
+				}
+				action={
+					<span className="text-xs text-muted">
+						<Trans>Write it down while it's fresh</Trans>
+					</span>
+				}
+			/>
 			<Widget.Content className="grid gap-4">
 				<TextField
 					fullWidth
@@ -329,7 +336,7 @@ function ReviewCard({ application, review, readOnly }: ReviewCardProps) {
 				</ul>
 			)}
 			{(data.nextRound || data.priority) && (
-				<div className="grid gap-3 rounded-xl bg-default p-4">
+				<div className="grid gap-3 rounded-xl bg-surface-secondary p-4">
 					{data.nextRound && (
 						<p className="text-sm">
 							<strong className="font-semibold">
@@ -451,11 +458,11 @@ function WeekPlan({ application, review, now, readOnly }: WeekPlanProps) {
 
 	return (
 		<Widget role="region" aria-labelledby={titleId}>
-			<Widget.Header>
-				<Widget.Title id={titleId} role="heading" aria-level={2}>
-					<Trans>This week: make your evidence easier to follow</Trans>
-				</Widget.Title>
-			</Widget.Header>
+			<WidgetHeading
+				id={titleId}
+				icon="list-checks"
+				title={<Trans>This week: make your evidence easier to follow</Trans>}
+			/>
 			<Widget.Content className="grid gap-3">
 				<p className="text-xs text-muted tabular-nums">
 					{t`${done} of ${count} done`} · {plural(minutes, { one: "# minute in total", other: "# minutes in total" })}

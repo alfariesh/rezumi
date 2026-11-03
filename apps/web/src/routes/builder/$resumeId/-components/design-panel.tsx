@@ -15,6 +15,7 @@ import { DesignSectionBuilder } from "../-sidebar/right/sections/design";
 import { LayoutSectionBuilder } from "../-sidebar/right/sections/layout";
 import { PageSectionBuilder } from "../-sidebar/right/sections/page";
 import { TypographySectionBuilder } from "../-sidebar/right/sections/typography";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { useIsResumeLocked, useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { ExpandingLabel } from "@/features/resume/editor/chrome/mode-switch";
 import { EntriesGroup } from "@/features/resume/editor/design/entries-group";
@@ -46,14 +47,7 @@ function DesignWidget({ group, children }: DesignWidgetProps) {
 
 	return (
 		<Widget id={`design-${group}`} role="region" aria-labelledby={titleId} className="scroll-mt-14">
-			<Widget.Header>
-				<span className="flex min-w-0 items-center gap-2">
-					<Icon name={icon} size={16} className="shrink-0 text-muted" />
-					<Widget.Title id={titleId} role="heading" aria-level={2} className="truncate">
-						{label()}
-					</Widget.Title>
-				</span>
-			</Widget.Header>
+			<WidgetHeading id={titleId} icon={icon} title={label()} />
 			{/* A size container, so groups lay out by the panel's width rather than the window's. */}
 			<Widget.Content className="@container grid min-w-0 gap-4">{children}</Widget.Content>
 		</Widget>
@@ -439,7 +433,7 @@ function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
 				<Widget.Header>
 					<Disclosure.Heading level={2} className="min-w-0 flex-1">
 						<Disclosure.Trigger className="flex min-h-8 w-full items-center gap-2 rounded-lg text-start">
-							<Icon name={icon} size={16} className="shrink-0 text-muted" />
+							<Icon name={icon} size={20} className="shrink-0 text-muted" />
 							<Widget.Title id="design-advanced-title" className="truncate">
 								{label()}
 							</Widget.Title>

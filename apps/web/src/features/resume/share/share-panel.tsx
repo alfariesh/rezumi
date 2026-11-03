@@ -18,6 +18,7 @@ import { AddressField } from "./address-field";
 import { CopyLinkButton } from "./copy-link-button";
 import { CustomDomainField } from "./custom-domain-field";
 import { useShareOrigin } from "./use-share-origin";
+import { WidgetHeading } from "@/components/layout/widget-heading";
 import { templates } from "@/dialogs/resume/template/data";
 import {
 	useCurrentResume,
@@ -141,15 +142,7 @@ function ShareWidget({ icon, title, trailing, children }: ShareWidgetProps) {
 
 	return (
 		<Widget role="region" aria-labelledby={titleId}>
-			<Widget.Header>
-				<span className="flex min-w-0 items-center gap-2">
-					<Icon name={icon} size={16} className="shrink-0 text-muted" />
-					<Widget.Title id={titleId} className="truncate">
-						{title}
-					</Widget.Title>
-				</span>
-				{trailing}
-			</Widget.Header>
+			<WidgetHeading id={titleId} icon={icon} title={title} action={trailing} />
 			<Widget.Content className="@container grid gap-4">{children}</Widget.Content>
 		</Widget>
 	);
