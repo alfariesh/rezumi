@@ -215,7 +215,7 @@ export const authRouter = {
 			operationId: "exportAccountData",
 			summary: "Export user account data",
 			description:
-				"Returns a JSON-serializable export of the authenticated user's profile, documents, applications, career knowledge, preparation, schedules and coaching conversations. Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
+				"Returns a JSON-serializable export of the authenticated user's profile, documents, applications, career knowledge, preparation, schedules, coaching conversations, and payments, passes and Rezumi AI credits. Images remain URL references; coaching attachments include storage references. Secrets such as password hashes, tokens, and API keys are never included. Requires authentication.",
 			successDescription: "The user's exported account data.",
 		})
 		.input(z.object({}).optional())
@@ -256,6 +256,66 @@ export const authRouter = {
 					jobs: z.array(createSelectSchema(schema.careerJob)),
 					transcripts: z.array(createSelectSchema(schema.careerTranscript)),
 					workspaces: z.array(createSelectSchema(schema.careerWorkspace, { data: careerWorkspaceSchema })),
+				}),
+				billing: z.object({
+					payments: z.array(
+						z.object({
+							id: z.string(),
+							orderId: z.string(),
+							planId: z.string(),
+							amount: z.number().int(),
+							currency: z.string(),
+							durationDays: z.number().int(),
+							credits: z.number().int(),
+							status: z.string(),
+							paymentType: z.string().nullable(),
+							createdAt: z.date(),
+							expiresAt: z.date().nullable(),
+							paidAt: z.date().nullable(),
+							refundedAmount: z.number().int(),
+							refunds: z.array(
+								z.object({
+									amount: z.number().int(),
+									method: z.string(),
+									status: z.string(),
+									reason: z.string(),
+									createdAt: z.date(),
+									settledAt: z.date().nullable(),
+								}),
+							),
+						}),
+					),
+					passes: z.array(
+						z.object({
+							planId: z.string(),
+							startsAt: z.date(),
+							endsAt: z.date(),
+							source: z.string(),
+							paymentId: z.string().nullable(),
+							revokedAt: z.date().nullable(),
+							createdAt: z.date(),
+						}),
+					),
+					creditGrants: z.array(
+						z.object({
+							source: z.string(),
+							paymentId: z.string().nullable(),
+							amount: z.number().int(),
+							remaining: z.number().int(),
+							expiresAt: z.date(),
+							revokedAt: z.date().nullable(),
+							createdAt: z.date(),
+						}),
+					),
+					creditUsage: z.array(
+						z.object({
+							action: z.string(),
+							credits: z.number().int(),
+							status: z.string(),
+							createdAt: z.date(),
+							settledAt: z.date().nullable(),
+						}),
+					),
 				}),
 			}),
 		)

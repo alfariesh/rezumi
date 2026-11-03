@@ -179,3 +179,21 @@ export async function sendPendingReceipts(now = new Date()): Promise<number> {
 	for (const { id } of due) if (await sendPaymentReceipt(id, now)) sent++;
 	return sent;
 }
+
+/**
+ * Sends a paid payment's receipt again now, for a customer who didn't get it: the sent mark and the tries are reset,
+ * then it goes out as the first one did. Whether it went out.
+ */
+export async function resendPaymentReceipt(paymentId: string, now = new Date()): Promise<boolean> {
+	await db
+		.update(schema.billingPayment)
+		.set({ receiptSentAt: null, receiptAttempts: 0, receiptAttemptedAt: null })
+		.where(
+			and(
+				eq(schema.billingPayment.id, paymentId),
+				inArray(schema.billingPayment.status, ["paid", "partially_refunded"]),
+				isNotNull(schema.billingPayment.fulfilledAt),
+			),
+		);
+	return sendPaymentReceipt(paymentId, now);
+}

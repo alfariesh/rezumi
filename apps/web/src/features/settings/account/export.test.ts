@@ -77,6 +77,12 @@ describe("buildAccountZip", () => {
 			coverLetters: [{ id: "01a0ec71-a410-71da-9156-b347210cf72b", name: "Product Designer" }],
 			applications: [{ id: "app-1", company: "Lumen", role: "Designer" }],
 			aiContentReports: [{ id: "report-1", content: "Unsafe generated content", reason: "dangerous" }],
+			billing: {
+				payments: [{ id: "pay-1", orderId: "RZ-pay-1", amount: 79_000, status: "paid", refunds: [] }],
+				passes: [{ planId: "pro-ai", startsAt: "2026-09-29T00:00:00.000Z", endsAt: "2026-10-29T00:00:00.000Z" }],
+				creditGrants: [],
+				creditUsage: [],
+			},
 			career: {
 				...emptyCareer,
 				facts: [
@@ -113,6 +119,7 @@ describe("buildAccountZip", () => {
 			"account.json",
 			"ai-content-reports.json",
 			"applications.json",
+			"billing.json",
 			"career.json",
 			"letters/product-designer-01a0ec71-a410-71da-9156-b347210cf72b.json",
 			"resumes/product-designer-01a0ec71-03e8-77b1-a5e4-ce04be126204.json",
@@ -125,6 +132,11 @@ describe("buildAccountZip", () => {
 		expect(JSON.parse(strFromU8(files["applications.json"] as Uint8Array))).toEqual([
 			{ id: "app-1", company: "Lumen", role: "Designer" },
 		]);
+		// Payments, passes and credits sit in one file of records.
+		expect(JSON.parse(strFromU8(files["billing.json"] as Uint8Array))).toMatchObject({
+			payments: [{ orderId: "RZ-pay-1", status: "paid" }],
+			passes: [{ planId: "pro-ai" }],
+		});
 		const career = JSON.parse(strFromU8(files["career.json"] as Uint8Array));
 		expect(JSON.parse(strFromU8(files["ai-content-reports.json"] as Uint8Array))).toEqual([
 			{ id: "report-1", content: "Unsafe generated content", reason: "dangerous" },

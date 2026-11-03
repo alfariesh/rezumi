@@ -178,11 +178,21 @@ msgstr "{0, plural, one {# फ़ील्ड को संपादक मे�
 msgid "{0, plural, one {# issue is ignored.} other {# issues are ignored.}}"
 msgstr "{0, plural, one {# मुद्दे को नजरअंदाज कर दिया गया है।} other {# मुद्दों को नजरअंदाज कर दिया गया है।}}"
 
+#. placeholder {0}: paid.length
+#: src/features/billing/admin/customer.tsx
+msgid "{0, plural, one {# paid payment, after refunds} other {# paid payments, after refunds}}"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/conversation.tsx
 #: src/features/resume/editor/proposals/proposal-list.tsx
 msgid "{0, plural, one {# proposed edit} other {# proposed edits}}"
 msgstr "{0, plural, one {# प्रस्तावित संपादन} other {# प्रस्तावित संपादन}}"
+
+#. placeholder {0}: refunds.filter((refund) => refund.status === "succeeded").length
+#: src/features/billing/admin/customer.tsx
+msgid "{0, plural, one {# refund done} other {# refunds done}}"
+msgstr ""
 
 #. placeholder {0}: result.skipped
 #: src/features/applications/components/import-applications-sheet.tsx
@@ -339,10 +349,21 @@ msgstr "{0} बंद हो गया"
 msgid "{0} come with your first use of Rezumi AI, valid for {1} days."
 msgstr ""
 
+#. placeholder {0}: row.credits
+#: src/features/billing/admin/overview.tsx
+msgid "{0} credits"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
 msgstr "{0} संपादन लागू किये गये"
+
+#. placeholder {0}: credits.nextExpiry.credits
+#. placeholder {1}: formatShort(credits.nextExpiry.at)
+#: src/features/billing/admin/customer.tsx
+msgid "{0} expire {1}"
+msgstr ""
 
 #. placeholder {0}: creditCount(nextExpiry.credits)
 #. placeholder {1}: formatDate(nextExpiry.at)
@@ -428,6 +449,12 @@ msgstr "{0} में से {1} लागू जांचें पास ह�
 msgid "{0} of {1} applicable checks passed."
 msgstr "{0} में से {1} लागू जांचें पास हुईं।"
 
+#. placeholder {0}: checkouts.paid
+#. placeholder {1}: checkouts.started
+#: src/features/billing/admin/overview.tsx
+msgid "{0} of {1} checkouts paid"
+msgstr ""
+
 #. placeholder {0}: thread.editsAccepted
 #. placeholder {1}: thread.editsProposed
 #: src/features/assistant/assistant-panel.tsx
@@ -498,6 +525,11 @@ msgstr "{0} ठीक करने हेतु"
 #. placeholder {1}: formatDate(payment.access.endsAt)
 #: src/features/billing/receipt.tsx
 msgid "{0} until {1}"
+msgstr ""
+
+#. placeholder {0}: metrics.signups.verified
+#: src/features/billing/admin/overview.tsx
+msgid "{0} verified their email"
 msgstr ""
 
 #. placeholder {0}: getPaymentMethodName(payment.paymentType)
@@ -668,6 +700,11 @@ msgstr "{failing, plural, one {# समीक्षा करने के ल�
 #: src/features/career/knowledge/stories.tsx
 msgid "{filled} of 5 parts"
 msgstr "5 में से {filled} हिस्से"
+
+#. placeholder {0}: Math.min(page * PAGE_SIZE, total)
+#: src/features/billing/admin/overview.tsx
+msgid "{first}–{0} of {total}"
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "{freeTemplateCount} templates"
@@ -995,6 +1032,7 @@ msgstr "24 घंटे पहले"
 msgid "3 of 5 keywords on your resume"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 दिन"
@@ -1003,6 +1041,11 @@ msgstr "30 दिन"
 msgid "5 credits"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "7 days"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "90 days"
 msgstr "90 दिन"
@@ -1095,6 +1138,10 @@ msgstr "एक मॉडल की राय, फैसला नहीं. य�
 msgid "A name helps you tell passkeys apart, like “Work laptop”."
 msgstr "नाम से आप पासकीज़ में अंतर कर पाते हैं, जैसे “कार्य लैपटॉप”।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "A negative amount takes credits away, soonest-expiring first, never below zero."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A numeric date reads differently in different countries."
 msgstr "एक अंकीय तारीख अलग-अलग देशों में अलग तरह से पढ़ी जाती है।"
@@ -1122,6 +1169,10 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "A role has no description"
 msgstr "किसी भूमिका का कोई विवरण नहीं होता"
+
+#: src/features/billing/admin/customer.tsx
+msgid "A running pass ends now; a queued one is dropped, and later passes move up."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "A saved offer"
@@ -1220,6 +1271,21 @@ msgstr "उपलब्धि"
 msgid "Account"
 msgstr "खाता"
 
+#. placeholder {0}: account.id
+#. placeholder {1}: formatAccountDate(account.createdAt)
+#. placeholder {2}: account.timezone
+#: src/features/billing/admin/customer.tsx
+msgid "Account {0} · created {1} · time zone {2}"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Account deleted"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Accounts"
+msgstr ""
+
 #: src/features/homepage/hero.tsx
 msgid "achievements"
 msgstr ""
@@ -1228,9 +1294,15 @@ msgstr ""
 msgid "Action"
 msgstr "कार्रवाई"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Actions"
 msgstr "कार्रवाई"
+
+#. placeholder {0}: payment.orderId
+#: src/features/billing/admin/customer.tsx
+msgid "Actions for {0}"
+msgstr ""
 
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
@@ -1592,6 +1664,10 @@ msgstr ""
 msgid "Added by you"
 msgstr "आपके द्वारा जोड़ा गया"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Added credits expire in (days)"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Added to Knowledge as a preference."
 msgstr "ज्ञानकोश में प्राथमिकता के रूप में जोड़ा गया।"
@@ -1620,8 +1696,24 @@ msgstr "पता"
 msgid "Adds a reminder to Today if you haven't heard back by then."
 msgstr "अगर तब तक जवाब नहीं आता, तो \"आज\" में एक रिमाइंडर जोड़ता है।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Adjust"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Adjust credits"
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Adjust fonts, colors, spacing and sections in the resume builder. Download a PDF without a watermark on every plan, or share a link. Word and ODT downloads are included with Plus and Pro AI. The PDFs above are examples to help you compare designs."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Adjust Rezumi AI credits"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "admin"
 msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -1718,6 +1810,18 @@ msgstr ""
 msgid "Albanian"
 msgstr "अल्बानियाई"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Alert"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Alerts"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Alerts from the last 7 days, one per kind per hour. The owner's runbook has the steps."
+msgstr ""
+
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Align center"
 msgstr "बीच में संरेखित करें"
@@ -1752,6 +1856,10 @@ msgstr "सभी नौकरी आवेदन (बंद सहित)"
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON के रूप में सभी दस्तावेज़ और नौकरी आवेदन, एक ज़िप में"
+
+#: src/features/billing/admin/overview.tsx
+msgid "All statuses"
+msgstr ""
 
 #: src/features/settings/account/data.tsx
 msgid "All your documents, applications, API keys and public links are deleted for good. This can't be undone."
@@ -1803,12 +1911,32 @@ msgstr "{0} पर ईमेल भी करें"
 msgid "Also shows the icons on skills, profiles and interests."
 msgstr "कौशल, प्रोफाइल और रुचियों पर आइकन भी दिखाता है।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Also take back the pass and remaining credits from this payment"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Amharic"
 msgstr "अमहारी"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 msgid "Amount"
+msgstr ""
+
+#. placeholder {0}: formatPrice(left)
+#: src/features/billing/admin/customer.tsx
+msgid "Amount (Rupiah), up to {0}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Amount doesn't match the order"
+msgstr ""
+
+#. placeholder {0}: formatPrice(left)
+#: src/features/billing/admin/customer.tsx
+msgid "Amount transferred (Rupiah), up to {0}"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -2376,6 +2504,16 @@ msgstr "आवेदन करने के लिए सर्वोत्त�
 msgid "Beyond the resume"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Billing"
+msgstr ""
+
+#: src/features/settings/root.tsx
+#: src/features/user/dropdown-menu.tsx
+msgid "Billing admin"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Blocker"
 msgstr "अवरोधक"
@@ -2428,6 +2566,10 @@ msgstr "बॉर्डर चौड़ाई"
 #: src/features/career/offers.tsx
 msgid "Both offers cover everything compared here."
 msgstr "दोनों ऑफ़र में यहाँ तुलना की गई सभी चीज़ें शामिल हैं।"
+
+#: src/features/billing/admin/customer.tsx
+msgid "bought"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "Brand Designer"
@@ -2551,6 +2693,7 @@ msgstr "क्या सॉफ़्टवेयर आपका बायोड
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/admin/reason-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
 #: src/features/career/knowledge/facts.tsx
 #: src/features/career/knowledge/stories.tsx
@@ -2572,6 +2715,10 @@ msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Card"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Card: up to 6 months after the payment."
 msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -2711,6 +2858,10 @@ msgstr "जांचें कि यह सटीक है."
 msgid "check numbers and names before using it"
 msgstr "उपयोग करने से पहले संख्याएँ और नाम जाँच लें"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Check status"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Check the details"
 msgstr "विवरण जाँचें"
@@ -2792,6 +2943,14 @@ msgstr "जाँच हो रही है... सेव करने के �
 #: src/features/career/workspace/apply.tsx
 msgid "Checklist progress"
 msgstr "चेकलिस्ट की प्रगति"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Checkout conversion"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Checkouts"
+msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Checks by category"
@@ -2931,6 +3090,7 @@ msgstr "ग्राहक आईडी"
 #: src/features/applications/components/export-applications-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/billing/admin/reason-dialog.tsx
 #: src/features/billing/ai-source-menu.tsx
 #: src/features/billing/plan-dialog.tsx
 #: src/features/billing/purchase-dialog.tsx
@@ -3418,6 +3578,10 @@ msgstr "{correctedOn} को सुधारा गया · मूल रखा
 
 #: src/features/billing/credits.ts
 msgid "Correction by Rezumi"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Cost (rates not set)"
 msgstr ""
 
 #: src/features/career/knowledge/facts.tsx
@@ -4124,8 +4288,24 @@ msgstr "बनाया गया और {0} से लिंक किया �
 msgid "Credits"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Credits (e.g. 20 or -5)"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Credits adjusted"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Credits adjusted."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Credits are used soonest-expiring first. They can't be moved to another account or exchanged for money. Your own AI connection never uses credits."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Credits charged, and what the AI provider cost."
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
@@ -4134,6 +4314,10 @@ msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Credits used"
 msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -4223,6 +4407,11 @@ msgstr ""
 msgid "Custom styles, your own fonts, API and MCP"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Customer"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Czech"
 msgstr "चेक"
@@ -4235,6 +4424,10 @@ msgstr "रोज़ {clock} बजे · अगला {next}"
 #: src/features/resume/share/share-panel.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "30 दिनों में दैनिक दृश्य, चरम {0}"
+
+#: src/features/billing/admin/labels.ts
+msgid "DANA: up to 45 days after settlement."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Danish"
@@ -4289,6 +4482,14 @@ msgstr "तारीखें नहीं पढ़ी जाएंगी"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Day"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Days (1–366)"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Days in WIB. Trends compare with the period just before."
 msgstr ""
 
 #: src/features/letters/compose.ts
@@ -4614,6 +4815,7 @@ msgstr ""
 msgid "Don't send {0}"
 msgstr "{0} न भेजें"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -4666,6 +4868,7 @@ msgid "Download codes"
 msgstr "कोड डाउनलोड करें"
 
 #: src/features/applications/components/export-applications-sheet.tsx
+#: src/features/billing/admin/overview.tsx
 msgid "Download CSV"
 msgstr "सीएसवी डाउनलोड करें"
 
@@ -5002,6 +5205,7 @@ msgstr "शिक्षा"
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 #: src/features/settings/account/profile.tsx
@@ -5033,17 +5237,38 @@ msgstr ""
 msgid "Email delivery isn't set up on this server, so the address isn't verified."
 msgstr "इस सर्वर पर ईमेल डिलीवरी सेट नहीं है, इसलिए पता सत्यापित नहीं है।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "email not verified"
+msgstr ""
+
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Email the recruiter"
 msgstr "भर्तीकर्ता को ईमेल करें"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Email, RZ-… or ID"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Emailed"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "एक्सपोर्ट करते समय सभी फ़ॉन्ट एम्बेड करें, ताकि अक्षर वैसे ही दिखें जैसा आपने चाहा था।"
 
+#. placeholder {0}: formatPrice(left)
+#: src/features/billing/admin/customer.tsx
+msgid "Empty: the rest, {0}"
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "End"
 msgstr "अंत"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Ended"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "English"
@@ -5187,6 +5412,10 @@ msgstr "प्रत्येक प्रविष्टि में एक �
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "हर भूमिका कहती है कि आपने क्या किया। लेखन टैब में शब्दों पर राय लाइव होती है।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Every stretch of paid time, newest first."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Every template"
 msgstr ""
@@ -5210,6 +5439,10 @@ msgstr "हर सप्ताह"
 #: src/features/billing/buy-plans.tsx
 #: src/features/homepage/plans.ts
 msgid "Everything in Plus"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Everything matching “{query}”, any date."
 msgstr ""
 
 #. placeholder {0}: application.company
@@ -5352,6 +5585,10 @@ msgstr "ज्ञानकोश में चालू तथ्य, कहा�
 msgid "Failed"
 msgstr "असफल"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Failed, expired or cancelled"
+msgstr ""
+
 #: src/features/homepage/ui.tsx
 msgid "FAQ"
 msgstr ""
@@ -5417,6 +5654,10 @@ msgstr "टैग द्वारा फ़िल्टर करें"
 
 #: src/features/homepage/testimonials.tsx
 msgid "Finance Analyst"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Find a customer"
 msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
@@ -5788,6 +6029,10 @@ msgstr "लम्बा हो रहा है. \"छोटा\" आज़म�
 msgid "GitHub"
 msgstr "गिटहब"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Give a pass"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Give every role a period, such as \"Jan 2020 - Present\", so your timeline can be reconstructed."
 msgstr "हर भूमिका को एक अवधि दें, जैसे \"Jan 2020 - Present\", ताकि आपकी टाइमलाइन दोबारा बनाई जा सके।"
@@ -5796,9 +6041,17 @@ msgstr "हर भूमिका को एक अवधि दें, जै�
 msgid "Give every role and qualification a date range."
 msgstr "हर भूमिका और योग्यता को एक तारीख सीमा दें।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Give pass"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Give the story a title before you can save."
 msgstr "सहेजने से पहले कहानी को एक शीर्षक दें।"
+
+#: src/features/billing/admin/customer.tsx
+msgid "given"
+msgstr ""
 
 #. Secondary navigation button on backup-code verification screen
 #: src/features/auth/pages/verify-2fa.tsx
@@ -5834,6 +6087,10 @@ msgstr ""
 msgid "Google"
 msgstr "गूगल"
 
+#: src/features/billing/admin/labels.ts
+msgid "GoPay: up to 45 days after settlement."
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Grade"
 msgstr "ग्रेड"
@@ -5857,6 +6114,10 @@ msgstr "अभिवादन"
 #: src/features/documents/documents-page.tsx
 msgid "Grid"
 msgstr "ग्रिड"
+
+#: src/features/billing/admin/customer.tsx
+msgid "guest"
+msgstr ""
 
 #: src/features/homepage/footer.tsx
 msgid "Guides"
@@ -6005,6 +6266,7 @@ msgstr "नियुक्ति प्रबंधक"
 msgid "Hiring team"
 msgstr "नियुक्ति दल"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/$resumeId/-components/download-sheet.tsx
@@ -6031,6 +6293,10 @@ msgstr "क्षैतिज मार्जिन"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/page.tsx
 msgid "Horizontal spacing"
 msgstr "क्षैतिज स्पेसिंग"
+
+#: src/features/billing/admin/customer.tsx
+msgid "How"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "How did it go?"
@@ -6645,6 +6911,10 @@ msgstr "सबसे विशिष्ट भाग रखता है"
 msgid "Kept as it is"
 msgstr "जैसा है वैसा ही रखा गया"
 
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "Kept in the audit log with your name. At least 3 characters."
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Key ends in {ending}"
 msgstr ""
@@ -6730,6 +7000,10 @@ msgstr "पिछली जाँच {lastChecked} पहले"
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Last edited"
 msgstr "अंतिम बार संपादित"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Last month"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Last used"
@@ -7291,6 +7565,10 @@ msgstr "सर्वर द्वारा प्रबंधित"
 msgid "Managed by your server"
 msgstr "आपके सर्वर द्वारा प्रबंधित"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Manual transfer"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Many bullets start with the same phrase."
 msgstr "कई बुलेट एक ही वाक्यांश से शुरू होते हैं।"
@@ -7405,6 +7683,11 @@ msgstr "MCP सर्वर"
 msgid "MCP server address"
 msgstr ""
 
+#. placeholder {0}: formatUsdMicros(row.p50UsdMicros)
+#: src/features/billing/admin/overview.tsx
+msgid "median {0}"
+msgstr ""
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Median to first reply"
 msgstr ""
@@ -7425,6 +7708,8 @@ msgstr "कोच को संदेश भेजें"
 msgid "Messages"
 msgstr "संदेश"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 msgid "Method"
 msgstr ""
@@ -7432,6 +7717,60 @@ msgstr ""
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "माइक्रोफ़ोन ब्लॉक है। अपने ब्राउज़र की सेटिंग्स में इसकी अनुमति दें, या अपना जवाब टाइप करें।"
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans amount doesn't match"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans API kept failing"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans can't refund this method: transfer the money to the customer yourself, then record it here."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans events and admin actions, newest first."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans has no transaction yet: no method was chosen."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans hasn't confirmed it yet. Check the status in a moment."
+msgstr ""
+
+#. placeholder {0}: result.transactionStatus ?? "—"
+#. placeholder {1}: getPaymentStatusLabel(result.status)
+#: src/features/billing/admin/customer.tsx
+msgid "Midtrans says \"{0}\". Here: {1}."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans status needs a look: {said}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: {said}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: {said} (already handled)"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: late {said}, ignored"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: paid"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Midtrans: refunded"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Minimum base salary"
@@ -7684,6 +8023,7 @@ msgstr "सँकरा"
 msgid "narrow margins"
 msgstr "संकीर्ण मार्जिन"
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Needs attention"
 msgstr "ध्यान देने की जरूरत है"
@@ -7696,6 +8036,10 @@ msgstr "आपकी ज़रूरत है"
 msgid "Nepali"
 msgstr "नेपाली"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Net revenue"
+msgstr ""
+
 #: src/features/resume/editor/write/entries.tsx
 msgid "Network"
 msgstr "नेटवर्क"
@@ -7704,6 +8048,10 @@ msgstr "नेटवर्क"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "कभी नहीं"
+
+#: src/features/billing/admin/parts.tsx
+msgid "new"
+msgstr ""
 
 #: src/features/documents/document-card.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -7770,8 +8118,20 @@ msgstr "नया शेड्यूल"
 msgid "New section"
 msgstr "नया अनुभाग"
 
+#: src/features/billing/admin/overview.tsx
+msgid "New sign-ups"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "New story"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Newest first. The menu at the end of a row checks, refunds or resends."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Newest payments started in this period. Search finds any customer."
 msgstr ""
 
 #: src/features/applications/components/calendar-view.tsx
@@ -7988,6 +8348,22 @@ msgstr ""
 msgid "No open issues"
 msgstr "कोई खुला मुद्दा नहीं"
 
+#: src/features/billing/admin/customer.tsx
+msgid "No paid pass running"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "No passes."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "No payments in this period."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "No payments."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "No phone number"
 msgstr "कोई फ़ोन नंबर नहीं"
@@ -8019,6 +8395,10 @@ msgstr "कोई बायोडाटा नहीं"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "No resumes yet."
 msgstr "अभी कोई रेज़्यूमे नहीं।"
+
+#: src/features/billing/admin/overview.tsx
+msgid "No Rezumi AI work in this period."
+msgstr ""
 
 #: src/features/billing/plan.ts
 msgid "No room for another cover letter"
@@ -8120,6 +8500,10 @@ msgstr "जुड़े नहीं हैं"
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Not connected yet. Add its DNS records where you manage the domain, then check."
 msgstr "अभी जुड़ा नहीं है। इसके DNS रिकॉर्ड वहाँ जोड़ें जहाँ आप डोमेन प्रबंधित करते हैं, फिर जाँचें।"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Not emailed"
+msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Not enough Rezumi AI credits"
@@ -8252,6 +8636,10 @@ msgstr "\"{0}\" से कुछ भी मेल नहीं खाता"
 msgid "Nothing matches these filters"
 msgstr "इन फ़िल्टर से कुछ भी मेल नहीं खाता"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Nothing matches."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Nothing saved yet"
 msgstr "अभी कुछ भी सहेजा नहीं गया"
@@ -8292,9 +8680,25 @@ msgstr ""
 msgid "Nothing was heard. Try again, or type your answer."
 msgstr "कुछ सुनाई नहीं दिया। फिर से प्रयास करें, या अपना जवाब टाइप करें।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Nothing yet."
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Notice period"
 msgstr "नोटिस अवधि"
+
+#: src/features/billing/admin/customer.tsx
+msgid "notification"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Notification with a bad signature, rejected"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Notifications with a bad signature"
+msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
@@ -8467,6 +8871,7 @@ msgid "Opacity"
 msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/career/today.tsx
 #: src/features/documents/document-actions.tsx
 #: src/routes/dashboard/applications/index.tsx
@@ -8485,6 +8890,10 @@ msgstr "एआई सेटिंग्स खोलें"
 #: src/features/career/today.tsx
 msgid "Open briefing"
 msgstr "ब्रीफ़िंग खोलें"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Open customer"
+msgstr ""
 
 #. Button label to open the user's default email app
 #: src/features/auth/pages/forgot-password.tsx
@@ -8625,6 +9034,11 @@ msgstr "या रेज़्यूमे PDF अपलोड करें"
 msgid "Orange"
 msgstr "नारंगी"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Order"
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "Order number"
 msgstr ""
@@ -8675,6 +9089,10 @@ msgstr "पुराना: तब से पाठ बदल गया है�
 msgid "Outdent"
 msgstr "इंडेंट घटाएँ"
 
+#: src/features/billing/admin/labels.ts
+msgid "OVO: full refunds only, within 7 days."
+msgstr ""
+
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
@@ -8718,16 +9136,30 @@ msgstr "पेज पढ़ना ख़त्म नहीं हुआ."
 msgid "Page view"
 msgstr "पृष्ठ का दृश्य"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Paid"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Paid at Midtrans, not active here"
 msgstr ""
 
 #: src/features/billing/receipt.tsx
 msgid "Paid by"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Paid in total"
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "Paid on"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Paid payments"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -8750,6 +9182,38 @@ msgstr ""
 #: src/features/career/shared.tsx
 msgid "Partly supported"
 msgstr "आंशिक रूप से समर्थित"
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass and credits granted"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass and credits taken back"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass given by an admin"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Pass given."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Pass not granted"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Pass revoked by an admin"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Pass revoked."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Passes"
+msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Passes belong to an account with an email address. Your guest work moves with you."
@@ -8888,6 +9352,10 @@ msgstr ""
 msgid "Payment method"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Payment methods"
+msgstr ""
+
 #: src/features/billing/receipt.tsx
 msgid "Payment receipt"
 msgstr ""
@@ -8896,6 +9364,16 @@ msgstr ""
 msgid "Payment received"
 msgstr ""
 
+#: src/features/billing/admin/labels.ts
+msgid "Payment reversed by the bank"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "payments"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 msgid "Payments"
 msgstr ""
@@ -8926,6 +9404,10 @@ msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "People using Rezumi"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Period"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -8995,6 +9477,8 @@ msgstr "सादा टेक्स्ट (.txt)"
 msgid "Plain text with headings. Paste into application forms and notes."
 msgstr "शीर्षकों के साथ सादा पाठ. नौकरी के आवेदन पत्र और नोट्स में चिपकाएँ।"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/back-link.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/plan-page.tsx
@@ -9011,6 +9495,10 @@ msgstr "फिर से योजना बनाएँ"
 msgid "Plan my preparation"
 msgstr "मेरी तैयारी की योजना बनाएँ"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Plan now"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Plan what to ask"
 msgstr "तय करें कि क्या पूछना है"
@@ -9021,6 +9509,15 @@ msgstr "आपके सप्ताह की योजना बना रह�
 
 #: src/features/billing/plan-page.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Plans don't apply yet (BILLING_MODE)"
+msgstr ""
+
+#. placeholder {0}: plus.payments
+#: src/features/billing/admin/overview.tsx
+msgid "Plus · {0} sold"
 msgstr ""
 
 #: src/features/templates/gallery.tsx
@@ -9297,6 +9794,11 @@ msgstr "गोपनीयता नीति"
 msgid "Private. Only you can see it."
 msgstr "निजी। इसे केवल आप ही देख सकते हैं."
 
+#. placeholder {0}: proAi.payments
+#: src/features/billing/admin/overview.tsx
+msgid "Pro AI · {0} sold"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Pro AI credits"
 msgstr ""
@@ -9379,6 +9881,10 @@ msgstr "आपके सर्वर द्वारा प्रदान क�
 msgid "Provider"
 msgstr "प्रोवाइडर"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Provider cost"
+msgstr ""
+
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
@@ -9460,6 +9966,10 @@ msgstr "{url} के लिए QR कोड"
 msgid "QR code for two-step verification"
 msgstr "दो-चरणीय सत्यापन के लिए QR कोड"
 
+#: src/features/billing/admin/labels.ts
+msgid "QRIS: up to 45 days when paid with the acquirer's own app (GoPay), about 7 days from other apps."
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Question {index}"
 msgstr ""
@@ -9487,6 +9997,14 @@ msgstr "सवाल कॉपी किए गए"
 #: src/features/career/workspace/prepare.tsx
 msgid "Questions to ask"
 msgstr "पूछने के लिए सवाल"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Queued"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Queued like a purchase. No payment and no credits come with it."
+msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Raise the design sheet"
@@ -9690,6 +10208,8 @@ msgid "Ready"
 msgstr "तैयार"
 
 #: src/features/applications/components/detail/close-dialog.tsx
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/reason-dialog.tsx
 msgid "Reason"
 msgstr "कारण"
 
@@ -9700,6 +10220,26 @@ msgstr "याद से"
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/receipt.tsx
 msgid "Receipt"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Receipt email not delivered"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Receipt not sent"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Receipt sent"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Receipt sent again"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Receipt sent."
 msgstr ""
 
 #: src/features/billing/payment-history.tsx
@@ -9718,6 +10258,10 @@ msgstr "प्राप्तकर्ता"
 msgid "Recommended"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "Record a manual refund"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "फिर से रिकॉर्ड करें"
@@ -9725,6 +10269,14 @@ msgstr "फिर से रिकॉर्ड करें"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Record application"
 msgstr "नौकरी आवेदन रिकॉर्ड करें"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Record manual refund"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Record refund"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Record your answer"
@@ -9790,6 +10342,10 @@ msgstr "किसके द्वारा रेफ़र किया गय�
 msgid "Reflection"
 msgstr "चिंतन"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Refresh"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Refresh the briefing 2 hours before"
 msgstr "ब्रीफ़िंग 2 घंटे पहले रीफ़्रेश करें"
@@ -9802,14 +10358,71 @@ msgstr "ब्रीफ़िंग 24 घंटे पहले रीफ़्
 msgid "Refresh the briefing on the morning of"
 msgstr "ब्रीफ़िंग उसी दिन सुबह रीफ़्रेश करें"
 
+#. placeholder {0}: formatPrice(refundAmount)
+#: src/features/billing/admin/customer.tsx
+msgid "Refund {0}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refund asked of Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refund not confirmed"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Refund policy"
 msgstr ""
 
+#: src/features/billing/admin/labels.ts
+msgid "Refund recorded"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refund recorded."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refund refused by Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refund through Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/purchase.ts
 #: src/features/billing/receipt.tsx
 msgid "Refunded"
+msgstr ""
+
+#. placeholder {0}: metrics.refunds.refunds
+#: src/features/billing/admin/overview.tsx
+msgid "Refunded · {0}"
+msgstr ""
+
+#. placeholder {0}: formatPrice(result.amount)
+#: src/features/billing/admin/customer.tsx
+msgid "Refunded {0}."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Refunded or reversed"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refunds"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Refunds may need to be activated by Midtrans support first, and the Midtrans balance must cover them. A full refund always takes back the pass and the remaining credits."
+msgstr ""
+
+#. placeholder {0}: refund.failureReason ?? "—"
+#: src/features/billing/admin/customer.tsx
+msgid "Refused ({0})"
 msgstr ""
 
 #: src/features/resume/share/cv-domain-card.tsx
@@ -10054,6 +10667,10 @@ msgstr "ज़रूरतें"
 msgid "Requirements and your evidence"
 msgstr "आवश्यकताएँ और आपके प्रमाण"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Resend receipt"
+msgstr ""
+
 #: src/features/billing/buy-plans.tsx
 msgid "Resend the link"
 msgstr ""
@@ -10238,6 +10855,11 @@ msgstr ""
 msgid "Reversed by the bank"
 msgstr ""
 
+#. placeholder {0}: metrics.reversals.payments
+#: src/features/billing/admin/overview.tsx
+msgid "Reversed by the bank · {0}"
+msgstr ""
+
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -10280,6 +10902,11 @@ msgstr "समीक्षा के लिए AI कनेक्शन चा�
 msgid "Revoke"
 msgstr "रद्द करना"
 
+#: src/features/billing/admin/customer.tsx
+msgctxt "Taking a paid pass away"
+msgid "Revoke"
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Revoke {label}"
 msgstr ""
@@ -10291,6 +10918,14 @@ msgstr "एक्सेस अक्षम करें"
 #: src/features/settings/ai/connected-apps.tsx
 msgid "Revoke an application's access to your account."
 msgstr "अपने खाते तक किसी एप्लिकेशन की पहुंच रद्द करें."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Revoke this pass"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Revoked"
+msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Revoked “{name}”. Apps using it stop working now."
@@ -10319,6 +10954,7 @@ msgstr ""
 msgid "Rezumi AI · {cost} · {0} left"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
 #: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
@@ -10417,6 +11053,10 @@ msgstr ""
 msgid "Run again"
 msgstr "फिर से चलाएँ"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Running"
+msgstr ""
+
 #: src/features/billing/ai-source-menu.tsx
 msgid "Runs on Rezumi AI for {cost}. Change"
 msgstr ""
@@ -10446,6 +11086,10 @@ msgstr "वेतन नहीं बताया गया"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Salary range"
 msgstr "वेतन सीमा"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Sales"
+msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "Sales Executive"
@@ -10756,6 +11400,10 @@ msgstr "नौकरी के आवेदन और सहायक से ख
 msgid "Search job postings"
 msgstr "नौकरी पोस्टिंग खोजें"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Search results"
+msgstr ""
+
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "भूमिका, कंपनी या संपर्क खोजें"
@@ -11061,6 +11709,10 @@ msgstr "शेयर करना"
 msgid "Share a live link that is always the latest version"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Share of revenue."
+msgstr ""
+
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
 msgstr "अनुभाग साझा करें"
@@ -11085,6 +11737,10 @@ msgstr "शुरुआत को धार दे रहा है"
 
 #: src/features/homepage/resume.tsx
 msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "ShopeePay: full refunds only, between 06.00 and 23.50 WIB."
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -11629,6 +12285,7 @@ msgstr ""
 msgid "Start with the sections most resumes have."
 msgstr "उन अनुभागों से प्रारंभ करें जो अधिकांश बायोडाटा में होते हैं।"
 
+#: src/features/billing/admin/overview.tsx
 #: src/features/career/shared.tsx
 msgid "Started"
 msgstr "शुरू हो गया"
@@ -11654,11 +12311,25 @@ msgstr "अभी शुरू"
 msgid "Statistics"
 msgstr "आंकड़े"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
 #: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "स्टेटस"
+
+#: src/features/billing/admin/customer.tsx
+msgid "status check"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Status checked with Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Status needs a look by hand"
+msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Stay here"
@@ -11848,6 +12519,10 @@ msgstr "एक कॉलम पर स्विच किया गया"
 #: src/features/resume/builder/draft.ts
 msgid "Synced changes made in another tab."
 msgstr "दूसरे टैब में किए गए बदलाव सिंक्रनाइज़ हो गए।"
+
+#: src/features/billing/admin/customer.tsx
+msgid "system"
+msgstr ""
 
 #: src/libs/theme.ts
 msgid "System"
@@ -12110,6 +12785,11 @@ msgstr "जब कोई सिस्टम इसे दोबारा प्�
 msgid "Thai"
 msgstr "थाई"
 
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/reason-dialog.tsx
+msgid "That didn't work. Try again."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "That file couldn't be read as a PDF. Choose a PDF file and try again."
 msgstr "उस फ़ाइल को PDF के रूप में नहीं पढ़ा जा सका। एक PDF फ़ाइल चुनें और पुनः प्रयास करें।"
@@ -12214,6 +12894,10 @@ msgstr "अंत प्रारंभ से पहले है."
 msgid "The English and Indonesian versions share one design, so switching languages took minutes, not an afternoon."
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "The export failed. Try again."
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "The exported PDF"
 msgstr "निर्यातित PDF"
@@ -12266,6 +12950,10 @@ msgstr "संदेश"
 msgid "The morning of the interview has passed, so the briefing runs now."
 msgstr "साक्षात्कार वाले दिन की सुबह बीत चुकी है, इसलिए ब्रीफ़िंग अभी चलती है।"
 
+#: src/features/billing/admin/overview.tsx
+msgid "The numbers couldn't load."
+msgstr ""
+
 #: src/features/career/coach.tsx
 msgid "The offers you chose to compare, with their terms"
 msgstr "जिन ऑफ़र की तुलना आपने चुनी, उनकी शर्तों के साथ"
@@ -12308,6 +12996,10 @@ msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "The payment page couldn't be opened. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "The payments couldn't load."
 msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
@@ -12353,6 +13045,10 @@ msgstr "प्रोवाइडर की प्रतिक्रिया स
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
 msgstr "इसका कारण इनसाइट्स रखा गया है। लिंक किए गए दस्तावेज़ों को छुआ नहीं गया है."
+
+#: src/features/billing/admin/customer.tsx
+msgid "The receipt wasn't sent. Check the email settings."
+msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
@@ -12518,6 +13214,10 @@ msgstr "यह कनेक्शन अनुरोध अमान्य ह�
 msgid "This conversation couldn't be opened. Refresh the page to try again."
 msgstr "यह बातचीत खोली नहीं जा सकी। पुनः प्रयास करने के लिए पेज रीफ़्रेश करें।"
 
+#: src/features/billing/admin/customer.tsx
+msgid "This customer couldn't load."
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "This date hasn't been saved. Use a month and year, like Mar 2022, or just a year. The resume keeps the last valid date."
 msgstr "यह दिनांक सहेजा नहीं गया है. एक माह और वर्ष का उपयोग करें, जैसे मार्च 2022, या केवल एक वर्ष। बायोडाटा अंतिम वैध तिथि रखता है।"
@@ -12617,6 +13317,10 @@ msgstr ""
 #: src/features/ats-checker/report/report-view.tsx
 msgid "This measures how faithfully software can extract this file's text. It does not predict whether an application will be rejected, and no tool can. Your file was read in this browser and never uploaded."
 msgstr "यह मापता है कि सॉफ़्टवेयर इस फ़ाइल का टेक्स्ट कितनी सफ़ाई से निकाल पाता है। यह नहीं बताता कि कोई आवेदन अस्वीकार होगा या नहीं, और कोई टूल यह बता भी नहीं सकता। आपकी फ़ाइल इसी ब्राउज़र में पढ़ी गई और कभी अपलोड नहीं हुई।"
+
+#: src/features/billing/admin/overview.tsx
+msgid "This month"
+msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "This needs {required} and you have {balance}. Use your own AI connection without credits, or get Pro AI for 100 credits."
@@ -12791,6 +13495,10 @@ msgstr "समय, लिंक, कौन, आपने क्या भेज�
 msgid "Timed plan"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Times"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "समय {timeZone} में दिखाए जाते हैं।"
@@ -12907,6 +13615,10 @@ msgstr "{model} से ट्रांसक्राइब कर रहा ह
 msgid "Transcript copied"
 msgstr "प्रतिलेख की प्रतिलिपि बनाई गई"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Transfer the money to the customer first, then record it here. Nothing is sent to Midtrans."
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -12920,6 +13632,19 @@ msgstr "कचरा खाली है"
 #: src/features/billing/credits.ts
 #: src/features/billing/plan-page.tsx
 msgid "Trial credits"
+msgstr ""
+
+#. placeholder {0}: formatShort(credits.trial.grantedAt)
+#: src/features/billing/admin/customer.tsx
+msgid "Trial given {0}"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Trial not given yet"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Trials given"
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -13194,6 +13919,11 @@ msgstr "अनाम कुंजी"
 #: src/features/settings/account/security.tsx
 msgid "Unnamed passkey"
 msgstr "अनाम पासकी"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "until {0}"
+msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 #: src/features/resume/stylesheet/targets.ts
@@ -13635,8 +14365,17 @@ msgstr "आवाज़ सेटिंग्स"
 msgid "Volunteer"
 msgstr "स्वयंसेवा"
 
+#: src/features/billing/admin/customer.tsx
+msgid "Waiting for Midtrans"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Waiting for payment"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Waiting for the bank"
 msgstr ""
 
 #: src/features/career/workspace/messages.tsx
@@ -13645,6 +14384,10 @@ msgstr "आपका इंतज़ार है"
 
 #: src/features/billing/payment-return.tsx
 msgid "Waiting for your payment"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Waiting over an hour, now"
 msgstr ""
 
 #: src/features/applications/next-step.ts
@@ -13891,6 +14634,11 @@ msgstr "वह किसके लिए है?"
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "What's working"
 msgstr "क्या काम कर रहा है?"
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "When"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a PDF."

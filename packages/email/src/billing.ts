@@ -1,9 +1,9 @@
-import type { PaymentReceiptEmailProps } from "./templates/billing";
+import type { BillingNoticeEmailProps, PaymentReceiptEmailProps } from "./templates/billing";
 import { createElement } from "react";
-import { PaymentReceiptEmail } from "./templates/billing";
+import { BillingNoticeEmail, PaymentReceiptEmail } from "./templates/billing";
 import { deliverEmail } from "./transport";
 
-export type { PaymentReceiptEmailProps } from "./templates/billing";
+export type { BillingNoticeEmailProps, PaymentReceiptEmailProps } from "./templates/billing";
 
 /** Sends a payment's receipt and says what happened; see deliverEmail. */
 export function deliverPaymentReceipt(input: { to: string; subject: string; receipt: PaymentReceiptEmailProps }) {
@@ -11,5 +11,14 @@ export function deliverPaymentReceipt(input: { to: string; subject: string; rece
 		to: input.to,
 		subject: input.subject,
 		react: createElement(PaymentReceiptEmail, input.receipt),
+	});
+}
+
+/** Sends a billing alert, the daily summary or a pass reminder and says what happened; see deliverEmail. */
+export function deliverBillingNotice(input: { to: string; subject: string; notice: BillingNoticeEmailProps }) {
+	return deliverEmail({
+		to: input.to,
+		subject: input.subject,
+		react: createElement(BillingNoticeEmail, input.notice),
 	});
 }

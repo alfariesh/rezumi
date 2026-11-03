@@ -30,7 +30,10 @@ function Row({ icon, label }: RowProps) {
 const rowClass =
 	"flex h-14 items-center gap-3 px-3.5 font-medium text-base transition-colors duration-quick ease-enter active:bg-default";
 
-/** Phones: the root lists the pages (Plan only while plans apply), with a link to the docs. Sign out is in the sidebar menu. */
+/**
+ * Phones: the root lists the pages (Plan only while plans apply, Billing admin only for administrators), with a link
+ * to the docs. Sign out is in the sidebar menu.
+ */
 export function SettingsRoot() {
 	const { session } = useRouteContext({ from: "/dashboard" });
 	const plan = usePlan();
@@ -66,6 +69,14 @@ export function SettingsRoot() {
 				<Link to="/dashboard/settings/app" viewTransition={pushTransition} className={rowClass}>
 					<Row icon="gear-six" label={<Trans>Settings</Trans>} />
 				</Link>
+				{session.user.role === "admin" && (
+					<>
+						<Separator className="ms-12" />
+						<Link to="/dashboard/admin/billing" viewTransition={pushTransition} className={rowClass}>
+							<Row icon="shield-check" label={<Trans>Billing admin</Trans>} />
+						</Link>
+					</>
+				)}
 			</nav>
 
 			<a

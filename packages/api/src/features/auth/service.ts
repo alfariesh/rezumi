@@ -6,6 +6,7 @@ import { auth, isCustomOAuthProviderEnabled } from "@rezumi/auth/config";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { exportBillingData } from "../billing/export";
 import { careerService } from "../career/service";
 import { coverLetterService } from "../cover-letters/service";
 import { getStorageService } from "../storage/service";
@@ -102,6 +103,7 @@ export const authService = {
 				.from(schema.aiContentReport)
 				.where(eq(schema.aiContentReport.userId, input.userId)),
 			career: await careerService.exportData(input.userId),
+			billing: await exportBillingData(input.userId),
 		};
 	},
 

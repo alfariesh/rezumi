@@ -6,6 +6,7 @@ import { creditSourceSchema, paidPlanIdSchema, planIdSchema } from "@rezumi/sche
 import { protectedProcedure } from "../../context";
 import { checkoutRateLimit } from "../../middleware/rate-limit";
 import { assertBillingAdmin, billingAdmin } from "./admin";
+import { listRecentAlerts } from "./alerts";
 import {
 	changePaymentMethod,
 	checkout,
@@ -18,6 +19,7 @@ import {
 import { getCreditBalance, listCreditHistory } from "./credits";
 import { getEntitlements, isBillingAppliedTo } from "./entitlements";
 import { countActiveDocuments } from "./limits";
+import { billingDailySeries, billingMetrics, exportPaymentsCsv, listRecentPayments, previousRange } from "./reports";
 
 const route = { tags: ["Internal"] };
 
@@ -115,6 +117,21 @@ const checkoutResult = z.object({
 	reused: z.boolean().describe("Whether this is an open payment from before rather than a new one."),
 });
 
+const paymentIdInput = z.object({ paymentId: z.string().min(1).max(100) });
+// Midtrans keeps a refund reason of up to 255 characters.
+const refundReason = z.string().trim().min(3).max(255);
+const reportRange = z
+	.object({ from: z.date(), to: z.date() })
+	.refine((range) => range.to > range.from, { message: "The end must be after the start." });
+
+const refundResult = z.object({
+	refundId: z.string(),
+	status: z.enum(["requesting", "succeeded", "failed"]),
+	amount: z.number().int(),
+	paymentStatus: z.enum(BILLING_PAYMENT_STATUSES),
+	refundedAmount: z.number().int(),
+});
+
 const idempotencyKey = z
 	.string()
 	.trim()
@@ -201,6 +218,7 @@ export const billingRouter = {
 				authentication: authenticationOf(context),
 				planId: input.planId,
 				idempotencyKey: input.idempotencyKey,
+				locale: context.locale,
 			}),
 		),
 
@@ -313,5 +331,108 @@ export const billingRouter = {
 			.input(z.object({ periodId: z.string().min(1), reason: z.string().trim().min(3).max(500) }))
 			.output(period)
 			.handler(({ context, input }) => billingAdmin.revokePeriod({ ...input, actorUserId: context.user.id })),
+
+		// Support views: read only, so no reason; the actions below each record theirs.
+		search: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/search" })
+			.input(z.object({ query: z.string().trim().min(3).max(200) }))
+			.handler(({ input }) => billingAdmin.search(input)),
+
+		customer: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/customers/{userId}" })
+			.input(z.object({ userId: z.string().min(1).max(100) }))
+			.handler(({ input }) => billingAdmin.customer(input)),
+
+		alerts: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/alerts" })
+			.input(z.object({ limit: z.number().int().min(1).max(100).optional() }).optional())
+			.handler(({ input }) => listRecentAlerts(input?.limit ?? 20)),
+
+		// The period's numbers, the same period just before (for trends), and the day-by-day series for the charts.
+		metrics: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/metrics" })
+			.input(reportRange)
+			.handler(async ({ input }) => {
+				const now = new Date();
+				const current = await billingMetrics(input, now);
+				const previous = await billingMetrics(previousRange(input), now);
+				return {
+					...current,
+					previous: {
+						revenue: previous.sales.revenue,
+						payments: previous.sales.payments,
+						net: previous.net,
+						started: previous.checkouts.started,
+						paid: previous.checkouts.paid,
+						signups: previous.signups.total,
+						creditsUsed: previous.credits.used,
+					},
+					daily: await billingDailySeries(input),
+				};
+			}),
+
+		payments: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/payments" })
+			.input(
+				z.object({
+					from: z.date(),
+					to: z.date(),
+					limit: z.number().int().min(1).max(100).optional(),
+					offset: z.number().int().min(0).max(100_000).optional(),
+					status: z.enum(["paid", "waiting", "failed", "refunded"]).optional(),
+				}),
+			)
+			.handler(({ input }) =>
+				listRecentPayments(input, { limit: input.limit ?? 20, offset: input.offset ?? 0, status: input.status }),
+			),
+
+		exportPayments: adminProcedure
+			.route({ ...route, method: "GET", path: "/billing/admin/payments/export" })
+			.input(reportRange)
+			.output(z.object({ filename: z.string(), csv: z.string(), rows: z.number().int() }))
+			.handler(({ input }) => exportPaymentsCsv(input)),
+
+		syncPayment: adminProcedure
+			.route({ ...route, method: "POST", path: "/billing/admin/payments/{paymentId}/sync" })
+			.input(paymentIdInput)
+			.output(
+				z.object({
+					found: z.boolean().describe("Whether Midtrans has a transaction for it yet."),
+					transactionStatus: z.string().nullable(),
+					status: z.enum(BILLING_PAYMENT_STATUSES),
+					changed: z.boolean(),
+				}),
+			)
+			.handler(({ context, input }) => billingAdmin.syncPayment({ ...input, actorUserId: context.user.id })),
+
+		refund: adminProcedure
+			.route({ ...route, method: "POST", path: "/billing/admin/payments/{paymentId}/refund" })
+			.input(
+				paymentIdInput.extend({
+					amount: z.number().int().min(1).max(100_000_000).optional().describe("Rupiah; the rest when left out."),
+					reason: refundReason,
+					revokeBenefits: z.boolean().optional().describe("Also take the pass and credits back on a partial refund."),
+				}),
+			)
+			.output(refundResult)
+			.handler(({ context, input }) => billingAdmin.refund({ ...input, actorUserId: context.user.id })),
+
+		recordManualRefund: adminProcedure
+			.route({ ...route, method: "POST", path: "/billing/admin/payments/{paymentId}/manual-refund" })
+			.input(
+				paymentIdInput.extend({
+					amount: z.number().int().min(1).max(100_000_000),
+					reason: refundReason,
+					revokeBenefits: z.boolean().optional(),
+				}),
+			)
+			.output(refundResult)
+			.handler(({ context, input }) => billingAdmin.recordManualRefund({ ...input, actorUserId: context.user.id })),
+
+		resendReceipt: adminProcedure
+			.route({ ...route, method: "POST", path: "/billing/admin/payments/{paymentId}/receipt" })
+			.input(paymentIdInput)
+			.output(z.object({ sent: z.boolean() }))
+			.handler(({ context, input }) => billingAdmin.resendReceipt({ ...input, actorUserId: context.user.id })),
 	},
 };

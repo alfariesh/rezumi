@@ -15,6 +15,8 @@ export const billingAccount = pg.pgTable("billing_account", {
 		.references(() => user.id, { onDelete: "cascade" }),
 	// When the one-time Rezumi AI trial credits were granted; set once per account.
 	trialGrantedAt: pg.timestamp("trial_granted_at", { withTimezone: true }),
+	// The app language at the last checkout, for emails sent later (the pass ending soon). Null until then.
+	locale: pg.text("locale"),
 	createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	updatedAt: pg
 		.timestamp("updated_at", { withTimezone: true })
@@ -292,4 +294,102 @@ export const billingPaymentEvent = pg.pgTable(
 		receivedAt: pg.timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
 	},
 	(t) => [pg.index().on(t.providerOrderId, t.receivedAt), pg.index().on(t.paymentId)],
+);
+
+export type BillingRefundMethod = "midtrans" | "manual";
+
+/**
+ * `requesting`: saved, its refund key with it, before Midtrans is asked, and still there while the answer is unknown
+ * (sending it again with the same key is safe). `succeeded` once Midtrans or the admin confirmed the money went back;
+ * `failed` when Midtrans refused it.
+ */
+export type BillingRefundStatus = "requesting" | "succeeded" | "failed";
+
+/** A waiting refund Midtrans accepted while the bank still processes it (card refunds take days): not a failure. */
+export const REFUND_BANK_PROCESSING = "bank_processing";
+
+/**
+ * Money given back for a payment: through Midtrans' refund API (from the admin page, or the Midtrans dashboard, picked
+ * up from its status), or by hand, such as a bank transfer for a virtual account payment Midtrans can't refund. The
+ * payment's `refunded_amount` is the sum of its succeeded refunds. Kept after the account is deleted.
+ */
+export const billingRefund = pg.pgTable(
+	"billing_refund",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		paymentId: pg
+			.text("payment_id")
+			.notNull()
+			.references(() => billingPayment.id, { onDelete: "cascade" }),
+		// The payment's nth refund; Rezumi's own refund keys are RF-<payment id>-<sequence>.
+		sequence: pg.integer("sequence").notNull(),
+		// Midtrans' idempotency key: the same key never refunds twice. Refunds made in the dashboard keep Midtrans' key.
+		refundKey: pg.text("refund_key").notNull().unique(),
+		method: pg.text("method").notNull().$type<BillingRefundMethod>(),
+		status: pg.text("status").notNull().$type<BillingRefundStatus>(),
+		// Whole Rupiah.
+		amount: pg.integer("amount").notNull(),
+		reason: pg.text("reason").notNull(),
+		// Whether the admin chose to take the pass and credits back for a partial refund; a full refund always does.
+		revokeBenefits: pg.boolean("revoke_benefits").notNull().default(false),
+		// The admin who asked; null for one found at Midtrans.
+		actorUserId: pg.text("actor_user_id").references(() => user.id, { onDelete: "set null" }),
+		// A short code that is safe to show: why it failed (refund_http_412), or REFUND_BANK_PROCESSING while it waits.
+		failureReason: pg.text("failure_reason"),
+		settledAt: pg.timestamp("settled_at", { withTimezone: true }),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: pg
+			.timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [
+		pg.uniqueIndex().on(t.paymentId, t.sequence),
+		pg.index().on(t.status, t.createdAt),
+		pg.check("billing_refund_amount_positive", sql`${t.amount} > 0`),
+		pg.check("billing_refund_method", sql`${t.method} IN ('midtrans', 'manual')`),
+		pg.check("billing_refund_status", sql`${t.status} IN ('requesting', 'succeeded', 'failed')`),
+	],
+);
+
+/**
+ * Billing emails that must go out once: an alert to the owner (one per kind per hour, `count` adds up what happened
+ * in that hour), the daily summary (one per day), and a customer's reminder that their pass ends soon (one per end
+ * date). The unique `key` makes a repeated or overlapping job a no-op; the billing job sends what isn't sent yet.
+ */
+export const billingNotification = pg.pgTable(
+	"billing_notification",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		// e.g. alert:amount_mismatch:2026-11-03T08, summary:2026-11-03, expiry:<user id>:<end time>.
+		key: pg.text("key").notNull().unique(),
+		// An alert kind, daily_summary or expiry_reminder.
+		kind: pg.text("kind").notNull(),
+		// The customer it is for; null for the owner's emails.
+		userId: pg.text("user_id").references(() => user.id, { onDelete: "cascade" }),
+		// How many times it happened while this notification was open.
+		count: pg.integer("count").notNull().default(1),
+		// Payment ids and short codes; never emails, tokens or payloads.
+		details: pg.jsonb("details").notNull().$type<Record<string, unknown>>().default({}),
+		sentAt: pg.timestamp("sent_at", { withTimezone: true }),
+		attempts: pg.integer("attempts").notNull().default(0),
+		// When the last send started: another sender leaves it alone for a while.
+		attemptedAt: pg.timestamp("attempted_at", { withTimezone: true }),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: pg
+			.timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [pg.index().on(t.sentAt, t.createdAt), pg.index().on(t.kind, t.createdAt)],
 );

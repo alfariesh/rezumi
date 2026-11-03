@@ -7,6 +7,7 @@ import {
 	createSnapTransaction,
 	expireTransaction,
 	getTransactionStatus,
+	refundTransaction,
 } from "./client";
 import { buildSnapPayload } from "./payload";
 
@@ -183,6 +184,86 @@ describe("Midtrans client", () => {
 		expect(request().url).toBe("https://app.sandbox.midtrans.com/snap/v1/transactions/snap-token/cancel");
 		answer(400, { error_messages: ["Transaction is on progress"] });
 		await expect(cancelSnapSession(config, "snap-token")).resolves.toBe(false);
+	});
+
+	it("lists the refunds a status shows, keys and amounts only", async () => {
+		stub();
+		answer(200, {
+			status_code: "200",
+			order_id: "RZ-1",
+			transaction_status: "partial_refund",
+			gross_amount: "79000.00",
+			refund_amount: "30000.00",
+			refunds: [
+				{ refund_key: "RF-1-1", refund_amount: "20000.00", reason: "Asked by the customer", refund_chargeback_id: 1 },
+				{ refund_key: "dashboard-key", refund_amount: "10000.00" },
+				{ refund_amount: "5.00" },
+			],
+		});
+		const result = await getTransactionStatus(config, "RZ-1");
+		expect(result.found && result.status.refundAmount).toBe("30000.00");
+		expect(result.found && result.status.refunds).toEqual([
+			{ refundKey: "RF-1-1", amount: "20000.00", reason: "Asked by the customer" },
+			{ refundKey: "dashboard-key", amount: "10000.00", reason: null },
+		]);
+	});
+
+	it("refunds with its key, sending an amount only for a partial refund", async () => {
+		stub();
+		answer(200, {
+			status_code: "200",
+			status_message: "Success, refund request is approved",
+			order_id: "RZ-1",
+			transaction_status: "refund",
+			gross_amount: "79000.00",
+			payment_type: "qris",
+			refund_amount: "79000.00",
+			refund_key: "RF-1-1",
+		});
+		const result = await refundTransaction(config, "RZ-1", { refundKey: "RF-1-1", reason: "Paid twice" });
+		expect(request().url).toBe("https://api.sandbox.midtrans.com/v2/RZ-1/refund");
+		expect(request().init.method).toBe("POST");
+		expect(JSON.parse(String(request().init.body))).toEqual({ refund_key: "RF-1-1", reason: "Paid twice" });
+		expect(result).toMatchObject({
+			confirmed: true,
+			status: {
+				transactionStatus: "refund",
+				refundAmount: "79000.00",
+				refunds: [{ refundKey: "RF-1-1", amount: "79000.00", reason: "Paid twice" }],
+			},
+		});
+
+		answer(200, {
+			status_code: "200",
+			order_id: "RZ-1",
+			transaction_status: "partial_refund",
+			gross_amount: "79000.00",
+			refund_amount: "10000.00",
+			refund_key: "RF-1-2",
+		});
+		await refundTransaction(config, "RZ-1", { refundKey: "RF-1-2", amount: 10_000, reason: "Part" });
+		expect(JSON.parse(String(request(1).init.body))).toEqual({ refund_key: "RF-1-2", amount: 10_000, reason: "Part" });
+	});
+
+	it("treats a refund the bank is still processing (201) as accepted, not confirmed", async () => {
+		stub();
+		answer(200, { status_code: "201", status_message: "Refund request is being processed", order_id: "RZ-1" });
+		await expect(refundTransaction(config, "RZ-1", { refundKey: "RF-1-1", reason: "Card" })).resolves.toEqual({
+			confirmed: false,
+		});
+	});
+
+	it.each([
+		[200, "412", "refund_http_412", false],
+		[200, "414", "refund_http_414", false],
+		[200, "406", "refund_http_406", false],
+		[401, "401", "refund_http_401", false],
+		[503, undefined, "refund_http_503", true],
+	] as const)("turns a refund refusal (HTTP %i, %s) into %s", async (httpStatus, statusCode, code, transient) => {
+		stub();
+		answer(httpStatus, { status_code: statusCode, status_message: "Merchant cannot modify the status" });
+		const error = await failureOf(refundTransaction(config, "RZ-1", { refundKey: "RF-1-1", reason: "x" }));
+		expect(error).toMatchObject({ code, transient, statusCode });
 	});
 
 	it("uses the production hosts for production", async () => {

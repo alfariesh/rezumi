@@ -235,6 +235,9 @@ export const env = createEnv({
 		BILLING_MODE: z.enum(["off", "admins", "on"]).default("off"),
 		// Closes new purchases for a while; passes and credits already bought keep working.
 		BILLING_CHECKOUT_PAUSED: z.stringbool().default(false),
+		// Where billing alerts and the daily sales summary go: the owner's address. Without it they are only kept for the
+		// admin page.
+		BILLING_ALERT_EMAIL: z.email().optional(),
 		// Midtrans Snap payments. Without the server key checkout is unavailable and the notification endpoint is a 404.
 		MIDTRANS_ENVIRONMENT: z.enum(["sandbox", "production"]).optional(),
 		MIDTRANS_SERVER_KEY: z.string().trim().min(1).optional(),
