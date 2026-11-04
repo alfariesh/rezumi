@@ -8,6 +8,7 @@ import { and, eq, isNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as tables from "@rezumi/db/schema";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 
 const fixture = vi.hoisted(() => ({
@@ -61,6 +62,12 @@ const designed = (template: ResumeData["metadata"]["template"], css = ""): Resum
 	const data = structuredClone(defaultResumeData);
 	data.metadata.template = template;
 	if (css) data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: css } };
+	return data;
+};
+
+const withLogos = (logos: boolean, template: ResumeData["metadata"]["template"] = "meridian"): ResumeData => {
+	const data = designed(template);
+	data.metadata.design.icons = { ...defaultIconDesign, logos };
 	return data;
 };
 
@@ -311,11 +318,55 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 			).rejects.toMatchObject({ code: "PLAN_FEATURE_REQUIRED" });
 		});
 
+		it("keeps tool logos already shown, allows switching them off, and refuses switching them on", async () => {
+			await getDb()
+				.insert(tables.resume)
+				.values({ id: "logos", userId: "member", name: "Logos", slug: "logos", data: withLogos(true) });
+			const kept = withLogos(true);
+			kept.basics.name = "Ada";
+			await resumes.update({ id: "logos", userId: "member", data: kept });
+			const copy = await createResume(
+				"member",
+				"Copy",
+				(await resumes.getById({ id: "logos", userId: "member" })).data,
+			);
+			expect((await resumes.getById({ id: copy, userId: "member" })).data.metadata.design.icons?.logos).toBe(true);
+
+			await resumes.patch({
+				id: "logos",
+				userId: "member",
+				operations: [{ op: "replace", path: "/metadata/design/icons/logos", value: false }],
+			});
+			await expect(
+				resumes.patch({
+					id: "logos",
+					userId: "member",
+					operations: [{ op: "replace", path: "/metadata/design/icons/logos", value: true }],
+				}),
+			).rejects.toMatchObject({
+				code: "PLAN_FEATURE_REQUIRED",
+				data: { feature: "brandLogos", planId: "free" },
+			});
+			const plain = await createResume();
+			await expect(resumes.update({ id: plain, userId: "member", data: withLogos(true) })).rejects.toMatchObject({
+				code: "PLAN_FEATURE_REQUIRED",
+				data: { feature: "brandLogos" },
+			});
+			// Every other icon setting stays on the free plan.
+			const icons = withLogos(false);
+			icons.metadata.design.icons = { ...defaultIconDesign, style: "sharp", sections: true };
+			await resumes.update({ id: plain, userId: "member", data: icons });
+		});
+
 		it("fits an imported file to the plan instead of refusing it", async () => {
 			const id = await createResume("member", "Import", designed("senja", "a { b: c }"), "import");
 			const { data } = await resumes.getById({ id, userId: "member" });
 			expect(data.metadata.template).toBe("meridian");
 			expect(data.metadata.stylesheet).toBeUndefined();
+			const logos = await createResume("member", "Logos", withLogos(true, "tunas"), "import");
+			const imported = (await resumes.getById({ id: logos, userId: "member" })).data.metadata;
+			expect(imported.template).toBe("tunas");
+			expect(imported.design.icons).toMatchObject({ enabled: true, items: true, logos: false });
 
 			const letter = await letters.create({ userId: "member", name: "Letter" });
 			const document = await letters.export({ userId: "member", id: letter.id });
@@ -333,11 +384,14 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 			).rejects.toMatchObject({ code: "PLAN_FEATURE_REQUIRED" });
 		});
 
-		it("opens premium templates and custom styles with a pass", async () => {
+		it("opens premium templates, tool logos and custom styles with a pass", async () => {
 			await grantPlus();
 			const id = await createResume("member", "Import", designed("senja", "a { b: c }"), "import");
 			expect((await resumes.getById({ id, userId: "member" })).data.metadata.template).toBe("senja");
 			await resumes.update({ id, userId: "member", data: designed("linen", "a { b: d }") });
+			const logos = await createResume("member", "Logos", withLogos(true), "import");
+			expect((await resumes.getById({ id: logos, userId: "member" })).data.metadata.design.icons?.logos).toBe(true);
+			await resumes.update({ id, userId: "member", data: withLogos(true, "linen") });
 		});
 	});
 

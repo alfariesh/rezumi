@@ -40,7 +40,14 @@ function withRole(role: string | null): DbOrTx {
 const unlimited = {
 	enabled: false,
 	planId: "free",
-	features: { premiumTemplates: true, wordOdtExport: true, customStyles: true, customFonts: true, automationApi: true },
+	features: {
+		premiumTemplates: true,
+		brandLogos: true,
+		wordOdtExport: true,
+		customStyles: true,
+		customFonts: true,
+		automationApi: true,
+	},
 	limits: { activeResumes: null, activeCoverLetters: null },
 	currentPeriodEndsAt: null,
 	upcoming: [],

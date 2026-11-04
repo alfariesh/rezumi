@@ -95,6 +95,7 @@ export type PlanLimits = { activeResumes: number; activeCoverLetters: number };
 
 export type PlanFeatures = {
   premiumTemplates: boolean; // template di luar FREE_TEMPLATES
+  brandLogos: boolean; // logo tools di Keahlian (design.icons.logos); ikon lain gratis
   wordOdtExport: boolean; // ekspor baru .docx dan .odt
   customStyles: boolean; // Custom Styles (CSS) — lihat docs/applying-custom-styles.mdx
   customFonts: boolean; // unggah font sendiri
@@ -509,6 +510,12 @@ Tidak dibatasi: pemindahan dokumen tamu (`linkAnonymousAccount` di `packages/aut
 - Penegakan saat simpan: `designFeaturesNeeded` meminta `customFonts` hanya bila ada URL face **baru**; `assertDesignChange` juga menolak face baru yang bukan unggahan akun itu sendiri di `APP_URL` (`BAD_REQUEST`, berlaku walau billing `off`). Dicek di update/patch CV dan update desain surat (`input.metadata`). Impor (`fitImportedDesign`) membuang face milik akun lain, dan semua face bila paket tidak memuat fiturnya (`changed.fonts`; web/mobile menjelaskannya lewat `describeImportedDesign`). Mempertahankan dan menghapus font selalu boleh; salinan dan restore versi tidak dicek.
 - Render: `resolvePdfFonts` hanya memakai face dengan URL unggahan yang sah (`parseUploadedFontUrl`), keluarga unggahan menang atas katalog bernama sama, ketebalan terdekat dipakai, Bold asli lewat `resolveTypographyBoldWeight`. Browser dan app mengunduh URL publiknya; server (`createResumePdfFile`, kartu tautan) membaca storage langsung lewat `readUploadedFont` dan **tidak pernah** mengambil alamat font dari dokumen lewat HTTP (anti-SSRF).
 - UI: Advanced → Typography → "Font kamu" (web `features/resume/editor/design/uploaded-fonts.tsx`, mobile `features/design/uploaded-fonts.tsx`): daftar keluarga + Hapus, tombol Unggah font (terkunci + dialog paket di web/Android; disembunyikan di iOS bila paket tidak memuatnya), keluarga unggahan muncul paling atas di pemilih font. File di storage tidak dihapus saat font dilepas dari CV (CV lain/salinan bisa masih memakainya).
+
+**Logo tools** (dibuat 4 November, Phase 05 revamp template CV, `BILLING_CATALOG_VERSION` 3):
+
+- Data: `metadata.design.icons.logos` (default `false`). Gaya ikon, grup ikon lain, dan logo profil tetap gratis.
+- Penegakan saat simpan: `designFeaturesNeeded` meminta `brandLogos` hanya bila `logos` berubah ke `true` (sebelumnya `false`/kosong). Menyimpan CV yang sudah menyalakannya, mematikannya, salinan, dan restore versi tidak dicek. Impor tanpa fitur → `fitImportedDesign` mematikan `logos` (`changed.logos`); web dan mobile memberi tahu lewat `describeImportedDesign`.
+- UI: Design → Ikon → "Logo tools di Keahlian" (web `features/resume/editor/design/style-groups.tsx`, mobile `features/design/style-groups.tsx`). Tanpa fitur dan saat masih mati: web dan Android menampilkan saklar dengan gembok + label "Plus" yang membuka dialog/alert paket; iOS menyembunyikan barisnya. Bila sudah menyala, saklar tetap bisa dimatikan di semua platform.
 
 ### 6.9 Kredit Rezumi AI
 

@@ -163,6 +163,7 @@ export const billingRouter = {
 				limits: z.object({ activeResumes: usage, activeCoverLetters: usage }),
 				features: z.object({
 					premiumTemplates: z.boolean(),
+					brandLogos: z.boolean(),
 					wordOdtExport: z.boolean(),
 					customStyles: z.boolean(),
 					customFonts: z.boolean(),

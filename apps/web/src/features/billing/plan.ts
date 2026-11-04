@@ -97,6 +97,11 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
 				title: t`This template isn't in your plan`,
 				description: t`You can preview every template. ${free} are included, and documents that already use another template keep it.`,
 			};
+		case "brandLogos":
+			return {
+				title: t`Tool logos aren't in your plan`,
+				description: t`Every other icon is included: contact, section titles, skills, interests and profile logos. Documents that already show tool logos keep them.`,
+			};
 		case "wordOdtExport":
 			return {
 				title: t`Word and ODT downloads aren't in your plan`,
@@ -121,8 +126,8 @@ export function describePlanProblem(problem: PlanProblem): { title: string; desc
 }
 
 /**
- * What an import changes to fit the plan, as the server does it: a premium template becomes the first free one and
- * custom styles are left out. Null when the file fits.
+ * What an import changes to fit the plan, as the server does it: a premium template becomes the first free one, tool
+ * logos are switched off, and custom styles and uploaded fonts are left out. Null when the file fits.
  */
 export function describeImportedDesign(
 	plan: PlanSummary | undefined,
@@ -130,13 +135,17 @@ export function describeImportedDesign(
 		template: Template;
 		stylesheet?: { source: { text: string } } | undefined;
 		typography?: { customFonts?: unknown[] | undefined } | undefined;
+		design?: { icons?: { logos?: boolean | undefined } | undefined } | undefined;
 	},
 ): string | null {
+	const logos = design.design?.icons?.logos === true && !hasPlanFeature(plan, "brandLogos");
 	const fonts = Boolean(design.typography?.customFonts?.length) && !hasPlanFeature(plan, "customFonts");
-	const notice = describeImportedTemplateAndStyles(plan, design);
-	if (!fonts) return notice;
-	const fontsNotice = t`Your own fonts aren't in your plan, so the imported document uses a standard font.`;
-	return notice ? `${notice} ${fontsNotice}` : fontsNotice;
+	const notices = [
+		describeImportedTemplateAndStyles(plan, design),
+		logos ? t`Tool logos aren't in your plan, so the imported document shows skills without them.` : null,
+		fonts ? t`Your own fonts aren't in your plan, so the imported document uses a standard font.` : null,
+	].filter(Boolean);
+	return notices.length > 0 ? notices.join(" ") : null;
 }
 
 function describeImportedTemplateAndStyles(

@@ -39,6 +39,7 @@ const summary = (patch: Partial<PlanSummary>): PlanSummary => ({
 	limits: { activeResumes: { used: 0, max: 3 }, activeCoverLetters: { used: 0, max: 3 } },
 	features: {
 		premiumTemplates: false,
+		brandLogos: false,
 		wordOdtExport: false,
 		customStyles: false,
 		customFonts: false,

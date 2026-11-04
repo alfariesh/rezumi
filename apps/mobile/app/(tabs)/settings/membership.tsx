@@ -47,6 +47,7 @@ export default function MembershipScreen() {
 		date.toLocaleDateString(i18n.locale, { day: "numeric", month: "short", year: "numeric", timeZone });
 	const features: Record<PlanFeature, { icon: IconName; label: string }> = {
 		premiumTemplates: { icon: "squares-four", label: t`Every template` },
+		brandLogos: { icon: "code", label: t`Tool logos in skills` },
 		wordOdtExport: { icon: "file-doc", label: t`Word and ODT downloads` },
 		customStyles: { icon: "palette", label: t`Custom styles` },
 		customFonts: { icon: "text-aa", label: t`Your own fonts` },

@@ -2,6 +2,7 @@ import type { PlanSummary } from "./plan";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { ORPCError } from "@orpc/client";
+import { PLAN_FEATURE_KEYS } from "@rezumi/schema/billing";
 
 vi.mock("@/libs/orpc/client", () => ({ orpc: {} }));
 i18n.loadAndActivate({ locale: "en", messages: {} });
@@ -23,6 +24,7 @@ const summary = (enabled: boolean, paid: boolean): PlanSummary => ({
 	limits: { activeResumes: { used: 0, max: 3 }, activeCoverLetters: { used: 0, max: 3 } },
 	features: {
 		premiumTemplates: paid,
+		brandLogos: paid,
 		wordOdtExport: paid,
 		customStyles: paid,
 		customFonts: paid,
@@ -82,9 +84,7 @@ describe("plan problems", () => {
 		const problems = [
 			{ kind: "limit", limit: "activeResumes", max: 3, used: 3, requested: { resumes: 1, coverLetters: 0 } },
 			{ kind: "limit", limit: "activeCoverLetters", max: 3, used: 2, requested: { resumes: 1, coverLetters: 2 } },
-			...(["premiumTemplates", "wordOdtExport", "customStyles", "customFonts", "automationApi"] as const).map(
-				(feature) => ({ kind: "feature", feature }) as const,
-			),
+			...PLAN_FEATURE_KEYS.map((feature) => ({ kind: "feature", feature }) as const),
 		] as const;
 		for (const problem of problems) {
 			const copy = describePlanProblem(problem);
@@ -104,5 +104,10 @@ describe("plan problems", () => {
 		expect(describeImportedDesign(free, { template: "meridian", stylesheet: css })).toContain("styles");
 		expect(describeImportedDesign(free, { template: "meridian" })).toBeNull();
 		expect(describeImportedDesign(summary(true, true), { template: "senja", stylesheet: css })).toBeNull();
+		const logos = { design: { icons: { logos: true } } } as const;
+		expect(describeImportedDesign(free, { template: "meridian", ...logos })).toContain("Tool logos");
+		expect(describeImportedDesign(free, { template: "senja", ...logos })).toMatch(/Meridian.*Tool logos/);
+		expect(describeImportedDesign(summary(true, true), { template: "meridian", ...logos })).toBeNull();
+		expect(describeImportedDesign(free, { template: "meridian", design: { icons: { logos: false } } })).toBeNull();
 	});
 });

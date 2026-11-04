@@ -30,6 +30,7 @@ import {
 	matchMargins,
 	rgbaToHex,
 } from "./presets";
+import { canShowPlans, hasPlanFeature, showPlanAlert, usePlan } from "@/features/billing/plan";
 import { localeMap } from "@/features/settings/locale-names";
 import { Button, Icon, IconButton, Segmented, Text, haptics, listLayout, useTheme } from "@/ui";
 
@@ -593,12 +594,15 @@ export function PageGroup({ data, write, disabled, pick }: GroupProps) {
 
 /**
  * Icons: one switch for all of them, the style every icon is drawn in, and the groups that show. Same controls as the
- * web's Design → Icons.
+ * web's Design → Icons. Tool logos need the plan's `brandLogos` to be switched on: Android shows the switch locked,
+ * iOS leaves it out (a resume that already shows them keeps the switch, to turn them off).
  */
 export function IconsGroup({ data, write, disabled }: GroupProps) {
 	const { t } = useLingui();
 	const { space } = useTheme();
+	const plan = usePlan();
 	const icons = iconDesignOf(data.metadata.design);
+	const logosLocked = !icons.logos && !hasPlanFeature(plan, "brandLogos");
 	const set = (key: keyof IconDesign, patch: Partial<IconDesign>) =>
 		write(
 			`icons.${key}`,
@@ -654,16 +658,23 @@ export function IconsGroup({ data, write, disabled }: GroupProps) {
 				/>
 			</Field>
 			<View>
-				{groups.map(({ key, label, description }) => (
-					<SwitchRow
-						key={key}
-						label={label}
-						description={description}
-						value={icons[key]}
-						disabled={disabled || !icons.enabled}
-						onChange={(checked) => set(key, { [key]: checked })}
-					/>
-				))}
+				{groups.map(({ key, label, description }) => {
+					const locked = key === "logos" && logosLocked;
+					if (locked && !canShowPlans()) return null;
+					return (
+						<SwitchRow
+							key={key}
+							label={locked ? `${label} · Plus` : label}
+							description={description}
+							value={icons[key]}
+							disabled={disabled || !icons.enabled}
+							locked={locked}
+							onChange={(checked) =>
+								locked ? showPlanAlert({ kind: "feature", feature: "brandLogos" }) : set(key, { [key]: checked })
+							}
+						/>
+					);
+				})}
 			</View>
 		</View>
 	);

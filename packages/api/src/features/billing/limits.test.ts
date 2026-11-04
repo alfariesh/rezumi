@@ -80,8 +80,33 @@ describe("designFeaturesNeeded", () => {
 		);
 	});
 
+	it("asks for tool logos only when they're switched on, not kept or switched off", () => {
+		const logos = (on: boolean) => ({ template: "meridian" as const, design: { icons: { logos: on } } });
+		expect(designFeaturesNeeded(null, logos(true))).toEqual(["brandLogos"]);
+		expect(designFeaturesNeeded(logos(false), logos(true))).toEqual(["brandLogos"]);
+		expect(designFeaturesNeeded({ template: "meridian" }, logos(true))).toEqual(["brandLogos"]);
+		expect(designFeaturesNeeded(logos(true), logos(true))).toEqual([]);
+		expect(designFeaturesNeeded(logos(true), logos(false))).toEqual([]);
+		expect(designFeaturesNeeded(logos(true), { template: "meridian" })).toEqual([]);
+		expect(designFeaturesNeeded(null, logos(false))).toEqual([]);
+		// Other icon settings, such as the style or turning every icon off and on, are on every plan.
+		expect(
+			designFeaturesNeeded({ template: "meridian", design: { icons: { logos: true, enabled: false } } }, {
+				template: "meridian",
+				design: { icons: { logos: true, enabled: true, style: "sharp" } },
+			} as never),
+		).toEqual([]);
+	});
+
 	it("reads stored designs of any shape", () => {
 		expect(designFeaturesNeeded({ template: 42, stylesheet: "nonsense" }, { template: "meridian" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "meridian", design: "nonsense" }, { template: "meridian" })).toEqual([]);
+		expect(
+			designFeaturesNeeded(
+				{ template: "meridian", design: { icons: { logos: "yes" } } },
+				{ template: "meridian", design: { icons: { logos: true } } },
+			),
+		).toEqual(["brandLogos"]);
 		expect(designFeaturesNeeded(undefined, { template: "linen", stylesheet: css("x {}") })).toEqual([
 			"premiumTemplates",
 			"customStyles",
@@ -161,8 +186,19 @@ describe("while billing is off", () => {
 				],
 			},
 		};
-		expect(await fitImportedDesign("member", imported)).toEqual({ template: false, stylesheet: false, fonts: true });
+		expect(await fitImportedDesign("member", imported)).toEqual({
+			template: false,
+			logos: false,
+			stylesheet: false,
+			fonts: true,
+		});
 		expect(imported.typography.customFonts).toEqual([{ url: "https://rezumi.app/api/uploads/member/fonts/a.ttf" }]);
+	});
+
+	it("keeps an imported file's tool logos", async () => {
+		const imported = { template: "meridian" as const, design: { icons: { logos: true } } };
+		expect((await fitImportedDesign("member", imported)).logos).toBe(false);
+		expect(imported.design.icons.logos).toBe(true);
 	});
 });
 

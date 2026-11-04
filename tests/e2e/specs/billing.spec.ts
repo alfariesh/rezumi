@@ -47,6 +47,7 @@ test("buys Pro AI: confirm, pay on Midtrans, come back to an active plan and a r
 			},
 			features: {
 				premiumTemplates: paid,
+				brandLogos: paid,
 				wordOdtExport: paid,
 				customStyles: paid,
 				customFonts: paid,

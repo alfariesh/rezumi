@@ -75,6 +75,11 @@ export function describePlanProblem(problem: PlanProblem): { title: string; mess
 				title: ios ? t`This template isn't available` : t`This template isn't in your plan`,
 				message: t`${freeTemplateList()} are available, and documents that already use another template keep it.`,
 			};
+		case "brandLogos":
+			return {
+				title: ios ? t`Tool logos aren't available` : t`Tool logos aren't in your plan`,
+				message: t`Every other icon is available: contact, section titles, skills, interests and profile logos. Documents that already show tool logos keep them.`,
+			};
 		case "wordOdtExport":
 			return {
 				title: ios ? t`Word and ODT aren't available` : t`Word and ODT downloads aren't in your plan`,
