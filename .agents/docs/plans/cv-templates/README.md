@@ -66,13 +66,18 @@ Temuan yang dibawa ke phase berikut: pemeriksa ATS tidak menemukan bagian pada t
 
 Sudah: grup Design → Ikon (saklar, gaya Standar/Rounded/Sharp, kontak, judul bagian, item, logo tools) di web, web ponsel, dan app mobile; pemilih ikon menggambar Hugeicons; galeri hanya lineup.
 
+Selesai di web, termasuk web ponsel (2026-11-04, cabang `feat/cv-templates-04-builder`; rincian teknis di `02-teknis.md` bagian 10):
+
+- [x] Pemilih ikon per kategori: grup "Sering dipakai" lalu kategori Hugeicons, pilihan kategori, pencarian dengan sinonim Inggris dan Indonesia ("surel", "pendidikan"), Enter memilih hasil teratas, tombol Tanpa ikon. Ikon digambar dalam gaya ikon resume yang aktif, juga pada tombol pemilih dan pratinjau level.
+- [x] Panel "Gaya {template}" di Design → Template dengan tombol "Pakai gaya bawaan {template}" (font, ukuran, warna aksen, tata letak entri, `keywordLayout`, bentuk foto) dan Undo.
+- [x] Input label kolom kustom di kartu About (baris label di atas isi); PDF mencetak "Label: isi" atau baris tabel Data Pribadi.
+- [x] Opsi "Chip" di menu Keahlian → Tata letak kata kunci. Chip dicek di ke-16 template; di sidebar berwarna (Kirana, Purnama) chip kini memakai warna teks sidebar sehingga terbaca.
+- [x] Filter bidang (Teknologi, Kreatif, Keuangan, Pemerintahan & BUMN, Akademik, Fresh graduate) dari `templateCareerFields`: pilihan bidang di Design → Template dan chip di galeri publik `/resume-templates`.
+
 Sisa:
 
-- [ ] Pemilih ikon per kategori (`iconCategories` di `@rezumi/schema/icons`) dengan pencarian, digambar dalam gaya ikon resume yang dipilih (bukan selalu Standar). Web dan mobile.
-- [ ] Tombol "Pakai gaya bawaan template" di galeri/Design: menerapkan `templatePresets` (font, ukuran, warna, tata letak entri, `keywordLayout`, bentuk foto) dengan Undo.
-- [ ] Input label untuk kolom kustom (Data Pribadi: "Tempat, tanggal lahir", "Kewarganegaraan") di formulir Basics web dan mobile.
-- [ ] Opsi "Chip" untuk tampilan kata kunci Keahlian (`keywordLayout: "tags"`) di form section Keahlian web dan mobile.
-- [ ] Filter galeri per bidang (Tech, Kreatif, Keuangan, Pemerintahan/BUMN, Akademik, Fresh graduate) dari data template.
+- [ ] App mobile (`apps/mobile`) untuk kelima item di atas. Ditunda atas keputusan pemilik (log `00-keputusan.md`, 2026-11-04). Logika bersama sudah di package (`02-teknis.md` bagian 10); label kategori ikon dan nama bidang perlu ditulis di katalog Lingui mobile.
+- [ ] Pemilik: cek pemetaan template → bidang (`templateCareerFields` di `packages/schema/src/templates.ts`), usulan agent dari kolom "Untuk siapa".
 
 ### Phase 05 — Paket
 
@@ -141,3 +146,4 @@ Tugasmu: …
 | 2026-11-03 | 01, 02, 03 (sebagian), 05 (sebagian), 06 (sebagian) | Ikon Hugeicons 3 gaya di PDF + `design.icons`; 16 template baru (`lineup-page.tsx`, `tokens.ts`); galeri web/mobile hanya menampilkan lineup; default CV baru = Meridian; 5 template gratis baru; gambar contoh galeri; chip keahlian + logo tools; label kolom kustom                                             | Phase 03: hapus 18 template lama + tesnya, pasang `legacyTemplateIds`. Phase 04: grup "Ikon" lengkap di Design (gaya, judul bagian, logo) web+mobile, pemilih ikon per kategori, tombol gaya bawaan. Phase 05: fitur paket `brandLogos`. Phase 06: persona contoh, DOCX, dokumentasi. Owner: opsional sinkron kategori ikon hobi (travel, media, food) via `icons:sync` |
 | 2026-11-03 | 01 (lanjutan), 04 (sebagian)                        | Set ikon CV 2.491 ikon dari ekspor Hugeicons Pro (format padat); grup Ikon di Design web + mobile; normalisasi template/ikon di setiap tulis; resource MCP `resume://_meta/design` + skill agent diperbarui; contoh resume memakai Meridian                                                                        | Phase 04 sisa: pemilih ikon per kategori, tombol gaya bawaan template, label kolom kustom di form. Phase 05: kunci logo tools untuk Gratis. Phase 03: hapus kode 18 template lama (sudah tidak pernah dipakai: semua ID lama dipetakan)                                                                                                                                 |
 | 2026-11-03 | 03                                                  | 18 template lama dihapus (kode, entri, 72 gambar contoh, modul `shared` yatim); `templateSchema` 16 ID; ID lama lewat `readableTemplateSchema`/`templateInputSchema`/`upgradeTemplateId`; tes dipindah ke pengganti dengan nilai ukur baru; fixture CSS, docs, README, form issue; `docs:gen` dan `lingui:extract` | Phase 04, 05, 06, 07 seperti di atas. Phase 07: kosongkan tabel temuan ATS (tracking huruf kapital). Owner: putuskan apakah mesin tanpa template pemakai (region `featured`, `skillLevelAfterName`, kontak per-pemilik) dihapus; Phase 06 mengganti `template-showcase-sources.json`                                                                                    |
+| 2026-11-04 | 04 (web)                                            | Pemilih ikon per kategori + pencarian sinonim, digambar dalam gaya ikon aktif; tombol "Pakai gaya bawaan" dengan Undo; label kolom kustom; opsi Chip Keahlian (+ perbaikan chip di sidebar gelap/berwarna); filter bidang di Design dan galeri publik; terjemahan Indonesia (termasuk "Undo" → "Urungkan" di web)  | Phase 04: versi mobile kelima item (ditunda pemilik). Owner: cek pemetaan template → bidang. Tindak lanjut: preset margin Sempit/Normal/Lebar web+mobile masih 10/14/19 pt, belum 24/36/48 seperti `01-desain.md`                                                                                                                                                       |
