@@ -10,7 +10,7 @@ Untuk agent. Perbarui dokumen ini bila desain berubah saat implementasi.
   - `templateInputSchema` (`z.preprocess` + `templateSchema`) dipakai DTO API (surat lamaran): ID lama diterima dan diganti, ID yang tak pernah ada ditolak. JSON Schema dan OpenAPI memakai sisi `out`, jadi hanya menyebut 16 ID.
   - `upgradeTemplateId(unknown)` untuk kode biasa (batas paket, impor Reactive Resume v4).
     Jalur tulis (`packages/schema/src/resume/write.ts`) memetakan ID lama sebelum membandingkan dengan JSON Schema terbitan; ID lain yang tak dikenal tetap ditolak (#3413). ID lama tidak pernah ditulis lagi.
-- Semua `Record<Template, …>` ikut diperbarui: galeri web `apps/web/src/dialogs/resume/template/data.ts`, mobile `apps/mobile/src/features/design/*`, DOCX `packages/docx/src/builder.ts` (`SIDEBAR_BACKGROUND`), manifest semantik `packages/pdf/src/semantic/template-manifest.ts`, registry `packages/pdf/src/templates/index.ts`, dan `packages/resume/src/stylesheet/registry/semantic.ts`.
+- Semua `Record<Template, …>` ikut diperbarui: galeri web `apps/web/src/dialogs/resume/template/data.ts`, mobile `apps/mobile/src/features/design/*`, DOCX `packages/docx/src/builder.ts` (`DOCX_LOOKS`, pengganti `SIDEBAR_BACKGROUND` sejak Phase 06), persona contoh galeri `tooling/templates/personas/index.ts`, manifest semantik `packages/pdf/src/semantic/template-manifest.ts`, registry `packages/pdf/src/templates/index.ts`, dan `packages/resume/src/stylesheet/registry/semantic.ts`.
 - Selector CSS kustom `resume[template="…"]` memakai ID baru; karena belum ada pengguna sungguhan, tidak perlu alias.
 
 ## 2. Ikon
