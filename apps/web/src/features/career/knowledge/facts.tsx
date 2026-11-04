@@ -1,8 +1,8 @@
 import type { Fact } from "../hooks";
-import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
+import type { FactCategory } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
-import { EmptyState, ItemCard, NativeSelect, Segment } from "@heroui-pro/react";
+import { EmptyState, NativeSelect } from "@heroui-pro/react";
 import {
 	Button,
 	Chip,
@@ -26,7 +26,6 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
-import { useProfile } from "./preferences";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { D2, EASE, EXIT } from "@/libs/motion";
@@ -130,8 +129,6 @@ export function FactsPage({ highlight }: FactsPageProps) {
 
 	return (
 		<div className="grid gap-4">
-			<MemoryCard />
-
 			<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
 				<div className="-mx-4 flex [scrollbar-width:none] gap-1 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
 					<FilterChip pressed={type === null} onClick={() => setType(null)}>
@@ -234,58 +231,6 @@ function FactRowsSkeleton() {
 				</div>
 			))}
 		</div>
-	);
-}
-
-// ---- Memory mode ----
-
-function MemoryCard() {
-	const { profile, save, isError, retry } = useProfile();
-	const labelId = useId();
-	const mode = profile?.memoryMode;
-	const hints: Record<MemoryMode, string> = {
-		ask: t`The coach proposes each fact in the chat. Nothing is saved until you agree.`,
-		auto: t`The coach saves facts you state, and tells you. You can undo.`,
-		off: t`The coach doesn't remember anything from your messages.`,
-	};
-	const modes: [MemoryMode, string][] = [
-		["ask", t`Ask first`],
-		["auto", t`Automatically`],
-		["off", t`Never`],
-	];
-	// While the profile loads the card keeps its shape: the hint is a placeholder line and the choice is disabled.
-	if (!profile && isError) return <CareerLoadError onRetry={retry} />;
-
-	return (
-		<ItemCard className="flex-wrap gap-y-3">
-			<ItemCard.Icon>
-				<Icon name="brain" size={16} />
-			</ItemCard.Icon>
-			<ItemCard.Content className="min-w-0 basis-56">
-				<ItemCard.Title id={labelId} className="whitespace-normal">
-					<Trans>Remember facts from my messages</Trans>
-				</ItemCard.Title>
-				{profile ? (
-					<ItemCard.Description className="whitespace-normal">{hints[profile.memoryMode]}</ItemCard.Description>
-				) : (
-					<Skeleton className="mt-1 h-4 w-3/4 rounded-md" />
-				)}
-			</ItemCard.Content>
-			<ItemCard.Action>
-				<Segment
-					aria-labelledby={labelId}
-					selectedKey={mode ?? null}
-					isDisabled={!profile}
-					onSelectionChange={(key) => profile && save({ ...profile, memoryMode: String(key) as MemoryMode })}
-				>
-					{modes.map(([value, label]) => (
-						<Segment.Item key={value} id={value} className="touch-target w-auto flex-none">
-							{label}
-						</Segment.Item>
-					))}
-				</Segment>
-			</ItemCard.Action>
-		</ItemCard>
 	);
 }
 
@@ -520,7 +465,7 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 								exit={{ height: 0, opacity: 0, transition: { duration: D2 * EXIT, ease: EASE } }}
 								className="overflow-hidden"
 							>
-								<div className="grid gap-1 rounded-xl bg-surface-secondary px-3.5 py-3 text-xs text-muted">
+								<div className="grid gap-1 rounded-xl bg-background px-3.5 py-3 text-xs text-muted">
 									<p className="font-semibold text-foreground">
 										{sourceLabel(fact)} · {date(fact.createdAt)}
 									</p>
