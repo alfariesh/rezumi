@@ -55,6 +55,10 @@ const useCendekia = (): LineupTemplate => {
 			contactText: { color: tokens.muted, fontSize: size.meta },
 		});
 
-		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accent } } };
+		return {
+			colors,
+			styles: { ...styles, icon: { size: size.meta, color: tokens.accent } },
+			features: { numberedPublications: true },
+		};
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);
 };

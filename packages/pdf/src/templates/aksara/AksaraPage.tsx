@@ -42,6 +42,8 @@ const useAksara = (): LineupTemplate => {
 			},
 			sectionItems: { rowGap: metrics.gapY(1.35) },
 			item: { rowGap: metrics.gapY(0.3) },
+			// The summary reads as a standfirst: a size up from the body, in the muted ink.
+			summary: { fontSize: size.body * 1.15, color: tokens.muted },
 			header: {
 				flexDirection: r.rtl ? "row" : "row-reverse",
 				alignItems: "flex-end",

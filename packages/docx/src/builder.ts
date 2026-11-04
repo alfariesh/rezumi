@@ -136,6 +136,8 @@ type DocxLook = {
 	/** An accent rule along the top edge of every page (Summit). */
 	topRule?: true;
 	numberPublications?: true;
+	/** The summary set larger and muted, as the PDF's standfirst (Aksara). */
+	standfirst?: true;
 };
 
 /** The small tracked capital label most templates title their sections with. */
@@ -161,6 +163,7 @@ const DOCX_LOOKS: Record<Template, DocxLook> = {
 	aksara: {
 		header: { name: 2.8, headline: "kicker" },
 		heading: { size: ["heading", 1.12], color: "ink", weight: "regular", rule: hairlineOver },
+		standfirst: true,
 	},
 	atlas: { header: { name: 2.05, headline: "muted" }, heading: { ...label("accent", 0.1), rule: hairlineOver } },
 	tunas: {
@@ -529,6 +532,7 @@ export function buildDocument(data: ResumeData, resolveTitle?: SectionTitleResol
 		sectionHeading: heading,
 		rightTabTwips,
 		...(look.numberPublications ? { numberPublications: true } : {}),
+		...(look.standfirst ? { standfirstSummary: true } : {}),
 		// Only the row order carries over: entry header layouts and accents don't apply to DOCX (plain, ATS-first).
 		lead: entryHeaderOf(data.metadata.design).lead,
 	});

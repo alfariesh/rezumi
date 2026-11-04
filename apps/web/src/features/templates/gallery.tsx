@@ -6,7 +6,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { careerFields, templateCareerFields, templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
-import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
+import { careerFieldNames, templateSample, templates } from "@/dialogs/resume/template/data";
 import { freeTemplates } from "@/features/homepage/plans";
 
 export function TemplateGallery() {
@@ -71,18 +71,19 @@ export function TemplateGallery() {
 						const name = template.name;
 						const layout = templateLayouts[id];
 						const isFree = freeTemplates.includes(id);
+						const sample = templateSample(id, i18n.locale);
 						return (
 							<article key={id} id={id} className="scroll-mt-24">
 								{/* The sample's download shows over the bottom of the page on hover and focus, and always on touch. */}
 								<div className="group relative">
 									<a
-										href={`/templates/pdf/${id}.pdf`}
+										href={sample.pdf}
 										aria-label={t`Preview ${name} sample PDF`}
 										className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
 									>
 										<img
-											src={`/templates/thumb/${id}.webp`}
-											srcSet={`/templates/thumb/${id}-small.webp 300w, /templates/thumb/${id}.webp 596w`}
+											src={sample.thumbnail}
+											srcSet={`${sample.smallThumbnail} 300w, ${sample.thumbnail} 596w`}
 											sizes="(min-width: 1024px) 363px, (min-width: 640px) 45vw, 90vw"
 											alt={t`${name} resume template preview`}
 											width={298}
@@ -99,7 +100,7 @@ export function TemplateGallery() {
 										className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 rounded-b-lg bg-linear-to-t from-foreground/45 to-transparent opacity-0 transition-opacity duration-quick group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100"
 									/>
 									<a
-										href={`/templates/pdf/${id}.pdf`}
+										href={sample.pdf}
 										download={`${name}-resume-example.pdf`}
 										aria-label={t`Download ${name} sample PDF`}
 										className={buttonVariants({

@@ -52,10 +52,11 @@ ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template defau
 
 ## Log keputusan
 
-| Tanggal    | Keputusan                                                                                                                       | Oleh    |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| 2026-11-03 | Ganti semua 18 template (belum ada pengguna sungguhan); 16 nama di atas disetujui                                               | Pemilik |
-| 2026-11-03 | 5 template gratis (Meridian, Sterling, Tunas, Wibawa, Kirana); semua gaya ikon gratis; logo tools Plus                          | Pemilik |
-| 2026-11-03 | Dikerjakan di checkout yang sama dengan sesi custom font (sesi itu hampir selesai)                                              | Pemilik |
-| 2026-11-04 | Kirana: urutan baca teks diperbaiki di mesin PDF (Forme `row-reverse`), tampilan tetap; bukan memindahkan header ke lebar penuh | Pemilik |
-| 2026-11-04 | Web dulu: app mobile belum dikerjakan; bagian mobile tiap phase ditunda sampai pemilik memintanya                               | Pemilik |
+| Tanggal    | Keputusan                                                                                                                           | Oleh    |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 2026-11-03 | Ganti semua 18 template (belum ada pengguna sungguhan); 16 nama di atas disetujui                                                   | Pemilik |
+| 2026-11-03 | 5 template gratis (Meridian, Sterling, Tunas, Wibawa, Kirana); semua gaya ikon gratis; logo tools Plus                              | Pemilik |
+| 2026-11-03 | Dikerjakan di checkout yang sama dengan sesi custom font (sesi itu hampir selesai)                                                  | Pemilik |
+| 2026-11-04 | Kirana: urutan baca teks diperbaiki di mesin PDF (Forme `row-reverse`), tampilan tetap; bukan memindahkan header ke lebar penuh     | Pemilik |
+| 2026-11-04 | Web dulu: app mobile belum dikerjakan; bagian mobile tiap phase ditunda sampai pemilik memintanya                                   | Pemilik |
+| 2026-11-04 | Foto persona contoh galeri dari Unsplash (nama dan isi CV fiktif); sumber dan lisensi tiap foto di `template-showcase-sources.json` | Pemilik |

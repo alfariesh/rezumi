@@ -151,7 +151,7 @@ Narrow cross-cutting helpers go in `packages/utils` only after checking no domai
 Multi-place changes:
 
 - **Resume data shape**: `packages/schema/src/resume/*` first, then API DTOs, importers, PDF rendering, and web forms consuming it.
-- **New template**: `packages/schema/src/templates.ts`, `packages/pdf/src/templates/index.ts`, source under `packages/pdf/src/templates/<name>/`, and previews under `apps/web/public/templates/{pdf,jpg,thumb}`: the sample PDF, then images generated from it with the command in `apps/web/DESIGN.md` (Template previews).
+- **New template**: `packages/schema/src/templates.ts`, `packages/pdf/src/templates/index.ts`, source under `packages/pdf/src/templates/<name>/`, and a fictional persona in `tooling/templates/personas/<name>.ts` (listed in its `index.ts`), then the sample PDF and previews under `apps/web/public/templates/{pdf,jpg,thumb}` (English, and Indonesian in `id/`) and `docs/images/templates` from `pnpm --filter @rezumi/tooling templates:previews <name>` (`apps/web/DESIGN.md` → Template previews).
 - **New DB column/table**: `packages/db/src/schema/*`, then `pnpm db:generate`.
 - **New env var**: `packages/env/src/server.ts`, `.env.example`, **and** the `globalPassThroughEnv` array and applicable test-task `env` arrays in `turbo.json`. Add deployment aliases in `packages/env/src/deployment.ts` when needed. Turborepo strict env mode filters unlisted injected variables from task processes.
 

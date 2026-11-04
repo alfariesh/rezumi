@@ -1,9 +1,12 @@
+import type { Template } from "@rezumi/schema/templates";
 import { Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { BentoCard } from "./bento-card";
 import { Container, SectionHeading, SectionTitle } from "./ui";
+import { templateSample } from "@/dialogs/resume/template/data";
 
 /** A resume page in miniature: bars for lines, one of them marked as the line being edited. */
 type MiniPageProps = { className?: string };
@@ -49,13 +52,15 @@ function WriteGraphic() {
 }
 
 function DesignGraphic() {
-	const fan = [
+	const { i18n } = useLingui();
+	// A two-column page with a photo, the default and a developer's page with tool logos.
+	const fan: { id: Template; className: string }[] = [
 		{
-			id: "jejak",
+			id: "kirana",
 			className: "-rotate-8 -translate-x-[70%] motion-safe:group-hover:[@media(hover:hover)]:-translate-x-[85%]",
 		},
 		{
-			id: "atlas",
+			id: "vector",
 			className: "rotate-8 translate-x-[70%] motion-safe:group-hover:[@media(hover:hover)]:translate-x-[85%]",
 		},
 		{ id: "meridian", className: "z-10 -translate-y-2" },
@@ -65,7 +70,7 @@ function DesignGraphic() {
 			{fan.map(({ id, className }) => (
 				<img
 					key={id}
-					src={`/templates/thumb/${id}-small.webp`}
+					src={templateSample(id, i18n.locale).smallThumbnail}
 					alt=""
 					width={300}
 					height={424}
