@@ -474,6 +474,8 @@ const componentFixtures = {
 	"./text": ui,
 	"expo-image": { Image: "Image" },
 	"react-native-reanimated": animation,
+	// Metro resolves an image to an asset id; the avatar placeholder is only drawn, never measured.
+	"../../assets/avatar-placeholder.webp": 1,
 };
 const { CollectionHeader } = load("components/collection-header.tsx");
 const { ListRow, EmptyState } = load("ui/layout.tsx", componentFixtures);
