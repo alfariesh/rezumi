@@ -115,6 +115,79 @@
 }
 
 /*
+ * A `secondary` field (the one for white surfaces) is filled with the page's `background`, not the gray `default`: it
+ * reads as a field on white without the weight of a gray block. A gray nested card sets `--field-fill` itself
+ * (`fields-on-card` in the app's stylesheet) so its fields stay white. The fallbacks resolve where the field sits, so a
+ * subtree that switches theme takes its own `background`.
+ */
+@utility field-fill {
+	background-color: var(--field-fill, var(--background));
+
+	&:hover {
+		background-color: var(--field-fill-hover, color-mix(in oklab, var(--background) 94%, var(--foreground)));
+	}
+}
+
+@layer components {
+	.input--secondary {
+		--input-bg: var(--field-fill, var(--background));
+		--input-bg-hover: var(--field-fill-hover, color-mix(in oklab, var(--background) 94%, var(--foreground)));
+		--input-bg-focus: var(--field-fill, var(--background));
+	}
+
+	.textarea--secondary {
+		--textarea-bg: var(--field-fill, var(--background));
+		--textarea-bg-hover: var(--field-fill-hover, color-mix(in oklab, var(--background) 94%, var(--foreground)));
+		--textarea-bg-focus: var(--field-fill, var(--background));
+	}
+
+	.input-group--secondary {
+		--input-group-bg: var(--field-fill, var(--background));
+		--input-group-bg-hover: var(--field-fill-hover, color-mix(in oklab, var(--background) 94%, var(--foreground)));
+		--input-group-bg-focus: var(--field-fill, var(--background));
+	}
+
+	.number-field--secondary .number-field__group {
+		--number-field-group-bg: var(--field-fill, var(--background));
+		--number-field-group-bg-hover: var(
+			--field-fill-hover,
+			color-mix(in oklab, var(--background) 94%, var(--foreground))
+		);
+		--number-field-group-bg-focus: var(--field-fill, var(--background));
+	}
+
+	.search-field--secondary .search-field__group {
+		--search-field-group-bg: var(--field-fill, var(--background));
+		--search-field-group-bg-hover: var(
+			--field-fill-hover,
+			color-mix(in oklab, var(--background) 94%, var(--foreground))
+		);
+		--search-field-group-bg-focus: var(--field-fill, var(--background));
+	}
+
+	.autocomplete--secondary .autocomplete__trigger {
+		--autocomplete-trigger-bg: var(--field-fill, var(--background));
+		--autocomplete-trigger-bg-hover: var(
+			--field-fill-hover,
+			color-mix(in oklab, var(--background) 94%, var(--foreground))
+		);
+		--autocomplete-trigger-bg-focus: var(--field-fill, var(--background));
+	}
+
+	.select--secondary .select__trigger {
+		--select-trigger-bg: var(--field-fill, var(--background));
+		--select-trigger-bg-hover: var(--field-fill-hover, color-mix(in oklab, var(--background) 94%, var(--foreground)));
+		--select-trigger-bg-focus: var(--field-fill, var(--background));
+	}
+
+	.date-input-group--secondary {
+		--date-input-group-bg: var(--field-fill, var(--background));
+		--date-input-group-bg-hover: var(--field-fill-hover, color-mix(in oklab, var(--background) 94%, var(--foreground)));
+		--date-input-group-bg-focus: var(--field-fill, var(--background));
+	}
+}
+
+/*
  * Every segment shares the field radius: outer corners match inputs and selects, inner ones (items and the sliding
  * indicator) are that minus the segment's padding: 4px by default, 2px for `sm`, none for `ghost`.
  */
