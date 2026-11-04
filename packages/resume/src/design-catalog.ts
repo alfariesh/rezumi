@@ -4,6 +4,7 @@ import { defaultIconDesign, iconStyleSchema } from "@rezumi/schema/resume/data";
 import { defaultSectionIconNames } from "@rezumi/schema/resume/section-icons";
 import {
 	legacyTemplateSuccessors,
+	templateCareerFields,
 	templateLayouts,
 	templateLineup,
 	templatePresets,
@@ -24,6 +25,7 @@ export function createDesignCatalog() {
 			lineup: templateLineup.map((id) => ({
 				id,
 				summary: templateSummaries[id],
+				fields: templateCareerFields[id],
 				...templateLayouts[id],
 				plan: free.has(id) ? "free" : "paid",
 				preset: templatePresets[id],

@@ -1,14 +1,22 @@
 import type { ThumbnailContent } from "./thumbnails";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import type { Template } from "@rezumi/schema/templates";
+import type { CareerField, Template } from "@rezumi/schema/templates";
 import type { FocusEvent, KeyboardEvent, PointerEvent } from "react";
-import { Segment } from "@heroui-pro/react";
-import { Label, Slider, Tag, TagGroup } from "@heroui/react";
+import { NativeSelect, Segment } from "@heroui-pro/react";
+import { Button, Label, Slider, Tag, TagGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useInView } from "motion/react";
 import { useEffect, useId, useRef, useState } from "react";
-import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
+import { applyTemplatePreset, hasTemplatePreset } from "@rezumi/resume/template-preset";
+import {
+	careerFields,
+	templateCareerFields,
+	templateLayouts,
+	templateLineup,
+	templatePresets,
+} from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { isRTL } from "@rezumi/utils/locale";
@@ -16,7 +24,7 @@ import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { SEGMENT_ITEM } from "./style-groups";
 import { thumbnailContent, useTemplateThumbnail } from "./thumbnails";
-import { templates } from "@/dialogs/resume/template/data";
+import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -33,6 +41,9 @@ const matchesFilter = (id: Template, filter: Filter) => {
 	if (filter === "ats") return layout.atsSafe;
 	return true;
 };
+
+const suitsField = (id: Template, field: CareerField | "all") =>
+	field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field);
 
 const layoutTags = (id: Template) => {
 	const layout = templateLayouts[id];
@@ -76,16 +87,18 @@ type TemplateGroupProps = {
  * it, on touch) previews it on the page; leaving the cards or pressing Esc restores the page; a click applies it.
  */
 export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
+	const { i18n } = useLingui();
 	const data = useResumeData();
 	const plan = usePlan();
 	const [filter, setFilter] = useState<Filter>("all");
+	const [field, setField] = useState<CareerField | "all">("all");
 	// Leaving Design (by shortcut, say) never leaves a preview on the page.
 	useEffect(() => () => useEditorStore.setState({ previewTemplate: null }), []);
 	if (!data) return null;
 
 	const current = data.metadata.template;
 	const content = thumbnailContent(data);
-	const shown = TEMPLATE_IDS.filter((id) => matchesFilter(id, filter));
+	const shown = TEMPLATE_IDS.filter((id) => matchesFilter(id, filter) && suitsField(id, field));
 	const filters: { id: Filter; label: string }[] = [
 		{ id: "all", label: t`All` },
 		{ id: "one", label: t`One column` },
@@ -105,6 +118,22 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 
 	return (
 		<div className="grid gap-3">
+			<NativeSelect variant="secondary" fullWidth>
+				<NativeSelect.Trigger
+					aria-label={t`Field of work`}
+					value={field}
+					onChange={(event) => setField(event.target.value as CareerField | "all")}
+				>
+					<NativeSelect.Option value="all">{t`All fields`}</NativeSelect.Option>
+					{careerFields.map((id) => (
+						<NativeSelect.Option key={id} value={id}>
+							{i18n._(careerFieldNames[id])}
+						</NativeSelect.Option>
+					))}
+					<NativeSelect.Indicator />
+				</NativeSelect.Trigger>
+			</NativeSelect>
+
 			{/* Chips rather than a segmented control: they wrap, so the four filters fit a 300px panel in any language. */}
 			<div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
 				<TagGroup
@@ -157,6 +186,13 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 					/>
 				))}
 			</div>
+			{shown.length === 0 && (
+				<p className="text-sm text-muted">
+					<Trans>No template matches both filters. Try All.</Trans>
+				</p>
+			)}
+
+			<PresetPanel data={data} template={current} />
 
 			{templateLayouts[current].columns === 2 && <SidebarPanel data={data} template={current} />}
 		</div>
@@ -252,6 +288,59 @@ export function PlanBadge({ locked }: PlanBadgeProps) {
 			Plus
 			{locked && <span className="sr-only">{t`Not in your plan`}</span>}
 		</span>
+	);
+}
+
+type PresetPanelProps = { data: ResumeData; template: Template };
+
+/**
+ * The template's own look (`templatePresets`): its fonts and accent, shown before it's applied. Switching templates
+ * keeps the user's fonts and colours; this applies the designed ones, with Undo.
+ */
+function PresetPanel({ data, template }: PresetPanelProps) {
+	const updateResumeData = useUpdateResumeData();
+	const preset = templatePresets[template];
+	const name = templates[template].name;
+	const inUse = hasTemplatePreset(data, template);
+	const fonts =
+		preset.heading.fontFamily === preset.body.fontFamily
+			? preset.heading.fontFamily
+			: `${preset.heading.fontFamily} · ${preset.body.fontFamily}`;
+
+	const apply = () => {
+		updateResumeData((draft) => applyTemplatePreset(draft, template), { newStep: true });
+		toast.add({
+			description: t`${name} style applied`,
+			actionProps: { children: t`Undo`, onClick: () => useResumeStore.getState().undo() },
+		});
+	};
+
+	return (
+		<div className="grid gap-3 rounded-xl bg-surface-secondary p-4">
+			<div className="flex items-center gap-3">
+				<span
+					aria-hidden="true"
+					className="size-6 shrink-0 rounded-full ring-1 ring-black/10 ring-inset dark:ring-white/15"
+					style={{ backgroundColor: preset.primary }}
+				/>
+				<div className="grid min-w-0 flex-1">
+					<p className="text-sm font-medium">
+						<Trans>{name} style</Trans>
+					</p>
+					<p className="truncate text-xs text-muted">{fonts}</p>
+				</div>
+			</div>
+			<p className="text-xs leading-4 text-muted">
+				<Trans>
+					The fonts, accent color, entry layout, skill keywords and photo shape {name} was designed with. Your content
+					stays.
+				</Trans>
+			</p>
+			<Button variant="secondary" size="sm" className="w-fit" isDisabled={inUse} onPress={apply}>
+				<Icon name={inUse ? "check" : "palette"} size={16} />
+				{inUse ? <Trans>Style in use</Trans> : <Trans>Use {name} style</Trans>}
+			</Button>
+		</div>
 	);
 }
 

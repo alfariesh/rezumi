@@ -20,7 +20,12 @@ import { LazyDisclosure } from "./lazy-disclosure";
 import { countEntriesToCheck, getEntries, getSectionObject } from "./model";
 import { IconPicker } from "@/components/input/icon-picker";
 import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
-import { useCurrentBuilderResumeSelector, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
+import {
+	useCurrentBuilderResumeSelector,
+	useResumeIconStyle,
+	useResumeStore,
+	useUpdateResumeData,
+} from "@/features/resume/builder/draft";
 import { usePrompt } from "@/hooks/use-confirm";
 import { getSectionTitle } from "@/libs/resume/section";
 
@@ -161,6 +166,7 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 	const settings = useCurrentBuilderResumeSelector((resume) => getSectionObject(resume.data, section) ?? null);
 	const locale = useCurrentBuilderResumeSelector((resume) => resume.data.metadata.page.locale);
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
+	const iconStyle = useResumeIconStyle();
 	if (!settings) return null;
 
 	const edit = (mutate: (target: NonNullable<ReturnType<typeof getSectionObject>>) => void) =>
@@ -389,6 +395,12 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 											</Label>
 											<Dropdown.ItemIndicator type="dot" />
 										</Dropdown.Item>
+										<Dropdown.Item id="tags" textValue={t`Chips`}>
+											<Label>
+												<Trans>Chips</Trans>
+											</Label>
+											<Dropdown.ItemIndicator type="dot" />
+										</Dropdown.Item>
 									</Dropdown.Menu>
 								</Dropdown.Popover>
 							</Dropdown.SubmenuTrigger>
@@ -440,6 +452,7 @@ function SectionMenu({ section, title, onMove }: SectionMenuProps) {
 			{/* The icon grid opens from the ⋯ button: an invisible trigger laid over it anchors the popover. */}
 			<IconPicker
 				value={settings.icon === "none" ? "" : settings.icon}
+				iconStyle={iconStyle}
 				onChange={(icon) => {
 					edit((target) => {
 						target.icon = icon === "" ? "none" : icon;
