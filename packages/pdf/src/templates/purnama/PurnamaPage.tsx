@@ -4,6 +4,7 @@ import type { LineupTemplate } from "../shared/lineup-page";
 import type { TemplateStyleContext } from "../shared/types";
 import { useMemo } from "react";
 import { StyleSheet } from "#react-pdf-renderer";
+import { useRender } from "../../context";
 import { TwoColumnLayout, useLineupBase } from "../shared/lineup-page";
 import { mixColors } from "../shared/tokens";
 
@@ -24,6 +25,22 @@ export const PurnamaPage = (props: TemplatePageProps) => {
 	);
 };
 
+/** A letter's rough advance in em, by its shape: enough to tell whether a word fits its line, not to set it. */
+const letterEm = (letter: string) =>
+	/[iljtfrI1.,'’|!:;]/.test(letter) ? 0.32 : /[mwMW]/.test(letter) ? 0.85 : /\p{Lu}/u.test(letter) ? 0.68 : 0.54;
+
+/**
+ * The name's size in the sidebar: its own, or smaller when its longest word would not fit the column, which Forme
+ * would break mid-word ("Kusumawar dhani"). Never below 60%, so a name stays a name.
+ */
+const sidebarNameSize = (name: string, size: number, tracking: number, room: number) => {
+	const words = name
+		.split(/\s+/)
+		.map((word) => [...word].reduce((sum, letter) => sum + letterEm(letter) + tracking, 0));
+	const widest = Math.max(0, ...words);
+	return widest * size > room ? Math.max(size * 0.6, room / widest) : size;
+};
+
 /** A slot that reads one way in the main column and another in the sidebar. */
 const bySide =
 	(main: Style, sidebar: Style) =>
@@ -31,10 +48,16 @@ const bySide =
 		placement === "sidebar" ? sidebar : main;
 
 const usePurnama = (): LineupTemplate => {
-	const { r, metrics, base, tokens, colors, tracking, lineup } = useLineupBase();
+	const { r, metrics, base, tokens, colors, tracking, lineup, metadata } = useLineupBase();
+	const { name } = useRender().basics;
 
 	return useMemo(() => {
 		const { size } = tokens;
+		// The sidebar's text width: its share of the paper, less the page margin and half the gutter (`TwoColumnLayout`).
+		const paper = metadata.page.format === "letter" ? 612 : 595.28;
+		const room =
+			(paper * metadata.layout.sidebarWidth) / 100 - metadata.page.marginX - metadata.typography.body.fontSize * 0.8;
+		const nameSize = sidebarNameSize(name, size.heading * 1.75, 0.01, room);
 		const sectionGap = metrics.gapY(2.4);
 		const light = tokens.onAccent;
 		const lightMuted = mixColors(light, tokens.accent, 0.72);
@@ -53,11 +76,11 @@ const usePurnama = (): LineupTemplate => {
 			headerTitle: { rowGap: metrics.gapY(1.4) },
 			headerIdentity: { ...r.headerIdentity, rowGap: metrics.gapY(0.5) },
 			headerName: {
-				fontSize: size.heading * 1.75,
+				fontSize: nameSize,
 				lineHeight: 1.05,
 				fontWeight: tokens.headingWeight,
 				color: light,
-				...tracking(0.01, size.heading * 1.75),
+				...tracking(0.01, nameSize),
 			},
 			headerHeadline: { fontSize: size.body, color: lightMuted, lineHeight: 1.35 },
 			contactList: { flexDirection: "column", rowGap: size.meta * 0.55 },
@@ -107,5 +130,5 @@ const usePurnama = (): LineupTemplate => {
 				}),
 			},
 		};
-	}, [r, metrics, base, tokens, colors, tracking, lineup]);
+	}, [r, metrics, base, tokens, colors, tracking, lineup, metadata, name]);
 };

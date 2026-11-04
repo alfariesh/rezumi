@@ -30,6 +30,7 @@ const useAtlas = (): LineupTemplate => {
 			sectionGroup: { flexDirection: "column", rowGap: sectionGap },
 			section: {
 				flexDirection: r.row,
+				alignItems: "flex-start",
 				columnGap: size.body * 1.8,
 				borderTopWidth: 0.6,
 				borderTopColor: tokens.hairline,
