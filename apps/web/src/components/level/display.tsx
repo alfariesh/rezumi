@@ -1,4 +1,4 @@
-import type { levelDesignSchema } from "@rezumi/schema/resume/data";
+import type { IconStyle, levelDesignSchema } from "@rezumi/schema/resume/data";
 import type z from "zod";
 import { t } from "@lingui/core/macro";
 import { cn } from "@rezumi/utils/style";
@@ -9,13 +9,24 @@ type Props = z.infer<typeof levelDesignSchema> &
 		level: number;
 		decorationSizePx?: number | undefined;
 		iconSizePx?: number | undefined;
+		/** The resume's icon style, for the icon level type. */
+		iconVariant?: IconStyle | undefined;
 	};
 
 const LEVEL_ITEM_KEYS = ["level-1", "level-2", "level-3", "level-4", "level-5"] as const;
 
 const defaultDecorationClassName = "size-2.5";
 
-export function LevelDisplay({ icon, type, level, className, decorationSizePx, iconSizePx, ...props }: Props) {
+export function LevelDisplay({
+	icon,
+	type,
+	level,
+	className,
+	decorationSizePx,
+	iconSizePx,
+	iconVariant,
+	...props
+}: Props) {
 	if (level === 0) return null;
 	if (type === "hidden" || icon === "") return null;
 
@@ -66,6 +77,7 @@ export function LevelDisplay({ icon, type, level, className, decorationSizePx, i
 						<ResumeIconGlyph
 							key={itemKey}
 							name={icon}
+							variant={iconVariant}
 							style={iconStyle}
 							className={cn(
 								"text-(--page-primary-color)",

@@ -1,16 +1,22 @@
-import { buttonVariants, Typography } from "@heroui/react";
+import type { CareerField } from "@rezumi/schema/templates";
+import { buttonVariants, Tag, TagGroup, Typography } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { templateLayouts, templateLineup } from "@rezumi/schema/templates";
+import { useState } from "react";
+import { careerFields, templateCareerFields, templateLayouts, templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
-import { templates } from "@/dialogs/resume/template/data";
+import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
 import { freeTemplates } from "@/features/homepage/plans";
 
 export function TemplateGallery() {
 	const { i18n } = useLingui();
 	const count = i18n.number(templateLineup.length);
 	const freeCount = i18n.number(freeTemplates.length);
+	const [field, setField] = useState<CareerField | "all">("all");
+	const shown = templateLineup.filter(
+		(id) => field === "all" || (templateCareerFields[id] as readonly CareerField[]).includes(field),
+	);
 
 	return (
 		<main id="main-content" className="min-h-svh bg-background px-5 pt-28 pb-16 text-foreground sm:px-8">
@@ -38,8 +44,29 @@ export function TemplateGallery() {
 					</p>
 				</div>
 
-				<div className="mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-					{templateLineup.map((id, index) => {
+				<TagGroup
+					aria-label={t`Templates for a field of work`}
+					selectionMode="single"
+					disallowEmptySelection
+					selectedKeys={[field]}
+					onSelectionChange={(keys) => {
+						const [key] = keys === "all" ? [] : [...keys];
+						if (key) setField(key as CareerField | "all");
+					}}
+					className="mt-12"
+				>
+					<TagGroup.List className="flex-wrap">
+						<Tag id="all">{t`All fields`}</Tag>
+						{careerFields.map((id) => (
+							<Tag key={id} id={id}>
+								{i18n._(careerFieldNames[id])}
+							</Tag>
+						))}
+					</TagGroup.List>
+				</TagGroup>
+
+				<div className="mt-8 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+					{shown.map((id, index) => {
 						const template = templates[id];
 						const name = template.name;
 						const layout = templateLayouts[id];

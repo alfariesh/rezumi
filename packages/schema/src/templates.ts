@@ -102,6 +102,34 @@ export const templateSummaries = {
 	senja: "Two columns, creative: accent block framing the portrait beside an oversized name.",
 } as const satisfies Record<Template, string>;
 
+/** Fields of work the template galleries filter by, in filter order. "graduate" is a first job or internship. */
+export const careerFields = ["tech", "creative", "finance", "government", "academic", "graduate"] as const;
+
+export type CareerField = (typeof careerFields)[number];
+
+/**
+ * The fields each template suits, from "Untuk siapa" in `.agents/docs/plans/cv-templates/00-keputusan.md`. Each field
+ * lists at least one free template. "government" covers civil service and state-owned companies (BUMN).
+ */
+export const templateCareerFields = {
+	meridian: ["tech", "finance", "graduate"],
+	sterling: ["finance", "government", "academic"],
+	aksara: ["creative"],
+	atlas: ["tech", "creative"],
+	tunas: ["graduate"],
+	summit: ["finance", "government"],
+	cendekia: ["academic", "graduate"],
+	wibawa: ["government", "graduate"],
+	tenun: ["government"],
+	vector: ["tech"],
+	kirana: ["creative", "graduate"],
+	linen: ["creative", "academic"],
+	horizon: ["tech", "finance"],
+	jejak: ["tech", "creative"],
+	purnama: ["finance", "creative"],
+	senja: ["creative"],
+} as const satisfies Record<Template, readonly CareerField[]>;
+
 /** How a template lays out the page. The single source for the gallery filters, the Check layout rule and DOCX. */
 export type TemplateLayout = {
 	/** Two-column templates print the sidebar as a column of its own; one-column templates read top to bottom. */

@@ -1,6 +1,19 @@
 import type { MessageDescriptor } from "@lingui/core";
-import type { Template } from "@rezumi/schema/templates";
+import type { CareerField, Template } from "@rezumi/schema/templates";
 import { msg } from "@lingui/core/macro";
+
+/** The galleries' field filter, in `careerFields` order (`templateCareerFields` says which templates suit each). */
+export const careerFieldNames = {
+	tech: msg({ comment: "Template gallery filter: technology jobs", message: "Tech" }),
+	creative: msg({ comment: "Template gallery filter: creative jobs such as design and writing", message: "Creative" }),
+	finance: msg({ comment: "Template gallery filter: finance, banking, law and consulting jobs", message: "Finance" }),
+	government: msg({
+		comment: "Template gallery filter: civil service and state-owned companies (Indonesian: Pemerintahan & BUMN)",
+		message: "Government & state-owned",
+	}),
+	academic: msg({ comment: "Template gallery filter: research, teaching and scholarships", message: "Academic" }),
+	graduate: msg({ comment: "Template gallery filter: a first job or internship", message: "Fresh graduate" }),
+} as const satisfies Record<CareerField, MessageDescriptor>;
 
 export type TemplateMetadata = {
 	name: string;

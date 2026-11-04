@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vite-plus/test";
 import z from "zod";
+import { FREE_TEMPLATES } from "./billing/catalog";
 import {
+	careerFields,
 	defaultTemplate,
 	formerTemplateSuccessor,
 	legacyTemplateSuccessors,
 	readableTemplateSchema,
+	templateCareerFields,
 	templateInputSchema,
 	templateLayouts,
 	templateLineup,
@@ -49,7 +52,7 @@ describe("template IDs", () => {
 
 	it("keeps per-template data for every template and nothing else", () => {
 		const sorted = (ids: readonly string[]) => [...ids].toSorted();
-		for (const record of [templateLayouts, templatePresets, templateSummaries])
+		for (const record of [templateLayouts, templatePresets, templateSummaries, templateCareerFields])
 			expect(sorted(Object.keys(record))).toEqual(sorted(templateLineup));
 	});
 
@@ -58,6 +61,16 @@ describe("template IDs", () => {
 		for (const [former, successor] of Object.entries(legacyTemplateSuccessors)) {
 			expect(templateLineup).toContain(successor);
 			expect(upgradeTemplateId(former)).toBe(successor);
+		}
+	});
+});
+
+describe("templateCareerFields", () => {
+	it("gives every template a field, and every field a free template", () => {
+		for (const id of templateLineup) expect(templateCareerFields[id].length).toBeGreaterThan(0);
+		for (const field of careerFields) {
+			const suited = templateLineup.filter((id) => (templateCareerFields[id] as readonly string[]).includes(field));
+			expect(suited.some((id) => (FREE_TEMPLATES as readonly string[]).includes(id))).toBe(true);
 		}
 	});
 });
