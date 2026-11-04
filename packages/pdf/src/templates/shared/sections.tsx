@@ -82,6 +82,7 @@ import { createRtlStyleHelpers } from "./rtl";
 import { getInlineItemWebsiteUrl, shouldRenderSeparateItemWebsite } from "./section-links";
 import { hasSplitRowText } from "./split-row";
 import { composeStyles, mergeStyles } from "./styles";
+import { mixColors } from "./tokens";
 
 type SectionItemsContextValue = {
 	itemStyle: StyleInput;
@@ -1010,12 +1011,17 @@ const defaultTagListStyle = { flexDirection: "row", flexWrap: "wrap", columnGap:
 const KeywordTags = ({ keywords }: { keywords: readonly string[] }) => {
 	const data = useRender();
 	const colors = useTemplateColors();
+	const placement = useTemplatePlacement();
 	const tagListStyle = useTemplateStyle("tagList");
 	const tagStyle = useTemplateStyle("tag");
 	const smallStyle = mergeStyles(useTemplateStyle("small"));
 	const fontSize = parseStyleFontSize(smallStyle.fontSize) ?? data.metadata.typography.body.fontSize * 0.875;
 	const logos = showsIcons(data.metadata, "logo");
 	const { rtl, row } = createRtlStyleHelpers(data.rtl);
+	// On a coloured sidebar (Kirana's wash, Purnama's night) chips take the sidebar's text colour, not the accent. The
+	// fill is mixed into the colour behind it here: Forme lays a translucent fill over white, whatever the background.
+	const band = placement === "sidebar" ? colors.sidebarBackground : undefined;
+	const ink = band ? (colors.sidebarForeground ?? colors.foreground) : colors.primary;
 	const defaultTagStyle = {
 		flexDirection: row,
 		alignItems: "center",
@@ -1023,7 +1029,7 @@ const KeywordTags = ({ keywords }: { keywords: readonly string[] }) => {
 		paddingHorizontal: fontSize * 0.5,
 		paddingVertical: fontSize * 0.15,
 		borderRadius: fontSize * 0.35,
-		backgroundColor: getPrimaryTint(colors.primary, 0.09),
+		backgroundColor: mixColors(ink, band ?? colors.background, band ? 0.14 : 0.09),
 	} satisfies Style;
 
 	return (
@@ -1033,12 +1039,7 @@ const KeywordTags = ({ keywords }: { keywords: readonly string[] }) => {
 				return (
 					<View key={index} style={composeStyles(defaultTagStyle, tagStyle)}>
 						{logo && (
-							<ResumeIcon
-								name={logo}
-								size={fontSize}
-								color={colors.primary}
-								variant={iconDesignOf(data.metadata.design).style}
-							/>
+							<ResumeIcon name={logo} size={fontSize} color={ink} variant={iconDesignOf(data.metadata.design).style} />
 						)}
 						<Small semanticField="keywords">{keyword}</Small>
 					</View>
