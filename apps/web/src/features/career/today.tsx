@@ -28,7 +28,7 @@ import {
 	useNow,
 	withUndo,
 } from "./shared";
-import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
+import { RowIcon } from "@/components/layout/icon-row";
 import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { WidgetAction } from "@/components/layout/widget-heading";
@@ -52,9 +52,9 @@ type Opportunity = RouterOutput["career"]["opportunities"][number];
 type HomePageProps = { schedule: string | undefined; onScheduleChange: (schedule: string | undefined) => void };
 
 /**
- * Home, the first page after signing in: what needs you and roles found by discovery in the main column; the next
- * interview, the documents edited last and the schedules beside it. Below 1024px it's one column, most urgent first:
- * Coming up, Needs you, Recent documents, New roles, Schedules.
+ * Home, the first page after signing in: the documents edited last lead the main column, as previews, then what needs
+ * you and roles found by discovery; the next interview and the schedules sit beside it. Below 1024px it's one column,
+ * most urgent first: Coming up, Needs you, Recent documents, New roles, Schedules.
  */
 export function HomePage({ schedule, onScheduleChange }: HomePageProps) {
 	const now = useNow();
@@ -104,6 +104,7 @@ export function HomePage({ schedule, onScheduleChange }: HomePageProps) {
 			)}
 			<div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
 				<div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-7">
+					{!firstRun && <RecentDocuments className="order-3 lg:order-none" />}
 					<NeedsYou now={now} onReview={reviewRoles} className="order-2 lg:order-none" />
 					<NewRoles
 						ref={rolesRef}
@@ -115,7 +116,6 @@ export function HomePage({ schedule, onScheduleChange }: HomePageProps) {
 				</div>
 				<div className="contents lg:flex lg:flex-col lg:gap-[18px]">
 					<ComingUp now={now} className="order-1 lg:order-none" />
-					{!firstRun && <RecentDocuments className="order-3 lg:order-none" />}
 					<Schedules deleted={deleted} onOpenSchedule={onScheduleChange} className="order-5 lg:order-none" />
 				</div>
 			</div>
@@ -236,7 +236,6 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 									const actionable = row.notice.type === "opportunities" || /^\/(?!\/)/.test(row.url ?? "");
 									return (
 										<CollapseRow key={row.id} role="listitem">
-											{index > 0 && <RowSeparator />}
 											<div
 												role="group"
 												aria-labelledby={`note-${row.id}`}
@@ -463,7 +462,6 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 								const offset = dayOffset(row.firstSeenAt, now);
 								return (
 									<CollapseRow key={row.id}>
-										{index > 0 && <RowSeparator />}
 										<RoleCard
 											row={row}
 											first={index === 0}
@@ -617,9 +615,13 @@ function ComingUp({ now, className }: ComingUpProps) {
 	return (
 		<CareerWidget title={t`Coming up`} icon="calendar-blank" className={className}>
 			<div className="flex items-start gap-3">
-				<span className="flex w-12 shrink-0 flex-col items-center rounded-xl bg-default py-1.5">
-					<span className="text-xs leading-4 font-medium text-muted">{format(start, { weekday: "short" })}</span>
-					<span className="text-xl leading-6 font-semibold tabular-nums">{format(start, { day: "numeric" })}</span>
+				<span className="flex w-14 shrink-0 flex-col items-stretch gap-0.5 rounded-xl bg-accent p-1">
+					<span className="text-center text-[11px] leading-4 font-semibold tracking-wide text-accent-foreground uppercase">
+						{format(start, { weekday: "short" })}
+					</span>
+					<span className="rounded-lg bg-surface/40 py-1 text-center text-xl leading-6 font-semibold text-accent-foreground tabular-nums">
+						{format(start, { day: "numeric" })}
+					</span>
 				</span>
 				<div className="grid min-w-0 gap-0.5">
 					<p className="flex items-center gap-1.5 text-sm font-semibold">
@@ -798,8 +800,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 							const done = !row.intervalDays && Boolean(row.lastQueuedAt);
 							return (
 								<CollapseRow key={row.id}>
-									{index > 0 && <RowSeparator />}
-									<div className={cn("flex items-start gap-3", index > 0 && "pt-3")}>
+									<div className={cn("flex items-start gap-3", index > 0 && "pt-4.5")}>
 										<RowIcon>
 											<Icon name={icon} size={20} />
 										</RowIcon>

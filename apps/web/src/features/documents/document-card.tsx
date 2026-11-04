@@ -117,7 +117,7 @@ export function RenameInput({ document, onDone }: RenameInputProps) {
 }
 
 /** A letter's page, drawn from lines: letters have no thumbnail render. */
-function LetterThumbnail({ name }: { name: string }) {
+export function LetterThumbnail({ name }: { name: string }) {
 	return (
 		<div aria-hidden="true" className="flex size-full flex-col gap-1.5 bg-white p-[14%]">
 			<span className="h-1.5 w-2/5 rounded-sm bg-[#c9c9c9]" />
@@ -181,7 +181,7 @@ export function DocumentCard({
 				style={introIndex === undefined ? undefined : stagger(introIndex)}
 				className={cardVariants({ variant: "default" }).base({
 					className: cn(
-						"group/card rounded-[20px] p-2 shadow-none ring-0 ring-accent transition-[box-shadow,translate] duration-quick ease-enter hover:-translate-y-0.5 hover:shadow-overlay",
+						"group/card rounded-2xl p-2 shadow-none ring-0 ring-accent transition-[box-shadow,translate] duration-quick ease-enter hover:-translate-y-0.5 hover:shadow-overlay",
 						(isNew || selected) && "ring-2",
 						introIndex !== undefined && ENTER_CLASS,
 						isNew && "animate-arrive",
@@ -195,7 +195,7 @@ export function DocumentCard({
 						label={document.name}
 						onSelect={selecting && onSelectedChange ? () => onSelectedChange(!selected) : undefined}
 						className={cn(
-							"relative block aspect-page overflow-hidden rounded-[12px] bg-white ring-1 ring-separator transition-[scale] duration-quick ease-enter active:scale-[0.98]",
+							"relative block aspect-page overflow-hidden rounded-lg bg-white ring-1 ring-separator transition-[scale] duration-quick ease-enter active:scale-[0.98]",
 							document.trashedAt && "pointer-events-none",
 						)}
 					>

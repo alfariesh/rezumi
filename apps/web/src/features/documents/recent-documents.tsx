@@ -8,21 +8,31 @@ import { Link } from "@tanstack/react-router";
 import { useId } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { OpenLink } from "./document-card";
-import { RowIcon } from "@/components/layout/icon-row";
-import { WidgetAction, WidgetHeading, widgetActionClass } from "@/components/layout/widget-heading";
+import { LetterThumbnail, OpenLink } from "./document-card";
+import { ResumeThumbnail } from "./resume-thumbnail";
+import { WidgetHeading, widgetActionClass } from "@/components/layout/widget-heading";
 import { useDialogStore } from "@/dialogs/store";
 import { formatRelativeTime } from "@/libs/locale";
 import { orpc } from "@/libs/orpc/client";
 
-/** How many documents Home lists: enough to pick up where you left off, short enough to stay a side column. */
-const LIMIT = 4;
+/** How many documents Home previews, before the tile that starts a new one. */
+const LIMIT = 3;
+
+/**
+ * The row of previews: a strip to swipe that runs to the widget's edges, so the next card peeks, and four equal
+ * columns once there's room. The 4px of vertical padding keeps the previews' rings from being clipped by the scroll.
+ */
+const ROW =
+	"-mx-4 -my-1 flex snap-x scroll-px-4 gap-5 overflow-x-auto px-4 py-1 [scrollbar-width:none] @2xl:mx-0 @2xl:grid @2xl:grid-cols-4 @2xl:overflow-visible @2xl:px-0";
+const ITEM = "w-36 shrink-0 snap-start @2xl:w-auto";
+/** The whole first page, at the page's own ratio. */
+const FRAME = "relative block aspect-page overflow-hidden rounded-lg bg-white ring-1 ring-separator";
 
 type RecentDocumentsProps = { className?: string | undefined };
 
 /**
- * Home's shortcut back into the editor: the documents edited last, newest first, each opening its editor. The full
- * library, with search, tags and sorting, stays in Documents.
+ * Home's way back into the editor: the first page of the documents edited last, newest first, each opening its editor,
+ * and a tile to start a new one. The full library, with search, tags and sorting, stays in Documents.
  */
 export function RecentDocuments({ className }: RecentDocumentsProps) {
 	const { i18n } = useLingui();
@@ -34,7 +44,7 @@ export function RecentDocuments({ className }: RecentDocumentsProps) {
 	const recent = data?.toSorted((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()).slice(0, LIMIT);
 
 	return (
-		<Widget role="region" aria-labelledby={titleId} className={className}>
+		<Widget role="region" aria-labelledby={titleId} className={cn(className)}>
 			<WidgetHeading
 				id={titleId}
 				icon="file-text"
@@ -44,17 +54,12 @@ export function RecentDocuments({ className }: RecentDocumentsProps) {
 						<Link to="/dashboard/documents" className={widgetActionClass}>
 							<Trans>All documents</Trans>
 						</Link>
-					) : recent ? (
-						<WidgetAction onPress={() => openDialog("document.new", undefined)}>
-							<Icon name="plus" size={16} />
-							<Trans>New document</Trans>
-						</WidgetAction>
 					) : undefined
 				}
 			/>
-			<Widget.Content className="grid gap-1 p-2">
+			<Widget.Content className="@container p-4">
 				{isError && !data ? (
-					<div className="flex flex-wrap items-center justify-between gap-2 px-2 py-1.5">
+					<div className="flex flex-wrap items-center justify-between gap-2 px-1 py-1.5">
 						<p className="text-sm text-muted">
 							<Trans>Couldn't load documents</Trans>
 						</p>
@@ -63,45 +68,71 @@ export function RecentDocuments({ className }: RecentDocumentsProps) {
 						</Button>
 					</div>
 				) : !recent ? (
-					<div role="status" className="grid gap-1">
+					<div role="status" className={ROW}>
 						<span className="sr-only">{t`Loading`}</span>
-						{[0, 1, 2].map((key) => (
-							<div key={key} className="flex items-center gap-3 px-2 py-2">
-								<Skeleton className="size-10 shrink-0 rounded-xl" />
-								<div className="grid flex-1 gap-2">
-									<Skeleton className="h-4 w-3/5 rounded-md" />
-									<Skeleton className="h-3 w-2/5 rounded-md" />
-								</div>
+						{Array.from({ length: LIMIT + 1 }, (_, key) => (
+							<div key={key} className={cn(ITEM, "grid content-start gap-2")}>
+								<Skeleton className="aspect-page rounded-lg" />
+								<Skeleton className="h-4 w-3/5 rounded-md" />
+								<Skeleton className="h-3 w-2/5 rounded-md" />
 							</div>
 						))}
 					</div>
-				) : recent.length === 0 ? (
-					<p className="px-2 py-1.5 text-sm text-muted">
-						<Trans>No documents yet.</Trans>
-					</p>
 				) : (
-					recent.map((document) => (
-						<OpenLink
-							key={document.id}
-							document={document}
+					<div className={ROW}>
+						{recent.map((document) => (
+							<OpenLink
+								key={document.id}
+								document={document}
+								className={cn(
+									ITEM,
+									"group/preview grid min-w-0 content-start gap-2 rounded-xl text-foreground no-underline",
+									"focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none",
+								)}
+							>
+								<span
+									className={cn(
+										FRAME,
+										"transition-[scale] duration-quick ease-enter group-hover/preview:ring-accent group-active/preview:scale-[0.98]",
+									)}
+								>
+									{document.type === "resume" ? (
+										<ResumeThumbnail resume={document} />
+									) : (
+										<LetterThumbnail name={document.name} />
+									)}
+								</span>
+								<span className="grid min-w-0 gap-0.5 px-0.5">
+									<span className="truncate text-sm font-medium">{document.name}</span>
+									<span className="truncate text-xs text-muted">
+										{document.type === "resume" ? t`Resume` : t`Cover letter`}
+										{" · "}
+										{formatRelativeTime(document.updatedAt, i18n.locale)}
+									</span>
+								</span>
+							</OpenLink>
+						))}
+						<button
+							type="button"
+							onClick={() => openDialog("document.new", undefined)}
 							className={cn(
-								"flex items-center gap-3 rounded-xl px-2 py-2 text-foreground no-underline transition-colors duration-quick hover:bg-default",
+								ITEM,
+								"group/new grid min-w-0 content-start gap-2 rounded-xl text-start text-foreground",
 								"focus-visible:ring-2 focus-visible:ring-focus focus-visible:outline-none",
 							)}
 						>
-							<RowIcon>
-								<Icon name={document.type === "resume" ? "file-text" : "envelope-simple"} size={20} />
-							</RowIcon>
-							<span className="grid min-w-0 flex-1 gap-0.5">
-								<span className="truncate text-sm font-medium">{document.name}</span>
-								<span className="truncate text-xs text-muted">
-									{document.type === "resume" ? t`Resume` : t`Cover letter`}
-									{" · "}
-									{formatRelativeTime(document.updatedAt, i18n.locale)}
-								</span>
+							<span
+								className={cn(
+									"grid aspect-page place-items-center rounded-lg bg-default text-muted transition-colors duration-quick group-hover/new:bg-default-hover group-hover/new:text-foreground",
+								)}
+							>
+								<Icon name="plus" size={24} />
 							</span>
-						</OpenLink>
-					))
+							<span className="px-0.5 text-sm font-medium">
+								<Trans>New document</Trans>
+							</span>
+						</button>
+					</div>
 				)}
 			</Widget.Content>
 		</Widget>
