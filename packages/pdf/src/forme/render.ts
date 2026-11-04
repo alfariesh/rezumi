@@ -156,6 +156,54 @@ function listItemsNeedingBreak(layout: RenderWithLayoutResult["layout"]): number
 	});
 }
 
+/** A title counts as left alone when less than this share of the page is left below it. */
+const ORPHANED_TITLE_ROOM = 0.15;
+
+/**
+ * Sections whose title ends a page while their first item starts the next one. Forme can't keep a title with what
+ * follows it, so these sections start on the next page instead. Only a title at the foot of its page moves: one
+ * higher up has room below it, so its item went on for other reasons (a large margin) and moving would cost a page.
+ */
+function orphanedSectionTitles(layout: RenderWithLayoutResult["layout"]): string[] {
+	type Section = { page: number; top: number; bottom: number; title: boolean; items: Set<number> };
+	const sections = new Map<string, Section>();
+	layout.pages.forEach((page, pageIndex) => {
+		const visit = (element: ElementInfo) => {
+			const file = element.sourceLocation?.file;
+			const tagged = file?.startsWith(NODE_SOURCE_PREFIX) || file?.startsWith(NODE_CONTENT_PREFIX);
+			if (file && tagged && !offPage(element.y) && element.height > 0.5) {
+				const segments = file.slice(file.indexOf(":") + 1).split("/");
+				const at = segments.findIndex(
+					(segment) => segment.startsWith("section-") && segment !== "section-items" && segment !== "section-heading",
+				);
+				if (at !== -1) {
+					const key = segments.slice(0, at + 1).join("/");
+					const isItem = segments[at + 1] === "section-items" && segments[at + 2]?.startsWith("item-") === true;
+					let section = sections.get(key);
+					if (!section) {
+						section = { page: pageIndex, top: element.y, bottom: element.y, title: false, items: new Set() };
+						sections.set(key, section);
+					}
+					if (section.page === pageIndex) section.top = Math.min(section.top, element.y);
+					if (isItem) section.items.add(pageIndex);
+					else if (section.page === pageIndex) {
+						section.title = true;
+						section.bottom = Math.max(section.bottom, element.y + element.height);
+					}
+				}
+			}
+			element.children.forEach(visit);
+		};
+		page.elements.forEach(visit);
+	});
+	return [...sections].flatMap(([key, section]) => {
+		const page = layout.pages[section.page];
+		if (!page || !section.title || section.items.has(section.page) || !section.items.has(section.page + 1)) return [];
+		const room = page.contentY + page.contentHeight - section.bottom;
+		return section.top > page.contentY + 1 && room < page.contentHeight * ORPHANED_TITLE_ROOM ? [key] : [];
+	});
+}
+
 /**
  * Where a box's content ends on a free-form measuring page. A box reaching the bottom of the space it sits in was
  * stretched to fill the measuring page (the content box around repeated backgrounds, a row page's columns,
@@ -278,14 +326,17 @@ export async function renderResumeElement(
 		return { result, warnings: converted.warnings };
 	};
 
-	// Explicit breaks keep markers with their first line and restore rows lost when an item moves to a new page.
-	// Breaks move what follows, so a few passes settle it; each item is repaired at most once.
+	// Explicit breaks keep markers with their first line, restore rows lost when an item moves to a new page and keep
+	// section titles with their first item. Breaks move what follows, so a few passes settle it; each item and section
+	// is repaired at most once.
 	const layOut = async (keepNestedRowsWhole: boolean) => {
 		for (let pass = 0; ; pass++) {
 			const laidOut = await layOutOnce(keepNestedRowsWhole);
 			const needsBreak = listItemsNeedingBreak(laidOut.result.layout).filter((item) => !breakBeforeListItems.has(item));
-			if (needsBreak.length === 0 || pass === 3) return laidOut;
+			const titles = orphanedSectionTitles(laidOut.result.layout).filter((key) => !breakBeforeNodes.has(key));
+			if ((needsBreak.length === 0 && titles.length === 0) || pass === 3) return laidOut;
 			for (const item of needsBreak) breakBeforeListItems.add(item);
+			for (const key of titles) breakBeforeNodes.add(key);
 		}
 	};
 

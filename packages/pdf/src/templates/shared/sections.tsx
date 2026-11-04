@@ -107,6 +107,8 @@ type SectionItemProps = {
 	style?: StyleInput;
 	/** Room added at the item's start on top of its own padding: the date column's dates sit there. */
 	indent?: number | undefined;
+	/** Keeps a short item on one page, for items without a header node to hold their first lines together. */
+	keepTogether?: boolean | undefined;
 };
 
 type InlineItemHeaderProps = {
@@ -540,7 +542,7 @@ const SectionItems = ({ children, columns = 1 }: SectionItemsProps) => {
 	);
 };
 
-const SectionItem = ({ itemId, children, style, indent }: SectionItemProps) => {
+const SectionItem = ({ itemId, children, style, indent, keepTogether = false }: SectionItemProps) => {
 	const { rtl } = useRender();
 	const sectionItemsNodeKey = useSemanticNodeKey();
 	const itemNodeKey = sectionItemsNodeKey ? semanticNodeKeys.item(sectionItemsNodeKey, itemId) : undefined;
@@ -563,10 +565,12 @@ const SectionItem = ({ itemId, children, style, indent }: SectionItemProps) => {
 		return composeStyles(...styles, { [side]: (typeof start === "number" ? start : 0) + indent });
 	};
 
+	const wrapProps = keepTogether ? { wrap: false as const } : {};
+
 	if (!useTimeline) {
 		return (
 			<SemanticNodeKeyProvider nodeKey={itemNodeKey}>
-				<Div nodeKey={itemNodeKey} style={withIndent(itemStyle, sectionItemStyle, style)}>
+				<Div nodeKey={itemNodeKey} {...wrapProps} style={withIndent(itemStyle, sectionItemStyle, style)}>
 					{children}
 				</Div>
 			</SemanticNodeKeyProvider>
@@ -575,7 +579,7 @@ const SectionItem = ({ itemId, children, style, indent }: SectionItemProps) => {
 
 	return (
 		<SemanticNodeKeyProvider nodeKey={itemNodeKey}>
-			<View style={composeStyles(timelineItemStyle)}>
+			<View {...wrapProps} style={composeStyles(timelineItemStyle)}>
 				<SemanticTemplatePartView
 					ownerNodeKey={itemNodeKey}
 					partKeys={["timeline-marker"]}
@@ -758,12 +762,17 @@ const SectionItemHeader = ({ children, style }: SectionItemHeaderProps) => {
 	const itemNodeKey = useSemanticNodeKey();
 	const itemHeaderNodeKey = itemNodeKey ? semanticNodeKeys.itemHeader(itemNodeKey) : undefined;
 	const sectionItemHeaderStyle = useTemplateStyle("sectionItemHeader");
+	const { useTimeline } = useSectionItemsContext();
 	const exists = useSemanticNodeExists(itemHeaderNodeKey);
 	if (!exists) return <>{children}</>;
 
+	// A header is a few short rows, so it stays on one page: Forme breaks a row's columns apart, which left a title on
+	// one page and its date or degree on the next. Not on a timeline, whose dot sits in a column of its own and would
+	// stay behind on the first page.
+	const wrapProps = useTimeline ? {} : { wrap: false as const };
 	return (
 		<SemanticNodeKeyProvider nodeKey={itemHeaderNodeKey}>
-			<Div nodeKey={itemHeaderNodeKey} style={composeStyles(sectionItemHeaderStyle, style)}>
+			<Div nodeKey={itemHeaderNodeKey} {...wrapProps} style={composeStyles(sectionItemHeaderStyle, style)}>
 				{children}
 			</Div>
 		</SemanticNodeKeyProvider>
@@ -1694,7 +1703,8 @@ const LanguagesSection = ({ sectionId = "languages", sectionData }: ItemSectionP
 		<SectionShell sectionId={sectionId} title={languages.title}>
 			<SectionItems columns={languages.columns}>
 				{items.map((item) => (
-					<SectionItem key={item.id} itemId={item.id}>
+					// A language is two or three short lines (name, fluency, level) and has no header node to keep them together.
+					<SectionItem key={item.id} itemId={item.id} keepTogether>
 						<View style={{ flexGrow: languages.columns > 1 ? 1 : 0 }}>
 							<SectionItemHeader>
 								<Bold semanticField="language">{item.language}</Bold>
