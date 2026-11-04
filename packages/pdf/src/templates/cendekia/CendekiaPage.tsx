@@ -36,7 +36,7 @@ const useCendekia = (): LineupTemplate => {
 				borderBottomWidth: 0.6,
 				borderBottomColor: tokens.hairline,
 				paddingBottom: size.body * 0.2,
-				...tracking(0.08, size.body),
+				...tracking(0.06, size.body),
 			},
 			sectionItems: { rowGap: metrics.gapY(1.1) },
 			item: { rowGap: metrics.gapY(0.25) },

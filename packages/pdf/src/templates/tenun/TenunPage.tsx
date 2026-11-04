@@ -38,7 +38,7 @@ const useTenun = (): LineupTemplate => {
 				borderBottomColor: rule,
 				paddingHorizontal: size.body * 0.8,
 				paddingVertical: size.body * 0.4,
-				...tracking(0.1, size.label),
+				...tracking(0.06, size.label),
 			},
 			sectionItems: {
 				rowGap: metrics.gapY(1),

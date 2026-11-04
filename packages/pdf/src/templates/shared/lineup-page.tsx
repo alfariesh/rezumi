@@ -136,8 +136,16 @@ export const OneColumnLayout = ({
 };
 
 /**
+ * The most letter-spacing a lineup template gives text, in em. From about a tenth of an em, text extractors (pdf.js at
+ * 0.102 em, pdfminer and the parsers behind ATS near 0.1) read the gap after each letter as a space and return
+ * "E D U C A T I O N", so the section, or the name, is lost to them. 0.06 em leaves room for any font and size.
+ */
+const MAX_TRACKING_EM = 0.06;
+
+/**
  * What a lineup template's style hook starts from: the base template values plus the design tokens, the template
- * colours and a tracking helper that leaves Arabic script alone (letter-spacing breaks its joins).
+ * colours and a tracking helper that leaves Arabic script alone (letter-spacing breaks its joins) and never spaces
+ * letters past {@link MAX_TRACKING_EM}.
  */
 export const useLineupBase = () => {
 	const base = useTemplateBase();
@@ -145,7 +153,8 @@ export const useLineupBase = () => {
 		const { metadata, r, foreground, background, primary } = base;
 		const tokens = createDesignTokens({ metadata, foreground, background, primary });
 		const colors: TemplateColorRoles = { foreground, background, primary };
-		const tracking = (em: number, fontSize: number): Style => (r.rtl ? {} : { letterSpacing: em * fontSize });
+		const tracking = (em: number, fontSize: number): Style =>
+			r.rtl ? {} : { letterSpacing: Math.min(em, MAX_TRACKING_EM) * fontSize };
 		const lineup = createLineupStyles({ base: base.base, tokens });
 		return { ...base, tokens, colors, tracking, lineup };
 	}, [base]);
@@ -202,6 +211,12 @@ export const TwoColumnLayout = ({
 	);
 	const bandSide = sidebarEnd !== columnsReversed ? "right" : "left";
 	const { rowGap: sectionGap = 0 } = styles.sectionGroup;
+	// The columns go in reading order, the column with the name first, else the main one, and the row's direction puts
+	// a sidebar that comes later back at the start of the line. A browser then reads the public page main column first;
+	// the PDF does once Forme lays `row-reverse` out itself (today `to-forme` turns it into a reversed `row`).
+	const sidebarFirst = showHeader && headerPlacement === "sidebar-only";
+	const flipped = r.columns === "row" ? "row-reverse" : "row";
+	const columnsDirection = sidebarFirst === sidebarEnd ? flipped : r.columns;
 
 	const sidebarColumn = showSidebar && (
 		<View
@@ -274,8 +289,8 @@ export const TwoColumnLayout = ({
 				)}
 				{decoration}
 				{showHeader && headerPlacement === "full-width" && headerNode}
-				<View style={composeStyles({ flexDirection: r.columns, flexGrow: 1 }, styles.columns)}>
-					{sidebarEnd ? [mainColumn, sidebarColumn] : [sidebarColumn, mainColumn]}
+				<View style={composeStyles({ flexDirection: columnsDirection, flexGrow: 1 }, styles.columns)}>
+					{sidebarFirst ? [sidebarColumn, mainColumn] : [mainColumn, sidebarColumn]}
 				</View>
 			</TemplateProvider>
 		</Page>
