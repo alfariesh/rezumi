@@ -155,7 +155,7 @@ export function OffersPage({ a, b }: OffersPageProps) {
 			</CareerWidget>
 
 			<div className="grid gap-4">
-				<Alert status="warning">
+				<Alert status="warning" className="rounded-2xl shadow-none">
 					<Alert.Indicator className="shrink-0" />
 					<Alert.Content>
 						<Alert.Title>

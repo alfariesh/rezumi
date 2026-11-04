@@ -11,7 +11,7 @@ type ToolApprovalsProps = {
 
 export function ToolApprovals({ message, disabled, onDecision }: ToolApprovalsProps) {
 	return agentApprovalRequests(message).map(({ id, kind, text }) => (
-		<div key={id} className="my-3 grid gap-3 rounded-lg border border-separator bg-surface-secondary p-4">
+		<div key={id} className="my-3 grid w-fit max-w-full gap-3 rounded-2xl rounded-ss-none bg-surface px-4 py-2.5">
 			<p className="text-sm font-medium">
 				{kind === "search" ? (
 					<Trans>Send this exact query to your web search provider?</Trans>

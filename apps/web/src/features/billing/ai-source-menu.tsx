@@ -102,7 +102,7 @@ export function AiCostNote({ action, providerId, className }: AiCostNoteProps) {
 	if (!choice || !managed || providerId !== managed.id) return null;
 	const cost = creditCount(creditCost(action));
 	return (
-		<span className={cn(REZUMI_AI_TEXT, className)}>
+		<span className={cn(REZUMI_AI_TEXT, "text-xs", className)}>
 			<Trans>
 				Rezumi AI · {cost} · {creditCount(balance)} left
 			</Trans>
