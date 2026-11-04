@@ -178,7 +178,8 @@ describe("semantic binding host fidelity", () => {
 		kirana: 0,
 		linen: 0,
 		horizon: 0,
-		jejak: 4,
+		// The fixture prints only the summary, which Jejak keeps off its trail: just the timeline content.
+		jejak: 1,
 		purnama: 1,
 		senja: 0,
 	} as const satisfies Record<Template, number>;
@@ -191,6 +192,16 @@ describe("semantic binding host fidelity", () => {
 			expect(nodesWithStyle(document, "opacity", 0.37)).toHaveLength(expected);
 		},
 	);
+
+	it("attaches Jejak's trail (line, marker, dot, content) to existing hosts where two entries join", async () => {
+		const data = buildFixture("template-part { opacity: 0.37; }", "experience");
+		const [job] = data.sections.experience.items;
+		if (job) data.sections.experience.items.push({ ...job, id: "experience-2", company: "Difference Engines" });
+		const document = await renderFixture("jejak", data);
+
+		// One line for the section, then a marker, a dot and a content box per entry.
+		expect(nodesWithStyle(document, "opacity", 0.37)).toHaveLength(7);
+	});
 
 	it("attaches the one-line entry header's parts to existing hosts", async () => {
 		const data = buildFixture("template-part { opacity: 0.37; }", "experience");

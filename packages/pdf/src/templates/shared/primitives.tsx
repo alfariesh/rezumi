@@ -4,6 +4,7 @@ import type { StyleInput } from "./styles";
 import type { ComponentProps, ReactNode } from "react";
 import { Children, isValidElement } from "react";
 import { iconDesignOf } from "@rezumi/schema/resume/data";
+import { upgradeIconName } from "@rezumi/schema/resume/icon-names";
 import { Image, View } from "#react-pdf-renderer";
 import { useRender } from "../../context";
 import { ResumeIcon } from "../../forme/icons";
@@ -242,11 +243,14 @@ export const Icon = ({
 	size: sizeProp,
 	nodeKey,
 	iconRole = "item",
+	keepSpace = false,
 	...props
 }: ComponentProps<typeof ResumeIcon> & {
 	nodeKey?: string | undefined;
 	/** Which of the resume's icon switches shows this icon. */
 	iconRole?: IconRole | undefined;
+	/** Keeps the icon's room when there is no icon to draw, so the text beside it lines up with lines that have one. */
+	keepSpace?: boolean | undefined;
 }) => {
 	const { metadata } = useRender();
 	const itemSlot = useTemplateIconSlot("icon");
@@ -272,6 +276,13 @@ export const Icon = ({
 			styles: [asStyleInput(style), resolved.style],
 		}) ?? templateIconSize;
 
+	// An empty or hidden icon has no node to resolve: its room is a plain box of the icon's size.
+	const glyph = upgradeIconName(props.name);
+	if (keepSpace && (!glyph || glyph === "none")) {
+		if (iconProps.display === "none" || !showsIcons(metadata, iconRole)) return null;
+		const room = resolvedSize ?? 16;
+		return <View style={{ width: room, height: room, flexShrink: 0 }} />;
+	}
 	if (iconProps.display === "none" || !visible || !showsIcons(metadata, iconRole)) return null;
 
 	return (

@@ -722,6 +722,9 @@ const partMatchesOwner = ({
 	if ("sectionTypes" in part.owner && part.owner.sectionTypes) {
 		if (!section || !part.owner.sectionTypes.includes(section.attributes.type as CustomSectionType)) return false;
 	}
+	if ("minItems" in part.owner && part.owner.minItems !== undefined) {
+		if (node.children.filter(({ kind }) => kind === "item").length < part.owner.minItems) return false;
+	}
 	if (
 		"entryLayout" in part.owner &&
 		part.owner.entryLayout &&

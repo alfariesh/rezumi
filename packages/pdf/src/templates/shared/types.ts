@@ -25,6 +25,8 @@ export type TemplateIconSlot =
 	| ((context: TemplateStyleContext) => Partial<TemplateIconProps>);
 
 export type TemplateFeatures = {
+	/** Contact lines without an icon keep the icon's room, so every line's text starts in one column (Wibawa). */
+	contactIconColumn?: boolean;
 	sectionTimeline?: boolean;
 	stackSidebarItemHeader?: boolean;
 	skillLevelAfterName?: boolean;
