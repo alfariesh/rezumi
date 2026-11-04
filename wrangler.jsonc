@@ -15,7 +15,7 @@
 	"rules": [
 		{ "type": "ESModule", "globs": ["index.js"], "fallthrough": false },
 		{ "type": "CompiledWasm", "globs": ["*.wasm"], "fallthrough": false },
-		{ "type": "Text", "globs": ["prompts/*.md"], "fallthrough": false },
+		{ "type": "Text", "globs": ["prompts/*.md", "hugeicons/*/*.json"], "fallthrough": false },
 	],
 	"assets": {
 		"directory": "apps/server/dist-cloudflare/assets",

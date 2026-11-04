@@ -195,7 +195,14 @@ try {
 	const pdf = Buffer.from(await response.arrayBuffer());
 	assert.equal(pdf.subarray(0, 5).toString(), "%PDF-");
 	assert(pdf.includes(Buffer.from("/Subtype /Image")), "Uploaded picture must be embedded in PDF");
-	assert.equal((await client.resume.getById({ id })).data.basics.name, "Cloudflare Native");
+	const updated = (await client.resume.getById({ id })).data;
+	assert.equal(updated.basics.name, "Cloudflare Native");
+	// Icon drawings load from Text modules beside the script; the same resume without icons draws less.
+	updated.metadata.design.icons = { ...updated.metadata.design.icons, enabled: false };
+	await client.resume.update({ id, data: updated });
+	response = await request(`/api/resumes/workersmoke/${resume.slug}/pdf`);
+	assert.equal(response.status, 200, await response.clone().text());
+	assert(pdf.length > (await response.arrayBuffer()).byteLength, "Resume icons must draw in Worker PDFs");
 	const thread = await client.agent.threads.start({ resumeId: id });
 	const send = (text, signal) =>
 		client.agent.messages.send(
@@ -276,7 +283,7 @@ try {
 		null,
 	);
 	console.log(
-		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures, assistant streaming/stop, atomic limits, expiry.",
+		"Cloudflare smoke passed: auth, native cron, transactions, R2 privacy, live updates, PDF pictures and icons, assistant streaming/stop, atomic limits, expiry.",
 	);
 } catch (error) {
 	for (const log of harness?.getLogs() ?? []) {
