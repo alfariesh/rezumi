@@ -58,7 +58,7 @@ export function revealSelectionInPanel(selection: EditorSelection) {
 export function keepOpenedEntryInView(entryId: string) {
 	window.setTimeout(() => {
 		const card = document.getElementById(entryElementId(entryId));
-		const panel = card?.closest('[data-slot="tabs-content"]');
+		const panel = card?.closest("[data-editor-panel]");
 		if (!card || !panel) return;
 		if (card.getBoundingClientRect().top < panel.getBoundingClientRect().top) {
 			card.scrollIntoView({ block: "start", behavior: getScrollBehavior() });

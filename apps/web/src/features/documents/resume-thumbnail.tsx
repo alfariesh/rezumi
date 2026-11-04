@@ -110,7 +110,7 @@ function useResumeThumbnail(resume: ThumbnailResume, size: ResumeThumbnailSize, 
 			return enqueueThumbnailRender(async () => {
 				const { data } = await queryClient.fetchQuery(orpc.resume.getById.queryOptions({ input: { id: resume.id } }));
 				signal.throwIfAborted();
-				const pdf = await createResumePdfBlob(data);
+				const pdf = await createResumePdfBlob(data, undefined, { signal });
 				const image = await createPdfFirstPageImage(pdf, size, signal);
 				void storeThumbnail(resume.id, version, image);
 				return URL.createObjectURL(image);

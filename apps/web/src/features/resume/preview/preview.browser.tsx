@@ -33,8 +33,8 @@ type PreviewPdf = {
 };
 
 const UPDATE_DEBOUNCE_MS = 100;
-// While a field has focus the page waits for a pause in typing, so rendering (about 230 ms for two pages,
-// on the main thread) doesn't compete with keystrokes.
+// While a field has focus the page waits for a pause in typing, so drawing the new pages on the main thread doesn't
+// compete with keystrokes.
 const TYPING_DEBOUNCE_MS = 250;
 // Incoming layer fades in over the old one; the old layer holds at full opacity until the incoming one is opaque,
 // then drops out. Fading both at once dips the page towards the background mid-swap.
@@ -143,6 +143,8 @@ export function ResumePreviewClient({
 		if (paused) return;
 
 		let cancelled = false;
+		// A newer render supersedes this one: if it's still waiting for the worker, the worker skips it.
+		const abort = new AbortController();
 		const requestId = ++requestIdRef.current;
 		const delay = !hasPreviewRef.current ? 0 : isEditableElementFocused() ? TYPING_DEBOUNCE_MS : UPDATE_DEBOUNCE_MS;
 
@@ -161,6 +163,7 @@ export function ResumePreviewClient({
 					onLostCharacters: (characters) => {
 						lost = characters;
 					},
+					signal: abort.signal,
 				});
 
 				if (!stale()) {
@@ -194,6 +197,7 @@ export function ResumePreviewClient({
 
 		return () => {
 			cancelled = true;
+			abort.abort();
 			window.clearTimeout(timeoutId);
 		};
 	}, [paused, resumeData, includeCoverLetterHeader, attempt]);

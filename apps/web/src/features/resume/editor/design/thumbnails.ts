@@ -17,17 +17,31 @@ const SIZE = { width: 344, height: 486 };
 const fingerprint = (data: ResumeData) =>
 	fnv1a(JSON.stringify({ ...data, metadata: { ...data.metadata, template: null } })).toString(36);
 
+export type ThumbnailContent = { hash: string; hasContent: boolean };
+
+/** What every thumbnail keys on. The gallery works it out once per change and hands it to each card. */
+export function thumbnailContent(data: ResumeData): ThumbnailContent {
+	return {
+		hash: fingerprint(data),
+		// New resumes inherit account details; those alone don't show a template's section layout.
+		hasContent: Boolean(
+			buildMarkdown({ ...data, basics: defaultResumeData.basics }).trim() || (!data.picture.hidden && data.picture.url),
+		),
+	};
+}
+
 /**
  * A template's first page rendered from the user's own content, font and colour. Cached by template and
  * content; until it's ready the gallery shows the template's sample image, so the grid never jumps.
  */
-export function useTemplateThumbnail(template: Template, data: ResumeData, enabled: boolean) {
+export function useTemplateThumbnail(
+	template: Template,
+	data: ResumeData,
+	enabled: boolean,
+	content: ThumbnailContent = thumbnailContent(data),
+) {
 	const queryClient = useQueryClient();
-	const hash = fingerprint(data);
-	// New resumes inherit account details; those alone don't show a template's section layout.
-	const hasContent = Boolean(
-		buildMarkdown({ ...data, basics: defaultResumeData.basics }).trim() || (!data.picture.hidden && data.picture.url),
-	);
+	const { hash, hasContent } = content;
 
 	useEffect(() => {
 		releaseThumbnailUrls(queryClient, QUERY_KEY);
@@ -37,7 +51,9 @@ export function useTemplateThumbnail(template: Template, data: ResumeData, enabl
 		queryKey: [QUERY_KEY, template, hash],
 		queryFn: ({ signal }) =>
 			enqueueThumbnailRender(async () => {
-				const pdf = await createResumePdfBlob({ ...data, metadata: { ...data.metadata, template } });
+				const pdf = await createResumePdfBlob({ ...data, metadata: { ...data.metadata, template } }, undefined, {
+					signal,
+				});
 				return URL.createObjectURL(await createPdfFirstPageImage(pdf, SIZE, signal));
 			}, signal),
 		enabled: enabled && hasContent,

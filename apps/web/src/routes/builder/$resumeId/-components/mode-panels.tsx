@@ -2,6 +2,7 @@ import type { EditorMode } from "@/features/resume/editor/store";
 import { lazyRouteComponent } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { CheckPanel } from "@/features/resume/editor/check/check-panel";
+import { KeptModes } from "@/features/resume/editor/chrome/shell";
 import { OfflineBanner } from "@/features/resume/editor/save-status";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { selectionFromPanelElement } from "@/features/resume/editor/write/reveal";
@@ -33,19 +34,23 @@ export function ModePanel({ mode }: { mode: EditorMode }) {
 	return (
 		<>
 			<OfflineBanner className="mx-4 mt-4 w-auto" />
-			{mode === "design" ? (
-				<Suspense>
-					<DesignPanel />
-				</Suspense>
-			) : mode === "check" ? (
-				<CheckPanel />
-			) : mode === "share" ? (
-				<Suspense>
-					<SharePanel />
-				</Suspense>
-			) : (
-				<WriteMode />
-			)}
+			<KeptModes mode={mode}>
+				{(kept) =>
+					kept === "design" ? (
+						<Suspense>
+							<DesignPanel />
+						</Suspense>
+					) : kept === "check" ? (
+						<CheckPanel />
+					) : kept === "share" ? (
+						<Suspense>
+							<SharePanel />
+						</Suspense>
+					) : (
+						<WriteMode />
+					)
+				}
+			</KeptModes>
 		</>
 	);
 }

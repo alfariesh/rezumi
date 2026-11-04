@@ -20,7 +20,13 @@ import {
 } from "@/features/letters/use-letter-mode";
 import { useLetterWebMcpTools } from "@/features/letters/webmcp";
 import { usePreviewPausedStore } from "@/features/resume/builder/draft";
-import { EditorFrame, MobileTabBar, useEditorLayout } from "@/features/resume/editor/chrome/shell";
+import {
+	EditorFrame,
+	KeptModes,
+	MobilePanel,
+	MobileTabBar,
+	useEditorLayout,
+} from "@/features/resume/editor/chrome/shell";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { switchModeInstantly } from "@/libs/motion";
 
@@ -64,7 +70,9 @@ export function LetterShell() {
 }
 
 function ModePanel({ mode }: { mode: LetterMode }) {
-	return mode === "design" ? <LetterDesignPanel /> : <LetterWritePanel />;
+	return (
+		<KeptModes mode={mode}>{(kept) => (kept === "design" ? <LetterDesignPanel /> : <LetterWritePanel />)}</KeptModes>
+	);
 }
 
 type MobileView = "write" | "page" | "design";
@@ -89,11 +97,9 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 				<main id="main-content" className={cn("h-full", view !== "page" && "invisible")}>
 					<LetterPage />
 				</main>
-				{view !== "page" && (
-					<section key={mode} className="absolute inset-0 overflow-y-auto bg-background [overflow-anchor:none]">
-						<ModePanel mode={mode} />
-					</section>
-				)}
+				<MobilePanel mode={mode} visible={view !== "page"}>
+					<ModePanel mode={mode} />
+				</MobilePanel>
 			</div>
 
 			<MobileTabBar

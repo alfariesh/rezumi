@@ -62,10 +62,14 @@ export function WritePanel() {
  */
 function ImportedNote() {
 	const { imported } = useSearch({ strict: false }) as { imported?: string };
+	return imported ? <ImportedSummary imported={imported} /> : null;
+}
+
+/** Subscribes to the resume only while the note shows. */
+function ImportedSummary({ imported }: { imported: string }) {
 	const navigate = useNavigate();
 	const data = useCurrentBuilderResumeSelector((resume) => resume.data);
 	const { sections, entries, toCheck } = summarizeContent(data);
-	if (!imported) return null;
 
 	const dismiss = () =>
 		void navigate({

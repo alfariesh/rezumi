@@ -2,7 +2,7 @@ import type { WriteSection } from "./model";
 import type { SectionType } from "@rezumi/schema/resume/data";
 import type { KeyboardEvent, ReactNode } from "react";
 import type { Selection } from "react-aria-components";
-import { Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
+import { Chip, Dropdown, Label, Separator } from "@heroui/react";
 import { i18n } from "@lingui/core";
 import { plural, t } from "@lingui/core/macro";
 import { Plural, Trans } from "@lingui/react/macro";
@@ -16,6 +16,7 @@ import { cn } from "@rezumi/utils/style";
 import { pendingProposals } from "../proposals/proposals";
 import { useEditorStore } from "../store";
 import { addEntryTo } from "./actions";
+import { LazyDisclosure } from "./lazy-disclosure";
 import { countEntriesToCheck, getEntries, getSectionObject } from "./model";
 import { IconPicker } from "@/components/input/icon-picker";
 import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
@@ -144,13 +145,9 @@ export function SectionRow({ section, index, locked, onMove, children }: Section
 				{!locked && <SectionMenu section={section} title={title} onMove={onMove} />}
 			</div>
 
-			<Disclosure isExpanded={open}>
-				<Disclosure.Content>
-					<Disclosure.Body>
-						<div className="grid gap-2 ps-[26px] pt-1 pb-3">{children}</div>
-					</Disclosure.Body>
-				</Disclosure.Content>
-			</Disclosure>
+			<LazyDisclosure open={open}>
+				<div className="grid gap-2 ps-[26px] pt-1 pb-3">{children}</div>
+			</LazyDisclosure>
 		</div>
 	);
 }
@@ -473,6 +470,8 @@ const NONE: readonly never[] = [];
 /** The assistant's pending edits in a section, while the assistant is open: "2 proposed". */
 function useProposedCount(sectionId: string) {
 	const proposals = useEditorStore((state) => (state.assistantOpen ? state.assistantProposals : NONE));
-	const data = useCurrentBuilderResumeSelector((resume) => resume.data);
-	return pendingProposals(data, proposals, sectionId).length;
+	// Selects the count, so typing re-renders a row only when its count changes.
+	return useCurrentBuilderResumeSelector((resume) =>
+		proposals.length === 0 ? 0 : pendingProposals(resume.data, proposals, sectionId).length,
+	);
 }

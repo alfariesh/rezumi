@@ -1,8 +1,9 @@
 import type { MobileView } from "@/features/resume/editor/store";
 import type { IconName } from "@rezumi/ui/components/icon";
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactNode, UIEvent } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { Activity, useLayoutEffect, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
@@ -135,21 +136,85 @@ type PanelColumnProps = Omit<BodyProps, "page">;
  * sit on the window, 12px from its edge, in line with the bar's back button above them.
  */
 function PanelColumn({ mode, modes, panelLabel, panel }: PanelColumnProps) {
+	const scroll = useModeScroll(mode);
+
 	return (
 		<div className="flex min-h-0 min-w-0 flex-col">
 			{/* The same scrollbar gutter as the panel below, so the switch and the widgets share both edges. */}
 			<div className="shrink-0 [scrollbar-gutter:stable] overflow-hidden px-3 pb-1">{modes}</div>
 			<section
-				key={mode}
+				{...scroll}
+				data-editor-panel
 				aria-label={panelLabel}
 				// `relative`: absolutely positioned descendants (sr-only text, say) stay inside this scroller instead of
-				// stretching the document, which would let scrollIntoView shift the whole editor. Keyed by mode so each
-				// mode starts at its top; no scroll anchoring, which yanked the Design panel back while scrolling it.
+				// stretching the document, which would let scrollIntoView shift the whole editor. No scroll anchoring,
+				// which yanked the Design panel back while scrolling it.
 				className="relative min-h-0 flex-1 scrollbar [scrollbar-gutter:stable] overflow-y-auto [overflow-anchor:none]"
 			>
 				{panel}
 			</section>
 		</div>
+	);
+}
+
+/**
+ * One scroller for every mode: a mode opens at its top the first time and where it was left after that. Positions
+ * are kept as the panel scrolls, since hiding the old mode's panel can clamp the scroller before a switch is seen.
+ */
+function useModeScroll(mode: string) {
+	const ref = useRef<HTMLElement>(null);
+	const positions = useRef(new Map<string, number>());
+
+	useLayoutEffect(() => {
+		if (ref.current) ref.current.scrollTop = positions.current.get(mode) ?? 0;
+	}, [mode]);
+
+	return {
+		ref,
+		onScroll: (event: UIEvent<HTMLElement>) => positions.current.set(mode, event.currentTarget.scrollTop),
+	};
+}
+
+type KeptModesProps<M extends string> = { mode: M; children: (mode: M) => ReactNode };
+
+/**
+ * Each mode's panel mounts the first time it opens and then stays, hidden, so switching back is instant and keeps
+ * what was open in it. A hidden panel drops its subscriptions and catches up when it shows again.
+ */
+export function KeptModes<M extends string>({ mode, children }: KeptModesProps<M>) {
+	const [opened, setOpened] = useState<readonly M[]>([mode]);
+	if (!opened.includes(mode)) setOpened([...opened, mode]);
+
+	return opened.map((kept) => (
+		<Activity key={kept} mode={kept === mode ? "visible" : "hidden"}>
+			{children(kept)}
+		</Activity>
+	));
+}
+
+type MobilePanelProps = { mode: string; visible: boolean; children: ReactNode };
+
+/** Phones: the mode's panel over the page. It stays mounted, hidden, while the page shows. */
+export function MobilePanel({ mode, visible, children }: MobilePanelProps) {
+	return (
+		<Activity mode={visible ? "visible" : "hidden"}>
+			<MobileScroller mode={mode}>{children}</MobileScroller>
+		</Activity>
+	);
+}
+
+/** Inside the Activity, so showing the panel again re-runs the scroll restore. */
+function MobileScroller({ mode, children }: Omit<MobilePanelProps, "visible">) {
+	const scroll = useModeScroll(mode);
+
+	return (
+		<section
+			{...scroll}
+			data-editor-panel
+			className="absolute inset-0 overflow-y-auto bg-background [overflow-anchor:none]"
+		>
+			{children}
+		</section>
 	);
 }
 

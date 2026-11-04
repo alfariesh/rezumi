@@ -2,12 +2,12 @@ import type { PageSettings } from "./entries";
 import type { Entry, WriteSection } from "./model";
 import type { MessageDescriptor } from "@lingui/core";
 import type { KeyboardEvent, ReactNode } from "react";
-import { Button, Chip, Disclosure, Dropdown, Label, Separator } from "@heroui/react";
+import { Button, Chip, Dropdown, Label, Separator } from "@heroui/react";
 import { msg, t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { AnimatePresence, m } from "motion/react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useLocale } from "react-aria-components";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
@@ -17,11 +17,12 @@ import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { EntryFields } from "./entries";
 import { useEntry, useEntryWriter } from "./fields";
+import { LazyDisclosure } from "./lazy-disclosure";
 import { createEntry, describeEntry, getEntries, getPrimaryField, isDraftEntry } from "./model";
 import { entryElementId, keepOpenedEntryInView } from "./reveal";
 import { useSectionTitle } from "./section-row";
 import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
-import { useCurrentResume, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
+import { useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
 import { D3, EASE, EXIT } from "@/libs/motion";
 import { getCompatibleMoveTargets, getSourceSectionTitle, moveItem } from "@/libs/resume/move-item";
 
@@ -158,15 +159,11 @@ export function EntryCard({ section, entryId, index, count, page, locked, onMove
 			</div>
 
 			{!isPhone && (
-				<Disclosure isExpanded={open}>
-					<Disclosure.Content>
-						<Disclosure.Body>
-							<fieldset disabled={locked} className="m-0 grid min-w-0 gap-y-3 border-0 px-3 pt-1 pb-4">
-								{fields}
-							</fieldset>
-						</Disclosure.Body>
-					</Disclosure.Content>
-				</Disclosure>
+				<LazyDisclosure open={open}>
+					<fieldset disabled={locked} className="m-0 grid min-w-0 gap-y-3 border-0 px-3 pt-1 pb-4">
+						{fields}
+					</fieldset>
+				</LazyDisclosure>
 			)}
 
 			<AnimatePresence>
@@ -245,19 +242,25 @@ function deleteEntry(section: WriteSection, entryId: string) {
 
 type EntryMenuProps = { section: WriteSection; entry: Entry };
 
+const NO_MOVE_OPTIONS: { moveTargets: ReturnType<typeof getCompatibleMoveTargets>; sourceTitle: string } = {
+	moveTargets: [],
+	sourceTitle: "",
+};
+
 /** Hide from page, Duplicate, Move to… and Delete. */
 function EntryMenu({ section, entry }: EntryMenuProps) {
-	const resume = useCurrentResume();
 	const updateResumeData = useUpdateResumeData();
 	const customSectionId = section.kind === "custom" ? section.id : undefined;
-	const moveTargets = useMemo(
-		() => getCompatibleMoveTargets(resume.data, section.type, customSectionId),
-		[resume.data, section.type, customSectionId],
-	);
-	const sourceTitle = useMemo(
-		() => getSourceSectionTitle(resume.data, section.type, customSectionId),
-		[resume.data, section.type, customSectionId],
-	);
+	// Read when the menu opens rather than subscribed to, so typing doesn't re-render every entry's menu.
+	const [{ moveTargets, sourceTitle }, setMoveOptions] = useState(NO_MOVE_OPTIONS);
+	const readMoveOptions = () => {
+		const data = useResumeStore.getState().resume?.data;
+		if (!data) return;
+		setMoveOptions({
+			moveTargets: getCompatibleMoveTargets(data, section.type, customSectionId),
+			sourceTitle: getSourceSectionTitle(data, section.type, customSectionId),
+		});
+	};
 
 	const move = (target: Parameters<typeof moveItem>[1]["target"]) =>
 		updateResumeData((draft) => moveItem(draft, { itemId: entry.id, type: section.type, customSectionId, target }), {
@@ -286,7 +289,7 @@ function EntryMenu({ section, entry }: EntryMenuProps) {
 		);
 
 	return (
-		<Dropdown>
+		<Dropdown onOpenChange={(isOpen) => isOpen && readMoveOptions()}>
 			<IconButton icon="dots-three" label={t`Entry options`} size="sm" />
 			<Dropdown.Popover placement="bottom end" className="w-56">
 				<Dropdown.Menu>
