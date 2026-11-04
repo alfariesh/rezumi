@@ -283,11 +283,14 @@ function convertNode(node: HostNode, parent: Context): string {
 			const isRow = direction === "row" || direction === "row-reverse";
 			const inHeader = region === "header" || parent.inHeader === true;
 			const fold = isRow && !split && (tag === "section" || (inHeader && holdsBlocks(node)));
+			// A header on a band of colour (Horizon) reaches the screen's edges on a phone.
+			const bleed = region === "header" && cssColor(flat.backgroundColor) !== undefined;
 			const extra = [
 				semantic?.attributes ?? "",
 				region ? ` data-region="${region}"` : "",
 				split ? " data-split" : "",
 				fold ? " data-fold" : "",
+				bleed ? " data-bleed" : "",
 				props.fixed === true ? " data-fixed" : "",
 			].join("");
 			const inner = { ...context, inHeader };
@@ -399,12 +402,17 @@ const BASE_CSS = `
 .rr .rr-page{min-height:0!important;padding:24px 20px!important}
 .rr [data-split]{flex-direction:column!important;row-gap:20px!important}
 .rr [data-split]>*,.rr [data-region]{width:auto!important;max-width:none!important;flex:none!important}
+.rr [data-split]>*{padding-left:0!important;padding-right:0!important}
+.rr [data-region=header]{margin-left:0!important;margin-right:0!important}
+.rr [data-region=header][data-bleed]{margin-top:-24px!important;margin-left:-20px!important;margin-right:-20px!important;padding:24px 20px!important}
 .rr [data-part=main]{order:1}
 .rr [data-part=sidebar]{order:2}
 .rr [data-part=header-sidebar]{display:contents!important}
 .rr [data-part=header-sidebar]>*{order:2}
 .rr [data-part=header-sidebar]>[data-region=header]{order:0}
 .rr [data-region=sidebar]{background-color:var(--rr-band,transparent)}
+.rr [data-band] [data-region=sidebar],.rr [data-band] [data-part=header-sidebar]>[data-region=header]{margin-left:-20px!important;margin-right:-20px!important;padding:20px!important;background-color:var(--rr-band)}
+.rr [data-band] [data-part=header-sidebar]>[data-region=header]{margin-top:-24px!important}
 .rr [data-fold]{flex-direction:column!important;align-items:flex-start!important;row-gap:8px}
 .rr [data-fold]>*{width:auto!important;max-width:100%!important;flex:none!important}
 .rr [data-fixed]{display:none!important}
@@ -444,7 +452,8 @@ export function toHtml(tree: HostNode[], options: ToHtmlOptions = {}): HtmlOutpu
 			);
 			const split = splitParts(page);
 			const children = convertSplitChildren(page.children, split, { ...pageContext, fontSize });
-			return `<div${attributes(["rr-page", "v", sheet], split ? " data-split" : "")}>${children}</div>`;
+			const flags = `${split ? " data-split" : ""}${band ? " data-band" : ""}`;
+			return `<div${attributes(["rr-page", "v", sheet], flags)}>${children}</div>`;
 		});
 
 	const rules = [...context.classes].map(([body, name]) => `.rr .${name}{${body}}`).join("\n");

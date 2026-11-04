@@ -10,7 +10,8 @@ import type { Style as FormeStyle } from "@formepdf/react";
  */
 
 export type ConvertedStyle = {
-	style: FormeStyle;
+	/** Forme's style, plus the `zIndex` Rezumi's build of the engine reads (`vendor/README.md`). */
+	style: FormeStyle & { zIndex?: number };
 	/** Properties dropped because Forme has no equivalent. */
 	dropped: string[];
 	/** `display: none` — the element isn't drawn. */
@@ -477,6 +478,13 @@ export function toFormeStyle(input: Style, context: Context): ConvertedStyle {
 			const transform = value === "upperfirst" ? "capitalize" : value;
 			if (TEXT_TRANSFORMS.has(String(transform))) style.textTransform = transform;
 			else dropped.push(key);
+			continue;
+		}
+		if (key === "zIndex") {
+			// Forme reads a whole number, as CSS does; a fraction would fail the whole document, and "auto" is the default.
+			const order = Number(value);
+			if (Number.isInteger(order)) style.zIndex = order;
+			else if (value !== "auto") dropped.push(key);
 			continue;
 		}
 		if (NUMBER_KEYS.has(key)) {

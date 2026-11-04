@@ -20,6 +20,13 @@ describe("toFormeStyle", () => {
 		expect(convert({ paddingTop: "10%" }).dropped).toEqual(["paddingTop"]);
 	});
 
+	it("passes a whole z-index to Forme and drops anything else", () => {
+		expect(convert({ zIndex: -1 }).style.zIndex).toBe(-1);
+		expect(convert({ zIndex: "2" }).style.zIndex).toBe(2);
+		expect(convert({ zIndex: 1.5 })).toMatchObject({ style: {}, dropped: ["zIndex"] });
+		expect(convert({ zIndex: "auto" })).toMatchObject({ style: {}, dropped: [] });
+	});
+
 	it("names the standard serif the way Forme does", () => {
 		expect(convert({ fontFamily: ["Times-Roman", "Noto Serif"] }).style.fontFamily).toBe("Times, Noto Serif");
 	});

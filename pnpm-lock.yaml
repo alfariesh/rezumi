@@ -380,6 +380,7 @@ catalogs:
       version: 4.6.7
 
 overrides:
+  '@formepdf/core': file:vendor/formepdf-core
   vite: npm:@voidzero-dev/vite-plus-core@1.3.0
   vitest: 5.0.5
   react-native-enriched-html>@tiptap/core: 3.32.0
@@ -415,6 +416,7 @@ overrides:
   '@expo/cli@58.1.17>zod': ^4.6.7
 
 patchedDependencies:
+  '@formepdf/shared@0.29.0': 493cb1d7b653a2adeaadbdaf33f214323e51a41ea3cf650a07b41344d2e0a592
   deepmerge@4.3.1: d0b09c0c7f6badc39a9816270406c175f63e3402e126a23a748ca35e1a43ace6
 
 importers:
@@ -816,8 +818,8 @@ importers:
         specifier: ^2.4.3
         version: 2.4.3
       '@formepdf/core':
-        specifier: 0.29.0
-        version: 0.29.0(react@19.3.1)
+        specifier: file:../../vendor/formepdf-core
+        version: file:vendor/formepdf-core(react@19.3.1)
       '@formepdf/react':
         specifier: 0.29.0
         version: 0.29.0(react@19.3.1)
@@ -1798,8 +1800,8 @@ importers:
         version: 0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(@react-native/metro-config@0.88.1(@babel/core@7.29.7(supports-color@7.2.0))(supports-color@7.2.0))(@types/react@19.3.0)(react@19.3.1)(supports-color@7.2.0)
     devDependencies:
       '@formepdf/core':
-        specifier: 0.29.0
-        version: 0.29.0(react@19.3.1)
+        specifier: file:../../vendor/formepdf-core
+        version: file:vendor/formepdf-core(react@19.3.1)
       '@rezumi/config':
         specifier: workspace:*
         version: link:../config
@@ -1927,8 +1929,8 @@ importers:
   packages/pdf:
     dependencies:
       '@formepdf/core':
-        specifier: 0.29.0
-        version: 0.29.0(react@19.3.1)
+        specifier: file:../../vendor/formepdf-core
+        version: file:vendor/formepdf-core(react@19.3.1)
       '@formepdf/react':
         specifier: 0.29.0
         version: 0.29.0(react@19.3.1)
@@ -3747,8 +3749,8 @@ packages:
   '@formatjs/intl-supportedvaluesof@2.3.11':
     resolution: {integrity: sha512-oRzzAbJA08psr6AO0jgXAdx4HZ2vGNeja1fgaio2R2ne8DLtGPV+fa3gxI/t8J2dNPOndrwVAZVVfbH6GDFDwA==}
 
-  '@formepdf/core@0.29.0':
-    resolution: {integrity: sha512-+pNHvHSPlZtJia9gSRlAqh3bY/NuJMN4e/2Abw5WHX6qBvc1PxtqM1QLY9RnAGJ0jo8FKKED2TWtSDb4GcX1uA==}
+  '@formepdf/core@file:vendor/formepdf-core':
+    resolution: {directory: vendor/formepdf-core, type: directory}
     peerDependencies:
       react: ^18 || ^19
 
@@ -13878,17 +13880,17 @@ snapshots:
     dependencies:
       '@formatjs/fast-memoize': 3.1.7
 
-  '@formepdf/core@0.29.0(react@19.3.1)':
+  '@formepdf/core@file:vendor/formepdf-core(react@19.3.1)':
     dependencies:
       '@formepdf/react': 0.29.0(react@19.3.1)
       react: 19.3.1
 
   '@formepdf/react@0.29.0(react@19.3.1)':
     dependencies:
-      '@formepdf/shared': 0.29.0
+      '@formepdf/shared': 0.29.0(patch_hash=493cb1d7b653a2adeaadbdaf33f214323e51a41ea3cf650a07b41344d2e0a592)
       react: 19.3.1
 
-  '@formepdf/shared@0.29.0':
+  '@formepdf/shared@0.29.0(patch_hash=493cb1d7b653a2adeaadbdaf33f214323e51a41ea3cf650a07b41344d2e0a592)':
     dependencies:
       parse5: 7.3.0
 

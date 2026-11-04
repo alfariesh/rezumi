@@ -63,8 +63,11 @@ const useJejak = (): LineupTemplate => {
 			contactText: { color: tokens.muted, fontSize: size.meta },
 		});
 
+		// The line runs from the first dot to the end of the list, beneath the dots (each dot hides it where it sits). The
+		// PDF draws it as the border of a box around the entries, on every page they reach (`barAsBorder` in `to-forme`);
+		// in a browser the list's own z-index keeps it above the page, which stacks a negative one at the root.
 		const timeline = StyleSheet.create({
-			items: { position: "relative" },
+			items: { position: "relative", zIndex: 0 },
 			line: {
 				position: "absolute",
 				top: dot,
@@ -72,6 +75,7 @@ const useJejak = (): LineupTemplate => {
 				...(r.rtl ? { right: lineInset } : { left: lineInset }),
 				width: 0.8,
 				backgroundColor: tokens.hairline,
+				zIndex: -1,
 			},
 			item: { flexDirection: r.row, columnGap: size.body * 0.6, position: "relative" },
 			marker: { width: marker, alignItems: "center" },

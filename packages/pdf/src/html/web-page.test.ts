@@ -50,6 +50,28 @@ describe("renderResumeWebPage", () => {
 		expect(css).toMatch(/@media \(max-width:640px\)\{[\s\S]*\[data-part=main\]\{order:1\}/);
 	});
 
+	it("keeps a sidebar's colour behind the header it holds when the page folds on a phone", async () => {
+		const data = structuredClone(sampleResumeData);
+		data.metadata.template = "purnama";
+		const { html, css } = await renderResumeWebPage({ data });
+
+		// Purnama's light name sits in the dark sidebar: folded, the header must keep the band, not land on white.
+		expect(html).toMatch(/class="rr-page[^"]*"[^>]* data-band/);
+		expect(html).toMatch(/data-part="header-sidebar"[\s\S]*data-region="header"/);
+		expect(css).toMatch(
+			/\[data-band\] \[data-part=header-sidebar\]>\[data-region=header\]\{[^}]*background-color:var\(--rr-band\)/,
+		);
+	});
+
+	it("lets a header band reach the screen's edges on a phone", async () => {
+		const data = structuredClone(sampleResumeData);
+		data.metadata.template = "horizon";
+		const { html, css } = await renderResumeWebPage({ data });
+
+		expect(html).toMatch(/data-region="header"[^>]* data-bleed/);
+		expect(css).toMatch(/\[data-region=header\]\[data-bleed\]\{margin-top:-24px/);
+	});
+
 	it("makes the name the page's heading and section titles its subheadings", async () => {
 		const data = structuredClone(sampleResumeData);
 		const { html } = await renderResumeWebPage({ data });
