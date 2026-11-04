@@ -45,7 +45,7 @@ describe("handleMcpServerCard", () => {
 	it("advertises the connect URL and OAuth authorization server", async () => {
 		const { handleMcpServerCard } = await import("./metadata");
 
-		const response = handleMcpServerCard();
+		const response = await handleMcpServerCard();
 
 		await expect(response.json()).resolves.toMatchObject({
 			url: "https://rezumi.app/mcp",
