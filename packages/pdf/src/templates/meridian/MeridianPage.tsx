@@ -34,7 +34,7 @@ const useMeridian = (): LineupTemplate => {
 				textTransform: "uppercase",
 				lineHeight: 1.2,
 				color: tokens.accent,
-				...tracking(0.12, size.label),
+				...tracking(0.06, size.label),
 			},
 			sectionHeadingContainer: { alignItems: "center", columnGap: size.label * 1.25 },
 			sectionHeadingRule: { borderTopWidth: 0.6, borderTopColor: tokens.hairline },

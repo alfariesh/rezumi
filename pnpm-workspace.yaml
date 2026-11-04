@@ -79,6 +79,9 @@ allowBuilds:
   workerd: true
 minimumReleaseAge: 0
 overrides:
+  # Forme 0.29.0 with Rezumi's layout fixes (absolute boxes between top/bottom, percentage heights, negative
+  # z-index), until upstream ships them. Source and rebuild steps: vendor/README.md.
+  "@formepdf/core": file:vendor/formepdf-core
   # Keep plugin imports on the same Vite and Vitest instances as Vite+.
   vite: npm:@voidzero-dev/vite-plus-core@1.3.0
   vitest: 5.0.5
@@ -117,6 +120,7 @@ overrides:
   # Expo's two plugin schemas use APIs shared with v4; dependency-security.test.mjs checks compatibility.
   "@expo/cli@58.1.17>zod": ^4.6.7
 patchedDependencies:
+  "@formepdf/shared@0.29.0": patches/@formepdf__shared@0.29.0.patch
   deepmerge@4.3.1: patches/deepmerge@4.3.1.patch
 skills:
   dirs:

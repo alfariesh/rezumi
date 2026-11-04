@@ -51,6 +51,9 @@ type TemplateSemanticPartOwner =
 			key: "section-items";
 			placement?: TemplateSemanticPlacement;
 			columns?: 1;
+			sectionTypes?: readonly CustomSectionType[];
+			/** Only while the section shows at least this many entries (a timeline's line joins two or more). */
+			minItems?: number;
 	  }
 	| {
 			kind: "item";

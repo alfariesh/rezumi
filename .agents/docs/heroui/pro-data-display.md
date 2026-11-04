@@ -15,7 +15,7 @@ Scope: action-bar, data-grid, empty-state, list-view, item-card, item-card-group
 - Locale: NumberValue/KPI and RAC strings (sort/select labels, HoverCard) use the nearest `react-aria-components` `I18nProvider`, falling back to the browser locale. Rezumi has no RAC `I18nProvider` (only Lingui's in `features/homepage/prerender.tsx`), so wrap the app root with `<I18nProvider locale={i18n.locale}>` or pass `locale` per NumberValue.
 - Strings in docs are English literals. Rezumi must pass Lingui `t`/`Trans` output (ActionBar `aria-label` defaults to `"Actions"`).
 - Icons: docs use `@gravity-ui/icons` (not installed). Any SVG child works; Rezumi uses `@phosphor-icons/react`, used in the examples below.
-- Mobile parity (CLAUDE.md): these are web-only React components. `apps/mobile` needs its own native equivalent for any user-facing behavior that changes (`heroui-native-pro` is in the catalog; not evaluated here).
+- Mobile (CLAUDE.md): these are web-only React components. The mobile app is not being worked on yet (web first); when it catches up, `apps/mobile` needs its own native equivalent for any user-facing behavior that changes (`heroui-native-pro` is in the catalog; not evaluated here).
 
 ## Index
 

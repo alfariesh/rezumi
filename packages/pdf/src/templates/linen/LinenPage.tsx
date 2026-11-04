@@ -78,7 +78,7 @@ const useLinen = (): LineupTemplate => {
 						textTransform: "uppercase",
 						lineHeight: 1.2,
 						color: tokens.muted,
-						...tracking(0.14, size.label),
+						...tracking(0.06, size.label),
 					},
 				),
 				icon: { size: size.meta, color: tokens.accent },

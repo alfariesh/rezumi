@@ -1,0 +1,14 @@
+diff --git a/dist/style.js b/dist/style.js
+index 4b7e184a7646cbf1ed3627d406ab7fac8b532244..eb267a7ddcbca71828f6041a78999b0cacd94b50 100644
+--- a/dist/style.js
++++ b/dist/style.js
+@@ -351,6 +351,9 @@ export function mapStyle(style) {
+         result.bottom = style.bottom;
+     if (style.left !== undefined)
+         result.left = style.left;
++    // Paint order of an absolute box; the engine reads a whole number.
++    if (Number.isInteger(style.zIndex))
++        result.zIndex = style.zIndex;
+     // Page behavior
+     if (style.wrap !== undefined)
+         result.wrap = style.wrap;

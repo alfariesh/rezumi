@@ -6,7 +6,7 @@ import { resolvedPdfFlowProps } from "../../semantic/adapter";
 import { useResolvedNode, useSemanticNodeKey, useSemanticNodeVisible } from "../../semantic/context";
 import { semanticNodeKeys } from "../../semantic/node-keys";
 import { getCustomFieldLinkUrl, getWebsiteDisplayText } from "./contact";
-import { useTemplateStyle } from "./context";
+import { useTemplateFeature, useTemplateStyle } from "./context";
 import { Icon, Link, Text } from "./primitives";
 import { composeStyles } from "./styles";
 
@@ -82,6 +82,7 @@ export const CustomFieldContactItem = ({
 	const linkUrl = getCustomFieldLinkUrl(field);
 	const keys = useContactNodeKeys("custom", field.id, primitiveNodeKey);
 	const labelStyle = useTemplateStyle("contactLabel");
+	const iconColumn = useTemplateFeature("contactIconColumn");
 	const resolved = useResolvedNode(keys.primitiveNodeKey);
 	const visible = useSemanticNodeVisible(keys.primitiveNodeKey);
 	const children = (
@@ -90,6 +91,7 @@ export const CustomFieldContactItem = ({
 				iconRole="contact"
 				nodeKey={keys.iconNodeKey}
 				name={field.icon as IconName}
+				keepSpace={iconColumn}
 				{...(iconColor ? { color: iconColor } : {})}
 			/>
 			{field.label && (

@@ -1,0 +1,880 @@
+//! # Style System
+//!
+//! A CSS-like style model for document nodes. This is intentionally a subset
+//! of CSS that covers the properties needed for document layout: flexbox,
+//! box model, typography, color, borders.
+//!
+//! We don't try to implement all of CSS. We implement the parts that matter
+//! for PDF documents, and we implement them correctly.
+
+use crate::model::{Edges, MarginEdges, Position};
+use serde::{Deserialize, Serialize};
+
+/// The complete set of style properties for a node.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Style {
+    // ── Box Model ──────────────────────────────────────────────
+    /// Explicit width in points.
+    pub width: Option<Dimension>,
+    /// Explicit height in points.
+    pub height: Option<Dimension>,
+    /// Minimum width.
+    pub min_width: Option<Dimension>,
+    /// Minimum height.
+    pub min_height: Option<Dimension>,
+    /// Maximum width.
+    pub max_width: Option<Dimension>,
+    /// Maximum height.
+    pub max_height: Option<Dimension>,
+
+    /// Padding inside the border.
+    #[serde(default)]
+    pub padding: Option<Edges>,
+    /// Margin outside the border. Supports auto values for centering.
+    #[serde(default)]
+    pub margin: Option<MarginEdges>,
+
+    // ── Display & Layout Mode ──────────────────────────────────
+    /// Display mode: flex (default) or grid.
+    pub display: Option<Display>,
+
+    // ── Flexbox Layout ─────────────────────────────────────────
+    /// Direction of the main axis.
+    #[serde(default)]
+    pub flex_direction: Option<FlexDirection>,
+    /// How to distribute space along the main axis.
+    #[serde(default)]
+    pub justify_content: Option<JustifyContent>,
+    /// How to align items along the cross axis.
+    #[serde(default)]
+    pub align_items: Option<AlignItems>,
+    /// Override align-items for this specific child.
+    #[serde(default)]
+    pub align_self: Option<AlignItems>,
+    /// Whether flex items wrap to new lines.
+    #[serde(default)]
+    pub flex_wrap: Option<FlexWrap>,
+    /// How to distribute space between flex lines on the cross axis.
+    pub align_content: Option<AlignContent>,
+    /// Flex grow factor.
+    pub flex_grow: Option<f64>,
+    /// Flex shrink factor.
+    pub flex_shrink: Option<f64>,
+    /// Flex basis (initial main size).
+    pub flex_basis: Option<Dimension>,
+    /// Gap between flex items.
+    pub gap: Option<f64>,
+    /// Row gap (overrides gap for rows).
+    pub row_gap: Option<f64>,
+    /// Column gap (overrides gap for columns).
+    pub column_gap: Option<f64>,
+
+    // ── CSS Grid Layout ──────────────────────────────────────────
+    /// Column track definitions (e.g., `[Pt(100), Fr(1), Fr(2)]`).
+    pub grid_template_columns: Option<Vec<GridTrackSize>>,
+    /// Row track definitions.
+    pub grid_template_rows: Option<Vec<GridTrackSize>>,
+    /// Auto-generated row size.
+    pub grid_auto_rows: Option<GridTrackSize>,
+    /// Auto-generated column size.
+    pub grid_auto_columns: Option<GridTrackSize>,
+    /// Grid placement for this child item.
+    pub grid_placement: Option<GridPlacement>,
+
+    // ── Typography ─────────────────────────────────────────────
+    /// Font family name.
+    pub font_family: Option<String>,
+    /// Font size in points.
+    pub font_size: Option<f64>,
+    /// Font weight (100-900).
+    pub font_weight: Option<u32>,
+    /// Font style.
+    pub font_style: Option<FontStyle>,
+    /// Line height as a multiplier of font size.
+    pub line_height: Option<f64>,
+    /// Text alignment within the text block.
+    pub text_align: Option<TextAlign>,
+    /// Letter spacing in points.
+    pub letter_spacing: Option<f64>,
+    /// Word spacing in points (extra width added to each ASCII space, PDF
+    /// `Tw` operator). Negative tightens word gaps. When the text is
+    /// justified (`text-align: justify`), the layout engine adds the
+    /// computed slack-per-space on top of this user value.
+    pub word_spacing: Option<f64>,
+    /// Text decoration.
+    pub text_decoration: Option<TextDecoration>,
+    /// Text transform.
+    pub text_transform: Option<TextTransform>,
+    /// Hyphenation mode (CSS `hyphens` property).
+    pub hyphens: Option<Hyphens>,
+    /// BCP 47 language tag for hyphenation and line breaking.
+    pub lang: Option<String>,
+    /// Text direction (ltr, rtl, or auto).
+    pub direction: Option<Direction>,
+    /// Text overflow behavior (wrap, ellipsis, clip).
+    pub text_overflow: Option<TextOverflow>,
+    /// Line breaking algorithm: optimal (Knuth-Plass, default) or greedy.
+    pub line_breaking: Option<LineBreaking>,
+
+    /// Overflow behavior for container elements.
+    pub overflow: Option<Overflow>,
+
+    /// Vertical alignment for table-cell content (top/middle/bottom).
+    pub vertical_align: Option<VerticalAlign>,
+
+    // ── Color & Background ─────────────────────────────────────
+    /// Text color.
+    pub color: Option<Color>,
+    /// Background color.
+    pub background_color: Option<Color>,
+    /// Background paint that may be a solid color or a gradient. Wins
+    /// over `background_color` when set. Parsed from CSS strings on
+    /// the React side: `"#1e293b"`, `"linear-gradient(180deg, #fff
+    /// 0%, #000 100%)"`, `"radial-gradient(circle, #fff, #000)"`.
+    pub background: Option<Background>,
+    /// Opacity (0.0 - 1.0).
+    pub opacity: Option<f64>,
+    /// Drop shadow painted behind the element. v1 supports offset + color
+    /// (no blur — `blur` is parsed for forward-compat but ignored). When
+    /// the element has `border_radius`, the shadow path is rounded too.
+    pub box_shadow: Option<BoxShadow>,
+
+    // ── Border ─────────────────────────────────────────────────
+    /// Border width for all sides.
+    pub border_width: Option<EdgeValues<f64>>,
+    /// Border color for all sides.
+    pub border_color: Option<EdgeValues<Color>>,
+    /// Border line style per side (solid / dashed / dotted).
+    pub border_style: Option<EdgeValues<BorderStyle>>,
+    /// Border radius (uniform or per-corner).
+    pub border_radius: Option<CornerValues>,
+
+    // ── Positioning ─────────────────────────────────────────────
+    /// Positioning mode (relative or absolute).
+    pub position: Option<Position>,
+    /// Top offset (for absolute positioning).
+    pub top: Option<f64>,
+    /// Right offset (for absolute positioning).
+    pub right: Option<f64>,
+    /// Bottom offset (for absolute positioning).
+    pub bottom: Option<f64>,
+    /// Left offset (for absolute positioning).
+    pub left: Option<f64>,
+    /// Paint order of an absolutely positioned box among its containing
+    /// block's content (CSS `z-index`). A negative value paints the box
+    /// beneath the containing block's in-flow content; zero or more paints it
+    /// on top of that content, in ascending order.
+    pub z_index: Option<i32>,
+
+    // ── Page Behavior ──────────────────────────────────────────
+    /// Whether this node can be broken across pages.
+    /// `true` = breakable (default for View, Text, Table).
+    /// `false` = keep on one page; if it doesn't fit, move to next page.
+    pub wrap: Option<bool>,
+
+    /// Force a page break before this node.
+    pub break_before: Option<bool>,
+
+    /// Minimum number of lines to keep at the bottom of a page before
+    /// breaking (widow control). Default: 2.
+    pub min_widow_lines: Option<u32>,
+
+    /// Minimum number of lines to keep at the top of a new page after
+    /// breaking (orphan control). Default: 2.
+    pub min_orphan_lines: Option<u32>,
+
+    // ── Transform ──────────────────────────────────────────────
+    /// Paint-only transform applied around the element's origin. Layout
+    /// flow is unaffected (matches CSS `transform` semantics) — the
+    /// element occupies the same axis-aligned box as if untransformed.
+    pub transform: Option<Vec<TransformOp>>,
+
+    /// Origin of the transform as fractions of the element box (0.0–1.0).
+    /// Defaults to (0.5, 0.5) — the element's center, matching CSS.
+    pub transform_origin: Option<(f64, f64)>,
+}
+
+/// A single transform operation. Applied in order — the first op listed
+/// is applied first (innermost), the last is applied last (outermost),
+/// matching CSS `transform` semantics.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[serde(tag = "type", rename_all = "camelCase")]
+pub enum TransformOp {
+    /// Rotate by the given angle in degrees, positive = clockwise (CSS).
+    Rotate { deg: f64 },
+    /// Uniform or non-uniform scale.
+    Scale { x: f64, y: f64 },
+    /// Translate in points.
+    Translate { x: f64, y: f64 },
+}
+
+/// A dimension that can be points, percentage, or auto.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub enum Dimension {
+    /// Fixed size in points (1/72 inch).
+    Pt(f64),
+    /// Percentage of parent's corresponding dimension.
+    Percent(f64),
+    /// Size determined by content.
+    Auto,
+}
+
+impl Dimension {
+    /// Resolve this dimension given a parent size.
+    /// Returns None for Auto.
+    pub fn resolve(&self, parent_size: f64) -> Option<f64> {
+        match self {
+            Dimension::Pt(v) => Some(*v),
+            Dimension::Percent(p) => Some(parent_size * p / 100.0),
+            Dimension::Auto => None,
+        }
+    }
+}
+
+/// Layout display mode.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Display {
+    /// Flexbox layout (default).
+    #[default]
+    Flex,
+    /// CSS Grid layout.
+    Grid,
+}
+
+/// A single grid track size definition.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum GridTrackSize {
+    /// Fixed size in points.
+    Pt(f64),
+    /// Fractional unit (distributes remaining space proportionally).
+    Fr(f64),
+    /// Size determined by content.
+    Auto,
+    /// Clamped between min and max.
+    MinMax(Box<GridTrackSize>, Box<GridTrackSize>),
+}
+
+/// Grid item placement.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GridPlacement {
+    /// Column start line (1-based).
+    pub column_start: Option<i32>,
+    /// Column end line (1-based).
+    pub column_end: Option<i32>,
+    /// Row start line (1-based).
+    pub row_start: Option<i32>,
+    /// Row end line (1-based).
+    pub row_end: Option<i32>,
+    /// Number of columns to span.
+    pub column_span: Option<u32>,
+    /// Number of rows to span.
+    pub row_span: Option<u32>,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum FlexDirection {
+    #[default]
+    Column,
+    Row,
+    ColumnReverse,
+    RowReverse,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum JustifyContent {
+    #[default]
+    FlexStart,
+    FlexEnd,
+    Center,
+    SpaceBetween,
+    SpaceAround,
+    SpaceEvenly,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum AlignItems {
+    FlexStart,
+    FlexEnd,
+    Center,
+    #[default]
+    Stretch,
+    Baseline,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum FlexWrap {
+    #[default]
+    NoWrap,
+    Wrap,
+    WrapReverse,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum AlignContent {
+    #[default]
+    FlexStart,
+    FlexEnd,
+    Center,
+    SpaceBetween,
+    SpaceAround,
+    SpaceEvenly,
+    Stretch,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum FontStyle {
+    #[default]
+    Normal,
+    Italic,
+    Oblique,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum TextAlign {
+    #[default]
+    Left,
+    Right,
+    Center,
+    Justify,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum TextDecoration {
+    #[default]
+    None,
+    Underline,
+    LineThrough,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize)]
+pub enum TextTransform {
+    #[default]
+    None,
+    Uppercase,
+    Lowercase,
+    Capitalize,
+}
+
+/// Vertical alignment of table-cell content within its row box.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum VerticalAlign {
+    /// Content starts at the top of the cell (the engine's historical
+    /// behavior).
+    #[default]
+    Top,
+    Middle,
+    Bottom,
+    /// First text baselines align across the row's baseline-aligned cells.
+    /// In this engine the baseline sits `font_size` below the line-box top
+    /// (there is no font-ascent metric), so alignment is exact within the
+    /// engine's own baseline model.
+    Baseline,
+}
+
+/// Overflow behavior for container elements.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Overflow {
+    /// Content can overflow the container bounds (default).
+    #[default]
+    Visible,
+    /// Content is clipped to the container bounds.
+    Hidden,
+}
+
+/// Text overflow behavior when text exceeds available width.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum TextOverflow {
+    /// Normal wrapping (default).
+    #[default]
+    Wrap,
+    /// Single-line truncation with "..." appended.
+    Ellipsis,
+    /// Single-line truncation without any indicator.
+    Clip,
+}
+
+/// Text direction for BiDi support.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Direction {
+    /// Left-to-right (default).
+    #[default]
+    Ltr,
+    /// Right-to-left (Arabic, Hebrew).
+    Rtl,
+    /// Auto-detect from first strong character.
+    Auto,
+}
+
+/// Line breaking algorithm.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum LineBreaking {
+    /// Knuth-Plass optimal line breaking (default). Minimizes global raggedness.
+    #[default]
+    Optimal,
+    /// Simple greedy line breaking. Fills lines left-to-right, breaks at first overflow.
+    Greedy,
+}
+
+/// CSS `hyphens` property controlling word hyphenation.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Hyphens {
+    /// No hyphenation, not even at soft hyphens.
+    None,
+    /// Only break at soft hyphens (U+00AD) in the text.
+    #[default]
+    Manual,
+    /// Algorithmic hyphenation using language rules.
+    Auto,
+}
+
+/// An RGBA color.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub struct Color {
+    pub r: f64, // 0.0 - 1.0
+    pub g: f64,
+    pub b: f64,
+    pub a: f64,
+}
+
+/// CSS-style drop shadow. v1 paints a filled rectangle offset behind the
+/// element with the given color; the `blur` field is parsed for forward
+/// compatibility but ignored. Honors `border_radius` for rounded shadows.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct BoxShadow {
+    pub offset_x: f64,
+    pub offset_y: f64,
+    /// Currently ignored (no blur in v1).
+    #[serde(default)]
+    pub blur: f64,
+    pub color: Color,
+}
+
+/// CSS-style background that may be a solid color or a gradient. The
+/// React layer parses CSS strings (`linear-gradient(180deg, #fff, #000)`,
+/// `radial-gradient(circle, #fff, #000)`, `#abcdef`) into this shape.
+///
+/// v1 supports 2-stop gradients via PDF Type 2 (axial) and Type 3
+/// (radial) shading dictionaries. Multi-stop gradients fall back to the
+/// first and last stop in v1; full stitching is a v2 task.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(tag = "type", rename_all = "camelCase")]
+pub enum Background {
+    Color(Color),
+    Linear(LinearGradient),
+    Radial(RadialGradient),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct LinearGradient {
+    /// CSS angle in degrees. 0deg = bottom-to-top, 90deg = left-to-right,
+    /// 180deg = top-to-bottom (CSS clockwise-from-up convention).
+    pub angle_deg: f64,
+    pub stops: Vec<GradientStop>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RadialGradient {
+    pub stops: Vec<GradientStop>,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GradientStop {
+    /// Position along the gradient axis (0.0 to 1.0).
+    pub position: f64,
+    pub color: Color,
+}
+
+impl Color {
+    pub const BLACK: Color = Color {
+        r: 0.0,
+        g: 0.0,
+        b: 0.0,
+        a: 1.0,
+    };
+    pub const WHITE: Color = Color {
+        r: 1.0,
+        g: 1.0,
+        b: 1.0,
+        a: 1.0,
+    };
+    pub const TRANSPARENT: Color = Color {
+        r: 0.0,
+        g: 0.0,
+        b: 0.0,
+        a: 0.0,
+    };
+
+    pub fn rgb(r: f64, g: f64, b: f64) -> Self {
+        Self { r, g, b, a: 1.0 }
+    }
+
+    pub fn hex(hex: &str) -> Self {
+        let hex = hex.trim_start_matches('#');
+        let (r, g, b) = match hex.len() {
+            3 => {
+                let r = u8::from_str_radix(&hex[0..1].repeat(2), 16).unwrap_or(0);
+                let g = u8::from_str_radix(&hex[1..2].repeat(2), 16).unwrap_or(0);
+                let b = u8::from_str_radix(&hex[2..3].repeat(2), 16).unwrap_or(0);
+                (r, g, b)
+            }
+            6 => {
+                let r = u8::from_str_radix(&hex[0..2], 16).unwrap_or(0);
+                let g = u8::from_str_radix(&hex[2..4], 16).unwrap_or(0);
+                let b = u8::from_str_radix(&hex[4..6], 16).unwrap_or(0);
+                (r, g, b)
+            }
+            _ => (0, 0, 0),
+        };
+        Self {
+            r: r as f64 / 255.0,
+            g: g as f64 / 255.0,
+            b: b as f64 / 255.0,
+            a: 1.0,
+        }
+    }
+}
+
+impl Default for Color {
+    fn default() -> Self {
+        Color::BLACK
+    }
+}
+
+/// Border line style. Solid is the default; dashed/dotted are stroked with a
+/// PDF dash pattern (see the serializer). Metrics calibrated against Chrome:
+/// dashed = dash 2×width / gap 1×width; dotted = round dots, diameter 1×width,
+/// spaced 2×width centre-to-centre.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum BorderStyle {
+    #[default]
+    Solid,
+    Dashed,
+    Dotted,
+}
+
+/// Values for each edge (top, right, bottom, left).
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub struct EdgeValues<T: Copy> {
+    pub top: T,
+    pub right: T,
+    pub bottom: T,
+    pub left: T,
+}
+
+impl<T: Copy> EdgeValues<T> {
+    pub fn uniform(v: T) -> Self {
+        Self {
+            top: v,
+            right: v,
+            bottom: v,
+            left: v,
+        }
+    }
+}
+
+/// Values for each corner (top-left, top-right, bottom-right, bottom-left).
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+pub struct CornerValues {
+    pub top_left: f64,
+    pub top_right: f64,
+    pub bottom_right: f64,
+    pub bottom_left: f64,
+}
+
+impl CornerValues {
+    pub fn uniform(v: f64) -> Self {
+        Self {
+            top_left: v,
+            top_right: v,
+            bottom_right: v,
+            bottom_left: v,
+        }
+    }
+}
+
+/// Resolved style: all values are concrete (no Option, no Auto for computed values).
+/// This is what the layout engine works with after style resolution.
+#[derive(Debug, Clone)]
+pub struct ResolvedStyle {
+    // Box model
+    pub width: SizeConstraint,
+    pub height: SizeConstraint,
+    pub min_width: f64,
+    pub min_height: f64,
+    pub max_width: f64,
+    pub max_height: f64,
+    pub padding: Edges,
+    pub margin: MarginEdges,
+
+    // Display
+    pub display: Display,
+
+    // Flex
+    pub flex_direction: FlexDirection,
+    pub justify_content: JustifyContent,
+    pub align_items: AlignItems,
+    pub align_self: Option<AlignItems>,
+    pub flex_wrap: FlexWrap,
+    pub align_content: AlignContent,
+    pub flex_grow: f64,
+    pub flex_shrink: f64,
+    pub flex_basis: SizeConstraint,
+    pub gap: f64,
+    pub row_gap: f64,
+    pub column_gap: f64,
+
+    // Grid
+    pub grid_template_columns: Option<Vec<GridTrackSize>>,
+    pub grid_template_rows: Option<Vec<GridTrackSize>>,
+    pub grid_auto_rows: Option<GridTrackSize>,
+    pub grid_auto_columns: Option<GridTrackSize>,
+    pub grid_placement: Option<GridPlacement>,
+
+    // Text
+    pub font_family: String,
+    pub font_size: f64,
+    pub font_weight: u32,
+    pub font_style: FontStyle,
+    pub line_height: f64,
+    pub text_align: TextAlign,
+    pub letter_spacing: f64,
+    pub word_spacing: f64,
+    pub text_decoration: TextDecoration,
+    pub text_transform: TextTransform,
+    pub hyphens: Hyphens,
+    pub lang: Option<String>,
+    pub direction: Direction,
+    pub text_overflow: TextOverflow,
+    pub line_breaking: LineBreaking,
+    pub vertical_align: VerticalAlign,
+
+    // Visual
+    pub color: Color,
+    pub background_color: Option<Color>,
+    pub opacity: f64,
+    pub overflow: Overflow,
+    pub border_width: Edges,
+    pub border_color: EdgeValues<Color>,
+    pub border_style: EdgeValues<BorderStyle>,
+    pub border_radius: CornerValues,
+    pub box_shadow: Option<BoxShadow>,
+    pub background: Option<Background>,
+
+    // Positioning
+    pub position: Position,
+    /// True iff `position` was *explicitly* set (relative or absolute) rather
+    /// than defaulted. `position` itself defaults to `Relative`, so this is the
+    /// only reliable signal that an element establishes a containing block for
+    /// its absolute descendants.
+    pub positioned: bool,
+    pub top: Option<f64>,
+    pub right: Option<f64>,
+    pub bottom: Option<f64>,
+    pub left: Option<f64>,
+    pub z_index: i32,
+
+    // Page behavior
+    pub breakable: bool,
+    pub break_before: bool,
+    pub min_widow_lines: u32,
+    pub min_orphan_lines: u32,
+
+    // Transform (paint-only — layout unaffected)
+    pub transform: Vec<TransformOp>,
+    /// Transform origin as fractions of the element box (0.0–1.0).
+    /// `(0.5, 0.5)` is the element center, matching CSS default.
+    pub transform_origin: (f64, f64),
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum SizeConstraint {
+    Fixed(f64),
+    Auto,
+}
+
+impl Style {
+    /// Resolve this style against a parent's resolved style and available dimensions.
+    pub fn resolve(&self, parent: Option<&ResolvedStyle>, available_width: f64) -> ResolvedStyle {
+        let parent_font_size = parent.map(|p| p.font_size).unwrap_or(12.0);
+        let parent_color = parent.map(|p| p.color).unwrap_or(Color::BLACK);
+        let parent_font_family = parent
+            .map(|p| p.font_family.clone())
+            .unwrap_or_else(|| "Helvetica".to_string());
+
+        let font_size = self.font_size.unwrap_or(parent_font_size);
+
+        ResolvedStyle {
+            width: self
+                .width
+                .map(|d| match d {
+                    Dimension::Pt(v) => SizeConstraint::Fixed(v),
+                    Dimension::Percent(p) => SizeConstraint::Fixed(available_width * p / 100.0),
+                    Dimension::Auto => SizeConstraint::Auto,
+                })
+                .unwrap_or(SizeConstraint::Auto),
+
+            height: self
+                .height
+                .map(|d| match d {
+                    Dimension::Pt(v) => SizeConstraint::Fixed(v),
+                    Dimension::Percent(p) => SizeConstraint::Fixed(p), // height % is complex, simplified
+                    Dimension::Auto => SizeConstraint::Auto,
+                })
+                .unwrap_or(SizeConstraint::Auto),
+
+            min_width: self
+                .min_width
+                .and_then(|d| d.resolve(available_width))
+                .unwrap_or(0.0),
+            min_height: self.min_height.and_then(|d| d.resolve(0.0)).unwrap_or(0.0),
+            max_width: self
+                .max_width
+                .and_then(|d| d.resolve(available_width))
+                .unwrap_or(f64::INFINITY),
+            max_height: self
+                .max_height
+                .and_then(|d| d.resolve(0.0))
+                .unwrap_or(f64::INFINITY),
+
+            padding: self.padding.unwrap_or_default(),
+            margin: self.margin.unwrap_or_default(),
+
+            display: self.display.unwrap_or_default(),
+
+            flex_direction: self.flex_direction.unwrap_or_default(),
+            justify_content: self.justify_content.unwrap_or_default(),
+            align_items: self.align_items.unwrap_or_default(),
+            align_self: self.align_self,
+            flex_wrap: self.flex_wrap.unwrap_or_default(),
+            align_content: self.align_content.unwrap_or_default(),
+            flex_grow: self.flex_grow.unwrap_or(0.0),
+            flex_shrink: self.flex_shrink.unwrap_or(1.0),
+            flex_basis: self
+                .flex_basis
+                .map(|d| match d {
+                    Dimension::Pt(v) => SizeConstraint::Fixed(v),
+                    Dimension::Percent(p) => SizeConstraint::Fixed(available_width * p / 100.0),
+                    Dimension::Auto => SizeConstraint::Auto,
+                })
+                .unwrap_or(SizeConstraint::Auto),
+            gap: self.gap.unwrap_or(0.0),
+            row_gap: self.row_gap.or(self.gap).unwrap_or(0.0),
+            column_gap: self.column_gap.or(self.gap).unwrap_or(0.0),
+
+            grid_template_columns: self.grid_template_columns.clone(),
+            grid_template_rows: self.grid_template_rows.clone(),
+            grid_auto_rows: self.grid_auto_rows.clone(),
+            grid_auto_columns: self.grid_auto_columns.clone(),
+            grid_placement: self.grid_placement.clone(),
+
+            font_family: self.font_family.clone().unwrap_or(parent_font_family),
+            font_size,
+            font_weight: self
+                .font_weight
+                .unwrap_or(parent.map(|p| p.font_weight).unwrap_or(400)),
+            font_style: self
+                .font_style
+                .unwrap_or(parent.map(|p| p.font_style).unwrap_or_default()),
+            line_height: self
+                .line_height
+                .unwrap_or(parent.map(|p| p.line_height).unwrap_or(1.4)),
+            text_align: {
+                let direction = self
+                    .direction
+                    .unwrap_or(parent.map(|p| p.direction).unwrap_or_default());
+                self.text_align.unwrap_or_else(|| {
+                    if matches!(direction, Direction::Rtl) {
+                        TextAlign::Right
+                    } else {
+                        parent.map(|p| p.text_align).unwrap_or_default()
+                    }
+                })
+            },
+            // Both inherit per CSS (like text_transform below) — the
+            // unwrap_or(0.0) form silently dropped a container's tracking
+            // from descendant text at measure AND render time; the HTML
+            // mapper explicitly relies on engine inheritance for
+            // properties it doesn't set per node.
+            letter_spacing: self
+                .letter_spacing
+                .unwrap_or(parent.map(|p| p.letter_spacing).unwrap_or(0.0)),
+            word_spacing: self
+                .word_spacing
+                .unwrap_or(parent.map(|p| p.word_spacing).unwrap_or(0.0)),
+            text_decoration: self
+                .text_decoration
+                .unwrap_or(parent.map(|p| p.text_decoration).unwrap_or_default()),
+            text_transform: self
+                .text_transform
+                .unwrap_or(parent.map(|p| p.text_transform).unwrap_or_default()),
+            hyphens: self
+                .hyphens
+                .unwrap_or(parent.map(|p| p.hyphens).unwrap_or_default()),
+            lang: self
+                .lang
+                .clone()
+                .or_else(|| parent.and_then(|p| p.lang.clone())),
+            direction: self
+                .direction
+                .unwrap_or(parent.map(|p| p.direction).unwrap_or_default()),
+            text_overflow: self.text_overflow.unwrap_or_default(),
+            vertical_align: self.vertical_align.unwrap_or_default(),
+            line_breaking: self
+                .line_breaking
+                .unwrap_or(parent.map(|p| p.line_breaking).unwrap_or_default()),
+
+            color: self.color.unwrap_or(parent_color),
+            background_color: self.background_color,
+            opacity: self.opacity.unwrap_or(1.0),
+            overflow: self.overflow.unwrap_or_default(),
+            box_shadow: self.box_shadow,
+            background: self.background.clone(),
+
+            border_width: self
+                .border_width
+                .map(|e| Edges {
+                    top: e.top,
+                    right: e.right,
+                    bottom: e.bottom,
+                    left: e.left,
+                })
+                .unwrap_or_default(),
+
+            border_color: self
+                .border_color
+                .unwrap_or(EdgeValues::uniform(Color::BLACK)),
+            border_style: self
+                .border_style
+                .unwrap_or(EdgeValues::uniform(BorderStyle::Solid)),
+            border_radius: self.border_radius.unwrap_or(CornerValues::uniform(0.0)),
+
+            position: self.position.unwrap_or_default(),
+            positioned: self.position.is_some(),
+            top: self.top,
+            right: self.right,
+            bottom: self.bottom,
+            left: self.left,
+            z_index: self.z_index.unwrap_or(0),
+
+            breakable: self.wrap.unwrap_or(true),
+            break_before: self.break_before.unwrap_or(false),
+            min_widow_lines: self.min_widow_lines.unwrap_or(2),
+            min_orphan_lines: self.min_orphan_lines.unwrap_or(2),
+
+            // Transform doesn't inherit — explicit per-element only.
+            transform: self.transform.clone().unwrap_or_default(),
+            transform_origin: self.transform_origin.unwrap_or((0.5, 0.5)),
+        }
+    }
+}

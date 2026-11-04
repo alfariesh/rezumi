@@ -28,6 +28,9 @@ export default defineConfig({
 			"**/coverage/**",
 			"**/reports/**",
 			"**/routeTree.gen.ts",
+			// Third-party code kept as published (vendor/README.md).
+			"vendor/formepdf-core/**",
+			"packages/forme-native/rust/vendor/**",
 		],
 		rules: {
 			"typescript/no-explicit-any": "error",
@@ -178,6 +181,9 @@ export default defineConfig({
 			"docs/spec.json",
 			"docs/guides/json-resume-schema.mdx",
 			"plugins/rezumi/skills/resume-builder/references/schema.md",
+			// Third-party code kept as published (vendor/README.md).
+			"vendor/formepdf-core/**",
+			"packages/forme-native/rust/vendor/**",
 		],
 		overrides: [
 			{

@@ -43,7 +43,7 @@ const useAtlas = (): LineupTemplate => {
 				textTransform: "uppercase",
 				lineHeight: (size.body * 1.45) / size.label,
 				color: tokens.accent,
-				...tracking(0.1, size.label),
+				...tracking(0.06, size.label),
 			},
 			sectionItems: { flex: 1, rowGap: metrics.gapY(1.3) },
 			item: { rowGap: metrics.gapY(0.3) },

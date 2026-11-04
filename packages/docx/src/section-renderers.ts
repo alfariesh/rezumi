@@ -6,11 +6,35 @@ import type {
 	ResumeData,
 	SectionType,
 } from "@rezumi/schema/resume/data";
-import { BorderStyle, ExternalHyperlink, HeadingLevel, Paragraph, TabStopPosition, TabStopType, TextRun } from "docx";
+import type { IBorderOptions, IParagraphOptions } from "docx";
+import {
+	BorderStyle,
+	ExternalHyperlink,
+	HeadingLevel,
+	Paragraph,
+	ShadingType,
+	TabStopPosition,
+	TabStopType,
+	TextRun,
+} from "docx";
 import { toSafeLink } from "@rezumi/utils/link";
 import { htmlToParagraphs } from "./html-to-docx";
 
 type Sections = ResumeData["sections"];
+
+/** A section title's look beyond its colour, after the template (see `DOCX_LOOKS` in the builder). */
+export type SectionHeadingStyle = {
+	sizeHalfPt: number;
+	bold: boolean;
+	/** Capitals drawn by Word: the text stays as typed, so ATS still reads the words. */
+	allCaps?: boolean;
+	/** Letter spacing in twips. */
+	characterSpacing?: number;
+	/** A rule under the title, over it, or a bar before it. */
+	border?: { edge: "top" | "bottom" | "left"; rule: IBorderOptions };
+	/** A faint band behind the title. */
+	shadingHex?: string;
+};
 
 type RenderConfig = {
 	headingFont: string;
@@ -19,6 +43,14 @@ type RenderConfig = {
 	bodySizeHalfPt: number;
 	textColorHex: string;
 	primaryColorHex: string;
+	/** Dates, locations and issuers. Missing means the text colour. */
+	mutedColorHex?: string;
+	/** Missing means the plain look: heading size × 0.75 with a rule under it. */
+	sectionHeading?: SectionHeadingStyle;
+	/** Where dates align: the column's right edge, in twips from its start. */
+	rightTabTwips?: number;
+	/** Publications numbered in order (Cendekia). */
+	numberPublications?: boolean;
 	/** Entries → Row order. Missing means organization first. */
 	lead?: EntryHeader["lead"];
 };
@@ -50,22 +82,34 @@ const getBaseRun = () => ({ font: config.bodyFont, size: config.bodySizeHalfPt, 
 
 type BaseRun = ReturnType<typeof getBaseRun>;
 
-/** A section heading paragraph in the primary color with a bottom border, using the heading typography. */
+const mutedColor = () => config.mutedColorHex ?? config.textColorHex;
+
+/** A section heading paragraph in `colorHex`, using the heading typography and the template's title look. */
 function sectionHeading(title: string, colorHex: string): Paragraph {
 	const color = colorHex.replace("#", "");
+	const look = config.sectionHeading ?? {
+		sizeHalfPt: Math.round(config.headingSizeHalfPt * 0.75),
+		bold: true,
+		border: { edge: "bottom", rule: { style: BorderStyle.SINGLE, size: 1, color } },
+	};
+	const border: IParagraphOptions["border"] = look.border ? { [look.border.edge]: look.border.rule } : undefined;
 
 	return new Paragraph({
 		heading: HeadingLevel.HEADING_6,
-		spacing: { before: 240, after: 120 },
-		border: { bottom: { style: BorderStyle.SINGLE, size: 1, color } },
+		// A rule over the title sits higher, so the section keeps its distance from the one above.
+		spacing: { before: look.border?.edge === "top" ? 300 : 240, after: 120 },
+		keepNext: true,
+		...(border ? { border } : {}),
+		...(look.shadingHex ? { shading: { type: ShadingType.CLEAR, fill: look.shadingHex, color: "auto" } } : {}),
 		children: [
-			// Section headings use <h6> in templates: calc(var(--page-heading-font-size) * 0.75pt)
 			new TextRun({
 				text: title,
-				bold: true,
+				bold: look.bold,
 				color,
-				size: Math.round(config.headingSizeHalfPt * 0.75),
+				size: look.sizeHalfPt,
 				font: config.headingFont,
+				...(look.allCaps ? { allCaps: true } : {}),
+				...(look.characterSpacing ? { characterSpacing: look.characterSpacing } : {}),
 			}),
 		],
 	});
@@ -80,13 +124,13 @@ type RenderableSection<T> = { hidden: boolean; title: string; showHeading?: bool
 function renderEntries<T extends { hidden: boolean }>(
 	section: RenderableSection<T>,
 	colorHex: string,
-	renderItem: (item: T, baseRun: BaseRun) => Paragraph[],
+	renderItem: (item: T, baseRun: BaseRun, index: number) => Paragraph[],
 ): Paragraph[] {
 	const items = section.items.filter((item) => !item.hidden);
 	if (section.hidden || items.length === 0) return [];
 
 	const baseRun = getBaseRun();
-	return [...headingOf(section, colorHex), ...items.flatMap((item) => renderItem(item, baseRun))];
+	return [...headingOf(section, colorHex), ...items.flatMap((item, index) => renderItem(item, baseRun, index))];
 }
 
 function titleAndSubtitle(primary: string, secondary: string, rightText?: string, bold = true): Paragraph {
@@ -98,11 +142,12 @@ function titleAndSubtitle(primary: string, secondary: string, rightText?: string
 	}
 
 	if (rightText) {
-		children.push(new TextRun({ text: `\t${rightText}`, italics: true, ...baseRun }));
+		// Dates are meta: muted, not bold, at the column's right edge.
+		children.push(new TextRun({ text: `\t${rightText}`, ...baseRun, color: mutedColor() }));
 	}
 
 	return new Paragraph({
-		tabStops: [{ type: TabStopType.RIGHT, position: TabStopPosition.MAX }],
+		tabStops: [{ type: TabStopType.RIGHT, position: config.rightTabTwips ?? TabStopPosition.MAX }],
 		spacing: { before: 120 },
 		children,
 	});
@@ -120,8 +165,7 @@ function locationLine(location: string): Paragraph[] {
 			children: [
 				new TextRun({
 					text: location,
-					italics: true,
-					color: config.textColorHex,
+					color: mutedColor(),
 					font: config.bodyFont,
 					size: config.bodySizeHalfPt,
 				}),
@@ -259,8 +303,8 @@ const renderCertifications = (section: Sections["certifications"], colorHex: str
 	]);
 
 const renderPublications = (section: Sections["publications"], colorHex: string) =>
-	renderEntries(section, colorHex, (item) => [
-		titleAndSubtitle(item.title, item.publisher, item.date),
+	renderEntries(section, colorHex, (item, _baseRun, index) => [
+		titleAndSubtitle(config.numberPublications ? `${index + 1}. ${item.title}` : item.title, item.publisher, item.date),
 		...itemTrailer(item),
 	]);
 

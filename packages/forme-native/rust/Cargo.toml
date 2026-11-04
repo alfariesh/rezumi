@@ -20,3 +20,7 @@ opt-level = "s"
 lto = "thin"
 codegen-units = 1
 strip = "debuginfo"
+
+# Forme 0.29.0 with Rezumi's layout fixes, until upstream ships them. See vendor/README.md at the repository root.
+[patch.crates-io]
+forme-pdf = { path = "vendor/forme-pdf" }

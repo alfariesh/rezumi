@@ -41,7 +41,7 @@ const useKirana = (): LineupTemplate => {
 			textTransform: "uppercase",
 			lineHeight: 1.2,
 			color: tokens.accent,
-			...tracking(0.12, size.label),
+			...tracking(0.06, size.label),
 		};
 
 		const styles = StyleSheet.create({
