@@ -84,13 +84,16 @@ pnpm --filter @rezumi/tooling templates:preview --out <folder> --photo meridian 
 sips -s format png --resampleWidth 1240 <folder>/meridian.pdf --out <folder>/meridian.png   # macOS
 ```
 
-`--locale id-ID` mencetak judul bagian bahasa Indonesia; `--set path=json` mengubah satu nilai (`--set metadata.design.colors.primary='"rgba(0,0,0,1)"'`). Cek setiap template dalam matriks: dengan/tanpa foto, A4/Letter, dua halaman, aksen terang dan gelap, `--locale ar` (RTL).
+`--locale id-ID` mencetak judul bagian bahasa Indonesia; `--set path=json` mengubah satu nilai (`--set metadata.design.colors.primary='"rgba(0,0,0,1)"'`).
+
+Matriks lengkap: `pnpm --filter @rezumi/tooling templates:matrix [ids…] [--out <folder>] [--variant a,b]`. Ke-16 persona dalam lima varian (A foto · A4 · semua ikon + logo · chip · aksen gelap; B tanpa foto · Letter · ikon mati · aksen terang; C 2–3 halaman · nama sangat panjang; D RTL `ar-SA` · Letter; E panjang · ikon + logo · chip) jadi PDF, PNG, data JSON dan satu lembar kontak per template. Skrip mencetak hash setiap PDF: jalankan sebelum dan sesudah perubahan, lalu bandingkan per berkas agar template lain tidak ikut bergeser.
 
 ## 7. Tes
 
 - `packages/pdf/src/semantic/all-templates-smoke.test.tsx` dan `ats-extraction.integration.test.tsx` mencakup semua ID baru (urutan teks hasil ekstraksi: nama, kontak, judul bagian, tanggal).
 - Tes khusus template lama sudah dipindah (Phase 03): `OnyxPage` → `templates/meridian/MeridianPage.test.tsx`, `PersianPage` → `templates/sterling/SterlingPage.test.tsx`, `DitgarPage` → `templates/purnama/PurnamaPage.test.tsx`, `gengar-skills` → `templates/kirana/kirana-skills.test.tsx`. Mekanisme mesin yang tak dipakai template mana pun lagi (region `featured`, ringkasan di header, kontak per-pemilik, `skillLevelAfterName`) diuji di tingkat pohon dengan manifest pengganti lewat `vi.mock("…/template-manifest")` (`semantic/template-manifest.test.ts`, `kirana-skills.test.tsx`).
 - Tes ATS (`ats-extraction.integration.test.tsx`, Phase 07): tabel temuan untuk ke-16 template (satu kolom harus kosong, skor 100; dua kolom mencatat temuan geometri kolom), urutan teks lapisan konten (nama → email → telepon → judul bagian, tanggal di dalam bagiannya) dalam tampilan contoh dan preset, tidak ada huruf terpisah atau karakter PUA, dan ikon + logo tools menyala tidak menambah karakter. Tracking dibatasi 0,06 em (`MAX_TRACKING_EM`); pdf.js menyisipkan spasi antarhuruf mulai 0,102 em.
+- Pergantian halaman (`page-breaks.integration.test.tsx`, Phase 07): sapuan panjang Pengalaman di Meridian dan Kirana; judul entri selalu di satu halaman dan halaman pertama setiap bagian memuat item pertamanya (dibaca dari tata letak Forme); kontak RTL tercetak seperti diketik; nama panjang Purnama tidak terpotong.
 - `pnpm --filter @rezumi/pdf test`, `pnpm --filter @rezumi/schema test`, `pnpm --filter @rezumi/docx test`, typecheck paket terdampak, `pnpm exec turbo boundaries`.
 
 ## 8. Status implementasi (2026-11-03)

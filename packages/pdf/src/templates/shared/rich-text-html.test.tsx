@@ -108,8 +108,14 @@ describe("normalizeRichTextHtml", () => {
 		expect(normalizeRichTextHtml("\u3000text\u00a0")).toBe("<p>\u3000text\u00a0</p>");
 	});
 
-	it("normalizes RTL pseudo-bullets into anchored list items in the shared HTML path", () => {
-		expect(normalizeRichTextHtml("<p>‏- א<br>‏- ב</p>", { direction: "rtl" })).toBe("<ul><li>‏א</li><li>‏ב</li></ul>");
+	it("normalizes RTL pseudo-bullets into list items in the shared HTML path", () => {
+		expect(normalizeRichTextHtml("<p>‏- א<br>‏- ב</p>", { direction: "rtl" })).toBe("<ul><li>א</li><li>ב</li></ul>");
+	});
+
+	it("adds no direction mark to RTL text, which Forme would draw with an advance", () => {
+		expect(normalizeRichTextHtml("<p>Plain text</p><ul><li>Item</li></ul>", { direction: "rtl" })).toBe(
+			"<p>Plain text</p><ul><li>Item</li></ul>",
+		);
 	});
 });
 

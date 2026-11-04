@@ -134,6 +134,13 @@ function toCssDeclarations(input: Style, context: Context) {
 			LENGTH_KEYS.has(key) && key.endsWith("Radius") && typeof raw === "string" && PERCENT.test(raw.trim());
 		const css = percentCorner ? raw.trim() : cssValue(key, converted[key], fontSize);
 		if (css === undefined) continue;
+		// A run set apart from its paragraph's direction (a phone number on a right-to-left page) is isolated, which CSS
+		// needs for inline text; Forme's `direction: auto` takes the text's first letter, `unicode-bidi: plaintext`.
+		if (key === "direction" && css === "auto") {
+			declarations.push(["unicode-bidi", "plaintext"]);
+			continue;
+		}
+		if (key === "direction" && css === "ltr") declarations.push(["unicode-bidi", "isolate"]);
 		for (const target of EXPANDED[key] ?? [key]) declarations.push([kebab(target), css]);
 	}
 	return { declarations, fontSize, hidden };
