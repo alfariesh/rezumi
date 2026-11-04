@@ -10,8 +10,8 @@ import { SwitchRow } from "@rezumi/ui/components/switch";
 import { SectionBase } from "../shared/section-base";
 import { NumberInput } from "@/components/input/number-input";
 import { FontFamilyCombobox, FontWeightCombobox } from "@/components/typography/combobox";
-import { getNextWeights } from "@/components/typography/get-next-weights";
 import { useCurrentResume, useUpdateResumeData } from "@/features/resume/builder/draft";
+import { nextFontWeights, UploadedFonts } from "@/features/resume/editor/design/uploaded-fonts";
 import { useSyncFormValues } from "@/hooks/use-sync-form-values";
 import { useAppForm } from "@/libs/tanstack-form";
 
@@ -61,6 +61,7 @@ function TypographySectionForm() {
 
 	return (
 		<div className="grid grid-cols-1 gap-4 @md:grid-cols-2">
+			<UploadedFonts faces={typography.customFonts} />
 			<TypographyFieldGroup label={<Trans context="Body Text (paragraphs, lists, etc.)">Body</Trans>} />
 			<TypographyGroupFields form={form} prefix="body" handleAutoSave={handleAutoSave} />
 			<TypographyFieldGroup label={<Trans context="Headings or Titles (H1, H2, H3, H4, H5, H6)">Heading</Trans>} />
@@ -91,6 +92,7 @@ type TypographyGroupFieldsProps = {
 
 function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroupFieldsProps) {
 	const fontFamily = useSelector(form.store, (s) => s.values[prefix].fontFamily);
+	const customFonts = useSelector(form.store, (s) => s.values.customFonts);
 
 	return (
 		<>
@@ -109,10 +111,11 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 									variant="secondary"
 									value={field.state.value}
 									className="text-base"
+									customFonts={customFonts}
 									onValueChange={(value: string | null) => {
 										if (value === null) return;
 										field.handleChange(value);
-										const nextWeights = getNextWeights(value, prefix === "heading");
+										const nextWeights = nextFontWeights(customFonts, value, prefix === "heading");
 										if (nextWeights) form.setFieldValue(`${prefix}.fontWeights`, nextWeights);
 										handleAutoSave();
 									}}
@@ -138,6 +141,7 @@ function TypographyGroupFields({ form, prefix, handleAutoSave }: TypographyGroup
 									single={prefix === "heading"}
 									value={field.state.value}
 									fontFamily={fontFamily}
+									customFonts={customFonts}
 									onValueChange={(value) => {
 										if (value?.length === 0) return;
 										field.handleChange(value as FontWeight[]);

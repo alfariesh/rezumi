@@ -32,6 +32,8 @@ export type RenderResumeInput = {
 	readImage?: ((source: string) => Promise<Uint8Array>) | undefined;
 	/** Computer Modern mirror supplied by the server entry; browser callers leave it unset. */
 	webFontBaseUrl?: string | undefined;
+	/** How the server reads fonts users uploaded (see `loadFonts`); browsers and the app download them. */
+	readUploadedFont?: ((source: string) => Promise<Uint8Array>) | undefined;
 };
 
 export type RenderedResume = {
@@ -206,6 +208,7 @@ export function renderResume(engine: FormeEngine, input: RenderResumeInput): Pro
 		}),
 		input.readImage,
 		input.webFontBaseUrl,
+		input.readUploadedFont,
 	);
 }
 
@@ -218,10 +221,11 @@ export async function renderResumeElement(
 	element: ReactElement,
 	readImage?: (source: string) => Promise<Uint8Array>,
 	webFontBaseUrl?: string,
+	readUploadedFont?: (source: string) => Promise<Uint8Array>,
 ): Promise<RenderedResume> {
 	const data = (element.props as { data?: ResumeData }).data;
 	// Font downloads start first: they're the largest wait, and the tree needs only the icons.
-	const fontsLoaded = loadFonts(data ? resumeFontRequests(data) : [], webFontBaseUrl);
+	const fontsLoaded = loadFonts(data ? resumeFontRequests(data) : [], webFontBaseUrl, readUploadedFont);
 	let tree = renderHostTree(element);
 	// Icons load on first use: a tree that asked for new ones is drawn again once they arrive.
 	if (await loadRequestedIcons()) tree = renderHostTree(element);

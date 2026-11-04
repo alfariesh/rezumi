@@ -207,7 +207,7 @@ Motion is the app's: hover color changes, the bento's template fan spreading on 
 - **Template previews** come from each template's sample PDF (`apps/web/public/templates/pdf/<id>.pdf`), never at print resolution: `templates/jpg/<id>.jpg` at 600×848 (builder and letter cards, the mobile picker and the README; old mobile builds load this URL, so it stays a JPEG), and `templates/thumb/<id>.webp` at 596×843 with a 300×424 `<id>-small.webp` (homepage and gallery). Regenerate them with the server's sharp:
 
   ```sh
-  id=gengar
+  id=meridian
   pdftoppm -png -r 300 -singlefile "apps/web/public/templates/pdf/$id.pdf" "/tmp/$id"
   (cd apps/server && node --input-type=module -e '
   import sharp from "sharp";

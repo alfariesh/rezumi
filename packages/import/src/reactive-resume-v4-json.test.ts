@@ -348,3 +348,22 @@ describe("parseReactiveResumeV4JSON – rejects non-v4 input gracefully", () => 
 		expect(() => parseReactiveResumeV4JSON(JSON.stringify(currentFormat))).toThrow(/v4/i);
 	});
 });
+
+// ─── Templates: Reactive Resume names are mapped to the template that replaced them ───
+
+describe("parseReactiveResumeV4JSON – templates", () => {
+	it.each([
+		["onyx", "meridian"],
+		["pikachu", "horizon"],
+		["gengar", "kirana"],
+		["azurill", "jejak"],
+		["meridian", "meridian"],
+		// Reactive Resume's own "nosepass" has no counterpart here.
+		["nosepass", "meridian"],
+	])("reads the %s template as %s", (v4Template, expected) => {
+		const v4 = makeV4Base();
+		v4.metadata.template = v4Template;
+
+		expect(parseReactiveResumeV4JSON(JSON.stringify(v4)).metadata.template).toBe(expected);
+	});
+});

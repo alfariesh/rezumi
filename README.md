@@ -39,7 +39,7 @@ You own your data: a full data export on every plan, with no advertising analyti
 
 **Templates and Customization**
 
-- Templates from the shared catalog, including Porygon and Smeargle, previewed with your own content
+- Sixteen templates, one-column and two-column, previewed with your own content
 - One-column, two-column, and ATS-safe template filters
 - Font presets, custom fonts, colors, spacing, A4 and Letter paper, and left or right sidebars
 - Fit overflowing content by adjusting density, margins, and text size
@@ -96,82 +96,74 @@ You own your data: a full data export on every plan, with no advertising analyti
 <table>
   <tr>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/azurill.jpg" alt="Azurill" width="150" />
-      <br /><sub><b>Azurill</b></sub>
+      <img src="apps/web/public/templates/jpg/meridian.jpg" alt="Meridian" width="150" />
+      <br /><sub><b>Meridian</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/bronzor.jpg" alt="Bronzor" width="150" />
-      <br /><sub><b>Bronzor</b></sub>
+      <img src="apps/web/public/templates/jpg/sterling.jpg" alt="Sterling" width="150" />
+      <br /><sub><b>Sterling</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/chikorita.jpg" alt="Chikorita" width="150" />
-      <br /><sub><b>Chikorita</b></sub>
+      <img src="apps/web/public/templates/jpg/aksara.jpg" alt="Aksara" width="150" />
+      <br /><sub><b>Aksara</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/ditto.jpg" alt="Ditto" width="150" />
-      <br /><sub><b>Ditto</b></sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="apps/web/public/templates/jpg/gengar.jpg" alt="Gengar" width="150" />
-      <br /><sub><b>Gengar</b></sub>
-    </td>
-    <td align="center">
-      <img src="apps/web/public/templates/jpg/glalie.jpg" alt="Glalie" width="150" />
-      <br /><sub><b>Glalie</b></sub>
-    </td>
-    <td align="center">
-      <img src="apps/web/public/templates/jpg/kakuna.jpg" alt="Kakuna" width="150" />
-      <br /><sub><b>Kakuna</b></sub>
-    </td>
-    <td align="center">
-      <img src="apps/web/public/templates/jpg/lapras.jpg" alt="Lapras" width="150" />
-      <br /><sub><b>Lapras</b></sub>
+      <img src="apps/web/public/templates/jpg/atlas.jpg" alt="Atlas" width="150" />
+      <br /><sub><b>Atlas</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/leafish.jpg" alt="Leafish" width="150" />
-      <br /><sub><b>Leafish</b></sub>
+      <img src="apps/web/public/templates/jpg/tunas.jpg" alt="Tunas" width="150" />
+      <br /><sub><b>Tunas</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/onyx.jpg" alt="Onyx" width="150" />
-      <br /><sub><b>Onyx</b></sub>
+      <img src="apps/web/public/templates/jpg/summit.jpg" alt="Summit" width="150" />
+      <br /><sub><b>Summit</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/persian.jpg" alt="Persian" width="150" />
-      <br /><sub><b>Persian</b></sub>
+      <img src="apps/web/public/templates/jpg/cendekia.jpg" alt="Cendekia" width="150" />
+      <br /><sub><b>Cendekia</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/pikachu.jpg" alt="Pikachu" width="150" />
-      <br /><sub><b>Pikachu</b></sub>
-    </td>
-    <td align="center">
-      <img src="apps/web/public/templates/jpg/rhyhorn.jpg" alt="Rhyhorn" width="150" />
-      <br /><sub><b>Rhyhorn</b></sub>
+      <img src="apps/web/public/templates/jpg/wibawa.jpg" alt="Wibawa" width="150" />
+      <br /><sub><b>Wibawa</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/ditgar.jpg" alt="Ditgar" width="150" />
-      <br /><sub><b>Ditgar</b></sub>
+      <img src="apps/web/public/templates/jpg/tenun.jpg" alt="Tenun" width="150" />
+      <br /><sub><b>Tenun</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/meowth.jpg" alt="Meowth" width="150" />
-      <br /><sub><b>Meowth</b></sub>
+      <img src="apps/web/public/templates/jpg/vector.jpg" alt="Vector" width="150" />
+      <br /><sub><b>Vector</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/scizor.jpg" alt="Scizor" width="150" />
-      <br /><sub><b>Scizor</b></sub>
+      <img src="apps/web/public/templates/jpg/kirana.jpg" alt="Kirana" width="150" />
+      <br /><sub><b>Kirana</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/porygon.jpg" alt="Porygon" width="150" />
-      <br /><sub><b>Porygon</b></sub>
+      <img src="apps/web/public/templates/jpg/linen.jpg" alt="Linen" width="150" />
+      <br /><sub><b>Linen</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="apps/web/public/templates/jpg/horizon.jpg" alt="Horizon" width="150" />
+      <br /><sub><b>Horizon</b></sub>
     </td>
     <td align="center">
-      <img src="apps/web/public/templates/jpg/smeargle.jpg" alt="Smeargle" width="150" />
-      <br /><sub><b>Smeargle</b></sub>
+      <img src="apps/web/public/templates/jpg/jejak.jpg" alt="Jejak" width="150" />
+      <br /><sub><b>Jejak</b></sub>
+    </td>
+    <td align="center">
+      <img src="apps/web/public/templates/jpg/purnama.jpg" alt="Purnama" width="150" />
+      <br /><sub><b>Purnama</b></sub>
+    </td>
+    <td align="center">
+      <img src="apps/web/public/templates/jpg/senja.jpg" alt="Senja" width="150" />
+      <br /><sub><b>Senja</b></sub>
     </td>
   </tr>
 </table>

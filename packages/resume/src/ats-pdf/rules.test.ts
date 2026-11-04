@@ -184,7 +184,7 @@ describe("section checks", () => {
 	});
 
 	/**
-	 * The bronzor template sets each section title in a narrow column beside the section's
+	 * The Atlas template sets each section title in a narrow column beside the section's
 	 * content, so baseline clustering merges the heading into the first content line
 	 * ("Profiles GitHub"). The heading is still a separate run in its own column and the
 	 * check has to find it there.

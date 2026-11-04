@@ -15,11 +15,13 @@ import { NodeType } from "node-html-parser";
 import { entryHeaderOf } from "@rezumi/schema/resume/data";
 import { assertResumeRenderBudget } from "@rezumi/schema/resume/limits";
 import { isRTL } from "@rezumi/utils/locale";
+import { showsIcons } from "../icon-visibility";
 import { getResumeSectionIcon } from "../section-icon";
 import { shouldUseSectionTimeline } from "../templates/shared/columns";
 import { getCustomFieldLinkUrl } from "../templates/shared/contact";
 import { entryLayoutOf, leadsWithRole } from "../templates/shared/entry-header";
 import { filterItems, filterSections } from "../templates/shared/filtering";
+import { itemIcon } from "../templates/shared/item-icons";
 import { hasTemplatePicture } from "../templates/shared/picture";
 import { parseNormalizedRichTextHtml, richTextMarkClassName } from "../templates/shared/rich-text-html";
 import { STANDARD_FIELD_REGISTRY } from "./binding-inventory";
@@ -281,12 +283,8 @@ const buildItem = ({
 	const headerFieldNames = ITEM_HEADER_FIELDS[type];
 	const direction = isRTL(data.metadata.page.locale) ? "rtl" : "ltr";
 
-	if (
-		ITEM_ICON_SECTIONS.has(type as CustomSectionType) &&
-		typeof item.icon === "string" &&
-		item.icon &&
-		!data.metadata.page.hideIcons
-	) {
+	const icon = ITEM_ICON_SECTIONS.has(type as CustomSectionType) ? itemIcon(type, item, data.metadata) : undefined;
+	if (icon?.name && showsIcons(data.metadata, icon.role)) {
 		headerChildren.push(
 			semanticNode({
 				key: semanticNodeKeys.icon(headerKey, "item"),
@@ -442,7 +440,7 @@ const buildSection = ({
 					kind: "section-heading",
 					roles: ["section-title"],
 					children:
-						sectionIcon && !data.metadata.page.hideSectionIcons
+						sectionIcon && showsIcons(data.metadata, "section")
 							? [
 									semanticNode({
 										key: semanticNodeKeys.icon(headingKey, "section"),
@@ -583,7 +581,7 @@ const buildHeader = (
 	const regionKey = semanticNodeKeys.region(pageKey, "header");
 	const headerKey = semanticNodeKeys.header(regionKey);
 	const contactListKey = semanticNodeKeys.contactList(headerKey);
-	const showIcons = !data.metadata.page.hideIcons;
+	const showIcons = showsIcons(data.metadata, "contact");
 	const contacts: SemanticNode[] = [];
 	const baseContacts = [
 		["email", data.basics.email, true],
@@ -798,7 +796,7 @@ const routeTemplateParts = ({
 			}),
 		};
 	};
-	// Parts placed beside a sibling settle first, so a part that takes everything left (Azurill's timeline content)
+	// Parts placed beside a sibling settle first, so a part that takes everything left (Jejak's timeline content)
 	// carries them along with their sibling.
 	const anchored = directParts.filter((part) => typeof part.route.at === "object").map(route);
 	remaining = remaining.flatMap((child) => [

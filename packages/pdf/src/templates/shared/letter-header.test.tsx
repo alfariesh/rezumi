@@ -24,7 +24,7 @@ const letterIn = (template: Template) => {
 
 describe("letters", () => {
 	// A letter's page is full width; templates that keep their header in the sidebar still print it.
-	it.each(["gengar"] as const)("prints the sender's header in %s", { timeout: 60_000 }, async (template) => {
+	it.each(["purnama", "kirana"] as const)("prints the sender's header in %s", { timeout: 60_000 }, async (template) => {
 		const { pdf } = await renderResume(forme, {
 			data: letterIn(template),
 			template,

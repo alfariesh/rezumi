@@ -43,11 +43,11 @@ describe("strict write bounds", () => {
 	it("preserves defaults for omitted fields from older clients", () => {
 		const data = structuredClone(defaultResumeData);
 		Reflect.deleteProperty(data.summary, "keepTogether");
-		Reflect.deleteProperty(data.metadata.page, "hideSectionIcons");
+		Reflect.deleteProperty(data.metadata.page, "marginX");
 		Reflect.deleteProperty(data.metadata.typography.body, "fontSize");
 		expect(parseWritableResumeData(data)).toMatchObject({
 			summary: { keepTogether: false },
-			metadata: { page: { hideSectionIcons: true }, typography: { body: { fontSize: 11 } } },
+			metadata: { page: { marginX: 36 }, typography: { body: { fontSize: 11 } } },
 		});
 	});
 });

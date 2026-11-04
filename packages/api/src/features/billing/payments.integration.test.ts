@@ -10,6 +10,7 @@ import { and, asc, eq, isNull } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as tables from "@rezumi/db/schema";
+import { BILLING_CATALOG_VERSION } from "@rezumi/schema/billing";
 import { notificationSignature } from "./midtrans/signature";
 import { safeProviderFields } from "./midtrans/status";
 import { DAY_MS } from "./timeline";
@@ -296,7 +297,7 @@ describe.skipIf(!databaseUrl)("Midtrans payments", () => {
 				amount: 79_000,
 				durationDays: 30,
 				credits: 100,
-				catalogVersion: 1,
+				catalogVersion: BILLING_CATALOG_VERSION,
 				currency: "IDR",
 				channel: "web",
 				snapToken: "snap-token",

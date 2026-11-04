@@ -254,8 +254,8 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 		it("keeps a premium template through edits and copies, but refuses switching to one", async () => {
 			await getDb()
 				.insert(tables.resume)
-				.values({ id: "premium", userId: "member", name: "Premium", slug: "premium", data: designed("pikachu") });
-			const edited = designed("pikachu");
+				.values({ id: "premium", userId: "member", name: "Premium", slug: "premium", data: designed("senja") });
+			const edited = designed("senja");
 			edited.basics.name = "Ada";
 			await resumes.update({ id: "premium", userId: "member", data: edited });
 			await resumes.patch({
@@ -268,10 +268,10 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 				"Copy",
 				(await resumes.getById({ id: "premium", userId: "member" })).data,
 			);
-			expect((await resumes.getById({ id: copy, userId: "member" })).data.metadata.template).toBe("pikachu");
+			expect((await resumes.getById({ id: copy, userId: "member" })).data.metadata.template).toBe("senja");
 
 			const plain = await createResume();
-			await expect(resumes.update({ id: plain, userId: "member", data: designed("pikachu") })).rejects.toMatchObject({
+			await expect(resumes.update({ id: plain, userId: "member", data: designed("senja") })).rejects.toMatchObject({
 				code: "PLAN_FEATURE_REQUIRED",
 				data: { feature: "premiumTemplates", planId: "free" },
 			});
@@ -279,13 +279,13 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 				resumes.patch({
 					id: plain,
 					userId: "member",
-					operations: [{ op: "replace", path: "/metadata/template", value: "gengar" }],
+					operations: [{ op: "replace", path: "/metadata/template", value: "linen" }],
 				}),
 			).rejects.toMatchObject({ code: "PLAN_FEATURE_REQUIRED" });
 			await resumes.patch({
 				id: plain,
 				userId: "member",
-				operations: [{ op: "replace", path: "/metadata/template", value: "rhyhorn" }],
+				operations: [{ op: "replace", path: "/metadata/template", value: "sterling" }],
 			});
 		});
 
@@ -297,47 +297,47 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 					userId: "member",
 					name: "Styled",
 					slug: "styled",
-					data: designed("onyx", "a { b: c }"),
+					data: designed("meridian", "a { b: c }"),
 				});
-			const kept = designed("onyx", "a { b: c }");
+			const kept = designed("meridian", "a { b: c }");
 			kept.basics.name = "Ada";
 			await resumes.update({ id: "styled", userId: "member", data: kept });
 			await expect(
-				resumes.update({ id: "styled", userId: "member", data: designed("onyx", "a { b: d }") }),
+				resumes.update({ id: "styled", userId: "member", data: designed("meridian", "a { b: d }") }),
 			).rejects.toMatchObject({ code: "PLAN_FEATURE_REQUIRED", data: { feature: "customStyles" } });
-			await resumes.update({ id: "styled", userId: "member", data: designed("onyx") });
+			await resumes.update({ id: "styled", userId: "member", data: designed("meridian") });
 			await expect(
-				resumes.update({ id: "styled", userId: "member", data: designed("onyx", "a { b: c }") }),
+				resumes.update({ id: "styled", userId: "member", data: designed("meridian", "a { b: c }") }),
 			).rejects.toMatchObject({ code: "PLAN_FEATURE_REQUIRED" });
 		});
 
 		it("fits an imported file to the plan instead of refusing it", async () => {
-			const id = await createResume("member", "Import", designed("pikachu", "a { b: c }"), "import");
+			const id = await createResume("member", "Import", designed("senja", "a { b: c }"), "import");
 			const { data } = await resumes.getById({ id, userId: "member" });
-			expect(data.metadata.template).toBe("bronzor");
+			expect(data.metadata.template).toBe("meridian");
 			expect(data.metadata.stylesheet).toBeUndefined();
 
 			const letter = await letters.create({ userId: "member", name: "Letter" });
 			const document = await letters.export({ userId: "member", id: letter.id });
-			document.style.metadata.template = "gengar";
-			expect((await letters.import({ userId: "member", document })).style.metadata.template).toBe("bronzor");
+			document.style.metadata.template = "linen";
+			expect((await letters.import({ userId: "member", document })).style.metadata.template).toBe("meridian");
 		});
 
 		it("refuses a premium template chosen for a letter", async () => {
-			await expect(letters.create({ userId: "member", name: "Letter", template: "gengar" })).rejects.toMatchObject({
+			await expect(letters.create({ userId: "member", name: "Letter", template: "linen" })).rejects.toMatchObject({
 				code: "PLAN_FEATURE_REQUIRED",
 			});
-			const letter = await letters.create({ userId: "member", name: "Letter", template: "onyx" });
+			const letter = await letters.create({ userId: "member", name: "Letter", template: "meridian" });
 			await expect(
-				letters.update({ userId: "member", id: letter.id, expectedRevision: letter.revision, template: "gengar" }),
+				letters.update({ userId: "member", id: letter.id, expectedRevision: letter.revision, template: "linen" }),
 			).rejects.toMatchObject({ code: "PLAN_FEATURE_REQUIRED" });
 		});
 
 		it("opens premium templates and custom styles with a pass", async () => {
 			await grantPlus();
-			const id = await createResume("member", "Import", designed("pikachu", "a { b: c }"), "import");
-			expect((await resumes.getById({ id, userId: "member" })).data.metadata.template).toBe("pikachu");
-			await resumes.update({ id, userId: "member", data: designed("gengar", "a { b: d }") });
+			const id = await createResume("member", "Import", designed("senja", "a { b: c }"), "import");
+			expect((await resumes.getById({ id, userId: "member" })).data.metadata.template).toBe("senja");
+			await resumes.update({ id, userId: "member", data: designed("linen", "a { b: d }") });
 		});
 	});
 
@@ -380,11 +380,11 @@ describe.skipIf(!databaseUrl)("plan limits", () => {
 		it("refuses nothing", async () => {
 			fixture.mode = "off";
 			for (let index = 0; index < 5; index++) await createResume("member", `CV ${index}`);
-			const id = await createResume("member", "Import", designed("pikachu", "a { b: c }"), "import");
-			expect((await resumes.getById({ id, userId: "member" })).data.metadata.template).toBe("pikachu");
-			await resumes.update({ id, userId: "member", data: designed("gengar", "a { b: d }") });
+			const id = await createResume("member", "Import", designed("senja", "a { b: c }"), "import");
+			expect((await resumes.getById({ id, userId: "member" })).data.metadata.template).toBe("senja");
+			await resumes.update({ id, userId: "member", data: designed("linen", "a { b: d }") });
 			for (let index = 0; index < 5; index++)
-				await letters.create({ userId: "member", name: `L${index}`, template: "gengar" });
+				await letters.create({ userId: "member", name: `L${index}`, template: "linen" });
 			await createResume("member", "With letters", withLetters(3), "import");
 			await automation.assertAutomationAccess({ user: { id: "member" }, method: "apiKey" });
 			await automation.assertAutomationAccess({ user: { id: "member" }, method: "bearer", clientId: "claude" });

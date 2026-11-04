@@ -14,7 +14,7 @@ const fixture = (): ResumeData => {
 	const data = structuredClone(defaultResumeData);
 	data.picture.hidden = true;
 	data.basics.name = "Jane Doe";
-	data.metadata.template = "ditgar";
+	data.metadata.template = "purnama";
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];
 	data.summary.hidden = false;
 	return data;

@@ -53,8 +53,11 @@ export async function handleResumeCard(request: Request, username: string, slug:
 	if (!png) {
 		try {
 			// Loaded with the first card: the PDF engine and its fonts are heavy, and most requests never need them.
-			const { loadResumeCardAssets } = await import("@rezumi/pdf/server");
-			const assets = await loadResumeCardAssets(data, env.APP_URL);
+			const [{ loadResumeCardAssets }, { readUploadedFont }] = await Promise.all([
+				import("@rezumi/pdf/server"),
+				import("@rezumi/api/features/storage"),
+			]);
+			const assets = await loadResumeCardAssets(data, env.APP_URL, readUploadedFont);
 			const svg = resumeCardSvg({
 				...text,
 				headingFamily: assets.headingFamily,

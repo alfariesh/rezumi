@@ -387,6 +387,16 @@ msgstr "{0} interview · {1}"
 msgid "{0} interview · {1} min"
 msgstr "{0} interview · {1} min"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr "{0} is ready. Choose it under Font family."
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr "{0} italic"
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -1407,10 +1417,6 @@ msgstr "Also download the cover letter"
 msgid "Also email a copy"
 msgstr "Also email a copy"
 
-#: src/features/design/style-groups.tsx
-msgid "Also shows the icons on skills, profiles and interests."
-msgstr "Also shows the icons on skills, profiles and interests."
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
 msgstr "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
@@ -1906,9 +1912,17 @@ msgstr "Before interview"
 msgid "Before restore"
 msgstr "Before restore"
 
+#: src/features/design/style-groups.tsx
+msgid "Before titles such as Education, Skills and Certifications."
+msgstr "Before titles such as Education, Skills and Certifications."
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Before you submit"
 msgstr "Before you submit"
+
+#: src/features/design/style-groups.tsx
+msgid "Before your email, phone, location, website and custom fields."
+msgstr "Before your email, phone, location, website and custom fields."
 
 #: src/features/application-detail/hooks.ts
 #: src/features/applications/next-step.ts
@@ -2258,6 +2272,10 @@ msgstr "Choose a date"
 msgid "Choose a file"
 msgstr "Choose a file"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr "Choose a font file smaller than 8 MB."
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "Choose a PDF"
@@ -2604,6 +2622,10 @@ msgstr "Contact & complaints"
 #: src/features/check/issues.ts
 msgid "Contact details"
 msgstr "Contact details"
+
+#: src/features/design/style-groups.tsx
+msgid "Contact line"
+msgstr "Contact line"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/application-detail/sheets.tsx
@@ -3162,6 +3184,10 @@ msgstr "Couldn't update the timeline. Try again."
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "Couldn't upload the file. Try again."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr "Couldn't upload the font. Try again."
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4357,6 +4383,10 @@ msgstr "Follow-up reminder"
 msgid "Font family"
 msgstr "Font family"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr "Font limit reached"
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Font pairing"
@@ -4771,13 +4801,17 @@ msgstr "Icon"
 msgid "Icon color"
 msgstr "Icon color"
 
+#: src/features/design/style-groups.tsx
+msgid "Icon style"
+msgstr "Icon style"
+
 #: src/features/write/section-sheet.tsx
 msgid "Icon…"
 msgstr "Icon…"
 
-#: src/features/design/style-groups.tsx
-msgid "Icons in contact line"
-msgstr "Icons in contact line"
+#: src/features/design/design-pane.tsx
+msgid "Icons"
+msgstr "Icons"
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -5602,6 +5636,10 @@ msgstr "Locked documents were skipped. Unlock them first."
 #: src/features/write/outline.tsx
 msgid "Locked. Unlock to edit."
 msgstr "Locked. Unlock to edit."
+
+#: src/features/design/style-groups.tsx
+msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
+msgstr "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
@@ -7867,6 +7905,7 @@ msgstr "Reminders appear here. Email copies are optional and need a verified add
 msgid "Remote"
 msgstr "Remote"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7876,6 +7915,11 @@ msgstr "Remove"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "Remove {0}"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr "Remove {0}?"
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7896,6 +7940,10 @@ msgstr "Remove field"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "Remove file"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr "Remove font"
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -8355,6 +8403,10 @@ msgid "Rotation isn't supported by PDF rendering."
 msgstr "Rotation isn't supported by PDF rendering."
 
 #: src/features/design/style-groups.tsx
+msgid "Rounded"
+msgstr "Rounded"
+
+#: src/features/design/style-groups.tsx
 msgid "Row order"
 msgstr "Row order"
 
@@ -8696,6 +8748,10 @@ msgstr "Second offer"
 msgid "Section headings"
 msgstr "Section headings"
 
+#: src/features/design/style-groups.tsx
+msgid "Section titles"
+msgstr "Section titles"
+
 #: src/features/ats-checker/messages.ts
 msgid "Sections"
 msgstr "Sections"
@@ -8924,6 +8980,10 @@ msgstr "Share via…"
 msgid "Sharing"
 msgstr "Sharing"
 
+#: src/features/design/style-groups.tsx
+msgid "Sharp"
+msgstr "Sharp"
+
 #: src/features/workspace/parts.tsx
 msgid "Sharpening the opening"
 msgstr "Sharpening the opening"
@@ -8997,7 +9057,7 @@ msgstr "Show heading"
 msgid "Show hidden terms again"
 msgstr "Show hidden terms again"
 
-#: src/features/design/advanced.tsx
+#: src/features/design/style-groups.tsx
 msgid "Show icons"
 msgstr "Show icons"
 
@@ -9032,10 +9092,6 @@ msgstr "Show photo"
 #: src/features/career/today.tsx
 msgid "Show read"
 msgstr "Show read"
-
-#: src/features/design/advanced.tsx
-msgid "Show section icons"
-msgstr "Show section icons"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9206,6 +9262,10 @@ msgstr "Skill"
 msgid "Skills"
 msgstr "Skills"
 
+#: src/features/design/style-groups.tsx
+msgid "Skills, interests and profiles"
+msgstr "Skills, interests and profiles"
+
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
@@ -9369,6 +9429,10 @@ msgstr "Stage"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Stage stays {stage}"
 msgstr "Stage stays {stage}"
+
+#: src/features/design/style-groups.tsx
+msgid "Standard"
+msgstr "Standard"
 
 #: src/features/write/date-field.tsx
 msgid "Start"
@@ -9767,6 +9831,10 @@ msgstr "Text is written one character at a time."
 msgid "Text only"
 msgstr "Text only"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr "Text set in it moves to the default font. You can upload the font again later."
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "Text sits in the header or footer area."
@@ -9904,6 +9972,10 @@ msgstr "The follow-up is saved. To get a reminder, allow notifications in your d
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "The greeting follows the name."
+
+#: src/features/design/style-groups.tsx
+msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
+msgstr "The icons you pick, and network logos such as LinkedIn and GitHub."
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "The interview is saved. To get a reminder, allow notifications in your device settings."
@@ -10215,6 +10287,10 @@ msgstr "This file is large for a resume."
 msgid "This file is larger than many application forms accept."
 msgstr "This file is larger than many application forms accept."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "This file uses a lot of different fonts."
@@ -10226,6 +10302,10 @@ msgstr "This file uses Type 3 fonts, which carry drawings instead of characters.
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "This file's size couldn't be read. Choose another PDF."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10493,6 +10573,10 @@ msgstr "Too light for headings on white. It may be hard to read and print faintl
 msgid "Too many requests. Try again later."
 msgstr "Too many requests. Try again later."
 
+#: src/features/design/style-groups.tsx
+msgid "Tool logos in skills"
+msgstr "Tool logos in skills"
+
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
@@ -10607,6 +10691,10 @@ msgstr "Turkish"
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
 msgstr "Turn off discretionary ligatures when exporting."
+
+#: src/features/design/style-groups.tsx
+msgid "Turn off for a text-only resume."
+msgstr "Turn off for a text-only resume."
 
 #: src/features/share/link.tsx
 msgid "Turn on the link to choose an address."
@@ -10767,9 +10855,21 @@ msgstr "Updating preview…"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr "Upload font"
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "Upload photo"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11610,6 +11710,10 @@ msgstr "Your facts, stories and preferences. Editing Knowledge sends nothing to 
 msgid "Your focus"
 msgstr "Your focus"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr "Your fonts"
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "Your headings look the same as your body text."
@@ -11675,9 +11779,17 @@ msgstr "Your own fonts"
 msgid "Your own fonts aren't available"
 msgstr "Your own fonts aren't available"
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr "Your own fonts aren't available, so the imported document uses a standard font."
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
 msgstr "Your own fonts aren't in your plan"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgstr "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."

@@ -43,7 +43,7 @@ describe("ResumeDocument cover letter header", () => {
 		return renderedText(instance.container.document as RenderedNode);
 	};
 
-	it.each(["gengar", "onyx"] as const)(
+	it.each(["kirana", "purnama", "meridian"] as const)(
 		"renders the sender block for %s cover letter PDFs when includeCoverLetterHeader is set",
 		async (template) => {
 			const data = createCoverLetterOnlyData();
@@ -54,7 +54,7 @@ describe("ResumeDocument cover letter header", () => {
 		},
 	);
 
-	it.each(["gengar", "onyx"] as const)(
+	it.each(["kirana", "purnama", "meridian"] as const)(
 		"omits the sender block for %s cover letter PDFs by default",
 		async (template) => {
 			const data = createCoverLetterOnlyData();

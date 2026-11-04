@@ -52,10 +52,19 @@ describe("applyResumePatches", () => {
 	});
 
 	it("rolls back if patched document fails schema validation", () => {
-		// The tolerant read-time parser would silently replace an unknown template with "onyx";
+		// The tolerant read-time parser would silently replace an unknown template with the default;
 		// a write must reject it instead (#3413).
 		expect(() =>
 			applyResumePatches(defaultResumeData, [{ op: "replace", path: "/metadata/template", value: "unknown-template" }]),
 		).toThrow(/Patch produced invalid resume data/);
+	});
+
+	it("saves a former template ID as its successor", () => {
+		const replaceTemplate = (value: string) =>
+			applyResumePatches(defaultResumeData, [{ op: "replace", path: "/metadata/template", value }]).metadata.template;
+
+		expect(replaceTemplate("onyx")).toBe("meridian");
+		expect(replaceTemplate("ditgar")).toBe("purnama");
+		expect(replaceTemplate("sterling")).toBe("sterling");
 	});
 });

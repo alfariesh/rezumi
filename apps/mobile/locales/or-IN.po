@@ -387,6 +387,16 @@ msgstr "{0} ସାକ୍ଷାତକାର · {1}"
 msgid "{0} interview · {1} min"
 msgstr "{0} ସାକ୍ଷାତକାର · {1} ମିନିଟ୍।"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr ""
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -1409,10 +1419,6 @@ msgstr "କଭର୍ ଚିଠି ମଧ୍ୟ ଡାଉନଲୋଡ୍ କର�
 msgid "Also email a copy"
 msgstr "ଏକ କପି ଇମେଲ୍ କରନ୍ତୁ।"
 
-#: src/features/design/style-groups.tsx
-msgid "Also shows the icons on skills, profiles and interests."
-msgstr "କ skills ଶଳ, ପ୍ରୋଫାଇଲ୍ ଏବଂ ଆଗ୍ରହ ଉପରେ ଆଇକନ୍ ଗୁଡିକ ମଧ୍ୟ ଦେଖାଏ |"
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
 msgstr "ସବୁବେଳେ ଆଜିରେ ଦେଖାଯାଏ। ଇମେଲ୍ ପାଇଁ ଯାଞ୍ଚିତ ଠିକଣା ଓ ସର୍ଭର୍ ମେଲ୍ ସେଟଅପ୍ ଦରକାର। ପୁସ୍ ବିଜ୍ଞପ୍ତି ପଠାଯାଏନାହିଁ।"
@@ -1908,9 +1914,17 @@ msgstr "ସାକ୍ଷାତକାର ପୂର୍ବରୁ"
 msgid "Before restore"
 msgstr "ପୁନ restore ସ୍ଥାପନ ପୂର୍ବରୁ"
 
+#: src/features/design/style-groups.tsx
+msgid "Before titles such as Education, Skills and Certifications."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Before you submit"
 msgstr "ଦାଖଲ କରିବା ପୂର୍ବରୁ"
+
+#: src/features/design/style-groups.tsx
+msgid "Before your email, phone, location, website and custom fields."
+msgstr ""
 
 #: src/features/application-detail/hooks.ts
 #: src/features/applications/next-step.ts
@@ -2261,6 +2275,10 @@ msgstr "ଏକ ତାରିଖ ବାଛନ୍ତୁ।"
 msgid "Choose a file"
 msgstr "ଏକ ଫାଇଲ୍ ବାଛନ୍ତୁ |"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "PDF ବାଛନ୍ତୁ"
@@ -2610,6 +2628,10 @@ msgstr ""
 #: src/features/check/issues.ts
 msgid "Contact details"
 msgstr "ଯୋଗାଯୋଗ ବିବରଣୀ"
+
+#: src/features/design/style-groups.tsx
+msgid "Contact line"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 #: src/features/application-detail/sheets.tsx
@@ -3171,6 +3193,10 @@ msgstr "ସମୟସୀମା ଅଦ୍ୟତନ କରିପାରିଲା ନ
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "ଫାଇଲ୍ ଅପଲୋଡ୍ କରିପାରିଲା ନାହିଁ। ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4373,6 +4399,10 @@ msgstr "ଅନୁସରଣ ସ୍ମାରକ"
 msgid "Font family"
 msgstr "ଫଣ୍ଟ ପରିବାର"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Font pairing"
@@ -4789,13 +4819,17 @@ msgstr "ଆଇକନ୍"
 msgid "Icon color"
 msgstr "ଆଇକନ୍ ରଙ୍ଗ |"
 
+#: src/features/design/style-groups.tsx
+msgid "Icon style"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Icon…"
 msgstr "ଆଇକନ୍…"
 
-#: src/features/design/style-groups.tsx
-msgid "Icons in contact line"
-msgstr "ଯୋଗାଯୋଗ ଲାଇନରେ ଆଇକନ୍ |"
+#: src/features/design/design-pane.tsx
+msgid "Icons"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -5621,6 +5655,10 @@ msgstr "ଲକ୍ ହୋଇଥିବା ଡକ୍ୟୁମେଣ୍ଟ୍ ଗୁ
 #: src/features/write/outline.tsx
 msgid "Locked. Unlock to edit."
 msgstr "ତାଲା ପଡିଛି | ସଂପାଦନ କରିବାକୁ ଅନଲକ୍ କରନ୍ତୁ |"
+
+#: src/features/design/style-groups.tsx
+msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
@@ -7895,6 +7933,7 @@ msgstr "ସ୍ମାରକ ଏଠାରେ ଦେଖାଯାଏ। ଇମେଲ
 msgid "Remote"
 msgstr "ରିମୋଟ୍"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7904,6 +7943,11 @@ msgstr "ଅପସାରଣ କରନ୍ତୁ |"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "{0} ଅପସାରଣ କରନ୍ତୁ |"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7924,6 +7968,10 @@ msgstr "କ୍ଷେତ୍ର ଅପସାରଣ କରନ୍ତୁ |"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "ଫାଇଲ୍ ହଟାନ୍ତୁ"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -8386,6 +8434,10 @@ msgid "Rotation isn't supported by PDF rendering."
 msgstr "PDF ରେଣ୍ଡରିଂ ଦ୍ୱାରା ଘୂର୍ଣ୍ଣନ ସମର୍ଥିତ ନୁହେଁ |"
 
 #: src/features/design/style-groups.tsx
+msgid "Rounded"
+msgstr ""
+
+#: src/features/design/style-groups.tsx
 msgid "Row order"
 msgstr ""
 
@@ -8728,6 +8780,10 @@ msgstr "ଦ୍ୱିତୀୟ ଅଫର୍"
 msgid "Section headings"
 msgstr "ବିଭାଗ ହେଡିଙ୍ଗ୍ |"
 
+#: src/features/design/style-groups.tsx
+msgid "Section titles"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Sections"
 msgstr "ବିଭାଗଗୁଡ଼ିକ"
@@ -8962,6 +9018,10 @@ msgstr "ମାଧ୍ୟମରେ ସେୟାର କରନ୍ତୁ…"
 msgid "Sharing"
 msgstr "ସେୟାର କରିବା"
 
+#: src/features/design/style-groups.tsx
+msgid "Sharp"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Sharpening the opening"
 msgstr "ଆରମ୍ଭକୁ ତୀକ୍ଷ୍ଣ କରୁଛି"
@@ -9036,7 +9096,7 @@ msgstr "ହେଡିଙ୍ଗ୍ ଦେଖାନ୍ତୁ |"
 msgid "Show hidden terms again"
 msgstr "ଲୁଚାଇଥିବା ପଦ ପୁଣି ଦେଖାନ୍ତୁ"
 
-#: src/features/design/advanced.tsx
+#: src/features/design/style-groups.tsx
 msgid "Show icons"
 msgstr "ଆଇକନ୍ ଦେଖାନ୍ତୁ"
 
@@ -9071,10 +9131,6 @@ msgstr "ଫଟୋ ଦେଖାନ୍ତୁ"
 #: src/features/career/today.tsx
 msgid "Show read"
 msgstr "ପଢ଼ାଯାଇଥିବାଗୁଡ଼ିକ ଦେଖାନ୍ତୁ"
-
-#: src/features/design/advanced.tsx
-msgid "Show section icons"
-msgstr "ବିଭାଗ ଆଇକନ୍ ଦେଖାନ୍ତୁ"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9245,6 +9301,10 @@ msgstr "କୌଶଳ"
 msgid "Skills"
 msgstr "କୌଶଳଗୁଡିକ"
 
+#: src/features/design/style-groups.tsx
+msgid "Skills, interests and profiles"
+msgstr ""
+
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
@@ -9408,6 +9468,10 @@ msgstr "ପର୍ଯ୍ୟାୟ"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Stage stays {stage}"
 msgstr "ପର୍ଯ୍ୟାୟ {stage} ରହେ"
+
+#: src/features/design/style-groups.tsx
+msgid "Standard"
+msgstr ""
 
 #: src/features/write/date-field.tsx
 msgid "Start"
@@ -9806,6 +9870,10 @@ msgstr "ଟେକ୍ସଟ୍ ଏକ ସମୟରେ ଗୋଟିଏ ଅକ୍�
 msgid "Text only"
 msgstr "କେବଳ ଲେଖା"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "ଟେକ୍ସଟ୍ ହେଡର୍ କିମ୍ବା ଫୁଟର୍ କ୍ଷେତ୍ରରେ ଥାଏ।"
@@ -9944,6 +10012,10 @@ msgstr "ପରବର୍ତ୍ତୀ ଯୋଗାଯୋଗ ସେଭ୍ ହେଲ
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "ଅଭିବାଦନ ନାମ ଅନୁସରଣ କରେ |"
+
+#: src/features/design/style-groups.tsx
+msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "The interview is saved. To get a reminder, allow notifications in your device settings."
@@ -10256,6 +10328,10 @@ msgstr "ଏକ ରେଜ୍ୟୁମେ ପାଇଁ ଏହି ଫାଇଲ୍ �
 msgid "This file is larger than many application forms accept."
 msgstr "ଏହି ଫାଇଲ୍ ଅନେକ ଆବେଦନ ଫର୍ମ ଗ୍ରହଣ କରୁଥିବାଠାରୁ ବଡ଼।"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "ଏହି ଫାଇଲ୍ ଅନେକ ଭିନ୍ନ ଫଣ୍ଟ ବ୍ୟବହାର କରେ।"
@@ -10267,6 +10343,10 @@ msgstr "ଏହି ଫାଇଲ୍ Type 3 ଫଣ୍ଟ ବ୍ୟବହାର କ�
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "ଏହି ଫାଇଲ୍‌ର ଆକାର ପଢ଼ାଯାଇପାରିଲା ନାହିଁ। ଅନ୍ୟ PDF ବାଛନ୍ତୁ।"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10534,6 +10614,10 @@ msgstr "ଧଳା ରଙ୍ଗର ହେଡିଙ୍ଗ୍ ପାଇଁ ଅତ�
 msgid "Too many requests. Try again later."
 msgstr "ବହୁତ ଅନୁରୋଧ | ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
 
+#: src/features/design/style-groups.tsx
+msgid "Tool logos in skills"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "ମୋଟ ଯୋଗ ହୁଏନାହିଁ। ବୋନସ୍ ଓ ଅଂଶଧନ ସର୍ତ୍ତ ଉପରେ ନିର୍ଭର କରେ; ଅଂଶଧନର ମୂଲ୍ୟ ଅନିଶ୍ଚିତ। ମୂଳ ଅଫର୍ ଡକ୍ୟୁମେଣ୍ଟ୍ ପଢ଼ନ୍ତୁ।"
@@ -10648,6 +10732,10 @@ msgstr "ତୁର୍କିଶ୍"
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
 msgstr "ରପ୍ତାନି କରିବା ସମୟରେ ଇଚ୍ଛାଧୀନ ଲିଗେଚର୍ ବନ୍ଦ କରନ୍ତୁ।"
+
+#: src/features/design/style-groups.tsx
+msgid "Turn off for a text-only resume."
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Turn on the link to choose an address."
@@ -10809,9 +10897,21 @@ msgstr "ପୂର୍ବଦୃଶ୍ୟ ଅପଡେଟ୍ କରୁଛି…"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "ଏକ PDF ଅପଲୋଡ୍ କରନ୍ତୁ ଏବଂ ଏକ ଆବେଦନକାରୀ ଟ୍ରାକିଂ ସିଷ୍ଟମ ବାହାର କରୁଥିବା ପାଠ୍ୟକୁ ଦେଖନ୍ତୁ: କ’ଣ ଅଭାବ ଅଛି, କ’ଣ ଅର୍ଡର ଅଛି, ଏବଂ ଏହାକୁ କିପରି ଠିକ୍ କରାଯିବ | ମାଗଣା, କ account ଣସି ଖାତା ଆବଶ୍ୟକ ନାହିଁ |"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "ଫଟୋ ଅପଲୋଡ୍ କରନ୍ତୁ"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11658,6 +11758,10 @@ msgstr "ଆପଣଙ୍କ ତଥ୍ୟ, କାହାଣୀ ଓ ପସନ୍ଦ�
 msgid "Your focus"
 msgstr "ଆପଣଙ୍କ ଧ୍ୟାନ"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "ଆପଣଙ୍କ ଶୀର୍ଷକ ଆପଣଙ୍କ ମୁଖ୍ୟ ଟେକ୍ସଟ୍ ପରି ସମାନ ଦେଖାଯାଏ।"
@@ -11723,8 +11827,16 @@ msgstr ""
 msgid "Your own fonts aren't available"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts

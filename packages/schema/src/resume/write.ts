@@ -1,5 +1,6 @@
 import type { ResumeData } from "./data";
 import z from "zod";
+import { formerTemplateSuccessor } from "../templates";
 import { resumeDataSchema } from "./data";
 import { createResumeDataJsonSchema } from "./json-schema";
 import { assertResumeRenderBudget } from "./limits";
@@ -54,6 +55,8 @@ export const writableResumeDataSchema = z.transform<z.input<typeof resumeDataSch
 		...input,
 		metadata: {
 			...input.metadata,
+			// A former template ID is still accepted and saved as its successor; any other unknown ID stays an error.
+			template: formerTemplateSuccessor(input.metadata.template) ?? input.metadata.template,
 			// JSON Schema cannot represent the fallback on this transformed historical field.
 			styleRules: input.metadata.styleRules === undefined ? [] : input.metadata.styleRules,
 			stylesheet: canonical.data.metadata.stylesheet,

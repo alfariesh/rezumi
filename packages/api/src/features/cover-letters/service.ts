@@ -267,10 +267,11 @@ export const coverLetterService = {
 	 */
 	create: async (input: CreateInput) => {
 		// A letter takes its resume's design as it is; only a template chosen for it here needs the plan.
-		if (input.template) await assertDesignChange(input.userId, null, { template: input.template });
+		const { template } = input;
+		if (template) await assertDesignChange(input.userId, null, { template });
 		const application = await getOwnedApplication(input.userId, input.applicationId);
 		const style = await getResumeStyle(input.userId, input.resumeId);
-		if (input.template) style.metadata.template = input.template;
+		if (template) style.metadata.template = template;
 		const linked = Boolean(input.resumeId) && !input.template;
 		const letter = await db.transaction(async (tx) => {
 			await lockUser(tx, input.userId);
@@ -335,14 +336,17 @@ export const coverLetterService = {
 		changes.designLinked = designLinked;
 
 		if (input.template) {
-			await assertDesignChange(input.userId, stored.style.metadata, { template: input.template });
+			const { template } = input;
+			await assertDesignChange(input.userId, stored.style.metadata, { template });
 			const style = changes.style ?? stored.style;
-			changes.style = { ...style, metadata: { ...style.metadata, template: input.template } };
+			changes.style = { ...style, metadata: { ...style.metadata, template } };
 		}
 		if (input.metadata) {
 			const style = changes.style ?? stored.style;
 			const set = Object.fromEntries(Object.entries(input.metadata).filter(([, value]) => value !== undefined));
 			changes.style = { ...style, metadata: { ...style.metadata, ...(set as Partial<typeof style.metadata>) } };
+			// Typography can bring uploaded fonts, which need the plan and the user's own files.
+			await assertDesignChange(input.userId, stored.style.metadata, changes.style.metadata);
 		}
 		if (input.name !== undefined) changes.name = coverLetterContentSchema.shape.name.parse(input.name);
 		if (input.recipient !== undefined)

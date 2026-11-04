@@ -35,7 +35,7 @@ describe("getResumeSectionIcon", () => {
 					},
 				],
 			};
-			expect(getResumeSectionIcon(data, "custom-1")).toBe("graduation-cap");
+			expect(getResumeSectionIcon(data, "custom-1")).toBe("mortarboard-01");
 		});
 	});
 });

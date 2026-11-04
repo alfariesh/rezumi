@@ -8,6 +8,7 @@ import { renderToBuffer } from "./forme/testing";
 
 type Line = { text: string; x: number; y: number; right: number };
 
+// Summit prints its section title as typed; a tracked-capitals title would reach the PDF a letter at a time.
 function resume(plain: string, html: string, family = "Noto Serif SC", locale = "zh-CN"): ResumeData {
 	const data = structuredClone(defaultResumeData);
 	data.picture.hidden = true;
@@ -20,6 +21,14 @@ function resume(plain: string, html: string, family = "Noto Serif SC", locale = 
 	data.metadata.typography.body.fontWeights = ["400", "700"];
 	data.metadata.typography.heading.fontWeights = ["400", "700"];
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];
+	// The headline is the plain control line: it is set at the body size, weight and spacing, whatever the template makes of it.
+	data.metadata.stylesheet = {
+		mode: "semantic",
+		source: {
+			languageVersion: 1,
+			text: "@version 1; headline { font-size: 10pt; font-weight: 400; letter-spacing: 0; }",
+		},
+	};
 	data.summary.title = "Whitespace";
 	data.summary.hidden = false;
 	data.summary.content = html;
@@ -27,7 +36,7 @@ function resume(plain: string, html: string, family = "Noto Serif SC", locale = 
 }
 
 async function pdfLines(data: ResumeData) {
-	const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<
+	const element = createElement(ResumeDocument, { data, template: "summit" }) as unknown as Parameters<
 		typeof renderToBuffer
 	>[0];
 	const loading = getDocument({ data: new Uint8Array(await act(() => renderToBuffer(element))) });

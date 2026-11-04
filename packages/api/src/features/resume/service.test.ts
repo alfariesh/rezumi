@@ -378,7 +378,7 @@ describe("patch", () => {
 		expect(update.set).toHaveBeenCalledWith({
 			data: expect.objectContaining({
 				basics: expect.objectContaining({ name: "Ada" }),
-				metadata: expect.objectContaining({ page: expect.objectContaining({ marginX: 14 }) }),
+				metadata: expect.objectContaining({ page: expect.objectContaining({ marginX: 36 }) }),
 			}),
 		});
 		expect(update.where).toHaveBeenCalledWith(expect.arrayContaining([["trashed_at"], ["is_locked", false]]));

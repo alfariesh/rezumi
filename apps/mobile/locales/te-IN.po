@@ -387,6 +387,16 @@ msgstr "{0} ఇంటర్వ్యూ · {1}"
 msgid "{0} interview · {1} min"
 msgstr "{0} ఇంటర్వ్యూ · {1} నిమి"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr ""
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr ""
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -1407,10 +1417,6 @@ msgstr "కవర్ లెటర్‌ను కూడా డౌన్‌లో
 msgid "Also email a copy"
 msgstr "కాపీని కూడా ఇమెయిల్ చేయండి"
 
-#: src/features/design/style-groups.tsx
-msgid "Also shows the icons on skills, profiles and interests."
-msgstr "నైపుణ్యాలు, ప్రొఫైల్‌లు మరియు ఆసక్తులపై చిహ్నాలను కూడా చూపుతుంది."
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
 msgstr "ఎల్లప్పుడూ ఈరోజులో కనిపిస్తుంది. ఇమెయిల్‌కి ధృవీకరించబడిన చిరునామా మరియు సర్వర్ మెయిల్ సెటప్ అవసరం. పుష్ నోటిఫికేషన్‌లు పంపబడవు."
@@ -1906,9 +1912,17 @@ msgstr "ఇంటర్వ్యూకి ముందు"
 msgid "Before restore"
 msgstr "పునరుద్ధరించడానికి ముందు"
 
+#: src/features/design/style-groups.tsx
+msgid "Before titles such as Education, Skills and Certifications."
+msgstr ""
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Before you submit"
 msgstr "సమర్పించే ముందు"
+
+#: src/features/design/style-groups.tsx
+msgid "Before your email, phone, location, website and custom fields."
+msgstr ""
 
 #: src/features/application-detail/hooks.ts
 #: src/features/applications/next-step.ts
@@ -2258,6 +2272,10 @@ msgstr "తేదీని ఎంచుకోండి"
 msgid "Choose a file"
 msgstr "ఫైల్‌ను ఎంచుకోండి"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr ""
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "PDFని ఎంచుకోండి"
@@ -2604,6 +2622,10 @@ msgstr ""
 #: src/features/check/issues.ts
 msgid "Contact details"
 msgstr "సంప్రదింపు వివరాలు"
+
+#: src/features/design/style-groups.tsx
+msgid "Contact line"
+msgstr ""
 
 #: src/features/application-detail/sections.tsx
 #: src/features/application-detail/sheets.tsx
@@ -3162,6 +3184,10 @@ msgstr "టైమ్‌లైన్‌ని అప్‌డేట్ చేయ�
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "ఫైల్‌ని అప్‌లోడ్ చేయడం సాధ్యపడలేదు. మళ్లీ ప్రయత్నించండి."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4357,6 +4383,10 @@ msgstr "ఫాలో-అప్ రిమైండర్"
 msgid "Font family"
 msgstr "ఫాంట్ కుటుంబం"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr ""
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Font pairing"
@@ -4771,13 +4801,17 @@ msgstr "ఐకాన్"
 msgid "Icon color"
 msgstr "చిహ్నం రంగు"
 
+#: src/features/design/style-groups.tsx
+msgid "Icon style"
+msgstr ""
+
 #: src/features/write/section-sheet.tsx
 msgid "Icon…"
 msgstr "చిహ్నం..."
 
-#: src/features/design/style-groups.tsx
-msgid "Icons in contact line"
-msgstr "సంప్రదింపు లైన్‌లో చిహ్నాలు"
+#: src/features/design/design-pane.tsx
+msgid "Icons"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -5602,6 +5636,10 @@ msgstr "లాక్ చేయబడిన పత్రాలు దాటవే
 #: src/features/write/outline.tsx
 msgid "Locked. Unlock to edit."
 msgstr "లాక్ చేయబడింది. సవరించడానికి అన్‌లాక్ చేయండి."
+
+#: src/features/design/style-groups.tsx
+msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
+msgstr ""
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
@@ -7867,6 +7905,7 @@ msgstr "రిమైండర్‌లు ఇక్కడ కనిపిస్�
 msgid "Remote"
 msgstr "రిమోట్"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7876,6 +7915,11 @@ msgstr "తొలగించు"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "{0}ని తీసివేయండి"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr ""
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7896,6 +7940,10 @@ msgstr "ఫీల్డ్‌ను తీసివేయండి"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "ఫైల్‌ను తీసివేయండి"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr ""
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -8355,6 +8403,10 @@ msgid "Rotation isn't supported by PDF rendering."
 msgstr "PDF రెండరింగ్ ద్వారా భ్రమణానికి మద్దతు లేదు."
 
 #: src/features/design/style-groups.tsx
+msgid "Rounded"
+msgstr ""
+
+#: src/features/design/style-groups.tsx
 msgid "Row order"
 msgstr ""
 
@@ -8696,6 +8748,10 @@ msgstr "రెండవ ఆఫర్"
 msgid "Section headings"
 msgstr "విభాగం శీర్షికలు"
 
+#: src/features/design/style-groups.tsx
+msgid "Section titles"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Sections"
 msgstr "విభాగాలు"
@@ -8924,6 +8980,10 @@ msgstr "దీని ద్వారా భాగస్వామ్యం చే
 msgid "Sharing"
 msgstr "షేరింగ్"
 
+#: src/features/design/style-groups.tsx
+msgid "Sharp"
+msgstr ""
+
 #: src/features/workspace/parts.tsx
 msgid "Sharpening the opening"
 msgstr "ప్రారంభ పరిచయాన్ని పదును పెడుతోంది"
@@ -8997,7 +9057,7 @@ msgstr "శీర్షికను చూపు"
 msgid "Show hidden terms again"
 msgstr "దాచిన నిబంధనలను మళ్లీ చూపించు"
 
-#: src/features/design/advanced.tsx
+#: src/features/design/style-groups.tsx
 msgid "Show icons"
 msgstr "చిహ్నాలను చూపండి"
 
@@ -9032,10 +9092,6 @@ msgstr "ఫోటోను చూపండి"
 #: src/features/career/today.tsx
 msgid "Show read"
 msgstr "చదివిన అంశాలను చూపించు"
-
-#: src/features/design/advanced.tsx
-msgid "Show section icons"
-msgstr "విభాగం చిహ్నాలను చూపండి"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9206,6 +9262,10 @@ msgstr "స్కిల్"
 msgid "Skills"
 msgstr "స్కిల్స్"
 
+#: src/features/design/style-groups.tsx
+msgid "Skills, interests and profiles"
+msgstr ""
+
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
@@ -9369,6 +9429,10 @@ msgstr "దశ"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Stage stays {stage}"
 msgstr "దశ {stage}గానే ఉంటుంది"
+
+#: src/features/design/style-groups.tsx
+msgid "Standard"
+msgstr ""
 
 #: src/features/write/date-field.tsx
 msgid "Start"
@@ -9767,6 +9831,10 @@ msgstr "టెక్స్ట్ ఒక్కో అక్షరం చొప్
 msgid "Text only"
 msgstr "వచనం మాత్రమే"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "టెక్స్ట్ హెడర్ లేదా ఫుటర్ ప్రాంతంలో ఉంది."
@@ -9904,6 +9972,10 @@ msgstr "ఫాలో-అప్ సేవ్ చేయబడింది. రి�
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "గ్రీటింగ్ పేరును అనుసరిస్తుంది."
+
+#: src/features/design/style-groups.tsx
+msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
+msgstr ""
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "The interview is saved. To get a reminder, allow notifications in your device settings."
@@ -10215,6 +10287,10 @@ msgstr "రెజ్యూమ్‌కు ఈ ఫైల్ పెద్దది
 msgid "This file is larger than many application forms accept."
 msgstr "చాలా అప్లికేషన్ ఫారమ్‌లు అంగీకరించే దానికంటే ఈ ఫైల్ పెద్దది."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "ఈ ఫైల్ చాలా వేర్వేరు ఫాంట్‌లను ఉపయోగిస్తుంది."
@@ -10226,6 +10302,10 @@ msgstr "ఈ ఫైల్ Type 3 ఫాంట్‌లను ఉపయోగి�
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "ఈ ఫైల్ పరిమాణాన్ని చదవడం సాధ్యపడలేదు. మరొక PDFని ఎంచుకోండి."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10493,6 +10573,10 @@ msgstr "తెలుపు రంగులో ఉన్న శీర్షిక
 msgid "Too many requests. Try again later."
 msgstr "చాలా ఎక్కువ అభ్యర్థనలు. తర్వాత మళ్లీ ప్రయత్నించండి."
 
+#: src/features/design/style-groups.tsx
+msgid "Tool logos in skills"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "మొత్తాలు జోడించబడలేదు. బోనస్ మరియు ఈక్విటీ షరతులపై ఆధారపడి ఉంటాయి; ఈక్విటీ విలువ అనిశ్చితంగా ఉంది. అసలు ఆఫర్ పత్రాలను చదవండి."
@@ -10607,6 +10691,10 @@ msgstr "టర్కిష్"
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
 msgstr "ఎగుమతి చేసేటప్పుడు డిస్క్రీషనరీ లిగేచర్లను ఆఫ్ చేయండి."
+
+#: src/features/design/style-groups.tsx
+msgid "Turn off for a text-only resume."
+msgstr ""
 
 #: src/features/share/link.tsx
 msgid "Turn on the link to choose an address."
@@ -10767,9 +10855,21 @@ msgstr "ప్రివ్యూని నవీకరిస్తోంది�
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "PDFని అప్‌లోడ్ చేయండి మరియు దరఖాస్తుదారు ట్రాకింగ్ సిస్టమ్ ఎక్స్‌ట్రాక్ట్ చేసే టెక్స్ట్‌ను చూడండి: ఏమి లేదు, ఏది ఆర్డర్‌లో లేదు మరియు దాన్ని ఎలా పరిష్కరించాలి. ఉచితం, ఖాతా అవసరం లేదు."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr ""
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "ఫోటోను అప్‌లోడ్ చేయండి"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11610,6 +11710,10 @@ msgstr "మీ వాస్తవాలు, కథనాలు మరియు �
 msgid "Your focus"
 msgstr "మీ దృష్టి"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "మీ శీర్షికలు మీ బాడీ టెక్స్ట్‌లాగే కనిపిస్తున్నాయి."
@@ -11675,8 +11779,16 @@ msgstr ""
 msgid "Your own fonts aren't available"
 msgstr ""
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr ""
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
+msgstr ""
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts

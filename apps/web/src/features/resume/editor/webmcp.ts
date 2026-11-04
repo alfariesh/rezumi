@@ -9,7 +9,7 @@ import { resumePatchOperationsSchema } from "@rezumi/ai/tools/resume-tool-contra
 import { lintResumeForAts } from "@rezumi/resume/ats";
 import { applyResumePatches, ResumePatchError } from "@rezumi/resume/patch";
 import { createResumeDataJsonSchema } from "@rezumi/schema/resume/json-schema";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateLineup } from "@rezumi/schema/templates";
 import { toast } from "@rezumi/ui/components/toast";
 import { buildIssues } from "./check/issues";
 import { useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -105,7 +105,7 @@ function createResumeTools(
 			"Example paths: /basics/name, /basics/headline, /summary/content (HTML),",
 			"/sections/experience/items/- (append an entry), /sections/experience/items/0/description (HTML),",
 			"/sections/skills/items/-, /sections/interests/hidden, /metadata/design/colors/primary (rgba string),",
-			`/metadata/template (one of ${templateSchema.options.join(", ")}).`,
+			`/metadata/template (one of ${templateLineup.join(", ")}).`,
 			"Dates: write `dates` ({ start, end, present } with years or year-months, '2022' or '2022-03'); the text in",
 			"`period` (or `date`) is rewritten from it. Rich text fields take HTML (<p>, <ul><li>, <strong>, <a>).",
 			"New entries need a UUID `id` and `hidden: false`; read_resume_schema lists every field.",

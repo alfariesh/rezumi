@@ -64,7 +64,7 @@ describe("sanitizeAndParseResumeJson", () => {
 		});
 
 		const result = sanitizeAndParseResumeJson(json);
-		expect(result.data.metadata.template).toBe("onyx");
+		expect(result.data.metadata.template).toBe("meridian");
 		expect(result.data.picture.url).toBe("");
 		expect(result.data.customSections).toEqual([]);
 	});

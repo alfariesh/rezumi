@@ -43,12 +43,12 @@ describe("plan features", () => {
 	});
 
 	it("labels premium templates while plans apply, and locks them only without the feature", () => {
-		expect(isLabelledTemplate(summary(false, false), "pikachu")).toBe(false);
-		expect(isLabelledTemplate(summary(true, true), "pikachu")).toBe(true);
-		expect(isLabelledTemplate(summary(true, false), "onyx")).toBe(false);
-		expect(isLockedTemplate(summary(true, false), "pikachu")).toBe(true);
-		expect(isLockedTemplate(summary(true, false), "onyx")).toBe(false);
-		expect(isLockedTemplate(summary(true, true), "pikachu")).toBe(false);
+		expect(isLabelledTemplate(summary(false, false), "senja")).toBe(false);
+		expect(isLabelledTemplate(summary(true, true), "senja")).toBe(true);
+		expect(isLabelledTemplate(summary(true, false), "meridian")).toBe(false);
+		expect(isLockedTemplate(summary(true, false), "senja")).toBe(true);
+		expect(isLockedTemplate(summary(true, false), "meridian")).toBe(false);
+		expect(isLockedTemplate(summary(true, true), "senja")).toBe(false);
 	});
 });
 
@@ -93,16 +93,16 @@ describe("plan problems", () => {
 		}
 		expect(describePlanProblem(problems[1]).description).toContain("a resume and 2 cover letters");
 		expect(describePlanProblem({ kind: "feature", feature: "premiumTemplates" }).description).toContain(
-			"Bronzor, Onyx, Rhyhorn, and Azurill",
+			"Meridian, Sterling, Tunas, Wibawa, and Kirana",
 		);
 	});
 
 	it("says what an import gave up to fit the plan", () => {
 		const free = summary(true, false);
 		const css = { source: { text: "a { b: c }" } };
-		expect(describeImportedDesign(free, { template: "pikachu", stylesheet: css })).toContain("Bronzor");
-		expect(describeImportedDesign(free, { template: "onyx", stylesheet: css })).toContain("styles");
-		expect(describeImportedDesign(free, { template: "onyx" })).toBeNull();
-		expect(describeImportedDesign(summary(true, true), { template: "pikachu", stylesheet: css })).toBeNull();
+		expect(describeImportedDesign(free, { template: "senja", stylesheet: css })).toContain("Meridian");
+		expect(describeImportedDesign(free, { template: "meridian", stylesheet: css })).toContain("styles");
+		expect(describeImportedDesign(free, { template: "meridian" })).toBeNull();
+		expect(describeImportedDesign(summary(true, true), { template: "senja", stylesheet: css })).toBeNull();
 	});
 });

@@ -5,4 +5,6 @@ export {
 	inferContentType,
 	isPublicUploadOwner,
 	migrateUserStorage,
+	readUploadedFont,
+	uploadFontFile,
 } from "./service";

@@ -1430,6 +1430,9 @@ importers:
       '@rezumi/env':
         specifier: workspace:*
         version: link:../env
+      '@rezumi/fonts':
+        specifier: workspace:*
+        version: link:../fonts
       '@rezumi/import':
         specifier: workspace:*
         version: link:../import
@@ -1867,6 +1870,9 @@ importers:
       '@rezumi/env':
         specifier: workspace:*
         version: link:../env
+      '@rezumi/resume':
+        specifier: workspace:*
+        version: link:../resume
       '@rezumi/schema':
         specifier: workspace:*
         version: link:../schema
@@ -2061,9 +2067,6 @@ importers:
       '@heroui/styles':
         specifier: 'catalog:'
         version: 3.2.7(tailwind-merge@3.7.0)(tailwindcss@4.3.3)
-      '@phosphor-icons/web':
-        specifier: ^2.1.2
-        version: 2.1.2
       '@rezumi/icons':
         specifier: workspace:*
         version: link:../icons
@@ -2160,9 +2163,6 @@ importers:
       '@orpc/server':
         specifier: 'catalog:'
         version: 1.16.1(ws@8.22.0)
-      '@phosphor-icons/core':
-        specifier: ^2.1.1
-        version: 2.1.1
       '@rezumi/api':
         specifier: workspace:*
         version: link:../packages/api
@@ -5227,12 +5227,6 @@ packages:
   '@peculiar/x509@1.14.3':
     resolution: {integrity: sha512-C2Xj8FZ0uHWeCXXqX5B4/gVFQmtSkiuOolzAgutjTfseNOHT3pUjljDZsTSxXFGgio54bCzVFqmEOUrIVk8RDA==}
     engines: {node: '>=20.0.0'}
-
-  '@phosphor-icons/core@2.1.1':
-    resolution: {integrity: sha512-v4ARvrip4qBCImOE5rmPUylOEK4iiED9ZyKjcvzuezqMaiRASCHKcRIuvvxL/twvLpkfnEODCOJp5dM4eZilxQ==}
-
-  '@phosphor-icons/web@2.1.2':
-    resolution: {integrity: sha512-rPAR9o/bEcp4Cw4DEeZHXf+nlGCMNGkNDRizYHM47NLxz9vvEHp/Tt6FMK1NcWadzw/pFDPnRBGi/ofRya958A==}
 
   '@playwright/test@1.64.1':
     resolution: {integrity: sha512-IaYGml/nSOiZWROfPtuIL7neuu9qDOZ3TNvNljUIrhDMxiGTgPjzj/g9p9RxpS2tSepPDRY+UwAaEeiKtUvIAg==}
@@ -15099,10 +15093,6 @@ snapshots:
       reflect-metadata: 0.2.2
       tslib: 2.8.1
       tsyringe: 4.10.0
-
-  '@phosphor-icons/core@2.1.1': {}
-
-  '@phosphor-icons/web@2.1.2': {}
 
   '@playwright/test@1.64.1':
     dependencies:

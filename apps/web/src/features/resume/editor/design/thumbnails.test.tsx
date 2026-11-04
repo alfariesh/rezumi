@@ -44,7 +44,7 @@ it("keeps the sample image when only account details are filled, without queuing
 		...defaultResumeData,
 		basics: { ...defaultResumeData.basics, name: "Example User", email: "example@example.test" },
 	};
-	const { result } = renderHook(() => useTemplateThumbnail("onyx", data, true), { wrapper });
+	const { result } = renderHook(() => useTemplateThumbnail("meridian", data, true), { wrapper });
 	await waitFor(() => expect(result.current.fetchStatus).toBe("idle"));
 	expect(result.current.data).toBeUndefined();
 	expect(mocks.pdf).not.toHaveBeenCalled();
@@ -53,13 +53,13 @@ it("keeps the sample image when only account details are filled, without queuing
 it("renders the user's own content, then drops the previous thumbnail when the resume becomes blank", async () => {
 	const original = structuredClone(sampleResumeData);
 	const { result, rerender } = renderHook(
-		({ data }: { data: ResumeData }) => useTemplateThumbnail("rhyhorn", data, true),
+		({ data }: { data: ResumeData }) => useTemplateThumbnail("sterling", data, true),
 		{ wrapper, initialProps: { data: sampleResumeData } },
 	);
 	await waitFor(() => expect(result.current.data).toBe("blob:personal-preview"));
 	expect(mocks.pdf).toHaveBeenCalledWith({
 		...sampleResumeData,
-		metadata: { ...sampleResumeData.metadata, template: "rhyhorn" },
+		metadata: { ...sampleResumeData.metadata, template: "sterling" },
 	});
 	expect(sampleResumeData).toEqual(original);
 	rerender({ data: defaultResumeData });
@@ -74,7 +74,7 @@ it("renders a visible picture without text, but keeps the sample for hidden cont
 	data.summary.content = "<p>Hidden summary</p>";
 	data.summary.hidden = true;
 	const { result, rerender } = renderHook(
-		({ data }: { data: ResumeData }) => useTemplateThumbnail("onyx", data, true),
+		({ data }: { data: ResumeData }) => useTemplateThumbnail("meridian", data, true),
 		{ wrapper, initialProps: { data } },
 	);
 	await waitFor(() => expect(result.current.data).toBe("blob:personal-preview"));

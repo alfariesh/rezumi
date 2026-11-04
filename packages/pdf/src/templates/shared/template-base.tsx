@@ -1,6 +1,4 @@
 import type { Style } from "../../forme/style-types";
-import type { TemplateIconSlot, TemplateStyleContext } from "./types";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import { useMemo } from "react";
 import { rgbaStringToHex } from "@rezumi/utils/color";
 import { View } from "#react-pdf-renderer";
@@ -33,20 +31,6 @@ export const useTemplateBase = () => {
 	}, [picture, metadata, rtl, columnsReversed]);
 };
 
-export const createIconSlot = ({
-	metadata,
-	accentFor,
-}: {
-	metadata: ResumeData["metadata"];
-	accentFor: (context: TemplateStyleContext) => string;
-}): TemplateIconSlot => {
-	return (context) => ({
-		display: metadata.page.hideIcons ? "none" : "flex",
-		size: metadata.typography.body.fontSize,
-		color: accentFor(context),
-	});
-};
-
 type TemplateHeaderStyles = {
 	header: Style;
 	picture: Style;
@@ -56,18 +40,17 @@ type TemplateHeaderStyles = {
 	contactList: Style;
 	contactItem: Style;
 	contactText?: Style | undefined;
+	headline?: Style | undefined;
 };
 
-export const TemplateHeader = ({
+/** The header's contact list: email, phone, location, website and the custom fields, in that order. */
+export const HeaderContactList = ({
 	styles,
-	contactListOutsideTitle = false,
 }: {
-	styles: TemplateHeaderStyles;
-	contactListOutsideTitle?: boolean;
+	styles: Pick<TemplateHeaderStyles, "contactList" | "contactItem" | "contactText">;
 }) => {
-	const { basics, picture } = useRender();
-	const hasPicture = hasTemplatePicture(picture);
-	const contactList = (
+	const { basics } = useRender();
+	return (
 		<SemanticContactListView style={styles.contactList}>
 			<EmailContactItem email={basics.email} style={styles.contactItem} textStyle={styles.contactText} />
 			<PhoneContactItem phone={basics.phone} style={styles.contactItem} textStyle={styles.contactText} />
@@ -83,6 +66,18 @@ export const TemplateHeader = ({
 			))}
 		</SemanticContactListView>
 	);
+};
+
+export const TemplateHeader = ({
+	styles,
+	contactListOutsideTitle = false,
+}: {
+	styles: TemplateHeaderStyles;
+	contactListOutsideTitle?: boolean;
+}) => {
+	const { basics, picture } = useRender();
+	const hasPicture = hasTemplatePicture(picture);
+	const contactList = <HeaderContactList styles={styles} />;
 
 	return (
 		<SemanticHeaderView style={styles.header}>
@@ -91,7 +86,7 @@ export const TemplateHeader = ({
 			<View style={styles.title}>
 				<View style={styles.identity}>
 					<Heading style={styles.name}>{basics.name}</Heading>
-					<Text>{basics.headline}</Text>
+					<Text {...(styles.headline ? { style: styles.headline } : {})}>{basics.headline}</Text>
 				</View>
 				{!contactListOutsideTitle && contactList}
 			</View>

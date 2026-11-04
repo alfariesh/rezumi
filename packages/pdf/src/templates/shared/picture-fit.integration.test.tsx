@@ -30,8 +30,11 @@ const cropMarker = {
 } as const;
 
 const frameColor = [255, 0, 255] as const;
-const pictureBounds = { left: 21, right: 170, top: 18, bottom: 167 } as const;
+// Where Meridian puts the 100 pt frame on the rasterized A4 page: the top right corner of the header.
+const pictureBounds = { left: 722, right: 870, top: 18, bottom: 167 } as const;
 
+// The crop markers sit on the edges of the square the cover fit keeps and are wide enough that a whole rasterized
+// pixel is their colour wherever the page is sampled; their outer edges are what the assertions measure.
 function markedImage(orientation: Orientation) {
 	const [width, height] = dimensions[orientation];
 	const canvas = createCanvas(width, height);
@@ -49,15 +52,15 @@ function markedImage(orientation: Orientation) {
 	context.fillRect(strip, height - strip, width - strip * 2, strip);
 	if (orientation === "landscape") {
 		context.fillStyle = "#ff8000";
-		context.fillRect(50, 0, 5, height);
+		context.fillRect(50, 0, 12, height);
 		context.fillStyle = "#008080";
-		context.fillRect(width - 55, 0, 5, height);
+		context.fillRect(width - 62, 0, 12, height);
 	}
 	if (orientation === "portrait") {
 		context.fillStyle = "#ff8000";
-		context.fillRect(0, 50, width, 5);
+		context.fillRect(0, 50, width, 12);
 		context.fillStyle = "#008080";
-		context.fillRect(0, height - 55, width, 5);
+		context.fillRect(0, height - 62, width, 12);
 	}
 	context.fillStyle = "#000000";
 	context.fillRect(Math.floor(width / 2) - 3, strip, 6, height - strip * 2);
@@ -65,8 +68,10 @@ function markedImage(orientation: Orientation) {
 	return canvas.toDataURL("image/png");
 }
 
-async function rasterPicture(orientation: Orientation, fit: Fit, template: Template = "onyx", aspectRatio = 1) {
+async function rasterPicture(orientation: Orientation, fit: Fit, template: Template = "meridian", aspectRatio = 1) {
 	const data = structuredClone(defaultResumeData);
+	// The margins are fixed here so the geometry below only moves with the template (Meridian).
+	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
 	data.basics.name = "Picture fit";
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";

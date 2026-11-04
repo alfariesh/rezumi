@@ -1,3 +1,4 @@
+import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import { createCanvas } from "@napi-rs/canvas";
 import { act, createElement } from "react";
@@ -11,11 +12,21 @@ const context = source.getContext("2d");
 context.fillStyle = "#00aa00";
 context.fillRect(0, 0, 100, 100);
 
-async function picturePixels(template: "onyx" | "ditto" | "glalie", borderWidth: number, shadowWidth = 0) {
+async function picturePixels(template: Template, borderWidth: number, shadowWidth = 0) {
 	const data = structuredClone(defaultResumeData);
+	// Page, accent and type are fixed here so the pixel counts below only move with the template.
+	data.metadata.template = template;
+	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
+	// Blue pixels count as shadow below, so the accent stays red.
+	data.metadata.design.colors.primary = "rgba(220, 38, 38, 1)";
+	data.metadata.typography.body = {
+		fontFamily: "Helvetica",
+		fontWeights: ["400", "500"],
+		fontSize: 10,
+		lineHeight: 1.5,
+	};
+	data.metadata.typography.heading = { fontFamily: "Helvetica", fontWeights: ["600"], fontSize: 14, lineHeight: 1.5 };
 	data.basics.name = "Picture";
-	data.metadata.typography.body.fontFamily = "Helvetica";
-	data.metadata.typography.heading.fontFamily = "Helvetica";
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
 	data.metadata.layout.pages = [{ fullWidth: false, main: [], sidebar: [] }];
 	Object.assign(data.picture, {
@@ -67,10 +78,11 @@ async function picturePixels(template: "onyx" | "ditto" | "glalie", borderWidth:
 	return { borderPixels, imagePixels, shadowPixels, bounds };
 }
 
-describe("picture border visibility (#3017)", () => {
-	it("draws a border and a soft centered shadow without moving the photo", async () => {
-		const plain = await picturePixels("onyx", 0);
-		const bordered = await picturePixels("onyx", 10);
+// Meridian is the one-column default; Horizon and Kirana hold the picture in a band and in a sidebar.
+describe.each(["meridian", "horizon", "kirana"] as const)("picture border visibility (#3017) in %s", (template) => {
+	it("draws a border and a soft centered shadow without moving the photo", { timeout: 60_000 }, async () => {
+		const plain = await picturePixels(template, 0);
+		const bordered = await picturePixels(template, 10);
 		expect(plain.borderPixels).toBe(0);
 		expect(bordered.borderPixels).toBeGreaterThan(1000);
 		expect(bordered.imagePixels).toBeGreaterThan(1000);
@@ -78,7 +90,7 @@ describe("picture border visibility (#3017)", () => {
 		// Rasterized border/image edges can differ by one antialiased pixel.
 		for (const edge of ["left", "right", "top", "bottom"] as const)
 			expect(Math.abs(bordered.bounds[edge] - plain.bounds[edge])).toBeLessThanOrEqual(1);
-		const shadow = await picturePixels("onyx", 0, 10);
+		const shadow = await picturePixels(template, 0, 10);
 		expect(plain.shadowPixels).toBe(0);
 		expect(shadow.shadowPixels).toBeGreaterThan(100);
 		expect(shadow.bounds).toEqual(plain.bounds);

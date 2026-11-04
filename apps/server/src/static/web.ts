@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import { serveStatic } from "@hono/node-server/serve-static";
 import { env } from "@rezumi/env/server";
 import { jsonLdScript, socialMetaTags } from "@rezumi/pdf/web-page-document";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateLineup } from "@rezumi/schema/templates";
 import { isAppSectionPath, RESERVED_SEGMENTS } from "@rezumi/utils/app-paths";
 import { defaultLocale, getLocaleAlternates, isLocale, localizedUrl } from "@rezumi/utils/locale";
 import { escapeHtml } from "@rezumi/utils/string";
@@ -201,7 +201,7 @@ function homepageStructuredData(origin: string): StructuredData {
 				publisher: { "@id": `${origin}/#organization` },
 				featureList: [
 					"Resume editor with a live page preview",
-					`${templateSchema.options.length} templates`,
+					`${templateLineup.length} templates`,
 					"PDF, Word (DOCX), Markdown and JSON export",
 					"Import from PDF, LinkedIn and JSON Resume, or Word with an AI provider",
 					"ATS readability checker",
@@ -365,7 +365,7 @@ const prerenderedPages: Record<
 			description: TEMPLATES_DESCRIPTION,
 			mainEntity: {
 				"@type": "ItemList",
-				itemListElement: templateSchema.options.map((template, index) => ({
+				itemListElement: templateLineup.map((template, index) => ({
 					"@type": "ListItem",
 					position: index + 1,
 					name: template.charAt(0).toUpperCase() + template.slice(1),

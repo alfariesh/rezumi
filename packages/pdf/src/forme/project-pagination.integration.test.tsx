@@ -11,10 +11,10 @@ it("keeps project list continuations visible and following sections after them",
 	const data = structuredClone(defaultResumeData);
 	data.basics.name = "Synthetic Resume";
 	data.picture.hidden = true;
-	data.metadata.template = "scizor";
+	data.metadata.template = "summit";
 	data.metadata.typography.body = { fontFamily: "Helvetica", fontWeights: ["400"], fontSize: 10, lineHeight: 1.5 };
 	data.metadata.typography.heading = { fontFamily: "Helvetica", fontWeights: ["700"], fontSize: 14, lineHeight: 1.5 };
-	data.metadata.page = { ...data.metadata.page, gapX: 4, gapY: 6, marginX: 14, marginY: 12, hideSectionIcons: true };
+	data.metadata.page = { ...data.metadata.page, gapX: 4, gapY: 6, marginX: 14, marginY: 12 };
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary", "projects", "certifications"], sidebar: [] }];
 	data.summary.content = Array.from({ length: 50 }, (_, i) => `<p>FILLER_${i}</p>`).join("");
 	const tokens: string[] = [];

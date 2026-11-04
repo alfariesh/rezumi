@@ -1,6 +1,7 @@
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import { describe, expect, it, vi } from "vite-plus/test";
 import { createElement } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../document";
 import { pdf } from "../forme/testing";
@@ -113,7 +114,7 @@ describe("semantic issue fixtures", () => {
 		const resolve = (text: string) =>
 			resolveResumeRuntime({
 				data,
-				template: "onyx",
+				template: "meridian",
 				source: source(`@version 1;${text}`),
 			}).presentation;
 
@@ -142,7 +143,9 @@ describe("semantic issue fixtures", () => {
 			level icon[role~="active"] { opacity: 0.2; }
 		`);
 		data.metadata.stylesheet = { mode: "semantic", source: stylesheet };
-		const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+		const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<
+			typeof pdf
+		>[0];
 		const instance = pdf(element);
 		await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
 		const document = instance.container.document as HostNode;
@@ -166,7 +169,9 @@ describe("semantic issue fixtures", () => {
 	it("hides section heading decoration without hiding section content", async () => {
 		const data = buildIssueFixture();
 		data.sections.experience.showHeading = false;
-		const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+		const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<
+			typeof pdf
+		>[0];
 		const instance = pdf(element);
 		await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
 		const document = instance.container.document as HostNode;
@@ -182,7 +187,9 @@ describe("semantic issue fixtures", () => {
 			section[type="skills"] field[name="name"] { font-weight: 400; }
 		`);
 		data.metadata.stylesheet = { mode: "semantic", source: stylesheet };
-		const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+		const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<
+			typeof pdf
+		>[0];
 		const instance = pdf(element);
 		await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
 		const document = instance.container.document as HostNode;
@@ -194,9 +201,11 @@ describe("semantic issue fixtures", () => {
 	it("preserves the first character of a section heading with a leading text padding (#3380)", async () => {
 		const data = buildIssueFixture();
 		data.sections.experience.title = "Experience";
-		data.metadata.page.hideSectionIcons = false;
+		data.metadata.design.icons = { ...defaultIconDesign, sections: true };
 
-		const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+		const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<
+			typeof pdf
+		>[0];
 		const instance = pdf(element);
 		await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
 		const document = instance.container.document as HostNode;
@@ -225,7 +234,9 @@ describe("semantic issue fixtures", () => {
 			section[type="skills"] item:last-child { order: -1; }
 		`);
 		data.metadata.stylesheet = { mode: "semantic", source: stylesheet };
-		const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+		const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<
+			typeof pdf
+		>[0];
 		const instance = pdf(element);
 		await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
 		const runs = textRuns(instance.container.document as HostNode);

@@ -2,24 +2,22 @@ import type { PrimitiveBinding, SemanticBindingRegistry } from "./binding-invent
 import type { SemanticNodeKind } from "@rezumi/resume/stylesheet/types";
 import type { CustomSectionType, EntryHeader } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
-import { azurillSemanticManifest } from "../templates/azurill/semantic";
-import { bronzorSemanticManifest } from "../templates/bronzor/semantic";
-import { chikoritaSemanticManifest } from "../templates/chikorita/semantic";
-import { ditgarSemanticManifest } from "../templates/ditgar/semantic";
-import { dittoSemanticManifest } from "../templates/ditto/semantic";
-import { gengarSemanticManifest } from "../templates/gengar/semantic";
-import { glalieSemanticManifest } from "../templates/glalie/semantic";
-import { kakunaSemanticManifest } from "../templates/kakuna/semantic";
-import { laprasSemanticManifest } from "../templates/lapras/semantic";
-import { leafishSemanticManifest } from "../templates/leafish/semantic";
-import { meowthSemanticManifest } from "../templates/meowth/semantic";
-import { onyxSemanticManifest } from "../templates/onyx/semantic";
-import { persianSemanticManifest } from "../templates/persian/semantic";
-import { pikachuSemanticManifest } from "../templates/pikachu/semantic";
-import { porygonSemanticManifest } from "../templates/porygon/semantic";
-import { rhyhornSemanticManifest } from "../templates/rhyhorn/semantic";
-import { scizorSemanticManifest } from "../templates/scizor/semantic";
-import { smeargleSemanticManifest } from "../templates/smeargle/semantic";
+import { aksaraSemanticManifest } from "../templates/aksara/semantic";
+import { atlasSemanticManifest } from "../templates/atlas/semantic";
+import { cendekiaSemanticManifest } from "../templates/cendekia/semantic";
+import { horizonSemanticManifest } from "../templates/horizon/semantic";
+import { jejakSemanticManifest } from "../templates/jejak/semantic";
+import { kiranaSemanticManifest } from "../templates/kirana/semantic";
+import { linenSemanticManifest } from "../templates/linen/semantic";
+import { meridianSemanticManifest } from "../templates/meridian/semantic";
+import { purnamaSemanticManifest } from "../templates/purnama/semantic";
+import { senjaSemanticManifest } from "../templates/senja/semantic";
+import { sterlingSemanticManifest } from "../templates/sterling/semantic";
+import { summitSemanticManifest } from "../templates/summit/semantic";
+import { tenunSemanticManifest } from "../templates/tenun/semantic";
+import { tunasSemanticManifest } from "../templates/tunas/semantic";
+import { vectorSemanticManifest } from "../templates/vector/semantic";
+import { wibawaSemanticManifest } from "../templates/wibawa/semantic";
 import { SHARED_BINDING_REGISTRY } from "./binding-inventory";
 import { entryHeaderParts } from "./shared-parts";
 
@@ -140,24 +138,22 @@ export type TemplateSemanticManifest = {
 };
 
 const TEMPLATE_SEMANTIC_MANIFESTS = {
-	azurill: azurillSemanticManifest,
-	bronzor: bronzorSemanticManifest,
-	chikorita: chikoritaSemanticManifest,
-	ditgar: ditgarSemanticManifest,
-	ditto: dittoSemanticManifest,
-	gengar: gengarSemanticManifest,
-	glalie: glalieSemanticManifest,
-	kakuna: kakunaSemanticManifest,
-	lapras: laprasSemanticManifest,
-	leafish: leafishSemanticManifest,
-	meowth: meowthSemanticManifest,
-	onyx: onyxSemanticManifest,
-	persian: persianSemanticManifest,
-	pikachu: pikachuSemanticManifest,
-	porygon: porygonSemanticManifest,
-	rhyhorn: rhyhornSemanticManifest,
-	scizor: scizorSemanticManifest,
-	smeargle: smeargleSemanticManifest,
+	meridian: meridianSemanticManifest,
+	senja: senjaSemanticManifest,
+	purnama: purnamaSemanticManifest,
+	jejak: jejakSemanticManifest,
+	horizon: horizonSemanticManifest,
+	linen: linenSemanticManifest,
+	kirana: kiranaSemanticManifest,
+	vector: vectorSemanticManifest,
+	tenun: tenunSemanticManifest,
+	wibawa: wibawaSemanticManifest,
+	cendekia: cendekiaSemanticManifest,
+	summit: summitSemanticManifest,
+	tunas: tunasSemanticManifest,
+	atlas: atlasSemanticManifest,
+	aksara: aksaraSemanticManifest,
+	sterling: sterlingSemanticManifest,
 } as const satisfies Readonly<Record<Template, TemplateSemanticManifest>>;
 
 // Every template's entries can be drawn on one line, so the parts of that header belong to all of them.

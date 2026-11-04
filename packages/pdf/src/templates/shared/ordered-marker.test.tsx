@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { act } from "react";
+import { defaultIconDesign } from "@rezumi/schema/resume/data";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 import { ResumeDocument } from "../../document";
 import { renderToBuffer } from "../../forme/testing";
@@ -13,7 +14,7 @@ async function renderList({ font, rtl = false, count = 102, nested = false }: Op
 	const data = structuredClone(defaultResumeData);
 	data.metadata.typography.body.fontFamily = font;
 	data.metadata.typography.heading.fontFamily = "Helvetica";
-	data.metadata.page.hideIcons = true;
+	data.metadata.design.icons = { ...defaultIconDesign, contact: false, items: false };
 	if (rtl) data.metadata.page.locale = "ar-SA";
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["projects"], sidebar: [] }];
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
@@ -28,8 +29,8 @@ async function renderList({ font, rtl = false, count = 102, nested = false }: Op
 			description: `${nested ? "<ul><li>Outer" : ""}<ol>${Array.from({ length: count }, (_, index) => `<li><strong>ITEM0_${String(index + 1).padStart(3, "0")}</strong></li>`).join("")}</ol>${nested ? "</li></ul>" : ""}`,
 		},
 	];
-	expect(resolveResumeRuntime({ data, template: "rhyhorn" }).diagnostics).toEqual([]);
-	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="rhyhorn" />));
+	expect(resolveResumeRuntime({ data, template: "meridian" }).diagnostics).toEqual([]);
+	const bytes = await act(() => renderToBuffer(<ResumeDocument data={data} template="meridian" />));
 	const loading = getDocument({ data: new Uint8Array(bytes), useSystemFonts: true });
 	try {
 		const document = await loading.promise;

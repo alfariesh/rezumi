@@ -185,17 +185,17 @@ are lowercase and case-sensitive.
 
 **Resume structure**
 
-| Element           | Targets                                              | Typical use                                             |
-| ----------------- | ---------------------------------------------------- | ------------------------------------------------------- |
-| `resume`          | The whole resume                                     | Scope a rule to one template.                           |
-| `page`            | One authored layout page and its overflow pages      | Set a page size or background color.                    |
-| `region`          | The header, main, sidebar or featured area of a page | Style a layout area.                                    |
-| `header`          | The resume header                                    | Style the name and contact area.                        |
-| `section`         | A section                                            | Target a section type or placement.                     |
-| `section-heading` | A section's title                                    | Change heading type or add a rule under it.             |
-| `section-items`   | The entries in a section                             | Adjust entry layout and gaps.                           |
-| `item`            | One entry                                            | Space or keep together a job, project or similar entry. |
-| `item-header`     | An entry's top row                                   | Align the title, company, dates or similar details.     |
+| Element           | Targets                                         | Typical use                                             |
+| ----------------- | ----------------------------------------------- | ------------------------------------------------------- |
+| `resume`          | The whole resume                                | Scope a rule to one template.                           |
+| `page`            | One authored layout page and its overflow pages | Set a page size or background color.                    |
+| `region`          | The header, main or sidebar area of a page      | Style a layout area.                                    |
+| `header`          | The resume header                               | Style the name and contact area.                        |
+| `section`         | A section                                       | Target a section type or placement.                     |
+| `section-heading` | A section's title                               | Change heading type or add a rule under it.             |
+| `section-items`   | The entries in a section                        | Adjust entry layout and gaps.                           |
+| `item`            | One entry                                       | Space or keep together a job, project or similar entry. |
+| `item-header`     | An entry's top row                              | Align the title, company, dates or similar details.     |
 
 **Header and entry content**
 
@@ -225,10 +225,9 @@ are lowercase and case-sensitive.
 | ------------- | --------------------------------------------------------- | ------------------------------------ |
 | `type`        | `section`, `icon`                                         | `section[type="experience"]`         |
 | `placement`   | `region`, `section`                                       | `region[placement="sidebar"]`        |
-| `region`      | `region`, `header`                                        | `region[region="featured"]`          |
+| `region`      | `region`, `header`                                        | `region[region="sidebar"]`           |
 | `origin`      | `section`                                                 | `section[origin="main"]`             |
-| `part`        | `region`, `section`, `contact-item`, `item-header`        | `region[part~="sidebar-background"]` |
-| `template`    | `resume`                                                  | `resume[template="azurill"]`         |
+| `template`    | `resume`                                                  | `resume[template="jejak"]`           |
 | `name`        | `field`, `contact-item`, `combined-text`, `template-part` | `field[name="position"]`             |
 | `level`       | `rich-heading`                                            | `rich-heading[level="2"]`            |
 | `direction`   | `list-item-content`                                       | `list-item-content[direction="rtl"]` |
@@ -399,27 +398,19 @@ Some templates expose extra details that others don't have. Always guard these r
 they don't apply by accident after a template change.
 
 ```css
-resume[template="azurill"] template-part[name="timeline-line"] {
+resume[template="jejak"] template-part[name="timeline-line"] {
   background-color: #94a3b8;
 }
 ```
 
-| Template  | Selectors                                                                                                                                                      |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Azurill   | `template-part[name="timeline-content"]`, `template-part[name="timeline-dot"]`, `template-part[name="timeline-line"]`, `template-part[name="timeline-marker"]` |
-| Bronzor   | `section[part~="interleaved-section-row"]`                                                                                                                     |
-| Chikorita | `template-part[name="contact-row-primary"]`, `template-part[name="contact-row-secondary"]`                                                                     |
-| Ditgar    | `template-part[name="featured-summary"]`, `item-header[part~="item-header-border"]`, `region[part~="sidebar-background"]`                                      |
-| Ditto     | `template-part[name="contact-offset"]`, `template-part[name="header-band"]`, `template-part[name="picture-anchor"]`                                            |
-| Gengar    | `template-part[name="featured-summary"]`, `region[part~="sidebar-background"]`                                                                                 |
-| Glalie    | `template-part[name="sidebar-background"]`                                                                                                                     |
-| Leafish   | `template-part[name="header-body"]`, `template-part[name="header-contact-band"]`, `template-part[name="header-intro"]`                                         |
-| Pikachu   | `template-part[name="header-divider"]`                                                                                                                         |
-| Rhyhorn   | `template-part[name="contact-item-content"]`, `contact-item[part~="contact-item-last"]`                                                                        |
-| Scizor    | `template-part[name="header-name-rule"]`                                                                                                                       |
-| Smeargle  | `template-part[name="featured-summary"]`                                                                                                                       |
+| Template | Selectors                                                                                                                                                      |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Jejak    | `template-part[name="timeline-content"]`, `template-part[name="timeline-dot"]`, `template-part[name="timeline-line"]`, `template-part[name="timeline-marker"]` |
+| Kirana   | `template-part[name="sidebar-background"]`                                                                                                                     |
+| Purnama  | `template-part[name="sidebar-background"]`                                                                                                                     |
 
-Kakuna, Lapras, Meowth, Onyx and Porygon have no template-specific parts.
+Meridian, Sterling, Aksara, Atlas, Tunas, Summit, Cendekia, Wibawa, Tenun, Vector, Linen, Horizon and Senja have no
+template-specific parts.
 
 Every template also has `template-part[name="item-header-row"]`: the row with the title and date in Awards,
 Certifications, Projects and Publications entries. It doesn't need a template guard.

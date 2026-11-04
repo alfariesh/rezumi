@@ -7,7 +7,7 @@ import {
 	coverLetterSchema,
 	coverLetterStyleSchema,
 } from "@rezumi/schema/cover-letter/data";
-import { templateSchema } from "@rezumi/schema/templates";
+import { templateInputSchema } from "@rezumi/schema/templates";
 import { aiSourceInput } from "../features/billing/ai-source";
 import { paginationShape } from "../pagination";
 
@@ -69,7 +69,7 @@ export const coverLetterDto = {
 			content: editableSchema.shape.content.default(""),
 			resumeId: z.string().min(1).optional().describe("The resume it goes with; its details and design are linked."),
 			applicationId: z.string().min(1).optional().describe("The job it's for; it fills the recipient."),
-			template: templateSchema.optional(),
+			template: templateInputSchema.optional(),
 			layout: coverLetterLayoutSchema
 				.optional()
 				.describe("Defaults to structured, or freeform when a recipient block is given."),
@@ -81,7 +81,7 @@ export const coverLetterDto = {
 	},
 	update: {
 		input: revisionSchema.extend(editableSchema.partial().shape).extend({
-			template: templateSchema.optional().describe("Sets the letter's own template, which unlinks its design."),
+			template: templateInputSchema.optional().describe("Sets the letter's own template, which unlinks its design."),
 			metadata: coverLetterStyleSchema.shape.metadata
 				.pick({ typography: true, design: true, page: true })
 				.partial()

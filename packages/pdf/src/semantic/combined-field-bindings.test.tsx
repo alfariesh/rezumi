@@ -91,7 +91,7 @@ describe("combined PDF field bindings", () => {
 		const treeOf = (data: ResumeData) =>
 			buildSemanticTree({
 				data,
-				template: "onyx",
+				template: "meridian",
 				page: data.metadata.layout.pages[0] as NonNullable<(typeof data.metadata.layout.pages)[number]>,
 				pageNumber: 1,
 				showHeader: true,
@@ -110,7 +110,7 @@ describe("combined PDF field bindings", () => {
 			[treeOf(stackedData), false],
 			[treeOf(inlineData), true],
 		] as const) {
-			const inventory = createBindingInventory(tree, getTemplateSemanticBindingRegistry("onyx"));
+			const inventory = createBindingInventory(tree, getTemplateSemanticBindingRegistry("meridian"));
 			const combined = combinedNodes(tree);
 			expect(combined).not.toEqual([]);
 			expect(
@@ -140,7 +140,7 @@ describe("combined PDF field bindings", () => {
 			[stackedData, "BSc • First"],
 			[inlineData, "Mathematics (BSc)"],
 		] as const) {
-			const document = await renderHost("onyx", data);
+			const document = await renderHost("meridian", data);
 			const outer = findTexts(document, text).map(mergedStyle);
 			expect(outer).toContainEqual(
 				expect.objectContaining({ color: "#334455", fontSize: 14, opacity: 0.6, marginLeft: 3 }),
@@ -157,9 +157,9 @@ describe("combined PDF field bindings", () => {
 			field[name="grade"] { color: #550000; }
 			field[name="period"] { color: #660000; }
 		`;
-		const experience = await renderHost("onyx", fixture("experience", colors, "inline"));
-		const inlineEducation = await renderHost("onyx", fixture("education", colors, "inline"));
-		const splitEducation = await renderHost("onyx", fixture("education", colors));
+		const experience = await renderHost("meridian", fixture("experience", colors, "inline"));
+		const inlineEducation = await renderHost("meridian", fixture("education", colors, "inline"));
+		const splitEducation = await renderHost("meridian", fixture("education", colors));
 
 		expect(nodeText(experience)).toContain("Engineer (London)");
 		expectColor(experience, "Engineer", "#110000");
@@ -199,13 +199,13 @@ describe("combined PDF field bindings", () => {
 		education.grade = "";
 		education.location = "";
 
-		expectColor(await renderHost("onyx", experienceData), "1842", "#660000");
-		expectColor(await renderHost("onyx", educationData), "1835", "#660000");
+		expectColor(await renderHost("meridian", experienceData), "1842", "#660000");
+		expectColor(await renderHost("meridian", educationData), "1835", "#660000");
 	});
 
 	it("keeps non-inheritable split-field styles on their final field hosts", async () => {
 		const document = await renderHost(
-			"onyx",
+			"meridian",
 			fixture(
 				"experience",
 				'field[name="position"] { opacity: 0.6; } field[name="location"] { margin-left: 3pt; }',

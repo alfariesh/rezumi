@@ -2,8 +2,8 @@ import type { Style } from "../../forme/style-types";
 import type { getTemplateMetrics } from "./metrics";
 import type { createRtlStyleHelpers } from "./rtl";
 import type { Picture, ResumeData } from "@rezumi/schema/resume/data";
-import { resolveBoldFontWeight } from "@rezumi/fonts";
 import { rgbaStringToHex } from "@rezumi/utils/color";
+import { resolveTypographyBoldWeight } from "../../hooks/use-register-fonts";
 
 type BaseTemplateStylesInput = {
 	metadata: ResumeData["metadata"];
@@ -55,7 +55,7 @@ export function createBaseTemplateStyles({
 		heading: {
 			fontFamily: metadata.typography.heading.fontFamily,
 			fontSize: metadata.typography.heading.fontSize,
-			/** Default fallback "600". bronzor uses fontWeights[0]??"500"; scizor uses .at(-1)??"700". */
+			/** The heaviest stored weight, or "600". */
 			fontWeight: metadata.typography.heading.fontWeights.at(-1) ?? "600",
 			lineHeight: metadata.typography.heading.lineHeight,
 			color: foreground,
@@ -67,7 +67,7 @@ export function createBaseTemplateStyles({
 			columnGap: metrics.gapX(1 / 3),
 		} satisfies Style,
 
-		/** Default gap = gapX(1/3). chikorita overrides to gapX(0.25). */
+		/** Default gap = gapX(1/3); a template may override it. */
 		inline: {
 			flexDirection: r.row,
 			alignItems: "center",
@@ -83,12 +83,10 @@ export function createBaseTemplateStyles({
 			fontSize: metadata.typography.body.fontSize * 0.875,
 		} satisfies Style,
 
-		/** True Bold face when the family has one (#3310); falls back to the last stored weight. scizor overrides color only. */
+		/** True Bold face when the family has one (#3310); falls back to the last stored weight. */
 		bold: {
 			fontWeight:
-				resolveBoldFontWeight(metadata.typography.body.fontFamily, metadata.typography.body.fontWeights) ??
-				metadata.typography.body.fontWeights.at(-1) ??
-				"600",
+				resolveTypographyBoldWeight(metadata.typography) ?? metadata.typography.body.fontWeights.at(-1) ?? "600",
 		} satisfies Style,
 
 		richParagraph: {
@@ -150,10 +148,7 @@ export function createBaseTemplateStyles({
 
 		inlineItemHeaderTrailing: { flexGrow: 1, textAlign: r.rtl ? "left" : "right" } satisfies Style,
 
-		/**
-		 * Standard picture style shared by every template but ditto.
-		 * ditto overrides: spread this and add `position: "absolute"`, `top`, `left`, `marginLeft`.
-		 */
+		/** Standard picture style; a template may spread it and position the picture itself. */
 		picture: {
 			width: picture.size,
 			height: picture.size / picture.aspectRatio,

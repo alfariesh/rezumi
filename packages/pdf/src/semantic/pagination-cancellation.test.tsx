@@ -64,7 +64,9 @@ describe("semantic pagination cancellation", () => {
 		["the builder's own pagination", undefined, true, false],
 	] as const)("puts %s on the final existing section View", async (_name, value, breakBefore, wrap) => {
 		const data = buildFixture(value);
-		const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+		const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<
+			typeof pdf
+		>[0];
 		const instance = pdf(element);
 		await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
 		const section = findSectionView(instance.container.document as HostNode, "SummaryPagination sentinel");

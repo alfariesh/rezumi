@@ -105,7 +105,7 @@ async function checkParity(origin: string): Promise<void> {
 			},
 			{
 				data,
-				template: name === "free-form" ? "azurill" : templateSchema.parse(name),
+				template: name === "free-form" ? "jejak" : templateSchema.parse(name),
 				readImage: readPreviewImage,
 				onPageMap: (map) => {
 					pageCount = map.pages.length;

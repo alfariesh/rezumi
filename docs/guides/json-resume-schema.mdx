@@ -81,7 +81,7 @@ A skill item has no `description` field. Use `keywords` for tools or topics, and
 - **Rich text is HTML.** Fields such as `description` and `summary.content` hold HTML strings.
 - **IDs.** Every item and custom section needs a unique `id`. Use a UUID.
 - **Cover letters.** The schema still accepts custom sections of type `cover-letter` so older exports stay valid. When you save or import such a resume, Rezumi moves each letter into a cover letter of its own and removes the section. See [Writing a cover letter](/guides/writing-a-cover-letter).
-- **Templates.** `metadata.template` is one of the 18 templates: `azurill`, `bronzor`, `chikorita`, `ditgar`, `ditto`, `gengar`, `glalie`, `kakuna`, `lapras`, `leafish`, `meowth`, `onyx`, `persian`, `pikachu`, `porygon`, `rhyhorn`, `scizor` or `smeargle`.
+- **Templates.** `metadata.template` is one of the 16 templates: `meridian`, `sterling`, `aksara`, `atlas`, `tunas`, `summit`, `cendekia`, `wibawa`, `tenun`, `vector`, `kirana`, `linen`, `horizon`, `jejak`, `purnama` or `senja`. An ID from the earlier template set, such as `onyx` or `azurill`, is still read and saved as the template that replaced it.
 - **No version field.** Resume objects have no top-level `version` or `$schema` property. Don't add one; point your tools at the schema URL instead.
 
 ## Validate resume data
@@ -266,7 +266,11 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"type": "string",
-								"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+								"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
+							},
+							"label": {
+								"description": "An optional label for the field, such as 'Date of birth' or 'Nationality'. Templates with a personal details table print it beside the text; leave blank for a plain contact line.",
+								"type": "string"
 							},
 							"text": {
 								"type": "string",
@@ -308,7 +312,7 @@ The complete schema, generated from the source code of this version.
 				},
 				"icon": {
 					"default": "",
-					"description": "Phosphor icon name to display before the summary section title in the PDF output. Empty string uses the default summary icon; 'none' hides the icon.",
+					"description": "Icon (a Hugeicons name from the resume icon set) to display before the summary section title when section icons are on. Empty string uses the default summary icon; 'none' hides the icon.",
 					"type": "string"
 				},
 				"columns": {
@@ -365,7 +369,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -409,7 +413,7 @@ The complete schema, generated from the source code of this version.
 									},
 									"icon": {
 										"type": "string",
-										"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+										"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
 									},
 									"iconColor": {
 										"default": "",
@@ -487,7 +491,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -742,7 +746,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -926,7 +930,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -1091,7 +1095,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -1135,7 +1139,7 @@ The complete schema, generated from the source code of this version.
 									},
 									"icon": {
 										"type": "string",
-										"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+										"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
 									},
 									"iconColor": {
 										"default": "",
@@ -1181,11 +1185,12 @@ The complete schema, generated from the source code of this version.
 						},
 						"keywordLayout": {
 							"default": "inline",
-							"description": "How skill keywords are displayed: inline separated by commas, or one bullet per keyword.",
+							"description": "How skill keywords are displayed: inline separated by commas, one bullet per keyword, or 'tags' (small chips).",
 							"type": "string",
 							"enum": [
 								"inline",
-								"list"
+								"list",
+								"tags"
 							]
 						},
 						"layout": {
@@ -1217,7 +1222,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -1306,7 +1311,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -1350,7 +1355,7 @@ The complete schema, generated from the source code of this version.
 									},
 									"icon": {
 										"type": "string",
-										"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+										"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
 									},
 									"iconColor": {
 										"default": "",
@@ -1402,7 +1407,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -1571,7 +1576,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -1740,7 +1745,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -1909,7 +1914,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -2078,7 +2083,7 @@ The complete schema, generated from the source code of this version.
 						},
 						"icon": {
 							"default": "",
-							"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+							"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 							"type": "string"
 						},
 						"columns": {
@@ -2220,7 +2225,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -2313,7 +2318,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -2401,7 +2406,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -2455,7 +2460,7 @@ The complete schema, generated from the source code of this version.
 										},
 										"icon": {
 											"type": "string",
-											"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+											"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
 										},
 										"iconColor": {
 											"default": "",
@@ -2535,7 +2540,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -2802,7 +2807,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -2998,7 +3003,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -3174,7 +3179,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -3205,11 +3210,12 @@ The complete schema, generated from the source code of this version.
 							},
 							"keywordLayout": {
 								"default": "inline",
-								"description": "How skill keywords are displayed: inline separated by commas, or one bullet per keyword.",
+								"description": "How skill keywords are displayed: inline separated by commas, one bullet per keyword, or 'tags' (small chips).",
 								"type": "string",
 								"enum": [
 									"inline",
-									"list"
+									"list",
+									"tags"
 								]
 							},
 							"id": {
@@ -3236,7 +3242,7 @@ The complete schema, generated from the source code of this version.
 										},
 										"icon": {
 											"type": "string",
-											"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+											"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
 										},
 										"iconColor": {
 											"default": "",
@@ -3303,7 +3309,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -3404,7 +3410,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -3458,7 +3464,7 @@ The complete schema, generated from the source code of this version.
 										},
 										"icon": {
 											"type": "string",
-											"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+											"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
 										},
 										"iconColor": {
 											"default": "",
@@ -3512,7 +3518,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -3693,7 +3699,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -3874,7 +3880,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -4055,7 +4061,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -4236,7 +4242,7 @@ The complete schema, generated from the source code of this version.
 							},
 							"icon": {
 								"default": "",
-								"description": "Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+								"description": "Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 								"type": "string"
 							},
 							"columns": {
@@ -4368,28 +4374,25 @@ The complete schema, generated from the source code of this version.
 			"type": "object",
 			"properties": {
 				"template": {
-					"default": "onyx",
 					"description": "The template to use for the resume. Determines the overall design and appearance of the resume.",
 					"type": "string",
 					"enum": [
-						"azurill",
-						"bronzor",
-						"chikorita",
-						"ditgar",
-						"ditto",
-						"gengar",
-						"glalie",
-						"kakuna",
-						"lapras",
-						"leafish",
-						"meowth",
-						"onyx",
-						"persian",
-						"pikachu",
-						"porygon",
-						"rhyhorn",
-						"scizor",
-						"smeargle"
+						"meridian",
+						"sterling",
+						"aksara",
+						"atlas",
+						"tunas",
+						"summit",
+						"cendekia",
+						"wibawa",
+						"tenun",
+						"vector",
+						"kirana",
+						"linen",
+						"horizon",
+						"jejak",
+						"purnama",
+						"senja"
 					]
 				},
 				"layout": {
@@ -4463,14 +4466,14 @@ The complete schema, generated from the source code of this version.
 							"description": "The vertical gap between the sections of the page, defined in points (pt)."
 						},
 						"marginX": {
-							"default": 14,
+							"default": 36,
 							"description": "The horizontal margin of the page, defined in points (pt).",
 							"type": "number",
 							"minimum": 0,
 							"maximum": 100
 						},
 						"marginY": {
-							"default": 12,
+							"default": 32,
 							"description": "The vertical margin of the page, defined in points (pt).",
 							"type": "number",
 							"minimum": 0,
@@ -4505,16 +4508,6 @@ The complete schema, generated from the source code of this version.
 							"default": false,
 							"type": "boolean",
 							"description": "Whether to hide the underlines of the links."
-						},
-						"hideIcons": {
-							"default": false,
-							"type": "boolean",
-							"description": "Whether to hide the item-level icons (skills, profiles, interests)."
-						},
-						"hideSectionIcons": {
-							"default": true,
-							"type": "boolean",
-							"description": "Whether to hide the section heading icons displayed before section titles."
 						}
 					},
 					"required": [
@@ -4524,9 +4517,7 @@ The complete schema, generated from the source code of this version.
 						"marginY",
 						"format",
 						"locale",
-						"hideLinkUnderline",
-						"hideIcons",
-						"hideSectionIcons"
+						"hideLinkUnderline"
 					],
 					"description": "The page settings of the resume. Determines the margins, format, and locale of the resume."
 				},
@@ -4538,7 +4529,7 @@ The complete schema, generated from the source code of this version.
 							"properties": {
 								"icon": {
 									"type": "string",
-									"description": "The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available."
+									"description": "The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available."
 								},
 								"type": {
 									"type": "string",
@@ -4623,6 +4614,55 @@ The complete schema, generated from the source code of this version.
 								"lead",
 								"accent"
 							]
+						},
+						"icons": {
+							"description": "Which icons the resume shows, and in which style. When missing, the defaults apply.",
+							"type": "object",
+							"properties": {
+								"enabled": {
+									"default": true,
+									"description": "Whether the resume shows icons at all. False hides every icon.",
+									"type": "boolean"
+								},
+								"style": {
+									"default": "standard",
+									"type": "string",
+									"enum": [
+										"standard",
+										"rounded",
+										"sharp"
+									],
+									"description": "How every icon on the resume is drawn: 'standard', 'rounded' (softer ends) or 'sharp' (square corners)."
+								},
+								"contact": {
+									"default": true,
+									"description": "Whether icons show before the email, phone, location, website and custom fields.",
+									"type": "boolean"
+								},
+								"sections": {
+									"default": false,
+									"description": "Whether icons show before section titles.",
+									"type": "boolean"
+								},
+								"items": {
+									"default": true,
+									"description": "Whether the icons chosen for skills, interests and profiles (network logos) show.",
+									"type": "boolean"
+								},
+								"logos": {
+									"default": false,
+									"description": "Whether logos of known tools and technologies (React, Python, Figma, …) show beside skills that name them. The skill text always prints.",
+									"type": "boolean"
+								}
+							},
+							"required": [
+								"enabled",
+								"style",
+								"contact",
+								"sections",
+								"items",
+								"logos"
+							]
 						}
 					},
 					"required": [
@@ -4639,7 +4679,7 @@ The complete schema, generated from the source code of this version.
 							"properties": {
 								"fontFamily": {
 									"type": "string",
-									"description": "The family of the font to use. Must be a supported resume font."
+									"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 								},
 								"fontWeights": {
 									"default": [
@@ -4690,7 +4730,7 @@ The complete schema, generated from the source code of this version.
 							"properties": {
 								"fontFamily": {
 									"type": "string",
-									"description": "The family of the font to use. Must be a supported resume font."
+									"description": "The family of the font to use. Must be a supported resume font or a family in customFonts."
 								},
 								"fontWeights": {
 									"default": [
@@ -4735,6 +4775,53 @@ The complete schema, generated from the source code of this version.
 								"lineHeight"
 							],
 							"description": "The typography for the headings of the resume."
+						},
+						"customFonts": {
+							"description": "Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font.",
+							"maxItems": 24,
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"family": {
+										"type": "string",
+										"minLength": 1,
+										"maxLength": 64,
+										"description": "The family name the face belongs to, as read from the file."
+									},
+									"weight": {
+										"type": "string",
+										"enum": [
+											"100",
+											"200",
+											"300",
+											"400",
+											"500",
+											"600",
+											"700",
+											"800",
+											"900"
+										],
+										"description": "The weight of this face."
+									},
+									"italic": {
+										"default": false,
+										"description": "Whether this face is italic.",
+										"type": "boolean"
+									},
+									"url": {
+										"type": "string",
+										"maxLength": 500,
+										"description": "Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."
+									}
+								},
+								"required": [
+									"family",
+									"weight",
+									"italic",
+									"url"
+								]
+							}
 						},
 						"hyphenation": {
 							"description": "Enable automatic PDF hyphenation using the resume language. Defaults to false.",

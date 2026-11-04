@@ -387,6 +387,16 @@ msgstr "Wawancara {0} · {1}"
 msgid "{0} interview · {1} min"
 msgstr "Wawancara {0} · {1} menit"
 
+#. placeholder {0}: face.family
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} is ready. Choose it under Font family."
+msgstr "{0} siap dipakai. Pilih di Keluarga font."
+
+#. placeholder {0}: face.weight
+#: src/features/design/uploaded-fonts.tsx
+msgid "{0} italic"
+msgstr "{0} miring"
+
 #. placeholder {0}: formatMoney(time.locale, data.currency, -difference)
 #: src/features/career/offers.tsx
 msgid "{0} less"
@@ -1407,10 +1417,6 @@ msgstr "Download juga surat lamarannya"
 msgid "Also email a copy"
 msgstr "Juga kirimkan salinannya melalui email"
 
-#: src/features/design/style-groups.tsx
-msgid "Also shows the icons on skills, profiles and interests."
-msgstr "Juga menunjukkan ikon keterampilan, profil, dan minat."
-
 #: src/features/career/schedule-sheet.tsx
 msgid "Always appears in Today. Email requires a verified address and server mail setup. No push notifications are sent."
 msgstr "Selalu muncul di Hari ini. Email memerlukan alamat terverifikasi dan pengaturan email server. Tidak ada pemberitahuan push yang dikirim."
@@ -1906,9 +1912,17 @@ msgstr "Sebelum wawancara"
 msgid "Before restore"
 msgstr "Sebelum memulihkan"
 
+#: src/features/design/style-groups.tsx
+msgid "Before titles such as Education, Skills and Certifications."
+msgstr "Di depan judul seperti Pendidikan, Keahlian, dan Sertifikasi."
+
 #: src/features/workspace/tabs/apply.tsx
 msgid "Before you submit"
 msgstr "Sebelum Anda mengirim"
+
+#: src/features/design/style-groups.tsx
+msgid "Before your email, phone, location, website and custom fields."
+msgstr "Di depan email, telepon, lokasi, situs web, dan kolom kustom."
 
 #: src/features/application-detail/hooks.ts
 #: src/features/applications/next-step.ts
@@ -2258,6 +2272,10 @@ msgstr "Pilih tanggal"
 msgid "Choose a file"
 msgstr "Pilih file"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Choose a font file smaller than 8 MB."
+msgstr "Pilih file font yang lebih kecil dari 8 MB."
+
 #: src/features/ats-checker/checker.tsx
 msgid "Choose a PDF"
 msgstr "Pilih PDF"
@@ -2604,6 +2622,10 @@ msgstr "Kontak & Pengaduan"
 #: src/features/check/issues.ts
 msgid "Contact details"
 msgstr "Detail kontak"
+
+#: src/features/design/style-groups.tsx
+msgid "Contact line"
+msgstr "Baris kontak"
 
 #: src/features/application-detail/sections.tsx
 #: src/features/application-detail/sheets.tsx
@@ -3162,6 +3184,10 @@ msgstr "Tidak dapat memperbarui garis waktu. Coba lagi."
 #: src/features/application-detail/sections.tsx
 msgid "Couldn't upload the file. Try again."
 msgstr "Tidak dapat mengunggah file. Coba lagi."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Couldn't upload the font. Try again."
+msgstr "Font gagal diunggah. Coba lagi."
 
 #: src/features/settings/profile.tsx
 msgid "Couldn't upload the photo."
@@ -4357,6 +4383,10 @@ msgstr "Pengingat tindak lanjut"
 msgid "Font family"
 msgstr "Keluarga font"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Font limit reached"
+msgstr "Batas font tercapai"
+
 #: src/features/design/style-groups.tsx
 #: src/features/letters/design.tsx
 msgid "Font pairing"
@@ -4771,13 +4801,17 @@ msgstr "Ikon"
 msgid "Icon color"
 msgstr "Warna ikon"
 
+#: src/features/design/style-groups.tsx
+msgid "Icon style"
+msgstr "Gaya ikon"
+
 #: src/features/write/section-sheet.tsx
 msgid "Icon…"
 msgstr "Ikon…"
 
-#: src/features/design/style-groups.tsx
-msgid "Icons in contact line"
-msgstr "Ikon di baris kontak"
+#: src/features/design/design-pane.tsx
+msgid "Icons"
+msgstr "Ikon"
 
 #: src/features/ats-checker/messages.ts
 msgid "If it came from a scan, that is expected. Otherwise remove it; recruiters read it as keyword stuffing."
@@ -5602,6 +5636,10 @@ msgstr "Dokumen yang dikunci dilewati. Buka kuncinya terlebih dahulu."
 #: src/features/write/outline.tsx
 msgid "Locked. Unlock to edit."
 msgstr "Terkunci. Buka kunci untuk mengedit."
+
+#: src/features/design/style-groups.tsx
+msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
+msgstr "Logo di samping tools yang disebut di keahlian, seperti React, Python, atau Figma. Teksnya tetap tercetak."
 
 #: src/features/applications-board/calendar-screen.tsx
 msgid "Long press an interview to drag it, or hold its bottom edge to change its length."
@@ -7867,6 +7905,7 @@ msgstr "Pengingat muncul di sini. Salinan email bersifat opsional dan memerlukan
 msgid "Remote"
 msgstr "Jarak jauh"
 
+#: src/features/design/uploaded-fonts.tsx
 #: src/features/share/custom-domain.tsx
 #: src/ui/fields.tsx
 msgid "Remove"
@@ -7876,6 +7915,11 @@ msgstr "Menghapus"
 #: src/features/application-detail/sheets.tsx
 msgid "Remove {0}"
 msgstr "Hapus {0}"
+
+#. placeholder {0}: removing ?? ""
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove {0}?"
+msgstr "Hapus {0}?"
 
 #: src/features/assistant/messages.tsx
 msgid "Remove {name}"
@@ -7896,6 +7940,10 @@ msgstr "Hapus bidang"
 #: src/features/application-detail/sections.tsx
 msgid "Remove file"
 msgstr "Hapus file"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Remove font"
+msgstr "Hapus font"
 
 #: src/features/share/web-page.tsx
 msgid "Remove password"
@@ -8355,6 +8403,10 @@ msgid "Rotation isn't supported by PDF rendering."
 msgstr "Rotasi tidak didukung oleh rendering PDF."
 
 #: src/features/design/style-groups.tsx
+msgid "Rounded"
+msgstr "Rounded"
+
+#: src/features/design/style-groups.tsx
 msgid "Row order"
 msgstr ""
 
@@ -8696,6 +8748,10 @@ msgstr "Penawaran kedua"
 msgid "Section headings"
 msgstr "Judul bagian"
 
+#: src/features/design/style-groups.tsx
+msgid "Section titles"
+msgstr "Judul bagian"
+
 #: src/features/ats-checker/messages.ts
 msgid "Sections"
 msgstr "Bagian"
@@ -8924,6 +8980,10 @@ msgstr "Bagikan melalui…"
 msgid "Sharing"
 msgstr "Berbagi"
 
+#: src/features/design/style-groups.tsx
+msgid "Sharp"
+msgstr "Sharp"
+
 #: src/features/workspace/parts.tsx
 msgid "Sharpening the opening"
 msgstr "Mempertajam pembuka"
@@ -8997,7 +9057,7 @@ msgstr "Tampilkan judul"
 msgid "Show hidden terms again"
 msgstr "Tampilkan istilah tersembunyi lagi"
 
-#: src/features/design/advanced.tsx
+#: src/features/design/style-groups.tsx
 msgid "Show icons"
 msgstr "Tampilkan ikon"
 
@@ -9032,10 +9092,6 @@ msgstr "Tampilkan foto"
 #: src/features/career/today.tsx
 msgid "Show read"
 msgstr "Tampilkan yang dibaca"
-
-#: src/features/design/advanced.tsx
-msgid "Show section icons"
-msgstr "Tampilkan ikon bagian"
 
 #: src/features/applications-board/time-grid.tsx
 msgid "Show this day"
@@ -9206,6 +9262,10 @@ msgstr "Keahlian"
 msgid "Skills"
 msgstr "Keahlian"
 
+#: src/features/design/style-groups.tsx
+msgid "Skills, interests and profiles"
+msgstr "Keahlian, minat, dan profil"
+
 #: src/features/assistant/tool-approvals.tsx
 #: src/features/workspace/tabs/apply.tsx
 msgid "Skip"
@@ -9369,6 +9429,10 @@ msgstr "Tahap"
 #: src/features/workspace/tabs/messages.tsx
 msgid "Stage stays {stage}"
 msgstr "Tahap tetap {stage}"
+
+#: src/features/design/style-groups.tsx
+msgid "Standard"
+msgstr "Standar"
 
 #: src/features/write/date-field.tsx
 msgid "Start"
@@ -9767,6 +9831,10 @@ msgstr "Teks ditulis satu karakter dalam satu waktu."
 msgid "Text only"
 msgstr "Hanya teks"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Text set in it moves to the default font. You can upload the font again later."
+msgstr "Teks yang memakainya kembali ke font bawaan. Kamu bisa mengunggah font ini lagi nanti."
+
 #: src/features/ats-checker/messages.ts
 msgid "Text sits in the header or footer area."
 msgstr "Teks berada di area kepala atau kaki halaman."
@@ -9904,6 +9972,10 @@ msgstr "Tindak lanjutnya disimpan. Untuk mendapatkan pengingat, izinkan notifika
 #: src/features/letters/write.tsx
 msgid "The greeting follows the name."
 msgstr "Salam mengikuti namanya."
+
+#: src/features/design/style-groups.tsx
+msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
+msgstr "Ikon pilihanmu, dan logo jaringan seperti LinkedIn dan GitHub."
 
 #: src/features/application-detail/interview-sheet.tsx
 msgid "The interview is saved. To get a reminder, allow notifications in your device settings."
@@ -10215,6 +10287,10 @@ msgstr "File ini besar untuk ukuran sebuah resume."
 msgid "This file is larger than many application forms accept."
 msgstr "File ini lebih besar dari yang diterima banyak formulir lamaran."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
+msgstr "File ini bukan font yang bisa dibaca Rezumi. Unggah file TTF atau OTF."
+
 #: src/features/ats-checker/messages.ts
 msgid "This file uses a lot of different fonts."
 msgstr "File ini menggunakan banyak font yang berbeda."
@@ -10226,6 +10302,10 @@ msgstr "File ini menggunakan font Type 3, yang memuat gambar, bukan karakter."
 #: src/features/application-detail/sections.tsx
 msgid "This file's size couldn't be read. Choose another PDF."
 msgstr "Ukuran file ini tidak dapat dibaca. Pilih PDF lainnya."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
+msgstr "Lisensi font ini tidak mengizinkan font disematkan ke dokumen, jadi tidak bisa dipakai di PDF."
 
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
@@ -10493,6 +10573,10 @@ msgstr "Terlalu terang untuk judul berwarna putih. Mungkin sulit untuk membaca d
 msgid "Too many requests. Try again later."
 msgstr "Terlalu banyak permintaan. Coba lagi nanti."
 
+#: src/features/design/style-groups.tsx
+msgid "Tool logos in skills"
+msgstr "Logo tools di keahlian"
+
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up. Bonus and equity depend on conditions; equity value is uncertain. Read original offer documents."
 msgstr "Total tidak dijumlahkan. Bonus dan ekuitas bergantung pada kondisi; nilai ekuitas tidak pasti. Baca dokumen penawaran asli."
@@ -10607,6 +10691,10 @@ msgstr "Turki"
 #: src/features/ats-checker/messages.ts
 msgid "Turn off discretionary ligatures when exporting."
 msgstr "Matikan ligatur opsional saat mengekspor."
+
+#: src/features/design/style-groups.tsx
+msgid "Turn off for a text-only resume."
+msgstr "Matikan untuk CV yang hanya berisi teks."
 
 #: src/features/share/link.tsx
 msgid "Turn on the link to choose an address."
@@ -10767,9 +10855,21 @@ msgstr "Memperbarui pratinjau…"
 msgid "Upload a PDF and see the text an applicant tracking system extracts: what's missing, what's out of order, and how to fix it. Free, no account needed."
 msgstr "Unggah PDF dan lihat teks yang diekstraksi oleh sistem pelacakan pelamar: apa yang hilang, apa yang rusak, dan cara memperbaikinya. Gratis, tidak perlu akun."
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload a single TTF or OTF file. Web fonts (WOFF, WOFF2) and font collections (TTC) can't be used."
+msgstr "Unggah satu file TTF atau OTF. Font web (WOFF, WOFF2) dan kumpulan font (TTC) tidak bisa dipakai."
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload font"
+msgstr "Unggah font"
+
 #: src/features/write/picture-screen.tsx
 msgid "Upload photo"
 msgstr "Unggah foto"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr "Unggah file TTF atau OTF yang boleh kamu pakai, satu file untuk setiap ketebalan atau gaya. Siapa pun yang membuka tautan bagikan dokumen ini bisa mengunduhnya."
 
 #: src/features/settings/profile.tsx
 #: src/features/write/picture-screen.tsx
@@ -11610,6 +11710,10 @@ msgstr "Fakta, cerita, dan preferensi Anda. Mengedit Pengetahuan tidak mengirimk
 msgid "Your focus"
 msgstr "Fokus Anda"
 
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your fonts"
+msgstr "Font kamu"
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "Judul Anda terlihat sama seperti teks isi."
@@ -11675,9 +11779,17 @@ msgstr "Font sendiri"
 msgid "Your own fonts aren't available"
 msgstr "Font sendiri tidak tersedia"
 
+#: src/features/billing/plan.ts
+msgid "Your own fonts aren't available, so the imported document uses a standard font."
+msgstr "Font sendiri tidak tersedia, jadi dokumen hasil impor memakai font standar."
+
 #: src/features/billing/plan-alert.ts
 msgid "Your own fonts aren't in your plan"
 msgstr "Font sendiri tidak termasuk dalam paketmu"
+
+#: src/features/design/uploaded-fonts.tsx
+msgid "Your own fonts aren't in your plan. Fonts already added keep working on the page."
+msgstr "Font sendiri tidak termasuk dalam paketmu. Font yang sudah ditambahkan tetap tampil di halaman."
 
 #: src/features/ats-checker/messages.ts
 msgid "Your phone number is written in an unusual shape."

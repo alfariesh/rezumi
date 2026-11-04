@@ -59,7 +59,7 @@ describe("semantic rich-text bindings", () => {
 	it("applies occurrence-specific paragraph, strong, and marker styles to existing primitives", async () => {
 		const element = createElement(ResumeDocument, {
 			data: buildFixture(),
-			template: "onyx",
+			template: "meridian",
 		}) as unknown as Parameters<typeof pdf>[0];
 		const instance = pdf(element);
 		await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
@@ -84,7 +84,7 @@ describe("semantic rich-text bindings", () => {
 		data.summary.content = content;
 		const page = data.metadata.layout.pages[0];
 		if (!page) throw new Error("Expected a page fixture.");
-		const tree = buildSemanticTree({ data, template: "onyx", page, pageNumber: 1, showHeader: false });
+		const tree = buildSemanticTree({ data, template: "meridian", page, pageNumber: 1, showHeader: false });
 		const richText = findSemanticNode(tree, (candidate) => candidate.kind === "rich-text");
 		if (!richText) throw new Error("Expected a rich-text descriptor.");
 

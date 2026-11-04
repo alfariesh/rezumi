@@ -87,3 +87,19 @@ it("lists single file key when prefix points directly to an existing file", asyn
 	const results = await storage.list(key);
 	expect(results).toEqual([key]);
 });
+
+it("serves uploaded fonts publicly as fonts so shared resumes draw with them", async () => {
+	const key = "uploads/user-1/fonts/0b6c3f4e-1d2a-4f8e-9c1b-7a5d2e3f4a5b.ttf";
+	const data = new Uint8Array([0, 1, 0, 0, 1, 2, 3]);
+	await storage.write({ key, data, contentType: "font/ttf" });
+
+	const response = await handleUpload(new Request(`${envMock.APP_URL}/api/${key}`));
+	expect(response.status).toBe(200);
+	expect(response.headers.get("Content-Type")).toBe("font/ttf");
+	expect(response.headers.get("Content-Disposition")).toBeNull();
+	expect(response.headers.get("Cache-Control")).toBe("public, max-age=3600");
+	expect(new Uint8Array(await response.arrayBuffer())).toEqual(data);
+
+	await storage.write({ key: "uploads/user-1/fonts/other.bin", data, contentType: "application/octet-stream" });
+	expect((await handleUpload(new Request(`${envMock.APP_URL}/api/uploads/user-1/fonts/other.bin`))).status).toBe(404);
+});

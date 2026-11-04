@@ -7,7 +7,7 @@ import Fuse from "fuse.js";
 import { Grid } from "react-window";
 import { icons } from "@rezumi/schema/icons";
 import { Icon } from "@rezumi/ui/components/icon";
-import { cn } from "@rezumi/utils/style";
+import { ResumeIconGlyph } from "./resume-icon";
 
 const columnCount = 8;
 const columnWidth = 36;
@@ -36,7 +36,7 @@ function IconCellComponent({ columnIndex, rowIndex, style, icons, onChange }: Ic
 			}}
 			className="flex size-full cursor-(--cursor-interactive) items-center justify-center rounded-lg hover:bg-default"
 		>
-			{icon ? <i className={cn("ph text-base", `ph-${icon}`)} /> : <Icon name="prohibit" size={16} />}
+			{icon ? <ResumeIconGlyph name={icon} className="size-4" /> : <Icon name="prohibit" size={16} />}
 		</button>
 	);
 }

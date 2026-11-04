@@ -409,7 +409,7 @@ const CONTAINER_KEYS = new Set([
 
 /**
  * Forme 0.25 gives an absolute box no height from its `top` and `bottom`, where Yoga stretched it between them
- * (Azurill's timeline line). A plain bar down the whole content box becomes the left border of a box around the other
+ * (Jejak's timeline line). A plain bar down the whole content box becomes the left border of a box around the other
  * children instead: that box is as tall as they are, and its border is drawn on every page it reaches. A box that
  * merely stretches along a row keeps its whole height on the page where the row breaks.
  */

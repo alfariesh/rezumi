@@ -2,11 +2,16 @@ import { getFont } from "@rezumi/fonts";
 
 type Weight = "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
 
-export function getNextWeights(fontFamily: string, single = false): Weight[] | null {
-	const fontData = getFont(fontFamily);
-	if (!fontData || !Array.isArray(fontData.weights) || fontData.weights.length === 0) return null;
+/** The weights to switch to with a new family; `available` overrides the catalog's (an uploaded family's weights). */
+export function getNextWeights(
+	fontFamily: string,
+	single = false,
+	available?: readonly Weight[] | null,
+): Weight[] | null {
+	const familyWeights = available ?? getFont(fontFamily)?.weights;
+	if (!Array.isArray(familyWeights) || familyWeights.length === 0) return null;
 
-	const uniqueWeights = [...new Set(fontData.weights)] as Weight[];
+	const uniqueWeights = [...new Set(familyWeights)] as Weight[];
 
 	if (single) return [uniqueWeights.includes("600") ? "600" : (uniqueWeights.at(-1) ?? "400")];
 	// Body text uses a regular weight and a bold weight.

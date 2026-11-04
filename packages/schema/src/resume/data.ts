@@ -1,12 +1,13 @@
 import z from "zod";
-import { templateSchema } from "../templates";
+import { readableTemplateSchema } from "../templates";
 import { dateFormatSchema, resumeDatesSchema, syncResumeDates, upgradeResumeDates } from "./dates";
+import { upgradeResumeIcons } from "./icon-names";
 import { semanticStylesheetSchema } from "./stylesheet";
 
 const iconSchema = z
 	.string()
 	.describe(
-		"The icon to display for the custom field. Must be a valid icon name from @phosphor-icons/web icon set, or an empty string to hide. Default to '' (empty string) when unsure which icons are available.",
+		"The icon to display, as a Hugeicons name from the resume icon set (for example 'briefcase-01', 'mortarboard-01', 'linkedin-02', 'github', 'source-code'), or an empty string for none. The resume's icon style decides how it is drawn. Default to '' (empty string) when unsure which icons are available.",
 	);
 
 const iconColorSchema = z
@@ -84,6 +85,13 @@ export const pictureSchema = z.object({
 export const customFieldSchema = z.object({
 	id: z.string().describe("The unique identifier for the custom field. Usually generated as a UUID."),
 	icon: iconSchema,
+	label: z
+		.string()
+		.optional()
+		.catch(undefined)
+		.describe(
+			"An optional label for the field, such as 'Date of birth' or 'Nationality'. Templates with a personal details table print it beside the text; leave blank for a plain contact line.",
+		),
 	text: z.string().describe("The text to display for the custom field."),
 	link: z.string().describe("If the custom field should be a link, the URL to link to.").catch(""),
 });
@@ -104,7 +112,7 @@ export const summarySchema = z.object({
 		.string()
 		.catch("")
 		.describe(
-			"Phosphor icon name to display before the summary section title in the PDF output. Empty string uses the default summary icon; 'none' hides the icon.",
+			"Icon (a Hugeicons name from the resume icon set) to display before the summary section title when section icons are on. Empty string uses the default summary icon; 'none' hides the icon.",
 		),
 	columns: z.number().int().min(1).max(6).catch(1).describe("The number of columns the summary should span across."),
 	hidden: z.boolean().describe("Whether to hide the summary from the resume."),
@@ -347,7 +355,7 @@ export const baseSectionSchema = z.object({
 		.string()
 		.catch("")
 		.describe(
-			"Phosphor icon name to display before the section title in the PDF output. Empty string uses the default section icon; 'none' hides the icon.",
+			"Icon (a Hugeicons name from the resume icon set) to display before the section title when section icons are on. Empty string uses the default section icon; 'none' hides the icon.",
 		),
 	columns: z.number().int().min(1).max(6).catch(1).describe("The number of columns the section should span across."),
 	hidden: z.boolean().describe("Whether to hide the section from the resume."),
@@ -384,10 +392,12 @@ const publicationsSectionSchema = itemSection(
 );
 const referencesSectionSchema = itemSection(referenceItemSchema, "The items to display in the references section.");
 const skillKeywordLayoutSchema = z
-	.enum(["inline", "list"])
+	.enum(["inline", "list", "tags"])
 	.default("inline")
 	.catch("inline")
-	.describe("How skill keywords are displayed: inline separated by commas, or one bullet per keyword.");
+	.describe(
+		"How skill keywords are displayed: inline separated by commas, one bullet per keyword, or 'tags' (small chips).",
+	);
 
 export const skillsSectionSchema = itemSection(skillItemSchema, "The items to display in the skills section.")
 	.extend({
@@ -488,7 +498,9 @@ const customSectionsSchema = z.array(customSectionSchema);
 const fontWeightSchema = z.enum(["100", "200", "300", "400", "500", "600", "700", "800", "900"]);
 
 const typographyItemSchema = z.object({
-	fontFamily: z.string().describe("The family of the font to use. Must be a supported resume font."),
+	fontFamily: z
+		.string()
+		.describe("The family of the font to use. Must be a supported resume font or a family in customFonts."),
 	fontWeights: z
 		.array(fontWeightSchema)
 		.catch(["400"])
@@ -542,8 +554,8 @@ export const layoutSchema = z.object({
 export const pageSchema = z.object({
 	gapX: z.number().min(0).describe("The horizontal gap between the sections of the page, defined in points (pt)."),
 	gapY: z.number().min(0).describe("The vertical gap between the sections of the page, defined in points (pt)."),
-	marginX: z.number().min(0).max(100).catch(14).describe("The horizontal margin of the page, defined in points (pt)."),
-	marginY: z.number().min(0).max(100).catch(12).describe("The vertical margin of the page, defined in points (pt)."),
+	marginX: z.number().min(0).max(100).catch(36).describe("The horizontal margin of the page, defined in points (pt)."),
+	marginY: z.number().min(0).max(100).catch(32).describe("The vertical margin of the page, defined in points (pt)."),
 	format: z
 		.enum(["a4", "letter", "free-form"])
 		.describe("The format of the page. Can be 'a4', 'letter', or 'free-form'.")
@@ -559,11 +571,49 @@ export const pageSchema = z.object({
 			"How dates print: 'short' (Mar 2022), 'long' (March 2022), 'numeric' (03/2022) or 'iso' (2022-03). When missing, it's read from how the dates were typed.",
 		),
 	hideLinkUnderline: z.boolean().describe("Whether to hide the underlines of the links.").catch(false),
-	hideIcons: z.boolean().describe("Whether to hide the item-level icons (skills, profiles, interests).").catch(false),
-	hideSectionIcons: z
+});
+
+export const iconStyleSchema = z
+	.enum(["standard", "rounded", "sharp"])
+	.describe("How every icon on the resume is drawn: 'standard', 'rounded' (softer ends) or 'sharp' (square corners).");
+
+export type IconStyle = z.infer<typeof iconStyleSchema>;
+
+export const iconDesignSchema = z.object({
+	enabled: z.boolean().catch(true).describe("Whether the resume shows icons at all. False hides every icon."),
+	style: iconStyleSchema.catch("standard"),
+	contact: z
 		.boolean()
-		.describe("Whether to hide the section heading icons displayed before section titles.")
-		.catch(true),
+		.catch(true)
+		.describe("Whether icons show before the email, phone, location, website and custom fields."),
+	sections: z.boolean().catch(false).describe("Whether icons show before section titles."),
+	items: z
+		.boolean()
+		.catch(true)
+		.describe("Whether the icons chosen for skills, interests and profiles (network logos) show."),
+	logos: z
+		.boolean()
+		.catch(false)
+		.describe(
+			"Whether logos of known tools and technologies (React, Python, Figma, …) show beside skills that name them. The skill text always prints.",
+		),
+});
+
+export type IconDesign = z.infer<typeof iconDesignSchema>;
+
+export const defaultIconDesign: IconDesign = {
+	enabled: true,
+	style: "standard",
+	contact: true,
+	sections: false,
+	items: true,
+	logos: false,
+};
+
+/** Resumes saved before icon settings existed have none; read them through this. */
+export const iconDesignOf = (design: { icons?: Partial<IconDesign> | undefined }): IconDesign => ({
+	...defaultIconDesign,
+	...design.icons,
 });
 
 export const levelDesignSchema = z.object({
@@ -628,11 +678,35 @@ const designSchema = z.object({
 		.optional()
 		.catch(undefined)
 		.describe("How entry headers are arranged and decorated. When missing, entries use the stacked layout."),
+	icons: iconDesignSchema
+		.optional()
+		.catch(undefined)
+		.describe("Which icons the resume shows, and in which style. When missing, the defaults apply."),
 });
+
+export const customFontFaceSchema = z.object({
+	family: z.string().trim().min(1).max(64).describe("The family name the face belongs to, as read from the file."),
+	weight: fontWeightSchema.describe("The weight of this face."),
+	italic: z.boolean().catch(false).describe("Whether this face is italic."),
+	url: z
+		.string()
+		.max(500)
+		.describe("Where the font file is. Only fonts the user uploaded to Rezumi are drawn; never invent a URL."),
+});
+
+export type CustomFontFace = z.infer<typeof customFontFaceSchema>;
 
 export const typographySchema = z.object({
 	body: typographyItemSchema.describe("The typography for the body of the resume."),
 	heading: typographyItemSchema.describe("The typography for the headings of the resume."),
+	customFonts: z
+		.array(customFontFaceSchema)
+		.max(24)
+		.optional()
+		.catch(undefined)
+		.describe(
+			"Font files the user uploaded for this document, one entry per face. A body or heading fontFamily may name one of these families. Leave it unchanged unless the user asks to remove a font.",
+		),
 	hyphenation: z
 		.boolean()
 		.optional()
@@ -761,9 +835,9 @@ export type StyleRule = z.infer<typeof styleRuleSchema>;
 export type StyleRuleTarget = z.infer<typeof styleRuleTargetSchema>;
 
 export const metadataSchema = z.object({
-	template: templateSchema
-		.catch("onyx")
-		.describe("The template to use for the resume. Determines the overall design and appearance of the resume."),
+	template: readableTemplateSchema.describe(
+		"The template to use for the resume. Determines the overall design and appearance of the resume.",
+	),
 	layout: layoutSchema.describe(
 		"The layout of the resume. Determines the structure and arrangement of the sections on the resume.",
 	),
@@ -834,7 +908,18 @@ export const parseResumeData = (data: unknown): ResumeData => {
 	for (const section of parsed.customSections) section.showHeading ??= true;
 	upgradeResumeDates(parsed);
 	syncResumeDates(parsed);
+	upgradeResumeDesign(parsed, data);
 	return parsed;
+};
+
+/**
+ * Brings a parsed resume's design up to date: former icon names become their resume icon set match, and the icon
+ * switches once kept under `metadata.page` (read from the unparsed `source`) become `metadata.design.icons`. A former
+ * template ID is already its successor by now (`readableTemplateSchema`). Every read and write of resume data goes
+ * through it.
+ */
+export const upgradeResumeDesign = (parsed: ResumeData, source: unknown) => {
+	upgradeResumeIcons(parsed, (source as { metadata?: { page?: Record<string, unknown> } } | null)?.metadata?.page);
 };
 
 export type LayoutPage = z.infer<typeof pageLayoutSchema>;

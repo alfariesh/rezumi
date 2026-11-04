@@ -1,4 +1,5 @@
 import type { ResumeData } from "./data";
+import { defaultIconDesign } from "./data";
 
 /** The shared fields every section starts with, minus its items or content. */
 export const sectionDefaults = (icon: string) => ({
@@ -36,24 +37,24 @@ export const defaultResumeData: ResumeData = {
 		website: { url: "", label: "" },
 		customFields: [],
 	},
-	summary: { ...sectionDefaults("article"), content: "" },
+	summary: { ...sectionDefaults("newspaper"), content: "" },
 	sections: {
-		profiles: section("messenger-logo"),
-		experience: section("briefcase"),
-		education: section("graduation-cap"),
-		projects: section("code-simple"),
-		skills: { ...section("compass-tool"), layout: "default", keywordLayout: "inline" },
+		profiles: section("link-01"),
+		experience: section("briefcase-01"),
+		education: section("mortarboard-01"),
+		projects: section("source-code"),
+		skills: { ...section("drafting-compass"), layout: "default", keywordLayout: "inline" },
 		languages: section("translate"),
 		interests: section("football"),
 		awards: section("trophy"),
-		certifications: section("certificate"),
-		publications: section("books"),
+		certifications: section("certificate-01"),
+		publications: section("library"),
 		volunteer: section("hand-heart"),
-		references: section("phone"),
+		references: section("call-02"),
 	},
 	customSections: [],
 	metadata: {
-		template: "onyx",
+		template: "meridian",
 		layout: {
 			sidebarWidth: 35,
 			pages: [
@@ -67,18 +68,16 @@ export const defaultResumeData: ResumeData = {
 		page: {
 			gapX: 4,
 			gapY: 6,
-			marginX: 14,
-			marginY: 12,
+			marginX: 36,
+			marginY: 32,
 			format: "a4",
 			locale: "en-US",
 			dateFormat: "short",
-			hideLinkUnderline: false,
-			hideIcons: false,
-			hideSectionIcons: true,
+			hideLinkUnderline: true,
 		},
 		design: {
 			colors: {
-				primary: "rgba(220, 38, 38, 1)",
+				primary: "rgba(31, 58, 104, 1)",
 				text: "rgba(0, 0, 0, 1)",
 				background: "rgba(255, 255, 255, 1)",
 			},
@@ -87,19 +86,20 @@ export const defaultResumeData: ResumeData = {
 				type: "circle",
 			},
 			entry: { layout: "stacked", lead: "organization", accent: "none" },
+			icons: { ...defaultIconDesign },
 		},
 		typography: {
 			body: {
-				fontFamily: "IBM Plex Serif",
-				fontWeights: ["400", "500"],
-				fontSize: 10,
-				lineHeight: 1.5,
+				fontFamily: "Plus Jakarta Sans",
+				fontWeights: ["400", "600"],
+				fontSize: 9.5,
+				lineHeight: 1.45,
 			},
 			heading: {
-				fontFamily: "IBM Plex Serif",
-				fontWeights: ["600"],
-				fontSize: 14,
-				lineHeight: 1.5,
+				fontFamily: "Plus Jakarta Sans",
+				fontWeights: ["700"],
+				fontSize: 13,
+				lineHeight: 1.3,
 			},
 		},
 		notes: "",
