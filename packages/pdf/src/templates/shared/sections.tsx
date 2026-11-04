@@ -891,10 +891,12 @@ type EntryHeaderLayoutProps = {
 	/** Everything but the lead and the date, drawn as one line of text. */
 	runs: readonly SemanticTextRun[];
 	date: SemanticTextRun;
+	/** Wraps the lead and the rest beside the date, as a numbered entry hangs them from its number. */
+	hang?: ((content: ReactNode) => ReactNode) | undefined;
 };
 
 /** The compact, date-column and eyebrow headers; the stacked and one-line ones stay with their sections. */
-const EntryHeaderLayout = ({ entry, lead, runs, date }: EntryHeaderLayoutProps) => {
+const EntryHeaderLayout = ({ entry, lead, runs, date, hang }: EntryHeaderLayoutProps) => {
 	const data = useRender();
 	const splitRowStyle = useSectionSplitRowStyle();
 	const alignEndStyle = useRowEndStyle(splitRowStyle);
@@ -920,8 +922,19 @@ const EntryHeaderLayout = ({ entry, lead, runs, date }: EntryHeaderLayoutProps) 
 					<Text semanticField={date.field}>{date.value}</Text>
 				</View>
 				<Div bindSemanticNode={false} style={{ flex: 1 }}>
-					{title}
-					{details}
+					{hang ? (
+						hang(
+							<>
+								{title}
+								{details}
+							</>,
+						)
+					) : (
+						<>
+							{title}
+							{details}
+						</>
+					)}
 				</Div>
 			</>
 		);
@@ -965,6 +978,7 @@ const EntryHeaderLayout = ({ entry, lead, runs, date }: EntryHeaderLayoutProps) 
 const SummarySection = ({ showHeading = true }: SummarySectionProps = {}) => {
 	const data = useRender();
 	const { summary } = data;
+	const summaryStyle = useTemplateStyle("summary");
 
 	if (!isVisibleSummary(summary)) return null;
 
@@ -972,7 +986,9 @@ const SummarySection = ({ showHeading = true }: SummarySectionProps = {}) => {
 		<SectionShell sectionId="summary" title={summary.title} showHeading={showHeading}>
 			<SectionItems>
 				<SectionItem itemId="content">
-					<RichText semanticField="content">{summary.content}</RichText>
+					<RichText semanticField="content" textStyle={summaryStyle}>
+						{summary.content}
+					</RichText>
 				</SectionItem>
 			</SectionItems>
 		</SectionShell>
@@ -1512,36 +1528,71 @@ const DatedItemSection = ({
 	const splitRowStyle = useSectionSplitRowStyle();
 	const alignEndStyle = useRowEndStyle(splitRowStyle);
 	const entry = useEntryHeader(sectionType, section.columns);
+	const sectionItemHeaderStyle = useTemplateStyle("sectionItemHeader");
+	const numbered = useTemplateFeature("numberedPublications") && sectionType === "publications";
 
 	if (items.length === 0) return null;
+
+	// Numbered entries hang from their number: the item makes room for it at its start, the header reaches back over
+	// that room, and the number sits in it beside the title (after the date in the date column).
+	const { row } = createRtlStyleHelpers(data.rtl);
+	const numberWidth = numbered
+		? data.metadata.typography.body.fontSize * (String(items.length).length * 0.62 + 0.9)
+		: 0;
+	const marginSide = data.rtl ? "marginRight" : "marginLeft";
+	const headerMargin = mergeStyles(entry.headerStyle)[marginSide];
+	const headerStyle = numbered
+		? composeStyles(entry.headerStyle, {
+				[marginSide]: (typeof headerMargin === "number" ? headerMargin : 0) - numberWidth,
+			})
+		: entry.headerStyle;
+	const headerRowGap = mergeStyles(sectionItemHeaderStyle).rowGap;
+	const hang = (index: number, content: ReactNode, contentStyle?: Style) =>
+		numbered ? (
+			<View style={{ flexDirection: row }}>
+				<Text style={{ width: numberWidth, flexShrink: 0 }}>{`${index + 1}.`}</Text>
+				<View style={{ flex: 1, ...contentStyle }}>{content}</View>
+			</View>
+		) : (
+			content
+		);
 
 	return (
 		<SectionShell sectionId={sectionId} title={section.title}>
 			<SectionItems columns={section.columns}>
-				{items.map((item) => {
+				{items.map((item, index) => {
 					const fields = item as unknown as Record<string, string>;
 					return (
-						<SectionItem key={item.id} itemId={item.id} indent={entry.itemIndent}>
-							<SectionItemHeader style={entry.headerStyle}>
+						<SectionItem
+							key={item.id}
+							itemId={item.id}
+							indent={numbered ? (entry.itemIndent ?? 0) + numberWidth : entry.itemIndent}
+						>
+							<SectionItemHeader style={headerStyle}>
 								{entry.layout === "date-column" ? (
 									<EntryHeaderLayout
 										entry={entry}
 										lead={{ field: titleField, value: fields[titleField] ?? "", website: item.website }}
 										runs={subtitleField ? [{ field: subtitleField, value: fields[subtitleField] ?? "" }] : []}
 										date={{ field: dateField, value: fields[dateField] ?? "" }}
+										hang={numbered ? (content) => hang(index, content) : undefined}
 									/>
 								) : (
-									<>
-										<ItemHeaderRow style={composeStyles(splitRowStyle)}>
-											<ItemTitle field={titleField} website={item.website}>
-												{fields[titleField]}
-											</ItemTitle>
-											<RowEndText semanticField={dateField} style={composeStyles(alignEndStyle)}>
-												{fields[dateField]}
-											</RowEndText>
-										</ItemHeaderRow>
-										{subtitleField && <Text semanticField={subtitleField}>{fields[subtitleField]}</Text>}
-									</>
+									hang(
+										index,
+										<>
+											<ItemHeaderRow style={composeStyles(splitRowStyle)}>
+												<ItemTitle field={titleField} website={item.website}>
+													{fields[titleField]}
+												</ItemTitle>
+												<RowEndText semanticField={dateField} style={composeStyles(alignEndStyle)}>
+													{fields[dateField]}
+												</RowEndText>
+											</ItemHeaderRow>
+											{subtitleField && <Text semanticField={subtitleField}>{fields[subtitleField]}</Text>}
+										</>,
+										headerRowGap === undefined ? undefined : { rowGap: headerRowGap },
+									)
 								)}
 							</SectionItemHeader>
 

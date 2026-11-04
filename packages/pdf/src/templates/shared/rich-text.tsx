@@ -1,4 +1,5 @@
 import type { Style } from "../../forme/style-types";
+import type { StyleInput } from "./styles";
 import type { ReactElement, ReactNode } from "react";
 import { cloneElement, isValidElement } from "react";
 import { View } from "#react-pdf-renderer";
@@ -31,7 +32,7 @@ import {
 } from "./rich-text-spacing";
 import { createRichTextStylesheet } from "./rich-text-stylesheet";
 import { safeTextStyle } from "./safe-text-style";
-import { composeStyles } from "./styles";
+import { composeStyles, mergeStyles } from "./styles";
 
 const richListItemContentStackStyle = {
 	flexDirection: "column",
@@ -40,6 +41,8 @@ const richListItemContentStackStyle = {
 type RichTextProps = {
 	children: string;
 	semanticField?: string | undefined;
+	/** Drawn over the template's body text in paragraphs and list items (a summary's standfirst). */
+	textStyle?: StyleInput;
 };
 
 // react-pdf textkit reads BiDi base direction from each run's own `direction` attribute
@@ -73,7 +76,7 @@ const applyRtlDirectionRecursively = (node: ReactNode): ReactNode => {
 	return cloneElement(element, { style: nextStyle }, nextChildren);
 };
 
-export const RichText = ({ children, semanticField }: RichTextProps) => {
+export const RichText = ({ children, semanticField, textStyle }: RichTextProps) => {
 	const { metadata, rtl } = useRender();
 	const parentNodeKey = useSemanticNodeKey();
 	const fieldNodeKey =
@@ -89,10 +92,14 @@ export const RichText = ({ children, semanticField }: RichTextProps) => {
 
 	const boldStyle = useTemplateStyle("bold");
 	const linkStyle = useTemplateStyle("link");
-	const richParagraphStyle = useTemplateStyle("richParagraph");
+	const templateParagraphStyle = useTemplateStyle("richParagraph");
 	const richListItemRowStyle = useTemplateStyle("richListItemRow");
 	const richListItemMarkerStyle = useTemplateStyle("richListItemMarker");
-	const richListItemContentStyle = useTemplateStyle("richListItemContent");
+	const templateListItemContentStyle = useTemplateStyle("richListItemContent");
+	const richParagraphStyle = textStyle ? mergeStyles(templateParagraphStyle, textStyle) : templateParagraphStyle;
+	const richListItemContentStyle = textStyle
+		? mergeStyles(templateListItemContentStyle, textStyle)
+		: templateListItemContentStyle;
 	const bodyLineHeight = resolveRichTextBodyLineHeight(richParagraphStyle, richListItemContentStyle);
 	const proseSpacing = createRichTextProseSpacing(bodyLineHeight);
 

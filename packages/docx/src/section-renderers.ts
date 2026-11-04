@@ -51,6 +51,8 @@ type RenderConfig = {
 	rightTabTwips?: number;
 	/** Publications numbered in order (Cendekia). */
 	numberPublications?: boolean;
+	/** The summary as a standfirst: a size up from the body, in the muted colour (Aksara). */
+	standfirstSummary?: boolean;
 	/** Entries → Row order. Missing means organization first. */
 	lead?: EntryHeader["lead"];
 };
@@ -211,7 +213,12 @@ const itemTrailer = (item: { description: string; website: { url: string; label:
 export function renderSummary(summary: ResumeData["summary"], colorHex: string): Paragraph[] {
 	if (summary.hidden || !summary.content) return [];
 
-	return [...headingOf(summary, colorHex), ...htmlToParagraphs(summary.content, getHtmlStyle())];
+	const style = getHtmlStyle();
+	const standfirst = { ...style, size: Math.round((style.size ?? config.bodySizeHalfPt) * 1.15), color: mutedColor() };
+	return [
+		...headingOf(summary, colorHex),
+		...htmlToParagraphs(summary.content, config.standfirstSummary ? standfirst : style),
+	];
 }
 
 const renderExperience = (section: Sections["experience"], colorHex: string) =>

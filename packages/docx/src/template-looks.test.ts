@@ -52,6 +52,18 @@ describe("DOCX template looks", () => {
 		expect(kirana).toContain('"w:fill":"ecedef"');
 	});
 
+	it("sets Aksara's summary as a standfirst, larger than the body", () => {
+		const summarySize = (template: Template) => {
+			const xml = documentXml(template, (data) => {
+				data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];
+				data.summary.content = "<p>Standfirst</p>";
+			});
+			const before = xml.slice(0, xml.indexOf('"Standfirst"'));
+			return Number(before.slice(before.lastIndexOf('"w:sz"')).match(/"w:val":(\d+)/)?.[1]);
+		};
+		expect(summarySize("aksara")).toBeGreaterThan(summarySize("meridian"));
+	});
+
 	it("numbers Cendekia's publications", () => {
 		const titles = (template: Template) =>
 			documentXml(template, (data) => {

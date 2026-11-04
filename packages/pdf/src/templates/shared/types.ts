@@ -27,6 +27,8 @@ export type TemplateIconSlot =
 export type TemplateFeatures = {
 	/** Contact lines without an icon keep the icon's room, so every line's text starts in one column (Wibawa). */
 	contactIconColumn?: boolean;
+	/** Publications are numbered, each entry hanging from its number (Cendekia). */
+	numberedPublications?: boolean;
 	sectionTimeline?: boolean;
 	stackSidebarItemHeader?: boolean;
 	skillLevelAfterName?: boolean;
@@ -80,6 +82,8 @@ export type TemplateStyleSlots = {
 	contactLabel?: TemplateStyleSlot;
 	sectionItems?: TemplateStyleSlot;
 	item?: TemplateStyleSlot;
+	/** The summary's text, when a template sets it apart from the body (Aksara's standfirst). */
+	summary?: TemplateStyleSlot;
 	levelContainer?: TemplateStyleSlot;
 	levelItem?: TemplateStyleSlot;
 	levelItemActive?: TemplateStyleSlot;
