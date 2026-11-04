@@ -24,6 +24,8 @@ export async function main() {
 		process.env.NODE_ENV === "production" ? Number.parseInt(process.env.PORT ?? "3000", 10) : env.SERVER_PORT;
 
 	const app = createApp();
+	// Build the MCP tool list before taking traffic, so the first tools/list is quick. Workers build it on first use.
+	(await import("@rezumi/mcp")).prepareMcpDiscovery();
 
 	const server = serve(
 		{

@@ -19,6 +19,11 @@ vi.mock("./http/app", () => {
 		},
 	};
 });
+vi.mock("@rezumi/mcp", () => ({
+	prepareMcpDiscovery: () => {
+		events.push("mcp discovery ready");
+	},
+}));
 vi.mock("@rezumi/auth/config", () => ({
 	initializeAuth: async () => {
 		await Promise.resolve();
@@ -42,7 +47,14 @@ describe("server startup", () => {
 		const entry = await import("./index");
 		expect(events).toEqual([]);
 		await entry.main();
-		expect(events).toEqual(["migrations complete", "auth imported", "auth ready", "app created", "server listening"]);
+		expect(events).toEqual([
+			"migrations complete",
+			"auth imported",
+			"auth ready",
+			"app created",
+			"mcp discovery ready",
+			"server listening",
+		]);
 	});
 
 	it.each(["SIGTERM", "SIGINT"])("drains active requests before exiting on %s", async (signal) => {
