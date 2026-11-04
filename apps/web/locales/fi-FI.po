@@ -2268,7 +2268,7 @@ msgstr "Kysy ennen kuin päätät."
 msgid "Ask both"
 msgstr "Kysy molemmilta"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Kysy ensin"
 
@@ -2362,7 +2362,7 @@ msgstr "Liitä tiedosto"
 msgid "Attachment"
 msgstr "Liite"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Automaattisesti"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Valmentaja"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "Verkosto"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Ei koskaan"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Päivämääriä ei löytynyt."
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "Lataa uudelleen"
 msgid "Remember"
 msgstr "Muista"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Muista faktat viesteistäni"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Tarkastukset ovat mekaanisia. Tämä kysyy kielimallilta, kuinka lukija voi reagoida luettelomerkintöihisi, ja ehdottaa uudelleenkirjoituksia. Se ei ole osa tulosta."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Valmentaja ei muista mitään viesteistäsi."
 
@@ -12932,7 +12932,7 @@ msgstr "Valmentaja ei muista mitään viesteistäsi."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Valmentajaa ei ole otettu käyttöön tällä palvelimella. Palvelimen ylläpitäjän on asetettava ENCRYPTION_SECRET. Tietopankki, Tarjoukset ja hakemuksesi toimivat ilman sitä."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Valmentaja ehdottaa jokaista faktaa keskustelussa. Mitään ei tallenneta ennen kuin hyväksyt."
 
@@ -12940,7 +12940,7 @@ msgstr "Valmentaja ehdottaa jokaista faktaa keskustelussa. Mitään ei tallennet
 msgid "The coach reads these for this application only."
 msgstr "Valmentaja lukee nämä vain tätä hakemusta varten."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Valmentaja tallentaa kertomasi faktat ja ilmoittaa siitä. Voit kumota sen."
 
@@ -15139,10 +15139,6 @@ msgstr "Sähköpostiosoitettasi ei ole vahvistettu palveluntarjoajalla. Vahvista
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Sähköpostiosoitteesi, puhelinnumerosi, sijaintisi ja muut otsakkeen tiedot sekä suosittelijoiden puhelinnumerot jätetään pois verkkosivulta, sen PDF:stä ja hakutuloksista."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Käyttöön otetut faktasi, tarinasi ja toiveesi voidaan lähettää tekoälyyhteydellesi, kun käytät valmennustyökaluja tai ajastettua haastatteluun valmistautumista. Keskustelussa tietopankin kytkin määrää, mitä kuhunkin viestiin lisätään."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

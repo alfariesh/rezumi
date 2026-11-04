@@ -2268,7 +2268,7 @@ msgstr "সিদ্ধান্ত নেওয়ার আগে জিজ্
 msgid "Ask both"
 msgstr "দুই কোম্পানিকেই জিজ্ঞাসা করুন"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "আগে জিজ্ঞাসা করবে"
 
@@ -2362,7 +2362,7 @@ msgstr "একটি ফাইল সংযুক্ত করুন"
 msgid "Attachment"
 msgstr "সংযুক্তি"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "স্বয়ংক্রিয়ভাবে"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "কোচ"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "নেটওয়ার্ক"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "কখনই না"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "কোনো তারিখ পাওয়া যায়নি।"
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "পুনরায় লোড করুন"
 msgid "Remember"
 msgstr "মনে রাখুন"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "আমার বার্তা থেকে তথ্য মনে রাখুন"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "চেকগুলি যান্ত্রিক। এটি একটি ভাষা মডেলকে জিজ্ঞাসা করে কিভাবে একজন পাঠক আপনার তালিকার এন্ট্রিগুলিতে প্রতিক্রিয়া জানাতে পারে এবং পুনরায় লেখার পরামর্শ দেয়। এটা স্কোরের অংশ নয়।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "কোচ আপনার বার্তা থেকে কিছুই মনে রাখে না।"
 
@@ -12932,7 +12932,7 @@ msgstr "কোচ আপনার বার্তা থেকে কিছু�
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "এই সার্ভারে কোচ সেট আপ করা নেই। যিনি সার্ভারটি চালান তাকে ENCRYPTION_SECRET সেট করতে হবে। জ্ঞানভান্ডার, অফারসমূহ এবং আপনার আবেদনগুলো এটি ছাড়াই কাজ করে।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "কোচ চ্যাটে প্রতিটি তথ্য প্রস্তাব করে। আপনি রাজি না হওয়া পর্যন্ত কিছুই সংরক্ষিত হয় না।"
 
@@ -12940,7 +12940,7 @@ msgstr "কোচ চ্যাটে প্রতিটি তথ্য প্�
 msgid "The coach reads these for this application only."
 msgstr "কোচ শুধু এই আবেদনের জন্য এগুলো পড়ে।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "আপনার বলা তথ্যগুলো কোচ সংরক্ষণ করে এবং আপনাকে জানায়। আপনি তা পূর্বাবস্থায় ফেরাতে পারেন।"
 
@@ -15139,10 +15139,6 @@ msgstr "আপনার ইমেইল ঠিকানা প্রদানক
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "আপনার ইমেইল, ফোন, অবস্থান ও হেডারের অন্যান্য বিবরণ, এবং রেফারেন্সদের ফোন নম্বর ওয়েব পেজ, এর PDF ও সার্চ ফলাফল থেকে বাদ রাখা হয়।"
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "কোচিং টুল বা নির্ধারিত ইন্টারভিউ প্রস্তুতি ব্যবহার করলে আপনার চালু থাকা তথ্য, গল্প ও পছন্দ আপনার এআই সংযোগে পাঠানো হতে পারে। চ্যাটে, জ্ঞানভান্ডার সুইচ নিয়ন্ত্রণ করে প্রতিটি বার্তায় কী যোগ হবে।"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

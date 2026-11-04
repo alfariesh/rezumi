@@ -2268,7 +2268,7 @@ msgstr "निर्णय गर्नुअघि सोध्नुहोस�
 msgid "Ask both"
 msgstr "दुवैलाई सोध्नुहोस्"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "पहिले सोध्नुहोस्"
 
@@ -2362,7 +2362,7 @@ msgstr "फाइल संलग्न गर्नुहोस्"
 msgid "Attachment"
 msgstr "संलग्नक"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "स्वचालित रूपमा"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "कोच"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "नेटवर्क"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "कहिल्यै"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "कुनै मिति फेला परेन।"
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "पुन: लोड गर्नुहोस्"
 msgid "Remember"
 msgstr "सम्झनुहोस्"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "मेरा सन्देशहरूबाट तथ्यहरू सम्झनुहोस्"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "चेक मेकानिकल हो। यसले भाषा मोडेललाई सोध्छ कि पाठकले तपाइँको सूची प्रविष्टिहरूमा कसरी प्रतिक्रिया दिन सक्छ र पुन: लेख्न सुझाव दिन्छ। यो स्कोरको भाग होइन।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "कोचले तपाईंका सन्देशहरूबाट केही पनि सम्झँदैन।"
 
@@ -12932,7 +12932,7 @@ msgstr "कोचले तपाईंका सन्देशहरूबा�
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "यो सर्भरमा कोच सेट अप गरिएको छैन। यसलाई चलाउनेले ENCRYPTION_SECRET सेट गर्नुपर्छ। ज्ञानभण्डार, प्रस्तावहरू र तपाईंका आवेदनहरू यसबिना पनि काम गर्छन्।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "कोचले हरेक तथ्य च्याटमा प्रस्ताव गर्छ। तपाईं सहमत नभएसम्म केही पनि सुरक्षित गरिँदैन।"
 
@@ -12940,7 +12940,7 @@ msgstr "कोचले हरेक तथ्य च्याटमा प्�
 msgid "The coach reads these for this application only."
 msgstr "कोचले यी यो आवेदनका लागि मात्र पढ्छ।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "कोचले तपाईंले भनेका तथ्यहरू सुरक्षित गर्छ, र तपाईंलाई जानकारी दिन्छ। तपाईं पूर्ववत गर्न सक्नुहुन्छ।"
 
@@ -15139,10 +15139,6 @@ msgstr "तपाईंको इमेल ठेगाना प्रदाय
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "तपाईंको इमेल, फोन, स्थान र हेडरका अन्य विवरणहरू, साथै सन्दर्भ व्यक्तिहरूका फोन नम्बरहरू, वेब पेज, यसको PDF र खोज नतिजाहरूबाट हटाइन्छन्।"
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "तपाईंले कोचिङ उपकरणहरू वा तालिकाबद्ध अन्तर्वार्ता तयारी प्रयोग गर्दा तपाईंका खुला गरिएका तथ्य, कथा र प्राथमिकताहरू तपाईंको AI जडानमा पठाउन सकिन्छ। च्याटमा, हरेक सन्देशमा के थपिन्छ भन्ने ज्ञानभण्डार स्विचले नियन्त्रण गर्छ।"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

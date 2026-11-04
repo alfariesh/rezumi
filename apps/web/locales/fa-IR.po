@@ -2268,7 +2268,7 @@ msgstr "پیش از تصمیم‌گیری بپرسید."
 msgid "Ask both"
 msgstr "از هر دو بپرسید"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "ابتدا سؤال شود"
 
@@ -2362,7 +2362,7 @@ msgstr "یک فایل پیوست کنید"
 msgid "Attachment"
 msgstr "پیوست"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "خودکار"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "مربی"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "شبکه"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "هرگز"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "هیچ تاریخی پیدا نشد."
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "بارگذاری مجدد"
 msgid "Remember"
 msgstr "به خاطر سپردن"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "به خاطر سپردن واقعیت‌ها از پیام‌هایم"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "چک ها مکانیکی هستند. این از یک مدل زبان می‌پرسد که خواننده چگونه ممکن است به ورودی‌های فهرست شما واکنش نشان دهد و بازنویسی‌هایی را پیشنهاد می‌کند. بخشی از امتیاز نیست"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "مربی چیزی از پیام‌های شما به خاطر نمی‌سپارد."
 
@@ -12932,7 +12932,7 @@ msgstr "مربی چیزی از پیام‌های شما به خاطر نمی‌�
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "مربی در این سرور راه‌اندازی نشده است. کسی که آن را اداره می‌کند باید ENCRYPTION_SECRET را تنظیم کند. دانسته‌ها، پیشنهادها و درخواست‌های شما بدون آن کار می‌کنند."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "مربی هر واقعیت را در گفتگو پیشنهاد می‌دهد. تا موافقت نکنید چیزی ذخیره نمی‌شود."
 
@@ -12940,7 +12940,7 @@ msgstr "مربی هر واقعیت را در گفتگو پیشنهاد می‌د
 msgid "The coach reads these for this application only."
 msgstr "مربی این‌ها را فقط برای این درخواست می‌خواند."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "مربی واقعیت‌هایی را که بیان می‌کنید ذخیره می‌کند و به شما خبر می‌دهد. می‌توانید آن را لغو کنید."
 
@@ -15139,10 +15139,6 @@ msgstr "آدرس ایمیل شما نزد ارائه‌دهنده تأیید ن�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "ایمیل، تلفن، مکان و سایر جزئیات سربرگ شما، و شماره تلفن معرف‌ها، در صفحه وب، PDF آن و نتایج جستجو نمایش داده نمی‌شوند."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "واقعیت‌ها، داستان‌ها و ترجیحات فعال شما ممکن است هنگام استفاده از ابزارهای مربیگری یا آماده‌سازی زمان‌بندی‌شدهٔ مصاحبه به اتصال هوش مصنوعی شما فرستاده شوند. در گفتگو، کلید «دانسته‌ها» تعیین می‌کند چه چیزی به هر پیام افزوده شود."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

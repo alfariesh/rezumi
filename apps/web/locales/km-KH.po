@@ -2268,7 +2268,7 @@ msgstr "សួរមុនពេលសម្រេចចិត្ត។"
 msgid "Ask both"
 msgstr "សួរទាំងពីរ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "សួរជាមុនសិន"
 
@@ -2362,7 +2362,7 @@ msgstr "ភ្ជាប់ឯកសារ"
 msgid "Attachment"
 msgstr "ឯកសារភ្ជាប់"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "ដោយស្វ័យប្រវត្តិ"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "គ្រូបង្វឹក"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "បណ្ដាញ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "មិនដែល"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "រកមិនឃើញកាលបរិច្ឆេទទេ។"
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "ផ្ទុកឡើងវិញ"
 msgid "Remember"
 msgstr "ចងចាំ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "ចងចាំការពិតពីសាររបស់ខ្ញុំ"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "ការត្រួតពិនិត្យគឺមេកានិច។ វាសួរគំរូភាសាពីរបៀបដែលអ្នកអានអាចប្រតិកម្មចំពោះធាតុបញ្ជីរបស់អ្នក ហើយស្នើឱ្យសរសេរឡើងវិញ។ វាមិនមែនជាផ្នែកនៃពិន្ទុទេ។"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "គ្រូបង្វឹកមិនចងចាំអ្វីពីសាររបស់អ្នកទេ។"
 
@@ -12932,7 +12932,7 @@ msgstr "គ្រូបង្វឹកមិនចងចាំអ្វីពី
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "គ្រូបង្វឹកមិនត្រូវបានរៀបចំនៅលើម៉ាស៊ីនមេនេះទេ។ អ្នកដែលដំណើរការវាត្រូវកំណត់ ENCRYPTION_SECRET។ ចំណេះដឹង ការផ្តល់ការងារ និងពាក្យសុំរបស់អ្នក ដំណើរការបានដោយគ្មានវា។"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "គ្រូបង្វឹកស្នើការពិតនីមួយៗក្នុងការជជែក។ គ្មានអ្វីត្រូវបានរក្សាទុកទេ រហូតដល់អ្នកយល់ព្រម។"
 
@@ -12940,7 +12940,7 @@ msgstr "គ្រូបង្វឹកស្នើការពិតនីមួ
 msgid "The coach reads these for this application only."
 msgstr "គ្រូបង្វឹកអានទាំងនេះសម្រាប់តែពាក្យសុំនេះប៉ុណ្ណោះ។"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "គ្រូបង្វឹករក្សាទុកការពិតដែលអ្នកបញ្ជាក់ ហើយប្រាប់អ្នក។ អ្នកអាចត្រឡប់វិញបាន។"
 
@@ -15139,10 +15139,6 @@ msgstr "អាសយដ្ឋានអ៊ីមែលរបស់អ្នកម
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "អ៊ីមែល ទូរស័ព្ទ ទីតាំង និងព័ត៌មានផ្សេងទៀតនៅក្នុងបឋមកថារបស់អ្នក ព្រមទាំងលេខទូរស័ព្ទរបស់អ្នកយោង មិនត្រូវបានដាក់បញ្ចូលក្នុងទំព័រវេប PDF របស់វា និងលទ្ធផលស្វែងរកទេ។"
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "ការពិត រឿង និងចំណង់ចំណូលចិត្តដែលបានបើករបស់អ្នក អាចត្រូវបានផ្ញើទៅការតភ្ជាប់ AI របស់អ្នក នៅពេលអ្នកប្រើឧបករណ៍បង្វឹក ឬការត្រៀមសម្ភាសន៍តាមកាលវិភាគ។ ក្នុងការជជែក កុងតាក់ចំណេះដឹងគ្រប់គ្រងអ្វីដែលត្រូវបានបន្ថែមទៅសារនីមួយៗ។"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

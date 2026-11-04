@@ -2268,7 +2268,7 @@ msgstr "തീരുമാനിക്കുന്നതിന് മുമ്�
 msgid "Ask both"
 msgstr "ഇരുവരോടും ചോദിക്കുക"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "ആദ്യം ചോദിക്കുക"
 
@@ -2362,7 +2362,7 @@ msgstr "ഒരു ഫയൽ അറ്റാച്ചുചെയ്യുക"
 msgid "Attachment"
 msgstr "അറ്റാച്ച്മെന്റ്"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "സ്വയമേവ"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "കോച്ച്"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "നെറ്റ്‌വർക്ക്"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "ഒരിക്കലുമില്ല"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "തീയതികളൊന്നും കണ്ടെത്തിയില്ല."
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "വീണ്ടും ലോഡുചെയ്യുക"
 msgid "Remember"
 msgstr "ഓർമ്മിക്കുക"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "എന്റെ സന്ദേശങ്ങളിൽ നിന്നുള്ള വസ്തുതകൾ ഓർമ്മിക്കുക"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "പരിശോധനകൾ മെക്കാനിക്കൽ ആണ്. നിങ്ങളുടെ ലിസ്റ്റ് എൻട്രികളോട് ഒരു വായനക്കാരൻ എങ്ങനെ പ്രതികരിക്കുമെന്ന് ഇത് ഒരു ഭാഷാ മോഡലിനോട് ചോദിക്കുകയും വീണ്ടും എഴുതാൻ നിർദ്ദേശിക്കുകയും ചെയ്യുന്നു. അത് സ്‌കോറിൻ്റെ ഭാഗമല്ല."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "നിങ്ങളുടെ സന്ദേശങ്ങളിൽ നിന്ന് കോച്ച് ഒന്നും ഓർമ്മിക്കുന്നില്ല."
 
@@ -12932,7 +12932,7 @@ msgstr "നിങ്ങളുടെ സന്ദേശങ്ങളിൽ നി�
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "ഈ സെർവറിൽ കോച്ച് സജ്ജമാക്കിയിട്ടില്ല. സെർവർ നടത്തുന്നയാൾ ENCRYPTION_SECRET സജ്ജമാക്കണം. അറിവ്, ഓഫറുകൾ, നിങ്ങളുടെ അപേക്ഷകൾ എന്നിവ ഇതില്ലാതെയും പ്രവർത്തിക്കും."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "കോച്ച് ഓരോ വസ്തുതയും ചാറ്റിൽ നിർദ്ദേശിക്കുന്നു. നിങ്ങൾ സമ്മതിക്കുന്നത് വരെ ഒന്നും സേവ് ചെയ്യില്ല."
 
@@ -12940,7 +12940,7 @@ msgstr "കോച്ച് ഓരോ വസ്തുതയും ചാറ്റ
 msgid "The coach reads these for this application only."
 msgstr "ഈ അപേക്ഷയ്ക്കായി മാത്രം കോച്ച് ഇവ വായിക്കുന്നു."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "നിങ്ങൾ പറയുന്ന വസ്തുതകൾ കോച്ച് സേവ് ചെയ്യുകയും നിങ്ങളെ അറിയിക്കുകയും ചെയ്യുന്നു. നിങ്ങൾക്ക് പഴയപടിയാക്കാം."
 
@@ -15139,10 +15139,6 @@ msgstr "നിങ്ങളുടെ ഇമെയിൽ വിലാസം ദാ
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "നിങ്ങളുടെ ഇമെയിൽ, ഫോൺ, ലൊക്കേഷൻ, മറ്റ് ഹെഡർ വിവരങ്ങൾ, റഫറൻസുകളുടെ ഫോൺ നമ്പറുകൾ എന്നിവ വെബ് പേജിൽ നിന്നും അതിന്റെ PDF-ൽ നിന്നും തിരയൽ ഫലങ്ങളിൽ നിന്നും ഒഴിവാക്കുന്നു."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "കോച്ചിംഗ് ടൂളുകളോ ഷെഡ്യൂൾ ചെയ്ത അഭിമുഖ തയ്യാറെടുപ്പോ ഉപയോഗിക്കുമ്പോൾ, നിങ്ങൾ ഓണാക്കിയ വസ്തുതകളും കഥകളും പ്രിഫറൻസുകളും നിങ്ങളുടെ AI കണക്ഷനിലേക്ക് അയച്ചേക്കാം. ചാറ്റിൽ, ഓരോ സന്ദേശത്തിലും എന്ത് ചേർക്കണമെന്ന് അറിവ് സ്വിച്ച് നിയന്ത്രിക്കുന്നു."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

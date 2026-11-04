@@ -2268,7 +2268,7 @@ msgstr "ନିଷ୍ପତ୍ତି ନେବା ପୂର୍ବରୁ ପଚା
 msgid "Ask both"
 msgstr "ଉଭୟଙ୍କୁ ପଚାରନ୍ତୁ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "ପ୍ରଥମେ ପଚାରନ୍ତୁ"
 
@@ -2362,7 +2362,7 @@ msgstr "ଏକ ଫାଇଲ୍ ସଂଲଗ୍ନ କରନ୍ତୁ |"
 msgid "Attachment"
 msgstr "ଆଟାଚମେଣ୍ଟ୍"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "ସ୍ୱୟଂଚାଳିତ ଭାବେ"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "କୋଚ୍"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8068,7 +8072,7 @@ msgstr ""
 msgid "Network"
 msgstr "ନେଟୱର୍କ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "କଦାପି ନୁହେଁ |"
@@ -8287,10 +8291,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "କୌଣସି ତାରିଖ ମିଳିଲା ନାହିଁ।"
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10510,7 +10510,7 @@ msgstr "ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ |"
 msgid "Remember"
 msgstr "ମନେ ରଖନ୍ତୁ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "ମୋ ବାର୍ତ୍ତାରୁ ତଥ୍ୟ ମନେ ରଖନ୍ତୁ"
 
@@ -12926,7 +12926,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "ଯାଞ୍ଚଗୁଡ଼ିକ ଯାନ୍ତ୍ରିକ ଅଟେ | ଏହା ଏକ ଭାଷା ମଡେଲକୁ ପଚାରିଥାଏ ଯେ ଜଣେ ପାଠକ ତୁମର ତାଲିକା ଏଣ୍ଟ୍ରିଗୁଡିକ ଉପରେ କିପରି ପ୍ରତିକ୍ରିୟା କରିପାରେ ଏବଂ ପୁନ r ଲିଖନ କରିବାକୁ ପରାମର୍ଶ ଦେଇଥାଏ | ଏହା ସ୍କୋରର ଏକ ଅଂଶ ନୁହେଁ |"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "କୋଚ୍ ଆପଣଙ୍କ ବାର୍ତ୍ତାରୁ କିଛି ମନେ ରଖେ ନାହିଁ।"
 
@@ -12934,7 +12934,7 @@ msgstr "କୋଚ୍ ଆପଣଙ୍କ ବାର୍ତ୍ତାରୁ କିଛ
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "ଏହି ସର୍ଭରରେ କୋଚ୍ ସେଟ୍ ଅପ୍ ହୋଇନାହିଁ। ଏହାକୁ ଚଳାଉଥିବା ବ୍ୟକ୍ତିଙ୍କୁ ENCRYPTION_SECRET ସେଟ୍ କରିବାକୁ ପଡ଼ିବ। ଜ୍ଞାନ, ଅଫର୍ ଓ ଆପଣଙ୍କ ଆବେଦନଗୁଡ଼ିକ ଏହା ବିନା କାମ କରେ।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "କୋଚ୍ ଚାଟ୍‌ରେ ପ୍ରତ୍ୟେକ ତଥ୍ୟ ପ୍ରସ୍ତାବ କରେ। ଆପଣ ସହମତ ନ ହେବା ପର୍ଯ୍ୟନ୍ତ କିଛି ସେଭ୍ ହୁଏ ନାହିଁ।"
 
@@ -12942,7 +12942,7 @@ msgstr "କୋଚ୍ ଚାଟ୍‌ରେ ପ୍ରତ୍ୟେକ ତଥ୍ୟ
 msgid "The coach reads these for this application only."
 msgstr "କୋଚ୍ ଏଗୁଡ଼ିକୁ କେବଳ ଏହି ଆବେଦନ ପାଇଁ ପଢ଼େ।"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "ଆପଣ କହୁଥିବା ତଥ୍ୟ କୋଚ୍ ସେଭ୍ କରେ, ଏବଂ ଆପଣଙ୍କୁ ଜଣାଏ। ଆପଣ ପୂର୍ବବତ୍ କରିପାରିବେ।"
 
@@ -15142,10 +15142,6 @@ msgstr "ଆପଣଙ୍କ ଇମେଲ୍ ଠିକଣା ପ୍ରଦାନକ
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "ଆପଣଙ୍କ ଇମେଲ୍, ଫୋନ୍, ଅବସ୍ଥାନ ଏବଂ ଅନ୍ୟ ହେଡର୍ ବିବରଣୀ, ଏବଂ ସନ୍ଦର୍ଭଗୁଡ଼ିକର ଫୋନ୍ ନମ୍ବର, ୱେବ୍ ପୃଷ୍ଠା, ଏହାର PDF ଏବଂ ସନ୍ଧାନ ଫଳାଫଳରୁ ବାଦ ଦିଆଯାଏ।"
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "ଆପଣ କୋଚିଂ ଟୁଲ୍ କିମ୍ବା ନିର୍ଧାରିତ ସାକ୍ଷାତକାର ପ୍ରସ୍ତୁତି ବ୍ୟବହାର କଲେ ଆପଣଙ୍କ ସକ୍ଷମ ତଥ୍ୟ, କାହାଣୀ ଓ ପସନ୍ଦ ଆପଣଙ୍କ AI ସଂଯୋଗକୁ ପଠାଯାଇପାରେ। ଚାଟ୍‌ରେ, ପ୍ରତ୍ୟେକ ବାର୍ତ୍ତାରେ କ'ଣ ଯୋଡ଼ାଯିବ ତାହା ଜ୍ଞାନ ସୁଇଚ୍ ନିୟନ୍ତ୍ରଣ କରେ।"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

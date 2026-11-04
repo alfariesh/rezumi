@@ -2268,7 +2268,7 @@ msgstr "ถามก่อนตัดสินใจ"
 msgid "Ask both"
 msgstr "ถามทั้งสองที่"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "ถามก่อน"
 
@@ -2362,7 +2362,7 @@ msgstr "แนบไฟล์"
 msgid "Attachment"
 msgstr "เอกสารแนบ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "อัตโนมัติ"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "โค้ช"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "ชื่อเว็บไซต์"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "ไม่เคย"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "ไม่พบวันที่"
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "โหลดซ้ำ"
 msgid "Remember"
 msgstr "จดจำ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "จดจำข้อเท็จจริงจากข้อความของฉัน"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "เช็คเป็นแบบกลไก สิ่งนี้จะถามโมเดลภาษาว่าผู้อ่านจะตอบสนองต่อรายการของคุณอย่างไรและแนะนำให้เขียนใหม่ มันไม่ได้เป็นส่วนหนึ่งของคะแนน"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "โค้ชจะไม่จดจำอะไรจากข้อความของคุณ"
 
@@ -12932,7 +12932,7 @@ msgstr "โค้ชจะไม่จดจำอะไรจากข้อค
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "ยังไม่ได้ตั้งค่าโค้ชบนเซิร์ฟเวอร์นี้ ผู้ดูแลเซิร์ฟเวอร์ต้องตั้งค่า ENCRYPTION_SECRET คลังความรู้ ข้อเสนองาน และใบสมัครของคุณใช้งานได้โดยไม่ต้องมีค่านี้"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "โค้ชจะเสนอข้อเท็จจริงแต่ละข้อในแชต จะไม่มีอะไรถูกบันทึกจนกว่าคุณจะยอมรับ"
 
@@ -12940,7 +12940,7 @@ msgstr "โค้ชจะเสนอข้อเท็จจริงแต่
 msgid "The coach reads these for this application only."
 msgstr "โค้ชจะอ่านสิ่งเหล่านี้สำหรับใบสมัครนี้เท่านั้น"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "โค้ชจะบันทึกข้อเท็จจริงที่คุณบอกและแจ้งให้คุณทราบ คุณเลิกทำได้"
 
@@ -15139,10 +15139,6 @@ msgstr "ที่อยู่อีเมลของคุณยังไม่
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "อีเมล โทรศัพท์ สถานที่ และรายละเอียดอื่นๆ ในส่วนหัว รวมถึงเบอร์โทรศัพท์ของบุคคลอ้างอิง จะไม่ปรากฏในหน้าเว็บ ไฟล์ PDF ของหน้าเว็บ และผลการค้นหา"
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "ข้อเท็จจริง เรื่องราว และความต้องการที่คุณเปิดใช้ อาจถูกส่งไปยังการเชื่อมต่อ AI ของคุณเมื่อคุณใช้เครื่องมือโค้ชหรือการเตรียมสัมภาษณ์ตามกำหนดการ ในแชต สวิตช์คลังความรู้จะควบคุมว่าจะเพิ่มอะไรในแต่ละข้อความ"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

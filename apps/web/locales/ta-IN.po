@@ -2268,7 +2268,7 @@ msgstr "முடிவெடுக்கும் முன் கேளுங�
 msgid "Ask both"
 msgstr "இருவரிடமும் கேள்"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "முதலில் கேட்கும்"
 
@@ -2362,7 +2362,7 @@ msgstr "ஒரு கோப்பை இணைக்கவும்"
 msgid "Attachment"
 msgstr "இணைப்பு"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "தானாகவே"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "ஆலோசகர்"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "நெட்வொர்க்"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "ஒருபோதும் இல்லை"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "தேதிகள் எதுவும் காணப்படவில்லை."
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "மீண்டும் ஏற்றவும்"
 msgid "Remember"
 msgstr "நினைவில் வை"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "என் செய்திகளிலிருந்து உண்மைகளை நினைவில் வை"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "காசோலைகள் இயந்திரத்தனமானவை. உங்கள் பட்டியல் உள்ளீடுகளுக்கு வாசகர் எவ்வாறு எதிர்வினையாற்றலாம் என்பதை இது மொழி மாதிரியைக் கேட்கிறது மற்றும் மீண்டும் எழுத பரிந்துரைக்கிறது. இது மதிப்பெண்ணின் ஒரு பகுதி அல்ல."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "உங்கள் செய்திகளிலிருந்து ஆலோசகர் எதையும் நினைவில் வைக்காது."
 
@@ -12932,7 +12932,7 @@ msgstr "உங்கள் செய்திகளிலிருந்து �
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "இந்தச் சேவையகத்தில் ஆலோசகர் அமைக்கப்படவில்லை. இதை இயக்குபவர் ENCRYPTION_SECRET-ஐ அமைக்க வேண்டும். அறிவுத் தளம், சலுகைகள், உங்கள் விண்ணப்பங்கள் அது இல்லாமலும் வேலை செய்யும்."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "ஆலோசகர் ஒவ்வொரு உண்மையையும் அரட்டையில் முன்மொழியும். நீங்கள் ஒப்புக்கொள்ளும் வரை எதுவும் சேமிக்கப்படாது."
 
@@ -12940,7 +12940,7 @@ msgstr "ஆலோசகர் ஒவ்வொரு உண்மையையு�
 msgid "The coach reads these for this application only."
 msgstr "ஆலோசகர் இவற்றை இந்த விண்ணப்பத்திற்கு மட்டுமே படிக்கும்."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "நீங்கள் கூறும் உண்மைகளை ஆலோசகர் சேமித்து, உங்களுக்குத் தெரிவிக்கும். நீங்கள் செயல்தவிர்க்கலாம்."
 
@@ -15139,10 +15139,6 @@ msgstr "உங்கள் மின்னஞ்சல் முகவரி வ
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "உங்கள் மின்னஞ்சல், தொலைபேசி, இருப்பிடம் மற்றும் பிற தலைப்பு விவரங்களும், பரிந்துரையாளர்களின் தொலைபேசி எண்களும் வலைப்பக்கம், அதன் PDF மற்றும் தேடல் முடிவுகளில் சேர்க்கப்படாது."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "ஆலோசனைக் கருவிகளையோ அட்டவணையிட்ட நேர்காணல் தயாரிப்பையோ பயன்படுத்தும்போது, நீங்கள் இயக்கிய உண்மைகள், கதைகள், விருப்பங்கள் உங்கள் AI இணைப்புக்கு அனுப்பப்படலாம். அரட்டையில், ஒவ்வொரு செய்தியிலும் என்ன சேர்க்கப்படும் என்பதை அறிவுத் தள சுவிட்ச் கட்டுப்படுத்தும்."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

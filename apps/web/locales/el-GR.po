@@ -2268,7 +2268,7 @@ msgstr "Ρωτήστε πριν αποφασίσετε."
 msgid "Ask both"
 msgstr "Ρωτήστε και τις δύο"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Να ρωτά πρώτα"
 
@@ -2362,7 +2362,7 @@ msgstr "Επισυνάψτε ένα αρχείο"
 msgid "Attachment"
 msgstr "Συνημμένο"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Αυτόματα"
 
@@ -3168,6 +3168,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Σύμβουλος"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -8067,7 +8071,7 @@ msgstr ""
 msgid "Network"
 msgstr "Δίκτυο"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Ποτέ"
@@ -8286,10 +8290,6 @@ msgstr ""
 #: src/features/ats-checker/messages.ts
 msgid "No dates were found."
 msgstr "Δεν βρέθηκαν ημερομηνίες."
-
-#: src/features/documents/recent-documents.tsx
-msgid "No documents yet."
-msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "no edits"
@@ -10508,7 +10508,7 @@ msgstr "Γεμίζω πάλι"
 msgid "Remember"
 msgstr "Απομνημόνευση"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Απομνημόνευση γεγονότων από τα μηνύματά μου"
 
@@ -12924,7 +12924,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Οι έλεγχοι είναι μηχανικοί. Αυτό ρωτά ένα μοντέλο γλώσσας πώς μπορεί να αντιδράσει ένας αναγνώστης στις καταχωρίσεις της λίστας σας και προτείνει επανεγγραφή. Δεν είναι μέρος του σκορ."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Ο σύμβουλος δεν θυμάται τίποτα από τα μηνύματά σας."
 
@@ -12932,7 +12932,7 @@ msgstr "Ο σύμβουλος δεν θυμάται τίποτα από τα μ�
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Ο σύμβουλος δεν έχει ρυθμιστεί σε αυτόν τον διακομιστή. Όποιος τον διαχειρίζεται πρέπει να ορίσει το ENCRYPTION_SECRET. Η Γνώση, οι Προσφορές και οι αιτήσεις σας λειτουργούν χωρίς αυτό."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Ο σύμβουλος προτείνει κάθε γεγονός στη συνομιλία. Δεν αποθηκεύεται τίποτα μέχρι να συμφωνήσετε."
 
@@ -12940,7 +12940,7 @@ msgstr "Ο σύμβουλος προτείνει κάθε γεγονός στη 
 msgid "The coach reads these for this application only."
 msgstr "Ο σύμβουλος τα διαβάζει μόνο για αυτή την αίτηση."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Ο σύμβουλος αποθηκεύει γεγονότα που δηλώνετε και σας ενημερώνει. Μπορείτε να το αναιρέσετε."
 
@@ -15139,10 +15139,6 @@ msgstr "Η διεύθυνση email σας δεν έχει επαληθευτε�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Το email, το τηλέφωνο, η τοποθεσία και τα άλλα στοιχεία της κεφαλίδας σας, καθώς και τα τηλέφωνα των συστάσεων, δεν εμφανίζονται στην ιστοσελίδα, στο PDF της και στα αποτελέσματα αναζήτησης."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Τα ενεργά γεγονότα, οι ιστορίες και οι προτιμήσεις σας μπορούν να σταλούν στη σύνδεση AI σας όταν χρησιμοποιείτε εργαλεία συμβουλευτικής ή την προγραμματισμένη προετοιμασία συνεντεύξεων. Στη συνομιλία, ο διακόπτης Γνώσης ελέγχει τι προστίθεται σε κάθε μήνυμα."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"
