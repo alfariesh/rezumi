@@ -82,6 +82,25 @@ describe("renderResumeWebPage", () => {
 		expect(html.indexOf(data.basics.name)).toBeLessThan(html.indexOf('data-part="sidebar"'));
 	});
 
+	it("reads a phone number and a handle in their own direction on a right-to-left page", async () => {
+		const data = structuredClone(sampleResumeData);
+		data.metadata.page.locale = "ar-SA";
+		data.basics.customFields = [{ id: "handle", icon: "instagram", text: "@rezumi.studio", link: "" }];
+		const { html, css } = await renderResumeWebPage({ data });
+		const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+		// The style class of the element holding `text` (a span in a link, a text box otherwise).
+		const rule = (text: string) => {
+			const classes = html.match(new RegExp(`class="([^"]+)"[^>]*>${escape(text)}<`))?.[1] ?? "";
+			const name = classes.split(" ").find((token) => /^c\d+$/.test(token)) ?? "missing";
+			return css.match(new RegExp(`\\.${name}\\{([^}]*)\\}`))?.[1] ?? "";
+		};
+
+		// Inline text needs isolating for its own direction to count.
+		expect(rule(data.basics.phone)).toMatch(/direction:ltr/);
+		expect(rule(data.basics.phone)).toMatch(/unicode-bidi:isolate/);
+		expect(rule("@rezumi.studio")).toMatch(/unicode-bidi:plaintext/);
+	});
+
 	it("makes the name the page's heading and section titles its subheadings", async () => {
 		const data = structuredClone(sampleResumeData);
 		const { html } = await renderResumeWebPage({ data });

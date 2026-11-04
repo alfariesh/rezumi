@@ -227,7 +227,8 @@ type FontFeatureSetting =
 	| (string & {});
 type FontFeatureSettings = FontFeatureSetting[] | Partial<Record<FontFeatureSetting, number | boolean>>;
 type TextStyle = {
-	direction?: "ltr" | "rtl";
+	/** `auto` takes the direction of the text's first letter (Forme's bidi paragraph level; `unicode-bidi: plaintext` on the web). */
+	direction?: "ltr" | "rtl" | "auto";
 	fontSize?: number | string;
 	fontFamily?: string | string[];
 	fontStyle?: FontStyle;

@@ -1094,7 +1094,10 @@ const ProfileSection = ({ sectionId = "profiles", sectionData }: ItemSectionProp
 							</View>
 						</SectionItemHeader>
 						<Link semanticRole="profile" src={item.website.url}>
-							<Text semanticField="username">{item.username}</Text>
+							{/* "@studio" on a right-to-left page reads from its own first letter, not as "studio@". */}
+							<Text semanticField="username" {...(data.rtl ? { style: { direction: "auto" as const } } : {})}>
+								{item.username}
+							</Text>
 						</Link>
 					</SectionItem>
 				))}

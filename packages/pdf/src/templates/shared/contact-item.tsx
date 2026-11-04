@@ -2,6 +2,7 @@ import type { IconName } from "../../forme/icons";
 import type { Style } from "../../forme/style-types";
 import type { CustomField } from "@rezumi/schema/resume/data";
 import { View } from "#react-pdf-renderer";
+import { useRender } from "../../context";
 import { resolvedPdfFlowProps } from "../../semantic/adapter";
 import { useResolvedNode, useSemanticNodeKey, useSemanticNodeVisible } from "../../semantic/context";
 import { semanticNodeKeys } from "../../semantic/node-keys";
@@ -15,6 +16,16 @@ type ContactStyle = Style | Style[];
 type WebsiteDisplay = {
 	url: string;
 	label?: string | undefined;
+};
+
+/**
+ * On a right-to-left page a contact reads in the direction of its own first letter, so "@studio", "site.com/" and
+ * "Gender:" keep their marks at the end while Arabic text stays right to left. A phone number has no letters and reads
+ * left to right: "+62 812 5550 1824" read "1824 5550 812 62+".
+ */
+const useContactTextStyle = (textStyle: ContactStyle | undefined, direction: "auto" | "ltr" = "auto") => {
+	const { rtl } = useRender();
+	return rtl ? composeStyles(textStyle, { direction }) : textStyle;
 };
 
 const useContactNodeKeys = (name: string, id?: string, primitiveNodeKey?: string) => {
@@ -55,6 +66,7 @@ export const WebsiteContactItem = ({
 }: WebsiteContactItemProps) => {
 	const keys = useContactNodeKeys("website", undefined, primitiveNodeKey);
 	const visible = useSemanticNodeVisible(keys.primitiveNodeKey);
+	const valueStyle = useContactTextStyle(textStyle);
 	if (!website.url || !visible) return null;
 
 	return (
@@ -65,7 +77,7 @@ export const WebsiteContactItem = ({
 				name="globe-02"
 				{...(iconColor ? { color: iconColor } : {})}
 			/>
-			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
+			<Text nodeKey={keys.fieldNodeKey} {...(valueStyle ? { style: valueStyle } : {})}>
 				{getWebsiteDisplayText(website)}
 			</Text>
 		</Link>
@@ -85,6 +97,8 @@ export const CustomFieldContactItem = ({
 	const iconColumn = useTemplateFeature("contactIconColumn");
 	const resolved = useResolvedNode(keys.primitiveNodeKey);
 	const visible = useSemanticNodeVisible(keys.primitiveNodeKey);
+	const valueStyle = useContactTextStyle(textStyle);
+	const fieldLabelStyle = useContactTextStyle(composeStyles(textStyle, labelStyle));
 	const children = (
 		<>
 			<Icon
@@ -95,11 +109,11 @@ export const CustomFieldContactItem = ({
 				{...(iconColor ? { color: iconColor } : {})}
 			/>
 			{field.label && (
-				<Text bindSemanticNode={false} style={composeStyles(textStyle, labelStyle)}>
+				<Text bindSemanticNode={false} style={fieldLabelStyle}>
 					{`${field.label}:`}
 				</Text>
 			)}
-			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
+			<Text nodeKey={keys.fieldNodeKey} {...(valueStyle ? { style: valueStyle } : {})}>
 				{field.text}
 			</Text>
 		</>
@@ -141,6 +155,7 @@ export const EmailContactItem = ({
 }: EmailContactItemProps) => {
 	const keys = useContactNodeKeys("email", undefined, primitiveNodeKey);
 	const visible = useSemanticNodeVisible(keys.primitiveNodeKey);
+	const valueStyle = useContactTextStyle(textStyle);
 	if (!email || !visible) return null;
 	return (
 		<Link nodeKey={keys.primitiveNodeKey} src={`mailto:${email}`} {...(style ? { style } : {})}>
@@ -150,7 +165,7 @@ export const EmailContactItem = ({
 				name={iconName}
 				{...(iconColor ? { color: iconColor } : {})}
 			/>
-			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
+			<Text nodeKey={keys.fieldNodeKey} {...(valueStyle ? { style: valueStyle } : {})}>
 				{email}
 			</Text>
 		</Link>
@@ -168,11 +183,12 @@ type PhoneContactItemProps = {
 export const PhoneContactItem = ({ phone, style, textStyle, iconColor, primitiveNodeKey }: PhoneContactItemProps) => {
 	const keys = useContactNodeKeys("phone", undefined, primitiveNodeKey);
 	const visible = useSemanticNodeVisible(keys.primitiveNodeKey);
+	const numberStyle = useContactTextStyle(textStyle, "ltr");
 	if (!phone || !visible) return null;
 	return (
 		<Link nodeKey={keys.primitiveNodeKey} src={`tel:${phone}`} {...(style ? { style } : {})}>
 			<Icon iconRole="contact" nodeKey={keys.iconNodeKey} name="call-02" {...(iconColor ? { color: iconColor } : {})} />
-			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
+			<Text nodeKey={keys.fieldNodeKey} {...(numberStyle ? { style: numberStyle } : {})}>
 				{phone}
 			</Text>
 		</Link>
@@ -197,6 +213,7 @@ export const LocationContactItem = ({
 	const keys = useContactNodeKeys("location", undefined, primitiveNodeKey);
 	const resolved = useResolvedNode(keys.primitiveNodeKey);
 	const visible = useSemanticNodeVisible(keys.primitiveNodeKey);
+	const valueStyle = useContactTextStyle(textStyle);
 	if (!location || !visible) return null;
 	return (
 		<View {...resolvedPdfFlowProps(resolved)} style={composeStyles(style, resolved.style)}>
@@ -206,7 +223,7 @@ export const LocationContactItem = ({
 				name="location-01"
 				{...(iconColor ? { color: iconColor } : {})}
 			/>
-			<Text nodeKey={keys.fieldNodeKey} {...(textStyle ? { style: textStyle } : {})}>
+			<Text nodeKey={keys.fieldNodeKey} {...(valueStyle ? { style: valueStyle } : {})}>
 				{location}
 			</Text>
 		</View>
