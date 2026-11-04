@@ -7,7 +7,7 @@ import { templateLineup } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { freeTemplates } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
-import { templates } from "@/dialogs/resume/template/data";
+import { templateSample, templates } from "@/dialogs/resume/template/data";
 
 // The free five first, then one of the layouts Plus adds.
 const shown: Template[] = [...freeTemplates, "horizon"];
@@ -38,7 +38,7 @@ export function Templates() {
 						return (
 							<li key={id}>
 								<img
-									src={`/templates/thumb/${id}-small.webp`}
+									src={templateSample(id, i18n.locale).smallThumbnail}
 									alt={t`${name} resume template preview`}
 									width={300}
 									height={424}

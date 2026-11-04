@@ -2,6 +2,7 @@ import type { DesignSource } from "@/features/resume/editor/design/style-groups"
 import type { Template } from "@rezumi/schema/templates";
 import { buttonVariants } from "@heroui/react";
 import { t } from "@lingui/core/macro";
+import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
@@ -13,7 +14,7 @@ import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { LetterLockedNote, LetterWidget } from "./write-panel";
-import { templates } from "@/dialogs/resume/template/data";
+import { templateSample, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useLetterEditorStore } from "@/features/letters/store";
@@ -67,6 +68,7 @@ export function LetterDesignPanel() {
 	const letter = useLetterEditorStore((state) => state.letter);
 	const designSource = useLetterDesignSource();
 	const plan = usePlan();
+	const { i18n } = useLingui();
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions({ input: {} }));
 	// Leaving Design never leaves a preview on the page.
 	useEffect(() => () => useEditorStore.setState({ previewTemplate: null }), []);
@@ -167,7 +169,7 @@ export function LetterDesignPanel() {
 										)}
 									>
 										<img
-											src={templates[id].imageUrl}
+											src={templateSample(id, i18n.locale).image}
 											alt=""
 											loading="lazy"
 											className="size-full object-cover object-top"

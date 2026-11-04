@@ -24,7 +24,7 @@ import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { SEGMENT_ITEM } from "./style-groups";
 import { thumbnailContent, useTemplateThumbnail } from "./thumbnails";
-import { careerFieldNames, templates } from "@/dialogs/resume/template/data";
+import { careerFieldNames, templateSample, templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { useResumeData, useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
@@ -217,6 +217,7 @@ function TemplateCard({ id, data, content, selected, labelled, locked, onPreview
 	const isInView = useInView(ref, { margin: "240px" });
 	const { data: thumbnail } = useTemplateThumbnail(id, data, isInView, content);
 	const metadata = templates[id];
+	const { i18n } = useLingui();
 	const hold = useRef<{ timer?: number; previewing: boolean }>({ previewing: false });
 
 	const endHold = () => {
@@ -264,7 +265,11 @@ function TemplateCard({ id, data, content, selected, labelled, locked, onPreview
 					selected && "ring-2 ring-accent ring-offset-2 ring-offset-surface",
 				)}
 			>
-				<img src={thumbnail ?? metadata.imageUrl} alt="" className="size-full object-cover object-top" />
+				<img
+					src={thumbnail ?? templateSample(id, i18n.locale).image}
+					alt=""
+					className="size-full object-cover object-top"
+				/>
 				{selected && (
 					<span className="absolute end-1.5 top-1.5 grid size-5 place-items-center rounded-full bg-accent text-accent-foreground">
 						<Icon name="check" size={14} />
