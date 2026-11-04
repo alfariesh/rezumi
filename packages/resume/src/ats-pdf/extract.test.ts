@@ -27,6 +27,47 @@ describe("buildExtractedDocument", () => {
 	});
 
 	/**
+	 * A bold lead-in followed by regular text comes out as two runs with the reader's space item between them. That
+	 * space is narrower than the gap that alone reads as a word break (here 0.23 em), so dropping it with the other
+	 * blank items ran the two words together ("experiencecreating").
+	 */
+	it("keeps the space the reader emitted between two runs", () => {
+		const bold = { text: "with professional experience", x: 56, y: 60, fontRef: "g_d0_f2" };
+		const raw = makeRawExtraction({
+			// 28 characters at 5 pt each end the bold run at 196; the space item fills 196–198.3.
+			lines: [bold, { text: "creating engaging games", x: 198.3, y: 60 }],
+			fonts: [{}, { name: "AAAAAA+Inter-Bold" }],
+		});
+		const page = raw.pages[0];
+		const [first, second] = page?.items ?? [];
+		if (!page || !first || !second) throw new Error("fixture");
+		const space = { ...second, str: " ", width: 2.3, transform: [10, 0, 0, 10, 196, second.transform[5]] as const };
+		const withSpace = { ...raw, pages: [{ ...page, items: [first, space, second] }] };
+
+		expect(buildExtractedDocument(raw).lines[0]?.text).toBe("with professional experiencecreating engaging games");
+		expect(buildExtractedDocument(withSpace).lines[0]?.text).toBe(
+			"with professional experience creating engaging games",
+		);
+	});
+
+	it("does not split runs that touch, even after a space item", () => {
+		const raw = makeRawExtraction({
+			lines: [
+				{ text: "Kowal", x: 56, y: 60 },
+				{ text: "ski", x: 81, y: 60 },
+			],
+		});
+		const page = raw.pages[0];
+		const [first, second] = page?.items ?? [];
+		if (!page || !first || !second) throw new Error("fixture");
+		const space = { ...second, str: " ", width: 0 };
+
+		expect(buildExtractedDocument({ ...raw, pages: [{ ...page, items: [first, space, second] }] }).lines[0]?.text).toBe(
+			"Kowalski",
+		);
+	});
+
+	/**
 	 * Geometry must not depend on the order the reader happened to emit items in. Stream order is
 	 * measured separately, as inversion; everything else has to be a pure function of the page.
 	 */

@@ -101,7 +101,7 @@ const useSenja = (): LineupTemplate & { styles: { block: Style } } => {
 				fontWeight: "600",
 				textTransform: "uppercase",
 				color: tokens.accent,
-				...tracking(0.16, size.label),
+				...tracking(0.06, size.label),
 			},
 			contactList: { flexDirection: r.row, flexWrap: "wrap", columnGap: size.meta * 1.7, rowGap: size.meta * 0.35 },
 			contactItem: { flexDirection: r.row, alignItems: "center", columnGap: size.meta * 0.45 },

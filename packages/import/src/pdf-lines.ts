@@ -11,8 +11,10 @@ import type { ExtractedDocument } from "@rezumi/resume/ats-pdf";
 
 /** Horizontal gap, relative to font size, above which two spans are separate header fields. */
 const FIELD_GAP_RATIO = 1.5;
-/** Narrower gaps are still a word break; matches the ratio the ATS extractor joins prose with. */
+/** Narrower gaps are still a word break; matches the ratios the ATS extractor joins prose with. */
 const SPACE_GAP_RATIO = 0.25;
+/** The same, after a space item the reader emitted (a bold lead-in, then the regular text). */
+const EMITTED_SPACE_GAP_RATIO = 0.05;
 
 /** The evidence the ATS layout rules require before calling a page two-column. */
 const GUTTER_COVERAGE = 0.85;
@@ -30,8 +32,10 @@ function joinSpans(spans: readonly TextSpan[]): string {
 			const gap = span.x - (previous.x + previous.width);
 			const fontSize = Math.max(previous.fontSize, span.fontSize, 1);
 
+			const spaceGap = (span.spaceBefore ? EMITTED_SPACE_GAP_RATIO : SPACE_GAP_RATIO) * fontSize;
+
 			if (gap > FIELD_GAP_RATIO * fontSize) text += "  ";
-			else if (gap > SPACE_GAP_RATIO * fontSize && !/\s$/.test(text) && !/^\s/.test(span.text)) text += " ";
+			else if (gap > spaceGap && !/\s$/.test(text) && !/^\s/.test(span.text)) text += " ";
 		}
 
 		text += span.text;

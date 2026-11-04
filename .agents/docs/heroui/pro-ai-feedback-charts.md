@@ -45,7 +45,7 @@ Subpath-only exists to keep optional peers out of the root. The export map also 
 5. **`style` prop collision.** `NumberValue` has a `style` prop (formatting style) and omits native `style` from span props [docs]. `Rating` takes `style` for CSS vars (`--rating-active-color`) because it is a normal prop there.
 6. **Tool state vocabulary differs from AI SDK.** `ToolPartState` = `input-streaming | input-available | output-available | output-error | requires-action` [docs]. Rezumi reads `approval-requested`, `approval-responded`, `output-denied` (`conversation.tsx` `ToolPartView`). No HeroUI equivalent for the last two; map `approval-requested → requires-action` [infer].
 7. **Beta.** `1.0.0-beta.10`. Pin version; docs describe newer surface in places (see per-component notes, e.g. `PromptInput.Queue.Item.Steer` is in [d.ts] but not in docs).
-8. **Mobile parity.** All of this is web only. `CLAUDE.md` requires matching `apps/mobile` changes; catalog lists `heroui-native-pro 1.0.0-beta.12` but this note does not cover it.
+8. **Mobile.** All of this is web only. The mobile app is not being worked on yet (web first, `CLAUDE.md`); when it catches up, catalog lists `heroui-native-pro 1.0.0-beta.12`, which this note does not cover.
 
 ---
 

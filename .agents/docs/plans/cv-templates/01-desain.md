@@ -21,6 +21,7 @@ Hasil audit 2026-11-03 (gambar `apps/web/public/templates/jpg/*.jpg`):
 5. **Tanggal itu meta.** Redup, tidak tebal, rata kanan atau di kolom sendiri.
 6. **Foto opsional.** Bulat atau sudut membulat lembut; template tetap seimbang tanpa foto.
 7. **Ikon kecil dan sejajar.** Tinggi ikon = tinggi huruf kapital isi; warna aksen atau redup; tidak pernah menggantikan teks.
+8. **Tracking maks. 0,06 em.** Dari ±0,1 em, pdf.js dan parser ATS membaca celah antarhuruf sebagai spasi ("E D U C A T I O N") sehingga judul bagian atau nama hilang. Helper `tracking` di `shared/lineup-page.tsx` membatasinya; tes ATS menjaganya.
 
 ## Token bersama
 
@@ -37,7 +38,7 @@ Semua template baru memakai `packages/pdf/src/templates/shared/tokens.ts` (dibua
 | `onAccent`      | putih atau tinta, dipilih menurut kontras di atas `accent`     |
 | `meta` (ukuran) | 0,92× ukuran isi                                               |
 | `small`         | 0,86× ukuran isi                                               |
-| `label`         | 0,8× ukuran isi, huruf kapital, tracking 0,1 em, tebal 700     |
+| `label`         | 0,8× ukuran isi, huruf kapital, tracking 0,06 em, tebal 700    |
 
 Dekorasi judul bagian (fitur template `headingDecoration`): `rule-below` (garis di bawah), `rule-after` (garis mengisi sisa baris), `bar` (batang aksen pendek di depan), `underline-short` (garis aksen 24 pt di bawah), `band` (pita samar di belakang), `none`.
 
@@ -63,7 +64,7 @@ Kolom "Preset" adalah titik awal; agent boleh menyesuaikan setelah melihat hasil
 
 **2. Sterling** — klasik Wall Street, tenang dan berwibawa.
 
-- Header tengah: nama serif kapital dengan tracking lebar; kontak tengah dipisah "·" (ikon kecil bila menyala).
+- Header tengah: nama serif kapital dengan tracking 0,06 em (lebih lebar membuat ATS membaca huruf terpisah); kontak tengah dipisah "·" (ikon kecil bila menyala).
 - Judul bagian: serif kapital tebal tracking + `rule-below` warna tinta.
 - Entri: organisasi tebal + lokasi kanan; peran miring + tanggal kanan.
 - Preset: EB Garamond; aksen hampir hitam.

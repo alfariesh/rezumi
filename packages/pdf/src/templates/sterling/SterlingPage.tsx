@@ -36,7 +36,7 @@ const useSterling = (): LineupTemplate => {
 				borderBottomWidth: 0.75,
 				borderBottomColor: tokens.accent,
 				paddingBottom: size.body * 0.2,
-				...tracking(0.1, size.body),
+				...tracking(0.06, size.body),
 			},
 			sectionItems: { rowGap: metrics.gapY(1.2) },
 			item: { rowGap: metrics.gapY(0.25) },
@@ -49,7 +49,7 @@ const useSterling = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				textAlign: "center",
-				...tracking(0.14, size.heading * 1.85),
+				...tracking(0.06, size.heading * 1.85),
 			},
 			headerHeadline: { fontSize: size.body * 1.05, color: tokens.muted, textAlign: "center" },
 			contactList: {

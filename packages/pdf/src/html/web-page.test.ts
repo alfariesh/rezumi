@@ -42,8 +42,9 @@ describe("renderResumeWebPage", () => {
 	});
 
 	it("puts the main column before the sidebar when the page folds on a phone", async () => {
+		// Purnama keeps its name in the sidebar, so the sidebar comes first in the markup and the fold reorders it.
 		const data = structuredClone(sampleResumeData);
-		data.metadata.template = "kirana";
+		data.metadata.template = "purnama";
 		const { html, css } = await renderResumeWebPage({ data });
 
 		expect(html).toMatch(/data-split[\s\S]*data-part="(?:header-sidebar|sidebar)"[\s\S]*data-part="main"/);
@@ -70,6 +71,15 @@ describe("renderResumeWebPage", () => {
 
 		expect(html).toMatch(/data-region="header"[^>]* data-bleed/);
 		expect(css).toMatch(/\[data-region=header\]\[data-bleed\]\{margin-top:-24px/);
+	});
+
+	it("writes a start-side sidebar after the main column, so the page reads from the name", async () => {
+		const data = structuredClone(sampleResumeData);
+		data.metadata.template = "kirana";
+		const { html } = await renderResumeWebPage({ data });
+
+		expect(html).toMatch(/data-split[\s\S]*data-part="main"[\s\S]*data-part="sidebar"/);
+		expect(html.indexOf(data.basics.name)).toBeLessThan(html.indexOf('data-part="sidebar"'));
 	});
 
 	it("makes the name the page's heading and section titles its subheadings", async () => {
