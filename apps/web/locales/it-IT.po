@@ -1901,6 +1901,10 @@ msgstr "Tutte le candidature"
 msgid "All applications (including closed)"
 msgstr "Tutte le domande di lavoro (anche chiuse)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Tutti i documenti e le domande di lavoro come JSON, in un unico zip"
@@ -2158,6 +2162,7 @@ msgstr "I sistemi di tracciamento dei candidati trasformano il tuo PDF in testo 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Candidatura"
 
@@ -2186,6 +2191,7 @@ msgstr "Data candidatura al"
 msgid "Application deleted"
 msgstr "domanda di lavoro cancellata"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Dettagli della candidatura"
@@ -2307,7 +2313,7 @@ msgstr "Chiedi prima di decidere."
 msgid "Ask both"
 msgstr "Chiedi a entrambe"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Chiedi prima"
 
@@ -2401,7 +2407,7 @@ msgstr "Allega un file"
 msgid "Attachment"
 msgstr "Allegato"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Automaticamente"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Carriera"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "Scegli un curriculum in Write che corrisponda al suo design. Fino ad all
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Scegli un file WebM, MP4, MP3, WAV o Ogg fino a 2 MB."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Scegli una domanda di lavoro..."
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Coach"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Impossibile caricare le applicazioni connesse. Aggiorna la pagina per riprovare."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Impossibile caricare i documenti"
 
@@ -4247,6 +4259,7 @@ msgstr "Riempi"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Lettera di presentazione"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "Fatto dimenticato"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Fatti"
@@ -6357,7 +6371,9 @@ msgstr "Cronologia"
 msgid "Hold to delete"
 msgstr "Tieni premuto per eliminare"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Home"
 
@@ -7433,9 +7449,14 @@ msgstr "Abito a {0}"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Caricamento in corso"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "Rete"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Mai"
@@ -8167,6 +8188,7 @@ msgstr "Nuova lettera di presentazione invece"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Nuovo documento"
 
@@ -9580,6 +9602,7 @@ msgstr "Testo semplice con titoli. Incolla nei moduli e nelle note di domanda di
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "Preferenze"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Destinatario"
@@ -10553,7 +10581,7 @@ msgstr "Ricaricare"
 msgid "Remember"
 msgstr "Ricorda"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Ricorda i fatti dai miei messaggi"
 
@@ -10849,6 +10877,7 @@ msgstr "riprendere"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "Estratto {0}. La freschezza dell'origine è sconosciuta se non segnalata
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "Screening"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Ricerca"
 
@@ -11800,6 +11831,7 @@ msgstr "Configura la tua app di autenticazione"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Impostazioni"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Storie"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "I controlli sono meccanici. Questo chiede a un modello linguistico come un lettore potrebbe reagire alle voci dell'elenco e suggerisce riscritture. Non fa parte della partitura."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Il coach non ricorda nulla dei tuoi messaggi."
 
@@ -12972,7 +13005,7 @@ msgstr "Il coach non ricorda nulla dei tuoi messaggi."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Il coach non è configurato su questo server. Chi lo gestisce deve impostare ENCRYPTION_SECRET. Conoscenze, Offerte e le tue candidature funzionano anche senza."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Il coach propone ogni fatto nella chat. Non viene salvato nulla finché non sei d'accordo."
 
@@ -12980,7 +13013,7 @@ msgstr "Il coach propone ogni fatto nella chat. Non viene salvato nulla finché 
 msgid "The coach reads these for this application only."
 msgstr "Il coach li legge solo per questa candidatura."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Il coach salva i fatti che dichiari e te lo comunica. Puoi annullare."
 
@@ -13660,8 +13693,6 @@ msgstr "A"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Oggi"
 
@@ -14672,7 +14703,7 @@ msgstr "Cosa conta"
 msgid "What matters to you"
 msgstr "Cosa conta per te"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "Il tuo indirizzo email non è verificato presso il provider. Verificalo 
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Email, telefono, posizione e gli altri dati dell'intestazione, insieme ai numeri di telefono delle referenze, vengono esclusi dalla pagina web, dal suo PDF e dai risultati di ricerca."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "I fatti, le storie e le preferenze attivi possono essere inviati alla tua connessione IA quando usi gli strumenti di coaching o la preparazione pianificata dei colloqui. In chat, l'interruttore Conoscenze controlla cosa viene aggiunto a ogni messaggio."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

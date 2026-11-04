@@ -1901,6 +1901,10 @@ msgstr "すべての応募"
 msgid "All applications (including closed)"
 msgstr "すべての求人応募（終了したものを含む）"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "すべてのドキュメントと求人応募書を JSON として 1 つの zip にまとめたもの"
@@ -2158,6 +2162,7 @@ msgstr "応募者追跡システムは、誰かが読む前にあなたの PDF �
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "応募"
 
@@ -2186,6 +2191,7 @@ msgstr "応募日（終了）"
 msgid "Application deleted"
 msgstr "求人応募が削除されました"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "応募の詳細"
@@ -2307,7 +2313,7 @@ msgstr "決める前に確認しましょう。"
 msgid "Ask both"
 msgstr "両社に確認"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "先に確認する"
 
@@ -2401,7 +2407,7 @@ msgstr "ファイルを添付する"
 msgid "Attachment"
 msgstr "添付ファイル"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "自動"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "キャリア"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "デザインに合わせて Write で履歴書を選択します。そ�
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MBまでのWebM、MP4、MP3、WAV、Oggファイルを選択してください。"
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "求人応募を選択してください…"
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "コーチ"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "接続されたアプリケーションを読み込めませんでした。ページを再読み込みして、もう一度お試しください。"
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "ドキュメントをロードできませんでした"
 
@@ -4247,6 +4259,7 @@ msgstr "切り抜き"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "カバーレター"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "事実を忘れさせました"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "事実"
@@ -6357,7 +6371,9 @@ msgstr "履歴"
 msgid "Hold to delete"
 msgstr "長押しして削除"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "ホーム"
 
@@ -7433,9 +7449,14 @@ msgstr "{0}でのライブ"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "読み込み中"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "ネットワーク"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "一度もない"
@@ -8167,6 +8188,7 @@ msgstr "代わりに新しいカバーレター"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "新しいドキュメント"
 
@@ -9580,6 +9602,7 @@ msgstr "見出し付きのプレーンテキスト。求人応募フォームや
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "環境設定"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "宛先"
@@ -10553,7 +10581,7 @@ msgstr "リロード"
 msgid "Remember"
 msgstr "記憶する"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "メッセージから事実を記憶する"
 
@@ -10849,6 +10877,7 @@ msgstr "再開する"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "{0}を取得しました。産地の鮮度は報告がない限り不明
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "スクリーニング"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "検索"
 
@@ -11800,6 +11831,7 @@ msgstr "認証アプリを設定"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "設定"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "ストーリー"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "チェックは機械式です。これにより、読者がリストのエントリにどのように反応するかを言語モデルに尋ね、書き換えを提案します。それはスコアの一部ではありません。"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "コーチはあなたのメッセージから何も記憶しません。"
 
@@ -12972,7 +13005,7 @@ msgstr "コーチはあなたのメッセージから何も記憶しません。
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "このサーバーではコーチが設定されていません。運営者がENCRYPTION_SECRETを設定する必要があります。ナレッジ、オファー、応募はこれがなくても使えます。"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "コーチはチャットで事実を1つずつ提案します。あなたが同意するまで何も保存されません。"
 
@@ -12980,7 +13013,7 @@ msgstr "コーチはチャットで事実を1つずつ提案します。あな�
 msgid "The coach reads these for this application only."
 msgstr "コーチはこれらをこの応募に対してのみ読み込みます。"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "コーチはあなたが述べた事実を保存し、そのことを知らせます。元に戻すこともできます。"
 
@@ -13660,8 +13693,6 @@ msgstr "に"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "今日"
 
@@ -14672,7 +14703,7 @@ msgstr "重視すること"
 msgid "What matters to you"
 msgstr "あなたが重視すること"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "メールアドレスがプロバイダーで確認されていません
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "メールアドレス、電話番号、所在地などのヘッダー情報と、リファレンスの電話番号は、Web ページ、その PDF、検索結果には表示されません。"
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "コーチングツールや予定された面接準備を使うと、有効にした事実、ストーリー、希望条件があなたのAI接続に送信されることがあります。チャットでは、ナレッジのスイッチで各メッセージに追加する内容を管理できます。"
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

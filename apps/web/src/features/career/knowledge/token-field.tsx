@@ -10,7 +10,7 @@ export function TokenFrame({ children, className }: TokenFrameProps) {
 	return (
 		<div
 			className={cn(
-				"flex min-h-10 flex-wrap items-center gap-1 rounded-field bg-default p-1.5 text-field-foreground transition-[background-color,box-shadow] duration-quick focus-within:ring-2 focus-within:ring-focus hover:bg-default-hover",
+				"flex min-h-10 flex-wrap items-center gap-1 rounded-field field-fill p-1.5 text-field-foreground transition-[background-color,box-shadow] duration-quick focus-within:ring-2 focus-within:ring-focus",
 				className,
 			)}
 		>

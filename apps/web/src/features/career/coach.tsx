@@ -418,7 +418,7 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 	return (
 		<div className="grid justify-items-center gap-6 pt-[clamp(0px,6vh,48px)] text-center">
 			<div className="grid max-w-2xl gap-3">
-				<Typography type="h2" render={renderAsH3}>
+				<Typography type="h2" align="center" render={renderAsH3}>
 					<Trans>What are you working on?</Trans>
 				</Typography>
 				<p className="text-base text-pretty text-muted">
@@ -437,7 +437,7 @@ function EmptyState({ disabled, onPick }: EmptyStateProps) {
 							onPress={() => onPick(starter.text)}
 							className="w-fit max-w-full justify-center gap-2 rounded-full border-0 bg-surface px-4 py-2.5 text-start"
 						>
-							<Icon name={starter.icon} size={18} className="shrink-0 text-accent" />
+							<Icon name={starter.icon} size={18} className="me-1 shrink-0 text-accent" />
 							<span className="min-w-0 text-pretty">{starter.text}</span>
 						</PromptSuggestion.Item>
 					))}

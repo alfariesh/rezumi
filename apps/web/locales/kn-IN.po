@@ -1901,6 +1901,10 @@ msgstr "ಎಲ್ಲಾ ಅರ್ಜಿಗಳು"
 msgid "All applications (including closed)"
 msgstr "ಎಲ್ಲಾ ಉದ್ಯೋಗ ಅರ್ಜಿಗಳು (ಮುಚ್ಚಿರುವುದು ಸೇರಿದಂತೆ)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON ನಂತೆ ಎಲ್ಲಾ ಡಾಕ್ಯುಮೆಂಟ್‌ಗಳು ಮತ್ತು ಉದ್ಯೋಗ ಅರ್ಜಿಗಳು, ಒಂದೇ ಜಿಪ್‌ನಲ್ಲಿ"
@@ -2158,6 +2162,7 @@ msgstr "ಅರ್ಜಿದಾರರ ಟ್ರ್ಯಾಕಿಂಗ್ ವ್ಯ�
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "ಅರ್ಜಿ"
 
@@ -2186,6 +2191,7 @@ msgstr "ಅರ್ಜಿ ಸಲ್ಲಿಸುವ ದಿನಾಂಕ"
 msgid "Application deleted"
 msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿಯನ್ನು ಅಳಿಸಲಾಗಿದೆ"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "ಅರ್ಜಿಯ ವಿವರಗಳು"
@@ -2307,7 +2313,7 @@ msgstr "ನಿರ್ಧರಿಸುವ ಮೊದಲು ಕೇಳಿ."
 msgid "Ask both"
 msgstr "ಎರಡನ್ನೂ ಕೇಳಿ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "ಮೊದಲು ಕೇಳಿ"
 
@@ -2401,7 +2407,7 @@ msgstr "ಫೈಲ್ ಅನ್ನು ಲಗತ್ತಿಸಿ"
 msgid "Attachment"
 msgstr "ಲಗತ್ತು"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "ಸ್ವಯಂಚಾಲಿತವಾಗಿ"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "ವೃತ್ತಿಜೀವನ"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "ಅದರ ವಿನ್ಯಾಸವನ್ನು ಹೊಂದಿಸಲು 
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB ವರೆಗಿನ WebM, MP4, MP3, WAV ಅಥವಾ Ogg ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "ಉದ್ಯೋಗ ಅರ್ಜಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ..."
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "ಕೋಚ್"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "ಸಂಪರ್ಕಿತ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಲು ಪುಟವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "ಡಾಕ್ಯುಮೆಂಟ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"
 
@@ -4247,6 +4259,7 @@ msgstr "ಚೌಕಟ್ಟು ತುಂಬಿಸಿ"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "ಕವರ್ ಲೆಟರ್"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "ಸಂಗತಿಯನ್ನು ಮರೆಯಲಾಗಿದೆ"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "ಸಂಗತಿಗಳು"
@@ -6357,7 +6371,9 @@ msgstr "ಇತಿಹಾಸ"
 msgid "Hold to delete"
 msgstr "ಅಳಿಸಲು ಒತ್ತಿ ಹಿಡಿಯಿರಿ"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "ಮುಖ್ಯ ಪುಟ"
 
@@ -7433,9 +7449,14 @@ msgstr "{0} ನಲ್ಲಿ ಲೈವ್"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "ನೆಟ್ವರ್ಕ್"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "ಎಂದಿಗೂ ಇಲ್ಲ"
@@ -8167,6 +8188,7 @@ msgstr "ಬದಲಿಗೆ ಹೊಸ ಕವರ್ ಲೆಟರ್"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "ಹೊಸ ಡಾಕ್ಯುಮೆಂಟ್"
 
@@ -9580,6 +9602,7 @@ msgstr "ಶೀರ್ಷಿಕೆಗಳೊಂದಿಗೆ ಸರಳ ಪಠ್ಯ.
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "ಆದ್ಯತೆಗಳು"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "ಸ್ವೀಕೃತದಾರ"
@@ -10553,7 +10581,7 @@ msgstr "ಮರುಲೋಡ್ ಮಾಡಿ"
 msgid "Remember"
 msgstr "ನೆನಪಿಡಿ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "ನನ್ನ ಸಂದೇಶಗಳಿಂದ ಸಂಗತಿಗಳನ್ನು ನೆನಪಿಡಿ"
 
@@ -10849,6 +10877,7 @@ msgstr "ರೆಸ್ಯೂಮೆ"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "{0} ಮರುಪಡೆಯಲಾಗಿದೆ. ವರದಿ ಮಾಡದ �
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "ಸ್ಕ್ರೀನಿಂಗ್"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "ಹುಡುಕಿ Kannada"
 
@@ -11800,6 +11831,7 @@ msgstr "ನಿಮ್ಮ ದೃಢೀಕರಣ ಅಪ್ಲಿಕೇಶನ್ ಹ
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "ಸೆಟ್ಟಿಂಗ್ಸಗಳು"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "ಕಥೆಗಳು"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "ಚೆಕ್‌ಗಳು ಯಾಂತ್ರಿಕವಾಗಿವೆ. ನಿಮ್ಮ ಪಟ್ಟಿ ನಮೂದುಗಳಿಗೆ ಓದುಗರು ಹೇಗೆ ಪ್ರತಿಕ್ರಿಯಿಸಬಹುದು ಎಂಬುದನ್ನು ಇದು ಭಾಷಾ ಮಾದರಿಯನ್ನು ಕೇಳುತ್ತದೆ ಮತ್ತು ಪುನಃ ಬರೆಯುವಂತೆ ಸೂಚಿಸುತ್ತದೆ. ಇದು ಸ್ಕೋರ್‌ನ ಭಾಗವಲ್ಲ."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "ಕೋಚ್ ನಿಮ್ಮ ಸಂದೇಶಗಳಿಂದ ಏನನ್ನೂ ನೆನಪಿಟ್ಟುಕೊಳ್ಳುವುದಿಲ್ಲ."
 
@@ -12972,7 +13005,7 @@ msgstr "ಕೋಚ್ ನಿಮ್ಮ ಸಂದೇಶಗಳಿಂದ ಏನನ್
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "ಈ ಸರ್ವರ್‌ನಲ್ಲಿ ಕೋಚ್ ಅನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ. ಇದನ್ನು ನಡೆಸುವವರು ENCRYPTION_SECRET ಅನ್ನು ಹೊಂದಿಸಬೇಕು. ಜ್ಞಾನ, ಆಫರ್‌ಗಳು ಮತ್ತು ನಿಮ್ಮ ಅರ್ಜಿಗಳು ಅದಿಲ್ಲದೆಯೂ ಕೆಲಸ ಮಾಡುತ್ತವೆ."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "ಕೋಚ್ ಪ್ರತಿಯೊಂದು ಸಂಗತಿಯನ್ನು ಚಾಟ್‌ನಲ್ಲಿ ಪ್ರಸ್ತಾಪಿಸುತ್ತದೆ. ನೀವು ಒಪ್ಪುವವರೆಗೆ ಏನನ್ನೂ ಉಳಿಸಲಾಗುವುದಿಲ್ಲ."
 
@@ -12980,7 +13013,7 @@ msgstr "ಕೋಚ್ ಪ್ರತಿಯೊಂದು ಸಂಗತಿಯನ್ನ�
 msgid "The coach reads these for this application only."
 msgstr "ಕೋಚ್ ಇವುಗಳನ್ನು ಈ ಅರ್ಜಿಗಾಗಿ ಮಾತ್ರ ಓದುತ್ತದೆ."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "ನೀವು ಹೇಳುವ ಸಂಗತಿಗಳನ್ನು ಕೋಚ್ ಉಳಿಸುತ್ತದೆ ಮತ್ತು ನಿಮಗೆ ತಿಳಿಸುತ್ತದೆ. ನೀವು ರದ್ದುಗೊಳಿಸಬಹುದು."
 
@@ -13660,8 +13693,6 @@ msgstr "ಗೆ"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "ಇಂದು"
 
@@ -14672,7 +14703,7 @@ msgstr "ಮುಖ್ಯವಾದದ್ದು"
 msgid "What matters to you"
 msgstr "ನಿಮಗೆ ಮುಖ್ಯವಾದದ್ದು"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "ನಿಮ್ಮ ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಪೂರ
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "ನಿಮ್ಮ ಇಮೇಲ್, ದೂರವಾಣಿ, ಸ್ಥಳ ಮತ್ತು ಇತರ ಶಿರೋಲೇಖ ವಿವರಗಳು, ಹಾಗೂ ಪರಿಚಯಗಳ ದೂರವಾಣಿ ಸಂಖ್ಯೆಗಳನ್ನು ವೆಬ್ ಪುಟ, ಅದರ PDF ಮತ್ತು ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳಿಂದ ಹೊರಗಿಡಲಾಗುತ್ತದೆ."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "ನೀವು ಕೋಚಿಂಗ್ ಉಪಕರಣಗಳನ್ನು ಅಥವಾ ನಿಗದಿತ ಸಂದರ್ಶನ ಸಿದ್ಧತೆಯನ್ನು ಬಳಸಿದಾಗ ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಿದ ಸಂಗತಿಗಳು, ಕಥೆಗಳು ಮತ್ತು ಆದ್ಯತೆಗಳನ್ನು ನಿಮ್ಮ AI ಸಂಪರ್ಕಕ್ಕೆ ಕಳುಹಿಸಬಹುದು. ಚಾಟ್‌ನಲ್ಲಿ, ಪ್ರತಿ ಸಂದೇಶಕ್ಕೆ ಏನನ್ನು ಸೇರಿಸಲಾಗುತ್ತದೆ ಎಂಬುದನ್ನು ಜ್ಞಾನದ ಸ್ವಿಚ್ ನಿಯಂತ್ರಿಸುತ್ತದೆ."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

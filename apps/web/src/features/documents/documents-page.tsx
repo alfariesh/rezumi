@@ -27,6 +27,7 @@ import { DocumentList, documentKey } from "./document-list";
 import { collectTags, filterDocuments } from "./filter";
 import { LibraryError } from "./library-error";
 import { useStartDocument } from "./use-start-document";
+import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 import { useDialogStore } from "@/dialogs/store";
 import { isEditableElementFocused } from "@/features/resume/builder/draft";
@@ -129,7 +130,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 	});
 
 	return (
-		<div className="mx-auto grid w-full max-w-[1180px] content-start gap-5 px-8 py-8 max-sm:px-4 max-sm:py-5">
+		<Page width="wide">
 			<PageHeader title={<Trans>Documents</Trans>}>
 				{!failed && !firstRun && (
 					<>
@@ -282,7 +283,7 @@ export function DocumentsPage({ search, onSearchChange }: DocumentsPageProps) {
 			<DropToImport />
 			<TagsDialog documents={tagsFor} onClose={() => setTagsFor(null)} />
 			<LinkApplicationDialog document={linkFor} onClose={() => setLinkFor(null)} />
-		</div>
+		</Page>
 	);
 }
 
@@ -308,8 +309,10 @@ function storeView(view: "grid" | "list") {
 	}
 }
 
-/** The first visit: import is the filled button here, and only here. */
-function FirstRun({ onChooseFile }: { onChooseFile: () => void }) {
+type FirstRunProps = { onChooseFile: () => void };
+
+/** The first visit, here and on Home until there is a document: import is the filled button here, and only here. */
+export function FirstRun({ onChooseFile }: FirstRunProps) {
 	const { startBlank, trySample, creating } = useStartDocument();
 
 	return (
@@ -552,7 +555,8 @@ function LibrarySkeleton({ view }: { view: "grid" | "list" }) {
 }
 
 /** A file dragged anywhere over the page shows the drop target, and dropping it starts the import. */
-function DropToImport() {
+/** A file dropped anywhere on the page opens New with it; mounted where import is offered (Documents, a first Home). */
+export function DropToImport() {
 	const openDialog = useDialogStore((state) => state.openDialog);
 	const [dragging, setDragging] = useState(false);
 

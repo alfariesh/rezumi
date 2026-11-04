@@ -60,6 +60,8 @@
 @utility fields-on-card {
 	--default: var(--field-background);
 	--default-hover: var(--field-hover);
+	--field-fill: var(--field-background);
+	--field-fill-hover: var(--field-hover);
 }
 
 /*
@@ -79,7 +81,8 @@
 
 /*
  * Page transitions: the router starts a view transition of type `page` when the pathname changes. The page fades
- * out quickly and the new one fades up 6px; named navigation (app-nav, auth-brand) stays in place.
+ * out quickly and the new one fades up 6px. Named parts that exist on only one side (leaving or entering a section)
+ * fade with the page; the shell's chrome swaps in place (below).
  */
 @keyframes vt-page-out {
 	to {
@@ -106,11 +109,43 @@ html:active-view-transition-type(page)::view-transition-group(*) {
 
 html:active-view-transition-type(page)::view-transition-old(root),
 html:active-view-transition-type(page)::view-transition-old(*):only-child {
+	opacity: 1;
 	animation: calc(var(--d2) * 0.7) var(--ease) both vt-page-out;
 }
 
-html:active-view-transition-type(page)::view-transition-new(root) {
+html:active-view-transition-type(page)::view-transition-new(root),
+html:active-view-transition-type(page)::view-transition-new(*):only-child {
 	animation: var(--d2) var(--ease) both vt-page-in;
+}
+
+/*
+ * The shell's chrome is captured apart from the page and swaps in place: no fade, no slide, no move. Without this
+ * the navbar, the sidebar and a section's header and tabs dim and shift on every click, which reads as a blink.
+ * Names: the sidebar (app-nav) and navbar (app-bar) in the dashboard shell, Knowledge's title (knowledge-header) and
+ * Knowledge's tabs (knowledge-nav). Only the pair (both sides) is matched here: a part on one side only keeps the
+ * `:only-child` fades above, whose selectors are more specific.
+ */
+html:active-view-transition-type(page)::view-transition-group(app-nav),
+html:active-view-transition-type(page)::view-transition-group(app-bar),
+html:active-view-transition-type(page)::view-transition-group(knowledge-header),
+html:active-view-transition-type(page)::view-transition-group(knowledge-nav),
+html:active-view-transition-type(page)::view-transition-old(app-nav),
+html:active-view-transition-type(page)::view-transition-old(app-bar),
+html:active-view-transition-type(page)::view-transition-old(knowledge-header),
+html:active-view-transition-type(page)::view-transition-old(knowledge-nav),
+html:active-view-transition-type(page)::view-transition-new(app-nav),
+html:active-view-transition-type(page)::view-transition-new(app-bar),
+html:active-view-transition-type(page)::view-transition-new(knowledge-header),
+html:active-view-transition-type(page)::view-transition-new(knowledge-nav) {
+	animation: none;
+}
+
+/* The old picture would show through the new one where the chrome is transparent (a changed title, the current tab). */
+html:active-view-transition-type(page)::view-transition-old(app-nav),
+html:active-view-transition-type(page)::view-transition-old(app-bar),
+html:active-view-transition-type(page)::view-transition-old(knowledge-header),
+html:active-view-transition-type(page)::view-transition-old(knowledge-nav) {
+	opacity: 0;
 }
 
 /*

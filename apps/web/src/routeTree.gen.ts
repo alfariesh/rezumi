@@ -34,6 +34,7 @@ import { Route as DashboardIndexRouteImport } from "./routes/dashboard/index";
 import { Route as DashboardAdminRouteRouteImport } from "./routes/dashboard/admin/route";
 import { Route as DashboardCareerRouteRouteImport } from "./routes/dashboard/career/route";
 import { Route as DashboardCoverLettersRouteImport } from "./routes/dashboard/cover-letters";
+import { Route as DashboardDocumentsRouteImport } from "./routes/dashboard/documents";
 import { Route as DashboardSettingsRouteRouteImport } from "./routes/dashboard/settings/route";
 import { Route as DashboardTrashRouteImport } from "./routes/dashboard/trash";
 import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resumeId/index";
@@ -187,6 +188,11 @@ const DashboardCareerRouteRoute = DashboardCareerRouteRouteImport.update({
 const DashboardCoverLettersRoute = DashboardCoverLettersRouteImport.update({
   id: "/cover-letters",
   path: "/cover-letters",
+  getParentRoute: () => DashboardRouteRoute,
+} as any);
+const DashboardDocumentsRoute = DashboardDocumentsRouteImport.update({
+  id: "/documents",
+  path: "/documents",
   getParentRoute: () => DashboardRouteRoute,
 } as any);
 const DashboardSettingsRouteRoute = DashboardSettingsRouteRouteImport.update({
@@ -384,6 +390,7 @@ export interface FileRoutesByFullPath {
   "/auth/verify-2fa": typeof AuthVerify2faRoute;
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
+  "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/agent/": typeof AgentIndexRoute;
   "/auth/": typeof AuthIndexRoute;
@@ -433,6 +440,7 @@ export interface FileRoutesByTo {
   "/auth/verify-2fa": typeof AuthVerify2faRoute;
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
+  "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/": typeof HomeIndexRoute;
   "/agent": typeof AgentIndexRoute;
@@ -491,6 +499,7 @@ export interface FileRoutesById {
   "/auth/verify-2fa": typeof AuthVerify2faRoute;
   "/auth/verify-2fa-backup": typeof AuthVerify2faBackupRoute;
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
+  "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
   "/_home/": typeof HomeIndexRoute;
   "/agent/": typeof AgentIndexRoute;
@@ -550,6 +559,7 @@ export interface FileRouteTypes {
     | "/auth/verify-2fa"
     | "/auth/verify-2fa-backup"
     | "/dashboard/cover-letters"
+    | "/dashboard/documents"
     | "/dashboard/trash"
     | "/agent/"
     | "/auth/"
@@ -599,6 +609,7 @@ export interface FileRouteTypes {
     | "/auth/verify-2fa"
     | "/auth/verify-2fa-backup"
     | "/dashboard/cover-letters"
+    | "/dashboard/documents"
     | "/dashboard/trash"
     | "/"
     | "/agent"
@@ -656,6 +667,7 @@ export interface FileRouteTypes {
     | "/auth/verify-2fa"
     | "/auth/verify-2fa-backup"
     | "/dashboard/cover-letters"
+    | "/dashboard/documents"
     | "/dashboard/trash"
     | "/_home/"
     | "/agent/"
@@ -875,6 +887,13 @@ declare module "@tanstack/react-router" {
       path: "/cover-letters";
       fullPath: "/dashboard/cover-letters";
       preLoaderRoute: typeof DashboardCoverLettersRouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/documents": {
+      id: "/dashboard/documents";
+      path: "/documents";
+      fullPath: "/dashboard/documents";
+      preLoaderRoute: typeof DashboardDocumentsRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/settings": {
@@ -1251,6 +1270,7 @@ interface DashboardRouteRouteChildren {
   DashboardCareerRouteRoute: typeof DashboardCareerRouteRouteWithChildren;
   DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren;
   DashboardCoverLettersRoute: typeof DashboardCoverLettersRoute;
+  DashboardDocumentsRoute: typeof DashboardDocumentsRoute;
   DashboardTrashRoute: typeof DashboardTrashRoute;
   DashboardIndexRoute: typeof DashboardIndexRoute;
   DashboardCoachChar123ConversationIdChar125Route: typeof DashboardCoachChar123ConversationIdChar125Route;
@@ -1264,6 +1284,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardCareerRouteRoute: DashboardCareerRouteRouteWithChildren,
   DashboardSettingsRouteRoute: DashboardSettingsRouteRouteWithChildren,
   DashboardCoverLettersRoute: DashboardCoverLettersRoute,
+  DashboardDocumentsRoute: DashboardDocumentsRoute,
   DashboardTrashRoute: DashboardTrashRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardCoachChar123ConversationIdChar125Route:

@@ -7,6 +7,7 @@ import { type ComponentRef, useRef, useState } from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
 import Animated from "react-native-reanimated";
 import { client, useCareerAction, useCareerTime, useNow, useTodayQueries, useUndoRows } from "./hooks";
+import { RecentDocuments } from "./recent-documents";
 import { ScheduleSheet, scheduleTitle } from "./schedule-sheet";
 import { collectInterviews, rollForward } from "./scheduling";
 import { Actions, LoadState, Section, SwitchRow } from "./shared";
@@ -119,6 +120,7 @@ export function TodayScreen() {
 						}}
 						style={{ flex: tablet ? 1 : 0, gap: space.s6 }}
 					>
+						<RecentDocuments bleed={!tablet} />
 						<Section title={t`Coming up`}>
 							<LoadState query={applications} />
 							<LoadState query={queries.briefings} />

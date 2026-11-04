@@ -14,7 +14,7 @@ import { ResumeAssistant } from "@/features/assistant/dock";
 import { openAssistantFrom } from "@/features/assistant/open";
 import { usePreviewPausedStore } from "@/features/resume/builder/draft";
 import { IssueStepper } from "@/features/resume/editor/check/page-layer";
-import { EditorFrame, MobileTabBar, useEditorLayout } from "@/features/resume/editor/chrome/shell";
+import { EditorFrame, MobilePanel, MobileTabBar, useEditorLayout } from "@/features/resume/editor/chrome/shell";
 import { useEditorStore } from "@/features/resume/editor/store";
 import { useEditorMode } from "@/features/resume/editor/use-editor-mode";
 import { useResumeWebMcpTools } from "@/features/resume/editor/webmcp";
@@ -152,11 +152,10 @@ function MobileBody({ mode, onModeChange }: MobileBodyProps) {
 						<DesignSheet />
 					</Suspense>
 				)}
-				{view !== "page" && view !== "design" && (
-					<section key={mode} className="absolute inset-0 overflow-y-auto bg-background [overflow-anchor:none]">
-						<ModePanel mode={mode} />
-					</section>
-				)}
+				{/* Shown only in Write, Check and Share, so Design here means the panel was left in Write. */}
+				<MobilePanel mode={mode} visible={view !== "page" && view !== "design"}>
+					<ModePanel mode={mode === "design" ? "write" : mode} />
+				</MobilePanel>
 			</div>
 
 			<MobileTabBar

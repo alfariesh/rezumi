@@ -1901,6 +1901,10 @@ msgstr "Όλες οι αιτήσεις"
 msgid "All applications (including closed)"
 msgstr "Όλες οι αιτήσεις εργασίας (συμπεριλαμβανομένων των κλειστών)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Όλα τα έγγραφα και οι αιτήσεις εργασίας ως JSON, σε ένα zip"
@@ -2158,6 +2162,7 @@ msgstr "Τα συστήματα παρακολούθησης των αιτούν
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Αίτηση"
 
@@ -2186,6 +2191,7 @@ msgstr "Ημερομηνία υποβολής αίτησης έως"
 msgid "Application deleted"
 msgstr "η αίτηση εργασίας διαγράφηκε"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Λεπτομέρειες αίτησης"
@@ -2307,7 +2313,7 @@ msgstr "Ρωτήστε πριν αποφασίσετε."
 msgid "Ask both"
 msgstr "Ρωτήστε και τις δύο"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Να ρωτά πρώτα"
 
@@ -2401,7 +2407,7 @@ msgstr "Επισυνάψτε ένα αρχείο"
 msgid "Attachment"
 msgstr "Συνημμένο"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Αυτόματα"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Καριέρα"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "Επιλέξτε ένα βιογραφικό στο Write για να τ
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Επιλέξτε αρχείο WebM, MP4, MP3, WAV ή Ogg έως 2 MB."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Επιλέξτε μια αίτηση εργασίας…"
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Σύμβουλος"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Δεν ήταν δυνατή η φόρτωση των συνδεδεμένων εφαρμογών. Ανανεώστε τη σελίδα για να προσπαθήσετε ξανά."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Δεν ήταν δυνατή η φόρτωση εγγράφων"
 
@@ -4247,6 +4259,7 @@ msgstr "Κάλυψη"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Συνοδευτική επιστολή"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "Το γεγονός ξεχάστηκε"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Γεγονότα"
@@ -6357,7 +6371,9 @@ msgstr "Ιστορικό"
 msgid "Hold to delete"
 msgstr "Πατήστε παρατεταμένα για διαγραφή"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Αρχική"
 
@@ -7433,9 +7449,14 @@ msgstr "Ζωντανά στο {0}"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Φόρτωση"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "Δίκτυο"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Ποτέ"
@@ -8167,6 +8188,7 @@ msgstr "Αντίθετα, νέα συνοδευτική επιστολή"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Νέο έγγραφο"
 
@@ -9580,6 +9602,7 @@ msgstr "Απλό κείμενο με επικεφαλίδες. Επικολλή�
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "Προτιμήσεις"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Παραλήπτης"
@@ -10553,7 +10581,7 @@ msgstr "Γεμίζω πάλι"
 msgid "Remember"
 msgstr "Απομνημόνευση"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Απομνημόνευση γεγονότων από τα μηνύματά μου"
 
@@ -10849,6 +10877,7 @@ msgstr "περίληψη"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "Ανακτήθηκε το {0}. Η φρεσκάδα της προέλευ
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "Προκαταρκτική αξιολόγηση"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Ερευνα"
 
@@ -11800,6 +11831,7 @@ msgstr "Ρυθμίστε την εφαρμογή ελέγχου ταυτότητ
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Ιστορίες"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Οι έλεγχοι είναι μηχανικοί. Αυτό ρωτά ένα μοντέλο γλώσσας πώς μπορεί να αντιδράσει ένας αναγνώστης στις καταχωρίσεις της λίστας σας και προτείνει επανεγγραφή. Δεν είναι μέρος του σκορ."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Ο σύμβουλος δεν θυμάται τίποτα από τα μηνύματά σας."
 
@@ -12972,7 +13005,7 @@ msgstr "Ο σύμβουλος δεν θυμάται τίποτα από τα μ�
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Ο σύμβουλος δεν έχει ρυθμιστεί σε αυτόν τον διακομιστή. Όποιος τον διαχειρίζεται πρέπει να ορίσει το ENCRYPTION_SECRET. Η Γνώση, οι Προσφορές και οι αιτήσεις σας λειτουργούν χωρίς αυτό."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Ο σύμβουλος προτείνει κάθε γεγονός στη συνομιλία. Δεν αποθηκεύεται τίποτα μέχρι να συμφωνήσετε."
 
@@ -12980,7 +13013,7 @@ msgstr "Ο σύμβουλος προτείνει κάθε γεγονός στη 
 msgid "The coach reads these for this application only."
 msgstr "Ο σύμβουλος τα διαβάζει μόνο για αυτή την αίτηση."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Ο σύμβουλος αποθηκεύει γεγονότα που δηλώνετε και σας ενημερώνει. Μπορείτε να το αναιρέσετε."
 
@@ -13660,8 +13693,6 @@ msgstr "Να"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Σήμερα"
 
@@ -14672,7 +14703,7 @@ msgstr "Τι μετράει"
 msgid "What matters to you"
 msgstr "Τι μετράει για εσάς"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "Η διεύθυνση email σας δεν έχει επαληθευτε�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Το email, το τηλέφωνο, η τοποθεσία και τα άλλα στοιχεία της κεφαλίδας σας, καθώς και τα τηλέφωνα των συστάσεων, δεν εμφανίζονται στην ιστοσελίδα, στο PDF της και στα αποτελέσματα αναζήτησης."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Τα ενεργά γεγονότα, οι ιστορίες και οι προτιμήσεις σας μπορούν να σταλούν στη σύνδεση AI σας όταν χρησιμοποιείτε εργαλεία συμβουλευτικής ή την προγραμματισμένη προετοιμασία συνεντεύξεων. Στη συνομιλία, ο διακόπτης Γνώσης ελέγχει τι προστίθεται σε κάθε μήνυμα."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

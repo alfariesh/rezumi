@@ -19,7 +19,11 @@ export function NavigationCommandGroup() {
 	return (
 		<>
 			<BaseCommandGroup heading={<Trans>Go to…</Trans>}>
-				<PaletteItem id="navigation.home" textValue={searchText(t`Home`, [t`Home`])} onAction={() => onNavigate("/")}>
+				<PaletteItem
+					id="navigation.home"
+					textValue={searchText(t`Home`, [t`Home`])}
+					onAction={() => onNavigate(session ? "/dashboard" : "/")}
+				>
 					<Icon name="house" size={16} />
 					<Trans>Home</Trans>
 				</PaletteItem>
@@ -28,7 +32,7 @@ export function NavigationCommandGroup() {
 					id="navigation.documents"
 					textValue={searchText(t`Documents`, [t`Documents`, t`Resumes`, t`Cover letters`])}
 					isDisabled={!session}
-					onAction={() => onNavigate("/dashboard")}
+					onAction={() => onNavigate("/dashboard/documents")}
 				>
 					<Icon name="file-text" size={16} />
 					<Trans>Documents</Trans>

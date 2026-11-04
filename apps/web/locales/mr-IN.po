@@ -1901,6 +1901,10 @@ msgstr "सर्व अर्ज"
 msgid "All applications (including closed)"
 msgstr "सर्व नोकरीचे अर्ज (बंदसह)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON म्हणून सर्व कागदपत्रे आणि नोकरीचे अर्ज एकाच झिपमध्ये"
@@ -2158,6 +2162,7 @@ msgstr "अर्जदार ट्रॅकिंग सिस्टम तु
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "अर्ज"
 
@@ -2186,6 +2191,7 @@ msgstr "पर्यंत अर्ज करण्याची तारीख
 msgid "Application deleted"
 msgstr "नोकरी अर्ज हटवला"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "अर्जाचे तपशील"
@@ -2307,7 +2313,7 @@ msgstr "निर्णय घेण्यापूर्वी विचार�
 msgid "Ask both"
 msgstr "दोघांनाही विचारा"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "आधी विचारा"
 
@@ -2401,7 +2407,7 @@ msgstr "फाइल संलग्न करा"
 msgid "Attachment"
 msgstr "संलग्नक"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "आपोआप"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "करिअर"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "त्याच्या डिझाइनशी जुळण्या�
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB पर्यंतची WebM, MP4, MP3, WAV किंवा Ogg फाइल निवडा."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "नोकरीसाठी अर्ज निवडा..."
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "कोच"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "कनेक्ट केलेले अॅप्लिकेशन लोड करता आले नाहीत. पुन्हा प्रयत्न करण्यासाठी पान रिफ्रेश करा."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "दस्तऐवज लोड करू शकलो नाही"
 
@@ -4247,6 +4259,7 @@ msgstr "फ्रेम भरा"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "कव्हर लेटर"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "तथ्य विसरले"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "तथ्ये"
@@ -6357,7 +6371,9 @@ msgstr "इतिहास"
 msgid "Hold to delete"
 msgstr "हटवण्यासाठी दाबून ठेवा"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "होम"
 
@@ -7433,9 +7449,14 @@ msgstr "{0} वर थेट"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "लोड करत आहे"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "नेटवर्क"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "कधीच नाही"
@@ -8167,6 +8188,7 @@ msgstr "त्याऐवजी नवीन कव्हर लेटर"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "नवीन दस्तऐवज"
 
@@ -9580,6 +9602,7 @@ msgstr "शीर्षकांसह साधा मजकूर. अर्�
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "प्राधान्ये"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "प्राप्तकर्ता"
@@ -10553,7 +10581,7 @@ msgstr "रीलोड करा"
 msgid "Remember"
 msgstr "लक्षात ठेवा"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "माझ्या संदेशांमधील तथ्ये लक्षात ठेवा"
 
@@ -10849,6 +10877,7 @@ msgstr "रेझ्युमे"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "{0} पुनर्प्राप्त केले. अहवाल �
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "स्क्रीनिंग"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "शोध"
 
@@ -11800,6 +11831,7 @@ msgstr "तुमचे ऑथेंटिकेटर अॅप सेट क�
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "सेटिंग"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "कथा"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "चेक यांत्रिक आहेत. हे एका भाषेच्या मॉडेलला विचारते की वाचक तुमच्या सूचीच्या नोंदींवर कशी प्रतिक्रिया देऊ शकतो आणि पुनर्लेखन सुचवतो. तो स्कोअरचा भाग नाही."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "कोच तुमच्या संदेशांमधील काहीही लक्षात ठेवत नाही."
 
@@ -12972,7 +13005,7 @@ msgstr "कोच तुमच्या संदेशांमधील का
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "या सर्व्हरवर कोच सेट केलेला नाही. तो चालवणाऱ्याने ENCRYPTION_SECRET सेट करणे आवश्यक आहे. ज्ञानसंग्रह, ऑफर्स आणि तुमचे अर्ज त्याशिवाय काम करतात."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "कोच चॅटमध्ये प्रत्येक तथ्य सुचवतो. तुम्ही सहमती देईपर्यंत काहीही जतन केले जात नाही."
 
@@ -12980,7 +13013,7 @@ msgstr "कोच चॅटमध्ये प्रत्येक तथ्य
 msgid "The coach reads these for this application only."
 msgstr "कोच हे फक्त या अर्जासाठी वाचतो."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "तुम्ही सांगितलेली तथ्ये कोच जतन करतो, आणि तुम्हाला कळवतो. तुम्ही पूर्ववत करू शकता."
 
@@ -13660,8 +13693,6 @@ msgstr "ला"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "आज"
 
@@ -14672,7 +14703,7 @@ msgstr "काय महत्त्वाचे आहे"
 msgid "What matters to you"
 msgstr "तुमच्यासाठी काय महत्त्वाचे आहे"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "तुमचा ईमेल पत्ता प्रदात्या
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "तुमचा ईमेल, फोन, स्थान आणि इतर शीर्षलेख तपशील, तसेच रेफरन्सेसचे फोन नंबर, वेब पेज, त्याचा PDF आणि शोध परिणामांमधून वगळले जातात."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "तुम्ही कोचिंग साधने किंवा नियोजित मुलाखत तयारी वापरता तेव्हा तुमची चालू असलेली तथ्ये, कथा आणि प्राधान्ये तुमच्या AI कनेक्शनला पाठवली जाऊ शकतात. चॅटमध्ये, प्रत्येक संदेशात काय जोडले जाते ते ज्ञानसंग्रह स्विच ठरवते."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

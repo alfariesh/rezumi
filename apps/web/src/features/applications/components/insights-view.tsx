@@ -13,18 +13,25 @@ import { useId, useRef } from "react";
 import { Cell, LabelList } from "recharts";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
+import { cn } from "@rezumi/utils/style";
 import { computeInsights, computeOutcomes, computeTimeline } from "../insights";
 import { getStageColor, getStageLabel } from "../stages";
 import { WidgetAction, WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
-/** The page's shape while stats load: the funnel, the two figures, then the charts. */
+/** The page's shape while stats load: the two figures, then the flow beside the funnel, then the charts. */
 export function InsightsSkeleton() {
 	return (
-		<div className="flex max-w-4xl flex-col gap-4">
-			<Skeleton className="h-64 rounded-3xl" />
+		<div className="flex flex-col gap-4">
 			<Skeleton className="h-28 rounded-2xl" />
-			<Skeleton className="h-80 rounded-3xl" />
+			<div className="grid items-start gap-4 2xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+				<Skeleton className="h-96 rounded-3xl" />
+				<Skeleton className="h-64 rounded-3xl max-2xl:hidden" />
+			</div>
+			<div className="grid gap-4 lg:grid-cols-2">
+				<Skeleton className="h-72 rounded-3xl" />
+				<Skeleton className="h-72 rounded-3xl max-lg:hidden" />
+			</div>
 		</div>
 	);
 }
@@ -86,126 +93,133 @@ export function ApplicationInsights({ applications }: { applications: Applicatio
 		label: getStageLabel(row.status),
 		reached: row.reached,
 	}));
+	const hasTailored = outcomes.tailored.sent + outcomes.base.sent > 0;
 	const timelineData = timeline.map((bucket) => ({ label: bucket.label, count: bucket.count }));
 	const sourceData = data.bySource.map((row) => ({ source: row.source, count: row.count }));
 
 	return (
-		<div className="flex max-w-4xl flex-col gap-4 overflow-y-auto pb-6">
-			<ChartWidget
-				icon="graph"
-				title={t`How far applications get`}
-				description={t`Counts every application that reached each stage, including ones now closed.`}
-			>
-				{/* The chart is a picture; the list below carries the same numbers for assistive tech. */}
-				<BarChart
-					aria-hidden="true"
-					data={funnelData}
-					height={outcomes.funnel.length * 40 + 16}
-					layout="vertical"
-					margin={{ top: 4, right: 40, bottom: 4, left: 0 }}
-				>
-					<BarChart.XAxis hide type="number" />
-					<BarChart.YAxis axisLine={false} dataKey="label" tickLine={false} type="category" width={80} />
-					<BarChart.Bar
-						barSize={16}
-						dataKey="reached"
-						isAnimationActive={animate}
-						name={t`Reached`}
-						radius={[0, 8, 8, 0]}
-					>
-						{funnelData.map((row) => (
-							<Cell key={row.status} fill={getStageColor(row.status)} />
-						))}
-						<LabelList dataKey="reached" formatter={formatCount} position="right" {...LABEL_PROPS} />
-					</BarChart.Bar>
-					<BarChart.Tooltip
-						content={({ active, label, payload }) => {
-							if (!active || !payload?.length) return null;
-							return (
-								<ChartTooltip>
-									<ChartTooltip.Header>{label}</ChartTooltip.Header>
-									{payload.map((entry) => (
-										<ChartTooltip.Item key={String(entry.dataKey)}>
-											<ChartTooltip.Indicator
-												color={
-													entry.payload?.status ? getStageColor(entry.payload.status) : (entry.fill ?? "var(--chart-3)")
-												}
-											/>
-											<ChartTooltip.Label>{entry.name}</ChartTooltip.Label>
-											<ChartTooltip.Value>{formatCount(entry.value)}</ChartTooltip.Value>
-										</ChartTooltip.Item>
-									))}
-								</ChartTooltip>
-							);
-						}}
-					/>
-				</BarChart>
-				<ol className="sr-only">
-					{outcomes.funnel.map((row) => (
-						<li key={row.status}>
-							{getStageLabel(row.status)}: {formatCount(row.reached)}
-						</li>
-					))}
-				</ol>
-			</ChartWidget>
-
-			<KPIGroup>
-				<KPI>
-					<KPI.Header>
-						<KPI.Title>
-							<Trans>Heard back</Trans>
-						</KPI.Title>
-					</KPI.Header>
-					<KPI.Content>
-						<KPI.Value
-							className="text-3xl"
-							locale={i18n.locale}
-							maximumFractionDigits={0}
-							style="percent"
-							value={outcomes.heardBack / outcomes.sent}
-						/>
-					</KPI.Content>
-				</KPI>
-				<KPIGroup.Separator />
-				<KPI>
-					<KPI.Header>
-						<KPI.Title>
-							<Trans>Median to first reply</Trans>
-						</KPI.Title>
-					</KPI.Header>
-					<KPI.Content>
-						{outcomes.medianDaysToReply === null ? (
-							<dd className="text-3xl font-semibold text-muted">—</dd>
-						) : (
+		<div className="flex flex-col gap-4 pb-6">
+			{/* The summary first; beside it the tailored-resume note when there is one. */}
+			<div className={cn("grid items-stretch gap-4", hasTailored && "xl:grid-cols-2")}>
+				<KPIGroup>
+					<KPI>
+						<KPI.Header>
+							<KPI.Title>
+								<Trans>Heard back</Trans>
+							</KPI.Title>
+						</KPI.Header>
+						<KPI.Content>
 							<KPI.Value
 								className="text-3xl"
 								locale={i18n.locale}
 								maximumFractionDigits={0}
-								style="unit"
-								unit="day"
-								value={outcomes.medianDaysToReply}
+								style="percent"
+								value={outcomes.heardBack / outcomes.sent}
 							/>
-						)}
-					</KPI.Content>
-				</KPI>
-			</KPIGroup>
+						</KPI.Content>
+					</KPI>
+					<KPIGroup.Separator />
+					<KPI>
+						<KPI.Header>
+							<KPI.Title>
+								<Trans>Median to first reply</Trans>
+							</KPI.Title>
+						</KPI.Header>
+						<KPI.Content>
+							{outcomes.medianDaysToReply === null ? (
+								<dd className="text-3xl font-semibold text-muted">—</dd>
+							) : (
+								<KPI.Value
+									className="text-3xl"
+									locale={i18n.locale}
+									maximumFractionDigits={0}
+									style="unit"
+									unit="day"
+									value={outcomes.medianDaysToReply}
+								/>
+							)}
+						</KPI.Content>
+					</KPI>
+				</KPIGroup>
+				{hasTailored && (
+					<Widget role="region" aria-labelledby="insights-tailored">
+						<WidgetHeading id="insights-tailored" icon="file-text" title={<Trans>Tailored vs. base resume</Trans>} />
+						<Widget.Content>
+							<p className="text-sm leading-6 text-muted">
+								<Trans>
+									{outcomes.tailored.replied} of {outcomes.tailored.sent} tailored applications got a reply;{" "}
+									{outcomes.base.replied} of {outcomes.base.sent} sent with another resume.
+								</Trans>{" "}
+								{outcomes.tailored.sent + outcomes.base.sent < 10 && <Trans>Small numbers, but worth noticing.</Trans>}
+							</p>
+						</Widget.Content>
+					</Widget>
+				)}
+			</div>
 
-			{outcomes.tailored.sent + outcomes.base.sent > 0 && (
-				<Widget role="region" aria-labelledby="insights-tailored">
-					<WidgetHeading id="insights-tailored" icon="file-text" title={<Trans>Tailored vs. base resume</Trans>} />
-					<Widget.Content>
-						<p className="text-sm leading-6 text-muted">
-							<Trans>
-								{outcomes.tailored.replied} of {outcomes.tailored.sent} tailored applications got a reply;{" "}
-								{outcomes.base.replied} of {outcomes.base.sent} sent with another resume.
-							</Trans>{" "}
-							{outcomes.tailored.sent + outcomes.base.sent < 10 && <Trans>Small numbers, but worth noticing.</Trans>}
-						</p>
-					</Widget.Content>
-				</Widget>
-			)}
-
-			<PipelineFlow insights={insights} />
+			{/* Wide screens: the flow (its text scales with its width, so it takes the larger share) beside the funnel. */}
+			<div className="grid items-start gap-4 2xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+				<PipelineFlow insights={insights} />
+				<ChartWidget
+					icon="graph"
+					title={t`How far applications get`}
+					description={t`Counts every application that reached each stage, including ones now closed.`}
+				>
+					{/* The chart is a picture; the list below carries the same numbers for assistive tech. */}
+					<BarChart
+						aria-hidden="true"
+						data={funnelData}
+						height={outcomes.funnel.length * 40 + 16}
+						layout="vertical"
+						margin={{ top: 4, right: 40, bottom: 4, left: 0 }}
+					>
+						<BarChart.XAxis hide type="number" />
+						<BarChart.YAxis axisLine={false} dataKey="label" tickLine={false} type="category" width={80} />
+						<BarChart.Bar
+							barSize={16}
+							dataKey="reached"
+							isAnimationActive={animate}
+							name={t`Reached`}
+							radius={[0, 8, 8, 0]}
+						>
+							{funnelData.map((row) => (
+								<Cell key={row.status} fill={getStageColor(row.status)} />
+							))}
+							<LabelList dataKey="reached" formatter={formatCount} position="right" {...LABEL_PROPS} />
+						</BarChart.Bar>
+						<BarChart.Tooltip
+							content={({ active, label, payload }) => {
+								if (!active || !payload?.length) return null;
+								return (
+									<ChartTooltip>
+										<ChartTooltip.Header>{label}</ChartTooltip.Header>
+										{payload.map((entry) => (
+											<ChartTooltip.Item key={String(entry.dataKey)}>
+												<ChartTooltip.Indicator
+													color={
+														entry.payload?.status
+															? getStageColor(entry.payload.status)
+															: (entry.fill ?? "var(--chart-3)")
+													}
+												/>
+												<ChartTooltip.Label>{entry.name}</ChartTooltip.Label>
+												<ChartTooltip.Value>{formatCount(entry.value)}</ChartTooltip.Value>
+											</ChartTooltip.Item>
+										))}
+									</ChartTooltip>
+								);
+							}}
+						/>
+					</BarChart>
+					<ol className="sr-only">
+						{outcomes.funnel.map((row) => (
+							<li key={row.status}>
+								{getStageLabel(row.status)}: {formatCount(row.reached)}
+							</li>
+						))}
+					</ol>
+				</ChartWidget>
+			</div>
 
 			<div className="grid gap-4 lg:grid-cols-2">
 				{/* application velocity over time */}

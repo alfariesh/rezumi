@@ -1,22 +1,11 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import z from "zod";
-import { useOverlayHistory } from "@/features/career/hooks";
-import { TodayPage } from "@/features/career/today";
 
+// Today is Home now, at /dashboard. Notifications, emails and older app builds still link here (with `schedule` to
+// open a schedule), so this address forwards and keeps it.
 export const Route = createFileRoute("/dashboard/career/")({
-	// `schedule`: a schedule's id or "new" opens the schedule sheet, so links from notifications can open it.
 	validateSearch: z.object({ schedule: z.string().min(1).optional().catch(undefined) }),
-	component: RouteComponent,
+	beforeLoad: ({ search }) => {
+		throw redirect({ to: "/dashboard", search: search.schedule ? { schedule: search.schedule } : {}, replace: true });
+	},
 });
-
-function RouteComponent() {
-	const { schedule } = Route.useSearch();
-	const navigate = useNavigate({ from: Route.fullPath });
-	const overlay = useOverlayHistory();
-	const onScheduleChange = (next: string | undefined) => {
-		if (!next) return overlay.close(() => void navigate({ search: {}, replace: true }));
-		if (!schedule) overlay.open();
-		void navigate({ search: { schedule: next }, replace: Boolean(schedule) });
-	};
-	return <TodayPage schedule={schedule} onScheduleChange={onScheduleChange} />;
-}

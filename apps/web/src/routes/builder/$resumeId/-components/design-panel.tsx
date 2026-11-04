@@ -398,9 +398,12 @@ type AdvancedWidgetProps = { open: boolean; onOpenChange: (open: boolean) => voi
 
 /**
  * Every exact value (typography, colours and levels, page, layout), custom CSS and Reset design defaults, collapsed
- * until asked for. The editors mount only while it's open.
+ * until asked for. The editors mount the first time it opens (React Aria renders a closed panel's content too), then
+ * stay for the closing animation.
  */
 function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
+	const [opened, setOpened] = useState(open);
+	if (open && !opened) setOpened(true);
 	const updateResumeData = useUpdateResumeData();
 	const { icon, label } = groupOf("advanced");
 
@@ -447,29 +450,31 @@ function AdvancedWidget({ open, onOpenChange }: AdvancedWidgetProps) {
 				<Disclosure.Content className="*:p-0">
 					{/* `pt-px`: room for the content's hairline under the header, which the panel's clip would cut. */}
 					<Disclosure.Body className="p-0 pt-px">
-						<Widget.Content className="@container mt-0 grid min-w-0 gap-8">
-							<ExactSection id="typography" title={<Trans>Typography</Trans>}>
-								<TypographySectionBuilder />
-							</ExactSection>
-							<ExactSection id="design" title={<Trans>Colors and levels</Trans>}>
-								<DesignSectionBuilder />
-							</ExactSection>
-							<ExactSection id="page" title={<Trans>Page</Trans>}>
-								<DateFormatSelect />
-								<PageSectionBuilder />
-							</ExactSection>
-							<ExactSection id="layout" title={<Trans>Layout</Trans>}>
-								<LayoutSectionBuilder />
-							</ExactSection>
-							<ExactSection id="styles" title={<Trans>Custom CSS</Trans>}>
-								<CustomStylesSectionBuilder />
-							</ExactSection>
+						{opened && (
+							<Widget.Content className="@container mt-0 grid min-w-0 gap-8">
+								<ExactSection id="typography" title={<Trans>Typography</Trans>}>
+									<TypographySectionBuilder />
+								</ExactSection>
+								<ExactSection id="design" title={<Trans>Colors and levels</Trans>}>
+									<DesignSectionBuilder />
+								</ExactSection>
+								<ExactSection id="page" title={<Trans>Page</Trans>}>
+									<DateFormatSelect />
+									<PageSectionBuilder />
+								</ExactSection>
+								<ExactSection id="layout" title={<Trans>Layout</Trans>}>
+									<LayoutSectionBuilder />
+								</ExactSection>
+								<ExactSection id="styles" title={<Trans>Custom CSS</Trans>}>
+									<CustomStylesSectionBuilder />
+								</ExactSection>
 
-							<Button variant="secondary" className="w-fit" onPress={() => reset()}>
-								<Icon name="arrow-counter-clockwise" size={18} />
-								<Trans>Reset design defaults</Trans>
-							</Button>
-						</Widget.Content>
+								<Button variant="secondary" className="w-fit" onPress={() => reset()}>
+									<Icon name="arrow-counter-clockwise" size={18} />
+									<Trans>Reset design defaults</Trans>
+								</Button>
+							</Widget.Content>
+						)}
 					</Disclosure.Body>
 				</Disclosure.Content>
 			</Disclosure>

@@ -1901,6 +1901,10 @@ msgstr "Barcha arizalar"
 msgid "All applications (including closed)"
 msgstr "Barcha ishga arizalar (shu jumladan yopiq)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON sifatida barcha hujjatlar va ishga arizalar bitta zip ichida"
@@ -2158,6 +2162,7 @@ msgstr "Ariza beruvchini kuzatish tizimlari PDF-ni hech kim o‘qimasdan oldin u
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Ariza"
 
@@ -2186,6 +2191,7 @@ msgstr "Ariza berilgan sanagacha"
 msgid "Application deleted"
 msgstr "ish uchun ariza o'chirildi"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Ariza tafsilotlari"
@@ -2307,7 +2313,7 @@ msgstr "Qaror qilishdan oldin so'rang."
 msgid "Ask both"
 msgstr "Ikkalasidan so'rash"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Avval so'rash"
 
@@ -2401,7 +2407,7 @@ msgstr "Fayl biriktiring"
 msgid "Attachment"
 msgstr "Ilova"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Avtomatik"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Karyera"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "Dizayniga mos keladigan Write-da rezyumeni tanlang. Ungacha maktubning o
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB gacha WebM, MP4, MP3, WAV yoki Ogg faylini tanlang."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Ishga arizani tanlang…"
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Murabbiy"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Ulangan ilovalarni yuklab bo'lmadi. Qayta urinish uchun sahifani yangilang."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Hujjatlarni yuklab bo‘lmadi"
 
@@ -4247,6 +4259,7 @@ msgstr "To'ldirish"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Motivatsion xat"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "Fakt unutildi"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Faktlar"
@@ -6357,7 +6371,9 @@ msgstr "Tarix"
 msgid "Hold to delete"
 msgstr "O'chirish uchun bosib turing"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Bosh sahifa"
 
@@ -7433,9 +7449,14 @@ msgstr "{0} da jonli"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Yuklanmoqda"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "Tarmoq"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Hech qachon"
@@ -8167,6 +8188,7 @@ msgstr "Buning o'rniga yangi qopqoq xati"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Yangi hujjat"
 
@@ -9580,6 +9602,7 @@ msgstr "Sarlavhalar bilan oddiy matn. Ishga ariza shakllari va eslatmalarga joyl
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "Afzalliklar"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Qabul qiluvchi"
@@ -10553,7 +10581,7 @@ msgstr "Qayta yuklash"
 msgid "Remember"
 msgstr "Eslab qolish"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Xabarlarimdagi faktlarni eslab qolish"
 
@@ -10849,6 +10877,7 @@ msgstr "Rezyume; qayta boshlash"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "Olingan {0}. Xabar berilmasa, kelib chiqishi yangiligi noma'lum."
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "Skrining"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Qidiruv"
 
@@ -11800,6 +11831,7 @@ msgstr "Autentifikatsiya ilovangizni sozlang"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Sozlamalar"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Hikoyalar"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Tekshirishlar mexanik. Bu til modelidan o'quvchi sizning ro'yxatdagi yozuvlaringizga qanday munosabatda bo'lishi mumkinligini so'raydi va qayta yozishni taklif qiladi. Bu hisobning bir qismi emas."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Murabbiy xabarlaringizdan hech narsani eslab qolmaydi."
 
@@ -12972,7 +13005,7 @@ msgstr "Murabbiy xabarlaringizdan hech narsani eslab qolmaydi."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Murabbiy bu serverda sozlanmagan. Serverni boshqaruvchi ENCRYPTION_SECRET qiymatini o'rnatishi kerak. Bilimlar, Takliflar va arizalaringiz busiz ham ishlaydi."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Murabbiy har bir faktni chatda taklif qiladi. Siz rozi bo'lmaguningizcha hech narsa saqlanmaydi."
 
@@ -12980,7 +13013,7 @@ msgstr "Murabbiy har bir faktni chatda taklif qiladi. Siz rozi bo'lmaguningizcha
 msgid "The coach reads these for this application only."
 msgstr "Murabbiy bularni faqat shu ariza uchun o'qiydi."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Murabbiy siz aytgan faktlarni saqlaydi va bu haqda xabar beradi. Buni bekor qilishingiz mumkin."
 
@@ -13660,8 +13693,6 @@ msgstr "Kimga"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Bugun"
 
@@ -14672,7 +14703,7 @@ msgstr "Nima muhim"
 msgid "What matters to you"
 msgstr "Siz uchun nima muhim"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "Email manzilingiz provayderda tasdiqlanmagan. Uni u yerda tasdiqlang, so
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Elektron pochtangiz, telefoningiz, joylashuvingiz va sarlavhadagi boshqa ma'lumotlar, shuningdek tavsiya beruvchilarning telefon raqamlari veb-sahifa, uning PDF fayli va qidiruv natijalariga kiritilmaydi."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Murabbiylik vositalari yoki rejalashtirilgan intervyu tayyorgarligidan foydalanganingizda yoqilgan faktlar, hikoyalar va afzalliklaringiz AI ulanishingizga yuborilishi mumkin. Chatda Bilimlar tugmasi har bir xabarga nima qo'shilishini boshqaradi."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

@@ -1901,6 +1901,10 @@ msgstr "எல்லா விண்ணப்பங்களும்"
 msgid "All applications (including closed)"
 msgstr "அனைத்து வேலை விண்ணப்பங்களும் (மூடப்பட்டவை உட்பட)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "JSON என அனைத்து ஆவணங்களும் வேலை விண்ணப்பங்களும் ஒரே ஜிப்பில்"
@@ -2158,6 +2162,7 @@ msgstr "விண்ணப்பதாரர் கண்காணிப்ப�
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "விண்ணப்பம்"
 
@@ -2186,6 +2191,7 @@ msgstr "விண்ணப்பிக்கும் தேதி"
 msgid "Application deleted"
 msgstr "வேலை விண்ணப்பம் நீக்கப்பட்டது"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "விண்ணப்ப விவரங்கள்"
@@ -2307,7 +2313,7 @@ msgstr "முடிவெடுக்கும் முன் கேளுங�
 msgid "Ask both"
 msgstr "இருவரிடமும் கேள்"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "முதலில் கேட்கும்"
 
@@ -2401,7 +2407,7 @@ msgstr "ஒரு கோப்பை இணைக்கவும்"
 msgid "Attachment"
 msgstr "இணைப்பு"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "தானாகவே"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "தொழில் வாழ்க்கை"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "அதன் வடிவமைப்புடன் பொருந்�
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "2 MB வரையிலான WebM, MP4, MP3, WAV அல்லது Ogg கோப்பைத் தேர்ந்தெடுக்கவும்."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "வேலைக்கான விண்ணப்பத்தைத் தேர்ந்தெடுங்கள்..."
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "ஆலோசகர்"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "இணைக்கப்பட்ட பயன்பாடுகளை ஏற்ற முடியவில்லை. மீண்டும் முயற்சிக்கப் பக்கத்தைப் புதுப்பிக்கவும்."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "ஆவணங்களை ஏற்ற முடியவில்லை"
 
@@ -4247,6 +4259,7 @@ msgstr "நிரப்பு"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "கவர் கடிதம்"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "உண்மை மறக்கப்பட்டது"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "உண்மைகள்"
@@ -6357,7 +6371,9 @@ msgstr "வரலாறு"
 msgid "Hold to delete"
 msgstr "நீக்க அழுத்திப் பிடிக்கவும்"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "முகப்பு"
 
@@ -7433,9 +7449,14 @@ msgstr "{0} இல் நேரலை"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "ஏற்றப்படுகிறது"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "நெட்வொர்க்"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "ஒருபோதும் இல்லை"
@@ -8167,6 +8188,7 @@ msgstr "அதற்கு பதிலாக புதிய கவர் க�
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "புதிய ஆவணம்"
 
@@ -9580,6 +9602,7 @@ msgstr "தலைப்புகளுடன் கூடிய எளிய உ
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "விருப்பங்கள்"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "பெறுநர்"
@@ -10553,7 +10581,7 @@ msgstr "மீண்டும் ஏற்றவும்"
 msgid "Remember"
 msgstr "நினைவில் வை"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "என் செய்திகளிலிருந்து உண்மைகளை நினைவில் வை"
 
@@ -10849,6 +10877,7 @@ msgstr "ரெஸ்யூம்"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "{0} மீட்டெடுக்கப்பட்டது. புக
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "முதற்கட்டத் தேர்வு"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "தேடல்"
 
@@ -11800,6 +11831,7 @@ msgstr "உங்கள் அங்கீகாரச் செயலியை 
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "அமைப்புகள்"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "கதைகள்"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "காசோலைகள் இயந்திரத்தனமானவை. உங்கள் பட்டியல் உள்ளீடுகளுக்கு வாசகர் எவ்வாறு எதிர்வினையாற்றலாம் என்பதை இது மொழி மாதிரியைக் கேட்கிறது மற்றும் மீண்டும் எழுத பரிந்துரைக்கிறது. இது மதிப்பெண்ணின் ஒரு பகுதி அல்ல."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "உங்கள் செய்திகளிலிருந்து ஆலோசகர் எதையும் நினைவில் வைக்காது."
 
@@ -12972,7 +13005,7 @@ msgstr "உங்கள் செய்திகளிலிருந்து �
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "இந்தச் சேவையகத்தில் ஆலோசகர் அமைக்கப்படவில்லை. இதை இயக்குபவர் ENCRYPTION_SECRET-ஐ அமைக்க வேண்டும். அறிவுத் தளம், சலுகைகள், உங்கள் விண்ணப்பங்கள் அது இல்லாமலும் வேலை செய்யும்."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "ஆலோசகர் ஒவ்வொரு உண்மையையும் அரட்டையில் முன்மொழியும். நீங்கள் ஒப்புக்கொள்ளும் வரை எதுவும் சேமிக்கப்படாது."
 
@@ -12980,7 +13013,7 @@ msgstr "ஆலோசகர் ஒவ்வொரு உண்மையையு�
 msgid "The coach reads these for this application only."
 msgstr "ஆலோசகர் இவற்றை இந்த விண்ணப்பத்திற்கு மட்டுமே படிக்கும்."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "நீங்கள் கூறும் உண்மைகளை ஆலோசகர் சேமித்து, உங்களுக்குத் தெரிவிக்கும். நீங்கள் செயல்தவிர்க்கலாம்."
 
@@ -13660,8 +13693,6 @@ msgstr "செய்ய"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "இன்று"
 
@@ -14672,7 +14703,7 @@ msgstr "முக்கியமானவை"
 msgid "What matters to you"
 msgstr "உங்களுக்கு முக்கியமானவை"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "உங்கள் மின்னஞ்சல் முகவரி வ
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "உங்கள் மின்னஞ்சல், தொலைபேசி, இருப்பிடம் மற்றும் பிற தலைப்பு விவரங்களும், பரிந்துரையாளர்களின் தொலைபேசி எண்களும் வலைப்பக்கம், அதன் PDF மற்றும் தேடல் முடிவுகளில் சேர்க்கப்படாது."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "ஆலோசனைக் கருவிகளையோ அட்டவணையிட்ட நேர்காணல் தயாரிப்பையோ பயன்படுத்தும்போது, நீங்கள் இயக்கிய உண்மைகள், கதைகள், விருப்பங்கள் உங்கள் AI இணைப்புக்கு அனுப்பப்படலாம். அரட்டையில், ஒவ்வொரு செய்தியிலும் என்ன சேர்க்கப்படும் என்பதை அறிவுத் தள சுவிட்ச் கட்டுப்படுத்தும்."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

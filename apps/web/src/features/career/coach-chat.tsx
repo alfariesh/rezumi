@@ -344,7 +344,7 @@ const MessageView = memo(function MessageView({
 					// min-w-0 lets a wide table scroll inside its own box instead of stretching the column.
 					<ChatMessage.Content
 						className={cn(
-							"w-fit! max-w-full min-w-0 rounded-2xl rounded-ss-none bg-default px-4 py-2.5",
+							"w-fit! max-w-full min-w-0 rounded-2xl rounded-ss-none bg-surface px-4 py-2.5",
 							enter && ENTER_CLASS,
 						)}
 					>

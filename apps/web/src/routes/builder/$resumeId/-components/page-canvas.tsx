@@ -7,7 +7,7 @@ import { useLingui } from "@lingui/react";
 import { Plural, Trans } from "@lingui/react/macro";
 import { useQuery } from "@tanstack/react-query";
 import { lazyRouteComponent } from "@tanstack/react-router";
-import { Suspense, useState } from "react";
+import { Activity, Suspense, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { cn } from "@rezumi/utils/style";
@@ -30,14 +30,23 @@ const NONE: readonly never[] = [];
 
 const WebPagePreview = lazyRouteComponent(() => import("@/features/resume/share/web-page-preview"), "WebPagePreview");
 
-/** Share shows the web page; every other mode, the PDF's pages. */
+/**
+ * Share shows the web page; every other mode, the PDF's pages. The pages stay mounted, hidden, under Share, so
+ * leaving it shows them at once instead of drawing them again.
+ */
 export function PageCanvas() {
 	const [mode] = useEditorMode();
-	if (mode !== "share") return <ResumePageCanvas />;
 	return (
-		<Suspense>
-			<WebPagePreview />
-		</Suspense>
+		<>
+			<Activity mode={mode === "share" ? "hidden" : "visible"}>
+				<ResumePageCanvas />
+			</Activity>
+			{mode === "share" && (
+				<Suspense>
+					<WebPagePreview />
+				</Suspense>
+			)}
+		</>
 	);
 }
 

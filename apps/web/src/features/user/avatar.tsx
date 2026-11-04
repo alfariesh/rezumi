@@ -20,10 +20,7 @@ export function UserAvatar(props: UserAvatarProps) {
 		<Avatar {...(size ? { size } : {})} className={className}>
 			{image && <Avatar.Image src={image} alt="" />}
 			<Avatar.Fallback
-				className={cn(
-					"bg-[url(/avatar-placeholder.webp)] bg-cover bg-center font-semibold text-white",
-					fallbackClassName,
-				)}
+				className={cn("bg-[url(/gradients/blue.webp)] bg-cover bg-center font-semibold text-white", fallbackClassName)}
 			>
 				{getInitials(name)}
 			</Avatar.Fallback>

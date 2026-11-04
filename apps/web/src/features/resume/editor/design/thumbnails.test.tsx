@@ -57,10 +57,11 @@ it("renders the user's own content, then drops the previous thumbnail when the r
 		{ wrapper, initialProps: { data: sampleResumeData } },
 	);
 	await waitFor(() => expect(result.current.data).toBe("blob:personal-preview"));
-	expect(mocks.pdf).toHaveBeenCalledWith({
-		...sampleResumeData,
-		metadata: { ...sampleResumeData.metadata, template: "sterling" },
-	});
+	expect(mocks.pdf).toHaveBeenCalledWith(
+		{ ...sampleResumeData, metadata: { ...sampleResumeData.metadata, template: "sterling" } },
+		undefined,
+		{ signal: expect.any(AbortSignal) },
+	);
 	expect(sampleResumeData).toEqual(original);
 	rerender({ data: defaultResumeData });
 	await waitFor(() => expect(result.current.fetchStatus).toBe("idle"));

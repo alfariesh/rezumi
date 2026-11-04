@@ -182,9 +182,17 @@ it.each([
 
 it("does not claim an Ask first privacy default when the saved memory setting fails to load", async () => {
 	api.fail.add("profile");
-	mount(<FactsPage highlight={undefined} />);
+	mount(<PreferencesPage />);
 	await screen.findByRole("alert");
 	expect(screen.queryByRole("radio", { name: "Ask first" })).toBeNull();
+});
+
+it("saves the coach memory choice from Preferences", async () => {
+	mount(<PreferencesPage />);
+	fireEvent.click(await screen.findByRole("radio", { name: "Never" }));
+	expect(screen.getByText("The coach doesn't remember anything from your messages.")).toBeTruthy();
+	fireEvent.blur(screen.getByRole("spinbutton", { name: "Notice period" }));
+	await waitFor(() => expect(api.saveProfile).toHaveBeenCalledWith(expect.objectContaining({ memoryMode: "off" })));
 });
 
 it("rejects salary shorthand without autosaving a different number, and accepts a full amount", async () => {

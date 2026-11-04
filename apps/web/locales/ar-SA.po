@@ -1901,6 +1901,10 @@ msgstr "كل الطلبات"
 msgid "All applications (including closed)"
 msgstr "جميع طلبات العمل (بما في ذلك المغلقة)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "جميع المستندات وطلبات العمل بصيغة JSON، في ملف مضغوط واحد"
@@ -2158,6 +2162,7 @@ msgstr "تقوم أنظمة تتبع مقدم الطلب بتحويل PDF الخ
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "الطلب"
 
@@ -2186,6 +2191,7 @@ msgstr "تاريخ التقديم إلى"
 msgid "Application deleted"
 msgstr "تم حذف طلب الوظيفة"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "تفاصيل الطلب"
@@ -2307,7 +2313,7 @@ msgstr "اسأل قبل أن تقرر."
 msgid "Ask both"
 msgstr "اسأل كليهما"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "اسأل أولًا"
 
@@ -2401,7 +2407,7 @@ msgstr "إرفاق ملف"
 msgid "Attachment"
 msgstr "مرفق"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "تلقائيًا"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "المسار المهني"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "اختر سيرة ذاتية في تطبيق Write لتتناسب مع �
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "اختر ملف WebM أو MP4 أو MP3 أو WAV أو Ogg بحجم يصل إلى 2 MB."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "اختر طلب التوظيف…"
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "المدرّب"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "تعذّر تحميل التطبيقات المتصلة. حدّث الصفحة للمحاولة مرة أخرى."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "تعذر تحميل المستندات"
 
@@ -4247,6 +4259,7 @@ msgstr "ملء الإطار"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "خطاب التقديم"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "تم نسيان الحقيقة"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "الحقائق"
@@ -6357,7 +6371,9 @@ msgstr "السجل"
 msgid "Hold to delete"
 msgstr "اضغط مطولًا للحذف"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "الصفحة الرئيسية"
 
@@ -7433,9 +7449,14 @@ msgstr "العيش في {0}"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "جارٍ التحميل"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "الشبكة"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "أبداً"
@@ -8167,6 +8188,7 @@ msgstr "خطاب تغطية جديد بدلا من ذلك"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "وثيقة جديدة"
 
@@ -9580,6 +9602,7 @@ msgstr "نص عادي مع العناوين. الصق في نماذج طلبات
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "التفضيلات"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "المستلم"
@@ -10553,7 +10581,7 @@ msgstr "إعادة تحميل"
 msgid "Remember"
 msgstr "تذكّر"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "تذكّر الحقائق من رسائلي"
 
@@ -10849,6 +10877,7 @@ msgstr "سيرة ذاتية"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "تم الاسترجاع {0}. نضارة الأصل غير معروفة �
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "الفحص"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "يبحث"
 
@@ -11800,6 +11831,7 @@ msgstr "إعداد تطبيق المصادقة"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "إعدادات"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "القصص"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "الشيكات ميكانيكية. يسأل هذا نموذج اللغة عن كيفية تفاعل القارئ مع إدخالات القائمة ويقترح إعادة الكتابة. انها ليست جزءا من النتيجة."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "لا يتذكّر المدرّب أي شيء من رسائلك."
 
@@ -12972,7 +13005,7 @@ msgstr "لا يتذكّر المدرّب أي شيء من رسائلك."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "المدرّب غير مُعدّ على هذا الخادم. يجب على من يديره ضبط ENCRYPTION_SECRET. تعمل المعرفة والعروض وطلباتك بدونه."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "يقترح المدرّب كل حقيقة في المحادثة. لا يُحفظ شيء حتى توافق."
 
@@ -12980,7 +13013,7 @@ msgstr "يقترح المدرّب كل حقيقة في المحادثة. لا ي
 msgid "The coach reads these for this application only."
 msgstr "يقرأ المدرّب هذه لهذا الطلب فقط."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "يحفظ المدرّب الحقائق التي تذكرها، ويخبرك بذلك. يمكنك التراجع."
 
@@ -13660,8 +13693,6 @@ msgstr "ل"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "اليوم"
 
@@ -14672,7 +14703,7 @@ msgstr "ما يهم"
 msgid "What matters to you"
 msgstr "ما يهمك"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "عنوان بريدك الإلكتروني غير مُتحقَّق من�
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "يُستبعد بريدك الإلكتروني وهاتفك وموقعك وغيرها من بيانات الترويسة، وأرقام هواتف المراجعين، من صفحة الويب وملف PDF الخاص بها ونتائج البحث."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "يمكن إرسال حقائقك وقصصك وتفضيلاتك المفعّلة إلى اتصال الذكاء الاصطناعي لديك عند استخدام أدوات التدريب أو التحضير المجدول للمقابلات. في المحادثة، يتحكم مفتاح المعرفة فيما يُضاف إلى كل رسالة."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

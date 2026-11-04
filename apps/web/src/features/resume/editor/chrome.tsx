@@ -108,7 +108,7 @@ export function BackLink() {
 		<Tooltip>
 			<Tooltip.Trigger>
 				<Link
-					to="/dashboard"
+					to="/dashboard/documents"
 					aria-label={label}
 					className={buttonVariants({ variant: "ghost", size: "md", isIconOnly: true })}
 				>

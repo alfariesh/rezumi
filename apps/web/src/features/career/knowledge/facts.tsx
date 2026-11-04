@@ -1,9 +1,21 @@
 import type { Fact } from "../hooks";
-import type { FactCategory, MemoryMode } from "@rezumi/schema/career";
+import type { FactCategory } from "@rezumi/schema/career";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { KeyboardEvent } from "react";
-import { EmptyState, ItemCard, NativeSelect, Segment } from "@heroui-pro/react";
-import { Button, Chip, InputGroup, Label, Modal, Separator, Spinner, Switch, TextArea, TextField } from "@heroui/react";
+import { EmptyState, NativeSelect } from "@heroui-pro/react";
+import {
+	Button,
+	Chip,
+	InputGroup,
+	Label,
+	Modal,
+	Separator,
+	Skeleton,
+	Spinner,
+	Switch,
+	TextArea,
+	TextField,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,9 +24,8 @@ import { memo, useDeferredValue, useEffect, useId, useRef, useState } from "reac
 import { factCategorySchema } from "@rezumi/schema/career";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { CareerLoadError, CareerLoading } from "../load-state";
+import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, FilterChip, flash, useCareerTime, withUndo } from "../shared";
-import { useProfile } from "./preferences";
 import { WidgetAction } from "@/components/layout/widget-heading";
 import { toastError } from "@/libs/error-message";
 import { D2, EASE, EXIT } from "@/libs/motion";
@@ -118,8 +129,6 @@ export function FactsPage({ highlight }: FactsPageProps) {
 
 	return (
 		<div className="grid gap-4">
-			<MemoryCard />
-
 			<div className="flex flex-wrap items-center gap-x-3 gap-y-2">
 				<div className="-mx-4 flex [scrollbar-width:none] gap-1 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
 					<FilterChip pressed={type === null} onClick={() => setType(null)}>
@@ -145,13 +154,14 @@ export function FactsPage({ highlight }: FactsPageProps) {
 				</InputGroup>
 			</div>
 
-			{!facts && (factQuery.isError ? <CareerLoadError onRetry={() => void factQuery.refetch()} /> : <CareerLoading />)}
+			{!facts && factQuery.isError && <CareerLoadError onRetry={() => void factQuery.refetch()} />}
 
-			{facts && (
+			{/* The widget shows while facts load, with placeholder rows, so the list lands where its frame already is. */}
+			{!(factQuery.isError && !facts) && (
 				<CareerWidget
 					icon="check-circle"
 					title={<Trans>Your facts</Trans>}
-					count={visible.length}
+					count={facts ? visible.length : undefined}
 					trailing={
 						<WidgetAction onPress={() => setAdding(true)}>
 							<Icon name="plus" size={16} />
@@ -160,40 +170,44 @@ export function FactsPage({ highlight }: FactsPageProps) {
 					}
 					contentClassName="gap-0 p-0"
 				>
-					<div ref={listRef}>
-						<AnimatePresence initial={false}>
-							{visible.map((fact) => (
-								<FactRow
-									key={fact.id}
-									fact={fact}
-									onStatus={setStatus}
-									onCorrect={correct}
-									onShare={share}
-									onForget={forget}
-								/>
-							))}
-						</AnimatePresence>
-						{visible.length === 0 && (
-							<EmptyState size="sm">
-								<EmptyState.Header>
-									<EmptyState.Media variant="icon">
-										<Icon name="list-checks" size={20} />
-									</EmptyState.Media>
-									<EmptyState.Title>{facts.length === 0 ? t`No facts yet` : t`No facts match`}</EmptyState.Title>
-									<EmptyState.Description>
-										{facts.length === 0 ? t`Use Add fact to start.` : t`Try another word or type.`}
-									</EmptyState.Description>
-								</EmptyState.Header>
-								{type !== null && (
-									<EmptyState.Content>
-										<Button variant="secondary" size="sm" onPress={() => setType(null)}>
-											<Trans>Show all types</Trans>
-										</Button>
-									</EmptyState.Content>
-								)}
-							</EmptyState>
-						)}
-					</div>
+					{!facts ? (
+						<FactRowsSkeleton />
+					) : (
+						<div ref={listRef}>
+							<AnimatePresence initial={false}>
+								{visible.map((fact) => (
+									<FactRow
+										key={fact.id}
+										fact={fact}
+										onStatus={setStatus}
+										onCorrect={correct}
+										onShare={share}
+										onForget={forget}
+									/>
+								))}
+							</AnimatePresence>
+							{visible.length === 0 && (
+								<EmptyState size="sm">
+									<EmptyState.Header>
+										<EmptyState.Media variant="icon">
+											<Icon name="list-checks" size={20} />
+										</EmptyState.Media>
+										<EmptyState.Title>{facts.length === 0 ? t`No facts yet` : t`No facts match`}</EmptyState.Title>
+										<EmptyState.Description>
+											{facts.length === 0 ? t`Use Add fact to start.` : t`Try another word or type.`}
+										</EmptyState.Description>
+									</EmptyState.Header>
+									{type !== null && (
+										<EmptyState.Content>
+											<Button variant="secondary" size="sm" onPress={() => setType(null)}>
+												<Trans>Show all types</Trans>
+											</Button>
+										</EmptyState.Content>
+									)}
+								</EmptyState>
+							)}
+						</div>
+					)}
 				</CareerWidget>
 			)}
 			<AddFactDialog open={adding} onOpenChange={setAdding} onAdded={added} />
@@ -201,50 +215,22 @@ export function FactsPage({ highlight }: FactsPageProps) {
 	);
 }
 
-// ---- Memory mode ----
-
-function MemoryCard() {
-	const { profile, save, isError, retry } = useProfile();
-	const labelId = useId();
-	const mode = profile?.memoryMode;
-	const hints: Record<MemoryMode, string> = {
-		ask: t`The coach proposes each fact in the chat. Nothing is saved until you agree.`,
-		auto: t`The coach saves facts you state, and tells you. You can undo.`,
-		off: t`The coach doesn't remember anything from your messages.`,
-	};
-	const modes: [MemoryMode, string][] = [
-		["ask", t`Ask first`],
-		["auto", t`Automatically`],
-		["off", t`Never`],
-	];
-	if (!profile) return isError ? <CareerLoadError onRetry={retry} /> : <CareerLoading />;
-
+/** Fact rows while the list loads: the chips, two lines of text, and the switch at the end, as `FactRow` lays them out. */
+function FactRowsSkeleton() {
 	return (
-		<ItemCard className="flex-wrap gap-y-3">
-			<ItemCard.Icon>
-				<Icon name="brain" size={16} />
-			</ItemCard.Icon>
-			<ItemCard.Content className="min-w-0 basis-56">
-				<ItemCard.Title id={labelId} className="whitespace-normal">
-					<Trans>Remember facts from my messages</Trans>
-				</ItemCard.Title>
-				<ItemCard.Description className="whitespace-normal">{hints[profile.memoryMode]}</ItemCard.Description>
-			</ItemCard.Content>
-			<ItemCard.Action>
-				<Segment
-					aria-labelledby={labelId}
-					selectedKey={mode ?? null}
-					isDisabled={!profile}
-					onSelectionChange={(key) => profile && save({ ...profile, memoryMode: String(key) as MemoryMode })}
-				>
-					{modes.map(([value, label]) => (
-						<Segment.Item key={value} id={value} className="touch-target w-auto flex-none">
-							{label}
-						</Segment.Item>
-					))}
-				</Segment>
-			</ItemCard.Action>
-		</ItemCard>
+		<div role="status">
+			<span className="sr-only">{t`Loading`}</span>
+			{Array.from({ length: 4 }, (_, index) => (
+				<div key={index} className="flex items-start gap-4 border-t border-separator px-4 py-4 first:border-t-0">
+					<div className="grid min-w-0 flex-1 gap-2.5">
+						<Skeleton className="h-5 w-24 rounded-full" />
+						<Skeleton className="h-4 w-4/5 rounded-md" />
+						<Skeleton className="h-4 w-1/2 rounded-md" />
+					</div>
+					<Skeleton className="h-6 w-10 shrink-0 rounded-full" />
+				</div>
+			))}
+		</div>
 	);
 }
 
@@ -479,7 +465,7 @@ const FactRow = memo(function FactRow({ fact, onStatus, onCorrect, onShare, onFo
 								exit={{ height: 0, opacity: 0, transition: { duration: D2 * EXIT, ease: EASE } }}
 								className="overflow-hidden"
 							>
-								<div className="grid gap-1 rounded-xl bg-surface-secondary px-3.5 py-3 text-xs text-muted">
+								<div className="grid gap-1 rounded-xl bg-background px-3.5 py-3 text-xs text-muted">
 									<p className="font-semibold text-foreground">
 										{sourceLabel(fact)} · {date(fact.createdAt)}
 									</p>

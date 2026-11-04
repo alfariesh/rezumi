@@ -1896,6 +1896,10 @@ msgstr "All applications"
 msgid "All applications (including closed)"
 msgstr "All applications (including closed)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr "All documents"
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "All documents and applications as JSON, in one zip"
@@ -2153,6 +2157,7 @@ msgstr "Applicant tracking systems turn your PDF into plain text before anyone r
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Application"
 
@@ -2181,6 +2186,7 @@ msgstr "Application date to"
 msgid "Application deleted"
 msgstr "Application deleted"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Application details"
@@ -2302,7 +2308,7 @@ msgstr "Ask before deciding."
 msgid "Ask both"
 msgstr "Ask both"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Ask first"
 
@@ -2396,7 +2402,7 @@ msgstr "Attach a file"
 msgid "Attachment"
 msgstr "Attachment"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Automatically"
 
@@ -2562,6 +2568,7 @@ msgstr "Billing"
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr "Billing admin"
 
@@ -2771,10 +2778,6 @@ msgstr "Card"
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr "Card: up to 6 months after the payment."
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Career"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3044,6 +3047,10 @@ msgstr "Choose a resume in Write to match its design. Until then, the letter has
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr "Choose an application to see its next step, what you sent and its activity here."
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Choose an application…"
@@ -3209,6 +3216,10 @@ msgstr "Closed applications are hidden. Turn on Show closed to see them."
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Coach"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr "Coach memory"
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3844,6 +3855,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Couldn't load connected applications. Refresh the page to try again."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Couldn't load documents"
 
@@ -4242,6 +4254,7 @@ msgstr "Cover"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Cover letter"
@@ -5642,6 +5655,7 @@ msgid "Fact forgotten"
 msgstr "Fact forgotten"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Facts"
@@ -6352,7 +6366,9 @@ msgstr "History"
 msgid "Hold to delete"
 msgstr "Hold to delete"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Home"
 
@@ -7428,9 +7444,14 @@ msgstr "Live at {0}"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Loading"
 
@@ -8126,7 +8147,7 @@ msgstr "Net revenue"
 msgid "Network"
 msgstr "Network"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Never"
@@ -8162,6 +8183,7 @@ msgstr "New cover letter instead"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "New document"
 
@@ -9575,6 +9597,7 @@ msgstr "Plain text with headings. Paste into application forms and notes."
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr "Plan"
 
@@ -9732,6 +9755,7 @@ msgid "Preferences"
 msgstr "Preferences"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10337,6 +10361,10 @@ msgstr "Receipts are proof of payment, not tax invoices."
 msgid "Recent activity"
 msgstr "Recent activity"
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr "Recent documents"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Recipient"
@@ -10548,7 +10576,7 @@ msgstr "Reload"
 msgid "Remember"
 msgstr "Remember"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Remember facts from my messages"
 
@@ -10844,6 +10872,7 @@ msgstr "resume"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10937,6 +10966,7 @@ msgstr "Retrieved {0}. Origin freshness is unknown unless reported."
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11447,6 +11477,7 @@ msgstr "Screening"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Search"
 
@@ -11795,6 +11826,7 @@ msgstr "Set up your authenticator app"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Settings"
 
@@ -12468,6 +12500,7 @@ msgstr "Stored encrypted and tested right away."
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Stories"
@@ -12959,7 +12992,7 @@ msgstr "The checker shows the text a parser extracts and what to fix first."
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "The coach doesn't remember anything from your messages."
 
@@ -12967,7 +13000,7 @@ msgstr "The coach doesn't remember anything from your messages."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "The coach proposes each fact in the chat. Nothing is saved until you agree."
 
@@ -12975,7 +13008,7 @@ msgstr "The coach proposes each fact in the chat. Nothing is saved until you agr
 msgid "The coach reads these for this application only."
 msgstr "The coach reads these for this application only."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "The coach saves facts you state, and tells you. You can undo."
 
@@ -13655,8 +13688,6 @@ msgstr "To"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Today"
 
@@ -14667,7 +14698,7 @@ msgstr "What matters"
 msgid "What matters to you"
 msgstr "What matters to you"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr "What needs you, new roles from your search, your next interview and your schedules."
 
@@ -15192,10 +15223,6 @@ msgstr "Your email address isn't verified with the provider. Verify it there, th
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

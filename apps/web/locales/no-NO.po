@@ -1901,6 +1901,10 @@ msgstr "Alle søknader"
 msgid "All applications (including closed)"
 msgstr "Alle jobbsøknader (inkludert lukkede)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Alle dokumenter og jobbsøknader som JSON, i en zip"
@@ -2158,6 +2162,7 @@ msgstr "Søkersporingssystemer gjør din PDF til ren tekst før noen leser den. 
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Søknad"
 
@@ -2186,6 +2191,7 @@ msgstr "Søknadsdato til"
 msgid "Application deleted"
 msgstr "jobbsøknad slettet"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Søknadsdetaljer"
@@ -2307,7 +2313,7 @@ msgstr "Spør før du bestemmer deg."
 msgid "Ask both"
 msgstr "Spør begge"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Spør først"
 
@@ -2401,7 +2407,7 @@ msgstr "Legg ved en fil"
 msgid "Attachment"
 msgstr "Vedlegg"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Automatisk"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Karriere"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "Velg en CV i Write for å matche designet. Inntil da har brevet sitt."
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Velg en WebM-, MP4-, MP3-, WAV- eller Ogg-fil på opptil 2 MB."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Velg en jobbsøknad..."
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Coach"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Kunne ikke laste inn tilkoblede apper. Oppdater siden for å prøve igjen."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Kunne ikke laste inn dokumenter"
 
@@ -4247,6 +4259,7 @@ msgstr "Fyll"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Følgebrev"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "Faktum glemt"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Fakta"
@@ -6357,7 +6371,9 @@ msgstr "Historikk"
 msgid "Hold to delete"
 msgstr "Hold inne for å slette"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Hjem"
 
@@ -7433,9 +7449,14 @@ msgstr "Live på {0}"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Laster"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "Nettverk"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Aldri"
@@ -8167,6 +8188,7 @@ msgstr "Nytt følgebrev i stedet"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Nytt dokument"
 
@@ -9580,6 +9602,7 @@ msgstr "Ren tekst med overskrifter. Lim inn i jobbsøknadsskjemaer og notater."
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "Preferanser"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Mottaker"
@@ -10553,7 +10581,7 @@ msgstr "Last inn på nytt"
 msgid "Remember"
 msgstr "Husk"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Husk fakta fra meldingene mine"
 
@@ -10849,6 +10877,7 @@ msgstr "gjenoppta"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "Hentet {0}. Opprinnelsesfriskhet er ukjent med mindre det er rapportert.
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "Innledende vurdering"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Søk"
 
@@ -11800,6 +11831,7 @@ msgstr "Sett opp autentiseringsappen din"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Innstillinger"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Historier"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Kontrollene er mekaniske. Dette spør en språkmodell om hvordan en leser kan reagere på listeoppføringene dine og foreslår omskrivninger. Det er ikke en del av poengsummen."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Coachen husker ingenting fra meldingene dine."
 
@@ -12972,7 +13005,7 @@ msgstr "Coachen husker ingenting fra meldingene dine."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Coachen er ikke satt opp på denne serveren. Den som drifter den, må angi ENCRYPTION_SECRET. Kunnskap, Tilbud og søknadene dine fungerer uten."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Coachen foreslår hvert faktum i chatten. Ingenting lagres før du godtar."
 
@@ -12980,7 +13013,7 @@ msgstr "Coachen foreslår hvert faktum i chatten. Ingenting lagres før du godta
 msgid "The coach reads these for this application only."
 msgstr "Coachen leser disse bare for denne søknaden."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Coachen lagrer fakta du oppgir, og sier fra. Du kan angre."
 
@@ -13660,8 +13693,6 @@ msgstr "Til"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "I dag"
 
@@ -14672,7 +14703,7 @@ msgstr "Det som betyr noe"
 msgid "What matters to you"
 msgstr "Det som betyr noe for deg"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "E-postadressen din er ikke bekreftet hos leverandøren. Bekreft den der,
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "E-post, telefon, sted og andre opplysninger i toppteksten, samt telefonnumrene til referanser, utelates fra nettsiden, PDF-en og søkeresultatene."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Fakta, historier og preferanser du har slått på, kan sendes til AI-tilkoblingen din når du bruker coachingverktøy eller planlagt intervjuforberedelse. I chatten styrer Kunnskap-bryteren hva som legges til i hver melding."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

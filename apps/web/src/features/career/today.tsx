@@ -15,7 +15,7 @@ import { IconButton } from "@rezumi/ui/components/icon-button";
 import { toast } from "@rezumi/ui/components/toast";
 import { getInitials } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
-import { CareerLoadError } from "./load-state";
+import { CareerLoadError, RowsSkeleton } from "./load-state";
 import { rollForward, ScheduleSheet, scheduleKind } from "./schedule-sheet";
 import {
 	CareerWidget,
@@ -28,8 +28,11 @@ import {
 	useNow,
 	withUndo,
 } from "./shared";
-import { RowIcon, RowSeparator } from "@/components/layout/icon-row";
+import { RowIcon } from "@/components/layout/icon-row";
+import { Page } from "@/components/layout/page";
+import { PageHeader } from "@/components/layout/page-header";
 import { WidgetAction } from "@/components/layout/widget-heading";
+import { useDialogStore } from "@/dialogs/store";
 import {
 	collectInterviews,
 	formatDuration,
@@ -37,6 +40,8 @@ import {
 	upcomingInterviews,
 } from "@/features/applications/interviews";
 import { applicationsListQueryOptions } from "@/features/applications/queries";
+import { DropToImport, FirstRun } from "@/features/documents/documents-page";
+import { RecentDocuments } from "@/features/documents/recent-documents";
 import { toastError } from "@/libs/error-message";
 import { orpc } from "@/libs/orpc/client";
 import { renderAsH3 } from "@/libs/typography";
@@ -44,14 +49,18 @@ import { renderAsH3 } from "@/libs/typography";
 type Notification = RouterOutput["career"]["notifications"][number];
 type Opportunity = RouterOutput["career"]["opportunities"][number];
 
-type TodayPageProps = { schedule: string | undefined; onScheduleChange: (schedule: string | undefined) => void };
+type HomePageProps = { schedule: string | undefined; onScheduleChange: (schedule: string | undefined) => void };
 
 /**
- * Career → Today: what needs you, roles found by discovery, the next interview and the schedules that produce them.
- * Below 1024px it's one column: Coming up, Needs you, New roles, Schedules.
+ * Home, the first page after signing in: the documents edited last lead the main column, as previews, then what needs
+ * you and roles found by discovery; the next interview and the schedules sit beside it. Below 1024px it's one column,
+ * most urgent first: Coming up, Needs you, Recent documents, New roles, Schedules.
  */
-export function TodayPage({ schedule, onScheduleChange }: TodayPageProps) {
+export function HomePage({ schedule, onScheduleChange }: HomePageProps) {
 	const now = useNow();
+	const openDialog = useDialogStore((state) => state.openDialog);
+	const documents = useQuery(orpc.documents.list.queryOptions({ input: { trashed: false } }));
+	const firstRun = documents.data?.length === 0;
 	const rolesRef = useRef<HTMLDivElement>(null);
 	// Deleted schedules stay hidden locally until the Undo toast closes; any mutation refetches every query.
 	const [deleted, setDeleted] = useState<string[]>([]);
@@ -81,23 +90,37 @@ export function TodayPage({ schedule, onScheduleChange }: TodayPageProps) {
 	};
 
 	return (
-		<div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
-			<div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-7">
-				<NeedsYou now={now} onReview={reviewRoles} className="order-2 lg:order-none" />
-				<NewRoles
-					ref={rolesRef}
-					now={now}
-					deleted={deleted}
-					onOpenSchedule={onScheduleChange}
-					className="order-3 scroll-mt-6 lg:order-none"
-				/>
-			</div>
-			<div className="contents lg:flex lg:flex-col lg:gap-[18px]">
-				<ComingUp now={now} className="order-1 lg:order-none" />
-				<Schedules deleted={deleted} onOpenSchedule={onScheduleChange} className="order-4 lg:order-none" />
+		<Page>
+			<PageHeader
+				title={<Trans>Home</Trans>}
+				description={<Trans>What needs you, new roles from your search, your next interview and your schedules.</Trans>}
+			/>
+			{/* Until the first document exists, starting one leads the page, as it does on Documents. */}
+			{firstRun && (
+				<>
+					<FirstRun onChooseFile={() => openDialog("document.new", undefined)} />
+					<DropToImport />
+				</>
+			)}
+			<div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start xl:grid-cols-[minmax(0,1fr)_380px]">
+				<div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-7">
+					{!firstRun && <RecentDocuments className="order-3 lg:order-none" />}
+					<NeedsYou now={now} onReview={reviewRoles} className="order-2 lg:order-none" />
+					<NewRoles
+						ref={rolesRef}
+						now={now}
+						deleted={deleted}
+						onOpenSchedule={onScheduleChange}
+						className="order-4 scroll-mt-6 lg:order-none"
+					/>
+				</div>
+				<div className="contents lg:flex lg:flex-col lg:gap-[18px]">
+					<ComingUp now={now} className="order-1 lg:order-none" />
+					<Schedules deleted={deleted} onOpenSchedule={onScheduleChange} className="order-5 lg:order-none" />
+				</div>
 			</div>
 			<ScheduleSheet schedule={schedule} onScheduleChange={onScheduleChange} onDelete={deleteSchedule} />
-		</div>
+		</Page>
 	);
 }
 
@@ -201,7 +224,7 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 					}}
 				/>
 			) : !data ? (
-				<Skeleton className="h-32 rounded-xl" />
+				<RowsSkeleton rows={2} />
 			) : (
 				<Swap id={rows.length > 0 ? "list" : "empty"}>
 					{rows.length > 0 ? (
@@ -213,7 +236,6 @@ function NeedsYou({ now, onReview, className }: NeedsYouProps) {
 									const actionable = row.notice.type === "opportunities" || /^\/(?!\/)/.test(row.url ?? "");
 									return (
 										<CollapseRow key={row.id} role="listitem">
-											{index > 0 && <RowSeparator />}
 											<div
 												role="group"
 												aria-labelledby={`note-${row.id}`}
@@ -440,7 +462,6 @@ function NewRoles({ ref, now, deleted, onOpenSchedule, className }: NewRolesProp
 								const offset = dayOffset(row.firstSeenAt, now);
 								return (
 									<CollapseRow key={row.id}>
-										{index > 0 && <RowSeparator />}
 										<RoleCard
 											row={row}
 											first={index === 0}
@@ -594,9 +615,13 @@ function ComingUp({ now, className }: ComingUpProps) {
 	return (
 		<CareerWidget title={t`Coming up`} icon="calendar-blank" className={className}>
 			<div className="flex items-start gap-3">
-				<span className="flex w-12 shrink-0 flex-col items-center rounded-xl bg-default py-1.5">
-					<span className="text-xs leading-4 font-medium text-muted">{format(start, { weekday: "short" })}</span>
-					<span className="text-xl leading-6 font-semibold tabular-nums">{format(start, { day: "numeric" })}</span>
+				<span className="flex w-14 shrink-0 flex-col items-stretch gap-0.5 rounded-xl bg-accent p-1">
+					<span className="text-center text-xs leading-4 font-semibold text-accent-foreground">
+						{format(start, { weekday: "short" })}
+					</span>
+					<span className="rounded-lg bg-surface/40 py-1 text-center text-xl leading-6 font-semibold text-accent-foreground tabular-nums">
+						{format(start, { day: "numeric" })}
+					</span>
 				</span>
 				<div className="grid min-w-0 gap-0.5">
 					<p className="flex items-center gap-1.5 text-sm font-semibold">
@@ -762,7 +787,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 					}}
 				/>
 			) : !rows ? (
-				<Skeleton className="h-24 rounded-xl" />
+				<RowsSkeleton rows={2} />
 			) : rows.length === 0 ? (
 				<p className="text-sm text-muted">
 					<Trans>Nothing scheduled yet.</Trans>
@@ -775,8 +800,7 @@ function Schedules({ deleted, onOpenSchedule, className }: SchedulesProps) {
 							const done = !row.intervalDays && Boolean(row.lastQueuedAt);
 							return (
 								<CollapseRow key={row.id}>
-									{index > 0 && <RowSeparator />}
-									<div className={cn("flex items-start gap-3", index > 0 && "pt-3")}>
+									<div className={cn("flex items-start gap-3", index > 0 && "pt-4.5")}>
 										<RowIcon>
 											<Icon name={icon} size={20} />
 										</RowIcon>

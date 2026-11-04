@@ -1,6 +1,17 @@
 import type { Fact, Story } from "../hooks";
 import { EmptyState } from "@heroui-pro/react";
-import { Button, Checkbox, Chip, Input, Separator, Spinner, TextArea, Tooltip, Typography } from "@heroui/react";
+import {
+	Button,
+	Checkbox,
+	Chip,
+	Input,
+	Separator,
+	Skeleton,
+	Spinner,
+	TextArea,
+	Tooltip,
+	Typography,
+} from "@heroui/react";
 import { plural, t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +22,7 @@ import * as z from "zod";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useSessionDraft } from "../hooks";
-import { CareerLoadError, CareerLoading } from "../load-state";
+import { CareerLoadError } from "../load-state";
 import { CareerWidget, CollapseRow, Eyebrow, Swap, useNow, withUndo } from "../shared";
 import { WidgetAction, widgetActionClass } from "@/components/layout/widget-heading";
 import { collectInterviews, upcomingInterviews } from "@/features/applications/interviews";
@@ -21,6 +32,16 @@ import { client, orpc } from "@/libs/orpc/client";
 import { renderAsH2 } from "@/libs/typography";
 
 type PartKey = "situation" | "task" | "action" | "result" | "reflection";
+
+/** The gradient behind each STARR tile, by position; a tile with nothing written yet stays gray. */
+const TILE_BACKGROUNDS = [
+	"bg-[url(/gradients/blue.webp)]",
+	"bg-[url(/gradients/green.webp)]",
+	"bg-[url(/gradients/orange.webp)]",
+	"bg-[url(/gradients/red.webp)]",
+	"bg-[url(/gradients/purple.webp)]",
+];
+const FILLED_TILE = "bg-cover bg-center text-white";
 
 /** STARR, in order. Situation, Task and Action are required; Result and Reflection stay blank until supported. */
 const parts = () =>
@@ -46,6 +67,24 @@ const factChanged = (story: Story, facts: Map<string, Fact>) =>
 		return at !== undefined && new Date(at) > new Date(story.updatedAt);
 	});
 
+/** The list beside the open story, as the page lays them out, with placeholder stories (a title and a date). */
+function StoriesSkeleton() {
+	return (
+		<div role="status" className="grid items-start gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
+			<span className="sr-only">{t`Loading`}</span>
+			<CareerWidget icon="book-open" title={<Trans>Your stories</Trans>} contentClassName="gap-1 p-2">
+				{[0, 1, 2].map((key) => (
+					<div key={key} className="grid gap-2 px-3 py-2.5">
+						<Skeleton className="h-4 w-3/4 rounded-md" />
+						<Skeleton className="h-3 w-1/3 rounded-md" />
+					</div>
+				))}
+			</CareerWidget>
+			<Skeleton className="h-96 rounded-3xl max-lg:hidden" />
+		</div>
+	);
+}
+
 type StoriesPageProps = { storyId: string | undefined; edit: boolean };
 
 export function StoriesPage({ storyId, edit }: StoriesPageProps) {
@@ -66,7 +105,7 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 				}}
 			/>
 		);
-	if (!stories || !facts) return <CareerLoading />;
+	if (!stories || !facts) return <StoriesSkeleton />;
 
 	const factsById = new Map((facts ?? []).map((fact) => [fact.id, fact]));
 	const list = stories.filter((story) => !hidden.includes(story.id));
@@ -120,10 +159,9 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 				contentClassName="gap-1 p-2"
 			>
 				<AnimatePresence initial={false}>
-					{list.map((story, index) => (
+					{list.map((story) => (
 						<StoryCard
 							key={story.id}
-							first={index === 0}
 							story={story}
 							selected={story.id === selected?.id}
 							changed={factChanged(story, factsById)}
@@ -211,16 +249,15 @@ export function StoriesPage({ storyId, edit }: StoriesPageProps) {
 
 // ---- List ----
 
-type StoryCardProps = { story: Story; selected: boolean; changed: boolean; first: boolean };
+type StoryCardProps = { story: Story; selected: boolean; changed: boolean };
 
 // Memoized with its motion wrapper: picking a story re-renders only the two cards whose selection changed.
-const StoryCard = memo(function StoryCard({ story, selected, changed, first }: StoryCardProps) {
+const StoryCard = memo(function StoryCard({ story, selected, changed }: StoryCardProps) {
 	const filled = parts().filter((part) => story.data[part.key].trim()).length;
 	const factCount = story.data.factIds.length;
 
 	return (
 		<CollapseRow>
-			{!first && <Separator className="mx-3 my-1 w-auto" />}
 			<Link
 				to="/dashboard/career/knowledge/stories/{-$storyId}"
 				params={{ storyId: story.id }}
@@ -250,14 +287,14 @@ const StoryCard = memo(function StoryCard({ story, selected, changed, first }: S
 
 function PartTiles({ story }: { story: Story }) {
 	return (
-		<span aria-hidden="true" className="flex gap-[3px]">
-			{parts().map((part) => (
+		<span aria-hidden="true" className="flex gap-2">
+			{parts().map((part, index) => (
 				<span
 					key={part.key}
 					title={part.label}
 					className={cn(
-						"grid h-5 w-[22px] place-items-center rounded-md text-xs font-semibold",
-						story.data[part.key].trim() ? "bg-accent-soft text-accent-soft-foreground" : "bg-default text-muted",
+						"grid size-7 place-items-center rounded-lg text-sm font-semibold",
+						story.data[part.key].trim() ? [FILLED_TILE, TILE_BACKGROUNDS[index]] : "bg-default text-muted",
 					)}
 				>
 					{part.letter}
@@ -269,10 +306,10 @@ function PartTiles({ story }: { story: Story }) {
 
 // ---- Reader ----
 
-const partTile = (filled: boolean) =>
+const partTile = (filled: boolean, index: number) =>
 	cn(
-		"grid size-7 place-items-center rounded-lg text-sm font-semibold",
-		filled ? "bg-accent-soft text-accent-soft-foreground" : "bg-default text-muted",
+		"grid size-9 place-items-center rounded-xl text-base font-semibold",
+		filled ? [FILLED_TILE, TILE_BACKGROUNDS[index]] : "bg-default text-muted",
 	);
 
 type StoryReaderProps = { story: Story; facts: Map<string, Fact> };
@@ -306,9 +343,8 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 					const text = story.data[part.key].trim();
 					return (
 						<Fragment key={part.key}>
-							{index > 0 && <Separator />}
-							<div className="grid grid-cols-[32px_minmax(0,1fr)] gap-3.5 py-3.5">
-								<span aria-hidden="true" className={partTile(Boolean(text))}>
+							<div className="grid grid-cols-[36px_minmax(0,1fr)] gap-3.5 py-3.5">
+								<span aria-hidden="true" className={partTile(Boolean(text), index)}>
 									{part.letter}
 								</span>
 								<div className="grid min-w-0 gap-1">
@@ -336,7 +372,7 @@ function StoryReader({ story, facts }: StoryReaderProps) {
 						key={fact.id}
 						to="/dashboard/career/knowledge/facts"
 						search={{ highlight: fact.id }}
-						className="flex items-start gap-2.5 rounded-xl bg-surface-secondary px-3 py-2.5 text-sm leading-5 hover:bg-default"
+						className="flex items-start gap-2.5 rounded-xl px-3 py-2.5 text-sm leading-5 hover:bg-default"
 					>
 						<Icon name="link-simple-horizontal" size={16} className="mt-0.5 shrink-0 text-accent" />
 						<span className={cn(fact.status !== "active" && "text-muted")}>{fact.text}</span>
@@ -541,9 +577,8 @@ function StoryEditor({ story, facts, onSaved, onCancel, onDelete }: StoryEditorP
 					const text = draft[part.key];
 					return (
 						<Fragment key={part.key}>
-							{index > 0 && <Separator />}
-							<label className="grid grid-cols-[32px_minmax(0,1fr)] gap-3.5 py-3.5">
-								<span aria-hidden="true" className={partTile(Boolean(text.trim()))}>
+							<label className="grid grid-cols-[36px_minmax(0,1fr)] gap-3.5 py-3.5">
+								<span aria-hidden="true" className={partTile(Boolean(text.trim()), index)}>
 									{part.letter}
 								</span>
 								<span className="grid min-w-0 gap-1.5">

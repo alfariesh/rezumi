@@ -2,15 +2,18 @@ import type { ReactNode } from "react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { createFileRoute, Outlet, useMatchRoute } from "@tanstack/react-router";
+import { cn } from "@rezumi/utils/style";
+import { Page } from "@/components/layout/page";
 import { PageHeader } from "@/components/layout/page-header";
 
 export const Route = createFileRoute("/dashboard/career")({
 	component: CareerLayout,
 });
 
-type Heading = { title: ReactNode; description: ReactNode };
+/** `tabs`: the page has tabs under its title (Knowledge), so the title stays put while they switch. */
+type Heading = { title: ReactNode; description: ReactNode; tabs?: boolean };
 
-/** Career: Today, Knowledge and Offers are separate pages in the sidebar; each gets its own title here. */
+/** Knowledge and Offers: separate pages in the sidebar, under one address; each gets its own title here. */
 function CareerLayout() {
 	const matchRoute = useMatchRoute();
 	const headings: { match: string; fuzzy: boolean; heading: Heading }[] = [
@@ -20,6 +23,7 @@ function CareerLayout() {
 			heading: {
 				title: t`Knowledge`,
 				description: <Trans>The facts, stories and preferences the coach works from.</Trans>,
+				tabs: true,
 			},
 		},
 		{
@@ -30,21 +34,19 @@ function CareerLayout() {
 				description: <Trans>Compare two saved offers side by side, and decide what to ask.</Trans>,
 			},
 		},
-		{
-			match: "/dashboard/career/",
-			fuzzy: false,
-			heading: {
-				title: t`Today`,
-				description: <Trans>What needs you, new roles from your search, your next interview and your schedules.</Trans>,
-			},
-		},
 	];
 	const current = headings.find((item) => matchRoute({ to: item.match, fuzzy: item.fuzzy }))?.heading;
 
 	return (
-		<div className="mx-auto flex min-h-svh w-full max-w-[1180px] flex-col gap-5 px-8 py-8 max-sm:px-4 max-sm:py-5">
-			{current && <PageHeader title={current.title} description={current.description} />}
+		<Page>
+			{current && (
+				// Named for the page transition: switching Knowledge's tabs keeps the title in place while the tab's page
+				// fades (index.css). Leaving for another page, it fades with the page.
+				<div className={cn("grid", current.tabs && "[view-transition-name:knowledge-header]")}>
+					<PageHeader title={current.title} description={current.description} />
+				</div>
+			)}
 			<Outlet />
-		</div>
+		</Page>
 	);
 }

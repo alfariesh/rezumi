@@ -1,17 +1,17 @@
-import type { CareerProfileData } from "@rezumi/schema/career";
+import type { CareerProfileData, MemoryMode } from "@rezumi/schema/career";
 import type { KeyboardEvent } from "react";
 import { Segment } from "@heroui-pro/react";
-import { FieldError, Input, InputGroup, Label, TextArea, TextField } from "@heroui/react";
+import { FieldError, Input, InputGroup, Label, Skeleton, TextArea, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useId, useRef, useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { useDebouncedSave } from "../hooks";
-import { CareerLoadError, CareerLoading } from "../load-state";
+import { CareerLoadError } from "../load-state";
 import { CareerWidget, useCareerTime, useNow } from "../shared";
 import { parseAmount } from "./amount";
 import { SearchRegionsField } from "./search-regions-field";
@@ -22,32 +22,36 @@ import { client, orpc } from "@/libs/orpc/client";
 
 const saveFailed = (error: unknown) => toastError(error, t`Couldn't save your preferences. Try again.`);
 
-/** The Preferences profile, saved whole. The cache updates at once; a failed save puts the server copy back. */
-export function useProfile() {
-	const queryClient = useQueryClient();
-	const queryKey = orpc.career.profile.queryKey();
-	const query = useQuery(orpc.career.profile.queryOptions());
-	const profile = query.data;
-	const mutation = useMutation({
-		...orpc.career.saveProfile.mutationOptions(),
-		onError: (error) => {
-			void queryClient.invalidateQueries({ queryKey });
-			saveFailed(error);
-		},
-	});
-	const save = (next: CareerProfileData) => {
-		queryClient.setQueryData(queryKey, next);
-		mutation.mutate(next);
-	};
-	return { profile, save, isError: query.isError, retry: () => void query.refetch() };
-}
-
 export function PreferencesPage() {
 	const query = useQuery(orpc.career.profile.queryOptions());
 	const profile = query.data;
 	if (query.isError && !profile) return <CareerLoadError onRetry={() => void query.refetch()} />;
 	// The form keeps its own draft once loaded, so a background refetch never overwrites what's being typed.
-	return profile ? <PreferencesForm initial={profile} /> : <CareerLoading />;
+	return profile ? <PreferencesForm initial={profile} /> : <PreferencesSkeleton />;
+}
+
+/** The form's two widgets with placeholder fields (a label over a field), so the page doesn't jump when it loads. */
+function PreferencesSkeleton() {
+	const field = (key: number) => (
+		<div key={key} className="grid gap-2">
+			<Skeleton className="h-4 w-28 rounded-md" />
+			<Skeleton className="h-10 rounded-xl" />
+		</div>
+	);
+	return (
+		<div role="status" className="grid max-w-[820px] gap-4">
+			<span className="sr-only">{t`Loading`}</span>
+			<CareerWidget icon="compass" title={<Trans>What you're looking for</Trans>} contentClassName="gap-5 p-4">
+				<div className="grid gap-5 sm:grid-cols-2">{[0, 1, 2, 3].map(field)}</div>
+			</CareerWidget>
+			<CareerWidget icon="list-checks" title={<Trans>Requirements</Trans>} contentClassName="gap-5 p-4">
+				<div className="grid gap-5 sm:grid-cols-2">{[0, 1].map(field)}</div>
+			</CareerWidget>
+			<CareerWidget icon="brain" title={<Trans>Coach memory</Trans>} contentClassName="gap-5 p-4">
+				{field(0)}
+			</CareerWidget>
+		</div>
+	);
 }
 
 type PreferencesFormProps = { initial: CareerProfileData };
@@ -66,6 +70,17 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 	});
 	const { timeZone } = useCareerTime();
 	const id = useId();
+	const memoryModes: [MemoryMode, string][] = [
+		["ask", t`Ask first`],
+		["auto", t`Automatically`],
+		["off", t`Never`],
+	];
+
+	const memoryHints: Record<MemoryMode, string> = {
+		ask: t`The coach proposes each fact in the chat. Nothing is saved until you agree.`,
+		auto: t`The coach saves facts you state, and tells you. You can undo.`,
+		off: t`The coach doesn't remember anything from your messages.`,
+	};
 
 	const change = (patch: Partial<CareerProfileData>) => {
 		const next = { ...draft, ...patch };
@@ -222,6 +237,27 @@ function PreferencesForm({ initial }: PreferencesFormProps) {
 						<Trans>Change timezone</Trans>
 					</Link>
 				</p>
+			</CareerWidget>
+
+			<CareerWidget icon="brain" title={<Trans>Coach memory</Trans>} contentClassName="gap-3 p-4">
+				<div className="grid content-start gap-1.5">
+					<span id={`${id}-memory`} className="text-sm font-medium">
+						<Trans>Remember facts from my messages</Trans>
+					</span>
+					<Segment
+						aria-labelledby={`${id}-memory`}
+						selectedKey={draft.memoryMode}
+						onSelectionChange={(key) => change({ memoryMode: String(key) as MemoryMode })}
+						className="w-fit max-w-full overflow-x-auto"
+					>
+						{memoryModes.map(([value, label]) => (
+							<Segment.Item key={value} id={value} className="touch-target w-auto flex-none px-3">
+								{label}
+							</Segment.Item>
+						))}
+					</Segment>
+				</div>
+				<p className="text-sm text-muted">{memoryHints[draft.memoryMode]}</p>
 			</CareerWidget>
 		</div>
 	);

@@ -1901,6 +1901,10 @@ msgstr "Všechny žádosti"
 msgid "All applications (including closed)"
 msgstr "Všechny žádosti o zaměstnání (včetně uzavřených)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Všechny dokumenty a žádosti o zaměstnání jako JSON, v jednom zipu"
@@ -2158,6 +2162,7 @@ msgstr "Sledovací systémy žadatelů změní váš PDF na prostý text dříve
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Žádost"
 
@@ -2186,6 +2191,7 @@ msgstr "Datum přihlášky do"
 msgid "Application deleted"
 msgstr "Žádost o zaměstnání smazána"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Podrobnosti žádosti"
@@ -2307,7 +2313,7 @@ msgstr "Než se rozhodnete, zeptejte se."
 msgid "Ask both"
 msgstr "Zeptat se obou"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Nejdřív se zeptat"
 
@@ -2401,7 +2407,7 @@ msgstr "Připojte soubor"
 msgid "Attachment"
 msgstr "Příloha"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Automaticky"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Kariéra"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "Vyberte si životopis v Write tak, aby odpovídal jeho designu. Do té d
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Vyberte soubor WebM, MP4, MP3, WAV nebo Ogg do 2 MB."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Vyberte si žádost o zaměstnání…"
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Kouč"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Připojené aplikace se nepodařilo načíst. Obnovte stránku a zkuste to znovu."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Dokumenty se nepodařilo načíst"
 
@@ -4247,6 +4259,7 @@ msgstr "Vyplnit"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Motivační dopis"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "Fakt zapomenut"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Fakta"
@@ -6357,7 +6371,9 @@ msgstr "Historie"
 msgid "Hold to delete"
 msgstr "Podržením smažete"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Domů"
 
@@ -7433,9 +7449,14 @@ msgstr "Živě na {0}"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Načítání"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "Síť"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Nikdy"
@@ -8167,6 +8188,7 @@ msgstr "Místo toho nový průvodní dopis"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Nový dokument"
 
@@ -9580,6 +9602,7 @@ msgstr "Prostý text s nadpisy. Vložte do formulářů žádosti o zaměstnán�
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "Předvolby"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Příjemce"
@@ -10553,7 +10581,7 @@ msgstr "Znovu načíst"
 msgid "Remember"
 msgstr "Zapamatovat"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Pamatovat si fakta z mých zpráv"
 
@@ -10849,6 +10877,7 @@ msgstr "životopis"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "Získáno {0}. Čerstvost původu není známa, pokud není uvedeno."
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "Úvodní pohovor"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Vyhledávání"
 
@@ -11800,6 +11831,7 @@ msgstr "Nastavte ověřovací aplikaci"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Příběhy"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Kontroly jsou mechanické. To se dotazuje jazykového modelu, jak může čtenář reagovat na vaše položky seznamu, a navrhuje přepsání. Není součástí partitury."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Kouč si z vašich zpráv nic nepamatuje."
 
@@ -12972,7 +13005,7 @@ msgstr "Kouč si z vašich zpráv nic nepamatuje."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Kouč není na tomto serveru nastaven. Správce musí nastavit ENCRYPTION_SECRET. Znalosti, Nabídky a vaše žádosti fungují i bez něj."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Kouč každý fakt navrhne v chatu. Nic se neuloží, dokud nesouhlasíte."
 
@@ -12980,7 +13013,7 @@ msgstr "Kouč každý fakt navrhne v chatu. Nic se neuloží, dokud nesouhlasít
 msgid "The coach reads these for this application only."
 msgstr "Kouč je čte jen pro tuto žádost."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Kouč ukládá fakta, která uvedete, a dá vám vědět. Můžete to vrátit zpět."
 
@@ -13660,8 +13693,6 @@ msgstr "Na"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Dnes"
 
@@ -14672,7 +14703,7 @@ msgstr "Co je důležité"
 msgid "What matters to you"
 msgstr "Co je pro vás důležité"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "Vaše e-mailová adresa není u poskytovatele ověřena. Ověřte ji tam
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Váš e-mail, telefon, místo a další údaje ze záhlaví i telefonní čísla referencí se na webové stránce, v jejím PDF ani ve výsledcích vyhledávání nezobrazí."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Vaše zapnutá fakta, příběhy a preference mohou být odeslány vašemu připojení k AI, když používáte nástroje pro koučování nebo naplánovanou přípravu na pohovor. V chatu přepínač Znalosti určuje, co se ke každé zprávě přidá."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

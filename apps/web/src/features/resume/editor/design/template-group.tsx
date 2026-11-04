@@ -1,3 +1,4 @@
+import type { ThumbnailContent } from "./thumbnails";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import type { FocusEvent, KeyboardEvent, PointerEvent } from "react";
@@ -14,7 +15,7 @@ import { isRTL } from "@rezumi/utils/locale";
 import { cn } from "@rezumi/utils/style";
 import { useEditorStore } from "../store";
 import { SEGMENT_ITEM } from "./style-groups";
-import { useTemplateThumbnail } from "./thumbnails";
+import { thumbnailContent, useTemplateThumbnail } from "./thumbnails";
 import { templates } from "@/dialogs/resume/template/data";
 import { isLabelledTemplate, isLockedTemplate, usePlan } from "@/features/billing/plan";
 import { openPlanDialog } from "@/features/billing/plan-dialog";
@@ -83,6 +84,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 	if (!data) return null;
 
 	const current = data.metadata.template;
+	const content = thumbnailContent(data);
 	const shown = TEMPLATE_IDS.filter((id) => matchesFilter(id, filter));
 	const filters: { id: Filter; label: string }[] = [
 		{ id: "all", label: t`All` },
@@ -147,6 +149,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 						key={id}
 						id={id}
 						data={data}
+						content={content}
 						selected={id === current}
 						labelled={isLabelledTemplate(plan, id)}
 						locked={isLockedTemplate(plan, id)}
@@ -163,6 +166,7 @@ export function TemplateGroup({ layout = "grid" }: TemplateGroupProps) {
 type TemplateCardProps = {
 	id: Template;
 	data: ResumeData;
+	content: ThumbnailContent;
 	selected: boolean;
 	/** Outside the free templates, while plans apply to the account. */
 	labelled: boolean;
@@ -171,11 +175,11 @@ type TemplateCardProps = {
 	onPreview: () => void;
 };
 
-function TemplateCard({ id, data, selected, labelled, locked, onPreview }: TemplateCardProps) {
+function TemplateCard({ id, data, content, selected, labelled, locked, onPreview }: TemplateCardProps) {
 	const ref = useRef<HTMLButtonElement>(null);
 	// Only cards on or near the screen render, so a font or colour change doesn't re-render every template.
 	const isInView = useInView(ref, { margin: "240px" });
-	const { data: thumbnail } = useTemplateThumbnail(id, data, isInView);
+	const { data: thumbnail } = useTemplateThumbnail(id, data, isInView, content);
 	const metadata = templates[id];
 	const hold = useRef<{ timer?: number; previewing: boolean }>({ previewing: false });
 

@@ -7,9 +7,11 @@ type CreateResumePdfBlobExtras = {
 	onPageMap?: (pageMap: PageMap) => void;
 	/** Receives the characters no font could draw (they print as "?"); not called when every character rendered. */
 	onLostCharacters?: (characters: string[]) => void;
+	/** Drops the render if it hasn't started yet, so a superseded preview or thumbnail doesn't hold up the next one. */
+	signal?: AbortSignal;
 };
 
-export type PdfWorkerRequest = RenderInput & { id: number };
+export type PdfWorkerRequest = (RenderInput & { id: number }) | { cancel: number };
 export type PdfWorkerResponse =
 	| ({ id: number } & Rendered)
 	// `cause` survives the worker boundary so callers can still tell text loss apart (see `getReadableErrorMessage`).
@@ -52,22 +54,33 @@ function getWorker(): Worker | null {
 	return worker;
 }
 
-function render(input: RenderInput): Promise<Rendered> {
+function render(input: RenderInput, signal?: AbortSignal): Promise<Rendered> {
+	signal?.throwIfAborted();
 	const target = getWorker();
 	if (!target) return renderHere(input);
 	const id = ++nextId;
 	return new Promise((resolve, reject) => {
 		pending.set(id, { input, resolve, reject });
 		target.postMessage({ ...input, id } satisfies PdfWorkerRequest);
+		signal?.addEventListener(
+			"abort",
+			() => {
+				if (!pending.delete(id)) return;
+				// The worker skips it if it hasn't started; one already laying out finishes and its reply is ignored.
+				target.postMessage({ cancel: id } satisfies PdfWorkerRequest);
+				reject(signal.reason);
+			},
+			{ once: true },
+		);
 	});
 }
 
 export const createResumePdfBlob = async (
 	data: ResumeData,
 	renderOptions?: RenderInput["renderOptions"],
-	{ onPageMap, onLostCharacters }: CreateResumePdfBlobExtras = {},
+	{ onPageMap, onLostCharacters, signal }: CreateResumePdfBlobExtras = {},
 ) => {
-	const { blob, pageMap, lostCharacters } = await render({ data, renderOptions });
+	const { blob, pageMap, lostCharacters } = await render({ data, renderOptions }, signal);
 	if (pageMap) onPageMap?.(pageMap);
 	if (lostCharacters) onLostCharacters?.(lostCharacters);
 	return blob;

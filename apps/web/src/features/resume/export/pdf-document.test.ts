@@ -44,4 +44,17 @@ describe("createResumePdfBlob", () => {
 		await createResumePdfBlob(sampleResumeData);
 		expect(mocks.renderHere).toHaveBeenCalledTimes(2);
 	});
+
+	it("drops a render aborted before the worker answers, and tells the worker to skip it", async () => {
+		const requests: PdfWorkerRequest[] = [];
+		stubWorker((request) => requests.push(request));
+		const { createResumePdfBlob } = await import("./pdf-document");
+		const abort = new AbortController();
+
+		const rendering = createResumePdfBlob(sampleResumeData, undefined, { signal: abort.signal });
+		abort.abort();
+
+		await expect(rendering).rejects.toMatchObject({ name: "AbortError" });
+		await vi.waitFor(() => expect(requests).toContainEqual({ cancel: 1 }));
+	});
 });

@@ -1901,6 +1901,10 @@ msgstr "Alle sollicitaties"
 msgid "All applications (including closed)"
 msgstr "Alle sollicitaties (ook gesloten)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Alle documenten en sollicitaties als JSON, in één zip"
@@ -2158,6 +2162,7 @@ msgstr "Volgsystemen voor sollicitanten zetten uw PDF om in platte tekst voordat
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Sollicitatie"
 
@@ -2186,6 +2191,7 @@ msgstr "Sollicitatiedatum tot"
 msgid "Application deleted"
 msgstr "sollicitatie verwijderd"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Sollicitatiegegevens"
@@ -2307,7 +2313,7 @@ msgstr "Vraag het voordat u beslist."
 msgid "Ask both"
 msgstr "Vraag het beide"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Eerst vragen"
 
@@ -2401,7 +2407,7 @@ msgstr "Voeg een bestand toe"
 msgid "Attachment"
 msgstr "Bijlage"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Automatisch"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Loopbaan"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "Kies een cv in Write dat bij het ontwerp past. Tot die tijd heeft de bri
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "Kies een WebM-, MP4-, MP3-, WAV- of Ogg-bestand van maximaal 2 MB."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Kies een sollicitatie..."
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Coach"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Kan gekoppelde apps niet laden. Vernieuw de pagina om het opnieuw te proberen."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Kan documenten niet laden"
 
@@ -4247,6 +4259,7 @@ msgstr "Vullen"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Sollicitatiebrief"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "Feit vergeten"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Feiten"
@@ -6357,7 +6371,9 @@ msgstr "Geschiedenis"
 msgid "Hold to delete"
 msgstr "Ingedrukt houden om te verwijderen"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Home"
 
@@ -7433,9 +7449,14 @@ msgstr "Live op {0}"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Laden"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "Netwerk"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Nooit"
@@ -8167,6 +8188,7 @@ msgstr "In plaats daarvan een nieuwe sollicitatiebrief"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Nieuw document"
 
@@ -9580,6 +9602,7 @@ msgstr "Platte tekst met kopjes. Plakken in sollicitatieformulieren en notities.
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "Voorkeuren"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Ontvanger"
@@ -10553,7 +10581,7 @@ msgstr "Herladen"
 msgid "Remember"
 msgstr "Onthouden"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Feiten uit mijn berichten onthouden"
 
@@ -10849,6 +10877,7 @@ msgstr "cv"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "{0} opgehaald. De versheid van de herkomst is onbekend, tenzij vermeld."
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "Screening"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Zoekopdracht"
 
@@ -11800,6 +11831,7 @@ msgstr "Stel uw authenticator-app in"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Instellingen"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Verhalen"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "De controles zijn mechanisch. Hierbij wordt aan een taalmodel gevraagd hoe een lezer op uw lijstitems zou kunnen reageren en worden herschrijvingen voorgesteld. Het maakt geen deel uit van de partituur."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "De coach onthoudt niets uit uw berichten."
 
@@ -12972,7 +13005,7 @@ msgstr "De coach onthoudt niets uit uw berichten."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "De coach is niet ingesteld op deze server. De beheerder moet ENCRYPTION_SECRET instellen. Kennis, Aanbiedingen en uw sollicitaties werken zonder."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "De coach stelt elk feit voor in de chat. Er wordt niets opgeslagen totdat u akkoord gaat."
 
@@ -12980,7 +13013,7 @@ msgstr "De coach stelt elk feit voor in de chat. Er wordt niets opgeslagen totda
 msgid "The coach reads these for this application only."
 msgstr "De coach leest deze alleen voor deze sollicitatie."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "De coach slaat feiten op die u noemt, en laat het u weten. U kunt het ongedaan maken."
 
@@ -13660,8 +13693,6 @@ msgstr "Naar"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Vandaag"
 
@@ -14672,7 +14703,7 @@ msgstr "Wat belangrijk is"
 msgid "What matters to you"
 msgstr "Wat voor u belangrijk is"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "Uw e-mailadres is niet geverifieerd bij de provider. Verifieer het daar 
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "Je e-mailadres, telefoonnummer, locatie en andere koptekstgegevens, en de telefoonnummers van referenties, worden weggelaten uit de webpagina, de bijbehorende PDF en zoekresultaten."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Uw ingeschakelde feiten, verhalen en voorkeuren kunnen naar uw AI-verbinding worden gestuurd wanneer u coachingtools of geplande gespreksvoorbereiding gebruikt. In de chat bepaalt de Kennis-schakelaar wat aan elk bericht wordt toegevoegd."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"

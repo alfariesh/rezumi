@@ -250,19 +250,22 @@ export function RichTextEditor({
 	});
 	const menus = useToolbarMenus(editor, () => setFocused(false));
 
+	// A hidden editor mode (see KeptModes) destroys the editor; when the mode shows again these effects run once with
+	// that destroyed editor before useEditor hands over its replacement, so each skips it.
+
 	// Undo, the page and the assistant change the text from outside; keep the editor in step.
 	useEffect(() => {
-		if (!editor || editor.getHTML() === editorValue) return;
+		if (!editor || editor.isDestroyed || editor.getHTML() === editorValue) return;
 		editor.commands.setContent(editorValue, { emitUpdate: false });
 	}, [editor, editorValue]);
 
 	useEffect(() => {
-		editor?.setEditable(!disabled && !readOnlyTable, false);
+		if (editor && !editor.isDestroyed) editor.setEditable(!disabled && !readOnlyTable, false);
 	}, [editor, disabled, readOnlyTable]);
 
 	// The preview took a click or focus while the editor loaded: put the caret there, after the editor's first paint.
 	useEffect(() => {
-		if (!editor || !focusRequest) return;
+		if (!editor || editor.isDestroyed || !focusRequest) return;
 		const frame = requestAnimationFrame(() => {
 			const at = focusRequest === "end" ? null : editor.view.posAtCoords({ left: focusRequest.x, top: focusRequest.y });
 			editor.commands.focus(at?.pos ?? "end");

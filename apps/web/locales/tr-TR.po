@@ -1901,6 +1901,10 @@ msgstr "Tüm başvurular"
 msgid "All applications (including closed)"
 msgstr "Tüm iş başvuruları (kapalı olanlar dahil)"
 
+#: src/features/documents/recent-documents.tsx
+msgid "All documents"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "All documents and applications as JSON, in one zip"
 msgstr "Tüm belgeler ve iş başvuruları JSON olarak tek zipte"
@@ -2158,6 +2162,7 @@ msgstr "Aday takip sistemleri PDF'nuzu kimse okumadan düz metne dönüştürür
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/documents/document-list.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Application"
 msgstr "Başvuru"
 
@@ -2186,6 +2191,7 @@ msgstr "Başvuru tarihi"
 msgid "Application deleted"
 msgstr "iş başvurusu silindi"
 
+#: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Application details"
 msgstr "Başvuru ayrıntıları"
@@ -2307,7 +2313,7 @@ msgstr "Karar vermeden önce sorun."
 msgid "Ask both"
 msgstr "İkisine de sor"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Ask first"
 msgstr "Önce sor"
 
@@ -2401,7 +2407,7 @@ msgstr "Dosya ekle"
 msgid "Attachment"
 msgstr "EK"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Automatically"
 msgstr "Otomatik olarak"
 
@@ -2567,6 +2573,7 @@ msgstr ""
 
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr ""
 
@@ -2776,10 +2783,6 @@ msgstr ""
 #: src/features/billing/admin/labels.ts
 msgid "Card: up to 6 months after the payment."
 msgstr ""
-
-#: src/routes/dashboard/-components/app-shell.tsx
-msgid "Career"
-msgstr "Kariyer"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -3049,6 +3052,10 @@ msgstr "Write'da tasarımına uygun bir özgeçmiş seçin. O zamana kadar mektu
 msgid "Choose a WebM, MP4, MP3, WAV or Ogg file up to 2 MB."
 msgstr "En fazla 2 MB boyutunda bir WebM, MP4, MP3, WAV veya Ogg dosyası seçin."
 
+#: src/features/applications/components/application-detail-sheet.tsx
+msgid "Choose an application to see its next step, what you sent and its activity here."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Choose an application…"
 msgstr "Bir iş başvurusu seçin…"
@@ -3214,6 +3221,10 @@ msgstr ""
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Coach"
 msgstr "Koç"
+
+#: src/features/career/knowledge/preferences.tsx
+msgid "Coach memory"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Code"
@@ -3849,6 +3860,7 @@ msgid "Couldn't load connected applications. Refresh the page to try again."
 msgstr "Bağlı uygulamalar yüklenemedi. Tekrar denemek için sayfayı yenileyin."
 
 #: src/features/documents/library-error.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Couldn't load documents"
 msgstr "Dokümanlar yüklenemedi"
 
@@ -4247,6 +4259,7 @@ msgstr "Doldur"
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/detail/sent-documents.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Cover letter"
 msgstr "Ön yazı"
@@ -5647,6 +5660,7 @@ msgid "Fact forgotten"
 msgstr "Bilgi unutuldu"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Facts"
 msgstr "Bilgiler"
@@ -6357,7 +6371,9 @@ msgstr "Geçmiş"
 msgid "Hold to delete"
 msgstr "Silmek için basılı tutun"
 
+#: src/features/career/today.tsx
 #: src/features/command-palette/pages/navigation.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Home"
 msgstr "Ana Sayfa"
 
@@ -7433,9 +7449,14 @@ msgstr "{0}'da canlı yayın"
 #: src/components/layout/loading-screen.tsx
 #: src/features/career/coach-chat.tsx
 #: src/features/career/coach.tsx
+#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
+#: src/features/career/knowledge/stories.tsx
+#: src/features/career/load-state.tsx
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/shell.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "Loading"
 msgstr "Yükleniyor"
 
@@ -8131,7 +8152,7 @@ msgstr ""
 msgid "Network"
 msgstr "Sosyal Ağ"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Asla"
@@ -8167,6 +8188,7 @@ msgstr "Bunun yerine yeni kapak mektubu"
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/documents/recent-documents.tsx
 msgid "New document"
 msgstr "Yeni belge"
 
@@ -9580,6 +9602,7 @@ msgstr "Başlıkları olan düz metin. İş başvuru formlarına ve notlarına y
 #: src/features/billing/plan-page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Plan"
 msgstr ""
 
@@ -9737,6 +9760,7 @@ msgid "Preferences"
 msgstr "Tercihler"
 
 #: src/features/career/coach-chat.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgctxt "Career preferences: the roles, places, pay and ways of working you want"
 msgid "Preferences"
@@ -10342,6 +10366,10 @@ msgstr ""
 msgid "Recent activity"
 msgstr ""
 
+#: src/features/documents/recent-documents.tsx
+msgid "Recent documents"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Recipient"
 msgstr "Alıcı"
@@ -10553,7 +10581,7 @@ msgstr "Yeniden yükle"
 msgid "Remember"
 msgstr "Hatırla"
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "Remember facts from my messages"
 msgstr "Mesajlarımdaki bilgileri hatırla"
 
@@ -10849,6 +10877,7 @@ msgstr "sürdürmek"
 #: src/features/applications/components/list-view.tsx
 #: src/features/documents/document-card.tsx
 #: src/features/documents/document-list.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Resume"
@@ -10942,6 +10971,7 @@ msgstr "{0} alındı. Menşei tazeliği bildirilmedikçe bilinmemektedir."
 
 #: src/features/assistant/conversation.tsx
 #: src/features/career/knowledge/preferences.tsx
+#: src/features/documents/recent-documents.tsx
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -11452,6 +11482,7 @@ msgstr "Ön eleme"
 
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/documents/documents-page.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Search"
 msgstr "Aramak"
 
@@ -11800,6 +11831,7 @@ msgstr "Doğrulayıcı uygulamanızı ayarlayın"
 #: src/features/settings/page.tsx
 #: src/features/settings/root.tsx
 #: src/features/user/dropdown-menu.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 msgid "Settings"
 msgstr "Ayarlar"
 
@@ -12473,6 +12505,7 @@ msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
 #: src/routes/dashboard/career/knowledge/route.tsx
 msgid "Stories"
 msgstr "Hikayeler"
@@ -12964,7 +12997,7 @@ msgstr ""
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Kontroller mekaniktir. Bu, bir dil modeline okuyucunun liste girişlerinize nasıl tepki verebileceğini sorar ve yeniden yazma önerilerinde bulunur. Puanın bir parçası değil."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach doesn't remember anything from your messages."
 msgstr "Koç mesajlarınızdan hiçbir şey hatırlamaz."
 
@@ -12972,7 +13005,7 @@ msgstr "Koç mesajlarınızdan hiçbir şey hatırlamaz."
 msgid "The coach isn't set up on this server. Whoever runs it needs to set ENCRYPTION_SECRET. Knowledge, Offers and your applications work without it."
 msgstr "Koç bu sunucuda kurulu değil. Sunucuyu çalıştıran kişinin ENCRYPTION_SECRET ayarlaması gerekiyor. Bilgi Bankası, Teklifler ve başvurularınız onsuz da çalışır."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach proposes each fact in the chat. Nothing is saved until you agree."
 msgstr "Koç her bilgiyi sohbette önerir. Siz onaylamadan hiçbir şey kaydedilmez."
 
@@ -12980,7 +13013,7 @@ msgstr "Koç her bilgiyi sohbette önerir. Siz onaylamadan hiçbir şey kaydedil
 msgid "The coach reads these for this application only."
 msgstr "Koç bunları yalnızca bu başvuru için okur."
 
-#: src/features/career/knowledge/facts.tsx
+#: src/features/career/knowledge/preferences.tsx
 msgid "The coach saves facts you state, and tells you. You can undo."
 msgstr "Koç belirttiğiniz bilgileri kaydeder ve size bildirir. Geri alabilirsiniz."
 
@@ -13660,8 +13693,6 @@ msgstr "İle"
 #: src/features/applications/components/calendar-view.tsx
 #: src/features/career/coach.tsx
 #: src/features/resume/share/share-panel.tsx
-#: src/routes/dashboard/-components/app-shell.tsx
-#: src/routes/dashboard/career/route.tsx
 msgid "Today"
 msgstr "Bugün"
 
@@ -14672,7 +14703,7 @@ msgstr "Önemli olanlar"
 msgid "What matters to you"
 msgstr "Sizin için önemli olanlar"
 
-#: src/routes/dashboard/career/route.tsx
+#: src/features/career/today.tsx
 msgid "What needs you, new roles from your search, your next interview and your schedules."
 msgstr ""
 
@@ -15197,10 +15228,6 @@ msgstr "E-posta adresiniz sağlayıcıda doğrulanmamış. Orada doğrulayıp te
 #: src/features/resume/share/share-panel.tsx
 msgid "Your email, phone, location and other header details, and references' phone numbers, are left out of the web page, its PDF and search results."
 msgstr "E-posta, telefon, konum ve diğer başlık bilgileriniz ile referansların telefon numaraları web sayfasına, PDF'sine ve arama sonuçlarına dahil edilmez."
-
-#: src/routes/dashboard/career/knowledge/route.tsx
-msgid "Your enabled facts, stories and preferences can be sent to your AI connection when you use coaching tools or scheduled interview preparation. In chat, the Knowledge switch controls what is added to each message."
-msgstr "Koçluk araçlarını veya zamanlanmış görüşme hazırlığını kullandığınızda, açık olan bilgileriniz, hikayeleriniz ve tercihleriniz yapay zeka bağlantınıza gönderilebilir. Sohbette, her mesaja neyin ekleneceğini Bilgi Bankası anahtarı belirler."
 
 #: src/features/career/workspace/fit.tsx
 msgid "Your evidence"
