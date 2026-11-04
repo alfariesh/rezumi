@@ -616,7 +616,7 @@ function ComingUp({ now, className }: ComingUpProps) {
 		<CareerWidget title={t`Coming up`} icon="calendar-blank" className={className}>
 			<div className="flex items-start gap-3">
 				<span className="flex w-14 shrink-0 flex-col items-stretch gap-0.5 rounded-xl bg-accent p-1">
-					<span className="text-center text-[11px] leading-4 font-semibold tracking-wide text-accent-foreground uppercase">
+					<span className="text-center text-xs leading-4 font-semibold text-accent-foreground">
 						{format(start, { weekday: "short" })}
 					</span>
 					<span className="rounded-lg bg-surface/40 py-1 text-center text-xl leading-6 font-semibold text-accent-foreground tabular-nums">
