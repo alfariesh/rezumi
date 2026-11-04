@@ -182,9 +182,24 @@ const buildFixtureTree = (template: Template, showHeader = true, adjust?: (data:
 	return buildSemanticTree({ data, template, page, pageNumber: 1, showHeader });
 };
 
+/** A second experience entry: parts that join entries (Jejak's timeline line) need two. */
+const withTwoJobs = (data: ResumeData) => {
+	const [job] = data.sections.experience.items;
+	if (job) data.sections.experience.items.push({ ...job, id: "experience/2", company: "Difference Engines" });
+};
+
+const partsNamed = (tree: SemanticNode, name: string) =>
+	findNodes(tree, (node) => node.kind === "template-part" && node.attributes.name === name);
+
+const sectionNode = (tree: SemanticNode, id: string) => {
+	const [section] = findNodes(tree, (node) => node.kind === "section" && node.id === id);
+	if (!section) throw new Error(`No ${id} section in the tree.`);
+	return section;
+};
+
 describe("template semantic manifests", () => {
 	it.each(templateSchema.options)("%s builds its manifest-backed tree without key collisions", (template) => {
-		const tree = buildFixtureTree(template);
+		const tree = buildFixtureTree(template, true, withTwoJobs);
 		const nodes = flattenTree(tree);
 		const partNames = new Set(
 			findNodes(tree, (node) => node.kind === "template-part").map((node) => node.attributes.name),
@@ -238,6 +253,45 @@ describe("template semantic manifests", () => {
 		expect(summary).toHaveLength(1);
 		expect(summary[0]?.attributes).toMatchObject({ origin: "main", placement: "main" });
 		expect(summary[0]?.roles).not.toContain("featured-summary");
+	});
+
+	it("keeps Jejak's trail to dated sections: no dot beside the summary", () => {
+		const tree = buildFixtureTree("jejak", true, withTwoJobs);
+
+		expect(partsNamed(sectionNode(tree, "summary"), "timeline-dot")).toHaveLength(0);
+		expect(partsNamed(sectionNode(tree, "summary"), "timeline-marker")).toHaveLength(0);
+		expect(partsNamed(sectionNode(tree, "summary"), "timeline-line")).toHaveLength(0);
+		expect(partsNamed(sectionNode(tree, "experience"), "timeline-dot")).toHaveLength(2);
+	});
+
+	it("draws Jejak's line only where it joins two entries", () => {
+		const single = buildFixtureTree("jejak");
+		const joined = buildFixtureTree("jejak", true, withTwoJobs);
+
+		// A single entry keeps its dot but no line.
+		expect(partsNamed(sectionNode(single, "experience"), "timeline-line")).toHaveLength(0);
+		expect(partsNamed(sectionNode(single, "experience"), "timeline-dot")).toHaveLength(1);
+		expect(partsNamed(sectionNode(joined, "experience"), "timeline-line")).toHaveLength(1);
+		expect(partsNamed(sectionNode(joined, "education"), "timeline-line")).toHaveLength(0);
+	});
+
+	it("leaves a part without section filters on every matching section", () => {
+		manifestStandIn = {
+			...baseManifest("kirana", []),
+			parts: [
+				{
+					name: "items-rule",
+					key: "items-rule",
+					owner: { kind: "section-items", key: "section-items", placement: "main" },
+					binding: view,
+					route: { parent: "owner", at: "start" },
+				},
+			],
+		};
+		const tree = buildFixtureTree("kirana");
+
+		for (const section of ["summary", "experience", "education", "projects"])
+			expect(partsNamed(sectionNode(tree, section), "items-rule")).toHaveLength(1);
 	});
 
 	it("builds owner-specific contact parts and a last-item alias", () => {

@@ -20,6 +20,8 @@ const MIN_LINE_TOLERANCE_PT = 2;
 
 /** Horizontal gap, as a share of font size, above which two spans need a space between them. */
 const SPACE_GAP_RATIO = 0.25;
+/** The same, when the reader emitted a space item between them (a space glyph is often under a quarter em). */
+const EMITTED_SPACE_GAP_RATIO = 0.05;
 
 /** Horizontal gap, as a share of font size, above which two spans sit in different columns. */
 const COLUMN_GAP_RATIO = 2.5;
@@ -51,12 +53,19 @@ function fontSizeOf(item: RawPage["items"][number]): number {
 
 function buildSpans(page: RawPage): TextSpan[] {
 	const spans: TextSpan[] = [];
+	// Baseline of the space item the reader emitted last, until the next span claims it.
+	let spaceBaseline: number | null = null;
 
 	page.items.forEach((item, streamIndex) => {
-		if (item.str.trim().length === 0) return;
+		if (item.str.trim().length === 0) {
+			spaceBaseline = item.str.length > 0 ? item.transform[5] : null;
+			return;
+		}
 
 		const fontSize = fontSizeOf(item);
 		const [, , , , e, f] = item.transform;
+		const spaceBefore = spaceBaseline !== null && Math.abs(spaceBaseline - f) <= fontSize * LINE_TOLERANCE_RATIO;
+		spaceBaseline = null;
 
 		// PDF user space puts the origin bottom-left and `f` on the baseline; every consumer above
 		// this file works in top-left points, so the flip happens once, here.
@@ -71,6 +80,7 @@ function buildSpans(page: RawPage): TextSpan[] {
 			fontRef: item.fontRef,
 			fontSize,
 			streamIndex,
+			...(spaceBefore ? { spaceBefore: true as const } : {}),
 		});
 	});
 
@@ -141,7 +151,9 @@ function toLine(group: readonly TextSpan[], pageNumber: number): TextLine {
 		if (text.length >= MAX_LINE_CHARS) break;
 		if (previous) {
 			const gap = span.x - (previous.x + previous.width);
-			const threshold = SPACE_GAP_RATIO * Math.max(previous.fontSize, span.fontSize, 1);
+			const fontSize = Math.max(previous.fontSize, span.fontSize, 1);
+			// A space item the reader saw between the two counts down to a narrow gap; it never joins runs that touch.
+			const threshold = (span.spaceBefore ? EMITTED_SPACE_GAP_RATIO : SPACE_GAP_RATIO) * fontSize;
 			const needsSpace = gap > threshold && !/\s$/.test(text) && !/^\s/.test(span.text);
 			if (needsSpace) text += " ";
 		}

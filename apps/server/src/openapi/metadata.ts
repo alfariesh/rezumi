@@ -1,7 +1,6 @@
 import { oauthProviderAuthServerMetadata, oauthProviderOpenIdConfigMetadata } from "@better-auth/oauth-provider";
 import { auth } from "@rezumi/auth/config";
 import { env } from "@rezumi/env/server";
-import { buildMcpServerCard } from "@rezumi/mcp/server-card";
 import { appVersion } from "../app-version";
 
 const DOCS_URL = "https://docs.rezumi.app";
@@ -63,7 +62,9 @@ export function handleAgentCatalog() {
 	});
 }
 
-export function handleMcpServerCard() {
+/** Loads the MCP tool metadata on first use, as `/mcp` does (see `createApp`). */
+export async function handleMcpServerCard() {
+	const { buildMcpServerCard } = await import("@rezumi/mcp/server-card");
 	const card = buildMcpServerCard(appVersion);
 
 	return Response.json(

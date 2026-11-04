@@ -8,8 +8,6 @@ import { bodyLimit } from "hono/body-limit";
 import { compress } from "hono/compress";
 import { prepareStagedBody, withStagedBody } from "@rezumi/api/features/storage/transport";
 import { env } from "@rezumi/env/server";
-import { prepareMcpDiscovery } from "@rezumi/mcp";
-import { handleMcp } from "../mcp/handler";
 import { handleOpenApi, handleOpenApiDocument } from "../openapi/handler";
 import {
 	handleAgentCatalog,
@@ -70,7 +68,6 @@ type AppOptions = {
 };
 
 export function createApp(options: AppOptions = {}) {
-	prepareMcpDiscovery();
 	const app = new Hono<ServerEnvironment>();
 	const proxies = new BlockList();
 	for (const range of env.TRUSTED_PROXIES) {
@@ -142,7 +139,9 @@ export function createApp(options: AppOptions = {}) {
 	app.get("/uploads/*", (c) => handleUpload(c.req.raw));
 	app.get("/schema.json", () => handleSchemaJson());
 	app.get("/openapi.json", () => handleOpenApiDocument());
-	app.all("/mcp/*", (c) => handleMcp(c.req.raw, client(c)));
+	// MCP loads on its first request: its tool schemas are built as it loads, which a Worker would otherwise pay for
+	// at startup, against its CPU limit.
+	app.all("/mcp/*", async (c) => (await import("../mcp/handler")).handleMcp(c.req.raw, client(c)));
 
 	app.get("/.well-known/apple-app-site-association", () => handleAppleAppSiteAssociation());
 	app.get("/.well-known/assetlinks.json", () => handleAndroidAssetLinks());

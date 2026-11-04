@@ -355,46 +355,6 @@ function withoutTrailingBreaks(nodes: HostNode[]): HostNode[] {
 	return [...nodes.slice(0, -1), { ...last, children }];
 }
 
-const MIRRORED_JUSTIFY: Record<string, FormeStyle["justifyContent"]> = {
-	"flex-start": "flex-end",
-	"flex-end": "flex-start",
-};
-
-/**
- * Forme 0.25 lays `row-reverse` out as `row`. The children go in reverse order in a row packed from the other end,
- * which places them the same, except that a wrapping row fills its lines in the reverse order.
- */
-function unreverseRow(spread: { style: FormeStyle; children: ReactNode[] }): {
-	style: FormeStyle;
-	children: ReactNode[];
-} {
-	const { style, children } = spread;
-	if (style.flexDirection !== "row-reverse") return spread;
-	const inFlow = children.filter(
-		(child) => isValidElement<{ style?: FormeStyle }>(child) && child.props.style?.position !== "absolute",
-	);
-	// `space-between` packs a lone child at the start, which for `row-reverse` is the right.
-	const justify =
-		style.justifyContent === "space-between" && inFlow.length < 2
-			? "flex-start"
-			: (style.justifyContent ?? "flex-start");
-	// A growing child leaves no free space to pack. Mirroring anyway trips another Forme 0.25 defect: a row grown by
-	// its column packs its children along its height too (the page's layout box is such a row).
-	const grows = inFlow.some(
-		(child) =>
-			isValidElement<{ style?: FormeStyle }>(child) &&
-			Number(child.props.style?.flexGrow ?? child.props.style?.flex ?? 0) > 0,
-	);
-	return {
-		style: {
-			...style,
-			flexDirection: "row",
-			...(grows ? {} : { justifyContent: MIRRORED_JUSTIFY[justify] ?? justify }),
-		},
-		children: [...children].reverse(),
-	};
-}
-
 // What lays a container's children out, as opposed to what sizes, spaces and paints the container.
 const CONTAINER_KEYS = new Set([
 	"flexDirection",
@@ -408,10 +368,11 @@ const CONTAINER_KEYS = new Set([
 ]);
 
 /**
- * Forme 0.25 gives an absolute box no height from its `top` and `bottom`, where Yoga stretched it between them
- * (Jejak's timeline line). A plain bar down the whole content box becomes the left border of a box around the other
- * children instead: that box is as tall as they are, and its border is drawn on every page it reaches. A box that
- * merely stretches along a row keeps its whole height on the page where the row breaks.
+ * Forme draws an absolute box only on the page its containing block starts on, so a rule stretched down a list that
+ * breaks across pages stops at the end of the first one (Jejak's timeline line). A plain bar down the content box, from
+ * `top` to `bottom` and `left` (or `right`) in, becomes that side's border of a box around the other children instead:
+ * the box is as tall as they are, its border is drawn on every page it reaches, and beneath the children. Margins move
+ * the border's ends in by the offsets and give the children their place back.
  */
 function barAsBorder(spread: { style: FormeStyle; children: ReactNode[] }): {
 	style: FormeStyle;
@@ -419,13 +380,15 @@ function barAsBorder(spread: { style: FormeStyle; children: ReactNode[] }): {
 } {
 	const isBar = (child: ReactNode): child is ReactElement<{ style: FormeStyle }> => {
 		if (!isValidElement<{ style?: FormeStyle }>(child)) return false;
-		const { position, height, top, bottom, left, width, backgroundColor } = child.props.style ?? {};
+		const { position, height, top, bottom, left, right, width, backgroundColor } = child.props.style ?? {};
 		return (
 			position === "absolute" &&
 			height === undefined &&
-			top === 0 &&
-			bottom === 0 &&
-			typeof left === "number" &&
+			typeof top === "number" &&
+			top >= 0 &&
+			typeof bottom === "number" &&
+			bottom >= 0 &&
+			(typeof left === "number") !== (typeof right === "number") &&
 			typeof width === "number" &&
 			width > 0 &&
 			typeof backgroundColor === "string"
@@ -433,30 +396,47 @@ function barAsBorder(spread: { style: FormeStyle; children: ReactNode[] }): {
 	};
 	const bar = spread.children.find(isBar);
 	if (!bar) return spread;
-	const { left, width, backgroundColor } = bar.props.style as { left: number; width: number; backgroundColor: string };
+	const { top, bottom, left, right, width, backgroundColor } = bar.props.style as {
+		top: number;
+		bottom: number;
+		left?: number;
+		right?: number;
+		width: number;
+		backgroundColor: string;
+	};
+	const side = left === undefined ? "Right" : "Left";
 
 	const outer: Record<string, unknown> = {};
 	const inner: Record<string, unknown> = { position: "relative", flexGrow: 1 };
 	for (const [property, value] of Object.entries(spread.style))
 		(CONTAINER_KEYS.has(property) ? inner : outer)[property] = value;
 	// Forme strokes a border centred on the box's edge, so the edge sits half the bar's width in.
-	const edge = left + width / 2;
-	inner.marginLeft = -(edge + width);
+	const edge = (left ?? right ?? 0) + width / 2;
+	inner[`margin${side}`] = -(edge + width);
+	const bordered: Record<string, unknown> = {
+		flexGrow: 1,
+		[`margin${side}`]: edge,
+		[`border${side}Width`]: width,
+		[`border${side}Color`]: backgroundColor,
+	};
+	if (top > 0) {
+		bordered.marginTop = top;
+		inner.marginTop = -top;
+	}
+	if (bottom > 0) {
+		bordered.marginBottom = bottom;
+		inner.marginBottom = -bottom;
+	}
 
 	const content = createElement(
 		FormeView,
 		{ key: "content", style: inner as FormeStyle },
 		...spread.children.filter((child) => child !== bar),
 	);
-	const bordered = createElement(
-		FormeView,
-		{
-			key: "bar",
-			style: { flexGrow: 1, marginLeft: edge, borderLeftWidth: width, borderLeftColor: backgroundColor },
-		},
-		content,
-	);
-	return { style: outer as FormeStyle, children: [bordered] };
+	return {
+		style: outer as FormeStyle,
+		children: [createElement(FormeView, { key: "bar", style: bordered as FormeStyle }, content)],
+	};
 }
 
 function convertChildren(children: HostNode[], context: Context): ReactNode[] {
@@ -486,8 +466,9 @@ function convertNode(node: HostNode, parentContext: Context, key: number): React
 			const converted = convertStyle(props.style, context, node);
 			const { style } = converted;
 			if (converted.hidden) return null;
+			// Rezumi's Forme build lays `row-reverse` out itself, from the main-end and in tree order (vendor/README.md).
 			const spread = barAsBorder(
-				unreverseRow(spreadRowGap(style, convertChildren(node.children, childContext(context, converted)), context)),
+				spreadRowGap(style, convertChildren(node.children, childContext(context, converted)), context),
 			);
 			let children = spread.children;
 			const viewStyle = flowStyle(props, spread.style);
@@ -898,9 +879,8 @@ function convertPage(page: HostElement, context: Context, key: number, freeFormH
 		convertChildren(page.children, { ...childContext(pageContext, converted), pageMargin: margin }),
 		pageContext,
 	);
-	const unreversed = unreverseRow(spread);
-	converted.style = unreversed.style;
-	const { children } = unreversed;
+	converted.style = spread.style;
+	const { children } = spread;
 	const fixed = children.filter((child) => isValidElement(child) && child.type === FormeFixed);
 	if (fixed.length === 0)
 		return createElement(

@@ -48,13 +48,14 @@ ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template defau
 
 - Semua template: teks asli (bukan gambar), satu urutan baca, judul bagian standar, kontak di badan dokumen. Satu kolom = "ATS aman"; dua kolom = "visual" (tetap terbaca ATS modern, ditandai jujur di galeri).
 - Setiap template harus tetap rapi **dengan dan tanpa foto**, A4 dan Letter, 1–3 halaman, bahasa RTL, serta warna aksen apa pun yang dipilih pengguna.
-- Fitur web dan mobile sama (aturan parity di `CLAUDE.md`).
+- Fitur dibuat di web dulu. App mobile belum dikerjakan (keputusan 2026-11-04) dan menyusul sebelum rilis toko pertama (aturan di `CLAUDE.md`).
 
 ## Log keputusan
 
-| Tanggal    | Keputusan                                                                                              | Oleh    |
-| ---------- | ------------------------------------------------------------------------------------------------------ | ------- |
-| 2026-11-03 | Ganti semua 18 template (belum ada pengguna sungguhan); 16 nama di atas disetujui                      | Pemilik |
-| 2026-11-03 | 5 template gratis (Meridian, Sterling, Tunas, Wibawa, Kirana); semua gaya ikon gratis; logo tools Plus | Pemilik |
-| 2026-11-03 | Dikerjakan di checkout yang sama dengan sesi custom font (sesi itu hampir selesai)                     | Pemilik |
-| 2026-11-04 | Phase 04: web dulu, app mobile menyusul ("mobile skip dulu")                                           | Pemilik |
+| Tanggal    | Keputusan                                                                                                                       | Oleh    |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| 2026-11-03 | Ganti semua 18 template (belum ada pengguna sungguhan); 16 nama di atas disetujui                                               | Pemilik |
+| 2026-11-03 | 5 template gratis (Meridian, Sterling, Tunas, Wibawa, Kirana); semua gaya ikon gratis; logo tools Plus                          | Pemilik |
+| 2026-11-03 | Dikerjakan di checkout yang sama dengan sesi custom font (sesi itu hampir selesai)                                              | Pemilik |
+| 2026-11-04 | Kirana: urutan baca teks diperbaiki di mesin PDF (Forme `row-reverse`), tampilan tetap; bukan memindahkan header ke lebar penuh | Pemilik |
+| 2026-11-04 | Web dulu: app mobile belum dikerjakan; bagian mobile tiap phase ditunda sampai pemilik memintanya                               | Pemilik |

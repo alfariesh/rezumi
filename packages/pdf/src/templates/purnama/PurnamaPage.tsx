@@ -88,7 +88,7 @@ const usePurnama = (): LineupTemplate => {
 						lineHeight: 1.2,
 						color: lightMuted,
 						fontFamily: base.text.fontFamily,
-						...tracking(0.14, size.label),
+						...tracking(0.06, size.label),
 					},
 				),
 				sectionHeadingContainer: bySide({ alignItems: "center", columnGap: size.label * 1.25 }, {}),

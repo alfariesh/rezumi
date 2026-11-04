@@ -100,6 +100,16 @@ try {
 	assert.equal((await request("/_prerender/home/en-US.html")).status, 404);
 	assert.equal((await request("/missing.js")).status, 404);
 	assert.match((await request("/dashboard")).headers.get("x-robots-tag"), /noindex/);
+	// MCP loads on its first request, not at Worker startup (see createApp); both of its routes must still answer.
+	response = await request("/.well-known/mcp/server-card.json");
+	assert.equal(response.status, 200, await response.clone().text());
+	assert.match((await response.json()).url, /\/mcp$/);
+	response = await request("/mcp", {
+		method: "POST",
+		headers: { "content-type": "application/json", accept: "application/json, text/event-stream" },
+		body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" }),
+	});
+	assert.equal(response.status, 401, await response.clone().text());
 	response = await request("/api/auth/sign-up/email", {
 		method: "POST",
 		headers: { "content-type": "application/json", origin },

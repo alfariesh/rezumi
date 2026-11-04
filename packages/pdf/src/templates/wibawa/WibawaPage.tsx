@@ -58,9 +58,15 @@ const useWibawa = (): LineupTemplate => {
 			contactList: { flexDirection: "column", rowGap: size.body * 0.3 },
 			contactItem: { flexDirection: r.row, alignItems: "center", columnGap: size.body * 0.5 },
 			contactText: { fontSize: size.body },
-			contactLabel: { color: tokens.muted },
+			// The labels of the personal details take one width (room for "Tempat, tanggal lahir:"), so their values line up
+			// as in a table.
+			contactLabel: { color: tokens.muted, width: size.body * 11, flexShrink: 0 },
 		});
 
-		return { colors, styles: { ...styles, icon: { size: size.body * 0.95, color: tokens.accent } } };
+		return {
+			colors,
+			features: { contactIconColumn: true },
+			styles: { ...styles, icon: { size: size.body * 0.95, color: tokens.accent } },
+		};
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);
 };

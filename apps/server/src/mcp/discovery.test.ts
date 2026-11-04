@@ -111,7 +111,7 @@ beforeEach(() => {
 });
 afterEach(() => vi.restoreAllMocks());
 
-it("precomputes discovery before the first request without user queries or network calls", async () => {
+it("precomputes discovery on the Node server before the first request without user queries or network calls", async () => {
 	const query = vi.spyOn(Pool.prototype, "query").mockImplementation(() => {
 		throw new Error("Unexpected database query");
 	});
@@ -122,9 +122,10 @@ it("precomputes discovery before the first request without user queries or netwo
 		throw new Error("Unexpected network connection");
 	});
 	const fetch = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Unexpected network call"));
-	// Import under the guards: parity contracts are also built during module initialization.
-	const { createApp } = await import("../http/app");
-	createApp({ serveStatic: false });
+	// Import under the guards: parity contracts are also built during module initialization. The Node server runs
+	// this before listening (index.ts); a Worker leaves it to the first MCP request.
+	const { prepareMcpDiscovery } = await import("@rezumi/mcp");
+	prepareMcpDiscovery();
 	expect(query.mock.calls.length).toBe(0);
 	expect(connect.mock.calls.length).toBe(0);
 	expect(socket.mock.calls.length).toBe(0);

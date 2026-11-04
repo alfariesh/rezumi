@@ -94,9 +94,11 @@ const webFontMap = new Map<string, WebFont>(webFontList.map((font) => [font.fami
 const fontMap = new Map<string, FontRecord>();
 const chinesePrioritySet = new Set<string>(preferredChineseFontFamilies);
 
-export const fontList = [...standardFontList, ...webFontList].sort((a, b) =>
-	a.family.localeCompare(b.family, undefined, { sensitivity: "base" }),
-);
+// One collator for the whole sort: localeCompare with options builds a new one per comparison, which cost a Worker
+// about 30 ms of its startup CPU limit.
+const familyOrder = new Intl.Collator(undefined, { sensitivity: "base" });
+
+export const fontList = [...standardFontList, ...webFontList].sort((a, b) => familyOrder.compare(a.family, b.family));
 
 for (const font of fontList) {
 	fontMap.set(font.family, font);
