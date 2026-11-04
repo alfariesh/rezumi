@@ -118,6 +118,11 @@ export type TextSpan = BoundingBox & {
 	fontSize: number;
 	/** Index of the source item in the page's stream order. */
 	streamIndex: number;
+	/**
+	 * The reader emitted a space item right before this one on the same baseline: the space between two runs in
+	 * different fonts (bold, then regular), which is often narrower than the gap that alone would read as one.
+	 */
+	spaceBefore?: true;
 };
 
 export type TextLine = BoundingBox & {
