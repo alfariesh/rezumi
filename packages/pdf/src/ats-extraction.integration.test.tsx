@@ -86,8 +86,8 @@ describe("a resume rendered by this app", () => {
 		kirana: { findings: ["MULTI_COLUMN_LAYOUT", "NO_EDUCATION_SECTION"], score: 55 },
 		linen: { findings: ["READING_ORDER_RISK", "TIGHT_LINE_SPACING"], score: 96 },
 		horizon: { findings: [], score: 100 },
-		jejak: { findings: ["TIGHT_LINE_SPACING"], score: 99 },
-		purnama: { findings: ["MULTI_COLUMN_LAYOUT"], score: 55 },
+		jejak: { findings: ["READING_ORDER_RISK", "TIGHT_LINE_SPACING"], score: 96 },
+		purnama: { findings: ["COLUMN_GUTTER"], score: 97 },
 		senja: { findings: ["READING_ORDER_RISK"], score: 97 },
 	};
 
@@ -216,7 +216,8 @@ describe("the text of every template", () => {
 			expect(name).toBeLessThan(mail ?? -1);
 			expect(mail).toBeLessThan(telephone ?? -1);
 			expect(telephone).toBeLessThan(headings.get(mainTitles[0] ?? "") ?? -1);
-			if (oneColumn) expect(name).toBeLessThan(Math.min(...headings.values()));
+			// Forme draws a row's children in tree order, so a sidebar at the start of the line still reads after the name.
+			expect(name).toBeLessThan(Math.min(...headings.values()));
 
 			// Each entry's dates sit inside its own section, before whatever title comes next in the text.
 			for (const [title, dates] of [
