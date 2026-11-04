@@ -55,7 +55,8 @@ export function createDesignCatalog() {
 				"A profile without its own icon gets its network's logo (GitHub, LinkedIn, X, Behance, Dribbble, Medium, …) when `items` is on.",
 			tools: {
 				setting: "/metadata/design/icons/logos",
-				note: "With `logos` on, a skill whose name or keyword names a known tool shows that tool's logo beside the text. Matching ignores case, spaces, dots and dashes.",
+				plan: "paid",
+				note: "With `logos` on, a skill whose name or keyword names a known tool shows that tool's logo beside the text. Matching ignores case, spaces, dots and dashes. Switching it on needs a paid plan; a resume that already shows tool logos keeps them. Every other icon setting is free.",
 				matches: BRAND_ICONS,
 			},
 		},

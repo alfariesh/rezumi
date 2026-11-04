@@ -45,7 +45,7 @@ const refusals = [
 	new ORPCError("PLAN_LIMIT_REACHED", {
 		data: { limit: "activeResumes", max: 3, used: 3, requested: { resumes: 1, coverLetters: 0 } },
 	}),
-	...["premiumTemplates", "wordOdtExport", "customStyles", "customFonts", "automationApi"].map(
+	...["premiumTemplates", "brandLogos", "wordOdtExport", "customStyles", "customFonts", "automationApi"].map(
 		(feature) => new ORPCError("PLAN_FEATURE_REQUIRED", { data: { feature } }),
 	),
 ];

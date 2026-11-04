@@ -55,13 +55,17 @@ export function describeImportedDesign(
 		template: Template;
 		stylesheet?: { source: { text: string } } | undefined;
 		typography?: { customFonts?: unknown[] | undefined } | undefined;
+		design?: { icons?: { logos?: boolean | undefined } | undefined } | undefined;
 	},
 ): string | null {
+	const logos = design.design?.icons?.logos === true && !hasPlanFeature(plan, "brandLogos");
 	const fonts = Boolean(design.typography?.customFonts?.length) && !hasPlanFeature(plan, "customFonts");
-	const notice = describeImportedTemplateAndStyles(plan, design);
-	if (!fonts) return notice;
-	const fontsNotice = t`Your own fonts aren't available, so the imported document uses a standard font.`;
-	return notice ? `${notice} ${fontsNotice}` : fontsNotice;
+	const notices = [
+		describeImportedTemplateAndStyles(plan, design),
+		logos ? t`Tool logos aren't available, so the imported document shows skills without them.` : null,
+		fonts ? t`Your own fonts aren't available, so the imported document uses a standard font.` : null,
+	].filter(Boolean);
+	return notices.length > 0 ? notices.join(" ") : null;
 }
 
 function describeImportedTemplateAndStyles(

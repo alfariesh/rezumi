@@ -5,7 +5,7 @@ import { I18nManager, TextInput, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { scheduleOnRN } from "react-native-worklets";
-import { IconButton, Switch, Text, haptics, useTheme } from "@/ui";
+import { Icon, IconButton, Switch, Text, haptics, useTheme } from "@/ui";
 
 type FieldProps = { label: string; value?: string | undefined; helper?: string | undefined; children: ReactNode };
 
@@ -238,14 +238,25 @@ type SwitchRowProps = {
 	value: boolean;
 	onChange: (value: boolean) => void;
 	disabled?: boolean | undefined;
+	/** A lock before the label: the plan doesn't open the switch, and `onChange` explains why instead. */
+	locked?: boolean | undefined;
 };
 
-export function SwitchRow({ label, description, value, onChange, disabled }: SwitchRowProps) {
-	const { space, size } = useTheme();
+export function SwitchRow({ label, description, value, onChange, disabled, locked }: SwitchRowProps) {
+	const { colors, space, size } = useTheme();
 	return (
 		<View style={{ flexDirection: "row", alignItems: "center", gap: space.s3, minHeight: size.hit }}>
 			<View style={{ flex: 1, gap: space.s0 }}>
-				<Text variant="body">{label}</Text>
+				{locked ? (
+					<View style={{ flexDirection: "row", alignItems: "center", gap: space.s1 }}>
+						<Icon name="lock" size={size.icon.meta} color={colors.ink3} />
+						<Text variant="body" style={{ flexShrink: 1 }}>
+							{label}
+						</Text>
+					</View>
+				) : (
+					<Text variant="body">{label}</Text>
+				)}
 				{description ? (
 					<Text variant="caption" color="ink3">
 						{description}

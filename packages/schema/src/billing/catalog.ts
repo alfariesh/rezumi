@@ -19,6 +19,8 @@ export type PaidPlanId = z.infer<typeof paidPlanIdSchema>;
 export type PlanFeatures = {
 	/** Templates outside FREE_TEMPLATES. */
 	premiumTemplates: boolean;
+	/** Logos of known tools and technologies beside skills (`design.icons.logos`). Other icons are on every plan. */
+	brandLogos: boolean;
 	/** New Word (.docx) and ODT exports. */
 	wordOdtExport: boolean;
 	/** Custom Styles (CSS); see docs/applying-custom-styles.mdx. */
@@ -50,7 +52,7 @@ export type PlanDefinition = {
 	creditsPerPurchase: number;
 };
 
-export const BILLING_CATALOG_VERSION = 2;
+export const BILLING_CATALOG_VERSION = 3;
 
 export const BILLING_CURRENCY = "IDR";
 
@@ -71,6 +73,7 @@ export function isFreeTemplate(template: Template): boolean {
 /** The billing features a plan names, in the order the apps list them. */
 export const PLAN_FEATURE_KEYS = [
 	"premiumTemplates",
+	"brandLogos",
 	"wordOdtExport",
 	"customStyles",
 	"customFonts",
@@ -132,6 +135,7 @@ export type CreditSource = z.infer<typeof creditSourceSchema>;
 
 const paidFeatures: PlanFeatures = {
 	premiumTemplates: true,
+	brandLogos: true,
 	wordOdtExport: true,
 	customStyles: true,
 	customFonts: true,
@@ -147,6 +151,7 @@ export const PLANS = {
 		limits: { activeResumes: 3, activeCoverLetters: 3 },
 		features: {
 			premiumTemplates: false,
+			brandLogos: false,
 			wordOdtExport: false,
 			customStyles: false,
 			customFonts: false,

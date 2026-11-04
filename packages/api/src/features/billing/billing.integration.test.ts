@@ -209,6 +209,7 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 			limits: { activeResumes: { used: 1, max: null }, activeCoverLetters: { used: 0, max: null } },
 			features: {
 				premiumTemplates: true,
+				brandLogos: true,
 				wordOdtExport: true,
 				customStyles: true,
 				customFonts: true,

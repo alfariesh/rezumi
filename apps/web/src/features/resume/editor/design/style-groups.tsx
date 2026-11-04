@@ -5,6 +5,7 @@ import type { WritableDraft } from "immer";
 import { RadioButtonGroup, Segment } from "@heroui-pro/react";
 import {
 	Button,
+	Chip,
 	ColorArea,
 	ColorField,
 	ColorPicker,
@@ -39,6 +40,8 @@ import {
 	TEXT_SIZE,
 } from "./presets";
 import { Combobox } from "@/components/ui/combobox";
+import { hasPlanFeature, usePlan } from "@/features/billing/plan";
+import { openPlanDialog } from "@/features/billing/plan-dialog";
 import { getLocaleOptions } from "@/features/locale/locale-options";
 import { useIsResumeLocked, useResumeData, useUpdateResumeData } from "@/features/resume/builder/draft";
 
@@ -425,13 +428,16 @@ export function PageGroup() {
 
 /**
  * Icons: one switch for all of them, the style every icon is drawn in, and the groups that show. Tool logos sit beside
- * the text they stand for, which applicant tracking systems read either way.
+ * the text they stand for, which applicant tracking systems read either way. They need the plan's `brandLogos` to be
+ * switched on; a resume that already shows them can keep them or switch them off.
  */
 export function IconsGroup() {
 	const { metadata, write } = useDesign();
+	const plan = usePlan();
 	if (!metadata) return null;
 
 	const icons = iconDesignOf(metadata.design);
+	const logosLocked = !icons.logos && !hasPlanFeature(plan, "brandLogos");
 	const set = (key: keyof IconDesign, patch: Partial<IconDesign>) =>
 		write(
 			`icons.${key}`,
@@ -496,16 +502,34 @@ export function IconsGroup() {
 			</div>
 
 			<div className="grid">
-				{groups.map(({ key, label, description }) => (
-					<SwitchRow
-						key={key}
-						label={label}
-						description={description}
-						isSelected={icons[key]}
-						isDisabled={!icons.enabled}
-						onChange={(checked) => set(key, { [key]: checked })}
-					/>
-				))}
+				{groups.map(({ key, label, description }) => {
+					const locked = key === "logos" && logosLocked;
+					return (
+						<SwitchRow
+							key={key}
+							label={
+								locked ? (
+									<span className="inline-flex flex-wrap items-center gap-2">
+										{label}
+										<Chip size="sm" variant="soft">
+											<Icon name="lock" size={12} aria-hidden />
+											Plus
+											<span className="sr-only">{t`Not in your plan`}</span>
+										</Chip>
+									</span>
+								) : (
+									label
+								)
+							}
+							description={description}
+							isSelected={icons[key]}
+							isDisabled={!icons.enabled}
+							onChange={(checked) =>
+								locked ? openPlanDialog({ kind: "feature", feature: "brandLogos" }) : set(key, { [key]: checked })
+							}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);

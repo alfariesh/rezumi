@@ -28,7 +28,7 @@ function planHighlights(planId: PaidPlanId) {
 	const { activeResumes, activeCoverLetters } = PLANS.plus.limits;
 	return [
 		t`${activeResumes} active resumes and ${activeCoverLetters} cover letters`,
-		t`Every template, with Word and ODT downloads`,
+		t`Every template, tool logos, Word and ODT downloads`,
 		t`Custom styles, your own fonts, API and MCP`,
 	];
 }

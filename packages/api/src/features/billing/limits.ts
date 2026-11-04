@@ -74,6 +74,8 @@ function featureMessage(feature: PlanFeature) {
 	switch (feature) {
 		case "premiumTemplates":
 			return `This template isn't included in your plan. Choose one of ${freeTemplateNames.slice(0, -1).join(", ")} or ${freeTemplateNames.at(-1)}. Documents that already use a template keep it.`;
+		case "brandLogos":
+			return "Tool logos in skills aren't included in your plan. Documents that already show them keep them, and every other icon stays available.";
 		case "wordOdtExport":
 			return "Word and ODT downloads aren't included in your plan. Download a PDF, Markdown or JSON file instead.";
 		case "customStyles":
@@ -141,10 +143,14 @@ export type PlanDesign = {
 	template: Template;
 	stylesheet?: { source: { text: string } } | undefined;
 	typography?: { customFonts?: { url: string }[] | undefined } | undefined;
+	design?: { icons?: { logos?: boolean | undefined } | undefined } | undefined;
 };
 
 /** A design as stored, before validation: older rows may hold anything. */
-export type StoredDesign = { template?: unknown; stylesheet?: unknown; typography?: unknown } | null | undefined;
+export type StoredDesign =
+	| { template?: unknown; stylesheet?: unknown; typography?: unknown; design?: unknown }
+	| null
+	| undefined;
 
 function stylesheetText(design: StoredDesign) {
 	const source = (design?.stylesheet as { source?: { text?: unknown } } | null | undefined)?.source;
@@ -157,6 +163,12 @@ function customFontUrls(design: StoredDesign): Set<string> {
 	return new Set(faces.flatMap((face) => (typeof face?.url === "string" ? [face.url as string] : [])));
 }
 
+/** Whether tool logos are switched on; a resume saved before icon settings existed has them off. */
+function showsToolLogos(design: StoredDesign) {
+	const icons = (design?.design as { icons?: { logos?: unknown } | null } | null | undefined)?.icons;
+	return icons?.logos === true;
+}
+
 /** Uploaded font faces the design has and `before` didn't. */
 function addedFontUrls(before: StoredDesign, after: PlanDesign) {
 	const kept = customFontUrls(before);
@@ -164,9 +176,9 @@ function addedFontUrls(before: StoredDesign, after: PlanDesign) {
 }
 
 /**
- * The features a design change needs: a premium template chosen anew, custom styles added or changed, or an uploaded
- * font added. Keeping a premium template, saved styles or fonts, removing them, and moving to a free template need
- * nothing.
+ * The features a design change needs: a premium template chosen anew, tool logos switched on, custom styles added or
+ * changed, or an uploaded font added. Keeping a premium template, logos, saved styles or fonts, removing them, and
+ * moving to a free template need nothing.
  */
 export function designFeaturesNeeded(before: StoredDesign, after: PlanDesign): PlanFeature[] {
 	const needed: PlanFeature[] = [];
@@ -174,6 +186,7 @@ export function designFeaturesNeeded(before: StoredDesign, after: PlanDesign): P
 	const template = upgradeTemplateId(after.template);
 	const storedTemplate = upgradeTemplateId(before?.template);
 	if (!isFreeTemplate(template) && template !== storedTemplate) needed.push("premiumTemplates");
+	if (showsToolLogos(after) && !showsToolLogos(before)) needed.push("brandLogos");
 	const styles = stylesheetText(after);
 	if (styles && styles !== stylesheetText(before)) needed.push("customStyles");
 	if (addedFontUrls(before, after).length > 0) needed.push("customFonts");
@@ -205,12 +218,12 @@ export async function assertDesignChange(
 }
 
 /**
- * An imported file's design, fitted to the plan: a premium template becomes the first free one, and custom styles and
- * uploaded fonts are left out, so the import still succeeds. Fonts from another account are always left out. Returns
- * what changed, for the app to tell the user. Mutates `design`.
+ * An imported file's design, fitted to the plan: a premium template becomes the first free one, tool logos are
+ * switched off, and custom styles and uploaded fonts are left out, so the import still succeeds. Fonts from another
+ * account are always left out. Returns what changed, for the app to tell the user. Mutates `design`.
  */
 export async function fitImportedDesign(userId: string, design: PlanDesign, database: DbOrTx = db) {
-	const changed = { template: false, stylesheet: false, fonts: false };
+	const changed = { template: false, logos: false, stylesheet: false, fonts: false };
 	const fonts = design.typography?.customFonts;
 	if (design.typography && fonts) {
 		const own = fonts.filter((face) => parseUploadedFontUrl(face.url, env.APP_URL)?.userId === userId);
@@ -226,6 +239,10 @@ export async function fitImportedDesign(userId: string, design: PlanDesign, data
 	if (needed.includes("premiumTemplates") && !entitlements.features.premiumTemplates) {
 		design.template = FREE_TEMPLATES[0];
 		changed.template = true;
+	}
+	if (needed.includes("brandLogos") && !entitlements.features.brandLogos && design.design?.icons) {
+		design.design.icons.logos = false;
+		changed.logos = true;
 	}
 	if (needed.includes("customStyles") && !entitlements.features.customStyles) {
 		delete design.stylesheet;

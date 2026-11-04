@@ -84,7 +84,7 @@ const mocks = {
 	"expo-image": `export const Image='Image';`,
 	"expo-router": `export const useRouter=()=>({});`,
 	"@/routes": `export const routes={};`,
-	"@/ui": `export const Banner='Banner',Button='Button',IconButton='IconButton',Switch='Switch',Text='Text';export const haptics={selection:()=>globalThis.__motionCheck.haptics++};export const useReducedMotion=()=>globalThis.__motionCheck.reduced;export const workletEaseMove=()=>{};export const useTheme=()=>({space:{s1:4,s2:8,s4:16,s6:24,s8:32},motion:{d2:200,easeMove:()=>{}},size:{hit:44},radius:{rLg:4},colors:{},shadows:{e1:{},ePage:{}}});`,
+	"@/ui": `export const Banner='Banner',Button='Button',Icon='Icon',IconButton='IconButton',Switch='Switch',Text='Text';export const haptics={selection:()=>globalThis.__motionCheck.haptics++};export const useReducedMotion=()=>globalThis.__motionCheck.reduced;export const workletEaseMove=()=>{};export const useTheme=()=>({space:{s1:4,s2:8,s4:16,s6:24,s8:32},motion:{d2:200,easeMove:()=>{}},size:{hit:44},radius:{rLg:4},colors:{},shadows:{e1:{},ePage:{}}});`,
 	"./motion": `export const useReducedMotion=()=>globalThis.__motionCheck.reduced;`,
 	"./usePreview": `export const usePreview=()=>({result:null,displayScale:1});`,
 	"./fit": `export const fitResume=()=>{};`,
