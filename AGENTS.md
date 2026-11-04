@@ -254,6 +254,7 @@ Push to `main` runs `.github/workflows/deploy-cloudflare.yml` (also `workflow_di
 
 ## Gotchas
 
+- PDFs render with a patched Forme 0.29.0 (`vendor/formepdf-core`, `packages/forme-native/rust/vendor/forme-pdf`, `patches/@formepdf__shared@0.29.0.patch`). Read `vendor/README.md` before upgrading `@formepdf/*` or `forme-pdf`, or changing the engine.
 - Email sending needs SMTP config; without it emails are logged to console. Dev still works — verification links appear in server logs.
 - Database connection errors: check `docker compose -f compose.dev.yml ps` and use `localhost` for host-run code.
 - S3 errors: check `docker compose -f compose.dev.yml logs seaweedfs seaweedfs_create_bucket`; verify endpoint and bucket, or select local storage.

@@ -91,3 +91,6 @@ temp
 # Lingui compile output (the fill-translations gate compiles to validate; the apps load .po directly)
 /apps/*/locales/*.js
 apps/mobile/uniwind-types.d.ts
+
+# The patched Forme engine is committed as built (vendor/README.md), dist included.
+!/vendor/formepdf-core/dist/

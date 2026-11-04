@@ -1,0 +1,602 @@
+//! # Forme
+//!
+//! A page-native PDF rendering engine.
+//!
+//! Most PDF renderers treat a document as an infinite vertical canvas and then
+//! slice it into pages after layout. This produces broken tables, orphaned
+//! headers, collapsed flex layouts on page boundaries, and years of GitHub
+//! issues begging for fixes.
+//!
+//! Forme does the opposite: **the page is the fundamental unit of layout.**
+//! Every layout decision—every flex calculation, every line break, every table
+//! row placement—is made with the page boundary as a hard constraint. Content
+//! doesn't get "sliced" after the fact. It flows *into* pages.
+//!
+//! ## Architecture
+//!
+//! ```text
+//! Input (JSON/API)
+//!       ↓
+//!   [model]    — Document tree: nodes, styles, content
+//!       ↓
+//!   [style]    — Resolve cascade, inheritance, defaults
+//!       ↓
+//!   [layout]   — Page-aware layout engine
+//!       ↓
+//!   [pdf]      — Serialize to PDF bytes
+//! ```
+
+pub mod barcode;
+pub mod chart;
+pub mod error;
+pub mod font;
+pub mod image_loader;
+pub mod layout;
+pub mod model;
+pub mod pdf;
+pub mod qrcode;
+pub mod style;
+pub mod svg;
+pub mod template;
+pub mod text;
+
+#[cfg(feature = "wasm")]
+pub mod wasm;
+
+#[cfg(feature = "wasm-raw")]
+pub mod wasm_raw;
+
+pub use error::FormeError;
+pub use layout::LayoutInfo;
+pub use model::{
+    CertificationConfig, ColumnDef, ColumnWidth, FontEntry, PatternType, RedactionPattern,
+    RedactionRegion, TextRun,
+};
+pub use model::{ChartDataPoint, ChartSeries, DotPlotGroup};
+pub use model::{Document, Metadata, Node, NodeKind, PageConfig, PageSize};
+pub use style::Style;
+
+use font::FontContext;
+use layout::LayoutEngine;
+use pdf::PdfWriter;
+
+/// Certify PDF bytes with an X.509 certificate.
+///
+/// Takes arbitrary PDF bytes and a certification configuration, and returns
+/// new PDF bytes with a valid digital signature. Uses incremental update
+/// to preserve the original PDF content.
+pub fn certify_pdf(
+    pdf_bytes: &[u8],
+    config: &model::CertificationConfig,
+) -> Result<Vec<u8>, FormeError> {
+    pdf::certify::certify_pdf(pdf_bytes, config)
+}
+
+/// Redact regions of a PDF by overlaying opaque rectangles.
+///
+/// Takes arbitrary PDF bytes and a list of redaction regions (page, x, y,
+/// width, height in top-origin coordinates). Returns new PDF bytes with
+/// the redaction rectangles drawn on top via incremental update.
+pub fn redact_pdf(
+    pdf_bytes: &[u8],
+    regions: &[model::RedactionRegion],
+) -> Result<Vec<u8>, FormeError> {
+    pdf::redaction::redact_pdf(pdf_bytes, regions)
+}
+
+/// Find text regions matching patterns in a PDF.
+///
+/// Searches PDF content streams for literal or regex patterns and returns
+/// redaction regions (in web top-origin coordinates) for each match.
+pub fn find_text_regions(
+    pdf_bytes: &[u8],
+    patterns: &[model::RedactionPattern],
+) -> Result<Vec<RedactionRegion>, FormeError> {
+    pdf::redaction::find_text_regions(pdf_bytes, patterns)
+}
+
+/// Redact text matching patterns from a PDF.
+///
+/// Convenience wrapper: finds text regions matching the patterns, then
+/// applies coordinate-based redaction to all matches.
+pub fn redact_text(
+    pdf_bytes: &[u8],
+    patterns: &[model::RedactionPattern],
+) -> Result<Vec<u8>, FormeError> {
+    pdf::redaction::redact_text(pdf_bytes, patterns)
+}
+
+/// Merge multiple PDFs into a single document.
+///
+/// Takes a slice of PDF byte slices and returns merged PDF bytes containing
+/// all pages in order. Requires at least 2 input PDFs.
+pub fn merge_pdfs(pdfs: &[&[u8]]) -> Result<Vec<u8>, FormeError> {
+    pdf::merge::merge_pdfs(pdfs)
+}
+
+/// Render a document to PDF bytes.
+///
+/// This is the primary entry point. Takes a document tree and returns
+/// the raw bytes of a valid PDF file. If the document has a `certification`
+/// configuration, the output PDF is digitally signed.
+pub fn render(document: &Document) -> Result<Vec<u8>, FormeError> {
+    render_with_warnings(document).map(|(pdf, _warnings)| pdf)
+}
+
+/// Lay out a document, running the page-number sentinel re-layout loop **only
+/// when the document actually places a `{{pageNumber}}`/`{{totalPages}}`
+/// sentinel**. Without one, the reserved sentinel width is never consumed, so a
+/// re-layout reproduces byte-identical pages — pure wasted work (measured as a
+/// 2x render cost above 100 pages, where the total-page digit count first
+/// crosses 2->3; see `benchmarks/`). The sentinel presence is detected at the
+/// exhaustive chokepoint — every sentinel glyph is measured in
+/// `FontContext::char_width`, from any source (HTML `counter()`, margin boxes,
+/// JSX literals). Returns the laid-out pages, the populated font context, and
+/// the number of full layout passes (1, or 2–3 when the width needed fixing).
+///
+/// SCOPING NOTE (investigated 2026-09, abandoned — see benchmarks/): re-laying
+/// out ONLY the running element on a digit-width change, instead of the whole
+/// document, looks like a clean ~2x win but is NOT scopable as written. The
+/// sentinel width is consumed during INJECTION — `inject_fixed_elements` lays
+/// out the footer/margin content — NOT during the flow pass; the flow-time
+/// `measure_node_height` height reservation doesn't touch it. And HTML `@page`
+/// margin boxes are mapped to Fixed nodes (see the `html` crate), so there is no
+/// purely out-of-flow page-number case. Consequently the guard signals (is there
+/// a sentinel? in flow or in a running element? does its height change?) don't
+/// exist yet after a flow-only pass, and a naive "reuse flow + re-inject" split
+/// silently SKIPS the digit-width correction entirely — a correctness regression
+/// that byte-identity caught. Any future attempt must derive those signals from
+/// injection or a document-model scan, not from the flow pass.
+fn layout_with_sentinel_passes(
+    document: &Document,
+) -> (
+    Vec<crate::layout::LayoutPage>,
+    FontContext,
+    u32,
+    Vec<String>,
+) {
+    layout_with_sentinel_passes_audited(document, false, Vec::new())
+}
+
+fn layout_with_sentinel_passes_audited(
+    document: &Document,
+    audit: bool,
+    fonts: Vec<FontBytes>,
+) -> (
+    Vec<crate::layout::LayoutPage>,
+    FontContext,
+    u32,
+    Vec<String>,
+) {
+    let mut font_context = FontContext::new();
+    register_document_fonts(&mut font_context, &document.fonts);
+    for font in fonts {
+        font_context
+            .registry_mut()
+            .register(&font.family, font.weight, font.italic, font.data);
+    }
+    let engine = LayoutEngine::new();
+    font_context.reset_page_sentinel();
+    let mut pages = engine.layout(document, &font_context);
+    let mut passes = 1u32;
+
+    if font_context.saw_page_sentinel() {
+        for _ in 0..2 {
+            let needed = digits_for_count(pages.len());
+            if needed == font_context.sentinel_digit_count() {
+                break;
+            }
+            font_context.set_sentinel_digit_count(needed);
+            pages = engine.layout(document, &font_context);
+            passes += 1;
+        }
+    }
+    let mut layout_warnings = engine.take_warnings();
+    if audit {
+        crate::layout::audit::audit_content(document, &pages, &mut layout_warnings);
+    }
+    (pages, font_context, passes, layout_warnings)
+}
+
+/// Number of full layout passes a document needs (1 for the common case; 2–3
+/// only when a page-number sentinel's reserved width must be corrected).
+/// Exposed as the regression guard for the sentinel re-layout optimization.
+pub fn count_layout_passes(document: &Document) -> u32 {
+    layout_with_sentinel_passes(document).2
+}
+
+/// Render a document to PDF bytes plus any non-fatal warnings (e.g. pdfUa
+/// requested without an embeddable font registered). Same output as `render`;
+/// the warnings surface through the WASM bindings and the HTML wrapper.
+pub fn render_with_warnings(document: &Document) -> Result<(Vec<u8>, Vec<String>), FormeError> {
+    render_with_warnings_and_passes(document).map(|(pdf, warnings, _passes)| (pdf, warnings))
+}
+
+/// Opt-in per-render checks. `Default` disables everything, and every
+/// disabled check costs nothing — the flag is tested once per render.
+/// Deserializes from the camelCase JSON the JS wrappers send
+/// (`{"auditContent": true}`), unknown fields ignored so older engines
+/// tolerate newer wrappers.
+#[derive(Debug, Clone, Copy, Default, serde::Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct RenderOptions {
+    /// Post-render content audit: after layout, verify the laid-out pages
+    /// against the input document and report content that was dropped,
+    /// rendered fully off-page, painted in its background's exact colour,
+    /// or clipped to a zero-size box — through the render-defect channel
+    /// (`render defect: ...` warnings), like every other case where the
+    /// engine's output differs from what the document asked for.
+    pub audit_content: bool,
+}
+
+/// Like [`render_with_warnings`], but also returns the number of layout passes
+/// the render took — surfaced through the HTML wrapper for benchmark evidence.
+pub fn render_with_warnings_and_passes(
+    document: &Document,
+) -> Result<(Vec<u8>, Vec<String>, u32), FormeError> {
+    render_with_options(document, RenderOptions::default())
+}
+
+/// Like [`render_with_warnings_and_passes`], with opt-in [`RenderOptions`].
+/// PDF 2.0 contradicts every ISO 32000-1 (PDF 1.7) based conformance
+/// claim: PDF/A-2 and A-3 are defined over 1.7, as is PDF/UA-1. Error by
+/// name rather than emit a file whose header falsifies its own claim.
+/// PDF/A-4 is defined over ISO 32000-2: claiming it IMPLIES PDF 2.0
+/// output, whatever pdfVersion says (the serde default cannot be told
+/// apart from an explicit "1.7", so the claim wins — the alternative is
+/// a file whose header falsifies its own conformance).
+fn effective_pdf_version(document: &Document) -> crate::model::PdfVersion {
+    use crate::model::{PdfAConformance, PdfVersion};
+    if document.pdf_ua2 {
+        return PdfVersion::V2_0;
+    }
+    match &document.pdfa {
+        Some(PdfAConformance::A4 | PdfAConformance::A4f) => PdfVersion::V2_0,
+        _ => document.pdf_version,
+    }
+}
+
+fn validate_pdf_version(document: &Document) -> Result<(), FormeError> {
+    use crate::model::{PdfAConformance, PdfVersion};
+    if document.pdf_version != PdfVersion::V2_0 {
+        return Ok(());
+    }
+    if let Some(level) = &document.pdfa {
+        let family = match level {
+            PdfAConformance::A2a | PdfAConformance::A2b | PdfAConformance::A2u => "PDF/A-2",
+            PdfAConformance::A3a | PdfAConformance::A3b | PdfAConformance::A3u => "PDF/A-3",
+            // A-4 is the 2.0-based standard: no contradiction — it
+            // IMPLIES pdfVersion 2.0 (applied at render time below).
+            PdfAConformance::A4 | PdfAConformance::A4f => return Ok(()),
+        };
+        return Err(FormeError::RenderError(format!(
+            "pdfVersion \"2.0\" contradicts pdfa: {family} is defined over ISO 32000-1              (PDF 1.7). Drop the pdfa claim, or keep pdfVersion \"1.7\" (the default).              PDF/A-4 is the 2.0-based archival standard."
+        )));
+    }
+    if document.pdf_ua {
+        return Err(FormeError::RenderError(
+            "pdfVersion \"2.0\" contradicts pdfUa: PDF/UA-1 is defined over ISO 32000-1              (PDF 1.7). Drop the pdfUa claim, or keep pdfVersion \"1.7\" (the default).              PDF/UA-2 is the 2.0-based accessibility standard (pdfUa2)."
+                .to_string(),
+        ));
+    }
+    Ok(())
+}
+
+/// PDF/UA-2 (ISO 14289-2:2024) is defined over PDF 2.0: it implies the
+/// 2.0 output version and tagging, contradicts UA-1 and the 1.7 pdfa
+/// levels, and composes with pdfa "4"/"4f".
+fn validate_pdf_ua2(document: &Document) -> Result<(), FormeError> {
+    use crate::model::PdfAConformance;
+    if !document.pdf_ua2 {
+        return Ok(());
+    }
+    if document.pdf_ua {
+        return Err(FormeError::RenderError(
+            "pdfUa2 contradicts pdfUa: a file claims PDF/UA-1 (ISO 32000-1) or PDF/UA-2 \
+             (PDF 2.0), not both. Keep exactly one."
+                .to_string(),
+        ));
+    }
+    if let Some(
+        PdfAConformance::A2a
+        | PdfAConformance::A2b
+        | PdfAConformance::A2u
+        | PdfAConformance::A3a
+        | PdfAConformance::A3b
+        | PdfAConformance::A3u,
+    ) = document.pdfa
+    {
+        return Err(FormeError::RenderError(
+            "pdfUa2 contradicts a 1.7-based pdfa level (2x/3x are ISO 32000-1). \
+             Compose PDF/UA-2 with pdfa: \"4\" or \"4f\", or drop one claim."
+                .to_string(),
+        ));
+    }
+    Ok(())
+}
+
+pub fn render_with_options(
+    document: &Document,
+    options: RenderOptions,
+) -> Result<(Vec<u8>, Vec<String>, u32), FormeError> {
+    render_with_options_and_fonts(document, options, Vec::new())
+}
+
+/// A font handed to the engine as bytes, registered after `Document::fonts`.
+///
+/// `Document::fonts` carries each font as a base64 string, so a caller that
+/// already holds the bytes (the HTML wrapper decodes them from its options)
+/// had to encode them again for the engine to decode, keeping both copies
+/// for the whole render: about 1.7 MiB of WASM memory per registered face,
+/// enough to push a Cloudflare Worker over its limit (#197). Bytes passed
+/// here are moved into the font registry without a copy.
+#[derive(Debug, Clone)]
+pub struct FontBytes {
+    /// Family name, as text references it in `fontFamily`.
+    pub family: String,
+    /// CSS weight (400 regular, 700 bold).
+    pub weight: u32,
+    pub italic: bool,
+    /// The TrueType program.
+    pub data: Vec<u8>,
+}
+
+/// [`render_with_options`], with fonts given as bytes instead of base64 in
+/// `document.fonts` (see [`FontBytes`]).
+pub fn render_with_options_and_fonts(
+    document: &Document,
+    options: RenderOptions,
+    fonts: Vec<FontBytes>,
+) -> Result<(Vec<u8>, Vec<String>, u32), FormeError> {
+    validate_pdf_version(document)?;
+    validate_pdf_ua2(document)?;
+    // Coarse phase profiling behind FORME_PROFILE (native only in practice —
+    // `env::var` is Err under wasm, so the timer is never constructed there and
+    // `Instant::now` is never called). Prints layout vs serialize to stderr.
+    let profile = std::env::var("FORME_PROFILE").is_ok();
+    let t_layout = if profile {
+        Some(std::time::Instant::now())
+    } else {
+        None
+    };
+    let (pages, font_context, passes, layout_warnings) =
+        layout_with_sentinel_passes_audited(document, options.audit_content, fonts);
+    let layout_ms = t_layout.map(|t| t.elapsed().as_secs_f64() * 1000.0);
+
+    let writer = PdfWriter::new();
+    let tagged = document.tagged
+        || document.pdf_ua
+        || document.pdf_ua2
+        || matches!(
+            document.pdfa,
+            Some(model::PdfAConformance::A2a) | Some(model::PdfAConformance::A3a)
+        );
+    let t_ser = if profile {
+        Some(std::time::Instant::now())
+    } else {
+        None
+    };
+    let (pdf, warnings) = writer.write(
+        &pages,
+        &document.metadata,
+        &font_context,
+        tagged,
+        document.pdfa.as_ref(),
+        document.pdf_ua,
+        document.embedded_data.as_deref(),
+        &document.attachments,
+        document.zugferd.as_ref(),
+        document.flatten_forms,
+        effective_pdf_version(document),
+        document.pdf_ua2,
+        document.embed_standard_fonts,
+    )?;
+    let warnings = {
+        let mut all = layout_warnings;
+        all.extend(warnings);
+        all
+    };
+    let serialize_ms = t_ser.map(|t| t.elapsed().as_secs_f64() * 1000.0);
+    let pdf = if let Some(ref sig_config) = document.certification {
+        pdf::certify::certify_pdf(&pdf, sig_config)?
+    } else {
+        pdf
+    };
+    if let (Some(l), Some(s)) = (layout_ms, serialize_ms) {
+        eprintln!(
+            "FORME_PROFILE pages={} passes={passes} layout_ms={l:.1} serialize_ms={s:.1}",
+            pages.len()
+        );
+    }
+    Ok((pdf, warnings, passes))
+}
+
+/// Render a document to PDF bytes along with layout metadata.
+///
+/// Same as `render()` but also returns `LayoutInfo` describing the
+/// position and dimensions of every element on every page.
+/// If the document has a `certification` configuration, the output PDF
+/// is digitally signed.
+pub fn render_with_layout(
+    document: &Document,
+) -> Result<(Vec<u8>, LayoutInfo, Vec<String>), FormeError> {
+    render_with_layout_and_passes(document)
+        .map(|(pdf, layout, warnings, _passes)| (pdf, layout, warnings))
+}
+
+/// Like [`render_with_layout`], but also returns the number of layout passes
+/// the render took (1 for the common case; 2-3 when a page-number sentinel's
+/// reserved width needed correction). The plain variant discarded this value,
+/// which is how `renderHtmlWithLayout` shipped without `passes` on every
+/// target while its declared type promised one.
+pub fn render_with_layout_and_passes(
+    document: &Document,
+) -> Result<(Vec<u8>, LayoutInfo, Vec<String>, u32), FormeError> {
+    render_with_layout_and_options(document, RenderOptions::default())
+}
+
+/// Like [`render_with_layout_and_passes`], with opt-in [`RenderOptions`].
+pub fn render_with_layout_and_options(
+    document: &Document,
+    options: RenderOptions,
+) -> Result<(Vec<u8>, LayoutInfo, Vec<String>, u32), FormeError> {
+    render_with_layout_and_options_and_fonts(document, options, Vec::new())
+}
+
+/// [`render_with_layout_and_options`], with fonts given as bytes (see
+/// [`FontBytes`]).
+pub fn render_with_layout_and_options_and_fonts(
+    document: &Document,
+    options: RenderOptions,
+    fonts: Vec<FontBytes>,
+) -> Result<(Vec<u8>, LayoutInfo, Vec<String>, u32), FormeError> {
+    validate_pdf_version(document)?;
+    validate_pdf_ua2(document)?;
+    let (pages, font_context, passes, layout_warnings) =
+        layout_with_sentinel_passes_audited(document, options.audit_content, fonts);
+    let layout_info = LayoutInfo::from_pages(&pages);
+    let writer = PdfWriter::new();
+    let tagged = document.tagged
+        || document.pdf_ua
+        || document.pdf_ua2
+        || matches!(
+            document.pdfa,
+            Some(model::PdfAConformance::A2a) | Some(model::PdfAConformance::A3a)
+        );
+    let (pdf, warnings) = writer.write(
+        &pages,
+        &document.metadata,
+        &font_context,
+        tagged,
+        document.pdfa.as_ref(),
+        document.pdf_ua,
+        document.embedded_data.as_deref(),
+        &document.attachments,
+        document.zugferd.as_ref(),
+        document.flatten_forms,
+        effective_pdf_version(document),
+        document.pdf_ua2,
+        document.embed_standard_fonts,
+    )?;
+    let pdf = if let Some(ref sig_config) = document.certification {
+        pdf::certify::certify_pdf(&pdf, sig_config)?
+    } else {
+        pdf
+    };
+    let warnings = {
+        let mut all = layout_warnings;
+        all.extend(warnings);
+        all
+    };
+    Ok((pdf, layout_info, warnings, passes))
+}
+
+/// Return the number of digits needed to display `n` as a decimal string.
+fn digits_for_count(n: usize) -> u32 {
+    if n < 10 {
+        1
+    } else if n < 100 {
+        2
+    } else if n < 1000 {
+        3
+    } else {
+        4
+    }
+}
+
+/// Register custom fonts from the document's `fonts` array.
+fn register_document_fonts(font_context: &mut FontContext, fonts: &[FontEntry]) {
+    use base64::Engine as _;
+    let b64 = base64::engine::general_purpose::STANDARD;
+
+    for entry in fonts {
+        let bytes = if let Some(comma_pos) = entry.src.find(',') {
+            // data URI: "data:font/ttf;base64,AAAA..."
+            b64.decode(&entry.src[comma_pos + 1..]).ok()
+        } else {
+            // raw base64 string
+            b64.decode(&entry.src).ok()
+        };
+
+        if let Some(data) = bytes {
+            font_context
+                .registry_mut()
+                .register(&entry.family, entry.weight, entry.italic, data);
+        }
+    }
+}
+
+/// Render a document described as JSON to PDF bytes.
+pub fn render_json(json: &str) -> Result<Vec<u8>, FormeError> {
+    let document: Document = serde_json::from_str(json)?;
+    render(&document)
+}
+
+/// Render a document described as JSON to PDF bytes along with layout metadata.
+pub fn render_json_with_layout(
+    json: &str,
+) -> Result<(Vec<u8>, LayoutInfo, Vec<String>), FormeError> {
+    let document: Document = serde_json::from_str(json)?;
+    render_with_layout(&document)
+}
+
+/// Like [`render_json_with_layout`], with opt-in [`RenderOptions`] — the
+/// JSON-input mirror of [`render_with_layout_and_options`], used by the
+/// WASM bindings so `@formepdf/core` callers can opt into the content
+/// audit the way the HTML path already can.
+pub fn render_json_with_layout_and_options(
+    json: &str,
+    options: RenderOptions,
+) -> Result<(Vec<u8>, LayoutInfo, Vec<String>, u32), FormeError> {
+    let document: Document = serde_json::from_str(json)?;
+    render_with_layout_and_options(&document, options)
+}
+
+/// Render a template with data to PDF bytes.
+///
+/// Takes a template JSON tree (with `$ref`, `$each`, `$if`, operators) and
+/// a data JSON object. Evaluates all expressions, then renders the resulting
+/// document to PDF.
+pub fn render_template(template_json: &str, data_json: &str) -> Result<Vec<u8>, FormeError> {
+    let template: serde_json::Value = serde_json::from_str(template_json)?;
+    let data: serde_json::Value = serde_json::from_str(data_json)?;
+    let resolved = template::evaluate_template(&template, &data)?;
+    let document: Document = serde_json::from_value(resolved)?;
+    render(&document)
+}
+
+/// Render a template with data to PDF bytes along with layout metadata and
+/// the render's warnings.
+///
+/// The warnings are part of the return tuple rather than an `_and_warnings`
+/// variant on purpose: this function discarded them for its whole life, which
+/// made `renderTemplateWithLayout` report "warnings: none" on every render
+/// while its declared type promised a list. Matching [`render_with_layout`]'s
+/// shape means a caller has to name the value to drop it.
+pub fn render_template_with_layout(
+    template_json: &str,
+    data_json: &str,
+) -> Result<(Vec<u8>, LayoutInfo, Vec<String>), FormeError> {
+    let template: serde_json::Value = serde_json::from_str(template_json)?;
+    let data: serde_json::Value = serde_json::from_str(data_json)?;
+    let resolved = template::evaluate_template(&template, &data)?;
+    let document: Document = serde_json::from_value(resolved)?;
+    render_with_layout(&document)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_digits_for_count() {
+        assert_eq!(digits_for_count(0), 1);
+        assert_eq!(digits_for_count(1), 1);
+        assert_eq!(digits_for_count(9), 1);
+        assert_eq!(digits_for_count(10), 2);
+        assert_eq!(digits_for_count(99), 2);
+        assert_eq!(digits_for_count(100), 3);
+        assert_eq!(digits_for_count(999), 3);
+        assert_eq!(digits_for_count(1000), 4);
+    }
+}
