@@ -12,9 +12,9 @@ import { readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { createResumePdfFile } from "@rezumi/pdf/server";
+import { applyTemplatePreset } from "@rezumi/resume/template-preset";
 import { createSampleResumeData } from "@rezumi/schema/resume/sample";
 import { templateSchema } from "@rezumi/schema/templates";
-import { applyTemplatePreset } from "./presets";
 
 const { values, positionals } = parseArgs({
 	allowPositionals: true,

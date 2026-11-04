@@ -1,37 +1,48 @@
+import type { IconStyle } from "@rezumi/schema/resume/data";
 import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { upgradeIconName } from "@rezumi/schema/resume/icon-names";
 
-type IconData = Record<string, string>;
+type IconGlyphs = Readonly<Record<string, string>>;
 
-// The drawings of every resume icon (≈180 KB gzipped) load the first time one is shown, then stay.
-let iconData: IconData | undefined;
-let loading: Promise<IconData> | undefined;
+// The drawings of every resume icon in a style (≈300 KB gzipped) load the first time that style shows, then stay.
+const glyphs = new Map<IconStyle, IconGlyphs>();
 
-function useIconData() {
-	const [data, setData] = useState(iconData);
+/** Every resume icon's drawing in `style`, once loaded. */
+export function useIconGlyphs(style: IconStyle): IconGlyphs | undefined {
+	const [, setLoaded] = useState<IconStyle>();
 	useEffect(() => {
-		if (data) return;
+		if (glyphs.has(style)) return;
 		let active = true;
-		loading ??= import("@rezumi/pdf/icons").then((module) => (iconData = module.default));
-		void loading.then((loaded) => active && setData(loaded));
+		void import("@rezumi/pdf/icon-glyphs")
+			.then(({ loadIconGlyphs }) => loadIconGlyphs(style))
+			.then(
+				(loaded) => {
+					glyphs.set(style, loaded);
+					if (active) setLoaded(style);
+				},
+				// A failed download leaves the icons blank; the next picker or page that shows them tries again.
+				() => {},
+			);
 		return () => {
 			active = false;
 		};
-	}, [data]);
-	return data;
+	}, [style]);
+	return glyphs.get(style);
 }
 
 type ResumeIconGlyphProps = {
 	/** A resume icon name; a former Phosphor name draws its closest match. */
 	name: string;
+	/** The resume's icon style; the page draws its icons in it. */
+	variant?: IconStyle | undefined;
 	className?: string | undefined;
 	style?: CSSProperties | undefined;
 };
 
-/** A resume icon as the resume draws it (standard style), in the current text colour. */
-export function ResumeIconGlyph({ name, className, style }: ResumeIconGlyphProps) {
-	const data = useIconData();
+/** A resume icon as the resume draws it, in the current text colour. */
+export function ResumeIconGlyph({ name, variant = "standard", className, style }: ResumeIconGlyphProps) {
+	const data = useIconGlyphs(variant);
 	const icon = upgradeIconName(name);
 	const markup = icon && icon !== "none" ? data?.[icon] : undefined;
 

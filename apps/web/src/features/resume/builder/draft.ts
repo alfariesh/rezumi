@@ -1,4 +1,4 @@
-import type { ResumeData } from "@rezumi/schema/resume/data";
+import type { IconStyle, ResumeData } from "@rezumi/schema/resume/data";
 import type { QueryClient, QueryKey } from "@tanstack/react-query";
 import type { WritableDraft } from "immer";
 import { t } from "@lingui/core/macro";
@@ -9,6 +9,7 @@ import { debounce, isEqual } from "es-toolkit";
 import { useCallback, useEffect, useState } from "react";
 import { immer } from "zustand/middleware/immer";
 import { create } from "zustand/react";
+import { iconDesignOf } from "@rezumi/schema/resume/data";
 import { syncResumeDates } from "@rezumi/schema/resume/dates";
 import { toast } from "@rezumi/ui/components/toast";
 import { generateId } from "@rezumi/utils/string";
@@ -673,6 +674,11 @@ export function useCurrentResume(): Resume {
 
 export function useResumeData(): ResumeData | undefined {
 	return useBuilderResumeSelector((resume) => resume.data);
+}
+
+/** The open resume's icon style, so icon pickers draw icons as its page does. */
+export function useResumeIconStyle(): IconStyle {
+	return useBuilderResumeSelector((resume) => iconDesignOf(resume.data.metadata.design).style) ?? "standard";
 }
 
 export function useIsResumeLocked(): boolean {

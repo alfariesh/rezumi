@@ -3,7 +3,7 @@ import type z from "zod";
 import { Input } from "@heroui/react";
 import { Trans } from "@lingui/react/macro";
 import { useSelector } from "@tanstack/react-form";
-import { colorDesignSchema, levelDesignSchema } from "@rezumi/schema/resume/data";
+import { colorDesignSchema, iconDesignOf, levelDesignSchema } from "@rezumi/schema/resume/data";
 import { resolveLevelDisplaySizes } from "@rezumi/schema/resume/level-display-sizes";
 import { FormControl, FormItem, FormLabel, FormMessage } from "@rezumi/ui/components/form";
 import { SectionBase } from "../shared/section-base";
@@ -135,6 +135,7 @@ function LevelSectionForm() {
 
 	const previewType = useSelector(form.store, (s) => s.values.type);
 	const previewIcon = useSelector(form.store, (s) => s.values.icon);
+	const iconStyle = iconDesignOf(resume.data.metadata.design).style;
 	const { decorationSize, levelIconExplicitSize } = resolveLevelDisplaySizes({
 		bodyFontSize: resume.data.metadata.typography.body.fontSize,
 	});
@@ -153,6 +154,7 @@ function LevelSectionForm() {
 					level={3}
 					type={previewType}
 					icon={previewIcon}
+					iconVariant={iconStyle}
 					decorationSizePx={decorationSize}
 					iconSizePx={levelIconExplicitSize}
 					className="w-full max-w-[220px] justify-center"
@@ -170,6 +172,7 @@ function LevelSectionForm() {
 								render={
 									<IconPicker
 										value={field.state.value}
+										iconStyle={iconStyle}
 										onChange={(value) => {
 											field.handleChange(value);
 										}}

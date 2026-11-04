@@ -1,3 +1,4 @@
+import type { IconStyle } from "@rezumi/schema/resume/data";
 import { Button, Popover } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { lazyRouteComponent } from "@tanstack/react-router";
@@ -5,7 +6,7 @@ import { Suspense, useState } from "react";
 import { cn } from "@rezumi/utils/style";
 import { ResumeIconGlyph } from "./resume-icon";
 
-// The icon list, its search index and the virtual grid load when the picker is about to open.
+// The icon list, its search and the virtual list load when the picker is about to open.
 const IconPickerGrid = lazyRouteComponent(() => import("./icon-picker-grid"), "IconPickerGrid");
 const preloadGrid = () => void IconPickerGrid.preload?.();
 
@@ -13,6 +14,8 @@ type IconPickerProps = Omit<React.ComponentProps<typeof Button>, "children" | "v
 	Pick<React.AriaAttributes, "aria-hidden"> & { tabIndex?: number } & {
 		value: string;
 		onChange: (icon: string) => void;
+		/** The resume's icon style, so the icons look as they print. */
+		iconStyle?: IconStyle | undefined;
 		popoverProps?: {
 			open?: boolean;
 			onOpenChange?: (open: boolean) => void;
@@ -21,9 +24,18 @@ type IconPickerProps = Omit<React.ComponentProps<typeof Button>, "children" | "v
 		};
 	};
 
-export function IconPicker({ value, onChange, popoverProps, className, ...props }: IconPickerProps) {
+export function IconPicker({
+	value,
+	onChange,
+	iconStyle = "standard",
+	popoverProps,
+	className,
+	...props
+}: IconPickerProps) {
 	const { open, onOpenChange } = popoverProps ?? {};
+	// Kept between openings, like the search.
 	const [search, setSearch] = useState("");
+	const [group, setGroup] = useState("all");
 
 	return (
 		<Popover {...(open !== undefined && { isOpen: open })} {...(onOpenChange && { onOpenChange })}>
@@ -37,13 +49,21 @@ export function IconPicker({ value, onChange, popoverProps, className, ...props 
 				onFocus={preloadGrid}
 				{...props}
 			>
-				<ResumeIconGlyph name={value} className="size-4" />
+				<ResumeIconGlyph name={value} variant={iconStyle} className="size-4" />
 			</Button>
 
-			<Popover.Content placement="bottom start" className="h-[326px] w-[290px] p-0">
+			<Popover.Content placement="bottom start" className="h-[380px] w-[300px] p-0">
 				<Popover.Dialog className="h-full p-0 outline-hidden">
 					<Suspense>
-						<IconPickerGrid search={search} onSearchChange={setSearch} onChange={onChange} />
+						<IconPickerGrid
+							search={search}
+							onSearchChange={setSearch}
+							group={group}
+							onGroupChange={setGroup}
+							value={value}
+							iconStyle={iconStyle}
+							onChange={onChange}
+						/>
 					</Suspense>
 				</Popover.Dialog>
 			</Popover.Content>

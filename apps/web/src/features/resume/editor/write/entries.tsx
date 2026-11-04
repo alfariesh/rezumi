@@ -16,6 +16,7 @@ import { RichTextEditor } from "./rich-text-editor";
 import { ChipInput } from "@/components/input/chip-input";
 import { ColorPicker } from "@/components/input/color-picker";
 import { IconPicker } from "@/components/input/icon-picker";
+import { useResumeIconStyle } from "@/features/resume/builder/draft";
 
 export type PageSettings = { locale: string; dateFormat?: DateFormat | undefined };
 
@@ -164,10 +165,12 @@ function Level({ entry, write }: FieldSetProps) {
 /** The icon printed before the entry, and its colour (blank uses the template's). */
 function IconAndColor({ entry, write }: FieldSetProps) {
 	const values = valuesOf(entry);
+	const iconStyle = useResumeIconStyle();
 	return (
 		<div className="col-span-full flex items-center gap-2">
 			<IconPicker
 				value={str(values.icon)}
+				iconStyle={iconStyle}
 				onChange={(icon: string) =>
 					write("icon", (target) => {
 						target.icon = icon;
