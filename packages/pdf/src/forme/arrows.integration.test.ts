@@ -8,7 +8,7 @@ import { renderResume } from "./render";
 it("preserves arrows with a standard PDF font", { timeout: 60_000 }, async () => {
 	const data = structuredClone(defaultResumeData);
 	data.picture.hidden = true;
-	data.metadata.template = "onyx";
+	data.metadata.template = "meridian";
 	data.metadata.typography.body.fontFamily = "Times-Roman";
 	data.metadata.typography.heading.fontFamily = "Times-Roman";
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];

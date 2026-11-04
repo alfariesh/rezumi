@@ -27,7 +27,7 @@ const findFirst = (node: HostNode, predicate: (candidate: HostNode) => boolean):
 };
 
 const renderHostTree = async (data: ResumeData): Promise<HostNode> => {
-	const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+	const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<typeof pdf>[0];
 	const instance = pdf(element);
 	await vi.waitFor(() => expect(instance.container.document).not.toBeNull());
 	return instance.container.document as HostNode;
@@ -54,14 +54,14 @@ type ParsedPdf = {
 
 const parsePdf = (data: Uint8Array): Promise<ParsedPdf> => getDocument({ data }).promise as Promise<ParsedPdf>;
 
-const azurillAuthoredOverflowFixture = () => {
+const jejakAuthoredOverflowFixture = () => {
 	const data = structuredClone(defaultResumeData);
 	const overflowTokens = Array.from(
 		{ length: 180 },
-		(_value, index) => `AZURILL_OVERFLOW_${String(index + 1).padStart(3, "0")}`,
+		(_value, index) => `JEJAK_OVERFLOW_${String(index + 1).padStart(3, "0")}`,
 	);
 	data.picture.hidden = true;
-	data.basics.name = "AZURILL HEADER";
+	data.basics.name = "JEJAK HEADER";
 	data.summary.title = "Long summary";
 	data.summary.content = overflowTokens.map((token) => `<p>${token} generated PDF page content.</p>`).join("");
 	data.sections.profiles.title = "Sidebar";
@@ -90,7 +90,7 @@ const azurillAuthoredOverflowFixture = () => {
 			roles: [],
 		},
 	];
-	data.metadata.template = "azurill";
+	data.metadata.template = "jejak";
 	data.metadata.typography.body.fontFamily = "Helvetica";
 	data.metadata.typography.heading.fontFamily = "Helvetica";
 	data.metadata.layout.pages = [
@@ -136,7 +136,7 @@ describe("semantic pagination bindings", () => {
 	});
 
 	it.each([1, 100])(
-		"paints only the selected Azurill page and its overflow with %i paragraphs (#3610)",
+		"paints only the selected Jejak page and its overflow with %i paragraphs (#3610)",
 		async (count) => {
 			const data = structuredClone(defaultResumeData);
 			data.picture.hidden = true;
@@ -161,7 +161,7 @@ describe("semantic pagination bindings", () => {
 				},
 			};
 
-			const pages = await rasterizePdf(await renderPdf(data, "azurill"));
+			const pages = await rasterizePdf(await renderPdf(data, "jejak"));
 			if (count === 1) expect(pages).toHaveLength(2);
 			else expect(pages.length).toBeGreaterThan(2);
 			for (const [index, page] of pages.entries()) {
@@ -179,10 +179,10 @@ describe("semantic pagination bindings", () => {
 		},
 	);
 
-	it("keeps Azurill overflow lossless while preserving a manual full-width authored continuation", async () => {
-		const { data, overflowTokens } = azurillAuthoredOverflowFixture();
+	it("keeps Jejak overflow lossless while preserving a manual full-width authored continuation", async () => {
+		const { data, overflowTokens } = jejakAuthoredOverflowFixture();
 		const authoredPagesBeforeRender = structuredClone(data.metadata.layout.pages);
-		const document = await parsePdf(await renderPdf(data, "azurill"));
+		const document = await parsePdf(await renderPdf(data, "jejak"));
 		const pages = await readPhysicalPages(document);
 		const renderedText = pages.map(({ text }) => text).join(" ");
 		const overflowPageIndexes = overflowTokens.map((token) => pages.findIndex(({ text }) => text.includes(token)));

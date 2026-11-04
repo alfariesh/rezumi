@@ -18,7 +18,7 @@ describe("handleResumePdfDownload", () => {
 	});
 
 	it("renders the PDF when the signed URL token is valid", async () => {
-		const pdf = new File([new Uint8Array([37, 80, 68, 70])], "Scizor.pdf", { type: "application/pdf" });
+		const pdf = new File([new Uint8Array([37, 80, 68, 70])], "Summit.pdf", { type: "application/pdf" });
 		mocks.verifyResumePdfDownloadToken.mockReturnValueOnce({
 			ok: true,
 			resumeId: "resume-1",
@@ -26,7 +26,7 @@ describe("handleResumePdfDownload", () => {
 			expiresAt: "2026-06-01T10:10:00.000Z",
 		});
 		mocks.createResumePdfDownload.mockResolvedValueOnce({
-			headers: { "content-disposition": 'attachment; filename="Scizor.pdf"' },
+			headers: { "content-disposition": 'attachment; filename="Summit.pdf"' },
 			body: pdf,
 		});
 
@@ -37,7 +37,7 @@ describe("handleResumePdfDownload", () => {
 
 		expect(response.status).toBe(200);
 		expect(response.headers.get("Content-Type")).toBe("application/pdf");
-		expect(response.headers.get("Content-Disposition")).toBe('attachment; filename="Scizor.pdf"');
+		expect(response.headers.get("Content-Disposition")).toBe('attachment; filename="Summit.pdf"');
 		expect(response.headers.get("Cache-Control")).toBe("private, no-store");
 		expect(await response.text()).toBe("%PDF");
 		expect(mocks.createResumePdfDownload).toHaveBeenCalledWith({

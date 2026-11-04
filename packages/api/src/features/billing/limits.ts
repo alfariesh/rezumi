@@ -9,7 +9,7 @@ import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
 import { parseUploadedFontUrl } from "@rezumi/fonts/uploaded";
 import { FREE_TEMPLATES, isFreeTemplate } from "@rezumi/schema/billing";
-import { templateSchema, upgradeTemplateId } from "@rezumi/schema/templates";
+import { upgradeTemplateId } from "@rezumi/schema/templates";
 import { lockBillingAccount } from "./account";
 import { getBillingMode, getEntitlements } from "./entitlements";
 
@@ -172,8 +172,7 @@ export function designFeaturesNeeded(before: StoredDesign, after: PlanDesign): P
 	const needed: PlanFeature[] = [];
 	// Former template IDs count as their successor on both sides: a document keeps the template it already had.
 	const template = upgradeTemplateId(after.template);
-	const stored = templateSchema.safeParse(before?.template);
-	const storedTemplate = stored.success ? upgradeTemplateId(stored.data) : undefined;
+	const storedTemplate = upgradeTemplateId(before?.template);
 	if (!isFreeTemplate(template) && template !== storedTemplate) needed.push("premiumTemplates");
 	const styles = stylesheetText(after);
 	if (styles && styles !== stylesheetText(before)) needed.push("customStyles");

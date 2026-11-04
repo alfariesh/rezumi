@@ -21,8 +21,8 @@ async function renderItems(content: string, locale = "en-US", narrow = false): P
 	const data = structuredClone(defaultResumeData);
 	data.picture.hidden = true;
 	data.basics.name = "";
-	data.metadata.template = narrow ? "chikorita" : "onyx";
-	// Measured at the 10 pt body and the margins resumes had before November 2026.
+	data.metadata.template = narrow ? "linen" : "meridian";
+	// The 10 pt body and the margins are fixed here so the widths below only move with the template (Meridian; Linen for the narrow sidebar).
 	data.metadata.typography.body.fontSize = 10;
 	data.metadata.page = { ...data.metadata.page, marginX: 14, marginY: 12 };
 	data.metadata.page.locale = locale;

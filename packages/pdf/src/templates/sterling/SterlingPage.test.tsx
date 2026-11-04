@@ -14,7 +14,7 @@ vi.mock("../../forme/fonts", () => ({ loadFonts: async () => ({ fonts: [], warni
 
 function fixture() {
 	const data = structuredClone(sampleResumeData);
-	data.metadata.template = "persian";
+	data.metadata.template = "sterling";
 	data.metadata.typography.body.fontFamily = "Times-Roman";
 	data.metadata.typography.heading.fontFamily = "Times-Roman";
 	data.metadata.page.marginX = 30;
@@ -41,8 +41,30 @@ function fixture() {
 	return data;
 }
 
+const letters = (text: string) => text.replaceAll(/\s/g, "").toLowerCase();
+
+/**
+ * A line that spells `value`. Sterling prints its name and titles in tracked capitals, which reach the PDF a letter
+ * at a time ("E X P E R I E N C E"), so the line is read back without spaces or case and spans its letters.
+ */
+function findLine(items: TextItem[], value: string): TextItem {
+	const lines = Map.groupBy(items, (item) => item.transform[5].toFixed(1));
+	for (const line of lines.values()) {
+		const ordered = line.toSorted((a, b) => a.transform[4] - b.transform[4]);
+		const first = ordered[0];
+		const last = ordered.at(-1);
+		if (!first || !last || letters(ordered.map((item) => item.str).join("")) !== letters(value)) continue;
+		return {
+			...first,
+			str: ordered.map((item) => item.str).join(""),
+			width: last.transform[4] + last.width - first.transform[4],
+		};
+	}
+	throw new Error(`Missing PDF line: ${value}`);
+}
+
 async function render(data = fixture()) {
-	const result = await act(() => renderResume(forme, { data, template: "persian" }));
+	const result = await act(() => renderResume(forme, { data, template: "sterling" }));
 	expect(result.missingFonts).toEqual([]);
 	const loading = getDocument({
 		data: result.pdf.slice(),
@@ -73,7 +95,7 @@ async function render(data = fixture()) {
 	}
 }
 
-describe("Persian Wall Street template (#3520)", () => {
+describe("Sterling template (#3520)", () => {
 	it.each(["a4", "letter"] as const)(
 		"centers the header and keeps standard entry headers aligned on %s",
 		async (format) => {
@@ -89,18 +111,19 @@ describe("Persian Wall Street template (#3520)", () => {
 				if (!item) throw new Error(`Missing PDF text: ${value}`);
 				return item;
 			};
-			const name = find(data.basics.name.toUpperCase());
+			const name = findLine(page.items, data.basics.name);
 			expect(page.styles[name.fontName]?.fontFamily).toBe("sans-serif");
 			for (const title of ["Experience", "Education", "Projects", "Skills"]) {
-				expect(page.styles[find(title.toUpperCase()).fontName]?.fontFamily).toBe("sans-serif");
+				expect(page.styles[findLine(page.items, title).fontName]?.fontFamily).toBe("sans-serif");
 			}
-			expect(name.transform[5] - find("EXPERIENCE").transform[5]).toBeLessThan(100);
+			expect(name.transform[5] - findLine(page.items, "Experience").transform[5]).toBeLessThan(100);
 			const experience = data.sections.experience.items[0];
 			const education = data.sections.education.items[0];
 			const skill = data.sections.skills.items[0];
 			const project = data.sections.projects.items[0];
 			if (!experience || !education || !skill || !project) throw new Error("Missing sample entries");
-			expect(name.transform[4] + name.width / 2).toBeCloseTo(page.width / 2, 0);
+			// The tracking after the last capital is part of the centred line but not of the glyphs read back (about 1.5 pt).
+			expect(Math.abs(name.transform[4] + name.width / 2 - page.width / 2)).toBeLessThan(2);
 			const position = find(experience.position);
 			expect(page.styles[position.fontName]?.fontFamily).toBe("serif");
 			const period = find(experience.period);
@@ -161,9 +184,8 @@ describe("Persian Wall Street template (#3520)", () => {
 		const page = pages[0];
 		if (!page) throw new Error("Missing first page");
 		expect(page.images).toBe(1);
-		const name = page.items.find((item) => item.str === data.basics.name.toUpperCase());
-		const section = page.items.find((item) => item.str === "EXPERIENCE");
-		if (!name || !section) throw new Error("Missing letterhead or first section");
+		const name = findLine(page.items, data.basics.name);
+		const section = findLine(page.items, "Experience");
 		expect(name.transform[5] - section.transform[5]).toBeLessThan(100);
 		expect(name.transform[4] + name.width).toBeLessThan(page.width - 30 - data.picture.size);
 	});

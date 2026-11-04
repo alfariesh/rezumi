@@ -111,7 +111,7 @@ const renderFixture = async (template: Template, data: ResumeData): Promise<Host
 describe("semantic binding host fidelity", () => {
 	it("attaches region, contact-list, icon-row heading, no-border item-header, and item-icon styles", async () => {
 		const document = await renderFixture(
-			"onyx",
+			"meridian",
 			buildFixture(
 				`
 					region[region="main"] { background-color: #101010; }
@@ -146,7 +146,7 @@ describe("semantic binding host fidelity", () => {
 		["references", "Charles Babbage"],
 	] as const)("keeps direct %s Text siblings outside the item-header contract", async (section, text) => {
 		const document = await renderFixture(
-			"onyx",
+			"meridian",
 			buildFixture(
 				`
 					item-header { display: none; background-color: #414141; break-before: page; }
@@ -163,46 +163,39 @@ describe("semantic binding host fidelity", () => {
 		expect(textPath?.some((node) => mergedStyle(node).backgroundColor === "#414141")).toBe(false);
 	});
 
-	it("binds Rhyhorn's outer contact owner, nested content primitive, link alias, and last-owner alias separately", async () => {
-		const document = await renderFixture(
-			"rhyhorn",
-			buildFixture(`
-				contact-item { background-color: #616161; }
-				template-part[name="contact-item-content"] { color: #717171; }
-				link { text-decoration: none; }
-				contact-item[part~="contact-item-last"] { border-bottom-width: 9pt; }
-			`),
-		);
-		const emailPath = findPath(document, (node) => node.type === "LINK" && nodeText(node) === "ada@example.com");
-		const link = emailPath?.at(-1);
+	// How many visible primitive template parts each template draws (the template-part rule reaches every one).
+	const primitivePartHosts = {
+		meridian: 0,
+		sterling: 0,
+		aksara: 0,
+		atlas: 0,
+		tunas: 0,
+		summit: 0,
+		cendekia: 0,
+		wibawa: 0,
+		tenun: 0,
+		vector: 0,
+		kirana: 0,
+		linen: 0,
+		horizon: 0,
+		jejak: 4,
+		purnama: 1,
+		senja: 0,
+	} as const satisfies Record<Template, number>;
 
-		expect(link && mergedStyle(link)).toMatchObject({ color: "#717171", textDecoration: "none" });
-		expect(emailPath?.some((node) => node.type === "VIEW" && mergedStyle(node).backgroundColor === "#616161")).toBe(
-			true,
-		);
-		expect(emailPath?.some((node) => node.type === "VIEW" && mergedStyle(node).borderBottomWidth === 9)).toBe(true);
-	});
+	it.each(Object.entries(primitivePartHosts) as [Template, number][])(
+		"%s attaches every visible primitive template part to an existing host",
+		async (template, expected) => {
+			const document = await renderFixture(template, buildFixture("template-part { opacity: 0.37; }"));
 
-	it.each([
-		["azurill", 4],
-		["ditgar", 1],
-		["ditto", 3],
-		["gengar", 1],
-		["glalie", 1],
-		["leafish", 3],
-		["pikachu", 1],
-		["rhyhorn", 1],
-		["scizor", 1],
-	] as const)("%s attaches every visible primitive template part to an existing host", async (template, expected) => {
-		const document = await renderFixture(template, buildFixture("template-part { opacity: 0.37; }"));
-
-		expect(nodesWithStyle(document, "opacity", 0.37)).toHaveLength(expected);
-	});
+			expect(nodesWithStyle(document, "opacity", 0.37)).toHaveLength(expected);
+		},
+	);
 
 	it("attaches the one-line entry header's parts to existing hosts", async () => {
 		const data = buildFixture("template-part { opacity: 0.37; }", "experience");
 		data.metadata.design.entry = { layout: "inline", lead: "organization", accent: "none" };
-		const document = await renderFixture("onyx", data);
+		const document = await renderFixture("meridian", data);
 
 		expect(nodesWithStyle(document, "opacity", 0.37)).toHaveLength(3);
 	});

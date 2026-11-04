@@ -35,7 +35,7 @@ const education = node("section-education", "section", {
 	attributes: { type: "education", placement: "main", origin: "native" },
 });
 const fixtureTree = node("resume", "resume", {
-	attributes: { template: "rhyhorn" },
+	attributes: { template: "meridian" },
 	children: [
 		node("page-1", "page", {
 			attributes: { "page-number": "1" },

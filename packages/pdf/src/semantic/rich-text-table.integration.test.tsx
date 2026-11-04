@@ -22,7 +22,7 @@ const fixture = (html: string): ResumeData => {
 	const data = structuredClone(defaultResumeData);
 	data.basics.name = "Table probe";
 	data.picture.hidden = true;
-	// Keep the featured summary heading off: these assertions measure table geometry/borders only.
+	// Keep the summary heading off: these assertions measure table geometry/borders only.
 	data.summary.showHeading = false;
 	data.summary.content = html;
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];
@@ -49,9 +49,10 @@ const readPdf = async (data: ResumeData, template: Template) => {
 	}
 };
 
-describe("imported rich-text tables", () => {
-	it("ditgar preserves bare cell text and row/column positions", async () => {
-		const { items } = await readPdf(fixture(table()), "ditgar");
+// Meridian draws the summary in the main column; Purnama puts the header in its sidebar beside it.
+describe.each(["meridian", "purnama"] as const)("imported rich-text tables in %s", (template) => {
+	it("preserves bare cell text and row/column positions", async () => {
+		const { items } = await readPdf(fixture(table()), template);
 		const cell = (text: string) => {
 			const cell = items.find((item) => item.text === text);
 			if (!cell) throw new Error(`Missing table cell ${text}`);
@@ -76,12 +77,12 @@ describe("imported rich-text tables", () => {
 	});
 
 	it("preserves table cells containing recognized paragraphs", async () => {
-		const { items } = await readPdf(fixture(table(true)), "ditgar");
+		const { items } = await readPdf(fixture(table(true)), template);
 		expect(items.map((item) => item.text)).toEqual(expect.arrayContaining(["Alpha", "Beta", "Gamma", "Delta"]));
 	});
 
 	it("preserves raw text inside an unrecognized block wrapper", async () => {
-		const { items } = await readPdf(fixture("<div>Wrapper content</div>"), "ditgar");
+		const { items } = await readPdf(fixture("<div>Wrapper content</div>"), template);
 		expect(items.map((item) => item.text)).toContain("Wrapper content");
 	});
 });

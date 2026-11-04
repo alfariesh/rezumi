@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 import z from "zod";
+import { templateLineup } from "../templates";
 import { defaultResumeData } from "./default";
 import { createResumeDataJsonSchema } from "./json-schema";
 
@@ -39,5 +40,14 @@ describe("createResumeDataJsonSchema", () => {
 
 		expect(generatedSchema.safeParse(valid).success).toBe(true);
 		expect(generatedSchema.safeParse(mismatched).success).toBe(false);
+	});
+
+	it("names only the sixteen templates, never a former one", () => {
+		const schema = createResumeDataJsonSchema();
+		const metadata = schema.properties?.metadata;
+		const template = metadata && typeof metadata !== "boolean" ? metadata.properties?.template : undefined;
+
+		expect(template).toMatchObject({ enum: [...templateLineup] });
+		expect(JSON.stringify(schema)).not.toMatch(/"(onyx|azurill|ditgar|pikachu|scizor)"/);
 	});
 });

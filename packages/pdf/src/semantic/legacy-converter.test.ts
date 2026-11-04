@@ -63,8 +63,9 @@ describe("convertLegacyStyleRules", () => {
 		expect(primary).toContain('[role~="primary-text"]');
 		expect(primary).not.toContain('section[type="awards"] field[name="title"]');
 		expect(primary).toContain("font-weight: 400;");
-		expect(primary).toContain('resume[template="scizor"] section[type="experience"]');
-		expect(primary).toContain("Scizor Bold final color");
+		// No template needs the colour put back after a Bold rule, so the output names none.
+		expect(primary).not.toContain("resume[template=");
+		expect(primary).not.toContain("final color");
 		expect(primary).toContain('item[role~="nested-role"] > item-header > field[name="position"]');
 		expect(primary).not.toContain('field[role~="nested-role"]');
 		expect(award).toContain('section[type="awards"] field[name="title"]');

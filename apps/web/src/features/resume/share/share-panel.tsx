@@ -10,6 +10,7 @@ import { useRouteContext } from "@tanstack/react-router";
 import { QRCodeSVG } from "qrcode.react";
 import { useId, useState } from "react";
 import { formatTimeSince, publicResumeUrl, summarizeViews } from "@rezumi/resume/sharing";
+import { defaultTemplate } from "@rezumi/schema/templates";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { toast } from "@rezumi/ui/components/toast";
@@ -265,7 +266,7 @@ function WebPageSettings() {
 	const data = useResumeData();
 	const updateResumeData = useUpdateResumeData();
 	const locked = useIsResumeLocked();
-	const template = data?.metadata.template ?? "onyx";
+	const template = data?.metadata.template ?? defaultTemplate;
 
 	return (
 		<ShareWidget icon="desktop" title={<Trans>Web Page</Trans>}>

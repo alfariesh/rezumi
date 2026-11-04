@@ -362,7 +362,7 @@ describe("buildSemanticTree", () => {
 		item.roles.push({ id: "blank-role", position: " ", period: "", description: "<p>Hidden role</p>" });
 		const tree = buildSemanticTree({
 			data,
-			template: "onyx",
+			template: "meridian",
 			page: required(data.metadata.layout.pages[0], "authored page"),
 			pageNumber: 1,
 			showHeader: true,
@@ -381,7 +381,7 @@ describe("buildSemanticTree", () => {
 		const before = structuredClone(data);
 		const input = {
 			data,
-			template: "onyx" as const,
+			template: "meridian" as const,
 			page: required(data.metadata.layout.pages[0], "authored page"),
 			pageNumber: 1,
 			showHeader: true,
@@ -415,7 +415,7 @@ describe("buildSemanticTree", () => {
 		const data = buildCompleteFixture();
 		const tree = buildSemanticTree({
 			data,
-			template: "onyx",
+			template: "meridian",
 			page: required(data.metadata.layout.pages[0], "authored page"),
 			pageNumber: 1,
 			showHeader: true,
@@ -574,8 +574,8 @@ describe("buildSemanticTree", () => {
 		data.basics.location = "";
 		data.basics.website = { url: "", label: "" };
 		const page = { fullWidth: true, main: ["experience"], sidebar: [] };
-		const first = buildSemanticTree({ data, template: "onyx", page, pageNumber: 1, showHeader: true });
-		const second = buildSemanticTree({ data, template: "onyx", page, pageNumber: 2, showHeader: true });
+		const first = buildSemanticTree({ data, template: "meridian", page, pageNumber: 1, showHeader: true });
+		const second = buildSemanticTree({ data, template: "meridian", page, pageNumber: 2, showHeader: true });
 
 		expect(findNodes(first, (node) => node.kind === "contact-item").map((node) => node.attributes.name)).toEqual([
 			"custom",
@@ -620,7 +620,7 @@ describe("buildSemanticTree", () => {
 		];
 		const tree = buildSemanticTree({
 			data,
-			template: "onyx",
+			template: "meridian",
 			page: { fullWidth: true, main: ["profiles"], sidebar: [] },
 			pageNumber: 1,
 			showHeader: false,

@@ -16,7 +16,7 @@ const renderLevel = async (level: number) => {
 	data.sections.skills.items = [
 		{ id: "skill", hidden: false, name: "Skill", proficiency: "Expert", level, keywords: [], icon: "", iconColor: "" },
 	];
-	const element = createElement(ResumeDocument, { data, template: "scizor" }) as unknown as Parameters<
+	const element = createElement(ResumeDocument, { data, template: "summit" }) as unknown as Parameters<
 		typeof renderToBuffer
 	>[0];
 	let bytes: Uint8Array = new Uint8Array();

@@ -77,7 +77,7 @@ const PATCH_REFERENCE = [
 	'| Add experience | `{ "op": "add", "path": "/sections/experience/items/-", "value": { ...full item } }` |',
 	'| Remove skill at index 2 | `{ "op": "remove", "path": "/sections/skills/items/2" }` |',
 	'| Update specific field | `{ "op": "replace", "path": "/sections/experience/items/0/company", "value": "New Corp" }` |',
-	'| Change template | `{ "op": "replace", "path": "/metadata/template", "value": "bronzor" }` |',
+	'| Change template | `{ "op": "replace", "path": "/metadata/template", "value": "atlas" }` |',
 	'| Change primary color | `{ "op": "replace", "path": "/metadata/design/colors/primary", "value": "rgba(37, 99, 235, 1)" }` |',
 	'| Hide a section | `{ "op": "replace", "path": "/sections/interests/hidden", "value": true }` |',
 	"",

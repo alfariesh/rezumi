@@ -88,4 +88,16 @@ describe("writableResumeDataSchema", () => {
 		};
 		expect(writableResumeDataSchema.safeParse(data).success).toBe(false);
 	});
+
+	it("saves a former template ID as its successor but still rejects an ID that never existed", () => {
+		const withTemplate = (template: unknown) => ({
+			...defaultResumeData,
+			metadata: { ...defaultResumeData.metadata, template },
+		});
+		expect(parseResumeDataForWrite(withTemplate("onyx")).metadata.template).toBe("meridian");
+		expect(parseResumeDataForWrite(withTemplate("ditgar")).metadata.template).toBe("purnama");
+		expect(parseResumeDataForWrite(withTemplate("sterling")).metadata.template).toBe("sterling");
+		for (const unknown of ["nosepass", "", 7, null])
+			expect(writableResumeDataSchema.safeParse(withTemplate(unknown)).success).toBe(false);
+	});
 });

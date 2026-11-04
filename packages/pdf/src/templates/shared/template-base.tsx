@@ -1,6 +1,4 @@
 import type { Style } from "../../forme/style-types";
-import type { TemplateIconSlot, TemplateStyleContext } from "./types";
-import type { ResumeData } from "@rezumi/schema/resume/data";
 import { useMemo } from "react";
 import { rgbaStringToHex } from "@rezumi/utils/color";
 import { View } from "#react-pdf-renderer";
@@ -31,19 +29,6 @@ export const useTemplateBase = () => {
 
 		return { picture, metadata, rtl, r, foreground, background, primary, metrics, base };
 	}, [picture, metadata, rtl, columnsReversed]);
-};
-
-export const createIconSlot = ({
-	metadata,
-	accentFor,
-}: {
-	metadata: ResumeData["metadata"];
-	accentFor: (context: TemplateStyleContext) => string;
-}): TemplateIconSlot => {
-	return (context) => ({
-		size: metadata.typography.body.fontSize,
-		color: accentFor(context),
-	});
 };
 
 type TemplateHeaderStyles = {

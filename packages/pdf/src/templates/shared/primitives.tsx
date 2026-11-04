@@ -329,31 +329,6 @@ export const SemanticRegionView = ({ region, style, ...props }: ComponentProps<t
 	);
 };
 
-export const SemanticRegionTemplatePartView = ({
-	region,
-	partKeys,
-	style,
-	...props
-}: ComponentProps<typeof View> & { region: string; partKeys: readonly string[] }) => {
-	const pageNodeKey = useTemplatePageNodeKey();
-	const regionNodeKey = semanticNodeKeys.region(pageNodeKey, region);
-	const partNodeKey = semanticTemplatePartNodeKey(regionNodeKey, ...partKeys);
-	const regionResolved = useResolvedNode(regionNodeKey);
-	const partResolved = useResolvedNode(partNodeKey);
-	const regionVisible = useSemanticNodeVisible(regionNodeKey);
-	const partVisible = useSemanticNodeVisible(partNodeKey);
-	if (!regionVisible || !partVisible) return null;
-
-	return (
-		<View
-			{...props}
-			{...resolvedPdfFlowProps(regionResolved)}
-			{...resolvedPdfFlowProps(partResolved)}
-			style={composeStyles(asStyleInput(style), regionResolved.style, partResolved.style)}
-		/>
-	);
-};
-
 export const SemanticContactListView = ({ style, ...props }: ComponentProps<typeof View>) => {
 	const headerNodeKey = useSemanticNodeKey();
 	const nodeKey = headerNodeKey ? semanticNodeKeys.contactList(headerNodeKey) : undefined;
@@ -363,30 +338,6 @@ export const SemanticContactListView = ({ style, ...props }: ComponentProps<type
 	if (!visible) return null;
 	const children =
 		nodeKey && renderedChildKeys ? projectContactChildren(props.children, nodeKey, renderedChildKeys) : props.children;
-
-	return (
-		<View {...props} {...resolvedPdfFlowProps(resolved)} style={composeStyles(asStyleInput(style), resolved.style)}>
-			{children}
-		</View>
-	);
-};
-
-export const SemanticContactRowView = ({
-	partKey,
-	style,
-	...props
-}: ComponentProps<typeof View> & { partKey: string }) => {
-	const headerNodeKey = useSemanticNodeKey();
-	const contactListNodeKey = headerNodeKey ? semanticNodeKeys.contactList(headerNodeKey) : undefined;
-	const nodeKey = semanticTemplatePartNodeKey(contactListNodeKey, partKey);
-	const resolved = useResolvedNode(nodeKey);
-	const renderedChildKeys = useRenderedChildKeys(nodeKey);
-	const visible = useSemanticNodeVisible(nodeKey);
-	if (!visible) return null;
-	const children =
-		contactListNodeKey && renderedChildKeys
-			? projectContactChildren(props.children, contactListNodeKey, renderedChildKeys)
-			: props.children;
 
 	return (
 		<View {...props} {...resolvedPdfFlowProps(resolved)} style={composeStyles(asStyleInput(style), resolved.style)}>

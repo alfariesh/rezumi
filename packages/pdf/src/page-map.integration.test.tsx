@@ -5,6 +5,7 @@ import type { Template } from "@rezumi/schema/templates";
 import { describe, expect, it } from "vite-plus/test";
 import * as forme from "@formepdf/core";
 import { sampleResumeData } from "@rezumi/schema/resume/sample";
+import { templateLineup } from "@rezumi/schema/templates";
 import { renderResume } from "./forme/render";
 import { extractPageMap, parseResumeNodeKey } from "./page-map";
 
@@ -113,8 +114,8 @@ describe("extractPageMap", () => {
 describe("rendered page maps", () => {
 	const visibleExperienceIds = data.sections.experience.items.filter((item) => !item.hidden).map((item) => item.id);
 
-	it("azurill maps the header and every experience entry onto the page", async () => {
-		const { pages, nodes } = await renderPageMap("azurill");
+	it.each(templateLineup)("%s maps the header and every experience entry onto the page", async (template) => {
+		const { pages, nodes } = await renderPageMap(template);
 
 		expect(pages.length).toBeGreaterThan(0);
 		expect(nodes.some((node) => node.kind === "header" && node.page === 0)).toBe(true);

@@ -26,7 +26,7 @@ describe("billing catalog", () => {
 		for (const id of templateSchema.options)
 			expect(isFreeTemplate(id)).toBe((FREE_TEMPLATES as readonly string[]).includes(id));
 		expect(isFreeTemplate("meridian")).toBe(true);
-		expect(isFreeTemplate("pikachu")).toBe(false);
+		expect(isFreeTemplate("senja")).toBe(false);
 	});
 
 	it("lists every plan feature once", () => {

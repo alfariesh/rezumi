@@ -796,7 +796,7 @@ const routeTemplateParts = ({
 			}),
 		};
 	};
-	// Parts placed beside a sibling settle first, so a part that takes everything left (Azurill's timeline content)
+	// Parts placed beside a sibling settle first, so a part that takes everything left (Jejak's timeline content)
 	// carries them along with their sibling.
 	const anchored = directParts.filter((part) => typeof part.route.at === "object").map(route);
 	remaining = remaining.flatMap((child) => [

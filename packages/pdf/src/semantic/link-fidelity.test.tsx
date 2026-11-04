@@ -36,7 +36,7 @@ const findEmailLink = (node: HostNode): HostNode | undefined => {
 };
 
 const finalLinkDecoration = async (data: ResumeData) => {
-	const element = createElement(ResumeDocument, { data, template: "onyx" }) as unknown as Parameters<typeof pdf>[0];
+	const element = createElement(ResumeDocument, { data, template: "meridian" }) as unknown as Parameters<typeof pdf>[0];
 	const instance = pdf(element);
 	await expect.poll(() => instance.container.document).not.toBeNull();
 	const link = findEmailLink(instance.container.document as HostNode);

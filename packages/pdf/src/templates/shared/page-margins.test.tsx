@@ -15,7 +15,7 @@ const renderOverflow = async (
 	explicitPage?: { fullWidth: boolean },
 ) => {
 	const data = structuredClone(defaultResumeData);
-	// The band tints below were measured on the red accent resumes had before November 2026.
+	// The accent is fixed to red so the band colours below only move with the template.
 	data.metadata.design.colors.primary = "rgba(220, 38, 38, 1)";
 	data.basics.name = "Margin Audit";
 	data.metadata.stylesheet = { mode: "semantic", source: { languageVersion: 1, text: "@version 1;" } };
@@ -53,10 +53,7 @@ const renderOverflow = async (
 	await act(async () => {
 		bytes = new Uint8Array(await renderToBuffer(element));
 	});
-	const rasters =
-		!explicitPage && placement === "main" && template !== "pikachu" && template !== "onyx"
-			? await rasterizePdf(bytes.slice())
-			: [];
+	const rasters = !explicitPage && placement === "main" ? await rasterizePdf(bytes.slice()) : [];
 	const loadingTask = getDocument({ data: bytes, useSystemFonts: true });
 	try {
 		const document = await loadingTask.promise;
@@ -75,8 +72,16 @@ const renderOverflow = async (
 	}
 };
 
+// What each sidebar template paints at the page corners with a red accent, and where its name sits below the top margin.
+const expectedSidebars = {
+	// Purnama's sidebar is the full accent and holds the header.
+	purnama: { nameTop: 47.43, sidebar: [220, 38, 38] },
+	// Kirana's sidebar is a soft tint of the accent; the header sits over the main column.
+	kirana: { nameTop: 45.31, sidebar: [252, 238, 238] },
+} as const;
+
 describe("physical page margins (#3337, #3175)", () => {
-	it.each(["ditgar", "glalie"] as const)(
+	it.each(["purnama", "kirana"] as const)(
 		"keeps overflowing main content inside vertical margins (%s)",
 		async (template) => {
 			const { pages, rasters } = await renderOverflow(template, "main");
@@ -85,8 +90,9 @@ describe("physical page margins (#3337, #3175)", () => {
 			if (!firstPage) throw new Error("Missing first PDF page");
 			const name = firstPage.lines.find((line) => line.str === "Margin Audit");
 			if (!name) throw new Error("Missing first-page header");
+			const { nameTop, sidebar } = expectedSidebars[template];
 			// The header's box starts at the 48pt margin; its first baseline sits by the font's ascent below that.
-			expect(firstPage.height - name.transform[5] - name.height).toBeCloseTo(47.93, 1);
+			expect(firstPage.height - name.transform[5] - name.height).toBeCloseTo(nameTop, 1);
 			const corner = (pageIndex: number, right: boolean, bottom: boolean) => {
 				const raster = rasters[pageIndex];
 				if (!raster) throw new Error("Missing rasterized PDF page");
@@ -96,24 +102,20 @@ describe("physical page margins (#3337, #3175)", () => {
 				return [...raster.data.slice((y * raster.width + x) * 4, (y * raster.width + x) * 4 + 3)];
 			};
 			const white = [255, 255, 255];
-			const red = [220, 38, 38];
-			const tint = [248, 212, 212];
-			// Glalie's single 36% band: what its former pair of 20% layers added up to.
-			const doubleTint = [242, 177, 177];
-			expect(corner(0, false, false)).toEqual(template === "glalie" ? doubleTint : red);
+			expect(corner(0, false, false)).toEqual(sidebar);
 			for (let index = 0; index < rasters.length; index++) {
-				const sidebarColor = template === "ditgar" ? tint : doubleTint;
-				expect(corner(index, false, true)).toEqual(sidebarColor);
+				expect(corner(index, false, true)).toEqual(sidebar);
 				expect(corner(index, true, true)).toEqual(white);
 				if (index > 0) {
-					expect(corner(index, false, false)).toEqual(sidebarColor);
+					expect(corner(index, false, false)).toEqual(sidebar);
 					expect(corner(index, true, false)).toEqual(white);
 				}
 			}
 			const bodyLines = pages.flatMap((page) => page.lines.filter((line) => line.str.startsWith("Body line")));
 			expect(bodyLines).toHaveLength(60);
+			// Every other line stays inside the margins; the oversized name above is measured on its own.
 			for (const [index, page] of pages.entries()) {
-				for (const line of page.lines) {
+				for (const line of page.lines.filter((line) => line !== name)) {
 					// Standard Helvetica glyph bounds can extend about 2pt above the line box.
 					expect(
 						page.height - line.transform[5] - line.height,
@@ -124,7 +126,7 @@ describe("physical page margins (#3337, #3175)", () => {
 			}
 		},
 	);
-	it.each(["glalie"] as const)(
+	it.each(["kirana"] as const)(
 		"starts explicit headerless pages at the margin (fullWidth: false, %s)",
 		async (template) => {
 			const { pages } = await renderOverflow(template, "main", "en-US", { fullWidth: false });

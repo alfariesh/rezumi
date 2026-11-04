@@ -40,6 +40,15 @@ describe("designFeaturesNeeded", () => {
 		expect(designFeaturesNeeded({ template: "linen" }, { template: "senja" })).toEqual(["premiumTemplates"]);
 	});
 
+	it("counts a former template as its successor on both sides", () => {
+		// Ditgar became Purnama and Pikachu became Horizon: keeping either is free, switching to another is not.
+		expect(designFeaturesNeeded({ template: "ditgar" }, { template: "purnama" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "pikachu" }, { template: "horizon" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "pikachu" }, { template: "senja" })).toEqual(["premiumTemplates"]);
+		expect(designFeaturesNeeded({ template: "onyx" }, { template: "meridian" })).toEqual([]);
+		expect(designFeaturesNeeded({ template: "nosepass" }, { template: "senja" })).toEqual(["premiumTemplates"]);
+	});
+
 	it("asks for custom styles only when they're added or changed, not kept or removed", () => {
 		expect(
 			designFeaturesNeeded({ template: "meridian" }, { template: "meridian", stylesheet: css("a { b: c }") }),

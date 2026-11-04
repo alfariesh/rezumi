@@ -14,7 +14,7 @@ const extractedText = async (fontFamily: string) => {
 	data.metadata.layout.pages = [{ fullWidth: true, main: ["summary"], sidebar: [] }];
 	data.metadata.typography.body.fontFamily = fontFamily;
 	data.metadata.typography.heading.fontFamily = fontFamily;
-	const { pdf } = await renderResume(forme, { data, template: "onyx" });
+	const { pdf } = await renderResume(forme, { data, template: "meridian" });
 	const document = await getDocument({ data: pdf }).promise;
 	const page = await document.getPage(1);
 	return (await page.getTextContent()).items.map((item) => ("str" in item ? item.str : "")).join(" ");
