@@ -150,7 +150,7 @@ describe("plan errors", () => {
 			else expect(error.message).not.toMatch(/Rp|\d+\.\d{3}|https?:|\bbuy\b|upgrade|purchase|price/i);
 		}
 		expect(planFeatureRequired("premiumTemplates", "free").message).toContain(
-			"Meridian, Sterling, Tunas, Wibawa or Kirana",
+			"Meridian, Sterling, Tunas, Wibawa, Kirana, Cerah, Teras or Lintasan",
 		);
 	});
 });

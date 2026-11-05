@@ -93,7 +93,7 @@ describe("plan problems", () => {
 		}
 		expect(describePlanProblem(problems[1]).description).toContain("a resume and 2 cover letters");
 		expect(describePlanProblem({ kind: "feature", feature: "premiumTemplates" }).description).toContain(
-			"Meridian, Sterling, Tunas, Wibawa, and Kirana",
+			"Meridian, Sterling, Tunas, Wibawa, Kirana, Cerah, Teras, and Lintasan",
 		);
 	});
 

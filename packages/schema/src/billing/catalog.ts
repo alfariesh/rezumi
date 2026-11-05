@@ -52,17 +52,23 @@ export type PlanDefinition = {
 	creditsPerPurchase: number;
 };
 
-export const BILLING_CATALOG_VERSION = 3;
+export const BILLING_CATALOG_VERSION = 4;
 
 export const BILLING_CURRENCY = "IDR";
 
-/** The templates on the free plan: four one-column, ATS-safe layouts and one two-column. */
+/**
+ * The templates on the free plan: seven one-column, ATS-safe layouts and one two-column. Meridian comes first: an
+ * import that names a premium template falls back to it.
+ */
 export const FREE_TEMPLATES = [
 	"meridian",
 	"sterling",
 	"tunas",
 	"wibawa",
 	"kirana",
+	"cerah",
+	"teras",
+	"lintasan",
 ] as const satisfies readonly Template[];
 
 /** Whether a template is one of the free plan's; the others need `premiumTemplates`. */

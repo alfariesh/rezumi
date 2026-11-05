@@ -29,7 +29,7 @@ Keputusan pemilik yang berlaku untuk semua phase. Agent tidak mengubahnya diam-d
 
 ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template default untuk CV baru: **Meridian**.
 
-**Perluasan 2026-11-05: 20 template baru (total 36)**, semuanya Premium (paket gratis tidak berubah, jadi `BILLING_CATALOG_VERSION` tetap). Spesifikasi di `01-desain.md` → "Perluasan 2026-11-05".
+**Perluasan 2026-11-05: 20 template baru (total 36)**. Cerah, Teras dan Lintasan masuk paket Gratis (`BILLING_CATALOG_VERSION` 4); 17 lainnya Premium. Spesifikasi di `01-desain.md` → "Perluasan 2026-11-05".
 
 | Nama     | Kolom | Untuk siapa                                     | Nama     | Kolom | Untuk siapa                                 |
 | -------- | ----- | ----------------------------------------------- | -------- | ----- | ------------------------------------------- |
@@ -56,7 +56,7 @@ ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template defau
 
 ## 3. Paket (membership)
 
-- **Gratis:** Meridian, Sterling, Tunas, Wibawa, Kirana; semua gaya ikon; logo profil.
+- **Gratis:** Meridian, Sterling, Tunas, Wibawa, Kirana, dan sejak 2026-11-05 Cerah, Teras, Lintasan; semua gaya ikon; logo profil.
 - **Plus dan Pro AI:** 11 template lain; logo tools/stack di Keahlian.
 - Aturan lama tetap: dokumen yang sudah memakai template premium tetap memakainya; batas hanya menghalangi memilih template premium baru. Font sendiri, Custom Styles, Word/ODT, API/MCP tidak berubah.
 - Mengubah daftar template gratis = mengubah isi paket: naikkan `BILLING_CATALOG_VERSION` dan perbarui halaman legal/harga yang menyebut template gratis.

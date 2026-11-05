@@ -10,7 +10,7 @@ import { templateLineup } from "@rezumi/schema/templates";
  * Rupiah for now. Paid plans are 30-day passes that never renew on their own.
  */
 
-/** The templates on the free plan: four one-column, ATS-safe layouts and one two-column. */
+/** The templates on the free plan: seven one-column, ATS-safe layouts and one two-column. */
 export const freeTemplates: readonly Template[] = FREE_TEMPLATES;
 
 export const planCurrency = BILLING_CURRENCY;

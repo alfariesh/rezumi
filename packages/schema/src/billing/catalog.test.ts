@@ -57,7 +57,7 @@ describe("billing catalog", () => {
 	});
 
 	it("matches the launch decisions", () => {
-		expect(BILLING_CATALOG_VERSION).toBe(3);
+		expect(BILLING_CATALOG_VERSION).toBe(4);
 		expect(PLANS.plus.priceIdr).toBe(29_000);
 		expect(PLANS["pro-ai"].priceIdr).toBe(79_000);
 		expect(PLANS.free.limits).toEqual({ activeResumes: 3, activeCoverLetters: 3 });

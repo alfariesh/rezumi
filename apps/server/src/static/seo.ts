@@ -132,7 +132,7 @@ export function handleLlms() {
 			? []
 			: ["- Plus, Pro AI and Rezumi AI trial credits are coming soon. Paid plan limits are not active yet."]),
 		"",
-		"- Plans (prices in Indonesian Rupiah): Free (Rp0: 3 active resumes and 3 cover letters, 5 templates, every icon style, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus (Rp29,000 for 30 days: 50 resumes and letters, every template, tool logos in skills, Word and ODT, custom styles, MCP and API); Pro AI (Rp79,000 for 30 days: everything in Plus and 100 AI credits, no API key needed). Paid plans never renew automatically.",
+		"- Plans (prices in Indonesian Rupiah): Free (Rp0: 3 active resumes and 3 cover letters, 8 templates, every icon style, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus (Rp29,000 for 30 days: 50 resumes and letters, every template, tool logos in skills, Word and ODT, custom styles, MCP and API); Pro AI (Rp79,000 for 30 days: everything in Plus and 100 AI credits, no API key needed). Paid plans never renew automatically.",
 		"- Export: PDF, Markdown and JSON on every plan; Word (DOCX) and ODT with Plus and Pro AI.",
 		"- Import: PDF, LinkedIn data export, JSON Resume, Rezumi JSON; Word files with an AI provider.",
 		"- Sharing: private by default; a public link or a password-protected link, changeable at any time.",
