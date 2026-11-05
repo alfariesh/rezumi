@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>Mockup Portfolio Rezumi</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+		/>
+		<style>
+			:root {
+				--bg: #f4f5f2;
+				--card: #ffffff;
+				--ink: #16181c;
+				--sub: #5a6070;
+				--line: #e1e3e0;
+				--accent: #1f3a68;
+				--free: #0f7a52;
+				--plus: #7a3db8;
+				--display: "Bricolage Grotesque", system-ui, sans-serif;
+				--body: "Plus Jakarta Sans", system-ui, sans-serif;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root:not([data-theme="light"]) {
+					--bg: #0d0f12;
+					--card: #16191e;
+					--ink: #eceef1;
+					--sub: #a2a8b3;
+					--line: #272b32;
+					--accent: #a9bdf0;
+					--free: #4fd39b;
+					--plus: #c9a2f4;
+					color-scheme: dark;
+				}
+			}
+			:root[data-theme="dark"] {
+				--bg: #0d0f12;
+				--card: #16191e;
+				--ink: #eceef1;
+				--sub: #a2a8b3;
+				--line: #272b32;
+				--accent: #a9bdf0;
+				--free: #4fd39b;
+				--plus: #c9a2f4;
+				color-scheme: dark;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				margin: 0;
+				background: var(--bg);
+				color: var(--ink);
+				font: 400 16px/1.6 var(--body);
+			}
+			h1,
+			h2,
+			h3,
+			p,
+			ul,
+			ol,
+			dl,
+			dd {
+				margin: 0;
+			}
+			a {
+				color: inherit;
+			}
+			img {
+				display: block;
+				max-width: 100%;
+			}
+			.ix-wrap {
+				max-width: 1240px;
+				margin: 0 auto;
+				padding-left: max(16px, env(safe-area-inset-left, 0px));
+				padding-right: max(16px, env(safe-area-inset-right, 0px));
+			}
+			.ix-hero {
+				display: grid;
+				gap: 18px;
+				padding-block: 48px 28px;
+			}
+			.ix-eyebrow {
+				font-size: 13px;
+				font-weight: 600;
+				color: var(--sub);
+				letter-spacing: 0.03em;
+			}
+			.ix-hero h1 {
+				font: 800 clamp(2.4rem, 1.6rem + 3.4vw, 4rem)/1 var(--display);
+				letter-spacing: -0.035em;
+				text-wrap: balance;
+			}
+			.ix-lead {
+				font-size: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+				max-width: 64ch;
+			}
+			.ix-steps {
+				display: grid;
+				gap: 8px;
+				padding-inline-start: 1.3em;
+				max-width: 72ch;
+			}
+			.ix-reco {
+				display: grid;
+				gap: 12px;
+				padding-block: 24px;
+				margin-block: 8px 24px;
+				border-block: 1px solid var(--line);
+			}
+			.ix-reco h2 {
+				font: 800 1.25rem/1.2 var(--display);
+			}
+			.ix-reco ul {
+				display: grid;
+				gap: 6px;
+				padding-inline-start: 1.2em;
+				max-width: 80ch;
+			}
+			.ix-h2 {
+				font: 800 clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem)/1.1 var(--display);
+				letter-spacing: -0.025em;
+				margin-bottom: 20px;
+			}
+			.ix-themes {
+				display: grid;
+				gap: 20px;
+			}
+			.ix-theme {
+				display: grid;
+				grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+				gap: 28px;
+				padding: 20px;
+				border-radius: 20px;
+				background: var(--card);
+				border: 1px solid var(--line);
+			}
+			@media (max-width: 900px) {
+				.ix-theme {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+			.ix-preview {
+				position: relative;
+				padding-bottom: 28px;
+				padding-inline-end: 56px;
+			}
+			.ix-shot {
+				overflow: hidden;
+				border-radius: 12px;
+				border: 1px solid var(--line);
+				background: var(--bg);
+			}
+			.ix-shot img {
+				width: 100%;
+				height: auto;
+			}
+			.ix-shot--desk {
+				aspect-ratio: 1440/900;
+			}
+			.ix-shot--desk img {
+				height: 100%;
+				object-fit: cover;
+				object-position: top;
+			}
+			.ix-shot--phone {
+				position: absolute;
+				inset-inline-end: 0;
+				bottom: 0;
+				width: 26%;
+				min-width: 96px;
+				aspect-ratio: 390/844;
+				border-radius: 16px;
+				border: 4px solid var(--ink);
+				box-shadow: 0 12px 30px rgb(0 0 0 / 0.25);
+			}
+			.ix-shot--phone img {
+				height: 100%;
+				object-fit: cover;
+				object-position: top;
+			}
+			.ix-theme__body {
+				display: grid;
+				gap: 12px;
+				align-content: start;
+			}
+			.ix-theme__head {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 10px 16px;
+			}
+			.ix-theme__head h3 {
+				font: 800 2rem/1 var(--display);
+				letter-spacing: -0.03em;
+			}
+			.ix-plan {
+				padding: 3px 10px;
+				border-radius: 999px;
+				font-size: 13px;
+				font-weight: 700;
+				border: 1.5px solid currentColor;
+			}
+			.ix-plan--gratis {
+				color: var(--free);
+			}
+			.ix-plan--plus {
+				color: var(--plus);
+			}
+			.ix-for {
+				font-weight: 600;
+			}
+			.ix-facts {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 10px 16px;
+				padding: 14px;
+				border-radius: 12px;
+				background: var(--bg);
+				font-size: 14px;
+			}
+			.ix-facts dt {
+				font-size: 12px;
+				color: var(--sub);
+			}
+			.ix-facts dd {
+				font-weight: 600;
+			}
+			.ix-btn {
+				justify-self: start;
+				display: inline-flex;
+				align-items: center;
+				min-height: 44px;
+				padding: 0 18px;
+				border-radius: 999px;
+				background: var(--ink);
+				color: var(--bg);
+				font-weight: 700;
+				text-decoration: none;
+				margin-top: 4px;
+			}
+			.ix-btn:focus-visible,
+			.ix-tile:focus-visible {
+				outline: 2px solid var(--accent);
+				outline-offset: 3px;
+			}
+			.ix-more {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+				gap: 16px;
+				padding-block: 28px;
+			}
+			.ix-tile {
+				display: grid;
+				gap: 6px;
+				padding: 24px;
+				border-radius: 20px;
+				background: var(--card);
+				border: 1px solid var(--line);
+				text-decoration: none;
+			}
+			.ix-tile b {
+				font: 800 1.5rem/1.1 var(--display);
+				letter-spacing: -0.02em;
+			}
+			.ix-tile span {
+				color: var(--sub);
+			}
+			.ix-tile:hover {
+				border-color: var(--ink);
+			}
+			.ix-detail {
+				padding-block: 28px;
+			}
+			.ix-cols {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+				gap: 24px;
+			}
+			.ix-cols h3 {
+				font: 800 1.125rem/1.2 var(--display);
+				margin-bottom: 6px;
+			}
+			.ix-note {
+				color: var(--sub);
+				font-size: 14px;
+				margin-bottom: 14px;
+			}
+			.ix-swatches {
+				list-style: none;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+				gap: 10px;
+			}
+			.ix-swatches li {
+				display: grid;
+				grid-template-columns: auto 1fr;
+				gap: 0 10px;
+				align-items: center;
+				padding: 10px;
+				border-radius: 12px;
+				background: var(--card);
+				border: 1px solid var(--line);
+			}
+			.ix-swatches i {
+				grid-row: span 2;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+			}
+			.ix-swatches b {
+				font-size: 14px;
+			}
+			.ix-swatches span {
+				font:
+					12px/1.3 ui-monospace,
+					Menlo,
+					monospace;
+				color: var(--sub);
+			}
+			.ix-fonts {
+				display: grid;
+				gap: 10px;
+				font-size: 14px;
+			}
+			.ix-fonts dt {
+				font-weight: 700;
+			}
+			.ix-fonts dd {
+				color: var(--sub);
+			}
+			.ix-foot {
+				padding-block: 28px 56px;
+				color: var(--sub);
+				font-size: 13px;
+				border-top: 1px solid var(--line);
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="ix-wrap ix-hero">
+			<p class="ix-eyebrow">Rezumi · portfolio web · Phase 00</p>
+			<h1>Mockup tema portfolio</h1>
+			<p class="ix-lead">
+				Empat tema yang disetujui untuk halaman <b>rezumi.app/username</b>, pembanding widget metrik, dan demo efek
+				intro. Semua orang dan isinya fiktif; semua gambar karya, peta, dan logo digambar sendiri.
+			</p>
+			<ol class="ix-steps">
+				<li>
+					<b>Buka tiap tema.</b> Tombol <i>Coba pengaturan</i> di pojok kanan bawah mengganti warna aksen, mode
+					terang/gelap, font, efek intro, dan varian metrik. Klik karya untuk membuka detailnya.
+				</li>
+				<li><b>Lihat halaman metrik dan efek intro.</b> Keduanya acuan untuk Phase 02, 04, dan 06.</li>
+			</ol>
+		</header>
+		<section class="ix-wrap ix-reco" aria-labelledby="reco-title">
+			<h2 id="reco-title">Keputusan pemilik, 5 November 2026</h2>
+			<ul>
+				<li>
+					<b>Gratis:</b> Lugas + Prima. <b>Plus:</b> Kanvas + Mozaik. Nama tetap; ID teknis lugas, prima, kanvas,
+					mozaik.
+				</li>
+				<li>
+					<b>Ke backlog:</b> dua arah lain (Sintaks untuk developer, Warta gaya majalah), untuk ditambah setelah rilis.
+				</li>
+				<li>
+					<b>Metrik:</b> ketiga varian (Kartu KPI, Angka besar, Sebelum → sesudah) jadi pilihan pengguna; grafik mini
+					ikut rilis pertama sebagai isian opsional.
+				</li>
+				<li><b>Efek intro:</b> keenamnya masuk rilis pertama; pembagian gratis/Plus dikonfirmasi di Phase 07.</li>
+				<li><b>Warna dan font:</b> 8 warna aksen kurasi dan pasangan font per tema di bawah disetujui.</li>
+			</ul>
+		</section>
+		<section class="ix-wrap" aria-labelledby="themes-title">
+			<h2 id="themes-title" class="ix-h2">Empat tema rilis</h2>
+			<div class="ix-themes">
+				<article class="ix-theme" id="tema-lugas">
+					<div class="ix-preview">
+						<div class="ix-shot ix-shot--desk">
+							<img src="shots/lugas-desktop.jpg" alt="Tema Lugas di laptop" loading="lazy" width="1440" height="900" />
+						</div>
+						<div class="ix-shot ix-shot--phone">
+							<img src="shots/lugas-phone.jpg" alt="Tema Lugas di HP" loading="lazy" width="390" height="844" />
+						</div>
+					</div>
+					<div class="ix-theme__body">
+						<div class="ix-theme__head">
+							<h3>Lugas</h3>
+							<span class="ix-plan ix-plan--gratis">Gratis</span>
+						</div>
+						<p class="ix-for">Semua bidang; tema bawaan</p>
+						<p>
+							Satu kolom sempit, tipografi besar, banyak ruang putih. Karya tampil sebagai daftar dengan sampul kecil.
+						</p>
+						<dl class="ix-facts">
+							<div>
+								<dt>Persona</dt>
+								<dd>Nadia Rahmawati</dd>
+							</div>
+							<div>
+								<dt>Mode bawaan</dt>
+								<dd>Terang</dd>
+							</div>
+							<div>
+								<dt>Efek bawaan</dt>
+								<dd>Muncul halus</dd>
+							</div>
+							<div>
+								<dt>Metrik bawaan</dt>
+								<dd>Angka besar</dd>
+							</div>
+						</dl>
+						<a class="ix-btn" href="lugas.html">Buka tema Lugas</a>
+					</div>
+				</article>
+				<article class="ix-theme" id="tema-prima">
+					<div class="ix-preview">
+						<div class="ix-shot ix-shot--desk">
+							<img src="shots/prima-desktop.jpg" alt="Tema Prima di laptop" loading="lazy" width="1440" height="900" />
+						</div>
+						<div class="ix-shot ix-shot--phone">
+							<img src="shots/prima-phone.jpg" alt="Tema Prima di HP" loading="lazy" width="390" height="844" />
+						</div>
+					</div>
+					<div class="ix-theme__body">
+						<div class="ix-theme__head">
+							<h3>Prima</h3>
+							<span class="ix-plan ix-plan--gratis">Gratis</span>
+						</div>
+						<p class="ix-for">Keuangan, konsultan, BUMN, manajer, fresh graduate formal</p>
+						<p>
+							Intro dua kolom dengan foto, angka pencapaian sebagai kartu KPI, dan timeline pengalaman yang menonjol.
+						</p>
+						<dl class="ix-facts">
+							<div>
+								<dt>Persona</dt>
+								<dd>Anindya Dewi</dd>
+							</div>
+							<div>
+								<dt>Mode bawaan</dt>
+								<dd>Terang</dd>
+							</div>
+							<div>
+								<dt>Efek bawaan</dt>
+								<dd>Tanpa efek</dd>
+							</div>
+							<div>
+								<dt>Metrik bawaan</dt>
+								<dd>Kartu KPI</dd>
+							</div>
+						</dl>
+						<a class="ix-btn" href="prima.html">Buka tema Prima</a>
+					</div>
+				</article>
+				<article class="ix-theme" id="tema-kanvas">
+					<div class="ix-preview">
+						<div class="ix-shot ix-shot--desk">
+							<img
+								src="shots/kanvas-desktop.jpg"
+								alt="Tema Kanvas di laptop"
+								loading="lazy"
+								width="1440"
+								height="900"
+							/>
+						</div>
+						<div class="ix-shot ix-shot--phone">
+							<img src="shots/kanvas-phone.jpg" alt="Tema Kanvas di HP" loading="lazy" width="390" height="844" />
+						</div>
+					</div>
+					<div class="ix-theme__body">
+						<div class="ix-theme__head">
+							<h3>Kanvas</h3>
+							<span class="ix-plan ix-plan--plus">Plus</span>
+						</div>
+						<p class="ix-for">Desainer, fotografer, arsitek, kreator konten</p>
+						<p>
+							Grid gambar besar dengan keterangan saat disentuh. Detail karya layar penuh; mode gelap membuat gambar
+							menonjol.
+						</p>
+						<dl class="ix-facts">
+							<div>
+								<dt>Persona</dt>
+								<dd>Bayu Saputra</dd>
+							</div>
+							<div>
+								<dt>Mode bawaan</dt>
+								<dd>Gelap</dd>
+							</div>
+							<div>
+								<dt>Efek bawaan</dt>
+								<dd>Garis vektor</dd>
+							</div>
+							<div>
+								<dt>Metrik bawaan</dt>
+								<dd>Angka besar</dd>
+							</div>
+						</dl>
+						<a class="ix-btn" href="kanvas.html">Buka tema Kanvas</a>
+					</div>
+				</article>
+				<article class="ix-theme" id="tema-mozaik">
+					<div class="ix-preview">
+						<div class="ix-shot ix-shot--desk">
+							<img
+								src="shots/mozaik-desktop.jpg"
+								alt="Tema Mozaik di laptop"
+								loading="lazy"
+								width="1440"
+								height="900"
+							/>
+						</div>
+						<div class="ix-shot ix-shot--phone">
+							<img src="shots/mozaik-phone.jpg" alt="Tema Mozaik di HP" loading="lazy" width="390" height="844" />
+						</div>
+					</div>
+					<div class="ix-theme__body">
+						<div class="ix-theme__head">
+							<h3>Mozaik</h3>
+							<span class="ix-plan ix-plan--plus">Plus</span>
+						</div>
+						<p class="ix-for">Kreator, freelancer, mahasiswa</p>
+						<p>
+							Grid bento: kartu berbagai ukuran untuk foto, tentang, tautan, karya, dan angka. Ceria, sudut bulat, cocok
+							untuk layanan.
+						</p>
+						<dl class="ix-facts">
+							<div>
+								<dt>Persona</dt>
+								<dd>Citra Maharani</dd>
+							</div>
+							<div>
+								<dt>Mode bawaan</dt>
+								<dd>Terang</dd>
+							</div>
+							<div>
+								<dt>Efek bawaan</dt>
+								<dd>Gradien hidup</dd>
+							</div>
+							<div>
+								<dt>Metrik bawaan</dt>
+								<dd>Kartu KPI</dd>
+							</div>
+						</dl>
+						<a class="ix-btn" href="mozaik.html">Buka tema Mozaik</a>
+					</div>
+				</article>
+			</div>
+		</section>
+		<section class="ix-wrap ix-more" aria-label="Halaman lain">
+			<a class="ix-tile" href="metrik.html"
+				><b>Widget metrik</b><span>Tiga varian, dengan dan tanpa grafik mini, terang dan gelap.</span></a
+			>
+			<a class="ix-tile" href="efek-intro.html"
+				><b>Efek intro</b
+				><span>Tujuh pilihan (termasuk tanpa efek), dengan tombol putar ulang dan mode kurangi gerakan.</span></a
+			>
+		</section>
+		<section class="ix-wrap ix-detail" aria-labelledby="detail-title">
+			<h2 id="detail-title" class="ix-h2">Detail yang ikut ditetapkan</h2>
+			<div class="ix-cols">
+				<div>
+					<h3>8 warna aksen kurasi</h3>
+					<p class="ix-note">
+						Ditambah “Ikut CV” dan warna bebas. Warna yang terlalu terang (misalnya Kunyit) otomatis digelapkan saat
+						dipakai sebagai teks.
+					</p>
+					<ul class="ix-swatches">
+						<li><i style="background: #1d4ed8"></i><b>Samudra</b><span>#1D4ED8</span></li>
+						<li><i style="background: #0f766e"></i><b>Toska</b><span>#0F766E</span></li>
+						<li><i style="background: #15803d"></i><b>Daun</b><span>#15803D</span></li>
+						<li><i style="background: #eab308"></i><b>Kunyit</b><span>#EAB308</span></li>
+						<li><i style="background: #ea580c"></i><b>Jingga</b><span>#EA580C</span></li>
+						<li><i style="background: #dc2626"></i><b>Cabai</b><span>#DC2626</span></li>
+						<li><i style="background: #7c3aed"></i><b>Anggrek</b><span>#7C3AED</span></li>
+						<li><i style="background: #334155"></i><b>Grafit</b><span>#334155</span></li>
+					</ul>
+				</div>
+				<div>
+					<h3>Pasangan font per tema</h3>
+					<p class="ix-note">
+						Semua ada di daftar font web Rezumi dan berlisensi bebas (Google Fonts). Pasangan pertama adalah bawaan
+						tema; dua yang pertama bisa dicoba di mockup.
+					</p>
+					<dl class="ix-fonts">
+						<div>
+							<dt>Lugas</dt>
+							<dd>
+								Plus Jakarta Sans · Lora + Figtree · Manrope · DM Sans · Source Serif 4 + Source Sans 3 · Atkinson
+								Hyperlegible
+							</dd>
+						</div>
+						<div>
+							<dt>Prima</dt>
+							<dd>
+								Source Serif 4 + IBM Plex Sans · Manrope · Libre Caslon Text + Public Sans · IBM Plex Serif + IBM Plex
+								Sans · Literata + Work Sans
+							</dd>
+						</div>
+						<div>
+							<dt>Kanvas</dt>
+							<dd>
+								Archivo (sempit) · Bodoni Moda + Work Sans · Syne + DM Sans · Instrument Serif + Instrument Sans ·
+								Bricolage Grotesque + DM Sans
+							</dd>
+						</div>
+						<div>
+							<dt>Mozaik</dt>
+							<dd>
+								Bricolage Grotesque + Onest · Unbounded + Albert Sans · Outfit · Sora + DM Sans · Rethink Sans · Red Hat
+								Display + Albert Sans
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</section>
+		<footer class="ix-wrap ix-foot">
+			Foto profil: potret Unsplash yang sama dengan contoh template CV (sumber di
+			.agents/docs/template-showcase-sources.json). Peta di kartu Lokasi adalah gambar contoh; di produk, gambar peta
+			dibuat dari OpenFreeMap dengan atribusi OpenStreetMap.
+		</footer>
+	</body>
+</html>

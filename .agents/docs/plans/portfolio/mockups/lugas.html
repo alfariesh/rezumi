@@ -1,0 +1,2384 @@
+<!doctype html>
+<html lang="id" dir="ltr" class="t-lugas" data-pf-scheme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>Tema Lugas · mockup portfolio</title>
+		<meta
+			name="description"
+			content="Mockup tema Lugas untuk portfolio Rezumi dengan persona fiktif Nadia Rahmawati."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap"
+		/>
+		<link rel="stylesheet" href="tokens.css" />
+		<link rel="stylesheet" href="shared.css" />
+		<style>
+			:root {
+				--pf-max-width: 680px;
+				--pf-radius: 14px;
+				--pf-bg: #ffffff;
+				--pf-surface: #f3f4f6;
+				--pf-text: #111318;
+				--pf-muted: #596070;
+				--pf-border: #e4e6ea;
+			}
+			:root[data-pf-scheme="dark"] {
+				--pf-bg: #0f1115;
+				--pf-surface: #191c21;
+				--pf-text: #eceef1;
+				--pf-muted: #9ba2ad;
+				--pf-border: #272b32;
+			}
+			.lg-top {
+				padding-block: 12px;
+			}
+			.lg-brand {
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+				font-size: var(--pf-text-sm);
+			}
+			.lg-mono {
+				display: grid;
+				place-items: center;
+				width: 34px;
+				height: 34px;
+				border-radius: 50%;
+				background: var(--pf-text);
+				color: var(--pf-bg);
+				font-size: 12px;
+				letter-spacing: 0.02em;
+				flex: none;
+			}
+			.lg-main {
+				display: grid;
+				gap: clamp(72px, 9vw, 112px);
+				padding-block: clamp(32px, 6vw, 72px) 40px;
+			}
+			.lg-hero {
+				display: grid;
+				gap: 22px;
+				justify-items: start;
+			}
+			.lg-photo {
+				width: 88px;
+				height: 88px;
+				border-radius: 50%;
+				object-fit: cover;
+			}
+			.pf-nophoto .lg-photo {
+				display: none;
+			}
+			.lg-hero__text {
+				display: grid;
+				gap: 12px;
+			}
+			.lg-name {
+				font-size: min(
+					clamp(2.6rem, 1.4rem + 5.2vw, 4.4rem),
+					calc(min(100vw - 32px, 680px) / (var(--name-word) * 0.62))
+				);
+				font-weight: 800;
+				letter-spacing: -0.035em;
+				line-height: 1;
+			}
+			.lg-headline {
+				font-size: var(--pf-text-lg);
+				color: var(--pf-muted);
+				font-weight: 500;
+				line-height: 1.35;
+			}
+			.lg-greeting {
+				font-size: clamp(1.125rem, 1rem + 0.5vw, 1.3rem);
+				line-height: 1.5;
+				max-width: 36ch;
+			}
+			.lg-stats {
+				width: 100%;
+				padding-block: 28px 4px;
+				border-top: 1px solid var(--pf-border);
+				margin-top: 6px;
+			}
+			.lg-stats.pf-metrics[data-variant="big"] {
+				--pf-metric-value: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+				gap: 24px;
+			}
+			.lg-sec {
+				display: grid;
+				gap: 28px;
+			}
+			@media (max-width: 560px) {
+				.lg-stats.pf-metrics[data-variant="big"] {
+					grid-template-columns: repeat(3, minmax(0, 1fr));
+					gap: 14px;
+					--pf-metric-value: 1.7rem;
+				}
+				.lg-stats .pf-metric__label {
+					font-size: var(--pf-text-xs);
+				}
+			}
+			.lg-sec .pf-section__title {
+				font-size: clamp(1.5rem, 1.2rem + 1vw, 1.875rem);
+				letter-spacing: -0.025em;
+				font-weight: 800;
+			}
+			.lg-lead {
+				font-size: var(--pf-text-lg);
+				line-height: 1.6;
+			}
+			.lg-works {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+			}
+			.lg-work a {
+				display: grid;
+				grid-template-columns: 120px minmax(0, 1fr);
+				gap: 20px;
+				align-items: start;
+				padding-block: 22px;
+				border-top: 1px solid var(--pf-border);
+				text-decoration: none;
+			}
+			.lg-work:last-child a {
+				border-bottom: 1px solid var(--pf-border);
+			}
+			.lg-work__cover {
+				border-radius: 10px;
+			}
+			.lg-work__body {
+				display: grid;
+				gap: 6px;
+				min-width: 0;
+			}
+			.lg-work__title {
+				font: 700 var(--pf-text-lg)/1.25 var(--pf-font-heading);
+				letter-spacing: -0.01em;
+			}
+			.lg-work a:hover .lg-work__title {
+				text-decoration: underline;
+				text-decoration-color: var(--pf-accent-text);
+				text-underline-offset: 4px;
+				text-decoration-thickness: 2px;
+			}
+			.lg-work__summary {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+				line-height: 1.5;
+			}
+			.lg-work__meta {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				gap: 8px 14px;
+				margin-top: 4px;
+				font-size: var(--pf-text-xs);
+				color: var(--pf-muted);
+			}
+			.pf-noimg .lg-work a {
+				grid-template-columns: minmax(0, 1fr);
+			}
+			@media (max-width: 520px) {
+				.lg-work a {
+					grid-template-columns: 84px minmax(0, 1fr);
+					gap: 14px;
+				}
+			}
+			.lg-services {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+			}
+			.lg-services .pf-service {
+				display: grid;
+				gap: 6px;
+				padding-block: 20px;
+				border-top: 1px solid var(--pf-border);
+			}
+			.pf-service__head {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 4px 16px;
+			}
+			.pf-service h3 {
+				font-size: var(--pf-text-lg);
+				font-weight: 700;
+			}
+			.pf-service__price {
+				font-weight: 600;
+				font-variant-numeric: tabular-nums;
+				color: var(--pf-accent-text);
+				font-size: var(--pf-text-sm);
+			}
+			.pf-service p {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+			}
+			.pf-service__cta {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				font-weight: 600;
+				font-size: var(--pf-text-sm);
+				color: var(--pf-accent-text);
+				text-underline-offset: 4px;
+				width: fit-content;
+			}
+			.lg-quotes {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				gap: 36px;
+			}
+			.pf-quote {
+				display: grid;
+				gap: 16px;
+			}
+			.lg-quotes blockquote {
+				font: 500 var(--pf-text-lg)/1.5 var(--pf-font-heading);
+				letter-spacing: -0.005em;
+			}
+			.lg-quotes blockquote::before {
+				content: "“";
+				display: block;
+				height: 0.6em;
+				color: var(--pf-accent-text);
+				font-size: 2.2em;
+				line-height: 1;
+			}
+			.lg-extras {
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+				gap: 32px;
+			}
+			.pf-extra h3 {
+				font-size: var(--pf-text-md);
+				margin-bottom: 12px;
+			}
+			.pf-extra ul {
+				list-style: none;
+				padding: 0;
+				display: grid;
+				gap: 10px;
+			}
+			.pf-extra li {
+				display: grid;
+				gap: 1px;
+				font-size: var(--pf-text-sm);
+			}
+			.pf-extra li span {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-xs);
+			}
+			.lg-custom {
+				padding: 28px;
+				border-radius: var(--pf-radius);
+				background: var(--pf-surface);
+				gap: 16px;
+			}
+			.lg-custom .pf-btn {
+				justify-self: start;
+			}
+			.lg-cta {
+				font: 800 clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem)/1.15 var(--pf-font-heading);
+				letter-spacing: -0.025em;
+				max-width: 22ch;
+			}
+			#contact {
+				gap: 24px;
+			}
+			#contact .pf-loc {
+				max-width: 420px;
+			}
+			.t-lugas .pf-detail__panel {
+				max-width: 820px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="pf-wrap lg-top">
+			<nav class="pf-nav" aria-label="Navigasi halaman">
+				<a class="pf-nav__brand lg-brand" href="#top"
+					><span class="lg-mono" aria-hidden="true">NR</span><span data-person-name>Nadia Rahmawati</span></a
+				>
+				<ul class="pf-nav__links">
+					<li><a href="#about">Tentang</a></li>
+					<li><a href="#work">Karya</a></li>
+					<li><a href="#services">Layanan</a></li>
+					<li><a href="#experience">Pengalaman</a></li>
+					<li><a href="#contact">Kontak</a></li>
+				</ul>
+				<details class="pf-menu">
+					<summary>
+						<svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M4 7h16M4 12h16M4 17h16" /></svg
+						>Menu
+					</summary>
+					<ul class="pf-menu__list">
+						<li><a href="#about">Tentang</a></li>
+						<li><a href="#work">Karya</a></li>
+						<li><a href="#services">Layanan</a></li>
+						<li><a href="#experience">Pengalaman</a></li>
+						<li><a href="#contact">Kontak</a></li>
+					</ul>
+				</details>
+			</nav>
+		</header>
+		<main class="pf-wrap lg-main" id="top">
+			<section class="lg-hero" aria-label="Intro">
+				<img class="lg-photo pf-photo" src="img/nadia.jpg" alt="Foto Nadia Rahmawati" width="480" height="480" />
+				<div class="lg-hero__text">
+					<h1 class="pf-name lg-name" style="--name-word: 9">
+						<span data-fx-name data-person-name>Nadia Rahmawati</span>
+					</h1>
+					<p class="lg-headline"><span data-fx-headline>Senior Product Manager · Payments</span></p>
+				</div>
+				<p class="lg-greeting">
+					Saya membangun produk pembayaran yang dipakai jutaan orang setiap hari, dan memastikan setiap rilis bisa
+					diukur.
+				</p>
+				<div class="pf-chips">
+					<span class="pf-chip"
+						><svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21z" />
+							<circle cx="12" cy="9.5" r="2.5" /></svg
+						>Jakarta, Indonesia</span
+					><span class="pf-chip pf-chip--open">Terbuka untuk peran Lead PM</span>
+				</div>
+				<dl class="pf-metrics lg-stats" data-variant="big" data-spark="on">
+					<div class="pf-metric">
+						<dt class="pf-metric__label">pengguna QR per bulan</dt>
+						<dd class="pf-metric__row"><span class="pf-metric__value">4 jt</span></dd>
+					</div>
+					<div class="pf-metric">
+						<dt class="pf-metric__label">pembayaran berhasil</dt>
+						<dd class="pf-metric__row"><span class="pf-metric__value">97,5%</span></dd>
+					</div>
+					<div class="pf-metric">
+						<dt class="pf-metric__label">uji A/B per tahun</dt>
+						<dd class="pf-metric__row"><span class="pf-metric__value">40+</span></dd>
+					</div>
+				</dl>
+				<div class="pf-btns">
+					<a class="pf-btn pf-btn--primary" href="#"
+						><svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M6 3h9l3 3v15H6z" />
+							<path d="M9 10h6M9 14h6M9 18h4" /></svg
+						>Lihat CV</a
+					><a class="pf-btn pf-btn--secondary" href="#"
+						><svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+							<path d="M14 3v5h5" /></svg
+						>Unduh PDF</a
+					><a class="pf-btn pf-btn--secondary" href="#contact"
+						><svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<rect x="3" y="5" width="18" height="14" rx="2" />
+							<path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg
+						>Kirim pesan</a
+					>
+				</div>
+			</section>
+			<section class="pf-section lg-sec" id="about">
+				<h2 class="pf-section__title">Tentang saya</h2>
+				<div class="pf-prose lg-lead">
+					<p>
+						<strong>Product manager dengan delapan tahun pengalaman di pembayaran digital</strong>, dari pendaftaran
+						merchant hingga pembayaran QR yang dipakai 4 juta orang setiap bulan.
+					</p>
+					<p>
+						Saya mengubah riset dan data menjadi roadmap yang dipercaya tim engineering, lalu merilis dalam langkah
+						kecil yang terukur. Di luar kantor, saya membimbing PM pemula dan menulis catatan produk setiap Jumat.
+					</p>
+				</div>
+			</section>
+			<section class="pf-section lg-sec" id="work">
+				<h2 class="pf-section__title">Karya</h2>
+				<ul class="lg-works">
+					<li class="lg-work">
+						<a href="#work-qr-checkout"
+							><div class="pf-cover lg-work__cover">
+								<img src="img/lugas-1.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="lg-work__body"
+								><span class="lg-work__title">QR checkout yang jarang gagal</span
+								><span class="lg-work__summary"
+									>Menata ulang alur bayar QR untuk 4 juta pengguna: dari 91% menjadi 97,5% pembayaran berhasil dalam
+									empat kuartal.</span
+								><span class="lg-work__meta"
+									><span>Senior PM · tim 11 orang · 2022–2024</span
+									><span class="pf-work-metric"><b>97,5%</b><span>Pembayaran berhasil</span></span></span
+								></span
+							></a
+						>
+					</li>
+					<li class="lg-work">
+						<a href="#work-patungan"
+							><div class="pf-cover lg-work__cover">
+								<img src="img/lugas-2.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="lg-work__body"
+								><span class="lg-work__title">Patungan dan kartu tersimpan</span
+								><span class="lg-work__summary">Dua fitur yang kini menyumbang 18% volume transaksi bulanan.</span
+								><span class="lg-work__meta"
+									><span>Senior PM · 2023</span
+									><span class="pf-work-metric"><b>18%</b><span>Volume transaksi</span></span></span
+								></span
+							></a
+						>
+					</li>
+					<li class="lg-work">
+						<a href="#work-pendaftaran-merchant"
+							><div class="pf-cover lg-work__cover">
+								<img src="img/lugas-3.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="lg-work__body"
+								><span class="lg-work__title">Pendaftaran merchant di bawah satu jam</span
+								><span class="lg-work__summary"
+									>Verifikasi dokumen otomatis memangkas waktu daftar dari lima hari menjadi 52 menit.</span
+								><span class="lg-work__meta"
+									><span>PM, Merchant Platform · 2020</span
+									><span class="pf-work-metric"><b>52 mnt</b><span>Waktu daftar</span></span></span
+								></span
+							></a
+						>
+					</li>
+					<li class="lg-work">
+						<a href="#work-dasbor-merchant"
+							><div class="pf-cover lg-work__cover">
+								<img src="img/lugas-4.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="lg-work__body"
+								><span class="lg-work__title">Dasbor swalayan untuk merchant kecil</span
+								><span class="lg-work__summary"
+									>Dasbor dua bahasa yang menumbuhkan merchant aktif dari 60 ribu menjadi 310 ribu.</span
+								><span class="lg-work__meta"
+									><span>PM, Merchant Platform · 2019–2021</span
+									><span class="pf-work-metric"><b>310 rb</b><span>Merchant aktif</span></span></span
+								></span
+							></a
+						>
+					</li>
+					<li class="lg-work">
+						<a href="#work-ritme-eksperimen"
+							><div class="pf-cover lg-work__cover">
+								<img src="img/lugas-5.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="lg-work__body"
+								><span class="lg-work__title">Ritme eksperimen mingguan</span
+								><span class="lg-work__summary"
+									>Tinjauan bersama data science: lebih dari 40 uji A/B per tahun, semuanya dengan keputusan
+									tertulis.</span
+								><span class="lg-work__meta"
+									><span>Senior PM · 2022–kini</span
+									><span class="pf-work-metric"><b>40+</b><span>Uji A/B per tahun</span></span></span
+								></span
+							></a
+						>
+					</li>
+					<li class="lg-work">
+						<a href="#work-pelacakan-kurir"
+							><div class="pf-cover lg-work__cover">
+								<img src="img/lugas-6.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="lg-work__body"
+								><span class="lg-work__title">Pelacakan kurir langsung</span
+								><span class="lg-work__summary"
+									>Peta kurir untuk 1.200 pengemudi; telepon “paket saya di mana” turun sepertiga.</span
+								><span class="lg-work__meta"
+									><span>Associate PM · Rantai Logistik · 2017</span
+									><span class="pf-work-metric"><b>−33%</b><span>Telepon ke CS</span></span></span
+								></span
+							></a
+						>
+					</li>
+				</ul>
+			</section>
+			<section class="pf-section lg-sec" id="services">
+				<h2 class="pf-section__title">Layanan</h2>
+				<ul class="lg-services">
+					<li class="pf-service">
+						<div class="pf-service__head">
+							<h3>Audit alur pembayaran</h3>
+							<span class="pf-service__price">Mulai Rp7,5 jt</span>
+						</div>
+						<p>Saya menelusuri checkout-mu, menandai titik gagal, lalu memberi daftar perbaikan berurutan.</p>
+						<a class="pf-service__cta" href="#"
+							>Tanya lewat WhatsApp<svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</li>
+					<li class="pf-service">
+						<div class="pf-service__head">
+							<h3>Mentoring PM</h3>
+							<span class="pf-service__price">Rp1,2 jt / sesi</span>
+						</div>
+						<p>Empat sesi 60 menit untuk PM 0–3 tahun: discovery, prioritas, dan menulis spesifikasi.</p>
+						<a class="pf-service__cta" href="#contact"
+							>Pesan lewat form<svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</li>
+					<li class="pf-service">
+						<div class="pf-service__head"><h3>Pembicara &amp; workshop</h3></div>
+						<p>Topik: eksperimen produk, pembayaran digital, dan kerja PM bersama data.</p>
+						<a class="pf-service__cta" href="#contact"
+							>Pesan lewat form<svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</li>
+				</ul>
+			</section>
+			<section class="pf-section lg-sec" id="testimonials">
+				<h2 class="pf-section__title">Testimoni</h2>
+				<ul class="lg-quotes">
+					<li class="pf-quote">
+						<blockquote>
+							Nadia membuat rapat prioritas jadi singkat: datanya jelas, keputusannya tertulis, dan tim tahu alasannya.
+						</blockquote>
+						<div class="pf-person">
+							<span class="pf-avatar" aria-hidden="true">DW</span
+							><span class="pf-person__text"><b>Damar Wicaksana</b><span>Engineering Manager, Kilau Pay</span></span>
+						</div>
+					</li>
+					<li class="pf-quote">
+						<blockquote>
+							Spesifikasi dari Nadia paling jarang memicu pertanyaan ulang. Kami bisa langsung membangun.
+						</blockquote>
+						<div class="pf-person">
+							<span class="pf-avatar" aria-hidden="true">SH</span
+							><span class="pf-person__text"><b>Sinta Halim</b><span>Lead Designer, Kilau Pay</span></span>
+						</div>
+					</li>
+					<li class="pf-quote">
+						<blockquote>
+							Mentor yang sabar tapi tegas soal data. Setelah empat sesi, saya berani memimpin uji A/B pertama.
+						</blockquote>
+						<div class="pf-person">
+							<span class="pf-avatar" aria-hidden="true">YP</span
+							><span class="pf-person__text"><b>Yoga Pratama</b><span>Product Manager, Ladang Digital</span></span>
+						</div>
+					</li>
+				</ul>
+			</section>
+			<section class="pf-section lg-sec" id="clients">
+				<h2 class="pf-section__title">Klien</h2>
+				<ul class="pf-logos">
+					<li class="pf-logo">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.4" />
+							<circle cx="12" cy="12" r="3.6" fill="currentColor" /></svg
+						><span>Kilau Pay</span>
+					</li>
+					<li class="pf-logo">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<rect x="3" y="5" width="18" height="5" rx="2.5" fill="currentColor" />
+							<rect x="3" y="14" width="12" height="5" rx="2.5" fill="currentColor" /></svg
+						><span>Rantai Logistik</span>
+					</li>
+					<li class="pf-logo">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M2 20 9.5 7l4 6.5L16 10l6 10z" fill="currentColor" /></svg
+						><span>Ladang Digital</span>
+					</li>
+					<li class="pf-logo">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path d="M5 19C5 10 10 4 20 4c0 10-6 15-15 15z" fill="currentColor" />
+							<path d="M5 19 13 11" stroke="var(--pf-bg)" stroke-width="1.6" /></svg
+						><span>Pasar Pagi</span>
+					</li>
+					<li class="pf-logo">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor" />
+							<rect x="13" y="3" width="8" height="8" rx="4" fill="currentColor" />
+							<rect x="3" y="13" width="8" height="8" rx="4" fill="currentColor" />
+							<rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor" /></svg
+						><span>Koperasi Arta</span>
+					</li>
+					<li class="pf-logo">
+						<svg viewBox="0 0 24 24" aria-hidden="true">
+							<path
+								d="M2 9c3.3-3 6.7 3 10 0s6.7 3 10 0M2 15c3.3-3 6.7 3 10 0s6.7 3 10 0"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.4"
+								stroke-linecap="round"
+							/></svg
+						><span>Nusa Kurir</span>
+					</li>
+				</ul>
+			</section>
+			<section class="pf-section lg-sec" id="experience">
+				<h2 class="pf-section__title">Pengalaman</h2>
+				<ol class="pf-cvlist">
+					<li class="pf-cvitem">
+						<div class="pf-cvitem__head">
+							<span class="pf-cvitem__role">Senior Product Manager</span
+							><span class="pf-cvitem__when">Mar 2022 – Sekarang</span>
+						</div>
+						<span class="pf-cvitem__org">Kilau Pay · Jakarta</span>
+						<ul>
+							<li>
+								Memimpin tim QR checkout berisi 11 engineer dan desainer; menaikkan tingkat keberhasilan pembayaran dari
+								91% menjadi 97,5% dalam empat kuartal.
+							</li>
+							<li>Meluncurkan fitur patungan dan kartu tersimpan, kini 18% dari volume transaksi bulanan.</li>
+							<li>
+								Membentuk tinjauan eksperimen mingguan bersama data science; lebih dari 40 uji A/B per tahun dengan
+								keputusan tertulis.
+							</li>
+						</ul>
+					</li>
+					<li class="pf-cvitem">
+						<div class="pf-cvitem__head">
+							<span class="pf-cvitem__role">Product Manager, Merchant Platform</span
+							><span class="pf-cvitem__when">Jan 2019 – Feb 2022</span>
+						</div>
+						<span class="pf-cvitem__org">Kilau Pay · Jakarta</span>
+						<ul>
+							<li>
+								Memangkas waktu pendaftaran merchant dari lima hari menjadi kurang dari satu jam dengan verifikasi
+								dokumen otomatis.
+							</li>
+							<li>
+								Menumbuhkan merchant kecil aktif dari 60.000 menjadi 310.000 lewat dasbor swalayan dalam bahasa
+								Indonesia dan Inggris.
+							</li>
+						</ul>
+					</li>
+					<li class="pf-cvitem">
+						<div class="pf-cvitem__head">
+							<span class="pf-cvitem__role">Associate Product Manager</span
+							><span class="pf-cvitem__when">Jul 2016 – Dec 2018</span>
+						</div>
+						<span class="pf-cvitem__org">Rantai Logistik · Bandung</span>
+						<ul>
+							<li>
+								Merilis pelacakan kurir langsung untuk 1.200 pengemudi, mengurangi telepon “paket saya di mana” hingga
+								sepertiga.
+							</li>
+						</ul>
+					</li>
+				</ol>
+			</section>
+			<section class="pf-section lg-sec" id="education">
+				<h2 class="pf-section__title">Pendidikan</h2>
+				<ul class="pf-cvlist">
+					<li class="pf-cvitem">
+						<div class="pf-cvitem__head">
+							<span class="pf-cvitem__role">Sarjana Teknik, Teknik Industri</span
+							><span class="pf-cvitem__when">2012 – 2016</span>
+						</div>
+						<span class="pf-cvitem__org">Institut Teknologi Bandung · IPK 3,71</span>
+					</li>
+				</ul>
+			</section>
+			<section class="pf-section lg-sec" id="skills">
+				<h2 class="pf-section__title">Keahlian</h2>
+				<div class="pf-skillgroups">
+					<div class="pf-skillgroup">
+						<b>Produk</b>
+						<ul class="pf-tags">
+							<li>Discovery</li>
+							<li>Roadmapping</li>
+							<li>Penetapan harga</li>
+							<li>OKR</li>
+						</ul>
+					</div>
+					<div class="pf-skillgroup">
+						<b>Data</b>
+						<ul class="pf-tags">
+							<li>SQL</li>
+							<li>A/B testing</li>
+							<li>Amplitude</li>
+							<li>Looker</li>
+						</ul>
+					</div>
+					<div class="pf-skillgroup">
+						<b>Eksekusi</b>
+						<ul class="pf-tags">
+							<li>Scrum</li>
+							<li>Menulis spesifikasi</li>
+							<li>Figma</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<section class="pf-section lg-sec lg-extras" aria-label="Sertifikat dan bahasa">
+				<div class="pf-extra">
+					<h3>Sertifikat</h3>
+					<ul>
+						<li><b>Certified Scrum Product Owner</b><span>Scrum Alliance · 2021</span></li>
+						<li><b>Manajemen Risiko Pembayaran</b><span>Akademi Pembayaran Nusantara · 2023</span></li>
+					</ul>
+				</div>
+				<div class="pf-extra">
+					<h3>Bahasa</h3>
+					<ul>
+						<li><b>Bahasa Indonesia</b><span>Bahasa ibu</span></li>
+						<li><b>Bahasa Inggris</b><span>Profesional</span></li>
+					</ul>
+				</div>
+			</section>
+			<section class="pf-section lg-sec lg-custom" id="custom-1">
+				<h2 class="pf-section__title">Catatan produk</h2>
+				<div class="pf-prose">
+					<p>
+						Setiap Jumat saya menulis satu pelajaran dari eksperimen minggu itu: apa yang diuji, apa yang gagal, dan
+						keputusan yang diambil. Sudah 86 catatan sejak 2024.
+					</p>
+				</div>
+				<a class="pf-btn pf-btn--secondary" href="#"
+					>Baca catatannya<svg
+						class="pf-icon pf-flip"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.8"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M5 12h14M13 6l6 6-6 6" /></svg
+				></a>
+			</section>
+			<section class="pf-section lg-sec" id="contact">
+				<h2 class="pf-section__title">Kontak</h2>
+				<p class="lg-cta">Sedang mencari PM untuk produk pembayaran? Mari ngobrol.</p>
+				<div class="pf-btns">
+					<a class="pf-btn pf-btn--primary" href="#"
+						><svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<rect x="3" y="5" width="18" height="14" rx="2" />
+							<path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg
+						>Email</a
+					><a class="pf-btn pf-btn--secondary" href="#"
+						><svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.1z" />
+							<path
+								d="M9 10.5c.5 1.8 2 3.3 3.8 3.8l1.2-1.1 2 .9c-.2 1.2-1.2 2-2.4 1.9A6.5 6.5 0 0 1 8.4 10c0-1.2.7-2.2 1.9-2.4l.9 2z"
+								stroke-width="1.2"
+							/></svg
+						>WhatsApp</a
+					>
+				</div>
+				<ul class="pf-contact-links">
+					<li><span>Email</span><a href="#">nadia.rahmawati@email.com</a></li>
+					<li><span>WhatsApp</span><a href="#">+62 812 5550 1824</a></li>
+					<li><span>LinkedIn</span><a href="#">linkedin.com/in/nadiarahmawati</a></li>
+					<li><span>Situs</span><a href="#">nadiarahmawati.id</a></li>
+				</ul>
+				<form class="pf-form" action="#" method="post">
+					<div class="pf-form__row">
+						<div class="pf-field">
+							<label for="cf-name">Nama</label><input id="cf-name" name="name" autocomplete="name" required />
+						</div>
+						<div class="pf-field">
+							<label for="cf-email">Email</label
+							><input id="cf-email" name="email" type="email" autocomplete="email" required />
+						</div>
+					</div>
+					<div class="pf-field">
+						<label for="cf-message">Pesan</label
+						><textarea id="cf-message" name="message" maxlength="2000" required></textarea>
+					</div>
+					<p class="pf-form__note">Pesan dikirim ke Nadia. Email-mu terlihat olehnya agar ia bisa membalas.</p>
+					<div><button class="pf-btn pf-btn--primary" type="submit">Kirim pesan</button></div>
+					<p class="pf-form__sent" role="status" hidden>
+						Terkirim. Nadia akan membalas ke email-mu. (Di mockup, pesan tidak benar-benar dikirim.)
+					</p>
+				</form>
+				<div class="pf-loc">
+					<div class="pf-loc__map">
+						<img
+							class="pf-map-light"
+							src="img/map-lugas-light.svg"
+							alt="Peta sekitar Jakarta"
+							loading="lazy"
+							width="800"
+							height="480"
+						/><img
+							class="pf-map-dark"
+							src="img/map-lugas-dark.svg"
+							alt=""
+							loading="lazy"
+							width="800"
+							height="480"
+						/><span class="pf-loc__pin"></span
+						><span class="pf-loc__attr">© OpenMapTiles © OpenStreetMap contributors</span>
+					</div>
+					<div class="pf-loc__body">
+						<div class="pf-loc__city">
+							<b>Jakarta, Indonesia</b
+							><span class="pf-loc__time" data-tz="Asia/Jakarta" data-tz-label="WIB" data-city="Jakarta"
+								>14.05 WIB di Jakarta</span
+							>
+						</div>
+						<div class="pf-chips"><span class="pf-chip">Hybrid</span><span class="pf-chip">Remote</span></div>
+						<a
+							class="pf-loc__open"
+							href="https://www.openstreetmap.org/search?query=Jakarta"
+							target="_blank"
+							rel="noopener"
+							>Buka di peta</a
+						>
+					</div>
+				</div>
+			</section>
+		</main>
+		<footer class="pf-foot pf-wrap">
+			<span>© 2026 <span data-person-name>Nadia Rahmawati</span></span
+			><span class="pf-foot__right"
+				><a class="pf-badge" href="#"><i>R</i>Dibuat dengan Rezumi</a><a href="#">Laporkan halaman ini</a></span
+			>
+		</footer>
+		<section class="pf-detail" id="work-qr-checkout" role="dialog" aria-labelledby="work-qr-checkout-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-pelacakan-kurir" aria-label="Sebelumnya: Pelacakan kurir langsung"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-patungan" aria-label="Berikutnya: Patungan dan kartu tersimpan"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-qr-checkout-title">QR checkout yang jarang gagal</h2>
+					<p class="pf-detail__summary">
+						Menata ulang alur bayar QR untuk 4 juta pengguna: dari 91% menjadi 97,5% pembayaran berhasil dalam empat
+						kuartal.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Senior PM · tim 11 orang</b></span
+						><span>Tahun <b>2022–2024</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Pembayaran</li>
+						<li>Eksperimen</li>
+						<li>Mobile</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/lugas-1.svg"
+						alt="Sampul: QR checkout yang jarang gagal"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<h3>Masalah</h3>
+						<p>
+							Satu dari sebelas pembayaran QR gagal di layar terakhir. Pengguna mencoba lagi, lalu menyerah dan membayar
+							tunai.
+						</p>
+						<h3>Peran saya</h3>
+						<ul>
+							<li>Memimpin discovery bersama 2 desainer dan 1 peneliti.</li>
+							<li>Menulis spesifikasi dan rencana eksperimen untuk 9 engineer.</li>
+							<li>Melaporkan hasil mingguan ke tim risiko dan direksi.</li>
+						</ul>
+					</div>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-1" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-1)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-2" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-2)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-3" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-3)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+					<div class="pf-gallery">
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/lugas-g1.svg"
+									alt="Layar QR sebelum perubahan"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Layar QR sebelum perubahan</figcaption>
+						</figure>
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/lugas-g2.svg"
+									alt="Konfirmasi nominal yang lebih jelas"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Konfirmasi nominal yang lebih jelas</figcaption>
+						</figure>
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/lugas-g3.svg"
+									alt="Struk instan setelah bayar"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Struk instan setelah bayar</figcaption>
+						</figure>
+					</div>
+					<div class="pf-prose pf-block--text">
+						<h3>Proses</h3>
+						<p>
+							Kami merekam 60 sesi pembayaran di warung dan kafe, lalu menemukan dua penyebab utama: nominal yang salah
+							ketik dan koneksi yang putus di layar konfirmasi.
+						</p>
+						<p>
+							Setiap perubahan dirilis ke 5% pengguna lebih dulu. Hanya yang menaikkan keberhasilan tanpa menambah waktu
+							bayar yang lanjut ke semua pengguna.
+						</p>
+						<blockquote>
+							Kalau satu perubahan tidak bisa diukur dalam dua minggu, kami pecah lagi sampai bisa.
+						</blockquote>
+					</div>
+					<div>
+						<button
+							class="pf-video"
+							type="button"
+							data-site="YouTube"
+							aria-label="Putar video: Demo alur QR checkout baru"
+						>
+							<div class="pf-cover">
+								<img src="img/lugas-video.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="pf-video__play"
+								><span
+									><svg
+										class="pf-icon"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" /></svg></span></span
+							><span class="pf-video__meta"><b>Demo alur QR checkout baru</b>YouTube · 2:14</span>
+						</button>
+						<p class="pf-caption pf-video__note">Pemutar YouTube baru dimuat setelah tombol putar diklik.</p>
+					</div>
+					<div class="pf-card-row">
+						<div class="pf-pdf">
+							<div class="pf-pdf__page">
+								<img src="img/lugas-pdf.svg" alt="" loading="lazy" width="800" height="1131" />
+							</div>
+							<div>
+								<b>Studi kasus QR checkout (versi publik)</b><span>PDF · 12 halaman · 2,4 MB</span><br /><a
+									class="pf-btn pf-btn--secondary"
+									href="#"
+									><svg
+										class="pf-icon"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+										<path d="M14 3v5h5" /></svg
+									>Buka PDF</a
+								>
+							</div>
+						</div>
+						<a class="pf-link" href="#"
+							><span class="pf-link__site"
+								><svg
+									class="pf-icon"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="9" />
+									<path
+										d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"
+									/></svg></span
+							><span class="pf-link__text"
+								><b>Cara kami menurunkan pembayaran gagal tanpa menambah langkah</b>
+								<p>Catatan produk tentang tiga eksperimen yang paling berpengaruh.</p>
+								<span class="pf-link__domain"
+									>medium.com
+									<svg
+										class="pf-icon pf-flip"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M7 17 17 7M9 7h8v8" /></svg></span></span
+						></a>
+					</div>
+					<div class="pf-prose pf-block--text">
+						<h3>Hasil</h3>
+						<p>
+							Dalam empat kuartal, pembayaran berhasil naik dari 91% menjadi 97,5%, dan keluhan gagal bayar turun 58%.
+							Pola rilis bertahap ini kini dipakai tiga tim lain.
+						</p>
+					</div>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-patungan" role="dialog" aria-labelledby="work-patungan-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-qr-checkout" aria-label="Sebelumnya: QR checkout yang jarang gagal"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-pendaftaran-merchant" aria-label="Berikutnya: Pendaftaran merchant di bawah satu jam"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-patungan-title">Patungan dan kartu tersimpan</h2>
+					<p class="pf-detail__summary">Dua fitur yang kini menyumbang 18% volume transaksi bulanan.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Senior PM</b></span
+						><span>Tahun <b>2023</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Fitur baru</li>
+						<li>Retensi</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/lugas-2.svg"
+						alt="Sampul: Patungan dan kartu tersimpan"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Dua fitur yang kini menyumbang 18% volume transaksi bulanan.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Volume transaksi</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">18%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+7 poin</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section
+			class="pf-detail"
+			id="work-pendaftaran-merchant"
+			role="dialog"
+			aria-labelledby="work-pendaftaran-merchant-title"
+		>
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-patungan" aria-label="Sebelumnya: Patungan dan kartu tersimpan"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-dasbor-merchant" aria-label="Berikutnya: Dasbor swalayan untuk merchant kecil"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-pendaftaran-merchant-title">Pendaftaran merchant di bawah satu jam</h2>
+					<p class="pf-detail__summary">
+						Verifikasi dokumen otomatis memangkas waktu daftar dari lima hari menjadi 52 menit.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>PM, Merchant Platform</b></span
+						><span>Tahun <b>2020</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>B2B</li>
+						<li>Otomasi</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/lugas-3.svg"
+						alt="Sampul: Pendaftaran merchant di bawah satu jam"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Verifikasi dokumen otomatis memangkas waktu daftar dari lima hari menjadi 52 menit.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu daftar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">52 mnt</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−99%</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-dasbor-merchant" role="dialog" aria-labelledby="work-dasbor-merchant-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-pendaftaran-merchant" aria-label="Sebelumnya: Pendaftaran merchant di bawah satu jam"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-ritme-eksperimen" aria-label="Berikutnya: Ritme eksperimen mingguan"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-dasbor-merchant-title">Dasbor swalayan untuk merchant kecil</h2>
+					<p class="pf-detail__summary">
+						Dasbor dua bahasa yang menumbuhkan merchant aktif dari 60 ribu menjadi 310 ribu.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>PM, Merchant Platform</b></span
+						><span>Tahun <b>2019–2021</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Dasbor</li>
+						<li>Pertumbuhan</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/lugas-4.svg"
+						alt="Sampul: Dasbor swalayan untuk merchant kecil"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Dasbor dua bahasa yang menumbuhkan merchant aktif dari 60 ribu menjadi 310 ribu.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Merchant aktif</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">310 rb</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>5,2×</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-ritme-eksperimen" role="dialog" aria-labelledby="work-ritme-eksperimen-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-dasbor-merchant" aria-label="Sebelumnya: Dasbor swalayan untuk merchant kecil"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-pelacakan-kurir" aria-label="Berikutnya: Pelacakan kurir langsung"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-ritme-eksperimen-title">Ritme eksperimen mingguan</h2>
+					<p class="pf-detail__summary">
+						Tinjauan bersama data science: lebih dari 40 uji A/B per tahun, semuanya dengan keputusan tertulis.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Senior PM</b></span
+						><span>Tahun <b>2022–kini</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Data</li>
+						<li>Proses</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/lugas-5.svg"
+						alt="Sampul: Ritme eksperimen mingguan"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Tinjauan bersama data science: lebih dari 40 uji A/B per tahun, semuanya dengan keputusan tertulis.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Uji A/B per tahun</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">40+</span></dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-pelacakan-kurir" role="dialog" aria-labelledby="work-pelacakan-kurir-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-ritme-eksperimen" aria-label="Sebelumnya: Ritme eksperimen mingguan"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-qr-checkout" aria-label="Berikutnya: QR checkout yang jarang gagal"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-pelacakan-kurir-title">Pelacakan kurir langsung</h2>
+					<p class="pf-detail__summary">
+						Peta kurir untuk 1.200 pengemudi; telepon “paket saya di mana” turun sepertiga.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Associate PM · Rantai Logistik</b></span
+						><span>Tahun <b>2017</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Logistik</li>
+						<li>Peta</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/lugas-6.svg"
+						alt="Sampul: Pelacakan kurir langsung"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Peta kurir untuk 1.200 pengemudi; telepon “paket saya di mana” turun sepertiga.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Telepon ke CS</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">−33%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−33%</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<script>
+			window.MK = {
+				name: "Lugas",
+				accentCv: "#1F3A68",
+				accents: [
+					{ id: "biru", label: "Biru", color: "#2563EB" },
+					{ id: "magenta", label: "Magenta", color: "#C0267B" },
+					{ id: "kuning", label: "Kuning terang", color: "#FFD60A", note: "uji kontras" },
+				],
+				fonts: [
+					{
+						id: "jakarta",
+						label: "Plus Jakarta Sans",
+						heading: "Plus Jakarta Sans",
+						body: "Plus Jakarta Sans",
+						mono: "IBM Plex Mono",
+					},
+					{ id: "lora-figtree", label: "Lora + Figtree", heading: "Lora", body: "Figtree", mono: "IBM Plex Mono" },
+				],
+				scheme: "light",
+				effect: "fade-up",
+				effects: ["none", "fade-up", "shimmer", "gradient", "typewriter", "scramble", "vector-hover"],
+				effectLabels: {
+					none: "Tanpa efek",
+					"fade-up": "Muncul halus",
+					shimmer: "Kilau",
+					gradient: "Gradien hidup",
+					typewriter: "Ketik berganti",
+					scramble: "Acak teknologi",
+					"vector-hover": "Garis vektor",
+				},
+				metric: "big",
+				metrics: ["big", "kpi", "ba"],
+				metricLabels: { kpi: "Kartu KPI", big: "Angka besar", ba: "Sebelum → sesudah" },
+				longName: "Nadia Rahmawati Kusumaningtyas Wijayakusumaningrat",
+				fullName: "Nadia Rahmawati",
+				phrases: ["Senior Product Manager", "Spesialis pembayaran", "Mentor PM"],
+				hasPhoto: true,
+				detail: "#work-qr-checkout",
+			};
+		</script>
+		<script>
+			/* Intro text effects for the portfolio mockups. Written from scratch for Rezumi (no React Bits code).
+			 * Rules: the real text stays in the DOM, animated layers are aria-hidden, every effect stops by itself
+			 * within about five seconds, and "reduce motion" shows the text without animation. */
+			(() => {
+				const root = document.documentElement;
+				const reduced = () =>
+					root.classList.contains("mk-reduce") || matchMedia("(prefers-reduced-motion: reduce)").matches;
+				const touch = () =>
+					!root.classList.contains("mk-mouse") &&
+					(root.classList.contains("mk-touch") || matchMedia("(hover: none), (pointer: coarse)").matches);
+				const timers = new WeakMap();
+				const GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+=<>/";
+
+				const hex = (h) => {
+					const n = parseInt(h.replace("#", ""), 16);
+					return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+				};
+				const toHex = (rgb) => "#" + rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
+				const lum = (rgb) => {
+					const c = rgb.map((v) => {
+						const s = v / 255;
+						return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+					});
+					return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+				};
+				const contrast = (a, b) => {
+					const [x, y] = [lum(hex(a)), lum(hex(b))].sort((p, q) => q - p);
+					return (x + 0.05) / (y + 0.05);
+				};
+				const toHsl = ([r, g, b]) => {
+					r /= 255;
+					g /= 255;
+					b /= 255;
+					const max = Math.max(r, g, b);
+					const min = Math.min(r, g, b);
+					const l = (max + min) / 2;
+					let h = 0;
+					let s = 0;
+					if (max !== min) {
+						const d = max - min;
+						s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+						h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+						h *= 60;
+					}
+					return [h, s, l];
+				};
+				const fromHsl = ([h, s, l]) => {
+					const k = (n) => (n + h / 30) % 12;
+					const a = s * Math.min(l, 1 - l);
+					const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+					return [f(0) * 255, f(8) * 255, f(4) * 255];
+				};
+				/** Shift lightness until the colour reads as text on the background (≥ min:1). */
+				const safe = (color, bg, min = 4.5) => {
+					const hsl = toHsl(hex(color));
+					const darker = lum(hex(bg)) > 0.4;
+					let out = color;
+					for (let i = 0; i < 100 && contrast(out, bg) < min; i++) {
+						hsl[2] = Math.min(1, Math.max(0, hsl[2] + (darker ? -0.01 : 0.01)));
+						out = toHex(fromHsl(hsl));
+					}
+					return out;
+				};
+				const rotate = (color, deg) => {
+					const hsl = toHsl(hex(color));
+					hsl[0] = (hsl[0] + deg + 360) % 360;
+					return toHex(fromHsl(hsl));
+				};
+
+				const clear = (host) => {
+					for (const t of timers.get(host) || []) clearTimeout(t);
+					timers.set(host, []);
+				};
+				const later = (host, fn, ms) => timers.get(host).push(setTimeout(fn, ms));
+				const reset = (host) => {
+					clear(host);
+					host.className = host.dataset.base;
+					host.removeAttribute("style");
+					host.onpointerover = null;
+					host.onpointerout = null;
+					host.textContent = host.dataset.text;
+				};
+				const restart = (host, cls) => {
+					host.classList.remove(cls);
+					void host.offsetWidth;
+					host.classList.add(cls);
+				};
+				const words = (host) => {
+					host.textContent = "";
+					host.dataset.text.split(/(\s+)/).forEach((part, i) => {
+						if (/^\s+$/.test(part)) return host.append(part);
+						const s = document.createElement("span");
+						s.className = "pfx-word";
+						s.style.setProperty("--i", String(i / 2));
+						s.textContent = part;
+						host.append(s);
+					});
+				};
+				const chars = (host) => {
+					const text = host.dataset.text;
+					host.textContent = "";
+					const sr = document.createElement("span");
+					sr.className = "sr-only";
+					sr.textContent = text;
+					const vis = document.createElement("span");
+					vis.setAttribute("aria-hidden", "true");
+					vis.dir = "auto";
+					const list = [];
+					for (const word of text.split(/(\s+)/)) {
+						if (/^\s+$/.test(word)) {
+							vis.append(word);
+							continue;
+						}
+						const w = document.createElement("span");
+						w.style.whiteSpace = "nowrap";
+						for (const c of word) {
+							const s = document.createElement("span");
+							s.className = "pfx-ch";
+							s.textContent = c;
+							s.dataset.c = c;
+							w.append(s);
+							list.push(s);
+						}
+						vis.append(w);
+					}
+					host.append(sr, vis);
+					const block = host.closest("h1, h2, p, div") || host.parentElement;
+					for (const w of vis.children) if (w.offsetWidth > block.clientWidth) w.style.whiteSpace = "normal";
+					return list;
+				};
+
+				const effects = {
+					none() {},
+					"fade-up"(host) {
+						words(host);
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					shimmer(host) {
+						host.classList.add("pfx-shimmer");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					gradient(host) {
+						const cs = getComputedStyle(host);
+						const bg = cs.getPropertyValue("--pf-bg").trim() || "#ffffff";
+						const a = cs.getPropertyValue("--pf-accent-text").trim() || "#333333";
+						host.style.setProperty("--fx-a", a);
+						host.style.setProperty("--fx-b", safe(rotate(a, 38), bg, 4.5));
+						host.style.setProperty("--fx-c", safe(rotate(a, -34), bg, 4.5));
+						host.classList.add("pfx-gradient");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					typewriter(host, opts) {
+						const phrases = (opts.phrases || [host.dataset.text]).slice(0, 3);
+						host.textContent = "";
+						const sr = document.createElement("span");
+						sr.className = "sr-only";
+						sr.textContent = phrases.join(", ");
+						const box = document.createElement("span");
+						box.className = "pfx-type";
+						box.setAttribute("aria-hidden", "true");
+						box.dir = "auto";
+						for (const p of phrases) {
+							const g = document.createElement("span");
+							g.className = "pfx-type__ghost";
+							g.textContent = p;
+							box.append(g);
+						}
+						const out = document.createElement("span");
+						out.className = "pfx-type__out";
+						out.textContent = phrases[0];
+						box.append(out);
+						host.append(sr, box);
+						if (reduced() || phrases.length < 2) return box.classList.add("pfx-done");
+						const order = [...phrases.slice(1), phrases[0]];
+						let t = 700;
+						let current = phrases[0];
+						for (const next of order) {
+							for (let i = current.length; i >= 0; i--) {
+								const s = current.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 16;
+							}
+							for (let i = 1; i <= next.length; i++) {
+								const s = next.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 30;
+							}
+							t += 700;
+							current = next;
+						}
+						later(host, () => box.classList.add("pfx-done"), t - 600);
+					},
+					scramble(host) {
+						const list = chars(host);
+						if (reduced()) return;
+						for (const s of list) s.style.width = s.getBoundingClientRect().width + "px";
+						const start = 120;
+						const span = 950;
+						list.forEach((s, i) => {
+							const settle = start + (span * (i + 1)) / list.length;
+							for (let t = 0; t < settle; t += 45)
+								later(
+									host,
+									() => {
+										s.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+										s.classList.add("pfx-scr");
+									},
+									t,
+								);
+							later(
+								host,
+								() => {
+									s.textContent = s.dataset.c;
+									s.classList.remove("pfx-scr");
+								},
+								settle,
+							);
+						});
+					},
+					"vector-hover"(host) {
+						if (touch()) return effects["fade-up"](host);
+						host.classList.add("pfx-vector");
+						const list = chars(host);
+						const draw = (ch) => {
+							if (ch.dataset.ready) return;
+							ch.dataset.ready = "1";
+							const probe = document.createElement("span");
+							probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+							ch.append(probe);
+							const base = probe.offsetTop;
+							probe.remove();
+							const w = ch.offsetWidth;
+							const h = ch.offsetHeight;
+							const ns = "http://www.w3.org/2000/svg";
+							const svg = document.createElementNS(ns, "svg");
+							svg.setAttribute("class", "pfx-outline");
+							svg.setAttribute("width", String(w));
+							svg.setAttribute("height", String(h));
+							const text = document.createElementNS(ns, "text");
+							text.setAttribute("x", "0");
+							text.setAttribute("y", String(base));
+							text.textContent = ch.dataset.c;
+							svg.append(text);
+							const boxEl = document.createElement("span");
+							boxEl.className = "pfx-box";
+							boxEl.innerHTML = `<b></b><b></b><b></b><b></b><em>${w} × ${h}</em>`;
+							ch.append(svg, boxEl);
+						};
+						const off = new WeakMap();
+						host.onpointerover = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							clearTimeout(off.get(ch));
+							draw(ch);
+							ch.classList.add("pfx-on");
+						};
+						host.onpointerout = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							off.set(
+								ch,
+								setTimeout(() => ch.classList.remove("pfx-on"), 650),
+							);
+						};
+						return list;
+					},
+				};
+
+				window.PFX = {
+					safe,
+					contrast,
+					apply(host, id, opts = {}) {
+						if (!host.dataset.text) host.dataset.text = host.textContent.trim();
+						if (host.dataset.base === undefined) host.dataset.base = host.className;
+						reset(host);
+						host.dataset.fx = id;
+						(effects[id] || effects.none)(host, opts);
+					},
+					replay(host, opts = {}) {
+						this.apply(host, host.dataset.fx || "none", opts);
+					},
+				};
+			})();
+		</script>
+		<script>
+			/* Mockup-only test panel: tries the customisation the product will offer (accent, mode, font pair,
+			 * intro effect, metric variant) plus robustness checks that are not user settings. */
+			(() => {
+				const MK = window.MK;
+				const root = document.documentElement;
+				const $ = (s, el = document) => el.querySelector(s);
+				const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+				const nameHost = $("[data-fx-name]");
+				const headHost = $("[data-fx-headline]");
+				const state = { scheme: MK.scheme, accent: MK.accentCv, effect: MK.effect };
+
+				const effectiveScheme = () => {
+					if (state.scheme !== "auto") return state.scheme;
+					const host = root.getAttribute("data-theme");
+					if (host === "dark" || host === "light") return host;
+					return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				};
+
+				function applyAccent() {
+					const color = state.accent;
+					root.style.setProperty("--pf-accent", color);
+					const bg = getComputedStyle(root).getPropertyValue("--pf-bg").trim();
+					const text = PFX.safe(color, bg, 4.5);
+					const on = PFX.contrast(color, "#ffffff") >= PFX.contrast(color, "#111111") ? "#ffffff" : "#111111";
+					root.style.setProperty("--pf-accent-text", text);
+					root.style.setProperty("--pf-on-accent", on);
+					const out = $("#mk-readout");
+					if (out) {
+						const ratio = PFX.contrast(text, bg).toFixed(1).replace(".", ",");
+						out.innerHTML =
+							text.toLowerCase() === color.toLowerCase()
+								? `Aksen ${color} aman sebagai teks (kontras ${ratio}:1).`
+								: `Aksen ${color} terlalu ${PFX.contrast(bg, "#000000") > PFX.contrast(bg, "#ffffff") ? "terang" : "gelap"} untuk teks di latar ini.<br>Teks aksen dikoreksi otomatis: ${text} (kontras ${ratio}:1).`;
+					}
+					if (state.effect === "gradient") applyEffect();
+				}
+
+				function applyScheme() {
+					root.dataset.pfScheme = effectiveScheme();
+					applyAccent();
+				}
+
+				function applyFonts(id) {
+					const pair = MK.fonts.find((f) => f.id === id) || MK.fonts[0];
+					const fallback = (f) =>
+						/Mono|Code/.test(f)
+							? `"${f}", ui-monospace, monospace`
+							: /Serif|Lora|Newsreader|Spectral|Bodoni|Garamond|Literata|Caslon/.test(f)
+								? `"${f}", Georgia, serif`
+								: `"${f}", system-ui, sans-serif`;
+					root.style.setProperty("--pf-font-heading", fallback(pair.heading));
+					root.style.setProperty("--pf-font-body", fallback(pair.body));
+					root.style.setProperty("--pf-font-mono", fallback(pair.mono));
+					root.style.setProperty("--pf-name-stretch", pair.stretch || "100%");
+					root.dataset.fontPair = pair.id;
+					if (["scramble", "vector-hover"].includes(state.effect)) document.fonts.ready.then(applyEffect);
+				}
+
+				function applyEffect() {
+					const id = state.effect;
+					if (!nameHost) return;
+					if (id === "typewriter" && headHost) {
+						PFX.apply(nameHost, "none");
+						PFX.apply(headHost, "typewriter", { phrases: MK.phrases });
+					} else {
+						if (headHost) PFX.apply(headHost, "none");
+						PFX.apply(nameHost, id);
+					}
+				}
+
+				function applyMetric(variant) {
+					for (const g of $$(".pf-metrics[data-switch]")) g.dataset.variant = variant;
+				}
+
+				function render() {
+					const seg = (name, items, current) =>
+						`<div class="mk-seg" role="radiogroup">${items
+							.map(
+								(it) =>
+									`<label><input type="radio" name="${name}" value="${it.value}" id="mk-${name}-${it.value}"${it.value === current ? " checked" : ""}>${it.swatch ? `<span class="mk-swatch" style="background:${it.swatch}"></span>` : ""}${it.label}</label>`,
+							)
+							.join("")}</div>`;
+					const panel = document.createElement("aside");
+					panel.className = "mk-panel";
+					panel.setAttribute("aria-label", "Panel percobaan mockup");
+					panel.innerHTML = `
+<button class="mk-panel__toggle" type="button" aria-expanded="false" aria-controls="mk-body"><i></i>Coba pengaturan</button>
+<div class="mk-panel__body" id="mk-body" hidden>
+	<div class="mk-panel__head"><b>Tema ${MK.name} · mockup</b><a href="index.html">Semua mockup</a></div>
+	<fieldset><legend>Warna aksen</legend>${seg(
+		"accent",
+		[
+			{ value: MK.accentCv, label: "Ikut CV", swatch: MK.accentCv },
+			...MK.accents.map((a) => ({ value: a.color, label: a.label, swatch: a.color })),
+		],
+		state.accent,
+	)}<div class="mk-readout" id="mk-readout"></div></fieldset>
+	<fieldset><legend>Mode</legend>${seg(
+		"scheme",
+		[
+			{ value: "light", label: "Terang" },
+			{ value: "dark", label: "Gelap" },
+			{ value: "auto", label: "Ikuti perangkat" },
+		],
+		state.scheme,
+	)}</fieldset>
+	<fieldset><legend>Pasangan font</legend>${seg(
+		"font",
+		MK.fonts.map((f) => ({ value: f.id, label: f.label })),
+		MK.fonts[0].id,
+	)}</fieldset>
+	<fieldset><legend>Efek intro</legend><div class="mk-row"><select id="mk-effect" aria-label="Efek intro">${MK.effects
+		.map(
+			(e) =>
+				`<option value="${e}"${e === state.effect ? " selected" : ""}>${MK.effectLabels[e]}${e === MK.effect ? " (bawaan tema)" : ""}</option>`,
+		)
+		.join("")}</select><button class="mk-small" type="button" id="mk-replay">Putar ulang</button></div>
+		<span class="mk-note">Garis vektor: arahkan kursor ke huruf nama (di HP jatuh ke Muncul halus).</span></fieldset>
+	<fieldset><legend>Widget metrik</legend>${seg(
+		"metric",
+		MK.metrics.map((v) => ({ value: v, label: MK.metricLabels[v] })),
+		MK.metric,
+	)}<label class="mk-check"><input type="checkbox" id="mk-spark" checked> Grafik mini (sparkline)</label></fieldset>
+	<fieldset><legend>Uji ketahanan (bukan pengaturan)</legend>
+		<label class="mk-check"><input type="checkbox" id="mk-long"> Nama sangat panjang</label>
+		<label class="mk-check"><input type="checkbox" id="mk-nophoto"${MK.hasPhoto ? "" : " checked disabled"}> Tanpa foto${MK.hasPhoto ? "" : " (persona ini memang tanpa foto)"}</label>
+		<label class="mk-check"><input type="checkbox" id="mk-noimg"> Karya tanpa gambar</label>
+		<label class="mk-check"><input type="checkbox" id="mk-rtl"> Kanan ke kiri (RTL)</label>
+		<label class="mk-check"><input type="checkbox" id="mk-reduce"> Kurangi gerakan</label>
+		<a href="${MK.detail}">Buka contoh detail karya</a>
+	</fieldset>
+</div>`;
+					document.body.append(panel);
+					const toggle = $(".mk-panel__toggle", panel);
+					const body = $("#mk-body", panel);
+					toggle.addEventListener("click", () => {
+						const open = body.hidden;
+						body.hidden = !open;
+						toggle.setAttribute("aria-expanded", String(open));
+					});
+					panel.addEventListener("change", (e) => {
+						const t = e.target;
+						if (t.name === "accent") {
+							state.accent = t.value;
+							applyAccent();
+						}
+						if (t.name === "scheme") {
+							state.scheme = t.value;
+							applyScheme();
+						}
+						if (t.name === "font") applyFonts(t.value);
+						if (t.name === "metric") applyMetric(t.value);
+						if (t.id === "mk-effect") {
+							state.effect = t.value;
+							applyEffect();
+						}
+						if (t.id === "mk-spark") for (const g of $$(".pf-metrics")) g.dataset.spark = t.checked ? "on" : "off";
+						if (t.id === "mk-long") {
+							const text = t.checked ? MK.longName : MK.fullName;
+							for (const el of $$("[data-person-name]")) el.textContent = text;
+							for (const el of $$(".pf-name"))
+								el.style.setProperty("--name-word", String(Math.max(...text.split(/\s+/).map((w) => w.length))));
+							if (nameHost) {
+								nameHost.dataset.text = text;
+								applyEffect();
+							}
+						}
+						if (t.id === "mk-nophoto") root.classList.toggle("pf-nophoto", t.checked);
+						if (t.id === "mk-noimg") root.classList.toggle("pf-noimg", t.checked);
+						if (t.id === "mk-rtl") root.dir = t.checked ? "rtl" : "ltr";
+						if (t.id === "mk-reduce") {
+							root.classList.toggle("mk-reduce", t.checked);
+							applyEffect();
+						}
+					});
+					$("#mk-replay", panel).addEventListener("click", applyEffect);
+				}
+
+				function wire() {
+					for (const el of $$("[data-tz]")) {
+						const fmt = new Intl.DateTimeFormat("id-ID", {
+							hour: "2-digit",
+							minute: "2-digit",
+							timeZone: el.dataset.tz,
+						});
+						const tick = () =>
+							(el.textContent = `${fmt.format(new Date())} ${el.dataset.tzLabel} di ${el.dataset.city}`);
+						tick();
+						setInterval(tick, 30000);
+					}
+					for (const form of $$(".pf-form")) {
+						form.addEventListener("submit", (e) => {
+							e.preventDefault();
+							const sent = $(".pf-form__sent", form);
+							if (sent) sent.hidden = false;
+						});
+					}
+					for (const b of $$(".pf-video")) {
+						b.addEventListener("click", () =>
+							toast(`Di produk, pemutar ${b.dataset.site} baru dimuat setelah tombol ini diklik.`),
+						);
+					}
+					for (const a of $$('a[href="#"]')) {
+						a.addEventListener("click", (e) => {
+							e.preventDefault();
+							toast("Tautan contoh: di halaman sungguhan, ini membuka tujuan aslinya.");
+						});
+					}
+					matchMedia("(prefers-color-scheme: dark)").addEventListener(
+						"change",
+						() => state.scheme === "auto" && applyScheme(),
+					);
+				}
+
+				let toastTimer;
+				function toast(msg) {
+					let el = $(".mk-toast");
+					if (!el) {
+						el = document.createElement("div");
+						el.className = "mk-toast";
+						el.setAttribute("role", "status");
+						document.body.append(el);
+					}
+					el.textContent = msg;
+					el.hidden = false;
+					clearTimeout(toastTimer);
+					toastTimer = setTimeout(() => (el.hidden = true), 3200);
+				}
+
+				render();
+				wire();
+				applyFonts(MK.fonts[0].id);
+				applyScheme();
+				document.fonts.ready.then(applyEffect);
+			})();
+		</script>
+	</body>
+</html>

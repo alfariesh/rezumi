@@ -1,0 +1,2944 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>Widget metrik · mockup portfolio</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+		/>
+		<link rel="stylesheet" href="tokens.css" />
+		<link rel="stylesheet" href="shared.css" />
+		<style>
+			:root {
+				--pf-accent: #1f3a68;
+				--pf-bg: #ffffff;
+				--pf-surface: #f3f4f6;
+				--pf-text: #111318;
+				--pf-muted: #596070;
+				--pf-border: #e4e6ea;
+				--pf-font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+				--pf-font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+				--page: #eceef1;
+			}
+			body {
+				background: var(--page);
+				padding-bottom: 64px;
+			}
+			.mt-head,
+			.mt-variant {
+				max-width: 1280px;
+				margin: 0 auto;
+				padding-left: max(16px, env(safe-area-inset-left, 0px));
+				padding-right: max(16px, env(safe-area-inset-right, 0px));
+			}
+			.mt-head {
+				display: grid;
+				gap: 14px;
+				padding-block: 40px 24px;
+			}
+			.mt-eyebrow {
+				font-size: var(--pf-text-xs);
+				font-weight: 600;
+				color: var(--pf-muted);
+				letter-spacing: 0.04em;
+			}
+			.mt-head h1 {
+				font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+				font-weight: 800;
+				letter-spacing: -0.03em;
+			}
+			.mt-intro {
+				max-width: 70ch;
+				color: var(--pf-muted);
+			}
+			.mt-controls {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 12px 24px;
+				align-items: center;
+				font-size: var(--pf-text-sm);
+			}
+			.mt-check {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+			}
+			.mt-check input {
+				width: 18px;
+				height: 18px;
+			}
+			.mt-reco {
+				padding: 14px 16px;
+				border-radius: 12px;
+				background: #fff;
+				border: 1px solid var(--pf-border);
+				max-width: 70ch;
+				font-size: var(--pf-text-sm);
+			}
+			.mt-variant {
+				display: grid;
+				gap: 18px;
+				padding-block: 28px;
+			}
+			.mt-variant__head {
+				display: grid;
+				gap: 6px;
+				max-width: 72ch;
+			}
+			.mt-variant__head h2 {
+				font-size: var(--pf-text-xl);
+				font-weight: 800;
+				letter-spacing: -0.02em;
+			}
+			.mt-variant__head p {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+			}
+			.mt-matrix {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 12px;
+			}
+			@media (max-width: 900px) {
+				.mt-matrix {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+			.mt-phone .mt-matrix {
+				grid-template-columns: repeat(auto-fill, 390px);
+				justify-content: start;
+			}
+			@media (max-width: 860px) {
+				.mt-phone .mt-matrix {
+					grid-template-columns: minmax(0, 390px);
+				}
+			}
+			.mt-cell {
+				display: grid;
+				gap: 14px;
+				align-content: start;
+				padding: 22px;
+				border-radius: 16px;
+				background: var(--pf-bg);
+				color: var(--pf-text);
+				min-width: 0;
+				--pf-accent-soft: color-mix(in oklab, var(--pf-accent) 14%, var(--pf-bg));
+			}
+			.mt-cell .pf-metrics[data-variant] {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+				gap: 12px;
+			}
+			.mt-cell .pf-metrics[data-variant="kpi"] .pf-metric {
+				padding: 14px;
+			}
+			.mt-cell .pf-metrics[data-variant="big"] {
+				--pf-metric-value: clamp(1.75rem, 1.2rem + 1.2vw, 2.5rem);
+			}
+			.mt-matrix--2 .mt-cell .pf-metrics[data-variant="kpi"] {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+			@media (max-width: 620px) {
+				.mt-cell .pf-metrics[data-variant] {
+					grid-template-columns: minmax(0, 1fr);
+				}
+				.mt-cell .pf-metrics[data-variant="big"] {
+					grid-template-columns: repeat(3, minmax(0, 1fr));
+				}
+			}
+			.mt-phone .mt-cell .pf-metrics[data-variant] {
+				grid-template-columns: minmax(0, 1fr);
+			}
+			.mt-phone .mt-cell .pf-metrics[data-variant="big"] {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+			}
+			.mt-cell[data-scheme="dark"] {
+				--pf-bg: #0f1115;
+				--pf-surface: #191c21;
+				--pf-text: #eceef1;
+				--pf-muted: #9ba2ad;
+				--pf-border: #272b32;
+				--pf-positive: #4fd39b;
+				--pf-negative: #ff8a7d;
+				color-scheme: dark;
+			}
+			.mt-tag {
+				font-size: var(--pf-text-xs);
+				font-weight: 600;
+				color: var(--pf-muted);
+			}
+			.mt-card {
+				display: grid;
+				grid-template-columns: 120px minmax(0, 1fr);
+				gap: 16px;
+				align-items: center;
+			}
+			.mt-card .pf-cover {
+				border-radius: 10px;
+			}
+			.mt-card__body {
+				display: grid;
+				gap: 6px;
+				justify-items: start;
+			}
+			.mt-card__body span {
+				font-size: var(--pf-text-xs);
+				color: var(--pf-muted);
+			}
+			.mt-formats {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+				gap: 10px;
+			}
+			.mt-formats li {
+				display: grid;
+				gap: 4px;
+				justify-items: start;
+				padding: 14px;
+				border-radius: 12px;
+				background: var(--pf-bg);
+			}
+			.mt-formats span {
+				font-size: var(--pf-text-xs);
+				color: var(--pf-muted);
+			}
+			.mt-formats b {
+				font-size: var(--pf-text-lg);
+			}
+			.mt-sr {
+				padding: 14px 16px;
+				border-radius: 12px;
+				background: var(--pf-bg);
+				font-size: var(--pf-text-sm);
+				color: var(--pf-muted);
+				max-width: 80ch;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root:not([data-theme="light"]) {
+					--page: #08090b;
+					--pf-bg: #15171b;
+					--pf-surface: #1d2025;
+					--pf-text: #eceef1;
+					--pf-muted: #a0a7b3;
+					--pf-border: #2a2e36;
+					color-scheme: dark;
+				}
+			}
+			:root[data-theme="dark"] {
+				--page: #08090b;
+				--pf-bg: #15171b;
+				--pf-surface: #1d2025;
+				--pf-text: #eceef1;
+				--pf-muted: #a0a7b3;
+				--pf-border: #2a2e36;
+				color-scheme: dark;
+			}
+			.mt-cell[data-scheme="light"] {
+				--pf-bg: #ffffff;
+				--pf-surface: #f3f4f6;
+				--pf-text: #111318;
+				--pf-muted: #596070;
+				--pf-border: #e4e6ea;
+				--pf-positive: #0f7a52;
+				--pf-negative: #b42318;
+				color-scheme: light;
+			}
+			.mt-reco {
+				background: var(--pf-bg);
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mt-head">
+			<p class="mt-eyebrow">Mockup portfolio · Phase 00</p>
+			<h1>Widget metrik</h1>
+			<p class="mt-intro">
+				Angka hasil kerja di blok Metrik detail karya. Ketiga varian memakai data yang sama (studi kasus QR checkout,
+				persona fiktif Nadia Rahmawati). Nilai selalu tertulis sebagai teks; grafik mini hanya pelengkap.
+			</p>
+			<div class="mt-controls">
+				<a href="index.html">Semua mockup</a
+				><label class="mt-check"><input type="checkbox" id="mt-phone" /> Tampilan HP (390 px)</label
+				><label class="mt-check"><input type="checkbox" id="mt-yellow" /> Uji aksen kuning terang</label>
+			</div>
+			<aside class="mt-reco">
+				<b>Keputusan (5 November 2026):</b> ketiga varian tersedia sebagai pilihan pengguna (bawaan sesuai tema), dan
+				grafik mini ikut rilis pertama sebagai isian opsional per metrik.
+			</aside>
+		</header>
+		<section class="mt-variant" id="kpi">
+			<div class="mt-variant__head">
+				<h2>A · Kartu KPI</h2>
+				<p>
+					Setiap angka di kartu sendiri: label, nilai besar, chip perubahan, grafik mini atau progres, dan konteks.
+					Paling mirip dashboard; bawaan Prima dan Mozaik.
+				</p>
+			</div>
+			<div class="mt-matrix">
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang · dengan grafik mini</span>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-13" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-13)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-14" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-14)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-15" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-15)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang · tanpa grafik mini</span>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="off" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-16" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-16)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-17" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-17)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-18" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-18)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap · dengan grafik mini</span>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-19" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-19)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-20" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-20)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-21" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-21)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap · tanpa grafik mini</span>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="off" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-22" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-22)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-23" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-23)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-24" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-24)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</section>
+		<section class="mt-variant" id="big">
+			<div class="mt-variant__head">
+				<h2>B · Angka besar sederet</h2>
+				<p>Nilai sangat besar dan label, tanpa kartu. Tenang dan cepat dibaca; bawaan Lugas dan Kanvas.</p>
+			</div>
+			<div class="mt-matrix">
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang · dengan grafik mini</span>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-25" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-25)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-26" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-26)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-27" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-27)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang · tanpa grafik mini</span>
+					<dl class="pf-metrics" data-variant="big" data-spark="off" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-28" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-28)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-29" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-29)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-30" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-30)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap · dengan grafik mini</span>
+					<dl class="pf-metrics" data-variant="big" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-31" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-31)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-32" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-32)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-33" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-33)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap · tanpa grafik mini</span>
+					<dl class="pf-metrics" data-variant="big" data-spark="off" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-34" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-34)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-35" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-35)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-36" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-36)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</section>
+		<section class="mt-variant" id="ba">
+			<div class="mt-variant__head">
+				<h2>C · Sebelum → sesudah</h2>
+				<p>
+					Dua nilai dengan batang pembanding, sehingga besarnya perubahan langsung terlihat. Cocok untuk studi kasus.
+				</p>
+			</div>
+			<div class="mt-matrix">
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang · dengan grafik mini</span>
+					<dl class="pf-metrics" data-variant="ba" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-37" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-37)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-38" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-38)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-39" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-39)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang · tanpa grafik mini</span>
+					<dl class="pf-metrics" data-variant="ba" data-spark="off" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-40" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-40)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-41" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-41)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-42" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-42)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap · dengan grafik mini</span>
+					<dl class="pf-metrics" data-variant="ba" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-43" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-43)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-44" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-44)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-45" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-45)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap · tanpa grafik mini</span>
+					<dl class="pf-metrics" data-variant="ba" data-spark="off" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembayaran berhasil</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">97,5%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+6,5 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 93%"></i><span>sebelum 91%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 97,5%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-46" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-46)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,32.2 L80.0,28.4 L120.0,19.0 L160.0,14.5 L200.0,7.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">4 kuartal setelah rilis</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu bayar rata-rata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38 dtk</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−42%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 66 dtk</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 58%"></i><span>sesudah 38 dtk</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-47" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-47)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,10.4 L80.0,15.6 L120.0,24.6 L160.0,32.3 L200.0,36.1 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dari scan sampai struk</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Keluhan gagal bayar</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">1.720</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−58%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 4.100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 42%"></i><span>sesudah 1.720</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-48" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-48)"
+									/>
+									<path
+										d="M0.0,4.0 L40.0,7.0 L80.0,16.1 L120.0,26.7 L160.0,32.7 L200.0,37.3 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">tiket per bulan</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</section>
+		<section class="mt-variant" id="lain">
+			<div class="mt-variant__head">
+				<h2>Isian lain</h2>
+				<p>
+					Progres, perubahan yang buruk (naik itu buruk), perubahan netral, dan nilai teks. Ditampilkan dengan varian
+					Kartu KPI.
+				</p>
+			</div>
+			<div class="mt-matrix mt-matrix--2">
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang</span>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Kepuasan merchant</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">92%</span></dd>
+							<dd class="pf-metric__progress"><i style="--w: 92%"></i></dd>
+							<dd class="pf-metric__context">survei 1.200 merchant</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Biaya per transaksi</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">Rp410</span
+								><span class="pf-trend" data-good="false"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik: </span>+3%</span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-49" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L48.0,31.0 L96.0,34.0 L144.0,22.0 L192.0,13.0 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-49)"
+									/>
+									<path
+										d="M0.0,40.0 L48.0,31.0 L96.0,34.0 L144.0,22.0 L192.0,13.0 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">naik itu buruk: warna merah</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Rating aplikasi</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">4,8/5</span
+								><span class="pf-trend" data-good="null"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M4 12h16M14 6l6 6-6 6"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">tetap: </span>stabil</span
+								>
+							</dd>
+							<dd class="pf-metric__context">6 bulan terakhir</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Peringkat</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">Top 3</span></dd>
+							<dd class="pf-metric__context">nilai teks pendek, bukan angka</dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap</span>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Kepuasan merchant</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">92%</span></dd>
+							<dd class="pf-metric__progress"><i style="--w: 92%"></i></dd>
+							<dd class="pf-metric__context">survei 1.200 merchant</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Biaya per transaksi</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">Rp410</span
+								><span class="pf-trend" data-good="false"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik: </span>+3%</span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-50" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L48.0,31.0 L96.0,34.0 L144.0,22.0 L192.0,13.0 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-50)"
+									/>
+									<path
+										d="M0.0,40.0 L48.0,31.0 L96.0,34.0 L144.0,22.0 L192.0,13.0 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">naik itu buruk: warna merah</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Rating aplikasi</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">4,8/5</span
+								><span class="pf-trend" data-good="null"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M4 12h16M14 6l6 6-6 6"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">tetap: </span>stabil</span
+								>
+							</dd>
+							<dd class="pf-metric__context">6 bulan terakhir</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Peringkat</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">Top 3</span></dd>
+							<dd class="pf-metric__context">nilai teks pendek, bukan angka</dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</section>
+		<section class="mt-variant" id="tempat">
+			<div class="mt-variant__head">
+				<h2>Di tempat lain</h2>
+				<p>
+					Metrik yang sama juga dipakai sebagai chip di kartu karya dan sebagai angka pencapaian di intro (hanya nilai +
+					label).
+				</p>
+			</div>
+			<div class="mt-matrix mt-matrix--2">
+				<div class="mt-cell" data-scheme="light">
+					<span class="mt-tag">Terang · kartu karya</span>
+					<div class="mt-card">
+						<div class="pf-cover"><img src="img/lugas-1.svg" alt="" width="1200" height="900" /></div>
+						<div class="mt-card__body">
+							<b>QR checkout yang jarang gagal</b><span>Senior PM · 2022–2024</span
+							><span class="pf-work-metric"><b>97,5%</b><span>Pembayaran berhasil</span></span>
+						</div>
+					</div>
+					<span class="mt-tag">Angka pencapaian di intro</span>
+					<dl class="pf-metrics" data-variant="big" data-spark="on">
+						<div class="pf-metric">
+							<dt class="pf-metric__label">pengguna QR per bulan</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">4 jt</span></dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">pembayaran berhasil</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">97,5%</span></dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">uji A/B per tahun</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">40+</span></dd>
+						</div>
+					</dl>
+				</div>
+				<div class="mt-cell" data-scheme="dark">
+					<span class="mt-tag">Gelap · kartu karya</span>
+					<div class="mt-card">
+						<div class="pf-cover"><img src="img/lugas-1.svg" alt="" width="1200" height="900" /></div>
+						<div class="mt-card__body">
+							<b>QR checkout yang jarang gagal</b><span>Senior PM · 2022–2024</span
+							><span class="pf-work-metric"><b>97,5%</b><span>Pembayaran berhasil</span></span>
+						</div>
+					</div>
+					<span class="mt-tag">Angka pencapaian di intro</span>
+					<dl class="pf-metrics" data-variant="big" data-spark="on">
+						<div class="pf-metric">
+							<dt class="pf-metric__label">pengguna QR per bulan</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">4 jt</span></dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">pembayaran berhasil</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">97,5%</span></dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">uji A/B per tahun</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">40+</span></dd>
+						</div>
+					</dl>
+				</div>
+			</div>
+		</section>
+		<section class="mt-variant" id="format">
+			<div class="mt-variant__head">
+				<h2>Format angka (bahasa Indonesia)</h2>
+				<p>Satu fungsi format dipakai halaman publik, pratinjau editor, dan kartu share.</p>
+			</div>
+			<ul class="mt-formats">
+				<li><span>Rupiah</span><b class="tnum">Rp1,2 M</b></li>
+				<li><span>Ringkas</span><b class="tnum">12 rb · 1,8 jt</b></li>
+				<li><span>Persen</span><b class="tnum">97,5%</b></li>
+				<li><span>Kali lipat</span><b class="tnum">3×</b></li>
+				<li><span>Durasi</span><b class="tnum">2 minggu</b></li>
+				<li><span>Rating</span><b class="tnum">4,8/5</b></li>
+				<li><span>Teks pendek</span><b class="tnum">Top 3 · #1</b></li>
+				<li>
+					<span>Turun itu baik</span
+					><span class="pf-trend" data-good="true"
+						><svg viewBox="0 0 24 24" aria-hidden="true">
+							<path
+								d="M6 14l6 6 6-6M12 20V4"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.6"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/></svg
+						><span class="sr-only">turun, baik: </span>−40% waktu muat</span
+					>
+				</li>
+				<li>
+					<span>Naik itu buruk</span
+					><span class="pf-trend" data-good="false"
+						><svg viewBox="0 0 24 24" aria-hidden="true">
+							<path
+								d="M6 10l6-6 6 6M12 4v16"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.6"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							/></svg
+						><span class="sr-only">naik: </span>+3% biaya</span
+					>
+				</li>
+			</ul>
+			<p class="mt-sr">
+				Pembaca layar membaca: “Pembayaran berhasil: 97,5%, naik, baik: +6,5 poin. Sebelum 91%, sesudah 97,5%. 4 kuartal
+				setelah rilis.”
+			</p>
+		</section>
+		<script>
+			/* Intro text effects for the portfolio mockups. Written from scratch for Rezumi (no React Bits code).
+			 * Rules: the real text stays in the DOM, animated layers are aria-hidden, every effect stops by itself
+			 * within about five seconds, and "reduce motion" shows the text without animation. */
+			(() => {
+				const root = document.documentElement;
+				const reduced = () =>
+					root.classList.contains("mk-reduce") || matchMedia("(prefers-reduced-motion: reduce)").matches;
+				const touch = () =>
+					!root.classList.contains("mk-mouse") &&
+					(root.classList.contains("mk-touch") || matchMedia("(hover: none), (pointer: coarse)").matches);
+				const timers = new WeakMap();
+				const GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+=<>/";
+
+				const hex = (h) => {
+					const n = parseInt(h.replace("#", ""), 16);
+					return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+				};
+				const toHex = (rgb) => "#" + rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
+				const lum = (rgb) => {
+					const c = rgb.map((v) => {
+						const s = v / 255;
+						return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+					});
+					return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+				};
+				const contrast = (a, b) => {
+					const [x, y] = [lum(hex(a)), lum(hex(b))].sort((p, q) => q - p);
+					return (x + 0.05) / (y + 0.05);
+				};
+				const toHsl = ([r, g, b]) => {
+					r /= 255;
+					g /= 255;
+					b /= 255;
+					const max = Math.max(r, g, b);
+					const min = Math.min(r, g, b);
+					const l = (max + min) / 2;
+					let h = 0;
+					let s = 0;
+					if (max !== min) {
+						const d = max - min;
+						s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+						h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+						h *= 60;
+					}
+					return [h, s, l];
+				};
+				const fromHsl = ([h, s, l]) => {
+					const k = (n) => (n + h / 30) % 12;
+					const a = s * Math.min(l, 1 - l);
+					const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+					return [f(0) * 255, f(8) * 255, f(4) * 255];
+				};
+				/** Shift lightness until the colour reads as text on the background (≥ min:1). */
+				const safe = (color, bg, min = 4.5) => {
+					const hsl = toHsl(hex(color));
+					const darker = lum(hex(bg)) > 0.4;
+					let out = color;
+					for (let i = 0; i < 100 && contrast(out, bg) < min; i++) {
+						hsl[2] = Math.min(1, Math.max(0, hsl[2] + (darker ? -0.01 : 0.01)));
+						out = toHex(fromHsl(hsl));
+					}
+					return out;
+				};
+				const rotate = (color, deg) => {
+					const hsl = toHsl(hex(color));
+					hsl[0] = (hsl[0] + deg + 360) % 360;
+					return toHex(fromHsl(hsl));
+				};
+
+				const clear = (host) => {
+					for (const t of timers.get(host) || []) clearTimeout(t);
+					timers.set(host, []);
+				};
+				const later = (host, fn, ms) => timers.get(host).push(setTimeout(fn, ms));
+				const reset = (host) => {
+					clear(host);
+					host.className = host.dataset.base;
+					host.removeAttribute("style");
+					host.onpointerover = null;
+					host.onpointerout = null;
+					host.textContent = host.dataset.text;
+				};
+				const restart = (host, cls) => {
+					host.classList.remove(cls);
+					void host.offsetWidth;
+					host.classList.add(cls);
+				};
+				const words = (host) => {
+					host.textContent = "";
+					host.dataset.text.split(/(\s+)/).forEach((part, i) => {
+						if (/^\s+$/.test(part)) return host.append(part);
+						const s = document.createElement("span");
+						s.className = "pfx-word";
+						s.style.setProperty("--i", String(i / 2));
+						s.textContent = part;
+						host.append(s);
+					});
+				};
+				const chars = (host) => {
+					const text = host.dataset.text;
+					host.textContent = "";
+					const sr = document.createElement("span");
+					sr.className = "sr-only";
+					sr.textContent = text;
+					const vis = document.createElement("span");
+					vis.setAttribute("aria-hidden", "true");
+					vis.dir = "auto";
+					const list = [];
+					for (const word of text.split(/(\s+)/)) {
+						if (/^\s+$/.test(word)) {
+							vis.append(word);
+							continue;
+						}
+						const w = document.createElement("span");
+						w.style.whiteSpace = "nowrap";
+						for (const c of word) {
+							const s = document.createElement("span");
+							s.className = "pfx-ch";
+							s.textContent = c;
+							s.dataset.c = c;
+							w.append(s);
+							list.push(s);
+						}
+						vis.append(w);
+					}
+					host.append(sr, vis);
+					const block = host.closest("h1, h2, p, div") || host.parentElement;
+					for (const w of vis.children) if (w.offsetWidth > block.clientWidth) w.style.whiteSpace = "normal";
+					return list;
+				};
+
+				const effects = {
+					none() {},
+					"fade-up"(host) {
+						words(host);
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					shimmer(host) {
+						host.classList.add("pfx-shimmer");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					gradient(host) {
+						const cs = getComputedStyle(host);
+						const bg = cs.getPropertyValue("--pf-bg").trim() || "#ffffff";
+						const a = cs.getPropertyValue("--pf-accent-text").trim() || "#333333";
+						host.style.setProperty("--fx-a", a);
+						host.style.setProperty("--fx-b", safe(rotate(a, 38), bg, 4.5));
+						host.style.setProperty("--fx-c", safe(rotate(a, -34), bg, 4.5));
+						host.classList.add("pfx-gradient");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					typewriter(host, opts) {
+						const phrases = (opts.phrases || [host.dataset.text]).slice(0, 3);
+						host.textContent = "";
+						const sr = document.createElement("span");
+						sr.className = "sr-only";
+						sr.textContent = phrases.join(", ");
+						const box = document.createElement("span");
+						box.className = "pfx-type";
+						box.setAttribute("aria-hidden", "true");
+						box.dir = "auto";
+						for (const p of phrases) {
+							const g = document.createElement("span");
+							g.className = "pfx-type__ghost";
+							g.textContent = p;
+							box.append(g);
+						}
+						const out = document.createElement("span");
+						out.className = "pfx-type__out";
+						out.textContent = phrases[0];
+						box.append(out);
+						host.append(sr, box);
+						if (reduced() || phrases.length < 2) return box.classList.add("pfx-done");
+						const order = [...phrases.slice(1), phrases[0]];
+						let t = 700;
+						let current = phrases[0];
+						for (const next of order) {
+							for (let i = current.length; i >= 0; i--) {
+								const s = current.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 16;
+							}
+							for (let i = 1; i <= next.length; i++) {
+								const s = next.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 30;
+							}
+							t += 700;
+							current = next;
+						}
+						later(host, () => box.classList.add("pfx-done"), t - 600);
+					},
+					scramble(host) {
+						const list = chars(host);
+						if (reduced()) return;
+						for (const s of list) s.style.width = s.getBoundingClientRect().width + "px";
+						const start = 120;
+						const span = 950;
+						list.forEach((s, i) => {
+							const settle = start + (span * (i + 1)) / list.length;
+							for (let t = 0; t < settle; t += 45)
+								later(
+									host,
+									() => {
+										s.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+										s.classList.add("pfx-scr");
+									},
+									t,
+								);
+							later(
+								host,
+								() => {
+									s.textContent = s.dataset.c;
+									s.classList.remove("pfx-scr");
+								},
+								settle,
+							);
+						});
+					},
+					"vector-hover"(host) {
+						if (touch()) return effects["fade-up"](host);
+						host.classList.add("pfx-vector");
+						const list = chars(host);
+						const draw = (ch) => {
+							if (ch.dataset.ready) return;
+							ch.dataset.ready = "1";
+							const probe = document.createElement("span");
+							probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+							ch.append(probe);
+							const base = probe.offsetTop;
+							probe.remove();
+							const w = ch.offsetWidth;
+							const h = ch.offsetHeight;
+							const ns = "http://www.w3.org/2000/svg";
+							const svg = document.createElementNS(ns, "svg");
+							svg.setAttribute("class", "pfx-outline");
+							svg.setAttribute("width", String(w));
+							svg.setAttribute("height", String(h));
+							const text = document.createElementNS(ns, "text");
+							text.setAttribute("x", "0");
+							text.setAttribute("y", String(base));
+							text.textContent = ch.dataset.c;
+							svg.append(text);
+							const boxEl = document.createElement("span");
+							boxEl.className = "pfx-box";
+							boxEl.innerHTML = `<b></b><b></b><b></b><b></b><em>${w} × ${h}</em>`;
+							ch.append(svg, boxEl);
+						};
+						const off = new WeakMap();
+						host.onpointerover = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							clearTimeout(off.get(ch));
+							draw(ch);
+							ch.classList.add("pfx-on");
+						};
+						host.onpointerout = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							off.set(
+								ch,
+								setTimeout(() => ch.classList.remove("pfx-on"), 650),
+							);
+						};
+						return list;
+					},
+				};
+
+				window.PFX = {
+					safe,
+					contrast,
+					apply(host, id, opts = {}) {
+						if (!host.dataset.text) host.dataset.text = host.textContent.trim();
+						if (host.dataset.base === undefined) host.dataset.base = host.className;
+						reset(host);
+						host.dataset.fx = id;
+						(effects[id] || effects.none)(host, opts);
+					},
+					replay(host, opts = {}) {
+						this.apply(host, host.dataset.fx || "none", opts);
+					},
+				};
+			})();
+		</script>
+		<script>
+			(() => {
+				const cells = [...document.querySelectorAll(".mt-cell")];
+				const paint = (accent) => {
+					for (const c of cells) {
+						c.style.setProperty("--pf-accent", accent);
+						const bg = getComputedStyle(c).getPropertyValue("--pf-bg").trim();
+						const text = PFX.safe(accent, bg, 4.5);
+						c.style.setProperty("--pf-accent-text", text);
+						c.style.setProperty(
+							"--pf-on-accent",
+							PFX.contrast(accent, "#ffffff") >= PFX.contrast(accent, "#111111") ? "#ffffff" : "#111111",
+						);
+					}
+				};
+				paint("#1F3A68");
+				document
+					.getElementById("mt-yellow")
+					.addEventListener("change", (e) => paint(e.target.checked ? "#FFD60A" : "#1F3A68"));
+				document
+					.getElementById("mt-phone")
+					.addEventListener("change", (e) => document.body.classList.toggle("mt-phone", e.target.checked));
+			})();
+		</script>
+	</body>
+</html>

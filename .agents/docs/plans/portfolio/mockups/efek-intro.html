@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>Efek intro · mockup portfolio</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600&family=Newsreader:opsz,wght@6..72,500&family=Archivo:wdth,wght@62..125,800&family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Geist+Mono:wght@700&display=swap"
+		/>
+		<link rel="stylesheet" href="tokens.css" />
+		<link rel="stylesheet" href="shared.css" />
+		<style>
+			:root {
+				--page: #eceef1;
+				--card: #ffffff;
+				--ink: #111318;
+				--sub: #596070;
+				--line: #e2e5ea;
+				--pf-bg: #f6f7f9;
+				--pf-surface: #eef0f3;
+				--pf-text: #111318;
+				--pf-muted: #596070;
+				--pf-border: #e2e5ea;
+				--pf-font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+				--pf-font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root:not([data-theme="light"]) {
+					--page: #08090b;
+					--card: #14161a;
+					--ink: #eceef1;
+					--sub: #a0a7b3;
+					--line: #262a31;
+					--pf-bg: #0f1115;
+					--pf-surface: #191c21;
+					--pf-text: #eceef1;
+					--pf-muted: #9ba2ad;
+					--pf-border: #272b32;
+					color-scheme: dark;
+				}
+			}
+			:root[data-theme="dark"] {
+				--page: #08090b;
+				--card: #14161a;
+				--ink: #eceef1;
+				--sub: #a0a7b3;
+				--line: #262a31;
+				--pf-bg: #0f1115;
+				--pf-surface: #191c21;
+				--pf-text: #eceef1;
+				--pf-muted: #9ba2ad;
+				--pf-border: #272b32;
+				color-scheme: dark;
+			}
+			:root[data-fx-scheme="light"] {
+				--pf-bg: #f6f7f9;
+				--pf-text: #111318;
+				--pf-muted: #596070;
+			}
+			:root[data-fx-scheme="dark"] {
+				--pf-bg: #0f1115;
+				--pf-text: #eceef1;
+				--pf-muted: #9ba2ad;
+			}
+			body {
+				background: var(--page);
+				color: var(--ink);
+				padding-bottom: 64px;
+			}
+			.fx-wrap {
+				max-width: 1280px;
+				margin: 0 auto;
+				padding-left: max(16px, env(safe-area-inset-left, 0px));
+				padding-right: max(16px, env(safe-area-inset-right, 0px));
+				display: grid;
+				gap: 20px;
+			}
+			.fx-headbar {
+				display: grid;
+				gap: 12px;
+				padding-block: 40px 8px;
+			}
+			.fx-headbar h1 {
+				font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+				font-weight: 800;
+				letter-spacing: -0.03em;
+			}
+			.fx-headbar p {
+				color: var(--sub);
+				max-width: 72ch;
+			}
+			.fx-eyebrow {
+				font-size: var(--pf-text-xs);
+				font-weight: 600;
+				letter-spacing: 0.04em;
+			}
+			.fx-controls {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 10px 22px;
+				align-items: center;
+				font-size: var(--pf-text-sm);
+			}
+			.fx-controls label {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+			}
+			.fx-controls input {
+				width: 18px;
+				height: 18px;
+			}
+			.fx-controls button,
+			.fx-replay {
+				min-height: 38px;
+				padding: 0 14px;
+				border-radius: 999px;
+				border: 1px solid var(--line);
+				background: var(--card);
+				color: var(--ink);
+				font: 600 var(--pf-text-sm)/1 var(--pf-font-body);
+				cursor: pointer;
+			}
+			.fx-reco {
+				padding: 14px 16px;
+				border-radius: 12px;
+				background: var(--card);
+				border: 1px solid var(--line);
+				font-size: var(--pf-text-sm);
+				max-width: 80ch;
+			}
+			.fx-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(min(100%, 560px), 1fr));
+				gap: 14px;
+			}
+			.fx-phone .fx-grid {
+				grid-template-columns: repeat(auto-fill, minmax(0, 390px));
+				justify-content: start;
+			}
+			.fx-card {
+				display: grid;
+				border-radius: 18px;
+				background: var(--card);
+				border: 1px solid var(--line);
+				overflow: hidden;
+				min-width: 0;
+			}
+			.fx-stage {
+				display: grid;
+				gap: 10px;
+				align-content: center;
+				min-height: 220px;
+				padding: clamp(22px, 4vw, 40px);
+				background: var(--pf-bg);
+				color: var(--pf-text);
+			}
+			.fx-name {
+				font-family: var(--fx-font);
+				font-weight: var(--fx-weight);
+				font-size: clamp(2.2rem, 1.4rem + 3vw, 3.6rem);
+				letter-spacing: -0.03em;
+				line-height: 1;
+				overflow-wrap: anywhere;
+			}
+			.fx-phone .fx-name {
+				font-size: 2.4rem;
+			}
+			.fx-upper {
+				text-transform: uppercase;
+				font-stretch: 72%;
+				letter-spacing: -0.02em;
+			}
+			.fx-head {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-lg);
+				font-weight: 500;
+			}
+			.fx-card:nth-child(5) .fx-head {
+				color: var(--pf-accent-text);
+				font-weight: 600;
+			}
+			.fx-info {
+				display: grid;
+				gap: 10px;
+				padding: 18px 22px 22px;
+				border-top: 1px solid var(--line);
+				font-size: var(--pf-text-sm);
+			}
+			.fx-title {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 12px;
+			}
+			.fx-title h3 {
+				font-size: var(--pf-text-lg);
+				font-weight: 800;
+				letter-spacing: -0.01em;
+			}
+			.fx-info > p {
+				color: var(--sub);
+			}
+			.fx-info dl {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 8px 28px;
+			}
+			.fx-info dt {
+				font-size: var(--pf-text-xs);
+				color: var(--sub);
+			}
+			.fx-info dd {
+				font-weight: 600;
+			}
+			.fx-hint {
+				font-size: var(--pf-text-xs);
+				color: var(--sub);
+			}
+			.fx-table-wrap {
+				overflow-x: auto;
+				border-radius: 14px;
+				border: 1px solid var(--line);
+				background: var(--card);
+			}
+			.fx-table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: var(--pf-text-sm);
+				min-width: 640px;
+			}
+			.fx-table th,
+			.fx-table td {
+				padding: 10px 14px;
+				text-align: start;
+				border-bottom: 1px solid var(--line);
+				vertical-align: top;
+			}
+			.fx-table th {
+				font-size: var(--pf-text-xs);
+				color: var(--sub);
+				font-weight: 600;
+			}
+			.fx-rules {
+				display: grid;
+				gap: 8px;
+				padding-inline-start: 1.2em;
+				color: var(--sub);
+				font-size: var(--pf-text-sm);
+				max-width: 80ch;
+			}
+			.fx-rulecard {
+				align-content: start;
+				gap: 14px;
+				padding: clamp(22px, 4vw, 40px);
+			}
+			.fx-rulecard h2 {
+				font-size: var(--pf-text-lg);
+				font-weight: 800;
+			}
+			.fx-card {
+				--pf-accent-soft: color-mix(in oklab, var(--pf-accent) 14%, var(--pf-bg));
+			}
+		</style>
+	</head>
+	<body>
+		<div class="fx-wrap">
+			<header class="fx-headbar">
+				<p class="fx-eyebrow">Mockup portfolio · Phase 00 · <a href="index.html">Semua mockup</a></p>
+				<h1>Efek intro</h1>
+				<p>
+					Setiap kandidat efek diterapkan ke nama persona fiktif. Efek hanya untuk nama atau headline, berhenti sendiri
+					dalam ±5 detik, dan teks aslinya selalu terbaca oleh Google dan pembaca layar. Semua efek ditulis sendiri
+					untuk Rezumi, tanpa kode React Bits.
+				</p>
+				<div class="fx-controls">
+					<button type="button" id="fx-all">Putar ulang semua</button
+					><label><input type="checkbox" id="fx-reduce" /> Kurangi gerakan</label
+					><label><input type="checkbox" id="fx-touch" /> Layar sentuh</label
+					><label><input type="checkbox" id="fx-phone" /> Tampilan HP (390 px)</label
+					><label><input type="checkbox" id="fx-dark" /> Gelap</label>
+				</div>
+				<aside class="fx-reco">
+					<b>Keputusan (5 November 2026):</b> keenam efek masuk rilis pertama. Usulan paket (dikonfirmasi di Phase 07):
+					Muncul halus dan Kilau gratis, sisanya Plus. Ketik berganti dibatasi 3 frasa agar selesai dalam 5 detik.
+				</aside>
+			</header>
+			<div class="fx-grid">
+				<article
+					class="fx-card"
+					data-accent="#161E34"
+					style="--fx-font: &quot;Source Serif 4&quot;, Georgia, serif; --fx-weight: 600"
+				>
+					<div class="fx-stage">
+						<h2 class="fx-name"><span class="fx-host" data-demo-fx="none">Anindya Dewi</span></h2>
+						<p class="fx-head"><span class="fx-headhost">Senior Relationship Manager</span></p>
+					</div>
+					<div class="fx-info">
+						<div class="fx-title">
+							<h3>Tanpa efek</h3>
+							<button type="button" class="fx-replay">Putar ulang</button>
+						</div>
+						<p>Tenang dan formal.</p>
+						<dl>
+							<div>
+								<dt>Cocok untuk</dt>
+								<dd>Keuangan, BUMN, akademik</dd>
+							</div>
+							<div>
+								<dt>Butuh skrip</dt>
+								<dd>Tidak</dd>
+							</div>
+							<div>
+								<dt>Usulan paket</dt>
+								<dd>Semua paket</dd>
+							</div>
+						</dl>
+					</div>
+				</article>
+				<article
+					class="fx-card"
+					data-accent="#1F3A68"
+					style="--fx-font: &quot;Plus Jakarta Sans&quot;, system-ui, sans-serif; --fx-weight: 800"
+				>
+					<div class="fx-stage">
+						<h2 class="fx-name"><span class="fx-host" data-demo-fx="fade-up">Nadia Rahmawati</span></h2>
+						<p class="fx-head"><span class="fx-headhost">Senior Product Manager · Payments</span></p>
+					</div>
+					<div class="fx-info">
+						<div class="fx-title">
+							<h3>Muncul halus</h3>
+							<button type="button" class="fx-replay">Putar ulang</button>
+						</div>
+						<p>Kata muncul berurutan sekali, dengan geser kecil dan blur ringan.</p>
+						<dl>
+							<div>
+								<dt>Cocok untuk</dt>
+								<dd>Semua bidang (aman sebagai bawaan)</dd>
+							</div>
+							<div>
+								<dt>Butuh skrip</dt>
+								<dd>Tidak (CSS)</dd>
+							</div>
+							<div>
+								<dt>Usulan paket</dt>
+								<dd>Gratis</dd>
+							</div>
+						</dl>
+					</div>
+				</article>
+				<article
+					class="fx-card"
+					data-accent="#AA482A"
+					style="--fx-font: &quot;Newsreader&quot;, Georgia, serif; --fx-weight: 500"
+				>
+					<div class="fx-stage">
+						<h2 class="fx-name"><span class="fx-host" data-demo-fx="shimmer">Laras Kusumawardhani</span></h2>
+						<p class="fx-head"><span class="fx-headhost">Features Editor &amp; Content Strategist</span></p>
+					</div>
+					<div class="fx-info">
+						<div class="fx-title">
+							<h3>Kilau</h3>
+							<button type="button" class="fx-replay">Putar ulang</button>
+						</div>
+						<p>Kilau warna aksen menyapu nama tiga kali, lalu berhenti.</p>
+						<dl>
+							<div>
+								<dt>Cocok untuk</dt>
+								<dd>Kreatif, pemasaran, penulis</dd>
+							</div>
+							<div>
+								<dt>Butuh skrip</dt>
+								<dd>Tidak (CSS)</dd>
+							</div>
+							<div>
+								<dt>Usulan paket</dt>
+								<dd>Gratis</dd>
+							</div>
+						</dl>
+					</div>
+				</article>
+				<article
+					class="fx-card"
+					data-accent="#D6603F"
+					style="--fx-font: &quot;Archivo&quot;, system-ui, sans-serif; --fx-weight: 800"
+				>
+					<div class="fx-stage">
+						<h2 class="fx-name fx-upper"><span class="fx-host" data-demo-fx="gradient">Bayu Saputra</span></h2>
+						<p class="fx-head"><span class="fx-headhost">Creative Director &amp; Fotografer</span></p>
+					</div>
+					<div class="fx-info">
+						<div class="fx-title">
+							<h3>Gradien hidup</h3>
+							<button type="button" class="fx-replay">Putar ulang</button>
+						</div>
+						<p>Warna aksen dan dua warna turunannya bergerak pelan di nama selama ±5 detik.</p>
+						<dl>
+							<div>
+								<dt>Cocok untuk</dt>
+								<dd>Desainer, kreator</dd>
+							</div>
+							<div>
+								<dt>Butuh skrip</dt>
+								<dd>Tidak (CSS)</dd>
+							</div>
+							<div>
+								<dt>Usulan paket</dt>
+								<dd>Plus</dd>
+							</div>
+						</dl>
+					</div>
+				</article>
+				<article
+					class="fx-card"
+					data-accent="#1D6F73"
+					style="--fx-font: &quot;Bricolage Grotesque&quot;, system-ui, sans-serif; --fx-weight: 800"
+				>
+					<div class="fx-stage">
+						<h2 class="fx-name"><span class="fx-host" data-demo-fx="typewriter">Citra Maharani</span></h2>
+						<p class="fx-head"><span class="fx-headhost">Brand Designer</span></p>
+					</div>
+					<div class="fx-info">
+						<div class="fx-title">
+							<h3>Ketik berganti</h3>
+							<button type="button" class="fx-replay">Putar ulang</button>
+						</div>
+						<p>Headline mengetik bergantian 2–3 peran, lalu berhenti di peran pertama.</p>
+						<dl>
+							<div>
+								<dt>Cocok untuk</dt>
+								<dd>Multi-peran, freelancer</dd>
+							</div>
+							<div>
+								<dt>Butuh skrip</dt>
+								<dd>Ya (kecil)</dd>
+							</div>
+							<div>
+								<dt>Usulan paket</dt>
+								<dd>Plus</dd>
+							</div>
+						</dl>
+					</div>
+				</article>
+				<article
+					class="fx-card"
+					data-accent="#4F46E5"
+					style="--fx-font: &quot;Geist Mono&quot;, ui-monospace, monospace; --fx-weight: 700"
+				>
+					<div class="fx-stage">
+						<h2 class="fx-name"><span class="fx-host" data-demo-fx="scramble">Fajar Nugraha</span></h2>
+						<p class="fx-head"><span class="fx-headhost">Senior Backend Engineer</span></p>
+					</div>
+					<div class="fx-info">
+						<div class="fx-title">
+							<h3>Acak teknologi</h3>
+							<button type="button" class="fx-replay">Putar ulang</button>
+						</div>
+						<p>Huruf acak berganti cepat lalu tersusun menjadi nama, sekali saat dibuka.</p>
+						<dl>
+							<div>
+								<dt>Cocok untuk</dt>
+								<dd>Developer, data, IT</dd>
+							</div>
+							<div>
+								<dt>Butuh skrip</dt>
+								<dd>Ya (kecil)</dd>
+							</div>
+							<div>
+								<dt>Usulan paket</dt>
+								<dd>Plus</dd>
+							</div>
+						</dl>
+					</div>
+				</article>
+				<article
+					class="fx-card"
+					data-accent="#0F5B5C"
+					style="--fx-font: &quot;Bricolage Grotesque&quot;, system-ui, sans-serif; --fx-weight: 800"
+				>
+					<div class="fx-stage">
+						<h2 class="fx-name"><span class="fx-host" data-demo-fx="vector-hover">Bima Aditya Nugroho</span></h2>
+						<p class="fx-head"><span class="fx-headhost">Senior UX Researcher · Product Design</span></p>
+					</div>
+					<div class="fx-info">
+						<div class="fx-title">
+							<h3>Garis vektor</h3>
+							<button type="button" class="fx-replay">Putar ulang</button>
+						</div>
+						<p>Huruf di bawah kursor menjadi garis tepi putus-putus dengan kotak seleksi ala aplikasi desain.</p>
+						<dl>
+							<div>
+								<dt>Cocok untuk</dt>
+								<dd>Desainer UI dan grafis (desktop)</dd>
+							</div>
+							<div>
+								<dt>Butuh skrip</dt>
+								<dd>Ya</dd>
+							</div>
+							<div>
+								<dt>Usulan paket</dt>
+								<dd>Plus</dd>
+							</div>
+						</dl>
+						<p class="fx-hint">Arahkan kursor ke huruf. Di HP efek ini diganti Muncul halus.</p>
+					</div>
+				</article>
+				<section class="fx-card fx-rulecard">
+					<h2>Aturan untuk semua efek</h2>
+					<ul class="fx-rules">
+						<li>Teks asli selalu ada di halaman; lapisan animasi disembunyikan dari pembaca layar.</li>
+						<li>Perangkat dengan pengaturan “kurangi gerakan” melihat teks tanpa animasi.</li>
+						<li>Tidak ada gerak tanpa henti; efek berhenti sendiri dalam ±5 detik.</li>
+						<li>Warna efek dihitung dari aksen yang sudah dikoreksi kontras; tata letak tidak bergeser.</li>
+						<li>Di layar sentuh, Garis vektor diganti Muncul halus.</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+		<script>
+			/* Intro text effects for the portfolio mockups. Written from scratch for Rezumi (no React Bits code).
+			 * Rules: the real text stays in the DOM, animated layers are aria-hidden, every effect stops by itself
+			 * within about five seconds, and "reduce motion" shows the text without animation. */
+			(() => {
+				const root = document.documentElement;
+				const reduced = () =>
+					root.classList.contains("mk-reduce") || matchMedia("(prefers-reduced-motion: reduce)").matches;
+				const touch = () =>
+					!root.classList.contains("mk-mouse") &&
+					(root.classList.contains("mk-touch") || matchMedia("(hover: none), (pointer: coarse)").matches);
+				const timers = new WeakMap();
+				const GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+=<>/";
+
+				const hex = (h) => {
+					const n = parseInt(h.replace("#", ""), 16);
+					return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+				};
+				const toHex = (rgb) => "#" + rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
+				const lum = (rgb) => {
+					const c = rgb.map((v) => {
+						const s = v / 255;
+						return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+					});
+					return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+				};
+				const contrast = (a, b) => {
+					const [x, y] = [lum(hex(a)), lum(hex(b))].sort((p, q) => q - p);
+					return (x + 0.05) / (y + 0.05);
+				};
+				const toHsl = ([r, g, b]) => {
+					r /= 255;
+					g /= 255;
+					b /= 255;
+					const max = Math.max(r, g, b);
+					const min = Math.min(r, g, b);
+					const l = (max + min) / 2;
+					let h = 0;
+					let s = 0;
+					if (max !== min) {
+						const d = max - min;
+						s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+						h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+						h *= 60;
+					}
+					return [h, s, l];
+				};
+				const fromHsl = ([h, s, l]) => {
+					const k = (n) => (n + h / 30) % 12;
+					const a = s * Math.min(l, 1 - l);
+					const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+					return [f(0) * 255, f(8) * 255, f(4) * 255];
+				};
+				/** Shift lightness until the colour reads as text on the background (≥ min:1). */
+				const safe = (color, bg, min = 4.5) => {
+					const hsl = toHsl(hex(color));
+					const darker = lum(hex(bg)) > 0.4;
+					let out = color;
+					for (let i = 0; i < 100 && contrast(out, bg) < min; i++) {
+						hsl[2] = Math.min(1, Math.max(0, hsl[2] + (darker ? -0.01 : 0.01)));
+						out = toHex(fromHsl(hsl));
+					}
+					return out;
+				};
+				const rotate = (color, deg) => {
+					const hsl = toHsl(hex(color));
+					hsl[0] = (hsl[0] + deg + 360) % 360;
+					return toHex(fromHsl(hsl));
+				};
+
+				const clear = (host) => {
+					for (const t of timers.get(host) || []) clearTimeout(t);
+					timers.set(host, []);
+				};
+				const later = (host, fn, ms) => timers.get(host).push(setTimeout(fn, ms));
+				const reset = (host) => {
+					clear(host);
+					host.className = host.dataset.base;
+					host.removeAttribute("style");
+					host.onpointerover = null;
+					host.onpointerout = null;
+					host.textContent = host.dataset.text;
+				};
+				const restart = (host, cls) => {
+					host.classList.remove(cls);
+					void host.offsetWidth;
+					host.classList.add(cls);
+				};
+				const words = (host) => {
+					host.textContent = "";
+					host.dataset.text.split(/(\s+)/).forEach((part, i) => {
+						if (/^\s+$/.test(part)) return host.append(part);
+						const s = document.createElement("span");
+						s.className = "pfx-word";
+						s.style.setProperty("--i", String(i / 2));
+						s.textContent = part;
+						host.append(s);
+					});
+				};
+				const chars = (host) => {
+					const text = host.dataset.text;
+					host.textContent = "";
+					const sr = document.createElement("span");
+					sr.className = "sr-only";
+					sr.textContent = text;
+					const vis = document.createElement("span");
+					vis.setAttribute("aria-hidden", "true");
+					vis.dir = "auto";
+					const list = [];
+					for (const word of text.split(/(\s+)/)) {
+						if (/^\s+$/.test(word)) {
+							vis.append(word);
+							continue;
+						}
+						const w = document.createElement("span");
+						w.style.whiteSpace = "nowrap";
+						for (const c of word) {
+							const s = document.createElement("span");
+							s.className = "pfx-ch";
+							s.textContent = c;
+							s.dataset.c = c;
+							w.append(s);
+							list.push(s);
+						}
+						vis.append(w);
+					}
+					host.append(sr, vis);
+					const block = host.closest("h1, h2, p, div") || host.parentElement;
+					for (const w of vis.children) if (w.offsetWidth > block.clientWidth) w.style.whiteSpace = "normal";
+					return list;
+				};
+
+				const effects = {
+					none() {},
+					"fade-up"(host) {
+						words(host);
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					shimmer(host) {
+						host.classList.add("pfx-shimmer");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					gradient(host) {
+						const cs = getComputedStyle(host);
+						const bg = cs.getPropertyValue("--pf-bg").trim() || "#ffffff";
+						const a = cs.getPropertyValue("--pf-accent-text").trim() || "#333333";
+						host.style.setProperty("--fx-a", a);
+						host.style.setProperty("--fx-b", safe(rotate(a, 38), bg, 4.5));
+						host.style.setProperty("--fx-c", safe(rotate(a, -34), bg, 4.5));
+						host.classList.add("pfx-gradient");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					typewriter(host, opts) {
+						const phrases = (opts.phrases || [host.dataset.text]).slice(0, 3);
+						host.textContent = "";
+						const sr = document.createElement("span");
+						sr.className = "sr-only";
+						sr.textContent = phrases.join(", ");
+						const box = document.createElement("span");
+						box.className = "pfx-type";
+						box.setAttribute("aria-hidden", "true");
+						box.dir = "auto";
+						for (const p of phrases) {
+							const g = document.createElement("span");
+							g.className = "pfx-type__ghost";
+							g.textContent = p;
+							box.append(g);
+						}
+						const out = document.createElement("span");
+						out.className = "pfx-type__out";
+						out.textContent = phrases[0];
+						box.append(out);
+						host.append(sr, box);
+						if (reduced() || phrases.length < 2) return box.classList.add("pfx-done");
+						const order = [...phrases.slice(1), phrases[0]];
+						let t = 700;
+						let current = phrases[0];
+						for (const next of order) {
+							for (let i = current.length; i >= 0; i--) {
+								const s = current.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 16;
+							}
+							for (let i = 1; i <= next.length; i++) {
+								const s = next.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 30;
+							}
+							t += 700;
+							current = next;
+						}
+						later(host, () => box.classList.add("pfx-done"), t - 600);
+					},
+					scramble(host) {
+						const list = chars(host);
+						if (reduced()) return;
+						for (const s of list) s.style.width = s.getBoundingClientRect().width + "px";
+						const start = 120;
+						const span = 950;
+						list.forEach((s, i) => {
+							const settle = start + (span * (i + 1)) / list.length;
+							for (let t = 0; t < settle; t += 45)
+								later(
+									host,
+									() => {
+										s.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+										s.classList.add("pfx-scr");
+									},
+									t,
+								);
+							later(
+								host,
+								() => {
+									s.textContent = s.dataset.c;
+									s.classList.remove("pfx-scr");
+								},
+								settle,
+							);
+						});
+					},
+					"vector-hover"(host) {
+						if (touch()) return effects["fade-up"](host);
+						host.classList.add("pfx-vector");
+						const list = chars(host);
+						const draw = (ch) => {
+							if (ch.dataset.ready) return;
+							ch.dataset.ready = "1";
+							const probe = document.createElement("span");
+							probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+							ch.append(probe);
+							const base = probe.offsetTop;
+							probe.remove();
+							const w = ch.offsetWidth;
+							const h = ch.offsetHeight;
+							const ns = "http://www.w3.org/2000/svg";
+							const svg = document.createElementNS(ns, "svg");
+							svg.setAttribute("class", "pfx-outline");
+							svg.setAttribute("width", String(w));
+							svg.setAttribute("height", String(h));
+							const text = document.createElementNS(ns, "text");
+							text.setAttribute("x", "0");
+							text.setAttribute("y", String(base));
+							text.textContent = ch.dataset.c;
+							svg.append(text);
+							const boxEl = document.createElement("span");
+							boxEl.className = "pfx-box";
+							boxEl.innerHTML = `<b></b><b></b><b></b><b></b><em>${w} × ${h}</em>`;
+							ch.append(svg, boxEl);
+						};
+						const off = new WeakMap();
+						host.onpointerover = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							clearTimeout(off.get(ch));
+							draw(ch);
+							ch.classList.add("pfx-on");
+						};
+						host.onpointerout = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							off.set(
+								ch,
+								setTimeout(() => ch.classList.remove("pfx-on"), 650),
+							);
+						};
+						return list;
+					},
+				};
+
+				window.PFX = {
+					safe,
+					contrast,
+					apply(host, id, opts = {}) {
+						if (!host.dataset.text) host.dataset.text = host.textContent.trim();
+						if (host.dataset.base === undefined) host.dataset.base = host.className;
+						reset(host);
+						host.dataset.fx = id;
+						(effects[id] || effects.none)(host, opts);
+					},
+					replay(host, opts = {}) {
+						this.apply(host, host.dataset.fx || "none", opts);
+					},
+				};
+			})();
+		</script>
+		<script>
+			(() => {
+				const root = document.documentElement;
+				const cards = [...document.querySelectorAll(".fx-card[data-accent]")];
+				const PHRASES = ["Brand Designer", "Desainer kemasan", "Ilustrator"];
+				const scheme = () =>
+					root.dataset.fxScheme ||
+					root.getAttribute("data-theme") ||
+					(matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+				const paint = (card) => {
+					const accent = card.dataset.accent;
+					card.style.setProperty("--pf-accent", accent);
+					const bg = getComputedStyle(card.querySelector(".fx-stage"))
+						.backgroundColor.match(/\d+/g)
+						.slice(0, 3)
+						.map(Number);
+					const hex = "#" + bg.map((v) => v.toString(16).padStart(2, "0")).join("");
+					card.style.setProperty("--pf-bg", hex);
+					card.style.setProperty("--pf-accent-text", PFX.safe(accent, hex, 4.5));
+				};
+				const play = (card) => {
+					paint(card);
+					const host = card.querySelector(".fx-host");
+					const head = card.querySelector(".fx-headhost");
+					const id = host.dataset.demoFx;
+					if (id === "typewriter") {
+						PFX.apply(host, "none");
+						PFX.apply(head, "typewriter", { phrases: PHRASES });
+					} else {
+						PFX.apply(host, id);
+					}
+				};
+				const all = () => cards.forEach(play);
+				for (const c of cards) c.querySelector(".fx-replay").addEventListener("click", () => play(c));
+				document.getElementById("fx-all").addEventListener("click", all);
+				document.getElementById("fx-reduce").addEventListener("change", (e) => {
+					root.classList.toggle("mk-reduce", e.target.checked);
+					all();
+				});
+				document.getElementById("fx-touch").addEventListener("change", (e) => {
+					root.classList.toggle("mk-touch", e.target.checked);
+					all();
+				});
+				document.getElementById("fx-phone").addEventListener("change", (e) => {
+					document.body.classList.toggle("fx-phone", e.target.checked);
+					all();
+				});
+				document.getElementById("fx-dark").addEventListener("change", (e) => {
+					root.dataset.fxScheme = e.target.checked ? "dark" : "light";
+					all();
+				});
+				document.getElementById("fx-dark").checked = scheme() === "dark";
+				document.fonts.ready.then(all);
+			})();
+		</script>
+	</body>
+</html>

@@ -6,7 +6,7 @@
 
 ## Untuk pemilik
 
-**Apa yang dibuat:** tiga tema lain yang kamu pilih di Phase 00, **efek intro** yang kamu pilih (misalnya kilau, ketik berganti, huruf acak, garis vektor) beserta pemilihnya di editor, galeri tema dengan gambar contoh (Inggris dan Indonesia), dan pemeriksaan visual besar: setiap tema di HP dan desktop, terang dan gelap, isi sedikit dan banyak, serta bahasa Arab. Kamu menilai hasil akhirnya dari gambar.
+**Apa yang dibuat:** tiga tema lain yang kamu pilih di Phase 00 (Prima, Kanvas, Mozaik), **efek intro** yang kamu pilih (misalnya kilau, ketik berganti, huruf acak, garis vektor) beserta pemilihnya di editor, galeri tema dengan gambar contoh (Inggris dan Indonesia), dan pemeriksaan visual besar: setiap tema di HP dan desktop, terang dan gelap, isi sedikit dan banyak, serta bahasa Arab. Kamu menilai hasil akhirnya dari gambar.
 
 **Siapkan:** waktu menilai lembar contoh di akhir sesi.
 
@@ -18,7 +18,7 @@
 
 ### Langkah
 
-1. **Tiga tema** sesuai `01-desain.md` bagian 5 dan mockup di `mockups/`, lengkap dengan semua jenis blok karya, varian widget metrik yang dipilih di Phase 00, Layanan, Testimoni, dan Klien. Pakai primitif bersama; bila primitif perlu diperluas, pastikan tema pertama tidak berubah (bandingkan render sebelum/sesudah).
+1. **Tiga tema** (Prima, Kanvas, Mozaik) sesuai `01-desain.md` bagian 5 dan `mockups/<id>.html`, lengkap dengan semua jenis blok karya, varian widget metrik yang dipilih di Phase 00, Layanan, Testimoni, dan Klien. Pakai primitif bersama; bila primitif perlu diperluas, pastikan tema pertama tidak berubah (bandingkan render sebelum/sesudah).
 2. **Gambar galeri tema**: `tooling/portfolio/previews.ts` (skrip `portfolio:previews`) merender persona → screenshot Chrome sistem 2× → `apps/web/public/portfolio-themes/{jpg,thumb}/<tema>.{jpg,webp}` dan versi Indonesia di `id/`.
 3. **Efek intro** (`02-teknis.md` bagian 23, `01-desain.md` bagian 18): modul efek yang dipilih di Phase 00 (aturan turunan #13), dibuat dari nol (jangan menyalin kode React Bits), CSS dulu lalu skrip kecil bila perlu; halaman hanya memuat efek yang dipakai; `prefers-reduced-motion`, berhenti ≤5 detik, teks asli di HTML, tanpa CLS; fallback HP untuk Garis vektor; pemilih di tab Desain → Intro dengan demo mini + "Putar ulang" di pratinjau; efek bawaan per tema. Latar intro (polos, gradien lembut, pola, gambar dengan lapisan kontras) di semua tema.
 4. **Galeri tema** di dialog buat dan tab Desain: gambar, nama, deskripsi (Lingui), untuk siapa; label Plus disiapkan untuk Phase 07.
