@@ -41,7 +41,7 @@ flowchart TD
 - **Development.** `pnpm dev` starts Vite on `PORT` (default `3000`), the Hono server on `SERVER_PORT` (default `3001`), and the email template preview on port `3002`. Vite proxies `/api`, `/mcp`, `/uploads`, `/.well-known`, and `/schema.json` to Hono, so you always open `http://localhost:3000`.
 - **Cloudflare Workers.** Production runs as a single Worker built by `tooling/cloudflare/build.mjs` from `apps/server/src/cloudflare`. Workers Static Assets serves the built web app, and the Worker runs the same Hono app for the API, auth, MCP, upload, and dynamic HTML routes. PostgreSQL connects through the Hyperdrive binding, files live in R2, and SQLite Durable Objects replace Redis for shared rate limits, live updates, and cancellation. See [Self-hosting on Cloudflare](/self-hosting/cloudflare) and [Deployment checks](/contributing/deployment-checks).
 
-There is no request-time React server rendering. The web build prerenders the marketing homepage for each locale, and `apps/server/src/static/web.ts` serves HTML shells with OpenGraph, canonical, and JSON-LD metadata injected.
+There is no request-time React server rendering. The web build prerenders the marketing pages for each locale and every documentation page once, in English. `apps/server/src/static/web.ts` serves them, and the HTML shell for other routes, with OpenGraph, canonical, and JSON-LD metadata injected.
 
 ### What happens at startup
 
@@ -94,6 +94,7 @@ Turbo hashes shared Vitest configuration and setup files, tracks transitive sour
 | A database column or table                      | `packages/db/src/schema/*`, then `pnpm db:generate`                                                                             |
 | A server environment variable                   | `packages/env/src/server.ts`, `.env.example`, and `globalPassThroughEnv` plus applicable test-task `env` arrays in `turbo.json` |
 | A dev-only script                               | `tooling/`                                                                                                                      |
+| A documentation page                            | An `.mdx` file in `docs/`, listed in `docs/docs.json`; the web app publishes it at `/docs` through `apps/web/src/features/docs` |
 
 A new template touches several places: `packages/schema/src/templates.ts`, `packages/pdf/src/templates/index.ts`, the template source under `packages/pdf/src/templates/<name>/`, and preview images under `apps/web/public/templates/{jpg,pdf}`.
 
@@ -112,7 +113,7 @@ After you change a shared contract, an export, or an import path, run `pnpm exec
 
 ## The web app
 
-`apps/web/src/routes` stays route-owned: route files handle the URL, loaders, redirects, and metadata. Implementation lives in `apps/web/src/features`, grouped by product area: `documents`, `resume` (editor, preview, export, sharing, custom styles), `letters`, `applications`, `assistant`, `ats-checker`, `settings`, `command-palette`, `auth`, `homepage`, `theme`, `locale`, and `user`.
+`apps/web/src/routes` stays route-owned: route files handle the URL, loaders, redirects, and metadata. Implementation lives in `apps/web/src/features`, grouped by product area: `documents`, `resume` (editor, preview, export, sharing, custom styles), `letters`, `applications`, `assistant`, `ats-checker`, `settings`, `command-palette`, `auth`, `homepage`, `docs` (the public documentation at `/docs`), `theme`, `locale`, and `user`.
 
 `apps/web/src/router.tsx` creates the router context with `queryClient`, `orpc`, `theme`, `locale`, `session`, and `flags`. Read these from route context instead of fetching them again. Never edit `routeTree.gen.ts` by hand; Vite regenerates it when you add or rename a route.
 
@@ -137,7 +138,7 @@ Keep helpers inside the feature that uses them. Don't reintroduce technical-laye
 - `packages/pdf/src/templates/shared/filtering.ts` holds the section filtering shared by all templates. Template-specific visual exceptions stay in that template's folder.
 - `packages/pdf/src/hooks/use-register-fonts.ts` resolves font families, weights, and fallback stacks for other scripts.
 
-Default section titles in the PDF come from a generated catalog, `packages/pdf/src/section-title-catalog.json`, built from the web app's translations. See [Contributing translations](/contributing/translations#updating-catalogs-in-a-checkout).
+Default section titles in the PDF come from a generated catalog, `packages/pdf/src/section-title-catalog.json`, built from the web app's translations. See [Add translatable text](/contributing/development#add-translatable-text).
 
 ### Cover letters
 
