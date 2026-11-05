@@ -40,7 +40,7 @@ export function McpSection() {
 				</InputGroup>
 			</TextField>
 			<Link
-				href="https://docs.rezumi.app/guides/using-the-mcp-server"
+				href="/docs/guides/using-the-mcp-server"
 				target="_blank"
 				rel="noopener noreferrer"
 				className="w-fit text-sm"

@@ -27,7 +27,7 @@ import { serveResumePage } from "../static/resume-page";
 import { handleSchemaJson } from "../static/schema";
 import { handleLlms, handlePagesSitemap, handleResumesSitemap, handleRobots, handleSitemap } from "../static/seo";
 import { handleUpload } from "../static/uploads";
-import { handleWebApp, isProfilePath, isPublicResumePath, serveWebDistStatic } from "../static/web";
+import { handleWebApp, isProfilePath, isPublicResumePath, listDocsPaths, serveWebDistStatic } from "../static/web";
 import { handleAlias } from "./alias";
 import { handleAppleAppSiteAssociation, handleAndroidAssetLinks } from "./app-links";
 import { handleAuth, handleOAuth } from "./auth";
@@ -160,7 +160,7 @@ export function createApp(options: AppOptions = {}) {
 
 	app.get("/robots.txt", () => handleRobots());
 	app.get("/sitemap.xml", () => handleSitemap());
-	app.get("/sitemaps/pages.xml", () => handlePagesSitemap());
+	app.get("/sitemaps/pages.xml", async () => handlePagesSitemap(await listDocsPaths(options.readWebFile)));
 	app.get("/sitemaps/:page{resumes-[0-9]+\\.xml}", (c) =>
 		handleResumesSitemap(Number(c.req.param("page").slice("resumes-".length, -".xml".length))),
 	);

@@ -556,7 +556,7 @@ function StylesheetEditorShell({ readOnly = false }: StylesheetEditorShellProps)
 					<Trans>Not sure what to write?</Trans>{" "}
 					<a
 						className="text-accent-soft-foreground underline underline-offset-4"
-						href="https://docs.rezumi.app/applying-custom-styles"
+						href="/docs/applying-custom-styles"
 						target="_blank"
 						rel="noopener noreferrer"
 					>

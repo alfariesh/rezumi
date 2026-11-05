@@ -2708,6 +2708,7 @@ msgstr ""
 msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
 msgstr ""
 
+#: src/features/docs/header.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
@@ -3205,6 +3206,7 @@ msgstr "客户端 ID"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -3600,6 +3602,7 @@ msgstr "对话名称"
 msgid "Conversations"
 msgstr "对话"
 
+#: src/features/docs/mdx-components.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3625,6 +3628,10 @@ msgstr "复印一份工作简历"
 #: src/features/career/workspace/apply.tsx
 msgid "Copy answers"
 msgstr "复制回答"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Copy code"
+msgstr ""
 
 #. Action button to copy two-factor backup codes to clipboard
 #: src/dialogs/auth/enable-two-factor.tsx
@@ -4906,6 +4913,7 @@ msgstr "忽略"
 msgid "DNS records"
 msgstr ""
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "文档"
@@ -4917,6 +4925,11 @@ msgstr "文档菜单：{name}"
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "文件类型"
+
+#: src/features/docs/layout.tsx
+#: src/features/docs/sidebar.tsx
+msgid "Documentation"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -6250,6 +6263,10 @@ msgstr "回家"
 msgid "Go to dashboard"
 msgstr "转到仪表板"
 
+#: src/features/docs/article.tsx
+msgid "Go to the introduction"
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "Go to your plan"
 msgstr ""
@@ -6747,6 +6764,10 @@ msgstr ""
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
 msgstr "推断"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Info"
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Inline"
@@ -7490,6 +7511,10 @@ msgstr "职位申请链接"
 msgid "Link to application…"
 msgstr "职位申请链接..."
 
+#: src/features/docs/mdx-components.tsx
+msgid "Link to this section"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Link turned off. The address is kept"
 msgstr "链接已关闭。地址已保留"
@@ -8056,6 +8081,10 @@ msgstr "更多格式"
 msgid "More options"
 msgstr "更多选择"
 
+#: src/features/docs/article.tsx
+msgid "More pages"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "更个性化"
@@ -8373,6 +8402,10 @@ msgstr ""
 msgid "Newest payments started in this period. Search finds any customer."
 msgstr ""
 
+#: src/features/docs/article.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr ""
@@ -8594,6 +8627,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "没有未解决的问题"
+
+#: src/features/docs/sidebar.tsx
+msgid "No pages match “{term}”."
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "No paid pass running"
@@ -8867,6 +8904,7 @@ msgid "Not written yet"
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
+#: src/features/docs/mdx-components.tsx
 msgid "Note"
 msgstr "信息"
 
@@ -9038,6 +9076,10 @@ msgstr ""
 msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
 msgstr ""
 
+#: src/features/docs/toc.tsx
+msgid "On this page"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "已开启。任何拥有链接的人都可以查看您的网页。"
@@ -9156,6 +9198,10 @@ msgstr "打开简报"
 msgid "Open customer"
 msgstr ""
 
+#: src/features/docs/header.tsx
+msgid "Open dashboard"
+msgstr ""
+
 #. Button label to open the user's default email app
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Open email app"
@@ -9178,6 +9224,7 @@ msgstr "打开编辑器"
 msgid "Open in Offers"
 msgstr "在“录用通知”中打开"
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
 msgstr ""
@@ -9253,6 +9300,7 @@ msgid "Optional for local Ollama"
 msgstr "本地可选 Ollama"
 
 #: src/components/ui/combobox.tsx
+#: src/features/docs/mdx-components.tsx
 #: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "选项"
@@ -9394,6 +9442,7 @@ msgid "Page 1 · {formatLabel}"
 msgstr "第1页 · {formatLabel}"
 
 #: src/components/layout/not-found-screen.tsx
+#: src/features/docs/article.tsx
 msgid "Page not found"
 msgstr "页面未找到"
 
@@ -10015,6 +10064,10 @@ msgstr "预览尺寸"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "预览 {0} · 点击应用"
+
+#: src/features/docs/article.tsx
+msgid "Previous"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "Previous 7 days"
@@ -11248,6 +11301,7 @@ msgstr ""
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "撤销“{name}”。使用它的应用程序现在停止工作。"
 
+#: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - 返回首页"
@@ -11728,6 +11782,10 @@ msgstr ""
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "搜索职位、公司或联系人"
+
+#: src/features/docs/sidebar.tsx
+msgid "Search the docs"
+msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
@@ -12336,6 +12394,7 @@ msgstr "跳过并上传"
 msgid "Skip to content"
 msgstr "跳至内容"
 
+#: src/features/docs/layout.tsx
 #: src/routes/_home/route.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Skip to main content"
@@ -13707,6 +13766,10 @@ msgstr "此页面采用分栏排版，提取出的文字顺序错乱。"
 msgid "This page is very densely packed."
 msgstr "此页面排得非常密集。"
 
+#: src/features/docs/article.tsx
+msgid "This page may have moved. Search the list of pages, or start from the introduction."
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "This payment didn't go through"
 msgstr ""
@@ -13888,6 +13951,7 @@ msgid "Timing the plan"
 msgstr "正在安排计划时间"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Tip"
 msgstr "提示"
 
@@ -14772,6 +14836,7 @@ msgid "Walk in ready"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Warning"
 msgstr "警告”"
 

@@ -9,7 +9,7 @@ import { popTransition } from "@/features/settings/root";
 
 // Help and legal documents for the hosted service.
 const getProjectLinks = () => [
-	{ href: "https://docs.rezumi.app", label: t`Docs` },
+	{ href: "/docs", label: t`Docs` },
 	{ href: LEGAL_URLS.contact, label: t`Contact & complaints` },
 	{ href: LEGAL_URLS.terms, label: t`Terms of service` },
 	{ href: LEGAL_URLS.privacy, label: t`Privacy policy` },

@@ -2708,6 +2708,7 @@ msgstr ""
 msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
 msgstr ""
 
+#: src/features/docs/header.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
@@ -3205,6 +3206,7 @@ msgstr "클라이언트 ID"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -3600,6 +3602,7 @@ msgstr "대화 이름"
 msgid "Conversations"
 msgstr "대화"
 
+#: src/features/docs/mdx-components.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3625,6 +3628,10 @@ msgstr "직업에 대한 이력서 복사"
 #: src/features/career/workspace/apply.tsx
 msgid "Copy answers"
 msgstr "답변 복사"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Copy code"
+msgstr ""
 
 #. Action button to copy two-factor backup codes to clipboard
 #: src/dialogs/auth/enable-two-factor.tsx
@@ -4906,6 +4913,7 @@ msgstr "해고하다"
 msgid "DNS records"
 msgstr ""
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "문서"
@@ -4917,6 +4925,11 @@ msgstr "문서 메뉴: {name}"
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "문서 유형"
+
+#: src/features/docs/layout.tsx
+#: src/features/docs/sidebar.tsx
+msgid "Documentation"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -6250,6 +6263,10 @@ msgstr "집에 가세요"
 msgid "Go to dashboard"
 msgstr "대시보드로 이동"
 
+#: src/features/docs/article.tsx
+msgid "Go to the introduction"
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "Go to your plan"
 msgstr ""
@@ -6747,6 +6764,10 @@ msgstr ""
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
 msgstr "추론됨"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Info"
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Inline"
@@ -7490,6 +7511,10 @@ msgstr "입사지원 바로가기"
 msgid "Link to application…"
 msgstr "입사지원서 링크…"
 
+#: src/features/docs/mdx-components.tsx
+msgid "Link to this section"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Link turned off. The address is kept"
 msgstr "링크가 사용 중지되었습니다. 주소는 유지됩니다"
@@ -8056,6 +8081,10 @@ msgstr "추가 서식"
 msgid "More options"
 msgstr "추가 옵션"
 
+#: src/features/docs/article.tsx
+msgid "More pages"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "좀 더 개인적인"
@@ -8373,6 +8402,10 @@ msgstr ""
 msgid "Newest payments started in this period. Search finds any customer."
 msgstr ""
 
+#: src/features/docs/article.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr ""
@@ -8594,6 +8627,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "미해결 문제 없음"
+
+#: src/features/docs/sidebar.tsx
+msgid "No pages match “{term}”."
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "No paid pass running"
@@ -8867,6 +8904,7 @@ msgid "Not written yet"
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
+#: src/features/docs/mdx-components.tsx
 msgid "Note"
 msgstr "정보"
 
@@ -9038,6 +9076,10 @@ msgstr ""
 msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
 msgstr ""
 
+#: src/features/docs/toc.tsx
+msgid "On this page"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "켜짐. 링크가 있는 사람은 누구나 웹 페이지를 볼 수 있습니다."
@@ -9156,6 +9198,10 @@ msgstr "브리핑 열기"
 msgid "Open customer"
 msgstr ""
 
+#: src/features/docs/header.tsx
+msgid "Open dashboard"
+msgstr ""
+
 #. Button label to open the user's default email app
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Open email app"
@@ -9178,6 +9224,7 @@ msgstr "편집기에서 열기"
 msgid "Open in Offers"
 msgstr "오퍼에서 열기"
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
 msgstr ""
@@ -9253,6 +9300,7 @@ msgid "Optional for local Ollama"
 msgstr "로컬 Ollama의 경우 선택 사항"
 
 #: src/components/ui/combobox.tsx
+#: src/features/docs/mdx-components.tsx
 #: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "옵션"
@@ -9394,6 +9442,7 @@ msgid "Page 1 · {formatLabel}"
 msgstr "페이지 1 · {formatLabel}"
 
 #: src/components/layout/not-found-screen.tsx
+#: src/features/docs/article.tsx
 msgid "Page not found"
 msgstr "페이지를 찾을 수 없음"
 
@@ -10015,6 +10064,10 @@ msgstr "미리보기 크기"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "{0} 미리보기 · 클릭하여 적용"
+
+#: src/features/docs/article.tsx
+msgid "Previous"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "Previous 7 days"
@@ -11248,6 +11301,7 @@ msgstr ""
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "“{name}”를 폐지했습니다. 이를 사용하는 앱은 이제 작동이 중지됩니다."
 
+#: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - 홈페이지로 이동"
@@ -11728,6 +11782,10 @@ msgstr ""
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "역할, 회사 또는 연락처 검색"
+
+#: src/features/docs/sidebar.tsx
+msgid "Search the docs"
+msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
@@ -12336,6 +12394,7 @@ msgstr "건너뛰고 업로드"
 msgid "Skip to content"
 msgstr "콘텐츠로 건너뛰기"
 
+#: src/features/docs/layout.tsx
 #: src/routes/_home/route.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Skip to main content"
@@ -13707,6 +13766,10 @@ msgstr "이 페이지는 열로 구성되어 있어 텍스트가 순서에 맞�
 msgid "This page is very densely packed."
 msgstr "이 페이지는 내용이 매우 빽빽하게 채워져 있습니다."
 
+#: src/features/docs/article.tsx
+msgid "This page may have moved. Search the list of pages, or start from the introduction."
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "This payment didn't go through"
 msgstr ""
@@ -13888,6 +13951,7 @@ msgid "Timing the plan"
 msgstr "계획 시간 배분 중"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Tip"
 msgstr "팁"
 
@@ -14772,6 +14836,7 @@ msgid "Walk in ready"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Warning"
 msgstr "경고"
 

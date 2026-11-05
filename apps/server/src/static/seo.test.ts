@@ -65,3 +65,9 @@ describe("localized sitemap", () => {
 		expect(xml).not.toContain("/dashboard");
 	});
 });
+
+it("lists the docs pages in the pages sitemap, without language alternates", async () => {
+	const xml = await handlePagesSitemap(["/docs", "/docs/guides/editor-overview"]).text();
+	expect(xml).toContain("<url><loc>https://rezumi.app/docs</loc></url>");
+	expect(xml).toContain("<url><loc>https://rezumi.app/docs/guides/editor-overview</loc></url>");
+});
