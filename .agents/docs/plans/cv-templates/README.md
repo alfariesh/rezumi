@@ -38,6 +38,7 @@ Status: ⬜ belum mulai · 🟡 berjalan/sebagian · ✅ selesai · ⛔ diblokir
 | 05    | Paket: template gratis baru, fitur logo tools        | 03              | ✅     |
 | 06    | Polesan desain, contoh galeri, dokumentasi, DOCX     | 03              | ✅     |
 | 07    | QA akhir: ATS, matriks visual, mobile, optimasi      | 04, 05, 06      | 🟡     |
+| 08    | Perluasan: 20 template baru (total 36)               | 01–07           | ✅     |
 
 ### Phase 01 — Fondasi
 
@@ -152,6 +153,12 @@ Sisa:
 - [ ] Ukuran bundel mobile. Diukur dari berkas (tanpa menjalankan mobile): data ikon Standar 1,20 MB, Rounded 1,62 MB, Sharp 1,13 MB = 3,95 MB mentah. Metro (rilis native tanpa pemecahan bundel) memasukkan ketiganya ke satu bundel lewat `iconFiles` (`import()` hanya menunda eksekusi, tidak mengecualikan). Selain itu `apps/mobile/src/features/write/pickers.tsx` meng-import `@rezumi/pdf/icons` secara statis, jadi ±2.491 ikon Standar diurai + di-`expandIcon` begitu modul layar tulis dimuat. Saran (dikerjakan bersama pemilih ikon mobile Phase 04, file yang sama): pakai `loadIconGlyphs(style)` dari `@rezumi/pdf/icon-glyphs` saat pemilih dibuka, lalu ukur `npx expo export --platform ios` sebelum/sesudah. Mengecilkan bundel itu sendiri (mis. data ikon sebagai aset) bertentangan dengan render offline (bagian 9 `02-teknis.md`); putuskan setelah diukur.
 - [ ] Tes mobile `scripts/layout.test.mjs`: penyebabnya `ui/layout.tsx` me-`require("../../assets/avatar-placeholder.webp")` tanpa fixture di tes. Fixture ditambahkan ke `componentFixtures`; **belum dijalankan** (permintaan pemilik). Jalankan `node apps/mobile/scripts/layout.test.mjs`.
 - [x] `poppler` 26.10.0 dipasang (`brew install poppler`, izin pemilik 2026-11-04): 14 tes `export-text` kini lulus lokal.
+
+### Phase 08 — Perluasan 20 template (2026-11-05)
+
+Selesai: 12 satu kolom (Anggrek, Ivory, Pilar, Bingkai, Cerah, Mozaik, Nusa, Selaras, Teras, Cobalt, Kontras, Lintasan) dan 8 dua kolom (Graphite, Awan, Menara, Tepi, Sekar, Marquee, Fajar, Cahaya); spesifikasi di `01-desain.md` → "Perluasan 2026-11-05". Setiap template punya `semantic.ts`, entri galeri web (deskripsi Lingui + terjemahan id-ID), `DOCX_LOOKS` (Graphite memakai isian sidebar baru `charcoal`), preset, persona fiktif dwibahasa tanpa foto, contoh galeri EN + ID (semuanya satu halaman A4) dan gambar dokumen. Matriks 20 × 5 varian dicek dengan mata.
+
+Sisa: tangkapan layar galeri di `docs/guides/choosing-a-template.mdx` dan `quickstart.mdx` masih menunjukkan "16 of 16"; foto Unsplash untuk persona baru (perlu sumber dan lisensi); app mobile (keputusan "web dulu"). Kartu sidebar Awan/Sekar bisa menyisakan potongan padding kosong di halaman berikutnya bila isi sidebar pas di dasar halaman (Forme membelah padding).
 
 ## Aturan wajib untuk setiap sesi agent
 

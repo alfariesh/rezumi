@@ -1,6 +1,12 @@
 import type { TemplatePageProps } from "../../document";
 import type { Style } from "../../forme/style-types";
-import type { TemplateColorRoles, TemplateFeatures, TemplateFeatureStyleSlots, TemplateStyleSlots } from "./types";
+import type {
+	TemplateColorRoles,
+	TemplateFeatures,
+	TemplateFeatureStyleSlots,
+	TemplateStyleContext,
+	TemplateStyleSlots,
+} from "./types";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { Page, View } from "#react-pdf-renderer";
@@ -159,6 +165,12 @@ export const useLineupBase = () => {
 		return { ...base, tokens, colors, tracking, lineup };
 	}, [base]);
 };
+
+/** A style slot that reads one way in the main column and another in the sidebar. */
+export const bySide =
+	(main: Style, sidebar: Style) =>
+	({ placement }: TemplateStyleContext): Style =>
+		placement === "sidebar" ? sidebar : main;
 
 type TwoColumnLayoutProps = TemplatePageProps & {
 	template: LineupTemplate;

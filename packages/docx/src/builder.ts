@@ -129,8 +129,11 @@ type DocxLook = {
 	heading: HeadingLook;
 	/** Sidebar titles, when they differ from the main column's. */
 	sidebarHeading?: HeadingLook;
-	/** "solid" fills the sidebar with the accent (text inverts), "tint" with a faint wash of it. */
-	sidebarFill?: "solid" | "tint";
+	/**
+	 * "solid" fills the sidebar with the accent (text inverts), "tint" with a faint wash of it, "charcoal" with a neutral
+	 * near-black whatever the accent (Graphite; text inverts, titles keep the accent).
+	 */
+	sidebarFill?: "solid" | "tint" | "charcoal";
 	/** A hairline between the columns (Linen). */
 	columnRule?: true;
 	/** An accent rule along the top edge of every page (Summit). */
@@ -139,6 +142,9 @@ type DocxLook = {
 	/** The summary set larger and muted, as the PDF's standfirst (Aksara). */
 	standfirst?: true;
 };
+
+/** Graphite's sidebar, as in the PDF (`packages/pdf/src/templates/graphite`). */
+const CHARCOAL_HEX = "262A31";
 
 /** The small tracked capital label most templates title their sections with. */
 const label = (color: HeadingLook["color"] = "accent", caps = 0.12): HeadingLook => ({
@@ -215,6 +221,102 @@ const DOCX_LOOKS: Record<Template, DocxLook> = {
 	senja: {
 		header: { name: 2.6, headline: "kicker" },
 		heading: { size: ["heading", 1.05], color: "ink", rule: { edge: "left", color: "accent", width: 4 } },
+	},
+	anggrek: {
+		header: { align: "center", name: 2.4, headline: "kicker" },
+		heading: { size: ["body", 0.9], color: "accent", caps: 0.06, rule: hairlineUnder },
+	},
+	ivory: { header: { name: 2.75, headline: "muted" }, heading: { size: ["heading", 1.18], color: "ink" } },
+	pilar: {
+		header: { name: 2.15, headline: "accent" },
+		heading: { ...label("ink", 0.05), size: ["body", 0.9], rule: { edge: "left", color: "accent", width: 2 } },
+	},
+	bingkai: {
+		header: { name: 1.95, headline: "muted", rule: true },
+		heading: {
+			size: ["body", 0.92],
+			color: "accent",
+			caps: 0.05,
+			rule: { edge: "bottom", color: "accent", width: 0.75 },
+		},
+	},
+	cerah: { header: { name: 2.1, headline: "accent" }, heading: { size: ["body", 1.02], color: "accent", band: true } },
+	mozaik: { header: { name: 2.3, headline: "muted", band: true }, heading: { ...label(), band: true } },
+	nusa: {
+		header: { name: 2.4, headline: "accent" },
+		heading: { ...label("accent", 0.05), size: ["body", 0.84], rule: { edge: "bottom", color: "accent", width: 1 } },
+	},
+	selaras: {
+		header: { name: 2.05, headline: "accent", rule: true },
+		heading: { size: ["heading", 0.98], color: "ink", rule: { edge: "left", color: "accent", width: 3 } },
+	},
+	teras: {
+		header: { name: 2.05, headline: "accent" },
+		heading: { ...label("accent", 0.05), size: ["body", 0.86], rule: { edge: "bottom", color: "accent", width: 2 } },
+	},
+	cobalt: {
+		header: { name: 2.2, headline: "accent" },
+		heading: {
+			size: ["body", 0.95],
+			color: "ink",
+			caps: 0.05,
+			rule: { edge: "bottom", color: "hairline", width: 0.9 },
+		},
+	},
+	kontras: {
+		header: { name: 3.1, headline: "kicker" },
+		heading: { size: ["heading", 1.2], color: "ink", rule: { edge: "bottom", color: "hairline", width: 1 } },
+	},
+	lintasan: {
+		header: { name: 2.1, headline: "accent" },
+		heading: { size: ["heading", 0.98], color: "ink", rule: hairlineUnder },
+	},
+	graphite: {
+		header: { name: 2.25, headline: "muted" },
+		heading: { size: ["heading", 1.05], color: "ink", rule: { edge: "bottom", color: "accent", width: 1.5 } },
+		sidebarHeading: label(),
+		sidebarFill: "charcoal",
+	},
+	awan: {
+		header: { name: 1.65, headline: "accent", contactColumn: true },
+		heading: { size: ["heading", 1.05], color: "ink" },
+		sidebarHeading: label(),
+		sidebarFill: "tint",
+	},
+	menara: {
+		header: { name: 1.7, headline: "muted", contactColumn: true },
+		heading: { size: ["heading", 1.05], color: "ink", rule: hairlineUnder },
+		sidebarHeading: label(),
+		sidebarFill: "tint",
+	},
+	tepi: {
+		header: { name: 2.25, headline: "accent", rule: true },
+		heading: { size: ["heading", 1.02], color: "ink" },
+		sidebarHeading: label("muted"),
+		columnRule: true,
+	},
+	sekar: {
+		header: { align: "center", name: 2.35, headline: "kicker", rule: true },
+		heading: { size: ["heading", 1.18], color: "ink" },
+		sidebarHeading: label(),
+		sidebarFill: "tint",
+	},
+	marquee: {
+		header: { name: 2.9, headline: "muted", rule: true },
+		heading: { size: ["heading", 1.08], color: "ink", rule: hairlineUnder },
+		sidebarHeading: label(),
+		sidebarFill: "tint",
+	},
+	fajar: {
+		header: { name: 2.15, headline: "accent", rule: true },
+		heading: { size: ["heading", 1.02], color: "ink", rule: { edge: "bottom", color: "accent", width: 0.75 } },
+		sidebarHeading: label(),
+	},
+	cahaya: {
+		header: { name: 2.3, headline: "accent" },
+		heading: { ...label(), rule: hairlineUnder },
+		sidebarHeading: label("ink"),
+		columnRule: true,
 	},
 };
 
@@ -514,9 +616,17 @@ export function buildDocument(data: ResumeData, resolveTitle?: SectionTitleResol
 	const mainPalette = paletteOn(textColorHex, bgColorHex, colorHex);
 	const onAccentHex = isDarkColor(`#${colorHex}`) ? "FFFFFF" : textColorHex;
 	const accentPalette = paletteOn(onAccentHex, colorHex, onAccentHex);
+	const charcoalPalette = paletteOn("FFFFFF", CHARCOAL_HEX, colorHex);
 	const sidebarShadingHex =
-		look.sidebarFill === "solid" ? colorHex : look.sidebarFill === "tint" ? mainPalette.wash : undefined;
-	const sidebarPalette = look.sidebarFill === "solid" ? accentPalette : mainPalette;
+		look.sidebarFill === "solid"
+			? colorHex
+			: look.sidebarFill === "tint"
+				? mainPalette.wash
+				: look.sidebarFill === "charcoal"
+					? CHARCOAL_HEX
+					: undefined;
+	const sidebarPalette =
+		look.sidebarFill === "solid" ? accentPalette : look.sidebarFill === "charcoal" ? charcoalPalette : mainPalette;
 
 	const mainHeading = headingStyleOf(look.heading, mainPalette, type);
 	const sidebarHeading = headingStyleOf(look.sidebarHeading ?? look.heading, sidebarPalette, type);

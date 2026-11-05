@@ -81,7 +81,7 @@ A skill item has no `description` field. Use `keywords` for tools or topics, and
 - **Rich text is HTML.** Fields such as `description` and `summary.content` hold HTML strings.
 - **IDs.** Every item and custom section needs a unique `id`. Use a UUID.
 - **Cover letters.** The schema still accepts custom sections of type `cover-letter` so older exports stay valid. When you save or import such a resume, Rezumi moves each letter into a cover letter of its own and removes the section. See [Writing a cover letter](/guides/writing-a-cover-letter).
-- **Templates.** `metadata.template` is one of the 16 templates: `meridian`, `sterling`, `aksara`, `atlas`, `tunas`, `summit`, `cendekia`, `wibawa`, `tenun`, `vector`, `kirana`, `linen`, `horizon`, `jejak`, `purnama` or `senja`. An ID from the earlier template set, such as `onyx` or `azurill`, is still read and saved as the template that replaced it.
+- **Templates.** `metadata.template` is one of the 36 templates: `meridian`, `sterling`, `aksara`, `atlas`, `tunas`, `summit`, `cendekia`, `wibawa`, `tenun`, `vector`, `anggrek`, `ivory`, `pilar`, `bingkai`, `cerah`, `mozaik`, `nusa`, `selaras`, `teras`, `cobalt`, `kontras`, `lintasan`, `kirana`, `linen`, `horizon`, `jejak`, `purnama`, `senja`, `graphite`, `awan`, `menara`, `tepi`, `sekar`, `marquee`, `fajar` or `cahaya`. An ID from the earlier template set, such as `onyx` or `azurill`, is still read and saved as the template that replaced it.
 - **No version field.** Resume objects have no top-level `version` or `$schema` property. Don't add one; point your tools at the schema URL instead.
 
 ## Validate resume data
@@ -4387,12 +4387,32 @@ The complete schema, generated from the source code of this version.
 						"wibawa",
 						"tenun",
 						"vector",
+						"anggrek",
+						"ivory",
+						"pilar",
+						"bingkai",
+						"cerah",
+						"mozaik",
+						"nusa",
+						"selaras",
+						"teras",
+						"cobalt",
+						"kontras",
+						"lintasan",
 						"kirana",
 						"linen",
 						"horizon",
 						"jejak",
 						"purnama",
-						"senja"
+						"senja",
+						"graphite",
+						"awan",
+						"menara",
+						"tepi",
+						"sekar",
+						"marquee",
+						"fajar",
+						"cahaya"
 					]
 				},
 				"layout": {
