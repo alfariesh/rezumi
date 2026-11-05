@@ -32,7 +32,7 @@ const useSterling = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				lineHeight: 1.25,
-				color: tokens.accent,
+				color: tokens.accentText,
 				borderBottomWidth: 0.75,
 				borderBottomColor: tokens.accent,
 				paddingBottom: size.body * 0.2,

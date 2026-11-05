@@ -72,7 +72,7 @@ const useSummit = (): LineupTemplate => {
 				fontSize: size.label * 1.05,
 				fontWeight: "600",
 				textTransform: "uppercase",
-				color: tokens.accent,
+				color: tokens.accentText,
 				...tracking(0.06, size.label),
 			},
 			contactList: { flexDirection: r.row, flexWrap: "wrap", columnGap: size.meta * 1.7, rowGap: size.meta * 0.35 },
@@ -80,6 +80,6 @@ const useSummit = (): LineupTemplate => {
 			contactText: { color: tokens.muted, fontSize: size.meta },
 		});
 
-		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accent } } };
+		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accentText } } };
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);
 };

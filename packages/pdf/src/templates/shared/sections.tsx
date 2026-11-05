@@ -82,7 +82,7 @@ import { createRtlStyleHelpers } from "./rtl";
 import { getInlineItemWebsiteUrl, shouldRenderSeparateItemWebsite } from "./section-links";
 import { hasSplitRowText } from "./split-row";
 import { composeStyles, mergeStyles } from "./styles";
-import { mixColors } from "./tokens";
+import { mixColors, readableAccent } from "./tokens";
 
 type SectionItemsContextValue = {
 	itemStyle: StyleInput;
@@ -1047,6 +1047,8 @@ const KeywordTags = ({ keywords }: { keywords: readonly string[] }) => {
 	// fill is mixed into the colour behind it here: Forme lays a translucent fill over white, whatever the background.
 	const band = placement === "sidebar" ? colors.sidebarBackground : undefined;
 	const ink = band ? (colors.sidebarForeground ?? colors.foreground) : colors.primary;
+	// The fill keeps the accent; a logo drawn in it takes the readable accent so a light accent still shows.
+	const logoInk = band ? ink : readableAccent(ink, colors.background);
 	const defaultTagStyle = {
 		flexDirection: row,
 		alignItems: "center",
@@ -1064,7 +1066,12 @@ const KeywordTags = ({ keywords }: { keywords: readonly string[] }) => {
 				return (
 					<View key={index} style={composeStyles(defaultTagStyle, tagStyle)}>
 						{logo && (
-							<ResumeIcon name={logo} size={fontSize} color={ink} variant={iconDesignOf(data.metadata.design).style} />
+							<ResumeIcon
+								name={logo}
+								size={fontSize}
+								color={logoInk}
+								variant={iconDesignOf(data.metadata.design).style}
+							/>
 						)}
 						<Small semanticField="keywords">{keyword}</Small>
 					</View>

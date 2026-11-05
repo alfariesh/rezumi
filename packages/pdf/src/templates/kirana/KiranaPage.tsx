@@ -40,7 +40,7 @@ const useKirana = (): LineupTemplate => {
 			fontWeight: tokens.headingWeight,
 			textTransform: "uppercase",
 			lineHeight: 1.2,
-			color: tokens.accent,
+			color: tokens.accentText,
 			...tracking(0.06, size.label),
 		};
 
@@ -66,7 +66,7 @@ const useKirana = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				...tracking(-0.015, size.heading * 2),
 			},
-			headerHeadline: { fontSize: size.body * 1.1, color: tokens.accent, fontWeight: "500" },
+			headerHeadline: { fontSize: size.body * 1.1, color: tokens.accentText, fontWeight: "500" },
 			contactList: { flexDirection: r.row, flexWrap: "wrap", columnGap: size.meta * 1.6, rowGap: size.meta * 0.35 },
 			contactItem: { flexDirection: r.row, alignItems: "center", columnGap: size.meta * 0.45 },
 			contactText: { color: tokens.muted, fontSize: size.meta },
@@ -78,10 +78,15 @@ const useKirana = (): LineupTemplate => {
 			styles: {
 				...styles,
 				sectionHeading: bySide(
-					{ fontSize: size.heading * 1.02, fontWeight: tokens.headingWeight, lineHeight: 1.2, color: tokens.accent },
+					{
+						fontSize: size.heading * 1.02,
+						fontWeight: tokens.headingWeight,
+						lineHeight: 1.2,
+						color: tokens.accentText,
+					},
 					label,
 				),
-				icon: { size: size.meta, color: tokens.accent },
+				icon: { size: size.meta, color: tokens.accentText },
 			},
 		};
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);

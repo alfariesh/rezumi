@@ -34,7 +34,7 @@ const useHorizon = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				lineHeight: 1.2,
-				color: tokens.accent,
+				color: tokens.accentText,
 				...tracking(0.06, size.label),
 			},
 			sectionHeadingContainer: { alignItems: "center", columnGap: size.label * 1.25 },
@@ -73,7 +73,7 @@ const useHorizon = (): LineupTemplate => {
 			features: { stackSidebarItemHeader: true },
 			styles: {
 				...styles,
-				icon: { size: size.meta, color: tokens.accent },
+				icon: { size: size.meta, color: tokens.accentText },
 				// The contact line sits on the band.
 				contactIcon: { size: size.meta, color: onBand },
 				contactLabel: { color: onBandMuted },

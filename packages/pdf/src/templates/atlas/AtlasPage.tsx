@@ -43,7 +43,7 @@ const useAtlas = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				lineHeight: (size.body * 1.45) / size.label,
-				color: tokens.accent,
+				color: tokens.accentText,
 				...tracking(0.06, size.label),
 			},
 			sectionItems: { flex: 1, rowGap: metrics.gapY(1.3) },
@@ -72,6 +72,6 @@ const useAtlas = (): LineupTemplate => {
 			contactText: { color: tokens.muted, fontSize: size.meta },
 		});
 
-		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accent } } };
+		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accentText } } };
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);
 };
