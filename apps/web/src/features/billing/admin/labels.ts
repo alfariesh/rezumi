@@ -1,5 +1,7 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import { t } from "@lingui/core/macro";
+import { planIdSchema } from "@rezumi/schema/billing";
+import { getPlanName } from "../plan";
 import { formatPrice } from "../purchase";
 
 export type AdminCustomer = RouterOutput["billing"]["admin"]["customer"];
@@ -127,11 +129,44 @@ export function describeEvent(event: AdminCustomer["events"][number]): { title: 
 	}
 }
 
+type SubscriptionSnapshot = {
+	status?: AdminSubscription["status"];
+	planId?: string;
+	interval?: string;
+	cancelAtPeriodEnd?: boolean;
+};
+
+const asRecord = (value: unknown) =>
+	value && typeof value === "object" ? (value as Record<string, unknown>) : undefined;
+
+/** What a subscription change was, from its audit details. Older entries hold less and may read as a plain change. */
+function describeSubscriptionChange(details: unknown) {
+	const record = asRecord(details);
+	const from = asRecord(record?.from) as SubscriptionSnapshot | undefined;
+	const to = asRecord(record?.to) as SubscriptionSnapshot | undefined;
+	if (!to) return t`Subscription changed`;
+	if (!from) return t`Subscription started`;
+	if (to.status && to.status !== from.status) {
+		const status = getSubscriptionStatusLabel({ status: to.status, cancelAtPeriodEnd: to.cancelAtPeriodEnd ?? false });
+		return t`Subscription now: ${status}`;
+	}
+	if (from.cancelAtPeriodEnd === false && to.cancelAtPeriodEnd === true) return t`Set to end at the period end`;
+	if (from.cancelAtPeriodEnd === true && to.cancelAtPeriodEnd === false) return t`Cancellation undone`;
+	const planId = planIdSchema.safeParse(to.planId);
+	const intervalChanged = from.interval !== undefined && from.interval !== to.interval;
+	if (planId.success && (from.planId !== to.planId || intervalChanged)) {
+		const plan = getPlanName(planId.data);
+		return to.interval === "year" ? t`Plan changed to ${plan}, yearly` : t`Plan changed to ${plan}, monthly`;
+	}
+	if (record?.pendingPlanChange === true) return t`Plan change set for the renewal`;
+	return t`Subscription changed`;
+}
+
 /** An audit entry in words. Unknown actions show their code. */
-export function describeAudit(action: string): { title: string; tone: HistoryTone } {
-	switch (action) {
+export function describeAudit(entry: { action: string; details?: unknown }): { title: string; tone: HistoryTone } {
+	switch (entry.action) {
 		case "payment.fulfilled":
-			return { title: t`Payment applied (credits granted)`, tone: "success" };
+			return { title: t`Payment applied`, tone: "success" };
 		case "payment.benefits_revoked":
 			return { title: t`Credits taken back`, tone: "warning" };
 		case "payment.refund_recorded":
@@ -143,7 +178,7 @@ export function describeAudit(action: string): { title: string; tone: HistoryTon
 		case "refund.failed":
 			return { title: t`Refund refused by Polar`, tone: "danger" };
 		case "subscription.changed":
-			return { title: t`Subscription changed`, tone: "default" };
+			return { title: describeSubscriptionChange(entry.details), tone: "default" };
 		case "subscription.revoked":
 			return { title: t`Subscription ended by an admin`, tone: "danger" };
 		case "period.granted":
@@ -153,6 +188,6 @@ export function describeAudit(action: string): { title: string; tone: HistoryTon
 		case "credits.adjusted":
 			return { title: t`Credits adjusted`, tone: "default" };
 		default:
-			return { title: action, tone: "default" };
+			return { title: entry.action, tone: "default" };
 	}
 }

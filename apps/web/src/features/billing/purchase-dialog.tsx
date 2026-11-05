@@ -64,6 +64,8 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 	const breakpoint = useBreakpoint();
 	const target = choice ?? { planId: "plus" as const, interval: "month" as const };
 	const kind = getPurchaseKind(subscription, target);
+	// The same plan, billed monthly instead of yearly or the other way round.
+	const billingOnly = subscription?.planId === target.planId;
 	// One key per attempt: a double click or a retried request returns the same checkout instead of a second one.
 	const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
 	const [redirecting, setRedirecting] = useState(false);
@@ -119,9 +121,11 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 					toast.add({
 						type: "success",
 						description:
-							effective === "now"
-								? t`Your plan is now ${getPlanName(target.planId)}.`
-								: t`Your plan changes at your next renewal.`,
+							effective !== "now"
+								? t`Your plan changes at your next renewal.`
+								: billingOnly
+									? t`You're now billed yearly.`
+									: t`Your plan is now ${getPlanName(target.planId)}.`,
 					});
 					reset();
 					onClose();
@@ -189,10 +193,33 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 								<li className="flex gap-2">
 									<Icon name="lightning" size={18} className="mt-0.5 shrink-0 text-muted" />
 									<span>
-										<Trans>
-											{name} starts now. You're charged the difference for the rest of this period with your saved
-											payment method, then the new price at each renewal.
-										</Trans>
+										{billingOnly ? (
+											<Trans>
+												Yearly billing starts now. You're charged the difference for the rest of this period with your
+												saved payment method, then the yearly price at each renewal.
+											</Trans>
+										) : (
+											<Trans>
+												{name} starts now. You're charged the difference for the rest of this period with your saved
+												payment method, then the new price at each renewal.
+											</Trans>
+										)}
+									</span>
+								</li>
+							) : billingOnly ? (
+								<li className="flex gap-2">
+									<Icon name="calendar-blank" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										{renewal ? (
+											<Trans>
+												Yearly billing stays until {renewal}; monthly billing starts then. Nothing is charged now.
+											</Trans>
+										) : (
+											<Trans>
+												Yearly billing stays until your next renewal; monthly billing starts then. Nothing is charged
+												now.
+											</Trans>
+										)}
 									</span>
 								</li>
 							) : (

@@ -2823,6 +2823,10 @@ msgstr "Batalkan langganan"
 msgid "Cancel your subscription?"
 msgstr "Batalkan langgananmu?"
 
+#: src/features/billing/admin/labels.ts
+msgid "Cancellation undone"
+msgstr "Pembatalan diurungkan"
+
 #: src/features/billing/purchase.ts
 msgid "Cancelled"
 msgstr "Dibatalkan"
@@ -9647,8 +9651,8 @@ msgid "Payment"
 msgstr "Pembayaran"
 
 #: src/features/billing/admin/labels.ts
-msgid "Payment applied (credits granted)"
-msgstr "Pembayaran diterapkan (kredit diberikan)"
+msgid "Payment applied"
+msgstr "Pembayaran diterapkan"
 
 #: src/features/billing/admin/labels.ts
 msgid "Payment failed"
@@ -9799,6 +9803,18 @@ msgstr "Rencanakan ulang"
 #: src/features/billing/purchase.ts
 msgid "Plan change"
 msgstr "Ganti paket"
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan change set for the renewal"
+msgstr "Ganti paket dijadwalkan saat perpanjangan"
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan changed to {plan}, monthly"
+msgstr "Paket diganti ke {plan}, bulanan"
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan changed to {plan}, yearly"
+msgstr "Paket diganti ke {plan}, tahunan"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan my preparation"
@@ -12059,6 +12075,10 @@ msgstr "Atur kata sandi"
 msgid "Set the document language when exporting."
 msgstr "Atur bahasa dokumen saat mengekspor."
 
+#: src/features/billing/admin/labels.ts
+msgid "Set to end at the period end"
+msgstr "Diatur berhenti di akhir periode"
+
 #: src/features/career/today.tsx
 msgid "Set up discovery"
 msgstr "Atur pencarian peluang"
@@ -12815,6 +12835,14 @@ msgstr "Langganan berubah"
 #: src/features/billing/admin/labels.ts
 msgid "Subscription ended by an admin"
 msgstr "Langganan dihentikan admin"
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription now: {status}"
+msgstr "Langganan sekarang: {status}"
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription started"
+msgstr "Langganan dimulai"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
@@ -15316,6 +15344,18 @@ msgstr "tahunan"
 msgid "Yearly"
 msgstr "Tahunan"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing starts now. You're charged the difference for the rest of this period with your saved payment method, then the yearly price at each renewal."
+msgstr "Tagihan tahunan mulai sekarang. Selisih untuk sisa periode ini ditagihkan ke metode pembayaran yang tersimpan, lalu harga tahunan di setiap perpanjangan."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing stays until {renewal}; monthly billing starts then. Nothing is charged now."
+msgstr "Tagihan tahunan berlaku sampai {renewal}; setelah itu tagihan bulanan dimulai. Tidak ada tagihan sekarang."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing stays until your next renewal; monthly billing starts then. Nothing is charged now."
+msgstr "Tagihan tahunan berlaku sampai perpanjangan berikutnya; setelah itu tagihan bulanan dimulai. Tidak ada tagihan sekarang."
+
 #: src/features/billing/buy-plans.tsx
 msgid "Yearly saves up to {saving}%"
 msgstr "Tahunan hemat sampai {saving}%"
@@ -15423,6 +15463,10 @@ msgstr "Anda akan selalu melihatnya di Hari ini. Email bergantung pada pengatura
 #: src/features/career/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "Anda sedang melihat versi tersimpan. Versi ini tidak dapat diedit."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "You're now billed yearly."
+msgstr "Sekarang kamu ditagih tahunan."
 
 #: src/features/resume/builder/draft.ts
 msgid "You're offline. Reconnect to save your changes before leaving."

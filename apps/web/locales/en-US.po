@@ -2818,6 +2818,10 @@ msgstr "Cancel subscription"
 msgid "Cancel your subscription?"
 msgstr "Cancel your subscription?"
 
+#: src/features/billing/admin/labels.ts
+msgid "Cancellation undone"
+msgstr "Cancellation undone"
+
 #: src/features/billing/purchase.ts
 msgid "Cancelled"
 msgstr "Cancelled"
@@ -9642,8 +9646,8 @@ msgid "Payment"
 msgstr "Payment"
 
 #: src/features/billing/admin/labels.ts
-msgid "Payment applied (credits granted)"
-msgstr "Payment applied (credits granted)"
+msgid "Payment applied"
+msgstr "Payment applied"
 
 #: src/features/billing/admin/labels.ts
 msgid "Payment failed"
@@ -9794,6 +9798,18 @@ msgstr "Plan again"
 #: src/features/billing/purchase.ts
 msgid "Plan change"
 msgstr "Plan change"
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan change set for the renewal"
+msgstr "Plan change set for the renewal"
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan changed to {plan}, monthly"
+msgstr "Plan changed to {plan}, monthly"
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan changed to {plan}, yearly"
+msgstr "Plan changed to {plan}, yearly"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan my preparation"
@@ -12054,6 +12070,10 @@ msgstr "Set password"
 msgid "Set the document language when exporting."
 msgstr "Set the document language when exporting."
 
+#: src/features/billing/admin/labels.ts
+msgid "Set to end at the period end"
+msgstr "Set to end at the period end"
+
 #: src/features/career/today.tsx
 msgid "Set up discovery"
 msgstr "Set up discovery"
@@ -12810,6 +12830,14 @@ msgstr "Subscription changed"
 #: src/features/billing/admin/labels.ts
 msgid "Subscription ended by an admin"
 msgstr "Subscription ended by an admin"
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription now: {status}"
+msgstr "Subscription now: {status}"
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription started"
+msgstr "Subscription started"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
@@ -15311,6 +15339,18 @@ msgstr "yearly"
 msgid "Yearly"
 msgstr "Yearly"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing starts now. You're charged the difference for the rest of this period with your saved payment method, then the yearly price at each renewal."
+msgstr "Yearly billing starts now. You're charged the difference for the rest of this period with your saved payment method, then the yearly price at each renewal."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing stays until {renewal}; monthly billing starts then. Nothing is charged now."
+msgstr "Yearly billing stays until {renewal}; monthly billing starts then. Nothing is charged now."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing stays until your next renewal; monthly billing starts then. Nothing is charged now."
+msgstr "Yearly billing stays until your next renewal; monthly billing starts then. Nothing is charged now."
+
 #: src/features/billing/buy-plans.tsx
 msgid "Yearly saves up to {saving}%"
 msgstr "Yearly saves up to {saving}%"
@@ -15418,6 +15458,10 @@ msgstr "You'll always see it in Today. Email depends on your server's mail setup
 #: src/features/career/workspace/shell.tsx
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "You're looking at a saved version. It can't be edited."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "You're now billed yearly."
+msgstr "You're now billed yearly."
 
 #: src/features/resume/builder/draft.ts
 msgid "You're offline. Reconnect to save your changes before leaving."

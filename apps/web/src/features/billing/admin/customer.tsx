@@ -375,7 +375,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 		...data.audit.map((entry) => ({
 			id: entry.id,
 			at: entry.createdAt,
-			...describeAudit(entry.action),
+			...describeAudit(entry),
 			source: entry.actorUserId ? t`admin` : t`system`,
 			reason: entry.reason,
 		})),
