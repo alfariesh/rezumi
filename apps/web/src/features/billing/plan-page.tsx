@@ -16,7 +16,8 @@ import { creditCount, describeCreditEntry } from "./credits";
 import { PaymentHistorySection } from "./payment-history";
 import { PendingPaymentBanner } from "./pending-payment";
 import { getPlanName } from "./plan";
-import { usePlanDates } from "./purchase";
+import { isLiveSubscription, usePlanDates } from "./purchase";
+import { SubscriptionActions } from "./subscription-actions";
 import { PageHeader } from "@/components/layout/page-header";
 import { WidgetHeading, widgetActionClass } from "@/components/layout/widget-heading";
 import { SettingsRow, SettingsRows, SettingsSection } from "@/features/settings/section";
@@ -93,10 +94,29 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 	const titleId = useId();
 	const style = planFrame[plan.planId];
 	const paid = plan.planId !== "free";
-	const activeUntil = plan.currentPeriodEndsAt ? (
-		<Trans>Active until {formatDate(plan.currentPeriodEndsAt)}</Trans>
-	) : (
+	const subscription =
+		plan.source === "subscription" && isLiveSubscription(plan.subscription) ? plan.subscription : null;
+	const pending = subscription?.pendingChange;
+	const activeUntil = !plan.currentPeriodEndsAt ? (
 		<Trans>No end date</Trans>
+	) : subscription?.status === "past_due" ? (
+		<Trans>
+			The last payment didn't go through. Update your payment method to keep it; access is paused until then.
+		</Trans>
+	) : plan.renews ? (
+		pending ? (
+			<Trans>
+				Changes to {getPlanName(pending.planId)} on {formatDate(plan.currentPeriodEndsAt)}
+			</Trans>
+		) : subscription?.interval === "year" ? (
+			<Trans>Renews yearly on {formatDate(plan.currentPeriodEndsAt)}</Trans>
+		) : (
+			<Trans>Renews monthly on {formatDate(plan.currentPeriodEndsAt)}</Trans>
+		)
+	) : subscription ? (
+		<Trans>Cancelled; active until {formatDate(plan.currentPeriodEndsAt)}</Trans>
+	) : (
+		<Trans>Active until {formatDate(plan.currentPeriodEndsAt)}</Trans>
 	);
 
 	return (
@@ -251,8 +271,9 @@ type PlanSettingsProps = {
 };
 
 /**
- * Plan: a payment still to finish, what the account has now, until when and what comes next, the passes to buy, how
- * much of its limits it uses, its Rezumi AI credits, what's included and its payments. Buying happens on the web only.
+ * Plan: a checkout still to finish, what the account has now, when it renews or ends and what comes next, the plans to
+ * subscribe to or change to, how much of its limits it uses, its Rezumi AI credits, what's included and its payments.
+ * Subscribing happens on the web only.
  */
 export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 	const { data: plan, isPending } = useQuery(orpc.billing.summary.queryOptions());
@@ -282,6 +303,11 @@ export function PlanSettings({ selectedPlan }: PlanSettingsProps) {
 
 			<div className="grid gap-2">
 				<YourPlanSection plan={plan} formatDate={formatDate} />
+				<SubscriptionActions
+					subscription={plan.subscription}
+					formatDate={formatDate}
+					canManage={plan.purchaseBlockedBy !== "unavailable" && plan.purchaseBlockedBy !== "web_only"}
+				/>
 				<p className="px-1 text-sm text-muted">
 					<Trans>
 						When a plan ends, nothing is locked or deleted: every document stays open to edit, share and download as a

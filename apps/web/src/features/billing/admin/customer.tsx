@@ -28,20 +28,24 @@ import { cn } from "@rezumi/utils/style";
 import { getPlanName } from "../plan";
 import {
 	formatPrice,
-	getPaymentMethodName,
+	getPaymentReasonLabel,
 	getPaymentStatusColor,
 	getPaymentStatusLabel,
 	usePlanDates,
 } from "../purchase";
-import { describeAudit, describeEvent, getRefundWindow } from "./labels";
+import { describeAudit, describeEvent, formatMoney, getSubscriptionStatusLabel } from "./labels";
 import { AdminCard, StatWidget } from "./parts";
 import { ReasonDialog } from "./reason-dialog";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
 import { renderAsH1 } from "@/libs/typography";
 
-/** Whole Rupiah or days typed by the admin; null until it is a positive whole number. */
+/** Days typed by the admin; null until it is a positive whole number. */
 const wholeNumber = (text: string) => (/^\d{1,9}$/.test(text.trim()) ? Number(text.trim()) : null);
+
+/** An amount typed in plain units ("4.99", "59000"), as the currency's smallest unit; null until it reads as one. */
+const typedAmount = (text: string) =>
+	/^\d{1,9}([.,]\d{1,2})?$/.test(text.trim()) ? Math.round(Number(text.trim().replace(",", ".")) * 100) : null;
 
 type NumberInputProps = { label: string; value: string; onChange: (value: string) => void; placeholder?: string };
 
@@ -56,7 +60,7 @@ function NumberInput({ label, value, onChange, placeholder }: NumberInputProps) 
 
 /** Which dialog is open, and for what. */
 type Dialog =
-	| { kind: "refund" | "manual-refund"; payment: AdminPayment }
+	| { kind: "refund"; payment: AdminPayment }
 	| { kind: "revoke-period"; periodId: string }
 	| { kind: "grant-period" }
 	| { kind: "adjust-credits" }
@@ -68,12 +72,14 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 	const id = useId();
 	const [amount, setAmount] = useState("");
 	const [revoke, setRevoke] = useState(false);
+	const [endSubscription, setEndSubscription] = useState(false);
 	const [planId, setPlanId] = useState<PaidPlanId>("plus");
 	const [days, setDays] = useState("30");
 	const [expiresIn, setExpiresIn] = useState("30");
 	const reset = () => {
 		setAmount("");
 		setRevoke(false);
+		setEndSubscription(false);
 		setDays("30");
 		setExpiresIn("30");
 	};
@@ -92,9 +98,10 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 	};
 
 	const payment = dialog && "payment" in dialog ? dialog.payment : null;
+	const currency = payment?.currency ?? "usd";
 	const left = payment ? payment.amount - payment.refundedAmount : 0;
-	const typed = wholeNumber(amount);
-	const refundAmount = payment?.refundMode === "api_full" ? left : (typed ?? left);
+	const typed = typedAmount(amount);
+	const refundAmount = typed ?? left;
 	const partial = refundAmount < (payment?.amount ?? 0);
 	const amountOk = refundAmount > 0 && refundAmount <= left && (amount.trim() === "" || typed !== null);
 
@@ -105,7 +112,7 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 					<Checkbox.Indicator />
 				</Checkbox.Control>
 				<span className="text-sm">
-					<Trans>Also take back the pass and remaining credits from this payment</Trans>
+					<Trans>Also take back the remaining credits from this payment</Trans>
 				</span>
 			</Checkbox.Content>
 		</Checkbox>
@@ -116,79 +123,61 @@ function Dialogs({ userId, dialog, onClose, onDone }: DialogsProps) {
 			<ReasonDialog
 				{...props("refund")}
 				danger
-				title={<Trans>Refund through Midtrans</Trans>}
+				title={<Trans>Refund through Polar</Trans>}
 				description={
 					payment && (
 						<>
-							{payment.orderId} · {formatPrice(payment.amount)} · {getPaymentMethodName(payment.paymentType)}
+							{payment.orderId} · {formatPrice(payment.amount, currency)} · {getPaymentReasonLabel(payment)}
 						</>
 					)
 				}
 				canSubmit={amountOk}
-				submitLabel={<Trans>Refund {formatPrice(refundAmount)}</Trans>}
+				submitLabel={<Trans>Refund {formatPrice(refundAmount, currency)}</Trans>}
 				onSubmit={async (reason) => {
 					if (!payment) return;
 					const result = await client.billing.admin.refund({
 						paymentId: payment.id,
-						...(payment.refundMode === "api_full" || amount.trim() === "" ? {} : { amount: refundAmount }),
+						...(amount.trim() === "" ? {} : { amount: refundAmount }),
 						reason,
 						revokeBenefits: partial ? revoke : undefined,
+						endSubscription: payment.subscriptionId ? endSubscription : undefined,
 					});
 					done(
 						result.status === "succeeded"
-							? t`Refunded ${formatPrice(result.amount)}.`
-							: t`Midtrans hasn't confirmed it yet. Check the status in a moment.`,
+							? t`Refunded ${formatPrice(result.amount, currency)}.`
+							: t`Polar hasn't confirmed it yet. Check the status in a moment.`,
 					);
 				}}
 			>
 				{payment && (
 					<div className="grid gap-3">
-						<p className="rounded-xl bg-surface-secondary px-3 py-2 text-sm">{getRefundWindow(payment.paymentType)}</p>
-						<p className="text-xs text-muted">
+						<p className="rounded-xl bg-surface-secondary px-3 py-2 text-sm">
 							<Trans>
-								Refunds may need to be activated by Midtrans support first, and the Midtrans balance must cover them. A
-								full refund always takes back the pass and the remaining credits.
+								Polar refunds the amount before tax and gives the tax back itself; its fees aren't returned. A full
+								refund takes back the remaining credits. A refund alone doesn't end the subscription.
 							</Trans>
 						</p>
-						{payment.refundMode === "api" && (
-							<NumberInput
-								label={t`Amount (Rupiah), up to ${formatPrice(left)}`}
-								value={amount}
-								onChange={setAmount}
-								placeholder={t`Empty: the rest, ${formatPrice(left)}`}
-							/>
-						)}
+						<NumberInput
+							label={t`Amount before tax (${currency.toUpperCase()}), up to ${formatPrice(left, currency)}`}
+							value={amount}
+							onChange={setAmount}
+							placeholder={t`Empty: the rest, ${formatPrice(left, currency)}`}
+						/>
 						{revokeBox}
+						{payment.subscriptionId && (
+							<Checkbox variant="secondary" isSelected={endSubscription} onChange={setEndSubscription}>
+								<Checkbox.Content>
+									<Checkbox.Control>
+										<Checkbox.Indicator />
+									</Checkbox.Control>
+									<span className="text-sm">
+										<Trans>Also end the subscription now (access stops at once)</Trans>
+									</span>
+								</Checkbox.Content>
+							</Checkbox>
+						)}
 					</div>
 				)}
-			</ReasonDialog>
-
-			<ReasonDialog
-				{...props("manual-refund")}
-				danger
-				title={<Trans>Record a manual refund</Trans>}
-				description={
-					<Trans>Transfer the money to the customer first, then record it here. Nothing is sent to Midtrans.</Trans>
-				}
-				canSubmit={typed !== null && typed > 0 && typed <= left}
-				submitLabel={<Trans>Record refund</Trans>}
-				onSubmit={async (reason) => {
-					if (!payment || typed === null) return;
-					await client.billing.admin.recordManualRefund({
-						paymentId: payment.id,
-						amount: typed,
-						reason,
-						revokeBenefits: typed < payment.amount ? revoke : undefined,
-					});
-					done(t`Refund recorded.`);
-				}}
-			>
-				<NumberInput
-					label={t`Amount transferred (Rupiah), up to ${formatPrice(left)}`}
-					value={amount}
-					onChange={setAmount}
-				/>
-				{typed !== null && typed < (payment?.amount ?? 0) && revokeBox}
 			</ReasonDialog>
 
 			<ReasonDialog
@@ -271,29 +260,21 @@ type PaymentActionsProps = {
 	onDone: () => void;
 };
 
-/** One payment's menu: ask Midtrans again, refund, record a transfer, resend the receipt. */
+/** One payment's menu: ask Polar again, or refund it. */
 function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 	const [busy, setBusy] = useState(false);
-	const refundable = payment.status === "paid" || payment.status === "partially_refunded";
+	const refundable = payment.refundable && (payment.status === "paid" || payment.status === "partially_refunded");
 
-	const run = async (action: "sync" | "receipt") => {
+	const sync = async () => {
 		setBusy(true);
 		try {
-			if (action === "sync") {
-				const result = await client.billing.admin.syncPayment({ paymentId: payment.id });
-				toast.add({
-					type: "success",
-					description: result.found
-						? t`Midtrans says "${result.transactionStatus ?? "—"}". Here: ${getPaymentStatusLabel(result.status)}.`
-						: t`Midtrans has no transaction yet: no method was chosen.`,
-				});
-			} else {
-				const result = await client.billing.admin.resendReceipt({ paymentId: payment.id });
-				toast.add({
-					type: result.sent ? "success" : "warning",
-					description: result.sent ? t`Receipt sent.` : t`The receipt wasn't sent. Check the email settings.`,
-				});
-			}
+			const result = await client.billing.admin.syncPayment({ paymentId: payment.id });
+			toast.add({
+				type: "success",
+				description: result.found
+					? t`Checked with Polar. Here: ${getPaymentStatusLabel(result.status)}.`
+					: t`Polar has nothing for this payment yet.`,
+			});
 			onDone();
 		} catch (error) {
 			toast.add({ type: "error", description: getReadableErrorMessage(error, t`That didn't work. Try again.`) });
@@ -302,23 +283,25 @@ function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 		}
 	};
 
-	const disabled = [
-		...(refundable && payment.refundMode !== "manual" ? [] : ["refund"]),
-		...(refundable ? [] : ["manual-refund"]),
-		...(refundable && payment.userId ? [] : ["receipt"]),
-	];
+	const disabled = refundable ? [] : ["refund"];
 
 	return (
 		<Dropdown>
-			<Button isIconOnly size="sm" variant="ghost" aria-label={t`Actions for ${payment.orderId}`} isPending={busy}>
+			<Button
+				isIconOnly
+				size="sm"
+				variant="ghost"
+				aria-label={t`Actions for ${payment.orderId ?? payment.id}`}
+				isPending={busy}
+			>
 				{busy ? <Spinner size="sm" color="current" aria-hidden /> : <Icon name="dots-three" size={18} />}
 			</Button>
 			<Dropdown.Popover placement="bottom end" className="min-w-56">
 				<Dropdown.Menu
 					disabledKeys={disabled}
 					onAction={(key) => {
-						if (key === "sync" || key === "receipt") void run(key);
-						if (key === "refund" || key === "manual-refund") onDialog({ kind: key, payment });
+						if (key === "sync") void sync();
+						if (key === "refund") onDialog({ kind: "refund", payment });
 					}}
 				>
 					<Dropdown.Item id="sync" textValue={t`Check status`}>
@@ -327,22 +310,10 @@ function PaymentActions({ payment, onDialog, onDone }: PaymentActionsProps) {
 							<Trans>Check status</Trans>
 						</Label>
 					</Dropdown.Item>
-					<Dropdown.Item id="receipt" textValue={t`Resend receipt`}>
-						<Icon name="envelope-simple" size={16} />
-						<Label>
-							<Trans>Resend receipt</Trans>
-						</Label>
-					</Dropdown.Item>
-					<Dropdown.Item id="refund" textValue={t`Refund through Midtrans`} variant="danger">
+					<Dropdown.Item id="refund" textValue={t`Refund through Polar`} variant="danger">
 						<Icon name="arrow-counter-clockwise" size={16} />
 						<Label>
-							<Trans>Refund through Midtrans</Trans>
-						</Label>
-					</Dropdown.Item>
-					<Dropdown.Item id="manual-refund" textValue={t`Record manual refund`}>
-						<Icon name="note-pencil" size={16} />
-						<Label>
-							<Trans>Record manual refund</Trans>
+							<Trans>Refund through Polar</Trans>
 						</Label>
 					</Dropdown.Item>
 				</Dropdown.Menu>
@@ -381,19 +352,24 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 	const { formatShort, formatDate } = usePlanDates();
 	const [now] = useState(() => Date.now());
 	const { plan, credits } = data;
-	// Money that stayed: a payment the bank reversed is gone with its refunds.
+	// Money that stayed, per currency: a payment the bank reversed is gone with its refunds.
 	const paid = data.payments.filter((payment) => payment.paidAt && payment.status !== "reversed");
-	const totalPaid = paid.reduce((sum, payment) => sum + payment.amount - payment.refundedAmount, 0);
-	const totalRefunded = data.payments.reduce((sum, payment) => sum + payment.refundedAmount, 0);
+	const totalPaid: Record<string, number> = {};
+	const totalRefunded: Record<string, number> = {};
+	for (const payment of paid)
+		totalPaid[payment.currency] = (totalPaid[payment.currency] ?? 0) + payment.amount - payment.refundedAmount;
+	for (const payment of data.payments)
+		if (payment.refundedAmount)
+			totalRefunded[payment.currency] = (totalRefunded[payment.currency] ?? 0) + payment.refundedAmount;
 	const refunds = data.payments.flatMap((payment) =>
-		payment.refunds.map((refund) => ({ ...refund, orderId: payment.orderId })),
+		payment.refunds.map((refund) => ({ ...refund, orderId: payment.orderId, currency: payment.currency })),
 	);
 	const history = [
 		...data.events.map((event) => ({
 			id: event.id,
 			at: event.receivedAt,
 			...describeEvent(event),
-			source: event.source === "notification" ? t`notification` : event.source === "admin" ? t`admin` : t`status check`,
+			source: event.source === "webhook" ? t`webhook` : event.source === "admin" ? t`admin` : t`status check`,
 			reason: null,
 		})),
 		...data.audit.map((entry) => ({
@@ -412,28 +388,44 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 			isRowHeader: true,
 			cell: (payment) => (
 				<span className="grid gap-0.5 whitespace-nowrap">
-					<span className="font-mono text-xs whitespace-nowrap" title={payment.orderId}>
-						RZ-…{payment.orderId.slice(-8)}
+					<span
+						className="font-mono text-xs whitespace-nowrap"
+						title={payment.orderId ?? payment.checkoutId ?? payment.id}
+					>
+						{payment.orderId ? `…${payment.orderId.slice(-8)}` : t`checkout only`}
 					</span>
 					<span className="text-xs text-muted">{formatShort(payment.createdAt)}</span>
 				</span>
 			),
 		},
-		{ id: "plan", header: t`Plan`, cell: (payment) => getPlanName(payment.planId) },
+		{
+			id: "plan",
+			header: t`Plan`,
+			cell: (payment) => (
+				<span className="grid gap-0.5">
+					<span>{getPlanName(payment.planId)}</span>
+					<span className="text-xs text-muted">{getPaymentReasonLabel(payment)}</span>
+				</span>
+			),
+		},
 		{
 			id: "amount",
 			header: t`Amount`,
 			align: "end",
 			cell: (payment) => (
 				<span className="grid gap-0.5 tabular-nums">
-					<span>{formatPrice(payment.amount)}</span>
+					<span>{formatPrice(payment.amount, payment.currency)}</span>
+					{payment.taxAmount > 0 && (
+						<span className="text-xs text-muted">
+							+{formatPrice(payment.taxAmount, payment.currency)} {t`tax`}
+						</span>
+					)}
 					{payment.refundedAmount > 0 && (
-						<span className="text-xs text-muted">−{formatPrice(payment.refundedAmount)}</span>
+						<span className="text-xs text-muted">−{formatPrice(payment.refundedAmount, payment.currency)}</span>
 					)}
 				</span>
 			),
 		},
-		{ id: "method", header: t`Method`, cell: (payment) => getPaymentMethodName(payment.paymentType) },
 		{
 			id: "status",
 			header: t`Status`,
@@ -444,7 +436,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					</Chip>
 					{payment.paidAt && !payment.fulfilledAt && (
 						<span className="text-xs text-danger">
-							<Trans>Pass not granted</Trans>
+							<Trans>Not applied</Trans>
 						</span>
 					)}
 				</span>
@@ -457,7 +449,9 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				payment.paidAt ? (
 					<span className="grid gap-0.5">
 						<span className="text-sm">{formatShort(payment.paidAt)}</span>
-						<span className="text-xs text-muted">{payment.receiptSentAt ? t`Receipt sent` : t`Receipt not sent`}</span>
+						{payment.periodEnd && (
+							<span className="text-xs text-muted">{t`covers until ${formatShort(payment.periodEnd)}`}</span>
+						)}
 					</span>
 				) : (
 					<span className="text-xs text-muted">{payment.failureReason ?? payment.providerStatus ?? "—"}</span>
@@ -478,7 +472,13 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 					icon={<Icon name="seal-check" size={16} />}
 					title={<Trans>Plan now</Trans>}
 					value={getPlanName(plan.planId)}
-					footer={plan.currentPeriodEndsAt ? t`until ${formatDate(plan.currentPeriodEndsAt)}` : t`No paid pass running`}
+					footer={
+						plan.currentPeriodEndsAt
+							? plan.renews
+								? t`renews ${formatDate(plan.currentPeriodEndsAt)}`
+								: t`until ${formatDate(plan.currentPeriodEndsAt)}`
+							: t`No paid plan running`
+					}
 				/>
 				<StatWidget
 					icon={<Icon name="sparkle" size={16} />}
@@ -495,7 +495,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				<StatWidget
 					icon={<Icon name="check-circle" size={16} />}
 					title={<Trans>Paid in total</Trans>}
-					value={formatPrice(totalPaid)}
+					value={formatMoney(totalPaid)}
 					footer={plural(paid.length, {
 						one: "# paid payment, after refunds",
 						other: "# paid payments, after refunds",
@@ -504,7 +504,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				<StatWidget
 					icon={<Icon name="arrow-counter-clockwise" size={16} />}
 					title={<Trans>Refunded</Trans>}
-					value={formatPrice(totalRefunded)}
+					value={formatMoney(totalRefunded)}
 					footer={plural(refunds.filter((refund) => refund.status === "succeeded").length, {
 						one: "# refund done",
 						other: "# refunds done",
@@ -522,7 +522,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 						</Chip>
 					</span>
 				}
-				description={<Trans>Newest first. The menu at the end of a row checks, refunds or resends.</Trans>}
+				description={<Trans>Newest first. The menu at the end of a row checks with Polar or refunds.</Trans>}
 			>
 				<DataGrid
 					aria-label={t`Payments`}
@@ -551,19 +551,20 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 								header: t`Order`,
 								isRowHeader: true,
 								cell: (refund) => (
-									<span className="font-mono text-xs whitespace-nowrap">RZ-…{refund.orderId.slice(-8)}</span>
+									<span className="font-mono text-xs whitespace-nowrap">…{(refund.orderId ?? "").slice(-8)}</span>
 								),
 							},
 							{
 								id: "amount",
 								header: t`Amount`,
 								align: "end",
-								cell: (refund) => <span className="tabular-nums">{formatPrice(refund.amount)}</span>,
+								cell: (refund) => <span className="tabular-nums">{formatPrice(refund.amount, refund.currency)}</span>,
 							},
 							{
 								id: "how",
 								header: t`How`,
-								cell: (refund) => (refund.method === "manual" ? t`Manual transfer` : "Midtrans"),
+								cell: (refund) =>
+									refund.method === "manual" ? t`Manual transfer` : refund.method === "midtrans" ? "Midtrans" : "Polar",
 							},
 							{
 								id: "status",
@@ -580,9 +581,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 											{refund.status === "succeeded"
 												? t`Done`
 												: refund.status === "requesting"
-													? refund.failureReason === "bank_processing"
-														? t`Waiting for the bank`
-														: t`Waiting for Midtrans`
+													? t`Waiting for Polar`
 													: t`Refused (${refund.failureReason ?? "—"})`}
 										</Chip.Label>
 									</Chip>
@@ -607,15 +606,93 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				</AdminCard>
 			)}
 
+			{data.subscriptions.length > 0 && (
+				<AdminCard icon="arrows-clockwise" plain title={<Trans>Subscriptions</Trans>}>
+					<DataGrid
+						aria-label={t`Subscriptions`}
+						data={data.subscriptions}
+						getRowId={(subscription) => subscription.id}
+						contentClassName="min-w-[680px]"
+						columns={[
+							{
+								id: "plan",
+								header: t`Plan`,
+								isRowHeader: true,
+								cell: (subscription) => (
+									<span className="grid gap-0.5">
+										<span>{getPlanName(subscription.planId)}</span>
+										<span className="text-xs text-muted">
+											{subscription.interval === "year" ? t`Yearly` : t`Monthly`} ·{" "}
+											{formatPrice(subscription.amount, subscription.currency)}
+										</span>
+									</span>
+								),
+							},
+							{
+								id: "status",
+								header: t`Status`,
+								cell: (subscription) => (
+									<Chip
+										size="sm"
+										variant="soft"
+										color={
+											subscription.status === "active"
+												? subscription.cancelAtPeriodEnd
+													? "warning"
+													: "success"
+												: subscription.status === "past_due"
+													? "danger"
+													: "default"
+										}
+									>
+										<Chip.Label>{getSubscriptionStatusLabel(subscription)}</Chip.Label>
+									</Chip>
+								),
+							},
+							{
+								id: "period",
+								header: t`Period`,
+								cell: (subscription) => (
+									<span className="text-xs text-muted tabular-nums">
+										{formatShort(subscription.currentPeriodStart)} –{" "}
+										{subscription.currentPeriodEnd ? formatShort(subscription.currentPeriodEnd) : "—"}
+									</span>
+								),
+							},
+							{
+								id: "paid",
+								header: t`Paid through`,
+								cell: (subscription) => (
+									<span className="text-xs text-muted tabular-nums">
+										{subscription.paidThrough ? formatShort(subscription.paidThrough) : "—"}
+									</span>
+								),
+							},
+							{
+								id: "polar",
+								header: t`Polar id`,
+								cell: (subscription) => (
+									<span className="font-mono text-xs" title={subscription.providerSubscriptionId}>
+										…{subscription.providerSubscriptionId.slice(-8)}
+									</span>
+								),
+							},
+						]}
+					/>
+				</AdminCard>
+			)}
+
 			<div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
 				<AdminCard
 					icon="tag"
-					title={<Trans>Passes</Trans>}
-					description={<Trans>Every stretch of paid time, newest first.</Trans>}
+					title={<Trans>Granted periods</Trans>}
+					description={
+						<Trans>Time given by an admin or a promotion, and 30-day passes from before, newest first.</Trans>
+					}
 				>
 					{data.periods.length === 0 ? (
 						<p className="py-6 text-center text-sm text-muted">
-							<Trans>No passes.</Trans>
+							<Trans>None.</Trans>
 						</p>
 					) : (
 						<Timeline density="compact" size="sm">
@@ -666,7 +743,7 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 				<AdminCard
 					icon="clock-counter-clockwise"
 					title={<Trans>History</Trans>}
-					description={<Trans>Midtrans events and admin actions, newest first.</Trans>}
+					description={<Trans>Polar events and admin actions, newest first.</Trans>}
 				>
 					{history.length === 0 ? (
 						<p className="py-6 text-center text-sm text-muted">
@@ -705,7 +782,10 @@ function CustomerBody({ data, onDialog, onDone }: CustomerBodyProps) {
 
 type CustomerBillingPageProps = { userId: string };
 
-/** One customer's billing, for support: plan, credits, payments with their actions, refunds, passes and history. */
+/**
+ * One customer's billing, for support: plan, credits, subscriptions, payments with their actions, refunds, granted
+ * periods and history.
+ */
 export function CustomerBillingPage({ userId }: CustomerBillingPageProps) {
 	const queryClient = useQueryClient();
 	const [dialog, setDialog] = useState<Dialog>(null);

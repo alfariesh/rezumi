@@ -19,7 +19,7 @@ const getQuestions = (): Question[] => {
 	const freeTemplateCount = freeTemplates.length;
 	const freeResumes = PLANS.free.limits.activeResumes;
 	const freeCoverLetters = PLANS.free.limits.activeCoverLetters;
-	const proCredits = PLANS["pro-ai"].creditsPerPurchase;
+	const proCredits = PLANS["pro-ai"].creditsPerMonth;
 	const trialCredits = TRIAL_CREDITS.amount;
 	const trialDays = TRIAL_CREDITS.validDays;
 	return [
@@ -30,13 +30,18 @@ const getQuestions = (): Question[] => {
 		},
 		{
 			id: "access",
-			question: t`How does a 30-day plan work?`,
-			answer: t`You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document.`,
+			question: t`How does a subscription work?`,
+			answer: t`Plus and Pro AI are billed monthly or yearly and renew until you cancel. Cancel any time from your plan page; you keep access until the end of the period you paid for, and nothing more is charged. Then your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document.`,
+		},
+		{
+			id: "payment",
+			question: t`How can I pay?`,
+			answer: t`With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars.`,
 		},
 		{
 			id: "credits",
 			question: t`What is an AI credit?`,
-			answer: t`Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes ${proCredits} credits. The Free plan includes a one-time trial of ${trialCredits} credits, valid for ${trialDays} days.`,
+			answer: t`Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes ${proCredits} credits every month; unused credits don't carry over. The Free plan includes a one-time trial of ${trialCredits} credits, valid for ${trialDays} days.`,
 		},
 		{
 			id: "own-key",

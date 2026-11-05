@@ -63,7 +63,6 @@ import { Route as DashboardCareerKnowledgePreferencesRouteImport } from "./route
 import { Route as DashboardSettingsAuthenticationIndexRouteImport } from "./routes/dashboard/settings/authentication/index";
 import { Route as DashboardSettingsBillingIndexRouteImport } from "./routes/dashboard/settings/billing/index";
 import { Route as DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport } from "./routes/dashboard/career/knowledge/stories.{-$storyId}";
-import { Route as DashboardSettingsBillingReceiptPaymentIdRouteImport } from "./routes/dashboard/settings/billing/receipt.$paymentId";
 import { Route as DashboardSettingsBillingReturnChar123PaymentIdChar125RouteImport } from "./routes/dashboard/settings/billing/return.{-$paymentId}";
 
 const HomeRouteRoute = HomeRouteRouteImport.update({
@@ -354,12 +353,6 @@ const DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route =
     path: "/stories/{-$storyId}",
     getParentRoute: () => DashboardCareerKnowledgeRouteRoute,
   } as any);
-const DashboardSettingsBillingReceiptPaymentIdRoute =
-  DashboardSettingsBillingReceiptPaymentIdRouteImport.update({
-    id: "/billing/receipt/$paymentId",
-    path: "/billing/receipt/$paymentId",
-    getParentRoute: () => DashboardSettingsRouteRoute,
-  } as any);
 const DashboardSettingsBillingReturnChar123PaymentIdChar125Route =
   DashboardSettingsBillingReturnChar123PaymentIdChar125RouteImport.update({
     id: "/billing/return/{-$paymentId}",
@@ -421,7 +414,6 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
-  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRoutesByTo {
@@ -472,7 +464,6 @@ export interface FileRoutesByTo {
   "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
-  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRoutesById {
@@ -531,7 +522,6 @@ export interface FileRoutesById {
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
-  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRouteTypes {
@@ -590,7 +580,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/authentication/"
     | "/dashboard/settings/billing/"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
-    | "/dashboard/settings/billing/receipt/$paymentId"
     | "/dashboard/settings/billing/return/{-$paymentId}";
   fileRoutesByTo: FileRoutesByTo;
   to:
@@ -641,7 +630,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/authentication"
     | "/dashboard/settings/billing"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
-    | "/dashboard/settings/billing/receipt/$paymentId"
     | "/dashboard/settings/billing/return/{-$paymentId}";
   id:
     | "__root__"
@@ -699,7 +687,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/authentication/"
     | "/dashboard/settings/billing/"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
-    | "/dashboard/settings/billing/receipt/$paymentId"
     | "/dashboard/settings/billing/return/{-$paymentId}";
   fileRoutesById: FileRoutesById;
 }
@@ -1092,13 +1079,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport;
       parentRoute: typeof DashboardCareerKnowledgeRouteRoute;
     };
-    "/dashboard/settings/billing/receipt/$paymentId": {
-      id: "/dashboard/settings/billing/receipt/$paymentId";
-      path: "/billing/receipt/$paymentId";
-      fullPath: "/dashboard/settings/billing/receipt/$paymentId";
-      preLoaderRoute: typeof DashboardSettingsBillingReceiptPaymentIdRouteImport;
-      parentRoute: typeof DashboardSettingsRouteRoute;
-    };
     "/dashboard/settings/billing/return/{-$paymentId}": {
       id: "/dashboard/settings/billing/return/{-$paymentId}";
       path: "/billing/return/{-$paymentId}";
@@ -1235,7 +1215,6 @@ interface DashboardSettingsRouteRouteChildren {
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute;
   DashboardSettingsAuthenticationIndexRoute: typeof DashboardSettingsAuthenticationIndexRoute;
   DashboardSettingsBillingIndexRoute: typeof DashboardSettingsBillingIndexRoute;
-  DashboardSettingsBillingReceiptPaymentIdRoute: typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   DashboardSettingsBillingReturnChar123PaymentIdChar125Route: typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 
@@ -1254,8 +1233,6 @@ const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
     DashboardSettingsAuthenticationIndexRoute:
       DashboardSettingsAuthenticationIndexRoute,
     DashboardSettingsBillingIndexRoute: DashboardSettingsBillingIndexRoute,
-    DashboardSettingsBillingReceiptPaymentIdRoute:
-      DashboardSettingsBillingReceiptPaymentIdRoute,
     DashboardSettingsBillingReturnChar123PaymentIdChar125Route:
       DashboardSettingsBillingReturnChar123PaymentIdChar125Route,
   };

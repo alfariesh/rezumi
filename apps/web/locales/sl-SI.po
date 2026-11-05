@@ -327,6 +327,11 @@ msgstr "{0} · {providerLabel}. Pošlje to prijavo in vaše Znanje; vaš ponudni
 msgid "{0} (copy)"
 msgstr "{0} (kopija)"
 
+#. placeholder {0}: monthlyOfYearly(id, currency)
+#: src/features/billing/buy-plans.tsx
+msgid "{0} a month, billed yearly"
+msgstr ""
+
 #. placeholder {0}: creditCount(payment.credits)
 #: src/features/billing/payment-return.tsx
 msgid "{0} added for Rezumi AI."
@@ -373,7 +378,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(credits)
 #: src/features/billing/purchase-dialog.tsx
-msgid "{0} for Rezumi AI come with it."
+msgid "{0} for Rezumi AI every month. Credits left at the end of a month don't carry over."
 msgstr ""
 
 #. placeholder {0}: semantics.dates.length
@@ -435,6 +440,13 @@ msgstr "{0} min"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} več"
+
+#. placeholder {0}: kinds.new ?? 0
+#. placeholder {1}: kinds.renewal ?? 0
+#. placeholder {2}: kinds.change ?? 0
+#: src/features/billing/admin/overview.tsx
+msgid "{0} new · {1} renewals · {2} plan changes"
+msgstr ""
 
 #. placeholder {0}: usage.used
 #. placeholder {1}: usage.max
@@ -508,6 +520,17 @@ msgstr "{0} delovno mesto"
 msgid "{0} returned “{1}”. Your message is kept."
 msgstr "{0} je vrnil »{1}«. Vaše sporočilo se hrani."
 
+#. placeholder {0}: BILLING_SELLER.merchantOfRecord
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} sells the subscription as the merchant of record and handles payment, invoices and tax. By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr ""
+
+#. placeholder {0}: metrics.subscriptions.canceling
+#. placeholder {1}: metrics.subscriptions.pastDue
+#: src/features/billing/admin/overview.tsx
+msgid "{0} set to end · {1} payment failed"
+msgstr ""
+
 #. placeholder {0}: report.skippedChecks
 #: src/features/ats-checker/report/score-header.tsx
 msgid "{0} skipped"
@@ -526,20 +549,9 @@ msgstr "Podprto: {0}, delno podprto: {1}, še brez dokazov: {2}. {3}"
 msgid "{0} to fix"
 msgstr "{0} za popravilo"
 
-#. placeholder {0}: formatDate(payment.access.startsAt)
-#. placeholder {1}: formatDate(payment.access.endsAt)
-#: src/features/billing/receipt.tsx
-msgid "{0} until {1}"
-msgstr ""
-
 #. placeholder {0}: metrics.signups.verified
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
-msgstr ""
-
-#. placeholder {0}: getPaymentMethodName(payment.paymentType)
-#: src/features/billing/receipt.tsx
-msgid "{0} via Midtrans"
 msgstr ""
 
 #. placeholder {0}: title || t`Untitled`
@@ -656,10 +668,6 @@ msgstr "{days, plural, one {# dan v pisarni, pod vašo mejo} two {# dneva v pisa
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, one {# dan v pisarni, vaša meja} two {# dneva v pisarni, vaša meja} few {# dnevi v pisarni, vaša meja} other {# dni v pisarni, vaša meja}}"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "{days} days of access, paid once. It doesn't renew on its own."
-msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -788,10 +796,6 @@ msgstr ""
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "Ni odziva: {name}. Nič ni bilo spremenjeno; poskusite znova."
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "{name} ends"
-msgstr ""
-
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} je razdeljen na stolpce {columns}"
@@ -818,7 +822,7 @@ msgid "{name} sits in the sidebar"
 msgstr "{name} je v stranski vrstici"
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "{name} starts"
+msgid "{name} starts now. You're charged the difference for the rest of this period with your saved payment method, then the new price at each renewal."
 msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
@@ -870,37 +874,30 @@ msgstr "{passedRules} od {totalRules} preverja uspešno."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# predlagano urejanje na tej strani · nič se ne spremeni, dokler ne sprejmete} other {# predlagana urejanja na tej strani · nič se ne spremeni, dokler ne sprejmete}}"
 
-#. placeholder {0}: formatDate(access.endsAt)
 #: src/features/billing/payment-return.tsx
-msgid "{plan} is active until {0}."
+msgid "{plan} is active."
 msgstr ""
 
+#. placeholder {0}: formatDate(payment.periodEnd)
 #: src/features/billing/payment-return.tsx
-msgid "{plan} is being added to your account."
-msgstr ""
-
-#. placeholder {0}: formatDate(access.startsAt)
-#. placeholder {1}: formatDate(access.endsAt)
-#: src/features/billing/payment-return.tsx
-msgid "{plan} starts on {0} and runs until {1}."
+msgid "{plan} is active. It renews on {0} unless you cancel."
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
-msgid "{price}, payable until {deadline}. A bank transfer can still be paid any time before then."
+msgid "{price}, open until {deadline}."
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "{proCredits} AI credits every month"
 msgstr ""
 
 #: src/features/billing/buy-plans.tsx
-#: src/features/homepage/plans.ts
-msgid "{proCredits} AI credits per purchase"
+msgid "{proCredits} Rezumi AI credits every month"
 msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {Predlagano #} other {Predlagano #}}"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "{rest} ends"
-msgstr ""
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
@@ -989,10 +986,12 @@ msgstr "{words, plural, one {# beseda} other {# besede}}"
 msgid "/ hour"
 msgstr "/ uro"
 
+#: src/features/billing/purchase.ts
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ month"
 msgstr "/ mesec"
 
+#: src/features/billing/purchase.ts
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ leto"
@@ -1053,6 +1052,10 @@ msgstr ""
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 dni"
+
+#: src/features/billing/purchase.ts
+msgid "30-day pass"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "5 credits"
@@ -1293,10 +1296,6 @@ msgstr "Dostop"
 msgid "Access is sent to"
 msgstr "Dostop je omogočen"
 
-#: src/features/billing/receipt.tsx
-msgid "Access period"
-msgstr ""
-
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "Dostopajte do svojega računa prek API, vključno z branjem, spreminjanjem in brisanjem vaših dokumentov in prošenj za delo."
@@ -1345,11 +1344,16 @@ msgstr "Dejanje"
 msgid "Actions"
 msgstr "Dejanja"
 
-#. placeholder {0}: payment.orderId
+#. placeholder {0}: payment.orderId ?? payment.id
 #: src/features/billing/admin/customer.tsx
 msgid "Actions for {0}"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "active"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Aktiven"
@@ -1362,9 +1366,17 @@ msgstr ""
 msgid "Active resumes"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Active subscriptions"
+msgstr ""
+
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/plan-page.tsx
 msgid "Active until {0}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Active, ends at period end"
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
@@ -1809,11 +1821,6 @@ msgstr "Po uvodnem pogovoru"
 msgid "After the technical interview"
 msgstr "Po tehničnem intervjuju"
 
-#. placeholder {0}: getPlanName(waitsFor.planId)
-#: src/features/billing/purchase-dialog.tsx
-msgid "After your {0} time ends."
-msgstr ""
-
 #: src/features/career/workspace/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "Po vašem prvem pregledu se tukaj prikaže lahek načrt za ta teden."
@@ -1988,7 +1995,11 @@ msgid "Also email {0}"
 msgstr "Pošlji tudi e-pošto na {0}"
 
 #: src/features/billing/admin/customer.tsx
-msgid "Also take back the pass and remaining credits from this payment"
+msgid "Also end the subscription now (access stops at once)"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Also take back the remaining credits from this payment"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -2001,18 +2012,14 @@ msgstr "Amharščina"
 msgid "Amount"
 msgstr ""
 
-#. placeholder {0}: formatPrice(left)
+#. placeholder {0}: currency.toUpperCase()
+#. placeholder {1}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
-msgid "Amount (Rupiah), up to {0}"
+msgid "Amount before tax ({0}), up to {1}"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Amount doesn't match the order"
-msgstr ""
-
-#. placeholder {0}: formatPrice(left)
-#: src/features/billing/admin/customer.tsx
-msgid "Amount transferred (Rupiah), up to {0}"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2514,7 +2521,6 @@ msgid "Back to the chat"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
-#: src/features/billing/receipt.tsx
 msgid "Back to your plan"
 msgstr ""
 
@@ -2594,6 +2600,10 @@ msgstr "Najboljša za prijave"
 msgid "Beyond the resume"
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
+msgid "Billed monthly or yearly until you cancel. Cancel any time; you keep access until the period ends."
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Billing"
@@ -2603,6 +2613,18 @@ msgstr ""
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Billing and invoices"
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Billing couldn't be opened. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Billing period"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -2743,26 +2765,6 @@ msgstr "Seznam z oznakami"
 msgid "Business"
 msgstr ""
 
-#: src/features/billing/purchase.ts
-msgid "Buy {name}"
-msgstr ""
-
-#: src/features/billing/buy-plans.tsx
-msgid "Buy a pass"
-msgstr ""
-
-#: src/features/billing/buy-plans.tsx
-msgid "Buying is paused for now"
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Buying isn't available right now. Try again later."
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
-msgstr ""
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Koledar"
@@ -2808,16 +2810,25 @@ msgstr "Ali lahko programska oprema prebere vaš življenjepis?"
 msgid "Cancel"
 msgstr "Prekliči"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Cancel any time from your plan page. You keep access until the end of the period you paid for."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Cancel subscription"
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Cancel your subscription?"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Cancelled"
 msgstr ""
 
-#: src/features/billing/purchase.ts
-msgid "Card"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Card: up to 6 months after the payment."
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Cancelled; active until {0}"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -2834,6 +2845,10 @@ msgstr "Certifikati"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Change"
 msgstr "spremeniti"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Change at renewal"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/settings/ai/web-access.tsx
@@ -2856,10 +2871,6 @@ msgstr "Spremeni jezik v…"
 #: src/dialogs/auth/change-password.tsx
 msgid "Change password"
 msgstr "Spremeni geslo"
-
-#: src/features/billing/pending-payment.tsx
-msgid "Change payment method"
-msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Change photo"
@@ -2885,6 +2896,10 @@ msgstr "Spremeni časovni pas"
 msgid "Change your password"
 msgstr "Spremenite svoje geslo"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Change your plan"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Changed elsewhere"
 msgstr "Spremenjen drugje"
@@ -2900,6 +2915,12 @@ msgstr "Ste si premislili? Preimenujte svoj življenjepis v nekaj bolj opisa."
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Changes section titles and date words only, not your content."
 msgstr "Spremeni samo naslove razdelkov in datumske besede, ne pa tudi vaše vsebine."
+
+#. placeholder {0}: getPlanName(pending.planId)
+#. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Changes to {0} on {1}"
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Changing it sends a confirmation to the new address. Your username is part of every public link."
@@ -3006,6 +3027,11 @@ msgstr "Preverite svoj e-poštni naslov za povezavo za potrditev računa."
 msgid "Check your resume’s ATS readability"
 msgstr "Preverite ATS berljivost svojega življenjepisa"
 
+#. placeholder {0}: getPaymentStatusLabel(result.status)
+#: src/features/billing/admin/customer.tsx
+msgid "Checked with Polar. Here: {0}."
+msgstr ""
+
 #. placeholder {0}: file.name
 #: src/features/ats-checker/checker.tsx
 msgid "Checking {0}"
@@ -3024,7 +3050,7 @@ msgid "Checking the exported PDF…"
 msgstr "Preverjanje izvoženega PDF ..."
 
 #: src/features/billing/payment-return.tsx
-msgid "Checking with Midtrans…"
+msgid "Checking with Polar…"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -3045,6 +3071,11 @@ msgstr "Napredek kontrolnega seznama"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Checkout conversion"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "checkout only"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -3566,11 +3597,11 @@ msgstr "Nadaljuj kot gost"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/billing/pending-payment.tsx
-msgid "Continue payment"
+msgid "Continue checkout"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Continue to payment"
+msgid "Continue to checkout"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -4350,6 +4381,11 @@ msgstr ""
 msgid "Cover letters that match"
 msgstr ""
 
+#. placeholder {0}: formatShort(payment.periodEnd)
+#: src/features/billing/admin/customer.tsx
+msgid "covers until {0}"
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Create"
 msgstr "Ustvari"
@@ -4379,7 +4415,7 @@ msgid "Create an account"
 msgstr ""
 
 #: src/features/billing/buy-plans.tsx
-msgid "Create an account to buy a pass"
+msgid "Create an account to subscribe"
 msgstr ""
 
 #: src/features/auth/pages/consent.tsx
@@ -4443,12 +4479,12 @@ msgstr ""
 msgid "Credits charged, and what the AI provider cost."
 msgstr ""
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "Credits left from this pass expire with it."
+#: src/features/homepage/faq.tsx
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes {proCredits} credits every month; unused credits don't carry over. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
 msgstr ""
 
-#: src/features/homepage/faq.tsx
-msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
+#: src/features/billing/admin/labels.ts
+msgid "Credits taken back"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -4470,6 +4506,10 @@ msgstr "podatki CSV"
 #: src/features/career/knowledge/preferences.tsx
 msgid "Currency"
 msgstr "Valuta"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Current"
+msgstr ""
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Current filters"
@@ -4559,10 +4599,6 @@ msgstr "Vsak dan ob {clock} · naslednjič {next}"
 #: src/features/resume/share/share-panel.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "Dnevni ogledi v 30 dneh, vrh {0}"
-
-#: src/features/billing/admin/labels.ts
-msgid "DANA: up to 45 days after settlement."
-msgstr ""
 
 #: src/libs/locale.ts
 msgid "Danish"
@@ -5205,10 +5241,6 @@ msgstr "Nizozemščina"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Vsak odgovor, za katerega dobite povratne informacije, se hrani tukaj, najnovejši najprej."
 
-#: src/features/billing/buy-plans.tsx
-msgid "Each pass is 30 days of access, paid once. Nothing renews on its own."
-msgstr ""
-
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Vsaka zahteva v oglasu se preveri glede na dejstva in zgodbe v vašem Znanju. Vrzeli so prikazane kot manjkajoči dokazi, nikoli kot manjkajoča sposobnost."
@@ -5399,7 +5431,7 @@ msgstr ""
 msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "Pri izvozu vdelajte vse pisave, da se znaki prikažejo tako, kot ste nameravali."
 
-#. placeholder {0}: formatPrice(left)
+#. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Empty: the rest, {0}"
 msgstr ""
@@ -5409,7 +5441,13 @@ msgid "End"
 msgstr "Konec"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/labels.ts
+#: src/features/billing/admin/overview.tsx
 msgid "Ended"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Ended, unpaid"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -5526,6 +5564,10 @@ msgstr "Možnosti vstopa"
 msgid "Equity"
 msgstr "Lastniški delež"
 
+#: src/features/billing/admin/labels.ts
+msgid "Event needs a look by hand"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Every {days} days at {clock} · next {next}"
 msgstr "Vsake {days} dni ob {clock} · naslednjič {next}"
@@ -5557,10 +5599,6 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Vsaka vloga pove, kaj si naredil. Mnenja o besedilih živijo v zavihku Pisanje."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Every stretch of paid time, newest first."
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Every template"
@@ -5691,10 +5729,6 @@ msgstr "Izvoženo PDF: {0}"
 #: src/features/applications/components/insights-view.tsx
 msgid "Exported pipeline-flow.png"
 msgstr "Izvožen pipeline-flow.png"
-
-#: src/features/billing/purchase.ts
-msgid "Extend {days} days"
-msgstr ""
 
 #: src/features/resume/import/read-file.ts
 msgid "Extract this account archive, then import a JSON file from its resumes or letters folder."
@@ -5964,11 +5998,6 @@ msgstr ""
 msgid "For"
 msgstr "Za"
 
-#: src/features/billing/buy-plans.tsx
-#: src/features/homepage/pricing.tsx
-msgid "For 30 days, no automatic renewal"
-msgstr ""
-
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
@@ -6178,6 +6207,10 @@ msgstr "Ustvarjanje PDF-ja…"
 msgid "German"
 msgstr "Nemščina"
 
+#: src/features/billing/purchase.ts
+msgid "Get {name}"
+msgstr ""
+
 #. placeholder {0}: PROVIDER_SITES[provider]
 #: src/features/settings/ai/web-access.tsx
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
@@ -6269,10 +6302,6 @@ msgstr ""
 msgid "Google"
 msgstr "Google"
 
-#: src/features/billing/admin/labels.ts
-msgid "GoPay: up to 45 days after settlement."
-msgstr ""
-
 #. Template gallery filter: civil service and state-owned companies (Indonesian: Pemerintahan & BUMN)
 #: src/dialogs/resume/template/data.ts
 msgid "Government & state-owned"
@@ -6281,6 +6310,10 @@ msgstr ""
 #: src/features/resume/editor/write/entries.tsx
 msgid "Grade"
 msgstr "Ocena"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Granted periods"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Gray"
@@ -6491,6 +6524,10 @@ msgstr "Vodoravni razmik"
 msgid "How"
 msgstr ""
 
+#: src/features/homepage/faq.tsx
+msgid "How can I pay?"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "How did it go?"
 msgstr "Kako je šlo?"
@@ -6500,7 +6537,7 @@ msgid "How did it land?"
 msgstr "Kako je bilo sprejeto?"
 
 #: src/features/homepage/faq.tsx
-msgid "How does a 30-day plan work?"
+msgid "How does a subscription work?"
 msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
@@ -6615,7 +6652,7 @@ msgid "If you close this dialog, your changes are lost."
 msgstr "Če zaprete to pogovorno okno, se vaše spremembe izgubijo."
 
 #: src/features/billing/payment-return.tsx
-msgid "If you paid just now, it shows here within a few minutes. Otherwise, start a new payment."
+msgid "If you paid just now, it shows here within a few minutes. Otherwise, start again."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -6623,7 +6660,7 @@ msgid "If you've paid, this page updates by itself in a few seconds."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
-msgid "If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can still be paid any time until {deadline}."
+msgid "If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}."
 msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
@@ -6844,6 +6881,15 @@ msgstr "Anketar"
 msgid "Introduction"
 msgstr ""
 
+#: src/features/billing/invoice-button.tsx
+#: src/features/billing/payment-history.tsx
+msgid "Invoice"
+msgstr ""
+
+#: src/features/billing/payment-history.tsx
+msgid "Invoices come from Polar, which sells the subscription and handles tax."
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Is equity part of the offer?"
 msgstr "Je lastniški delež del ponudbe?"
@@ -6909,6 +6955,14 @@ msgstr "Težave"
 msgid "Issues and Job match still work without AI."
 msgstr "Težave in Job match še vedno delujejo brez umetne inteligence."
 
+#: src/features/billing/subscription-actions.tsx
+msgid "It couldn't be cancelled. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "It couldn't be resumed. Try again in a moment."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "Ima vnose, vendar ni postavljen na stran."
@@ -6940,10 +6994,6 @@ msgstr "Italijanščina"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "Ležeče"
-
-#: src/features/billing/receipt.tsx
-msgid "Item"
-msgstr ""
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -7064,6 +7114,10 @@ msgstr "Nadaljuj z urejanjem"
 msgid "Keep in Trash"
 msgstr "Shrani v smeti"
 
+#: src/features/billing/subscription-actions.tsx
+msgid "Keep it"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Keep it honest"
 msgstr "Ostanite iskreni"
@@ -7091,6 +7145,10 @@ msgstr "Vsebino življenjepisa ohranite kot pravo besedilo, ne kot slike besedil
 #: src/features/ats-checker/messages.ts
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "Glave strani naj bodo kratke ali pa jih izpustite. Ponovijo se tudi v izvlečenem besedilu."
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Keep subscription"
+msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Keep the panel beside the page"
@@ -7634,10 +7692,6 @@ msgstr "Nalaganje shranjene različice…"
 msgid "Loading stylesheet editor…"
 msgstr "Nalaganje urejevalnika slogov…"
 
-#: src/features/billing/receipt.tsx
-msgid "Loading the receipt…"
-msgstr ""
-
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Nalaganje delovnega prostora…"
@@ -7946,68 +8000,12 @@ msgstr "Sporočilo svetovalcu"
 msgid "Messages"
 msgstr "Sporočila"
 
-#: src/features/billing/admin/customer.tsx
-#: src/features/billing/admin/overview.tsx
-#: src/features/billing/payment-history.tsx
-msgid "Method"
-msgstr ""
-
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "Mikrofon je blokiran. Dovolite ga v nastavitvah brskalnika ali vtipkajte odgovor."
 
 #: src/features/billing/admin/labels.ts
-msgid "Midtrans amount doesn't match"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
 msgid "Midtrans API kept failing"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans can't refund this method: transfer the money to the customer yourself, then record it here."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans events and admin actions, newest first."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans has no transaction yet: no method was chosen."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans hasn't confirmed it yet. Check the status in a moment."
-msgstr ""
-
-#. placeholder {0}: result.transactionStatus ?? "—"
-#. placeholder {1}: getPaymentStatusLabel(result.status)
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans says \"{0}\". Here: {1}."
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans status needs a look: {said}"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: {said}"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: {said} (already handled)"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: late {said}, ignored"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: paid"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: refunded"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
@@ -8037,6 +8035,20 @@ msgstr "Model: {label}"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "monthly"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Monthly"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Monthly recurring, before tax"
 msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
@@ -8279,7 +8291,7 @@ msgid "Nepali"
 msgstr "nepalščina"
 
 #: src/features/billing/admin/overview.tsx
-msgid "Net revenue"
+msgid "Net, before tax and Polar's fees"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -8290,6 +8302,10 @@ msgstr "Omrežje"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Nikoli"
+
+#: src/features/billing/admin/labels.ts
+msgid "Never paid"
+msgstr ""
 
 #: src/features/billing/admin/parts.tsx
 msgid "new"
@@ -8365,8 +8381,12 @@ msgstr ""
 msgid "New story"
 msgstr ""
 
+#: src/features/billing/purchase.ts
+msgid "New subscription"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
-msgid "Newest first. The menu at the end of a row checks, refunds or resends."
+msgid "Newest first. The menu at the end of a row checks with Polar or refunds."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -8596,11 +8616,7 @@ msgid "No open issues"
 msgstr "Ni odprtih vprašanj"
 
 #: src/features/billing/admin/customer.tsx
-msgid "No paid pass running"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "No passes."
+msgid "No paid plan running"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -8675,6 +8691,10 @@ msgstr "Iz tega opisa delovnega mesta ni bilo mogoče izluščiti konkretnih izr
 msgid "No stories yet"
 msgstr "Še ni zgodb"
 
+#: src/features/billing/admin/overview.tsx
+msgid "No subscriptions yet."
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "No suggestions for this provider. Enter any model ID."
 msgstr "Ni predlogov za tega ponudnika. Vnesite poljuben ID modela."
@@ -8723,6 +8743,10 @@ msgctxt "Entry header accent"
 msgid "None"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "None."
+msgstr ""
+
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Normal"
@@ -8736,6 +8760,7 @@ msgstr "normalne robove"
 msgid "Norwegian"
 msgstr "norveščina"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/career/workspace/messages.tsx
 msgid "Not applied"
 msgstr "Ni uporabljeno"
@@ -8909,6 +8934,10 @@ msgstr "Nič se ne ujema s temi filtri"
 msgid "Nothing matches."
 msgstr ""
 
+#: src/features/billing/subscription-actions.tsx
+msgid "Nothing more is charged. Your account goes back to Free at the end of the period you paid for; every document stays yours."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Nothing saved yet"
 msgstr "Še nič shranjenega"
@@ -8942,7 +8971,7 @@ msgid "Nothing to suggest."
 msgstr "Ni predlogov."
 
 #: src/features/billing/payment-return.tsx
-msgid "Nothing was charged for it. You can start a new {plan} payment."
+msgid "Nothing was charged for it. You can start {plan} again."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -8957,19 +8986,6 @@ msgstr ""
 msgid "Notice period"
 msgstr "Odpovedni rok"
 
-#: src/features/billing/admin/customer.tsx
-msgid "notification"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Notification with a bad signature, rejected"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Notifications with a bad signature"
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -9034,10 +9050,6 @@ msgstr ""
 msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr ""
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
-msgstr ""
-
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "Vklopljeno. Vsakdo s povezavo si lahko ogleda vašo spletno stran."
@@ -9045,10 +9057,6 @@ msgstr "Vklopljeno. Vsakdo s povezavo si lahko ogleda vašo spletno stran."
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "Ko je krog načrtovan, Priprava sestavi časovno razporejen načrt, vaš uvod in vprašanja, ki jih zastavite."
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Once paid"
-msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
@@ -9195,7 +9203,7 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "Odprite izvoženo datoteko in preverite, ali lahko označite in kopirate vsak njen del."
 
 #: src/features/billing/buy-plans.tsx
-msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgid "Open the link we sent to {email}. Your invoices go there too."
 msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -9304,10 +9312,6 @@ msgstr "Oranžna"
 msgid "Order"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Order number"
-msgstr ""
-
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "Organizacija"
@@ -9356,10 +9360,6 @@ msgstr "Zmanjšaj zamik"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Outer space"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "OVO: full refunds only, within 7 days."
 msgstr ""
 
 #: src/libs/resume/section.tsx
@@ -9412,23 +9412,19 @@ msgid "Paid"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Paid at Midtrans, not active here"
-msgstr ""
-
-#: src/features/billing/receipt.tsx
-msgid "Paid by"
+msgid "Paid at Polar, not active here"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Paid in total"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Paid on"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 msgid "Paid payments"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Paid through"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -9453,23 +9449,11 @@ msgid "Partly supported"
 msgstr "Delno podprto"
 
 #: src/features/billing/admin/labels.ts
-msgid "Pass and credits granted"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Pass and credits taken back"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
 msgid "Pass given by an admin"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Pass given."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Pass not granted"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
@@ -9478,14 +9462,6 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Pass revoked."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Passes"
-msgstr ""
-
-#: src/features/billing/buy-plans.tsx
-msgid "Passes belong to an account with an email address. Your guest work moves with you."
 msgstr ""
 
 #. Authentication provider display name in account settings
@@ -9593,6 +9569,10 @@ msgstr "Prilepljena objava za delo"
 msgid "Pasting fills the fields automatically."
 msgstr "Lepljenje samodejno izpolni polja."
 
+#: src/features/billing/admin/labels.ts
+msgid "Paused"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Paused · {line}"
 msgstr "Zaustavljeno · {line}"
@@ -9602,7 +9582,7 @@ msgid "Paused schedules keep their settings."
 msgstr "Zaustavljeni urniki ohranijo svoje nastavitve."
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Pay"
+msgid "Pay on Polar's secure checkout with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
@@ -9617,28 +9597,16 @@ msgstr "Obdobje plačila"
 msgid "Payment"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Payment method"
+#: src/features/billing/admin/labels.ts
+msgid "Payment applied (credits granted)"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
-msgid "Payment methods"
-msgstr ""
-
-#: src/features/billing/receipt.tsx
-msgid "Payment receipt"
+#: src/features/billing/admin/labels.ts
+msgid "Payment failed"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "Payment received"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Payment reversed by the bank"
-msgstr ""
-
-#: src/features/billing/admin/overview.tsx
-msgid "payments"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -9684,6 +9652,11 @@ msgstr ""
 msgid "People using Rezumi"
 msgstr ""
 
+#: src/features/homepage/pricing.tsx
+msgid "per month, or {yearly} a year"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Period"
 msgstr ""
@@ -9774,6 +9747,10 @@ msgstr ""
 msgid "Plan again"
 msgstr "Načrtuj znova"
 
+#: src/features/billing/purchase.ts
+msgid "Plan change"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan my preparation"
 msgstr "Načrtuj mojo pripravo"
@@ -9790,6 +9767,10 @@ msgstr "Načrtuj, kaj vprašati"
 msgid "Planning your week"
 msgstr "Načrtovanje vašega tedna"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Plans belong to an account with an email address. Your guest work moves with you."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
@@ -9800,15 +9781,75 @@ msgstr ""
 
 #. placeholder {0}: plus.payments
 #: src/features/billing/admin/overview.tsx
-msgid "Plus · {0} sold"
+msgid "Plus · {0} paid"
 msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
 msgstr ""
 
+#: src/features/homepage/faq.tsx
+msgid "Plus and Pro AI are billed monthly or yearly and renew until you cancel. Cancel any time from your plan page; you keep access until the end of the period you paid for, and nothing more is charged. Then your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document."
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar API kept failing"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Polar emails you the receipt, and your invoices are in billing."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar event needs a look: {type}"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar events and admin actions, newest first."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar has nothing for this payment yet."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar hasn't confirmed it yet. Check the status in a moment."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar id"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar refunds the amount before tax and gives the tax back itself; its fees aren't returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type} (already handled)"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type}, not for this payment"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: older {type}, ignored"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: order paid"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: refund"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -10037,7 +10078,7 @@ msgid "Previous week"
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
-msgid "Prices in Indonesian Rupiah. Access starts once payment is confirmed and lasts 30 days. When it ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia; the checkout shows any tax for where you live. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
 msgstr ""
 
 #: src/features/homepage/footer.tsx
@@ -10061,10 +10102,6 @@ msgstr "Tiskanje"
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "Pred pošiljanjem obrazec natisnite ali izvozite v ploski PDF."
 
-#: src/features/billing/receipt.tsx
-msgid "Print or save as PDF"
-msgstr ""
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
 msgstr "Zasebnost"
@@ -10080,7 +10117,7 @@ msgstr "Zasebno. Samo vi ga lahko vidite."
 
 #. placeholder {0}: proAi.payments
 #: src/features/billing/admin/overview.tsx
-msgid "Pro AI · {0} sold"
+msgid "Pro AI · {0} paid"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -10253,10 +10290,6 @@ msgstr "QR koda za {url}"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "QR-koda za preverjanje v dveh korakih"
-
-#: src/features/billing/admin/labels.ts
-msgid "QRIS: up to 45 days when paid with the acquirer's own app (GoPay), about 7 days from other apps."
-msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Question {index}"
@@ -10505,33 +10538,8 @@ msgstr "Razlog"
 msgid "Recalled"
 msgstr "Iz spomina"
 
-#: src/features/billing/payment-history.tsx
-#: src/features/billing/receipt.tsx
-msgid "Receipt"
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt not sent"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt sent"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Receipt sent again"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt sent."
-msgstr ""
-
-#: src/features/billing/payment-history.tsx
-msgid "Receipts are proof of payment, not tax invoices."
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -10550,10 +10558,6 @@ msgstr "Prejemnik"
 msgid "Recommended"
 msgstr ""
 
-#: src/features/billing/admin/customer.tsx
-msgid "Record a manual refund"
-msgstr ""
-
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "Posnemi znova"
@@ -10561,14 +10565,6 @@ msgstr "Posnemi znova"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Record application"
 msgstr "Zabeleži prijavo za delo"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Record manual refund"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Record refund"
-msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Record your answer"
@@ -10654,13 +10650,13 @@ msgstr "Osveži povzetek 24 ur prej"
 msgid "Refresh the briefing on the morning of"
 msgstr "Osveži povzetek zjutraj na dan intervjuja"
 
-#. placeholder {0}: formatPrice(refundAmount)
+#. placeholder {0}: formatPrice(refundAmount, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Refund {0}"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Refund asked of Midtrans"
+msgid "Refund asked of Polar"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
@@ -10676,21 +10672,16 @@ msgstr ""
 msgid "Refund recorded"
 msgstr ""
 
-#: src/features/billing/admin/customer.tsx
-msgid "Refund recorded."
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
-msgid "Refund refused by Midtrans"
+msgid "Refund refused by Polar"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "Refund through Midtrans"
+msgid "Refund through Polar"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/purchase.ts
-#: src/features/billing/receipt.tsx
 msgid "Refunded"
 msgstr ""
 
@@ -10699,9 +10690,13 @@ msgstr ""
 msgid "Refunded · {0}"
 msgstr ""
 
-#. placeholder {0}: formatPrice(result.amount)
+#. placeholder {0}: formatPrice(result.amount, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Refunded {0}."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refunded by Polar to prevent a dispute"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -10710,10 +10705,6 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Refunds"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Refunds may need to be activated by Midtrans support first, and the Midtrans balance must cover them. A full refund always takes back the pass and the remaining credits."
 msgstr ""
 
 #. placeholder {0}: refund.failureReason ?? "—"
@@ -10917,6 +10908,37 @@ msgstr "Preimenuj različico"
 msgid "Rename…"
 msgstr "Preimenuj ..."
 
+#: src/features/billing/purchase.ts
+msgid "Renewal"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "renews {0}"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Renews every month until you cancel."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Renews every year until you cancel."
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Renews monthly on {0}"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Renews monthly until you cancel"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Renews yearly on {0}"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Reopen"
 msgstr "Ponovno odpri"
@@ -10976,10 +10998,6 @@ msgstr "Zahteve"
 #: src/features/career/workspace/fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Zahteve in vaši dokazi"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Resend receipt"
-msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Resend the link"
@@ -11172,11 +11190,6 @@ msgstr ""
 msgid "Reversed by the bank"
 msgstr ""
 
-#. placeholder {0}: metrics.reversals.payments
-#: src/features/billing/admin/overview.tsx
-msgid "Reversed by the bank · {0}"
-msgstr ""
-
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -11256,12 +11269,6 @@ msgstr "Rezumi - Pojdi na domačo stran"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
-#. placeholder {0}: getPlanName(payment.planId)
-#. placeholder {1}: payment.durationDays
-#: src/features/billing/receipt.tsx
-msgid "Rezumi {0}, {1} days of access"
-msgstr ""
-
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr ""
@@ -11273,7 +11280,6 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
-#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -11372,6 +11378,10 @@ msgstr "Zaženi znova"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Running"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Running now; started and ended in this period."
 msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
@@ -11882,10 +11892,6 @@ msgstr "Izbrani dokumenti"
 msgid "Selection"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Seller"
-msgstr ""
-
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
 msgstr "Semantični CSS slogovni predlog"
@@ -12039,10 +12045,6 @@ msgstr "Delite"
 msgid "Share a live link that is always the latest version"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
-msgid "Share of revenue."
-msgstr ""
-
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
 msgstr "Delite razdelke"
@@ -12071,10 +12073,6 @@ msgstr "Izpopolnjevanje uvoda"
 
 #: src/features/homepage/resume.tsx
 msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "ShopeePay: full refunds only, between 06.00 and 23.50 WIB."
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -12543,7 +12541,7 @@ msgid "Start free"
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
-msgid "Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own."
+msgid "Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time."
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -12601,7 +12599,7 @@ msgid "Started"
 msgstr "Začelo se je"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Starts after your Pro AI time ends."
+msgid "Starts at your next renewal."
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -12624,7 +12622,6 @@ msgstr "Statistika"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
-#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "Stanje"
@@ -12634,11 +12631,7 @@ msgid "status check"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Status checked with Midtrans"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Status needs a look by hand"
+msgid "Status checked with Polar"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -12744,6 +12737,31 @@ msgstr "Poslano priloženo spremno pismo: {0}"
 msgid "Submitted attached resume: {0}"
 msgstr "Oddan pripet življenjepis: {0}"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Subscribe"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Subscribing is paused for now"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Subscribing isn't available right now. Try again later."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription changed"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription ended by an admin"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Subscriptions"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Success at 90 days · next step"
 msgstr "Uspeh po 90 dneh · naslednji korak"
@@ -12820,6 +12838,10 @@ msgstr "Preklopni model"
 msgid "Switch templates without rewriting"
 msgstr ""
 
+#: src/features/billing/purchase.ts
+msgid "Switch to {name}"
+msgstr ""
+
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to dark theme"
 msgstr "Preklopi na temno temo"
@@ -12828,9 +12850,17 @@ msgstr "Preklopi na temno temo"
 msgid "Switch to light theme"
 msgstr "Preklopi na svetlo temo"
 
+#: src/features/billing/purchase.ts
+msgid "Switch to monthly"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Switch to one column"
 msgstr "Preklopite na en stolpec"
+
+#: src/features/billing/purchase.ts
+msgid "Switch to yearly"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Switched to one column"
@@ -12939,6 +12969,10 @@ msgstr "Ciljne vloge"
 #: src/features/career/knowledge/stories.tsx
 msgid "Task"
 msgstr "Naloga"
+
+#: src/features/billing/admin/customer.tsx
+msgid "tax"
+msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Teams and structure"
@@ -13199,6 +13233,14 @@ msgstr "Vgrajeni čitalnik ostane aktiven."
 msgid "The checker shows the text a parser extracts and what to fix first."
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "The checkout couldn't be opened. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "The checkout shows the final amount, with any tax that applies where you live."
+msgstr ""
+
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Čeki so mehanski. To vpraša jezikovni model, kako bi se lahko bralec odzval na vaše vnose na seznamu, in predlaga prepise. To ni del ocene."
@@ -13275,9 +13317,17 @@ msgstr "Pozdrav sledi imenu."
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
 msgstr ""
 
+#: src/features/billing/invoice-button.tsx
+msgid "The invoice couldn't be opened. Try again in a moment."
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "Ključ je šifriran na strežniku in nikoli več ni prikazan. Shranjevanje preizkusi povezavo."
+
+#: src/features/billing/plan-page.tsx
+msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
+msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "The letter as it is"
@@ -13302,6 +13352,10 @@ msgstr "Vrstica se je spremenila, odkar ste vprašali, zato ni bila zamenjana."
 #: src/features/career/workspace/saved.tsx
 msgid "the message"
 msgstr "sporočilo"
+
+#: src/features/billing/payment-return.tsx
+msgid "The money went back, and any credits it brought were taken back. Your documents stay as they are."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "The morning of the interview has passed, so the briefing runs now."
@@ -13343,16 +13397,8 @@ msgstr "PDF strani ni bilo mogoče prebrati. Uredite karkoli, da bo znova upodob
 msgid "The pages are pictures, with no text behind them."
 msgstr "Strani so slike, brez besedila v ozadju."
 
-#: src/features/billing/payment-return.tsx
-msgid "The pass it bought has been taken back. Your documents stay as they are."
-msgstr ""
-
-#: src/features/billing/pending-payment.tsx
-msgid "The payment method couldn't be changed. Try again in a moment."
-msgstr ""
-
 #: src/features/billing/purchase-dialog.tsx
-msgid "The payment page couldn't be opened. Try again in a moment."
+msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -13370,10 +13416,6 @@ msgstr "Objave za delo ni bilo mogoče prebrati. Izpolnite vlogo in podjetje."
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "Objava delovnega mesta je shranjena s to prošnjo za zaposlitev."
-
-#: src/features/billing/receipt.tsx
-msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
-msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "The provider didn't answer. Check the key and the model."
@@ -13402,10 +13444,6 @@ msgstr "Odziva ponudnika ni bilo mogoče preveriti. Poskusite znova."
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
 msgstr "Razlog se hrani za Insights. Povezani dokumenti se ne dotikajo."
-
-#: src/features/billing/admin/customer.tsx
-msgid "The receipt wasn't sent. Check the email settings."
-msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
@@ -13520,10 +13558,6 @@ msgstr "Ni povezave do profila, portfelja ali repozitorija."
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "Ni povzetka."
-
-#: src/features/billing/receipt.tsx
-msgid "There's no receipt yet: this payment hasn't been paid."
-msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -13651,6 +13685,10 @@ msgstr "Ta datoteka uporablja pisave Type 3, ki namesto znakov vsebujejo risbe."
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/billing/invoice-button.tsx
+msgid "This invoice isn't available here. Open billing to find all your invoices."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "To je PDF Portfolio: vidna stran je le naslovnica."
@@ -13719,10 +13757,6 @@ msgstr ""
 msgid "This payment was refunded"
 msgstr ""
 
-#: src/features/billing/pending-payment.tsx
-msgid "This payment went through, so there's nothing to change."
-msgstr ""
-
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "Ta PDF nima besedilne plasti, zato razčlenjevalnik ne prebere ničesar iz njega."
@@ -13734,10 +13768,6 @@ msgstr "Ta PDF je skenirana slika. Ni besedila za branje. Preizkusite različico
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "Ta PDF je zaščiten z geslom. Shranite nezaščiteno kopijo in poskusite znova."
-
-#: src/features/billing/receipt.tsx
-msgid "This receipt isn't available. It may belong to another account."
-msgstr ""
 
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
@@ -13848,8 +13878,8 @@ msgstr "Čas · {0}"
 msgid "Time · {timeZone}"
 msgstr "Čas · {timeZone}"
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "Time you already have is never lost."
+#: src/features/billing/admin/customer.tsx
+msgid "Time given by an admin or a promotion, and 30-day passes from before, newest first."
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -13867,16 +13897,6 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Časi so prikazani v časovnem pasu {timeZone}."
-
-#. placeholder {0}: zoneName(split.pass.endsAt)
-#: src/features/billing/purchase-dialog.tsx
-msgid "Times in {0}, estimated for paying now."
-msgstr ""
-
-#. placeholder {0}: zoneName(split.pass.startsAt)
-#: src/features/billing/purchase-dialog.tsx
-msgid "Times in {0}."
-msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/general.tsx
@@ -13955,10 +13975,6 @@ msgstr ""
 msgid "Toolbar"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Total paid"
-msgstr ""
-
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up on purpose."
 msgstr ""
@@ -13995,10 +14011,6 @@ msgstr "Prepisovanje z modelom {model}…"
 msgid "Transcript copied"
 msgstr "Prepis kopiran"
 
-#: src/features/billing/admin/customer.tsx
-msgid "Transfer the money to the customer first, then record it here. Nothing is sent to Midtrans."
-msgstr ""
-
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -14008,6 +14020,10 @@ msgstr "Smetnjak"
 #: src/features/documents/trash-page.tsx
 msgid "Trash is empty"
 msgstr "Koš je prazen"
+
+#: src/features/billing/admin/labels.ts
+msgid "Trial"
+msgstr ""
 
 #: src/features/billing/credits.ts
 #: src/features/billing/plan-page.tsx
@@ -14062,7 +14078,7 @@ msgid "Try again"
 msgstr "Poskusi znova"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Try again later. Your current pass and credits aren't affected."
+msgid "Try again later. Your current plan and credits aren't affected."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -14326,6 +14342,10 @@ msgstr "Posodobljeno: {done} od {total}. Preskočeni so bili zaklenjeni dokument
 #: src/dialogs/resume/index.tsx
 msgid "Updating your resume..."
 msgstr "Posodabljanje vašega življenjepisa..."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Upgrade now"
+msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Upgrade to {name}"
@@ -14620,7 +14640,7 @@ msgid "Verify your email in Settings first"
 msgstr "Najprej potrdite e-poštni naslov v Nastavitvah"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Verify your email to buy a pass"
+msgid "Verify your email to subscribe"
 msgstr ""
 
 #: src/features/auth/pages/verify-2fa.tsx
@@ -14692,10 +14712,6 @@ msgstr "Ogled prošnje za delo"
 msgid "View posting"
 msgstr "Oglejte si objavo zaposlitve"
 
-#: src/features/billing/payment-return.tsx
-msgid "View receipt"
-msgstr ""
-
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -14713,10 +14729,6 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "ogledov · 30 dni"
-
-#: src/features/billing/purchase.ts
-msgid "Virtual account"
-msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -14738,17 +14750,13 @@ msgstr "Nastavitve glasu"
 msgid "Volunteer"
 msgstr "Prostovoljec"
 
-#: src/features/billing/admin/customer.tsx
-msgid "Waiting for Midtrans"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Waiting for payment"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "Waiting for the bank"
+msgid "Waiting for Polar"
 msgstr ""
 
 #: src/features/career/workspace/messages.tsx
@@ -14781,10 +14789,6 @@ msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't find this payment"
-msgstr ""
-
-#: src/features/billing/payment-return.tsx
-msgid "We email the receipt to you as well."
 msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
@@ -14838,6 +14842,14 @@ msgstr "Spletno iskanje ni uspelo: {0}"
 msgid "Web searches look for work here, up to three countries."
 msgstr "Spletno iskanje išče službe v teh državah. Izberite do tri države."
 
+#: src/features/billing/admin/customer.tsx
+msgid "webhook"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Webhooks with a bad signature"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "Spletna stran"
@@ -14861,6 +14873,11 @@ msgstr "Tehtanje vsake zahteve"
 #: src/features/career/workspace/debrief.tsx
 msgid "Went well"
 msgstr "Šlo je dobro"
+
+#: src/features/billing/admin/overview.tsx
+#: src/features/billing/payment-history.tsx
+msgid "What"
+msgstr ""
 
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
@@ -15102,6 +15119,10 @@ msgstr "širina"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "Ali bo moj življenjepis presegel sisteme za sledenje kandidatom?"
 
+#: src/features/homepage/faq.tsx
+msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars."
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
 msgstr ""
@@ -15220,6 +15241,20 @@ msgstr "Pomoč pri pisanju, prilagojeni predlogi in pomočnik. Privzeti ponudnik
 msgid "Written offer"
 msgstr "Pisna ponudba"
 
+#: src/features/billing/admin/overview.tsx
+msgid "yearly"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Yearly saves up to {saving}%"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr ""
@@ -15288,12 +15323,12 @@ msgstr "Nimate še življenjepisa za kopiranje. Najprej uvozite ali ustvarite ž
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "To ste že prej pozabili, zato ni bilo znova shranjeno."
 
-#: src/components/layout/loading-screen.tsx
-msgid "You only need one yes."
+#: src/features/billing/subscription-actions.tsx
+msgid "You keep {plan} until {until}, and nothing more is charged. Then your account is on Free; every document stays yours to open, edit and download as a PDF."
 msgstr ""
 
-#: src/features/homepage/faq.tsx
-msgid "You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document."
+#: src/components/layout/loading-screen.tsx
+msgid "You only need one yes."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -15337,11 +15372,7 @@ msgid "You're using a guest account"
 msgstr "Uporabljate račun gosta"
 
 #: src/features/billing/pending-payment.tsx
-msgid "Your {plan} payment isn't finished"
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Your {rest} time picks up again"
+msgid "Your {plan} checkout isn't finished"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -15424,6 +15455,14 @@ msgstr "Vaši kontaktni podatki niso na prvi strani."
 msgid "Your conversations appear here."
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your current plan stays until {renewal}; {name} starts then, at the new price. Nothing is charged now."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your current plan stays until your next renewal; {name} starts then. Nothing is charged now."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "Vaši podatki"
@@ -15488,9 +15527,17 @@ msgstr "Vaši naslovi so videti enako kot osnovno besedilo."
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "Vaš naslov se je spremenil v življenjepisu. Tudi pismo je posodobljeno."
 
+#: src/features/billing/invoice-button.tsx
+msgid "Your invoice is still being made. Try again in a moment."
+msgstr ""
+
 #: src/features/career/workspace/debrief.tsx
 msgid "your Knowledge"
 msgstr "vaše Znanje"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Your last payment didn't go through. Update your payment method in billing first."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Your lines are packed very tightly."
@@ -15569,7 +15616,21 @@ msgid "Your phone number is written in an unusual shape."
 msgstr "Vaša telefonska številka je zapisana v nenavadni obliki."
 
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/purchase.ts
 msgid "Your plan"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan changed in the meantime. Reload the page and try again."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan changes at your next renewal."
+msgstr ""
+
+#. placeholder {0}: getPlanName(target.planId)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan is now {0}."
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -15644,6 +15705,18 @@ msgstr "Vaše zgodbe ni bilo mogoče naložiti."
 
 #: src/components/layout/loading-screen.tsx
 msgid "Your story is worth telling well."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Your subscription continues."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Your subscription ends at the close of this period."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Your subscription is set to end. Keep it first to change the plan."
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx

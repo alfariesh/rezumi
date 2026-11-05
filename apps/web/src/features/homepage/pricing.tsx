@@ -1,44 +1,63 @@
 import type { Plan } from "./plans";
+import type { BillingCurrency } from "@rezumi/schema/billing";
 import { Button, buttonVariants, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
+import { toMajorUnits } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
-import { getPlans, planCurrency } from "./plans";
+import { currencyForLocale, getPlans } from "./plans";
 import { Container, SectionHeading, SectionTitle } from "./ui";
 
-type PlanPriceProps = { price: number; featured: boolean };
+type PlanPriceProps = { amount: number; currency: BillingCurrency; featured: boolean };
 
-/** The price, with the currency set small beside the figure: "Rp 79.000" in Indonesian, "IDR 79,000" in English. */
-function PlanPrice({ price, featured }: PlanPriceProps) {
+/** The price, with the currency set small beside the figure: "$ 4.99" in English, "Rp 59.000" in Indonesian. */
+function PlanPrice({ amount, currency, featured }: PlanPriceProps) {
 	const { i18n } = useLingui();
+	const value = toMajorUnits(amount, currency);
 	const parts = new Intl.NumberFormat(i18n.locale, {
 		style: "currency",
-		currency: planCurrency,
-		maximumFractionDigits: 0,
-	}).formatToParts(price);
-	const currency = parts.find((part) => part.type === "currency")?.value ?? planCurrency;
-	const amount = parts
+		currency: currency.toUpperCase(),
+		minimumFractionDigits: currency === "idr" || Number.isInteger(value) ? 0 : 2,
+		maximumFractionDigits: currency === "idr" ? 0 : 2,
+	}).formatToParts(value);
+	const symbol = parts.find((part) => part.type === "currency")?.value ?? currency.toUpperCase();
+	const figure = parts
 		.filter((part) => part.type !== "currency" && part.type !== "literal")
 		.map((part) => part.value)
 		.join("");
 
 	return (
 		<p className="order-first flex items-start gap-1.5 font-bold">
-			<span className={cn("mt-1 text-xl", featured ? "text-accent-foreground/70" : "text-muted")}>{currency}</span>
+			<span className={cn("mt-1 text-xl", featured ? "text-accent-foreground/70" : "text-muted")}>{symbol}</span>
 			<span className="text-5xl leading-none tracking-tight tabular-nums sm:text-6xl lg:text-5xl xl:text-6xl">
-				{amount}
+				{figure}
 			</span>
 		</p>
 	);
 }
 
+/** A yearly price as words under the monthly one: "or $39 a year". */
+function useYearly(amount: number, currency: BillingCurrency) {
+	const { i18n } = useLingui();
+	const value = toMajorUnits(amount, currency);
+	return new Intl.NumberFormat(i18n.locale, {
+		style: "currency",
+		currency: currency.toUpperCase(),
+		minimumFractionDigits: currency === "idr" || Number.isInteger(value) ? 0 : 2,
+		maximumFractionDigits: currency === "idr" ? 0 : 2,
+	}).format(value);
+}
+
 type PlanCardProps = { plan: Plan; billingEnabled: boolean };
 
 function PlanCard({ plan, billingEnabled }: PlanCardProps) {
+	const { i18n } = useLingui();
 	const featured = plan.featured === true;
-	const period = plan.price === 0 ? t`No card needed` : t`For 30 days, no automatic renewal`;
+	const currency = currencyForLocale(i18n.locale);
+	const yearly = useYearly(plan.prices?.year[currency] ?? 0, currency);
+	const period = plan.prices === null ? t`No card needed` : t`per month, or ${yearly} a year`;
 
 	return (
 		<div
@@ -59,7 +78,7 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 				<p className={cn("mt-2 min-h-12 text-base text-pretty", featured ? "text-accent-foreground/80" : "text-muted")}>
 					{plan.description}
 				</p>
-				<PlanPrice price={plan.price} featured={featured} />
+				<PlanPrice amount={plan.prices?.month[currency] ?? 0} currency={currency} featured={featured} />
 				<p className={cn("order-first mt-3 min-h-10 text-sm", featured ? "text-accent-foreground/70" : "text-muted")}>
 					{period}
 				</p>
@@ -99,7 +118,7 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 	);
 }
 
-/** 04 Pricing: three plans in one panel, Pro AI raised on the accent. Every price is a 30-day pass in Rupiah. */
+/** 04 Pricing: three plans in one panel, Pro AI raised on the accent. Paid plans are monthly or yearly subscriptions. */
 type PricingProps = { billingEnabled?: boolean };
 
 export function Pricing({ billingEnabled = false }: PricingProps) {
@@ -115,7 +134,7 @@ export function Pricing({ billingEnabled = false }: PricingProps) {
 				<SectionHeading section="pricing" id="pricing-title" />
 				<SectionTitle>{t`Pay only while you are applying.`}</SectionTitle>
 				<p className="mt-4 max-w-2xl text-lg text-pretty text-muted">
-					{t`Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own.`}
+					{t`Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time.`}
 				</p>
 				{!billingEnabled && (
 					<p className="mt-3 text-sm text-muted">{t`Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet.`}</p>
@@ -129,7 +148,7 @@ export function Pricing({ billingEnabled = false }: PricingProps) {
 					))}
 				</div>
 				<p className="mx-auto mt-6 max-w-3xl px-4 text-center text-sm text-pretty text-muted">
-					{t`Prices in Indonesian Rupiah. Access starts once payment is confirmed and lasts 30 days. When it ends, your account returns to Free and your documents stay. Your own AI key works on every plan.`}
+					{t`Prices in US dollars, or in Rupiah for visitors from Indonesia; the checkout shows any tax for where you live. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan.`}
 				</p>
 			</div>
 		</section>

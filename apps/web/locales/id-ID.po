@@ -327,6 +327,11 @@ msgstr "{0} · {providerLabel}. Mengirim lamaran ini dan Pengetahuan Anda; penye
 msgid "{0} (copy)"
 msgstr "{0} (salinan)"
 
+#. placeholder {0}: monthlyOfYearly(id, currency)
+#: src/features/billing/buy-plans.tsx
+msgid "{0} a month, billed yearly"
+msgstr "{0} per bulan, ditagih tahunan"
+
 #. placeholder {0}: creditCount(payment.credits)
 #: src/features/billing/payment-return.tsx
 msgid "{0} added for Rezumi AI."
@@ -373,8 +378,8 @@ msgstr "{0} kedaluwarsa pada {1}"
 
 #. placeholder {0}: creditCount(credits)
 #: src/features/billing/purchase-dialog.tsx
-msgid "{0} for Rezumi AI come with it."
-msgstr "Termasuk {0} untuk Rezumi AI."
+msgid "{0} for Rezumi AI every month. Credits left at the end of a month don't carry over."
+msgstr "{0} untuk Rezumi AI setiap bulan. Kredit yang tersisa di akhir bulan tidak terbawa."
 
 #. placeholder {0}: semantics.dates.length
 #: src/features/resume/editor/check/parser-view.tsx
@@ -435,6 +440,13 @@ msgstr "{0} mnt"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} lebih banyak"
+
+#. placeholder {0}: kinds.new ?? 0
+#. placeholder {1}: kinds.renewal ?? 0
+#. placeholder {2}: kinds.change ?? 0
+#: src/features/billing/admin/overview.tsx
+msgid "{0} new · {1} renewals · {2} plan changes"
+msgstr "{0} baru · {1} perpanjangan · {2} ganti paket"
 
 #. placeholder {0}: usage.used
 #. placeholder {1}: usage.max
@@ -508,6 +520,17 @@ msgstr "Postingan pekerjaan {0}"
 msgid "{0} returned “{1}”. Your message is kept."
 msgstr "{0} mengembalikan “{1}”. Pesan Anda disimpan."
 
+#. placeholder {0}: BILLING_SELLER.merchantOfRecord
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} sells the subscription as the merchant of record and handles payment, invoices and tax. By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr "{0} menjual langganan sebagai penjual resmi (merchant of record) dan mengurus pembayaran, invoice, dan pajak. Dengan melanjutkan, kamu menyetujui <0>Syarat dan Ketentuan</0> serta <1>Kebijakan Pengembalian Dana</1>."
+
+#. placeholder {0}: metrics.subscriptions.canceling
+#. placeholder {1}: metrics.subscriptions.pastDue
+#: src/features/billing/admin/overview.tsx
+msgid "{0} set to end · {1} payment failed"
+msgstr "{0} akan berhenti · {1} gagal bayar"
+
 #. placeholder {0}: report.skippedChecks
 #: src/features/ats-checker/report/score-header.tsx
 msgid "{0} skipped"
@@ -526,21 +549,10 @@ msgstr "{0} didukung, {1} didukung sebagian, {2} belum ada bukti. {3}"
 msgid "{0} to fix"
 msgstr "{0} untuk diperbaiki"
 
-#. placeholder {0}: formatDate(payment.access.startsAt)
-#. placeholder {1}: formatDate(payment.access.endsAt)
-#: src/features/billing/receipt.tsx
-msgid "{0} until {1}"
-msgstr "{0} sampai {1}"
-
 #. placeholder {0}: metrics.signups.verified
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
 msgstr "{0} memverifikasi email"
-
-#. placeholder {0}: getPaymentMethodName(payment.paymentType)
-#: src/features/billing/receipt.tsx
-msgid "{0} via Midtrans"
-msgstr "{0} melalui Midtrans"
 
 #. placeholder {0}: title || t`Untitled`
 #. placeholder {1}: index + 1
@@ -656,10 +668,6 @@ msgstr "{days, plural, other {# hari di kantor, di bawah batas Anda}}"
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, other {# hari di kantor, sesuai batas Anda}}"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "{days} days of access, paid once. It doesn't renew on its own."
-msgstr "Akses {days} hari, bayar sekali. Tidak diperpanjang otomatis."
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -788,10 +796,6 @@ msgstr "{name} dan gaya kustom tidak termasuk dalam paketmu, jadi dokumen hasil 
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name} tidak merespons. Tidak ada yang diubah; coba lagi."
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "{name} ends"
-msgstr "{name} berakhir"
-
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name} dibagi menjadi kolom {columns}"
@@ -818,8 +822,8 @@ msgid "{name} sits in the sidebar"
 msgstr "{name} berada di sidebar"
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "{name} starts"
-msgstr "{name} mulai"
+msgid "{name} starts now. You're charged the difference for the rest of this period with your saved payment method, then the new price at each renewal."
+msgstr "{name} mulai sekarang. Selisih untuk sisa periode ini ditagih ke metode pembayaran tersimpanmu, lalu harga baru di setiap perpanjangan."
 
 #: src/features/resume/editor/design/template-group.tsx
 msgid "{name} style"
@@ -870,37 +874,30 @@ msgstr "{passedRules} dari {totalRules} lulus cek."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {# usulan edit di halaman ini · tidak ada perubahan sampai Anda menerimanya} other {# usulan pengeditan pada halaman ini · tidak ada perubahan sampai Anda menerimanya}}"
 
-#. placeholder {0}: formatDate(access.endsAt)
 #: src/features/billing/payment-return.tsx
-msgid "{plan} is active until {0}."
-msgstr "{plan} aktif sampai {0}."
+msgid "{plan} is active."
+msgstr "{plan} aktif."
 
+#. placeholder {0}: formatDate(payment.periodEnd)
 #: src/features/billing/payment-return.tsx
-msgid "{plan} is being added to your account."
-msgstr "{plan} sedang ditambahkan ke akunmu."
-
-#. placeholder {0}: formatDate(access.startsAt)
-#. placeholder {1}: formatDate(access.endsAt)
-#: src/features/billing/payment-return.tsx
-msgid "{plan} starts on {0} and runs until {1}."
-msgstr "{plan} mulai pada {0} dan berlaku sampai {1}."
+msgid "{plan} is active. It renews on {0} unless you cancel."
+msgstr "{plan} aktif. Diperpanjang pada {0} kecuali kamu membatalkannya."
 
 #: src/features/billing/pending-payment.tsx
-msgid "{price}, payable until {deadline}. A bank transfer can still be paid any time before then."
-msgstr "{price}, bisa dibayar sampai {deadline}. Transfer bank masih bisa dibayar kapan saja sebelum itu."
+msgid "{price}, open until {deadline}."
+msgstr "{price}, terbuka sampai {deadline}."
+
+#: src/features/homepage/plans.ts
+msgid "{proCredits} AI credits every month"
+msgstr "{proCredits} kredit AI setiap bulan"
 
 #: src/features/billing/buy-plans.tsx
-#: src/features/homepage/plans.ts
-msgid "{proCredits} AI credits per purchase"
-msgstr "{proCredits} kredit AI per pembelian"
+msgid "{proCredits} Rezumi AI credits every month"
+msgstr "{proCredits} kredit Rezumi AI setiap bulan"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {# diusulkan} other {# diusulkan}}"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "{rest} ends"
-msgstr "{rest} berakhir"
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
@@ -989,10 +986,12 @@ msgstr "{words, plural, one {Kata #} other {kata-kata #}}"
 msgid "/ hour"
 msgstr "/ jam"
 
+#: src/features/billing/purchase.ts
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ month"
 msgstr "/ bulan"
 
+#: src/features/billing/purchase.ts
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ tahun"
@@ -1053,6 +1052,10 @@ msgstr "3 dari 5 kata kunci ada di CV Anda"
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30 hari"
+
+#: src/features/billing/purchase.ts
+msgid "30-day pass"
+msgstr "Pass 30 hari"
 
 #: src/features/homepage/features.tsx
 msgid "5 credits"
@@ -1293,10 +1296,6 @@ msgstr "Akses"
 msgid "Access is sent to"
 msgstr "Akses diberikan kepada"
 
-#: src/features/billing/receipt.tsx
-msgid "Access period"
-msgstr "Masa aktif"
-
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "Akses akun Anda melalui API, termasuk membaca, mengubah dan menghapus dokumen dan lamaran pekerjaan Anda."
@@ -1345,11 +1344,16 @@ msgstr "Tindakan"
 msgid "Actions"
 msgstr "Tindakan"
 
-#. placeholder {0}: payment.orderId
+#. placeholder {0}: payment.orderId ?? payment.id
 #: src/features/billing/admin/customer.tsx
 msgid "Actions for {0}"
 msgstr "Tindakan untuk {0}"
 
+#: src/features/billing/admin/overview.tsx
+msgid "active"
+msgstr "aktif"
+
+#: src/features/billing/admin/labels.ts
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "Aktif"
@@ -1362,10 +1366,18 @@ msgstr "Surat lamaran aktif"
 msgid "Active resumes"
 msgstr "CV aktif"
 
+#: src/features/billing/admin/overview.tsx
+msgid "Active subscriptions"
+msgstr "Langganan aktif"
+
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/plan-page.tsx
 msgid "Active until {0}"
 msgstr "Berlaku sampai {0}"
+
+#: src/features/billing/admin/labels.ts
+msgid "Active, ends at period end"
+msgstr "Aktif, berhenti di akhir periode"
 
 #: src/features/applications/components/detail/activity.tsx
 msgid "Activity"
@@ -1809,11 +1821,6 @@ msgstr "Setelah tahap penyaringan"
 msgid "After the technical interview"
 msgstr "Setelah wawancara teknis"
 
-#. placeholder {0}: getPlanName(waitsFor.planId)
-#: src/features/billing/purchase-dialog.tsx
-msgid "After your {0} time ends."
-msgstr "Setelah masa {0}-mu berakhir."
-
 #: src/features/career/workspace/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "Setelah tinjauan pertama Anda, rencana ringan untuk minggu ini muncul di sini."
@@ -1988,8 +1995,12 @@ msgid "Also email {0}"
 msgstr "Kirim juga email ke {0}"
 
 #: src/features/billing/admin/customer.tsx
-msgid "Also take back the pass and remaining credits from this payment"
-msgstr "Cabut juga paket dan sisa kredit dari pembayaran ini"
+msgid "Also end the subscription now (access stops at once)"
+msgstr "Sekaligus hentikan langganan sekarang (akses langsung berhenti)"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Also take back the remaining credits from this payment"
+msgstr "Sekaligus tarik sisa kredit dari pembayaran ini"
 
 #: src/libs/locale.ts
 msgid "Amharic"
@@ -2001,19 +2012,15 @@ msgstr "Amharik"
 msgid "Amount"
 msgstr "Nominal"
 
-#. placeholder {0}: formatPrice(left)
+#. placeholder {0}: currency.toUpperCase()
+#. placeholder {1}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
-msgid "Amount (Rupiah), up to {0}"
-msgstr "Jumlah (Rupiah), maksimal {0}"
+msgid "Amount before tax ({0}), up to {1}"
+msgstr "Jumlah sebelum pajak ({0}), maksimal {1}"
 
 #: src/features/billing/admin/labels.ts
 msgid "Amount doesn't match the order"
 msgstr "Nominal tidak cocok dengan pesanan"
-
-#. placeholder {0}: formatPrice(left)
-#: src/features/billing/admin/customer.tsx
-msgid "Amount transferred (Rupiah), up to {0}"
-msgstr "Jumlah yang ditransfer (Rupiah), maksimal {0}"
 
 #: src/dialogs/resume/template/data.ts
 msgid "An academic CV in a quiet serif, with small capital section titles and room for long lists of publications, grants and teaching. Suits research and scholarship applications."
@@ -2514,7 +2521,6 @@ msgid "Back to the chat"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
-#: src/features/billing/receipt.tsx
 msgid "Back to your plan"
 msgstr "Kembali ke paketmu"
 
@@ -2594,6 +2600,10 @@ msgstr "Terbaik untuk melamar"
 msgid "Beyond the resume"
 msgstr "Lebih dari sekadar CV"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Billed monthly or yearly until you cancel. Cancel any time; you keep access until the period ends."
+msgstr "Ditagih bulanan atau tahunan sampai kamu membatalkannya. Batalkan kapan saja; akses tetap ada sampai periodenya berakhir."
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Billing"
@@ -2604,6 +2614,18 @@ msgstr "Billing"
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
 msgstr "Admin billing"
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Billing and invoices"
+msgstr "Tagihan dan invoice"
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Billing couldn't be opened. Try again in a moment."
+msgstr "Halaman tagihan tidak bisa dibuka. Coba lagi sebentar lagi."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Billing period"
+msgstr "Periode tagihan"
 
 #: src/features/ats-checker/messages.ts
 msgid "Blocker"
@@ -2743,26 +2765,6 @@ msgstr "Daftar berpoin"
 msgid "Business"
 msgstr "Bisnis"
 
-#: src/features/billing/purchase.ts
-msgid "Buy {name}"
-msgstr "Beli {name}"
-
-#: src/features/billing/buy-plans.tsx
-msgid "Buy a pass"
-msgstr "Beli paket"
-
-#: src/features/billing/buy-plans.tsx
-msgid "Buying is paused for now"
-msgstr "Pembelian sedang dijeda"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Buying isn't available right now. Try again later."
-msgstr "Pembelian belum tersedia saat ini. Coba lagi nanti."
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
-msgstr "Dengan melanjutkan, kamu menyetujui <0>Syarat dan Ketentuan</0> serta <1>Kebijakan Pengembalian Dana</1>."
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "Kalender"
@@ -2808,17 +2810,26 @@ msgstr "Bisakah perangkat lunak membaca resume Anda?"
 msgid "Cancel"
 msgstr "Batalkan"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Cancel any time from your plan page. You keep access until the end of the period you paid for."
+msgstr "Batalkan kapan saja dari halaman Paket. Akses tetap ada sampai akhir periode yang sudah kamu bayar."
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Cancel subscription"
+msgstr "Batalkan langganan"
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Cancel your subscription?"
+msgstr "Batalkan langgananmu?"
+
 #: src/features/billing/purchase.ts
 msgid "Cancelled"
 msgstr "Dibatalkan"
 
-#: src/features/billing/purchase.ts
-msgid "Card"
-msgstr "Kartu"
-
-#: src/features/billing/admin/labels.ts
-msgid "Card: up to 6 months after the payment."
-msgstr "Kartu: sampai 6 bulan setelah pembayaran."
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Cancelled; active until {0}"
+msgstr "Dibatalkan; aktif sampai {0}"
 
 #: src/libs/locale.ts
 msgid "Catalan"
@@ -2834,6 +2845,10 @@ msgstr "Sertifikasi"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Change"
 msgstr "Mengubah"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Change at renewal"
+msgstr "Ganti saat perpanjangan"
 
 #: src/features/career/coach-chat.tsx
 #: src/features/settings/ai/web-access.tsx
@@ -2856,10 +2871,6 @@ msgstr "Ubah bahasa menjadi…"
 #: src/dialogs/auth/change-password.tsx
 msgid "Change password"
 msgstr "Ubah kata sandi"
-
-#: src/features/billing/pending-payment.tsx
-msgid "Change payment method"
-msgstr "Ganti metode pembayaran"
 
 #: src/features/settings/account/profile.tsx
 msgid "Change photo"
@@ -2885,6 +2896,10 @@ msgstr "Ubah zona waktu"
 msgid "Change your password"
 msgstr "Ubah kata sandi Anda"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Change your plan"
+msgstr "Ganti paketmu"
+
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Changed elsewhere"
 msgstr "Berubah di tempat lain"
@@ -2900,6 +2915,12 @@ msgstr "Berubah pikiran? Ganti nama resume Anda menjadi sesuatu yang lebih deskr
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Changes section titles and date words only, not your content."
 msgstr "Mengubah judul bagian dan kata tanggal saja, bukan konten Anda."
+
+#. placeholder {0}: getPlanName(pending.planId)
+#. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Changes to {0} on {1}"
+msgstr "Berganti ke {0} pada {1}"
 
 #: src/features/settings/account/profile.tsx
 msgid "Changing it sends a confirmation to the new address. Your username is part of every public link."
@@ -3006,6 +3027,11 @@ msgstr "Periksa email Anda untuk tautan memverifikasi akun Anda."
 msgid "Check your resume’s ATS readability"
 msgstr "Periksa keterbacaan ATS CV Anda"
 
+#. placeholder {0}: getPaymentStatusLabel(result.status)
+#: src/features/billing/admin/customer.tsx
+msgid "Checked with Polar. Here: {0}."
+msgstr "Sudah dicek ke Polar. Di sini: {0}."
+
 #. placeholder {0}: file.name
 #: src/features/ats-checker/checker.tsx
 msgid "Checking {0}"
@@ -3024,8 +3050,8 @@ msgid "Checking the exported PDF…"
 msgstr "Memeriksa PDF yang diekspor…"
 
 #: src/features/billing/payment-return.tsx
-msgid "Checking with Midtrans…"
-msgstr "Mengecek ke Midtrans…"
+msgid "Checking with Polar…"
+msgstr "Mengecek ke Polar…"
 
 #: src/features/billing/payment-return.tsx
 msgid "Checking your payment…"
@@ -3046,6 +3072,11 @@ msgstr "Progres daftar periksa"
 #: src/features/billing/admin/overview.tsx
 msgid "Checkout conversion"
 msgstr "Konversi checkout"
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "checkout only"
+msgstr "baru checkout"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Checkouts"
@@ -3566,12 +3597,12 @@ msgstr "Lanjutkan sebagai tamu"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/billing/pending-payment.tsx
-msgid "Continue payment"
-msgstr "Lanjutkan pembayaran"
+msgid "Continue checkout"
+msgstr "Lanjutkan checkout"
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Continue to payment"
-msgstr "Lanjut ke pembayaran"
+msgid "Continue to checkout"
+msgstr "Lanjut ke checkout"
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Contrast on white:"
@@ -4350,6 +4381,11 @@ msgstr "Surat lamaran dan balasan untuk recruiter"
 msgid "Cover letters that match"
 msgstr "Surat lamaran yang serasi"
 
+#. placeholder {0}: formatShort(payment.periodEnd)
+#: src/features/billing/admin/customer.tsx
+msgid "covers until {0}"
+msgstr "berlaku sampai {0}"
+
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Create"
 msgstr "Buat"
@@ -4379,8 +4415,8 @@ msgid "Create an account"
 msgstr "Buat akun"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Create an account to buy a pass"
-msgstr "Buat akun untuk membeli paket"
+msgid "Create an account to subscribe"
+msgstr "Buat akun untuk berlangganan"
 
 #: src/features/auth/pages/consent.tsx
 msgid "Create and change your documents and job applications, seeing each one it changes in full, and change your profile and username."
@@ -4443,13 +4479,13 @@ msgstr "Kredit yang paling cepat kedaluwarsa dipakai lebih dulu. Kredit tidak bi
 msgid "Credits charged, and what the AI provider cost."
 msgstr "Kredit yang ditagih, dan biaya provider AI."
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "Credits left from this pass expire with it."
-msgstr "Sisa kredit dari paket ini ikut kedaluwarsa."
-
 #: src/features/homepage/faq.tsx
-msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
-msgstr ""
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes {proCredits} credits every month; unused credits don't carry over. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
+msgstr "Kredit membayar pekerjaan AI yang dijalankan Rezumi untukmu, tanpa perlu menyiapkan API key. Setiap tindakan menampilkan biayanya sebelum dimulai, dan permintaan yang gagal mengembalikan kreditnya. Pro AI mendapat {proCredits} kredit setiap bulan; kredit yang tidak terpakai tidak terbawa ke bulan berikutnya. Paket Gratis mendapat kredit coba sekali sebanyak {trialCredits} kredit, berlaku {trialDays} hari."
+
+#: src/features/billing/admin/labels.ts
+msgid "Credits taken back"
+msgstr "Kredit ditarik kembali"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Credits used"
@@ -4470,6 +4506,10 @@ msgstr "Data CSV"
 #: src/features/career/knowledge/preferences.tsx
 msgid "Currency"
 msgstr "Mata uang"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Current"
+msgstr "Saat ini"
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Current filters"
@@ -4559,10 +4599,6 @@ msgstr "Setiap hari pukul {clock} · berikutnya {next}"
 #: src/features/resume/share/share-panel.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "Penayangan harian selama 30 hari, puncak {0}"
-
-#: src/features/billing/admin/labels.ts
-msgid "DANA: up to 45 days after settlement."
-msgstr "DANA: sampai 45 hari setelah lunas."
 
 #: src/libs/locale.ts
 msgid "Danish"
@@ -5205,10 +5241,6 @@ msgstr "Belanda"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "Setiap jawaban yang mendapat masukan disimpan di sini, yang terbaru di atas."
 
-#: src/features/billing/buy-plans.tsx
-msgid "Each pass is 30 days of access, paid once. Nothing renews on its own."
-msgstr "Setiap paket berisi akses 30 hari, bayar sekali. Tidak ada yang diperpanjang otomatis."
-
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "Setiap persyaratan dalam lowongan diperiksa terhadap fakta dan cerita di Pengetahuan Anda. Kekurangan ditampilkan sebagai bukti yang belum ada, bukan kemampuan yang tidak ada."
@@ -5399,7 +5431,7 @@ msgstr "Sudah diemail"
 msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "Sematkan semua font saat mengekspor, agar karakter dipetakan sesuai maksud Anda."
 
-#. placeholder {0}: formatPrice(left)
+#. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Empty: the rest, {0}"
 msgstr "Kosong: sisanya, {0}"
@@ -5409,8 +5441,14 @@ msgid "End"
 msgstr "Akhir"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/labels.ts
+#: src/features/billing/admin/overview.tsx
 msgid "Ended"
 msgstr "Berakhir"
+
+#: src/features/billing/admin/labels.ts
+msgid "Ended, unpaid"
+msgstr "Berakhir, tidak dibayar"
 
 #: src/libs/locale.ts
 msgid "English"
@@ -5526,6 +5564,10 @@ msgstr "Opsi masuk"
 msgid "Equity"
 msgstr "Ekuitas"
 
+#: src/features/billing/admin/labels.ts
+msgid "Event needs a look by hand"
+msgstr "Kejadian perlu dicek manual"
+
 #: src/features/career/today.tsx
 msgid "Every {days} days at {clock} · next {next}"
 msgstr "Setiap {days} hari pukul {clock} · berikutnya {next}"
@@ -5557,10 +5599,6 @@ msgstr "Semua ikon lain sudah termasuk: kontak, judul bagian, keahlian, minat, d
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "Setiap peran menunjukkan apa yang Anda lakukan. Pendapat tentang susunan kata langsung di tab Menulis."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Every stretch of paid time, newest first."
-msgstr "Setiap potongan masa aktif berbayar, terbaru dulu."
 
 #: src/features/billing/plan-page.tsx
 msgid "Every template"
@@ -5691,10 +5729,6 @@ msgstr "PDF yang diekspor: {0}"
 #: src/features/applications/components/insights-view.tsx
 msgid "Exported pipeline-flow.png"
 msgstr "pipeline-flow.png diekspor"
-
-#: src/features/billing/purchase.ts
-msgid "Extend {days} days"
-msgstr "Perpanjang {days} hari"
 
 #: src/features/resume/import/read-file.ts
 msgid "Extract this account archive, then import a JSON file from its resumes or letters folder."
@@ -5964,11 +5998,6 @@ msgstr "Makanan & minuman"
 msgid "For"
 msgstr "Untuk"
 
-#: src/features/billing/buy-plans.tsx
-#: src/features/homepage/pricing.tsx
-msgid "For 30 days, no automatic renewal"
-msgstr "Untuk 30 hari, tidak diperpanjang otomatis"
-
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
@@ -6178,6 +6207,10 @@ msgstr "Membuat PDF…"
 msgid "German"
 msgstr "Jerman"
 
+#: src/features/billing/purchase.ts
+msgid "Get {name}"
+msgstr "Ambil {name}"
+
 #. placeholder {0}: PROVIDER_SITES[provider]
 #: src/features/settings/ai/web-access.tsx
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
@@ -6269,10 +6302,6 @@ msgstr "Hal baik butuh waktu. Terus melangkah."
 msgid "Google"
 msgstr "Google"
 
-#: src/features/billing/admin/labels.ts
-msgid "GoPay: up to 45 days after settlement."
-msgstr "GoPay: sampai 45 hari setelah lunas."
-
 #. Template gallery filter: civil service and state-owned companies (Indonesian: Pemerintahan & BUMN)
 #: src/dialogs/resume/template/data.ts
 msgid "Government & state-owned"
@@ -6281,6 +6310,10 @@ msgstr "Pemerintahan & BUMN"
 #: src/features/resume/editor/write/entries.tsx
 msgid "Grade"
 msgstr "Nilai"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Granted periods"
+msgstr "Masa aktif yang diberikan"
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Gray"
@@ -6491,6 +6524,10 @@ msgstr "Jarak horizontal"
 msgid "How"
 msgstr "Cara"
 
+#: src/features/homepage/faq.tsx
+msgid "How can I pay?"
+msgstr "Bagaimana cara membayar?"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "How did it go?"
 msgstr "Bagaimana hasilnya?"
@@ -6500,8 +6537,8 @@ msgid "How did it land?"
 msgstr "Bagaimana tanggapannya?"
 
 #: src/features/homepage/faq.tsx
-msgid "How does a 30-day plan work?"
-msgstr "Bagaimana cara kerja paket 30 hari?"
+msgid "How does a subscription work?"
+msgstr "Bagaimana langganan bekerja?"
 
 #: src/features/applications/components/insights-view.tsx
 msgid "How far applications get"
@@ -6615,16 +6652,16 @@ msgid "If you close this dialog, your changes are lost."
 msgstr "Jika Anda menutup dialog ini, perubahan Anda akan hilang."
 
 #: src/features/billing/payment-return.tsx
-msgid "If you paid just now, it shows here within a few minutes. Otherwise, start a new payment."
-msgstr "Bila kamu baru saja membayar, pembayaran muncul di sini dalam beberapa menit. Bila belum, mulai pembayaran baru."
+msgid "If you paid just now, it shows here within a few minutes. Otherwise, start again."
+msgstr "Bila kamu baru saja membayar, statusnya muncul di sini dalam beberapa menit. Bila belum, mulai lagi."
 
 #: src/features/billing/payment-return.tsx
 msgid "If you've paid, this page updates by itself in a few seconds."
 msgstr "Bila sudah membayar, halaman ini diperbarui sendiri dalam beberapa detik."
 
 #: src/features/billing/payment-return.tsx
-msgid "If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can still be paid any time until {deadline}."
-msgstr "Bila sudah membayar, halaman ini diperbarui sendiri dalam beberapa detik. Transfer bank (virtual account) masih bisa dibayar kapan saja sampai {deadline}."
+msgid "If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}."
+msgstr "Bila sudah membayar, halaman ini berubah sendiri dalam beberapa detik. Checkout tetap terbuka sampai {deadline}."
 
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Ignore"
@@ -6844,6 +6881,15 @@ msgstr "Pewawancara"
 msgid "Introduction"
 msgstr "Pengantar"
 
+#: src/features/billing/invoice-button.tsx
+#: src/features/billing/payment-history.tsx
+msgid "Invoice"
+msgstr "Invoice"
+
+#: src/features/billing/payment-history.tsx
+msgid "Invoices come from Polar, which sells the subscription and handles tax."
+msgstr "Invoice dikirim oleh Polar, yang menjual langganan dan mengurus pajaknya."
+
 #: src/features/career/offers.tsx
 msgid "Is equity part of the offer?"
 msgstr "Apakah ekuitas termasuk dalam penawaran?"
@@ -6909,6 +6955,14 @@ msgstr "Masalah"
 msgid "Issues and Job match still work without AI."
 msgstr "Masalah dan Pencocokan Pekerjaan tetap berfungsi tanpa AI."
 
+#: src/features/billing/subscription-actions.tsx
+msgid "It couldn't be cancelled. Try again in a moment."
+msgstr "Langganan tidak bisa dibatalkan. Coba lagi sebentar lagi."
+
+#: src/features/billing/subscription-actions.tsx
+msgid "It couldn't be resumed. Try again in a moment."
+msgstr "Langganan tidak bisa dilanjutkan. Coba lagi sebentar lagi."
+
 #: src/features/resume/editor/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "Ini memiliki entri tetapi tidak ditempatkan pada halaman."
@@ -6940,10 +6994,6 @@ msgstr "Italia"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "Miring"
-
-#: src/features/billing/receipt.tsx
-msgid "Item"
-msgstr "Item"
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -7064,6 +7114,10 @@ msgstr "Lanjutkan mengedit"
 msgid "Keep in Trash"
 msgstr "Simpan di Sampah"
 
+#: src/features/billing/subscription-actions.tsx
+msgid "Keep it"
+msgstr "Tetap berlangganan"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Keep it honest"
 msgstr "Tetap jujur"
@@ -7091,6 +7145,10 @@ msgstr "Jaga agar konten resume berupa teks asli, bukan gambar dari teks."
 #: src/features/ats-checker/messages.ts
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "Buat kepala halaman berulang tetap singkat, atau hilangkan. Kepala halaman itu juga ikut terulang dalam teks yang diekstrak."
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Keep subscription"
+msgstr "Lanjutkan langganan"
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Keep the panel beside the page"
@@ -7634,10 +7692,6 @@ msgstr "Memuat versi tersimpan…"
 msgid "Loading stylesheet editor…"
 msgstr "Memuat editor stylesheet…"
 
-#: src/features/billing/receipt.tsx
-msgid "Loading the receipt…"
-msgstr "Memuat bukti pembayaran…"
-
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "Memuat ruang kerja…"
@@ -7946,69 +8000,13 @@ msgstr "Kirim pesan ke coach"
 msgid "Messages"
 msgstr "Pesan"
 
-#: src/features/billing/admin/customer.tsx
-#: src/features/billing/admin/overview.tsx
-#: src/features/billing/payment-history.tsx
-msgid "Method"
-msgstr "Metode"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "Mikrofon diblokir. Izinkan di pengaturan browser Anda, atau ketik jawaban Anda."
 
 #: src/features/billing/admin/labels.ts
-msgid "Midtrans amount doesn't match"
-msgstr "Nominal Midtrans tidak cocok"
-
-#: src/features/billing/admin/labels.ts
 msgid "Midtrans API kept failing"
 msgstr "API Midtrans gagal berulang kali"
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans can't refund this method: transfer the money to the customer yourself, then record it here."
-msgstr "Midtrans tidak bisa me-refund metode ini: transfer sendiri uangnya ke pelanggan, lalu catat di sini."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans events and admin actions, newest first."
-msgstr "Kejadian Midtrans dan tindakan admin, terbaru dulu."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans has no transaction yet: no method was chosen."
-msgstr "Midtrans belum punya transaksinya: belum ada metode yang dipilih."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans hasn't confirmed it yet. Check the status in a moment."
-msgstr "Midtrans belum mengonfirmasi. Cek ulang statusnya sebentar lagi."
-
-#. placeholder {0}: result.transactionStatus ?? "—"
-#. placeholder {1}: getPaymentStatusLabel(result.status)
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans says \"{0}\". Here: {1}."
-msgstr "Midtrans: \"{0}\". Di Rezumi: {1}."
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans status needs a look: {said}"
-msgstr "Status Midtrans perlu dicek: {said}"
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: {said}"
-msgstr "Midtrans: {said}"
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: {said} (already handled)"
-msgstr "Midtrans: {said} (sudah diproses)"
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: late {said}, ignored"
-msgstr "Midtrans: {said} terlambat, diabaikan"
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: paid"
-msgstr "Midtrans: lunas"
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: refunded"
-msgstr "Midtrans: di-refund"
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Minimum base salary"
@@ -8038,6 +8036,20 @@ msgstr "Model: {label}"
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
 msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "monthly"
+msgstr "bulanan"
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Monthly"
+msgstr "Bulanan"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Monthly recurring, before tax"
+msgstr "Pendapatan berulang per bulan, sebelum pajak"
 
 #: src/features/resume/editor/chrome/bar.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -8279,8 +8291,8 @@ msgid "Nepali"
 msgstr "Nepali"
 
 #: src/features/billing/admin/overview.tsx
-msgid "Net revenue"
-msgstr "Pendapatan bersih"
+msgid "Net, before tax and Polar's fees"
+msgstr "Bersih, sebelum pajak dan fee Polar"
 
 #: src/features/resume/editor/write/entries.tsx
 msgid "Network"
@@ -8290,6 +8302,10 @@ msgstr "Jaringan"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "Tidak pernah"
+
+#: src/features/billing/admin/labels.ts
+msgid "Never paid"
+msgstr "Tidak pernah dibayar"
 
 #: src/features/billing/admin/parts.tsx
 msgid "new"
@@ -8365,9 +8381,13 @@ msgstr "Pendaftar baru"
 msgid "New story"
 msgstr ""
 
+#: src/features/billing/purchase.ts
+msgid "New subscription"
+msgstr "Langganan baru"
+
 #: src/features/billing/admin/customer.tsx
-msgid "Newest first. The menu at the end of a row checks, refunds or resends."
-msgstr "Terbaru dulu. Menu di ujung baris untuk cek status, refund, atau kirim ulang."
+msgid "Newest first. The menu at the end of a row checks with Polar or refunds."
+msgstr "Terbaru di atas. Menu di ujung baris untuk cek ulang ke Polar atau refund."
 
 #: src/features/billing/admin/overview.tsx
 msgid "Newest payments started in this period. Search finds any customer."
@@ -8596,12 +8616,8 @@ msgid "No open issues"
 msgstr "Tidak ada masalah terbuka"
 
 #: src/features/billing/admin/customer.tsx
-msgid "No paid pass running"
+msgid "No paid plan running"
 msgstr "Tidak ada paket berbayar yang berjalan"
-
-#: src/features/billing/admin/customer.tsx
-msgid "No passes."
-msgstr "Belum ada paket."
 
 #: src/features/billing/admin/overview.tsx
 msgid "No payments in this period."
@@ -8675,6 +8691,10 @@ msgstr "Tidak ada istilah spesifik yang dapat diambil dari deskripsi pekerjaan i
 msgid "No stories yet"
 msgstr "Belum ada cerita"
 
+#: src/features/billing/admin/overview.tsx
+msgid "No subscriptions yet."
+msgstr "Belum ada langganan."
+
 #: src/features/settings/ai/providers.tsx
 msgid "No suggestions for this provider. Enter any model ID."
 msgstr "Tidak ada saran untuk penyedia ini. Masukkan ID model apa pun."
@@ -8723,6 +8743,10 @@ msgctxt "Entry header accent"
 msgid "None"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "None."
+msgstr "Tidak ada."
+
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Normal"
@@ -8736,6 +8760,7 @@ msgstr "margin normal"
 msgid "Norwegian"
 msgstr "Norwegia"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/career/workspace/messages.tsx
 msgid "Not applied"
 msgstr "Tidak diterapkan"
@@ -8909,6 +8934,10 @@ msgstr "Tidak ada yang cocok dengan filter ini"
 msgid "Nothing matches."
 msgstr "Tidak ada yang cocok."
 
+#: src/features/billing/subscription-actions.tsx
+msgid "Nothing more is charged. Your account goes back to Free at the end of the period you paid for; every document stays yours."
+msgstr "Tidak ada tagihan lagi. Akunmu kembali ke Gratis di akhir periode yang sudah dibayar; semua dokumen tetap milikmu."
+
 #: src/features/career/workspace/saved.tsx
 msgid "Nothing saved yet"
 msgstr "Belum ada yang disimpan"
@@ -8942,8 +8971,8 @@ msgid "Nothing to suggest."
 msgstr "Tidak ada saran."
 
 #: src/features/billing/payment-return.tsx
-msgid "Nothing was charged for it. You can start a new {plan} payment."
-msgstr "Tidak ada dana yang ditagih. Kamu bisa memulai pembayaran {plan} baru."
+msgid "Nothing was charged for it. You can start {plan} again."
+msgstr "Tidak ada yang ditagih. Kamu bisa memulai {plan} lagi."
 
 #: src/features/career/workspace/practise.tsx
 msgid "Nothing was heard. Try again, or type your answer."
@@ -8957,19 +8986,6 @@ msgstr "Belum ada."
 msgid "Notice period"
 msgstr "Masa pemberitahuan"
 
-#: src/features/billing/admin/customer.tsx
-msgid "notification"
-msgstr "notifikasi"
-
-#: src/features/billing/admin/labels.ts
-msgid "Notification with a bad signature, rejected"
-msgstr "Notifikasi dengan tanda tangan salah, ditolak"
-
-#: src/features/billing/admin/labels.ts
-msgid "Notifications with a bad signature"
-msgstr "Notifikasi dengan tanda tangan salah"
-
-#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -9034,10 +9050,6 @@ msgstr ""
 msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr "Untuk pembelian pertama, kamu bisa meminta pengembalian dana penuh dalam 7 hari bila kredit Rezumi AI yang terpakai dari pembelian itu tidak lebih dari 10. Pembayaran ganda dan masalah teknis selalu diselesaikan."
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
-msgstr "Di halaman pembayaran aman Midtrans (QRIS, e-wallet, atau transfer bank), lalu kembali ke sini."
-
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "Aktif. Siapa pun yang memiliki tautan dapat melihat halaman web Anda."
@@ -9045,10 +9057,6 @@ msgstr "Aktif. Siapa pun yang memiliki tautan dapat melihat halaman web Anda."
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "Setelah babak dijadwalkan, Persiapan menyusun rencana berwaktu, pembuka Anda, dan pertanyaan yang perlu diajukan."
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Once paid"
-msgstr "Setelah dibayar"
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
@@ -9195,8 +9203,8 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "Buka file yang diekspor dan pastikan Anda dapat memilih dan menyalin setiap bagiannya."
 
 #: src/features/billing/buy-plans.tsx
-msgid "Open the link we sent to {email}. Your receipt goes there too."
-msgstr "Buka tautan yang kami kirim ke {email}. Bukti pembayaran juga dikirim ke sana."
+msgid "Open the link we sent to {email}. Your invoices go there too."
+msgstr "Buka tautan yang kami kirim ke {email}. Invoice-mu juga dikirim ke sana."
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Open the posting"
@@ -9304,10 +9312,6 @@ msgstr "Oranye"
 msgid "Order"
 msgstr "Pesanan"
 
-#: src/features/billing/receipt.tsx
-msgid "Order number"
-msgstr "Nomor pesanan"
-
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "Organisasi"
@@ -9357,10 +9361,6 @@ msgstr "Kurangi indentasi"
 #: src/components/input/icon-picker-grid.tsx
 msgid "Outer space"
 msgstr "Antariksa"
-
-#: src/features/billing/admin/labels.ts
-msgid "OVO: full refunds only, within 7 days."
-msgstr "OVO: hanya refund penuh, dalam 7 hari."
 
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -9412,24 +9412,20 @@ msgid "Paid"
 msgstr "Lunas"
 
 #: src/features/billing/admin/labels.ts
-msgid "Paid at Midtrans, not active here"
-msgstr "Lunas di Midtrans, belum aktif di Rezumi"
-
-#: src/features/billing/receipt.tsx
-msgid "Paid by"
-msgstr "Dibayar oleh"
+msgid "Paid at Polar, not active here"
+msgstr "Lunas di Polar, belum aktif di sini"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Paid in total"
 msgstr "Total dibayar"
 
-#: src/features/billing/receipt.tsx
-msgid "Paid on"
-msgstr "Dibayar pada"
-
 #: src/features/billing/admin/overview.tsx
 msgid "Paid payments"
 msgstr "Pembayaran berhasil"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Paid through"
+msgstr "Lunas sampai"
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Paper"
@@ -9453,24 +9449,12 @@ msgid "Partly supported"
 msgstr "Didukung sebagian"
 
 #: src/features/billing/admin/labels.ts
-msgid "Pass and credits granted"
-msgstr "Paket dan kredit diberikan"
-
-#: src/features/billing/admin/labels.ts
-msgid "Pass and credits taken back"
-msgstr "Paket dan kredit dicabut"
-
-#: src/features/billing/admin/labels.ts
 msgid "Pass given by an admin"
 msgstr "Paket diberikan admin"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Pass given."
 msgstr "Paket diberikan."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Pass not granted"
-msgstr "Paket belum diberikan"
 
 #: src/features/billing/admin/labels.ts
 msgid "Pass revoked by an admin"
@@ -9479,14 +9463,6 @@ msgstr "Paket dicabut admin"
 #: src/features/billing/admin/customer.tsx
 msgid "Pass revoked."
 msgstr "Paket dicabut."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Passes"
-msgstr "Masa aktif"
-
-#: src/features/billing/buy-plans.tsx
-msgid "Passes belong to an account with an email address. Your guest work moves with you."
-msgstr "Paket hanya untuk akun dengan alamat email. Pekerjaanmu sebagai tamu ikut pindah ke akun barumu."
 
 #. Authentication provider display name in account settings
 #. Label for passkey sign-in button
@@ -9593,6 +9569,10 @@ msgstr "Postingan pekerjaan yang ditempel"
 msgid "Pasting fills the fields automatically."
 msgstr "Menempel akan mengisi kolom secara otomatis."
 
+#: src/features/billing/admin/labels.ts
+msgid "Paused"
+msgstr "Dijeda"
+
 #: src/features/career/today.tsx
 msgid "Paused · {line}"
 msgstr "Dijeda · {line}"
@@ -9602,8 +9582,8 @@ msgid "Paused schedules keep their settings."
 msgstr "Jadwal yang dijeda tetap menyimpan pengaturannya."
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Pay"
-msgstr "Bayar"
+msgid "Pay on Polar's secure checkout with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
+msgstr "Bayar di checkout aman Polar dengan kartu, Apple Pay, atau Google Pay. {name} aktif begitu pembayarannya berhasil."
 
 #: src/features/homepage/pricing.tsx
 msgid "Pay only while you are applying."
@@ -9617,29 +9597,17 @@ msgstr "Periode pembayaran"
 msgid "Payment"
 msgstr "Pembayaran"
 
-#: src/features/billing/receipt.tsx
-msgid "Payment method"
-msgstr "Metode pembayaran"
+#: src/features/billing/admin/labels.ts
+msgid "Payment applied (credits granted)"
+msgstr "Pembayaran diterapkan (kredit diberikan)"
 
-#: src/features/billing/admin/overview.tsx
-msgid "Payment methods"
-msgstr "Metode pembayaran"
-
-#: src/features/billing/receipt.tsx
-msgid "Payment receipt"
-msgstr "Bukti Pembayaran"
+#: src/features/billing/admin/labels.ts
+msgid "Payment failed"
+msgstr "Pembayaran gagal"
 
 #: src/features/billing/payment-return.tsx
 msgid "Payment received"
 msgstr "Pembayaran diterima"
-
-#: src/features/billing/admin/labels.ts
-msgid "Payment reversed by the bank"
-msgstr "Pembayaran dibatalkan bank"
-
-#: src/features/billing/admin/overview.tsx
-msgid "payments"
-msgstr "pembayaran"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
@@ -9684,6 +9652,11 @@ msgstr "Mereka yang sampai ke tahap interview bersama Rezumi."
 msgid "People using Rezumi"
 msgstr "Pengguna Rezumi"
 
+#: src/features/homepage/pricing.tsx
+msgid "per month, or {yearly} a year"
+msgstr "per bulan, atau {yearly} per tahun"
+
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Period"
 msgstr "Periode"
@@ -9774,6 +9747,10 @@ msgstr "Paket"
 msgid "Plan again"
 msgstr "Rencanakan ulang"
 
+#: src/features/billing/purchase.ts
+msgid "Plan change"
+msgstr "Ganti paket"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan my preparation"
 msgstr "Rencanakan persiapan saya"
@@ -9790,6 +9767,10 @@ msgstr "Rencanakan yang perlu ditanyakan"
 msgid "Planning your week"
 msgstr "Merencanakan minggu Anda"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Plans belong to an account with an email address. Your guest work moves with you."
+msgstr "Paket melekat pada akun dengan alamat email. Pekerjaanmu sebagai tamu ikut pindah."
+
 #: src/features/billing/plan-page.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr "Paket belum berlaku untuk akunmu, jadi semua fitur terbuka."
@@ -9800,16 +9781,76 @@ msgstr "Paket belum berlaku (BILLING_MODE)"
 
 #. placeholder {0}: plus.payments
 #: src/features/billing/admin/overview.tsx
-msgid "Plus · {0} sold"
-msgstr "Plus · {0} terjual"
+msgid "Plus · {0} paid"
+msgstr "Plus · {0} lunas"
 
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
 msgstr ""
 
+#: src/features/homepage/faq.tsx
+msgid "Plus and Pro AI are billed monthly or yearly and renew until you cancel. Cancel any time from your plan page; you keep access until the end of the period you paid for, and nothing more is charged. Then your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document."
+msgstr "Plus dan Pro AI ditagih bulanan atau tahunan dan diperpanjang sampai kamu membatalkannya. Batalkan kapan saja dari halaman Paket; akses tetap ada sampai akhir periode yang sudah kamu bayar, dan tidak ada tagihan lagi. Setelah itu akunmu kembali ke Gratis. Semua CV dan surat tetap bisa diedit, dibagikan, dan diunduh sebagai PDF. Batas Gratis hanya berlaku saat membuat dokumen baru."
+
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
 msgstr "Plus, Pro AI, dan kredit coba segera tersedia. Batas paket berbayar belum aktif."
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar API kept failing"
+msgstr "API Polar gagal berulang kali"
+
+#: src/features/billing/payment-return.tsx
+msgid "Polar emails you the receipt, and your invoices are in billing."
+msgstr "Polar mengirim bukti pembayaran lewat email, dan invoice-mu ada di halaman tagihan."
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar event needs a look: {type}"
+msgstr "Kejadian Polar perlu dicek: {type}"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar events and admin actions, newest first."
+msgstr "Kejadian dari Polar dan tindakan admin, terbaru di atas."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar has nothing for this payment yet."
+msgstr "Polar belum punya data untuk pembayaran ini."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar hasn't confirmed it yet. Check the status in a moment."
+msgstr "Polar belum mengonfirmasinya. Cek statusnya sebentar lagi."
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar id"
+msgstr "ID Polar"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar refunds the amount before tax and gives the tax back itself; its fees aren't returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription."
+msgstr "Polar me-refund jumlah sebelum pajak dan mengembalikan pajaknya sendiri; fee Polar tidak dikembalikan. Refund penuh menarik sisa kredit. Refund saja tidak menghentikan langganan."
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type}"
+msgstr "Polar: {type}"
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type} (already handled)"
+msgstr "Polar: {type} (sudah diproses)"
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type}, not for this payment"
+msgstr "Polar: {type}, bukan untuk pembayaran ini"
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: older {type}, ignored"
+msgstr "Polar: {type} lama, diabaikan"
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: order paid"
+msgstr "Polar: order lunas"
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: refund"
+msgstr "Polar: refund"
 
 #: src/libs/locale.ts
 msgid "Polish"
@@ -10037,8 +10078,8 @@ msgid "Previous week"
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
-msgid "Prices in Indonesian Rupiah. Access starts once payment is confirmed and lasts 30 days. When it ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
-msgstr "Harga dalam Rupiah. Akses dimulai setelah pembayaran terkonfirmasi dan berlaku 30 hari. Setelah berakhir, akun Anda kembali ke paket Gratis dan dokumen Anda tetap ada. API key AI Anda sendiri bisa dipakai di semua paket."
+msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia; the checkout shows any tax for where you live. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgstr "Harga dalam dolar AS, atau Rupiah untuk pengunjung dari Indonesia; checkout menampilkan pajak yang berlaku di tempatmu. Langganan diperpanjang sampai kamu membatalkannya, dan akses tetap ada sampai periode yang sudah dibayar berakhir. Setelah itu akunmu kembali ke Gratis dan dokumenmu tetap ada. API key AI milikmu sendiri bisa dipakai di semua paket."
 
 #: src/features/homepage/footer.tsx
 #: src/features/homepage/ui.tsx
@@ -10061,10 +10102,6 @@ msgstr "Mencetak"
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "Cetak atau ekspor formulir menjadi PDF datar sebelum mengirimkannya."
 
-#: src/features/billing/receipt.tsx
-msgid "Print or save as PDF"
-msgstr "Cetak atau simpan sebagai PDF"
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
 msgstr "Privasi"
@@ -10080,8 +10117,8 @@ msgstr "Pribadi. Hanya Anda yang bisa melihatnya."
 
 #. placeholder {0}: proAi.payments
 #: src/features/billing/admin/overview.tsx
-msgid "Pro AI · {0} sold"
-msgstr "Pro AI · {0} terjual"
+msgid "Pro AI · {0} paid"
+msgstr "Pro AI · {0} lunas"
 
 #: src/features/billing/credits.ts
 msgid "Pro AI credits"
@@ -10253,10 +10290,6 @@ msgstr "Kode QR untuk {url}"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "Kode QR untuk verifikasi dua langkah"
-
-#: src/features/billing/admin/labels.ts
-msgid "QRIS: up to 45 days when paid with the acquirer's own app (GoPay), about 7 days from other apps."
-msgstr "QRIS: sampai 45 hari bila dibayar dengan aplikasi milik acquirer (GoPay), sekitar 7 hari dari aplikasi lain."
 
 #: src/features/career/workspace/apply.tsx
 msgid "Question {index}"
@@ -10505,34 +10538,9 @@ msgstr "Alasan"
 msgid "Recalled"
 msgstr "Diingat kembali"
 
-#: src/features/billing/payment-history.tsx
-#: src/features/billing/receipt.tsx
-msgid "Receipt"
-msgstr "Bukti bayar"
-
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
 msgstr "Email bukti bayar tidak terkirim"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt not sent"
-msgstr "Bukti bayar belum terkirim"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt sent"
-msgstr "Bukti bayar terkirim"
-
-#: src/features/billing/admin/labels.ts
-msgid "Receipt sent again"
-msgstr "Bukti bayar dikirim ulang"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt sent."
-msgstr "Bukti bayar terkirim."
-
-#: src/features/billing/payment-history.tsx
-msgid "Receipts are proof of payment, not tax invoices."
-msgstr "Bukti bayar adalah bukti pembayaran, bukan faktur pajak."
 
 #: src/features/billing/plan-page.tsx
 msgid "Recent activity"
@@ -10550,10 +10558,6 @@ msgstr "Penerima"
 msgid "Recommended"
 msgstr "Rekomendasi"
 
-#: src/features/billing/admin/customer.tsx
-msgid "Record a manual refund"
-msgstr "Catat refund manual"
-
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "Rekam lagi"
@@ -10561,14 +10565,6 @@ msgstr "Rekam lagi"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Record application"
 msgstr "Rekam lamaran kerja"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Record manual refund"
-msgstr "Catat refund manual"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Record refund"
-msgstr "Catat refund"
 
 #: src/features/career/workspace/practise.tsx
 msgid "Record your answer"
@@ -10654,14 +10650,14 @@ msgstr "Segarkan briefing 24 jam sebelumnya"
 msgid "Refresh the briefing on the morning of"
 msgstr "Segarkan briefing pada pagi harinya"
 
-#. placeholder {0}: formatPrice(refundAmount)
+#. placeholder {0}: formatPrice(refundAmount, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Refund {0}"
 msgstr "Refund {0}"
 
 #: src/features/billing/admin/labels.ts
-msgid "Refund asked of Midtrans"
-msgstr "Refund diajukan ke Midtrans"
+msgid "Refund asked of Polar"
+msgstr "Refund diminta ke Polar"
 
 #: src/features/billing/admin/labels.ts
 msgid "Refund not confirmed"
@@ -10676,21 +10672,16 @@ msgstr "Kebijakan Pengembalian Dana"
 msgid "Refund recorded"
 msgstr "Refund dicatat"
 
-#: src/features/billing/admin/customer.tsx
-msgid "Refund recorded."
-msgstr "Refund dicatat."
-
 #: src/features/billing/admin/labels.ts
-msgid "Refund refused by Midtrans"
-msgstr "Refund ditolak Midtrans"
+msgid "Refund refused by Polar"
+msgstr "Refund ditolak Polar"
 
 #: src/features/billing/admin/customer.tsx
-msgid "Refund through Midtrans"
-msgstr "Refund lewat Midtrans"
+msgid "Refund through Polar"
+msgstr "Refund lewat Polar"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/purchase.ts
-#: src/features/billing/receipt.tsx
 msgid "Refunded"
 msgstr "Dikembalikan"
 
@@ -10699,10 +10690,14 @@ msgstr "Dikembalikan"
 msgid "Refunded · {0}"
 msgstr "Refund · {0}"
 
-#. placeholder {0}: formatPrice(result.amount)
+#. placeholder {0}: formatPrice(result.amount, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Refunded {0}."
 msgstr "{0} sudah di-refund."
+
+#: src/features/billing/admin/labels.ts
+msgid "Refunded by Polar to prevent a dispute"
+msgstr "Di-refund Polar untuk mencegah sengketa"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Refunded or reversed"
@@ -10711,10 +10706,6 @@ msgstr "Di-refund atau dibatalkan bank"
 #: src/features/billing/admin/customer.tsx
 msgid "Refunds"
 msgstr "Refund"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Refunds may need to be activated by Midtrans support first, and the Midtrans balance must cover them. A full refund always takes back the pass and the remaining credits."
-msgstr "Fitur refund mungkin perlu diaktifkan dulu oleh support Midtrans, dan saldo Midtrans harus cukup. Refund penuh selalu mencabut paket dan sisa kreditnya."
 
 #. placeholder {0}: refund.failureReason ?? "—"
 #: src/features/billing/admin/customer.tsx
@@ -10917,6 +10908,37 @@ msgstr "Ganti nama versi"
 msgid "Rename…"
 msgstr "Ganti nama…"
 
+#: src/features/billing/purchase.ts
+msgid "Renewal"
+msgstr "Perpanjangan"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "renews {0}"
+msgstr "diperpanjang {0}"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Renews every month until you cancel."
+msgstr "Diperpanjang setiap bulan sampai kamu membatalkannya."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Renews every year until you cancel."
+msgstr "Diperpanjang setiap tahun sampai kamu membatalkannya."
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Renews monthly on {0}"
+msgstr "Diperpanjang bulanan pada {0}"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Renews monthly until you cancel"
+msgstr "Diperpanjang bulanan sampai kamu membatalkannya"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Renews yearly on {0}"
+msgstr "Diperpanjang tahunan pada {0}"
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Reopen"
 msgstr "Buka kembali"
@@ -10976,10 +10998,6 @@ msgstr "Persyaratan"
 #: src/features/career/workspace/fit.tsx
 msgid "Requirements and your evidence"
 msgstr "Persyaratan dan bukti Anda"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Resend receipt"
-msgstr "Kirim ulang bukti bayar"
 
 #: src/features/billing/buy-plans.tsx
 msgid "Resend the link"
@@ -11172,11 +11190,6 @@ msgstr "Dikembalikan: tidak ada hasil yang bisa dipakai"
 msgid "Reversed by the bank"
 msgstr "Dibatalkan oleh bank"
 
-#. placeholder {0}: metrics.reversals.payments
-#: src/features/billing/admin/overview.tsx
-msgid "Reversed by the bank · {0}"
-msgstr "Dibatalkan bank · {0}"
-
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -11256,12 +11269,6 @@ msgstr "Rezumi - Pergi ke beranda"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
-#. placeholder {0}: getPlanName(payment.planId)
-#. placeholder {1}: payment.durationDays
-#: src/features/billing/receipt.tsx
-msgid "Rezumi {0}, {1} days of access"
-msgstr "Rezumi {0}, akses {1} hari"
-
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr "Rezumi AI · {cost}"
@@ -11273,7 +11280,6 @@ msgstr "Rezumi AI · {cost} · sisa {0}"
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
-#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr "Kredit Rezumi AI"
 
@@ -11373,6 +11379,10 @@ msgstr "Jalankan lagi"
 #: src/features/billing/admin/customer.tsx
 msgid "Running"
 msgstr "Berjalan"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Running now; started and ended in this period."
+msgstr "Yang berjalan sekarang; yang mulai dan berakhir di periode ini."
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "Runs on Rezumi AI for {cost}. Change"
@@ -11882,10 +11892,6 @@ msgstr "Dokumen terpilih"
 msgid "Selection"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Seller"
-msgstr "Penjual"
-
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
 msgstr "Lembar gaya CSS semantik"
@@ -12039,10 +12045,6 @@ msgstr "Membagikan"
 msgid "Share a live link that is always the latest version"
 msgstr "Bagikan tautan yang selalu berisi versi terbaru"
 
-#: src/features/billing/admin/overview.tsx
-msgid "Share of revenue."
-msgstr "Porsi dari pendapatan."
-
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
 msgstr "Bagikan bagian"
@@ -12072,10 +12074,6 @@ msgstr "Mempertajam pembuka"
 #: src/features/homepage/resume.tsx
 msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
 msgstr "Meluncurkan aplikasi kurir iOS dan Android untuk 40.000 pengemudi."
-
-#: src/features/billing/admin/labels.ts
-msgid "ShopeePay: full refunds only, between 06.00 and 23.50 WIB."
-msgstr "ShopeePay: hanya refund penuh, antara 06.00 dan 23.50 WIB."
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Short and direct. Fine if the posting asks for brevity."
@@ -12543,8 +12541,8 @@ msgid "Start free"
 msgstr "Mulai gratis"
 
 #: src/features/homepage/pricing.tsx
-msgid "Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own."
-msgstr "Mulai gratis. Saat butuh lebih banyak versi, format, atau bantuan AI, beli akses 30 hari. Tidak ada yang diperpanjang otomatis."
+msgid "Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time."
+msgstr "Mulai gratis. Saat kamu butuh lebih banyak versi, format, atau bantuan AI, berlangganan bulanan atau tahunan, dan batalkan kapan saja."
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Start from"
@@ -12601,8 +12599,8 @@ msgid "Started"
 msgstr "Sudah dimulai"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Starts after your Pro AI time ends."
-msgstr "Mulai setelah masa Pro AI-mu berakhir."
+msgid "Starts at your next renewal."
+msgstr "Mulai saat perpanjangan berikutnya."
 
 #: src/features/career/shared.tsx
 msgid "Starts in {minutes} minutes"
@@ -12624,7 +12622,6 @@ msgstr "Statistik"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
-#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "Status"
@@ -12634,12 +12631,8 @@ msgid "status check"
 msgstr "cek status"
 
 #: src/features/billing/admin/labels.ts
-msgid "Status checked with Midtrans"
-msgstr "Status dicek ke Midtrans"
-
-#: src/features/billing/admin/labels.ts
-msgid "Status needs a look by hand"
-msgstr "Status perlu dicek manual"
+msgid "Status checked with Polar"
+msgstr "Status dicek ke Polar"
 
 #: src/features/documents/new-document-dialog.tsx
 msgid "Stay here"
@@ -12744,6 +12737,31 @@ msgstr "Surat lamaran terlampir diserahkan: {0}"
 msgid "Submitted attached resume: {0}"
 msgstr "Resume terlampir yang dikirimkan: {0}"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Subscribe"
+msgstr "Berlangganan"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Subscribing is paused for now"
+msgstr "Berlangganan sedang dijeda"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Subscribing isn't available right now. Try again later."
+msgstr "Berlangganan belum tersedia sekarang. Coba lagi nanti."
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription changed"
+msgstr "Langganan berubah"
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription ended by an admin"
+msgstr "Langganan dihentikan admin"
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Subscriptions"
+msgstr "Langganan"
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Success at 90 days · next step"
 msgstr "Keberhasilan dalam 90 hari · langkah berikutnya"
@@ -12820,6 +12838,10 @@ msgstr "Ganti model"
 msgid "Switch templates without rewriting"
 msgstr "Ganti template tanpa menulis ulang"
 
+#: src/features/billing/purchase.ts
+msgid "Switch to {name}"
+msgstr "Ganti ke {name}"
+
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to dark theme"
 msgstr "Beralih ke tema gelap"
@@ -12828,9 +12850,17 @@ msgstr "Beralih ke tema gelap"
 msgid "Switch to light theme"
 msgstr "Beralih ke tema terang"
 
+#: src/features/billing/purchase.ts
+msgid "Switch to monthly"
+msgstr "Ganti ke bulanan"
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Switch to one column"
 msgstr "Beralih ke satu kolom"
+
+#: src/features/billing/purchase.ts
+msgid "Switch to yearly"
+msgstr "Ganti ke tahunan"
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Switched to one column"
@@ -12939,6 +12969,10 @@ msgstr "Posisi target"
 #: src/features/career/knowledge/stories.tsx
 msgid "Task"
 msgstr "Tugas"
+
+#: src/features/billing/admin/customer.tsx
+msgid "tax"
+msgstr "pajak"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Teams and structure"
@@ -13199,6 +13233,14 @@ msgstr "Pembaca internal tetap aktif."
 msgid "The checker shows the text a parser extracts and what to fix first."
 msgstr "Pemeriksa menampilkan teks yang diambil parser dan apa yang perlu diperbaiki lebih dulu."
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "The checkout couldn't be opened. Try again in a moment."
+msgstr "Checkout tidak bisa dibuka. Coba lagi sebentar lagi."
+
+#: src/features/billing/buy-plans.tsx
+msgid "The checkout shows the final amount, with any tax that applies where you live."
+msgstr "Checkout menampilkan jumlah akhir, termasuk pajak yang berlaku di tempatmu."
+
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "Pemeriksaannya bersifat mekanis. Ini menanyakan model bahasa bagaimana reaksi pembaca terhadap entri daftar Anda dan menyarankan penulisan ulang. Itu bukan bagian dari skor."
@@ -13275,9 +13317,17 @@ msgstr "Salam mengikuti namanya."
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
 msgstr "Ikon pilihanmu, dan logo jaringan seperti LinkedIn dan GitHub."
 
+#: src/features/billing/invoice-button.tsx
+msgid "The invoice couldn't be opened. Try again in a moment."
+msgstr "Invoice tidak bisa dibuka. Coba lagi sebentar lagi."
+
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "Kuncinya dienkripsi di server dan tidak pernah ditampilkan lagi. Menyimpan menguji koneksi."
+
+#: src/features/billing/plan-page.tsx
+msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
+msgstr "Pembayaran terakhir gagal. Perbarui metode pembayaran untuk mempertahankannya; akses dijeda sampai saat itu."
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "The letter as it is"
@@ -13302,6 +13352,10 @@ msgstr "Salurannya berubah sejak Anda memintanya, jadi tidak diganti."
 #: src/features/career/workspace/saved.tsx
 msgid "the message"
 msgstr "pesan"
+
+#: src/features/billing/payment-return.tsx
+msgid "The money went back, and any credits it brought were taken back. Your documents stay as they are."
+msgstr "Uangnya sudah dikembalikan, dan kredit yang menyertainya ditarik. Dokumenmu tetap seperti semula."
 
 #: src/features/career/schedule-sheet.tsx
 msgid "The morning of the interview has passed, so the briefing runs now."
@@ -13343,17 +13397,9 @@ msgstr "PDF halaman tidak dapat dibaca. Edit apa pun untuk merendernya lagi."
 msgid "The pages are pictures, with no text behind them."
 msgstr "Halaman-halaman berupa gambar, tanpa teks di baliknya."
 
-#: src/features/billing/payment-return.tsx
-msgid "The pass it bought has been taken back. Your documents stay as they are."
-msgstr "Paket dari pembayaran ini sudah ditarik kembali. Dokumenmu tetap seperti semula."
-
-#: src/features/billing/pending-payment.tsx
-msgid "The payment method couldn't be changed. Try again in a moment."
-msgstr "Metode pembayaran tidak bisa diganti. Coba lagi sebentar lagi."
-
 #: src/features/billing/purchase-dialog.tsx
-msgid "The payment page couldn't be opened. Try again in a moment."
-msgstr "Halaman pembayaran tidak bisa dibuka. Coba lagi sebentar lagi."
+msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
+msgstr "Pembayaran untuk perubahan ini gagal. Perbarui metode pembayaran di halaman tagihan, lalu coba lagi."
 
 #: src/features/billing/admin/overview.tsx
 msgid "The payments couldn't load."
@@ -13370,10 +13416,6 @@ msgstr "Postingan pekerjaan tidak dapat dibaca. Isi peran dan perusahaan."
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "Postingan pekerjaan disimpan dengan lamaran pekerjaan ini."
-
-#: src/features/billing/receipt.tsx
-msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
-msgstr "Harga sudah final. Penjual bukan Pengusaha Kena Pajak (PKP), jadi tidak ada PPN dan bukti pembayaran ini bukan faktur pajak."
 
 #: src/features/assistant/provider-setup.tsx
 msgid "The provider didn't answer. Check the key and the model."
@@ -13402,10 +13444,6 @@ msgstr "Respons penyedia tidak dapat diverifikasi. Coba lagi."
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
 msgstr "Alasannya disimpan untuk Insights. Dokumen tertaut tidak disentuh."
-
-#: src/features/billing/admin/customer.tsx
-msgid "The receipt wasn't sent. Check the email settings."
-msgstr "Bukti bayar tidak terkirim. Cek pengaturan email."
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
@@ -13520,10 +13558,6 @@ msgstr "Tidak ada tautan ke profil, portofolio, atau repositori."
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "Tidak ada paragraf ringkasan."
-
-#: src/features/billing/receipt.tsx
-msgid "There's no receipt yet: this payment hasn't been paid."
-msgstr "Belum ada bukti bayar: pembayaran ini belum lunas."
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -13651,6 +13685,10 @@ msgstr "File ini menggunakan font Type 3, yang memuat gambar, bukan karakter."
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr "Lisensi font ini tidak mengizinkan font disematkan ke dokumen, jadi tidak bisa dipakai di PDF."
 
+#: src/features/billing/invoice-button.tsx
+msgid "This invoice isn't available here. Open billing to find all your invoices."
+msgstr "Invoice ini tidak tersedia di sini. Buka halaman tagihan untuk melihat semua invoice-mu."
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "Ini adalah PDF Portfolio: halaman yang terlihat hanyalah sampul."
@@ -13719,10 +13757,6 @@ msgstr "Pembayaran ini kedaluwarsa"
 msgid "This payment was refunded"
 msgstr "Pembayaran ini sudah dikembalikan"
 
-#: src/features/billing/pending-payment.tsx
-msgid "This payment went through, so there's nothing to change."
-msgstr "Pembayaran ini sudah berhasil, jadi tidak ada yang perlu diganti."
-
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "PDF ini tidak memiliki lapisan teks, jadi parser tidak membaca apa pun darinya."
@@ -13734,10 +13768,6 @@ msgstr "PDF ini adalah gambar yang dipindai. Tidak ada teks untuk dibaca. Coba v
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "PDF ini dilindungi kata sandi. Simpan salinan yang tidak dilindungi dan coba lagi."
-
-#: src/features/billing/receipt.tsx
-msgid "This receipt isn't available. It may belong to another account."
-msgstr "Bukti bayar ini tidak tersedia. Mungkin milik akun lain."
 
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
@@ -13848,9 +13878,9 @@ msgstr "Waktu · {0}"
 msgid "Time · {timeZone}"
 msgstr "Waktu · {timeZone}"
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "Time you already have is never lost."
-msgstr "Masa aktif yang sudah kamu miliki tidak pernah hangus."
+#: src/features/billing/admin/customer.tsx
+msgid "Time given by an admin or a promotion, and 30-day passes from before, newest first."
+msgstr "Masa aktif dari admin atau promo, dan pass 30 hari dari sebelumnya, terbaru di atas."
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Time, link, who, what you sent"
@@ -13867,16 +13897,6 @@ msgstr "Jumlah"
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Waktu ditampilkan dalam {timeZone}."
-
-#. placeholder {0}: zoneName(split.pass.endsAt)
-#: src/features/billing/purchase-dialog.tsx
-msgid "Times in {0}, estimated for paying now."
-msgstr "Waktu dalam {0}, perkiraan bila dibayar sekarang."
-
-#. placeholder {0}: zoneName(split.pass.startsAt)
-#: src/features/billing/purchase-dialog.tsx
-msgid "Times in {0}."
-msgstr "Waktu dalam {0}."
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/general.tsx
@@ -13955,10 +13975,6 @@ msgstr "Logo tools di keahlian"
 msgid "Toolbar"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Total paid"
-msgstr "Total dibayar"
-
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up on purpose."
 msgstr ""
@@ -13995,10 +14011,6 @@ msgstr "Mentranskripsi dengan {model}…"
 msgid "Transcript copied"
 msgstr "Transkrip disalin"
 
-#: src/features/billing/admin/customer.tsx
-msgid "Transfer the money to the customer first, then record it here. Nothing is sent to Midtrans."
-msgstr "Transfer dulu uangnya ke pelanggan, lalu catat di sini. Tidak ada yang dikirim ke Midtrans."
-
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -14008,6 +14020,10 @@ msgstr "Sampah"
 #: src/features/documents/trash-page.tsx
 msgid "Trash is empty"
 msgstr "Sampah kosong"
+
+#: src/features/billing/admin/labels.ts
+msgid "Trial"
+msgstr "Masa coba"
 
 #: src/features/billing/credits.ts
 #: src/features/billing/plan-page.tsx
@@ -14062,8 +14078,8 @@ msgid "Try again"
 msgstr "Coba lagi"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Try again later. Your current pass and credits aren't affected."
-msgstr "Coba lagi nanti. Paket dan kreditmu saat ini tidak terpengaruh."
+msgid "Try again later. Your current plan and credits aren't affected."
+msgstr "Coba lagi nanti. Paket dan kreditmu sekarang tidak terpengaruh."
 
 #: src/features/career/workspace/practise.tsx
 msgid "Try again with this"
@@ -14326,6 +14342,10 @@ msgstr "{done} dari {total} diperbarui. Dokumen terkunci, dan surat lamaran untu
 #: src/dialogs/resume/index.tsx
 msgid "Updating your resume..."
 msgstr "Memperbarui resume Anda..."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Upgrade now"
+msgstr "Upgrade sekarang"
 
 #: src/features/billing/purchase.ts
 msgid "Upgrade to {name}"
@@ -14620,8 +14640,8 @@ msgid "Verify your email in Settings first"
 msgstr "Verifikasi email Anda di Pengaturan terlebih dahulu"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Verify your email to buy a pass"
-msgstr "Verifikasi email untuk membeli paket"
+msgid "Verify your email to subscribe"
+msgstr "Verifikasi emailmu untuk berlangganan"
 
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verifying backup code..."
@@ -14692,10 +14712,6 @@ msgstr "Lihat lamaran kerja"
 msgid "View posting"
 msgstr "Lihat postingan pekerjaan"
 
-#: src/features/billing/payment-return.tsx
-msgid "View receipt"
-msgstr "Lihat bukti bayar"
-
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -14713,10 +14729,6 @@ msgstr "Dilihat"
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "penayangan · 30 hari"
-
-#: src/features/billing/purchase.ts
-msgid "Virtual account"
-msgstr "Virtual account"
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -14738,18 +14750,14 @@ msgstr "Pengaturan suara"
 msgid "Volunteer"
 msgstr "Relawan"
 
-#: src/features/billing/admin/customer.tsx
-msgid "Waiting for Midtrans"
-msgstr "Menunggu Midtrans"
-
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Waiting for payment"
 msgstr "Menunggu pembayaran"
 
 #: src/features/billing/admin/customer.tsx
-msgid "Waiting for the bank"
-msgstr "Menunggu bank"
+msgid "Waiting for Polar"
+msgstr "Menunggu Polar"
 
 #: src/features/career/workspace/messages.tsx
 msgid "Waiting for you"
@@ -14782,10 +14790,6 @@ msgstr "Kami tidak bisa mengecek pembayaran ini"
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't find this payment"
 msgstr "Pembayaran ini tidak ditemukan"
-
-#: src/features/billing/payment-return.tsx
-msgid "We email the receipt to you as well."
-msgstr "Bukti pembayaran juga kami kirim ke emailmu."
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "We read the page and save the posting for Check, the assistant and your letter."
@@ -14838,6 +14842,14 @@ msgstr "Pencarian web gagal: {0}"
 msgid "Web searches look for work here, up to three countries."
 msgstr "Penelusuran web mencari pekerjaan di negara-negara ini. Pilih hingga tiga negara."
 
+#: src/features/billing/admin/customer.tsx
+msgid "webhook"
+msgstr "webhook"
+
+#: src/features/billing/admin/labels.ts
+msgid "Webhooks with a bad signature"
+msgstr "Webhook dengan tanda tangan salah"
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "Situs Web"
@@ -14861,6 +14873,11 @@ msgstr "Menimbang setiap persyaratan"
 #: src/features/career/workspace/debrief.tsx
 msgid "Went well"
 msgstr "Berjalan baik"
+
+#: src/features/billing/admin/overview.tsx
+#: src/features/billing/payment-history.tsx
+msgid "What"
+msgstr "Jenis"
 
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
@@ -15102,6 +15119,10 @@ msgstr "Lebar"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "Apakah resume saya akan lolos dari sistem pelacakan pelamar?"
 
+#: src/features/homepage/faq.tsx
+msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars."
+msgstr "Dengan kartu debit atau kredit, Apple Pay, atau Google Pay, di checkout aman milik Polar, penjual resmi (merchant of record) kami. Polar mengurus pembayaran, invoice, dan pajak penjualan. Pengunjung dari Indonesia membayar dalam Rupiah; lainnya dalam dolar AS."
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
 msgstr "Tanpa paket itu, API dan MCP menolak semua key, jadi aplikasi yang kamu hubungkan belum bisa bekerja. Key yang kamu buat sekarang langsung bekerja setelah paketmu mencakup akses API. Rezumi di web dan di ponselmu selalu bisa dipakai."
@@ -15220,6 +15241,20 @@ msgstr "Bantuan menulis, saran yang disesuaikan, dan asisten. Penyedia default d
 msgid "Written offer"
 msgstr "Penawaran tertulis"
 
+#: src/features/billing/admin/overview.tsx
+msgid "yearly"
+msgstr "tahunan"
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly"
+msgstr "Tahunan"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Yearly saves up to {saving}%"
+msgstr "Tahunan hemat sampai {saving}%"
+
 #: src/features/homepage/faq.tsx
 msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr "Ya, di semua paket. Tambahkan API key dari OpenAI, Anthropic, Google Gemini, OpenRouter, atau penyedia lain dan Anda membayar penyedia itu langsung; tidak memakai kredit Rezumi. Tanpa API key atau kredit, tidak ada yang dikirim ke layanan AI."
@@ -15288,13 +15323,13 @@ msgstr "Anda belum memiliki resume untuk disalin. Impor atau buat resume terlebi
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "Anda sudah melupakan ini sebelumnya, jadi tidak disimpan lagi."
 
+#: src/features/billing/subscription-actions.tsx
+msgid "You keep {plan} until {until}, and nothing more is charged. Then your account is on Free; every document stays yours to open, edit and download as a PDF."
+msgstr "{plan} tetap aktif sampai {until}, dan tidak ada tagihan lagi. Setelah itu akunmu di paket Gratis; semua dokumen tetap bisa kamu buka, edit, dan unduh sebagai PDF."
+
 #: src/components/layout/loading-screen.tsx
 msgid "You only need one yes."
 msgstr "Kamu hanya butuh satu jawaban ya."
-
-#: src/features/homepage/faq.tsx
-msgid "You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document."
-msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "You said: “{said}” Ask before deciding."
@@ -15337,12 +15372,8 @@ msgid "You're using a guest account"
 msgstr "Anda menggunakan akun tamu"
 
 #: src/features/billing/pending-payment.tsx
-msgid "Your {plan} payment isn't finished"
-msgstr "Pembayaran {plan}-mu belum selesai"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Your {rest} time picks up again"
-msgstr "Masa {rest}-mu dilanjutkan"
+msgid "Your {plan} checkout isn't finished"
+msgstr "Checkout {plan}-mu belum selesai"
 
 #: src/features/settings/account/data.tsx
 msgid "Your account was deleted."
@@ -15424,6 +15455,14 @@ msgstr "Detail kontak Anda tidak ada di halaman pertama."
 msgid "Your conversations appear here."
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your current plan stays until {renewal}; {name} starts then, at the new price. Nothing is charged now."
+msgstr "Paketmu sekarang tetap sampai {renewal}; {name} mulai saat itu dengan harga baru. Tidak ada tagihan sekarang."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your current plan stays until your next renewal; {name} starts then. Nothing is charged now."
+msgstr "Paketmu sekarang tetap sampai perpanjangan berikutnya; {name} mulai saat itu. Tidak ada tagihan sekarang."
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "Data Anda"
@@ -15488,9 +15527,17 @@ msgstr "Judul Anda terlihat sama seperti teks isi."
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "Judul Anda berubah di resume. Surat itu juga diperbarui."
 
+#: src/features/billing/invoice-button.tsx
+msgid "Your invoice is still being made. Try again in a moment."
+msgstr "Invoice-mu masih dibuat. Coba lagi sebentar lagi."
+
 #: src/features/career/workspace/debrief.tsx
 msgid "your Knowledge"
 msgstr "Pengetahuan Anda"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Your last payment didn't go through. Update your payment method in billing first."
+msgstr "Pembayaran terakhirmu gagal. Perbarui dulu metode pembayaran di halaman tagihan."
 
 #: src/features/ats-checker/messages.ts
 msgid "Your lines are packed very tightly."
@@ -15569,8 +15616,22 @@ msgid "Your phone number is written in an unusual shape."
 msgstr "Nomor telepon Anda ditulis dalam bentuk yang tidak biasa."
 
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/purchase.ts
 msgid "Your plan"
 msgstr "Paketmu"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan changed in the meantime. Reload the page and try again."
+msgstr "Paketmu berubah sementara itu. Muat ulang halaman lalu coba lagi."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan changes at your next renewal."
+msgstr "Paketmu berganti saat perpanjangan berikutnya."
+
+#. placeholder {0}: getPlanName(target.planId)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan is now {0}."
+msgstr "Paketmu sekarang {0}."
 
 #: src/features/billing/plan.ts
 msgid "Your plan keeps up to {max} cover letters outside Trash. Move one you don't need to Trash to make room; you can restore it later."
@@ -15645,6 +15706,18 @@ msgstr "Cerita Anda tidak dapat dimuat."
 #: src/components/layout/loading-screen.tsx
 msgid "Your story is worth telling well."
 msgstr "Ceritamu layak disampaikan dengan baik."
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Your subscription continues."
+msgstr "Langgananmu berlanjut."
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Your subscription ends at the close of this period."
+msgstr "Langgananmu berakhir di akhir periode ini."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Your subscription is set to end. Keep it first to change the plan."
+msgstr "Langgananmu dijadwalkan berakhir. Lanjutkan dulu langganannya untuk mengganti paket."
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Your two-minute introduction"

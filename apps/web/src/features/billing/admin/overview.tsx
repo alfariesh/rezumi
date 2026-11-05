@@ -30,12 +30,12 @@ import { getCreditActionName } from "../credits";
 import { getPlanName } from "../plan";
 import {
 	formatPrice,
-	getPaymentMethodName,
+	getPaymentReasonLabel,
 	getPaymentStatusColor,
 	getPaymentStatusLabel,
 	usePlanDates,
 } from "../purchase";
-import { formatUsdMicros, getAlertLabel, reportRange } from "./labels";
+import { formatMoney, formatUsdMicros, getAlertLabel, reportRange } from "./labels";
 import { AdminCard, CHART_COLORS, IconButton, LegendDot, MiniStat, StatWidget, trendOf } from "./parts";
 import { getReadableErrorMessage } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
@@ -71,20 +71,18 @@ type KpiCardProps = {
 	icon: ReactNode;
 	title: ReactNode;
 	value: number;
-	format: "currency" | "decimal" | "percent";
-	previous: number;
-	series: number[];
+	format: "decimal" | "percent";
+	previous: number | null;
+	series?: number[];
 	color: string;
 	footer?: ReactNode;
 };
 
 const formatValue = (value: number, format: KpiCardProps["format"]) =>
-	format === "currency"
-		? formatPrice(value)
-		: new Intl.NumberFormat(i18n.locale, {
-				style: format,
-				maximumFractionDigits: format === "percent" ? 1 : 0,
-			}).format(value);
+	new Intl.NumberFormat(i18n.locale, {
+		style: format,
+		maximumFractionDigits: format === "percent" ? 1 : 0,
+	}).format(value);
 
 /** One headline number with how it moved since the period before, and its day-by-day line. */
 function KpiCard({ icon, title, value, format, previous, series, color, footer }: KpiCardProps) {
@@ -93,8 +91,8 @@ function KpiCard({ icon, title, value, format, previous, series, color, footer }
 			icon={icon}
 			title={title}
 			value={formatValue(value, format)}
-			trend={trendOf(value, previous)}
-			series={series}
+			trend={previous === null ? null : trendOf(value, previous)}
+			{...(series && { series })}
 			color={color}
 			footer={footer}
 		/>
@@ -109,13 +107,13 @@ function KpiRow({ metrics }: MetricsProps) {
 	return (
 		<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
 			<KpiCard
-				icon={<Icon name="trend-up" size={16} />}
-				title={<Trans>Net revenue</Trans>}
-				value={metrics.net}
-				format="currency"
-				previous={previous.net}
-				series={daily.map((day) => day.plus + day.proAi - day.refunds - day.reversals)}
+				icon={<Icon name="arrows-clockwise" size={16} />}
+				title={<Trans>Active subscriptions</Trans>}
+				value={metrics.subscriptions.active}
+				format="decimal"
+				previous={null}
 				color="var(--color-success)"
+				footer={t`${metrics.subscriptions.canceling} set to end · ${metrics.subscriptions.pastDue} payment failed`}
 			/>
 			<KpiCard
 				icon={<Icon name="check-circle" size={16} />}
@@ -172,13 +170,16 @@ function tooltipFor(format: (value: number) => string) {
 	};
 }
 
-const SalesTooltip = tooltipFor(formatPrice);
 const CountTooltip = tooltipFor((value) => new Intl.NumberFormat(i18n.locale).format(value));
 
-/** Revenue day by day, Plus and Pro AI stacked, with the period's totals above. */
+/**
+ * Paid orders day by day, Plus and Pro AI stacked, with the period's money above: per currency and before tax, since
+ * Polar collects the tax and the currencies never add up.
+ */
 function SalesCard({ metrics }: MetricsProps) {
 	const plan = (id: "plus" | "pro-ai") =>
-		metrics.sales.byPlan.find((row) => row.planId === id) ?? { payments: 0, revenue: 0 };
+		metrics.sales.byPlan.find((row) => row.planId === id) ?? { payments: 0, revenue: {} };
+	const kinds = Object.fromEntries(metrics.sales.byKind.map((row) => [row.kind, row.payments]));
 	const proAi = plan("pro-ai");
 	const plus = plan("plus");
 	return (
@@ -193,16 +194,14 @@ function SalesCard({ metrics }: MetricsProps) {
 			}
 		>
 			<div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-				<MiniStat value={formatPrice(proAi.revenue)} label={t`Pro AI · ${proAi.payments} sold`} />
-				<MiniStat value={formatPrice(plus.revenue)} label={t`Plus · ${plus.payments} sold`} />
-				<MiniStat value={formatPrice(metrics.refunds.amount)} label={t`Refunded · ${metrics.refunds.refunds}`} />
-				{metrics.reversals.payments > 0 && (
-					<MiniStat
-						value={formatPrice(metrics.reversals.amount)}
-						label={t`Reversed by the bank · ${metrics.reversals.payments}`}
-					/>
-				)}
+				<MiniStat value={formatMoney(proAi.revenue)} label={t`Pro AI · ${proAi.payments} paid`} />
+				<MiniStat value={formatMoney(plus.revenue)} label={t`Plus · ${plus.payments} paid`} />
+				<MiniStat value={formatMoney(metrics.refunds.amount)} label={t`Refunded · ${metrics.refunds.refunds}`} />
+				<MiniStat value={formatMoney(metrics.net)} label={t`Net, before tax and Polar's fees`} />
 			</div>
+			<p className="text-xs text-muted">
+				{t`${kinds.new ?? 0} new · ${kinds.renewal ?? 0} renewals · ${kinds.change ?? 0} plan changes`}
+			</p>
 			<BarChart data={metrics.daily} height={200}>
 				<BarChart.Grid vertical={false} />
 				<BarChart.XAxis dataKey="day" tickFormatter={dayLabel} tickMargin={8} minTickGap={16} />
@@ -216,7 +215,7 @@ function SalesCard({ metrics }: MetricsProps) {
 					maxBarSize={18}
 					radius={[6, 6, 0, 0]}
 				/>
-				<BarChart.Tooltip content={<SalesTooltip />} />
+				<BarChart.Tooltip content={<CountTooltip />} />
 			</BarChart>
 		</AdminCard>
 	);
@@ -268,23 +267,34 @@ function CheckoutCard({ metrics }: MetricsProps) {
 	);
 }
 
-/** Which methods people pay with, by revenue. */
-function MethodsCard({ metrics }: MetricsProps) {
-	const methods = metrics.sales.byMethod.toSorted((a, b) => b.revenue - a.revenue);
-	const total = methods.reduce((sum, method) => sum + method.revenue, 0);
+/** The subscriptions running now, by plan and interval, and what they bring in a month. */
+function SubscriptionsCard({ metrics }: MetricsProps) {
+	const { subscriptions } = metrics;
+	const rows = subscriptions.byPlan.toSorted((a, b) => b.subscriptions - a.subscriptions);
 	const colorAt = (index: number) => CHART_COLORS[index % CHART_COLORS.length] ?? "currentColor";
+	const label = (row: (typeof rows)[number]) =>
+		`${getPlanName(row.planId)} · ${row.interval === "year" ? t`yearly` : t`monthly`}`;
 	return (
-		<AdminCard icon="scales" title={<Trans>Payment methods</Trans>} description={<Trans>Share of revenue.</Trans>}>
-			{total === 0 ? (
+		<AdminCard
+			icon="arrows-clockwise"
+			title={<Trans>Subscriptions</Trans>}
+			description={<Trans>Running now; started and ended in this period.</Trans>}
+		>
+			<div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+				<MiniStat value={formatMoney(subscriptions.mrr)} label={t`Monthly recurring, before tax`} />
+				<MiniStat value={subscriptions.started} label={t`Started`} />
+				<MiniStat value={subscriptions.ended} label={t`Ended`} />
+			</div>
+			{rows.length === 0 ? (
 				<p className="py-10 text-center text-sm text-muted">
-					<Trans>No payments in this period.</Trans>
+					<Trans>No subscriptions yet.</Trans>
 				</p>
 			) : (
 				<div className="flex flex-col items-center gap-6 sm:flex-row">
 					<div className="relative shrink-0">
 						<PieChart height={180} width={180}>
 							<PieChart.Pie
-								data={methods.map((method) => ({ name: getPaymentMethodName(method.method), value: method.revenue }))}
+								data={rows.map((row) => ({ name: label(row), value: row.subscriptions }))}
 								dataKey="value"
 								nameKey="name"
 								innerRadius="70%"
@@ -292,27 +302,24 @@ function MethodsCard({ metrics }: MetricsProps) {
 								paddingAngle={2}
 								strokeWidth={0}
 							>
-								{methods.map((method, index) => (
-									<PieChart.Cell key={method.method} fill={colorAt(index)} />
+								{rows.map((row, index) => (
+									<PieChart.Cell key={`${row.planId}:${row.interval}`} fill={colorAt(index)} />
 								))}
 							</PieChart.Pie>
 						</PieChart>
 						<div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-							<span className="text-lg font-semibold tabular-nums">{metrics.sales.payments}</span>
+							<span className="text-lg font-semibold tabular-nums">{subscriptions.active}</span>
 							<span className="text-xs text-muted">
-								<Trans>payments</Trans>
+								<Trans>active</Trans>
 							</span>
 						</div>
 					</div>
 					<ul className="flex w-full flex-col gap-2">
-						{methods.map((method, index) => (
-							<li key={method.method} className="flex items-center gap-3 text-sm">
+						{rows.map((row, index) => (
+							<li key={`${row.planId}:${row.interval}`} className="flex items-center gap-3 text-sm">
 								<span className="size-2.5 shrink-0 rounded-full" style={{ backgroundColor: colorAt(index) }} />
-								<span className="flex-1">{getPaymentMethodName(method.method)}</span>
-								<span className="font-medium tabular-nums">{formatPrice(method.revenue)}</span>
-								<span className="w-10 text-end text-xs text-muted tabular-nums">
-									{Math.round((method.revenue / total) * 100)}%
-								</span>
+								<span className="flex-1">{label(row)}</span>
+								<span className="font-medium tabular-nums">{row.subscriptions}</span>
 							</li>
 						))}
 					</ul>
@@ -517,8 +524,8 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 			isRowHeader: true,
 			cell: (row) => (
 				<span className="grid gap-0.5 whitespace-nowrap">
-					<span className="font-mono text-xs whitespace-nowrap" title={row.orderId}>
-						RZ-…{row.orderId.slice(-8)}
+					<span className="font-mono text-xs whitespace-nowrap" title={row.orderId ?? row.id}>
+						{row.orderId ? `…${row.orderId.slice(-8)}` : t`checkout only`}
 					</span>
 					<span className="text-xs text-muted">{formatShort(row.createdAt)}</span>
 				</span>
@@ -541,12 +548,14 @@ function PaymentsCard({ range, query }: PaymentsCardProps) {
 			align: "end",
 			cell: (row) => (
 				<span className="grid gap-0.5 tabular-nums">
-					<span>{formatPrice(row.amount)}</span>
-					{row.refundedAmount > 0 && <span className="text-xs text-muted">−{formatPrice(row.refundedAmount)}</span>}
+					<span>{formatPrice(row.amount, row.currency)}</span>
+					{row.refundedAmount > 0 && (
+						<span className="text-xs text-muted">−{formatPrice(row.refundedAmount, row.currency)}</span>
+					)}
 				</span>
 			),
 		},
-		{ id: "method", header: t`Method`, cell: (row) => getPaymentMethodName(row.paymentType) },
+		{ id: "what", header: t`What`, cell: (row) => getPaymentReasonLabel(row) },
 		{
 			id: "status",
 			header: t`Status`,
@@ -799,7 +808,7 @@ export function BillingAdminPage({ query }: BillingAdminPageProps) {
 						<CheckoutCard metrics={metrics.data} />
 					</div>
 					<div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-						<MethodsCard metrics={metrics.data} />
+						<SubscriptionsCard metrics={metrics.data} />
 						<AiCard metrics={metrics.data} />
 					</div>
 				</>

@@ -1,55 +1,59 @@
 import type { RouterOutput } from "@/libs/orpc/client";
 import { t } from "@lingui/core/macro";
+import { formatPrice } from "../purchase";
 
 export type AdminCustomer = RouterOutput["billing"]["admin"]["customer"];
 export type AdminPayment = AdminCustomer["payments"][number];
 export type AdminMetrics = RouterOutput["billing"]["admin"]["metrics"];
 export type AdminPaymentRow = RouterOutput["billing"]["admin"]["payments"]["items"][number];
 
+export type AdminSubscription = AdminCustomer["subscriptions"][number];
+
 /** What each alert kind means, in a line. Unknown kinds show their code. */
 export function getAlertLabel(kind: string) {
 	switch (kind) {
+		case "paid_not_applied":
+			return t`Paid at Polar, not active here`;
+		case "payment_reversed":
+			return t`Refunded by Polar to prevent a dispute`;
+		case "needs_review":
+			return t`Event needs a look by hand`;
+		case "rejected_signatures":
+			return t`Webhooks with a bad signature`;
+		case "provider_errors":
+			return t`Polar API kept failing`;
+		case "refund_failed":
+			return t`Refund not confirmed`;
+		// Kinds from before Polar, still in old alert rows.
 		case "amount_mismatch":
 			return t`Amount doesn't match the order`;
-		case "paid_not_applied":
-			return t`Paid at Midtrans, not active here`;
-		case "payment_reversed":
-			return t`Payment reversed by the bank`;
-		case "needs_review":
-			return t`Status needs a look by hand`;
-		case "rejected_signatures":
-			return t`Notifications with a bad signature`;
 		case "midtrans_errors":
 			return t`Midtrans API kept failing`;
 		case "receipt_failed":
 			return t`Receipt email not delivered`;
-		case "refund_failed":
-			return t`Refund not confirmed`;
 		default:
 			return kind;
 	}
 }
 
-/**
- * How long Midtrans takes a refund for each method, and its limits (Midtrans docs, checked 2026-11-03). Shown before
- * the admin refunds, since a refusal comes only after asking.
- */
-export function getRefundWindow(paymentType: string | null) {
-	switch (paymentType) {
-		case "qris":
-			return t`QRIS: up to 45 days when paid with the acquirer's own app (GoPay), about 7 days from other apps.`;
-		case "gopay":
-			return t`GoPay: up to 45 days after settlement.`;
-		case "shopeepay":
-			return t`ShopeePay: full refunds only, between 06.00 and 23.50 WIB.`;
-		case "dana":
-			return t`DANA: up to 45 days after settlement.`;
-		case "ovo":
-			return t`OVO: full refunds only, within 7 days.`;
-		case "credit_card":
-			return t`Card: up to 6 months after the payment.`;
-		default:
-			return t`Midtrans can't refund this method: transfer the money to the customer yourself, then record it here.`;
+/** A Polar subscription status in words. */
+export function getSubscriptionStatusLabel(subscription: Pick<AdminSubscription, "status" | "cancelAtPeriodEnd">) {
+	switch (subscription.status) {
+		case "active":
+			return subscription.cancelAtPeriodEnd ? t`Active, ends at period end` : t`Active`;
+		case "trialing":
+			return t`Trial`;
+		case "past_due":
+			return t`Payment failed`;
+		case "paused":
+			return t`Paused`;
+		case "canceled":
+			return t`Ended`;
+		case "unpaid":
+			return t`Ended, unpaid`;
+		case "incomplete":
+		case "incomplete_expired":
+			return t`Never paid`;
 	}
 }
 
@@ -80,34 +84,46 @@ export function reportRange(preset: ReportPreset, now = new Date()) {
 	}
 }
 
+/**
+ * Money in several currencies, never added together: "$12.47 · IDR 177,000". A dash when there is none. Amounts are in
+ * each currency's smallest unit.
+ */
+export function formatMoney(money: Record<string, number>) {
+	const parts = Object.entries(money)
+		.filter(([, amount]) => amount !== 0)
+		.toSorted(([a], [b]) => (a === "usd" ? -1 : b === "usd" ? 1 : a.localeCompare(b)))
+		.map(([currency, amount]) => formatPrice(amount, currency));
+	return parts.length ? parts.join(" · ") : "—";
+}
+
 /** US dollars from millionths, for AI costs: "$0.0123". */
 export const formatUsdMicros = (micros: number | null) =>
 	micros === null ? "—" : `$${(micros / 1_000_000).toFixed(micros < 10_000 ? 4 : 2)}`;
 
 type HistoryTone = "success" | "warning" | "danger" | "default" | "muted";
 
-/** A Midtrans event in words: what Midtrans said and what Rezumi did with it. */
+/** A Polar event in words: what Polar reported and what Rezumi did with it. */
 export function describeEvent(event: AdminCustomer["events"][number]): { title: string; tone: HistoryTone } {
-	const said = event.transactionStatus ?? "—";
+	const type = event.eventType;
 	switch (event.outcome) {
 		case "applied":
-			return event.transactionStatus === "settlement" || event.transactionStatus === "capture"
-				? { title: t`Midtrans: paid`, tone: "success" }
-				: event.transactionStatus === "refund" || event.transactionStatus === "partial_refund"
-					? { title: t`Midtrans: refunded`, tone: "warning" }
-					: { title: t`Midtrans: ${said}`, tone: "default" };
+			return type === "order.paid"
+				? { title: t`Polar: order paid`, tone: "success" }
+				: type === "order.refunded" || type.startsWith("refund.")
+					? { title: t`Polar: refund`, tone: "warning" }
+					: { title: t`Polar: ${type}`, tone: "default" };
 		case "duplicate":
-			return { title: t`Midtrans: ${said} (already handled)`, tone: "muted" };
+			return { title: t`Polar: ${type} (already handled)`, tone: "muted" };
 		case "stale":
-			return { title: t`Midtrans: late ${said}, ignored`, tone: "muted" };
-		case "rejected_signature":
-			return { title: t`Notification with a bad signature, rejected`, tone: "danger" };
-		case "amount_mismatch":
-			return { title: t`Midtrans amount doesn't match`, tone: "danger" };
+			return { title: t`Polar: older ${type}, ignored`, tone: "muted" };
+		case "ignored":
+		case "unknown_product":
+		case "unknown_customer":
+			return { title: t`Polar: ${type}, not for this payment`, tone: "muted" };
 		case "error":
-			return { title: t`Midtrans status needs a look: ${said}`, tone: "danger" };
+			return { title: t`Polar event needs a look: ${type}`, tone: "danger" };
 		default:
-			return { title: t`Midtrans: ${said}`, tone: "default" };
+			return { title: t`Polar: ${type}`, tone: "default" };
 	}
 }
 
@@ -115,19 +131,21 @@ export function describeEvent(event: AdminCustomer["events"][number]): { title: 
 export function describeAudit(action: string): { title: string; tone: HistoryTone } {
 	switch (action) {
 		case "payment.fulfilled":
-			return { title: t`Pass and credits granted`, tone: "success" };
+			return { title: t`Payment applied (credits granted)`, tone: "success" };
 		case "payment.benefits_revoked":
-			return { title: t`Pass and credits taken back`, tone: "warning" };
+			return { title: t`Credits taken back`, tone: "warning" };
 		case "payment.refund_recorded":
 			return { title: t`Refund recorded`, tone: "warning" };
 		case "payment.synced":
-			return { title: t`Status checked with Midtrans`, tone: "muted" };
+			return { title: t`Status checked with Polar`, tone: "muted" };
 		case "refund.requested":
-			return { title: t`Refund asked of Midtrans`, tone: "warning" };
+			return { title: t`Refund asked of Polar`, tone: "warning" };
 		case "refund.failed":
-			return { title: t`Refund refused by Midtrans`, tone: "danger" };
-		case "receipt.resent":
-			return { title: t`Receipt sent again`, tone: "muted" };
+			return { title: t`Refund refused by Polar`, tone: "danger" };
+		case "subscription.changed":
+			return { title: t`Subscription changed`, tone: "default" };
+		case "subscription.revoked":
+			return { title: t`Subscription ended by an admin`, tone: "danger" };
 		case "period.granted":
 			return { title: t`Pass given by an admin`, tone: "success" };
 		case "period.revoked":

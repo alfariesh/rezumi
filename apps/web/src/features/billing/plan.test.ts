@@ -20,6 +20,10 @@ const summary = (enabled: boolean, paid: boolean): PlanSummary => ({
 	enabled,
 	planId: paid ? "plus" : "free",
 	currentPeriodEndsAt: null,
+	source: null,
+	renews: false,
+	subscription: null,
+	currency: "usd",
 	upcoming: [],
 	limits: { activeResumes: { used: 0, max: 3 }, activeCoverLetters: { used: 0, max: 3 } },
 	features: {

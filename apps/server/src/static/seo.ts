@@ -112,7 +112,7 @@ export function handleLlms() {
 	const body = [
 		"# Rezumi",
 		"",
-		`> Rezumi is a resume builder and job search workspace. Write a resume in an editor beside a live page, pick one of ${templateLineup.length} templates, check that applicant tracking systems can read it, tailor it to a job posting, and share it at a public link or download it. Start on the free plan; paid plans are 30-day passes that never renew on their own.`,
+		`> Rezumi is a resume builder and job search workspace. Write a resume in an editor beside a live page, pick one of ${templateLineup.length} templates, check that applicant tracking systems can read it, tailor it to a job posting, and share it at a public link or download it. Start on the free plan; paid plans are monthly or yearly subscriptions you can cancel any time.`,
 		"",
 		"## Search",
 		"",
@@ -130,7 +130,7 @@ export function handleLlms() {
 			? []
 			: ["- Plus, Pro AI and Rezumi AI trial credits are coming soon. Paid plan limits are not active yet."]),
 		"",
-		"- Plans (prices in Indonesian Rupiah): Free (Rp0: 3 active resumes and 3 cover letters, 5 templates, every icon style, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus (Rp29,000 for 30 days: 50 resumes and letters, every template, tool logos in skills, Word and ODT, custom styles, MCP and API); Pro AI (Rp79,000 for 30 days: everything in Plus and 100 AI credits, no API key needed). Paid plans never renew automatically.",
+		"- Plans (US dollars; Rupiah for visitors from Indonesia): Free ($0: 3 active resumes and 3 cover letters, 5 templates, every icon style, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus ($4.99 a month or $39 a year: 50 resumes and letters, every template, tool logos in skills, Word and ODT, custom styles, MCP and API); Pro AI ($9.99 a month or $79 a year: everything in Plus and 100 AI credits every month, no API key needed). Paid plans are subscriptions you can cancel any time; access lasts until the paid period ends.",
 		"- Export: PDF, Markdown and JSON on every plan; Word (DOCX) and ODT with Plus and Pro AI.",
 		"- Import: PDF, LinkedIn data export, JSON Resume, Rezumi JSON; Word files with an AI provider.",
 		"- Sharing: private by default; a public link or a password-protected link, changeable at any time.",

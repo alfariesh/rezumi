@@ -1,17 +1,25 @@
 import type { PlanSummary } from "./plan";
-import type { PaidPlanId } from "@rezumi/schema/billing";
-import { TextShimmer } from "@heroui-pro/react";
+import type { BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
+import { Segment, TextShimmer } from "@heroui-pro/react";
 import { Alert, Button, buttonVariants, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Link, useRouteContext } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { PLANS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { toast } from "@rezumi/ui/components/toast";
 import { cn } from "@rezumi/utils/style";
 import { getPlanName } from "./plan";
-import { formatPrice, getPurchaseKind, getPurchaseLabel } from "./purchase";
+import {
+	getPurchaseKind,
+	getPurchaseLabel,
+	intervalSuffix,
+	isLiveSubscription,
+	monthlyOfYearly,
+	priceLabel,
+	yearlySaving,
+} from "./purchase";
 import { PurchaseDialog } from "./purchase-dialog";
 import { SettingsSection } from "@/features/settings/section";
 import { authClient } from "@/libs/auth/client";
@@ -19,11 +27,11 @@ import { getReadableErrorMessage } from "@/libs/error-message";
 
 const PAID_PLANS = ["plus", "pro-ai"] as const satisfies readonly PaidPlanId[];
 
-/** What each pass adds, in three lines; numbers come from the catalog the server enforces. */
+/** What each plan adds, in three lines; numbers come from the catalog the server enforces. */
 function planHighlights(planId: PaidPlanId) {
 	if (planId === "pro-ai") {
-		const proCredits = PLANS["pro-ai"].creditsPerPurchase;
-		return [t`Everything in Plus`, t`${proCredits} AI credits per purchase`, t`No API key to set up`];
+		const proCredits = PLANS["pro-ai"].creditsPerMonth;
+		return [t`Everything in Plus`, t`${proCredits} Rezumi AI credits every month`, t`No API key to set up`];
 	}
 	const { activeResumes, activeCoverLetters } = PLANS.plus.limits;
 	return [
@@ -35,7 +43,7 @@ function planHighlights(planId: PaidPlanId) {
 
 type PurchaseStepProps = { blocker: "guest" | "email_not_verified" | "paused" };
 
-/** What stands between the account and buying, and the way past it, in place of the buy buttons. */
+/** What stands between the account and subscribing, and the way past it, in place of the buttons. */
 function PurchaseStep({ blocker }: PurchaseStepProps) {
 	const context = useRouteContext({ strict: false });
 	const smtpEnabled = context.flags?.smtpEnabled ?? false;
@@ -57,10 +65,10 @@ function PurchaseStep({ blocker }: PurchaseStepProps) {
 				{blocker === "guest" ? (
 					<>
 						<Alert.Title>
-							<Trans>Create an account to buy a pass</Trans>
+							<Trans>Create an account to subscribe</Trans>
 						</Alert.Title>
 						<Alert.Description>
-							<Trans>Passes belong to an account with an email address. Your guest work moves with you.</Trans>
+							<Trans>Plans belong to an account with an email address. Your guest work moves with you.</Trans>
 						</Alert.Description>
 						<Link
 							to="/auth/register"
@@ -73,11 +81,11 @@ function PurchaseStep({ blocker }: PurchaseStepProps) {
 				) : blocker === "email_not_verified" ? (
 					<>
 						<Alert.Title>
-							<Trans>Verify your email to buy a pass</Trans>
+							<Trans>Verify your email to subscribe</Trans>
 						</Alert.Title>
 						<Alert.Description>
 							{smtpEnabled ? (
-								<Trans>Open the link we sent to {email}. Your receipt goes there too.</Trans>
+								<Trans>Open the link we sent to {email}. Your invoices go there too.</Trans>
 							) : (
 								<Trans>Email delivery isn't set up on this server, so the address can't be verified.</Trans>
 							)}
@@ -91,10 +99,10 @@ function PurchaseStep({ blocker }: PurchaseStepProps) {
 				) : (
 					<>
 						<Alert.Title>
-							<Trans>Buying is paused for now</Trans>
+							<Trans>Subscribing is paused for now</Trans>
 						</Alert.Title>
 						<Alert.Description>
-							<Trans>Try again later. Your current pass and credits aren't affected.</Trans>
+							<Trans>Try again later. Your current plan and credits aren't affected.</Trans>
 						</Alert.Description>
 					</>
 				)}
@@ -110,14 +118,20 @@ type BuyPlansSectionProps = {
 };
 
 /**
- * The two passes with their final price and a button that fits where the account stands: buy, extend 30 days, upgrade
- * to Pro AI, or queue Plus behind Pro AI. Without a way to buy here (guest, unverified email, paused) it explains the
- * step instead; where buying doesn't apply at all it shows nothing.
+ * The two plans, monthly or yearly, at the visitor's price, with a button that fits where the account stands:
+ * subscribe, upgrade, switch interval, or switch down from the next renewal. Without a way to subscribe here (guest,
+ * unverified email, paused) it explains the step instead; where plans aren't sold at all it shows nothing.
  */
 export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
-	const [buying, setBuying] = useState<PaidPlanId | null>(null);
+	const labelId = useId();
+	const subscription = plan.subscription;
+	const live = isLiveSubscription(subscription) ? subscription : null;
+	const [interval, setInterval] = useState<BillingInterval>(live?.interval ?? "month");
+	const [choice, setChoice] = useState<{ planId: PaidPlanId; interval: BillingInterval } | null>(null);
 	const selectedRef = useRef<HTMLDivElement>(null);
 	const blocker = plan.purchaseBlockedBy;
+	const currency = plan.currency;
+	const saving = Math.max(...PAID_PLANS.map((id) => yearlySaving(id, currency)));
 
 	useEffect(() => {
 		selectedRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -128,14 +142,42 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 	return (
 		<SettingsSection
 			icon="tag"
-			title={<Trans>Buy a pass</Trans>}
-			description={<Trans>Each pass is 30 days of access, paid once. Nothing renews on its own.</Trans>}
+			title={live ? <Trans>Change your plan</Trans> : <Trans>Subscribe</Trans>}
+			description={
+				<Trans>
+					Billed monthly or yearly until you cancel. Cancel any time; you keep access until the period ends.
+				</Trans>
+			}
 		>
 			{blocker && <PurchaseStep blocker={blocker} />}
+			<div className="flex flex-wrap items-center justify-between gap-2">
+				<span id={labelId} className="sr-only">
+					<Trans>Billing period</Trans>
+				</span>
+				<Segment
+					aria-labelledby={labelId}
+					selectedKey={interval}
+					onSelectionChange={(key) => setInterval(key === "year" ? "year" : "month")}
+				>
+					<Segment.Item id="month" className="px-3">
+						<Trans>Monthly</Trans>
+					</Segment.Item>
+					<Segment.Item id="year" className="px-3">
+						<Trans>Yearly</Trans>
+					</Segment.Item>
+				</Segment>
+				{saving > 0 && (
+					<span className="text-xs text-muted">
+						<Trans>Yearly saves up to {saving}%</Trans>
+					</span>
+				)}
+			</div>
 			<div className="grid divide-separator max-sm:divide-y sm:grid-cols-2 sm:divide-x">
 				{PAID_PLANS.map((id) => {
-					const kind = getPurchaseKind(plan.planId, id);
+					const target = { planId: id, interval };
+					const kind = getPurchaseKind(live, target);
 					const isSelected = id === selected;
+					const pending = live?.pendingChange?.planId === id && live.pendingChange.interval === interval;
 					return (
 						<div
 							key={id}
@@ -158,19 +200,32 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 									) : (
 										<h3 className="text-base font-semibold">{getPlanName(id)}</h3>
 									)}
-									{isSelected && (
-										<Chip size="sm" variant="soft" color="accent">
+									{kind === "current" ? (
+										<Chip size="sm" variant="soft" color="success">
 											<Chip.Label>
-												<Trans>Selected</Trans>
+												<Trans>Current</Trans>
 											</Chip.Label>
 										</Chip>
+									) : (
+										isSelected && (
+											<Chip size="sm" variant="soft" color="accent">
+												<Chip.Label>
+													<Trans>Selected</Trans>
+												</Chip.Label>
+											</Chip>
+										)
 									)}
 								</div>
 								<span className="text-2xl font-semibold tracking-tight tabular-nums">
-									{formatPrice(PLANS[id].priceIdr)}
+									{priceLabel(id, interval, currency)}{" "}
+									<span className="text-sm font-normal text-muted">{intervalSuffix(interval)}</span>
 								</span>
 								<span className="text-xs text-muted">
-									<Trans>For 30 days, no automatic renewal</Trans>
+									{interval === "year" ? (
+										<Trans>{monthlyOfYearly(id, currency)} a month, billed yearly</Trans>
+									) : (
+										<Trans>Renews monthly until you cancel</Trans>
+									)}
 								</span>
 							</div>
 							<ul className="grid gap-2 text-sm">
@@ -181,26 +236,40 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 									</li>
 								))}
 							</ul>
-							{kind === "queue" && (
+							{pending && (
 								<p className="text-xs text-muted">
-									<Trans>Starts after your Pro AI time ends.</Trans>
+									<Trans>Starts at your next renewal.</Trans>
 								</p>
 							)}
-							{plan.canPurchase && (
+							{plan.canPurchase && kind !== "current" && !pending && (
 								<Button
 									fullWidth
 									className="mt-auto"
 									variant={isSelected || (!selected && id === "pro-ai") ? "primary" : "secondary"}
-									onPress={() => setBuying(id)}
+									isDisabled={live?.cancelAtPeriodEnd === true || live?.status === "past_due"}
+									onPress={() => setChoice(target)}
 								>
-									{getPurchaseLabel(kind, id)}
+									{getPurchaseLabel(kind, target, live)}
 								</Button>
 							)}
 						</div>
 					);
 				})}
 			</div>
-			<PurchaseDialog planId={buying} current={plan.planId} onClose={() => setBuying(null)} />
+			{live?.cancelAtPeriodEnd && (
+				<p className="text-xs text-muted">
+					<Trans>Your subscription is set to end. Keep it first to change the plan.</Trans>
+				</p>
+			)}
+			{live?.status === "past_due" && (
+				<p className="text-xs text-muted">
+					<Trans>Your last payment didn't go through. Update your payment method in billing first.</Trans>
+				</p>
+			)}
+			<p className="text-xs text-muted">
+				<Trans>The checkout shows the final amount, with any tax that applies where you live.</Trans>
+			</p>
+			<PurchaseDialog choice={choice} subscription={live} currency={currency} onClose={() => setChoice(null)} />
 		</SettingsSection>
 	);
 }
