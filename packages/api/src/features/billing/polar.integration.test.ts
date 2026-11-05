@@ -419,6 +419,114 @@ describe.skipIf(!databaseUrl)("Polar billing", () => {
 			).rejects.toMatchObject({ code: "CONFLICT" });
 		});
 
+		it("gives a first Plus subscription a 7-day free trial, and records its $0 start apart from sales", async () => {
+			const session = (id: string) => ({
+				id,
+				url: `https://sandbox.polar.sh/checkout/${id}`,
+				expires_at: iso(new Date(Date.now() + day)),
+				status: "open",
+			});
+			polar()
+				.checkouts.create.mockResolvedValueOnce(session("checkout_pro"))
+				.mockResolvedValueOnce(session("checkout_t"));
+			expect((await as("buyer").summary()).trialAvailable).toBe(true);
+			// Pro AI has no trial; Plus does, set on the checkout.
+			await as("buyer").checkout({ planId: "pro-ai", interval: "month", idempotencyKey: "pro" });
+			expect(polar().checkouts.create.mock.calls[0]?.[0]).toMatchObject({ allow_trial: false });
+			const opened = await as("buyer").checkout({ planId: "plus", interval: "month", idempotencyKey: "plus" });
+			expect(polar().checkouts.create.mock.calls[1]?.[0]).toMatchObject({
+				allow_trial: true,
+				trial_interval: "day",
+				trial_interval_count: 7,
+			});
+
+			// Polar starts the trial with a paid $0 order for the trial week, and the subscription trialing.
+			const trialEnd = new Date(Date.now() + 7 * day);
+			const trial = subscription({
+				product: PRODUCTS.plusMonthly,
+				status: "trialing",
+				start: new Date(),
+				end: trialEnd,
+			});
+			await deliver("order.paid", order({ sub: trial, checkoutId: "checkout_t", net: 0 }));
+			const [started] = (await paymentsOf("buyer")).filter((payment) => payment.id === opened.paymentId);
+			expect(started).toMatchObject({ status: "paid", amount: 0, totalAmount: 0, trialDays: 7, periodEnd: trialEnd });
+			expect(await getEntitlements("buyer")).toMatchObject({
+				planId: "plus",
+				renews: true,
+				currentPeriodEndsAt: trialEnd,
+			});
+			expect((await as("buyer").summary()).trialAvailable).toBe(false);
+
+			const metrics = await as("owner").admin.metrics({
+				from: new Date(Date.now() - day),
+				to: new Date(Date.now() + day),
+			});
+			expect(metrics.sales.payments).toBe(0);
+			expect(metrics.subscriptions).toMatchObject({ active: 0, trialing: 1, trialsStarted: 1, mrr: {} });
+		});
+
+		it("ends a running trial before an upgrade, so the new plan's period is paid for", async () => {
+			const trial = subscription({
+				product: PRODUCTS.plusMonthly,
+				status: "trialing",
+				start: new Date(),
+				end: new Date(Date.now() + 7 * day),
+			});
+			await deliver("order.paid", order({ sub: trial, net: 0 }));
+			// A declined first charge leaves the trial as it was, and the plan unchanged.
+			polar().subscriptions.update.mockResolvedValueOnce(trial);
+			await expect(as("buyer").changePlan({ planId: "pro-ai", interval: "month" })).rejects.toMatchObject({
+				code: "PAYMENT_FAILED",
+			});
+			expect(polar().subscriptions.update).toHaveBeenCalledOnce();
+			expect(polar().subscriptions.update).toHaveBeenLastCalledWith("sub_1", { trial_end: "now" });
+
+			const paidPlus = subscription({ product: PRODUCTS.plusMonthly, modifiedAt: new Date(Date.now() + 1000) });
+			const upgraded = subscription({ product: PRODUCTS.proMonthly, modifiedAt: new Date(Date.now() + 2000) });
+			polar().subscriptions.update.mockResolvedValueOnce(paidPlus).mockResolvedValueOnce(upgraded);
+			polar().orders.list.mockResolvedValue({
+				items: [
+					order({ id: "order_3", reason: "subscription_update", sub: upgraded, net: 500 }),
+					order({ id: "order_2", reason: "subscription_cycle", sub: paidPlus, net: 499 }),
+				],
+			});
+			await as("buyer").changePlan({ planId: "pro-ai", interval: "month" });
+			expect(polar().subscriptions.update.mock.calls.slice(1)).toEqual([
+				["sub_1", { trial_end: "now" }],
+				["sub_1", { product_id: PRODUCTS.proMonthly, proration_behavior: "invoice" }],
+			]);
+			expect((await paymentsOf("buyer")).map((payment) => [payment.billingReason, payment.totalAmount])).toEqual([
+				["subscription_create", 0],
+				["subscription_cycle", 499],
+				["subscription_update", 500],
+			]);
+			expect((await grantsOf("buyer")).map((grant) => grant.amount)).toEqual([100]);
+			expect(await getEntitlements("buyer")).toMatchObject({ planId: "pro-ai", renews: true });
+		});
+
+		it("gives no trial once the account has had a subscription", async () => {
+			await deliver("order.paid", order({ sub: subscription({ product: PRODUCTS.plusMonthly }) }));
+			await deliver(
+				"subscription.revoked",
+				subscription({
+					product: PRODUCTS.plusMonthly,
+					status: "canceled",
+					endedAt: new Date(),
+					modifiedAt: new Date(Date.now() + 1000),
+				}),
+			);
+			polar().checkouts.create.mockResolvedValue({
+				id: "checkout_again",
+				url: "https://sandbox.polar.sh/checkout/again",
+				expires_at: iso(new Date(Date.now() + day)),
+				status: "open",
+			});
+			expect((await as("buyer").summary()).trialAvailable).toBe(false);
+			await as("buyer").checkout({ planId: "plus", interval: "month", idempotencyKey: "again" });
+			expect(polar().checkouts.create.mock.calls[0]?.[0]).toMatchObject({ allow_trial: false });
+		});
+
 		it("records a renewal as a new payment with a new month of credits", async () => {
 			const start = new Date(Date.now() - 29 * day);
 			const firstSub = subscription({

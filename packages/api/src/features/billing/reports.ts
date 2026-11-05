@@ -84,6 +84,8 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		.from(payment)
 		.where(and(within(payment.createdAt, range), isNotNull(payment.idempotencyKey)));
 
+	// A free trial starting is a paid $0 order its checkout offered a trial for: counted apart, not as a sale.
+	const trialStart = sql`(${payment.trialDays} is not null and ${payment.totalAmount} = 0)`;
 	const paidRows = await db
 		.select({
 			planId: payment.planId,
@@ -94,8 +96,12 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 			revenue: sum(payment.amount),
 		})
 		.from(payment)
-		.where(and(isNotNull(payment.paidAt), within(payment.paidAt, range)))
+		.where(and(isNotNull(payment.paidAt), within(payment.paidAt, range), sql`not ${trialStart}`))
 		.groupBy(payment.planId, payment.interval, payment.billingReason, payment.currency);
+	const [trialStarts] = await db
+		.select({ started: count() })
+		.from(payment)
+		.where(and(isNotNull(payment.paidAt), within(payment.paidAt, range), trialStart));
 
 	const refundRows = await db
 		.select({ currency: payment.currency, refunds: count(), amount: sum(refund.amount) })
@@ -224,13 +230,16 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 	// Monthly recurring revenue: active subscriptions not set to end, yearly ones counted as a twelfth.
 	const mrr: Money = {};
 	let active = 0;
+	let trialing = 0;
 	let canceling = 0;
 	let pastDue = 0;
 	const livePlans = new Map<string, { planId: PaidPlanId; interval: BillingInterval; subscriptions: number }>();
 	for (const row of liveRows) {
 		const counted = toNumber(row.subscriptions);
 		if (row.status === "past_due") pastDue += counted;
-		else if (row.status === "active" || row.status === "trialing") {
+		// In a free trial: nothing paid yet, so not active and not in MRR until its first charge.
+		else if (row.status === "trialing") trialing += counted;
+		else if (row.status === "active") {
 			active += counted;
 			if (row.cancelAtPeriodEnd) canceling += counted;
 			else addMoney(mrr, row.currency, Math.round(toNumber(row.amount) / (row.interval === "year" ? 12 : 1)));
@@ -269,6 +278,8 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		net: subtract(revenue, refunded),
 		subscriptions: {
 			active,
+			trialing,
+			trialsStarted: toNumber(trialStarts?.started),
 			canceling,
 			pastDue,
 			started: toNumber(started?.subscriptions),
@@ -424,6 +435,8 @@ export async function listRecentPayments(
 			interval: payment.interval,
 			billingReason: payment.billingReason,
 			amount: payment.amount,
+			totalAmount: payment.totalAmount,
+			trialDays: payment.trialDays,
 			currency: payment.currency,
 			refundedAmount: payment.refundedAmount,
 			status: payment.status,

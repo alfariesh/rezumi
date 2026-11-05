@@ -122,7 +122,16 @@ describe("subscription access", () => {
 		for (const status of ["canceled", "unpaid", "incomplete", "incomplete_expired", "paused"] as const)
 			expect(subscriptionAccess({ ...base, status }, now)).toBeNull();
 		expect(subscriptionAccess({ ...base, endedAt: at("2026-11-05T00:00:00Z") }, now)).toBeNull();
-		expect(subscriptionAccess({ ...base, status: "trialing" }, now)?.renews).toBe(false);
+	});
+
+	it("runs a free trial like a paid period: into its first charge, a few hours past its end", () => {
+		expect(subscriptionAccess({ ...base, status: "trialing" }, now)).toMatchObject({
+			endsAt: base.currentPeriodEnd,
+			renews: true,
+		});
+		expect(subscriptionAccess({ ...base, status: "trialing", cancelAtPeriodEnd: true }, now)?.renews).toBe(false);
+		const ended = { ...base, status: "trialing" as const, currentPeriodEnd: at("2026-11-05T11:00:00Z") };
+		expect(subscriptionAccess(ended, now)?.endsAt).toEqual(new Date(+at("2026-11-05T11:00:00Z") + RENEWAL_GRACE_MS));
 	});
 });
 

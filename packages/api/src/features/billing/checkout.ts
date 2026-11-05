@@ -92,6 +92,8 @@ export type PaymentView = {
 	periodEnd: Date | null;
 	refundedAmount: number;
 	redirectUrl: string | null;
+	/** The free trial its checkout offered, in days; a paid $0 order is that trial starting. */
+	trialDays: number | null;
 };
 
 function toPaymentView(payment: PaymentRow, authentication: Authentication, now = new Date()): PaymentView {
@@ -120,6 +122,7 @@ function toPaymentView(payment: PaymentRow, authentication: Authentication, now 
 		periodEnd: payment.periodEnd,
 		refundedAmount: payment.refundedAmount,
 		redirectUrl: payable ? payment.redirectUrl : null,
+		trialDays: payment.trialDays,
 	};
 }
 
@@ -172,6 +175,25 @@ function publicIp(ip: string | null | undefined): string | undefined {
 	return value;
 }
 
+/**
+ * Whether the account can still start a plan's free trial: only its first subscription gets one, so not after any
+ * subscription (live or ended) or any paid payment. Polar also refuses a second trial to the same email or card.
+ */
+export async function hasTrialAvailable(userId: string): Promise<boolean> {
+	const [subscribed] = await db
+		.select({ id: schema.billingSubscription.id })
+		.from(schema.billingSubscription)
+		.where(eq(schema.billingSubscription.userId, userId))
+		.limit(1);
+	if (subscribed) return false;
+	const [paid] = await db
+		.select({ id: schema.billingPayment.id })
+		.from(schema.billingPayment)
+		.where(and(eq(schema.billingPayment.userId, userId), isNotNull(schema.billingPayment.paidAt)))
+		.limit(1);
+	return !paid;
+}
+
 /** The currency a request is charged in: Rupiah from Indonesia, US dollars elsewhere. */
 export const currencyOf = (origin: RequestOrigin): BillingCurrency => currencyForCountry(origin.country);
 
@@ -201,6 +223,8 @@ export async function checkout(input: {
 	const amount = planPrice(input.planId, input.interval, currency);
 	if (isLive(await getCurrentSubscription(userId)))
 		throw new ORPCError("CONFLICT", { message: "You already have a subscription. Change its plan instead." });
+	const trialDays =
+		PLANS[input.planId].trialDays && (await hasTrialAvailable(userId)) ? PLANS[input.planId].trialDays : null;
 
 	const prepared = await db.transaction(async (tx) => {
 		const account = await lockBillingAccount(tx, userId);
@@ -255,6 +279,7 @@ export async function checkout(input: {
 				totalAmount: amount,
 				currency,
 				credits: 0,
+				trialDays,
 				status: "creating",
 				channel: "web",
 				createdAt: now,
@@ -289,7 +314,10 @@ export async function checkout(input: {
 			success_url: `${new URL(`/dashboard/settings/billing/return/${created.id}`, env.APP_URL)}?checkout_id={CHECKOUT_ID}`,
 			return_url: returnUrl,
 			allow_discount_codes: true,
-			allow_trial: false,
+			// Set here rather than on the products, so only a first subscription gets it, the same in every environment.
+			...(trialDays
+				? { allow_trial: true, trial_interval: "day" as const, trial_interval_count: trialDays }
+				: { allow_trial: false }),
 			metadata: { rezumi_payment_id: created.id },
 		});
 	} catch (error) {
@@ -384,6 +412,27 @@ export async function changePlan(input: {
 	const up =
 		PLANS[input.planId].rank > PLANS[current.planId].rank ||
 		(input.planId === current.planId && input.interval === "year" && current.interval === "month");
+	if (up && current.status === "trialing") {
+		// Polar ends a trial on a plan change but doesn't charge the fresh period it starts (sandbox, 2026-11-05): end the
+		// trial first, which charges the current plan's first period at once, then upgrade with the difference invoiced.
+		let ended;
+		try {
+			ended = await polarApi(config).subscriptions.update(current.providerSubscriptionId, { trial_end: "now" });
+		} catch (error) {
+			throw subscriptionChangeError("subscription.update", error);
+		}
+		// A declined first charge leaves the trial running, unchanged.
+		if (ended.status !== "active")
+			throw new ORPCError("PAYMENT_FAILED", {
+				status: 402,
+				message: "The payment for this change didn't go through. Update your payment method and try again.",
+			});
+		await applyPolarSubscription(ended, {
+			source: "status_check",
+			eventType: "subscription.end_trial",
+			now: input.now,
+		});
+	}
 	let updated;
 	try {
 		updated = await polarApi(config).subscriptions.update(current.providerSubscriptionId, {

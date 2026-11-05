@@ -21,6 +21,7 @@ import {
 	getInvoice,
 	getPayment,
 	getPendingPayment,
+	hasTrialAvailable,
 	listPayments,
 	openBillingPortal,
 	purchaseBlocker,
@@ -113,6 +114,11 @@ const payment = z.object({
 		.string()
 		.nullable()
 		.describe("Where to continue paying: web sessions only, while the checkout is open."),
+	trialDays: z
+		.number()
+		.int()
+		.nullable()
+		.describe("The free trial its checkout offered, in days. Paid with a total of 0, it is that trial starting."),
 });
 
 const subscription = z.object({
@@ -212,6 +218,11 @@ export const billingRouter = {
 					.nullable()
 					.describe("Why it can't, when it can't."),
 				pendingPayment: payment.nullable().describe("The newest checkout that can still be paid; web sessions only."),
+				trialAvailable: z
+					.boolean()
+					.describe(
+						"Whether a first subscription to a plan with trialDays in the catalog starts with that free trial.",
+					),
 			}),
 		)
 		.handler(async ({ context }) => {
@@ -241,6 +252,7 @@ export const billingRouter = {
 				canPurchase: blocker === null,
 				purchaseBlockedBy: blocker,
 				pendingPayment: entitlements.enabled ? await getPendingPayment(authentication, now) : null,
+				trialAvailable: entitlements.enabled && !current && (await hasTrialAvailable(context.user.id)),
 			};
 		}),
 

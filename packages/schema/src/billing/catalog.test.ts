@@ -2,6 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { templateSchema } from "../templates";
 import {
 	BILLING_CATALOG_VERSION,
+	BILLING_PRICES_INCLUDE_TAX,
 	BILLING_CURRENCIES,
 	BILLING_INTERVALS,
 	CREDIT_COSTS,
@@ -63,7 +64,10 @@ describe("billing catalog", () => {
 	});
 
 	it("matches the launch decisions", () => {
-		expect(BILLING_CATALOG_VERSION).toBe(4);
+		expect(BILLING_CATALOG_VERSION).toBe(5);
+		// A free week before the first charge, on Plus only (2026-11-05); prices are before tax.
+		expect([PLANS.free.trialDays, PLANS.plus.trialDays, PLANS["pro-ai"].trialDays]).toEqual([null, 7, null]);
+		expect(BILLING_PRICES_INCLUDE_TAX).toBe(false);
 		expect(PLANS.plus.prices).toEqual({ month: { usd: 499, idr: 5_900_000 }, year: { usd: 3_900, idr: 45_900_000 } });
 		expect(PLANS["pro-ai"].prices).toEqual({
 			month: { usd: 999, idr: 12_900_000 },

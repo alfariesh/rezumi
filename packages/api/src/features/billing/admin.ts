@@ -78,6 +78,7 @@ const adminPayment = (payment: PaymentRow) => ({
 	periodStart: payment.periodStart,
 	periodEnd: payment.periodEnd,
 	refundedAmount: payment.refundedAmount,
+	trialDays: payment.trialDays,
 	failureReason: payment.failureReason,
 	// Only Polar orders can be refunded from the admin page; old Midtrans passes were refunded by hand.
 	refundable: payment.provider === "polar" && Boolean(payment.providerOrderId),

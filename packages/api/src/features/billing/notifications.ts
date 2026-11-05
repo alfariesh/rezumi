@@ -142,6 +142,10 @@ function summaryNotice(day: string, metrics: BillingMetrics): { subject: string;
 					label: "Langganan aktif",
 					value: `${metrics.subscriptions.active} (${metrics.subscriptions.canceling} akan berhenti, ${metrics.subscriptions.pastDue} gagal bayar)`,
 				},
+				{
+					label: "Trial gratis",
+					value: `${metrics.subscriptions.trialing} berjalan (${metrics.subscriptions.trialsStarted} mulai kemarin)`,
+				},
 				{ label: "MRR", value: formatMoney(metrics.subscriptions.mrr) },
 				{ label: "Pendaftar baru", value: `${metrics.signups.total} (${metrics.signups.verified} terverifikasi)` },
 				{ label: "Kredit Rezumi AI terpakai", value: String(metrics.credits.used) },

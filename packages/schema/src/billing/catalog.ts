@@ -82,9 +82,20 @@ export type PlanDefinition = {
 	features: PlanFeatures;
 	/** Rezumi AI credits granted for each month of the plan, yearly subscriptions included; they don't roll over. */
 	creditsPerMonth: number;
+	/**
+	 * Free days before the first charge of an account's first subscription to this plan (a card is still taken at
+	 * checkout); null for none. Plan changes into a plan without one end a running trial.
+	 */
+	trialDays: number | null;
 };
 
-export const BILLING_CATALOG_VERSION = 4;
+export const BILLING_CATALOG_VERSION = 5;
+
+/**
+ * Prices are before tax: Polar adds the tax for the buyer's location at checkout and on every renewal. Polar's
+ * "Default tax behavior" (or each price's) must be Exclusive to match; the apps say so next to prices.
+ */
+export const BILLING_PRICES_INCLUDE_TAX = false;
 
 /** The templates on the free plan: four one-column, ATS-safe layouts and one two-column. */
 export const FREE_TEMPLATES = [
@@ -187,6 +198,7 @@ export const PLANS = {
 			automationApi: false,
 		},
 		creditsPerMonth: 0,
+		trialDays: null,
 	},
 	plus: {
 		id: "plus",
@@ -198,6 +210,7 @@ export const PLANS = {
 		limits: { activeResumes: 50, activeCoverLetters: 50 },
 		features: paidFeatures,
 		creditsPerMonth: 0,
+		trialDays: 7,
 	},
 	"pro-ai": {
 		id: "pro-ai",
@@ -209,6 +222,7 @@ export const PLANS = {
 		limits: { activeResumes: 50, activeCoverLetters: 50 },
 		features: paidFeatures,
 		creditsPerMonth: 100,
+		trialDays: null,
 	},
 } as const satisfies { readonly [Id in PlanId]: PlanDefinition & { id: Id } };
 

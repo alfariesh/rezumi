@@ -150,14 +150,13 @@ export function subscriptionAccess(
 ): { planId: PaidPlanId; startsAt: Date; endsAt: Date; renews: boolean } | null {
 	let endsAt: Date | null;
 	switch (subscription.status) {
-		case "active": {
+		// A trial's end is its first charge, a renewal like any other.
+		case "active":
+		case "trialing": {
 			const end = subscription.currentPeriodEnd;
 			endsAt = end && end <= now ? new Date(+end + RENEWAL_GRACE_MS) : end;
 			break;
 		}
-		case "trialing":
-			endsAt = subscription.currentPeriodEnd;
-			break;
 		case "past_due":
 			endsAt = subscription.paidThrough;
 			break;
@@ -170,7 +169,8 @@ export function subscriptionAccess(
 		planId: subscription.planId,
 		startsAt: subscription.currentPeriodStart,
 		endsAt,
-		renews: subscription.status === "active" && !subscription.cancelAtPeriodEnd,
+		// A trial goes on into its first charge unless it was cancelled.
+		renews: (subscription.status === "active" || subscription.status === "trialing") && !subscription.cancelAtPeriodEnd,
 	};
 }
 

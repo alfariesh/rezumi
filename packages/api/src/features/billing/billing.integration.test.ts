@@ -223,6 +223,7 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 			canPurchase: false,
 			purchaseBlockedBy: "unavailable",
 			pendingPayment: null,
+			trialAvailable: false,
 		});
 	});
 

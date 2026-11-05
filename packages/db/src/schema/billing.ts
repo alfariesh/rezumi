@@ -317,6 +317,9 @@ export const billingPayment = pg.pgTable(
 		credits: pg.integer("credits").notNull().default(0),
 		// The length of a 30-day pass from before subscriptions; null for subscriptions.
 		durationDays: pg.integer("duration_days"),
+		// The free trial its checkout offered, in days; null without one. Polar can still drop the trial for a customer
+		// who had one: the order then charges the full price, and a $0 order is the trial starting.
+		trialDays: pg.integer("trial_days"),
 		status: pg.text("status").notNull().$type<BillingPaymentStatus>(),
 		// Where it was bought: the website, for now.
 		channel: pg.text("channel").notNull().default("web").$type<"web">(),
