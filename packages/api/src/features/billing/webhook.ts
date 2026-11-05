@@ -111,7 +111,9 @@ export async function handlePolarWebhook(request: Request): Promise<Response> {
 	} catch (error) {
 		if (error instanceof webhooks.PolarWebhookUnknownTypeError) return json(202, { received: true, handled: false });
 		if (error instanceof webhooks.PolarWebhookVerificationError) {
-			await raiseBillingAlertQuietly({ kind: "rejected_signatures" });
+			// Counted only when it looks like a delivery (a secret out of step), not for any stray request.
+			if (headers["webhook-id"] && headers["webhook-timestamp"] && headers["webhook-signature"])
+				await raiseBillingAlertQuietly({ kind: "rejected_signatures" });
 			return json(403, { error: "Invalid signature" });
 		}
 		return json(400, { error: "Invalid payload" });

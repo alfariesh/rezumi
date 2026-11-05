@@ -274,6 +274,13 @@ export async function grantYearlyCredits(now = new Date()): Promise<number> {
 		if (!row.userId || !row.currentPeriodEnd) continue;
 		const month = creditMonth({ start: row.currentPeriodStart, end: row.currentPeriodEnd }, "year", now);
 		if (!month) continue;
+		// Granted already (the usual case, every minute of the month): a read, not a write under the account's lock.
+		const [given] = await db
+			.select({ id: schema.aiCreditGrant.id })
+			.from(schema.aiCreditGrant)
+			.where(and(eq(schema.aiCreditGrant.subscriptionId, row.id), eq(schema.aiCreditGrant.expiresAt, month.end)))
+			.limit(1);
+		if (given) continue;
 		const userId = row.userId;
 		const [payment] = await db
 			.select({ id: schema.billingPayment.id })

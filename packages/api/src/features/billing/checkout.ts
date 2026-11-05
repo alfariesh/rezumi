@@ -163,7 +163,7 @@ const isLive = (row: SubscriptionRow | null): row is SubscriptionRow =>
 export type RequestOrigin = { country?: string | null | undefined; ip?: string | null | undefined };
 
 /** An address Polar can place, for the customer's currency and tax: never a private or loopback one. */
-export function publicIp(ip: string | null | undefined): string | undefined {
+function publicIp(ip: string | null | undefined): string | undefined {
 	const value = ip?.trim();
 	if (!value || !isIP(value)) return undefined;
 	if (/^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(value)) return undefined;
