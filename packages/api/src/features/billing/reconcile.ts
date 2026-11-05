@@ -1,6 +1,6 @@
 import type { PolarApi } from "./polar/client";
 import type { PolarConfig } from "./polar/config";
-import { and, asc, eq, gt, inArray, isNotNull, isNull, lt, or, sql } from "drizzle-orm";
+import { and, asc, eq, gt, inArray, isNotNull, isNull, lt, notExists, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { PLANS } from "@rezumi/schema/billing";
@@ -201,22 +201,54 @@ export async function reconcilePayments(now = new Date()): Promise<number> {
 }
 
 /**
- * Subscriptions whose period ended a while ago without a renewal, cancellation or failure arriving: asks Polar for
- * each (and its latest orders) and applies the answers. Returns how many it checked.
+ * Applies a subscription's latest orders, oldest first: a renewal, a plan change or a refund whose webhook hasn't
+ * arrived yet. Orders applied already change nothing. Returns how many Polar listed.
+ */
+export async function applyRecentOrders(api: PolarApi, providerSubscriptionId: string, now: Date): Promise<number> {
+	const context = { source: "status_check", eventType: "status_check", now } as const;
+	const orders = await api.orders.list({ subscription_id: providerSubscriptionId, limit: 3, sorting: ["-created_at"] });
+	for (const order of orders.items.toReversed()) await applyPolarOrder(order, context);
+	return orders.items.length;
+}
+
+/**
+ * Asks Polar about subscriptions whose webhooks seem lost, and applies the answers (latest orders, then the
+ * subscription): a period that ended a while ago without a renewal, cancellation or failure arriving, and a monthly
+ * Pro AI subscription paid through now without credits for now, whose plan-change order hasn't arrived. Yearly ones
+ * get their months from grantYearlyCredits. Returns how many it checked.
  */
 export async function reconcileSubscriptions(now = new Date()): Promise<number> {
 	const config = getPolarConfig();
 	if (!config) return 0;
 	const api = polarApi(config);
 	const started = Date.now();
-	const overdue = await db
+	const overdue = and(
+		isNotNull(schema.billingSubscription.currentPeriodEnd),
+		lt(schema.billingSubscription.currentPeriodEnd, new Date(+now - SUBSCRIPTION_OVERDUE_MS)),
+	);
+	const uncredited = and(
+		eq(schema.billingSubscription.planId, "pro-ai"),
+		eq(schema.billingSubscription.interval, "month"),
+		gt(schema.billingSubscription.paidThrough, now),
+		notExists(
+			db
+				.select({ id: schema.aiCreditGrant.id })
+				.from(schema.aiCreditGrant)
+				.where(
+					and(
+						eq(schema.aiCreditGrant.subscriptionId, schema.billingSubscription.id),
+						gt(schema.aiCreditGrant.expiresAt, now),
+					),
+				),
+		),
+	);
+	const due = await db
 		.select({ id: schema.billingSubscription.id, providerId: schema.billingSubscription.providerSubscriptionId })
 		.from(schema.billingSubscription)
 		.where(
 			and(
 				inArray(schema.billingSubscription.status, [...LIVE_SUBSCRIPTION_STATUSES]),
-				isNotNull(schema.billingSubscription.currentPeriodEnd),
-				lt(schema.billingSubscription.currentPeriodEnd, new Date(+now - SUBSCRIPTION_OVERDUE_MS)),
+				or(overdue, uncredited),
 				or(
 					isNull(schema.billingSubscription.lastCheckedAt),
 					lt(schema.billingSubscription.lastCheckedAt, new Date(+now - SUBSCRIPTION_RECHECK_MS)),
@@ -226,7 +258,7 @@ export async function reconcileSubscriptions(now = new Date()): Promise<number> 
 		.orderBy(asc(schema.billingSubscription.currentPeriodEnd))
 		.limit(RECONCILE_BATCH);
 	let checked = 0;
-	for (const row of overdue) {
+	for (const row of due) {
 		if (Date.now() - started > RECONCILE_BUDGET_MS) break;
 		await db
 			.update(schema.billingSubscription)
@@ -234,8 +266,7 @@ export async function reconcileSubscriptions(now = new Date()): Promise<number> 
 			.where(eq(schema.billingSubscription.id, row.id));
 		try {
 			const context = { source: "status_check", eventType: "status_check", now } as const;
-			const orders = await api.orders.list({ subscription_id: row.providerId, limit: 3, sorting: ["-created_at"] });
-			for (const order of orders.items.toReversed()) await applyPolarOrder(order, context);
+			await applyRecentOrders(api, row.providerId, now);
 			await applyPolarSubscription(await api.subscriptions.get(row.providerId), context);
 			checked++;
 		} catch (error) {
@@ -274,11 +305,20 @@ export async function grantYearlyCredits(now = new Date()): Promise<number> {
 		if (!row.userId || !row.currentPeriodEnd) continue;
 		const month = creditMonth({ start: row.currentPeriodStart, end: row.currentPeriodEnd }, "year", now);
 		if (!month) continue;
-		// Granted already (the usual case, every minute of the month): a read, not a write under the account's lock.
+		// Granted already (the usual case, every minute of the month), or still covered by an earlier grant running into
+		// this month (a switch from monthly): a read, not a write under the account's lock.
 		const [given] = await db
 			.select({ id: schema.aiCreditGrant.id })
 			.from(schema.aiCreditGrant)
-			.where(and(eq(schema.aiCreditGrant.subscriptionId, row.id), eq(schema.aiCreditGrant.expiresAt, month.end)))
+			.where(
+				and(
+					eq(schema.aiCreditGrant.subscriptionId, row.id),
+					or(
+						eq(schema.aiCreditGrant.expiresAt, month.end),
+						and(isNull(schema.aiCreditGrant.revokedAt), gt(schema.aiCreditGrant.expiresAt, month.start)),
+					),
+				),
+			)
 			.limit(1);
 		if (given) continue;
 		const userId = row.userId;
@@ -301,6 +341,7 @@ export async function grantYearlyCredits(now = new Date()): Promise<number> {
 				subscriptionId: row.id,
 				paymentId: payment.id,
 				amount: perMonth,
+				startsAt: month.start,
 				expiresAt: month.end,
 				now,
 			}),

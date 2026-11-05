@@ -175,8 +175,9 @@ export async function grantCredits(
 
 /**
  * A month of Pro AI credits for a subscription: at most one grant per subscription per month (its end), whatever
- * orders a plan change or a retried event makes. Null when that month was granted already. Runs inside the caller's
- * transaction, holding the account's billing lock.
+ * orders a plan change or a retried event makes, and none while another of its grants still runs into that month (a
+ * switch from monthly to yearly keeps the month already given; the next month brings its own). Null when nothing was
+ * granted. Runs inside the caller's transaction, holding the account's billing lock.
  */
 export async function grantSubscriptionMonth(
 	tx: Transaction,
@@ -185,6 +186,8 @@ export async function grantSubscriptionMonth(
 		subscriptionId: string;
 		paymentId: string | null;
 		amount: number;
+		/** The start of the month the credits are for. */
+		startsAt: Date;
 		/** The end of the month the credits are for; they expire then. */
 		expiresAt: Date;
 		now?: Date;
@@ -195,6 +198,18 @@ export async function grantSubscriptionMonth(
 		throw new Error("A credit grant needs a positive whole amount.");
 	if (input.expiresAt <= now) return null;
 	await lockBillingAccount(tx, input.userId);
+	const [running] = await tx
+		.select({ id: schema.aiCreditGrant.id })
+		.from(schema.aiCreditGrant)
+		.where(
+			and(
+				eq(schema.aiCreditGrant.subscriptionId, input.subscriptionId),
+				isNull(schema.aiCreditGrant.revokedAt),
+				gt(schema.aiCreditGrant.expiresAt, input.startsAt),
+			),
+		)
+		.limit(1);
+	if (running) return null;
 	const [grant] = await tx
 		.insert(schema.aiCreditGrant)
 		.values({

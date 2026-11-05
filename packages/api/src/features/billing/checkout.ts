@@ -4,7 +4,7 @@ import type { BillingCurrency, BillingInterval, PaidPlanId } from "@rezumi/schem
 import { isIP } from "node:net";
 import { ORPCError } from "@orpc/server";
 import { errors as polarErrors } from "@polar-sh/sdk/2026-10";
-import { and, desc, eq, gt, isNotNull, lt, sql } from "drizzle-orm";
+import { and, desc, eq, gt, isNotNull, lt, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
@@ -16,7 +16,7 @@ import { isBillingAppliedTo } from "./entitlements";
 import { applyPolarSubscription } from "./fulfillment";
 import { polarApi, polarErrorCode, polarErrorDetail, polarStatus } from "./polar/client";
 import { getPolarConfig, planForProduct, productFor } from "./polar/config";
-import { syncPaymentStatus } from "./reconcile";
+import { applyRecentOrders, syncPaymentStatus } from "./reconcile";
 import { getCurrentSubscription, LIVE_SUBSCRIPTION_STATUSES } from "./subscriptions";
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
@@ -357,8 +357,9 @@ export type PlanChangeResult = {
 
 /**
  * Moves a subscription to another plan or interval. Up (Pro AI, or yearly) applies now and charges the prorated
- * difference at once, so its credits come with that payment; down applies at the next renewal, so the paid period
- * keeps its terms. A subscription set to cancel is resumed first by its owner; a past-due one needs its payment first.
+ * difference at once; that order is applied here, so its credits come at once rather than with its webhook. Down
+ * applies at the next renewal, so the paid period keeps its terms. A subscription set to cancel is resumed first by
+ * its owner; a past-due one needs its payment first.
  */
 export async function changePlan(input: {
 	authentication: Authentication;
@@ -397,6 +398,15 @@ export async function changePlan(input: {
 		eventType: "subscription.change_plan",
 		now: input.now,
 	});
+	if (up)
+		try {
+			// Polar makes the difference's order with the change itself.
+			await applyRecentOrders(polarApi(config), current.providerSubscriptionId, input.now ?? new Date());
+		} catch (error) {
+			console.warn("[billing] Reading a plan change's order failed; its webhook or the billing job brings it.", {
+				error: polarErrorCode("order.list", error),
+			});
+		}
 	const [row] = applied.subscriptionId
 		? await db
 				.select()
@@ -536,7 +546,10 @@ export async function getInvoice(
 	}
 }
 
-/** The account's payments, newest first. IDs are UUIDv7, so the cursor is the last ID seen. */
+/**
+ * The account's payments, newest first. IDs are UUIDv7, so the cursor is the last ID seen. An attempt Polar never
+ * answered (no checkout page, no order) charged nothing and isn't listed; the admin pages still show it.
+ */
 export async function listPayments(
 	authentication: Authentication,
 	page: { cursor?: string | undefined; limit: number },
@@ -547,6 +560,7 @@ export async function listPayments(
 		.where(
 			and(
 				eq(schema.billingPayment.userId, authentication.user.id),
+				or(isNotNull(schema.billingPayment.providerCheckoutId), isNotNull(schema.billingPayment.providerOrderId)),
 				page.cursor ? lt(schema.billingPayment.id, page.cursor) : undefined,
 			),
 		)

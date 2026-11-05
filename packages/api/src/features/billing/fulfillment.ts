@@ -201,6 +201,7 @@ async function grantOrderCredits(
 		subscriptionId: subscription.id,
 		paymentId: input.payment.id,
 		amount: perMonth,
+		startsAt: month.start,
 		expiresAt: month.end,
 		now: input.now,
 	});
@@ -410,20 +411,46 @@ export async function applyPolarSubscription(
 		if (!claim) return { ...ignored("duplicate"), subscriptionId: null };
 		const before = (
 			await tx
-				.select({ status: schema.billingSubscription.status, planId: schema.billingSubscription.planId })
+				.select({
+					status: schema.billingSubscription.status,
+					planId: schema.billingSubscription.planId,
+					interval: schema.billingSubscription.interval,
+					cancelAtPeriodEnd: schema.billingSubscription.cancelAtPeriodEnd,
+					pendingProductId: schema.billingSubscription.pendingProductId,
+				})
 				.from(schema.billingSubscription)
 				.where(eq(schema.billingSubscription.providerSubscriptionId, subscription.id))
 		)[0];
 		const { row, outcome } = await upsertSubscription(tx, { subscription, plan, userId, externalCustomerId });
-		if (outcome === "applied" && (before?.status !== row.status || before?.planId !== row.planId))
+		// What support asks about: a new plan or billing period, a cancellation set or undone, a change for the renewal.
+		const changed =
+			!before ||
+			before.status !== row.status ||
+			before.planId !== row.planId ||
+			before.interval !== row.interval ||
+			before.cancelAtPeriodEnd !== row.cancelAtPeriodEnd ||
+			before.pendingProductId !== row.pendingProductId;
+		if (outcome === "applied" && changed)
 			await tx.insert(schema.billingAuditLog).values({
 				targetUserId: userId,
 				action: "subscription.changed",
 				details: {
 					subscriptionId: row.id,
-					from: before ? { status: before.status, planId: before.planId } : null,
-					to: { status: row.status, planId: row.planId, interval: row.interval },
-					cancelAtPeriodEnd: row.cancelAtPeriodEnd,
+					from: before
+						? {
+								status: before.status,
+								planId: before.planId,
+								interval: before.interval,
+								cancelAtPeriodEnd: before.cancelAtPeriodEnd,
+							}
+						: null,
+					to: {
+						status: row.status,
+						planId: row.planId,
+						interval: row.interval,
+						cancelAtPeriodEnd: row.cancelAtPeriodEnd,
+					},
+					pendingPlanChange: row.pendingProductId !== null,
 					source: context.source,
 				},
 			});

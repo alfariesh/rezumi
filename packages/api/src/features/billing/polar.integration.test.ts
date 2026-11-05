@@ -581,6 +581,50 @@ describe.skipIf(!databaseUrl)("Polar billing", () => {
 			expect(new Set(grants.map((grant) => +grant.expiresAt)).size).toBe(2);
 		});
 
+		it("keeps a month's credits when monthly Pro AI switches to yearly, then grants the yearly months", async () => {
+			await deliver("order.paid", order());
+			const yearly = subscription({
+				product: PRODUCTS.proYearly,
+				interval: "year",
+				start: new Date(),
+				end: new Date(Date.now() + 365 * day),
+				modifiedAt: new Date(Date.now() + 1000),
+			});
+			polar().subscriptions.update.mockResolvedValue(yearly);
+			polar().orders.list.mockResolvedValue({
+				items: [order({ id: "order_2", reason: "subscription_update", sub: yearly, net: 6900 })],
+			});
+			await as("buyer").changePlan({ planId: "pro-ai", interval: "year" });
+			// The monthly grant still runs into the yearly's first month: 100 credits for it, not 200.
+			expect((await grantsOf("buyer")).map((grant) => grant.amount)).toEqual([100]);
+			expect(await reconcile.grantYearlyCredits()).toBe(0);
+			expect(await reconcile.grantYearlyCredits(new Date(Date.now() + 31 * day))).toBe(1);
+			const grants = await grantsOf("buyer");
+			expect(grants.map((grant) => grant.amount)).toEqual([100, 100]);
+			expect(new Set(grants.map((grant) => +grant.expiresAt)).size).toBe(2);
+		});
+
+		it("credits a Pro AI upgrade whose order webhook never came", async () => {
+			await deliver("order.paid", order({ sub: subscription({ product: PRODUCTS.plusMonthly }) }));
+			const upgraded = subscription({ product: PRODUCTS.proMonthly, modifiedAt: new Date(Date.now() + 1000) });
+			// The subscription's webhook arrived; the order's didn't.
+			await deliver("subscription.updated", upgraded);
+			expect((await getEntitlements("buyer")).planId).toBe("pro-ai");
+			expect(await grantsOf("buyer")).toEqual([]);
+			polar().orders.list.mockResolvedValue({
+				items: [order({ id: "order_2", reason: "subscription_update", sub: upgraded, net: 500 })],
+			});
+			polar().subscriptions.get.mockResolvedValue(upgraded);
+			expect(await reconcile.reconcileSubscriptions()).toBe(1);
+			expect((await grantsOf("buyer")).map((grant) => grant.amount)).toEqual([100]);
+			expect((await paymentsOf("buyer")).map((payment) => payment.billingReason)).toEqual([
+				"subscription_create",
+				"subscription_update",
+			]);
+			// Credited now, and not overdue: later runs leave it alone.
+			expect(await reconcile.reconcileSubscriptions(new Date(Date.now() + 2 * 60 * 60 * 1000))).toBe(0);
+		});
+
 		it("ends a deleted account's subscription at Polar", async () => {
 			await deliver("order.paid", order());
 			await endBillingForDeletedUser("buyer");
@@ -602,21 +646,53 @@ describe.skipIf(!databaseUrl)("Polar billing", () => {
 		});
 	});
 
+	describe("payment history", () => {
+		it("leaves out attempts Polar never answered", async () => {
+			await deliver("order.paid", order());
+			await getDb().insert(tables.billingPayment).values({
+				userId: "buyer",
+				idempotencyKey: "rejected",
+				planId: "pro-ai",
+				interval: "month",
+				catalogVersion: 4,
+				amount: 999,
+				currency: "usd",
+				status: "failed",
+				failureReason: "checkout_create_http_422",
+			});
+			const { items } = await as("buyer").payments({ limit: 10 });
+			expect(items.map((item) => [item.billingReason, item.status])).toEqual([["subscription_create", "paid"]]);
+		});
+	});
+
 	describe("subscription changes", () => {
 		beforeEach(async () => {
 			await deliver("order.paid", order({ sub: subscription({ product: PRODUCTS.plusMonthly }) }));
 		});
 
 		it("upgrades at once with a prorated invoice and downgrades from the next renewal", async () => {
-			polar().subscriptions.update.mockResolvedValue(
-				subscription({ product: PRODUCTS.proMonthly, modifiedAt: new Date(Date.now() + 1000) }),
-			);
+			const upgraded = subscription({ product: PRODUCTS.proMonthly, modifiedAt: new Date(Date.now() + 1000) });
+			polar().subscriptions.update.mockResolvedValue(upgraded);
+			// Polar makes the difference's order with the change; it is applied before the answer, webhook or not.
+			polar().orders.list.mockResolvedValue({
+				items: [order({ id: "order_2", reason: "subscription_update", sub: upgraded, net: 500 })],
+			});
 			const up = await as("buyer").changePlan({ planId: "pro-ai", interval: "month" });
 			expect(polar().subscriptions.update).toHaveBeenLastCalledWith("sub_1", {
 				product_id: PRODUCTS.proMonthly,
 				proration_behavior: "invoice",
 			});
 			expect(up).toMatchObject({ effective: "now", subscription: { planId: "pro-ai" } });
+			expect(polar().orders.list).toHaveBeenCalledWith({
+				subscription_id: "sub_1",
+				limit: 3,
+				sorting: ["-created_at"],
+			});
+			expect((await grantsOf("buyer")).map((grant) => grant.amount)).toEqual([100]);
+			expect((await paymentsOf("buyer")).map((payment) => [payment.billingReason, payment.status])).toEqual([
+				["subscription_create", "paid"],
+				["subscription_update", "paid"],
+			]);
 
 			polar().subscriptions.update.mockResolvedValue(
 				subscription({
@@ -630,6 +706,8 @@ describe.skipIf(!databaseUrl)("Polar billing", () => {
 				product_id: PRODUCTS.plusMonthly,
 				proration_behavior: "next_period",
 			});
+			// Nothing is charged until the renewal, so there is no order to read.
+			expect(polar().orders.list).toHaveBeenCalledTimes(1);
 			expect(down).toMatchObject({
 				effective: "renewal",
 				subscription: { planId: "pro-ai", pendingChange: { planId: "plus", interval: "month" } },
