@@ -11,6 +11,7 @@ export const RESERVED_SEGMENTS = [
 	"templates",
 	"ats-checker",
 	"resume-templates",
+	"docs",
 ] as const;
 
 /** Whether `pathname` is in one of the signed-in app's sections. */

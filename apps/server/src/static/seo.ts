@@ -72,7 +72,8 @@ export async function handleSitemap() {
 	);
 }
 
-export function handlePagesSitemap() {
+/** The marketing pages in every language, then the docs pages (`docsPaths`), which are written in English only. */
+export function handlePagesSitemap(docsPaths: string[] = []) {
 	const baseUrl = appUrl();
 	const urls = sitemapPaths.flatMap((path) => {
 		const pageUrl = `${baseUrl}${path}`;
@@ -85,9 +86,10 @@ export function handlePagesSitemap() {
 			["  <url>", `    <loc>${escapeXml(href)}</loc>`, ...alternates, "  </url>"].join("\n"),
 		);
 	});
+	const docs = docsPaths.map((path) => `  <url><loc>${escapeXml(`${baseUrl}${path}`)}</loc></url>`);
 	return xmlResponse(
 		'urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"',
-		urls,
+		[...urls, ...docs],
 	);
 }
 

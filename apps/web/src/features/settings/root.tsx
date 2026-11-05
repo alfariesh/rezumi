@@ -77,7 +77,7 @@ export function SettingsRoot() {
 			</nav>
 
 			<a
-				href="https://docs.rezumi.app"
+				href="/docs"
 				target="_blank"
 				rel="noopener noreferrer"
 				className="flex h-12 items-center rounded-2xl bg-surface px-3.5 font-medium shadow-surface transition-colors duration-quick ease-enter active:bg-default"

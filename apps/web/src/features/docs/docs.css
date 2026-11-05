@@ -1,0 +1,130 @@
+/*
+ * The public docs (src/features/docs): a page's vertical rhythm and the parts utilities can't express, the step
+ * numbers and the code colors. Elements get their look from the MDX components (mdx-components.tsx); these rules use
+ * :where() so a utility on any element still wins. In the entry stylesheet, so prerendered pages paint styled.
+ */
+@layer components {
+	/* Each block keeps a line of space from the one before it; headings open a section with more. */
+	.docs-flow > :where(* + *) {
+		margin-block-start: 1.25em;
+	}
+	.docs-flow > :where(h2:not(:first-child)) {
+		margin-block-start: 2.5em;
+	}
+	.docs-flow > :where(h3:not(:first-child), h4:not(:first-child)) {
+		margin-block-start: 2em;
+	}
+	.docs-flow > :where(h2, h3, h4) + :where(*) {
+		margin-block-start: 0.75em;
+	}
+
+	.docs-flow :where(p, li) {
+		text-wrap: pretty;
+	}
+
+	.docs-flow :where(ul) {
+		list-style-type: disc;
+		padding-inline-start: 1.25em;
+	}
+	.docs-flow :where(ol) {
+		list-style-type: decimal;
+		padding-inline-start: 1.25em;
+	}
+	.docs-flow :where(ul ul) {
+		list-style-type: circle;
+	}
+	.docs-flow :where(li) {
+		padding-inline-start: 0.375em;
+	}
+	.docs-flow :where(li + li, li > * + *) {
+		margin-block-start: 0.5em;
+	}
+	.docs-flow :where(li)::marker {
+		color: var(--muted);
+	}
+
+	.docs-flow :where(strong) {
+		font-weight: 600;
+		color: var(--foreground);
+	}
+
+	/* Inline code; blocks are drawn by CodeBlock. */
+	.docs-flow :where(:not(pre) > code) {
+		border-radius: 0.375rem;
+		background-color: var(--default);
+		padding: 0.125em 0.375em;
+		font-family: var(--font-mono);
+		font-size: 0.875em;
+		overflow-wrap: break-word;
+	}
+
+	.docs-flow :where(blockquote) {
+		border-inline-start: 2px solid var(--separator);
+		padding-inline-start: 1em;
+		color: var(--muted);
+	}
+
+	/* Steps: a number on a line that runs down to the next one. */
+	.docs-steps {
+		counter-reset: docs-step;
+		list-style: none;
+		padding: 0;
+	}
+	.docs-step {
+		position: relative;
+		counter-increment: docs-step;
+		padding-block-end: 1.75rem;
+		padding-inline-start: 2.75rem;
+	}
+	.docs-step:last-child {
+		padding-block-end: 0;
+	}
+	.docs-step::before {
+		content: counter(docs-step);
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline-start: 0;
+		display: grid;
+		place-items: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border-radius: 9999px;
+		background-color: var(--surface);
+		box-shadow: var(--surface-shadow);
+		color: var(--foreground);
+		font-size: 0.75rem;
+		font-variant-numeric: tabular-nums;
+		font-weight: 600;
+		line-height: 1;
+	}
+	.docs-step:not(:last-child)::after {
+		content: "";
+		position: absolute;
+		inset-block: 2.25rem 0.5rem;
+		inset-inline-start: calc(0.875rem - 0.5px);
+		width: 1px;
+		background-color: var(--separator);
+	}
+
+	/*
+	 * Code colors: the highlighter writes CSS variables (build.ts), set here from the theme's tokens so blocks follow
+	 * light and dark like the rest of the app.
+	 */
+	.docs-code {
+		--code-foreground: var(--foreground);
+		--code-background: transparent;
+		--code-token-comment: var(--muted);
+		--code-token-punctuation: var(--muted);
+		--code-token-keyword: var(--danger-soft-foreground);
+		--code-token-function: var(--accent-soft-foreground);
+		--code-token-constant: var(--accent-soft-foreground);
+		--code-token-parameter: var(--warning-soft-foreground);
+		--code-token-string: var(--success-soft-foreground);
+		--code-token-string-expression: var(--success-soft-foreground);
+		--code-token-link: var(--accent);
+	}
+	.docs-code :where(pre) {
+		color: var(--code-foreground);
+		tab-size: 2;
+	}
+}

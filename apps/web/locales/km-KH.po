@@ -2708,6 +2708,7 @@ msgstr ""
 msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
 msgstr ""
 
+#: src/features/docs/header.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
@@ -3205,6 +3206,7 @@ msgstr "លេខសម្គាល់អតិថិជន"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -3600,6 +3602,7 @@ msgstr "ឈ្មោះការសន្ទនា"
 msgid "Conversations"
 msgstr "ការសន្ទនា"
 
+#: src/features/docs/mdx-components.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3625,6 +3628,10 @@ msgstr "ចម្លងប្រវត្តិរូបសង្ខេបសម
 #: src/features/career/workspace/apply.tsx
 msgid "Copy answers"
 msgstr "ចម្លងចម្លើយ"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Copy code"
+msgstr ""
 
 #. Action button to copy two-factor backup codes to clipboard
 #: src/dialogs/auth/enable-two-factor.tsx
@@ -4906,6 +4913,7 @@ msgstr "បដិសេធ"
 msgid "DNS records"
 msgstr ""
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "ឯកសារ"
@@ -4917,6 +4925,11 @@ msgstr "ម៉ឺនុយឯកសារ៖ {name}"
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "ប្រភេទឯកសារ"
+
+#: src/features/docs/layout.tsx
+#: src/features/docs/sidebar.tsx
+msgid "Documentation"
+msgstr ""
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -6250,6 +6263,10 @@ msgstr "ទៅផ្ទះ"
 msgid "Go to dashboard"
 msgstr "ទៅ​កាន់​ផ្ទាំង​គ្រប់គ្រង"
 
+#: src/features/docs/article.tsx
+msgid "Go to the introduction"
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "Go to your plan"
 msgstr ""
@@ -6747,6 +6764,10 @@ msgstr ""
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
 msgstr "សន្និដ្ឋាន"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Info"
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Inline"
@@ -7490,6 +7511,10 @@ msgstr "ភ្ជាប់ទៅពាក្យសុំការងារ"
 msgid "Link to application…"
 msgstr "ភ្ជាប់ទៅពាក្យសុំការងារ…"
 
+#: src/features/docs/mdx-components.tsx
+msgid "Link to this section"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Link turned off. The address is kept"
 msgstr "តំណត្រូវបានបិទ។ អាសយដ្ឋានត្រូវបានរក្សាទុក"
@@ -8056,6 +8081,10 @@ msgstr "ទម្រង់បន្ថែម"
 msgid "More options"
 msgstr "ជម្រើសច្រើនទៀត"
 
+#: src/features/docs/article.tsx
+msgid "More pages"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "ផ្ទាល់ខ្លួនបន្ថែមទៀត"
@@ -8373,6 +8402,10 @@ msgstr ""
 msgid "Newest payments started in this period. Search finds any customer."
 msgstr ""
 
+#: src/features/docs/article.tsx
+msgid "Next"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr ""
@@ -8594,6 +8627,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "គ្មានបញ្ហាបើកចំហទេ។"
+
+#: src/features/docs/sidebar.tsx
+msgid "No pages match “{term}”."
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "No paid pass running"
@@ -8867,6 +8904,7 @@ msgid "Not written yet"
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
+#: src/features/docs/mdx-components.tsx
 msgid "Note"
 msgstr "ព័ត៌មាន"
 
@@ -9038,6 +9076,10 @@ msgstr ""
 msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
 msgstr ""
 
+#: src/features/docs/toc.tsx
+msgid "On this page"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "បើក។ អ្នកណាដែលមានតំណអាចមើលទំព័រវេបរបស់អ្នកបាន។"
@@ -9156,6 +9198,10 @@ msgstr "បើកឯកសារសង្ខេប"
 msgid "Open customer"
 msgstr ""
 
+#: src/features/docs/header.tsx
+msgid "Open dashboard"
+msgstr ""
+
 #. Button label to open the user's default email app
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Open email app"
@@ -9178,6 +9224,7 @@ msgstr "បើកកម្មវិធីនិពន្ធ"
 msgid "Open in Offers"
 msgstr "បើកក្នុង “ការផ្តល់ការងារ”"
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
 msgstr ""
@@ -9253,6 +9300,7 @@ msgid "Optional for local Ollama"
 msgstr "ជាជម្រើសសម្រាប់ Ollama ក្នុងស្រុក"
 
 #: src/components/ui/combobox.tsx
+#: src/features/docs/mdx-components.tsx
 #: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "ជម្រើស"
@@ -9394,6 +9442,7 @@ msgid "Page 1 · {formatLabel}"
 msgstr "ទំព័រ 1 · {formatLabel}"
 
 #: src/components/layout/not-found-screen.tsx
+#: src/features/docs/article.tsx
 msgid "Page not found"
 msgstr "រកមិនឃើញទំព័រ"
 
@@ -10015,6 +10064,10 @@ msgstr "ទំហំមើលជាមុន"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "ការមើល {0} · ចុចដើម្បីអនុវត្ត"
+
+#: src/features/docs/article.tsx
+msgid "Previous"
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "Previous 7 days"
@@ -11248,6 +11301,7 @@ msgstr ""
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "បានដកហូត \"{name}\" ។ កម្មវិធីដែលប្រើវាឈប់ដំណើរការឥឡូវនេះ។"
 
+#: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - ទៅ​កាន់​ទំព័រ​ដើម"
@@ -11728,6 +11782,10 @@ msgstr ""
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "ស្វែងរកតួនាទី ក្រុមហ៊ុន ឬទំនាក់ទំនង"
+
+#: src/features/docs/sidebar.tsx
+msgid "Search the docs"
+msgstr ""
 
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
@@ -12336,6 +12394,7 @@ msgstr "រំលង និងអាប់ឡូដ"
 msgid "Skip to content"
 msgstr "រំលងទៅមាតិកា"
 
+#: src/features/docs/layout.tsx
 #: src/routes/_home/route.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Skip to main content"
@@ -13707,6 +13766,10 @@ msgstr "ទំព័រនេះស្ថិតនៅក្នុងជួរឈ
 msgid "This page is very densely packed."
 msgstr "ទំព័រនេះត្រូវបានវេចខ្ចប់យ៉ាងក្រាស់។"
 
+#: src/features/docs/article.tsx
+msgid "This page may have moved. Search the list of pages, or start from the introduction."
+msgstr ""
+
 #: src/features/billing/payment-return.tsx
 msgid "This payment didn't go through"
 msgstr ""
@@ -13888,6 +13951,7 @@ msgid "Timing the plan"
 msgstr "កំពុងកំណត់ពេលសម្រាប់ផែនការ"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Tip"
 msgstr "គន្លឹះ"
 
@@ -14772,6 +14836,7 @@ msgid "Walk in ready"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Warning"
 msgstr "ការព្រមាន"
 

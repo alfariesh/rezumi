@@ -32,10 +32,7 @@ export function TemplateGallery() {
 						<Link to="/auth/register" className={buttonVariants()}>
 							{t`Build your resume`}
 						</Link>
-						<a
-							href="https://docs.rezumi.app/guides/choosing-a-template"
-							className="text-link underline underline-offset-4"
-						>
+						<a href="/docs/guides/choosing-a-template" className="text-link underline underline-offset-4">
 							{t`How to choose a template`}
 						</a>
 					</div>
