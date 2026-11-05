@@ -66,5 +66,21 @@ Baca dulu: `CLAUDE.md`, README rencana ini, `00-keputusan-produk.md` (log 2026-1
 | 6   | Web: halaman Paket (bulanan/tahunan, mata uang, langganan, portal), halaman kembali, riwayat, admin                                               | ✅     |
 | 7   | Tes unit + DB nyata (webhook bertanda tangan, urutan acak, duplikat, perpanjangan, refund, past_due) + tes browser                                | ✅     |
 | 8   | Dokumen: arsitektur, runbook, legal ID/EN, draf panduan pengguna                                                                                  | ✅     |
-| 9   | Uji sandbox end-to-end lewat server lokal (butuh token sandbox pemilik)                                                                           | ⬜     |
+| 9   | Uji sandbox end-to-end lewat server lokal (2026-11-05; webhook asli belum, lihat di bawah)                                                        | ✅     |
 | 10  | Go-live: Phase 11 versi Polar (onboarding produksi, webhook produksi, Bot Fight Mode, uji kartu sungguhan dilarang Polar: pakai kode diskon 100%) | ⬜     |
+
+### Hasil uji sandbox (2026-11-05)
+
+Server lokal (`BILLING_MODE=admins`, database terpisah `rezumi_polar_sandbox`, token sandbox pemilik), kartu uji Stripe 4242, tanpa webhook (semua lewat cek status dan job):
+
+- **Berhasil:** beli Plus bulanan → halaman kembali "Payment received"; invoice PDF dari Polar; portal pelanggan; upgrade Plus → Pro AI (selisih $5.00 ditagih saat itu); pindah Pro AI bulanan → tahunan ($69.01); batal lalu lanjutkan; turun ke Plus terjadwal di perpanjangan; refund admin $4.50 lewat Polar (kredit order itu dicabut); laporan admin (penjualan bersih, pajak, MRR $6.58).
+- **Pajak:** harga Polar sudah termasuk pajak. Pembeli dari Indonesia membayar $4.99 dengan rincian "Taxes (included) $0.49"; yang tercatat bersih $4.50.
+- **Email akun uji:** Polar memeriksa apakah domain email bisa menerima email. `@example.test` dan `@example.com` ditolak (checkout gagal 422); pakai domain sungguhan (uji ini: `polar-sandbox@rezumi.app`, email Polar ke sana tidak terkirim karena domain tanpa kotak masuk).
+- **Diperbaiki dari temuan uji:**
+  1. Order ganti paket hanya datang lewat webhook, jadi tanpa webhook kredit upgrade tidak pernah masuk. Sekarang `changePlan` langsung membaca dan menerapkan order itu, dan job memeriksa langganan Pro AI lunas yang belum punya kredit.
+  2. Pindah bulanan → tahunan di tengah bulan memberi 200 kredit (100 lama masih berlaku + 100 bulan pertama tahunan). Sekarang satu bulan kredit pada satu waktu.
+  3. Riwayat pembayaran pelanggan tidak lagi menampilkan percobaan yang tidak pernah sampai ke Polar sebagai "Failed".
+  4. Polar menambahkan token sesi portal ke URL halaman kembali; query itu kini langsung dihapus dari alamat browser.
+  5. Copy untuk ganti periode saja ("Yearly billing starts now", "You're now billed yearly") dan riwayat admin yang lebih jelas (batal/lanjut, ganti periode, ganti terjadwal).
+- **Belum diuji:** pengiriman webhook asli dari Polar (butuh alamat publik dan secret webhook). Lakukan di staging pada Phase 11: buat endpoint sandbox ke staging, pemilik menyalin secret-nya ke secret Worker, lalu ulangi satu pembelian dan satu refund.
+- **Keputusan untuk pemilik:** upgrade Plus → Pro AI di akhir periode memberi 100 kredit penuh untuk harga selisih yang kecil (mis. ±$0.17 bila sisa 1 hari), berlaku sampai akhir periode itu. Pilihan: biarkan (sederhana, murah hati) atau beri kredit sebanding sisa periode.
