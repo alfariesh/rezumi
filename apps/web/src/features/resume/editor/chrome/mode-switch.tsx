@@ -21,15 +21,18 @@ type ModeSwitchProps<M extends string> = {
 /**
  * A label that opens beside its icon while `shown` and folds to nothing otherwise (still read out: it's only
  * clipped). The "icon expand" pattern from HeroUI Pro's Segment, shared by the mode switch and Design's group nav.
+ * The tab grows while the indicator slides to it, so both share the indicator's timing (`--d2` on the movement
+ * curve); a keyboard switch skips it (`data-expanding-label`, see globals.css).
  */
 export function ExpandingLabel({ shown, children }: { shown: boolean; children: ReactNode }) {
 	return (
 		<span
-			className="inline-grid min-w-0 transition-all duration-200 ease-out motion-reduce:transition-none"
+			data-expanding-label=""
+			className="inline-grid min-w-0 transition-[grid-template-columns,opacity] duration-standard ease-in-out-strong motion-reduce:transition-none"
 			style={{ gridTemplateColumns: shown ? "1fr" : "0fr", opacity: shown ? 1 : 0 }}
 		>
 			<span
-				className="min-w-0 overflow-hidden whitespace-nowrap transition-[padding] duration-200 ease-out motion-reduce:transition-none"
+				className="min-w-0 overflow-hidden whitespace-nowrap transition-[padding] duration-standard ease-in-out-strong motion-reduce:transition-none"
 				style={{ paddingInlineStart: shown ? "0.375rem" : 0 }}
 			>
 				{children}

@@ -28,11 +28,14 @@
 	--stage-offer: oklch(0.64 0.11 150); /* #579F68 */
 	--stage-closed: oklch(0.64 0.11 27); /* #C67067 */
 
-	/* Motion: quick for hover and toggles, standard for menus and expand, emphasized for sheets and toasts. */
+	/*
+	 * Motion: quick for hover and toggles, standard for menus and expand, emphasized for sheets and toasts. `--ease` is
+	 * a strong ease-out: it answers in the first frames, where the eye is, and spends the rest settling.
+	 */
 	--d1: 120ms;
 	--d2: 200ms;
 	--d3: 320ms;
-	--ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+	--ease: cubic-bezier(0.23, 1, 0.32, 1);
 
 	/* Layout constants */
 	--editor-bar: 56px;
@@ -106,9 +109,9 @@
 
 	/* On-screen movement (sliding indicators, reorder, settling): `ease-in-out-strong`. */
 	--ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
-	/* Marketing pages only (routes/_home). App UI uses `ease-enter`. */
-	--ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
-	/* Drag release of a swipeable bottom sheet (plan 011). */
+	/* The marketing pages' name for the house curve (routes/_home). App UI writes `ease-enter`. */
+	--ease-out-strong: var(--ease);
+	/* Sheets and full-screen pushes, and the drag release of a swipeable bottom sheet (plan 011): the iOS sheet curve. */
 	--ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
@@ -247,6 +250,68 @@
 	}
 }
 
+/*
+ * HeroUI's motion on the house curves. HeroUI eases its overlays and press feedback with the browser's `ease`, which
+ * starts too gently for UI: the first frames, the ones the eye is on, barely move. Only timing and the start scale
+ * change here; HeroUI's keyframes animate opacity and transform alone, so the compositor still runs every one.
+ */
+@layer components {
+	/* Popovers, menus, listboxes, pickers and tooltips grow out of their trigger (HeroUI sets the origin). */
+	:is(
+		.popover,
+		.dropdown__popover,
+		.select__popover,
+		.combo-box__popover,
+		.autocomplete__popover,
+		.color-picker__popover,
+		.date-picker__popover,
+		.date-range-picker__popover,
+		.tooltip
+	)[data-entering="true"] {
+		animation-timing-function: var(--ease);
+	}
+
+	/*
+	 * Dialogs rise into place from 95% over `--d2` instead of shrinking from 105%; the lift from below on phones stays.
+	 * Full-screen modals keep HeroUI's unscaled entry.
+	 */
+	:is(.modal__container, .alert-dialog__container):not(.modal__container--full)[data-entering="true"] {
+		animation-name: heroui-overlay-enter-95;
+		animation-duration: var(--d2);
+		animation-timing-function: var(--ease);
+
+		&:is([data-placement="auto"], [data-placement="bottom"]) {
+			animation-name: heroui-overlay-enter-95-y;
+		}
+
+		&[data-placement="top"] {
+			animation-name: heroui-overlay-enter-95-ny;
+		}
+
+		@variant sm {
+			&[data-placement="auto"] {
+				animation-name: heroui-overlay-enter-95;
+			}
+		}
+	}
+
+	/* Press feedback answers in `--d1` and lets go just as fast (HeroUI: 250ms on `ease`). Same properties as HeroUI's. */
+	.button,
+	.toggle-button,
+	.pagination__link {
+		transition:
+			transform var(--d1) var(--ease),
+			background-color 100ms var(--ease-out),
+			box-shadow 100ms var(--ease-out);
+	}
+
+	/* The tab indicator travels from tab to tab: on-screen movement, on the movement curve. */
+	.tabs__indicator {
+		transition-duration: var(--d2);
+		transition-timing-function: var(--ease-in-out-strong);
+	}
+}
+
 @layer base {
 	* {
 		@apply min-w-0;
@@ -358,8 +423,11 @@
 	}
 }
 
-/* A keyboard mode switch moves the editor's tab indicator at once (switchModeInstantly in apps/web/src/libs/motion.ts). */
-[data-mode-switch][data-instant] .tabs__indicator {
+/*
+ * A keyboard mode switch lands at once: the editor's tab indicator and the selected tab's label skip their motion
+ * (switchModeInstantly in apps/web/src/libs/motion.ts, ExpandingLabel in the editor's mode switch).
+ */
+[data-mode-switch][data-instant] :is(.tabs__indicator, [data-expanding-label], [data-expanding-label] > *) {
 	transition: none !important;
 }
 

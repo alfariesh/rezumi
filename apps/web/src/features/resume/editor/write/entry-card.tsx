@@ -23,7 +23,7 @@ import { entryElementId, keepOpenedEntryInView } from "./reveal";
 import { useSectionTitle } from "./section-row";
 import { SortableEdge, SortableHandle, useSortableItem } from "@/components/input/sortable";
 import { useResumeStore, useUpdateResumeData } from "@/features/resume/builder/draft";
-import { D3, EASE, EXIT } from "@/libs/motion";
+import { D3, EASE_DRAWER, EXIT } from "@/libs/motion";
 import { getCompatibleMoveTargets, getSourceSectionTitle, moveItem } from "@/libs/resume/move-item";
 
 const DRAFT_HINTS: Record<string, MessageDescriptor> = {
@@ -205,8 +205,8 @@ function PhoneEntryScreen({ section, title, locked, onBack, onDelete, children }
 			aria-label={title || t`Untitled`}
 			className="fixed inset-0 z-40 flex flex-col bg-surface pb-[env(safe-area-inset-bottom)]"
 			initial={{ transform: offscreen }}
-			animate={{ transform: "translateX(0%)", transition: { duration: D3, ease: EASE } }}
-			exit={{ transform: offscreen, transition: { duration: D3 * EXIT, ease: EASE } }}
+			animate={{ transform: "translateX(0%)", transition: { duration: D3, ease: EASE_DRAWER } }}
+			exit={{ transform: offscreen, transition: { duration: D3 * EXIT, ease: EASE_DRAWER } }}
 		>
 			<div className="flex h-14 shrink-0 items-center gap-1 border-b border-separator px-1.5">
 				<Button variant="ghost" size="lg" onPress={onBack} className="gap-0.5 px-2 text-accent-soft-foreground">

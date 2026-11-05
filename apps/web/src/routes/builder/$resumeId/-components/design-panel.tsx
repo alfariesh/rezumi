@@ -248,7 +248,7 @@ export function DesignSheet() {
 		<section
 			aria-label={t`Design`}
 			className={cn(
-				"[container-type:size] absolute inset-x-0 bottom-0 z-20 flex h-[calc(100%-1rem)] flex-col rounded-t-2xl bg-overlay shadow-overlay transition-[translate] duration-emphasized ease-enter starting:translate-y-full",
+				"[container-type:size] absolute inset-x-0 bottom-0 z-20 flex h-[calc(100%-1rem)] flex-col rounded-t-2xl bg-overlay shadow-overlay transition-[translate] duration-emphasized ease-drawer starting:translate-y-full",
 				!expanded && "translate-y-[calc(50%-0.5rem)]",
 			)}
 		>

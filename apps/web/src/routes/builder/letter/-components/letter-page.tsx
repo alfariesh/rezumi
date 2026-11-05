@@ -101,7 +101,8 @@ export function LetterPage() {
 		letter: t({ message: "Letter", context: "US Letter paper size (8.5 × 11 in), shown beside A4" }),
 		"free-form": t`Free-form`,
 	}[format];
-	// Desktop: the page moves aside so it stays visible beside the Download & history sheet.
+	// Desktop: the page moves aside so it stays visible beside the Download & history sheet, in step with the sheet
+	// (its duration, the sheet curve).
 	const shifted = sheetOpen && (breakpoint === "desktop" || breakpoint === "wide");
 
 	return (
@@ -121,7 +122,7 @@ export function LetterPage() {
 					pageGap={24}
 					pageScale={pageScale}
 					className={cn(
-						"mx-auto w-fit transition-transform duration-emphasized ease-enter",
+						"mx-auto w-fit transition-transform duration-emphasized ease-drawer",
 						shifted && "-translate-x-[120px] rtl:translate-x-[120px]",
 					)}
 					pageClassName={cn("rounded-xl shadow-page", viewing && "outline-2 outline-offset-4 outline-foreground")}
