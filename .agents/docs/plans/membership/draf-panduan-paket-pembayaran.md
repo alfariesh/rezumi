@@ -19,7 +19,12 @@ description: "Subscribe to Plus or Pro AI monthly or yearly on the Rezumi websit
 
 Rezumi has a Free plan and two paid plans, **Plus** and **Pro AI**. Each is a **subscription, billed monthly or yearly**, that renews until you cancel. Cancel any time: you keep the plan until the end of the period you paid for, and nothing more is charged. When a plan ends your account returns to Free. Your documents are never locked or deleted: every resume and cover letter stays open to edit, share and download as a PDF.
 
-See the [pricing on the home page](https://rezumi.app/#pricing) for what each plan includes and costs. Prices are in US dollars, or in Rupiah for visitors from Indonesia; the checkout shows the final amount with any tax for where you live.
+See the [pricing on the home page](https://rezumi.app/#pricing) for what each plan includes and costs. Prices are in US dollars, or in Rupiah for visitors from Indonesia, and are before tax: the checkout adds the tax for where you live and shows the total before you pay.
+
+<Tip>
+  Your first Plus subscription starts with **7 days free**. You add a card at checkout, but nothing is charged until the
+  trial ends; Polar emails you a reminder a few days before. Cancel during the trial and you pay nothing.
+</Tip>
 
 <Note>
   Subscriptions are bought on the Rezumi website only. The Android app shows your plan and credits, and the iPhone app
@@ -38,7 +43,9 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
   <Step title="Choose monthly or yearly">
     Under **Subscribe**, pick **Monthly** or **Yearly**. Yearly costs less per month.
   </Step>
-  <Step title="Choose a plan">Select **Get Plus** or **Get Pro AI**.</Step>
+  <Step title="Choose a plan">
+    Select **Try Plus free** (or **Get Plus** once you've had a subscription) or **Get Pro AI**.
+  </Step>
   <Step title="Check the summary">
     The panel shows the price, how often it renews, the Rezumi AI credits that come with Pro AI, how to cancel, and the
     refund policy in brief. Select **Continue to checkout**.
@@ -55,7 +62,7 @@ See the [pricing on the home page](https://rezumi.app/#pricing) for what each pl
 
 ## Change your plan
 
-- **Upgrade** (Plus to Pro AI, or monthly to yearly): select **Upgrade to Pro AI** or **Switch to yearly**, then **Upgrade now**. The new plan starts at once and the difference for the rest of the current period is charged to your saved payment method.
+- **Upgrade** (Plus to Pro AI, or monthly to yearly): select **Upgrade to Pro AI** or **Switch to yearly**, then **Upgrade now**. The new plan starts at once and the difference for the rest of the current period is charged to your saved payment method. During the free trial, upgrading ends the trial: this month is charged today, then the difference.
 - **Switch down** (Pro AI to Plus, or yearly to monthly): select **Switch to Plus** or **Switch to monthly**, then **Change at renewal**. Your current plan stays until the next renewal; nothing is charged now.
 
 ## Cancel or keep your subscription
@@ -75,7 +82,7 @@ Pro AI includes Rezumi AI credits every month, yearly subscriptions included. Cr
 
 ## Refunds
 
-On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out. Refunds go back to the original payment method. See the [Refund policy](/legal/refund-policy).
+Within 7 days of your first charge (for a Plus trial, the charge when the trial ends) you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out. Refunds go back to the original payment method. See the [Refund policy](/legal/refund-policy).
 
 ## If you delete your account
 
