@@ -359,6 +359,11 @@ msgstr "{0} kamu dapatkan saat pertama kali memakai Rezumi AI, berlaku {1} hari.
 msgid "{0} credits"
 msgstr "{0} kredit"
 
+#. placeholder {0}: payment.trialDays
+#: src/features/billing/pending-payment.tsx
+msgid "{0} days free"
+msgstr "{0} hari gratis"
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
@@ -402,6 +407,13 @@ msgstr "{0} j"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{0} di {1} adalah {2} di zona waktu Anda ({preferredZone})."
+
+#. placeholder {0}: metrics.subscriptions.trialing
+#. placeholder {1}: metrics.subscriptions.canceling
+#. placeholder {2}: metrics.subscriptions.pastDue
+#: src/features/billing/admin/overview.tsx
+msgid "{0} in a free trial · {1} set to end · {2} payment failed"
+msgstr "{0} dalam masa coba gratis · {1} akan berhenti · {2} gagal bayar"
 
 #. placeholder {0}: usage.used
 #: src/features/billing/plan-page.tsx
@@ -524,12 +536,6 @@ msgstr "{0} mengembalikan “{1}”. Pesan Anda disimpan."
 #: src/features/billing/purchase-dialog.tsx
 msgid "{0} sells the subscription as the merchant of record and handles payment, invoices and tax. By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
 msgstr "{0} menjual langganan sebagai penjual resmi (merchant of record) dan mengurus pembayaran, invoice, dan pajak. Dengan melanjutkan, kamu menyetujui <0>Syarat dan Ketentuan</0> serta <1>Kebijakan Pengembalian Dana</1>."
-
-#. placeholder {0}: metrics.subscriptions.canceling
-#. placeholder {1}: metrics.subscriptions.pastDue
-#: src/features/billing/admin/overview.tsx
-msgid "{0} set to end · {1} payment failed"
-msgstr "{0} akan berhenti · {1} gagal bayar"
 
 #. placeholder {0}: report.skippedChecks
 #: src/features/ats-checker/report/score-header.tsx
@@ -875,6 +881,10 @@ msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing chan
 msgstr "{pendingOnPage, plural, one {# usulan edit di halaman ini · tidak ada perubahan sampai Anda menerimanya} other {# usulan pengeditan pada halaman ini · tidak ada perubahan sampai Anda menerimanya}}"
 
 #: src/features/billing/payment-return.tsx
+msgid "{plan} is active, free for now."
+msgstr "{plan} aktif, gratis untuk sementara."
+
+#: src/features/billing/payment-return.tsx
 msgid "{plan} is active."
 msgstr "{plan} aktif."
 
@@ -882,6 +892,11 @@ msgstr "{plan} aktif."
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active. It renews on {0} unless you cancel."
 msgstr "{plan} aktif. Diperpanjang pada {0} kecuali kamu membatalkannya."
+
+#. placeholder {0}: formatDate(payment.periodEnd)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is free until {0}. Then your card is charged {price} plus tax, unless you cancel before."
+msgstr "{plan} gratis sampai {0}. Setelah itu kartumu ditagih {price} ditambah pajak, kecuali kamu membatalkannya sebelum itu."
 
 #: src/features/billing/pending-payment.tsx
 msgid "{price}, open until {deadline}."
@@ -1395,6 +1410,10 @@ msgstr "Tambah"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Add “{0}”"
 msgstr "Tambahkan “{0}”"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the first charge comes after {trialDays} days, and cancelling before then costs nothing."
+msgstr "Tambahkan kartu, Apple Pay, atau Google Pay di checkout aman milik Polar. Hari ini tidak ada tagihan: tagihan pertama datang setelah {trialDays} hari, dan membatalkan sebelum itu tidak dikenai biaya apa pun."
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Add a contact"
@@ -3155,10 +3174,6 @@ msgstr "Pilih salah satu font di Desain sebagai gantinya."
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "Pilih warna"
-
-#: src/features/homepage/plans.ts
-msgid "Choose Plus"
-msgstr "Pilih Plus"
 
 #: src/features/homepage/plans.ts
 msgid "Choose Pro AI"
@@ -5887,6 +5902,11 @@ msgstr "Mencari yang berhasil"
 msgid "Finnish"
 msgstr "Finlandia"
 
+#: src/features/billing/buy-plans.tsx
+#: src/features/homepage/pricing.tsx
+msgid "First {trialDays} days free"
+msgstr "{trialDays} hari pertama gratis"
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run"
 msgstr "Pertama dijalankan"
@@ -6120,9 +6140,35 @@ msgstr "Gratis"
 msgid "Free ATS resume checker"
 msgstr "Pemeriksa resume ATS gratis"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Free for {trialDays} days, then renews every month until you cancel."
+msgstr "Gratis {trialDays} hari, lalu diperpanjang setiap bulan sampai kamu membatalkannya."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Free for {trialDays} days, then renews every year until you cancel."
+msgstr "Gratis {trialDays} hari, lalu diperpanjang setiap tahun sampai kamu membatalkannya."
+
 #: src/features/homepage/hero.tsx
 msgid "Free plan, no card needed. PDF downloads without a watermark."
 msgstr "Paket gratis, tanpa kartu. Unduh PDF tanpa watermark."
+
+#: src/features/billing/purchase.ts
+msgid "Free trial"
+msgstr "Masa coba gratis"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Free trial until {0}; the first charge is made then"
+msgstr "Masa coba gratis sampai {0}; tagihan pertama dibuat saat itu"
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Free trial, cancelled: ends on {0} with nothing charged"
+msgstr "Masa coba gratis, dibatalkan: berakhir {0} tanpa tagihan"
+
+#: src/features/billing/admin/overview.tsx
+msgid "Free trials started"
+msgstr "Masa coba dimulai"
 
 #: src/features/resume/editor/design/style-groups.tsx
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
@@ -6926,6 +6972,10 @@ msgstr "Apakah ada bonus, dan bergantung pada apa?"
 #: src/features/homepage/faq.tsx
 msgid "Is there a free plan?"
 msgstr "Apakah ada paket gratis?"
+
+#: src/features/homepage/faq.tsx
+msgid "Is there a free trial?"
+msgstr "Apakah ada masa coba gratis?"
 
 #: src/features/career/offers.tsx
 msgid "Is there a learning budget?"
@@ -9088,10 +9138,6 @@ msgstr "Offline · disimpan di perangkat ini"
 msgid "Older"
 msgstr ""
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
-msgstr "Untuk pembelian pertama, kamu bisa meminta pengembalian dana penuh dalam 7 hari bila kredit Rezumi AI yang terpakai dari pembelian itu tidak lebih dari 10. Pembayaran ganda dan masalah teknis selalu diselesaikan."
-
 #: src/features/docs/toc.tsx
 msgid "On this page"
 msgstr "Di halaman ini"
@@ -9866,6 +9912,10 @@ msgid "Polar API kept failing"
 msgstr "API Polar gagal berulang kali"
 
 #: src/features/billing/payment-return.tsx
+msgid "Polar emails you a reminder a few days before the first charge."
+msgstr "Polar mengirim email pengingat beberapa hari sebelum tagihan pertama."
+
+#: src/features/billing/payment-return.tsx
 msgid "Polar emails you the receipt, and your invoices are in billing."
 msgstr "Polar mengirim bukti pembayaran lewat email, dan invoice-mu ada di halaman tagihan."
 
@@ -10146,9 +10196,17 @@ msgstr "Bulan sebelumnya"
 msgid "Previous week"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Prices are before tax: Polar adds the tax that applies where you live."
+msgstr "Harga belum termasuk pajak: Polar menambahkan pajak yang berlaku di tempatmu."
+
+#: src/features/billing/buy-plans.tsx
+msgid "Prices are before tax: the checkout adds the tax that applies where you live."
+msgstr "Harga belum termasuk pajak: checkout menambahkan pajak yang berlaku di tempatmu."
+
 #: src/features/homepage/pricing.tsx
-msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia; the checkout shows any tax for where you live. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
-msgstr "Harga dalam dolar AS, atau Rupiah untuk pengunjung dari Indonesia; checkout menampilkan pajak yang berlaku di tempatmu. Langganan diperpanjang sampai kamu membatalkannya, dan akses tetap ada sampai periode yang sudah dibayar berakhir. Setelah itu akunmu kembali ke Gratis dan dokumenmu tetap ada. API key AI milikmu sendiri bisa dipakai di semua paket."
+msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgstr "Harga dalam dolar AS, atau Rupiah untuk pengunjung dari Indonesia, belum termasuk pajak: checkout menambahkan pajak yang berlaku di tempatmu. Langganan Plus pertama dimulai dengan 7 hari gratis. Langganan diperpanjang sampai kamu membatalkannya, dan akses tetap ada sampai periode yang sudah dibayar berakhir. Setelah itu akunmu kembali ke Gratis dan dokumenmu tetap ada. API key AI milikmu sendiri bisa dipakai di semua paket."
 
 #: src/features/homepage/footer.tsx
 #: src/features/homepage/ui.tsx
@@ -12619,6 +12677,10 @@ msgstr "Mulai setiap poin dengan kata kerja yang konkret: membangun, memimpin, m
 msgid "Start free"
 msgstr "Mulai gratis"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Start free trial"
+msgstr "Mulai masa coba gratis"
+
 #: src/features/homepage/pricing.tsx
 msgid "Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time."
 msgstr "Mulai gratis. Saat kamu butuh lebih banyak versi, format, atau bantuan AI, berlangganan bulanan atau tahunan, dan batalkan kapan saja."
@@ -13323,10 +13385,6 @@ msgstr "Pemeriksa menampilkan teks yang diambil parser dan apa yang perlu diperb
 #: src/features/billing/purchase-dialog.tsx
 msgid "The checkout couldn't be opened. Try again in a moment."
 msgstr "Checkout tidak bisa dibuka. Coba lagi sebentar lagi."
-
-#: src/features/billing/buy-plans.tsx
-msgid "The checkout shows the final amount, with any tax that applies where you live."
-msgstr "Checkout menampilkan jumlah akhir, termasuk pajak yang berlaku di tempatmu."
 
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
@@ -14148,6 +14206,10 @@ msgstr "Percayai perangkat ini selama 30 hari"
 msgid "Try {0}"
 msgstr "Coba {0}"
 
+#: src/features/billing/purchase.ts
+msgid "Try {name} free"
+msgstr "Coba {name} gratis"
+
 #: src/features/documents/documents-page.tsx
 msgid "Try a sample"
 msgstr "Coba sampel"
@@ -14184,6 +14246,10 @@ msgstr ""
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
 msgstr "Coba buka aplikasinya lagi"
+
+#: src/features/homepage/plans.ts
+msgid "Try Plus free"
+msgstr "Coba Plus gratis"
 
 #: src/features/homepage/faq.tsx
 msgid "Try the ATS checker"
@@ -15213,8 +15279,12 @@ msgid "Will my resume get past applicant tracking systems?"
 msgstr "Apakah resume saya akan lolos dari sistem pelacakan pelamar?"
 
 #: src/features/homepage/faq.tsx
-msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars."
-msgstr "Dengan kartu debit atau kredit, Apple Pay, atau Google Pay, di checkout aman milik Polar, penjual resmi (merchant of record) kami. Polar mengurus pembayaran, invoice, dan pajak penjualan. Pengunjung dari Indonesia membayar dalam Rupiah; lainnya dalam dolar AS."
+msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
+msgstr "Dengan kartu debit atau kredit, Apple Pay, atau Google Pay, di checkout aman milik Polar, penjual resmi (merchant of record) kami. Polar mengurus pembayaran, invoice, dan pajak penjualan. Pengunjung dari Indonesia membayar dalam Rupiah; lainnya dalam dolar AS. Harga belum termasuk pajak: checkout menambahkan pajak yang berlaku di tempatmu."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
+msgstr "Dalam 7 hari sejak tagihan pertamamu, kamu bisa meminta pengembalian dana penuh bila kredit Rezumi AI yang terpakai dari tagihan itu tidak lebih dari 10. Pembayaran ganda dan masalah teknis selalu diselesaikan."
 
 #: src/features/settings/ai/api-keys.tsx
 msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
@@ -15363,6 +15433,10 @@ msgstr "Tahunan hemat sampai {saving}%"
 #: src/features/homepage/faq.tsx
 msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
 msgstr "Ya, di semua paket. Tambahkan API key dari OpenAI, Anthropic, Google Gemini, OpenRouter, atau penyedia lain dan Anda membayar penyedia itu langsung; tidak memakai kredit Rezumi. Tanpa API key atau kredit, tidak ada yang dikirim ke layanan AI."
+
+#: src/features/homepage/faq.tsx
+msgid "Yes: a first Plus subscription starts with {plusTrialDays} free days. Polar takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing."
+msgstr "Ya: langganan Plus pertama dimulai dengan {plusTrialDays} hari gratis. Polar meminta kartu saat checkout, tetapi tidak menagih apa pun sampai masa coba berakhir, dan mengirim email pengingat beberapa hari sebelumnya. Batalkan selama masa coba dan kamu tidak membayar apa pun."
 
 #: src/features/homepage/faq.tsx
 msgid "Yes. Import a PDF, a LinkedIn data export or a JSON Resume file, then pick up where it left off."
@@ -15627,6 +15701,18 @@ msgstr "Font kamu"
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Your fonts are ready. Choose them under Font family."
 msgstr "Font kamu siap dipakai. Pilih di Keluarga font."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your free trial ends now. Your saved payment method is charged today for this month of {currentName}, then the difference for {name}; after that, {name}'s price at each renewal."
+msgstr "Masa coba gratismu berakhir sekarang. Metode pembayaran tersimpan ditagih hari ini untuk bulan ini sebagai {currentName}, lalu selisihnya untuk {name}; setelah itu, harga {name} di setiap perpanjangan."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your free trial ends now. Your saved payment method is charged today for this month, then the difference for yearly billing; after that, the yearly price at each renewal."
+msgstr "Masa coba gratismu berakhir sekarang. Metode pembayaran tersimpan ditagih hari ini untuk bulan ini, lalu selisihnya untuk tagihan tahunan; setelah itu, harga tahunan di setiap perpanjangan."
+
+#: src/features/billing/payment-return.tsx
+msgid "Your free trial has started"
+msgstr "Masa coba gratismu sudah dimulai"
 
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."

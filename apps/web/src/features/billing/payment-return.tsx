@@ -8,13 +8,22 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { billingCurrencySchema } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { BackToPlanLink } from "./back-link";
 import { creditCount } from "./credits";
 import { InvoiceButton } from "./invoice-button";
 import { getPlanName } from "./plan";
-import { formatPrice, getReturnState, isOpenPayment, usePlanDates } from "./purchase";
+import {
+	formatPrice,
+	getReturnState,
+	intervalSuffix,
+	isOpenPayment,
+	isTrialStart,
+	priceLabel,
+	usePlanDates,
+} from "./purchase";
 import { PageHeader } from "@/components/layout/page-header";
 import { orpc } from "@/libs/orpc/client";
 import { renderAsH2 } from "@/libs/typography";
@@ -41,8 +50,45 @@ function ResultCard({ icon, tone, title, children }: ResultCardProps) {
 
 type ResultProps = { payment: PaymentDetail; state: ReturnState; formatDate: (date: Date) => string };
 
+/** A trial's $0 start: what was taken (a card, no money), and when the first charge comes. */
+function TrialResult({ payment, formatDate }: Omit<ResultProps, "state">) {
+	const plan = getPlanName(payment.planId);
+	const price = payment.interval
+		? `${priceLabel(payment.planId, payment.interval, billingCurrencySchema.catch("usd").parse(payment.currency))} ${intervalSuffix(payment.interval)}`
+		: null;
+	return (
+		<ResultCard
+			icon="check-circle"
+			tone="bg-success/15 text-success"
+			title={<Trans>Your free trial has started</Trans>}
+		>
+			<ul className="grid gap-1.5 text-sm">
+				<li>
+					{payment.periodEnd && price ? (
+						<Trans>
+							{plan} is free until {formatDate(payment.periodEnd)}. Then your card is charged {price} plus tax, unless
+							you cancel before.
+						</Trans>
+					) : (
+						<Trans>{plan} is active, free for now.</Trans>
+					)}
+				</li>
+				<li className="text-muted">
+					<Trans>Polar emails you a reminder a few days before the first charge.</Trans>
+				</li>
+			</ul>
+			<div className="flex flex-wrap gap-2">
+				<Link to="/dashboard/settings/billing" className={buttonVariants()}>
+					<Trans>Go to your plan</Trans>
+				</Link>
+			</div>
+		</ResultCard>
+	);
+}
+
 function PaidResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 	const plan = getPlanName(payment.planId);
+	if (isTrialStart(payment)) return <TrialResult payment={payment} formatDate={formatDate} />;
 	return (
 		<ResultCard icon="check-circle" tone="bg-success/15 text-success" title={<Trans>Payment received</Trans>}>
 			<ul className="grid gap-1.5 text-sm">

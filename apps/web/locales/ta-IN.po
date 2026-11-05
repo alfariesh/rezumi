@@ -359,6 +359,11 @@ msgstr ""
 msgid "{0} credits"
 msgstr ""
 
+#. placeholder {0}: payment.trialDays
+#: src/features/billing/pending-payment.tsx
+msgid "{0} days free"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
@@ -402,6 +407,13 @@ msgstr "{0} மணி"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{1}-இல் {0} என்பது உங்கள் நேர மண்டலத்தில் ({preferredZone}) {2}."
+
+#. placeholder {0}: metrics.subscriptions.trialing
+#. placeholder {1}: metrics.subscriptions.canceling
+#. placeholder {2}: metrics.subscriptions.pastDue
+#: src/features/billing/admin/overview.tsx
+msgid "{0} in a free trial · {1} set to end · {2} payment failed"
+msgstr ""
 
 #. placeholder {0}: usage.used
 #: src/features/billing/plan-page.tsx
@@ -523,12 +535,6 @@ msgstr "{0} \"{1}\" திரும்பியது. உங்கள் செ
 #. placeholder {0}: BILLING_SELLER.merchantOfRecord
 #: src/features/billing/purchase-dialog.tsx
 msgid "{0} sells the subscription as the merchant of record and handles payment, invoices and tax. By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
-msgstr ""
-
-#. placeholder {0}: metrics.subscriptions.canceling
-#. placeholder {1}: metrics.subscriptions.pastDue
-#: src/features/billing/admin/overview.tsx
-msgid "{0} set to end · {1} payment failed"
 msgstr ""
 
 #. placeholder {0}: report.skippedChecks
@@ -875,12 +881,21 @@ msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing chan
 msgstr "{pendingOnPage, plural, one {# இந்தப் பக்கத்தில் திருத்த முன்மொழிந்தது · நீங்கள் ஏற்கும் வரை எதுவும் மாறாது} other {இந்தப் பக்கத்தில் # முன்மொழியப்பட்ட திருத்தங்கள் · நீங்கள் ஏற்கும் வரை எதுவும் மாறாது}}"
 
 #: src/features/billing/payment-return.tsx
+msgid "{plan} is active, free for now."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
 msgid "{plan} is active."
 msgstr ""
 
 #. placeholder {0}: formatDate(payment.periodEnd)
 #: src/features/billing/payment-return.tsx
 msgid "{plan} is active. It renews on {0} unless you cancel."
+msgstr ""
+
+#. placeholder {0}: formatDate(payment.periodEnd)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is free until {0}. Then your card is charged {price} plus tax, unless you cancel before."
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
@@ -1395,6 +1410,10 @@ msgstr "சேர்"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Add “{0}”"
 msgstr "\"{0}\" சேர்"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the first charge comes after {trialDays} days, and cancelling before then costs nothing."
+msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Add a contact"
@@ -3155,10 +3174,6 @@ msgstr ""
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "நிறத்தைத் தேர்ந்தெடுங்கள்"
-
-#: src/features/homepage/plans.ts
-msgid "Choose Plus"
-msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "Choose Pro AI"
@@ -5887,6 +5902,11 @@ msgstr "எது பயனளிக்கிறது எனக் கண்ட
 msgid "Finnish"
 msgstr "ஃபின்னிஷ்"
 
+#: src/features/billing/buy-plans.tsx
+#: src/features/homepage/pricing.tsx
+msgid "First {trialDays} days free"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run"
 msgstr "முதல் இயக்கம்"
@@ -6120,8 +6140,34 @@ msgstr ""
 msgid "Free ATS resume checker"
 msgstr "இலவச ATS ரெஸ்யூம் சரிபார்ப்பு"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Free for {trialDays} days, then renews every month until you cancel."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Free for {trialDays} days, then renews every year until you cancel."
+msgstr ""
+
 #: src/features/homepage/hero.tsx
 msgid "Free plan, no card needed. PDF downloads without a watermark."
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Free trial"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Free trial until {0}; the first charge is made then"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Free trial, cancelled: ends on {0} with nothing charged"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Free trials started"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -6925,6 +6971,10 @@ msgstr "போனஸ் உள்ளதா, அது எதைப் பொற�
 
 #: src/features/homepage/faq.tsx
 msgid "Is there a free plan?"
+msgstr ""
+
+#: src/features/homepage/faq.tsx
+msgid "Is there a free trial?"
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -9088,10 +9138,6 @@ msgstr "ஆஃப்லைன் · இந்தச் சாதனத்தி�
 msgid "Older"
 msgstr ""
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
-msgstr ""
-
 #: src/features/docs/toc.tsx
 msgid "On this page"
 msgstr ""
@@ -9866,6 +9912,10 @@ msgid "Polar API kept failing"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
+msgid "Polar emails you a reminder a few days before the first charge."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
 msgid "Polar emails you the receipt, and your invoices are in billing."
 msgstr ""
 
@@ -10146,8 +10196,16 @@ msgstr "முந்தைய மாதம்"
 msgid "Previous week"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Prices are before tax: Polar adds the tax that applies where you live."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Prices are before tax: the checkout adds the tax that applies where you live."
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
-msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia; the checkout shows any tax for where you live. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
 msgstr ""
 
 #: src/features/homepage/footer.tsx
@@ -12619,6 +12677,10 @@ msgstr "ஒவ்வொன்றையும் ஒரு உறுதியா�
 msgid "Start free"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Start free trial"
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
 msgid "Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time."
 msgstr ""
@@ -13322,10 +13384,6 @@ msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "The checkout couldn't be opened. Try again in a moment."
-msgstr ""
-
-#: src/features/billing/buy-plans.tsx
-msgid "The checkout shows the final amount, with any tax that applies where you live."
 msgstr ""
 
 #: src/features/resume/editor/check/writing-tab.tsx
@@ -14148,6 +14206,10 @@ msgstr "இந்தச் சாதனத்தை 30 நாட்களுக�
 msgid "Try {0}"
 msgstr "{0} முயற்சிக்கவும்"
 
+#: src/features/billing/purchase.ts
+msgid "Try {name} free"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Try a sample"
 msgstr "ஒரு மாதிரியை முயற்சிக்கவும்"
@@ -14184,6 +14246,10 @@ msgstr ""
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
 msgstr "பயன்பாட்டை மீண்டும் திறக்க முயற்சிக்கவும்"
+
+#: src/features/homepage/plans.ts
+msgid "Try Plus free"
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Try the ATS checker"
@@ -15213,7 +15279,11 @@ msgid "Will my resume get past applicant tracking systems?"
 msgstr "எனது ரெஸ்யூமே கடந்த விண்ணப்பதாரர் கண்காணிப்பு அமைப்புகளைப் பெறுமா?"
 
 #: src/features/homepage/faq.tsx
-msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars."
+msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
@@ -15362,6 +15432,10 @@ msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
+msgstr ""
+
+#: src/features/homepage/faq.tsx
+msgid "Yes: a first Plus subscription starts with {plusTrialDays} free days. Polar takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
@@ -15626,6 +15700,18 @@ msgstr ""
 
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Your fonts are ready. Choose them under Font family."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your free trial ends now. Your saved payment method is charged today for this month of {currentName}, then the difference for {name}; after that, {name}'s price at each renewal."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your free trial ends now. Your saved payment method is charged today for this month, then the difference for yearly billing; after that, the yearly price at each renewal."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Your free trial has started"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts

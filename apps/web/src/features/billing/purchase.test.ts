@@ -108,13 +108,29 @@ describe("payments", () => {
 	});
 
 	it("names what a payment was for and offers invoices for orders that went through", () => {
-		expect(getPaymentReasonLabel({ billingReason: "subscription_create", interval: "month" })).toBe("New subscription");
-		expect(getPaymentReasonLabel({ billingReason: "subscription_cycle", interval: "year" })).toBe("Renewal");
-		expect(getPaymentReasonLabel({ billingReason: "subscription_update", interval: "month" })).toBe("Plan change");
-		expect(getPaymentReasonLabel({ billingReason: null, interval: null })).toBe("30-day pass");
-		expect(hasInvoice({ paidAt: now, orderId: "order" })).toBe(true);
-		expect(hasInvoice({ paidAt: now, orderId: null })).toBe(false);
-		expect(hasInvoice({ paidAt: null, orderId: "order" })).toBe(false);
+		const paid = { totalAmount: 499, paidAt: now, trialDays: null };
+		expect(getPaymentReasonLabel({ ...paid, billingReason: "subscription_create", interval: "month" })).toBe(
+			"New subscription",
+		);
+		expect(getPaymentReasonLabel({ ...paid, billingReason: "subscription_cycle", interval: "year" })).toBe("Renewal");
+		expect(getPaymentReasonLabel({ ...paid, billingReason: "subscription_update", interval: "month" })).toBe(
+			"Plan change",
+		);
+		expect(getPaymentReasonLabel({ ...paid, billingReason: null, interval: null })).toBe("30-day pass");
+		// A trial's $0 start; once Polar dropped the trial (a repeat customer), the full price is a new subscription.
+		const trial = {
+			billingReason: "subscription_create" as const,
+			interval: "month" as const,
+			paidAt: now,
+			trialDays: 7,
+		};
+		expect(getPaymentReasonLabel({ ...trial, totalAmount: 0 })).toBe("Free trial");
+		expect(getPaymentReasonLabel({ ...trial, totalAmount: 549 })).toBe("New subscription");
+		const order = { trialDays: null, totalAmount: 499 };
+		expect(hasInvoice({ ...order, paidAt: now, orderId: "order" })).toBe(true);
+		expect(hasInvoice({ ...order, paidAt: now, orderId: null })).toBe(false);
+		expect(hasInvoice({ ...order, paidAt: null, orderId: "order" })).toBe(false);
+		expect(hasInvoice({ trialDays: 7, totalAmount: 0, paidAt: now, orderId: "order" })).toBe(false);
 	});
 
 	it("shows dates in the browser's zone until the account picks one", () => {

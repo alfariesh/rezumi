@@ -38,6 +38,7 @@ const summary = (enabled: boolean, paid: boolean): PlanSummary => ({
 	canPurchase: false,
 	purchaseBlockedBy: "unavailable",
 	pendingPayment: null,
+	trialAvailable: false,
 });
 
 describe("plan features", () => {

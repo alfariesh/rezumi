@@ -22,6 +22,7 @@ const getQuestions = (): Question[] => {
 	const proCredits = PLANS["pro-ai"].creditsPerMonth;
 	const trialCredits = TRIAL_CREDITS.amount;
 	const trialDays = TRIAL_CREDITS.validDays;
+	const plusTrialDays = PLANS.plus.trialDays;
 	return [
 		{
 			id: "free",
@@ -36,7 +37,12 @@ const getQuestions = (): Question[] => {
 		{
 			id: "payment",
 			question: t`How can I pay?`,
-			answer: t`With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars.`,
+			answer: t`With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live.`,
+		},
+		{
+			id: "trial",
+			question: t`Is there a free trial?`,
+			answer: t`Yes: a first Plus subscription starts with ${plusTrialDays} free days. Polar takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing.`,
 		},
 		{
 			id: "credits",

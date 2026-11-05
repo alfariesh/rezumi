@@ -4,7 +4,7 @@ import { Button, buttonVariants, Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Link } from "@tanstack/react-router";
-import { toMajorUnits } from "@rezumi/schema/billing";
+import { PLANS, toMajorUnits } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { currencyForLocale, getPlans } from "./plans";
@@ -58,6 +58,7 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 	const currency = currencyForLocale(i18n.locale);
 	const yearly = useYearly(plan.prices?.year[currency] ?? 0, currency);
 	const period = plan.prices === null ? t`No card needed` : t`per month, or ${yearly} a year`;
+	const trialDays = PLANS[plan.id].trialDays;
 
 	return (
 		<div
@@ -81,6 +82,11 @@ function PlanCard({ plan, billingEnabled }: PlanCardProps) {
 				<PlanPrice amount={plan.prices?.month[currency] ?? 0} currency={currency} featured={featured} />
 				<p className={cn("order-first mt-3 min-h-10 text-sm", featured ? "text-accent-foreground/70" : "text-muted")}>
 					{period}
+					{trialDays !== null && (
+						<span className={cn("block font-medium", featured ? "text-accent-foreground" : "text-success")}>
+							{t`First ${trialDays} days free`}
+						</span>
+					)}
 				</p>
 				<ul
 					className={cn(
@@ -148,7 +154,7 @@ export function Pricing({ billingEnabled = false }: PricingProps) {
 					))}
 				</div>
 				<p className="mx-auto mt-6 max-w-3xl px-4 text-center text-sm text-pretty text-muted">
-					{t`Prices in US dollars, or in Rupiah for visitors from Indonesia; the checkout shows any tax for where you live. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan.`}
+					{t`Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan.`}
 				</p>
 			</div>
 		</section>

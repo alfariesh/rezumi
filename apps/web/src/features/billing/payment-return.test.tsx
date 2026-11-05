@@ -57,6 +57,7 @@ const payment = (patch: Partial<PaymentDetail>): PaymentDetail => ({
 	periodEnd: null,
 	refundedAmount: 0,
 	redirectUrl: "https://sandbox.polar.sh/checkout/polar_c_test",
+	trialDays: null,
 	...patch,
 });
 
@@ -95,6 +96,23 @@ describe("returning from Polar", () => {
 		expect(screen.getByText(/Pro AI is active. It renews on December 3, 2026/)).toBeTruthy();
 		expect(screen.getByText("100 credits added for Rezumi AI.")).toBeTruthy();
 		expect(screen.getByRole("button", { name: "Invoice" })).toBeTruthy();
+	});
+
+	it("tells a trial's $0 start apart: free until the first charge", async () => {
+		api.payment.mockResolvedValue(
+			paid({
+				planId: "plus",
+				credits: 0,
+				amount: 0,
+				totalAmount: 0,
+				trialDays: 7,
+				periodEnd: new Date("2026-11-10T01:10:00Z"),
+			}),
+		);
+		renderPage();
+		expect(await screen.findByText("Your free trial has started")).toBeTruthy();
+		expect(screen.getByText(/Plus is free until November 10, 2026.*\$4\.99 \/ month plus tax/)).toBeTruthy();
+		expect(screen.queryByText("Payment received")).toBeNull();
 	});
 
 	it("leaves the credits line out for Plus", async () => {

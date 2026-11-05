@@ -1,5 +1,6 @@
 import type { Payment } from "./purchase";
 import { Alert, buttonVariants } from "@heroui/react";
+import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
@@ -11,7 +12,10 @@ type PendingPaymentBannerProps = { payment: Payment; formatDate: (date: Date) =>
 /** A checkout that's started and can still be paid: what it's for, until when, and the way back to Polar's page. */
 export function PendingPaymentBanner({ payment, formatDate }: PendingPaymentBannerProps) {
 	const plan = getPlanName(payment.planId);
-	const price = formatPrice(payment.totalAmount || payment.amount, payment.currency);
+	// A trial checkout charges nothing today; say so rather than the price it renews at.
+	const price = payment.trialDays
+		? t`${payment.trialDays} days free`
+		: formatPrice(payment.totalAmount || payment.amount, payment.currency);
 	const deadline = payment.expiresAt ? formatDate(payment.expiresAt) : null;
 
 	return (

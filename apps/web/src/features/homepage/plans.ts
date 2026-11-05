@@ -66,7 +66,7 @@ export const getPlans = (): Plan[] => {
 				t`Custom styles and your own fonts`,
 				t`MCP and API for your own automations`,
 			],
-			cta: t`Choose Plus`,
+			cta: t`Try Plus free`,
 		},
 		{
 			id: "pro-ai",

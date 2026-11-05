@@ -69,6 +69,7 @@ const summary = (patch: Partial<PlanSummary>): PlanSummary => ({
 	canPurchase: true,
 	purchaseBlockedBy: null,
 	pendingPayment: null,
+	trialAvailable: false,
 	...patch,
 });
 
@@ -81,7 +82,7 @@ function renderSection(plan: PlanSummary, selected?: "plus" | "pro-ai") {
 }
 
 // The plan buttons only: the monthly/yearly switch is a segmented control.
-const PLAN_BUTTON = /^(Get|Upgrade|Switch|Resend)/;
+const PLAN_BUTTON = /^(Get|Try|Upgrade|Switch|Resend)/;
 const buttons = () =>
 	screen
 		.queryAllByRole("button")
@@ -100,6 +101,13 @@ describe("subscribing", () => {
 		expect(buttons()).toEqual(["Get Plus", "Get Pro AI"]);
 		expect(screen.getByText("$4.99")).toBeTruthy();
 		expect(screen.getByText("$9.99")).toBeTruthy();
+	});
+
+	it("offers a first subscription to Plus as a free week, and says prices are before tax", () => {
+		renderSection(summary({ trialAvailable: true }));
+		expect(buttons()).toEqual(["Try Plus free", "Get Pro AI"]);
+		expect(screen.getAllByText("First 7 days free")).toHaveLength(1);
+		expect(screen.getByText(/Prices are before tax/)).toBeTruthy();
 	});
 
 	it("prices in Rupiah for visitors from Indonesia", () => {

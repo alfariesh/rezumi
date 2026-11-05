@@ -113,7 +113,7 @@ function KpiRow({ metrics }: MetricsProps) {
 				format="decimal"
 				previous={null}
 				color="var(--color-success)"
-				footer={t`${metrics.subscriptions.canceling} set to end · ${metrics.subscriptions.pastDue} payment failed`}
+				footer={t`${metrics.subscriptions.trialing} in a free trial · ${metrics.subscriptions.canceling} set to end · ${metrics.subscriptions.pastDue} payment failed`}
 			/>
 			<KpiCard
 				icon={<Icon name="check-circle" size={16} />}
@@ -283,6 +283,7 @@ function SubscriptionsCard({ metrics }: MetricsProps) {
 			<div className="flex flex-wrap items-center gap-x-6 gap-y-3">
 				<MiniStat value={formatMoney(subscriptions.mrr)} label={t`Monthly recurring, before tax`} />
 				<MiniStat value={subscriptions.started} label={t`Started`} />
+				<MiniStat value={subscriptions.trialsStarted} label={t`Free trials started`} />
 				<MiniStat value={subscriptions.ended} label={t`Ended`} />
 			</div>
 			{rows.length === 0 ? (

@@ -196,13 +196,19 @@ function homepageStructuredData(origin: string): StructuredData {
 				// The hosted plans, monthly in US dollars (features/homepage/plans.ts and @rezumi/schema/billing).
 				offers: [
 					{ "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
-					{ "@type": "Offer", name: "Plus", price: "4.99", priceCurrency: "USD", description: "Monthly subscription" },
+					{
+						"@type": "Offer",
+						name: "Plus",
+						price: "4.99",
+						priceCurrency: "USD",
+						description: "Monthly subscription, before tax; the first 7 days are free",
+					},
 					{
 						"@type": "Offer",
 						name: "Pro AI",
 						price: "9.99",
 						priceCurrency: "USD",
-						description: "Monthly subscription",
+						description: "Monthly subscription, before tax",
 					},
 				],
 				publisher: { "@id": `${origin}/#organization` },

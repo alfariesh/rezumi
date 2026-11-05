@@ -13,7 +13,7 @@ import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { creditCount } from "./credits";
 import { getPlanName } from "./plan";
-import { getPurchaseKind, getPurchaseLabel, intervalSuffix, priceLabel, usePlanDates } from "./purchase";
+import { getPurchaseKind, getPurchaseLabel, intervalSuffix, priceLabel, trialDaysFor, usePlanDates } from "./purchase";
 import { orpc } from "@/libs/orpc/client";
 
 /** Why a checkout or plan change didn't go through, in the user's words; the server's messages aren't translated. */
@@ -49,6 +49,8 @@ type PurchaseDialogProps = {
 	/** The account's live subscription: present, a choice changes it instead of starting a new one. */
 	subscription: Subscription | null;
 	currency: BillingCurrency;
+	/** Whether a new subscription starts with its plan's free trial (`summary.trialAvailable`). */
+	trialAvailable: boolean;
 	onClose: () => void;
 };
 
@@ -57,7 +59,7 @@ type PurchaseDialogProps = {
  * price and how often it renews, what changes when, the refund policy in brief and the terms it agrees to. A new
  * subscription continues on Polar's checkout page; a change is made here at once.
  */
-export function PurchaseDialog({ choice, subscription, currency, onClose }: PurchaseDialogProps) {
+export function PurchaseDialog({ choice, subscription, currency, trialAvailable, onClose }: PurchaseDialogProps) {
 	const queryClient = useQueryClient();
 	const { formatDate } = usePlanDates();
 	const descriptionId = useId();
@@ -66,6 +68,9 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 	const kind = getPurchaseKind(subscription, target);
 	// The same plan, billed monthly instead of yearly or the other way round.
 	const billingOnly = subscription?.planId === target.planId;
+	const trialDays = kind === "subscribe" ? trialDaysFor(target.planId, trialAvailable) : null;
+	// An upgrade ends a running free trial: the new plan has none (Polar starts its billing at once).
+	const endsTrial = kind === "upgrade" && subscription?.status === "trialing";
 	// One key per attempt: a double click or a retried request returns the same checkout instead of a second one.
 	const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
 	const [redirecting, setRedirecting] = useState(false);
@@ -144,6 +149,7 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 	};
 
 	const name = getPlanName(target.planId);
+	const currentName = subscription ? getPlanName(subscription.planId) : name;
 	const price = priceLabel(target.planId, target.interval, currency);
 	const credits = PLANS[target.planId].creditsPerMonth;
 	const renewal = subscription?.currentPeriodEnd ? formatDate(subscription.currentPeriodEnd) : null;
@@ -157,7 +163,7 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 					{placement === "bottom" && <Drawer.Handle />}
 					<Drawer.CloseTrigger aria-label={t`Close`} />
 					<Drawer.Header>
-						<Drawer.Heading>{getPurchaseLabel(kind, target, subscription)}</Drawer.Heading>
+						<Drawer.Heading>{getPurchaseLabel(kind, target, subscription, trialDays)}</Drawer.Heading>
 					</Drawer.Header>
 					<Drawer.Body className="grid content-start gap-5 text-sm">
 						<div id={descriptionId} className="grid gap-1">
@@ -170,16 +176,35 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 								</span>
 							</p>
 							<p className="text-muted">
-								{target.interval === "year" ? (
+								{trialDays ? (
+									target.interval === "year" ? (
+										<Trans>Free for {trialDays} days, then renews every year until you cancel.</Trans>
+									) : (
+										<Trans>Free for {trialDays} days, then renews every month until you cancel.</Trans>
+									)
+								) : target.interval === "year" ? (
 									<Trans>Renews every year until you cancel.</Trans>
 								) : (
 									<Trans>Renews every month until you cancel.</Trans>
 								)}
 							</p>
+							<p className="text-xs text-muted">
+								<Trans>Prices are before tax: Polar adds the tax that applies where you live.</Trans>
+							</p>
 						</div>
 
 						<ul className="grid gap-2">
-							{kind === "subscribe" ? (
+							{kind === "subscribe" && trialDays ? (
+								<li className="flex gap-2">
+									<Icon name="calendar-blank" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										<Trans>
+											Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the
+											first charge comes after {trialDays} days, and cancelling before then costs nothing.
+										</Trans>
+									</span>
+								</li>
+							) : kind === "subscribe" ? (
 								<li className="flex gap-2">
 									<Icon name="lock" size={18} className="mt-0.5 shrink-0 text-muted" />
 									<span>
@@ -193,7 +218,19 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 								<li className="flex gap-2">
 									<Icon name="lightning" size={18} className="mt-0.5 shrink-0 text-muted" />
 									<span>
-										{billingOnly ? (
+										{endsTrial ? (
+											billingOnly ? (
+												<Trans>
+													Your free trial ends now. Your saved payment method is charged today for this month, then the
+													difference for yearly billing; after that, the yearly price at each renewal.
+												</Trans>
+											) : (
+												<Trans>
+													Your free trial ends now. Your saved payment method is charged today for this month of{" "}
+													{currentName}, then the difference for {name}; after that, {name}'s price at each renewal.
+												</Trans>
+											)
+										) : billingOnly ? (
 											<Trans>
 												Yearly billing starts now. You're charged the difference for the rest of this period with your
 												saved payment method, then the yearly price at each renewal.
@@ -262,7 +299,7 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 
 						<p className="text-muted">
 							<Trans>
-								On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI
+								Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI
 								credits from it. Double payments and technical problems are always sorted out.
 							</Trans>
 						</p>
@@ -293,7 +330,9 @@ export function PurchaseDialog({ choice, subscription, currency, onClose }: Purc
 						</Button>
 						<Button className="flex-1" isPending={busy} onPress={confirm}>
 							{busy && <Spinner size="sm" color="current" aria-hidden />}
-							{kind === "subscribe" ? (
+							{kind === "subscribe" && trialDays ? (
+								<Trans>Start free trial</Trans>
+							) : kind === "subscribe" ? (
 								<Trans>Continue to checkout</Trans>
 							) : kind === "upgrade" ? (
 								<Trans>Upgrade now</Trans>

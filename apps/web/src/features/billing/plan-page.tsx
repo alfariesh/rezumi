@@ -103,6 +103,12 @@ function YourPlanSection({ plan, formatDate }: YourPlanSectionProps) {
 		<Trans>
 			The last payment didn't go through. Update your payment method to keep it; access is paused until then.
 		</Trans>
+	) : subscription?.status === "trialing" ? (
+		plan.renews ? (
+			<Trans>Free trial until {formatDate(plan.currentPeriodEndsAt)}; the first charge is made then</Trans>
+		) : (
+			<Trans>Free trial, cancelled: ends on {formatDate(plan.currentPeriodEndsAt)} with nothing charged</Trans>
+		)
 	) : plan.renews ? (
 		pending ? (
 			<Trans>

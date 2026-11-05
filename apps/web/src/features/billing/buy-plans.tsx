@@ -18,6 +18,7 @@ import {
 	isLiveSubscription,
 	monthlyOfYearly,
 	priceLabel,
+	trialDaysFor,
 	yearlySaving,
 } from "./purchase";
 import { PurchaseDialog } from "./purchase-dialog";
@@ -178,6 +179,7 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 					const kind = getPurchaseKind(live, target);
 					const isSelected = id === selected;
 					const pending = live?.pendingChange?.planId === id && live.pendingChange.interval === interval;
+					const trialDays = kind === "subscribe" ? trialDaysFor(id, plan.trialAvailable) : null;
 					return (
 						<div
 							key={id}
@@ -227,6 +229,11 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 										<Trans>Renews monthly until you cancel</Trans>
 									)}
 								</span>
+								{trialDays && (
+									<span className="text-xs font-medium text-success">
+										<Trans>First {trialDays} days free</Trans>
+									</span>
+								)}
 							</div>
 							<ul className="grid gap-2 text-sm">
 								{planHighlights(id).map((line) => (
@@ -249,7 +256,7 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 									isDisabled={live?.cancelAtPeriodEnd === true || live?.status === "past_due"}
 									onPress={() => setChoice(target)}
 								>
-									{getPurchaseLabel(kind, target, live)}
+									{getPurchaseLabel(kind, target, live, trialDays)}
 								</Button>
 							)}
 						</div>
@@ -267,9 +274,15 @@ export function BuyPlansSection({ plan, selected }: BuyPlansSectionProps) {
 				</p>
 			)}
 			<p className="text-xs text-muted">
-				<Trans>The checkout shows the final amount, with any tax that applies where you live.</Trans>
+				<Trans>Prices are before tax: the checkout adds the tax that applies where you live.</Trans>
 			</p>
-			<PurchaseDialog choice={choice} subscription={live} currency={currency} onClose={() => setChoice(null)} />
+			<PurchaseDialog
+				choice={choice}
+				subscription={live}
+				currency={currency}
+				trialAvailable={plan.trialAvailable}
+				onClose={() => setChoice(null)}
+			/>
 		</SettingsSection>
 	);
 }

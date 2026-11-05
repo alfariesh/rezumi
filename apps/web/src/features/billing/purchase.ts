@@ -119,14 +119,22 @@ export function getPurchaseKind(
 }
 
 /** The button's words for a plan and interval, from where the account stands. */
+/**
+ * The free trial a new subscription to this plan starts with, in days: the plan's, while the account hasn't had a
+ * subscription (`summary.trialAvailable`). Null otherwise.
+ */
+export const trialDaysFor = (planId: PaidPlanId, trialAvailable: boolean) =>
+	trialAvailable ? PLANS[planId].trialDays : null;
+
 export function getPurchaseLabel(
 	kind: PurchaseKind,
 	target: { planId: PaidPlanId; interval: BillingInterval },
 	subscription?: Subscription | null,
+	trialDays?: number | null,
 ) {
 	const name = getPlanName(target.planId);
 	if (kind === "current") return t`Your plan`;
-	if (kind === "subscribe") return t`Get ${name}`;
+	if (kind === "subscribe") return trialDays ? t`Try ${name} free` : t`Get ${name}`;
 	const samePlan = subscription?.planId === target.planId;
 	if (samePlan) return target.interval === "year" ? t`Switch to yearly` : t`Switch to monthly`;
 	return kind === "upgrade" ? t`Upgrade to ${name}` : t`Switch to ${name}`;
@@ -166,8 +174,15 @@ export function getPaymentStatusColor(status: PaymentStatus): "success" | "warni
 }
 
 /** What a payment was for, in a few words: a new subscription, a renewal, a plan change, or a 30-day pass. */
-export function getPaymentReasonLabel(payment: Pick<Payment, "billingReason" | "interval">) {
+/** A paid $0 order whose checkout offered a free trial: the trial starting, not a charge. */
+export const isTrialStart = (payment: Pick<Payment, "trialDays" | "totalAmount" | "paidAt">) =>
+	payment.trialDays !== null && payment.totalAmount === 0 && payment.paidAt !== null;
+
+export function getPaymentReasonLabel(
+	payment: Pick<Payment, "billingReason" | "interval" | "trialDays" | "totalAmount" | "paidAt">,
+) {
 	if (payment.interval === null) return t`30-day pass`;
+	if (isTrialStart(payment)) return t`Free trial`;
 	switch (payment.billingReason) {
 		case "subscription_cycle":
 			return t`Renewal`;
@@ -179,8 +194,9 @@ export function getPaymentReasonLabel(payment: Pick<Payment, "billingReason" | "
 }
 
 /** Whether a payment has an invoice at Polar: an order that went through (refunded ones keep theirs). */
-export const hasInvoice = (payment: Pick<Payment, "paidAt" | "orderId">) =>
-	payment.paidAt !== null && payment.orderId !== null;
+/** An order that went through and charged something: a trial's $0 start has nothing to invoice. */
+export const hasInvoice = (payment: Pick<Payment, "paidAt" | "orderId" | "trialDays" | "totalAmount">) =>
+	payment.paidAt !== null && payment.orderId !== null && !isTrialStart(payment);
 
 /** Where a payment stands for the page Polar sends the customer back to. */
 export type ReturnState = "paid" | "waiting" | "closed" | "failed" | "expired" | "refunded";
