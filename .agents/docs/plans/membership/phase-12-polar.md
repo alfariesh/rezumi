@@ -20,7 +20,7 @@ Keputusan pemilik 2026-11-05 ("ingin ke global… migrasikan Midtrans ke Polar")
 
 3. **Cara bayar:** kartu debit/kredit, Apple Pay, Google Pay, Link, dan beberapa metode lokal di Eropa/India/Korea. **QRIS, e-wallet, dan VA tidak ada lagi.**
 4. **Polar adalah penjual resmi (Merchant of Record):** Polar Software, Inc. menagih pembeli, menghitung dan menyetor pajak (VAT/GST/sales tax, termasuk PPN PMSE Indonesia), mengirim invoice dan email tagihan, menangani sengketa kartu, lalu membayarkan hasil penjualan ke rekening bank Indonesia-mu lewat Stripe Connect Express.
-5. **Portal pelanggan Polar:** pembeli bisa membatalkan, mengganti kartu, dan mengunduh invoice sendiri. Tombol "Kelola tagihan" di halaman Paket membukanya.
+5. **Portal pelanggan Polar:** pembeli bisa membatalkan, mengganti kartu, dan mengunduh invoice sendiri. Tombol "Tagihan dan invoice" (Inggris: "Billing and invoices") di halaman Paket membukanya.
 6. **Pro AI** tetap 100 kredit Rezumi AI **per bulan** (pelanggan tahunan menerimanya tiap bulan), tanpa rollover.
 
 **Biaya Polar** (paket Starter, organisasi dibuat setelah 27 Mei 2026): 5% + 50¢ per transaksi, +1,5% untuk kartu non-AS, dihitung dari total termasuk pajak. Payout: $2 per bulan aktif + 0,25% + $0,25 per payout, plus konversi kurs ±1%. Paket Pro Polar ($20/bulan, 3,8% + 40¢) baru menguntungkan di atas ±$1.379 penjualan per bulan.
@@ -60,11 +60,11 @@ Baca dulu: `CLAUDE.md`, README rencana ini, `00-keputusan-produk.md` (log 2026-1
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | 1   | Keputusan + rencana (dokumen ini, log keputusan)                                                                                                  | ✅     |
 | 2   | Produk sandbox (4 produk USD + IDR)                                                                                                               | ✅     |
-| 3   | Katalog, env, skema DB + migrasi                                                                                                                  | ⬜     |
-| 4   | Backend: klien Polar, webhook, checkout/changePlan/portal, langganan, kredit bulanan, rekonsiliasi, refund, admin, laporan per mata uang          | ⬜     |
-| 5   | Server: rute webhook, hook hapus akun, job                                                                                                        | ⬜     |
-| 6   | Web: halaman Paket (bulanan/tahunan, mata uang, langganan, portal), halaman kembali, riwayat, admin                                               | ⬜     |
-| 7   | Tes unit + DB nyata (webhook bertanda tangan, urutan acak, duplikat, perpanjangan, refund, past_due)                                              | ⬜     |
-| 8   | Dokumen: arsitektur, runbook, legal ID/EN, draf panduan pengguna                                                                                  | ⬜     |
+| 3   | Katalog, env, skema DB + migrasi                                                                                                                  | ✅     |
+| 4   | Backend: klien Polar, webhook, checkout/changePlan/portal, langganan, kredit bulanan, rekonsiliasi, refund, admin, laporan per mata uang          | ✅     |
+| 5   | Server: rute webhook, hook hapus akun, job                                                                                                        | ✅     |
+| 6   | Web: halaman Paket (bulanan/tahunan, mata uang, langganan, portal), halaman kembali, riwayat, admin                                               | ✅     |
+| 7   | Tes unit + DB nyata (webhook bertanda tangan, urutan acak, duplikat, perpanjangan, refund, past_due) + tes browser                                | ✅     |
+| 8   | Dokumen: arsitektur, runbook, legal ID/EN, draf panduan pengguna                                                                                  | ✅     |
 | 9   | Uji sandbox end-to-end lewat server lokal (butuh token sandbox pemilik)                                                                           | ⬜     |
 | 10  | Go-live: Phase 11 versi Polar (onboarding produksi, webhook produksi, Bot Fight Mode, uji kartu sungguhan dilarang Polar: pakai kode diskon 100%) | ⬜     |

@@ -1,6 +1,6 @@
 ---
 title: "Kebijakan Privasi"
-description: "Draf pemrosesan data akun, dokumen, pembayaran Midtrans dan AI pada layanan Rezumi."
+description: "Draf pemrosesan data akun, dokumen, pembayaran lewat Polar dan AI pada layanan Rezumi."
 ---
 
 <Warning>
@@ -21,7 +21,7 @@ Kebijakan ini untuk layanan resmi rezumi.app dan app yang terhubung ke sana. Kon
 | Nama, email, username, foto opsional, status verifikasi                                                           | Akun, profil dan pemberian layanan                           | Pelaksanaan perjanjian                                                     |
 | Hash password, sesi/token, IP/user agent, verifikasi, 2FA dan passkey; identitas/token login sosial               | Autentikasi dan pencegahan penyalahgunaan                    | Perjanjian dan kepentingan sah keamanan yang dinilai terhadap hak pengguna |
 | CV, surat, unggahan, riwayat versi, catatan privat, lamaran, kontak/interview, knowledge, offer dan jadwal karier | Penyimpanan, sinkronisasi, ekspor dan fitur yang diminta     | Pelaksanaan perjanjian; pilihan publikasi/koneksi oleh pengguna            |
-| Nomor pesanan, nilai, metode/status/waktu transaksi, masa paket, refund, ledger pemakaian kredit                  | Verifikasi pembayaran, akses, penanganan sengketa, pembukuan | Perjanjian dan kewajiban hukum                                             |
+| Id order/langganan Polar, nilai, mata uang, status/waktu, periode langganan, refund, ledger pemakaian kredit      | Verifikasi pembayaran, akses, penanganan sengketa, pembukuan | Perjanjian dan kewajiban hukum                                             |
 | Teks/dokumen, konteks lowongan, prompt, hasil AI dan catatan biaya tindakan                                       | Menjalankan tindakan AI yang dipilih                         | Permintaan pengguna/perjanjian dan persetujuan bila diwajibkan             |
 | Cookie sesi/preferensi, penyimpanan perangkat, log keamanan dan hitungan tayangan/unduhan CV                      | Fungsi app, keamanan dan statistik CV                        | Perjanjian dan kepentingan sah yang proporsional                           |
 | Pengaduan dan laporan konten yang dikirim                                                                         | Dukungan, moderasi, pelaksanaan hak                          | Perjanjian, kewajiban hukum dan kepentingan sah keamanan                   |
@@ -35,9 +35,12 @@ Tidak ada analytics iklan pihak ketiga dalam app resmi saat draf ini dibuat; log
 
 - **Cloudflare:** Worker, jaringan, pengamanan dan penyimpanan unggahan privat di R2; termasuk metadata permintaan.
 - **Neon:** basis data PostgreSQL terkelola untuk akun, dokumen dan catatan layanan. Wilayah basis data/backup: **[KONFIRMASI PEMILIK]**.
-- **Midtrans:** ketika checkout tersedia, nama dan email serta rincian pesanan/nilai untuk pembayaran. Rezumi menerima status dan referensi transaksi;
-  tidak menyimpan nomor kartu, PIN, OTP atau kredensial bank. Transfer refund manual memerlukan data penerima melalui dukungan;
-  bukti transfer dapat memuat data seperlunya, tidak berarti seluruh catatan refund anonim.
+- **Polar (Polar Software, Inc., Amerika Serikat):** penjual resmi (_Merchant of Record_) langganan. Saat checkout, Rezumi mengirim
+  id akun, nama, email, alamat IP (untuk mata uang dan lokasi pajak) dan bahasa; pelanggan mengisi data pembayaran dan alamat tagihan
+  langsung di Polar. Polar memproses pembayaran (melalui Stripe), pajak, invoice, dan sengketa sebagai pengendali data sendiri menurut
+  kebijakan privasinya. Rezumi menerima id dan status order/langganan/refund, nilai dan periode; tidak menerima atau menyimpan nomor kartu,
+  CVC, atau alamat tagihan. Saat akun dihapus, Rezumi meminta Polar menghapus dan menganonimkan data pelanggan; Polar menyimpan catatan order
+  sesuai kewajiban hukumnya. Data dapat diproses di luar Indonesia.
 - **Provider AI:** hanya data yang diperlukan untuk tindakan yang diminta, seperti teks CV/surat, lowongan, jawaban, knowledge atau konteks percakapan.
   BYOK memakai provider yang dipilih (mis. OpenAI, Anthropic, Google Gemini, OpenRouter atau endpoint kompatibel).
   Rezumi AI akan menunjukkan provider/model sebelum digunakan; **provider peluncuran, lokasi dan retensinya belum diputuskan**.
