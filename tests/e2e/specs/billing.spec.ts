@@ -104,7 +104,7 @@ test("subscribes to Pro AI: confirm, pay on Polar, come back to an active plan",
 
 	await page.goto("/dashboard/settings/billing?plan=pro-ai");
 	await expect(page.getByText("Selected", { exact: true })).toBeVisible();
-	await expect(page.getByText("$9.99", { exact: true })).toBeVisible();
+	await expect(page.getByText(/^\$9\.99 \/ month$/)).toBeVisible();
 	await page.getByRole("button", { name: "Get Pro AI" }).click();
 
 	const dialog = page.getByRole("dialog");
