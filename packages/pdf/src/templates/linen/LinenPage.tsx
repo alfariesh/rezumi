@@ -81,7 +81,7 @@ const useLinen = (): LineupTemplate => {
 						...tracking(0.06, size.label),
 					},
 				),
-				icon: { size: size.meta, color: tokens.accent },
+				icon: { size: size.meta, color: tokens.accentText },
 			},
 		};
 	}, [r, metrics, base, tokens, colors, tracking, lineup, metadata]);

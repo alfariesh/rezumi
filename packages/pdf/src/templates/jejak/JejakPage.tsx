@@ -34,7 +34,7 @@ const useJejak = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				lineHeight: 1.2,
-				color: tokens.accent,
+				color: tokens.accentText,
 				...tracking(0.06, size.label),
 			},
 			sectionItems: { rowGap: metrics.gapY(1.3) },
@@ -57,7 +57,7 @@ const useJejak = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				...tracking(-0.015, size.heading * 2.1),
 			},
-			headerHeadline: { fontSize: size.body * 1.1, color: tokens.accent, fontWeight: "500" },
+			headerHeadline: { fontSize: size.body * 1.1, color: tokens.accentText, fontWeight: "500" },
 			contactList: { flexDirection: r.row, flexWrap: "wrap", columnGap: size.meta * 1.7, rowGap: size.meta * 0.35 },
 			contactItem: { flexDirection: r.row, alignItems: "center", columnGap: size.meta * 0.45 },
 			contactText: { color: tokens.muted, fontSize: size.meta },
@@ -95,7 +95,7 @@ const useJejak = (): LineupTemplate => {
 			colors,
 			features: { sectionTimeline: true, stackSidebarItemHeader: true },
 			featureStyles: { sectionTimeline: timeline },
-			styles: { ...styles, icon: { size: size.meta, color: tokens.accent } },
+			styles: { ...styles, icon: { size: size.meta, color: tokens.accentText } },
 		};
 	}, [r, metrics, base, tokens, colors, tracking, lineup, metadata]);
 };

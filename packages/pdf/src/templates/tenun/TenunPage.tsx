@@ -32,7 +32,7 @@ const useTenun = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				lineHeight: 1.2,
-				color: tokens.accent,
+				color: tokens.accentText,
 				backgroundColor: tokens.accentSoft,
 				borderBottomWidth: 0.75,
 				borderBottomColor: rule,
@@ -66,6 +66,6 @@ const useTenun = (): LineupTemplate => {
 			contactText: { fontSize: size.meta },
 		});
 
-		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accent } } };
+		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accentText } } };
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);
 };

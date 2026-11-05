@@ -32,7 +32,7 @@ const useWibawa = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				lineHeight: 1.25,
-				color: tokens.accent,
+				color: tokens.accentText,
 				borderBottomWidth: 1,
 				borderBottomColor: tokens.accent,
 				paddingBottom: size.body * 0.25,
@@ -54,7 +54,7 @@ const useWibawa = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				...tracking(-0.01, size.heading * 1.85),
 			},
-			headerHeadline: { fontSize: size.body * 1.1, color: tokens.accent, fontWeight: "500" },
+			headerHeadline: { fontSize: size.body * 1.1, color: tokens.accentText, fontWeight: "500" },
 			contactList: { flexDirection: "column", rowGap: size.body * 0.3 },
 			contactItem: { flexDirection: r.row, alignItems: "center", columnGap: size.body * 0.5 },
 			contactText: { fontSize: size.body },
@@ -66,7 +66,7 @@ const useWibawa = (): LineupTemplate => {
 		return {
 			colors,
 			features: { contactIconColumn: true },
-			styles: { ...styles, icon: { size: size.body * 0.95, color: tokens.accent } },
+			styles: { ...styles, icon: { size: size.body * 0.95, color: tokens.accentText } },
 		};
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);
 };

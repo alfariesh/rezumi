@@ -32,7 +32,7 @@ const useCendekia = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				textTransform: "uppercase",
 				lineHeight: 1.25,
-				color: tokens.accent,
+				color: tokens.accentText,
 				borderBottomWidth: 0.6,
 				borderBottomColor: tokens.hairline,
 				paddingBottom: size.body * 0.2,
@@ -57,7 +57,7 @@ const useCendekia = (): LineupTemplate => {
 
 		return {
 			colors,
-			styles: { ...styles, icon: { size: size.meta, color: tokens.accent } },
+			styles: { ...styles, icon: { size: size.meta, color: tokens.accentText } },
 			features: { numberedPublications: true },
 		};
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);

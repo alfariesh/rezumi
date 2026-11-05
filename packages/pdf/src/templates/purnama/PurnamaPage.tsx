@@ -126,7 +126,7 @@ const usePurnama = (): LineupTemplate => {
 				contactLabel: { color: lightMuted },
 				icon: ({ placement }: TemplateStyleContext) => ({
 					size: size.meta,
-					color: placement === "sidebar" ? light : tokens.accent,
+					color: placement === "sidebar" ? light : tokens.accentText,
 				}),
 			},
 		};

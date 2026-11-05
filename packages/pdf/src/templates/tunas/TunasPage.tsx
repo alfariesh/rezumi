@@ -54,12 +54,12 @@ const useTunas = (): LineupTemplate => {
 				fontWeight: tokens.headingWeight,
 				...tracking(-0.01, size.heading * 1.7),
 			},
-			headerHeadline: { fontSize: size.body * 1.05, color: tokens.accent, fontWeight: "500" },
+			headerHeadline: { fontSize: size.body * 1.05, color: tokens.accentText, fontWeight: "500" },
 			contactList: { flexDirection: r.row, flexWrap: "wrap", columnGap: size.meta * 1.4, rowGap: size.meta * 0.3 },
 			contactItem: { flexDirection: r.row, alignItems: "center", columnGap: size.meta * 0.4 },
 			contactText: { color: tokens.muted, fontSize: size.meta },
 		});
 
-		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accent } } };
+		return { colors, styles: { ...styles, icon: { size: size.meta, color: tokens.accentText } } };
 	}, [r, metrics, base, tokens, colors, tracking, lineup]);
 };
