@@ -1,0 +1,59 @@
+---
+/**
+ * "On this page", like the docs' (apps/web/DESIGN.md → Docs): the article's sections, the one being read marked by an
+ * accent bar once the script below runs. Without JavaScript it is a plain list of links.
+ */
+import type { Locale } from "../i18n/config";
+import type { HeadingAnchor } from "../lib/portable-text";
+import { getTranslator } from "../i18n/messages";
+
+type Props = { locale: Locale; headings: readonly HeadingAnchor[] };
+
+const { locale, headings } = Astro.props;
+const t = getTranslator(locale);
+---
+
+<nav aria-labelledby="toc-title" data-toc class="text-sm">
+	<h2 id="toc-title" class="mb-3 text-xs font-semibold text-muted">{t("post.onThisPage")}</h2>
+	<ul class="flex flex-col border-s border-separator">
+		{
+			headings.map((heading) => (
+				<li>
+					<a
+						href={`#${heading.id}`}
+						data-toc-link={heading.id}
+						class:list={[
+							"-ms-px block border-s-2 border-transparent py-1 text-muted transition-colors hover:text-foreground aria-[current=location]:border-accent aria-[current=location]:text-foreground",
+							heading.level === 3 ? "ps-6" : "ps-3",
+						]}
+					>
+						{heading.text}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<script>
+	// Mark the section whose heading most recently scrolled past the top third of the viewport.
+	for (const toc of document.querySelectorAll<HTMLElement>("[data-toc]")) {
+		const links = new Map(
+			[...toc.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")].map((link) => [link.dataset.tocLink, link]),
+		);
+		const headings = [...links.keys()]
+			.map((id) => (id ? document.getElementById(id) : null))
+			.filter((heading): heading is HTMLElement => heading !== null);
+		const mark = () => {
+			const line = window.innerHeight / 3;
+			const current = headings.filter((heading) => heading.getBoundingClientRect().top <= line).at(-1) ?? headings[0];
+			for (const [id, link] of links) {
+				if (id === current?.id) link.setAttribute("aria-current", "location");
+				else link.removeAttribute("aria-current");
+			}
+		};
+		mark();
+		window.addEventListener("scroll", mark, { passive: true });
+		window.addEventListener("resize", mark, { passive: true });
+	}
+</script>

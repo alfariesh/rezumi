@@ -1,0 +1,23 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// The marketing blog at blog.rezumi.app: its own Worker, D1 database and R2 bucket, apart from the app Worker
+	// ("vitaekit" in the root wrangler.jsonc). Attach the blog.rezumi.app Custom Domain in the Cloudflare dashboard, as
+	// for rezumi.app, so the deploy token needs no zone permissions. First deploy: .agents/docs/blog.md.
+	"name": "rezumi-blog",
+	"main": "./src/worker.ts",
+	// Served from the blog.rezumi.app Custom Domain only: passkeys and the admin are bound to that origin, and an
+	// unfinished setup wizard must not be reachable on another address.
+	"workers_dev": false,
+	"preview_urls": false,
+	"compatibility_date": "2026-10-02",
+	"compatibility_flags": ["nodejs_compat"],
+	// Wrangler creates these on the first deploy and reconnects to them by name afterwards. Locally, `astro dev` runs
+	// both in .wrangler/state.
+	"d1_databases": [{ "binding": "DB", "database_name": "rezumi-blog" }],
+	"r2_buckets": [{ "binding": "MEDIA", "bucket_name": "rezumi-blog-media" }],
+	// Resizes media in the Worker (the `Image` component and images in posts).
+	"images": { "binding": "IMAGES" },
+	// Publishes scheduled posts and runs EmDash maintenance (src/worker.ts).
+	"triggers": { "crons": ["* * * * *"] },
+	"observability": { "enabled": true },
+}
