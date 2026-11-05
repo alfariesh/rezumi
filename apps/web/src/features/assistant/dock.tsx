@@ -8,7 +8,7 @@ import { lazy, Suspense } from "react";
 import { useLocale } from "react-aria-components";
 import { useLetterAssistantDocument, useResumeAssistantDocument } from "./document";
 import { useEditorStore } from "@/features/resume/editor/store";
-import { D2, D3, EASE, EXIT } from "@/libs/motion";
+import { D2, D3, EASE, EASE_DRAWER, EXIT } from "@/libs/motion";
 
 /**
  * Where the assistant sits (README §6.5): a third column at ≥1280 (it and the panel share `--editor-side`), in place
@@ -127,15 +127,18 @@ export function AssistantReplace({ replaced, assistant, children }: AssistantRep
 type AssistantOverlayProps = { place: "drawer" | "screen"; children: ReactNode };
 type OverlayCustom = { instant: boolean; hidden: string; shown: string };
 
-/** Enters from off-screen over 320ms and leaves the same way in 70% of that; ⌘J (`instant`) skips both. */
+/**
+ * Enters from off-screen over 320ms and leaves the same way in 70% of that, on the sheet curve HeroUI's drawers use;
+ * ⌘J (`instant`) skips both.
+ */
 const overlayMotion: Variants = {
 	hidden: ({ instant, hidden }: OverlayCustom) => ({
 		transform: hidden,
-		transition: instant ? { duration: 0 } : { duration: D3 * EXIT, ease: EASE },
+		transition: instant ? { duration: 0 } : { duration: D3 * EXIT, ease: EASE_DRAWER },
 	}),
 	shown: ({ instant, shown }: OverlayCustom) => ({
 		transform: shown,
-		transition: instant ? { duration: 0 } : { duration: D3, ease: EASE },
+		transition: instant ? { duration: 0 } : { duration: D3, ease: EASE_DRAWER },
 	}),
 };
 

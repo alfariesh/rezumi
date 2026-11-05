@@ -134,7 +134,7 @@ function ResumePageCanvas() {
 					pageGap={24}
 					pageScale={pageScale}
 					className={cn(
-						"mx-auto w-fit transition-transform duration-emphasized ease-enter",
+						"mx-auto w-fit transition-transform duration-emphasized ease-drawer",
 						shifted && "-translate-x-[120px] rtl:translate-x-[120px]",
 						parser && "hidden",
 					)}

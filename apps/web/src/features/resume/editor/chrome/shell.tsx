@@ -263,7 +263,7 @@ function TabletBody({ page, ...panel }: BodyProps) {
 			<div
 				inert={!drawerOpen}
 				className={cn(
-					"absolute start-2 top-0 bottom-2 z-20 flex w-[380px] max-w-[calc(100%-3rem)] flex-col overflow-hidden rounded-2xl bg-background pt-3 shadow-overlay transition-transform duration-emphasized ease-enter",
+					"absolute start-2 top-0 bottom-2 z-20 flex w-[380px] max-w-[calc(100%-3rem)] flex-col overflow-hidden rounded-2xl bg-background pt-3 shadow-overlay transition-transform duration-emphasized ease-drawer",
 					!drawerOpen && "-translate-x-[calc(100%+1rem)] rtl:translate-x-[calc(100%+1rem)]",
 				)}
 			>

@@ -2,12 +2,14 @@ import type { CSSProperties } from "react";
 import { MotionGlobalConfig } from "motion/react";
 
 // Motion (JS) mirrors of the CSS motion tokens in packages/ui/src/styles/globals.css (--d1/--d2/--d3, --ease,
-// --ease-in-out-strong). Durations are in seconds, Motion's unit; multiply by 1000 for APIs that take ms.
+// --ease-in-out-strong, --ease-drawer). Durations are in seconds, Motion's unit; multiply by 1000 for APIs that take ms.
 
-/** --ease / `ease-enter`: everything entering, exiting or changing state. */
-export const EASE = [0.2, 0.8, 0.2, 1] as const;
+/** --ease / `ease-enter`: everything entering, exiting or changing state. A strong ease-out: fast start, soft landing. */
+export const EASE = [0.23, 1, 0.32, 1] as const;
 /** --ease-in-out-strong / `ease-in-out-strong`: things moving across the screen (indicators, reorder, settling). */
 export const EASE_MOVE = [0.77, 0, 0.175, 1] as const;
+/** --ease-drawer / `ease-drawer`: sheets, drawers and full-screen pushes, on the iOS sheet curve HeroUI's drawers use. */
+export const EASE_DRAWER = [0.32, 0.72, 0, 1] as const;
 /** --d1 / `duration-quick`: hover, press, toggle, checkbox, focus ring. */
 export const D1 = 0.12;
 /** --d2 / `duration-standard`: menus, popovers, expand/collapse, content swaps, dialogs. */
@@ -17,8 +19,11 @@ export const D3 = 0.32;
 /** Exits run at 70% of the enter duration, e.g. `D2 * EXIT`. */
 export const EXIT = 0.7;
 
-/** Springy, a little elastic: the mobile tab bar's marker hopping to the new tab (interruptible mid-flight). */
-export const TAB_SPRING = { type: "spring", duration: 0.4, bounce: 0.3 } as const;
+/**
+ * The mobile tab bar's marker hopping to the new tab: a spring, so a quick second tap redirects it mid-flight with its
+ * speed kept. A small bounce: tabs change many times a day, so the overshoot stays a hint.
+ */
+export const TAB_SPRING = { type: "spring", duration: 0.35, bounce: 0.15 } as const;
 
 /**
  * Hotkey mode switches land at once: the editor's mode-switch indicator skips its slide for this one change

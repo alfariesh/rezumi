@@ -28,9 +28,10 @@ motion:
   quick: 120ms
   standard: 200ms
   emphasized: 320ms
-  easing: cubic-bezier(0.2, 0.8, 0.2, 1)
+  easing: cubic-bezier(0.23, 1, 0.32, 1)
   exit: 70% of the entering duration
   movement-easing: cubic-bezier(0.77, 0, 0.175, 1)
+  sheet-easing: cubic-bezier(0.32, 0.72, 0, 1)
 ---
 
 ## Overview
@@ -121,8 +122,10 @@ Icons inside resumes are Phosphor names stored in resume data, drawn by the Phos
 | `duration-standard`   | 200ms    | Menus, popovers, expansion, content swaps, and dialogs |
 | `duration-emphasized` | 320ms    | Sheets, toasts, and the assistant column               |
 
-- Entering and changing state use `ease-enter` (`cubic-bezier(0.2, 0.8, 0.2, 1)`). Exits take 70% of the entry duration. Bare `transition-*` utilities already use these.
-- Sliding indicators, reordering and settling use `ease-in-out-strong` (`cubic-bezier(0.77, 0, 0.175, 1)`). Swipe-dismissed bottom sheets use `ease-drawer`. `ease-out-strong` is for marketing pages only.
+- Entering and changing state use `ease-enter` (`cubic-bezier(0.23, 1, 0.32, 1)`), a strong ease-out: it moves most in the first frames and spends the rest settling. Never ease-in. Exits take 70% of the entry duration. Bare `transition-*` utilities already use these. `ease-out-strong`, the marketing pages' name, is the same curve.
+- Sliding indicators (HeroUI's tab indicator included), reordering and settling use `ease-in-out-strong` (`cubic-bezier(0.77, 0, 0.175, 1)`). A label that grows with its tab (the editor's mode switch) shares the indicator's `duration-standard` and curve.
+- Sheets, drawers and full-screen pushes, and anything that moves in step with one (the page stepping aside for the Download & history sheet), use `ease-drawer` (`cubic-bezier(0.32, 0.72, 0, 1)`), the curve HeroUI's drawers use. So do swipe-dismissed bottom sheets on release.
+- HeroUI's own motion runs on these curves (`globals.css`): popovers, menus, pickers and tooltips enter on `ease-enter` from their trigger; dialogs rise from 95% over `duration-standard`; press feedback (`Button`, `ToggleButton`, pagination) scales on `duration-quick`. Animate only opacity and transform there; HeroUI's keyframes already do.
 - Hover states on sidebar links and nav items are static (color or background), not animated.
 - Page navigations (a pathname change) fade the page out and the next one up 6px (`index.css`). The shell's chrome is named and swaps in place, with no fade: the sidebar (`app-nav`), the navbar (`app-bar`), and a section's header and tabs that persist between its pages (`knowledge-header`, `knowledge-nav`). Give any new persistent header or tab row a `view-transition-name` and add it to that rule. Search-param changes (views, filters) swap instantly.
 - First appearance uses the `starting:` variant (`ENTER_CLASS`, `POP_CLASS` in `apps/web/src/libs/motion.ts`), not an animation library class. Loading placeholders stay still; document reflow is never animated. Keyboard mode switches are instant.
