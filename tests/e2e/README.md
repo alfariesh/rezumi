@@ -42,9 +42,9 @@ and production build. The runner still uses zero retries, so parallelism cannot 
 - Public sharing: an anonymous visitor's PDF download and statistics, a renamed address that keeps redirecting, and
   a password-protected link.
 - OAuth consent for MCP clients: deny, allow with PKCE, and the access token's audience at `/mcp`.
-- Buying a pass on the web: confirm, a double click that opens one checkout, Midtrans' page (stood in), the return page
-  waiting then paid, the receipt and the payment list. `fixtures/rpc.ts` answers the billing procedures in the browser,
-  so billing can stay off and nothing reaches Midtrans.
+- Subscribing on the web: confirm, a double click that opens one checkout, Polar's checkout (stood in), the return page
+  waiting then paid, the renewing plan and the payment list with its invoice. `fixtures/rpc.ts` answers the billing
+  procedures in the browser, so billing can stay off and nothing reaches Polar.
 - The assistant, against a scripted OpenAI-compatible provider (`fixtures/ai-stub.ts`). It needs `FLAG_ALLOW_UNSAFE_AI_BASE_URL=true` so the server may call the stub on 127.0.0.1, and skips without it.
 
 Visual regression, PDF/DOCX rasterization parity, thumbnail resolution, and import-fixture reproduction are

@@ -193,11 +193,23 @@ function homepageStructuredData(origin: string): StructuredData {
 				applicationCategory: "BusinessApplication",
 				operatingSystem: "Web",
 				isAccessibleForFree: true,
-				// The hosted plans, priced in Rupiah for the Indonesian pilot (features/homepage/plans.ts in the web app).
+				// The hosted plans, monthly in US dollars (features/homepage/plans.ts and @rezumi/schema/billing).
 				offers: [
-					{ "@type": "Offer", name: "Free", price: "0", priceCurrency: "IDR" },
-					{ "@type": "Offer", name: "Plus", price: "29000", priceCurrency: "IDR", description: "30 days of access" },
-					{ "@type": "Offer", name: "Pro AI", price: "79000", priceCurrency: "IDR", description: "30 days of access" },
+					{ "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
+					{
+						"@type": "Offer",
+						name: "Plus",
+						price: "4.99",
+						priceCurrency: "USD",
+						description: "Monthly subscription, before tax; the first 7 days are free",
+					},
+					{
+						"@type": "Offer",
+						name: "Pro AI",
+						price: "9.99",
+						priceCurrency: "USD",
+						description: "Monthly subscription, before tax",
+					},
 				],
 				publisher: { "@id": `${origin}/#organization` },
 				featureList: [

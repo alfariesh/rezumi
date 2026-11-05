@@ -1,5 +1,5 @@
 import type { BillingAlertKind } from "./alerts";
-import type { BillingMetrics } from "./reports";
+import type { BillingMetrics, Money } from "./reports";
 import type { BillingNoticeEmailProps } from "@rezumi/email/billing";
 import type { PaidPlanId } from "@rezumi/schema/billing";
 import { and, asc, desc, eq, gt, inArray, isNotNull, isNull, lt, notExists, or, sql } from "drizzle-orm";
@@ -7,10 +7,12 @@ import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { deliverBillingNotice } from "@rezumi/email/billing";
 import { env } from "@rezumi/env/server";
-import { FREE_TEMPLATES, PLANS } from "@rezumi/schema/billing";
+import { FREE_TEMPLATES, PLANS, toMajorUnits } from "@rezumi/schema/billing";
 import { alertDue, wibMidnight } from "./alerts";
 import { getBillingMode, isBillingAppliedTo } from "./entitlements";
+import { subscriptionAccess } from "./polar/mapping";
 import { billingMetrics, formatWibTime } from "./reports";
+import { getCurrentSubscription, subscriptionState } from "./subscriptions";
 import { DAY_MS } from "./timeline";
 
 /**
@@ -50,41 +52,45 @@ function timeZoneOf(timezone: string | null | undefined) {
 	}
 }
 
-const formatRupiah = (amount: number) => `Rp${new Intl.NumberFormat("id-ID").format(amount)}`;
+/** Money in each currency, written the Indonesian way: "US$4,99 + Rp59.000"; a dash when there is none. */
+function formatMoney(money: Money) {
+	const parts = Object.entries(money)
+		.filter(([, amount]) => amount !== 0)
+		.map(([currency, amount]) =>
+			new Intl.NumberFormat("id-ID", {
+				style: "currency",
+				currency: currency.toUpperCase(),
+				maximumFractionDigits: currency.toLowerCase() === "idr" ? 0 : 2,
+			}).format(toMajorUnits(amount, currency)),
+		);
+	return parts.length ? parts.join(" + ") : "0";
+}
 
 // What each alert says to the owner, and what to look at first. The runbook has the steps.
 const ALERT_TEXT: Record<BillingAlertKind, { title: string; body: string }> = {
-	amount_mismatch: {
-		title: "Nominal pembayaran tidak cocok",
-		body: "Midtrans melaporkan nominal yang berbeda dari harga pesanan, jadi paket tidak diaktifkan. Cocokkan nominalnya di dashboard Midtrans, lalu aktifkan manual atau refund.",
-	},
 	paid_not_applied: {
 		title: "Pelanggan sudah bayar, tetapi paket belum aktif",
-		body: "Midtrans menyatakan pembayaran berhasil, tetapi aktivasi di Rezumi gagal atau tertahan. Buka pembayarannya di halaman admin dan tekan Cek ulang status.",
+		body: "Polar menyatakan order lunas, tetapi aktivasi di Rezumi gagal atau akunnya sudah dihapus. Buka pembayarannya di halaman admin dan tekan Cek ulang status; bila akunnya sudah tidak ada, refund lewat halaman admin.",
 	},
 	payment_reversed: {
-		title: "Pembayaran dibatalkan oleh bank",
-		body: "Pembayaran yang sudah berhasil dibalik oleh bank atau penerbit (misalnya chargeback). Paket dan sisa kreditnya sudah dicabut otomatis. Cek riwayatnya di dashboard Midtrans.",
+		title: "Uang pembayaran ditarik kembali",
+		body: "Polar me-refund sebuah order untuk mencegah sengketa kartu (dispute), atau ada sengketa. Polar sekaligus membatalkan langganannya; kredit dari order itu sudah dicabut otomatis. Cek riwayatnya di dashboard Polar.",
 	},
 	needs_review: {
-		title: "Status pembayaran perlu dicek manual",
-		body: "Midtrans mengirim status yang tidak bisa diproses otomatis (misalnya chargeback sebagian atau penipuan terdeteksi setelah lunas). Pembayaran dibiarkan apa adanya sampai kamu mengeceknya.",
+		title: "Kejadian pembayaran perlu dicek manual",
+		body: "Ada webhook Polar yang tidak bisa diproses otomatis. Datanya tidak diubah. Cek pembayarannya di halaman admin (Cek ulang status), dan setelah diperbaiki kamu bisa mengirim ulang event itu dari dashboard Polar (Settings → Webhooks → Deliveries).",
 	},
 	rejected_signatures: {
-		title: "Banyak notifikasi Midtrans ditolak",
-		body: "Lima atau lebih notifikasi dengan tanda tangan salah dalam satu jam. Biasanya kunci Midtrans baru diganti tetapi secret di server belum (MIDTRANS_SERVER_KEY / MIDTRANS_SIGNATURE_KEY). Pembayaran tetap aktif lewat pengecekan berkala, hanya lebih lambat.",
+		title: "Banyak webhook Polar ditolak",
+		body: "Lima atau lebih webhook dengan tanda tangan salah dalam satu jam. Biasanya secret webhook di Polar diganti tetapi POLAR_WEBHOOK_SECRET di server belum. Pembayaran tetap masuk lewat pengecekan berkala, hanya lebih lambat.",
 	},
-	midtrans_errors: {
-		title: "API Midtrans gagal berulang kali",
-		body: "Pembuatan halaman bayar atau pengecekan status ke Midtrans gagal beberapa kali. Cek status.midtrans.com dan apakah server key di server masih benar.",
-	},
-	receipt_failed: {
-		title: "Bukti bayar gagal terkirim",
-		body: "Email bukti bayar tidak sampai ke pelanggan setelah 5 kali percobaan. Cek pengaturan email server, lalu tekan Kirim ulang bukti bayar di halaman admin.",
+	provider_errors: {
+		title: "API Polar gagal berulang kali",
+		body: "Pembuatan halaman checkout atau pengecekan status ke Polar gagal beberapa kali. Cek status.polar.sh dan apakah POLAR_ACCESS_TOKEN di server masih berlaku.",
 	},
 	refund_failed: {
 		title: "Refund belum berhasil",
-		body: "Midtrans menolak refund atau belum mengonfirmasinya. Buka pembayarannya di halaman admin, tekan Cek ulang status, dan lihat alasannya.",
+		body: "Polar menolak refund atau belum mengonfirmasinya. Buka pembayarannya di halaman admin, tekan Cek ulang status, dan lihat alasannya.",
 	},
 };
 
@@ -111,37 +117,36 @@ function alertNotice(row: NotificationRow): { subject: string; notice: BillingNo
 /** The owner's morning email: yesterday in WIB, and what still waits. */
 function summaryNotice(day: string, metrics: BillingMetrics): { subject: string; notice: BillingNoticeEmailProps } {
 	const alerts = metrics.alerts.filter((alert) => alert.count > 0);
+	const kinds = Object.fromEntries(metrics.sales.byKind.map((entry) => [entry.kind, entry.payments]));
 	return {
 		subject: `[Rezumi] Ringkasan penjualan ${day}`,
 		notice: {
 			lang: "id",
-			preview: `${metrics.sales.payments} pembayaran, ${formatRupiah(metrics.sales.revenue)}`,
+			preview: `${metrics.sales.payments} pembayaran, ${formatMoney(metrics.sales.revenue)}`,
 			heading: `Ringkasan ${day}`,
 			paragraphs: [
-				`Penjualan kemarin (WIB): ${metrics.sales.payments} pembayaran berhasil, total ${formatRupiah(metrics.sales.revenue)}.`,
+				`Penjualan kemarin (WIB): ${metrics.sales.payments} pembayaran berhasil (${kinds.new ?? 0} langganan baru, ${kinds.renewal ?? 0} perpanjangan, ${kinds.change ?? 0} ganti paket), total ${formatMoney(metrics.sales.revenue)} sebelum pajak dan fee Polar.`,
 				metrics.hangingPayments
-					? `${metrics.hangingPayments} pembayaran masih menunggu dibayar lebih dari satu jam; biasanya pelanggan memilih transfer bank dan belum membayar.`
-					: "Tidak ada pembayaran yang menggantung.",
+					? `${metrics.hangingPayments} checkout dibuka lebih dari satu jam lalu tetapi belum dibayar.`
+					: "Tidak ada checkout yang menggantung.",
 			],
 			rows: [
 				...metrics.sales.byPlan.map((plan) => ({
 					label: PLAN_NAMES[plan.planId],
-					value: `${plan.payments} × (${formatRupiah(plan.revenue)})`,
+					value: `${plan.payments} × (${formatMoney(plan.revenue)})`,
 				})),
 				{ label: "Checkout dimulai", value: `${metrics.checkouts.started} (${metrics.checkouts.paid} sudah dibayar)` },
+				{ label: "Refund", value: `${metrics.refunds.refunds} (${formatMoney(metrics.refunds.amount)})` },
+				{ label: "Bersih", value: formatMoney(metrics.net) },
 				{
-					label: "Refund",
-					value: `${metrics.refunds.refunds} (${formatRupiah(metrics.refunds.amount)})`,
+					label: "Langganan aktif",
+					value: `${metrics.subscriptions.active} (${metrics.subscriptions.canceling} akan berhenti, ${metrics.subscriptions.pastDue} gagal bayar)`,
 				},
-				...(metrics.reversals.payments
-					? [
-							{
-								label: "Dibatalkan bank",
-								value: `${metrics.reversals.payments} (${formatRupiah(metrics.reversals.amount)})`,
-							},
-						]
-					: []),
-				{ label: "Bersih", value: formatRupiah(metrics.net) },
+				{
+					label: "Trial gratis",
+					value: `${metrics.subscriptions.trialing} berjalan (${metrics.subscriptions.trialsStarted} mulai kemarin)`,
+				},
+				{ label: "MRR", value: formatMoney(metrics.subscriptions.mrr) },
 				{ label: "Pendaftar baru", value: `${metrics.signups.total} (${metrics.signups.verified} terverifikasi)` },
 				{ label: "Kredit Rezumi AI terpakai", value: String(metrics.credits.used) },
 				{
@@ -185,41 +190,42 @@ function reminderNotice(input: { locale: string | null; planId: PaidPlanId; ends
 				preview: heading,
 				heading,
 				paragraphs: [
-					`Akses ${plan}-mu berakhir pada ${at}. Paket ini tidak diperpanjang otomatis, jadi tidak ada tagihan apa pun.`,
+					`Akses ${plan}-mu berakhir pada ${at}. Akses ini diberikan tanpa langganan, jadi tidak diperpanjang dan tidak ada tagihan apa pun.`,
 					`Setelah itu akunmu kembali ke Gratis. Semua CV dan surat tetap bisa dibuka, diedit, dan diunduh sebagai PDF. Kamu tetap bisa membuat dokumen baru selama CV aktif tidak lebih dari ${free.activeResumes} dan surat aktif tidak lebih dari ${free.activeCoverLetters}, memakai ${FREE_TEMPLATES.length} template gratis, dan memakai koneksi AI milikmu sendiri.`,
 					...(input.planId === "pro-ai"
 						? ["Sisa kredit Rezumi AI dari paket ini berakhir bersamaan dengan paketnya."]
 						: []),
-					"Bila ingin melanjutkan, kamu bisa membeli lagi kapan saja di halaman Paket.",
+					"Bila ingin melanjutkan, kamu bisa berlangganan kapan saja di halaman Paket.",
 				],
 				action: { label: "Lihat paket", url },
 				footer:
-					"Kamu menerima email ini karena pernah membeli paket Rezumi. Email ini hanya dikirim sekali per masa aktif.",
+					"Kamu menerima email ini karena akunmu mendapat akses paket Rezumi. Email ini hanya dikirim sekali per masa aktif.",
 			},
 		};
 	}
-	const heading = `Your ${plan} pass ends ${at}`;
+	const heading = `Your ${plan} access ends ${at}`;
 	return {
-		subject: `Your Rezumi ${plan} pass ends in 3 days`,
+		subject: `Your Rezumi ${plan} access ends in 3 days`,
 		notice: {
 			lang: "en",
 			preview: heading,
 			heading,
 			paragraphs: [
-				`Your ${plan} access ends on ${at}. Passes don't renew automatically, so you won't be charged.`,
+				`Your ${plan} access ends on ${at}. It was given without a subscription, so it doesn't renew and you won't be charged.`,
 				`After that your account is back on Free. Every resume and letter stays yours to open, edit and download as a PDF. You can still create new ones while you have up to ${free.activeResumes} active resumes and ${free.activeCoverLetters} active letters, use the ${FREE_TEMPLATES.length} free templates, and use your own AI connection.`,
-				...(input.planId === "pro-ai" ? ["Rezumi AI credits from this pass end with it."] : []),
-				"If you'd like to continue, you can buy another pass any time on the Plan page.",
+				...(input.planId === "pro-ai" ? ["Rezumi AI credits that came with it end with it too."] : []),
+				"If you'd like to continue, you can subscribe any time on the Plan page.",
 			],
 			action: { label: "See plans", url },
-			footer: "You're getting this because you bought a Rezumi pass. It's sent once per pass.",
+			footer: "You're getting this because your account was given a Rezumi plan. It's sent once per stretch of access.",
 		},
 	};
 }
 
 /**
- * Queues a reminder for each account whose paid access (its last queued pass) ends within three days, once per end
- * time: a pass bought later moves the end and gets its own reminder. Only while plans apply to the account.
+ * Queues a reminder for each account whose granted access (an admin grant, a promotion, an old pass) ends within three
+ * days, once per end time: a later grant moves the end and gets its own reminder. Subscriptions are left out: Polar
+ * emails about renewals and cancellations. Only while plans apply to the account.
  */
 export async function queueExpiryReminders(now = new Date()): Promise<number> {
 	if (getBillingMode() === "off") return 0;
@@ -281,6 +287,9 @@ async function reminderFor(row: NotificationRow, now: Date) {
 		.orderBy(desc(period.endsAt))
 		.limit(1);
 	if (!last || +last.endsAt !== +endsAt) return null;
+	// A subscription carries on past the grant: nothing ends for this account.
+	const subscription = await getCurrentSubscription(row.userId);
+	if (subscription && subscriptionAccess(subscriptionState(subscription), endsAt)) return null;
 	const [owner] = await db
 		.select({ email: schema.user.email, timezone: schema.user.timezone, locale: schema.billingAccount.locale })
 		.from(schema.user)

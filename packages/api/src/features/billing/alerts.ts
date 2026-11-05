@@ -1,5 +1,5 @@
 import type { DbOrTx } from "@rezumi/db/client";
-import { and, eq, gt, inArray, isNotNull, isNull, lt, ne, or, sql } from "drizzle-orm";
+import { and, eq, gt, inArray, isNotNull, isNull, lt, or, sql } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
@@ -12,28 +12,24 @@ import { getBillingMode } from "./entitlements";
  */
 
 const BILLING_ALERT_KINDS = [
-	// Midtrans reported a different amount than the payment's: nothing was granted.
-	"amount_mismatch",
-	// Midtrans has the money but the payment isn't paid here, or it is paid without its pass.
+	// Polar says an order is paid but it isn't granted here (its account is gone, or applying it failed).
 	"paid_not_applied",
-	// A paid payment was reversed by the bank or a chargeback; its pass and credits were taken back.
+	// Money taken back after it was paid: a refund Polar made to head off a dispute, or a dispute.
 	"payment_reversed",
-	// A status that needs a look by hand, such as a partial chargeback or a settlement fraud screening denied.
+	// An event that needs a look by hand: one that couldn't be applied, or a state the code doesn't expect.
 	"needs_review",
-	// Notifications with a bad signature: a wrong key after a change, or someone probing the endpoint.
+	// Webhooks with a bad signature: a wrong secret after a change, or someone probing the endpoint.
 	"rejected_signatures",
-	// Midtrans' API kept failing: payment pages or status checks.
-	"midtrans_errors",
-	// A receipt didn't reach its customer after every try.
-	"receipt_failed",
-	// Midtrans refused a refund, or didn't confirm one in time.
+	// Polar's API kept failing: checkout pages or status checks.
+	"provider_errors",
+	// Polar refused a refund, or never confirmed one.
 	"refund_failed",
 ] as const;
 
 export type BillingAlertKind = (typeof BILLING_ALERT_KINDS)[number];
 
 /** How many times an alert must happen within the hour before it is emailed; one for the rest. */
-const ALERT_THRESHOLDS: Partial<Record<BillingAlertKind, number>> = { rejected_signatures: 5, midtrans_errors: 3 };
+const ALERT_THRESHOLDS: Partial<Record<BillingAlertKind, number>> = { rejected_signatures: 5, provider_errors: 3 };
 
 /** SQL for "this row's count reached its kind's threshold". */
 export const alertDue = () =>
@@ -48,7 +44,7 @@ const MAX_ALERT_PAYMENTS = 20;
 const SWEEP_WINDOW_MS = 60 * 60 * 1000;
 /** A paid payment without its pass this long after it changed has failed, not raced. */
 const FULFILMENT_GRACE_MS = 5 * 60 * 1000;
-/** A refund Midtrans hasn't answered this long after it was asked needs a look. */
+/** A refund Polar hasn't settled this long after it was asked needs a look. */
 const REFUND_CONFIRM_MS = 30 * 60 * 1000;
 /** The daily summary goes out from this hour, Western Indonesian Time. */
 const SUMMARY_HOUR_WIB = 8;
@@ -107,9 +103,9 @@ export function raiseBillingAlertQuietly(input: Parameters<typeof raiseBillingAl
 }
 
 /**
- * The billing job's look for problems that are states rather than events: paid payments without their pass, receipts
- * that never went out, refunds Midtrans never answered. Each is caught in the hour after it starts, so the owner hears
- * about it once (or twice, across an hour boundary) rather than every hour it lasts.
+ * The billing job's look for problems that are states rather than events: paid payments without their access and
+ * credits, refunds Polar never settled. Each is caught in the hour after it starts, so the owner hears about it once
+ * (or twice, across an hour boundary) rather than every hour it lasts.
  */
 export async function detectBillingProblems(now = new Date()) {
 	const window = (column: Parameters<typeof gt>[0], after: number) =>
@@ -128,36 +124,14 @@ export async function detectBillingProblems(now = new Date()) {
 			),
 		)
 		.limit(MAX_ALERT_PAYMENTS);
-	const unsentReceipts = await db
-		.select({ id: payment.id })
-		.from(payment)
-		.where(
-			and(
-				inArray(payment.status, ["paid", "partially_refunded"]),
-				isNotNull(payment.fulfilledAt),
-				isNotNull(payment.userId),
-				isNull(payment.receiptSentAt),
-				sql`${payment.receiptAttempts} >= 5`,
-				window(payment.receiptAttemptedAt, 0),
-			),
-		)
-		.limit(MAX_ALERT_PAYMENTS);
 	const refund = schema.billingRefund;
 	const unansweredRefunds = await db
 		.select({ paymentId: refund.paymentId })
 		.from(refund)
-		.where(
-			and(
-				eq(refund.status, "requesting"),
-				// Accepted and with the bank: waiting is normal (card refunds take days), not a problem.
-				or(isNull(refund.failureReason), ne(refund.failureReason, schema.REFUND_BANK_PROCESSING)),
-				window(refund.createdAt, REFUND_CONFIRM_MS),
-			),
-		)
+		.where(and(eq(refund.status, "requesting"), window(refund.createdAt, REFUND_CONFIRM_MS)))
 		.limit(MAX_ALERT_PAYMENTS);
 	const found: [BillingAlertKind, string[]][] = [
 		["paid_not_applied", unfulfilled.map((row) => row.id)],
-		["receipt_failed", unsentReceipts.map((row) => row.id)],
 		["refund_failed", unansweredRefunds.map((row) => row.paymentId)],
 	];
 	let raised = 0;

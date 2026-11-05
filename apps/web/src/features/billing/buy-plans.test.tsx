@@ -6,14 +6,14 @@ import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
 
-const dialog = vi.hoisted(() => ({ planId: null as string | null }));
+const dialog = vi.hoisted(() => ({ choice: null as { planId: string; interval: string } | null }));
 const context = vi.hoisted(() => ({ smtpEnabled: true }));
 
 vi.mock("@/libs/orpc/client", () => ({ orpc: {} }));
 vi.mock("@/libs/auth/client", () => ({ authClient: { sendVerificationEmail: vi.fn() } }));
 vi.mock("./purchase-dialog", () => ({
-	PurchaseDialog: ({ planId }: { planId: string | null }) => {
-		dialog.planId = planId;
+	PurchaseDialog: ({ choice }: { choice: { planId: string; interval: string } | null }) => {
+		dialog.choice = choice;
 		return null;
 	},
 }));
@@ -31,10 +31,30 @@ i18n.loadAndActivate({ locale: "en", messages: {} });
 
 const { BuyPlansSection } = await import("./buy-plans");
 
+type Subscription = NonNullable<PlanSummary["subscription"]>;
+
+const subscribed = (patch: Partial<Subscription> = {}): Subscription => ({
+	id: "sub",
+	planId: "plus",
+	interval: "month",
+	status: "active",
+	amount: 499,
+	currency: "usd",
+	currentPeriodStart: new Date("2026-11-01T00:00:00Z"),
+	currentPeriodEnd: new Date("2026-12-01T00:00:00Z"),
+	cancelAtPeriodEnd: false,
+	pendingChange: null,
+	...patch,
+});
+
 const summary = (patch: Partial<PlanSummary>): PlanSummary => ({
 	enabled: true,
 	planId: "free",
 	currentPeriodEndsAt: null,
+	source: null,
+	renews: false,
+	subscription: null,
+	currency: "usd",
 	upcoming: [],
 	limits: { activeResumes: { used: 0, max: 3 }, activeCoverLetters: { used: 0, max: 3 } },
 	features: {
@@ -49,6 +69,7 @@ const summary = (patch: Partial<PlanSummary>): PlanSummary => ({
 	canPurchase: true,
 	purchaseBlockedBy: null,
 	pendingPayment: null,
+	trialAvailable: false,
 	...patch,
 });
 
@@ -60,37 +81,68 @@ function renderSection(plan: PlanSummary, selected?: "plus" | "pro-ai") {
 	);
 }
 
-const buttons = () => screen.queryAllByRole("button").map((button) => button.textContent);
+// The plan buttons only: the monthly/yearly switch is a segmented control.
+const PLAN_BUTTON = /^(Get|Try|Upgrade|Switch|Resend)/;
+const buttons = () =>
+	screen
+		.queryAllByRole("button")
+		.map((button) => button.textContent ?? "")
+		.filter((text) => PLAN_BUTTON.test(text));
 
-describe("buying a pass", () => {
+describe("subscribing", () => {
 	beforeEach(() => {
-		dialog.planId = null;
+		dialog.choice = null;
 		context.smtpEnabled = true;
 		Element.prototype.scrollIntoView = vi.fn();
 	});
 
-	it("offers both passes on the free plan, with their final price", () => {
+	it("offers both plans monthly on the free plan, at the visitor's price", () => {
 		renderSection(summary({}));
-		expect(buttons()).toEqual(["Buy Plus", "Buy Pro AI"]);
-		expect(screen.getByText(/IDR\s29,000/)).toBeTruthy();
-		expect(screen.getByText(/IDR\s79,000/)).toBeTruthy();
+		expect(buttons()).toEqual(["Get Plus", "Get Pro AI"]);
+		expect(screen.getByText("$4.99")).toBeTruthy();
+		expect(screen.getByText("$9.99")).toBeTruthy();
 	});
 
-	it("extends Plus or upgrades to Pro AI while Plus runs", () => {
-		renderSection(summary({ planId: "plus" }));
-		expect(buttons()).toEqual(["Extend 30 days", "Upgrade to Pro AI"]);
+	it("offers a first subscription to Plus as a free week, and says prices are before tax", () => {
+		renderSection(summary({ trialAvailable: true }));
+		expect(buttons()).toEqual(["Try Plus free", "Get Pro AI"]);
+		expect(screen.getAllByText("First 7 days free")).toHaveLength(1);
+		expect(screen.getByText(/Prices are before tax/)).toBeTruthy();
 	});
 
-	it("queues Plus behind a running Pro AI and extends Pro AI", () => {
-		renderSection(summary({ planId: "pro-ai" }));
-		expect(buttons()).toEqual(["Buy Plus", "Extend 30 days"]);
-		expect(screen.getByText("Starts after your Pro AI time ends.")).toBeTruthy();
+	it("prices in Rupiah for visitors from Indonesia", () => {
+		renderSection(summary({ currency: "idr" }));
+		expect(screen.getByText(/IDR\s59,000/)).toBeTruthy();
+		expect(screen.getByText(/IDR\s129,000/)).toBeTruthy();
 	});
 
-	it("confirms the pass that was clicked", () => {
-		renderSection(summary({ planId: "plus" }));
+	it("marks the current plan and offers the upgrade while subscribed to Plus", () => {
+		renderSection(summary({ planId: "plus", source: "subscription", renews: true, subscription: subscribed() }));
+		expect(screen.getByText("Current")).toBeTruthy();
+		expect(buttons()).toEqual(["Upgrade to Pro AI"]);
 		fireEvent.click(screen.getByRole("button", { name: "Upgrade to Pro AI" }));
-		expect(dialog.planId).toBe("pro-ai");
+		expect(dialog.choice).toEqual({ planId: "pro-ai", interval: "month" });
+	});
+
+	it("starts on the subscription's interval, so a yearly Pro AI can switch down to Plus", () => {
+		renderSection(
+			summary({
+				planId: "pro-ai",
+				source: "subscription",
+				renews: true,
+				subscription: subscribed({ planId: "pro-ai", interval: "year", amount: 7_900 }),
+			}),
+		);
+		expect(buttons()).toEqual(["Switch to Plus"]);
+		expect(screen.getByText("$79")).toBeTruthy();
+	});
+
+	it("waits for a cancelled subscription to be kept before changing it", () => {
+		renderSection(
+			summary({ planId: "plus", source: "subscription", subscription: subscribed({ cancelAtPeriodEnd: true }) }),
+		);
+		expect(screen.getByRole("button", { name: "Upgrade to Pro AI" }).hasAttribute("disabled")).toBe(true);
+		expect(screen.getByText("Your subscription is set to end. Keep it first to change the plan.")).toBeTruthy();
 	});
 
 	it("marks and brings forward the plan a link asked for", () => {
@@ -109,17 +161,17 @@ describe("buying a pass", () => {
 
 	it("asks an unverified account to verify first, with a new link on request", () => {
 		renderSection(summary({ canPurchase: false, purchaseBlockedBy: "email_not_verified" }));
-		expect(screen.getByText("Verify your email to buy a pass")).toBeTruthy();
+		expect(screen.getByText("Verify your email to subscribe")).toBeTruthy();
 		expect(buttons()).toEqual(["Resend the link"]);
 	});
 
-	it("says buying is paused without offering it", () => {
+	it("says subscribing is paused without offering it", () => {
 		renderSection(summary({ canPurchase: false, purchaseBlockedBy: "paused" }));
-		expect(screen.getByText("Buying is paused for now")).toBeTruthy();
+		expect(screen.getByText("Subscribing is paused for now")).toBeTruthy();
 		expect(buttons()).toEqual([]);
 	});
 
-	it("shows nothing where buying doesn't apply", () => {
+	it("shows nothing where plans aren't sold", () => {
 		const { container } = renderSection(summary({ canPurchase: false, purchaseBlockedBy: "unavailable" }));
 		expect(container.textContent).toBe("");
 	});

@@ -1,29 +1,31 @@
-import type { PlanSummary } from "./plan";
-import type { PaidPlanId } from "@rezumi/schema/billing";
-import type { IconName } from "@rezumi/ui/components/icon";
-import type { ComponentProps, ReactNode } from "react";
-import { Timeline } from "@heroui-pro/react";
-import { Alert, Button, Drawer, Skeleton, Spinner } from "@heroui/react";
+import type { Subscription } from "./purchase";
+import type { BillingCurrency, BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
+import type { ReactNode } from "react";
+import { Alert, Button, Drawer, Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { ORPCError } from "@orpc/client";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useId, useRef, useState } from "react";
-import { LEGAL_URLS, PLANS } from "@rezumi/schema/billing";
+import { BILLING_SELLER, LEGAL_URLS, PLANS } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
+import { toast } from "@rezumi/ui/components/toast";
 import { useBreakpoint } from "@rezumi/ui/hooks/use-breakpoint";
 import { creditCount } from "./credits";
 import { getPlanName } from "./plan";
-import { formatPrice, getPurchaseKind, getPurchaseLabel, splitPurchase, usePlanDates } from "./purchase";
+import { getPurchaseKind, getPurchaseLabel, intervalSuffix, priceLabel, trialDaysFor, usePlanDates } from "./purchase";
 import { orpc } from "@/libs/orpc/client";
 
-/** The reason a checkout didn't open, in the user's words; the server's own messages aren't translated. */
-function checkoutErrorMessage(error: unknown) {
+/** Why a checkout or plan change didn't go through, in the user's words; the server's messages aren't translated. */
+function purchaseErrorMessage(error: unknown) {
 	const code = error instanceof ORPCError ? error.code : null;
 	if (code === "EMAIL_NOT_VERIFIED") return t`Verify your email address first, then try again.`;
-	if (code === "BILLING_UNAVAILABLE") return t`Buying isn't available right now. Try again later.`;
+	if (code === "BILLING_UNAVAILABLE") return t`Subscribing isn't available right now. Try again later.`;
 	if (code === "TOO_MANY_REQUESTS") return t`Too many tries in a row. Wait a few minutes, then try again.`;
-	return t`The payment page couldn't be opened. Try again in a moment.`;
+	if (code === "PAYMENT_FAILED")
+		return t`The payment for this change didn't go through. Update your payment method in billing and try again.`;
+	if (code === "CONFLICT") return t`Your plan changed in the meantime. Reload the page and try again.`;
+	return t`The checkout couldn't be opened. Try again in a moment.`;
 }
 
 type LegalLinkProps = { href: string; children: ReactNode };
@@ -41,64 +43,46 @@ function LegalLink({ href, children }: LegalLinkProps) {
 	);
 }
 
-type StepProps = Omit<ComponentProps<typeof Timeline.Item>, "title" | "status"> & {
-	icon: IconName;
-	status: "default" | "current" | "success" | "muted";
-	title: ReactNode;
-	/** When it happens, at the right; a date or a word such as "Now". */
-	when: ReactNode;
-	children?: ReactNode;
-};
-
-/** One step of what a purchase does, in the compact log style: title and time on a line, a note under it. */
-function Step({ icon, status, title, when, children, ...item }: StepProps) {
-	// Timeline passes each item where it sits in the list; it goes on to the item so the last one has no connector.
-	return (
-		<Timeline.Item {...item} status={status} align={children ? "start" : "center"}>
-			<Timeline.Marker aria-hidden="true">
-				<Icon name={icon} size={12} />
-			</Timeline.Marker>
-			<Timeline.Content className="gap-1 pb-2">
-				<div className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
-					<h3 className="text-sm leading-tight font-medium">{title}</h3>
-					<span className="shrink-0 text-xs leading-tight text-muted tabular-nums">{when}</span>
-				</div>
-				{children && <p className="text-xs leading-snug text-muted">{children}</p>}
-			</Timeline.Content>
-		</Timeline.Item>
-	);
-}
-
 type PurchaseDialogProps = {
-	/** The plan being bought; null keeps the dialog closed. */
-	planId: PaidPlanId | null;
-	current: PlanSummary["planId"];
+	/** The plan and interval chosen; null keeps the dialog closed. */
+	choice: { planId: PaidPlanId; interval: BillingInterval } | null;
+	/** The account's live subscription: present, a choice changes it instead of starting a new one. */
+	subscription: Subscription | null;
+	currency: BillingCurrency;
+	/** Whether a new subscription starts with its plan's free trial (`summary.trialAvailable`). */
+	trialAvailable: boolean;
 	onClose: () => void;
 };
 
 /**
- * Confirms a purchase before Midtrans, in a drawer (right on desktop, from the bottom on phones): the plan, its final price, that it's 30 days paid once, what it does to the
- * current pass, the refund policy in brief and the terms it agrees to. Continuing opens Midtrans' payment page.
+ * Confirms a subscription or a plan change, in a drawer (right on desktop, from the bottom on phones): the plan, its
+ * price and how often it renews, what changes when, the refund policy in brief and the terms it agrees to. A new
+ * subscription continues on Polar's checkout page; a change is made here at once.
  */
-export function PurchaseDialog({ planId, current, onClose }: PurchaseDialogProps) {
-	const { formatShort, zoneName } = usePlanDates();
+export function PurchaseDialog({ choice, subscription, currency, trialAvailable, onClose }: PurchaseDialogProps) {
+	const queryClient = useQueryClient();
+	const { formatDate } = usePlanDates();
 	const descriptionId = useId();
 	const breakpoint = useBreakpoint();
-	const plan = PLANS[planId ?? "plus"];
-	// One key per attempt: a double click or a retried request returns the same payment instead of a second one.
+	const target = choice ?? { planId: "plus" as const, interval: "month" as const };
+	const kind = getPurchaseKind(subscription, target);
+	// The same plan, billed monthly instead of yearly or the other way round.
+	const billingOnly = subscription?.planId === target.planId;
+	const trialDays = kind === "subscribe" ? trialDaysFor(target.planId, trialAvailable) : null;
+	// An upgrade ends a running free trial: the new plan has none (Polar starts its billing at once).
+	const endsTrial = kind === "upgrade" && subscription?.status === "trialing";
+	// One key per attempt: a double click or a retried request returns the same checkout instead of a second one.
 	const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
 	const [redirecting, setRedirecting] = useState(false);
-	const preview = useQuery({
-		...orpc.billing.previewPurchase.queryOptions({ input: { planId: plan.id } }),
-		enabled: planId !== null,
-	});
 	const checkout = useMutation(orpc.billing.checkout.mutationOptions({ meta: { noInvalidate: true } }));
-	const busy = checkout.isPending || redirecting;
+	const change = useMutation(orpc.billing.changePlan.mutationOptions({ meta: { noInvalidate: true } }));
+	const busy = checkout.isPending || change.isPending || redirecting;
+	const error = checkout.error ?? change.error;
 	// A second click can land before the button re-renders as busy; this stops it from sending a second request.
 	const started = useRef(false);
 
 	useEffect(() => {
-		// Back from Midtrans, the browser can restore this page as it was left: still on its way out.
+		// Back from Polar, the browser can restore this page as it was left: still on its way out.
 		const restore = (event: PageTransitionEvent) => {
 			if (!event.persisted) return;
 			started.current = false;
@@ -108,19 +92,51 @@ export function PurchaseDialog({ planId, current, onClose }: PurchaseDialogProps
 		return () => window.removeEventListener("pageshow", restore);
 	}, []);
 
-	const pay = () => {
+	const reset = () => {
+		started.current = false;
+		checkout.reset();
+		change.reset();
+		setIdempotencyKey(crypto.randomUUID());
+	};
+
+	const confirm = () => {
 		if (started.current) return;
 		started.current = true;
-		checkout.mutate(
-			{ planId: plan.id, idempotencyKey },
+		if (kind === "subscribe") {
+			checkout.mutate(
+				{ planId: target.planId, interval: target.interval, idempotencyKey },
+				{
+					onSuccess: ({ redirectUrl }) => {
+						setRedirecting(true);
+						window.location.assign(redirectUrl);
+					},
+					onError: () => {
+						started.current = false;
+						setIdempotencyKey(crypto.randomUUID());
+					},
+				},
+			);
+			return;
+		}
+		change.mutate(
+			{ planId: target.planId, interval: target.interval },
 			{
-				onSuccess: ({ redirectUrl }) => {
-					setRedirecting(true);
-					window.location.assign(redirectUrl);
+				onSuccess: ({ effective }) => {
+					void queryClient.invalidateQueries({ queryKey: orpc.billing.key() });
+					toast.add({
+						type: "success",
+						description:
+							effective !== "now"
+								? t`Your plan changes at your next renewal.`
+								: billingOnly
+									? t`You're now billed yearly.`
+									: t`Your plan is now ${getPlanName(target.planId)}.`,
+					});
+					reset();
+					onClose();
 				},
 				onError: () => {
 					started.current = false;
-					setIdempotencyKey(crypto.randomUUID());
 				},
 			},
 		);
@@ -128,148 +144,182 @@ export function PurchaseDialog({ planId, current, onClose }: PurchaseDialogProps
 
 	const close = () => {
 		if (busy) return;
-		checkout.reset();
-		setIdempotencyKey(crypto.randomUUID());
+		reset();
 		onClose();
 	};
 
-	const name = getPlanName(plan.id);
-	const days = plan.durationDays;
-	const price = formatPrice(preview.data?.amount ?? plan.priceIdr);
-	const credits = preview.data?.credits ?? plan.creditsPerPurchase;
-	const split = preview.data ? splitPurchase(preview.data) : null;
-
+	const name = getPlanName(target.planId);
+	const currentName = subscription ? getPlanName(subscription.planId) : name;
+	const price = priceLabel(target.planId, target.interval, currency);
+	const credits = PLANS[target.planId].creditsPerMonth;
+	const renewal = subscription?.currentPeriodEnd ? formatDate(subscription.currentPeriodEnd) : null;
 	// Desktop slides in from the right; phones and tablets get a bottom sheet.
 	const placement = breakpoint === "mobile" || breakpoint === "tablet" ? "bottom" : "right";
 
-	const pass = split ? [split] : [];
-	const steps = [
-		<Step key="pay" icon="lock" status="default" title={<Trans>Pay</Trans>} when={<Trans>Now</Trans>}>
-			<Trans>On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here.</Trans>
-		</Step>,
-		...(preview.isPending
-			? [
-					<Timeline.Item key="loading">
-						<Timeline.Content>
-							<Skeleton className="h-10 rounded-lg" />
-						</Timeline.Content>
-					</Timeline.Item>,
-				]
-			: pass.length === 0
-				? [
-						<Step
-							key="start"
-							icon="calendar-plus"
-							status="current"
-							title={<Trans>{name} starts</Trans>}
-							when={<Trans>Once paid</Trans>}
-						>
-							<Trans>Time you already have is never lost.</Trans>
-						</Step>,
-					]
-				: pass.flatMap(({ pass: stretch, waitsFor, after }) => [
-						<Step
-							key="start"
-							icon="calendar-plus"
-							status="current"
-							title={<Trans>{name} starts</Trans>}
-							when={waitsFor ? formatShort(stretch.startsAt) : <Trans>Once paid</Trans>}
-						>
-							{waitsFor || credits > 0 ? (
-								<>
-									{waitsFor && <Trans>After your {getPlanName(waitsFor.planId)} time ends.</Trans>}{" "}
-									{credits > 0 && <Trans>{creditCount(credits)} for Rezumi AI come with it.</Trans>}
-								</>
-							) : undefined}
-						</Step>,
-						<Step
-							key="end"
-							icon="stop-circle"
-							status="default"
-							title={<Trans>{name} ends</Trans>}
-							when={formatShort(stretch.endsAt)}
-						>
-							{credits > 0 ? <Trans>Credits left from this pass expire with it.</Trans> : undefined}
-						</Step>,
-						...after.flatMap((later) => {
-							const rest = getPlanName(later.planId);
-							return [
-								<Step
-									key={`${later.startsAt.toISOString()}-start`}
-									icon="play"
-									status="muted"
-									title={<Trans>Your {rest} time picks up again</Trans>}
-									when={formatShort(later.startsAt)}
-								/>,
-								<Step
-									key={`${later.startsAt.toISOString()}-end`}
-									icon="stop-circle"
-									status="muted"
-									title={<Trans>{rest} ends</Trans>}
-									when={formatShort(later.endsAt)}
-								/>,
-							];
-						}),
-					])),
-	];
-
 	return (
-		<Drawer.Backdrop isOpen={planId !== null} onOpenChange={(open) => !open && close()}>
+		<Drawer.Backdrop isOpen={choice !== null} onOpenChange={(open) => !open && close()}>
 			<Drawer.Content placement={placement}>
 				<Drawer.Dialog aria-describedby={descriptionId}>
 					{placement === "bottom" && <Drawer.Handle />}
 					<Drawer.CloseTrigger aria-label={t`Close`} />
 					<Drawer.Header>
-						<Drawer.Heading>{getPurchaseLabel(getPurchaseKind(current, plan.id), plan.id)}</Drawer.Heading>
+						<Drawer.Heading>{getPurchaseLabel(kind, target, subscription, trialDays)}</Drawer.Heading>
 					</Drawer.Header>
-					<Drawer.Body className="grid content-start gap-6 text-sm">
+					<Drawer.Body className="grid content-start gap-5 text-sm">
 						<div id={descriptionId} className="grid gap-1">
 							<p className="flex items-baseline justify-between gap-3">
-								<span className="font-medium">{name}</span>
-								<span className="text-2xl font-semibold tracking-tight tabular-nums">{price}</span>
+								<span className="font-medium">
+									{name} · {target.interval === "year" ? <Trans>Yearly</Trans> : <Trans>Monthly</Trans>}
+								</span>
+								<span className="text-2xl font-semibold tracking-tight tabular-nums">
+									{price} <span className="text-sm font-normal text-muted">{intervalSuffix(target.interval)}</span>
+								</span>
 							</p>
 							<p className="text-muted">
-								<Trans>{days} days of access, paid once. It doesn't renew on its own.</Trans>
+								{trialDays ? (
+									target.interval === "year" ? (
+										<Trans>Free for {trialDays} days, then renews every year until you cancel.</Trans>
+									) : (
+										<Trans>Free for {trialDays} days, then renews every month until you cancel.</Trans>
+									)
+								) : target.interval === "year" ? (
+									<Trans>Renews every year until you cancel.</Trans>
+								) : (
+									<Trans>Renews every month until you cancel.</Trans>
+								)}
+							</p>
+							<p className="text-xs text-muted">
+								<Trans>Prices are before tax: Polar adds the tax that applies where you live.</Trans>
 							</p>
 						</div>
 
-						{/* What happens, in order, one step per moment: pay, the pass starts, it ends, then any time it pushed back. */}
-						<div className="grid gap-2">
-							<Timeline density="compact" size="sm">
-								{steps}
-							</Timeline>
-							{split && (
-								<p className="text-xs text-muted">
-									{split.waitsFor ? (
-										<Trans>Times in {zoneName(split.pass.startsAt)}.</Trans>
-									) : (
-										<Trans>Times in {zoneName(split.pass.endsAt)}, estimated for paying now.</Trans>
-									)}
-								</p>
+						<ul className="grid gap-2">
+							{kind === "subscribe" && trialDays ? (
+								<li className="flex gap-2">
+									<Icon name="calendar-blank" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										<Trans>
+											Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the
+											first charge comes after {trialDays} days, and cancelling before then costs nothing.
+										</Trans>
+									</span>
+								</li>
+							) : kind === "subscribe" ? (
+								<li className="flex gap-2">
+									<Icon name="lock" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										<Trans>
+											Pay on Polar's secure checkout with a card, Apple Pay or Google Pay. {name} starts as soon as the
+											payment goes through.
+										</Trans>
+									</span>
+								</li>
+							) : kind === "upgrade" ? (
+								<li className="flex gap-2">
+									<Icon name="lightning" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										{endsTrial ? (
+											billingOnly ? (
+												<Trans>
+													Your free trial ends now. Your saved payment method is charged today for this month, then the
+													difference for yearly billing; after that, the yearly price at each renewal.
+												</Trans>
+											) : (
+												<Trans>
+													Your free trial ends now. Your saved payment method is charged today for this month of{" "}
+													{currentName}, then the difference for {name}; after that, {name}'s price at each renewal.
+												</Trans>
+											)
+										) : billingOnly ? (
+											<Trans>
+												Yearly billing starts now. You're charged the difference for the rest of this period with your
+												saved payment method, then the yearly price at each renewal.
+											</Trans>
+										) : (
+											<Trans>
+												{name} starts now. You're charged the difference for the rest of this period with your saved
+												payment method, then the new price at each renewal.
+											</Trans>
+										)}
+									</span>
+								</li>
+							) : billingOnly ? (
+								<li className="flex gap-2">
+									<Icon name="calendar-blank" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										{renewal ? (
+											<Trans>
+												Yearly billing stays until {renewal}; monthly billing starts then. Nothing is charged now.
+											</Trans>
+										) : (
+											<Trans>
+												Yearly billing stays until your next renewal; monthly billing starts then. Nothing is charged
+												now.
+											</Trans>
+										)}
+									</span>
+								</li>
+							) : (
+								<li className="flex gap-2">
+									<Icon name="calendar-blank" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										{renewal ? (
+											<Trans>
+												Your current plan stays until {renewal}; {name} starts then, at the new price. Nothing is
+												charged now.
+											</Trans>
+										) : (
+											<Trans>
+												Your current plan stays until your next renewal; {name} starts then. Nothing is charged now.
+											</Trans>
+										)}
+									</span>
+								</li>
 							)}
-						</div>
+							{credits > 0 && (
+								<li className="flex gap-2">
+									<Icon name="sparkle" size={18} className="mt-0.5 shrink-0 text-muted" />
+									<span>
+										<Trans>
+											{creditCount(credits)} for Rezumi AI every month. Credits left at the end of a month don't carry
+											over.
+										</Trans>
+									</span>
+								</li>
+							)}
+							<li className="flex gap-2">
+								<Icon name="x-circle" size={18} className="mt-0.5 shrink-0 text-muted" />
+								<span>
+									<Trans>
+										Cancel any time from your plan page. You keep access until the end of the period you paid for.
+									</Trans>
+								</span>
+							</li>
+						</ul>
 
 						<p className="text-muted">
 							<Trans>
-								On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI
+								Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI
 								credits from it. Double payments and technical problems are always sorted out.
 							</Trans>
 						</p>
 
-						{checkout.isError && (
+						{error && (
 							<Alert status="danger">
 								<Alert.Indicator>
 									<Icon name="warning-circle" />
 								</Alert.Indicator>
 								<Alert.Content>
-									<Alert.Description>{checkoutErrorMessage(checkout.error)}</Alert.Description>
+									<Alert.Description>{purchaseErrorMessage(error)}</Alert.Description>
 								</Alert.Content>
 							</Alert>
 						)}
 
 						<p className="text-xs text-muted">
 							<Trans>
-								By continuing, you agree to the <LegalLink href={LEGAL_URLS.terms}>Terms of service</LegalLink> and the{" "}
+								{BILLING_SELLER.merchantOfRecord} sells the subscription as the merchant of record and handles payment,
+								invoices and tax. By continuing, you agree to the{" "}
+								<LegalLink href={LEGAL_URLS.terms}>Terms of service</LegalLink> and the{" "}
 								<LegalLink href={LEGAL_URLS.refund}>Refund policy</LegalLink>.
 							</Trans>
 						</p>
@@ -278,9 +328,17 @@ export function PurchaseDialog({ planId, current, onClose }: PurchaseDialogProps
 						<Button variant="tertiary" isDisabled={busy} onPress={close}>
 							<Trans>Cancel</Trans>
 						</Button>
-						<Button className="flex-1" isPending={busy} onPress={pay}>
+						<Button className="flex-1" isPending={busy} onPress={confirm}>
 							{busy && <Spinner size="sm" color="current" aria-hidden />}
-							<Trans>Continue to payment</Trans>
+							{kind === "subscribe" && trialDays ? (
+								<Trans>Start free trial</Trans>
+							) : kind === "subscribe" ? (
+								<Trans>Continue to checkout</Trans>
+							) : kind === "upgrade" ? (
+								<Trans>Upgrade now</Trans>
+							) : (
+								<Trans>Change at renewal</Trans>
+							)}
 						</Button>
 					</Drawer.Footer>
 				</Drawer.Dialog>

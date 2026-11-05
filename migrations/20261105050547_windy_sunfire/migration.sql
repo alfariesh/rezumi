@@ -1,0 +1,1 @@
+ALTER TABLE "billing_payment" ADD COLUMN "trial_days" integer;

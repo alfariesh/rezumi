@@ -17,10 +17,13 @@ beforeEach(() => {
 		"REDIS_URL",
 		"WEB_FONT_BASE_URL",
 		"STORAGE_HEALTHCHECK_TIMEOUT_MS",
-		"MIDTRANS_ENVIRONMENT",
-		"MIDTRANS_SERVER_KEY",
-		"MIDTRANS_ENABLED_PAYMENTS",
-		"MIDTRANS_SIGNATURE_KEY",
+		"POLAR_ENVIRONMENT",
+		"POLAR_ACCESS_TOKEN",
+		"POLAR_WEBHOOK_SECRET",
+		"POLAR_PRODUCT_PLUS_MONTHLY",
+		"POLAR_PRODUCT_PLUS_YEARLY",
+		"POLAR_PRODUCT_PRO_AI_MONTHLY",
+		"POLAR_PRODUCT_PRO_AI_YEARLY",
 		"BILLING_CHECKOUT_PAUSED",
 		"BILLING_ALERT_EMAIL",
 	])
@@ -204,56 +207,59 @@ describe("billing alert address", () => {
 	});
 });
 
-describe("Midtrans configuration", () => {
-	it("defaults to QRIS only and an open checkout", async () => {
+describe("Polar configuration", () => {
+	const products = {
+		POLAR_PRODUCT_PLUS_MONTHLY: "1eed6e9a-623e-4773-9f35-dbec17a0a0d4",
+		POLAR_PRODUCT_PLUS_YEARLY: "1dd73112-6f2c-43f1-a546-48454c07a588",
+		POLAR_PRODUCT_PRO_AI_MONTHLY: "5e164955-b367-4f38-90ff-1f07715d8833",
+		POLAR_PRODUCT_PRO_AI_YEARLY: "1aa24a00-f999-49cc-b1c2-c21ebe69a917",
+	};
+
+	it("leaves Polar off and checkout open by default", async () => {
 		const { env } = await import("./server");
-		expect(env.MIDTRANS_ENABLED_PAYMENTS).toEqual(["other_qris"]);
+		expect(env.POLAR_ACCESS_TOKEN).toBeUndefined();
+		expect(env.POLAR_ENVIRONMENT).toBeUndefined();
 		expect(env.BILLING_CHECKOUT_PAUSED).toBe(false);
-		expect(env.MIDTRANS_SERVER_KEY).toBeUndefined();
 	});
 
-	it("reads a comma-separated method list", async () => {
-		vi.stubEnv("MIDTRANS_ENABLED_PAYMENTS", " other_qris, gopay ,,bni_va ");
-		expect((await import("./server")).env.MIDTRANS_ENABLED_PAYMENTS).toEqual(["other_qris", "gopay", "bni_va"]);
+	it("accepts a token with its environment and all four products", async () => {
+		for (const [name, value] of Object.entries(products)) vi.stubEnv(name, value);
+		vi.stubEnv("POLAR_ENVIRONMENT", "sandbox");
+		vi.stubEnv("POLAR_ACCESS_TOKEN", "polar_oat_test");
+		vi.stubEnv("POLAR_WEBHOOK_SECRET", "whsec_test");
+		const { env } = await import("./server");
+		expect(env.POLAR_ENVIRONMENT).toBe("sandbox");
+		expect(env.POLAR_PRODUCT_PRO_AI_YEARLY).toBe(products.POLAR_PRODUCT_PRO_AI_YEARLY);
 	});
 
-	it.each(["qris", "credit_card", " , "])("rejects the method list %j", async (value) => {
-		vi.stubEnv("MIDTRANS_ENABLED_PAYMENTS", value);
+	it("rejects a product id that isn't a UUID", async () => {
+		vi.stubEnv("POLAR_PRODUCT_PLUS_MONTHLY", "plus-monthly");
 		vi.spyOn(console, "error").mockImplementation(() => {});
 		await expect(import("./server")).rejects.toThrow("Invalid environment variables");
 	});
 
-	it("accepts a signature key that matches the environment", async () => {
-		vi.stubEnv("MIDTRANS_ENVIRONMENT", "sandbox");
-		vi.stubEnv("MIDTRANS_SERVER_KEY", "SB-Mid-server-test");
-		vi.stubEnv("MIDTRANS_SIGNATURE_KEY", "SB-signature-test");
-		expect((await import("./server")).env.MIDTRANS_SIGNATURE_KEY).toBe("SB-signature-test");
-	});
-
-	it("accepts a sandbox key for sandbox and a production key for production", async () => {
-		vi.stubEnv("MIDTRANS_ENVIRONMENT", "sandbox");
-		vi.stubEnv("MIDTRANS_SERVER_KEY", "SB-Mid-server-test");
-		expect((await import("./server")).env.MIDTRANS_ENVIRONMENT).toBe("sandbox");
-		vi.resetModules();
-		vi.stubEnv("MIDTRANS_ENVIRONMENT", "production");
-		vi.stubEnv("MIDTRANS_SERVER_KEY", "Mid-server-test");
-		expect((await import("./server")).env.MIDTRANS_ENVIRONMENT).toBe("production");
-	});
-
 	it.each([
-		[{ MIDTRANS_SERVER_KEY: "SB-Mid-server-test" }, "needs MIDTRANS_ENVIRONMENT"],
-		[{ MIDTRANS_ENVIRONMENT: "sandbox", MIDTRANS_SERVER_KEY: "Mid-server-test" }, "not a sandbox server key"],
-		[{ MIDTRANS_ENVIRONMENT: "production", MIDTRANS_SERVER_KEY: "SB-Mid-server-test" }, "is a sandbox key"],
+		[{ POLAR_ACCESS_TOKEN: "polar_oat_test", ...products }, "needs POLAR_ENVIRONMENT"],
 		[
-			{ MIDTRANS_ENVIRONMENT: "sandbox", MIDTRANS_SERVER_KEY: "SB-Mid-server-test", MIDTRANS_SIGNATURE_KEY: "Mid-sig" },
-			"doesn't belong to the sandbox environment",
+			{
+				POLAR_ACCESS_TOKEN: "polar_oat_test",
+				POLAR_ENVIRONMENT: "sandbox",
+				...products,
+				POLAR_PRODUCT_PRO_AI_YEARLY: "",
+			},
+			"needs all four POLAR_PRODUCT_*",
 		],
 		[
-			{ MIDTRANS_ENVIRONMENT: "production", MIDTRANS_SERVER_KEY: "Mid-server-test", MIDTRANS_SIGNATURE_KEY: "SB-sig" },
-			"doesn't belong to the production environment",
+			{
+				POLAR_ACCESS_TOKEN: "polar_oat_test",
+				POLAR_ENVIRONMENT: "production",
+				...products,
+				POLAR_PRODUCT_PLUS_YEARLY: products.POLAR_PRODUCT_PLUS_MONTHLY,
+			},
+			"must be a different product",
 		],
-		[{ MIDTRANS_SIGNATURE_KEY: "SB-sig" }, "without MIDTRANS_SERVER_KEY"],
-	])("refuses to start with a mismatched key: %j", async (settings, message) => {
+		[{ POLAR_WEBHOOK_SECRET: "whsec_test" }, "without POLAR_ACCESS_TOKEN"],
+	])("refuses to start with an incomplete setup: %j", async (settings, message) => {
 		for (const [name, value] of Object.entries(settings)) vi.stubEnv(name, value);
 		await expect(import("./server")).rejects.toThrow(message);
 	});
