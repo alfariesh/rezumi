@@ -1,0 +1,33 @@
+# Backlog setelah rilis portfolio
+
+Ide yang sengaja tidak masuk rilis pertama. Sebelum memulai salah satunya, cek keputusan pemilik di `00-keputusan.md` dan buat rencana phase baru bila besar.
+
+| #   | Ide                                                                      | Kenapa ditunda / syarat                                                                                                              |
+| --- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| B1  | Dua tema sisa dari mockup Phase 00                                       | Rilis cukup 4 tema; tambah setelah melihat tema mana yang paling dipakai                                                             |
+| B2  | Halaman detail karya terpisah (`/<username>/work/<slug>`)                | SEO dan kartu share per karya; butuh segmen ketiga dan kanonik baru                                                                  |
+| B3  | Unggah file video                                                        | Ditolak untuk rilis pertama (keputusan 2026-11-05): file besar, biaya penyimpanan dan bandwidth, perlu konversi format               |
+| B4  | Banyak portfolio per akun (misalnya per bidang)                          | Butuh alamat per portfolio; kandidat fitur Pro                                                                                       |
+| B5  | Subdomain `nama.rezumi.app`                                              | Username bertitik/underscore, wildcard DNS dan rute, risiko nama menipu (`00-keputusan.md` bagian 2)                                 |
+| B6  | CSS sendiri dan font unggahan untuk portfolio                            | Pakai ulang Custom Styles dan font sendiri CV (fitur Plus); butuh sanitasi CSS                                                       |
+| B7  | Blog atau tulisan singkat                                                | Mengubah portfolio menjadi situs multi-halaman                                                                                       |
+| B8  | Testimoni terverifikasi (undangan ke pemberi testimoni untuk menyetujui) | Rilis pertama memakai pernyataan pengguna; verifikasi butuh alur email ke pihak ketiga                                               |
+| B9  | Statistik lanjutan (negara, perangkat, ekspor CSV)                       | Perlu kajian privasi                                                                                                                 |
+| B10 | Cache tepi + purge saat isi berubah; domain media R2 publik              | Setelah ada data beban; sekarang render per permintaan dan gambar lewat Worker                                                       |
+| B11 | Impor proyek otomatis dari GitHub, Behance, Dribbble (bukan satu tautan) | Integrasi pihak ketiga dan batas API; rilis pertama punya tempel tautan per karya                                                    |
+| B12 | API publik dan tool MCP untuk portfolio                                  | Setelah bentuk data stabil; ikuti pola `packages/mcp`                                                                                |
+| B13 | App mobile: lihat, ubah, dan terbitkan portfolio                         | Web dulu; **wajib** sebelum rilis toko pertama (aturan `CLAUDE.md`, "Feature parity exceptions")                                     |
+| B14 | Kartu nama digital: QR + unduh vCard                                     | Kecil; cocok untuk acara karier dan job fair                                                                                         |
+| B15 | Portfolio dua bahasa (ganti bahasa di halaman)                           | Butuh isi per bahasa; bisa dibantu AI terjemahan                                                                                     |
+| B16 | Portfolio privat dengan password                                         | Pola password CV sudah ada; tunggu permintaan pengguna                                                                               |
+| B17 | Embed lain (Figma, Loom, SoundCloud, Spotify, Google Slides)             | Tiap penyedia memperluas CSP `frame-src` dan perlu kajian privasi; rilis pertama hanya YouTube dan Vimeo                             |
+| B18 | AI: teks alternatif gambar dan terjemahan seluruh portfolio              | Butuh model dengan penglihatan dan biaya kredit baru                                                                                 |
+| B19 | "Open to work" terhubung dengan Applications (lowongan yang dilamar)     | Integrasi dengan fitur karier                                                                                                        |
+| B20 | Editor teks CV memakai Rich Text Editor HeroUI Pro juga                  | Portfolio memakainya lebih dulu; editor CV punya fitur AI Improve sendiri, jadi perlu migrasi hati-hati                              |
+| B21 | Metrik dengan data tersambung (misalnya angka GitHub atau Dribbble)      | Rilis pertama hanya angka yang diketik pengguna; data tersambung butuh integrasi dan pembaruan berkala                               |
+| B22 | Pratinjau PDF di halaman (beberapa halaman tanpa membuka tab baru)       | Rilis pertama: gambar halaman pertama + buka PDF; penampil di halaman menambah JavaScript dan risiko                                 |
+| B23 | Peta interaktif di halaman publik (dimuat saat diklik)                   | Rilis pertama memakai gambar peta agar cepat dan privat; peta interaktif menambah ±200 KB JavaScript dan permintaan ke penyedia peta |
+| B24 | Ubin peta sendiri (misalnya Protomaps di R2) menggantikan OpenFreeMap    | OpenFreeMap gratis tanpa SLA; ubin sendiri bila pemakaian peta di editor/dashboard membesar                                          |
+| B25 | Efek intro tambahan dan latar beranimasi (misalnya aurora, partikel)     | Mulai dari efek kurasi; tambah setelah melihat pemakaian; tetap patuhi aturan gerak dan ukuran skrip                                 |
+| B26 | Statistik CV memakai Cloudflare Analytics Engine juga                    | Portfolio memakainya lebih dulu; statistik CV sekarang di Postgres                                                                   |
+| B27 | Area layanan di peta (radius kota) untuk freelancer lokal                | Rilis pertama hanya satu titik kota                                                                                                  |

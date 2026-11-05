@@ -1,0 +1,102 @@
+# Portfolio web Rezumi — mulai di sini
+
+Rencana fitur **portfolio**: selain membuat CV, setiap akun bisa menerbitkan website portfolio satu halaman di `rezumi.app/<username>`, dengan pilihan tema dan pengaturan yang aman. Ini **builder terstruktur** (isi konten → pilih tema → atur warna, font, urutan bagian), bukan web builder bebas. Karya disusun dari **blok sederhana** (teks dengan Rich Text Editor HeroUI Pro, gambar, widget metrik, video, PDF, tautan otomatis); intro bisa diberi efek teks pilihan, lokasi tampil dengan peta (HeroUI Map), dan statistik memakai Cloudflare Analytics Engine. Satu phase dikerjakan dalam satu sesi Claude.
+
+- Keputusan produk (alamat, isi, blok karya, paket, cakupan rilis): [00-keputusan.md](00-keputusan.md)
+- Desain halaman publik, tema, kustomisasi, editor, input karya, widget metrik: [01-desain.md](01-desain.md)
+- Rancangan teknis (untuk agent): [02-teknis.md](02-teknis.md)
+- Ide setelah rilis: [backlog-lanjutan.md](backlog-lanjutan.md)
+
+## Cara memakai (untuk pemilik)
+
+1. Buka **sesi Claude baru** untuk setiap phase, lalu tempel prompt ini (ganti nomornya):
+
+   ```text
+   Kerjakan Phase 01 dari .agents/docs/plans/portfolio/README.md
+   ```
+
+2. Claude membaca dokumen, mengecek apa yang perlu kamu siapkan, dan bertanya bila ada keputusan yang kurang. Jawab saja di chat.
+3. Di akhir sesi Claude memberi laporan berbahasa awam plus gambar (HP dan desktop), lalu menawarkan commit dan Pull Request.
+4. **Merge ke `main` = langsung tayang di produksi.** Portfolio tetap tersembunyi oleh saklar `PORTFOLIO_MODE` sampai Phase 12. Dengan mode `admins`, hanya akun admin yang bisa mencobanya di produksi.
+5. Lanjut ke phase berikutnya sesuai urutan di bawah.
+
+Prompt lain yang bisa dipakai:
+
+| Kebutuhan                                      | Prompt                                                                                               |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Melanjutkan phase yang terpotong               | `Lanjutkan Phase 03 dari .agents/docs/plans/portfolio/README.md`                                     |
+| Dibantu tugas non-kode (Cloudflare, Turnstile) | `Bantu saya mengerjakan bagian "Untuk pemilik" Phase 09 dari .agents/docs/plans/portfolio/README.md` |
+| Mengubah satu desain tema                      | `Tema Kanvas: judul terlalu besar di HP. Perbaiki mengikuti .agents/docs/plans/portfolio`            |
+| Mengubah aturan paket                          | `Ubah batas karya paket Gratis jadi 8. Ikuti .agents/docs/plans/portfolio/00-keputusan.md`           |
+| Menanyakan posisi rencana                      | `Apa status rencana portfolio? Baca .agents/docs/plans/portfolio/README.md`                          |
+| Ada laporan konten buruk setelah rilis         | `Ada laporan portfolio berisi penipuan. Ikuti Phase 11 di .agents/docs/plans/portfolio`              |
+
+## Urutan phase dan status
+
+Status: ⬜ belum mulai · 🟡 berjalan/sebagian · ✅ selesai · ⛔ diblokir (lihat catatan) · ⏸️ ditunda (keputusan pemilik).
+
+| Phase | Judul                                                                              | Dikerjakan               | Perlu dari pemilik sebelum mulai                               | Bergantung pada | Status |
+| ----- | ---------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------------- | --------------- | ------ |
+| 00    | [Mockup tema dan widget metrik](phase-00-mockup-tema.md)                           | Claude + pemilik memilih | ±30 menit menilai mockup                                       | —               | ⬜     |
+| 01    | [Fondasi: data, API, saklar](phase-01-fondasi.md)                                  | Claude                   | —                                                              | 00              | ⬜     |
+| 02    | [Mesin tampilan, tema pertama, halaman publik](phase-02-halaman-publik.md)         | Claude                   | —                                                              | 01              | ⬜     |
+| 03    | [Editor: buat portfolio, isi teks, desain, terbitkan](phase-03-editor-isi.md)      | Claude                   | Jawaban aturan turunan #5                                      | 02              | ⬜     |
+| 04    | [Gambar, karya, dan metrik](phase-04-gambar-karya.md)                              | Claude                   | —                                                              | 03              | ⬜     |
+| 05    | [Media karya dan lokasi: video, PDF, tempel tautan, peta](phase-05-media-karya.md) | Claude                   | Jawaban aturan turunan #15                                     | 04              | ⬜     |
+| 06    | [Tema lengkap, efek intro, galeri tema, cek visual](phase-06-tema-lengkap.md)      | Claude + pemilik menilai | Waktu menilai lembar contoh                                    | 05              | ⬜     |
+| 07    | [Paket: Gratis dan Plus](phase-07-paket.md)                                        | Claude                   | Jawaban aturan turunan #1–#4, #9, #14, #16                     | 06              | ⬜     |
+| 08    | [Statistik pengunjung dan form kontak](phase-08-statistik-kontak.md)               | Claude                   | Widget Turnstile (site key + secret key)                       | 05              | ⬜     |
+| 09    | [Domain sendiri](phase-09-domain-sendiri.md)                                       | Claude + pemilik         | Cloudflare for SaaS aktif, token API, satu domain uji          | 07, 08          | ⬜     |
+| 10    | [Rezumi AI untuk portfolio](phase-10-rezumi-ai.md)                                 | Claude                   | API key AI di `.env.local` untuk uji; jawaban biaya kredit     | 04, 07          | ⬜     |
+| 11    | [Keamanan konten, privasi, legal](phase-11-keamanan-legal.md)                      | Claude + review pemilik  | Menyetujui teks S&K dan Kebijakan Privasi; jawaban #11 dan #12 | 08              | ⬜     |
+| 12    | [Uji menyeluruh dan rilis](phase-12-rilis.md)                                      | Claude + pemilik         | Waktu uji ±1 jam, secret produksi, izin menyalakan saklar      | Semua           | ⬜     |
+
+Phase 08, 09, 10, dan 11 boleh dikerjakan dalam urutan apa pun setelah dependensinya selesai, tetapi **satu per satu** di checkout yang sama karena banyak file yang sama tersentuh. Rilis (Phase 12) menunggu semuanya: keputusan pemilik 2026-11-05 menetapkan semua jenis blok karya, bagian tambahan, statistik, domain sendiri, AI, dan form kontak wajib ada di rilis pertama.
+
+## Aturan wajib untuk setiap sesi agent
+
+Bagian ini untuk Claude. Pemilik tidak perlu menghafalnya.
+
+1. **Baca dulu:** `CLAUDE.md` di root repo, README ini, `00-keputusan.md`, `01-desain.md`, `02-teknis.md`, lalu dokumen phase. Refresh graph (`index_repository`) di awal sesi; cari titik kode dengan graph + grep. Path di dokumen ini adalah titik awal dari eksplorasi 2026-11-05: cek ulang sebelum mengandalkannya. Untuk komponen HeroUI Pro (Rich Text Editor, KPI), ambil dokumentasinya lewat MCP `heroui-pro`.
+2. **Cek prasyarat.** Bila ada yang belum disiapkan pemilik (kolom tabel dan bagian "Untuk pemilik" di phase), berhenti dan sebutkan persis apa yang dibutuhkan serta cara menyiapkannya, langkah demi langkah. Jangan menebak kunci, URL, atau keputusan bisnis.
+3. **Keputusan bisnis tidak diubah diam-diam.** Bila implementasi menunjukkan satu keputusan di `00-keputusan.md` tidak bisa atau tidak sebaiknya dipakai, jelaskan pilihannya dan tanya pemilik. Catat jawaban di log keputusan. Aturan turunan (bagian 6) dikonfirmasi di phase yang disebut di tabelnya.
+4. **Git:** `git status --short` sebelum mengedit; sesi lain bisa bekerja di checkout yang sama, jadi stage hanya path milik sesi ini. Buat branch `feat/portfolio-NN-<slug>` dari `main` terbaru. Commit memakai Conventional Commits. Jangan merge ke `main` tanpa persetujuan pemilik.
+5. **Saklar:** semua perilaku baru berada di balik `PORTFOLIO_MODE` (`off` | `admins` | `on`, bawaan `off`). Dengan `off`, produk berperilaku persis seperti sebelumnya: `rezumi.app/<username>` tetap membuka CV utama, menu Portfolio tidak tampil, prosedur portfolio menolak. Buktikan dengan tes di setiap phase yang menyentuh rute, API, atau UI.
+6. **Rahasia:** jangan pernah menulis token, secret key, atau password di kode, dokumen, tes, log, atau chat. Minta pemilik mengisinya sendiri di `.env.local` (lokal) atau `pnpm exec wrangler secret put <NAMA>` (produksi). Panggilan ke API produksi pihak ketiga (Cloudflare, Turnstile) hanya dengan izin eksplisit pemilik.
+7. **Web dulu; app mobile belum dikerjakan** (aturan `CLAUDE.md`). Jangan mengubah, build, atau menjalankan `apps/mobile` kecuali menjaga agar tetap terkompilasi. Logika yang nanti dibutuhkan mobile ditaruh di paket bersama, bukan di `apps/web`. Portfolio dicatat di "Feature parity exceptions" `.agents/docs/mobile-release-handoff.md` (Phase 03).
+8. **Desain dicek dengan mata,** bukan hanya tes: render, lihat screenshot desktop (1440 px) dan HP (390 px), terang dan gelap, isi sedikit dan isi banyak. Sertakan gambar di laporan (SendUserFile, atau Artifact privat untuk banyak gambar).
+9. **Kualitas:** string aplikasi lewat Lingui lalu `pnpm lingui:extract` (terjemahkan id-ID); teks halaman publik lewat katalognya sendiri (`02-teknis.md` 5.5) lalu `pnpm pdf:translations`; typecheck dan tes paket yang berubah; `pnpm exec turbo boundaries` bila ekspor/impor antarpaket berubah; `pnpm exec vp lint --fix <path>` dan `pnpm exec vp fmt <path>`; akhiri dengan `pnpm lint:agent` dan `pnpm format:check`; `pnpm check:cloudflare` bila kode server atau bundel Worker berubah. Laporkan jumlah tes yang benar-benar berjalan; jangan mengaku lulus bila dilewati.
+10. **Dokumen ikut diperbarui:** bila rancangan berubah saat implementasi, perbarui `02-teknis.md` (dan `01-desain.md` untuk tampilan). Nomor bagian dokumen itu dirujuk phase lain: tambahkan bagian baru di akhir. Panduan pengguna di `docs/` ditulis sebagai draf di phase masing-masing dan diterbitkan di Phase 12.
+11. **Akhir sesi:** perbarui kolom Status di tabel atas dan tambahkan satu baris di "Catatan sesi" (tanggal, phase, hasil, sisa pekerjaan, tugas pemilik). Lalu beri laporan dengan format di bawah.
+12. **Bila konteks sesi hampir habis:** berhenti di titik aman (tes lulus, tidak ada perubahan setengah jadi), set status 🟡, tulis langkah lanjutan yang konkret di "Catatan sesi", dan minta pemilik membuka sesi baru dengan prompt "Lanjutkan Phase NN".
+
+Format laporan akhir untuk pemilik (bahasa awam, singkat):
+
+```text
+Phase NN — <judul>: selesai / sebagian
+Yang berubah: …
+Gambar / cara mengecek sendiri: …
+Tes yang dijalankan: … (jumlah lulus/gagal/dilewati)
+Belum dikerjakan / risiko: …
+Tugasmu sebelum phase berikutnya: …
+```
+
+## Isi folder
+
+| File                        | Isi                                                                                                                                                                                   |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `00-keputusan.md`           | Keputusan pemilik, aturan turunan yang menunggu konfirmasi, mutu yang dijanjikan, log keputusan                                                                                       |
+| `01-desain.md`              | Alur pengguna, struktur halaman, kustomisasi, enam arah tema, token, editor, input karya, widget metrik, layanan/testimoni/klien                                                      |
+| `02-teknis.md`              | Kode yang dipakai ulang, lokasi kode baru, data, render, rute, API, gambar, statistik, kontak, paket, domain, AI, keamanan, teks kaya, blok, metrik, video, PDF, tautan otomatis, tes |
+| `phase-00` … `phase-12`     | Instruksi tiap phase                                                                                                                                                                  |
+| `backlog-lanjutan.md`       | Ide setelah rilis                                                                                                                                                                     |
+| `draf-panduan-portfolio.md` | Dibuat di Phase 03 dan dilengkapi phase berikutnya: draf panduan pengguna `docs/`, diterbitkan di Phase 12                                                                            |
+| `mockups/`                  | Dibuat di Phase 00: mockup HTML tema, widget metrik, dan efek intro yang disetujui pemilik                                                                                            |
+
+## Catatan sesi
+
+| Tanggal    | Phase | Hasil                                                                                                                                                                                                                                                                                                                                                                                                                                | Sisa / tugas pemilik                                                                 |
+| ---------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| 2026-11-05 | —     | Rencana dibuat: eksplorasi kode (halaman web CV yang dirender server, rute `/<username>`, domain sendiri, kartu share, statistik, unggahan gambar, katalog paket, saklar `BILLING_MODE`), riset singkat pasar (read.cv tutup Mei 2025, Bento tutup Feb 2026, VisualCV menjual website dari CV), keputusan pemilik (alamat, freemium, model isi campuran, semua fitur tambahan di rilis pertama), dokumen phase 00–11                 | —                                                                                    |
+| 2026-11-05 | —     | Revisi input portfolio atas permintaan pemilik: karya = blok sederhana (Teks dengan Rich Text Editor HeroUI Pro, Gambar, Metrik, Video YouTube/Vimeo, PDF, Tautan otomatis), widget metrik dieksplorasi (anatomi KPI HeroUI Pro, tiga varian dipilih di Phase 00), bagian baru (angka pencapaian, layanan, testimoni, logo klien), data dasar khusus portfolio dan portfolio tanpa CV; Phase 05 baru, phase lama 05–11 menjadi 06–12 | —                                                                                    |
+| 2026-11-05 | —     | Tambahan atas permintaan pemilik: kartu Lokasi dengan peta (HeroUI Map di editor dan dashboard, gambar peta di halaman publik, tingkat kota), intro wajib dengan efek teks opsional (kurasi 6 efek buatan sendiri; React Bits tidak disalin karena lisensi MIT + Commons Clause), Cloudflare Analytics Engine untuk rincian statistik (negara, perangkat, perujuk) di samping Postgres; aturan turunan #13–#16                       | Mulai Phase 00 (siapkan ±30 menit untuk menilai mockup tema, metrik, dan efek intro) |
