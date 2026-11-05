@@ -1,24 +1,33 @@
 import type { PlanSummary } from "./plan";
 import type { RouterOutput } from "@/libs/orpc/client";
-import type { PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingCurrency, BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
 import { i18n } from "@lingui/core";
 import { t } from "@lingui/core/macro";
 import { useRouteContext } from "@tanstack/react-router";
-import { BILLING_CURRENCY, PLANS } from "@rezumi/schema/billing";
+import { PLANS, planPrice, toMajorUnits } from "@rezumi/schema/billing";
 import { getPlanName } from "./plan";
 
 export type Payment = RouterOutput["billing"]["payments"]["items"][number];
 export type PaymentDetail = RouterOutput["billing"]["payment"];
-export type PurchasePreview = RouterOutput["billing"]["previewPurchase"];
 export type PaymentStatus = Payment["status"];
+export type Subscription = NonNullable<PlanSummary["subscription"]>;
 
-/** The account's timezone; until one is chosen it reads UTC, and Rezumi sells in Indonesia, so dates show in WIB. */
+/** The browser's time zone, or UTC when it can't say. */
+const browserTimeZone = () => {
+	try {
+		return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+	} catch {
+		return "UTC";
+	}
+};
+
+/** The account's time zone; until one is chosen it reads UTC, so dates show in the browser's own zone. */
 export const planTimeZone = (timezone: string | null | undefined) =>
-	timezone && timezone !== "UTC" ? timezone : "Asia/Jakarta";
+	timezone && timezone !== "UTC" ? timezone : browserTimeZone();
 
 /**
- * Dates for plans and payments, in the app's language and the account's timezone: "3 Desember 2026 pukul 08.10 WIB"
- * with the time, "3 Des 2026" without, "3 Des 2026, 08.10" in a column.
+ * Dates for plans and payments, in the app's language and the account's time zone: "3 December 2026 at 08:10 GMT+7"
+ * with the time, "3 Dec 2026" without, "3 Dec 2026, 08:10" in a column.
  */
 export function usePlanDates() {
 	const { session } = useRouteContext({ from: "/dashboard" });
@@ -36,7 +45,7 @@ export function usePlanDates() {
 			}),
 		formatDay: (date: Date) =>
 			date.toLocaleDateString(i18n.locale, { day: "numeric", month: "short", year: "numeric", timeZone }),
-		/** "3 Des 2026, 08.10": for a column of times whose zone is named once, by `zoneName`. */
+		/** "3 Dec 2026, 08:10": for a column of times whose zone is named once, by `zoneName`. */
 		formatShort: (date: Date) =>
 			date.toLocaleString(i18n.locale, {
 				day: "numeric",
@@ -54,47 +63,85 @@ export function usePlanDates() {
 	};
 }
 
-/** A price in whole Rupiah, written the locale's way: "Rp 79.000" in Indonesian, "IDR 79,000" in English. */
-export const formatPrice = (amount: number) =>
-	new Intl.NumberFormat(i18n.locale, {
+/**
+ * An amount in a currency's smallest unit, written the locale's way: "$4.99" and "$39" in English, "Rp59.000" in
+ * Indonesian. Whole amounts drop the decimals; Rupiah never shows them.
+ */
+export function formatPrice(amount: number, currency: string) {
+	const code = currency.toUpperCase();
+	const value = toMajorUnits(amount, currency);
+	const whole = Number.isInteger(value);
+	return new Intl.NumberFormat(i18n.locale, {
 		style: "currency",
-		currency: BILLING_CURRENCY,
-		maximumFractionDigits: 0,
-	}).format(amount);
-
-/** What buying a plan does from where the account stands: a first pass, more days, an upgrade or a queued pass. */
-export type PurchaseKind = "buy" | "extend" | "upgrade" | "queue";
-
-export function getPurchaseKind(current: PlanSummary["planId"], target: PaidPlanId): PurchaseKind {
-	if (current === target) return "extend";
-	if (current === "free") return "buy";
-	return PLANS[target].rank > PLANS[current].rank ? "upgrade" : "queue";
+		currency: code,
+		minimumFractionDigits: code === "IDR" || whole ? 0 : 2,
+		maximumFractionDigits: code === "IDR" ? 0 : 2,
+	}).format(value);
 }
 
-/** The buy button's words for a plan, from where the account stands. */
-export function getPurchaseLabel(kind: PurchaseKind, target: PaidPlanId) {
-	const name = getPlanName(target);
-	const days = PLANS[target].durationDays;
-	if (kind === "extend") return t`Extend ${days} days`;
-	if (kind === "upgrade") return t`Upgrade to ${name}`;
-	return t`Buy ${name}`;
+/** A plan's price per renewal, formatted in the visitor's currency. */
+export const priceLabel = (planId: PaidPlanId, interval: BillingInterval, currency: BillingCurrency) =>
+	formatPrice(planPrice(planId, interval, currency), currency);
+
+/** How much a year costs less than twelve months, as a whole percentage: 35 for "save 35%". */
+export function yearlySaving(planId: PaidPlanId, currency: BillingCurrency) {
+	const twelveMonths = planPrice(planId, "month", currency) * 12;
+	return Math.round((1 - planPrice(planId, "year", currency) / twelveMonths) * 100);
 }
 
-export type PlannedStretch = PurchasePreview["schedule"][number];
+/** A yearly price spread over its months, formatted: what a month costs when paid yearly. */
+export function monthlyOfYearly(planId: PaidPlanId, currency: BillingCurrency) {
+	// Whole cents, and whole Rupiah (a hundred of its smallest unit).
+	const unit = currency === "idr" ? 100 : 1;
+	return formatPrice(Math.round(planPrice(planId, "year", currency) / 12 / unit) * unit, currency);
+}
+
+/** A subscription that still bills or gives access, so a new checkout isn't the way to a plan: changing it is. */
+export const isLiveSubscription = (subscription: Subscription | null | undefined): subscription is Subscription =>
+	!!subscription && ["trialing", "active", "past_due", "paused"].includes(subscription.status);
 
 /**
- * What a purchase does to the account's paid time, as the server would lay it out if it were paid now: the new pass,
- * the stretch it waits behind (none when it starts once paid), and the time it pushes behind it (`after`) (the rest of a lower
- * plan, or passes already queued). Null without the new pass.
+ * What choosing a plan and interval does from where the account stands: a first subscription, the plan it is on, a
+ * change up (charged the difference now: a higher plan, or yearly) or down (from the next renewal).
  */
-export function splitPurchase(
-	preview: PurchasePreview,
-): { pass: PlannedStretch; waitsFor: PlannedStretch | null; after: PlannedStretch[] } | null {
-	const index = preview.schedule.findIndex((stretch) => stretch.purchase);
-	const pass = preview.schedule[index];
-	if (!pass) return null;
-	return { pass, waitsFor: preview.schedule[index - 1] ?? null, after: preview.schedule.slice(index + 1) };
+export type PurchaseKind = "subscribe" | "current" | "upgrade" | "downgrade";
+
+export function getPurchaseKind(
+	subscription: Subscription | null | undefined,
+	target: { planId: PaidPlanId; interval: BillingInterval },
+): PurchaseKind {
+	if (!isLiveSubscription(subscription)) return "subscribe";
+	if (subscription.planId === target.planId && subscription.interval === target.interval) return "current";
+	const up =
+		PLANS[target.planId].rank > PLANS[subscription.planId].rank ||
+		(target.planId === subscription.planId && target.interval === "year");
+	return up ? "upgrade" : "downgrade";
 }
+
+/** The button's words for a plan and interval, from where the account stands. */
+/**
+ * The free trial a new subscription to this plan starts with, in days: the plan's, while the account hasn't had a
+ * subscription (`summary.trialAvailable`). Null otherwise.
+ */
+export const trialDaysFor = (planId: PaidPlanId, trialAvailable: boolean) =>
+	trialAvailable ? PLANS[planId].trialDays : null;
+
+export function getPurchaseLabel(
+	kind: PurchaseKind,
+	target: { planId: PaidPlanId; interval: BillingInterval },
+	subscription?: Subscription | null,
+	trialDays?: number | null,
+) {
+	const name = getPlanName(target.planId);
+	if (kind === "current") return t`Your plan`;
+	if (kind === "subscribe") return trialDays ? t`Try ${name} free` : t`Get ${name}`;
+	const samePlan = subscription?.planId === target.planId;
+	if (samePlan) return target.interval === "year" ? t`Switch to yearly` : t`Switch to monthly`;
+	return kind === "upgrade" ? t`Upgrade to ${name}` : t`Switch to ${name}`;
+}
+
+/** How often a plan renews, for a price: "/ month", "/ year". */
+export const intervalSuffix = (interval: BillingInterval) => (interval === "year" ? t`/ year` : t`/ month`);
 
 export function getPaymentStatusLabel(status: PaymentStatus) {
 	switch (status) {
@@ -126,32 +173,32 @@ export function getPaymentStatusColor(status: PaymentStatus): "success" | "warni
 	return "default";
 }
 
-/** The Midtrans method a payment used, by name; a dash until one is chosen. */
-export function getPaymentMethodName(paymentType: string | null) {
-	switch (paymentType) {
-		case null:
-			return "—";
-		case "qris":
-			return "QRIS";
-		case "gopay":
-			return "GoPay";
-		case "shopeepay":
-			return "ShopeePay";
-		case "bank_transfer":
-			return t`Virtual account`;
-		case "echannel":
-			return "Mandiri Bill";
-		case "credit_card":
-			return t`Card`;
+/** What a payment was for, in a few words: a new subscription, a renewal, a plan change, or a 30-day pass. */
+/** A paid $0 order whose checkout offered a free trial: the trial starting, not a charge. */
+export const isTrialStart = (payment: Pick<Payment, "trialDays" | "totalAmount" | "paidAt">) =>
+	payment.trialDays !== null && payment.totalAmount === 0 && payment.paidAt !== null;
+
+export function getPaymentReasonLabel(
+	payment: Pick<Payment, "billingReason" | "interval" | "trialDays" | "totalAmount" | "paidAt">,
+) {
+	if (payment.interval === null) return t`30-day pass`;
+	if (isTrialStart(payment)) return t`Free trial`;
+	switch (payment.billingReason) {
+		case "subscription_cycle":
+			return t`Renewal`;
+		case "subscription_update":
+			return t`Plan change`;
 		default:
-			return paymentType;
+			return t`New subscription`;
 	}
 }
 
-/** Whether a payment ever went through, so it has a receipt (refunded ones keep theirs). */
-export const hasReceipt = (payment: Pick<Payment, "paidAt">) => payment.paidAt !== null;
+/** Whether a payment has an invoice at Polar: an order that went through (refunded ones keep theirs). */
+/** An order that went through and charged something: a trial's $0 start has nothing to invoice. */
+export const hasInvoice = (payment: Pick<Payment, "paidAt" | "orderId" | "trialDays" | "totalAmount">) =>
+	payment.paidAt !== null && payment.orderId !== null && !isTrialStart(payment);
 
-/** Where a payment stands for the page Midtrans sends the customer back to. */
+/** Where a payment stands for the page Polar sends the customer back to. */
 export type ReturnState = "paid" | "waiting" | "closed" | "failed" | "expired" | "refunded";
 
 export function getReturnState(payment: Pick<Payment, "status" | "expiresAt">, now = new Date()): ReturnState {
@@ -161,7 +208,7 @@ export function getReturnState(payment: Pick<Payment, "status" | "expiresAt">, n
 			return "paid";
 		case "creating":
 		case "pending":
-			// Still open on the server, but the time to pay is over: a payment made at the last moment can still arrive.
+			// Still open on the server, but the checkout closed: a payment made at the last moment can still arrive.
 			return payment.expiresAt && payment.expiresAt <= now ? "closed" : "waiting";
 		case "failed":
 		case "cancelled":
@@ -177,11 +224,3 @@ export function getReturnState(payment: Pick<Payment, "status" | "expiresAt">, n
 /** Whether the return page should keep asking: the payment may still change on its own. */
 export const isOpenPayment = (payment: Pick<Payment, "status">) =>
 	payment.status === "pending" || payment.status === "creating";
-
-const ORDER_ID = /^RZ-([\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12})$/i;
-
-/** The payment behind a Midtrans order number (`RZ-<payment id>`), for return links that carry only `order_id`. */
-export function paymentIdFromOrderId(orderId: unknown): string | null {
-	if (typeof orderId !== "string") return null;
-	return ORDER_ID.exec(orderId.trim())?.[1]?.toLowerCase() ?? null;
-}

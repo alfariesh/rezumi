@@ -20,6 +20,7 @@ vi.mock("@/libs/orpc/client", () => ({
 					queryFn: async () => api.payment(input.id),
 				}),
 			},
+			invoice: { mutationOptions: () => ({ mutationFn: async () => ({ status: "unavailable" }) }) },
 		},
 	},
 }));
@@ -39,22 +40,38 @@ const paidAt = new Date("2026-11-03T01:10:00Z");
 
 const payment = (patch: Partial<PaymentDetail>): PaymentDetail => ({
 	id: ID,
-	orderId: `RZ-${ID}`,
+	orderId: null,
 	planId: "pro-ai",
-	amount: 79_000,
-	currency: "IDR",
-	durationDays: 30,
-	credits: 100,
+	interval: "month",
+	billingReason: "subscription_create",
+	amount: 999,
+	taxAmount: 0,
+	totalAmount: 999,
+	currency: "usd",
+	credits: 0,
 	status: "pending",
-	paymentType: "bank_transfer",
 	createdAt: new Date(+paidAt - 60_000),
 	expiresAt: new Date(Date.now() + 86_400_000),
 	paidAt: null,
+	periodStart: null,
+	periodEnd: null,
 	refundedAmount: 0,
-	redirectUrl: "https://app.sandbox.midtrans.com/snap/v4/redirection/token",
-	access: null,
+	redirectUrl: "https://sandbox.polar.sh/checkout/polar_c_test",
+	trialDays: null,
 	...patch,
 });
+
+const paid = (patch: Partial<PaymentDetail> = {}) =>
+	payment({
+		status: "paid",
+		paidAt,
+		orderId: "order_1",
+		credits: 100,
+		redirectUrl: null,
+		periodStart: paidAt,
+		periodEnd: new Date(+paidAt + 30 * 86_400_000),
+		...patch,
+	});
 
 function renderPage(paymentId: string | null = ID) {
 	return render(
@@ -66,57 +83,56 @@ function renderPage(paymentId: string | null = ID) {
 	);
 }
 
-describe("returning from Midtrans", () => {
+describe("returning from Polar", () => {
 	// A fresh mock per test: mockReset() leaves a rejecting implementation reported as an unhandled error.
 	beforeEach(() => {
 		api.payment = vi.fn();
 	});
 
-	it("shows the pass, its end and the credits once the server says it's paid", async () => {
-		api.payment.mockResolvedValue(
-			payment({
-				status: "paid",
-				paidAt,
-				redirectUrl: null,
-				access: { startsAt: paidAt, endsAt: new Date(+paidAt + 30 * 86_400_000) },
-			}),
-		);
+	it("shows the plan, when it renews and the credits once the server says it's paid", async () => {
+		api.payment.mockResolvedValue(paid());
 		renderPage();
 		expect(await screen.findByText("Payment received")).toBeTruthy();
-		expect(screen.getByText(/Pro AI is active until December 3, 2026/)).toBeTruthy();
+		expect(screen.getByText(/Pro AI is active. It renews on December 3, 2026/)).toBeTruthy();
 		expect(screen.getByText("100 credits added for Rezumi AI.")).toBeTruthy();
-		expect(screen.getByRole("link", { name: "View receipt" }).getAttribute("href")).toBe(
-			`/dashboard/settings/billing/receipt/${ID}`,
-		);
+		expect(screen.getByRole("button", { name: "Invoice" })).toBeTruthy();
 	});
 
-	it("says when a queued pass starts", async () => {
-		const startsAt = new Date(+paidAt + 10 * 86_400_000);
+	it("tells a trial's $0 start apart: free until the first charge", async () => {
 		api.payment.mockResolvedValue(
-			payment({
+			paid({
 				planId: "plus",
 				credits: 0,
-				status: "paid",
-				paidAt,
-				access: { startsAt, endsAt: new Date(+startsAt + 30 * 86_400_000) },
+				amount: 0,
+				totalAmount: 0,
+				trialDays: 7,
+				periodEnd: new Date("2026-11-10T01:10:00Z"),
 			}),
 		);
 		renderPage();
-		expect(await screen.findByText(/Plus starts on November 13, 2026/)).toBeTruthy();
+		expect(await screen.findByText("Your free trial has started")).toBeTruthy();
+		expect(screen.getByText(/Plus is free until November 10, 2026.*\$4\.99 \/ month plus tax/)).toBeTruthy();
+		expect(screen.queryByText("Payment received")).toBeNull();
+	});
+
+	it("leaves the credits line out for Plus", async () => {
+		api.payment.mockResolvedValue(paid({ planId: "plus", credits: 0 }));
+		renderPage();
+		expect(await screen.findByText(/Plus is active/)).toBeTruthy();
 		expect(screen.queryByText(/added for Rezumi AI/)).toBeNull();
 	});
 
-	it("waits for an open payment, with the way back to Midtrans, and turns paid by itself", async () => {
+	it("waits for an open checkout, with the way back to Polar, and turns paid by itself", async () => {
 		api.payment.mockResolvedValueOnce(payment({}));
-		api.payment.mockResolvedValue(payment({ status: "paid", paidAt, access: { startsAt: paidAt, endsAt: paidAt } }));
+		api.payment.mockResolvedValue(paid());
 		vi.useFakeTimers({ shouldAdvanceTime: true });
 		try {
 			renderPage();
 			expect(await screen.findByText("Waiting for your payment")).toBeTruthy();
-			expect(screen.getByRole("link", { name: "Continue payment" }).getAttribute("href")).toContain(
-				"app.sandbox.midtrans.com",
+			expect(screen.getByRole("link", { name: "Continue checkout" }).getAttribute("href")).toContain(
+				"sandbox.polar.sh",
 			);
-			expect(screen.getByText(/can still be paid any time until/)).toBeTruthy();
+			expect(screen.getByText(/The checkout stays open until/)).toBeTruthy();
 			await vi.advanceTimersByTimeAsync(3500);
 			await waitFor(() => expect(screen.getByText("Payment received")).toBeTruthy());
 		} finally {
@@ -140,7 +156,7 @@ describe("returning from Midtrans", () => {
 		api.payment.mockResolvedValue(payment({ status, redirectUrl: null }));
 		renderPage();
 		expect(await screen.findByText(title)).toBeTruthy();
-		expect(screen.queryByRole("link", { name: "Continue payment" })).toBeNull();
+		expect(screen.queryByRole("link", { name: "Continue checkout" })).toBeNull();
 	});
 
 	it("doesn't show another account's payment, or one it can't tell from the link", async () => {

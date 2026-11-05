@@ -327,6 +327,11 @@ msgstr "{0} · {providerLabel}. 이 지원 내역과 지식을 전송하며, 제
 msgid "{0} (copy)"
 msgstr "{0}(복사본)"
 
+#. placeholder {0}: monthlyOfYearly(id, currency)
+#: src/features/billing/buy-plans.tsx
+msgid "{0} a month, billed yearly"
+msgstr ""
+
 #. placeholder {0}: creditCount(payment.credits)
 #: src/features/billing/payment-return.tsx
 msgid "{0} added for Rezumi AI."
@@ -354,6 +359,11 @@ msgstr ""
 msgid "{0} credits"
 msgstr ""
 
+#. placeholder {0}: payment.trialDays
+#: src/features/billing/pending-payment.tsx
+msgid "{0} days free"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/assistant/document.ts
 msgid "{0} edits applied"
@@ -373,7 +383,7 @@ msgstr ""
 
 #. placeholder {0}: creditCount(credits)
 #: src/features/billing/purchase-dialog.tsx
-msgid "{0} for Rezumi AI come with it."
+msgid "{0} for Rezumi AI every month. Credits left at the end of a month don't carry over."
 msgstr ""
 
 #. placeholder {0}: semantics.dates.length
@@ -397,6 +407,13 @@ msgstr "{0}시간"
 #: src/features/applications/components/interview-dialog.tsx
 msgid "{0} in {1} is {2} in your timezone ({preferredZone})."
 msgstr "{1} 기준 {0}, 내 시간대({preferredZone})로는 {2}입니다."
+
+#. placeholder {0}: metrics.subscriptions.trialing
+#. placeholder {1}: metrics.subscriptions.canceling
+#. placeholder {2}: metrics.subscriptions.pastDue
+#: src/features/billing/admin/overview.tsx
+msgid "{0} in a free trial · {1} set to end · {2} payment failed"
+msgstr ""
 
 #. placeholder {0}: usage.used
 #: src/features/billing/plan-page.tsx
@@ -435,6 +452,13 @@ msgstr "{0}분"
 #: src/features/career/offers.tsx
 msgid "{0} more"
 msgstr "{0} 더 높음"
+
+#. placeholder {0}: kinds.new ?? 0
+#. placeholder {1}: kinds.renewal ?? 0
+#. placeholder {2}: kinds.change ?? 0
+#: src/features/billing/admin/overview.tsx
+msgid "{0} new · {1} renewals · {2} plan changes"
+msgstr ""
 
 #. placeholder {0}: usage.used
 #. placeholder {1}: usage.max
@@ -508,6 +532,11 @@ msgstr "{0} 채용 공고"
 msgid "{0} returned “{1}”. Your message is kept."
 msgstr "{0}가 \"{1}\"를 반환했습니다. 귀하의 메시지는 보관됩니다."
 
+#. placeholder {0}: BILLING_SELLER.merchantOfRecord
+#: src/features/billing/purchase-dialog.tsx
+msgid "{0} sells the subscription as the merchant of record and handles payment, invoices and tax. By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
+msgstr ""
+
 #. placeholder {0}: report.skippedChecks
 #: src/features/ats-checker/report/score-header.tsx
 msgid "{0} skipped"
@@ -526,20 +555,9 @@ msgstr "뒷받침됨 {0}개, 일부 뒷받침됨 {1}개, 아직 근거 없음 {2
 msgid "{0} to fix"
 msgstr "수정할 항목 {0}개"
 
-#. placeholder {0}: formatDate(payment.access.startsAt)
-#. placeholder {1}: formatDate(payment.access.endsAt)
-#: src/features/billing/receipt.tsx
-msgid "{0} until {1}"
-msgstr ""
-
 #. placeholder {0}: metrics.signups.verified
 #: src/features/billing/admin/overview.tsx
 msgid "{0} verified their email"
-msgstr ""
-
-#. placeholder {0}: getPaymentMethodName(payment.paymentType)
-#: src/features/billing/receipt.tsx
-msgid "{0} via Midtrans"
 msgstr ""
 
 #. placeholder {0}: title || t`Untitled`
@@ -656,10 +674,6 @@ msgstr "{days, plural, other {주 #일 출근, 한도 이내}}"
 #: src/features/career/offers.tsx
 msgid "{days, plural, one {# office day, your limit} other {# office days, your limit}}"
 msgstr "{days, plural, other {주 #일 출근, 한도와 같음}}"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "{days} days of access, paid once. It doesn't renew on its own."
-msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "{done, plural, one {# document updated} other {# documents updated}}"
@@ -788,10 +802,6 @@ msgstr ""
 msgid "{name} didn't respond. Nothing was changed; try again."
 msgstr "{name}에서 응답이 없습니다. 아무것도 변경되지 않았으니 다시 시도하세요."
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "{name} ends"
-msgstr ""
-
 #: src/features/resume/editor/check/issues.ts
 msgid "{name} is split into {columns} columns"
 msgstr "{name}는 {columns} 열로 분할됩니다."
@@ -818,7 +828,7 @@ msgid "{name} sits in the sidebar"
 msgstr "{name}는 사이드바에 있습니다."
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "{name} starts"
+msgid "{name} starts now. You're charged the difference for the rest of this period with your saved payment method, then the new price at each renewal."
 msgstr ""
 
 #: src/features/resume/editor/design/template-group.tsx
@@ -870,37 +880,39 @@ msgstr "{totalRules} 중 {passedRules} 검사가 통과되었습니다."
 msgid "{pendingOnPage, plural, one {# proposed edit on this page · nothing changes until you accept} other {# proposed edits on this page · nothing changes until you accept}}"
 msgstr "{pendingOnPage, plural, one {#는 이 페이지에 대한 편집을 제안했습니다. · 귀하가 수락할 때까지 아무 것도 변경되지 않습니다.} other {#는 이 페이지에 대한 편집을 제안했습니다. · 귀하가 수락할 때까지 아무 것도 변경되지 않습니다.}}"
 
-#. placeholder {0}: formatDate(access.endsAt)
 #: src/features/billing/payment-return.tsx
-msgid "{plan} is active until {0}."
+msgid "{plan} is active, free for now."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
-msgid "{plan} is being added to your account."
+msgid "{plan} is active."
 msgstr ""
 
-#. placeholder {0}: formatDate(access.startsAt)
-#. placeholder {1}: formatDate(access.endsAt)
+#. placeholder {0}: formatDate(payment.periodEnd)
 #: src/features/billing/payment-return.tsx
-msgid "{plan} starts on {0} and runs until {1}."
+msgid "{plan} is active. It renews on {0} unless you cancel."
+msgstr ""
+
+#. placeholder {0}: formatDate(payment.periodEnd)
+#: src/features/billing/payment-return.tsx
+msgid "{plan} is free until {0}. Then your card is charged {price} plus tax, unless you cancel before."
 msgstr ""
 
 #: src/features/billing/pending-payment.tsx
-msgid "{price}, payable until {deadline}. A bank transfer can still be paid any time before then."
+msgid "{price}, open until {deadline}."
+msgstr ""
+
+#: src/features/homepage/plans.ts
+msgid "{proCredits} AI credits every month"
 msgstr ""
 
 #: src/features/billing/buy-plans.tsx
-#: src/features/homepage/plans.ts
-msgid "{proCredits} AI credits per purchase"
+msgid "{proCredits} Rezumi AI credits every month"
 msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "{proposed, plural, one {# proposed} other {# proposed}}"
 msgstr "{proposed, plural, one {# 제안} other {# 제안}}"
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "{rest} ends"
-msgstr ""
 
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "{sections, plural, one {# section} other {# sections}}"
@@ -989,10 +1001,12 @@ msgstr "{words, plural, one {# 워드} other {# 단어}}"
 msgid "/ hour"
 msgstr "/ 시간"
 
+#: src/features/billing/purchase.ts
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ month"
 msgstr "/ 월"
 
+#: src/features/billing/purchase.ts
 #: src/features/career/knowledge/preferences.tsx
 msgid "/ year"
 msgstr "/ 년"
@@ -1053,6 +1067,10 @@ msgstr ""
 #: src/features/settings/ai/api-keys.tsx
 msgid "30 days"
 msgstr "30일"
+
+#: src/features/billing/purchase.ts
+msgid "30-day pass"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "5 credits"
@@ -1293,10 +1311,6 @@ msgstr "액세스"
 msgid "Access is sent to"
 msgstr "다음에 대한 액세스 권한이 부여됩니다."
 
-#: src/features/billing/receipt.tsx
-msgid "Access period"
-msgstr ""
-
 #: src/features/auth/pages/consent.tsx
 msgid "Access your account through the API, including reading, changing and deleting your documents and job applications."
 msgstr "문서 및 입사 지원서 읽기, 변경 및 삭제를 포함하여 API를 통해 계정에 액세스하세요."
@@ -1345,11 +1359,16 @@ msgstr "행동"
 msgid "Actions"
 msgstr "행위"
 
-#. placeholder {0}: payment.orderId
+#. placeholder {0}: payment.orderId ?? payment.id
 #: src/features/billing/admin/customer.tsx
 msgid "Actions for {0}"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "active"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
 #: src/features/settings/ai/web-access.tsx
 msgid "Active"
 msgstr "활동적인"
@@ -1362,9 +1381,17 @@ msgstr ""
 msgid "Active resumes"
 msgstr ""
 
+#: src/features/billing/admin/overview.tsx
+msgid "Active subscriptions"
+msgstr ""
+
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/plan-page.tsx
 msgid "Active until {0}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Active, ends at period end"
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
@@ -1383,6 +1410,10 @@ msgstr "추가"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Add “{0}”"
 msgstr "\"{0}\" 추가"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the first charge comes after {trialDays} days, and cancelling before then costs nothing."
+msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Add a contact"
@@ -1809,11 +1840,6 @@ msgstr "스크리닝 후"
 msgid "After the technical interview"
 msgstr "기술 면접 후"
 
-#. placeholder {0}: getPlanName(waitsFor.planId)
-#: src/features/billing/purchase-dialog.tsx
-msgid "After your {0} time ends."
-msgstr ""
-
 #: src/features/career/workspace/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
 msgstr "첫 검토를 마치면 이번 주를 위한 가벼운 계획이 여기에 표시됩니다."
@@ -1988,7 +2014,11 @@ msgid "Also email {0}"
 msgstr "{0} 주소로도 이메일 보내기"
 
 #: src/features/billing/admin/customer.tsx
-msgid "Also take back the pass and remaining credits from this payment"
+msgid "Also end the subscription now (access stops at once)"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Also take back the remaining credits from this payment"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -2001,18 +2031,14 @@ msgstr "암하라어"
 msgid "Amount"
 msgstr ""
 
-#. placeholder {0}: formatPrice(left)
+#. placeholder {0}: currency.toUpperCase()
+#. placeholder {1}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
-msgid "Amount (Rupiah), up to {0}"
+msgid "Amount before tax ({0}), up to {1}"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
 msgid "Amount doesn't match the order"
-msgstr ""
-
-#. placeholder {0}: formatPrice(left)
-#: src/features/billing/admin/customer.tsx
-msgid "Amount transferred (Rupiah), up to {0}"
 msgstr ""
 
 #: src/dialogs/resume/template/data.ts
@@ -2514,7 +2540,6 @@ msgid "Back to the chat"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
-#: src/features/billing/receipt.tsx
 msgid "Back to your plan"
 msgstr ""
 
@@ -2594,6 +2619,10 @@ msgstr "지원에 가장 적합"
 msgid "Beyond the resume"
 msgstr ""
 
+#: src/features/billing/buy-plans.tsx
+msgid "Billed monthly or yearly until you cancel. Cancel any time; you keep access until the period ends."
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Billing"
@@ -2603,6 +2632,18 @@ msgstr ""
 #: src/features/user/dropdown-menu.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Billing admin"
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Billing and invoices"
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Billing couldn't be opened. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Billing period"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -2744,26 +2785,6 @@ msgstr "글머리 기호 목록"
 msgid "Business"
 msgstr ""
 
-#: src/features/billing/purchase.ts
-msgid "Buy {name}"
-msgstr ""
-
-#: src/features/billing/buy-plans.tsx
-msgid "Buy a pass"
-msgstr ""
-
-#: src/features/billing/buy-plans.tsx
-msgid "Buying is paused for now"
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Buying isn't available right now. Try again later."
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "By continuing, you agree to the <0>Terms of service</0> and the <1>Refund policy</1>."
-msgstr ""
-
 #: src/routes/dashboard/applications/index.tsx
 msgid "Calendar"
 msgstr "달력"
@@ -2809,16 +2830,29 @@ msgstr "소프트웨어가 이력서를 읽을 수 있나요?"
 msgid "Cancel"
 msgstr "취소"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Cancel any time from your plan page. You keep access until the end of the period you paid for."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Cancel subscription"
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Cancel your subscription?"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Cancellation undone"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Cancelled"
 msgstr ""
 
-#: src/features/billing/purchase.ts
-msgid "Card"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Card: up to 6 months after the payment."
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Cancelled; active until {0}"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -2835,6 +2869,10 @@ msgstr "자격증"
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Change"
 msgstr "변화"
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Change at renewal"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 #: src/features/settings/ai/web-access.tsx
@@ -2857,10 +2895,6 @@ msgstr "언어를…로 변경하세요"
 #: src/dialogs/auth/change-password.tsx
 msgid "Change password"
 msgstr "비밀번호 변경"
-
-#: src/features/billing/pending-payment.tsx
-msgid "Change payment method"
-msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Change photo"
@@ -2886,6 +2920,10 @@ msgstr "시간대 변경"
 msgid "Change your password"
 msgstr "비밀번호 변경"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Change your plan"
+msgstr ""
+
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Changed elsewhere"
 msgstr "다른 곳에서 변경됨"
@@ -2901,6 +2939,12 @@ msgstr "생각이 바뀌셨나요? 이력서 이름을 더 잘 설명하는 이�
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Changes section titles and date words only, not your content."
 msgstr "콘텐츠가 아닌 섹션 제목과 날짜 단어만 변경합니다."
+
+#. placeholder {0}: getPlanName(pending.planId)
+#. placeholder {1}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Changes to {0} on {1}"
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Changing it sends a confirmation to the new address. Your username is part of every public link."
@@ -3007,6 +3051,11 @@ msgstr "계정을 인증할 수 있는 링크가 이메일로 전송되었습니
 msgid "Check your resume’s ATS readability"
 msgstr "이력서의 ATS 가독성을 확인하세요"
 
+#. placeholder {0}: getPaymentStatusLabel(result.status)
+#: src/features/billing/admin/customer.tsx
+msgid "Checked with Polar. Here: {0}."
+msgstr ""
+
 #. placeholder {0}: file.name
 #: src/features/ats-checker/checker.tsx
 msgid "Checking {0}"
@@ -3025,7 +3074,7 @@ msgid "Checking the exported PDF…"
 msgstr "내보낸 PDF를 확인하는 중…"
 
 #: src/features/billing/payment-return.tsx
-msgid "Checking with Midtrans…"
+msgid "Checking with Polar…"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -3046,6 +3095,11 @@ msgstr "체크리스트 진행률"
 
 #: src/features/billing/admin/overview.tsx
 msgid "Checkout conversion"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "checkout only"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -3120,10 +3174,6 @@ msgstr ""
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "색상을 선택하세요"
-
-#: src/features/homepage/plans.ts
-msgid "Choose Plus"
-msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "Choose Pro AI"
@@ -3568,11 +3618,11 @@ msgstr "게스트로 계속하기"
 
 #: src/features/billing/payment-return.tsx
 #: src/features/billing/pending-payment.tsx
-msgid "Continue payment"
+msgid "Continue checkout"
 msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Continue to payment"
+msgid "Continue to checkout"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -4357,6 +4407,11 @@ msgstr ""
 msgid "Cover letters that match"
 msgstr ""
 
+#. placeholder {0}: formatShort(payment.periodEnd)
+#: src/features/billing/admin/customer.tsx
+msgid "covers until {0}"
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 msgid "Create"
 msgstr "생성"
@@ -4386,7 +4441,7 @@ msgid "Create an account"
 msgstr ""
 
 #: src/features/billing/buy-plans.tsx
-msgid "Create an account to buy a pass"
+msgid "Create an account to subscribe"
 msgstr ""
 
 #: src/features/auth/pages/consent.tsx
@@ -4450,12 +4505,12 @@ msgstr ""
 msgid "Credits charged, and what the AI provider cost."
 msgstr ""
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "Credits left from this pass expire with it."
+#: src/features/homepage/faq.tsx
+msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Pro AI includes {proCredits} credits every month; unused credits don't carry over. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
 msgstr ""
 
-#: src/features/homepage/faq.tsx
-msgid "Credits pay for the AI work Rezumi runs for you, with no API key to set up. Each action shows its cost before it starts, and a request that fails gives its credits back. Each Pro AI purchase includes {proCredits} credits. The Free plan includes a one-time trial of {trialCredits} credits, valid for {trialDays} days."
+#: src/features/billing/admin/labels.ts
+msgid "Credits taken back"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -4477,6 +4532,10 @@ msgstr "CSV 데이터"
 #: src/features/career/knowledge/preferences.tsx
 msgid "Currency"
 msgstr "통화"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Current"
+msgstr ""
 
 #: src/features/applications/components/export-applications-sheet.tsx
 msgid "Current filters"
@@ -4566,10 +4625,6 @@ msgstr "매일 {clock} · 다음 {next}"
 #: src/features/resume/share/share-panel.tsx
 msgid "Daily views over 30 days, peak {0}"
 msgstr "30일 동안의 일일 조회수, 최대 {0}"
-
-#: src/features/billing/admin/labels.ts
-msgid "DANA: up to 45 days after settlement."
-msgstr ""
 
 #: src/libs/locale.ts
 msgid "Danish"
@@ -5218,10 +5273,6 @@ msgstr "네덜란드어"
 msgid "Each answer you get feedback on is kept here, newest first."
 msgstr "피드백을 받은 답변은 모두 최신순으로 여기에 보관됩니다."
 
-#: src/features/billing/buy-plans.tsx
-msgid "Each pass is 30 days of access, paid once. Nothing renews on its own."
-msgstr ""
-
 #: src/features/career/workspace/fit.tsx
 msgid "Each requirement in the posting is checked against the facts and stories in your Knowledge. Gaps show as missing evidence, never missing ability."
 msgstr "채용 공고의 각 요건을 지식에 있는 사실 및 스토리와 대조합니다. 빈 부분은 능력이 아니라 근거가 부족하다는 뜻으로만 표시됩니다."
@@ -5412,7 +5463,7 @@ msgstr ""
 msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "내보낼 때 모든 폰트를 임베드하여 문자가 의도한 대로 표시되게 하세요."
 
-#. placeholder {0}: formatPrice(left)
+#. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Empty: the rest, {0}"
 msgstr ""
@@ -5422,7 +5473,13 @@ msgid "End"
 msgstr "끝"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/labels.ts
+#: src/features/billing/admin/overview.tsx
 msgid "Ended"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Ended, unpaid"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -5539,6 +5596,10 @@ msgstr "입장 옵션"
 msgid "Equity"
 msgstr "지분"
 
+#: src/features/billing/admin/labels.ts
+msgid "Event needs a look by hand"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Every {days} days at {clock} · next {next}"
 msgstr "{days}일마다 {clock} · 다음 {next}"
@@ -5570,10 +5631,6 @@ msgstr ""
 #: src/features/resume/editor/check/issues.ts
 msgid "Every role says what you did. Opinions on wording live in the Writing tab."
 msgstr "모든 역할은 당신이 한 일을 말해줍니다. 표현에 대한 의견은 글쓰기 탭에 있습니다."
-
-#: src/features/billing/admin/customer.tsx
-msgid "Every stretch of paid time, newest first."
-msgstr ""
 
 #: src/features/billing/plan-page.tsx
 msgid "Every template"
@@ -5704,10 +5761,6 @@ msgstr "수출된 PDF: {0}"
 #: src/features/applications/components/insights-view.tsx
 msgid "Exported pipeline-flow.png"
 msgstr "pipeline-flow.png를 내보냈습니다"
-
-#: src/features/billing/purchase.ts
-msgid "Extend {days} days"
-msgstr ""
 
 #: src/features/resume/import/read-file.ts
 msgid "Extract this account archive, then import a JSON file from its resumes or letters folder."
@@ -5849,6 +5902,11 @@ msgstr "효과적인 부분 찾는 중"
 msgid "Finnish"
 msgstr "핀란드어"
 
+#: src/features/billing/buy-plans.tsx
+#: src/features/homepage/pricing.tsx
+msgid "First {trialDays} days free"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "First run"
 msgstr "첫 실행"
@@ -5977,11 +6035,6 @@ msgstr ""
 msgid "For"
 msgstr "을 위한"
 
-#: src/features/billing/buy-plans.tsx
-#: src/features/homepage/pricing.tsx
-msgid "For 30 days, no automatic renewal"
-msgstr ""
-
 #. placeholder {0}: domain.target
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "For a root domain such as example.com, use A and AAAA records with {0}'s addresses instead of the CNAME."
@@ -6087,8 +6140,34 @@ msgstr ""
 msgid "Free ATS resume checker"
 msgstr "무료 ATS 이력서 검사기"
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Free for {trialDays} days, then renews every month until you cancel."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Free for {trialDays} days, then renews every year until you cancel."
+msgstr ""
+
 #: src/features/homepage/hero.tsx
 msgid "Free plan, no card needed. PDF downloads without a watermark."
+msgstr ""
+
+#: src/features/billing/purchase.ts
+msgid "Free trial"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Free trial until {0}; the first charge is made then"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Free trial, cancelled: ends on {0} with nothing charged"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Free trials started"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -6191,6 +6270,10 @@ msgstr "PDF 생성 중…"
 msgid "German"
 msgstr "독일어"
 
+#: src/features/billing/purchase.ts
+msgid "Get {name}"
+msgstr ""
+
 #. placeholder {0}: PROVIDER_SITES[provider]
 #: src/features/settings/ai/web-access.tsx
 msgid "Get a key at <0>{0}</0>. It's stored encrypted and used only for your requests."
@@ -6286,10 +6369,6 @@ msgstr ""
 msgid "Google"
 msgstr "Google"
 
-#: src/features/billing/admin/labels.ts
-msgid "GoPay: up to 45 days after settlement."
-msgstr ""
-
 #. Template gallery filter: civil service and state-owned companies (Indonesian: Pemerintahan & BUMN)
 #: src/dialogs/resume/template/data.ts
 msgid "Government & state-owned"
@@ -6298,6 +6377,10 @@ msgstr ""
 #: src/features/resume/editor/write/entries.tsx
 msgid "Grade"
 msgstr "성적"
+
+#: src/features/billing/admin/customer.tsx
+msgid "Granted periods"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Gray"
@@ -6508,6 +6591,10 @@ msgstr "가로 간격"
 msgid "How"
 msgstr ""
 
+#: src/features/homepage/faq.tsx
+msgid "How can I pay?"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "How did it go?"
 msgstr "어떠셨나요?"
@@ -6517,7 +6604,7 @@ msgid "How did it land?"
 msgstr "반응은 어땠나요?"
 
 #: src/features/homepage/faq.tsx
-msgid "How does a 30-day plan work?"
+msgid "How does a subscription work?"
 msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
@@ -6632,7 +6719,7 @@ msgid "If you close this dialog, your changes are lost."
 msgstr "이 대화 상자를 닫으면 변경 사항이 사라집니다."
 
 #: src/features/billing/payment-return.tsx
-msgid "If you paid just now, it shows here within a few minutes. Otherwise, start a new payment."
+msgid "If you paid just now, it shows here within a few minutes. Otherwise, start again."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
@@ -6640,7 +6727,7 @@ msgid "If you've paid, this page updates by itself in a few seconds."
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
-msgid "If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can still be paid any time until {deadline}."
+msgid "If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}."
 msgstr ""
 
 #: src/features/resume/editor/check/check-panel.tsx
@@ -6865,6 +6952,15 @@ msgstr "면접관"
 msgid "Introduction"
 msgstr ""
 
+#: src/features/billing/invoice-button.tsx
+#: src/features/billing/payment-history.tsx
+msgid "Invoice"
+msgstr ""
+
+#: src/features/billing/payment-history.tsx
+msgid "Invoices come from Polar, which sells the subscription and handles tax."
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Is equity part of the offer?"
 msgstr "오퍼에 지분이 포함되나요?"
@@ -6875,6 +6971,10 @@ msgstr "보너스가 있나요? 무엇에 따라 달라지나요?"
 
 #: src/features/homepage/faq.tsx
 msgid "Is there a free plan?"
+msgstr ""
+
+#: src/features/homepage/faq.tsx
+msgid "Is there a free trial?"
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -6930,6 +7030,14 @@ msgstr "문제"
 msgid "Issues and Job match still work without AI."
 msgstr "이슈와 직업 매칭은 AI 없이도 계속 작동합니다."
 
+#: src/features/billing/subscription-actions.tsx
+msgid "It couldn't be cancelled. Try again in a moment."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "It couldn't be resumed. Try again in a moment."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "It has entries but isn't placed on a page."
 msgstr "항목이 있지만 페이지에 배치되지 않습니다."
@@ -6961,10 +7069,6 @@ msgstr "이탈리아어"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "기울임"
-
-#: src/features/billing/receipt.tsx
-msgid "Item"
-msgstr ""
 
 #. placeholder {0}: providers[0]?.label ?? ""
 #: src/features/career/schedule-sheet.tsx
@@ -7085,6 +7189,10 @@ msgstr "계속 편집"
 msgid "Keep in Trash"
 msgstr "휴지통에 보관"
 
+#: src/features/billing/subscription-actions.tsx
+msgid "Keep it"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Keep it honest"
 msgstr "솔직하게"
@@ -7112,6 +7220,10 @@ msgstr "이력서 내용을 텍스트 이미지가 아닌 실제 텍스트로 �
 #: src/features/ats-checker/messages.ts
 msgid "Keep running heads short, or drop them. They repeat in the extracted text too."
 msgstr "머리글을 짧게 유지하거나 삭제하세요. 추출된 텍스트에도 반복되어 나타납니다."
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Keep subscription"
+msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Keep the panel beside the page"
@@ -7659,10 +7771,6 @@ msgstr "저장된 버전 불러오는 중…"
 msgid "Loading stylesheet editor…"
 msgstr "스타일시트 편집기를 불러오는 중…"
 
-#: src/features/billing/receipt.tsx
-msgid "Loading the receipt…"
-msgstr ""
-
 #: src/features/career/workspace/shell.tsx
 msgid "Loading workspace…"
 msgstr "워크스페이스 불러오는 중…"
@@ -7971,68 +8079,12 @@ msgstr "코치에게 메시지 보내기"
 msgid "Messages"
 msgstr "메시지"
 
-#: src/features/billing/admin/customer.tsx
-#: src/features/billing/admin/overview.tsx
-#: src/features/billing/payment-history.tsx
-msgid "Method"
-msgstr ""
-
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "마이크가 차단되었습니다. 브라우저 설정에서 허용하거나 답변을 입력하세요."
 
 #: src/features/billing/admin/labels.ts
-msgid "Midtrans amount doesn't match"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
 msgid "Midtrans API kept failing"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans can't refund this method: transfer the money to the customer yourself, then record it here."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans events and admin actions, newest first."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans has no transaction yet: no method was chosen."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans hasn't confirmed it yet. Check the status in a moment."
-msgstr ""
-
-#. placeholder {0}: result.transactionStatus ?? "—"
-#. placeholder {1}: getPaymentStatusLabel(result.status)
-#: src/features/billing/admin/customer.tsx
-msgid "Midtrans says \"{0}\". Here: {1}."
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans status needs a look: {said}"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: {said}"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: {said} (already handled)"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: late {said}, ignored"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: paid"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Midtrans: refunded"
 msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
@@ -8062,6 +8114,20 @@ msgstr "모델: {label}"
 
 #: src/features/applications/components/calendar-view.tsx
 msgid "Month"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "monthly"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Monthly"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Monthly recurring, before tax"
 msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
@@ -8308,7 +8374,7 @@ msgid "Nepali"
 msgstr "네팔어"
 
 #: src/features/billing/admin/overview.tsx
-msgid "Net revenue"
+msgid "Net, before tax and Polar's fees"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -8319,6 +8385,10 @@ msgstr "네트워크"
 #: src/features/settings/ai/api-keys.tsx
 msgid "Never"
 msgstr "절대"
+
+#: src/features/billing/admin/labels.ts
+msgid "Never paid"
+msgstr ""
 
 #: src/features/billing/admin/parts.tsx
 msgid "new"
@@ -8394,8 +8464,12 @@ msgstr ""
 msgid "New story"
 msgstr ""
 
+#: src/features/billing/purchase.ts
+msgid "New subscription"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
-msgid "Newest first. The menu at the end of a row checks, refunds or resends."
+msgid "Newest first. The menu at the end of a row checks with Polar or refunds."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -8633,11 +8707,7 @@ msgid "No pages match “{term}”."
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "No paid pass running"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "No passes."
+msgid "No paid plan running"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -8712,6 +8782,10 @@ msgstr "해당 채용 공고에서 구체적인 용어를 추출할 수 없어 �
 msgid "No stories yet"
 msgstr "아직 스토리가 없습니다"
 
+#: src/features/billing/admin/overview.tsx
+msgid "No subscriptions yet."
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "No suggestions for this provider. Enter any model ID."
 msgstr "이 제공업체에 대한 제안이 없습니다. 모델 ID를 입력하세요."
@@ -8760,6 +8834,10 @@ msgctxt "Entry header accent"
 msgid "None"
 msgstr ""
 
+#: src/features/billing/admin/customer.tsx
+msgid "None."
+msgstr ""
+
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Normal"
@@ -8773,6 +8851,7 @@ msgstr "보통 여백"
 msgid "Norwegian"
 msgstr "노르웨이어"
 
+#: src/features/billing/admin/customer.tsx
 #: src/features/career/workspace/messages.tsx
 msgid "Not applied"
 msgstr "적용 안 됨"
@@ -8947,6 +9026,10 @@ msgstr "이 필터와 일치하는 항목이 없습니다."
 msgid "Nothing matches."
 msgstr ""
 
+#: src/features/billing/subscription-actions.tsx
+msgid "Nothing more is charged. Your account goes back to Free at the end of the period you paid for; every document stays yours."
+msgstr ""
+
 #: src/features/career/workspace/saved.tsx
 msgid "Nothing saved yet"
 msgstr "아직 저장된 항목 없음"
@@ -8980,7 +9063,7 @@ msgid "Nothing to suggest."
 msgstr "제안할 항목이 없습니다."
 
 #: src/features/billing/payment-return.tsx
-msgid "Nothing was charged for it. You can start a new {plan} payment."
+msgid "Nothing was charged for it. You can start {plan} again."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -8995,19 +9078,6 @@ msgstr ""
 msgid "Notice period"
 msgstr "퇴사 예고 기간"
 
-#: src/features/billing/admin/customer.tsx
-msgid "notification"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Notification with a bad signature, rejected"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Notifications with a bad signature"
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
 #: src/features/career/coach-thread.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Now"
@@ -9068,14 +9138,6 @@ msgstr "오프라인 · 이 기기에 저장됨"
 msgid "Older"
 msgstr ""
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "On Midtrans' secure payment page (QRIS, e-wallet or bank transfer), then you come back here."
-msgstr ""
-
 #: src/features/docs/toc.tsx
 msgid "On this page"
 msgstr ""
@@ -9087,10 +9149,6 @@ msgstr "켜짐. 링크가 있는 사람은 누구나 웹 페이지를 볼 수 �
 #: src/features/career/workspace/prepare.tsx
 msgid "Once a round is scheduled, Prepare builds a timed plan, your opening and the questions to ask."
 msgstr "면접 라운드 일정이 잡히면 준비 탭에서 시간별 계획, 오프닝, 물어볼 질문을 만들어 줍니다."
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Once paid"
-msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Once you've sent a few applications, this shows how far they get and how quickly people reply."
@@ -9242,7 +9300,7 @@ msgid "Open the exported file and confirm you can select and copy every part of 
 msgstr "내보낸 파일을 열어 모든 부분을 선택하고 복사할 수 있는지 확인하세요."
 
 #: src/features/billing/buy-plans.tsx
-msgid "Open the link we sent to {email}. Your receipt goes there too."
+msgid "Open the link we sent to {email}. Your invoices go there too."
 msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -9352,10 +9410,6 @@ msgstr "주황색"
 msgid "Order"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Order number"
-msgstr ""
-
 #: src/features/resume/editor/write/entries.tsx
 msgid "Organization"
 msgstr "기관"
@@ -9404,10 +9458,6 @@ msgstr "내어쓰기"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Outer space"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "OVO: full refunds only, within 7 days."
 msgstr ""
 
 #: src/libs/resume/section.tsx
@@ -9461,23 +9511,19 @@ msgid "Paid"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Paid at Midtrans, not active here"
-msgstr ""
-
-#: src/features/billing/receipt.tsx
-msgid "Paid by"
+msgid "Paid at Polar, not active here"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Paid in total"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Paid on"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 msgid "Paid payments"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Paid through"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -9502,23 +9548,11 @@ msgid "Partly supported"
 msgstr "일부 뒷받침됨"
 
 #: src/features/billing/admin/labels.ts
-msgid "Pass and credits granted"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Pass and credits taken back"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
 msgid "Pass given by an admin"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Pass given."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Pass not granted"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
@@ -9527,14 +9561,6 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Pass revoked."
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Passes"
-msgstr ""
-
-#: src/features/billing/buy-plans.tsx
-msgid "Passes belong to an account with an email address. Your guest work moves with you."
 msgstr ""
 
 #. Authentication provider display name in account settings
@@ -9642,6 +9668,10 @@ msgstr "채용공고를 붙여넣었습니다."
 msgid "Pasting fills the fields automatically."
 msgstr "붙여넣으면 항목이 자동으로 채워집니다."
 
+#: src/features/billing/admin/labels.ts
+msgid "Paused"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Paused · {line}"
 msgstr "일시 중지됨 · {line}"
@@ -9651,7 +9681,7 @@ msgid "Paused schedules keep their settings."
 msgstr "일시 중지된 스케줄도 설정은 유지됩니다."
 
 #: src/features/billing/purchase-dialog.tsx
-msgid "Pay"
+msgid "Pay on Polar's secure checkout with a card, Apple Pay or Google Pay. {name} starts as soon as the payment goes through."
 msgstr ""
 
 #: src/features/homepage/pricing.tsx
@@ -9666,28 +9696,16 @@ msgstr "지급 주기"
 msgid "Payment"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Payment method"
+#: src/features/billing/admin/labels.ts
+msgid "Payment applied"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
-msgid "Payment methods"
-msgstr ""
-
-#: src/features/billing/receipt.tsx
-msgid "Payment receipt"
+#: src/features/billing/admin/labels.ts
+msgid "Payment failed"
 msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "Payment received"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Payment reversed by the bank"
-msgstr ""
-
-#: src/features/billing/admin/overview.tsx
-msgid "payments"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -9733,6 +9751,11 @@ msgstr ""
 msgid "People using Rezumi"
 msgstr ""
 
+#: src/features/homepage/pricing.tsx
+msgid "per month, or {yearly} a year"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Period"
 msgstr ""
@@ -9823,6 +9846,22 @@ msgstr ""
 msgid "Plan again"
 msgstr "다시 계획"
 
+#: src/features/billing/purchase.ts
+msgid "Plan change"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan change set for the renewal"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan changed to {plan}, monthly"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Plan changed to {plan}, yearly"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Plan my preparation"
 msgstr "준비 계획 세우기"
@@ -9839,6 +9878,10 @@ msgstr "물어볼 내용 계획"
 msgid "Planning your week"
 msgstr "이번 주 계획 세우는 중"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Plans belong to an account with an email address. Your guest work moves with you."
+msgstr ""
+
 #: src/features/billing/plan-page.tsx
 msgid "Plans don't apply to your account yet, so everything is open."
 msgstr ""
@@ -9849,15 +9892,79 @@ msgstr ""
 
 #. placeholder {0}: plus.payments
 #: src/features/billing/admin/overview.tsx
-msgid "Plus · {0} sold"
+msgid "Plus · {0} paid"
 msgstr ""
 
 #: src/features/templates/gallery.tsx
 msgid "Plus / Pro AI"
 msgstr ""
 
+#: src/features/homepage/faq.tsx
+msgid "Plus and Pro AI are billed monthly or yearly and renew until you cancel. Cancel any time from your plan page; you keep access until the end of the period you paid for, and nothing more is charged. Then your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document."
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar API kept failing"
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Polar emails you a reminder a few days before the first charge."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Polar emails you the receipt, and your invoices are in billing."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar event needs a look: {type}"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar events and admin actions, newest first."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar has nothing for this payment yet."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar hasn't confirmed it yet. Check the status in a moment."
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar id"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+msgid "Polar refunds the amount before tax and gives the tax back itself; its fees aren't returned. A full refund takes back the remaining credits. A refund alone doesn't end the subscription."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type} (already handled)"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: {type}, not for this payment"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: older {type}, ignored"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: order paid"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Polar: refund"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -10089,8 +10196,16 @@ msgstr "지난달"
 msgid "Previous week"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Prices are before tax: Polar adds the tax that applies where you live."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Prices are before tax: the checkout adds the tax that applies where you live."
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
-msgid "Prices in Indonesian Rupiah. Access starts once payment is confirmed and lasts 30 days. When it ends, your account returns to Free and your documents stay. Your own AI key works on every plan."
+msgid "Prices in US dollars, or in Rupiah for visitors from Indonesia, before tax: the checkout adds the tax for where you live. A first Plus subscription starts with 7 free days. Subscriptions renew until you cancel, and you keep access until the period you paid for ends. Then your account returns to Free and your documents stay. Your own AI key works on every plan."
 msgstr ""
 
 #: src/features/homepage/footer.tsx
@@ -10114,10 +10229,6 @@ msgstr "인쇄"
 msgid "Print or export the form to a flat PDF before sending it."
 msgstr "보내기 전에 양식을 일반 PDF로 인쇄하거나 내보내세요."
 
-#: src/features/billing/receipt.tsx
-msgid "Print or save as PDF"
-msgstr ""
-
 #: src/features/resume/share/share-panel.tsx
 msgid "Privacy"
 msgstr "개인정보 보호"
@@ -10133,7 +10244,7 @@ msgstr "사적인. 오직 당신만이 그것을 볼 수 있습니다."
 
 #. placeholder {0}: proAi.payments
 #: src/features/billing/admin/overview.tsx
-msgid "Pro AI · {0} sold"
+msgid "Pro AI · {0} paid"
 msgstr ""
 
 #: src/features/billing/credits.ts
@@ -10306,10 +10417,6 @@ msgstr "{url}의 QR 코드"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "QR code for two-step verification"
 msgstr "2단계 인증용 QR 코드"
-
-#: src/features/billing/admin/labels.ts
-msgid "QRIS: up to 45 days when paid with the acquirer's own app (GoPay), about 7 days from other apps."
-msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Question {index}"
@@ -10558,33 +10665,8 @@ msgstr "이유"
 msgid "Recalled"
 msgstr "기억한 질문"
 
-#: src/features/billing/payment-history.tsx
-#: src/features/billing/receipt.tsx
-msgid "Receipt"
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
 msgid "Receipt email not delivered"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt not sent"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt sent"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Receipt sent again"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Receipt sent."
-msgstr ""
-
-#: src/features/billing/payment-history.tsx
-msgid "Receipts are proof of payment, not tax invoices."
 msgstr ""
 
 #: src/features/billing/plan-page.tsx
@@ -10603,10 +10685,6 @@ msgstr "수신인"
 msgid "Recommended"
 msgstr ""
 
-#: src/features/billing/admin/customer.tsx
-msgid "Record a manual refund"
-msgstr ""
-
 #: src/features/career/workspace/practise.tsx
 msgid "Record again"
 msgstr "다시 녹음"
@@ -10614,14 +10692,6 @@ msgstr "다시 녹음"
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Record application"
 msgstr "입사지원 기록"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Record manual refund"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Record refund"
-msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Record your answer"
@@ -10707,13 +10777,13 @@ msgstr "24시간 전에 브리핑 새로 고침"
 msgid "Refresh the briefing on the morning of"
 msgstr "당일 아침에 브리핑 새로 고침"
 
-#. placeholder {0}: formatPrice(refundAmount)
+#. placeholder {0}: formatPrice(refundAmount, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Refund {0}"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Refund asked of Midtrans"
+msgid "Refund asked of Polar"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
@@ -10729,21 +10799,16 @@ msgstr ""
 msgid "Refund recorded"
 msgstr ""
 
-#: src/features/billing/admin/customer.tsx
-msgid "Refund recorded."
-msgstr ""
-
 #: src/features/billing/admin/labels.ts
-msgid "Refund refused by Midtrans"
+msgid "Refund refused by Polar"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "Refund through Midtrans"
+msgid "Refund through Polar"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/purchase.ts
-#: src/features/billing/receipt.tsx
 msgid "Refunded"
 msgstr ""
 
@@ -10752,9 +10817,13 @@ msgstr ""
 msgid "Refunded · {0}"
 msgstr ""
 
-#. placeholder {0}: formatPrice(result.amount)
+#. placeholder {0}: formatPrice(result.amount, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Refunded {0}."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Refunded by Polar to prevent a dispute"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -10763,10 +10832,6 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Refunds"
-msgstr ""
-
-#: src/features/billing/admin/customer.tsx
-msgid "Refunds may need to be activated by Midtrans support first, and the Midtrans balance must cover them. A full refund always takes back the pass and the remaining credits."
 msgstr ""
 
 #. placeholder {0}: refund.failureReason ?? "—"
@@ -10970,6 +11035,37 @@ msgstr "버전 이름 바꾸기"
 msgid "Rename…"
 msgstr "이름 바꾸기…"
 
+#: src/features/billing/purchase.ts
+msgid "Renewal"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/admin/customer.tsx
+msgid "renews {0}"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Renews every month until you cancel."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Renews every year until you cancel."
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Renews monthly on {0}"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Renews monthly until you cancel"
+msgstr ""
+
+#. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
+#: src/features/billing/plan-page.tsx
+msgid "Renews yearly on {0}"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Reopen"
 msgstr "다시 열다"
@@ -11029,10 +11125,6 @@ msgstr "요건"
 #: src/features/career/workspace/fit.tsx
 msgid "Requirements and your evidence"
 msgstr "요건과 내 근거"
-
-#: src/features/billing/admin/customer.tsx
-msgid "Resend receipt"
-msgstr ""
 
 #: src/features/billing/buy-plans.tsx
 msgid "Resend the link"
@@ -11225,11 +11317,6 @@ msgstr ""
 msgid "Reversed by the bank"
 msgstr ""
 
-#. placeholder {0}: metrics.reversals.payments
-#: src/features/billing/admin/overview.tsx
-msgid "Reversed by the bank · {0}"
-msgstr ""
-
 #: src/features/career/today.tsx
 #: src/features/career/workspace/debrief.tsx
 #: src/features/resume/share/download-tab.tsx
@@ -11310,12 +11397,6 @@ msgstr "Rezumi - 홈페이지로 이동"
 msgid "Rezumi {__APP_VERSION__} · MIT"
 msgstr "Rezumi {__APP_VERSION__} · MIT"
 
-#. placeholder {0}: getPlanName(payment.planId)
-#. placeholder {1}: payment.durationDays
-#: src/features/billing/receipt.tsx
-msgid "Rezumi {0}, {1} days of access"
-msgstr ""
-
 #: src/features/billing/ai-source-menu.tsx
 msgid "Rezumi AI · {cost}"
 msgstr ""
@@ -11327,7 +11408,6 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/plan-page.tsx
-#: src/features/billing/receipt.tsx
 msgid "Rezumi AI credits"
 msgstr ""
 
@@ -11426,6 +11506,10 @@ msgstr "다시 실행"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Running"
+msgstr ""
+
+#: src/features/billing/admin/overview.tsx
+msgid "Running now; started and ended in this period."
 msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
@@ -11940,10 +12024,6 @@ msgstr "선택한 서류"
 msgid "Selection"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Seller"
-msgstr ""
-
 #: src/features/resume/stylesheet/editor.tsx
 msgid "Semantic CSS stylesheet"
 msgstr "시맨틱 CSS 스타일시트"
@@ -12053,6 +12133,10 @@ msgstr "비밀번호 설정"
 msgid "Set the document language when exporting."
 msgstr "내보낼 때 문서 언어를 설정하세요."
 
+#: src/features/billing/admin/labels.ts
+msgid "Set to end at the period end"
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Set up discovery"
 msgstr "탐색 설정"
@@ -12097,10 +12181,6 @@ msgstr "공유하다"
 msgid "Share a live link that is always the latest version"
 msgstr ""
 
-#: src/features/billing/admin/overview.tsx
-msgid "Share of revenue."
-msgstr ""
-
 #: src/features/resume/editor/chrome/download-sheet.tsx
 msgid "Share sections"
 msgstr "섹션 공유"
@@ -12129,10 +12209,6 @@ msgstr "오프닝 다듬는 중"
 
 #: src/features/homepage/resume.tsx
 msgid "Shipped the courier app for iOS and Android to 40,000 drivers."
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "ShopeePay: full refunds only, between 06.00 and 23.50 WIB."
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -12601,8 +12677,12 @@ msgstr "각 항목을 구체적인 동사로 시작하세요: 구축했다, 이�
 msgid "Start free"
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Start free trial"
+msgstr ""
+
 #: src/features/homepage/pricing.tsx
-msgid "Start free. When you need more versions, formats or AI help, buy 30 days of access. Nothing renews on its own."
+msgid "Start free. When you need more versions, formats or AI help, subscribe monthly or yearly, and cancel any time."
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -12660,7 +12740,7 @@ msgid "Started"
 msgstr "시작됨"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Starts after your Pro AI time ends."
+msgid "Starts at your next renewal."
 msgstr ""
 
 #: src/features/career/shared.tsx
@@ -12683,7 +12763,6 @@ msgstr "통계"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/payment-history.tsx
-#: src/features/billing/receipt.tsx
 #: src/features/career/workspace/fit.tsx
 msgid "Status"
 msgstr "상태"
@@ -12693,11 +12772,7 @@ msgid "status check"
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
-msgid "Status checked with Midtrans"
-msgstr ""
-
-#: src/features/billing/admin/labels.ts
-msgid "Status needs a look by hand"
+msgid "Status checked with Polar"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
@@ -12803,6 +12878,39 @@ msgstr "제출된 자기소개서: {0}"
 msgid "Submitted attached resume: {0}"
 msgstr "제출된 이력서: {0}"
 
+#: src/features/billing/buy-plans.tsx
+msgid "Subscribe"
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Subscribing is paused for now"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Subscribing isn't available right now. Try again later."
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription changed"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription ended by an admin"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription now: {status}"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Subscription started"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/admin/overview.tsx
+msgid "Subscriptions"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Success at 90 days · next step"
 msgstr "90일 후의 성공 · 다음 단계"
@@ -12879,6 +12987,10 @@ msgstr "모델 전환"
 msgid "Switch templates without rewriting"
 msgstr ""
 
+#: src/features/billing/purchase.ts
+msgid "Switch to {name}"
+msgstr ""
+
 #: src/features/theme/toggle-button.tsx
 msgid "Switch to dark theme"
 msgstr "다크 테마로 전환"
@@ -12887,9 +12999,17 @@ msgstr "다크 테마로 전환"
 msgid "Switch to light theme"
 msgstr "라이트 테마로 전환"
 
+#: src/features/billing/purchase.ts
+msgid "Switch to monthly"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Switch to one column"
 msgstr "하나의 열로 전환"
+
+#: src/features/billing/purchase.ts
+msgid "Switch to yearly"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Switched to one column"
@@ -12998,6 +13118,10 @@ msgstr "목표 직무"
 #: src/features/career/knowledge/stories.tsx
 msgid "Task"
 msgstr "과제"
+
+#: src/features/billing/admin/customer.tsx
+msgid "tax"
+msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Teams and structure"
@@ -13258,6 +13382,10 @@ msgstr "내장 리더는 활성 상태로 유지됩니다."
 msgid "The checker shows the text a parser extracts and what to fix first."
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "The checkout couldn't be opened. Try again in a moment."
+msgstr ""
+
 #: src/features/resume/editor/check/writing-tab.tsx
 msgid "The checks are mechanical. This asks a language model how a reader might react to your bullets and suggests rewrites. It isn't part of the score."
 msgstr "수표는 기계식입니다. 이는 독자가 목록 항목에 어떻게 반응할 것인지 언어 모델에 묻고 재작성을 제안합니다. 점수에 포함되지 않습니다."
@@ -13334,9 +13462,17 @@ msgstr "인사말은 이름을 따릅니다."
 msgid "The icons you pick, and network logos such as LinkedIn and GitHub."
 msgstr ""
 
+#: src/features/billing/invoice-button.tsx
+msgid "The invoice couldn't be opened. Try again in a moment."
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "The key is encrypted on the server and never shown again. Saving tests the connection."
 msgstr "키는 서버에서 암호화되어 다시 표시되지 않습니다. 저장하면 연결이 테스트됩니다."
+
+#: src/features/billing/plan-page.tsx
+msgid "The last payment didn't go through. Update your payment method to keep it; access is paused until then."
+msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "The letter as it is"
@@ -13361,6 +13497,10 @@ msgstr "요청한 이후 줄이 변경되었으므로 교체되지 않았습니�
 #: src/features/career/workspace/saved.tsx
 msgid "the message"
 msgstr "메시지"
+
+#: src/features/billing/payment-return.tsx
+msgid "The money went back, and any credits it brought were taken back. Your documents stay as they are."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 msgid "The morning of the interview has passed, so the briefing runs now."
@@ -13402,16 +13542,8 @@ msgstr "페이지의 PDF를 읽을 수 없습니다. 다시 렌더링하려면 �
 msgid "The pages are pictures, with no text behind them."
 msgstr "페이지가 이미지로만 되어 있고 그 뒤에 텍스트가 없습니다."
 
-#: src/features/billing/payment-return.tsx
-msgid "The pass it bought has been taken back. Your documents stay as they are."
-msgstr ""
-
-#: src/features/billing/pending-payment.tsx
-msgid "The payment method couldn't be changed. Try again in a moment."
-msgstr ""
-
 #: src/features/billing/purchase-dialog.tsx
-msgid "The payment page couldn't be opened. Try again in a moment."
+msgid "The payment for this change didn't go through. Update your payment method in billing and try again."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -13429,10 +13561,6 @@ msgstr "채용 공고를 읽을 수 없습니다. 역할과 회사를 입력하�
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "이 채용 지원서와 함께 저장된 채용 공고입니다."
-
-#: src/features/billing/receipt.tsx
-msgid "The price is final. The seller isn't registered for VAT, so no VAT is charged and this receipt is not a tax invoice."
-msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "The provider didn't answer. Check the key and the model."
@@ -13461,10 +13589,6 @@ msgstr "제공자의 응답을 확인할 수 없습니다. 다시 시도해 보�
 #: src/features/applications/components/detail/close-dialog.tsx
 msgid "The reason is kept for Insights. Linked documents aren't touched."
 msgstr "이유는 Insights에 보관됩니다. 연결된 문서는 건드리지 않습니다."
-
-#: src/features/billing/admin/customer.tsx
-msgid "The receipt wasn't sent. Check the email settings."
-msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
@@ -13579,10 +13703,6 @@ msgstr "프로필, 포트폴리오 또는 저장소로 연결되는 링크가 �
 #: src/features/ats-checker/messages.ts
 msgid "There is no summary paragraph."
 msgstr "요약 문단이 없습니다."
-
-#: src/features/billing/receipt.tsx
-msgid "There's no receipt yet: this payment hasn't been paid."
-msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "These are the answers saved when you applied."
@@ -13710,6 +13830,10 @@ msgstr "이 파일은 문자 대신 그림 정보를 담는 Type 3 폰트를 사
 msgid "This font's licence doesn't allow embedding it in documents, so it can't be used in a PDF."
 msgstr ""
 
+#: src/features/billing/invoice-button.tsx
+msgid "This invoice isn't available here. Open billing to find all your invoices."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "This is a PDF Portfolio: the visible page is only a cover."
 msgstr "이 파일은 PDF 포트폴리오입니다. 보이는 페이지는 표지일 뿐입니다."
@@ -13782,10 +13906,6 @@ msgstr ""
 msgid "This payment was refunded"
 msgstr ""
 
-#: src/features/billing/pending-payment.tsx
-msgid "This payment went through, so there's nothing to change."
-msgstr ""
-
 #: src/features/resume/editor/check/parser-view.tsx
 msgid "This PDF has no text layer, so a parser reads nothing from it."
 msgstr "이 PDF에는 텍스트 레이어가 없으므로 파서는 이 레이어에서 아무것도 읽지 않습니다."
@@ -13797,10 +13917,6 @@ msgstr "이 PDF는 스캔한 이미지입니다. 읽을 텍스트가 없습니�
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "이 PDF는 비밀번호로 보호되어 있습니다. 보호되지 않은 사본을 저장한 뒤 다시 시도하세요."
-
-#: src/features/billing/receipt.tsx
-msgid "This receipt isn't available. It may belong to another account."
-msgstr ""
 
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
@@ -13911,8 +14027,8 @@ msgstr "시간 · {0}"
 msgid "Time · {timeZone}"
 msgstr "시간 · {timeZone}"
 
-#: src/features/billing/purchase-dialog.tsx
-msgid "Time you already have is never lost."
+#: src/features/billing/admin/customer.tsx
+msgid "Time given by an admin or a promotion, and 30-day passes from before, newest first."
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -13930,16 +14046,6 @@ msgstr ""
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "시간은 {timeZone} 기준으로 표시됩니다."
-
-#. placeholder {0}: zoneName(split.pass.endsAt)
-#: src/features/billing/purchase-dialog.tsx
-msgid "Times in {0}, estimated for paying now."
-msgstr ""
-
-#. placeholder {0}: zoneName(split.pass.startsAt)
-#: src/features/billing/purchase-dialog.tsx
-msgid "Times in {0}."
-msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/general.tsx
@@ -14019,10 +14125,6 @@ msgstr ""
 msgid "Toolbar"
 msgstr ""
 
-#: src/features/billing/receipt.tsx
-msgid "Total paid"
-msgstr ""
-
 #: src/features/career/offers.tsx
 msgid "Totals aren't added up on purpose."
 msgstr ""
@@ -14059,10 +14161,6 @@ msgstr "{model} 모델로 텍스트 변환 중…"
 msgid "Transcript copied"
 msgstr "성적 증명서가 복사되었습니다."
 
-#: src/features/billing/admin/customer.tsx
-msgid "Transfer the money to the customer first, then record it here. Nothing is sent to Midtrans."
-msgstr ""
-
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/documents/trash-page.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
@@ -14072,6 +14170,10 @@ msgstr "휴지통"
 #: src/features/documents/trash-page.tsx
 msgid "Trash is empty"
 msgstr "휴지통이 비어 있습니다."
+
+#: src/features/billing/admin/labels.ts
+msgid "Trial"
+msgstr ""
 
 #: src/features/billing/credits.ts
 #: src/features/billing/plan-page.tsx
@@ -14104,6 +14206,10 @@ msgstr "이 기기를 30일 동안 신뢰"
 msgid "Try {0}"
 msgstr "{0}를 사용해 보세요"
 
+#: src/features/billing/purchase.ts
+msgid "Try {name} free"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 msgid "Try a sample"
 msgstr "샘플을 사용해 보세요"
@@ -14126,7 +14232,7 @@ msgid "Try again"
 msgstr "다시 시도해 보세요"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Try again later. Your current pass and credits aren't affected."
+msgid "Try again later. Your current plan and credits aren't affected."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -14140,6 +14246,10 @@ msgstr ""
 #: src/routes/auth/native-callback.tsx
 msgid "Try opening the app again"
 msgstr "앱을 다시 열어보세요."
+
+#: src/features/homepage/plans.ts
+msgid "Try Plus free"
+msgstr ""
 
 #: src/features/homepage/faq.tsx
 msgid "Try the ATS checker"
@@ -14390,6 +14500,10 @@ msgstr "{total}개 중 {done}개를 업데이트했습니다. 잠긴 서류와 �
 #: src/dialogs/resume/index.tsx
 msgid "Updating your resume..."
 msgstr "이력서를 업데이트하는 중입니다..."
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Upgrade now"
+msgstr ""
 
 #: src/features/billing/purchase.ts
 msgid "Upgrade to {name}"
@@ -14684,7 +14798,7 @@ msgid "Verify your email in Settings first"
 msgstr "먼저 설정에서 이메일을 인증하세요"
 
 #: src/features/billing/buy-plans.tsx
-msgid "Verify your email to buy a pass"
+msgid "Verify your email to subscribe"
 msgstr ""
 
 #: src/features/auth/pages/verify-2fa.tsx
@@ -14756,10 +14870,6 @@ msgstr "지원서 보기"
 msgid "View posting"
 msgstr "채용 공고 보기"
 
-#: src/features/billing/payment-return.tsx
-msgid "View receipt"
-msgstr ""
-
 #. placeholder {0}: formatVersionTime(viewing.createdAt, i18n.locale)
 #. placeholder {0}: when(selected)
 #. placeholder {1}: getVersionTitle(selected)
@@ -14777,10 +14887,6 @@ msgstr ""
 #: src/features/resume/share/share-panel.tsx
 msgid "views · 30 days"
 msgstr "조회수 · 30일"
-
-#: src/features/billing/purchase.ts
-msgid "Virtual account"
-msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors"
@@ -14802,17 +14908,13 @@ msgstr "음성 설정"
 msgid "Volunteer"
 msgstr "봉사"
 
-#: src/features/billing/admin/customer.tsx
-msgid "Waiting for Midtrans"
-msgstr ""
-
 #: src/features/billing/admin/overview.tsx
 #: src/features/billing/purchase.ts
 msgid "Waiting for payment"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
-msgid "Waiting for the bank"
+msgid "Waiting for Polar"
 msgstr ""
 
 #: src/features/career/workspace/messages.tsx
@@ -14846,10 +14948,6 @@ msgstr ""
 
 #: src/features/billing/payment-return.tsx
 msgid "We couldn't find this payment"
-msgstr ""
-
-#: src/features/billing/payment-return.tsx
-msgid "We email the receipt to you as well."
 msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
@@ -14903,6 +15001,14 @@ msgstr "웹 검색 실패: {0}"
 msgid "Web searches look for work here, up to three countries."
 msgstr "웹 검색을 통해 해당 국가의 일자리를 찾아보세요. 최대 3개 국가를 선택하세요."
 
+#: src/features/billing/admin/customer.tsx
+msgid "webhook"
+msgstr ""
+
+#: src/features/billing/admin/labels.ts
+msgid "Webhooks with a bad signature"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Website"
 msgstr "웹사이트"
@@ -14926,6 +15032,11 @@ msgstr "각 요건 따져 보는 중"
 #: src/features/career/workspace/debrief.tsx
 msgid "Went well"
 msgstr "잘됨"
+
+#: src/features/billing/admin/overview.tsx
+#: src/features/billing/payment-history.tsx
+msgid "What"
+msgstr ""
 
 #: src/features/resume/editor/check/page-layer.tsx
 msgid "What a parser reads"
@@ -15167,6 +15278,14 @@ msgstr "너비"
 msgid "Will my resume get past applicant tracking systems?"
 msgstr "내 이력서가 지원자 추적 시스템을 통과합니까?"
 
+#: src/features/homepage/faq.tsx
+msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "Without it the API and MCP refuse every key, so apps you connect won't work yet. Keys you make now start working once your plan includes API access. Rezumi on the web and on your phone always works."
 msgstr ""
@@ -15285,8 +15404,38 @@ msgstr "작성 도움, 맞춤 제안, 어시스턴트. 따로 선택하지 않�
 msgid "Written offer"
 msgstr "서면 오퍼"
 
+#: src/features/billing/admin/overview.tsx
+msgid "yearly"
+msgstr ""
+
+#: src/features/billing/admin/customer.tsx
+#: src/features/billing/buy-plans.tsx
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing starts now. You're charged the difference for the rest of this period with your saved payment method, then the yearly price at each renewal."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing stays until {renewal}; monthly billing starts then. Nothing is charged now."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Yearly billing stays until your next renewal; monthly billing starts then. Nothing is charged now."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Yearly saves up to {saving}%"
+msgstr ""
+
 #: src/features/homepage/faq.tsx
 msgid "Yes, on every plan. Add a key from OpenAI, Anthropic, Google Gemini, OpenRouter or another provider and you pay that provider directly; it doesn’t use Rezumi credits. Without a key or credits, nothing is sent to an AI service."
+msgstr ""
+
+#: src/features/homepage/faq.tsx
+msgid "Yes: a first Plus subscription starts with {plusTrialDays} free days. Polar takes a card at checkout but charges nothing until the trial ends, and emails you a reminder a few days before. Cancel during the trial and you pay nothing."
 msgstr ""
 
 #: src/features/homepage/faq.tsx
@@ -15353,12 +15502,12 @@ msgstr "아직 복사할 이력서가 없습니다. 먼저 이력서를 가져�
 msgid "You forgot this before, so it wasn't saved again."
 msgstr "이전에 잊은 내용이라 다시 저장하지 않았습니다."
 
-#: src/components/layout/loading-screen.tsx
-msgid "You only need one yes."
+#: src/features/billing/subscription-actions.tsx
+msgid "You keep {plan} until {until}, and nothing more is charged. Then your account is on Free; every document stays yours to open, edit and download as a PDF."
 msgstr ""
 
-#: src/features/homepage/faq.tsx
-msgid "You pay once for 30 days of Plus or Pro AI, starting when the payment is confirmed. Nothing renews automatically. When the 30 days end, your account returns to Free. All your resumes and letters stay editable, shareable and downloadable as PDF. The Free limits only apply when creating another document."
+#: src/components/layout/loading-screen.tsx
+msgid "You only need one yes."
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -15389,6 +15538,10 @@ msgstr "오늘에는 항상 표시됩니다. 이메일은 서버의 메일 설�
 msgid "You're looking at a saved version. It can't be edited."
 msgstr "저장된 버전을 보고 있습니다. 편집할 수 없습니다."
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "You're now billed yearly."
+msgstr ""
+
 #: src/features/resume/builder/draft.ts
 msgid "You're offline. Reconnect to save your changes before leaving."
 msgstr "오프라인 상태입니다. 떠나기 전에 변경사항을 저장하려면 다시 연결하세요."
@@ -15402,11 +15555,7 @@ msgid "You're using a guest account"
 msgstr "게스트 계정을 사용 중입니다"
 
 #: src/features/billing/pending-payment.tsx
-msgid "Your {plan} payment isn't finished"
-msgstr ""
-
-#: src/features/billing/purchase-dialog.tsx
-msgid "Your {rest} time picks up again"
+msgid "Your {plan} checkout isn't finished"
 msgstr ""
 
 #: src/features/settings/account/data.tsx
@@ -15489,6 +15638,14 @@ msgstr "연락처 정보가 첫 페이지에 없습니다."
 msgid "Your conversations appear here."
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your current plan stays until {renewal}; {name} starts then, at the new price. Nothing is charged now."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your current plan stays until your next renewal; {name} starts then. Nothing is charged now."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your data"
 msgstr "귀하의 데이터"
@@ -15545,6 +15702,18 @@ msgstr ""
 msgid "Your fonts are ready. Choose them under Font family."
 msgstr ""
 
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your free trial ends now. Your saved payment method is charged today for this month of {currentName}, then the difference for {name}; after that, {name}'s price at each renewal."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your free trial ends now. Your saved payment method is charged today for this month, then the difference for yearly billing; after that, the yearly price at each renewal."
+msgstr ""
+
+#: src/features/billing/payment-return.tsx
+msgid "Your free trial has started"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your headings look the same as your body text."
 msgstr "제목이 본문 텍스트와 동일하게 보입니다."
@@ -15553,9 +15722,17 @@ msgstr "제목이 본문 텍스트와 동일하게 보입니다."
 msgid "Your headline changed on the resume. The letter updated too."
 msgstr "이력서의 헤드라인이 변경되었습니다. 편지도 업데이트되었습니다."
 
+#: src/features/billing/invoice-button.tsx
+msgid "Your invoice is still being made. Try again in a moment."
+msgstr ""
+
 #: src/features/career/workspace/debrief.tsx
 msgid "your Knowledge"
 msgstr "내 지식"
+
+#: src/features/billing/buy-plans.tsx
+msgid "Your last payment didn't go through. Update your payment method in billing first."
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Your lines are packed very tightly."
@@ -15634,7 +15811,21 @@ msgid "Your phone number is written in an unusual shape."
 msgstr "전화번호가 특이한 형식으로 작성되어 있습니다."
 
 #: src/features/billing/plan-page.tsx
+#: src/features/billing/purchase.ts
 msgid "Your plan"
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan changed in the meantime. Reload the page and try again."
+msgstr ""
+
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan changes at your next renewal."
+msgstr ""
+
+#. placeholder {0}: getPlanName(target.planId)
+#: src/features/billing/purchase-dialog.tsx
+msgid "Your plan is now {0}."
 msgstr ""
 
 #: src/features/billing/plan.ts
@@ -15709,6 +15900,18 @@ msgstr "스토리를 불러올 수 없습니다."
 
 #: src/components/layout/loading-screen.tsx
 msgid "Your story is worth telling well."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Your subscription continues."
+msgstr ""
+
+#: src/features/billing/subscription-actions.tsx
+msgid "Your subscription ends at the close of this period."
+msgstr ""
+
+#: src/features/billing/buy-plans.tsx
+msgid "Your subscription is set to end. Keep it first to change the plan."
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx

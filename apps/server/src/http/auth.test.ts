@@ -33,6 +33,7 @@ vi.mock("@rezumi/api/features/storage", () => ({
 	migrateUserStorage: mocks.migrateUserStorage,
 }));
 
+vi.mock("@rezumi/api/features/billing/deletion", () => ({ endBillingForDeletedUser: vi.fn() }));
 vi.mock("@rezumi/db/client", () => ({ db: {} }));
 vi.mock("@rezumi/db/schema", () => ({ oauthClient: {}, verification: {} }));
 vi.mock("@rezumi/env/server", () => ({

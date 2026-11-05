@@ -174,6 +174,60 @@ export async function grantCredits(
 }
 
 /**
+ * A month of Pro AI credits for a subscription: at most one grant per subscription per month (its end), whatever
+ * orders a plan change or a retried event makes, and none while another of its grants still runs into that month (a
+ * switch from monthly to yearly keeps the month already given; the next month brings its own). Null when nothing was
+ * granted. Runs inside the caller's transaction, holding the account's billing lock.
+ */
+export async function grantSubscriptionMonth(
+	tx: Transaction,
+	input: {
+		userId: string;
+		subscriptionId: string;
+		paymentId: string | null;
+		amount: number;
+		/** The start of the month the credits are for. */
+		startsAt: Date;
+		/** The end of the month the credits are for; they expire then. */
+		expiresAt: Date;
+		now?: Date;
+	},
+): Promise<GrantRow | null> {
+	const now = input.now ?? new Date();
+	if (!Number.isInteger(input.amount) || input.amount <= 0)
+		throw new Error("A credit grant needs a positive whole amount.");
+	if (input.expiresAt <= now) return null;
+	await lockBillingAccount(tx, input.userId);
+	const [running] = await tx
+		.select({ id: schema.aiCreditGrant.id })
+		.from(schema.aiCreditGrant)
+		.where(
+			and(
+				eq(schema.aiCreditGrant.subscriptionId, input.subscriptionId),
+				isNull(schema.aiCreditGrant.revokedAt),
+				gt(schema.aiCreditGrant.expiresAt, input.startsAt),
+			),
+		)
+		.limit(1);
+	if (running) return null;
+	const [grant] = await tx
+		.insert(schema.aiCreditGrant)
+		.values({
+			userId: input.userId,
+			source: "plan",
+			amount: input.amount,
+			remaining: input.amount,
+			expiresAt: input.expiresAt,
+			paymentId: input.paymentId,
+			subscriptionId: input.subscriptionId,
+			createdAt: now,
+		})
+		.onConflictDoNothing({ target: [schema.aiCreditGrant.subscriptionId, schema.aiCreditGrant.expiresAt] })
+		.returning();
+	return grant ?? null;
+}
+
+/**
  * Gives the one-time trial credits the first time an account uses Rezumi AI: a registered account with a verified
  * email, while billing applies to it. `billing_account.trial_granted_at` keeps it to once per account, across
  * devices and sign-ins. Returns whether it granted them now. Grants nothing, and reads nothing, while billing is off.

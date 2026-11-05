@@ -35,9 +35,12 @@ At draft time the official apps include no third-party advertising analytics; se
 
 - **Cloudflare:** Workers, network/security and private R2 uploads, including request metadata.
 - **Neon:** managed PostgreSQL for accounts, documents and service records. Database/backup region: **[OWNER TO CONFIRM]**.
-- **Midtrans:** once checkout launches, name/email and order details/amount for payment. Rezumi receives payment status/references;
-  it does not store card numbers, PINs, OTPs or bank credentials. Manual refunds need recipient information through support;
-  transfer evidence may retain necessary personal details and is not necessarily anonymous.
+- **Polar (Polar Software, Inc., United States):** the merchant of record for subscriptions. At checkout Rezumi sends your account id,
+  name, email, IP address (for currency and tax location) and language; you enter payment details and billing address directly with Polar.
+  Polar processes the payment (through Stripe), tax, invoices and disputes as an independent controller under its own privacy policy.
+  Rezumi receives order/subscription/refund ids and statuses, amounts and periods; it never receives or stores card numbers, CVCs or
+  billing addresses. When you delete your account, Rezumi asks Polar to delete and anonymize your customer data; Polar keeps order records
+  as the law requires. Data may be processed outside Indonesia.
 - **AI providers:** only information needed for requested operations, such as resume/letter text, job descriptions, answers,
   knowledge and conversation context. BYOK uses the selected provider (such as OpenAI, Anthropic, Google Gemini, OpenRouter or compatible endpoints).
   Rezumi AI will identify provider/model before use; **launch provider, location and retention are undecided**.

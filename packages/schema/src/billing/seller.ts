@@ -1,4 +1,7 @@
-/** Public seller details shared by receipts and support. Null means owner confirmation is still required. */
+/**
+ * Who runs Rezumi, for support and the legal pages. Null means owner confirmation is still required. Purchases are sold
+ * by Polar as the merchant of record: it charges, invoices, and handles sales tax.
+ */
 export const BILLING_SELLER = {
 	name: "Salman Alfariesh",
 	brand: "Rezumi",
@@ -13,7 +16,8 @@ export const BILLING_SELLER = {
 	minimumAge: 18,
 	identityConfirmed: true,
 	supportEmailConfirmed: false,
-	vatRegistered: false,
+	/** The reseller and merchant of record named at checkout and on invoices. */
+	merchantOfRecord: "Polar Software, Inc.",
 } as const;
 
 /** Indonesian legal text governs; English translations remain available from each legal page. */
