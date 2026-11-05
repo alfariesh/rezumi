@@ -1,0 +1,70 @@
+# Phase 12 — Go global: Midtrans diganti Polar, paket menjadi langganan
+
+| Dikerjakan                  | Ukuran           | Bergantung pada                       | Perlu dari pemilik                                                                                      |
+| --------------------------- | ---------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Claude (+ pemilik di akhir) | Besar (2–3 sesi) | Phase 01–10 (fondasi billing, kredit) | Akun Polar sandbox + produksi, token akses sandbox di `.env.local`, keputusan harga (sudah, 2026-11-05) |
+
+Keputusan pemilik 2026-11-05 ("ingin ke global… migrasikan Midtrans ke Polar"). Dokumen ini menggantikan bagian Midtrans di Phase 06, 07, 09, dan 11. Aturan bisnis yang tidak disebut di sini (batas dokumen, fitur paket, bobot kredit, dokumen tidak pernah dikunci, beli hanya di web) **tetap berlaku**.
+
+## Untuk pemilik
+
+**Apa yang berubah untuk pembeli:**
+
+1. **Langganan otomatis**, bulanan atau tahunan, bisa dibatalkan sendiri kapan saja (akses tetap sampai akhir periode yang sudah dibayar). Tidak ada lagi pass 30 hari.
+2. **Harga global** dalam USD; pengunjung dari Indonesia otomatis melihat Rupiah.
+
+   | Paket  | Bulanan           | Tahunan         |
+   | ------ | ----------------- | --------------- |
+   | Plus   | $4.99 / Rp59.000  | $39 / Rp459.000 |
+   | Pro AI | $9.99 / Rp129.000 | $79 / Rp999.000 |
+
+3. **Cara bayar:** kartu debit/kredit, Apple Pay, Google Pay, Link, dan beberapa metode lokal di Eropa/India/Korea. **QRIS, e-wallet, dan VA tidak ada lagi.**
+4. **Polar adalah penjual resmi (Merchant of Record):** Polar Software, Inc. menagih pembeli, menghitung dan menyetor pajak (VAT/GST/sales tax, termasuk PPN PMSE Indonesia), mengirim invoice dan email tagihan, menangani sengketa kartu, lalu membayarkan hasil penjualan ke rekening bank Indonesia-mu lewat Stripe Connect Express.
+5. **Portal pelanggan Polar:** pembeli bisa membatalkan, mengganti kartu, dan mengunduh invoice sendiri. Tombol "Kelola tagihan" di halaman Paket membukanya.
+6. **Pro AI** tetap 100 kredit Rezumi AI **per bulan** (pelanggan tahunan menerimanya tiap bulan), tanpa rollover.
+
+**Biaya Polar** (paket Starter, organisasi dibuat setelah 27 Mei 2026): 5% + 50¢ per transaksi, +1,5% untuk kartu non-AS, dihitung dari total termasuk pajak. Payout: $2 per bulan aktif + 0,25% + $0,25 per payout, plus konversi kurs ±1%. Paket Pro Polar ($20/bulan, 3,8% + 40¢) baru menguntungkan di atas ±$1.379 penjualan per bulan.
+
+**Tugasmu** (Claude memandu; semua kunci kamu ketik sendiri, tidak pernah di chat):
+
+| Kapan                      | Tugas                                                                                                                                                                                                                                                                                                                                                    |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sebelum uji lokal          | Di **sandbox.polar.sh** (organisasi `elqebdsuhcoxtaljswym`): Settings → General → Developers → buat **Organization Access Token** (semua scope `checkouts`, `customer_sessions`, `customers`, `orders`, `products:read`, `refunds`, `subscriptions`, `webhooks`), lalu tulis di `.env.local`: `POLAR_ENVIRONMENT="sandbox"` dan `POLAR_ACCESS_TOKEN="…"` |
+| Sebelum uji webhook        | Claude membuat endpoint webhook sandbox; salin **secret**-nya dari dashboard (Settings → Webhooks) ke `.env.local` sebagai `POLAR_WEBHOOK_SECRET`                                                                                                                                                                                                        |
+| Sebelum go-live (Phase 11) | Selesaikan onboarding organisasi **Rezumi** di polar.sh: detail usaha dan produk, verifikasi identitas (KTP/paspor + selfie lewat Stripe), hubungkan rekening bank Indonesia (Rupiah, atas namamu). Review Polar bisa sampai 14 hari dan reviewer meminta kode diskon 100% atau video alur beli                                                          |
+| Sebelum go-live            | Di zona Cloudflare `rezumi.app`: **matikan Bot Fight Mode** (memblokir webhook Polar dengan 403)                                                                                                                                                                                                                                                         |
+| Sebelum go-live            | Pengaturan Polar produksi: Subscriptions → proration **Invoice** (upgrade langsung ditagih), matikan "plan changes" di Customer portal (ganti paket lewat Rezumi), biarkan email pelanggan bawaan Polar aktif                                                                                                                                            |
+| Sebelum go-live            | ⚖️ Konsultasi pajak: penghasilan dari payout Polar (bukan lagi omzet penjualan langsung) dan status perorangan. Review teks legal baru (S&K, privasi, refund) yang menyebut Polar                                                                                                                                                                        |
+
+## Untuk agent
+
+Baca dulu: `CLAUDE.md`, README rencana ini, `00-keputusan-produk.md` (log 2026-11-05), `01-arsitektur.md`. Dokumen Polar: MCP Polar (`search_docs`/`read_docs_page`); koneksi `0a751028-…` = **sandbox**, `16e7c96b-…` = **produksi** (jangan menulis ke produksi tanpa izin eksplisit pemilik). SDK `@polar-sh/sdk` 1.0.x, **API version `2026-10`** (stabil; `2027-01` masih "Next" sampai 1 Januari 2027 dan bisa berubah).
+
+### Desain
+
+- **Katalog** (`@rezumi/schema/billing`, `BILLING_CATALOG_VERSION` 4): `PLANS[id].prices[interval][currency]` dalam unit terkecil (USD sen; IDR juga dua desimal: Rp59.000 = `5900000`, diverifikasi di checkout sandbox 2026-11-05), `creditsPerMonth` (Pro AI 100). `BILLING_INTERVALS = ["month","year"]`, `BILLING_CURRENCIES = ["usd","idr"]`, `currencyForCountry("ID") = "idr"`, lainnya `usd`.
+- **Produk Polar:** empat produk (Plus/Pro AI × bulanan/tahunan), masing-masing harga USD + IDR, metadata `rezumi_plan`/`rezumi_interval`. ID produk lewat env `POLAR_PRODUCT_PLUS_MONTHLY`, `…_PLUS_YEARLY`, `…_PRO_AI_MONTHLY`, `…_PRO_AI_YEARLY`. Sandbox 2026-11-05: Plus bulanan `1eed6e9a-623e-4773-9f35-dbec17a0a0d4`, Plus tahunan `1dd73112-6f2c-43f1-a546-48454c07a588`, Pro AI bulanan `5e164955-b367-4f38-90ff-1f07715d8833`, Pro AI tahunan `1aa24a00-f999-49cc-b1c2-c21ebe69a917`.
+- **Tabel baru `billing_subscription`**: cermin langganan Polar (status, paket, interval, periode, `cancel_at_period_end`, `paid_through` = akhir periode terakhir yang lunas, `provider_modified_at` untuk menolak event lama). Hak akses: `active`/`trialing` sampai `current_period_end`; `past_due` hanya sampai `paid_through`; status lain tidak memberi akses. `membership_period` tetap untuk pemberian admin/promo dan pass lama; paket aktif = peringkat tertinggi yang menutupi saat ini.
+- **`billing_payment`** = satu checkout Polar yang belum dibayar atau satu order Polar (perpanjangan membuat baris baru tanpa checkout). Kolom Midtrans dibuang; kolom baru `provider_checkout_id`, `subscription_id`, `billing_reason`, `interval`, `tax_amount`, `total_amount`. `amount` = `net_amount` Polar (setelah diskon, sebelum pajak), boleh 0 (kode diskon 100% untuk review Polar).
+- **Webhook** `POST /api/payments/polar/webhook` (raw body, ≤256 KB): `webhooks.validateEvent` dari `@polar-sh/sdk/2026-10`; signature salah → 403; tipe tak dikenal → 202; dedupe dengan `webhook-id` (unik di `billing_payment_event.webhook_id`, dicatat di transaksi yang sama dengan perubahan); error sementara → 503 (Polar mengulang ±10×). Event: `order.paid`/`order.updated`/`order.refunded`, `subscription.*`, `refund.*`, `checkout.updated`/`checkout.expired`.
+- **Kredit Pro AI**: setiap order Pro AI yang lunas memberi 100 kredit sampai akhir potongan bulan itu; langganan tahunan mendapat potongan bulan berikutnya lewat job (`grantSubscriptionCredits`), maksimal satu hibah per potongan per langganan (upgrade bolak-balik tidak menambah kredit).
+- **Checkout** (`billing.checkout({ planId, interval, idempotencyKey })`): baris lokal `creating` di-commit dulu, lalu `checkouts.create` (produk, `external_customer_id` = user id, email/nama, `customer_ip_address` dari `CF-Connecting-IP`, `currency` dari negara `CF-IPCountry`, `locale`, `success_url` ke halaman kembali, `return_url`, metadata id pembayaran). Sudah berlangganan → `billing.changePlan` (`subscriptions.update`: naik paket atau ganti ke tahunan `invoice`; turun paket atau ke bulanan `next_period`). `billing.portal` membuat customer session (`external_customer_id`). Pembatalan/kartu/invoice lewat portal.
+- **Rekonsiliasi** (job tiap menit): checkout `pending` ditanya ke Polar (`checkouts.get`, lalu `orders.list({ checkout_id })`); langganan `active` yang `current_period_end`-nya lewat > 1 jam disinkronkan ulang; langganan milik akun terhapus dibatalkan (`subscriptions.revoke`).
+- **Refund** admin: `refunds.create` (jumlah **tanpa pajak**, alasan dari enum Polar); refund tidak membatalkan langganan, jadi admin memilih "batalkan langganan juga". Refund manual dihapus. Polar bisa me-refund sendiri ≤60 hari (mencegah chargeback) dan sekaligus membatalkan langganan: ditangani lewat webhook yang sama.
+- **Dihapus:** modul `midtrans/`, notifikasi Midtrans, ganti metode bayar, email dan halaman bukti bayar Rezumi (Polar mengirim invoice/receipt sebagai penjual), env `MIDTRANS_*`.
+- **Hapus akun:** hook hapus pengguna memanggil `customers.deleteExternal(userId, { anonymize: true })` (membatalkan langganan seketika, data Polar dianonimkan); job membatalkan sisa langganan bila panggilan itu gagal.
+
+### Langkah dan status
+
+| #   | Langkah                                                                                                                                           | Status |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 1   | Keputusan + rencana (dokumen ini, log keputusan)                                                                                                  | ✅     |
+| 2   | Produk sandbox (4 produk USD + IDR)                                                                                                               | ✅     |
+| 3   | Katalog, env, skema DB + migrasi                                                                                                                  | ⬜     |
+| 4   | Backend: klien Polar, webhook, checkout/changePlan/portal, langganan, kredit bulanan, rekonsiliasi, refund, admin, laporan per mata uang          | ⬜     |
+| 5   | Server: rute webhook, hook hapus akun, job                                                                                                        | ⬜     |
+| 6   | Web: halaman Paket (bulanan/tahunan, mata uang, langganan, portal), halaman kembali, riwayat, admin                                               | ⬜     |
+| 7   | Tes unit + DB nyata (webhook bertanda tangan, urutan acak, duplikat, perpanjangan, refund, past_due)                                              | ⬜     |
+| 8   | Dokumen: arsitektur, runbook, legal ID/EN, draf panduan pengguna                                                                                  | ⬜     |
+| 9   | Uji sandbox end-to-end lewat server lokal (butuh token sandbox pemilik)                                                                           | ⬜     |
+| 10  | Go-live: Phase 11 versi Polar (onboarding produksi, webhook produksi, Bot Fight Mode, uji kartu sungguhan dilarang Polar: pakai kode diskon 100%) | ⬜     |

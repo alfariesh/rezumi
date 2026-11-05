@@ -1,3 +1,4 @@
+import type { SubscriptionState } from "./polar/mapping";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PaidPlanId, PlanFeatures, PlanId } from "@rezumi/schema/billing";
 import { and, asc, eq, gt, isNull } from "drizzle-orm";
@@ -5,6 +6,8 @@ import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
 import { PLANS } from "@rezumi/schema/billing";
+import { subscriptionAccess } from "./polar/mapping";
+import { liveSubscriptions, subscriptionState } from "./subscriptions";
 
 export type BillingMode = "off" | "admins" | "on";
 
@@ -18,9 +21,15 @@ export type Entitlements = {
 	features: PlanFeatures;
 	/** Null when unlimited. */
 	limits: { activeResumes: number | null; activeCoverLetters: number | null };
-	/** When the current plan's access ends, counting back-to-back passes of the same plan. Null on free. */
+	/**
+	 * When the current plan's access ends (or renews), counting back-to-back periods of the same plan. Null on free.
+	 */
 	currentPeriodEndsAt: Date | null;
-	/** Passes waiting after the current one, in order. */
+	/** Where the current plan comes from: a subscription, or a period granted outside one (admin, promo, old pass). */
+	source: "subscription" | "period" | null;
+	/** Whether the current plan renews on its own at currentPeriodEndsAt: a subscription not set to cancel. */
+	renews: boolean;
+	/** Granted periods waiting after the current one, in order. */
 	upcoming: PlanStretch[];
 };
 
@@ -37,6 +46,8 @@ const unlimited = (): Entitlements => ({
 	},
 	limits: { activeResumes: null, activeCoverLetters: null },
 	currentPeriodEndsAt: null,
+	source: null,
+	renews: false,
 	upcoming: [],
 });
 
@@ -52,15 +63,34 @@ export function isBillingActiveFor(account: { role?: string | null | undefined }
 	return false;
 }
 
-/** The account's plan at `now`, from its unrevoked periods. */
-export function resolveEntitlements(periods: readonly PlanStretch[], now: Date): Entitlements {
+/**
+ * The account's plan at `now`: the higher of what its unrevoked periods and its subscriptions give. Periods queue
+ * without overlapping (admin grants, promotions, passes from before subscriptions); a subscription runs beside them.
+ */
+export function resolveEntitlements(
+	periods: readonly PlanStretch[],
+	now: Date,
+	subscriptions: readonly SubscriptionState[] = [],
+): Entitlements {
 	const stretches: PlanStretch[] = [];
 	for (const period of periods.filter((item) => item.endsAt > now).toSorted((a, b) => +a.startsAt - +b.startsAt)) {
 		const last = stretches.at(-1);
 		if (last && last.planId === period.planId && +last.endsAt === +period.startsAt) last.endsAt = period.endsAt;
 		else stretches.push({ ...period });
 	}
-	const current = stretches[0] && stretches[0].startsAt <= now ? stretches[0] : null;
+	const granted = stretches[0] && stretches[0].startsAt <= now ? stretches[0] : null;
+	let current: { planId: PaidPlanId; endsAt: Date; source: "subscription" | "period"; renews: boolean } | null = granted
+		? { planId: granted.planId, endsAt: granted.endsAt, source: "period", renews: false }
+		: null;
+	for (const subscription of subscriptions) {
+		const access = subscriptionAccess(subscription, now);
+		if (!access) continue;
+		const rank = PLANS[access.planId].rank;
+		const currentRank = current ? PLANS[current.planId].rank : -1;
+		// The higher plan wins; on the same plan the subscription does, since it is what renews.
+		if (rank > currentRank || (rank === currentRank && current?.source === "period"))
+			current = { planId: access.planId, endsAt: access.endsAt, source: "subscription", renews: access.renews };
+	}
 	const plan = PLANS[current?.planId ?? "free"];
 	return {
 		enabled: true,
@@ -68,7 +98,9 @@ export function resolveEntitlements(periods: readonly PlanStretch[], now: Date):
 		features: { ...plan.features },
 		limits: { ...plan.limits },
 		currentPeriodEndsAt: current?.endsAt ?? null,
-		upcoming: current ? stretches.slice(1) : stretches,
+		source: current?.source ?? null,
+		renews: current?.renews ?? false,
+		upcoming: granted ? stretches.slice(1) : stretches,
 	};
 }
 
@@ -107,5 +139,6 @@ export async function getEntitlements(userId: string, now = new Date(), database
 			),
 		)
 		.orderBy(asc(schema.membershipPeriod.startsAt));
-	return resolveEntitlements(periods, now);
+	const subscriptions = await liveSubscriptions(userId, database);
+	return resolveEntitlements(periods, now, subscriptions.map(subscriptionState));
 }

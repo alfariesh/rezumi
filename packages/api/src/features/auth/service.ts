@@ -6,6 +6,7 @@ import { auth, isCustomOAuthProviderEnabled } from "@rezumi/auth/config";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
+import { endBillingForDeletedUser } from "../billing/deletion";
 import { exportBillingData } from "../billing/export";
 import { careerService } from "../career/service";
 import { coverLetterService } from "../cover-letters/service";
@@ -145,5 +146,8 @@ export const authService = {
 
 			throw new ORPCError("INTERNAL_SERVER_ERROR");
 		}
+
+		// A subscription stops billing with the account; the billing job retries what fails here.
+		await endBillingForDeletedUser(input.userId);
 	},
 };

@@ -1,33 +1,33 @@
 import type { Transaction } from "./account";
-import type { MidtransRefundAnswer } from "./midtrans/client";
 import { ORPCError } from "@orpc/server";
-import { and, asc, eq, gt, inArray, lt } from "drizzle-orm";
+import { and, eq, inArray, lt } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { lockBillingAccount } from "./account";
 import { raiseBillingAlertQuietly } from "./alerts";
-import { applyVerifiedStatus, nextRefundSequence, refundKeyFor, settleRefunds } from "./fulfillment";
-import { MidtransError, getTransactionStatus, refundTransaction } from "./midtrans/client";
-import { getMidtransConfig } from "./midtrans/config";
+import { applyPolarRefund, applyPolarSubscription, nextRefundSequence, refundKeyFor } from "./fulfillment";
+import { isTransientPolarError, polarApi, polarErrorCode, polarErrorDetail, polarStatus } from "./polar/client";
+import { getPolarConfig } from "./polar/config";
 
 /**
- * Giving money back, from the admin page. Through Midtrans for the methods its refund API takes; by hand (a bank
- * transfer) for virtual accounts and convenience stores, recorded here afterwards. A full refund takes the payment's
- * pass and remaining credits back; a partial one only when the admin asks.
+ * Giving money back, from the admin page, through Polar's refund API. Polar refunds amounts **before tax** (it works
+ * out the tax to give back itself), keeps its own fees, and a refund alone never ends a subscription: the admin
+ * chooses to end it too. Refunds Polar makes on its own (from its dashboard, or to head off a dispute) arrive through
+ * the refund webhooks and the same bookkeeping.
  */
 
-/** Payment types Midtrans' refund API takes (docs checked 2026-11-03). Virtual accounts and stores are refunded by hand. */
-const API_REFUNDABLE = new Set(["qris", "gopay", "shopeepay", "dana", "ovo", "credit_card", "kredivo", "akulaku"]);
-/** Methods Midtrans refunds only in full. */
-const FULL_REFUND_ONLY = new Set(["shopeepay", "ovo"]);
-
-/** Whether the admin page can refund through Midtrans, refund only in full, or only record a manual transfer. */
-export function refundModeOf(paymentType: string | null) {
-	if (!paymentType || !API_REFUNDABLE.has(paymentType)) return "manual" as const;
-	return FULL_REFUND_ONLY.has(paymentType) ? ("api_full" as const) : ("api" as const);
-}
-
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
+
+/** Polar's reasons for a refund the admin can pick. */
+export const REFUND_REASONS = [
+	"customer_request",
+	"duplicate",
+	"service_disruption",
+	"satisfaction_guarantee",
+	"fraudulent",
+	"other",
+] as const;
+export type RefundReason = (typeof REFUND_REASONS)[number];
 
 /** Holds the payment for a refund: its account's billing lock first, as everywhere, then the row. */
 async function lockPayment(tx: Transaction, paymentId: string) {
@@ -43,16 +43,20 @@ async function lockPayment(tx: Transaction, paymentId: string) {
 		.where(eq(schema.billingPayment.id, paymentId))
 		.for("update");
 	if (!payment) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
+	if (payment.provider !== "polar" || !payment.providerOrderId)
+		throw new ORPCError("BAD_REQUEST", { message: "Only Polar orders can be refunded here." });
 	if (payment.status !== "paid" && payment.status !== "partially_refunded")
 		throw new ORPCError("BAD_REQUEST", { message: "Only a paid payment can be refunded." });
-	return payment;
+	return payment as PaymentRow & { providerOrderId: string };
 }
 
 function assertAmount(payment: PaymentRow, amount: number) {
 	const left = payment.amount - payment.refundedAmount;
 	if (left <= 0) throw new ORPCError("BAD_REQUEST", { message: "This payment was already refunded in full." });
 	if (amount > left)
-		throw new ORPCError("BAD_REQUEST", { message: `At most Rp${left} of this payment is left to refund.` });
+		throw new ORPCError("BAD_REQUEST", {
+			message: `At most ${left} (smallest ${payment.currency.toUpperCase()} units, before tax) is left to refund.`,
+		});
 }
 
 export type RefundResult = {
@@ -61,9 +65,11 @@ export type RefundResult = {
 	amount: number;
 	paymentStatus: PaymentRow["status"];
 	refundedAmount: number;
+	/** Whether the subscription the payment renewed was ended too. */
+	subscriptionEnded: boolean;
 };
 
-async function resultOf(refundId: string): Promise<RefundResult> {
+async function resultOf(refundId: string, subscriptionEnded: boolean): Promise<RefundResult> {
 	const [row] = await db
 		.select({
 			refundId: schema.billingRefund.id,
@@ -76,68 +82,55 @@ async function resultOf(refundId: string): Promise<RefundResult> {
 		.innerJoin(schema.billingPayment, eq(schema.billingRefund.paymentId, schema.billingPayment.id))
 		.where(eq(schema.billingRefund.id, refundId));
 	if (!row) throw new Error("The refund disappeared.");
-	return row;
+	return { ...row, subscriptionEnded };
 }
 
-/** What a refusal from Midtrans means, for the admin. */
-function refusalMessage(error: MidtransError) {
-	switch (error.statusCode ?? String(error.httpStatus)) {
-		case "412":
-			return "Midtrans won't refund this payment now: its method may not allow it, the refund window may have passed (QRIS from another app: about 7 days), ShopeePay only takes refunds 06.00–23.50 WIB, or the merchant balance is too low.";
-		case "414":
-			return "Midtrans refused the amount.";
-		case "401":
-		case "403":
-			return "Midtrans didn't allow the refund: refunds may not be activated on the account yet (ask Midtrans support), or Midtrans doesn't know this order.";
-		default:
-			return `Midtrans refused the refund (${error.code}).`;
-	}
+/** What a refusal from Polar means, for the admin. */
+function refusalMessage(error: unknown) {
+	const status = polarStatus(error);
+	if (status === 422 || status === 400)
+		return `Polar refused the refund: ${polarErrorDetail(error) ?? "the amount or order isn't refundable"}.`;
+	if (status === 401 || status === 403)
+		return "Polar didn't allow the refund: check that the access token has the refunds scope.";
+	if (status === 404) return "Polar doesn't know this order.";
+	return `Polar refused the refund (${polarErrorCode("refund.create", error)}).`;
 }
 
 /**
- * Refunds through Midtrans' refund API. The refund (and its deterministic key, RF-<payment>-<n>) is saved before
- * Midtrans is asked, with the payment held so two clicks can't make two refunds; asking again while one is unanswered
- * sends the same key, which Midtrans never refunds twice. The answer goes through `applyVerifiedStatus`, the same
- * bookkeeping a refund notification gets, so whichever comes first wins and the other changes nothing.
+ * Refunds a paid order through Polar. The refund is saved (as `requesting`) before Polar is asked, with the payment
+ * held so two clicks can't make two refunds, and its id goes to Polar in the refund's metadata so the webhook finds
+ * it. A refund still waiting blocks a second one. With `endSubscription`, the subscription the order belongs to is
+ * revoked at once (access ends now); otherwise it carries on.
  */
 export async function requestRefund(input: {
 	actorUserId: string;
 	paymentId: string;
-	/** Rupiah; the rest of the payment when left out. */
+	/** Before tax, in the currency's smallest unit; the rest of the payment when left out. */
 	amount?: number | undefined;
 	reason: string;
-	/** Also take the pass and credits back on a partial refund. A full refund always does. */
+	polarReason?: RefundReason | undefined;
+	/** Also take the payment's credits back on a partial refund. A full refund always does. */
 	revokeBenefits?: boolean | undefined;
+	/** End the subscription now as well. */
+	endSubscription?: boolean | undefined;
 	now?: Date;
 }): Promise<RefundResult> {
-	const config = getMidtransConfig();
+	const config = getPolarConfig();
 	if (!config)
-		throw new ORPCError("BILLING_UNAVAILABLE", { status: 403, message: "Midtrans isn't set up on this server." });
+		throw new ORPCError("BILLING_UNAVAILABLE", { status: 403, message: "Polar isn't set up on this server." });
 	const now = input.now ?? new Date();
 	const claimed = await db.transaction(async (tx) => {
 		const payment = await lockPayment(tx, input.paymentId);
-		const mode = refundModeOf(payment.paymentType);
-		if (mode === "manual")
-			throw new ORPCError("BAD_REQUEST", {
-				message: "Midtrans can't refund this method. Transfer the money yourself, then record a manual refund.",
-			});
-		const left = payment.amount - payment.refundedAmount;
-		const amount = input.amount ?? left;
+		const amount = input.amount ?? payment.amount - payment.refundedAmount;
 		const [open] = await tx
-			.select()
+			.select({ id: schema.billingRefund.id })
 			.from(schema.billingRefund)
 			.where(and(eq(schema.billingRefund.paymentId, payment.id), eq(schema.billingRefund.status, "requesting")));
-		if (open) {
-			// Asking again: the same key and amount, so a lost answer can't become a second refund.
-			if (open.amount !== amount)
-				throw new ORPCError("CONFLICT", {
-					message: `A refund of Rp${open.amount} is still waiting for Midtrans. Check the status, or send that one again.`,
-				});
-			return { payment, refund: open };
-		}
+		if (open)
+			throw new ORPCError("CONFLICT", {
+				message: "A refund for this payment is still being processed by Polar. Check the status first.",
+			});
 		assertAmount(payment, amount);
-		if (mode === "api_full" && amount !== payment.amount)
-			throw new ORPCError("BAD_REQUEST", { message: "Midtrans refunds this method only in full." });
 		const sequence = await nextRefundSequence(tx, payment.id);
 		const [refund] = await tx
 			.insert(schema.billingRefund)
@@ -145,7 +138,7 @@ export async function requestRefund(input: {
 				paymentId: payment.id,
 				sequence,
 				refundKey: refundKeyFor(payment.id, sequence),
-				method: "midtrans",
+				method: "polar",
 				status: "requesting",
 				amount,
 				reason: input.reason,
@@ -159,232 +152,128 @@ export async function requestRefund(input: {
 			targetUserId: payment.userId,
 			action: "refund.requested",
 			reason: input.reason,
-			details: { paymentId: payment.id, refundId: refund.id, refundKey: refund.refundKey, amount },
+			details: { paymentId: payment.id, refundId: refund.id, amount, endSubscription: input.endSubscription ?? false },
 		});
 		return { payment, refund };
 	});
 
 	const { payment, refund } = claimed;
-	let answer: MidtransRefundAnswer;
+	const api = polarApi(config);
 	try {
-		answer = await refundTransaction(config, payment.providerOrderId, {
-			refundKey: refund.refundKey,
-			// Without an amount Midtrans refunds the whole payment; only right when nothing was refunded before.
-			amount: refund.amount === payment.amount ? undefined : refund.amount,
-			reason: input.reason.slice(0, 255),
+		const created = await api.refunds.create({
+			order_id: payment.providerOrderId,
+			reason: input.polarReason ?? "customer_request",
+			amount: refund.amount,
+			comment: input.reason.slice(0, 500),
+			metadata: { rezumi_refund_id: refund.id },
 		});
+		await applyPolarRefund(created, { source: "admin", eventType: "refund.create", now });
 	} catch (error) {
-		if (!(error instanceof MidtransError)) throw error;
-		return settleRefusal({ error, refund, payment, actorUserId: input.actorUserId, reason: input.reason, now });
-	}
-	if (!answer.confirmed) {
-		// Accepted; the bank still has to confirm it. The refund job asks Midtrans until it does.
+		if (isTransientPolarError(error)) {
+			// No answer: the refund may have gone through. The refund job asks Polar until it knows.
+			console.warn("[billing] A Polar refund got no answer; it is checked again.", {
+				refundId: refund.id,
+				error: polarErrorCode("refund.create", error),
+			});
+			throw new ORPCError("BAD_GATEWAY", {
+				message: "Polar didn't answer. The refund is checked again automatically; don't send it twice.",
+			});
+		}
 		await db
 			.update(schema.billingRefund)
-			.set({ failureReason: schema.REFUND_BANK_PROCESSING })
+			.set({ status: "failed", failureReason: polarErrorCode("refund.create", error), settledAt: now })
 			.where(and(eq(schema.billingRefund.id, refund.id), eq(schema.billingRefund.status, "requesting")));
-	} else if (answer.status.grossAmount === null) {
-		// The reply is a verified status like Get Status; without its amount, ask for the full status instead.
-		await syncPaymentWithMidtrans(payment.id, now);
-	} else {
-		await applyVerifiedStatus({
-			paymentId: payment.id,
-			verified: { found: true, status: answer.status },
-			source: "admin",
-			now,
-		});
+		await raiseBillingAlertQuietly({ kind: "refund_failed", paymentId: payment.id, now });
+		throw new ORPCError("BAD_REQUEST", { message: refusalMessage(error) });
 	}
-	return resultOf(refund.id);
+
+	let subscriptionEnded = false;
+	if (input.endSubscription && payment.subscriptionId) {
+		const [subscription] = await db
+			.select({ providerId: schema.billingSubscription.providerSubscriptionId })
+			.from(schema.billingSubscription)
+			.where(eq(schema.billingSubscription.id, payment.subscriptionId));
+		if (subscription) {
+			try {
+				const revoked = await api.subscriptions.revoke(subscription.providerId);
+				await applyPolarSubscription(revoked, { source: "admin", eventType: "subscription.revoke", now });
+				subscriptionEnded = true;
+				await db.insert(schema.billingAuditLog).values({
+					actorUserId: input.actorUserId,
+					targetUserId: payment.userId,
+					action: "subscription.revoked",
+					reason: input.reason,
+					details: { paymentId: payment.id, subscriptionId: payment.subscriptionId },
+				});
+			} catch (error) {
+				console.warn("[billing] Ending a subscription after a refund failed.", {
+					paymentId: payment.id,
+					error: polarErrorCode("subscription.revoke", error),
+				});
+			}
+		}
+	}
+	return resultOf(refund.id, subscriptionEnded);
 }
 
-/** Midtrans' answers that say for certain this refund was not made; anything else may still have gone through. */
-const NOT_MADE = new Set([400, 401, 403, 404, 412, 414]);
+/** A refund saved but not settled this long after it was asked: the job asks Polar about it. */
+const REFUND_RECHECK_MS = 2 * 60 * 1000;
+/** A refund Polar still doesn't list this long after it was asked never reached Polar. */
+const REFUND_LOST_MS = 60 * 60 * 1000;
 
 /**
- * After Midtrans didn't take a refund: its status is asked first, since the refund may have gone through anyway (a
- * lost answer, a key already used). Only a definite refusal, with a status that doesn't list the key, marks it failed;
- * otherwise it stays waiting, and sending it again with the same key is safe.
- */
-async function settleRefusal(input: {
-	error: MidtransError;
-	refund: typeof schema.billingRefund.$inferSelect;
-	payment: PaymentRow;
-	actorUserId: string;
-	reason: string;
-	now: Date;
-}): Promise<RefundResult> {
-	const { error, refund, payment, now } = input;
-	console.warn("[billing] A Midtrans refund didn't go through.", {
-		paymentId: payment.id,
-		refundId: refund.id,
-		error: error.code,
-		...(error.detail && { reason: error.detail }),
-	});
-	const checked = await syncPaymentWithMidtrans(payment.id, now).then(
-		() => true,
-		() => false,
-	);
-	const current = await resultOf(refund.id);
-	if (current.status === "succeeded") return current;
-	const code = Number(error.statusCode ?? error.httpStatus);
-	if (!checked || error.transient || !NOT_MADE.has(code))
-		throw new ORPCError("BAD_GATEWAY", {
-			message:
-				"Midtrans didn't confirm the refund. Check the status in a moment; sending it again is safe, it can't refund twice.",
-		});
-	await db
-		.update(schema.billingRefund)
-		.set({ status: "failed", failureReason: error.code })
-		.where(and(eq(schema.billingRefund.id, refund.id), eq(schema.billingRefund.status, "requesting")));
-	await db.insert(schema.billingAuditLog).values({
-		actorUserId: input.actorUserId,
-		targetUserId: payment.userId,
-		action: "refund.failed",
-		reason: input.reason,
-		details: { paymentId: payment.id, refundId: refund.id, error: error.code },
-	});
-	await raiseBillingAlertQuietly({ kind: "refund_failed", paymentId: payment.id, now });
-	throw new ORPCError("BAD_REQUEST", { message: refusalMessage(error) });
-}
-
-// The refund job asks about a waiting refund at most this often, for up to this long, this many per run.
-const REFUND_CHECK_INTERVAL_MS = 15 * 60 * 1000;
-const REFUND_CHECK_MAX_AGE_MS = 45 * 24 * 60 * 60 * 1000;
-const REFUND_CHECK_BATCH = 10;
-
-/**
- * The billing job's look at refunds still waiting on Midtrans (no answer, or the bank still processing): claims a
- * few not checked lately, then asks Midtrans about their payments outside any transaction. A refund the status lists
- * becomes succeeded through the usual bookkeeping. Safe to run twice at once. Returns how many payments it checked.
+ * The billing job's look at refunds still waiting: Rezumi's requests without a settled answer (a lost reply, a refund
+ * Polar is still processing). Lists the order's refunds at Polar and applies them. Returns how many orders it checked.
  */
 export async function reconcileRefunds(now = new Date()): Promise<number> {
-	if (!getMidtransConfig()) return 0;
-	const refund = schema.billingRefund;
-	const claimed = await db.transaction(async (tx) => {
-		const rows = await tx
-			.select({ id: refund.id, paymentId: refund.paymentId })
-			.from(refund)
-			.where(
-				and(
-					eq(refund.status, "requesting"),
-					lt(refund.updatedAt, new Date(+now - REFUND_CHECK_INTERVAL_MS)),
-					gt(refund.createdAt, new Date(+now - REFUND_CHECK_MAX_AGE_MS)),
-				),
-			)
-			.orderBy(asc(refund.updatedAt))
-			.limit(REFUND_CHECK_BATCH)
-			.for("update", { skipLocked: true });
-		if (rows.length)
-			await tx
-				.update(refund)
-				.set({ updatedAt: now })
-				.where(
-					inArray(
-						refund.id,
-						rows.map((row) => row.id),
-					),
-				);
-		return rows;
-	});
+	const config = getPolarConfig();
+	if (!config) return 0;
+	const api = polarApi(config);
+	const waiting = await db
+		.selectDistinct({ orderId: schema.billingPayment.providerOrderId })
+		.from(schema.billingRefund)
+		.innerJoin(schema.billingPayment, eq(schema.billingRefund.paymentId, schema.billingPayment.id))
+		.where(
+			and(
+				eq(schema.billingRefund.status, "requesting"),
+				eq(schema.billingRefund.method, "polar"),
+				lt(schema.billingRefund.updatedAt, new Date(+now - REFUND_RECHECK_MS)),
+				inArray(schema.billingPayment.status, ["paid", "partially_refunded", "refunded"]),
+			),
+		)
+		.limit(10);
 	let checked = 0;
-	for (const paymentId of new Set(claimed.map((row) => row.paymentId))) {
+	for (const { orderId } of waiting) {
+		if (!orderId) continue;
 		try {
-			await syncPaymentWithMidtrans(paymentId, now);
+			const refunds = await api.refunds.list({ order_id: orderId, limit: 20 });
+			for (const refund of refunds.items)
+				await applyPolarRefund(refund, { source: "status_check", eventType: "status_check", now });
+			const known = new Set(refunds.items.map((refund) => refund.metadata.rezumi_refund_id).filter(Boolean));
+			const stillWaiting = await db
+				.select({
+					id: schema.billingRefund.id,
+					paymentId: schema.billingRefund.paymentId,
+					createdAt: schema.billingRefund.createdAt,
+				})
+				.from(schema.billingRefund)
+				.innerJoin(schema.billingPayment, eq(schema.billingRefund.paymentId, schema.billingPayment.id))
+				.where(and(eq(schema.billingRefund.status, "requesting"), eq(schema.billingPayment.providerOrderId, orderId)));
+			for (const refund of stillWaiting) {
+				// Polar has no refund carrying this id a good while after it was asked: the request never reached it.
+				const lost = !known.has(refund.id) && +now - +refund.createdAt > REFUND_LOST_MS;
+				await db
+					.update(schema.billingRefund)
+					.set(lost ? { status: "failed", failureReason: "refund_not_found", settledAt: now } : { updatedAt: now })
+					.where(and(eq(schema.billingRefund.id, refund.id), eq(schema.billingRefund.status, "requesting")));
+				if (lost) await raiseBillingAlertQuietly({ kind: "refund_failed", paymentId: refund.paymentId, now });
+			}
 			checked++;
 		} catch (error) {
-			console.warn("[billing] Checking a waiting refund failed; it is checked again later.", {
-				paymentId,
-				error: error instanceof MidtransError ? error.code : "error",
+			console.warn("[billing] Checking refunds with Polar failed; they are checked again later.", {
+				error: polarErrorCode("refund.list", error),
 			});
 		}
 	}
 	return checked;
-}
-
-/**
- * Asks Midtrans where a payment stands now, whatever its status here, and applies the answer: a missed notification,
- * a refund made in the Midtrans dashboard, a refund whose answer was lost. Null when Midtrans has no transaction yet.
- */
-export async function syncPaymentWithMidtrans(paymentId: string, now = new Date()) {
-	const config = getMidtransConfig();
-	if (!config)
-		throw new ORPCError("BILLING_UNAVAILABLE", { status: 403, message: "Midtrans isn't set up on this server." });
-	const [payment] = await db
-		.select({ providerOrderId: schema.billingPayment.providerOrderId })
-		.from(schema.billingPayment)
-		.where(eq(schema.billingPayment.id, paymentId));
-	if (!payment) throw new ORPCError("NOT_FOUND", { message: "No payment has that ID." });
-	const result = await getTransactionStatus(config, payment.providerOrderId);
-	if (!result.found) return null;
-	return {
-		transactionStatus: result.status.transactionStatus,
-		...(await applyVerifiedStatus({ paymentId, verified: result, source: "admin", now })),
-	};
-}
-
-/**
- * Records money the admin gave back outside Midtrans, such as a bank transfer for a virtual account payment. The
- * payment's refunded total and status follow, and a full refund takes the pass and remaining credits back.
- */
-export async function recordManualRefund(input: {
-	actorUserId: string;
-	paymentId: string;
-	amount: number;
-	reason: string;
-	revokeBenefits?: boolean | undefined;
-	now?: Date;
-}): Promise<RefundResult> {
-	const now = input.now ?? new Date();
-	const refundId = await db.transaction(async (tx) => {
-		const payment = await lockPayment(tx, input.paymentId);
-		const [open] = await tx
-			.select({ id: schema.billingRefund.id })
-			.from(schema.billingRefund)
-			.where(and(eq(schema.billingRefund.paymentId, payment.id), eq(schema.billingRefund.status, "requesting")));
-		if (open)
-			throw new ORPCError("CONFLICT", {
-				message: "A Midtrans refund for this payment is still waiting. Check the status first.",
-			});
-		assertAmount(payment, input.amount);
-		const sequence = await nextRefundSequence(tx, payment.id);
-		const [refund] = await tx
-			.insert(schema.billingRefund)
-			.values({
-				paymentId: payment.id,
-				sequence,
-				refundKey: refundKeyFor(payment.id, sequence),
-				method: "manual",
-				status: "succeeded",
-				amount: input.amount,
-				reason: input.reason,
-				revokeBenefits: input.revokeBenefits ?? false,
-				actorUserId: input.actorUserId,
-				settledAt: now,
-			})
-			.returning({ id: schema.billingRefund.id });
-		if (!refund) throw new Error("The refund was not saved.");
-		const settled = await settleRefunds(tx, payment, { now });
-		await tx
-			.update(schema.billingPayment)
-			.set({
-				refundedAmount: settled.refundedAmount,
-				status: settled.full ? "refunded" : "partially_refunded",
-			})
-			.where(eq(schema.billingPayment.id, payment.id));
-		await tx.insert(schema.billingAuditLog).values({
-			actorUserId: input.actorUserId,
-			targetUserId: payment.userId,
-			action: "payment.refund_recorded",
-			reason: input.reason,
-			details: {
-				paymentId: payment.id,
-				refundId: refund.id,
-				method: "manual",
-				amount: input.amount,
-				refundedAmount: settled.refundedAmount,
-			},
-		});
-		return refund.id;
-	});
-	return resultOf(refundId);
 }

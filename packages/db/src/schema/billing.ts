@@ -1,4 +1,4 @@
-import type { CreditSource, PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingInterval, CreditSource, PaidPlanId } from "@rezumi/schema/billing";
 import { sql } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
 import { generateId } from "@rezumi/utils/string";
@@ -25,11 +25,14 @@ export const billingAccount = pg.pgTable("billing_account", {
 		.$onUpdate(() => /* @__PURE__ */ new Date()),
 });
 
+/** `payment` is a 30-day pass bought before subscriptions; new paid access comes from `billing_subscription`. */
 export type MembershipPeriodSource = "payment" | "admin" | "promo";
 
 /**
- * One stretch of paid access. An account's unrevoked periods never overlap: passes queue one after another, higher
- * plans first. A revoked period is out of the schedule; one revoked while running ends at the moment it was revoked.
+ * One stretch of paid access granted outside a subscription: by an administrator, a promotion, or a 30-day pass bought
+ * before subscriptions. An account's unrevoked periods never overlap: they queue one after another, higher plans first.
+ * A revoked period is out of the schedule; one revoked while running ends at the moment it was revoked. A subscription
+ * runs beside them, and the higher plan of the two applies.
  */
 export const membershipPeriod = pg.pgTable(
 	"membership_period",
@@ -87,7 +90,7 @@ export const billingAuditLog = pg.pgTable(
 	(t) => [pg.index().on(t.targetUserId, t.createdAt)],
 );
 
-/** Rezumi AI credits that came in: the trial, a Pro AI purchase, or an administrator. Spent soonest-expiring first. */
+/** Rezumi AI credits that came in: the trial, a month of Pro AI, or an administrator. Spent soonest-expiring first. */
 export const aiCreditGrant = pg.pgTable(
 	"ai_credit_grant",
 	{
@@ -103,6 +106,10 @@ export const aiCreditGrant = pg.pgTable(
 		source: pg.text("source").notNull().$type<CreditSource>(),
 		// The Pro AI payment that bought them.
 		paymentId: pg.text("payment_id").references((): pg.AnyPgColumn => billingPayment.id, { onDelete: "set null" }),
+		// The subscription they came with: one grant per subscription per month, whatever orders a plan change makes.
+		subscriptionId: pg
+			.text("subscription_id")
+			.references((): pg.AnyPgColumn => billingSubscription.id, { onDelete: "set null" }),
 		amount: pg.integer("amount").notNull(),
 		// What is left to spend. Reserving takes from it; a released reservation gives it back.
 		remaining: pg.integer("remaining").notNull(),
@@ -114,6 +121,7 @@ export const aiCreditGrant = pg.pgTable(
 	(t) => [
 		pg.index().on(t.userId, t.expiresAt),
 		pg.index().on(t.paymentId),
+		pg.uniqueIndex("ai_credit_grant_subscription_month").on(t.subscriptionId, t.expiresAt),
 		pg.check("ai_credit_grant_amount_positive", sql`${t.amount} > 0`),
 		pg.check("ai_credit_grant_source", sql`${t.source} IN ('trial', 'plan', 'admin')`),
 		pg.check("ai_credit_grant_remaining_in_range", sql`${t.remaining} >= 0 AND ${t.remaining} <= ${t.amount}`),
@@ -165,6 +173,82 @@ export const aiCreditUsage = pg.pgTable(
 	],
 );
 
+/** Polar's subscription statuses, kept as Polar reports them. */
+export const BILLING_SUBSCRIPTION_STATUSES = [
+	"incomplete",
+	"incomplete_expired",
+	"trialing",
+	"active",
+	"past_due",
+	"canceled",
+	"unpaid",
+	"paused",
+] as const;
+
+export type BillingSubscriptionStatus = (typeof BILLING_SUBSCRIPTION_STATUSES)[number];
+
+const statusList = (values: readonly string[]) => sql.raw(values.map((value) => `'${value}'`).join(", "));
+
+/**
+ * A subscription at Polar, mirrored from its webhooks and status checks: the plan and interval its product stands for,
+ * where it stands, and the period it is in. `paid_through` is the end of the last period an order paid for, so a renewal
+ * that failed (past_due) stops access there. `provider_modified_at` keeps an older event from undoing a newer one;
+ * Polar doesn't deliver webhooks in order. Kept, without its owner, after the account is deleted; the billing job
+ * cancels one that was still running.
+ */
+export const billingSubscription = pg.pgTable(
+	"billing_subscription",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		userId: pg.text("user_id").references(() => user.id, { onDelete: "set null" }),
+		// The account it was bought for, kept as text after the account is gone: Polar knows the customer by it.
+		externalCustomerId: pg.text("external_customer_id").notNull(),
+		provider: pg.text("provider").notNull().default("polar").$type<"polar">(),
+		providerSubscriptionId: pg.text("provider_subscription_id").notNull().unique(),
+		providerCustomerId: pg.text("provider_customer_id"),
+		providerProductId: pg.text("provider_product_id").notNull(),
+		planId: pg.text("plan_id").notNull().$type<PaidPlanId>(),
+		interval: pg.text("interval").notNull().$type<BillingInterval>(),
+		status: pg.text("status").notNull().$type<BillingSubscriptionStatus>(),
+		// The recurring price, in the currency's smallest unit, before tax and discounts.
+		amount: pg.integer("amount").notNull(),
+		currency: pg.text("currency").notNull(),
+		currentPeriodStart: pg.timestamp("current_period_start", { withTimezone: true }).notNull(),
+		currentPeriodEnd: pg.timestamp("current_period_end", { withTimezone: true }),
+		paidThrough: pg.timestamp("paid_through", { withTimezone: true }),
+		cancelAtPeriodEnd: pg.boolean("cancel_at_period_end").notNull().default(false),
+		canceledAt: pg.timestamp("canceled_at", { withTimezone: true }),
+		startedAt: pg.timestamp("started_at", { withTimezone: true }),
+		endsAt: pg.timestamp("ends_at", { withTimezone: true }),
+		endedAt: pg.timestamp("ended_at", { withTimezone: true }),
+		// A plan or interval change scheduled for the next renewal (a downgrade), by product.
+		pendingProductId: pg.text("pending_product_id"),
+		// Polar's `modified_at` (or creation time) of the newest state applied.
+		providerModifiedAt: pg.timestamp("provider_modified_at", { withTimezone: true }).notNull(),
+		// When the billing job last asked Polar about it.
+		lastCheckedAt: pg.timestamp("last_checked_at", { withTimezone: true }),
+		// Set once the billing job revoked it at Polar because its account was deleted.
+		revokedForDeletionAt: pg.timestamp("revoked_for_deletion_at", { withTimezone: true }),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: pg
+			.timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [
+		pg.index().on(t.userId, t.status),
+		pg.index().on(t.status, t.currentPeriodEnd),
+		pg.check("billing_subscription_status", sql`${t.status} IN (${statusList(BILLING_SUBSCRIPTION_STATUSES)})`),
+		pg.check("billing_subscription_interval", sql`${t.interval} IN ('month', 'year')`),
+		pg.check("billing_subscription_amount_not_negative", sql`${t.amount} >= 0`),
+	],
+);
+
 export const BILLING_PAYMENT_STATUSES = [
 	"creating",
 	"pending",
@@ -178,17 +262,25 @@ export const BILLING_PAYMENT_STATUSES = [
 ] as const;
 
 /**
- * Where a payment stands. `creating` is committed before Snap is called; `pending` has a Snap page to pay on. Only a
- * verified Midtrans status moves it on from there, and `paid` never goes back: only to a refund or a reversal.
+ * Where a payment stands. `creating` is committed before Polar's checkout is created; `pending` has a checkout page to
+ * pay on (or an order Polar is still charging). Only Polar's own state moves it on from there, and `paid` never goes
+ * back: only to a refund or a reversal (a lost card dispute, or a refund Polar made to prevent one).
  */
 export type BillingPaymentStatus = (typeof BILLING_PAYMENT_STATUSES)[number];
 
-const statusList = (values: readonly string[]) => sql.raw(values.map((value) => `'${value}'`).join(", "));
+/** Why Polar made an order: a first purchase, a subscription's first payment, a renewal, or a plan change. */
+export type BillingReason =
+	| "purchase"
+	| "subscription_create"
+	| "subscription_cycle"
+	| "subscription_update"
+	| "subscription_meter_cycle";
 
 /**
- * One attempt to pay for a pass: one Midtrans `order_id`. Paying again after it expired or failed is a new row. The
- * price, length and credits are copied from the catalog at checkout, so a later price change never touches it. Kept,
- * without its owner, after the account is deleted: it is a bookkeeping record.
+ * Money for a plan: a checkout opened on the website (until it is paid), or one Polar order. A subscription's renewals
+ * are orders without a checkout, so each adds a row. The plan, interval and catalog version are copied when the row is
+ * made, so a later price change never touches it. Kept, without its owner, after the account is deleted: it is a
+ * bookkeeping record. Rows from before Polar (30-day passes through Midtrans) keep `provider` midtrans.
  */
 export const billingPayment = pg.pgTable(
 	"billing_payment",
@@ -199,40 +291,49 @@ export const billingPayment = pg.pgTable(
 			.primaryKey()
 			.$defaultFn(() => generateId()),
 		userId: pg.text("user_id").references(() => user.id, { onDelete: "set null" }),
-		provider: pg.text("provider").notNull().default("midtrans").$type<"midtrans">(),
-		// `transaction_details.order_id`: RZ-<id>.
-		providerOrderId: pg.text("provider_order_id").notNull().unique(),
+		provider: pg.text("provider").notNull().default("polar").$type<"polar" | "midtrans">(),
+		// The checkout session the customer pays on; null for renewals.
+		providerCheckoutId: pg.text("provider_checkout_id").unique(),
+		// Polar's order, once there is one.
+		providerOrderId: pg.text("provider_order_id").unique(),
 		// The key the checkout request carried; repeating it returns this payment instead of a second one.
 		idempotencyKey: pg.text("idempotency_key"),
+		subscriptionId: pg
+			.text("subscription_id")
+			.references((): pg.AnyPgColumn => billingSubscription.id, { onDelete: "set null" }),
 		planId: pg.text("plan_id").notNull().$type<PaidPlanId>(),
+		// Null on 30-day passes from before subscriptions.
+		interval: pg.text("interval").$type<BillingInterval>(),
 		catalogVersion: pg.integer("catalog_version").notNull(),
-		// Whole Rupiah, the `gross_amount` sent.
+		billingReason: pg.text("billing_reason").$type<BillingReason>(),
+		// After discounts, before tax, in the currency's smallest unit: what Rezumi earns before fees. Zero for a 100%
+		// discount code.
 		amount: pg.integer("amount").notNull(),
-		durationDays: pg.integer("duration_days").notNull(),
-		credits: pg.integer("credits").notNull(),
-		currency: pg.text("currency").notNull().default("IDR"),
+		taxAmount: pg.integer("tax_amount").notNull().default(0),
+		// What the customer was charged, tax included.
+		totalAmount: pg.integer("total_amount").notNull().default(0),
+		currency: pg.text("currency").notNull().default("usd"),
+		// Rezumi AI credits it granted when it was paid.
+		credits: pg.integer("credits").notNull().default(0),
+		// The length of a 30-day pass from before subscriptions; null for subscriptions.
+		durationDays: pg.integer("duration_days"),
 		status: pg.text("status").notNull().$type<BillingPaymentStatus>(),
 		// Where it was bought: the website, for now.
 		channel: pg.text("channel").notNull().default("web").$type<"web">(),
-		// To go back to the Snap page after a refresh. Never logged.
-		snapToken: pg.text("snap_token"),
+		// Polar's checkout page, to go back to after a refresh. Never logged.
 		redirectUrl: pg.text("redirect_url"),
-		// The end of the payment window sent to Midtrans.
+		// When the checkout page closes.
 		expiresAt: pg.timestamp("expires_at", { withTimezone: true }),
-		paymentType: pg.text("payment_type"),
-		transactionId: pg.text("transaction_id"),
-		// The last verified `transaction_status` and `fraud_status`.
+		// Polar's last status for it: the checkout's, then the order's.
 		providerStatus: pg.text("provider_status"),
-		fraudStatus: pg.text("fraud_status"),
+		// The subscription period the order pays for.
+		periodStart: pg.timestamp("period_start", { withTimezone: true }),
+		periodEnd: pg.timestamp("period_end", { withTimezone: true }),
 		paidAt: pg.timestamp("paid_at", { withTimezone: true }),
-		// Set once the pass and credits are granted; it keeps fulfilment to exactly once.
+		// Set once its access and credits are granted; it keeps fulfilment to exactly once.
 		fulfilledAt: pg.timestamp("fulfilled_at", { withTimezone: true }),
+		// Given back, before tax, in the currency's smallest unit.
 		refundedAmount: pg.integer("refunded_amount").notNull().default(0),
-		// Set once the receipt email went out; the billing job retries a few times until then.
-		receiptSentAt: pg.timestamp("receipt_sent_at", { withTimezone: true }),
-		receiptAttempts: pg.integer("receipt_attempts").notNull().default(0),
-		// When the last send started: another sender leaves it alone for a while, so a receipt goes out once.
-		receiptAttemptedAt: pg.timestamp("receipt_attempted_at", { withTimezone: true }),
 		// Backoff for the status checks the billing job makes.
 		lastCheckedAt: pg.timestamp("last_checked_at", { withTimezone: true }),
 		checkAttempts: pg.integer("check_attempts").notNull().default(0),
@@ -248,27 +349,29 @@ export const billingPayment = pg.pgTable(
 	(t) => [
 		pg.index().on(t.status, t.createdAt),
 		pg.index().on(t.userId, t.createdAt),
+		pg.index().on(t.subscriptionId),
 		pg.uniqueIndex().on(t.userId, t.idempotencyKey),
 		pg.check("billing_payment_status", sql`${t.status} IN (${statusList(BILLING_PAYMENT_STATUSES)})`),
-		pg.check("billing_payment_amount_positive", sql`${t.amount} > 0`),
+		pg.check("billing_payment_amount_not_negative", sql`${t.amount} >= 0`),
 		pg.check("billing_payment_refunded_in_range", sql`${t.refundedAmount} >= 0 AND ${t.refundedAmount} <= ${t.amount}`),
 	],
 );
 
-export type BillingPaymentEventSource = "notification" | "status_check" | "admin";
+export type BillingPaymentEventSource = "webhook" | "status_check" | "admin";
 
 export type BillingPaymentEventOutcome =
 	| "applied"
 	| "duplicate"
 	| "stale"
-	| "rejected_signature"
-	| "unknown_order"
-	| "amount_mismatch"
+	| "ignored"
+	| "unknown_product"
+	| "unknown_customer"
 	| "error";
 
 /**
- * Every Midtrans notification and every status check that found something, with what it did. The record for support
- * and investigations: Workers keep only a sample of logs. `payload` holds an allowlist of safe fields.
+ * Every Polar webhook and every status check that found something, with what it did. The record for support and
+ * investigations: Workers keep only a sample of logs. `webhook_id` (Polar's `webhook-id` header) is unique, so a
+ * redelivered event is recognized and skipped. `payload` holds an allowlist of safe fields.
  */
 export const billingPaymentEvent = pg.pgTable(
 	"billing_payment_event",
@@ -278,40 +381,39 @@ export const billingPaymentEvent = pg.pgTable(
 			.notNull()
 			.primaryKey()
 			.$defaultFn(() => generateId()),
-		// Null when the order is not one of Rezumi's.
 		paymentId: pg.text("payment_id").references(() => billingPayment.id, { onDelete: "set null" }),
-		providerOrderId: pg.text("provider_order_id").notNull(),
+		subscriptionId: pg.text("subscription_id").references(() => billingSubscription.id, { onDelete: "set null" }),
+		// Webhooks only; a redelivery carries the same id.
+		webhookId: pg.text("webhook_id").unique(),
+		// For example order.paid or subscription.updated; `status_check` for the billing job's own look.
+		eventType: pg.text("event_type").notNull(),
+		// The Polar object the event is about (an order, subscription, checkout or refund id).
+		providerObjectId: pg.text("provider_object_id"),
 		source: pg.text("source").notNull().$type<BillingPaymentEventSource>(),
-		// Midtrans' values as they came, strings included.
-		transactionStatus: pg.text("transaction_status"),
-		statusCode: pg.text("status_code"),
-		fraudStatus: pg.text("fraud_status"),
-		grossAmount: pg.text("gross_amount"),
-		// Notifications only.
-		signatureValid: pg.boolean("signature_valid"),
 		outcome: pg.text("outcome").notNull().$type<BillingPaymentEventOutcome>(),
 		payload: pg.jsonb("payload").notNull().$type<Record<string, unknown>>().default({}),
 		receivedAt: pg.timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
 	},
-	(t) => [pg.index().on(t.providerOrderId, t.receivedAt), pg.index().on(t.paymentId)],
+	(t) => [
+		pg.index().on(t.providerObjectId, t.receivedAt),
+		pg.index().on(t.paymentId),
+		pg.index().on(t.subscriptionId),
+		pg.index().on(t.eventType, t.receivedAt),
+	],
 );
 
-export type BillingRefundMethod = "midtrans" | "manual";
+export type BillingRefundMethod = "polar" | "midtrans" | "manual";
 
 /**
- * `requesting`: saved, its refund key with it, before Midtrans is asked, and still there while the answer is unknown
- * (sending it again with the same key is safe). `succeeded` once Midtrans or the admin confirmed the money went back;
- * `failed` when Midtrans refused it.
+ * `requesting`: saved before Polar is asked, and still there while Polar processes it (its `pending`). `succeeded`
+ * once Polar confirmed the money went back; `failed` when it refused or canceled the refund.
  */
 export type BillingRefundStatus = "requesting" | "succeeded" | "failed";
 
-/** A waiting refund Midtrans accepted while the bank still processes it (card refunds take days): not a failure. */
-export const REFUND_BANK_PROCESSING = "bank_processing";
-
 /**
- * Money given back for a payment: through Midtrans' refund API (from the admin page, or the Midtrans dashboard, picked
- * up from its status), or by hand, such as a bank transfer for a virtual account payment Midtrans can't refund. The
- * payment's `refunded_amount` is the sum of its succeeded refunds. Kept after the account is deleted.
+ * Money given back for a payment: through Polar's refund API from the admin page, or by Polar itself (from its
+ * dashboard, or to prevent a dispute), picked up from its webhooks. The payment's `refunded_amount` is the sum of its
+ * succeeded refunds. Kept after the account is deleted.
  */
 export const billingRefund = pg.pgTable(
 	"billing_refund",
@@ -325,20 +427,20 @@ export const billingRefund = pg.pgTable(
 			.text("payment_id")
 			.notNull()
 			.references(() => billingPayment.id, { onDelete: "cascade" }),
-		// The payment's nth refund; Rezumi's own refund keys are RF-<payment id>-<sequence>.
+		// The payment's nth refund.
 		sequence: pg.integer("sequence").notNull(),
-		// Midtrans' idempotency key: the same key never refunds twice. Refunds made in the dashboard keep Midtrans' key.
+		// Polar's refund id once Polar has one; before that, Rezumi's own key (RF-<payment id>-<sequence>).
 		refundKey: pg.text("refund_key").notNull().unique(),
 		method: pg.text("method").notNull().$type<BillingRefundMethod>(),
 		status: pg.text("status").notNull().$type<BillingRefundStatus>(),
-		// Whole Rupiah.
+		// Before tax, in the payment's currency's smallest unit.
 		amount: pg.integer("amount").notNull(),
 		reason: pg.text("reason").notNull(),
-		// Whether the admin chose to take the pass and credits back for a partial refund; a full refund always does.
+		// Whether the admin also took the plan's access and credits back.
 		revokeBenefits: pg.boolean("revoke_benefits").notNull().default(false),
-		// The admin who asked; null for one found at Midtrans.
+		// The admin who asked; null for one Polar made.
 		actorUserId: pg.text("actor_user_id").references(() => user.id, { onDelete: "set null" }),
-		// A short code that is safe to show: why it failed (refund_http_412), or REFUND_BANK_PROCESSING while it waits.
+		// A short code that is safe to show: why it failed.
 		failureReason: pg.text("failure_reason"),
 		settledAt: pg.timestamp("settled_at", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -352,7 +454,7 @@ export const billingRefund = pg.pgTable(
 		pg.uniqueIndex().on(t.paymentId, t.sequence),
 		pg.index().on(t.status, t.createdAt),
 		pg.check("billing_refund_amount_positive", sql`${t.amount} > 0`),
-		pg.check("billing_refund_method", sql`${t.method} IN ('midtrans', 'manual')`),
+		pg.check("billing_refund_method", sql`${t.method} IN ('polar', 'midtrans', 'manual')`),
 		pg.check("billing_refund_status", sql`${t.status} IN ('requesting', 'succeeded', 'failed')`),
 	],
 );

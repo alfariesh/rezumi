@@ -1,4 +1,5 @@
 import type { BillingMode } from "./entitlements";
+import type { SubscriptionState } from "./polar/mapping";
 import type { DbOrTx } from "@rezumi/db/client";
 import { beforeEach, describe, expect, it, vi } from "vite-plus/test";
 import { PLANS } from "@rezumi/schema/billing";
@@ -50,6 +51,8 @@ const unlimited = {
 	},
 	limits: { activeResumes: null, activeCoverLetters: null },
 	currentPeriodEndsAt: null,
+	source: null,
+	renews: false,
 	upcoming: [],
 };
 
@@ -102,6 +105,8 @@ describe("resolveEntitlements", () => {
 			features: PLANS.free.features,
 			limits: PLANS.free.limits,
 			currentPeriodEndsAt: null,
+			source: null,
+			renews: false,
 			upcoming: [],
 		});
 	});
@@ -148,5 +153,66 @@ describe("resolveEntitlements", () => {
 		);
 		expect(result.planId).toBe("plus");
 		expect(result.currentPeriodEndsAt).toEqual(at(30));
+	});
+
+	const subscription = (overrides: Partial<SubscriptionState> = {}): SubscriptionState => ({
+		planId: "plus",
+		interval: "month",
+		status: "active",
+		currentPeriodStart: at(-10),
+		currentPeriodEnd: at(20),
+		paidThrough: at(20),
+		cancelAtPeriodEnd: false,
+		endedAt: null,
+		...overrides,
+	});
+
+	it("gives an active subscription's plan until its period ends, renewing", () => {
+		expect(resolveEntitlements([], now, [subscription()])).toMatchObject({
+			planId: "plus",
+			currentPeriodEndsAt: at(20),
+			source: "subscription",
+			renews: true,
+		});
+		expect(resolveEntitlements([], now, [subscription({ cancelAtPeriodEnd: true })])).toMatchObject({
+			planId: "plus",
+			renews: false,
+		});
+	});
+
+	it("keeps access for a few hours past the period end while the renewal arrives", () => {
+		const ended = subscription({ currentPeriodStart: at(-30), currentPeriodEnd: new Date(+now - 60 * 60 * 1000) });
+		expect(resolveEntitlements([], now, [ended]).planId).toBe("plus");
+		const longAgo = subscription({ currentPeriodStart: at(-31), currentPeriodEnd: at(-1) });
+		expect(resolveEntitlements([], now, [longAgo]).planId).toBe("free");
+	});
+
+	it("stops a past_due subscription at the last paid period, and the others at once", () => {
+		expect(resolveEntitlements([], now, [subscription({ status: "past_due", paidThrough: at(-1) })]).planId).toBe(
+			"free",
+		);
+		expect(resolveEntitlements([], now, [subscription({ status: "past_due", paidThrough: at(2) })])).toMatchObject({
+			planId: "plus",
+			currentPeriodEndsAt: at(2),
+			renews: false,
+		});
+		for (const status of ["canceled", "unpaid", "incomplete", "incomplete_expired", "paused"] as const)
+			expect(resolveEntitlements([], now, [subscription({ status })]).planId).toBe("free");
+		expect(resolveEntitlements([], now, [subscription({ endedAt: at(-1) })]).planId).toBe("free");
+	});
+
+	it("takes the higher plan of a granted period and a subscription", () => {
+		const granted = [{ planId: "pro-ai" as const, startsAt: at(-1), endsAt: at(5) }];
+		expect(resolveEntitlements(granted, now, [subscription()])).toMatchObject({
+			planId: "pro-ai",
+			source: "period",
+			currentPeriodEndsAt: at(5),
+		});
+		const plus = [{ planId: "plus" as const, startsAt: at(-1), endsAt: at(40) }];
+		expect(resolveEntitlements(plus, now, [subscription({ planId: "pro-ai" })])).toMatchObject({
+			planId: "pro-ai",
+			source: "subscription",
+		});
+		expect(resolveEntitlements(plus, now, [subscription()])).toMatchObject({ planId: "plus", source: "subscription" });
 	});
 });

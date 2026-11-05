@@ -1,3 +1,4 @@
+import type { RefundReason } from "./refunds";
 import type { PaidPlanId } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/server";
 import { desc, eq, inArray, or, sql } from "drizzle-orm";
@@ -7,8 +8,9 @@ import { lockBillingAccount } from "./account";
 import { deductCredits, getCreditBalance, grantCredits } from "./credits";
 import { isBillingAppliedTo, resolveEntitlements } from "./entitlements";
 import { grantMembershipPeriod, revokeMembershipPeriod } from "./periods";
-import { resendPaymentReceipt } from "./receipt";
-import { recordManualRefund, refundModeOf, requestRefund, syncPaymentWithMidtrans } from "./refunds";
+import { syncPaymentWithPolar } from "./reconcile";
+import { requestRefund } from "./refunds";
+import { subscriptionState } from "./subscriptions";
 import { DAY_MS } from "./timeline";
 
 /** Billing tools for the owner: web sessions of accounts with the admin role only. */
@@ -51,27 +53,54 @@ const UUID = /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i;
 
 type PaymentRow = typeof schema.billingPayment.$inferSelect;
 
-/** A payment as the admin page shows it: everything but the Snap token and page address. */
+/** A payment as the admin page shows it: everything but the checkout page address. */
 const adminPayment = (payment: PaymentRow) => ({
 	id: payment.id,
 	userId: payment.userId,
+	provider: payment.provider,
 	orderId: payment.providerOrderId,
+	checkoutId: payment.providerCheckoutId,
+	subscriptionId: payment.subscriptionId,
 	planId: payment.planId,
+	interval: payment.interval,
+	billingReason: payment.billingReason,
 	amount: payment.amount,
-	durationDays: payment.durationDays,
+	taxAmount: payment.taxAmount,
+	totalAmount: payment.totalAmount,
+	currency: payment.currency.toLowerCase(),
 	credits: payment.credits,
 	status: payment.status,
-	paymentType: payment.paymentType,
-	transactionId: payment.transactionId,
 	providerStatus: payment.providerStatus,
 	createdAt: payment.createdAt,
 	expiresAt: payment.expiresAt,
 	paidAt: payment.paidAt,
 	fulfilledAt: payment.fulfilledAt,
+	periodStart: payment.periodStart,
+	periodEnd: payment.periodEnd,
 	refundedAmount: payment.refundedAmount,
-	receiptSentAt: payment.receiptSentAt,
 	failureReason: payment.failureReason,
-	refundMode: refundModeOf(payment.paymentType),
+	// Only Polar orders can be refunded from the admin page; old Midtrans passes were refunded by hand.
+	refundable: payment.provider === "polar" && Boolean(payment.providerOrderId),
+});
+
+type SubscriptionRow = typeof schema.billingSubscription.$inferSelect;
+
+/** A subscription as the admin page shows it. */
+const adminSubscription = (subscription: SubscriptionRow) => ({
+	id: subscription.id,
+	providerSubscriptionId: subscription.providerSubscriptionId,
+	planId: subscription.planId,
+	interval: subscription.interval,
+	status: subscription.status,
+	amount: subscription.amount,
+	currency: subscription.currency,
+	currentPeriodStart: subscription.currentPeriodStart,
+	currentPeriodEnd: subscription.currentPeriodEnd,
+	paidThrough: subscription.paidThrough,
+	cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+	canceledAt: subscription.canceledAt,
+	endedAt: subscription.endedAt,
+	createdAt: subscription.createdAt,
 });
 
 const customerSummary = {
@@ -81,11 +110,13 @@ const customerSummary = {
 	createdAt: schema.user.createdAt,
 };
 
-/** Where an admin's search lands: an email (or part of one), an order number RZ-…, a payment or account id. */
+/**
+ * Where an admin's search lands: an email (or part of one), a Polar order, checkout or subscription id, a payment or
+ * account id.
+ */
 async function search(input: { query: string }) {
 	const query = input.query.trim();
-	const orderId = /^RZ-/i.test(query) ? `RZ-${query.slice(3)}` : null;
-	const id = orderId ? orderId.slice(3) : UUID.test(query) ? query : null;
+	const id = UUID.test(query) ? query.toLowerCase() : null;
 	const payments = id
 		? await db
 				.select()
@@ -93,18 +124,23 @@ async function search(input: { query: string }) {
 				.where(
 					or(
 						eq(schema.billingPayment.id, id),
-						eq(schema.billingPayment.providerOrderId, orderId ?? `RZ-${id}`),
-						eq(schema.billingPayment.transactionId, query),
+						eq(schema.billingPayment.providerOrderId, id),
+						eq(schema.billingPayment.providerCheckoutId, id),
 						eq(schema.billingPayment.userId, id),
+						inArray(
+							schema.billingPayment.subscriptionId,
+							db
+								.select({ id: schema.billingSubscription.id })
+								.from(schema.billingSubscription)
+								.where(
+									or(eq(schema.billingSubscription.id, id), eq(schema.billingSubscription.providerSubscriptionId, id)),
+								),
+						),
 					),
 				)
 				.orderBy(desc(schema.billingPayment.createdAt))
 				.limit(SEARCH_LIMIT)
-		: await db
-				.select()
-				.from(schema.billingPayment)
-				.where(eq(schema.billingPayment.transactionId, query))
-				.limit(SEARCH_LIMIT);
+		: [];
 	const pattern = `%${query.toLowerCase().replaceAll(/[\\%_]/g, (match) => `\\${match}`)}%`;
 	const ownerIds = [...new Set(payments.flatMap((payment) => (payment.userId ? [payment.userId] : [])))];
 	const customers = await db
@@ -148,6 +184,12 @@ async function customer(input: { userId: string }) {
 		.where(eq(schema.billingPayment.userId, input.userId))
 		.orderBy(desc(schema.billingPayment.createdAt))
 		.limit(VIEW_LIMIT);
+	const subscriptions = await db
+		.select()
+		.from(schema.billingSubscription)
+		.where(eq(schema.billingSubscription.userId, input.userId))
+		.orderBy(desc(schema.billingSubscription.createdAt))
+		.limit(VIEW_LIMIT);
 	const paymentIds = payments.map((payment) => payment.id);
 	const refunds = paymentIds.length
 		? await db
@@ -174,7 +216,7 @@ async function customer(input: { userId: string }) {
 					id: schema.billingPaymentEvent.id,
 					paymentId: schema.billingPaymentEvent.paymentId,
 					source: schema.billingPaymentEvent.source,
-					transactionStatus: schema.billingPaymentEvent.transactionStatus,
+					eventType: schema.billingPaymentEvent.eventType,
 					outcome: schema.billingPaymentEvent.outcome,
 					receivedAt: schema.billingPaymentEvent.receivedAt,
 				})
@@ -215,11 +257,19 @@ async function customer(input: { userId: string }) {
 	const plan = resolveEntitlements(
 		periods.filter((period) => !period.revokedAt),
 		now,
+		subscriptions.map(subscriptionState),
 	);
 	return {
 		account,
 		billingApplies: await isBillingAppliedTo(input.userId),
-		plan: { planId: plan.planId, currentPeriodEndsAt: plan.currentPeriodEndsAt, upcoming: plan.upcoming },
+		plan: {
+			planId: plan.planId,
+			currentPeriodEndsAt: plan.currentPeriodEndsAt,
+			source: plan.source,
+			renews: plan.renews,
+			upcoming: plan.upcoming,
+		},
+		subscriptions: subscriptions.map(adminSubscription),
 		periods: periods.map((period) => ({
 			id: period.id,
 			planId: period.planId,
@@ -267,29 +317,18 @@ export const billingAdmin = {
 	search,
 	customer,
 
-	/** Asks Midtrans where a payment stands now and applies it: the "check again" button. */
+	/** Asks Polar where a payment stands now and applies it: the "check again" button. */
 	syncPayment: async (input: { actorUserId: string; paymentId: string }) => {
 		const before = await paymentOwner(input.paymentId);
-		const result = await syncPaymentWithMidtrans(input.paymentId);
+		const found = await syncPaymentWithPolar(input.paymentId);
 		const after = await paymentOwner(input.paymentId);
 		await audit({
 			actorUserId: input.actorUserId,
 			targetUserId: before.userId,
 			action: "payment.synced",
-			details: {
-				paymentId: input.paymentId,
-				found: Boolean(result),
-				transactionStatus: result?.transactionStatus ?? null,
-				before: before.status,
-				after: after.status,
-			},
+			details: { paymentId: input.paymentId, found, before: before.status, after: after.status },
 		});
-		return {
-			found: Boolean(result),
-			transactionStatus: result?.transactionStatus ?? null,
-			status: after.status,
-			changed: before.status !== after.status || result?.outcome === "applied",
-		};
+		return { found, status: after.status, changed: before.status !== after.status };
 	},
 
 	refund: (input: {
@@ -297,32 +336,10 @@ export const billingAdmin = {
 		paymentId: string;
 		amount?: number | undefined;
 		reason: string;
+		polarReason?: RefundReason | undefined;
 		revokeBenefits?: boolean | undefined;
+		endSubscription?: boolean | undefined;
 	}) => requestRefund(input),
-
-	recordManualRefund: (input: {
-		actorUserId: string;
-		paymentId: string;
-		amount: number;
-		reason: string;
-		revokeBenefits?: boolean | undefined;
-	}) => recordManualRefund(input),
-
-	/** Sends a paid payment's receipt again now. */
-	resendReceipt: async (input: { actorUserId: string; paymentId: string }) => {
-		const payment = await paymentOwner(input.paymentId);
-		if (payment.status !== "paid" && payment.status !== "partially_refunded")
-			throw new ORPCError("BAD_REQUEST", { message: "Only a paid payment has a receipt." });
-		if (!payment.userId) throw new ORPCError("BAD_REQUEST", { message: "The account was deleted: nobody to send to." });
-		const sent = await resendPaymentReceipt(input.paymentId);
-		await audit({
-			actorUserId: input.actorUserId,
-			targetUserId: payment.userId,
-			action: "receipt.resent",
-			details: { paymentId: input.paymentId, sent },
-		});
-		return { sent };
-	},
 
 	/** Gives an account a pass by hand, queued like a purchase. For support and testing before payments exist. */
 	grantPeriod: async (input: {

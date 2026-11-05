@@ -1,8 +1,12 @@
 import { detectBillingProblems, queueDailySummary } from "./alerts";
 import { releaseStaleReservations } from "./credits";
 import { queueExpiryReminders, sendBillingNotifications } from "./notifications";
-import { sendPendingReceipts } from "./receipt";
-import { reconcilePayments } from "./reconcile";
+import {
+	endDeletedAccountSubscriptions,
+	grantYearlyCredits,
+	reconcilePayments,
+	reconcileSubscriptions,
+} from "./reconcile";
 import { reconcileRefunds } from "./refunds";
 
 /** Runs one task, logging its failure instead of throwing, so the next task still runs. */
@@ -18,8 +22,9 @@ async function task<T>(work: () => Promise<T>, fallback: T, failure: string): Pr
 /**
  * Billing's scheduled work, run every minute by the Workers cron and the Node scheduler before career jobs. Cron
  * triggers can overlap or repeat, so every task claims its rows and is safe to run twice; each task's failure stays
- * its own. Payments first: a customer may be waiting for one; then refunds still waiting on Midtrans. Then the emails: receipts, the owner's alerts and daily
- * summary, and reminders that a pass ends soon.
+ * its own. Payments first (a customer may be waiting for one), then subscriptions Polar's news didn't reach, refunds
+ * still waiting, the months of yearly Pro AI credits, and subscriptions of deleted accounts. Then the emails: the
+ * owner's alerts and daily summary, and reminders that granted access ends soon.
  */
 export async function runBillingJobs(now = new Date()) {
 	const checkedPayments = await task(
@@ -27,15 +32,25 @@ export async function runBillingJobs(now = new Date()) {
 		0,
 		"Reconciling payments failed; they are checked again on the next run.",
 	);
+	const checkedSubscriptions = await task(
+		() => reconcileSubscriptions(now),
+		0,
+		"Checking overdue subscriptions failed; they are checked again on the next run.",
+	);
 	const checkedRefunds = await task(
 		() => reconcileRefunds(now),
 		0,
 		"Checking waiting refunds failed; they are checked again on the next run.",
 	);
-	const sentReceipts = await task(
-		() => sendPendingReceipts(now),
+	const grantedCredits = await task(
+		() => grantYearlyCredits(now),
 		0,
-		"Sending payment receipts failed; they retry on the next run.",
+		"Granting yearly Pro AI credits failed; they are granted on the next run.",
+	);
+	const endedSubscriptions = await task(
+		() => endDeletedAccountSubscriptions(now),
+		0,
+		"Ending deleted accounts' subscriptions failed; they are tried again on the next run.",
 	);
 	const releasedReservations = await task(
 		() => releaseStaleReservations(now),
@@ -44,11 +59,19 @@ export async function runBillingJobs(now = new Date()) {
 	);
 	await task(() => detectBillingProblems(now), 0, "Looking for billing problems failed; it runs again next time.");
 	await task(() => queueDailySummary(now), false, "Queueing the daily billing summary failed; it retries.");
-	await task(() => queueExpiryReminders(now), 0, "Queueing pass reminders failed; they retry on the next run.");
+	await task(() => queueExpiryReminders(now), 0, "Queueing access reminders failed; they retry on the next run.");
 	const sentNotifications = await task(
 		() => sendBillingNotifications(now),
 		0,
 		"Sending billing emails failed; they retry on the next run.",
 	);
-	return { checkedPayments, checkedRefunds, sentReceipts, releasedReservations, sentNotifications };
+	return {
+		checkedPayments,
+		checkedSubscriptions,
+		checkedRefunds,
+		grantedCredits,
+		endedSubscriptions,
+		releasedReservations,
+		sentNotifications,
+	};
 }

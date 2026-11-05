@@ -205,6 +205,10 @@ describe.skipIf(!databaseUrl)("billing foundation", () => {
 			enabled: false,
 			planId: "free",
 			currentPeriodEndsAt: null,
+			source: null,
+			renews: false,
+			subscription: null,
+			currency: "usd",
 			upcoming: [],
 			limits: { activeResumes: { used: 1, max: null }, activeCoverLetters: { used: 0, max: null } },
 			features: {

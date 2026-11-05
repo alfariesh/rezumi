@@ -34,7 +34,7 @@ import { handleAuth, handleOAuth } from "./auth";
 import { handleCareerJobs } from "./career-jobs";
 import { handleCustomDomain, handleTraefikProvider } from "./custom-domain";
 import { handleHealth } from "./health";
-import { handleMidtransPaymentNotification } from "./midtrans";
+import { handlePolarPaymentWebhook } from "./polar";
 import { handlePublicResumePdf } from "./public-resume-pdf";
 import { handleResumePdfDownload } from "./resume-pdf";
 
@@ -116,7 +116,8 @@ export function createApp(options: AppOptions = {}) {
 	app.use("/api/rpc/*", limitBody(160 * 1024 * 1024));
 	app.use("/api/auth/*", limitBody(1024 * 1024));
 	app.use("/api/storage/stage", limitBody(64 * 1024));
-	app.use("/api/payments/midtrans/notification", limitBody(64 * 1024));
+	// Polar orders embed their customer and subscription; 256 KB leaves room for a few hundred line items.
+	app.use("/api/payments/polar/webhook", limitBody(256 * 1024));
 
 	app.post("/api/storage/stage", (c) => prepareStagedBody(c.req.raw));
 	app.all("/api/rpc/*", (c) => withStagedBody(c.req.raw, (request) => handleRpc(request, client(c))));
@@ -124,7 +125,7 @@ export function createApp(options: AppOptions = {}) {
 	app.get("/api/auth/oauth", (c) => handleOAuth(c.req.raw));
 	app.all("/api/auth/*", (c) => handleAuth(c.req.raw, client(c)));
 	app.get("/api/health", () => handleHealth());
-	app.post("/api/payments/midtrans/notification", (c) => handleMidtransPaymentNotification(c.req.raw));
+	app.post("/api/payments/polar/webhook", (c) => handlePolarPaymentWebhook(c.req.raw));
 	app.get("/api/internal/traefik", (c) => handleTraefikProvider(c.req.raw));
 	app.on(["GET", "POST"], "/api/career/run", (c) => handleCareerJobs(c.req.raw));
 	app.get("/api/resumes/:username/:slug/pdf", (c) =>

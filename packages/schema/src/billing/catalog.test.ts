@@ -2,8 +2,12 @@ import { describe, expect, it } from "vite-plus/test";
 import { templateSchema } from "../templates";
 import {
 	BILLING_CATALOG_VERSION,
+	BILLING_CURRENCIES,
+	BILLING_INTERVALS,
 	CREDIT_COSTS,
 	creditActionSchema,
+	currencyForCountry,
+	DEFAULT_BILLING_CURRENCY,
 	FREE_TEMPLATES,
 	getPlan,
 	isFreeTemplate,
@@ -11,7 +15,9 @@ import {
 	PLAN_FEATURE_KEYS,
 	paidPlanIdSchema,
 	planIdSchema,
+	planPrice,
 	PLANS,
+	toMajorUnits,
 	TRIAL_CREDITS,
 } from "./catalog";
 
@@ -40,35 +46,53 @@ describe("billing catalog", () => {
 		expect(PLANS.plus.rank).toBeLessThan(PLANS["pro-ai"].rank);
 	});
 
-	it("sells paid plans as 30-day passes for whole Rupiah", () => {
+	it("sells paid plans monthly and yearly, in every currency, with yearly cheaper than twelve months", () => {
 		expect(paidPlanIdSchema.options).toEqual(["plus", "pro-ai"]);
-		for (const id of planIdSchema.options) {
-			const plan = getPlan(id);
-			expect(isPaidPlan(id)).toBe(id !== "free");
-			expect(Number.isInteger(plan.priceIdr)).toBe(true);
-			if (isPaidPlan(id)) {
-				expect(plan.priceIdr).toBeGreaterThan(0);
-				expect(plan.durationDays).toBe(30);
-			} else {
-				expect(plan.priceIdr).toBe(0);
-				expect(plan.durationDays).toBeNull();
-			}
+		expect(isPaidPlan("free")).toBe(false);
+		expect(PLANS.free.prices).toBeNull();
+		for (const id of paidPlanIdSchema.options) {
+			expect(isPaidPlan(id)).toBe(true);
+			for (const interval of BILLING_INTERVALS)
+				for (const currency of BILLING_CURRENCIES) {
+					const price = planPrice(id, interval, currency);
+					expect(Number.isInteger(price) && price > 0).toBe(true);
+				}
+			for (const currency of BILLING_CURRENCIES)
+				expect(planPrice(id, "year", currency)).toBeLessThan(planPrice(id, "month", currency) * 12);
 		}
 	});
 
 	it("matches the launch decisions", () => {
-		expect(BILLING_CATALOG_VERSION).toBe(3);
-		expect(PLANS.plus.priceIdr).toBe(29_000);
-		expect(PLANS["pro-ai"].priceIdr).toBe(79_000);
+		expect(BILLING_CATALOG_VERSION).toBe(4);
+		expect(PLANS.plus.prices).toEqual({ month: { usd: 499, idr: 5_900_000 }, year: { usd: 3_900, idr: 45_900_000 } });
+		expect(PLANS["pro-ai"].prices).toEqual({
+			month: { usd: 999, idr: 12_900_000 },
+			year: { usd: 7_900, idr: 99_900_000 },
+		});
 		expect(PLANS.free.limits).toEqual({ activeResumes: 3, activeCoverLetters: 3 });
 		expect(PLANS.plus.limits).toEqual({ activeResumes: 50, activeCoverLetters: 50 });
 		expect(PLANS["pro-ai"].limits).toEqual({ activeResumes: 50, activeCoverLetters: 50 });
 		expect(Object.values(PLANS.free.features).every((enabled) => !enabled)).toBe(true);
 		expect(Object.values(PLANS.plus.features).every(Boolean)).toBe(true);
 		expect(PLANS["pro-ai"].features).toEqual(PLANS.plus.features);
-		expect(PLANS.plus.creditsPerPurchase).toBe(0);
-		expect(PLANS["pro-ai"].creditsPerPurchase).toBe(100);
+		expect(PLANS.plus.creditsPerMonth).toBe(0);
+		expect(PLANS["pro-ai"].creditsPerMonth).toBe(100);
 		expect(TRIAL_CREDITS).toEqual({ amount: 5, validDays: 14 });
+	});
+
+	it("charges visitors from Indonesia in Rupiah and everyone else in US dollars", () => {
+		expect(currencyForCountry("ID")).toBe("idr");
+		expect(currencyForCountry(" id ")).toBe("idr");
+		expect(currencyForCountry("US")).toBe("usd");
+		expect(currencyForCountry("SG")).toBe("usd");
+		expect(currencyForCountry(null)).toBe(DEFAULT_BILLING_CURRENCY);
+		expect(currencyForCountry("XX")).toBe("usd");
+	});
+
+	it("reads amounts in each currency's smallest unit", () => {
+		expect(toMajorUnits(499, "usd")).toBe(4.99);
+		expect(toMajorUnits(5_900_000, "idr")).toBe(59_000);
+		expect(toMajorUnits(12_900_000, "IDR")).toBe(129_000);
 	});
 
 	it("prices every kind of Rezumi AI work in whole credits, with the launch weights", () => {

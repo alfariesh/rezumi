@@ -12,9 +12,40 @@ import z from "zod";
 export const planIdSchema = z.enum(["free", "plus", "pro-ai"]);
 export type PlanId = z.infer<typeof planIdSchema>;
 
-/** The plans that are bought as passes; membership periods only ever hold these. */
+/** The plans that are paid for; subscriptions and periods only ever hold these. */
 export const paidPlanIdSchema = planIdSchema.exclude(["free"]);
 export type PaidPlanId = z.infer<typeof paidPlanIdSchema>;
+
+/** How often a subscription renews. Each paid plan is sold monthly and yearly. */
+export const BILLING_INTERVALS = ["month", "year"] as const;
+export const billingIntervalSchema = z.enum(BILLING_INTERVALS);
+export type BillingInterval = z.infer<typeof billingIntervalSchema>;
+
+/**
+ * The currencies prices are set in (Polar's lowercase codes). Visitors from Indonesia pay in Rupiah; everyone else in
+ * US dollars, the default.
+ */
+export const BILLING_CURRENCIES = ["usd", "idr"] as const;
+export const billingCurrencySchema = z.enum(BILLING_CURRENCIES);
+export type BillingCurrency = z.infer<typeof billingCurrencySchema>;
+export const DEFAULT_BILLING_CURRENCY: BillingCurrency = "usd";
+
+/** The currency a visitor from a country (ISO 3166 alpha-2, as Cloudflare's CF-IPCountry gives it) is charged in. */
+export function currencyForCountry(country: string | null | undefined): BillingCurrency {
+	return country?.trim().toUpperCase() === "ID" ? "idr" : DEFAULT_BILLING_CURRENCY;
+}
+
+/**
+ * Amounts are integers in the currency's smallest unit, as Polar takes them: US cents, and for the Rupiah also two
+ * decimals (Rp59.000 is 5_900_000; checked on Polar's sandbox checkout, 2026-11-05).
+ */
+export const CURRENCY_DECIMALS: Record<BillingCurrency, number> = { usd: 2, idr: 2 };
+
+/** An amount in a currency's smallest unit, as a plain number of units (499 cents → 4.99). */
+export function toMajorUnits(amount: number, currency: string): number {
+	const decimals = CURRENCY_DECIMALS[currency.toLowerCase() as BillingCurrency] ?? 2;
+	return amount / 10 ** decimals;
+}
 
 export type PlanFeatures = {
 	/** Templates outside FREE_TEMPLATES. */
@@ -38,23 +69,22 @@ export type PlanLimits = {
 	activeCoverLetters: number;
 };
 
+/** A paid plan's price per renewal, in each currency's smallest unit. Prices include tax where tax is inclusive. */
+export type PlanPrices = Record<BillingInterval, Record<BillingCurrency, number>>;
+
 export type PlanDefinition = {
 	id: PlanId;
-	/** Higher ranks are used up first when passes queue: free 0, plus 1, pro-ai 2. */
+	/** Higher ranks win when an account has more than one source of access: free 0, plus 1, pro-ai 2. */
 	rank: number;
-	/** Whole Rupiah; 0 for free. Shown as the final price: the seller isn't VAT-registered. */
-	priceIdr: number;
-	/** How long one purchase lasts, in 24-hour days. Null for free, which never ends. */
-	durationDays: number | null;
+	/** What one renewal costs; null for free, which costs nothing and never ends. */
+	prices: PlanPrices | null;
 	limits: PlanLimits;
 	features: PlanFeatures;
-	/** Rezumi AI credits granted at once when a purchase is paid. */
-	creditsPerPurchase: number;
+	/** Rezumi AI credits granted for each month of the plan, yearly subscriptions included; they don't roll over. */
+	creditsPerMonth: number;
 };
 
-export const BILLING_CATALOG_VERSION = 3;
-
-export const BILLING_CURRENCY = "IDR";
+export const BILLING_CATALOG_VERSION = 4;
 
 /** The templates on the free plan: four one-column, ATS-safe layouts and one two-column. */
 export const FREE_TEMPLATES = [
@@ -146,8 +176,7 @@ export const PLANS = {
 	free: {
 		id: "free",
 		rank: 0,
-		priceIdr: 0,
-		durationDays: null,
+		prices: null,
 		limits: { activeResumes: 3, activeCoverLetters: 3 },
 		features: {
 			premiumTemplates: false,
@@ -157,25 +186,29 @@ export const PLANS = {
 			customFonts: false,
 			automationApi: false,
 		},
-		creditsPerPurchase: 0,
+		creditsPerMonth: 0,
 	},
 	plus: {
 		id: "plus",
 		rank: 1,
-		priceIdr: 29_000,
-		durationDays: 30,
+		prices: {
+			month: { usd: 499, idr: 5_900_000 },
+			year: { usd: 3_900, idr: 45_900_000 },
+		},
 		limits: { activeResumes: 50, activeCoverLetters: 50 },
 		features: paidFeatures,
-		creditsPerPurchase: 0,
+		creditsPerMonth: 0,
 	},
 	"pro-ai": {
 		id: "pro-ai",
 		rank: 2,
-		priceIdr: 79_000,
-		durationDays: 30,
+		prices: {
+			month: { usd: 999, idr: 12_900_000 },
+			year: { usd: 7_900, idr: 99_900_000 },
+		},
 		limits: { activeResumes: 50, activeCoverLetters: 50 },
 		features: paidFeatures,
-		creditsPerPurchase: 100,
+		creditsPerMonth: 100,
 	},
 } as const satisfies { readonly [Id in PlanId]: PlanDefinition & { id: Id } };
 
@@ -184,5 +217,13 @@ export function getPlan(id: PlanId): PlanDefinition {
 }
 
 export function isPaidPlan(id: PlanId): id is PaidPlanId {
-	return PLANS[id].durationDays !== null;
+	return PLANS[id].prices !== null;
 }
+
+/** What one renewal of a paid plan costs, in the currency's smallest unit. */
+export function planPrice(planId: PaidPlanId, interval: BillingInterval, currency: BillingCurrency): number {
+	return PLANS[planId].prices[interval][currency];
+}
+
+/** How many months one renewal covers, for monthly credits on yearly subscriptions. */
+export const INTERVAL_MONTHS: Record<BillingInterval, number> = { month: 1, year: 12 };

@@ -1,21 +1,28 @@
 import type { BillingPaymentStatus } from "@rezumi/db/schema";
-import type { PaidPlanId } from "@rezumi/schema/billing";
+import type { BillingInterval, PaidPlanId } from "@rezumi/schema/billing";
 import { ORPCError } from "@orpc/server";
 import { and, asc, count, countDistinct, eq, gt, gte, inArray, isNotNull, lt, ne, sql, sum } from "drizzle-orm";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
+import { toMajorUnits } from "@rezumi/schema/billing";
 import { ADMIN_ADJUSTMENT_ACTION } from "./credits";
+import { LIVE_SUBSCRIPTION_STATUSES } from "./subscriptions";
 
 /**
- * The owner's numbers: sign-ups, checkouts, sales, refunds, Rezumi AI use and cost for a period, and the CSV for the
- * books. Counts only; no names or email addresses leave the database here.
+ * The owner's numbers: sign-ups, checkouts, sales and refunds per currency, subscriptions, Rezumi AI use and cost for a
+ * period, and the CSV for the books. Amounts are before tax (Polar collects and remits tax as the merchant of record)
+ * and in each currency's smallest unit; currencies are never added together. Counts only; no names or email addresses
+ * leave the database here, except the admin payment list's buyer email.
  */
 
 export type ReportRange = { from: Date; to: Date };
 
+/** Money in several currencies: currency code → amount in its smallest unit. */
+export type Money = Record<string, number>;
+
 /** The longest period a report or export covers. */
 const MAX_RANGE_DAYS = 400;
-/** An open payment this old that can still be paid counts as hanging. */
+/** An open checkout this old that can still be paid counts as hanging. */
 const HANGING_AFTER_MS = 60 * 60 * 1000;
 const WIB_OFFSET_MS = 7 * 60 * 60 * 1000;
 
@@ -30,43 +37,32 @@ const within = (column: Parameters<typeof gte>[0], range: ReportRange) =>
 
 const toNumber = (value: unknown) => Number(value ?? 0);
 
-/**
- * Paid payments the bank took back (a deny after settlement, a chargeback) in a period, dated when that was applied:
- * the money still held after earlier refunds, which is what leaves the books.
- */
-function reversalsIn(range: ReportRange) {
-	const payment = schema.billingPayment;
-	const event = schema.billingPaymentEvent;
-	return db
-		.select({
-			at: sql<Date>`min(${event.receivedAt})`.mapWith(event.receivedAt),
-			orderId: payment.providerOrderId,
-			planId: payment.planId,
-			method: payment.paymentType,
-			amount: sql<number>`${payment.amount} - ${payment.refundedAmount}`.mapWith(Number),
-			transactionId: payment.transactionId,
-		})
-		.from(event)
-		.innerJoin(payment, eq(event.paymentId, payment.id))
-		.where(
-			and(
-				eq(payment.status, "reversed"),
-				eq(event.outcome, "applied"),
-				inArray(event.transactionStatus, ["deny", "failure", "chargeback"]),
-				// Failed attempts before the payment went through aren't the reversal.
-				sql`${event.receivedAt} >= ${payment.paidAt}`,
-				within(event.receivedAt, range),
-			),
-		)
-		.groupBy(payment.id);
+/** Adds `amount` of `currency` into `money`. */
+function addMoney(money: Money, currency: string, amount: number) {
+	const code = currency.toLowerCase();
+	money[code] = (money[code] ?? 0) + amount;
+	return money;
 }
 
-/** The numbers for a period: [from, to). Pending payments that hang are counted as of `now`. */
+const subtract = (a: Money, b: Money): Money => {
+	const result: Money = { ...a };
+	for (const [currency, amount] of Object.entries(b)) result[currency] = (result[currency] ?? 0) - amount;
+	return result;
+};
+
+/** What an order was for, as the owner reads it: a new subscription, a renewal, or a plan change. */
+export type SaleKind = "new" | "renewal" | "change";
+
+const saleKind = (reason: string | null): SaleKind =>
+	reason === "subscription_cycle" ? "renewal" : reason === "subscription_update" ? "change" : "new";
+
+/** The numbers for a period: [from, to). Hanging checkouts and live subscriptions are counted as of `now`. */
 export async function billingMetrics(range: ReportRange, now = new Date()) {
 	assertRange(range);
 	const user = schema.user;
 	const payment = schema.billingPayment;
 	const refund = schema.billingRefund;
+	const subscription = schema.billingSubscription;
 	const grant = schema.aiCreditGrant;
 	const usage = schema.aiCreditUsage;
 
@@ -78,32 +74,35 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		.from(user)
 		.where(and(within(user.createdAt, range), eq(user.isAnonymous, false)));
 
+	// Checkouts Rezumi opened on the website (renewals have none), and how many of them were paid (whenever).
 	const [checkouts] = await db
 		.select({
 			started: count(),
 			buyers: countDistinct(payment.userId),
-			// Of the payments started in the period, how many were paid (whenever).
 			paid: sql<number>`count(*) filter (where ${payment.paidAt} is not null)`,
 		})
 		.from(payment)
-		.where(within(payment.createdAt, range));
+		.where(and(within(payment.createdAt, range), isNotNull(payment.idempotencyKey)));
 
 	const paidRows = await db
 		.select({
 			planId: payment.planId,
-			method: payment.paymentType,
+			interval: payment.interval,
+			reason: payment.billingReason,
+			currency: payment.currency,
 			payments: count(),
 			revenue: sum(payment.amount),
 		})
 		.from(payment)
 		.where(and(isNotNull(payment.paidAt), within(payment.paidAt, range)))
-		.groupBy(payment.planId, payment.paymentType);
+		.groupBy(payment.planId, payment.interval, payment.billingReason, payment.currency);
 
 	const refundRows = await db
-		.select({ method: refund.method, refunds: count(), amount: sum(refund.amount) })
+		.select({ currency: payment.currency, refunds: count(), amount: sum(refund.amount) })
 		.from(refund)
+		.innerJoin(payment, eq(refund.paymentId, payment.id))
 		.where(and(eq(refund.status, "succeeded"), isNotNull(refund.settledAt), within(refund.settledAt, range)))
-		.groupBy(refund.method);
+		.groupBy(payment.currency);
 
 	const [hanging] = await db
 		.select({ payments: count() })
@@ -111,10 +110,39 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		.where(
 			and(
 				inArray(payment.status, ["creating", "pending"]),
+				sql`${payment.providerOrderId} is null`,
 				lt(payment.createdAt, new Date(+now - HANGING_AFTER_MS)),
 				gt(payment.expiresAt, now),
 			),
 		);
+
+	const liveRows = await db
+		.select({
+			planId: subscription.planId,
+			interval: subscription.interval,
+			status: subscription.status,
+			cancelAtPeriodEnd: subscription.cancelAtPeriodEnd,
+			currency: subscription.currency,
+			subscriptions: count(),
+			amount: sum(subscription.amount),
+		})
+		.from(subscription)
+		.where(inArray(subscription.status, [...LIVE_SUBSCRIPTION_STATUSES]))
+		.groupBy(
+			subscription.planId,
+			subscription.interval,
+			subscription.status,
+			subscription.cancelAtPeriodEnd,
+			subscription.currency,
+		);
+	const [started] = await db
+		.select({ subscriptions: count() })
+		.from(subscription)
+		.where(within(subscription.createdAt, range));
+	const [ended] = await db
+		.select({ subscriptions: count() })
+		.from(subscription)
+		.where(and(isNotNull(subscription.endedAt), within(subscription.endedAt, range)));
 
 	const [trials] = await db
 		.select({ granted: count(), credits: sum(grant.amount) })
@@ -165,32 +193,52 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 		alertKinds.set(row.kind, entry);
 	}
 
-	const reversals = await reversalsIn(range);
-	const reversed = reversals.reduce((total, row) => total + row.amount, 0);
+	const revenue: Money = {};
+	const byPlan = new Map<PaidPlanId, { payments: number; revenue: Money }>();
+	const byInterval = new Map<BillingInterval | "pass", { payments: number; revenue: Money }>();
+	const byKind = new Map<SaleKind, { payments: number; revenue: Money }>();
+	let payments = 0;
+	for (const row of paidRows) {
+		const amount = toNumber(row.revenue);
+		const counted = toNumber(row.payments);
+		payments += counted;
+		addMoney(revenue, row.currency, amount);
+		for (const [map, key] of [
+			[byPlan, row.planId],
+			[byInterval, row.interval ?? "pass"],
+			[byKind, saleKind(row.reason)],
+		] as const) {
+			const entry = (map as Map<string, { payments: number; revenue: Money }>).get(key) ?? { payments: 0, revenue: {} };
+			entry.payments += counted;
+			addMoney(entry.revenue, row.currency, amount);
+			(map as Map<string, { payments: number; revenue: Money }>).set(key, entry);
+		}
+	}
+	const refunded: Money = {};
+	let refundCount = 0;
+	for (const row of refundRows) {
+		refundCount += toNumber(row.refunds);
+		addMoney(refunded, row.currency, toNumber(row.amount));
+	}
 
-	const sales = paidRows.map((row) => ({
-		planId: row.planId,
-		method: row.method,
-		payments: toNumber(row.payments),
-		revenue: toNumber(row.revenue),
-	}));
-	const revenue = sales.reduce((total, row) => total + row.revenue, 0);
-	const refunds = refundRows.map((row) => ({
-		method: row.method,
-		refunds: toNumber(row.refunds),
-		amount: toNumber(row.amount),
-	}));
-	const refunded = refunds.reduce((total, row) => total + row.amount, 0);
-	const byPlan = (planId: PaidPlanId) => ({
-		planId,
-		payments: sales.filter((row) => row.planId === planId).reduce((total, row) => total + row.payments, 0),
-		revenue: sales.filter((row) => row.planId === planId).reduce((total, row) => total + row.revenue, 0),
-	});
-	const methods = new Map<string, { payments: number; revenue: number }>();
-	for (const row of sales) {
-		const method = row.method ?? "unknown";
-		const entry = methods.get(method) ?? { payments: 0, revenue: 0 };
-		methods.set(method, { payments: entry.payments + row.payments, revenue: entry.revenue + row.revenue });
+	// Monthly recurring revenue: active subscriptions not set to end, yearly ones counted as a twelfth.
+	const mrr: Money = {};
+	let active = 0;
+	let canceling = 0;
+	let pastDue = 0;
+	const livePlans = new Map<string, { planId: PaidPlanId; interval: BillingInterval; subscriptions: number }>();
+	for (const row of liveRows) {
+		const counted = toNumber(row.subscriptions);
+		if (row.status === "past_due") pastDue += counted;
+		else if (row.status === "active" || row.status === "trialing") {
+			active += counted;
+			if (row.cancelAtPeriodEnd) canceling += counted;
+			else addMoney(mrr, row.currency, Math.round(toNumber(row.amount) / (row.interval === "year" ? 12 : 1)));
+		}
+		const key = `${row.planId}:${row.interval}`;
+		const entry = livePlans.get(key) ?? { planId: row.planId, interval: row.interval, subscriptions: 0 };
+		entry.subscriptions += counted;
+		livePlans.set(key, entry);
 	}
 
 	return {
@@ -203,14 +251,31 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 			paid: toNumber(checkouts?.paid),
 		},
 		sales: {
-			payments: sales.reduce((total, row) => total + row.payments, 0),
+			payments,
 			revenue,
-			byPlan: [byPlan("plus"), byPlan("pro-ai")],
-			byMethod: [...methods].map(([method, entry]) => ({ method, ...entry })),
+			byPlan: (["plus", "pro-ai"] as const).map((planId) => ({
+				planId,
+				payments: byPlan.get(planId)?.payments ?? 0,
+				revenue: byPlan.get(planId)?.revenue ?? {},
+			})),
+			byInterval: [...byInterval].map(([interval, entry]) => ({ interval, ...entry })),
+			byKind: (["new", "renewal", "change"] as const).map((kind) => ({
+				kind,
+				payments: byKind.get(kind)?.payments ?? 0,
+				revenue: byKind.get(kind)?.revenue ?? {},
+			})),
 		},
-		refunds: { refunds: refunds.reduce((total, row) => total + row.refunds, 0), amount: refunded, byMethod: refunds },
-		reversals: { payments: reversals.length, amount: reversed },
-		net: revenue - refunded - reversed,
+		refunds: { refunds: refundCount, amount: refunded },
+		net: subtract(revenue, refunded),
+		subscriptions: {
+			active,
+			canceling,
+			pastDue,
+			started: toNumber(started?.subscriptions),
+			ended: toNumber(ended?.subscriptions),
+			mrr,
+			byPlan: [...livePlans.values()],
+		},
 		hangingPayments: toNumber(hanging?.payments),
 		credits: {
 			trialsGranted: toNumber(trials?.granted),
@@ -233,14 +298,13 @@ export async function billingMetrics(range: ReportRange, now = new Date()) {
 
 export type BillingMetrics = Awaited<ReturnType<typeof billingMetrics>>;
 
-/** One WIB day of the admin charts: revenue per plan in Rupiah, and counts. */
+/** One WIB day of the admin charts: paid orders per plan, and counts. */
 type DayTotals = {
 	day: string;
 	plus: number;
 	proAi: number;
 	payments: number;
 	refunds: number;
-	reversals: number;
 	started: number;
 	paid: number;
 	signups: number;
@@ -252,8 +316,8 @@ const wibDate = (column: Parameters<typeof gte>[0]) =>
 	sql<string>`to_char(${column} at time zone 'Asia/Jakarta', 'YYYY-MM-DD')`;
 
 /**
- * Day by day (WIB) for the admin charts: revenue by plan and payments, refunds, checkouts started and paid,
- * sign-ups, and Rezumi AI credits charged. Every day of the period is there, empty ones as zeros.
+ * Day by day (WIB) for the admin charts: paid orders by plan, refunds, checkouts started and paid, sign-ups, and
+ * Rezumi AI credits charged. Counts, so currencies never mix. Every day of the period is there, empty ones as zeros.
  */
 export async function billingDailySeries(range: ReportRange) {
 	assertRange(range);
@@ -264,18 +328,7 @@ export async function billingDailySeries(range: ReportRange) {
 	const days = new Map<string, DayTotals>();
 	for (let at = +range.from; at < +range.to; at += 24 * 60 * 60 * 1000) {
 		const day = formatWibTime(new Date(at)).slice(0, 10);
-		days.set(day, {
-			day,
-			plus: 0,
-			proAi: 0,
-			payments: 0,
-			refunds: 0,
-			reversals: 0,
-			started: 0,
-			paid: 0,
-			signups: 0,
-			credits: 0,
-		});
+		days.set(day, { day, plus: 0, proAi: 0, payments: 0, refunds: 0, started: 0, paid: 0, signups: 0, credits: 0 });
 	}
 	const add = (day: string, values: Partial<Record<Exclude<keyof DayTotals, "day">, unknown>>) => {
 		const entry = days.get(day);
@@ -284,24 +337,22 @@ export async function billingDailySeries(range: ReportRange) {
 	};
 
 	const sales = await db
-		.select({ day: wibDate(payment.paidAt), planId: payment.planId, payments: count(), revenue: sum(payment.amount) })
+		.select({ day: wibDate(payment.paidAt), planId: payment.planId, payments: count() })
 		.from(payment)
 		.where(and(isNotNull(payment.paidAt), within(payment.paidAt, range)))
 		.groupBy(sql`1`, payment.planId);
 	for (const row of sales)
 		add(row.day, {
 			payments: row.payments,
-			...(row.planId === "plus" ? { plus: row.revenue } : { proAi: row.revenue }),
+			...(row.planId === "plus" ? { plus: row.payments } : { proAi: row.payments }),
 		});
 
 	const refunds = await db
-		.select({ day: wibDate(refund.settledAt), amount: sum(refund.amount) })
+		.select({ day: wibDate(refund.settledAt), refunds: count() })
 		.from(refund)
 		.where(and(eq(refund.status, "succeeded"), isNotNull(refund.settledAt), within(refund.settledAt, range)))
 		.groupBy(sql`1`);
-	for (const row of refunds) add(row.day, { refunds: row.amount });
-
-	for (const row of await reversalsIn(range)) add(formatWibTime(row.at).slice(0, 10), { reversals: row.amount });
+	for (const row of refunds) add(row.day, { refunds: row.refunds });
 
 	const checkouts = await db
 		.select({
@@ -310,7 +361,7 @@ export async function billingDailySeries(range: ReportRange) {
 			paid: sql<number>`count(*) filter (where ${payment.paidAt} is not null)`,
 		})
 		.from(payment)
-		.where(within(payment.createdAt, range))
+		.where(and(within(payment.createdAt, range), isNotNull(payment.idempotencyKey)))
 		.groupBy(sql`1`);
 	for (const row of checkouts) add(row.day, { started: row.started, paid: row.paid });
 
@@ -370,10 +421,12 @@ export async function listRecentPayments(
 			email: schema.user.email,
 			orderId: payment.providerOrderId,
 			planId: payment.planId,
+			interval: payment.interval,
+			billingReason: payment.billingReason,
 			amount: payment.amount,
+			currency: payment.currency,
 			refundedAmount: payment.refundedAmount,
 			status: payment.status,
-			paymentType: payment.paymentType,
 			createdAt: payment.createdAt,
 			paidAt: payment.paidAt,
 		})
@@ -400,22 +453,28 @@ function cell(value: string | number | null) {
 	return /[",\r\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
+/** An amount as plain decimal units for a spreadsheet: 4.99, 59000.00. */
+const decimal = (amount: number, currency: string) => toMajorUnits(amount, currency).toFixed(2);
+
 const CSV_COLUMNS = [
 	"jenis",
 	"tanggal_wib",
-	"nomor_pesanan",
+	"order_polar",
 	"paket",
-	"metode",
-	"jumlah_idr",
+	"periode",
+	"alasan",
+	"mata_uang",
+	"jumlah_sebelum_pajak",
+	"pajak",
+	"total_dibayar",
 	"status",
-	"id_transaksi_midtrans",
-	"kunci_refund",
+	"id_refund",
 ] as const;
 
 /**
- * Payments paid, refunds made and bank reversals in a period, oldest first, for the books and tax: one line per
- * payment (amount positive), per refund and per reversal (negative), so the column sums to the period's net. Order
- * numbers and Midtrans references only; no names, email addresses or account ids.
+ * Orders paid and refunds made in a period, oldest first, for the books: one line per order (amounts positive) and per
+ * refund (negative), so each currency's column sums to the period's net before tax and Polar's fees. Polar's order and
+ * refund ids only; no names, email addresses or account ids. Payouts and fees are in Polar's dashboard.
  */
 export async function exportPaymentsCsv(range: ReportRange) {
 	assertRange(range);
@@ -426,10 +485,13 @@ export async function exportPaymentsCsv(range: ReportRange) {
 			at: payment.paidAt,
 			orderId: payment.providerOrderId,
 			planId: payment.planId,
-			method: payment.paymentType,
+			interval: payment.interval,
+			reason: payment.billingReason,
+			currency: payment.currency,
 			amount: payment.amount,
+			tax: payment.taxAmount,
+			total: payment.totalAmount,
 			status: payment.status,
-			transactionId: payment.transactionId,
 		})
 		.from(payment)
 		.where(and(isNotNull(payment.paidAt), within(payment.paidAt, range)))
@@ -439,10 +501,9 @@ export async function exportPaymentsCsv(range: ReportRange) {
 			at: refund.settledAt,
 			orderId: payment.providerOrderId,
 			planId: payment.planId,
-			method: payment.paymentType,
+			interval: payment.interval,
+			currency: payment.currency,
 			amount: refund.amount,
-			refundMethod: refund.method,
-			transactionId: payment.transactionId,
 			refundKey: refund.refundKey,
 		})
 		.from(refund)
@@ -457,10 +518,13 @@ export async function exportPaymentsCsv(range: ReportRange) {
 				formatWibTime(row.at ?? range.from),
 				row.orderId,
 				row.planId,
-				row.method,
-				row.amount,
+				row.interval ?? "pass",
+				saleKind(row.reason),
+				row.currency.toUpperCase(),
+				decimal(row.amount, row.currency),
+				decimal(row.tax, row.currency),
+				decimal(row.total, row.currency),
 				row.status,
-				row.transactionId,
 				null,
 			],
 		})),
@@ -471,25 +535,14 @@ export async function exportPaymentsCsv(range: ReportRange) {
 				formatWibTime(row.at ?? range.from),
 				row.orderId,
 				row.planId,
-				row.method,
-				-row.amount,
-				row.refundMethod === "manual" ? "refund_manual" : "refund_midtrans",
-				row.transactionId,
-				row.refundKey,
-			],
-		})),
-		...(await reversalsIn(range)).map((row) => ({
-			at: row.at,
-			cells: [
-				"pembalikan",
-				formatWibTime(row.at),
-				row.orderId,
-				row.planId,
-				row.method,
-				-row.amount,
-				"reversed",
-				row.transactionId,
+				row.interval ?? "pass",
 				null,
+				row.currency.toUpperCase(),
+				decimal(-row.amount, row.currency),
+				null,
+				null,
+				"refund",
+				row.refundKey,
 			],
 		})),
 	].toSorted((a, b) => +a.at - +b.at);

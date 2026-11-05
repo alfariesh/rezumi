@@ -3,8 +3,9 @@ import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 
 /**
- * The account's own billing records for its data export: payments and their refunds, passes, and Rezumi AI credits
- * in and out. Payment page tokens and addresses stay out, as do the internal retry counters.
+ * The account's own billing records for its data export: subscriptions, payments and their refunds, granted periods,
+ * and Rezumi AI credits in and out. Checkout addresses stay out, as do the internal retry counters. Invoices and the
+ * billing details Polar holds are in Polar's customer portal.
  */
 export async function exportBillingData(userId: string) {
 	const payments = await db
@@ -12,12 +13,16 @@ export async function exportBillingData(userId: string) {
 			id: schema.billingPayment.id,
 			orderId: schema.billingPayment.providerOrderId,
 			planId: schema.billingPayment.planId,
+			interval: schema.billingPayment.interval,
+			billingReason: schema.billingPayment.billingReason,
 			amount: schema.billingPayment.amount,
+			taxAmount: schema.billingPayment.taxAmount,
+			totalAmount: schema.billingPayment.totalAmount,
 			currency: schema.billingPayment.currency,
-			durationDays: schema.billingPayment.durationDays,
 			credits: schema.billingPayment.credits,
 			status: schema.billingPayment.status,
-			paymentType: schema.billingPayment.paymentType,
+			periodStart: schema.billingPayment.periodStart,
+			periodEnd: schema.billingPayment.periodEnd,
 			createdAt: schema.billingPayment.createdAt,
 			expiresAt: schema.billingPayment.expiresAt,
 			paidAt: schema.billingPayment.paidAt,
@@ -46,6 +51,23 @@ export async function exportBillingData(userId: string) {
 				)
 				.orderBy(asc(schema.billingRefund.createdAt))
 		: [];
+	const subscriptions = await db
+		.select({
+			id: schema.billingSubscription.id,
+			planId: schema.billingSubscription.planId,
+			interval: schema.billingSubscription.interval,
+			status: schema.billingSubscription.status,
+			amount: schema.billingSubscription.amount,
+			currency: schema.billingSubscription.currency,
+			currentPeriodStart: schema.billingSubscription.currentPeriodStart,
+			currentPeriodEnd: schema.billingSubscription.currentPeriodEnd,
+			cancelAtPeriodEnd: schema.billingSubscription.cancelAtPeriodEnd,
+			startedAt: schema.billingSubscription.startedAt,
+			endedAt: schema.billingSubscription.endedAt,
+		})
+		.from(schema.billingSubscription)
+		.where(eq(schema.billingSubscription.userId, userId))
+		.orderBy(asc(schema.billingSubscription.createdAt));
 	const passes = await db
 		.select({
 			planId: schema.membershipPeriod.planId,
@@ -84,6 +106,7 @@ export async function exportBillingData(userId: string) {
 		.where(eq(schema.aiCreditUsage.userId, userId))
 		.orderBy(asc(schema.aiCreditUsage.createdAt));
 	return {
+		subscriptions,
 		payments: payments.map((payment) => ({
 			...payment,
 			refunds: refunds
