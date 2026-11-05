@@ -2725,6 +2725,7 @@ msgstr "Build an ATS-friendly resume, tailor it to each role, and track every ap
 msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
 msgstr "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
 
+#: src/features/docs/header.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
@@ -3231,6 +3232,7 @@ msgstr "Client ID"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -3626,6 +3628,7 @@ msgstr "Conversation name"
 msgid "Conversations"
 msgstr "Conversations"
 
+#: src/features/docs/mdx-components.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3651,6 +3654,10 @@ msgstr "Copy a resume for a job"
 #: src/features/career/workspace/apply.tsx
 msgid "Copy answers"
 msgstr "Copy answers"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Copy code"
+msgstr "Copy code"
 
 #. Action button to copy two-factor backup codes to clipboard
 #: src/dialogs/auth/enable-two-factor.tsx
@@ -4937,6 +4944,7 @@ msgstr "Dismiss"
 msgid "DNS records"
 msgstr "DNS records"
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "Docs"
@@ -4948,6 +4956,11 @@ msgstr "Document menu: {name}"
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "Document type"
+
+#: src/features/docs/layout.tsx
+#: src/features/docs/sidebar.tsx
+msgid "Documentation"
+msgstr "Documentation"
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -6278,6 +6291,10 @@ msgstr "Go home"
 msgid "Go to dashboard"
 msgstr "Go to dashboard"
 
+#: src/features/docs/article.tsx
+msgid "Go to the introduction"
+msgstr "Go to the introduction"
+
 #: src/features/billing/payment-return.tsx
 msgid "Go to your plan"
 msgstr "Go to your plan"
@@ -6779,6 +6796,10 @@ msgstr "Indonesian (native) · English (professional)"
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
 msgstr "Inferred"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Info"
+msgstr "Info"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Inline"
@@ -7543,6 +7564,10 @@ msgstr "Link to application"
 msgid "Link to application…"
 msgstr "Link to application…"
 
+#: src/features/docs/mdx-components.tsx
+msgid "Link to this section"
+msgstr "Link to this section"
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Link turned off. The address is kept"
 msgstr "Link turned off. The address is kept"
@@ -8063,6 +8088,10 @@ msgstr "More formatting"
 msgid "More options"
 msgstr "More options"
 
+#: src/features/docs/article.tsx
+msgid "More pages"
+msgstr "More pages"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "More personal"
@@ -8388,6 +8417,10 @@ msgstr "Newest first. The menu at the end of a row checks with Polar or refunds.
 msgid "Newest payments started in this period. Search finds any customer."
 msgstr "Newest payments started in this period. Search finds any customer."
 
+#: src/features/docs/article.tsx
+msgid "Next"
+msgstr "Next"
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr "Next day"
@@ -8609,6 +8642,10 @@ msgstr "No open applications"
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "No open issues"
+
+#: src/features/docs/sidebar.tsx
+msgid "No pages match “{term}”."
+msgstr "No pages match “{term}”."
 
 #: src/features/billing/admin/customer.tsx
 msgid "No paid plan running"
@@ -8887,6 +8924,7 @@ msgid "Not written yet"
 msgstr "Not written yet"
 
 #: src/features/applications/components/detail/activity.tsx
+#: src/features/docs/mdx-components.tsx
 msgid "Note"
 msgstr "Note"
 
@@ -9045,6 +9083,10 @@ msgstr "Older"
 msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 
+#: src/features/docs/toc.tsx
+msgid "On this page"
+msgstr "On this page"
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "On. Anyone with the link can see your web page."
@@ -9159,6 +9201,10 @@ msgstr "Open briefing"
 msgid "Open customer"
 msgstr "Open customer"
 
+#: src/features/docs/header.tsx
+msgid "Open dashboard"
+msgstr "Open dashboard"
+
 #. Button label to open the user's default email app
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Open email app"
@@ -9181,6 +9227,7 @@ msgstr "Open in editor"
 msgid "Open in Offers"
 msgstr "Open in Offers"
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
 msgstr "Open navigation"
@@ -9256,6 +9303,7 @@ msgid "Optional for local Ollama"
 msgstr "Optional for local Ollama"
 
 #: src/components/ui/combobox.tsx
+#: src/features/docs/mdx-components.tsx
 #: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Options"
@@ -9389,6 +9437,7 @@ msgid "Page 1 · {formatLabel}"
 msgstr "Page 1 · {formatLabel}"
 
 #: src/components/layout/not-found-screen.tsx
+#: src/features/docs/article.tsx
 msgid "Page not found"
 msgstr "Page not found"
 
@@ -10051,6 +10100,10 @@ msgstr "Preview size"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "Previewing {0} · click to apply"
+
+#: src/features/docs/article.tsx
+msgid "Previous"
+msgstr "Previous"
 
 #: src/features/career/coach.tsx
 msgid "Previous 7 days"
@@ -11256,6 +11309,7 @@ msgstr "Revoked"
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "Revoked “{name}”. Apps using it stop working now."
 
+#: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - Go to homepage"
@@ -11733,6 +11787,10 @@ msgstr "Search results"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "Search role, company or contact"
+
+#: src/features/docs/sidebar.tsx
+msgid "Search the docs"
+msgstr "Search the docs"
 
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
@@ -12329,6 +12387,7 @@ msgstr "Skip and upload"
 msgid "Skip to content"
 msgstr "Skip to content"
 
+#: src/features/docs/layout.tsx
 #: src/routes/_home/route.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Skip to main content"
@@ -13740,6 +13799,10 @@ msgstr "This page is in columns, and the text extracts out of order."
 msgid "This page is very densely packed."
 msgstr "This page is very densely packed."
 
+#: src/features/docs/article.tsx
+msgid "This page may have moved. Search the list of pages, or start from the introduction."
+msgstr "This page may have moved. Search the list of pages, or start from the introduction."
+
 #: src/features/billing/payment-return.tsx
 msgid "This payment didn't go through"
 msgstr "This payment didn't go through"
@@ -13903,6 +13966,7 @@ msgid "Timing the plan"
 msgstr "Timing the plan"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Tip"
 msgstr "Tip"
 
@@ -14775,6 +14839,7 @@ msgid "Walk in ready"
 msgstr "Walk in ready"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Warning"
 msgstr "Warning"
 

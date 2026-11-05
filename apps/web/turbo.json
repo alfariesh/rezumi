@@ -3,7 +3,17 @@
 	"tags": ["app:web"],
 	"tasks": {
 		"build": {
+			"inputs": ["$TURBO_EXTENDS$", "$TURBO_ROOT$/docs/**"],
 			"outputs": ["$TURBO_EXTENDS$", "dist-prerender/**"]
+		},
+		"test": {
+			"inputs": ["$TURBO_EXTENDS$", "$TURBO_ROOT$/docs/**"]
+		},
+		"test:coverage": {
+			"inputs": ["$TURBO_EXTENDS$", "$TURBO_ROOT$/docs/**"]
+		},
+		"test:ci": {
+			"inputs": ["$TURBO_EXTENDS$", "$TURBO_ROOT$/docs/**"]
 		}
 	}
 }

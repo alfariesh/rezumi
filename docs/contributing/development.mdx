@@ -239,6 +239,17 @@ const label = t`Download PDF`;
 
 Then run `pnpm lingui:extract`. It updates the catalogs in `apps/web/locales/*.po` and regenerates the PDF section-title catalog. You only add English strings.
 
+## Write documentation
+
+The guides are MDX files in `docs/`. The hosted docs site and the web app's `/docs` pages both publish them, and `docs/docs.json` sets their order and groups. A page appears in the app only when `docs.json` lists it.
+
+- Start each page with front matter that has a `title` and a one-sentence `description`. The app shows both above the page and uses them for search results and link previews.
+- Link to other pages by their path from the docs root, such as `[Signing in](/guides/signing-in#passkeys)`. The app moves these links under `/docs`, and links to `https://rezumi.app/...` stay on the instance serving the docs.
+- Put screenshots in `docs/images/` and show them with `<img>` inside `<Frame caption="...">`, with alt text that describes what the picture shows. The build adds each picture's size, so the page doesn't jump while it loads.
+- Use the components both sites draw: `Card` and `CardGroup`, `Steps` and `Step`, `Frame`, `Note`, `Tip`, `Info` and `Warning`, `Accordion` and `AccordionGroup`, `Tabs` and `Tab`. Add a file name after a code block's language to give the block a title, as in ` ```jsonc wrangler.jsonc `.
+
+`pnpm --filter web test src/features/docs` compiles every listed page and fails on a link to a page that doesn't exist or a missing picture.
+
 ## Code style
 
 - TypeScript is strict, including `exactOptionalPropertyTypes` and `noUncheckedIndexedAccess`. Packages type-check with `tsrs --noEmit`.

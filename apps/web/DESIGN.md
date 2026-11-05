@@ -211,6 +211,15 @@ Motion is the app's: hover color changes, the bento's template fan spreading on 
 - Use one `h1`, section headings, landmarks, and a skip link. Drawings inside the hero and bento tiles are decorative (`aria-hidden`); the words beside them carry the meaning. Nothing relies on hover alone.
 - Translate copy, accessible labels, and demo resume text through Lingui. Names, companies and addresses may stay literal. Allow text expansion and RTL layouts.
 
+## Docs
+
+The public docs (`/docs`, `src/features/docs`) are a reading surface on the desk, built from HeroUI only, so they need no Pro component.
+
+- **Frame:** the docs bar (brand, Docs, theme, the call to action), a 288px sidebar with a search field that narrows the list and one group per `docs.json` group (12px semibold muted labels, 14px links, the current page on `bg-default`), the article capped at 768px, and "On this page" from `xl`, its current section marked by an accent bar. Below `lg` the sidebar is a drawer; below `xl` the section list folds into a Disclosure above the article.
+- **Reading text:** 16/28 in the article, 14/24 in callouts and cards. Page titles use `Typography type="h2"` as the `h1`, under the group name in accent and above the description in `text-lg text-muted`.
+- **Blocks:** content that holds things sits on white surfaces with `shadow-surface`: code (highlighted with the theme's soft-foreground tokens, `docs.css`), tables, framed screenshots (2× captures stop at 576px tall) and cards. Callouts are `Alert`s; collapsibles, `Accordion`; tabbed alternatives, `Tabs`.
+- **Delivery:** every page is prerendered once, in English like the pages, so its words are in the first response.
+
 ## Do and don't
 
 - **Do** make the primary action obvious and reserve the accent for actions and state.

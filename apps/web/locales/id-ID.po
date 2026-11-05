@@ -2730,6 +2730,7 @@ msgstr ""
 msgid "Build an ATS-friendly resume, tailor it to every job and track each application. Start free, or unlock every template, Word export and AI."
 msgstr "Buat CV ramah ATS, sesuaikan untuk setiap lowongan, dan pantau setiap lamaran. Mulai gratis, atau buka semua template, ekspor Word, dan AI."
 
+#: src/features/docs/header.tsx
 #: src/features/homepage/ui.tsx
 #: src/features/templates/gallery.tsx
 msgid "Build your resume"
@@ -3236,6 +3237,7 @@ msgstr "ID Klien"
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/coach-sheet.tsx
 #: src/features/career/workspace/prepare.tsx
+#: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/resume/builder/password-dialog.tsx
@@ -3631,6 +3633,7 @@ msgstr "Nama percakapan"
 msgid "Conversations"
 msgstr "Percakapan"
 
+#: src/features/docs/mdx-components.tsx
 #: src/features/resume/share/copy-link-button.tsx
 #: src/features/resume/share/copy-text.tsx
 #: src/features/settings/ai/api-keys.tsx
@@ -3656,6 +3659,10 @@ msgstr "Salin resume untuk suatu pekerjaan"
 #: src/features/career/workspace/apply.tsx
 msgid "Copy answers"
 msgstr "Salin jawaban"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Copy code"
+msgstr "Salin kode"
 
 #. Action button to copy two-factor backup codes to clipboard
 #: src/dialogs/auth/enable-two-factor.tsx
@@ -4942,6 +4949,7 @@ msgstr "Membubarkan"
 msgid "DNS records"
 msgstr ""
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Docs"
 msgstr "Dokumentasi"
@@ -4953,6 +4961,11 @@ msgstr "Menu dokumen: {name}"
 #: src/features/documents/documents-page.tsx
 msgid "Document type"
 msgstr "Jenis dokumen"
+
+#: src/features/docs/layout.tsx
+#: src/features/docs/sidebar.tsx
+msgid "Documentation"
+msgstr "Dokumentasi"
 
 #: src/features/billing/plan-page.tsx
 #: src/features/command-palette/pages/navigation.tsx
@@ -6283,6 +6296,10 @@ msgstr "Pulang"
 msgid "Go to dashboard"
 msgstr "Pergi ke dasbor"
 
+#: src/features/docs/article.tsx
+msgid "Go to the introduction"
+msgstr "Buka pengantar"
+
 #: src/features/billing/payment-return.tsx
 msgid "Go to your plan"
 msgstr "Buka paketmu"
@@ -6784,6 +6801,10 @@ msgstr "Indonesia (bahasa ibu) · Inggris (profesional)"
 #: src/features/career/workspace/fit.tsx
 msgid "Inferred"
 msgstr "Disimpulkan"
+
+#: src/features/docs/mdx-components.tsx
+msgid "Info"
+msgstr "Info"
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Inline"
@@ -7548,6 +7569,10 @@ msgstr "Tautan ke lamaran pekerjaan"
 msgid "Link to application…"
 msgstr "Tautan ke lamaran pekerjaan…"
 
+#: src/features/docs/mdx-components.tsx
+msgid "Link to this section"
+msgstr "Tautan ke bagian ini"
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Link turned off. The address is kept"
 msgstr "Tautan dimatikan. Alamatnya disimpan"
@@ -8068,6 +8093,10 @@ msgstr "Format lainnya"
 msgid "More options"
 msgstr "Opsi lainnya"
 
+#: src/features/docs/article.tsx
+msgid "More pages"
+msgstr "Halaman lainnya"
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "More personal"
 msgstr "Lebih pribadi"
@@ -8393,6 +8422,10 @@ msgstr "Terbaru di atas. Menu di ujung baris untuk cek ulang ke Polar atau refun
 msgid "Newest payments started in this period. Search finds any customer."
 msgstr "Pembayaran terbaru di periode ini. Pencarian menemukan pelanggan mana pun."
 
+#: src/features/docs/article.tsx
+msgid "Next"
+msgstr "Berikutnya"
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Next day"
 msgstr ""
@@ -8614,6 +8647,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/editor-bar.tsx
 msgid "No open issues"
 msgstr "Tidak ada masalah terbuka"
+
+#: src/features/docs/sidebar.tsx
+msgid "No pages match “{term}”."
+msgstr "Tidak ada halaman yang cocok dengan “{term}”."
 
 #: src/features/billing/admin/customer.tsx
 msgid "No paid plan running"
@@ -8892,6 +8929,7 @@ msgid "Not written yet"
 msgstr ""
 
 #: src/features/applications/components/detail/activity.tsx
+#: src/features/docs/mdx-components.tsx
 msgid "Note"
 msgstr "Informasi"
 
@@ -9050,6 +9088,10 @@ msgstr ""
 msgid "On a first purchase you can ask for a full refund within 7 days if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
 msgstr "Untuk pembelian pertama, kamu bisa meminta pengembalian dana penuh dalam 7 hari bila kredit Rezumi AI yang terpakai dari pembelian itu tidak lebih dari 10. Pembayaran ganda dan masalah teknis selalu diselesaikan."
 
+#: src/features/docs/toc.tsx
+msgid "On this page"
+msgstr "Di halaman ini"
+
 #: src/features/resume/share/share-panel.tsx
 msgid "On. Anyone with the link can see your web page."
 msgstr "Aktif. Siapa pun yang memiliki tautan dapat melihat halaman web Anda."
@@ -9164,6 +9206,10 @@ msgstr "Buka briefing"
 msgid "Open customer"
 msgstr "Buka pelanggan"
 
+#: src/features/docs/header.tsx
+msgid "Open dashboard"
+msgstr "Buka dasbor"
+
 #. Button label to open the user's default email app
 #: src/features/auth/pages/forgot-password.tsx
 msgid "Open email app"
@@ -9186,9 +9232,10 @@ msgstr "Buka di editor"
 msgid "Open in Offers"
 msgstr "Buka di Penawaran"
 
+#: src/features/docs/header.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Open navigation"
-msgstr ""
+msgstr "Buka navigasi"
 
 #: src/features/career/coach-chat.tsx
 msgid "Open preferences"
@@ -9261,6 +9308,7 @@ msgid "Optional for local Ollama"
 msgstr "Opsional untuk Ollama lokal"
 
 #: src/components/ui/combobox.tsx
+#: src/features/docs/mdx-components.tsx
 #: src/features/documents/document-list.tsx
 msgid "Options"
 msgstr "Pilihan"
@@ -9394,6 +9442,7 @@ msgid "Page 1 · {formatLabel}"
 msgstr "Halaman 1 · {formatLabel}"
 
 #: src/components/layout/not-found-screen.tsx
+#: src/features/docs/article.tsx
 msgid "Page not found"
 msgstr "Halaman tidak ditemukan"
 
@@ -10056,6 +10105,10 @@ msgstr "Ukuran pratinjau"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Previewing {0} · click to apply"
 msgstr "Pratinjau {0} · klik untuk menerapkan"
+
+#: src/features/docs/article.tsx
+msgid "Previous"
+msgstr "Sebelumnya"
 
 #: src/features/career/coach.tsx
 msgid "Previous 7 days"
@@ -11261,6 +11314,7 @@ msgstr "Dicabut"
 msgid "Revoked “{name}”. Apps using it stop working now."
 msgstr "Mencabut “{name}”. Aplikasi yang menggunakannya berhenti berfungsi sekarang."
 
+#: src/features/docs/header.tsx
 #: src/routes/_home/-sections/header.tsx
 msgid "Rezumi - Go to homepage"
 msgstr "Rezumi - Pergi ke beranda"
@@ -11738,6 +11792,10 @@ msgstr "Hasil pencarian"
 #: src/routes/dashboard/applications/index.tsx
 msgid "Search role, company or contact"
 msgstr "Cari peran, perusahaan atau kontak"
+
+#: src/features/docs/sidebar.tsx
+msgid "Search the docs"
+msgstr "Cari di dokumentasi"
 
 #: src/features/assistant/tool-approvals.tsx
 msgid "Search the web"
@@ -12334,6 +12392,7 @@ msgstr "Lewati dan unggah"
 msgid "Skip to content"
 msgstr "Lewati ke konten"
 
+#: src/features/docs/layout.tsx
 #: src/routes/_home/route.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Skip to main content"
@@ -13745,6 +13804,10 @@ msgstr "Halaman ini berbentuk kolom, dan teksnya diekstrak tidak sesuai urutan."
 msgid "This page is very densely packed."
 msgstr "Halaman ini sangat padat."
 
+#: src/features/docs/article.tsx
+msgid "This page may have moved. Search the list of pages, or start from the introduction."
+msgstr "Halaman ini mungkin sudah dipindahkan. Cari di daftar halaman, atau mulai dari pengantar."
+
 #: src/features/billing/payment-return.tsx
 msgid "This payment didn't go through"
 msgstr "Pembayaran ini tidak berhasil"
@@ -13908,6 +13971,7 @@ msgid "Timing the plan"
 msgstr "Mengatur waktu rencana"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Tip"
 msgstr "Tips"
 
@@ -14780,6 +14844,7 @@ msgid "Walk in ready"
 msgstr "Datang dengan siap"
 
 #: src/features/ats-checker/messages.ts
+#: src/features/docs/mdx-components.tsx
 msgid "Warning"
 msgstr "Peringatan"
 

@@ -128,13 +128,14 @@ function preloadLinks(html: string) {
  * An HTML page whose policy allows exactly the inline scripts of its template. Hashes come from the template before
  * any resume-derived markup goes in, so text that slipped past escaping could never allow itself.
  */
-function htmlResponse(html: string, headers: Record<string, string>, template = html) {
+function htmlResponse(html: string, headers: Record<string, string>, template = html, status = 200) {
 	const verification = new URL(CONTEXT7_ASK_URL).searchParams.get("siteKey") ?? "";
 	const note = `<blockquote data-context7-ask="true" aria-hidden="true" class="sr-only"><h2>Search</h2><p>Page index: https://rezumi.app/llms.txt.</p><p>${escapeHtml(CONTEXT7_ASK_DESCRIPTION)}</p></blockquote>`;
 	const body = html
 		.replace("</head>", () => `<meta name="context7-site-verification" content="${verification}"></head>`)
 		.replace(/<body\b[^>]*>/i, (tag) => `${tag}${note}`);
 	return new Response(body, {
+		status,
 		headers: {
 			...headers,
 			Link: [headers.Link, ...preloadLinks(template)].filter(Boolean).join(", "),
@@ -305,7 +306,7 @@ export const serveWebDistStatic = env.CLOUDFLARE
 		});
 
 function getFallbackResponseHeaders(pathname: string) {
-	if (pathname === "/" || indexableAppPaths.has(pathname)) {
+	if (pathname === "/" || indexableAppPaths.has(pathname) || isDocsPath(pathname)) {
 		return { "Content-Type": "text/html; charset=UTF-8", ...BASE_SECURITY_HEADERS };
 	}
 	if (isAppSectionPath(pathname)) {
@@ -384,7 +385,89 @@ const prerenderedPages: Record<
 
 export type ReadWebFile = (path: string) => Promise<string>;
 
-export async function handleWebApp(request: Request, readFile: ReadWebFile = (path) => fs.readFile(path, "utf-8")) {
+const readWebDistFile: ReadWebFile = (path) => fs.readFile(path, "utf-8");
+
+/** `/docs` and every address under it: the public documentation the web build prerenders (features/docs). */
+const isDocsPath = (pathname: string) => pathname === "/docs" || pathname.startsWith("/docs/");
+
+/**
+ * The prerendered file for a docs address: `docs.html` for /docs, `docs/<slug>.html` for /docs/<slug>. Only slugs of
+ * lowercase letters, digits and hyphens are looked up, so no address reaches a file outside the docs.
+ */
+function docsPageFile(pathname: string) {
+	const path = pathname.replace(/\/+$/, "");
+	if (path === "/docs") return `${prerenderRoot}/docs.html`;
+	const slug = path.slice("/docs/".length);
+	return /^[a-z0-9-]+(?:\/[a-z0-9-]+)*$/.test(slug) ? `${prerenderRoot}/docs/${slug}.html` : null;
+}
+
+/** The addresses of the docs pages, for the sitemap; none for a build without prerendered pages. */
+export async function listDocsPaths(readFile: ReadWebFile = readWebDistFile): Promise<string[]> {
+	try {
+		const paths: unknown = JSON.parse(await readFile(`${prerenderRoot}/docs/pages.json`));
+		return Array.isArray(paths)
+			? paths.filter((path): path is string => typeof path === "string" && isDocsPath(path))
+			: [];
+	} catch {
+		return [];
+	}
+}
+
+/** A page's escaped title or description as text again, for structured data, where entities are not decoded. */
+const unescapeHtml = (text: string) =>
+	text
+		.replaceAll("&lt;", "<")
+		.replaceAll("&gt;", ">")
+		.replaceAll("&quot;", '"')
+		.replaceAll("&#39;", "'")
+		.replaceAll("&amp;", "&");
+
+function docsStructuredData(origin: string, url: string, meta: { title: string; description: string }): StructuredData {
+	return {
+		"@context": "https://schema.org",
+		"@graph": [
+			organization(origin),
+			{
+				"@type": "TechArticle",
+				headline: unescapeHtml(meta.title.replace(/ \| Rezumi Docs$/, "")),
+				description: unescapeHtml(meta.description),
+				url,
+				inLanguage: "en",
+				isPartOf: { "@type": "WebSite", "@id": `${origin}/#website`, name: "Rezumi", url: `${origin}/` },
+				publisher: { "@id": `${origin}/#organization` },
+			},
+		],
+	};
+}
+
+/**
+ * A docs page: its prerendered HTML with the canonical address, social cards and structured data. An address with no
+ * page (an old one that moved, or a typo) gets the app shell with a 404 status: the app redirects or says so.
+ */
+async function handleDocsPage(pathname: string, html: string, headers: Record<string, string>, readFile: ReadWebFile) {
+	const file = docsPageFile(pathname);
+	const page = file ? await readFile(file).catch(() => null) : null;
+	if (!page) {
+		return htmlResponse(html, { ...headers, "X-Robots-Tag": "noindex, follow" }, html, 404);
+	}
+
+	const origin = new URL(env.APP_URL).origin;
+	const url = new URL(pathname.replace(/(.)\/+$/, "$1"), env.APP_URL).toString();
+	const meta = readPageMeta(page, { title: "Rezumi Docs", description: "" });
+	const markup = `
+		<link rel="canonical" href="${escapeHtml(url)}">
+		<meta property="og:locale" content="en_US">
+		${socialMetaTags({ type: "article", title: meta.title, description: meta.description, url: escapeHtml(url), image: `${origin}/opengraph/banner.jpg` })}
+		${jsonLdScript(docsStructuredData(origin, url, meta))}
+	`;
+	return htmlResponse(
+		page.replace("</head>", () => `${markup}</head>`),
+		headers,
+		page,
+	);
+}
+
+export async function handleWebApp(request: Request, readFile: ReadWebFile = readWebDistFile) {
 	const requestedPath = new URL(request.url).pathname;
 	const pathname = requestedPath === "/index.html" ? "/" : requestedPath;
 
@@ -403,6 +486,8 @@ export async function handleWebApp(request: Request, readFile: ReadWebFile = (pa
 	if (request.method === "HEAD") return new Response(null, { status: 200, headers });
 
 	const html = await readFile(indexHtmlPath);
+
+	if (isDocsPath(pathname)) return handleDocsPage(pathname, html, headers, readFile);
 
 	const prerendered = prerenderedPages[pathname];
 	if (prerendered) {

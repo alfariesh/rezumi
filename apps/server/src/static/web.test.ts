@@ -25,7 +25,7 @@ vi.mock("@rezumi/env/server", () => ({
 	env: mocks.env,
 }));
 
-const { handleWebApp } = await import("./web");
+const { handleWebApp, isProfilePath, isPublicResumePath, listDocsPaths } = await import("./web");
 
 const searchLink =
 	'<https://context7.com/api/v2/ask?siteKey=ask_b3fd9335a63f1b21b1a814ac>; rel="search"; type="text/plain"; title="Search rezumi.app"';
@@ -198,4 +198,74 @@ describe("web app fallback classification", () => {
 			expect(fs.readFile).not.toHaveBeenCalled();
 		},
 	);
+});
+
+describe("public docs", () => {
+	const page = (title: string, description: string) =>
+		`<html lang="en-US" dir="ltr"><head><title>${title}</title><meta name="description" content="${description}"></head><body><div id="app"><article>${title}</article></div></body></html>`;
+
+	beforeEach(() => {
+		vi.clearAllMocks();
+		vi.mocked(fs.readFile).mockImplementation((path) => {
+			const file = String(path);
+			if (file.endsWith("dist-prerender/docs.html"))
+				return Promise.resolve(page("Introduction | Rezumi Docs", "Start here."));
+			if (file.endsWith("dist-prerender/docs/guides/editor-overview.html"))
+				return Promise.resolve(page("Editor overview | Rezumi Docs", "Panels &amp; modes."));
+			if (file.endsWith("dist-prerender/docs/pages.json"))
+				return Promise.resolve('["/docs","/docs/guides/editor-overview","/elsewhere",3]');
+			if (file.endsWith("dist/index.html")) return Promise.resolve("<html><head></head><body>app</body></html>");
+			return Promise.reject(new Error(`ENOENT ${file}`));
+		});
+	});
+
+	it("never takes /docs for a username's page", () => {
+		expect(isProfilePath("/docs")).toBe(false);
+		expect(isPublicResumePath("/docs/getting-started")).toBe(false);
+	});
+
+	it.each([
+		["/docs", "https://rezumi.app/docs", "Introduction"],
+		["/docs/guides/editor-overview", "https://rezumi.app/docs/guides/editor-overview", "Editor overview"],
+		["/docs/guides/editor-overview/", "https://rezumi.app/docs/guides/editor-overview", "Editor overview"],
+	])(
+		"serves %s prerendered, indexable, with its canonical address and article data",
+		async (path, canonical, headline) => {
+			const response = await handleWebApp(new Request(`http://server.internal${path}`));
+			const html = await response.text();
+
+			expect(response.status).toBe(200);
+			expect(response.headers.get("X-Robots-Tag")).toBeNull();
+			expect(html).toContain(`<article>${headline} | Rezumi Docs</article>`);
+			expect(html).toContain(`<link rel="canonical" href="${canonical}">`);
+			expect(html).toContain('<meta property="og:type" content="article">');
+			expect(html).not.toContain('hreflang="');
+			const data = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] ?? "{}");
+			expect(data["@graph"][1]).toMatchObject({ "@type": "TechArticle", headline, url: canonical, inLanguage: "en" });
+		},
+	);
+
+	it("decodes the page's escaped description for the structured data", async () => {
+		const html = await (await handleWebApp(new Request("https://rezumi.app/docs/guides/editor-overview"))).text();
+		const data = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] ?? "{}");
+		expect(data["@graph"][1].description).toBe("Panels & modes.");
+	});
+
+	it.each(["/docs/guides/missing", "/docs/Guides/Editor-Overview", "/docs/guides/%2e%2e%2fsecret"])(
+		"answers %s with the app shell, a 404 and noindex, so the app can redirect or say so",
+		async (path) => {
+			const response = await handleWebApp(new Request(`https://rezumi.app${path}`));
+
+			expect(response.status).toBe(404);
+			expect(response.headers.get("X-Robots-Tag")).toBe("noindex, follow");
+			expect(await response.text()).toContain("app</body>");
+			for (const [file] of vi.mocked(fs.readFile).mock.calls) expect(String(file)).not.toContain("secret");
+		},
+	);
+
+	it("lists the docs addresses for the sitemap, and none without a prerendered build", async () => {
+		expect(await listDocsPaths()).toEqual(["/docs", "/docs/guides/editor-overview"]);
+		vi.mocked(fs.readFile).mockRejectedValue(new Error("ENOENT"));
+		expect(await listDocsPaths()).toEqual([]);
+	});
 });

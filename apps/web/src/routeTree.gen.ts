@@ -13,6 +13,7 @@ import { Route as HomeRouteRouteImport } from "./routes/_home/route";
 import { Route as AgentRouteRouteImport } from "./routes/agent/route";
 import { Route as AuthRouteRouteImport } from "./routes/auth/route";
 import { Route as DashboardRouteRouteImport } from "./routes/dashboard/route";
+import { Route as DocsRouteRouteImport } from "./routes/docs/route";
 import { Route as HomeIndexRouteImport } from "./routes/_home/index";
 import { Route as HomeAtsCheckerRouteImport } from "./routes/_home/ats-checker";
 import { Route as HomeResumeTemplatesRouteImport } from "./routes/_home/resume-templates";
@@ -37,6 +38,8 @@ import { Route as DashboardCoverLettersRouteImport } from "./routes/dashboard/co
 import { Route as DashboardDocumentsRouteImport } from "./routes/dashboard/documents";
 import { Route as DashboardSettingsRouteRouteImport } from "./routes/dashboard/settings/route";
 import { Route as DashboardTrashRouteImport } from "./routes/dashboard/trash";
+import { Route as DocsIndexRouteImport } from "./routes/docs/index";
+import { Route as DocsSplatRouteImport } from "./routes/docs/$";
 import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resumeId/index";
 import { Route as BuilderLetterCoverLetterIdRouteImport } from "./routes/builder/letter/$coverLetterId";
 import { Route as DashboardApplicationsIndexRouteImport } from "./routes/dashboard/applications/index";
@@ -82,6 +85,11 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 const DashboardRouteRoute = DashboardRouteRouteImport.update({
   id: "/dashboard",
   path: "/dashboard",
+  getParentRoute: () => rootRouteImport,
+} as any);
+const DocsRouteRoute = DocsRouteRouteImport.update({
+  id: "/docs",
+  path: "/docs",
   getParentRoute: () => rootRouteImport,
 } as any);
 const HomeIndexRoute = HomeIndexRouteImport.update({
@@ -203,6 +211,16 @@ const DashboardTrashRoute = DashboardTrashRouteImport.update({
   id: "/trash",
   path: "/trash",
   getParentRoute: () => DashboardRouteRoute,
+} as any);
+const DocsIndexRoute = DocsIndexRouteImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => DocsRouteRoute,
+} as any);
+const DocsSplatRoute = DocsSplatRouteImport.update({
+  id: "/$",
+  path: "/$",
+  getParentRoute: () => DocsRouteRoute,
 } as any);
 const BuilderResumeIdIndexRoute = BuilderResumeIdIndexRouteImport.update({
   id: "/",
@@ -365,6 +383,7 @@ export interface FileRoutesByFullPath {
   "/agent": typeof AgentRouteRouteWithChildren;
   "/auth": typeof AuthRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
+  "/docs": typeof DocsRouteRouteWithChildren;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
   "/dashboard/admin": typeof DashboardAdminRouteRouteWithChildren;
   "/dashboard/career": typeof DashboardCareerRouteRouteWithChildren;
@@ -385,9 +404,11 @@ export interface FileRoutesByFullPath {
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
+  "/docs/$": typeof DocsSplatRoute;
   "/agent/": typeof AgentIndexRoute;
   "/auth/": typeof AuthIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/docs/": typeof DocsIndexRoute;
   "/dashboard/career/knowledge": typeof DashboardCareerKnowledgeRouteRouteWithChildren;
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
@@ -434,10 +455,12 @@ export interface FileRoutesByTo {
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
+  "/docs/$": typeof DocsSplatRoute;
   "/": typeof HomeIndexRoute;
   "/agent": typeof AgentIndexRoute;
   "/auth": typeof AuthIndexRoute;
   "/dashboard": typeof DashboardIndexRoute;
+  "/docs": typeof DocsIndexRoute;
   "/dashboard/career/knowledge": typeof DashboardCareerKnowledgeRouteRouteWithChildren;
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
@@ -472,6 +495,7 @@ export interface FileRoutesById {
   "/agent": typeof AgentRouteRouteWithChildren;
   "/auth": typeof AuthRouteRouteWithChildren;
   "/dashboard": typeof DashboardRouteRouteWithChildren;
+  "/docs": typeof DocsRouteRouteWithChildren;
   "/builder/$resumeId": typeof BuilderResumeIdRouteRouteWithChildren;
   "/dashboard/admin": typeof DashboardAdminRouteRouteWithChildren;
   "/dashboard/career": typeof DashboardCareerRouteRouteWithChildren;
@@ -492,10 +516,12 @@ export interface FileRoutesById {
   "/dashboard/cover-letters": typeof DashboardCoverLettersRoute;
   "/dashboard/documents": typeof DashboardDocumentsRoute;
   "/dashboard/trash": typeof DashboardTrashRoute;
+  "/docs/$": typeof DocsSplatRoute;
   "/_home/": typeof HomeIndexRoute;
   "/agent/": typeof AgentIndexRoute;
   "/auth/": typeof AuthIndexRoute;
   "/dashboard/": typeof DashboardIndexRoute;
+  "/docs/": typeof DocsIndexRoute;
   "/dashboard/career/knowledge": typeof DashboardCareerKnowledgeRouteRouteWithChildren;
   "/dashboard/settings/integrations": typeof DashboardSettingsIntegrationsRouteRoute;
   "/builder/letter/$coverLetterId": typeof BuilderLetterCoverLetterIdRoute;
@@ -531,6 +557,7 @@ export interface FileRouteTypes {
     | "/agent"
     | "/auth"
     | "/dashboard"
+    | "/docs"
     | "/builder/$resumeId"
     | "/dashboard/admin"
     | "/dashboard/career"
@@ -551,9 +578,11 @@ export interface FileRouteTypes {
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
     | "/dashboard/trash"
+    | "/docs/$"
     | "/agent/"
     | "/auth/"
     | "/dashboard/"
+    | "/docs/"
     | "/dashboard/career/knowledge"
     | "/dashboard/settings/integrations"
     | "/builder/letter/$coverLetterId"
@@ -600,10 +629,12 @@ export interface FileRouteTypes {
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
     | "/dashboard/trash"
+    | "/docs/$"
     | "/"
     | "/agent"
     | "/auth"
     | "/dashboard"
+    | "/docs"
     | "/dashboard/career/knowledge"
     | "/dashboard/settings/integrations"
     | "/builder/letter/$coverLetterId"
@@ -637,6 +668,7 @@ export interface FileRouteTypes {
     | "/agent"
     | "/auth"
     | "/dashboard"
+    | "/docs"
     | "/builder/$resumeId"
     | "/dashboard/admin"
     | "/dashboard/career"
@@ -657,10 +689,12 @@ export interface FileRouteTypes {
     | "/dashboard/cover-letters"
     | "/dashboard/documents"
     | "/dashboard/trash"
+    | "/docs/$"
     | "/_home/"
     | "/agent/"
     | "/auth/"
     | "/dashboard/"
+    | "/docs/"
     | "/dashboard/career/knowledge"
     | "/dashboard/settings/integrations"
     | "/builder/letter/$coverLetterId"
@@ -695,6 +729,7 @@ export interface RootRouteChildren {
   AgentRouteRoute: typeof AgentRouteRouteWithChildren;
   AuthRouteRoute: typeof AuthRouteRouteWithChildren;
   DashboardRouteRoute: typeof DashboardRouteRouteWithChildren;
+  DocsRouteRoute: typeof DocsRouteRouteWithChildren;
   BuilderResumeIdRouteRoute: typeof BuilderResumeIdRouteRouteWithChildren;
   BuilderLetterCoverLetterIdRoute: typeof BuilderLetterCoverLetterIdRoute;
 }
@@ -727,6 +762,13 @@ declare module "@tanstack/react-router" {
       path: "/dashboard";
       fullPath: "/dashboard";
       preLoaderRoute: typeof DashboardRouteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/docs": {
+      id: "/docs";
+      path: "/docs";
+      fullPath: "/docs";
+      preLoaderRoute: typeof DocsRouteRouteImport;
       parentRoute: typeof rootRouteImport;
     };
     "/_home/": {
@@ -896,6 +938,20 @@ declare module "@tanstack/react-router" {
       fullPath: "/dashboard/trash";
       preLoaderRoute: typeof DashboardTrashRouteImport;
       parentRoute: typeof DashboardRouteRoute;
+    };
+    "/docs/": {
+      id: "/docs/";
+      path: "/";
+      fullPath: "/docs/";
+      preLoaderRoute: typeof DocsIndexRouteImport;
+      parentRoute: typeof DocsRouteRoute;
+    };
+    "/docs/$": {
+      id: "/docs/$";
+      path: "/$";
+      fullPath: "/docs/$";
+      preLoaderRoute: typeof DocsSplatRouteImport;
+      parentRoute: typeof DocsRouteRoute;
     };
     "/builder/$resumeId/": {
       id: "/builder/$resumeId/";
@@ -1276,6 +1332,20 @@ const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
   DashboardRouteRouteChildren,
 );
 
+interface DocsRouteRouteChildren {
+  DocsSplatRoute: typeof DocsSplatRoute;
+  DocsIndexRoute: typeof DocsIndexRoute;
+}
+
+const DocsRouteRouteChildren: DocsRouteRouteChildren = {
+  DocsSplatRoute: DocsSplatRoute,
+  DocsIndexRoute: DocsIndexRoute,
+};
+
+const DocsRouteRouteWithChildren = DocsRouteRoute._addFileChildren(
+  DocsRouteRouteChildren,
+);
+
 interface BuilderResumeIdRouteRouteChildren {
   BuilderResumeIdIndexRoute: typeof BuilderResumeIdIndexRoute;
 }
@@ -1292,6 +1362,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgentRouteRoute: AgentRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  DocsRouteRoute: DocsRouteRouteWithChildren,
   BuilderResumeIdRouteRoute: BuilderResumeIdRouteRouteWithChildren,
   BuilderLetterCoverLetterIdRoute: BuilderLetterCoverLetterIdRoute,
 };
