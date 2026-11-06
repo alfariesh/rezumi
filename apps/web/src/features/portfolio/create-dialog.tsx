@@ -5,13 +5,10 @@ import { Trans } from "@lingui/react/macro";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useId, useState } from "react";
-import { RENDERED_PORTFOLIO_THEMES } from "@rezumi/portfolio/editor";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
-import { defaultPortfolioTheme, PORTFOLIO_THEME_INFO } from "@rezumi/schema/portfolio/themes";
-import { Icon } from "@rezumi/ui/components/icon";
-import { cn } from "@rezumi/utils/style";
+import { defaultPortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import { TextInput } from "./editor/fields";
-import { themeDescription } from "./themes";
+import { ThemeGallery } from "./theme-gallery";
 import { authClient } from "@/libs/auth/client";
 import { toastError } from "@/libs/error-message";
 import { client, orpc } from "@/libs/orpc/client";
@@ -58,7 +55,7 @@ export function CreatePortfolioDialog({ onClose }: { onClose: () => void }) {
 
 	return (
 		<Modal.Backdrop isOpen onOpenChange={(open) => !open && !creating && onClose()}>
-			<Modal.Container size="md" scroll="inside">
+			<Modal.Container size={step === "theme" ? "lg" : "md"} scroll="inside">
 				<Modal.Dialog aria-labelledby={`${id}-title`} aria-describedby={`${id}-step`}>
 					{!creating && <Modal.CloseTrigger aria-label={t`Close`} />}
 					<Modal.Header>
@@ -140,31 +137,10 @@ export function CreatePortfolioDialog({ onClose }: { onClose: () => void }) {
 								</>
 							)
 						) : (
-							<div role="radiogroup" aria-label={t`Theme`} className="grid gap-2">
-								{RENDERED_PORTFOLIO_THEMES.map((option) => {
-									const selected = option === theme;
-									return (
-										<button
-											key={option}
-											type="button"
-											role="radio"
-											aria-checked={selected}
-											onClick={() => setTheme(option)}
-											className={cn(
-												"grid cursor-(--cursor-interactive) gap-1 rounded-2xl border p-3 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus",
-												selected ? "border-accent bg-accent-soft" : "border-separator hover:bg-default",
-											)}
-										>
-											<span className="flex items-center gap-2 text-sm font-semibold">
-												{PORTFOLIO_THEME_INFO[option].name}
-												{selected && <Icon name="check-circle" size={18} className="ms-auto text-accent" />}
-											</span>
-											<span className="text-xs text-muted">{themeDescription(option)}</span>
-										</button>
-									);
-								})}
+							<div className="grid gap-3">
+								<ThemeGallery value={theme} onChange={setTheme} columns={2} />
 								<p className="text-xs text-muted">
-									<Trans>More themes are coming soon. You can change the theme any time in Design.</Trans>
+									<Trans>You can change the theme any time in Design.</Trans>
 								</p>
 							</div>
 						)}

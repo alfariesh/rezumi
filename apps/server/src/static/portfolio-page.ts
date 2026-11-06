@@ -6,7 +6,7 @@ import { findPublicPortfolio, recordPortfolioVisit } from "@rezumi/api/features/
 import { env } from "@rezumi/env/server";
 import { webPageImageUrl } from "@rezumi/pdf/web-page";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
-import { PORTFOLIO_PAGE_SCRIPT, renderPortfolioDocument } from "@rezumi/portfolio/document";
+import { renderPortfolioDocument } from "@rezumi/portfolio/document";
 import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
 import { buildPortfolioView } from "@rezumi/portfolio/view";
 import { publicResumePath } from "@rezumi/resume/sharing";
@@ -16,17 +16,18 @@ import { BASE_SECURITY_HEADERS, contentSecurityPolicy } from "./web";
 const origin = () => new URL(env.APP_URL).origin;
 
 /**
- * The page's policy: the app's own, which allows the page script by its hash, plus the players a video block may load
- * after a click (`02-teknis.md` section 18). Turnstile joins in Phase 08.
+ * The page's policy: the app's own, which allows the page's script by its hash (the shared page script, plus the intro
+ * effect's when the page plays a script effect), plus the players a video block may load after a click
+ * (`02-teknis.md` section 18). Turnstile joins in Phase 08.
  */
-function portfolioContentSecurityPolicy(): string {
-	return contentSecurityPolicy(`<script>${PORTFOLIO_PAGE_SCRIPT}</script>`).replace(
+function portfolioContentSecurityPolicy(script: string): string {
+	return contentSecurityPolicy(`<script>${script}</script>`).replace(
 		"frame-src 'self' blob:",
 		"frame-src 'self' blob: https://www.youtube-nocookie.com https://player.vimeo.com",
 	);
 }
 
-function html(body: string, headers: Record<string, string> = {}) {
+function html(body: string, script: string, headers: Record<string, string> = {}) {
 	return new Response(body, {
 		status: 200,
 		headers: {
@@ -34,7 +35,7 @@ function html(body: string, headers: Record<string, string> = {}) {
 			"Content-Type": "text/html; charset=UTF-8",
 			// Visits are counted per request and the page follows every edit, so no cache may keep it.
 			"Cache-Control": "private, no-store",
-			"Content-Security-Policy": portfolioContentSecurityPolicy(),
+			"Content-Security-Policy": portfolioContentSecurityPolicy(script),
 			...headers,
 		},
 	});
@@ -174,7 +175,7 @@ async function showPortfolio(
 	await recordPortfolioVisit({ portfolio, requestHeaders: request.headers, trustedClient }).catch((error: unknown) =>
 		console.error("Portfolio visit counting failed", error),
 	);
-	return html(body, portfolio.indexable ? {} : { "X-Robots-Tag": "noindex, follow" });
+	return html(body, page.script, portfolio.indexable ? {} : { "X-Robots-Tag": "noindex, follow" });
 }
 
 /**

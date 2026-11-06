@@ -67,3 +67,5 @@ msg`Down, a good change:`;
 msg`Down, a bad change:`;
 msg`No change:`;
 msg`Made with Rezumi`;
+msg`More on {site}`;
+msg`Case studies`;

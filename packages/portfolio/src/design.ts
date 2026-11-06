@@ -1,7 +1,8 @@
 import type { PortfolioView } from "./view";
 import type { FontWeight } from "@rezumi/fonts";
 import { getWebFont } from "@rezumi/fonts";
-import { mixColors, readableAccent, readableOn } from "@rezumi/utils/contrast";
+import { contrastRatio, mixColors, readableAccent, readableOn } from "@rezumi/utils/contrast";
+import { readableOnNeutrals } from "./themes/palettes";
 
 /** A theme's neutral colours in one mode (`01-desain.md` section 5, "Warna netral per tema"). */
 type ThemeNeutrals = { bg: string; surface: string; text: string; muted: string; border: string };
@@ -21,7 +22,8 @@ type SchemeTokens = Record<`--pf-${string}`, string>;
 
 /** Every colour token of one mode, accent ones corrected for contrast against that mode's background. */
 function schemeTokens(accent: string, neutrals: ThemeNeutrals, mode: "light" | "dark"): SchemeTokens {
-	const accentText = readableAccent(accent, neutrals.bg, TEXT_CONTRAST);
+	// Readable on the page and on cards: accent text sits on both (links in a card, Mozaik's tiles, Prima's cards).
+	const accentText = readableOnNeutrals(accent, neutrals, TEXT_CONTRAST);
 	return {
 		"--pf-bg": neutrals.bg,
 		"--pf-surface": neutrals.surface,
@@ -31,11 +33,14 @@ function schemeTokens(accent: string, neutrals: ThemeNeutrals, mode: "light" | "
 		"--pf-accent": accent,
 		"--pf-accent-text": accentText,
 		"--pf-on-accent": readableOn(accent, "#111111"),
+		// A primary button's edge: the accent itself, unless it nearly matches the page (a near-black accent in dark
+		// mode), where the edge moves to a 3:1 shade so the button keeps its shape (WCAG 1.4.11).
+		"--pf-accent-edge": contrastRatio(accent, neutrals.bg) >= 3 ? accent : readableAccent(accent, neutrals.bg, 3),
 		// Mixed here rather than with color-mix(): a token built from var() on :root would keep the other mode's value
 		// wherever a section switches mode (`02-teknis.md` section 25).
 		"--pf-accent-soft": mixColors(accent, neutrals.bg, 0.11),
-		"--pf-positive": readableAccent(TREND[mode].positive, neutrals.bg, TEXT_CONTRAST),
-		"--pf-negative": readableAccent(TREND[mode].negative, neutrals.bg, TEXT_CONTRAST),
+		"--pf-positive": readableOnNeutrals(TREND[mode].positive, neutrals, TEXT_CONTRAST),
+		"--pf-negative": readableOnNeutrals(TREND[mode].negative, neutrals, TEXT_CONTRAST),
 		"--pf-chart": accentText,
 	};
 }
@@ -97,11 +102,18 @@ function nearestWeight(available: readonly FontWeight[], wanted: FontWeight): Fo
 	})[0] as FontWeight;
 }
 
+/** The heading weights most themes load: 700 for section titles, 800 for the name. */
+const DEFAULT_HEADING_WEIGHTS: readonly FontWeight[] = ["700", "800"];
+
 /**
- * The font files a page loads: headings in 700 and 800, body text in 400 and 600 plus 400 italic, at most two
- * families. Files come from the web font list (the same files the resume pages load), with `font-display: swap`.
+ * The font files a page loads: headings in the theme's weights (700 and 800 unless the theme sets its own), body text
+ * in 400 and 600 plus 400 italic, at most two families. Files come from the web font list (the same files the resume
+ * pages load), with `font-display: swap`.
  */
-export function portfolioFontFaces(view: PortfolioView): FontFace[] {
+export function portfolioFontFaces(
+	view: PortfolioView,
+	headingWeights: readonly FontWeight[] = DEFAULT_HEADING_WEIGHTS,
+): FontFace[] {
 	const wanted = new Map<string, Set<string>>();
 	const want = (family: string, weight: FontWeight, italic = false) => {
 		const set = wanted.get(family) ?? new Set<string>();
@@ -109,8 +121,7 @@ export function portfolioFontFaces(view: PortfolioView): FontFace[] {
 		wanted.set(family, set);
 	};
 	const { heading, body } = view.design.fonts;
-	want(heading, "700");
-	want(heading, "800");
+	for (const weight of headingWeights) want(heading, weight);
 	want(body, "400");
 	want(body, "600");
 	want(body, "400", true);
@@ -134,17 +145,27 @@ export function portfolioFontFaces(view: PortfolioView): FontFace[] {
 	return faces;
 }
 
-export function fontFaceCss(faces: readonly FontFace[]): string {
+/**
+ * The faces' rules. `optionalFamily` loads that family with `font-display: optional`: a theme whose name is so large
+ * that the fallback font wraps it differently (Kanvas) keeps the first screen still instead of reflowing it when the
+ * font arrives late; the font is preloaded, so it is usually there in time, and always on the next visit.
+ */
+export function fontFaceCss(faces: readonly FontFace[], optionalFamily?: string): string {
 	return faces
 		.map(
 			(face) =>
-				`@font-face{font-family:${quoteFamily(face.family)};font-weight:${face.weight};font-style:${face.italic ? "italic" : "normal"};font-display:swap;src:url("${encodeURI(face.src).replaceAll('"', "%22")}") format("truetype")}`,
+				`@font-face{font-family:${quoteFamily(face.family)};font-weight:${face.weight};font-style:${face.italic ? "italic" : "normal"};font-display:${face.family === optionalFamily ? "optional" : "swap"};src:url("${encodeURI(face.src).replaceAll('"', "%22")}") format("truetype")}`,
 		)
 		.join("\n");
 }
 
-/** The heading font's heaviest file, which the name uses: worth a preload for a quicker first paint. */
-export function preloadFont(view: PortfolioView, faces: readonly FontFace[]): string | null {
+/**
+ * The heading font file the name uses (its heaviest loaded weight unless the theme names the name's weight): worth a
+ * preload for a quicker first paint.
+ */
+export function preloadFont(view: PortfolioView, faces: readonly FontFace[], nameWeight?: FontWeight): string | null {
 	const heading = faces.filter((face) => face.family === view.design.fonts.heading && !face.italic);
-	return heading.at(-1)?.src ?? null;
+	const font = getWebFont(view.design.fonts.heading);
+	const weight = nameWeight && font ? nearestWeight(font.weights, nameWeight) : null;
+	return (weight ? heading.find((face) => face.weight === weight) : undefined)?.src ?? heading.at(-1)?.src ?? null;
 }

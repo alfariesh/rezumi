@@ -146,6 +146,7 @@ Font mono (`--pf-font-mono`) semua tema: IBM Plex Mono.
 - **Karya (varian bawaan "grid 2 kolom", judul bagian bawaan "Studi kasus"):** kartu bergaris, sampul 16:10, meta (tahun · peran), judul serif 20 px, ringkasan, chip metrik bersudut.
 - **Bagian lain:** Layanan dan Testimoni sebagai kartu (kutipan serif miring); Klien sebagai deret logo; bagian bebas cocok untuk daftar bernomor (contoh "Prinsip kerja"); Kontak dua kolom (form | kartu Lokasi).
 - **Urutan bawaan:** Tentang, Pengalaman, Karya, Layanan, Testimoni, Klien, Pendidikan, Sertifikat & penghargaan, Keahlian, bagian bebas, Kontak.
+- **Dibangun di Phase 06:** keterangan foto berisi dua sertifikat pertama (data tidak punya kolom kredensial); tombol "Kirim pesan" di navigasi hilang ≤960 px; strip KPI mengikuti jumlah angka (1–4); daftar pendek berurutan berbagi satu baris; judul Karya bawaan "Studi kasus".
 
 ### Kanvas (`kanvas`, Plus)
 
@@ -155,6 +156,7 @@ Font mono (`--pf-font-mono`) semua tema: IBM Plex Mono.
 - **Bagian lain:** dua kolom (label kecil kapital 1fr | isi 3fr, maks. 980 px), garis atas tipis. Layanan sebagai baris 3 kolom (nama + harga | deskripsi | tautan); Testimoni sebagai kutipan besar 20–28 px; Kontak dibuka kalimat ajakan kapital besar.
 - **Detail karya:** layar penuh dengan latar halaman (bukan panel di atas bayangan), lebar maks. 1200 px, judul kapital besar, galeri satu kolom rasio 3:2.
 - **Urutan bawaan:** Karya, Tentang, Layanan, Testimoni, Klien, Pengalaman, Pendidikan, Keahlian, Penghargaan & bahasa, bagian bebas, Kontak.
+- **Dibangun di Phase 06:** font Archivo yang tersedia tidak punya sumbu lebar, jadi "lebar 72%" diganti jarak huruf rapat; tablet layar sentuh 2 kolom (karya pertama selebar dua kolom); galeri detail menampilkan gambar utuh (tidak dipotong 3:2); ajakan, judul detail, dan judul keterangan ikut huruf kapital nama (hanya pasangan Archivo).
 
 ### Mozaik (`mozaik`, Plus)
 
@@ -163,6 +165,7 @@ Font mono (`--pf-font-mono`) semua tema: IBM Plex Mono.
 - **Karya (varian bawaan "bento"):** 4 kolom, tinggi baris `clamp(180px, 19vw, 250px)`; karya pertama 2×2, karya keenam 2×1, ditutup ubin "Lebih banyak di …" 2×1 (tautan profil utama); keterangan sebagai pil `--pf-surface` di dalam gambar. Tablet 2 kolom; HP satu kolom rasio 4:3. Tanpa gambar: ubin `--pf-accent-soft` dengan pil judul.
 - **Bagian lain:** Layanan sebagai ubin dengan harga berbentuk pil; Testimoni dalam ubin geser (CSS scroll-snap) di samping ubin Klien (logo 2 kolom); Pengalaman (ubin tinggi), Keahlian, Pendidikan, dan ubin Sertifikat/Penghargaan/Bahasa selebar penuh; bagian bebas cocok untuk langkah bernomor; Kontak: ubin ajakan (`--pf-accent-soft`) + ubin form.
 - **Urutan bawaan:** intro bento (dengan Tentang dan Lokasi), Karya, Layanan, Testimoni + Klien, Pengalaman/Keahlian/Pendidikan/Lainnya, bagian bebas, Kontak.
+- **Dibangun di Phase 06:** angka ke-3 dan ke-4 bertumpuk di ubin angka kedua; satu angka = satu ubin setinggi dua baris; tanpa angka kolomnya hilang; lokasi tanpa peta, mode kerja, relokasi, atau jam lokal tampil sebagai chip di ubin intro; ubin penutup karya menaut ke profil karya (Behance, Dribbble, GitHub, …) lalu situs.
 
 ### Aturan untuk semua tema
 
@@ -413,6 +416,7 @@ Keputusan pemilik 2026-11-05: **keenam efek masuk rilis pertama**, ditambah "Tan
 - **Garis vektor:** huruf di bawah kursor menjadi garis tepi putus-putus (SVG `stroke-dasharray`) dengan kotak seleksi bergagang empat dan label ukuran (misalnya "51 × 58") ala aplikasi desain. Di layar sentuh dan HP jatuh ke Muncul halus.
 - **Gradien hidup** memakai `--pf-accent-text` dan dua warna turunannya (rona ±35–38°) yang masing-masing dikoreksi kontras terhadap latar.
 - Prima menolak efek yang terlalu ramai (Gradien hidup, Acak teknologi, Garis vektor) agar tetap formal; Kanvas menolak Acak teknologi (tidak cocok dengan nama raksasa).
+- **Dibangun di Phase 06:** Ketik berganti selalu memakai headline sebagai frasa pertama dan terakhir, ditambah ≤2 peran pengguna; tanpa frasa kedua efek tidak berjalan. Acak teknologi dilewati untuk nama beraksara Arab/Ibrani dan bila font belum siap 1,2 detik setelah dimuat. Pratinjau editor diam selama mengedit; efek diputar saat dipilih atau lewat "Putar ulang intro". Demo mini di tab Desain → Intro memakai CSS dan skrip yang sama dengan halaman.
 
 ## 19. Lokasi dan peta
 

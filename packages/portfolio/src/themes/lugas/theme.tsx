@@ -3,6 +3,7 @@ import type { PortfolioViewSection, PortfolioViewWork } from "../../view";
 import type { ReactNode } from "react";
 import { themeVariant } from "@rezumi/schema/portfolio/themes";
 import { useRender } from "../../shared/context";
+import { HeroHeadline, HeroName } from "../../shared/hero-text";
 import { ResumeIcon, UiIcon } from "../../shared/icons";
 import { MetricGroup, WorkMetric } from "../../shared/metric";
 import {
@@ -22,16 +23,7 @@ import {
 	vars,
 	WorkDetail,
 } from "../../shared/parts";
-
-/** Sections drawn as short two-column lists, grouped when they follow each other (`01-desain.md` section 5, Lugas). */
-const EXTRA_KINDS = new Set(["languages", "certifications", "awards", "publications", "interests"]);
-
-/** The sections the navigation links to: the first four, then Contact. Long pages stay one tap from everything. */
-function navSections(sections: readonly PortfolioViewSection[]) {
-	const contact = sections.find((section) => section.kind === "contact");
-	const others = sections.filter((section) => section.kind !== "contact").slice(0, 4);
-	return contact ? [...others, contact] : others;
-}
+import { EXTRA_KINDS, groupSections, initials, navSections } from "../../shared/sections";
 
 function Navigation() {
 	const { view, messages } = useRender();
@@ -86,10 +78,8 @@ function Hero() {
 		>
 			{hero.picture && <Picture image={hero.picture} className="lg-photo" eager sizes="120px" />}
 			<div className="lg-hero__text">
-				<h1 className="pf-name lg-name" style={vars({ "--name-word": basics.longestWord })}>
-					{basics.name}
-				</h1>
-				{basics.headline && <p className="lg-headline">{basics.headline}</p>}
+				<HeroName className="lg-name" />
+				<HeroHeadline className="lg-headline" />
 			</div>
 			{hero.greeting && <p className="lg-greeting">{hero.greeting}</p>}
 			{(location || hero.availability) && (
@@ -232,27 +222,6 @@ function SectionBody({ section }: SectionProps): ReactNode {
 		default:
 			return <ExtraList kind={section.kind} items={section.items as ResumeItem[]} />;
 	}
-}
-
-function initials(name: string) {
-	return name
-		.split(/\s+/)
-		.filter(Boolean)
-		.slice(0, 2)
-		.map((word) => [...word][0] ?? "")
-		.join("")
-		.toUpperCase();
-}
-
-/** Consecutive short-list sections share one two-column block, each keeping its own anchor and heading. */
-function groupSections(sections: readonly PortfolioViewSection[]) {
-	const groups: PortfolioViewSection[][] = [];
-	for (const section of sections) {
-		const last = groups.at(-1);
-		if (EXTRA_KINDS.has(section.kind) && last && EXTRA_KINDS.has(last[0]?.kind ?? "")) last.push(section);
-		else groups.push([section]);
-	}
-	return groups;
 }
 
 type LugasPageProps = { year: number; creditUrl: string };
