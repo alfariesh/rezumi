@@ -115,6 +115,21 @@ describe("servePortfolioOrResume", () => {
 		});
 	});
 
+	it("allows a script intro effect by the hash of the page's whole script", async () => {
+		mocks.findPublicPortfolio.mockResolvedValue(
+			portfolio({
+				data: parsePortfolioData({ theme: "lugas", hero: { effect: { id: "scramble", target: "name", phrases: [] } } }),
+			}),
+		);
+		const response = await servePortfolioOrResume(get(), "nadia", "1.1.1.1");
+		const body = await response.text();
+		const script = /<script>([\s\S]*?)<\/script><\/body>/.exec(body)?.[1] ?? "";
+		expect(script.startsWith(PORTFOLIO_PAGE_SCRIPT)).toBe(true);
+		expect(script.length).toBeGreaterThan(PORTFOLIO_PAGE_SCRIPT.length);
+		const hash = createHash("sha256").update(script).digest("base64");
+		expect(response.headers.get("Content-Security-Policy")).toContain(`'sha256-${hash}'`);
+	});
+
 	it("keeps unindexed portfolios out of search engines", async () => {
 		mocks.findPublicPortfolio.mockResolvedValue(portfolio({ indexable: false }));
 		const response = await servePortfolioOrResume(get(), "nadia", "1.1.1.1");

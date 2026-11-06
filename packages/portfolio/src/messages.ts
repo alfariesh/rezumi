@@ -5,7 +5,7 @@ import portfolioCatalog from "./portfolio-catalog.json";
  * The interface text on a portfolio page, in English. `portfolio-catalog.json` translates it: `pnpm pdf:translations`
  * copies the translations from the app's Lingui catalogs, where `apps/web/src/features/portfolio/page-text.ts`
  * declares the same strings for translators. Keep both lists in step; the generator fails on a missing string.
- * `{service}`, `{count}` and `{place}` are filled in at render time.
+ * `{service}`, `{count}`, `{place}` and `{site}` are filled in at render time.
  */
 const ENGLISH = {
 	about: "About me",
@@ -67,6 +67,8 @@ const ENGLISH = {
 	downBad: "Down, a bad change:",
 	unchanged: "No change:",
 	credit: "Made with Rezumi",
+	moreOn: "More on {site}",
+	caseStudies: "Case studies",
 };
 
 export type PortfolioPageMessages = typeof ENGLISH;

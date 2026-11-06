@@ -16,7 +16,7 @@ Your portfolio is a one-page website at `rezumi.app/<your-username>`. It shows y
 2. Choose what it starts from:
    - **A resume** (your primary resume is picked). Your name, photo, experience, education, skills and contact details follow that resume as it changes. Its summary becomes **About me** and its projects become your **work**; after that you edit both freely in the portfolio.
    - **Without a resume**: type your name and headline. You can link a resume later in **Publish → Source resume**.
-3. Choose a theme. You can change it any time in **Design**. _(More themes: Phase 06.)_
+3. Choose a theme from the gallery: **Lugas** (one calm column, suits every field), **Prima** (formal and structured, for finance, consulting and management), **Kanvas** (big pictures first, for designers, photographers and architects) or **Mozaik** (playful tiles, for creators, freelancers and students). Kanvas and Mozaik are marked **Plus**. You can change the theme any time in **Design**; your content stays as it is.
 4. Select **Create portfolio**. The editor opens with your content already filled in.
 
 ### The editor
@@ -73,7 +73,9 @@ Pictures you remove or replace are deleted a day later, so **Undo** can still br
 
 #### Design
 
-Choose light, dark, or **Device** (each visitor's own setting), an accent colour (the same as your resume, one of eight, or your own; a colour that's hard to read as text is darkened or lightened for text automatically), a font pair, the intro's background (plain, a soft gradient, a subtle pattern, or a picture of your own under a darker layer), and the layout of each section the theme supports. _(Intro text effects: Phase 06.)_
+Choose the theme (the same gallery as when you created the portfolio), light, dark, or **Device** (each visitor's own setting), an accent colour (the same as your resume, one of eight, or your own; a colour that's hard to read as text is darkened or lightened for text automatically), a font pair, and the layout of each section the theme supports.
+
+Under **Intro**, choose the intro's background (plain, a soft gradient, a subtle pattern, or a picture of your own under a darker layer) and an **intro effect** for your name or headline. Each card shows a live sample; point at it to play it again. The effects are **Gentle fade-in** (words appear one by one), **Shimmer** (a light in your accent colour sweeps across), **Living gradient** (your accent colours drift, then rest), **Typewriter** (your headline types itself, then up to two more roles you add, and ends on the headline), **Tech scramble** (random letters settle into your name) and **Vector outline** (letters turn into design-app outlines under the mouse; phones get the gentle fade-in). Each theme offers the ones that suit it and starts with its own (Lugas: Gentle fade-in, Prima: none, Kanvas: Vector outline, Mozaik: Living gradient). Effects stop by themselves within five seconds, never hide your name from search engines or screen readers, and stay still for visitors who ask their device for less motion. The preview holds still while you edit; **Replay intro** above it plays the effect again.
 
 #### Publish
 

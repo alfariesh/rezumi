@@ -476,10 +476,9 @@ describe("renderPortfolioPage edge cases", () => {
 			}
 	});
 
-	it("draws a portfolio stored with a theme that has no renderer yet as Lugas", () => {
-		const { html } = render({ ...fullData, theme: "kanvas" });
-		expect(html).toContain('data-theme="lugas"');
-		expect(html).toContain('data-variant="list"');
+	it("draws every release theme as itself", () => {
+		for (const theme of ["lugas", "prima", "kanvas", "mozaik"] as const)
+			expect(render({ ...fullData, theme }).html).toContain(`data-theme="${theme}"`);
 	});
 
 	it("draws dark and device-following modes", () => {
