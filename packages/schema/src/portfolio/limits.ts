@@ -78,6 +78,13 @@ export const PORTFOLIO_UPLOAD = {
 	imageSide: 2000,
 	thumbSide: 800,
 	logoSide: 600,
+	/** One PDF in a work's PDF block (`02-teknis.md` section 19). */
+	pdfBytes: 10 * 1024 * 1024,
+	/**
+	 * A picture fetched from another site for a pasted link (`02-teknis.md` section 20). The browser shrinks it like any
+	 * other picture before it's uploaded, so it may start larger than `imageBytes`.
+	 */
+	remoteImageBytes: 10 * 1024 * 1024,
 } as const;
 
 /**

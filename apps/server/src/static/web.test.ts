@@ -163,6 +163,14 @@ describe("web app fallback classification", () => {
 		);
 	});
 
+	it("never lets the app itself frame video players: only portfolio pages allow them", async () => {
+		const response = await handleWebApp(new Request("https://example.com/dashboard"), async () => "<html></html>");
+		const policy = response.headers.get("Content-Security-Policy") ?? "";
+		expect(policy).toContain("frame-src 'self' blob:");
+		expect(policy).not.toContain("youtube");
+		expect(policy).not.toContain("vimeo");
+	});
+
 	it("tags pages for the release purge and preloads their stylesheet and fonts for Early Hints", async () => {
 		const response = await handleWebApp(
 			new Request("https://example.com/"),

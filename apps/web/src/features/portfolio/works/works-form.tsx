@@ -1,3 +1,5 @@
+import type { UnfurledLink } from "../media/remote";
+import type { PortfolioBlockOf } from "@rezumi/schema/portfolio/blocks";
 import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
 import type { ReactNode } from "react";
 import { Alert, Button, Checkbox, Chip, Label, Modal, RadioGroup, Spinner } from "@heroui/react";
@@ -7,12 +9,22 @@ import { useId, useState } from "react";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
+import { toast } from "@rezumi/ui/components/toast";
+import { generateId } from "@rezumi/utils/string";
 import { cn } from "@rezumi/utils/style";
 import { useSourceResume } from "../editor/context";
-import { moveItem, RadioOption, TextInput } from "../editor/fields";
+import { moveItem, normalizePortfolioUrl, RadioOption, TextInput } from "../editor/fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore, usePortfolioRecord } from "../editor/store";
 import { usePortfolioEditorUi } from "../editor/ui";
 import { ImageDrop, portfolioImageSrc, UploadStatus, useImageUploads } from "../images/image-field";
+import { linkBlockFromUnfurl, videoBlockFromUnfurl, workFromLink } from "../media/link-blocks";
+import {
+	importRemotePicture,
+	importVideoThumbnail,
+	unfurlErrorMessage,
+	unfurlLink,
+	videoThumbnailCandidates,
+} from "../media/remote";
 import { newWork, resumeProjects, titleFromFileName, workRoom, worksFromImages } from "./works";
 import { useConfirm } from "@/hooks/use-confirm";
 import { client } from "@/libs/orpc/client";
@@ -193,7 +205,7 @@ function WayCard({ icon, title, text, soon = false, onPress }: WayCardProps) {
 	);
 }
 
-/** "Add work": empty, from resume projects, or from pictures (pasting a link arrives in Phase 05). */
+/** "Add work": empty, from resume projects, from pictures, or from a pasted link. */
 function AddWorkDialog({ onClose }: { onClose: () => void }) {
 	const id = useId();
 	const data = usePortfolioData();
@@ -223,6 +235,8 @@ function AddWorkDialog({ onClose }: { onClose: () => void }) {
 								<Trans>Add work from your resume</Trans>
 							) : way === "pictures" ? (
 								<Trans>Add work from pictures</Trans>
+							) : way === "link" ? (
+								<Trans>Add work from a link</Trans>
 							) : (
 								<Trans>Add work</Trans>
 							)}
@@ -232,6 +246,8 @@ function AddWorkDialog({ onClose }: { onClose: () => void }) {
 						<FromResume onBack={() => setWay(null)} onClose={onClose} />
 					) : way === "pictures" ? (
 						<FromPictures onBack={() => setWay(null)} onClose={onClose} />
+					) : way === "link" ? (
+						<FromLink onBack={() => setWay(null)} onClose={onClose} />
 					) : (
 						<Modal.Body className="grid gap-2">
 							<WayCard
@@ -256,7 +272,6 @@ function AddWorkDialog({ onClose }: { onClose: () => void }) {
 								icon="link-simple-horizontal"
 								title={<Trans>Paste a link</Trans>}
 								text={<Trans>Behance, Dribbble, GitHub, YouTube or any site fills in the card.</Trans>}
-								soon
 								onPress={() => setWay("link")}
 							/>
 						</Modal.Body>
@@ -469,6 +484,181 @@ function FromPictures({ onBack, onClose }: StepProps) {
 						<Trans>Done</Trans>
 					</Button>
 				)}
+			</Modal.Footer>
+		</>
+	);
+}
+
+type LinkPreview = { picture: string | null; block: PortfolioBlockOf<"link"> | PortfolioBlockOf<"video"> };
+
+/** A preview from what the server read: the block it makes and the picture it would copy as the cover. */
+function previewOf(result: UnfurledLink): LinkPreview {
+	if (result.kind === "video") {
+		const block = videoBlockFromUnfurl(result);
+		return { block, picture: videoThumbnailCandidates(block).at(-1) ?? null };
+	}
+	return { block: linkBlockFromUnfurl(result), picture: result.imageUrl ?? null };
+}
+
+/**
+ * A work from a pasted link (`02-teknis.md` section 20): the server reads the page, the card fills in (all of it can
+ * be changed), and its picture becomes the cover only if the person agrees, copied into the portfolio first. A site
+ * that can't be read still makes a work: the person fills it in.
+ */
+function FromLink({ onBack, onClose }: StepProps) {
+	const data = usePortfolioData();
+	const openWork = usePortfolioEditorUi((state) => state.openWork);
+	const [text, setText] = useState("");
+	const [reading, setReading] = useState(false);
+	const [preview, setPreview] = useState<LinkPreview | null>(null);
+	const [failure, setFailure] = useState<string | null>(null);
+	const [title, setTitle] = useState("");
+	const [summary, setSummary] = useState("");
+	const [useCover, setUseCover] = useState(true);
+	const [adding, setAdding] = useState(false);
+	const url = normalizePortfolioUrl(text.trim());
+	const valid = /^https?:\/\/[^\s/]+\.[^\s]+/i.test(url);
+	const full = workRoom(data) === 0;
+
+	const read = async () => {
+		setReading(true);
+		setFailure(null);
+		setPreview(null);
+		try {
+			const result = await unfurlLink(url);
+			const next = previewOf(result);
+			setPreview(next);
+			setTitle(result.title ?? "");
+			setSummary(result.kind === "link" ? (result.description ?? "") : "");
+		} catch (error) {
+			setFailure(unfurlErrorMessage(error));
+			setPreview({ block: { id: generateId(), type: "link", url, title: "" }, picture: null });
+		} finally {
+			setReading(false);
+		}
+	};
+
+	const add = async () => {
+		if (!preview) return;
+		setAdding(true);
+		try {
+			const block = { ...preview.block };
+			let cover: PortfolioImage | undefined;
+			if (useCover && preview.picture) {
+				cover =
+					block.type === "video"
+						? await importVideoThumbnail({ ...block, title: title.trim() })
+						: await importRemotePicture(preview.picture, title.trim()).catch(() => undefined);
+				if (!cover) toast.add({ description: t`The picture couldn't be copied. Add a cover yourself.` });
+			}
+			if (cover && block.type === "video") block.thumbnail = cover;
+			if (cover && block.type === "link") block.image = cover;
+			if (block.type === "link" && !block.title.trim()) block.title = title.trim().slice(0, 140);
+			const current = usePortfolioEditorStore.getState().portfolio?.data ?? data;
+			const linkUrl = block.type === "link" ? block.url : url;
+			const work = workFromLink(current, { url: linkUrl, title: title.trim(), summary: summary.trim() }, block, cover);
+			editPortfolio(
+				(draft) => {
+					draft.works.items.push(work);
+				},
+				{ structural: true },
+			);
+			onClose();
+			openWork(work.id);
+		} finally {
+			setAdding(false);
+		}
+	};
+
+	return (
+		<>
+			<Modal.Body className="grid gap-4">
+				<div className="grid gap-2">
+					<TextInput
+						label={t`Link`}
+						value={text}
+						maxLength={PORTFOLIO_LIMITS.text.url}
+						placeholder="https://www.behance.net/gallery/…"
+						description={t`Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page.`}
+						isDisabled={reading || adding}
+						onChange={(value) => {
+							setText(value);
+							setPreview(null);
+							setFailure(null);
+						}}
+					/>
+					<Button className="w-fit" isDisabled={!valid || reading || adding || full} onPress={() => void read()}>
+						{reading ? <Spinner size="sm" /> : <Icon name="magnifying-glass" size={16} />}
+						<Trans>Read the link</Trans>
+					</Button>
+					{full && (
+						<p className="text-xs text-danger">
+							<Trans>This portfolio already holds {PORTFOLIO_LIMITS.works} works.</Trans>
+						</p>
+					)}
+				</div>
+				{failure && (
+					<Alert status="warning">
+						<Alert.Indicator>
+							<Icon name="warning" />
+						</Alert.Indicator>
+						<Alert.Content>
+							<Alert.Description>{failure}</Alert.Description>
+						</Alert.Content>
+					</Alert>
+				)}
+				{preview && (
+					<div className="grid gap-3 rounded-2xl border border-border p-3">
+						{preview.block.type === "video" && (
+							<Chip size="sm" variant="soft" className="w-fit">
+								<Icon name="play" size={14} />
+								<Trans>Video: it plays on your page when a visitor presses play</Trans>
+							</Chip>
+						)}
+						<TextInput
+							label={t`Title of the work`}
+							value={title}
+							maxLength={PORTFOLIO_LIMITS.text.workTitle}
+							onChange={setTitle}
+						/>
+						<TextInput
+							label={t`Short summary`}
+							multiline
+							value={summary}
+							maxLength={PORTFOLIO_LIMITS.text.workSummary}
+							onChange={setSummary}
+						/>
+						{preview.picture && (
+							<div className="grid gap-2">
+								<img
+									src={preview.picture}
+									alt=""
+									className="max-h-40 w-auto max-w-full justify-self-start rounded-lg"
+								/>
+								<Checkbox isSelected={useCover} onChange={setUseCover}>
+									<Checkbox.Content>
+										<Checkbox.Control>
+											<Checkbox.Indicator />
+										</Checkbox.Control>
+										<Label className="text-sm">
+											<Trans>Use this picture as the cover (it's copied into your portfolio)</Trans>
+										</Label>
+									</Checkbox.Content>
+								</Checkbox>
+								<span className="text-xs text-muted">
+									<Trans>Use it only if you may show it. Your page never loads pictures from other sites.</Trans>
+								</span>
+							</div>
+						)}
+					</div>
+				)}
+			</Modal.Body>
+			<Modal.Footer>
+				<BackButton onPress={onBack} />
+				<Button isDisabled={!preview || adding || reading || full} onPress={() => void add()}>
+					{adding && <Spinner size="sm" />}
+					<Trans>Add work</Trans>
+				</Button>
 			</Modal.Footer>
 		</>
 	);

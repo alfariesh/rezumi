@@ -1,3 +1,4 @@
+import type { PortfolioUnfurl, UnfurlProblem } from "./unfurl";
 import type { DbOrTx } from "@rezumi/db/client";
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
@@ -17,6 +18,14 @@ import { parseStoredResumeData } from "../resume/resume-data-validation";
 import { getStorageService } from "../storage";
 import { readPortfolioImageHeader } from "./image";
 import { getPortfolioMode, isPortfolioEnabledFor } from "./mode";
+import {
+	fetchRemoteImage,
+	RemoteImageError,
+	readUnfurlCache,
+	unfurlUrl,
+	UnfurlError,
+	writeUnfurlCache,
+} from "./unfurl";
 
 const portfolioColumns = {
 	id: schema.portfolio.id,
@@ -92,11 +101,34 @@ export const portfolioErrors = {
 			status: 403,
 			message: "This portfolio was taken down and can't be published. Contact support to appeal.",
 		}),
-	fileTooLarge: (bytes: number) =>
-		new ORPCError("PORTFOLIO_FILE_TOO_LARGE", {
+	fileTooLarge: (bytes: number, kind: "picture" | "pdf" | "remote-picture" = "picture") => {
+		const max = {
+			picture: PORTFOLIO_UPLOAD.imageBytes,
+			pdf: PORTFOLIO_UPLOAD.pdfBytes,
+			"remote-picture": PORTFOLIO_UPLOAD.remoteImageBytes,
+		}[kind];
+		const size = `${(bytes / 1024 / 1024).toFixed(1)} MB of ${max / 1024 / 1024} MB`;
+		return new ORPCError("PORTFOLIO_FILE_TOO_LARGE", {
 			status: 413,
-			message: `This picture is too large to upload (${(bytes / 1024 / 1024).toFixed(1)} MB of ${PORTFOLIO_UPLOAD.imageBytes / 1024 / 1024} MB).`,
-			data: { bytes, max: PORTFOLIO_UPLOAD.imageBytes },
+			message: {
+				picture: `This picture is too large to upload (${size}).`,
+				pdf: `This PDF is too large to upload (${size}). Save a smaller copy and try again.`,
+				"remote-picture": `This picture is too large to copy (more than ${max / 1024 / 1024} MB). Upload it yourself instead.`,
+			}[kind],
+			data: { bytes, max },
+		});
+	},
+	pdfInvalid: (reason: "type") =>
+		new ORPCError("PORTFOLIO_PDF_INVALID", {
+			status: 400,
+			message: "This file isn't a PDF. Upload a PDF file.",
+			data: { reason },
+		}),
+	linkUnreadable: (reason: UnfurlProblem) =>
+		new ORPCError("PORTFOLIO_LINK_UNREADABLE", {
+			status: 400,
+			message: "This site can't be read automatically. Fill in the details yourself.",
+			data: { reason },
 		}),
 	imageInvalid: (reason: "type" | "animated" | "dimensions" | "unreadable") =>
 		new ORPCError("PORTFOLIO_IMAGE_INVALID", {
@@ -259,6 +291,37 @@ async function readUploadedPicture(file: File, maxSide: number) {
 	return { data, ...header.image };
 }
 
+async function requirePortfolio(userId: string): Promise<void> {
+	const [portfolio] = await db
+		.select({ id: schema.portfolio.id })
+		.from(schema.portfolio)
+		.where(eq(schema.portfolio.userId, userId));
+	if (!portfolio) throw portfolioErrors.notFound();
+}
+
+/** Writes files already recorded in `portfolio_file`; when storage fails, removes what was written and the rows. */
+async function storeRecordedFiles(files: readonly { key: string; data: Uint8Array; contentType: string }[]) {
+	const storage = getStorageService();
+	const written: string[] = [];
+	try {
+		for (const file of files) {
+			await storage.write({ key: file.key, data: file.data, contentType: file.contentType });
+			written.push(file.key);
+		}
+	} catch (error) {
+		await Promise.allSettled(written.map((key) => storage.delete(key)));
+		await db.delete(schema.portfolioFile).where(
+			inArray(
+				schema.portfolioFile.key,
+				files.map((file) => file.key),
+			),
+		);
+		throw error;
+	}
+}
+
+const PDF_SIGNATURE = "%PDF-";
+
 async function storageUsage(userId: string): Promise<number> {
 	const [row] = await db
 		.select({ bytes: sql<string | null>`sum(${schema.portfolioFile.bytes})` })
@@ -404,11 +467,7 @@ export const portfolioService = {
 	 */
 	uploadImage: async (userId: string, input: { file: File; thumbnail?: File | undefined }) => {
 		await requireEnabled(userId);
-		const [portfolio] = await db
-			.select({ id: schema.portfolio.id })
-			.from(schema.portfolio)
-			.where(eq(schema.portfolio.userId, userId));
-		if (!portfolio) throw portfolioErrors.notFound();
+		await requirePortfolio(userId);
 
 		const main = await readUploadedPicture(input.file, PORTFOLIO_UPLOAD.imageSide);
 		const small = input.thumbnail ? await readUploadedPicture(input.thumbnail, PORTFOLIO_UPLOAD.thumbSide) : null;
@@ -430,23 +489,7 @@ export const portfolioService = {
 				unusedSince: sql`now()`,
 			})),
 		);
-		const storage = getStorageService();
-		const written: string[] = [];
-		try {
-			for (const file of files) {
-				await storage.write({ key: file.key, data: file.data, contentType: file.contentType });
-				written.push(file.key);
-			}
-		} catch (error) {
-			await Promise.allSettled(written.map((key) => storage.delete(key)));
-			await db.delete(schema.portfolioFile).where(
-				inArray(
-					schema.portfolioFile.key,
-					files.map((file) => file.key),
-				),
-			);
-			throw error;
-		}
+		await storeRecordedFiles(files);
 
 		const [first, second] = files;
 		return {
@@ -456,6 +499,74 @@ export const portfolioService = {
 			height: main.height,
 			bytes: files.reduce((sum, file) => sum + file.data.byteLength, 0),
 		};
+	},
+
+	/**
+	 * Stores a PDF for a work's PDF block (`02-teknis.md` section 19). The browser already checked it opens without a
+	 * password and counted its pages; the server checks the size and that the bytes are a PDF, and the public route
+	 * serves it locked down. The picture of its first page goes through `uploadImage`. Recorded before it's written,
+	 * unused until saved data uses it, like pictures.
+	 */
+	uploadPdf: async (userId: string, input: { file: File; pages: number }) => {
+		await requireEnabled(userId);
+		await requirePortfolio(userId);
+		const max = PORTFOLIO_UPLOAD.pdfBytes;
+		if (input.file.size > max) throw portfolioErrors.fileTooLarge(input.file.size, "pdf");
+		const data = new Uint8Array(await input.file.arrayBuffer());
+		if (data.byteLength > max) throw portfolioErrors.fileTooLarge(data.byteLength, "pdf");
+		if (String.fromCharCode(...data.subarray(0, PDF_SIGNATURE.length)) !== PDF_SIGNATURE)
+			throw portfolioErrors.pdfInvalid("type");
+
+		const key = `uploads/${userId}/documents/portfolio/${randomUUID()}.pdf`;
+		await db.insert(schema.portfolioFile).values({
+			userId,
+			kind: "pdf",
+			key,
+			bytes: data.byteLength,
+			pages: input.pages,
+			unusedSince: sql`now()`,
+		});
+		await storeRecordedFiles([{ key, data, contentType: "application/pdf" }]);
+		return { key, bytes: data.byteLength, pages: input.pages };
+	},
+
+	/**
+	 * Reads a pasted link into a video or a link card (`02-teknis.md` section 20), remembered for a day per link. A
+	 * site that can't be read is `PORTFOLIO_LINK_UNREADABLE`, and the editor lets the owner fill the card in.
+	 */
+	unfurl: async (userId: string, input: { url: string }, signal?: AbortSignal): Promise<PortfolioUnfurl> => {
+		await requireEnabled(userId);
+		const cached = await readUnfurlCache(input.url);
+		if (cached) return cached;
+		try {
+			const result = await unfurlUrl(input.url, { signal });
+			await writeUnfurlCache(input.url, result);
+			return result;
+		} catch (error) {
+			if (error instanceof UnfurlError) throw portfolioErrors.linkUnreadable(error.reason);
+			throw error;
+		}
+	},
+
+	/**
+	 * Fetches a link's preview picture once the owner approves it, for the browser to shrink and store through
+	 * `uploadImage`: the portfolio keeps its own copy and the page never loads pictures from other sites.
+	 */
+	fetchRemoteImage: async (userId: string, input: { url: string }, signal?: AbortSignal): Promise<File> => {
+		await requireEnabled(userId);
+		await requirePortfolio(userId);
+		try {
+			const picture = await fetchRemoteImage(input.url, { signal });
+			return new File([picture.bytes as Uint8Array<ArrayBuffer>], `picture.${picture.extension}`, {
+				type: picture.contentType,
+			});
+		} catch (error) {
+			if (!(error instanceof RemoteImageError)) throw error;
+			if (error.reason === "too-large")
+				throw portfolioErrors.fileTooLarge(PORTFOLIO_UPLOAD.remoteImageBytes + 1, "remote-picture");
+			if (error.reason === "type") throw portfolioErrors.imageInvalid("type");
+			throw portfolioErrors.linkUnreadable(error.reason);
+		}
 	},
 
 	/**

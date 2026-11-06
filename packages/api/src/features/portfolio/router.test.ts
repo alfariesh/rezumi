@@ -67,6 +67,11 @@ describe("portfolio procedures while PORTFOLIO_MODE is off", () => {
 		await expect(client().deleteFile({ key: "uploads/member/pictures/portfolio/a.webp" })).rejects.toMatchObject(
 			disabled,
 		);
+		await expect(
+			client().uploadPdf({ file: new File(["%PDF-1.7"], "a.pdf", { type: "application/pdf" }), pages: 1 }),
+		).rejects.toMatchObject(disabled);
+		await expect(client().unfurl({ url: "https://github.com/nadia/kopi-app" })).rejects.toMatchObject(disabled);
+		await expect(client().fetchRemoteImage({ url: "https://example.com/cover.png" })).rejects.toMatchObject(disabled);
 	});
 
 	it("rejects invalid data before anything else", async () => {

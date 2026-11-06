@@ -38,6 +38,19 @@ const UI_ICONS = {
 		</>
 	),
 	link: <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />,
+	play: <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" />,
+	document: (
+		<>
+			<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+			<path d="M14 3v5h5" />
+		</>
+	),
+	globe: (
+		<>
+			<circle cx="12" cy="12" r="9" />
+			<path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" />
+		</>
+	),
 	"trend-up": <path d="M6 10l6-6 6 6M12 4v16" />,
 	"trend-down": <path d="M6 14l6 6 6-6M12 20V4" />,
 	"trend-flat": <path d="M4 12h16M14 6l6 6-6 6" />,

@@ -1,31 +1,16 @@
-import type {
-	PortfolioView,
-	PortfolioViewImage,
-	PortfolioViewLink,
-	PortfolioViewSection,
-	PortfolioViewWork,
-} from "../view";
+import type { PortfolioView, PortfolioViewLink, PortfolioViewSection, PortfolioViewWork } from "../view";
 import type { UiIconName } from "./icons";
-import type { AnchorHTMLAttributes, CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { PORTFOLIO_MAP_ZOOM } from "@rezumi/schema/portfolio/data";
 import { renderPortfolioHtml } from "../rich-text";
 import { htmlToText } from "../text";
 import { useRender } from "./context";
 import { RezumiMark, ResumeIcon, UiIcon } from "./icons";
+import { LinkCard, PdfCard, VideoFacade } from "./media";
 import { MetricGroup } from "./metric";
+import { hostOf, linkAttributes, Picture, vars } from "./primitives";
 
-/** Attributes for a link: outside links open in a new tab and aren't credited by search engines (user content). */
-export function linkAttributes(
-	href: string,
-	options: { external?: boolean; me?: boolean } = {},
-): AnchorHTMLAttributes<HTMLAnchorElement> {
-	const external = options.external ?? /^https?:/i.test(href);
-	if (!external) return { href };
-	return {
-		href,
-		target: "_blank",
-		rel: [options.me ? "me" : "", "ugc nofollow noopener noreferrer"].filter(Boolean).join(" "),
-	};
-}
+export { hostOf, linkAttributes, Picture, vars };
 
 const BUTTON_ICONS: Partial<Record<NonNullable<PortfolioViewLink["kind"]>, UiIconName>> = {
 	resume: "resume",
@@ -60,40 +45,6 @@ export function Buttons({ links }: ButtonsProps) {
 				<Button key={`${link.href}-${index}`} link={link} primary={index === 0} />
 			))}
 		</div>
-	);
-}
-
-type PictureProps = {
-	image: PortfolioViewImage;
-	className?: string;
-	/** Load at once with high priority: the first picture a visitor sees. */
-	eager?: boolean;
-	/** The picture is decoration next to text that says the same; screen readers skip it. */
-	decorative?: boolean;
-	sizes?: string;
-};
-
-/** An `<img>` with its size (no layout shift), lazy loading, the small copy for narrow cards, and its focus point. */
-export function Picture({ image, className, eager, decorative, sizes }: PictureProps) {
-	const { imageUrl } = useRender();
-	const src = imageUrl(image.src);
-	if (!src) return null;
-	const small = image.srcSmall ? imageUrl(image.srcSmall) : undefined;
-	const style: CSSProperties | undefined = image.focus
-		? { objectPosition: `${Math.round(image.focus.x * 100)}% ${Math.round(image.focus.y * 100)}%` }
-		: undefined;
-	return (
-		<img
-			className={className}
-			src={src}
-			{...(small && image.width ? { srcSet: `${small} 800w, ${src} ${image.width}w`, sizes: sizes ?? "100vw" } : {})}
-			alt={decorative ? "" : image.alt}
-			{...(image.width && image.height ? { width: image.width, height: image.height } : {})}
-			loading={eager ? "eager" : "lazy"}
-			decoding="async"
-			{...(eager ? { fetchPriority: "high" as const } : {})}
-			{...(style ? { style } : {})}
-		/>
 	);
 }
 
@@ -216,9 +167,12 @@ export function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
 									);
 								case "metrics":
 									return <MetricGroup key={block.id} metrics={block.items} variant={view.design.variants.metric} />;
-								// Video, PDF and link blocks render from Phase 05 on; until then they're left out.
-								default:
-									return null;
+								case "video":
+									return <VideoFacade key={block.id} block={block} />;
+								case "pdf":
+									return <PdfCard key={block.id} block={block} />;
+								case "link":
+									return <LinkCard key={block.id} block={block} />;
 							}
 						})}
 					</div>
@@ -442,41 +396,92 @@ export function Skills({ items, variant }: SkillsProps) {
 }
 
 type ContactSection = Extract<PortfolioViewSection, { kind: "contact" }>;
-type LocationCardProps = { location: NonNullable<PortfolioView["location"]> };
 
 /**
- * Where the person is and how they work: city, local time (filled in by the page script), work modes and relocation.
- * The map picture arrives with Phase 05.
+ * An OpenStreetMap address centred on the location's point, at the zoom its precision allows. Only a city gets a
+ * marker; a province or country is an area, centred on its middle.
  */
-function LocationCard({ location }: LocationCardProps) {
+function openStreetMapUrl(point: NonNullable<NonNullable<PortfolioView["location"]>["point"]>): string {
+	const lat = point.lat.toFixed(4);
+	const lng = point.lng.toFixed(4);
+	const marker = point.precision === "city" ? `?mlat=${lat}&mlon=${lng}` : "";
+	return `https://www.openstreetmap.org/${marker}#map=${PORTFOLIO_MAP_ZOOM[point.precision]}/${lat}/${lng}`;
+}
+
+type LocationMapProps = { location: NonNullable<PortfolioView["location"]> };
+
+/**
+ * The map picture the editor saved (`02-teknis.md` section 24): the light or dark copy by the page's mode (both, chosen
+ * by the device, in auto mode), a pin in the accent colour drawn by CSS at the centre (cities only; a province or
+ * country is an area), and the attribution the map data requires. No map service is contacted when the page opens.
+ */
+function LocationMap({ location }: LocationMapProps) {
+	const { messages, view, imageUrl } = useRender();
+	const { map } = location;
+	if (!map) return null;
+	const alt = location.label ? messages.mapAround.replace("{place}", location.label) : "";
+	const light = imageUrl(map.light.src);
+	const dark = imageUrl(map.dark.src);
+	const { scheme } = view.design;
+	const image = { ...(scheme === "dark" ? map.dark : map.light), alt };
+	return (
+		<div className="pf-loc__map">
+			{scheme === "auto" && dark && light ? (
+				<picture>
+					<source media="(prefers-color-scheme: dark)" srcSet={dark} />
+					<Picture image={image} />
+				</picture>
+			) : (
+				<Picture image={image} />
+			)}
+			{(location.point?.precision ?? "city") === "city" && <span className="pf-loc__pin" aria-hidden="true" />}
+			<span className="pf-loc__attr">© OpenMapTiles © OpenStreetMap contributors</span>
+		</div>
+	);
+}
+
+/**
+ * Where the person is and how they work: the map picture when shown, city, local time (filled in by the page script),
+ * work modes and relocation, and a link to the place on OpenStreetMap.
+ */
+function LocationCard({ location }: LocationMapProps) {
 	const { messages, locale } = useRender();
 	const modes = location.workModes.map((mode) => messages[mode]);
 	if (location.relocate) modes.push(messages.relocate);
+	const mapLink = location.map && location.point ? openStreetMapUrl(location.point) : null;
 	return (
-		<div className="pf-loc">
-			{(location.label || location.showLocalTime) && (
-				<div className="pf-loc__city">
-					{location.label && <b>{location.label}</b>}
-					{location.showLocalTime && location.timezone && (
-						<span
-							className="pf-loc__time"
-							data-tz={location.timezone}
-							data-lang={locale}
-							aria-label={messages.localTime}
-							hidden
-						/>
-					)}
-				</div>
-			)}
-			{modes.length > 0 && (
-				<ul className="pf-chips">
-					{modes.map((mode) => (
-						<li key={mode} className="pf-chip">
-							{mode}
-						</li>
-					))}
-				</ul>
-			)}
+		<div className="pf-loc" data-map={location.map ? "" : undefined}>
+			<LocationMap location={location} />
+			<div className="pf-loc__body">
+				{(location.label || location.showLocalTime) && (
+					<div className="pf-loc__city">
+						{location.label && <b>{location.label}</b>}
+						{location.showLocalTime && location.timezone && (
+							<span
+								className="pf-loc__time"
+								data-tz={location.timezone}
+								data-lang={locale}
+								aria-label={messages.localTime}
+								hidden
+							/>
+						)}
+					</div>
+				)}
+				{modes.length > 0 && (
+					<ul className="pf-chips">
+						{modes.map((mode) => (
+							<li key={mode} className="pf-chip">
+								{mode}
+							</li>
+						))}
+					</ul>
+				)}
+				{mapLink && (
+					<a className="pf-loc__open" href={mapLink} target="_blank" rel="noopener noreferrer">
+						{messages.openMap}
+					</a>
+				)}
+			</div>
 		</div>
 	);
 }
@@ -593,17 +598,5 @@ function formatPhoneNumber(digits: string): string {
 	const indonesian = /^62(\d{3})(\d{3,4})(\d{3,5})$/.exec(digits);
 	return indonesian ? `+62 ${indonesian[1]} ${indonesian[2]} ${indonesian[3]}` : `+${digits}`;
 }
-
-/** A link's site, as people read it: `linkedin.com`. */
-export function hostOf(url: string): string {
-	try {
-		return new URL(url).hostname.replace(/^www\./, "");
-	} catch {
-		return url;
-	}
-}
-
-/** CSS custom properties React writes as written. */
-export const vars = (values: Record<string, string | number>) => values as CSSProperties;
 
 export type { ResumeItem };

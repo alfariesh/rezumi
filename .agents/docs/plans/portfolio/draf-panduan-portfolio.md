@@ -34,7 +34,7 @@ Changes save on their own (a cloud icon at the top shows the state). **Undo** an
   - **Testimonials**: add one by confirming it's genuine and that the person agreed to show it, then add the person's photo if you like.
   - **Clients**: names, with a logo you upload (PNG or WebP with a clear background; uploading it confirms you may show it) or a brand logo when one is known. Logos show grey until a visitor points at them. **Add from Experience** adds the companies on your resume.
   - **Sections from your resume** (Experience, Education, Skills…): switch individual entries off to hide them on the portfolio only; your resume doesn't change. **Edit on resume** opens the resume editor.
-  - **Contact**: an invitation line, which details show (email and website on, phone off by default), a WhatsApp button, your profiles, and the **Location card** (city, how you work, open to relocating, your local time). _(Contact form: Phase 08. Map: Phase 05.)_
+  - **Contact**: an invitation line, which details show (email and website on, phone off by default), a WhatsApp button, your profiles, and the **Location card**: find your city (the list starts from your resume's location), choose how precise to be (city, province or state, or country), how you work, open to relocating, and your local time (set from the city). **Show a map on my page** is off by default; turned on, it shows a map you can zoom, and at city precision you can drag the pin around your city (it's rounded to about a kilometre; don't put it on your home). Your page shows a picture of the map in light and dark mode, so visitors' browsers never contact a map service. There's no "use my location". _(Contact form: Phase 08.)_
   - **Work**: see [Work](#work) below.
 - **Add a section** adds a section of your own (up to ten) with a title, text and an optional button.
 
@@ -45,7 +45,7 @@ Each work has a **card** in the list and a **detail** that opens when a visitor 
 - **Empty**: fill in the card, then build the detail.
 - **From my resume**: tick projects on your resume; their title, summary, dates and link come along. Projects already added are marked.
 - **Upload pictures**: choose, drop or paste many pictures at once, then make **one work with all of them** (up to 12 per work) or **one work per picture** (good for photographers and illustrators).
-- **Paste a link** _(Phase 05)_.
+- **Paste a link**: paste a link to Behance, Dribbble, GitHub, Figma, Medium, YouTube, Vimeo or any public page, then **Read the link**. The title, summary and a picture fill in; change them as you like. Tick **Use this picture as the cover** only if you may show it: it's copied into your portfolio. A YouTube or Vimeo link makes a work with a Video block; any other makes a Link block. When a site can't be read automatically, you fill the card in yourself.
 
 Open a work to edit it; the preview shows its detail while you do.
 
@@ -54,7 +54,9 @@ Open a work to edit it; the preview shows its detail while you do.
   - **Text**: paragraphs, headings, lists, quotes and links.
   - **Pictures**: 1 to 12 pictures, each with a description and an optional caption, shown full width, as a grid, or to swipe sideways. Visitors can open them full screen.
   - **Metrics**: 1 to 4 results as numbers, such as "+35% checkout conversion". Use numbers you can explain in an interview, and say where they come from.
-  - _(Video, PDF and Link: Phase 05.)_
+  - **Video**: paste a YouTube or Vimeo link; the title fills in from the video. Visitors see the thumbnail (copied into your portfolio) and a play button; the player, and YouTube's or Vimeo's tracking, only load when they press play.
+  - **PDF**: upload a PDF up to 10 MB, without a password (a design portfolio, report or article). Its first page becomes the card's picture; visitors see the title, page count and size, and **Open PDF** opens it in a new tab.
+  - **Link**: paste a link and the card fills in (title, description, site name, the site's logo when known). The page's picture is only a suggestion: **Use this picture** copies it into your portfolio. You can also upload your own, or change any of the text.
 - Drag a block by its handle or use its arrows to reorder; removing a block can be undone. An empty work can **Start from a case study outline**: headings for the problem, your role, the process and the result, and a Metrics block.
 
 A portfolio holds up to 50 works, each with up to 30 blocks. _(Plan limits: Phase 07.)_

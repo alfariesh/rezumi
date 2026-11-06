@@ -1,13 +1,12 @@
-import type { PortfolioLocation } from "@rezumi/schema/portfolio/data";
-import { Checkbox, Label } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useState } from "react";
-import { PORTFOLIO_WORK_MODES, WHATSAPP_NUMBER_PATTERN } from "@rezumi/schema/portfolio/data";
+import { WHATSAPP_NUMBER_PATTERN } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { SwitchRow } from "@rezumi/ui/components/switch";
+import { LocationFields } from "../location/location-fields";
 import { useSourceResume } from "./context";
-import { ChoiceSelect, TextInput } from "./fields";
+import { TextInput } from "./fields";
 import { editPortfolio, usePortfolioData, usePortfolioEditorStore } from "./store";
 
 const { text: max } = PORTFOLIO_LIMITS;
@@ -21,34 +20,9 @@ export function normalizeWhatsAppNumber(text: string, defaultCountryCode = "62")
 	return digits;
 }
 
-const workModeLabel = (mode: PortfolioLocation["workModes"][number]) =>
-	({ remote: t`Remote`, hybrid: t`Hybrid`, onsite: t`On-site` })[mode];
-
-/** Common time zones for the local time; Phase 05's city search sets it from the city instead. */
-function timeZoneOptions(current: string | undefined) {
-	const device = Intl.DateTimeFormat().resolvedOptions().timeZone;
-	const zones = [
-		"Asia/Jakarta",
-		"Asia/Makassar",
-		"Asia/Jayapura",
-		"Asia/Singapore",
-		"Asia/Kuala_Lumpur",
-		"Asia/Tokyo",
-		"Asia/Dubai",
-		"Europe/London",
-		"Europe/Amsterdam",
-		"America/New_York",
-		"America/Los_Angeles",
-		"Australia/Sydney",
-		"UTC",
-	];
-	const all = [...new Set([...(current ? [current] : []), device, ...zones].filter(Boolean))];
-	return all.map((zone) => ({ id: zone, label: zone.replaceAll("_", " ") }));
-}
-
 /**
  * Contact: the invitation, which of the resume's details show (email and website on, phone off by default), WhatsApp,
- * profiles, and the Location card (the map arrives in Phase 05). The contact form arrives in Phase 08.
+ * profiles, and the Location card with its optional map. The contact form arrives in Phase 08.
  */
 export function ContactForm() {
 	const { contact } = usePortfolioData();
@@ -109,7 +83,7 @@ export function ContactForm() {
 			<WhatsAppField />
 			<LocationFields />
 			<p className="text-xs text-muted">
-				<Trans>A contact form and a map of your city are coming soon.</Trans>
+				<Trans>A contact form is coming soon.</Trans>
 			</p>
 		</div>
 	);
@@ -163,97 +137,6 @@ function WhatsAppField() {
 						);
 				}}
 			/>
-		</div>
-	);
-}
-
-function LocationFields() {
-	const { location } = usePortfolioData();
-	const source = useSourceResume();
-	const resumeLocation = source.data?.basics.location ?? "";
-
-	return (
-		<div className="grid gap-3 rounded-2xl bg-surface-secondary p-3">
-			<span className="text-sm font-medium">
-				<Trans>Location card</Trans>
-			</span>
-			<TextInput
-				label={t`City or region`}
-				value={location.label}
-				maxLength={max.location}
-				placeholder={resumeLocation || t`Bandung, Indonesia`}
-				description={resumeLocation ? t`Empty uses your resume's: ${resumeLocation}` : undefined}
-				onChange={(value) =>
-					editPortfolio(
-						(draft) => {
-							draft.location.label = value;
-						},
-						{ key: "location.label" },
-					)
-				}
-			/>
-			<fieldset className="grid gap-1.5">
-				<legend className="mb-1.5 text-sm font-medium">
-					<Trans>How you work</Trans>
-				</legend>
-				<div className="flex flex-wrap gap-x-4 gap-y-2">
-					{PORTFOLIO_WORK_MODES.map((mode) => (
-						<Checkbox
-							key={mode}
-							isSelected={location.workModes.includes(mode)}
-							onChange={(checked) =>
-								editPortfolio((draft) => {
-									const rest = draft.location.workModes.filter((entry) => entry !== mode);
-									draft.location.workModes = checked
-										? PORTFOLIO_WORK_MODES.filter((entry) => entry === mode || rest.includes(entry))
-										: rest;
-								})
-							}
-						>
-							<Checkbox.Content>
-								<Checkbox.Control>
-									<Checkbox.Indicator />
-								</Checkbox.Control>
-								<Label className="text-sm">{workModeLabel(mode)}</Label>
-							</Checkbox.Content>
-						</Checkbox>
-					))}
-				</div>
-			</fieldset>
-			<SwitchRow
-				isSelected={location.relocate}
-				onChange={(checked) =>
-					editPortfolio((draft) => {
-						draft.location.relocate = checked;
-					})
-				}
-				label={t`Open to relocating`}
-				className="py-0"
-			/>
-			<SwitchRow
-				isSelected={location.showLocalTime}
-				onChange={(checked) =>
-					editPortfolio((draft) => {
-						draft.location.showLocalTime = checked;
-						draft.location.timezone ??= Intl.DateTimeFormat().resolvedOptions().timeZone;
-					})
-				}
-				label={t`Show my local time`}
-				description={t`Helps recruiters in other time zones know when to reach you.`}
-				className="items-start py-0"
-			/>
-			{location.showLocalTime && (
-				<ChoiceSelect
-					label={t`Time zone`}
-					value={location.timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone}
-					options={timeZoneOptions(location.timezone)}
-					onChange={(zone) =>
-						editPortfolio((draft) => {
-							draft.location.timezone = zone;
-						})
-					}
-				/>
-			)}
 		</div>
 	);
 }
