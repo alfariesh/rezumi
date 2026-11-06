@@ -132,6 +132,8 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 						username: username(account.id),
 						displayUsername: username(account.id),
 						emailVerified: true,
+						// Settled accounts: new ones stay out of search engines for a week.
+						createdAt: new Date(Date.now() - 30 * 86_400_000),
 						...account,
 					}),
 				),
@@ -229,6 +231,19 @@ describe.skipIf(!databaseUrl)("who /<username> belongs to", () => {
 			expect(await publicPortfolio.countIndexablePortfolios()).toBe(0);
 			fixture.mode = "off";
 			expect(await publicPortfolio.listIndexablePortfolios(0)).toEqual([]);
+		});
+
+		it("keeps a portfolio out of search engines for its account's first week", async () => {
+			await addPortfolio("member");
+			const sixDaysOld = new Date(Date.now() - 6 * 86_400_000);
+			await getDb().update(tables.user).set({ createdAt: sixDaysOld }).where(eq(tables.user.id, "member"));
+			expect(await publicPortfolio.countIndexablePortfolios()).toBe(0);
+			expect(await publicPortfolio.findPublicPortfolio(username("member"))).toMatchObject({ indexable: false });
+
+			const eightDaysOld = new Date(Date.now() - 8 * 86_400_000);
+			await getDb().update(tables.user).set({ createdAt: eightDaysOld }).where(eq(tables.user.id, "member"));
+			expect(await publicPortfolio.countIndexablePortfolios()).toBe(1);
+			expect(await publicPortfolio.findPublicPortfolio(username("member"))).toMatchObject({ indexable: true });
 		});
 	});
 

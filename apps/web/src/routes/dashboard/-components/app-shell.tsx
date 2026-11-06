@@ -28,6 +28,7 @@ type NavItem = {
 		| "/dashboard"
 		| "/dashboard/applications"
 		| "/dashboard/documents"
+		| "/dashboard/portfolio"
 		| "/dashboard/coach"
 		| "/dashboard/career/knowledge/facts"
 		| "/dashboard/career/offers"
@@ -47,6 +48,8 @@ function useNavItems() {
 	const { data: counts } = useQuery(orpc.documents.counts.queryOptions());
 	const { data: applicationStats } = useQuery(orpc.applications.stats.queryOptions({}));
 	const { data: notifications } = useQuery(orpc.career.notifications.queryOptions({ input: {} }));
+	// Shown only to accounts the switch (`PORTFOLIO_MODE`) lets have one; while it's off nothing changes here.
+	const { data: portfolio } = useQuery(orpc.portfolio.get.queryOptions());
 	// Home counts what's waiting for the user (unread notifications), so nothing shows at zero.
 	const unread = notifications?.filter((notification) => !notification.readAt).length ?? 0;
 
@@ -70,6 +73,9 @@ function useNavItems() {
 			label: t`Documents`,
 			...(counts ? { count: counts.resume + counts.letter } : {}),
 		},
+		...(portfolio?.enabled
+			? [{ to: "/dashboard/portfolio", icon: "globe-hemisphere-west", label: t`Portfolio` } satisfies NavItem]
+			: []),
 		{ to: "/dashboard/coach", icon: "sparkle", label: t`Coach` },
 		{
 			to: "/dashboard/career/knowledge/facts",
@@ -171,6 +177,8 @@ function useCrumbs(): Crumb[] {
 			return [{ label: t`Documents` }];
 		case "trash":
 			return [{ label: t`Documents`, href: "/dashboard/documents" }, { label: t`Trash` }];
+		case "portfolio":
+			return [{ label: t`Portfolio` }];
 		case "applications":
 			return page
 				? [{ label: t`Applications`, href: "/dashboard/applications" }, { label: <ApplicationCrumb id={page} /> }]

@@ -1,7 +1,7 @@
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Widget } from "@heroui-pro/react";
-import { Button, buttonVariants, InputGroup, Label, Popover, Switch, TextField } from "@heroui/react";
+import { Button, buttonVariants, Description, InputGroup, Label, Popover, Switch, TextField } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { Trans } from "@lingui/react/macro";
@@ -18,6 +18,7 @@ import { cn } from "@rezumi/utils/style";
 import { AddressField } from "./address-field";
 import { CopyLinkButton } from "./copy-link-button";
 import { CustomDomainField } from "./custom-domain-field";
+import { portfolioHoldsShortLink, primaryResumeDescription, shortLinkDescription } from "./short-link";
 import { useShareOrigin } from "./use-share-origin";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { templates } from "@/dialogs/resume/template/data";
@@ -195,11 +196,18 @@ function useShareSetting() {
 
 type AddressesSectionProps = { origin: string; username: string; setting: ShareSetting };
 
-/** The short link (`/<username>`) and custom domain, both opening the primary resume. */
+/** Whether a published portfolio holds the short link and custom domain (portfolio plan Phase 03). */
+function usePortfolioHoldsShortLink() {
+	const { data } = useQuery(orpc.portfolio.get.queryOptions());
+	return portfolioHoldsShortLink(data);
+}
+
+/** The short link (`/<username>`) and custom domain, both opening the primary resume, or the published portfolio. */
 function AddressesSection({ origin, username, setting }: AddressesSectionProps) {
 	const resume = useCurrentResume();
 	const { flags } = useRouteContext({ strict: false });
 	const shortLink = publicResumeUrl(origin, { username, slug: resume.slug, isPrimary: true });
+	const shortLinkNote = shortLinkDescription(usePortfolioHoldsShortLink());
 
 	return (
 		<ShareWidget icon="link-simple-horizontal" title={<Trans>Short Link and Domain</Trans>}>
@@ -214,6 +222,7 @@ function AddressesSection({ origin, username, setting }: AddressesSectionProps) 
 						<CopyLinkButton url={shortLink} />
 					</InputGroup.Suffix>
 				</InputGroup>
+				{shortLinkNote && <Description>{shortLinkNote}</Description>}
 			</TextField>
 			{flags?.customDomains && <CustomDomainField suggest={flags.olacvSuggestion ?? false} />}
 		</ShareWidget>
@@ -229,6 +238,7 @@ function PrimaryRow({ setting: { update, isPending } }: ShareSettingProps) {
 	const { data: resumes } = useQuery(orpc.resume.list.queryOptions());
 	const current = resumes?.find((item) => item.isPrimary && item.id !== resume.id);
 	const isPublic = resume.isPublic ?? false;
+	const portfolioHolds = usePortfolioHoldsShortLink();
 
 	const setPrimary = async (checked: boolean) => {
 		if (checked && current) {
@@ -247,15 +257,12 @@ function PrimaryRow({ setting: { update, isPending } }: ShareSettingProps) {
 			isDisabled={isPending || resume.isLocked || (!isPublic && !resume.isPrimary)}
 			onChange={(checked) => void setPrimary(checked)}
 			label={t`Primary resume`}
-			description={
-				resume.isPrimary
-					? isPublic
-						? t`Your short link and custom domain open this resume.`
-						: t`Your short link and custom domain say this resume isn't shared until you publish it again.`
-					: current
-						? t`Your short link and custom domain open “${current.name}”.`
-						: t`Publish this resume to open it at your short link and custom domain.`
-			}
+			description={primaryResumeDescription({
+				portfolioHolds,
+				isPrimary: resume.isPrimary ?? false,
+				isPublic,
+				current: current ?? null,
+			})}
 			className="items-start py-0"
 		/>
 	);

@@ -327,6 +327,11 @@ msgstr "{0} · {providerLabel}। ଏହି ଆବେଦନ ଓ ଆପଣଙ୍�
 msgid "{0} (copy)"
 msgstr "{0} (କପି)"
 
+#. placeholder {0}: variantLabel(value)
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "{0} (theme default)"
+msgstr ""
+
 #. placeholder {0}: monthlyOfYearly(id, currency)
 #: src/features/billing/buy-plans.tsx
 msgid "{0} a month, billed yearly"
@@ -1117,6 +1122,10 @@ msgstr "ସାଇନ୍-ଇନ୍ ସମୟରେ ଏକ ପ୍ରାମାଣ�
 msgid "A comfortable length, and it fits on one page."
 msgstr "ଏକ ଆରାମଦାୟକ ଲମ୍ବ, ଏବଂ ଏହା ଗୋଟିଏ ପୃଷ୍ଠାରେ ଫିଟ୍ ହୁଏ |"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "A contact form and a map of your city are coming soon."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A date is in the future."
 msgstr "ଏକ ତାରିଖ ଭବିଷ୍ୟତରେ ଅଛି।"
@@ -1161,6 +1170,10 @@ msgstr "ଏକ ପୂର୍ଣ୍ଣ-ଉଚ୍ଚତା ଖାଲି ସ୍ଥ�
 msgid "A gap is not a problem. Add a one-line explanation if you want to; many strong resumes simply do not."
 msgstr "ଖାଲି ସ୍ଥାନ ଗୋଟିଏ ସମସ୍ୟା ନୁହେଁ। ଚାହିଁଲେ ଗୋଟିଏ ଧାଡ଼ିର ବ୍ୟାଖ୍ୟା ଯୋଡନ୍ତୁ; ଅନେକ ଶକ୍ତିଶାଳୀ ରେଜ୍ୟୁମେ ତାହା କରନ୍ତି ନାହିଁ।"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "A link"
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "A link isn't a full address"
 msgstr "ଏକ ଲିଙ୍କ୍ ସମ୍ପୂର୍ଣ୍ଣ ଠିକଣା ନୁହେଁ |"
@@ -1193,6 +1206,10 @@ msgstr ""
 msgid "A numeric date reads differently in different countries."
 msgstr "ଏକ ସାଂଖ୍ୟିକ ତାରିଖ ବିଭିନ୍ନ ଦେଶରେ ଭିନ୍ନ ଭାବରେ ପଢ଼ାଯାଏ।"
 
+#: src/features/portfolio/portfolio-page.tsx
+msgid "A one-page website at your own address, made from your resume and your work."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A page is rotated."
 msgstr "ଏକ ପୃଷ୍ଠା ଘୂରାଇ ଦିଆଯାଇଛି।"
@@ -1200,6 +1217,30 @@ msgstr "ଏକ ପୃଷ୍ଠା ଘୂରାଇ ଦିଆଯାଇଛି।"
 #: src/features/resume/editor/check/job-match.tsx
 msgid "A pasted posting can be saved as an application afterwards."
 msgstr "ଏକ ପେଷ୍ଟ ହୋଇଥିବା ଚାକିରି ପୋଷ୍ଟିଂ ପରେ ଏକ ଚାକିରି ଆବେଦନ ଭାବରେ ସଞ୍ଚୟ ହୋଇପାରିବ |"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "A photo can be added later."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "A photo for the portfolio arrives soon."
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "A photo of the person is coming soon."
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "A picture behind the intro is coming soon."
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "A picture for this section is coming soon."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "A profile (LinkedIn, GitHub…)"
+msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "A recruiter asked for a Word file at the last minute. I downloaded one in the same design and sent it right away."
@@ -1269,6 +1310,7 @@ msgstr "ପରିଚୟ"
 msgid "About 90 seconds when spoken"
 msgstr "କହିଲେ ପ୍ରାୟ 90 ସେକେଣ୍ଡ"
 
+#: src/features/portfolio/editor/section-forms.tsx
 #: src/features/portfolio/page-text.ts
 msgid "About me"
 msgstr ""
@@ -1282,6 +1324,7 @@ msgstr ""
 msgid "Accent"
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Accent color"
 msgstr "ଉଚ୍ଚାରଣ ରଙ୍ଗ |"
@@ -1415,8 +1458,16 @@ msgstr "ଯୋଡନ୍ତୁ |"
 msgid "Add “{0}”"
 msgstr "“{0}” ଯୋଡନ୍ତୁ |"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Add a button"
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "Add a card, Apple Pay or Google Pay on Polar's secure checkout. Nothing is charged today: the first charge comes after {trialDays} days, and cancelling before then costs nothing."
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add a client"
 msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
@@ -1488,6 +1539,10 @@ msgstr "ଏକ ଭୂମିକା ଯୋଡ଼ି Enter ଦବାନ୍ତୁ"
 msgid "Add a salary"
 msgstr ""
 
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Add a section"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Education\". Many systems have a required education field."
 msgstr "\"Education\" ଶୀର୍ଷକ ସହିତ ଏକ ବିଭାଗ ଯୋଡନ୍ତୁ। ଅନେକ ସିଷ୍ଟମରେ ଏକ ବାଧ୍ୟତାମୂଳକ ଶିକ୍ଷା ଫିଲ୍ଡ ଥାଏ।"
@@ -1495,6 +1550,10 @@ msgstr "\"Education\" ଶୀର୍ଷକ ସହିତ ଏକ ବିଭାଗ ଯ
 #: src/features/ats-checker/messages.ts
 msgid "Add a section headed \"Experience\" or \"Work Experience\". It is the field most systems rank on."
 msgstr "\"Experience\" କିମ୍ବା \"Work Experience\" ଶୀର୍ଷକ ସହିତ ଏକ ବିଭାଗ ଯୋଡନ୍ତୁ। ଏହା ସେହି ଫିଲ୍ଡ ଯାହା ଉପରେ ଅଧିକାଂଶ ସିଷ୍ଟମ ର୍ୟାଙ୍କ କରନ୍ତି।"
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add a service"
+msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Add a source"
@@ -1518,6 +1577,10 @@ msgstr "ଏକ ଟ୍ୟାଗ୍ ଯୋଗ କରନ୍ତୁ ଏବଂ Enter �
 
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Add a tag, then Enter"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add a testimonial"
 msgstr ""
 
 #: src/features/resume/editor/write/fields.tsx
@@ -1607,6 +1670,10 @@ msgstr "କ୍ଷେତ୍ର ଯୋଡନ୍ତୁ |"
 msgid "Add figures where you have them: volumes, percentages, timeframes, team sizes."
 msgstr "ଆପଣଙ୍କ ପାଖରେ ଥିବା ଆଙ୍କଡ଼ା ଯୋଡନ୍ତୁ: ପରିମାଣ, ପ୍ରତିଶତ, ସମୟସୀମା, ଦଳ ଆକାର।"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add from Experience"
+msgstr ""
+
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add interest"
 msgstr "ଆଗ୍ରହ ଯୋଡନ୍ତୁ |"
@@ -1691,6 +1758,10 @@ msgstr "ବିଭାଗଗୁଡ଼ିକ ମଧ୍ୟରେ କିଛି ଖା
 msgid "Add tag"
 msgstr "ଟ୍ୟାଗ୍ ଯୋଡନ୍ତୁ |"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add testimonial"
+msgstr ""
+
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add text"
 msgstr "ପାଠ ଯୋଡନ୍ତୁ |"
@@ -1745,6 +1816,10 @@ msgstr ""
 msgid "Add your name"
 msgstr "ଆପଣଙ୍କର ନାମ ଯୋଡନ୍ତୁ |"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Add your WhatsApp number in Contact, or the button won't show."
+msgstr ""
+
 #. placeholder {0}: role.trim()
 #. placeholder {1}: company.trim()
 #: src/features/applications/components/add-application-dialog.tsx
@@ -1784,6 +1859,8 @@ msgstr "ଅନୁଭବ ଭାବେ ଜ୍ଞାନରେ ଯୋଡ଼ାଗଲ
 msgid "Added to Prepare"
 msgstr "ପ୍ରସ୍ତୁତିରେ ଯୋଡ଼ାଗଲା"
 
+#: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/share/address-field.tsx
 msgid "Address"
 msgstr "ଠିକଣା"
@@ -2081,6 +2158,10 @@ msgstr ""
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "ଏକ ଅପ୍ରତ୍ୟାଶିତ ତ୍ରୁଟି ଏହି ପୃଷ୍ଠାକୁ ଲୋଡ୍ ହେବାରେ ଅଟକାଇ ଦେଇଛି। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ, କିମ୍ବା ଡ୍ୟାସବୋର୍ଡକୁ ଯାଆନ୍ତୁ।"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Another link"
+msgstr ""
+
 #: src/features/resume/share/address-field.tsx
 msgid "Another of your resumes uses this address."
 msgstr "ଆପଣଙ୍କର ଅନ୍ୟ ଏକ ରେଜୁମ୍ ଏହି ଠିକଣା ବ୍ୟବହାର କରେ |"
@@ -2132,6 +2213,14 @@ msgstr "ଆଡଭାନ୍ସରେ ଯେକ Any ଣସି ଫଣ୍ଟ |"
 #: src/features/resume/builder/password-dialog.tsx
 msgid "Anyone who opens the public URL will need this password."
 msgstr "ସର୍ବସାଧାରଣ URL ଖୋଲୁଥିବା ଯେକୌଣସି ବ୍ୟକ୍ତିଙ୍କୁ ଏହି ପାସୱାର୍ଡ ଆବଶ୍ୟକ ହେବ।"
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Anyone with the link can see it. Visitor numbers are coming soon."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Anyone with the link can see your portfolio. Changes show as soon as they're saved."
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Anyone with the link will be able to view your resume."
@@ -2507,6 +2596,7 @@ msgid "BA, Visual Communication Design · Nusantara Institute of Design"
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "ପଛକୁ"
@@ -2532,6 +2622,10 @@ msgstr "ଡକ୍ୟୁମେଣ୍ଟକୁ ଫେରନ୍ତୁ |"
 #: src/features/resume/share/history-tab.tsx
 msgid "Back to now"
 msgstr "ବର୍ତ୍ତମାନ ଫେରିଯାନ୍ତୁ |"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Back to Portfolio"
+msgstr ""
 
 #. Action returning the visitor to the sign-in page after a failed sign-in
 #. Secondary navigation button on 2FA verification screen
@@ -2578,6 +2672,11 @@ msgctxt "Entry header accent: a tinted background behind the header"
 msgid "Band"
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Bandung, Indonesia"
+msgstr ""
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a bar beside the header"
 msgid "Bar"
@@ -2598,6 +2697,10 @@ msgstr "ମୌଳିକ ବିବରଣୀ"
 
 #: src/features/portfolio/page-text.ts
 msgid "Before"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Before → after"
 msgstr ""
 
 #: src/features/resume/share/format.ts
@@ -2630,6 +2733,18 @@ msgstr "ଆବେଦନ ପାଇଁ ସର୍ବୋତ୍ତମ |"
 
 #: src/features/homepage/features.tsx
 msgid "Beyond the resume"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Big name"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Big numbers"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Big pictures first, for designers, photographers and architects."
 msgstr ""
 
 #: src/features/billing/buy-plans.tsx
@@ -2684,6 +2799,7 @@ msgstr "ଶରୀରର ପାଠ ବହୁତ ଛୋଟ |"
 msgid "Body text set to {minimum} pt"
 msgstr "ଶରୀର ପାଠ୍ୟ {minimum} pt ରେ ସେଟ୍ ହୋଇଛି |"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Bold"
 msgstr "ବୋଲ୍ଡ"
@@ -2789,6 +2905,7 @@ msgstr "ବଲଗେରିଆନ୍"
 msgid "bullet {n}"
 msgstr "ତାଲିକା ପ୍ରବେଶ {n} |"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Bulleted list"
@@ -2796,6 +2913,22 @@ msgstr "ବୁଲେଟେଡ୍ ତାଲିକା |"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Business"
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Button link"
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Button text"
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Button text (optional)"
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Buttons"
 msgstr ""
 
 #: src/routes/dashboard/applications/index.tsx
@@ -2834,6 +2967,9 @@ msgstr "ସଫ୍ଟୱେର୍ ତୁମର ରେଜୁମ୍ ପ read ି �
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/job-match.tsx
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -2866,6 +3002,14 @@ msgstr ""
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/plan-page.tsx
 msgid "Cancelled; active until {0}"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Cards"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Career sections come from"
 msgstr ""
 
 #: src/libs/locale.ts
@@ -2939,6 +3083,7 @@ msgid "Change your plan"
 msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Changed elsewhere"
 msgstr "ଅନ୍ୟତ୍ର ପରିବର୍ତ୍ତିତ |"
 
@@ -2949,6 +3094,10 @@ msgstr "ରେଜୁମକୁ ସିଧାସଳଖ ବଦଳାଇଲେ (ପ�
 #: src/dialogs/resume/index.tsx
 msgid "Changed your mind? Rename your resume to something more descriptive."
 msgstr "ମତ ପରିବର୍ତ୍ତନ କଲେ କି? ଆପଣଙ୍କ ରେଜ୍ୟୁମେକୁ ଅଧିକ ବିବରଣା ନାମକୁ ପୁନଃନାମକରଣ କରନ୍ତୁ।"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Changes section titles and button labels such as “View resume”, not your own text. Empty follows your resume."
+msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Changes section titles and date words only, not your content."
@@ -3136,6 +3285,7 @@ msgstr "ଚାଇନିଜ୍ (ସରଳୀକୃତ)"
 msgid "Chinese (Traditional)"
 msgstr "ଚାଇନିଜ୍ (ପାରମ୍ପରିକ)"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Chips"
 msgstr ""
@@ -3197,6 +3347,10 @@ msgstr ""
 msgid "Circle"
 msgstr "ବୃତ୍ତ"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "City or region"
+msgstr ""
+
 #: src/features/career/workspace/fit.tsx
 msgid "Clarify"
 msgstr "ସ୍ପଷ୍ଟ କରନ୍ତୁ"
@@ -3248,6 +3402,10 @@ msgstr "ଏହାକୁ ଶ style ଳୀ କରିବାକୁ ପୃଷ୍ଠ�
 msgid "Client ID"
 msgstr "କ୍ଲାଏଣ୍ଟ ID"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Client logos"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Clients"
 msgstr ""
@@ -3277,6 +3435,9 @@ msgstr ""
 #: src/features/docs/layout.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/offer-forms.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/check-panel.tsx
@@ -3350,6 +3511,10 @@ msgstr "କୋଡ୍"
 msgid "Color"
 msgstr "ରଙ୍ଗ"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Colors"
+msgstr ""
+
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 msgid "Colors and levels"
 msgstr ""
@@ -3386,6 +3551,7 @@ msgstr "କମାଣ୍ଡ ପ୍ୟାଲେଟ୍"
 msgid "Command palette: {currentPage}"
 msgstr "କମାଣ୍ଡ ପ୍ୟାଲେଟ୍: {currentPage}"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Compact"
@@ -3452,6 +3618,7 @@ msgstr "ସମ୍ପୂର୍ଣ୍ଣ ଡାଟା ବ୍ୟାକଅପ୍ | R
 msgid "Compress or remove large images to keep uploads quick."
 msgstr "ଅପଲୋଡ୍ ଶୀଘ୍ର ରଖିବା ପାଇଁ ବଡ଼ ଛବିଗୁଡ଼ିକୁ କମ୍ପ୍ରେସ୍ କରନ୍ତୁ କିମ୍ବା ହଟାନ୍ତୁ।"
 
+#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Computer"
 msgstr "କମ୍ପ୍ୟୁଟର"
@@ -3616,6 +3783,7 @@ msgid "Contain"
 msgstr "ପୂରା ଦେଖାନ୍ତୁ"
 
 #: src/routes/builder/$resumeId/-components/editor-shell.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Content"
 msgstr "ବିଷୟବସ୍ତୁ"
 
@@ -3811,9 +3979,17 @@ msgstr "ଇମେଲ୍ ପରିବର୍ତ୍ତନ କରିପାରିଲ�
 msgid "Couldn't change the schedule. Try again."
 msgstr "ସମୟସୂଚୀ ବଦଳାଇହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Couldn't change the source resume. Try again."
+msgstr ""
+
 #: src/features/career/today.tsx
 msgid "Couldn't change this schedule. Try again."
 msgstr "ଏହି ସମୟସୂଚୀ ବଦଳାଇହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Couldn't change this setting. Try again."
+msgstr ""
 
 #. Fallback toast when changing account password fails
 #: src/dialogs/auth/change-password.tsx
@@ -3872,6 +4048,10 @@ msgstr "ପତ୍ର ସୃଷ୍ଟି କରିହେଲା ନାହିଁ।
 msgid "Couldn't create your account. Try again."
 msgstr "ଆପଣଙ୍କ ଆକାଉଣ୍ଟ ସୃଷ୍ଟି କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Couldn't create your portfolio. Try again."
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Couldn't delete that story. Try again."
 msgstr "ସେହି କାହାଣୀ ବିଲୋପ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
@@ -3908,6 +4088,10 @@ msgstr "ଏହି ସମୟସୂଚୀ ବିଲୋପ କରିହେଲା �
 #: src/features/settings/account/data.tsx
 msgid "Couldn't delete your account. Try again."
 msgstr "ଆପଣଙ୍କ ଆକାଉଣ୍ଟ ବିଲୋପ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Couldn't delete your portfolio. Try again."
+msgstr ""
 
 #. Fallback toast when unlinking a social authentication provider fails
 #: src/features/settings/account/auth-hooks.ts
@@ -4036,6 +4220,10 @@ msgstr "ମୁଦ୍ରଣ ପାଇଁ ରେଜ୍ୟୁମେ ପ୍ରସ୍
 msgid "Couldn't propose these edits: {0}"
 msgstr "ଏହି ସମ୍ପାଦନାଗୁଡିକ ପ୍ରସ୍ତାବ ଦେଇ ପାରିଲା ନାହିଁ: {0} |"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Couldn't publish. Try again."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Couldn't reach the AI provider. Try again in a moment."
 msgstr "AI ପ୍ରଦାନକାରୀଙ୍କ ପାଖରେ ପହଞ୍ଚି ପାରିଲା ନାହିଁ | ଏକ ମୁହୂର୍ତ୍ତରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
@@ -4073,6 +4261,10 @@ msgstr "ପ୍ରଦାନକାରୀଙ୍କଠାରୁ ଆପଣଙ୍କ �
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Couldn't record submission. Try again."
 msgstr "ଦାଖଲ ରେକର୍ଡ କରିପାରିଲା ନାହିଁ | ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Couldn't reload your portfolio. Try again."
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Couldn't remember that. Try again."
@@ -4186,6 +4378,10 @@ msgstr "ଏହି ସମୟସୂଚୀ ସେଭ୍ କରିହେଲା ନ�
 msgid "Couldn't save your changes. Try again before continuing."
 msgstr "ଆପଣଙ୍କର ପରିବର୍ତ୍ତନଗୁଡିକ ସଞ୍ଚୟ କରିପାରିଲା ନାହିଁ | ଜାରି ରଖିବା ପୂର୍ବରୁ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
 
+#: src/routes/builder/portfolio/index.tsx
+msgid "Couldn't save your changes. Try again before leaving."
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Couldn't save your changes. Try again."
 msgstr "ଆପଣଙ୍କ ପରିବର୍ତ୍ତନଗୁଡ଼ିକ ସେଭ୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
@@ -4203,6 +4399,7 @@ msgid "Couldn't schedule the interview. Try again."
 msgstr "ସାକ୍ଷାତକାର ସମୟ ନିର୍ଦ୍ଧାରଣ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
 
 #: src/features/billing/buy-plans.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/settings/account/profile.tsx
 msgid "Couldn't send the email. Try again."
 msgstr "ଇମେଲ୍ ପଠାଇ ପାରିଲା ନାହିଁ | ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ |"
@@ -4286,6 +4483,10 @@ msgstr "ଆବେଦନର ଲିଙ୍କ୍ ହଟାଇହେଲା ନାହ
 #: src/features/documents/document-actions.tsx
 msgid "Couldn't unlock the document. Try again."
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍ ଅନଲକ୍ କରିହେଲା ନାହିଁ। ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Couldn't unpublish. Try again."
+msgstr ""
 
 #: src/features/resume/share/custom-domain-field.tsx
 #: src/features/resume/share/share-panel.tsx
@@ -4476,6 +4677,15 @@ msgstr "ସୃଷ୍ଟି ଏବଂ ଖୋଲ |"
 msgid "Create key"
 msgstr "ଚାବି ସୃଷ୍ଟି କରନ୍ତୁ |"
 
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Create portfolio"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Create your portfolio"
+msgstr ""
+
 #: src/features/documents/documents-page.tsx
 #: src/features/resume/share/format.ts
 #: src/features/settings/ai/api-keys.tsx
@@ -4651,6 +4861,7 @@ msgid "Danish"
 msgstr "ଡାନିସ୍"
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Dark"
 msgstr "ଡାର୍କ"
@@ -4795,10 +5006,15 @@ msgstr "ବର୍ତ୍ତମାନ ବିଲୋପ କରନ୍ତୁ…"
 msgid "Delete page"
 msgstr "ପେଜ୍ ବିଲୋପ କରନ୍ତୁ"
 
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Delete portfolio"
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Delete provider"
 msgstr "ପ୍ରଦାନକାରୀଙ୍କୁ ଡିଲିଟ୍ କରନ୍ତୁ"
 
+#: src/features/portfolio/editor/section-forms.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Delete section"
 msgstr "ବିଭାଗ ବିଲୋପ କରନ୍ତୁ |"
@@ -4824,6 +5040,10 @@ msgstr "ଏହି ବାର୍ତ୍ତାଳାପ ବିଲୋପ କରିବ
 msgid "Delete this entry?"
 msgstr "ଏହି ଏଣ୍ଟ୍ରି ବିଲୋପ କରିବେ କି?"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Delete this section?"
+msgstr ""
+
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete version"
 msgstr "ସଂସ୍କରଣ ବିଲୋପ କରନ୍ତୁ"
@@ -4835,6 +5055,10 @@ msgstr "ଆପଣଙ୍କର ଖାତା ବିଲୋପ କରନ୍ତୁ?"
 #: src/features/auth/pages/consent.tsx
 msgid "Delete your documents and account data."
 msgstr "ଆପଣଙ୍କ ଦଲିଲ ଓ ଖାତା ତଥ୍ୟ ବିଲୋପ କରନ୍ତୁ।"
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Delete your portfolio?"
+msgstr ""
 
 #: src/features/applications/components/application-actions-menu.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -4885,9 +5109,14 @@ msgstr "ପ୍ରତ୍ୟେକ ଭୂମିକାକୁ ଛୋଟ ବୁଲେ
 msgid "Describe the role"
 msgstr "ଭୂମିକା ବର୍ଣ୍ଣନା କର |"
 
+#: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Description"
 msgstr "ବର୍ଣ୍ଣନା"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Description in search results"
+msgstr ""
 
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/entries.tsx
@@ -4902,6 +5131,7 @@ msgstr "ଭୂମିକା {0} ର ବର୍ଣ୍ଣନା |"
 #: src/routes/builder/letter/-components/letter-bar.tsx
 #: src/routes/builder/letter/-components/letter-shell.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Design"
 msgstr "ଡିଜାଇନ୍"
 
@@ -4932,6 +5162,10 @@ msgstr "ବିବରଣୀଗୁଡିକ"
 #: src/features/auth/pages/error.tsx
 msgid "Details from the provider:"
 msgstr "ପ୍ରଦାନକାରୀଙ୍କଠାରୁ ବିବରଣୀ:"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Device"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Dictation started"
@@ -5124,6 +5358,10 @@ msgstr "PDF ଡାଉନଲୋଡ୍ କରନ୍ତୁ"
 msgid "Download PDF instead"
 msgstr "ଏହା ପରିବର୍ତ୍ତେ PDF ଡାଉନଲୋଡ୍ କରନ୍ତୁ |"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Download resume PDF"
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Download sample PDF"
 msgstr "ନମୁନା PDF ଡାଉନଲୋଡ୍ କରନ୍ତୁ |"
@@ -5235,6 +5473,10 @@ msgstr "ଡ୍ରାଗ୍ · ⌥↑↓"
 #. placeholder {1}: application.company
 #: src/features/applications/components/application-card.tsx
 msgid "Drag {0} at {1}"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Drag a section, or use its arrows, to change the order. Empty sections don't show on the page until they have something in them."
 msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
@@ -5374,6 +5616,14 @@ msgstr "ଲିଙ୍କ୍ ସଂପାଦନ କରନ୍ତୁ |"
 msgid "Edit note"
 msgstr "ନୋଟ୍ ସମ୍ପାଦନ କରନ୍ତୁ"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Edit on resume"
+msgstr ""
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Edit portfolio"
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Edit question"
 msgstr "ପ୍ରଶ୍ନ ସମ୍ପାଦନ କରନ୍ତୁ"
@@ -5437,11 +5687,16 @@ msgstr ""
 msgid "Education"
 msgstr "ଶିକ୍ଷା"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Education layout"
+msgstr ""
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Education swaps school and field of study the same way."
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
@@ -5494,6 +5749,35 @@ msgstr ""
 msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "ରପ୍ତାନି କରିବା ସମୟରେ ସମସ୍ତ ଫଣ୍ଟ ଏମ୍ବେଡ୍ କରନ୍ତୁ, ଯାହା ଦ୍ୱାରା ଅକ୍ଷରଗୁଡ଼ିକ ଆପଣ ଉଦ୍ଦେଶ୍ୟ କରିଥିବା ଭାବରେ ମେଳ ହୁଅନ୍ତି।"
 
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Empty"
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Empty shows “Open to work” in the page's language."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Empty uses a default"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Empty uses your greeting or About me."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Empty uses your name and headline."
+msgstr ""
+
+#. placeholder {0}: value || "—"
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Empty uses your resume's: {0}"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Empty uses your resume's: {resumeLocation}"
+msgstr ""
+
 #. placeholder {0}: formatPrice(left, currency)
 #: src/features/billing/admin/customer.tsx
 msgid "Empty: the rest, {0}"
@@ -5533,13 +5817,26 @@ msgstr "ଉନ୍ନତ ପଠନ ଉପଲବ୍ଧ ନାହିଁ; ବିଲ�
 msgid "Enhanced reading was unavailable. The built-in reader retrieved this posting."
 msgstr "ଉନ୍ନତ ପଢ଼ିବା ଉପଲବ୍ଧ ନଥିଲା। ବିଲ୍ଟ-ଇନ୍ ରିଡର୍ ଏହି ଚାକିରି ବିଜ୍ଞାପନ ଆଣିଲା।"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Enter 7 to 15 digits, with the country code."
+msgstr ""
+
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Enter a backup code."
 msgstr "ଏକ ବ୍ୟାକଅପ୍ କୋଡ୍ ପ୍ରବେଶ କରନ୍ତୁ।"
 
+#: src/features/portfolio/editor/fields.tsx
+msgid "Enter a full address, such as https://example.com or mailto:you@example.com."
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Enter a full amount, such as 95000. Your previous amount is unchanged."
 msgstr "95000 ପରି ଏକ ପୂର୍ଣ୍ଣ ରାଶି ଲେଖନ୍ତୁ। ଆପଣଙ୍କ ପୂର୍ବ ରାଶି ଅପରିବର୍ତ୍ତିତ ଅଛି।"
+
+#: src/features/portfolio/editor/fields.tsx
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Enter a full web address, such as https://example.com."
+msgstr ""
 
 #: src/features/settings/account/profile.tsx
 msgid "Enter a name, up to 64 characters."
@@ -5679,6 +5976,10 @@ msgstr ""
 msgid "Every term the posting stresses is already there."
 msgstr "ଚାକିରି ବିଜ୍ଞାପନ ଗୁରୁତ୍ୱ ଦେଉଥିବା ପ୍ରତ୍ୟେକ ଶବ୍ଦ ପୂର୍ବରୁ ଅଛି।"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Every visitor sees this mode."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 msgid "Every week"
 msgstr "ପ୍ରତି ସପ୍ତାହ"
@@ -5715,6 +6016,10 @@ msgstr ""
 #: src/libs/resume/section.tsx
 msgid "Experience"
 msgstr "ଅନୁଭବ"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Experience layout"
+msgstr ""
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Experience, Education and more"
@@ -5838,6 +6143,10 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Featured + grid"
+msgstr ""
+
 #: src/features/homepage/footer.tsx
 #: src/features/homepage/ui.tsx
 msgid "Features"
@@ -5884,6 +6193,10 @@ msgstr "ଭୂମିକା ଏବଂ କମ୍ପାନୀ ପୂରଣ କର�
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Fill in the role and company. The posting is saved with the application."
 msgstr "ଭୂମିକା ଏବଂ କମ୍ପାନୀ ପୁରଣ କରନ୍ତୁ | ଚାକିରି ଆବେଦନ ସହିତ ଚାକିରି ପୋଷ୍ଟିଂ ସଞ୍ଚୟ ହୋଇଛି |"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Fill in your details yourself."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Filled from the application. The greeting follows the name."
@@ -6031,12 +6344,20 @@ msgstr "ଅନୁସରଣ ନୋଟ୍ |"
 msgid "Follow-up reminder"
 msgstr "ଅନୁସରଣ ସ୍ମାରକ"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Follows each visitor's light or dark setting."
+msgstr ""
+
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font family"
 msgstr "ଫଣ୍ଟ ପରିବାର"
 
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Font limit reached"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Font pair"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -6054,6 +6375,10 @@ msgstr "ଫଣ୍ଟ ଭାର"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
 msgid "Font weights"
 msgstr "ଫଣ୍ଟ ଭାରଗୁଡିକ"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Fonts"
+msgstr ""
 
 #: src/libs/error-message.ts
 msgid "Fonts could not be loaded. Try again."
@@ -6126,6 +6451,10 @@ msgstr "ପାସୱାର୍ଡ ଭୁଲିଗଲେ କି?"
 msgid "Forgot your password?"
 msgstr "ପାସୱାର୍ଡ ଭୁଲିଗଲେ କି?"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Formal and structured, for finance, consulting and management."
+msgstr ""
+
 #: src/features/resume/share/download-tab.tsx
 msgid "Format"
 msgstr "ଫର୍ମାଟ୍"
@@ -6164,6 +6493,7 @@ msgstr "ଗତକାଲି ମିଳିଲା"
 #: src/features/billing/plan.ts
 #: src/features/homepage/plans.ts
 #: src/features/homepage/templates.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/templates/gallery.tsx
 msgid "Free"
 msgstr ""
@@ -6244,6 +6574,14 @@ msgstr "ଆପଣ ସଂଲଗ୍ନ କରିଥିବା ଏକ ଡକ୍ୟ�
 msgid "From Fit"
 msgstr "ଉପଯୁକ୍ତତାରୁ"
 
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "From resume"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "From Rp1.5m"
+msgstr ""
+
 #: src/features/resume/share/format.ts
 msgid "from the assistant or API"
 msgstr "ସହାୟକ କିମ୍ବା API ରୁ |"
@@ -6267,6 +6605,10 @@ msgstr "ଆପଣଙ୍କ ବାର୍ତ୍ତାରୁ"
 #: src/features/career/knowledge/facts.tsx
 msgid "From your resume"
 msgstr "ଆପଣଙ୍କ ରେଜ୍ୟୁମେରୁ"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "From your resume; it has none yet."
+msgstr ""
 
 #: src/features/career/knowledge/search-regions-field.tsx
 msgid "From your timezone"
@@ -6372,6 +6714,10 @@ msgstr "ପଛକୁ ଯାଆନ୍ତୁ"
 msgid "Go home"
 msgstr "ଘରକୁ ଯାଆନ୍ତୁ"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Go to Contact"
+msgstr ""
+
 #: src/components/layout/error-screen.tsx
 #: src/components/layout/not-found-screen.tsx
 #: src/routes/_home/-sections/header.tsx
@@ -6418,6 +6764,10 @@ msgstr ""
 msgid "Gray"
 msgstr "ଧୂସର"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Gray, colored on hover"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Greek"
 msgstr "ଗ୍ରୀକ୍"
@@ -6426,6 +6776,7 @@ msgstr "ଗ୍ରୀକ୍"
 msgid "Green"
 msgstr "ସବୁଜ"
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Greeting"
 msgstr "ସମ୍ବୋଧନ"
@@ -6433,6 +6784,18 @@ msgstr "ସମ୍ବୋଧନ"
 #: src/features/documents/documents-page.tsx
 msgid "Grid"
 msgstr "ଗ୍ରିଡ୍ (Grid)"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Grid, 2 columns"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Grid, 3 columns"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Groups"
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "guest"
@@ -6447,9 +6810,17 @@ msgstr ""
 msgid "Hard for software to read"
 msgstr "ସଫ୍ଟୱେର୍ ପ read ିବା ପାଇଁ କଠିନ |"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Have a project in mind? Let's talk."
+msgstr ""
+
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Have a resume already? <0>Import it</0>"
 msgstr "ଆପଣଙ୍କ ପାଖରେ ଆଗରୁ ରେଜ୍ୟୁମେ ଅଛି କି? <0>ଆମଦାନି କରନ୍ତୁ</0>"
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Head of Marketing, Kopi Senja"
+msgstr ""
 
 #: src/features/resume/stylesheet/targets.ts
 msgid "Header"
@@ -6457,6 +6828,10 @@ msgstr "ଶୀର୍ଷଲେଖ"
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgid "Header layout"
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Heading"
 msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/typography.tsx
@@ -6480,6 +6855,8 @@ msgstr "ହେଡିଂ 3"
 msgid "Heading changed"
 msgstr "ହେଡିଙ୍ଗ୍ ବଦଳିଗଲା |"
 
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Headline"
 msgstr "ଶିରୋନାମା"
@@ -6516,6 +6893,10 @@ msgstr "ସହାୟତା & ଡକସ୍"
 msgid "Help me turn an accomplishment into a Situation, Task, Action, Result and Reflection story."
 msgstr "ଏକ ସଫଳତାକୁ ପରିସ୍ଥିତି, କାର୍ଯ୍ୟ, ପଦକ୍ଷେପ, ଫଳାଫଳ ଓ ପ୍ରତିଫଳନ କାହାଣୀରେ ପରିଣତ କରିବାରେ ମୋତେ ସାହାଯ୍ୟ କରନ୍ତୁ।"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Helps recruiters in other time zones know when to reach you."
+msgstr ""
+
 #: src/components/input/color-picker.tsx
 msgid "Hex color"
 msgstr ""
@@ -6530,6 +6911,10 @@ msgstr "ଲୁଚାଇଦିଆଯାଇଛି"
 msgid "Hidden from New roles"
 msgstr "ନୂଆ ଭୂମିକାରୁ ଲୁଚାଯାଇଛି"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Hidden on your resume"
+msgstr ""
+
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "Hidden sections keep their content but aren't printed or shared. Fields save as you type."
 msgstr "ଲୁକ୍କାୟିତ ବିଭାଗଗୁଡିକ ସେମାନଙ୍କର ବିଷୟବସ୍ତୁ ରଖନ୍ତି କିନ୍ତୁ ମୁଦ୍ରିତ କିମ୍ବା ଅଂଶୀଦାର ହୋଇନଥାଏ | ଆପଣ ଟାଇପ୍ କଲାବେଳେ ଫିଲ୍ଡଗୁଡିକ ସେଭ୍ କରନ୍ତୁ |"
@@ -6542,6 +6927,11 @@ msgstr "ଲୁକ୍କାୟିତ ସର୍ତ୍ତାବଳୀ ଫେରି 
 msgid "Hidden: {hiddenList}"
 msgstr "ଲୁଚାଯାଇଛି: {hiddenList}"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Hide {name} from the page"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Hide {title} from the page"
 msgstr "ପୃଷ୍ଠାରୁ {title} ଲୁଚାନ୍ତୁ |"
@@ -6647,6 +7037,10 @@ msgstr ""
 msgid "How far applications get"
 msgstr "ଚାକିରି ଆବେଦନଗୁଡ଼ିକ କେତେ ଦୂର ଯାଏ"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "How I work"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "How is the bonus decided, and how much of it was paid out last year?"
 msgstr "ବୋନସ୍ କିପରି ସ୍ଥିର ହୁଏ, ଏବଂ ଗତ ବର୍ଷ ଏଥିରୁ କେତେ ଦିଆଯାଇଥିଲା?"
@@ -6675,8 +7069,16 @@ msgstr "ଫାଇଲ୍ କିପରି ଦେଖାଇବେ |"
 msgid "How well do I fit this role?"
 msgstr "ମୁଁ ଏହି ଭୂମିକାକୁ କେତେ ଭଲ ଭାବରେ ଫିଟ୍ କରିବି?"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "How you work"
+msgstr ""
+
 #: src/features/homepage/testimonials.tsx
 msgid "HR Generalist"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "https://linkedin.com/in/…"
 msgstr ""
 
 #: src/components/input/color-picker.tsx
@@ -6688,6 +7090,7 @@ msgstr ""
 msgid "Hungarian"
 msgstr "ହଙ୍ଗେରିଆନ୍"
 
+#: src/features/portfolio/editor/contact-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Hybrid"
 msgstr ""
@@ -6704,6 +7107,10 @@ msgstr "ମୁଁ ଏହି {kind} ଏବଂ {0} ଚାକିରି ପୋଷ୍
 #: src/features/assistant/assistant-panel.tsx
 msgid "I can see this {kind}. Suggestions come back as edits you can accept one by one."
 msgstr "ମୁଁ ଏହି {kind} ଦେଖିପାରେ | ପରାମର୍ଶଗୁଡିକ ଏଡିଟ୍ ଭାବରେ ଫେରି ଆସେ ଯାହାକୁ ଆପଣ ଗୋଟିଏ ପରେ ଗୋଟିଏ ଗ୍ରହଣ କରିପାରିବେ |"
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "I design apps people enjoy using, and I'm looking for my next team."
+msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "I keep one master resume and a version for every company. The tracker tells me where each one went."
@@ -6725,6 +7132,10 @@ msgstr ""
 #: src/features/resume/editor/write/entries.tsx
 msgid "Icon color"
 msgstr "ଆଇକନ୍ ରଙ୍ଗ |"
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Icon for {name}"
+msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Icon style"
@@ -6865,6 +7276,10 @@ msgstr "ମନୋନୀତ ରେଖା ଉନ୍ନତ କରନ୍ତୁ |"
 msgid "Improving…"
 msgstr "ଉନ୍ନତି…"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "In color"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "In progress"
 msgstr ""
@@ -6990,12 +7405,25 @@ msgstr "ସାକ୍ଷାତକାରର ସମୟ ଅଞ୍ଚଳ"
 msgid "Interviewer"
 msgstr "ସାକ୍ଷାତକାର"
 
+#: src/features/portfolio/editor/content-panel.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Intro"
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Intro background"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Intro layout"
+msgstr ""
+
 #: src/features/homepage/introduction.tsx
 msgid "Introduction"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Invitation"
 msgstr ""
 
 #: src/features/billing/invoice-button.tsx
@@ -7076,6 +7504,10 @@ msgstr "ସମସ୍ୟାଗୁଡିକ"
 msgid "Issues and Job match still work without AI."
 msgstr "ଇସ୍ୟୁ ଏବଂ ଚାକିରି ମ୍ୟାଚ୍ ଏପର୍ଯ୍ୟନ୍ତ AI ବିନା କାମ କରେ |"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "It can't be published. Contact support to appeal."
+msgstr ""
+
 #: src/features/billing/subscription-actions.tsx
 msgid "It couldn't be cancelled. Try again in a moment."
 msgstr ""
@@ -7096,6 +7528,10 @@ msgstr ""
 msgid "It may have been deleted. Choose another story or add a new one."
 msgstr "ଏହା ବିଲୋପ ହୋଇଥାଇପାରେ। ଅନ୍ୟ ଏକ କାହାଣୀ ବାଛନ୍ତୁ କିମ୍ବା ନୂଆ ଗୋଟିଏ ଯୋଡ଼ନ୍ତୁ।"
 
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "It was saved in another tab or on another device after you opened it here. Reload to continue from that version; your last changes here weren't saved."
+msgstr ""
+
 #: src/features/documents/document-actions.tsx
 msgid "It will be deleted for good and can't be restored."
 msgstr "ଏହା ଭଲ ପାଇଁ ବିଲୋପ ହେବ ଏବଂ ପୁନରୁଦ୍ଧାର ହୋଇପାରିବ ନାହିଁ |"
@@ -7112,6 +7548,7 @@ msgstr "ଭଲ ପାଇଁ ଏହା ଟାଇମଲାଇନରୁ ଅପସ�
 msgid "Italian"
 msgstr "ଇଟାଲିଆନ୍"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Italic"
 msgstr "ଇଟାଲିକ୍"
@@ -7132,6 +7569,14 @@ msgstr "ଏହାର ନିଜସ୍ୱ ଡିଜାଇନ୍ ({summary}) |"
 #: src/features/settings/ai/providers.tsx
 msgid "Its saved key is deleted. Conversations using it need another provider."
 msgstr "ଏହାର ସେଭ୍ କୀ ଡିଲିଟ୍ ହୋଇଛି | ଏହାକୁ ବ୍ୟବହାର କରି ବାର୍ତ୍ତାଳାପ ଅନ୍ୟ ଏକ ପ୍ରଦାନକାରୀ ଆବଶ୍ୟକ କରେ |"
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Its text, work, design and settings are deleted for good. Your resumes stay as they are."
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Its title and text are removed from the portfolio. You can undo this."
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Japanese"
@@ -7346,6 +7791,10 @@ msgstr "ଜ୍ଞାନ"
 msgid "Korean"
 msgstr "କୋରିଆନ୍"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "KPI cards"
+msgstr ""
+
 #. Short field label for custom display text associated with a URL
 #: src/components/input/url-input.tsx
 #: src/features/applications/components/detail/contacts.tsx
@@ -7359,6 +7808,10 @@ msgstr ""
 #. placeholder {0}: index + 1
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Label for field {0}"
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Label text"
 msgstr ""
 
 #. Preset button for setting picture aspect ratio to landscape orientation
@@ -7375,6 +7828,10 @@ msgstr "ଲ୍ୟାଣ୍ଡସ୍କେପ୍"
 #: src/routes/builder/$resumeId/-components/document-details.tsx
 msgid "Language"
 msgstr "ଭାଷା"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Language of the page's own words"
+msgstr ""
 
 #: src/features/homepage/resume.tsx
 #: src/features/portfolio/page-text.ts
@@ -7433,6 +7890,10 @@ msgstr "ଟେକ୍ସଟ୍‌କୁ ଭୂସମାନ୍ତର ଭାବର�
 msgid "Layout"
 msgstr "ଲେଆଉଟ୍"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Layouts"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "Lead Designer"
 msgstr ""
@@ -7472,6 +7933,10 @@ msgstr "ସଞ୍ଚିତ ଚାବିକୁ ରଖିବା ପାଇଁ ଖ�
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Leave it empty to remove the link."
 msgstr "ଲିଙ୍କ୍ ଅପସାରଣ କରିବାକୁ ଏହାକୁ ଖାଲି ଛାଡିଦିଅ |"
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Leave it empty to use the default title."
+msgstr ""
 
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Leave it empty to use the original title."
@@ -7525,6 +7990,10 @@ msgstr "ଉପରୋକ୍ତ API କି ବ୍ୟବହାର କରି Claude 
 #: src/features/documents/documents-page.tsx
 msgid "Let's start with what you have"
 msgstr "ତୁମର ଯାହା ଅଛି ତାହାଠାରୁ ଆରମ୍ଭ କରିବା |"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Lets Google and other search engines list your portfolio, so recruiters can find you by name. It can take weeks to appear, or to disappear after you turn this off."
+msgstr ""
 
 #: src/features/career/coach.tsx
 msgid "Lets the coach search public pages through your web search service"
@@ -7600,6 +8069,7 @@ msgid "Ligatures can drop letters out of words such as \"workflow\"."
 msgstr "ଲିଗେଚର୍ \"workflow\" ପରି ଶବ୍ଦରୁ ଅକ୍ଷର ଛାଡ଼ି ଦେଇପାରେ।"
 
 #: src/features/command-palette/pages/preferences/index.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/theme.ts
 msgid "Light"
 msgstr "ଲାଇଟ୍"
@@ -7629,10 +8099,15 @@ msgid "Lines this close can run together when read. Use at least {minimum}."
 msgstr "ପ close ଼ିବା ସମୟରେ ଏହି କ୍ଲୋଜ୍ ଏକତ୍ର ଚାଲିବ | ଅତିକମରେ {minimum} ବ୍ୟବହାର କରନ୍ତୁ |"
 
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Link"
 msgstr "ଲିଙ୍କ୍ |"
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Link (optional)"
+msgstr ""
 
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Link a Rezumi (recommended)"
@@ -7709,6 +8184,10 @@ msgstr "ଲିଙ୍କ୍ ହୋଇଛି | ରେଜୁମ୍ କଲାବେ�
 msgid "LinkedIn"
 msgstr "LinkedIn"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "LinkedIn, GitHub and other profiles from your resume."
+msgstr ""
+
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "LinkedIn, Referral…"
 msgstr "LinkedIn, ରେଫରାଲ୍…"
@@ -7722,6 +8201,7 @@ msgid "Links"
 msgstr "ଲିଙ୍କ୍"
 
 #: src/features/documents/documents-page.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "List"
 msgstr "ତାଲିକା (List)"
@@ -7840,6 +8320,7 @@ msgstr ""
 #: src/features/applications/components/application-form-sheet.tsx
 #: src/features/applications/components/import-applications-sheet.tsx
 #: src/features/applications/components/interview-dialog.tsx
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/design/entries-group.tsx
@@ -7847,6 +8328,10 @@ msgstr ""
 #: src/features/resume/editor/write/entries.tsx
 msgid "Location"
 msgstr "ଅବସ୍ଥାନ"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Location card"
+msgstr ""
 
 #: src/features/career/coach-chat.tsx
 msgid "Locations"
@@ -7867,6 +8352,10 @@ msgstr "ତାଲା ପଡିଛି"
 #: src/features/resume/editor/write/write-panel.tsx
 msgid "Locked. Unlock to edit."
 msgstr "ତାଲା ପଡିଛି | ସଂପାଦନ କରିବାକୁ ଅନଲକ୍ କରନ୍ତୁ |"
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Logo design"
+msgstr ""
 
 #. Icon picker category: brand and network logos
 #: src/components/input/icon-picker-grid.tsx
@@ -8152,6 +8641,10 @@ msgstr "ସର୍ବନିମ୍ନ ମୂଳ ଦରମା"
 msgid "Mixed"
 msgstr "ମିଶ୍ରିତ"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Mode"
+msgstr ""
+
 #: src/features/assistant/provider-setup.tsx
 #: src/features/settings/ai/providers.tsx
 msgid "Model"
@@ -8220,6 +8713,10 @@ msgstr "ଅଧିକ ପ୍ରଦାନକାରୀ ଏବଂ ବିକଳ୍ପ
 msgid "More than one email address appears."
 msgstr "ଏକରୁ ଅଧିକ ଇମେଲ୍ ଠିକଣା ଦେଖାଯାଏ।"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "More themes are coming soon. You can change the theme any time in Design."
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
 msgid "Morning of"
@@ -8249,6 +8746,22 @@ msgstr "ଅଧିକାଂଶ ସିଷ୍ଟମ୍ ଇମେଲ୍ ଠିକଣ
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Mostly readable"
 msgstr "ପ୍ରାୟତ read ପଠନୀୟ |"
+
+#: src/features/portfolio/editor/fields.tsx
+msgid "Move {name} down"
+msgstr ""
+
+#: src/features/portfolio/editor/fields.tsx
+msgid "Move {name} up"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Move {title} down"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Move {title} up"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Move all content inside the page boundaries and re-export."
@@ -8355,6 +8868,8 @@ msgstr ""
 #: src/features/documents/document-list.tsx
 #: src/features/documents/documents-page.tsx
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/editor/intro-form.tsx
+#: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/settings/account/profile.tsx
@@ -8534,6 +9049,7 @@ msgid "Newest payments started in this period. Search finds any customer."
 msgstr ""
 
 #: src/features/docs/article.tsx
+#: src/features/portfolio/create-dialog.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Next"
 msgstr ""
@@ -8808,6 +9324,7 @@ msgstr "କ response ଣସି ପ୍ରତିକ୍ରିୟା ନାହିଁ
 msgid "No results found."
 msgstr "କୌଣସି ଫଳାଫଳ ମିଳିଲା ନାହିଁ।"
 
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "No resume"
 msgstr "କ No ଣସି ରେଜୁମ୍ ନାହିଁ |"
@@ -8990,6 +9507,14 @@ msgstr "ଏବେ ନୁହେଁ"
 msgid "Not prepared yet"
 msgstr ""
 
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Not published"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Not published yet"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "Not recorded yet. Leave it blank until you can support it."
 msgstr "ଏପର୍ଯ୍ୟନ୍ତ ରେକର୍ଡ ହୋଇନାହିଁ। ଆପଣ ସମର୍ଥନ କରିପାରିବା ପର୍ଯ୍ୟନ୍ତ ଏହାକୁ ଖାଲି ରଖନ୍ତୁ।"
@@ -8997,12 +9522,17 @@ msgstr "ଏପର୍ଯ୍ୟନ୍ତ ରେକର୍ଡ ହୋଇନାହି�
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Not saved"
 msgstr "ସଞ୍ଚୟ ହୋଇନାହିଁ |"
 
 #: src/features/career/coach-chat.tsx
 msgid "Not saved — this fact was forgotten before."
 msgstr "ସେଭ୍ ହୋଇନାହିଁ — ଏହି ତଥ୍ୟକୁ ପୂର୍ବରୁ ଭୁଲାଯାଇଥିଲା।"
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Not saved: a field needs fixing"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "not scored"
@@ -9061,6 +9591,10 @@ msgstr "ଟିପ୍ପଣୀ"
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Notes and tasks"
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Nothing here on your resume yet, so the section doesn't show."
 msgstr ""
 
 #: src/features/ats-checker/checker.tsx
@@ -9145,9 +9679,14 @@ msgstr "ନୋଟିସ୍ ଅବଧି"
 msgid "Now"
 msgstr "ବର୍ତ୍ତମାନ"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Numbered list"
 msgstr "ସଂଖ୍ୟାଯୁକ୍ତ ତାଲିକା |"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Numbers style"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Observation"
@@ -9164,6 +9703,10 @@ msgstr "ବନ୍ଦ"
 #: src/features/resume/share/share-panel.tsx
 msgid "Off. Let recruiters find you on Google by turning this on."
 msgstr "ବନ୍ଦ ଅଛି। ଏହାକୁ ଚାଲୁ କଲେ ନିଯୁକ୍ତିଦାତାମାନେ ଆପଣଙ୍କୁ Googleରେ ଖୋଜିପାରିବେ।"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Off. Search engines won't list your portfolio, but anyone with the link can still open it."
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Off. The letter keeps its own copy of your details."
@@ -9204,6 +9747,7 @@ msgstr ""
 msgid "On this page"
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "On-site"
 msgstr ""
@@ -9224,6 +9768,10 @@ msgstr "ଥରେ ଆପଣ ଅଳ୍ପ କିଛି ଚାକିରି ଆବ�
 msgid "One address that always shows your latest version, public or behind a password."
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "One calm column, a big name and your work as a clear list. Suits every field."
+msgstr ""
+
 #: src/features/resume/editor/design/template-group.tsx
 #: src/features/templates/gallery.tsx
 msgid "One column"
@@ -9233,9 +9781,19 @@ msgstr "ଗୋଟିଏ ସ୍ତମ୍ଭ |"
 msgid "One column or two?"
 msgstr "ଗୋଟିଏ ସ୍ତମ୍ଭ କି ଦୁଇଟି?"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "One for headings, one for text."
+msgstr ""
+
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header layout"
 msgid "One line"
+msgstr ""
+
+#. placeholder {0}: hero.greeting.length
+#. placeholder {1}: max.greeting
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "One or two sentences under your name. {0}/{1}"
 msgstr ""
 
 #: src/features/templates/gallery.tsx
@@ -9280,6 +9838,14 @@ msgstr "ଏକାଥରକେ କେବଳ ପ୍ରଥମ {MAX_IMPORT} ଧା�
 #: src/features/ats-checker/messages.ts
 msgid "Only the first pages were checked."
 msgstr "କେବଳ ପ୍ରଥମ ପୃଷ୍ଠାଗୁଡ଼ିକ ଯାଞ୍ଚ କରାଯାଇଥିଲା।"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Only you can see it until you publish. After that, changes show as soon as they're saved."
+msgstr ""
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Only you can see it. Publish it from the editor when it's ready."
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Only you see these"
@@ -9357,6 +9923,12 @@ msgstr ""
 msgid "Open navigation"
 msgstr ""
 
+#: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/portfolio-page.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Open page"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "Open preferences"
 msgstr "ପସନ୍ଦ ଖୋଲନ୍ତୁ"
@@ -9386,10 +9958,15 @@ msgstr "|\n"
 msgid "Open the schedule"
 msgstr "ସମୟସୂଚୀ ଖୋଲନ୍ତୁ"
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Open to relocating"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Open to relocation"
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Open to work"
 msgstr ""
@@ -9411,6 +9988,10 @@ msgstr ""
 msgid "Opening the file"
 msgstr "ଫାଇଲ୍ ଖୋଲିବା |"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Opens"
+msgstr ""
+
 #: src/features/career/workspace/messages.tsx
 msgid "Opens in Career → Offers."
 msgstr "କ୍ୟାରିଅର୍ → ଅଫର୍‌ରେ ଖୋଲେ।"
@@ -9422,6 +10003,10 @@ msgstr "ନୂତନ ଟାବ୍‌ରେ ଖୋଲେ"
 #: src/features/documents/new-document-dialog.tsx
 msgid "Opens the editor on your name. Nothing else to fill in first."
 msgstr "ଆପଣଙ୍କ ନାମରେ ସମ୍ପାଦକ ଖୋଲନ୍ତି | ପ୍ରଥମେ ପୂରଣ କରିବାକୁ ଆଉ କିଛି ନାହିଁ |"
+
+#: src/features/resume/share/short-link.ts
+msgid "Opens your portfolio."
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
@@ -9487,6 +10072,14 @@ msgstr "କମଳା"
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Order"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Order button"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Order link"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -9573,6 +10166,10 @@ msgstr "ପୃଷ୍ଠା 1"
 #: src/routes/builder/letter/-components/letter-page.tsx
 msgid "Page 1 · {formatLabel}"
 msgstr "ପୃଷ୍ଠା 1 · {formatLabel} |"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Page language"
+msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Page navigation"
@@ -9855,6 +10452,7 @@ msgstr "ସବୁଦିନ ପାଇଁ ସବୁକିଛି ଅପସାରଣ
 msgid "Persian"
 msgstr "ପର୍ସିଆନ୍"
 
+#: src/features/portfolio/editor/preview.tsx
 #: src/features/portfolio/page-text.ts
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/basics-card.tsx
@@ -9875,9 +10473,21 @@ msgstr "ଫଟୋ ଲୁକ୍କାୟିତ |"
 msgid "Photo hidden from the page."
 msgstr "ଫଟୋ ପୃଷ୍ଠାରୁ ଲୁକ୍କାୟିତ |"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Photo on the left"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "Photo on the page."
 msgstr "ପୃଷ୍ଠାରେ ଫଟୋ"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Photo on the right"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Photo on top"
+msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Photos and cameras"
@@ -9903,13 +10513,22 @@ msgstr "ଦୁଇଟି ଉଦାହରଣ ବାଛନ୍ତୁ"
 msgid "Picking your stories"
 msgstr "ଆପଣଙ୍କ କାହାଣୀ ବାଛୁଛି"
 
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/libs/resume/section.tsx
 msgid "Picture"
 msgstr "ଛବି"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Pictures, text blocks and results for each work are coming soon."
+msgstr ""
+
 #: src/features/applications/components/insights-view.tsx
 msgid "Pipeline flow"
 msgstr "ପାଇପଲାଇନ ପ୍ରବାହ |"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Plain"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Plain text (.txt)"
@@ -9976,6 +10595,10 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Plans don't apply yet (BILLING_MODE)"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Playful tiles, for creators, freelancers and students."
 msgstr ""
 
 #. placeholder {0}: plus.payments
@@ -10062,6 +10685,16 @@ msgstr "ପୋଲିଶ୍"
 #: src/features/career/shared.tsx
 msgid "Polishing"
 msgstr "ପରିମାର୍ଜନ କରୁଛି"
+
+#: src/features/portfolio/portfolio-page.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+#: src/routes/dashboard/-components/app-shell.tsx
+msgid "Portfolio"
+msgstr ""
+
+#: src/features/portfolio/editor/preview.tsx
+msgid "Portfolio preview"
+msgstr ""
 
 #. Preset button for setting picture aspect ratio to portrait orientation
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -10238,6 +10871,10 @@ msgstr "ବର୍ତ୍ତମାନର କୀୱାର୍ଡ ଯୋଡ଼ିବ�
 msgid "Press <0>Enter</0> to open"
 msgstr "ଖୋଲିବା ପାଇଁ <0>Enter</0> ଦବାନ୍ତୁ"
 
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Preview"
+msgstr ""
+
 #: src/features/templates/gallery.tsx
 msgid "Preview {name} sample PDF"
 msgstr "ପୂର୍ବାବଲୋକନ {name} ନମୁନା PDF |"
@@ -10250,6 +10887,7 @@ msgstr ""
 msgid "Preview every template before you sign up. The Free plan includes {freeCount} templates and PDF downloads without a watermark. Plus and Pro AI unlock every template, plus Word and ODT downloads."
 msgstr ""
 
+#: src/features/portfolio/editor/preview.tsx
 #: src/features/resume/share/web-page-preview.tsx
 msgid "Preview size"
 msgstr "ପ୍ରିଭ୍ୟୁ ଆକାର"
@@ -10285,6 +10923,10 @@ msgstr "ପୂର୍ବ ମାସ"
 msgid "Previous week"
 msgstr ""
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Price (optional)"
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "Prices are before tax: Polar adds the tax that applies where you live."
 msgstr ""
@@ -10300,6 +10942,10 @@ msgstr ""
 #: src/features/homepage/footer.tsx
 #: src/features/homepage/ui.tsx
 msgid "Pricing"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Prima, Kanvas and Mozaik are coming soon."
 msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
@@ -10343,6 +10989,11 @@ msgstr ""
 #: src/features/homepage/footer.tsx
 msgid "Product"
 msgstr "ଉତ୍ପାଦ"
+
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Product designer"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 #: src/features/homepage/resume.tsx
@@ -10401,6 +11052,10 @@ msgstr "ପ୍ରଗତି ବାର୍"
 #: src/libs/resume/section.tsx
 msgid "Projects"
 msgstr "ପ୍ରକଳ୍ପଗୁଡିକ"
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Projects from your resume show here as work. Adding work with pictures, text blocks and results is coming soon."
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Proposed changes"
@@ -10461,7 +11116,9 @@ msgstr "ସର୍ବସାଧାରଣ, ଏକ ପାସୱାର୍ଡ ସହ�
 msgid "Publications"
 msgstr "ପ୍ରକାଶନଗୁଡିକ"
 
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/share/share-panel.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Publish"
 msgstr "ପ୍ରକାଶ କରନ୍ତୁ"
 
@@ -10477,12 +11134,21 @@ msgstr "ପ୍ରଥମେ ୱେବ୍ ପୃଷ୍ଠା ପ୍ରକାଶ �
 msgid "Publish the web page to count views and downloads. Counts are anonymous, and search engines aren't counted."
 msgstr "ଦର୍ଶନ ଏବଂ ଡାଉନଲୋଡ୍ ଗଣନା କରିବାକୁ ୱେବ୍ ପୃଷ୍ଠା ପ୍ରକାଶ କରନ୍ତୁ। ଗଣନା ଅଜ୍ଞାତ ଅଟେ, ଏବଂ ସନ୍ଧାନ ଇଞ୍ଜିନ୍‌ଗୁଡ଼ିକୁ ଗଣାଯାଏ ନାହିଁ।"
 
-#: src/features/resume/share/share-panel.tsx
+#: src/features/resume/share/short-link.ts
 msgid "Publish this resume to open it at your short link and custom domain."
 msgstr "ଆପଣଙ୍କ ଛୋଟ ଲିଙ୍କ୍ ଏବଂ କଷ୍ଟମ୍ ଡୋମେନ୍‌ରେ ଖୋଲିବା ପାଇଁ ଏହି ରେଜ୍ୟୁମେ ପ୍ରକାଶ କରନ୍ତୁ।"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Publish your portfolio"
+msgstr ""
+
 #: src/features/resume/share/share-panel.tsx
 msgid "Publish Your Resume"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Published"
 msgstr ""
 
 #: src/features/resume/editor/write/entries.tsx
@@ -10501,10 +11167,12 @@ msgstr "ପ୍ରଥମ ପୃଷ୍ଠାର ଶୀର୍ଷ ନିକଟରେ
 msgid "Put the caret in a line to improve it"
 msgstr "ଏହାକୁ ଉନ୍ନତ କରିବା ପାଇଁ କ୍ୟାରେଟ୍କୁ ଏକ ଧାଡିରେ ରଖନ୍ତୁ |"
 
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "QR code"
 msgstr "QR କୋଡ୍ |"
 
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "QR code for {url}"
 msgstr "{url} ପାଇଁ QR କୋଡ୍ |"
@@ -10548,6 +11216,10 @@ msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "Queued like a purchase. No payment and no credits come with it."
+msgstr ""
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Quote"
 msgstr ""
 
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -10837,6 +11509,11 @@ msgstr "ଆୟାତାକାର (ପୁରା ପ୍ରସ୍ଥ)"
 msgid "Red"
 msgstr "ଲାଲ୍"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Redo"
+msgstr ""
+
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Redo resume change"
 msgstr "ରେଜୁ ରିମେମ୍ ପରିବର୍ତ୍ତନ |"
@@ -10960,6 +11637,7 @@ msgid "Rejection is just redirection."
 msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Reload"
 msgstr "ପୁନ elo ଲୋଡ୍ କରନ୍ତୁ |"
 
@@ -11003,6 +11681,7 @@ msgstr "ସ୍ମାରକ ଏଠାରେ ଦେଖାଯାଏ। ଇମେଲ
 
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/career/offers.tsx
+#: src/features/portfolio/editor/contact-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "Remote"
 msgstr "ରିମୋଟ୍"
@@ -11047,6 +11726,10 @@ msgstr ""
 
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Remove {family}?"
+msgstr ""
+
+#: src/features/portfolio/editor/fields.tsx
+msgid "Remove {name}"
 msgstr ""
 
 #: src/features/applications/components/application-detail-sheet.tsx
@@ -11109,14 +11792,20 @@ msgstr "ଏହି ଫଟୋ ହଟାନ୍ତୁ?"
 
 #: src/features/career/coach.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/editor/content-panel.tsx
 #: src/features/settings/account/security.tsx
 msgid "Rename"
 msgstr "ନାମ ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Rename {title}"
+msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
 msgid "Rename letter"
 msgstr "ଅକ୍ଷରର ନାମ ପରିବର୍ତ୍ତନ କରନ୍ତୁ |"
 
+#: src/features/portfolio/editor/content-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Rename section"
 msgstr "ବିଭାଗର ନାମ ବଦଳାନ୍ତୁ"
@@ -11172,6 +11861,7 @@ msgstr "ଖୋଲନ୍ତୁ |"
 msgid "Reorder {0}"
 msgstr "{0} ରେକର୍ଡ କରନ୍ତୁ |"
 
+#: src/features/portfolio/editor/content-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Reorder {title}"
@@ -11345,6 +12035,10 @@ msgstr ""
 msgid "Resume review"
 msgstr ""
 
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Resume section"
+msgstr ""
+
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "Resume submitted (optional)"
@@ -11389,6 +12083,7 @@ msgstr "{0} ପ୍ରାପ୍ତ ହେଲା | ରିପୋର୍ଟ ନହେ
 #: src/features/resume/editor/check/writing-tab.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/dashboard/applications/index.tsx
 msgid "Retry"
 msgstr "ପୁନଃଚେଷ୍ଟା କରନ୍ତୁ"
@@ -11399,6 +12094,7 @@ msgstr "ପୁନର୍ବାର ସେଭ୍ କରନ୍ତୁ |"
 
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Retry saving"
 msgstr "ପୁନର୍ବାର ସଞ୍ଚୟ କରନ୍ତୁ |"
 
@@ -11648,6 +12344,19 @@ msgstr ""
 msgid "Sales Executive"
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Same as my resume"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Same as my resume ({resumeLocale})"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Same as your resume, so both look like a set."
+msgstr ""
+
 #: src/features/documents/use-start-document.ts
 msgid "Sample resume added. Delete it anytime."
 msgstr "ନମୁନା ରେଜୁମ୍ ଯୋଗ କରାଯାଇଛି | ଏହାକୁ ଯେକ time ଣସି ସମୟରେ ବିଲୋପ କରନ୍ତୁ |"
@@ -11768,6 +12477,7 @@ msgstr "ସଞ୍ଚୟ ହୋଇଛି |"
 #: src/features/homepage/features.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Saved"
 msgstr "ସେଭ୍‍ କରାଯାଇଛି"
 
@@ -11844,6 +12554,7 @@ msgstr "ସଞ୍ଚୟ ଆଶା କରାଯାଉଥିବା ସମୟଠା
 #: src/features/career/knowledge/preferences.tsx
 #: src/features/resume/editor/save-status.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Saving…"
 msgstr "ସେଭ୍ କରୁଛି…"
 
@@ -11926,6 +12637,10 @@ msgstr "ଖୋଜା ଟାଇଟଲ୍, ଟ୍ୟାଗ୍ ଓ ଲିଙ୍କ�
 #: src/features/documents/documents-page.tsx
 msgid "Search documents"
 msgstr "ଡକ୍ୟୁମେଣ୍ଟ୍ ସନ୍ଧାନ କରନ୍ତୁ |"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Search engines"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Search engines such as Google may list your web page. It can take weeks to appear, or to disappear after you turn this off."
@@ -12036,12 +12751,17 @@ msgstr "ସିକ୍ରେଟ୍ କପି ହେଲା"
 msgid "Section headings"
 msgstr "ବିଭାଗ ହେଡିଙ୍ଗ୍ |"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Section title"
+msgstr ""
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Section titles"
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
 #: src/features/homepage/section-nav.tsx
+#: src/features/portfolio/editor/content-panel.tsx
 #: src/features/resume/editor/check/parser-view.tsx
 #: src/features/resume/editor/write/add-section.tsx
 msgid "Sections"
@@ -12074,6 +12794,10 @@ msgstr ""
 
 #: src/features/billing/ai-source-menu.tsx
 msgid "See Pro AI"
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "See the case study"
 msgstr ""
 
 #: src/features/homepage/features.tsx
@@ -12137,6 +12861,10 @@ msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Send a message"
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Send a message (to Contact)"
 msgstr ""
 
 #. Primary action button label on forgot-password form
@@ -12219,8 +12947,16 @@ msgstr ""
 msgid "Serbian"
 msgstr "ସର୍ବିଆନ୍"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Service"
+msgstr ""
+
 #: src/features/portfolio/page-text.ts
 msgid "Services"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Services layout"
 msgstr ""
 
 #: src/features/applications/components/detail/next-step-card.tsx
@@ -12353,6 +13089,10 @@ msgstr "ଦେଖାନ୍ତୁ |"
 msgid "Show “Made with Rezumi”"
 msgstr "“Rezumi ସହିତ ନିର୍ମିତ” ଦେଖାନ୍ତୁ"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Show “Open to work”"
+msgstr ""
+
 #. placeholder {0}: Math.min(remaining, COLUMN_PAGE_SIZE)
 #. placeholder {0}: visible.length - shown.length
 #: src/features/applications/components/board.tsx
@@ -12365,9 +13105,18 @@ msgstr "{0} ଅଧିକ ଦେଖାନ୍ତୁ |"
 msgid "Show {0} read"
 msgstr "ପଢ଼ାଯାଇଥିବା {0}ଟି ଦେଖାନ୍ତୁ"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Show {name} on the page"
+msgstr ""
+
+#: src/features/portfolio/editor/content-panel.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show {title} on the page"
 msgstr "ପୃଷ୍ଠାରେ {title} ଦେଖାନ୍ତୁ |"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show a WhatsApp button"
+msgstr ""
 
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Show again"
@@ -12393,6 +13142,7 @@ msgstr "ହେଡିଙ୍ଗ୍ ଦେଖାନ୍ତୁ |"
 msgid "Show icons"
 msgstr ""
 
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/resume/share/share-panel.tsx
 msgid "Show in search engines"
 msgstr "ସନ୍ଧାନ ଇଞ୍ଜିନ୍‌ରେ ଦେଖାନ୍ତୁ"
@@ -12400,6 +13150,30 @@ msgstr "ସନ୍ଧାନ ଇଞ୍ଜିନ୍‌ରେ ଦେଖାନ୍ତ�
 #: src/features/resume/editor/write/fields.tsx
 msgid "Show link in title"
 msgstr "ଶୀର୍ଷକରେ ଲିଙ୍କ ଦେଖାନ୍ତୁ"
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show my email address"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show my local time"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show my phone number"
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Show my photo"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show my profiles"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Show my website"
+msgstr ""
 
 #: src/features/billing/payment-history.tsx
 msgid "Show older payments"
@@ -12428,12 +13202,20 @@ msgstr "ଫଟୋ ଦେଖାନ୍ତୁ"
 msgid "Show templates"
 msgstr "ଟେମ୍ପଲେଟ୍ ଦେଖାନ୍ତୁ |"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Show the {name} logo"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "Show them again"
 msgstr "ସେମାନଙ୍କୁ ପୁନର୍ବାର ଦେଖାନ୍ତୁ |"
 
 #: src/components/layout/loading-screen.tsx
 msgid "Show up. Apply. Repeat."
+msgstr ""
+
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -12560,6 +13342,10 @@ msgstr ""
 msgid "Skills"
 msgstr "କୌଶଳଗୁଡିକ"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Skills layout"
+msgstr ""
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Skills, interests and profiles"
 msgstr ""
@@ -12592,6 +13378,10 @@ msgstr "ପୃଷ୍ଠାକୁ ଯାଆନ୍ତୁ |"
 msgid "Skipped"
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Slider"
+msgstr ""
+
 #: src/libs/locale.ts
 msgid "Slovak"
 msgstr "ସ୍ଲୋଭାକ୍"
@@ -12606,6 +13396,10 @@ msgstr "ଛୋଟ ସଂଖ୍ୟା, କିନ୍ତୁ ଧ୍ୟାନ ଦେ�
 
 #: src/components/layout/loading-screen.tsx
 msgid "Small steps, every day, add up."
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Soft gradient"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -12682,6 +13476,10 @@ msgstr ""
 #: src/features/career/knowledge/facts.tsx
 msgid "Source"
 msgstr "ଉତ୍ସ"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Source resume"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 #: src/features/assistant/message-sources.tsx
@@ -12794,6 +13592,7 @@ msgid "Start free. When you need more versions, formats or AI help, subscribe mo
 msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
+#: src/features/portfolio/create-dialog.tsx
 msgid "Start from"
 msgstr "ଠାରୁ ଆରମ୍ଭ କରନ୍ତୁ |"
 
@@ -12842,6 +13641,10 @@ msgstr ""
 msgid "Start with the sections most resumes have."
 msgstr "ଅଧିକାଂଶ ରେଜୁମସ୍ ଥିବା ବିଭାଗଗୁଡିକ ସହିତ ଆରମ୍ଭ କରନ୍ତୁ |"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Start writing…"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 #: src/features/career/shared.tsx
 msgid "Started"
@@ -12886,6 +13689,14 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "Stay here"
 msgstr "ଏଠାରେ ରୁହ |"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 1 of 2 · What it starts from"
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Step 2 of 2 · How it looks"
+msgstr ""
 
 #: src/features/assistant/prompt-box.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -12952,6 +13763,7 @@ msgstr "କାହାଣୀ ମିଳିଲା ନାହିଁ"
 msgid "Strengthen"
 msgstr "ଶକ୍ତିଶାଳୀ କରନ୍ତୁ"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Strikethrough"
 msgstr "ଷ୍ଟ୍ରାଇକଥ୍ରୁ"
@@ -12971,6 +13783,10 @@ msgstr ""
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Stylesheet editor"
 msgstr "ଷ୍ଟାଇଲସିଟ୍ ଏଡିଟର୍"
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Subheading"
+msgstr ""
 
 #: src/features/career/workspace/apply.tsx
 msgid "Submit through the employer's application page yourself."
@@ -13017,6 +13833,10 @@ msgstr ""
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Subscriptions"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Subtle pattern"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -13328,6 +14148,10 @@ msgstr "{connectedProvider} ସହିତ ପରୀକ୍ଷା କରାଯା�
 msgid "Testimonials"
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Testimonials layout"
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "Testing search and reading with {connectedProvider}…"
 msgstr "{connectedProvider} ସହିତ ସନ୍ଧାନ ଏବଂ ପଠନ ପରୀକ୍ଷା…"
@@ -13349,6 +14173,7 @@ msgstr "ଆପଣଙ୍କ ସର୍ଭରର ସନ୍ଧାନ ସେବା �
 msgid "Testing…"
 msgstr "ପରୀକ୍ଷଣ…"
 
+#: src/features/portfolio/editor/section-forms.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Text"
 msgstr "ପାଠ"
@@ -13365,6 +14190,10 @@ msgstr "ପାଠ୍ୟ ରଙ୍ଗ"
 #: src/features/resume/editor/check/issues.ts
 msgid "Text comes out in the order a person reads it, at a size and spacing that survive."
 msgstr "ଜଣେ ବ୍ୟକ୍ତି ଏହାକୁ ପ read ଼ିବା କ୍ରମରେ, ଏକ ଆକାର ଏବଂ ବ୍ୟବଧାନରେ ପାଠ୍ୟ ବାହାରକୁ ଆସେ |"
+
+#: src/features/portfolio/editor/rich-text-editor.tsx
+msgid "Text formatting"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "Text in reading order"
@@ -13619,6 +14448,10 @@ msgstr "ସାକ୍ଷାତକାର ଦିନର ସକାଳ ବିତିଯ
 msgid "The numbers couldn't load."
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "The numbers style applies to results in your work once you add them."
+msgstr ""
+
 #: src/features/career/coach.tsx
 msgid "The offers you chose to compare, with their terms"
 msgstr "ଆପଣ ତୁଳନା ପାଇଁ ବାଛିଥିବା ଅଫର୍, ସେମାନଙ୍କ ସର୍ତ୍ତାବଳୀ ସହ"
@@ -13785,12 +14618,27 @@ msgstr ""
 msgid "The top of the first page does not look like a name."
 msgstr "ପ୍ରଥମ ପୃଷ୍ଠାର ଶୀର୍ଷ ଏକ ନାମ ପରି ଦେଖାଯାଏ ନାହିଁ।"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Their name"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Their role and company"
+msgstr ""
+
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/command-palette/pages/preferences/index.tsx
 #: src/features/command-palette/pages/preferences/theme.tsx
+#: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/editor/design-panel.tsx
 #: src/features/settings/general.tsx
 msgid "Theme"
 msgstr "ଥିମ୍"
+
+#. placeholder {0}: themeDefault.label
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Theme default ({0})"
+msgstr ""
 
 #. placeholder {0}: getPlanName(next.planId)
 #: src/features/billing/plan-page.tsx
@@ -13834,6 +14682,10 @@ msgstr "ଭାବୁଛି"
 msgid "Thinking…"
 msgstr "ଭାବୁଛି…"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "This address will open your portfolio"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "This application couldn't be opened."
 msgstr "ଏହି ଆବେଦନ ଖୋଲିହେଲା ନାହିଁ।"
@@ -13849,6 +14701,10 @@ msgstr "ଏହି ବ୍ରାଉଜର ଏଠାରେ ରେକର୍ଡ କ�
 #: src/features/career/workspace/practise.tsx
 msgid "This browser can't take dictation, and none of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). <0>Add one in Settings</0>, or type your answer."
 msgstr "ଏହି ବ୍ରାଉଜର ଡିକ୍ଟେସନ୍ ନେଇପାରିବ ନାହିଁ, ଏବଂ ଆପଣଙ୍କ କୌଣସି AI ସଂଯୋଗ ସ୍ପିଚ୍ ଟ୍ରାନ୍ସକ୍ରାଇବ୍ କରିପାରିବ ନାହିଁ (OpenAI, Google Gemini, Mistral, xAI, Groq କିମ୍ବା Vercel AI Gateway କରିପାରେ)। <0>ସେଟିଂସ୍‌ରେ ଗୋଟିଏ ଯୋଡ଼ନ୍ତୁ</0>, କିମ୍ବା ଆପଣଙ୍କ ଉତ୍ତର ଟାଇପ୍ କରନ୍ତୁ।"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "This color is hard to read as text here, so links and accent text use a deeper shade of it."
+msgstr ""
 
 #: src/features/auth/pages/consent.tsx
 msgid "This connection request is invalid or has expired. Start the connection again from your client."
@@ -14027,6 +14883,10 @@ msgstr "ଏହି PDF ଏକ ସ୍କାନ୍ ହୋଇଥିବା ପ୍ର�
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "ଏହି PDF ପାସୱାର୍ଡ ସୁରକ୍ଷିତ। ଏକ ଅସୁରକ୍ଷିତ କପି ସେଭ୍ କରନ୍ତୁ ଏବଂ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "This portfolio was taken down"
+msgstr ""
+
 #: src/features/resume/builder/draft.ts
 msgid "This resume is locked. Unlock it from its menu to edit."
 msgstr "ଏହି ରେଜ୍ୟୁମେ ଲକ୍ ହୋଇଛି। ସମ୍ପାଦନା କରିବାକୁ ଏହାର ମେନୁରୁ ଅନଲକ୍ କରନ୍ତୁ।"
@@ -14075,6 +14935,10 @@ msgstr "ଏହି ସେଭ୍ ହୋଇଥିବା ସଂସ୍କରଣ ଲ�
 msgid "This saved version is no longer available."
 msgstr "ଏହି ସେଭ୍ ହୋଇଥିବା ସଂସ୍କରଣ ଆଉ ଉପଲବ୍ଧ ନାହିଁ।"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "This section comes from a resume. Choose one in Publish → Source resume to fill it."
+msgstr ""
+
 #: src/features/auth/pages/error.tsx
 msgid "This server isn't accepting new accounts. Sign in with an existing account."
 msgstr "ଏହି ସର୍ଭର ନୂଆ ଆକାଉଣ୍ଟ ଗ୍ରହଣ କରୁନାହିଁ। ଏକ ବିଦ୍ୟମାନ ଆକାଉଣ୍ଟ ସହ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।"
@@ -14093,6 +14957,10 @@ msgstr "ଏହି କାହାଣୀ ଉପଲବ୍ଧ ନାହିଁ କି�
 
 #: src/features/billing/plan.ts
 msgid "This template isn't in your plan"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "This testimonial is genuine, and the person who gave it agreed to show it on my portfolio."
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -14127,6 +14995,10 @@ msgstr "ଗୋଟିଏ ପୃଷ୍ଠାକୁ ଟାଣନ୍ତୁ |"
 msgid "Tightening"
 msgstr "ସଂକ୍ଷିପ୍ତ କରୁଛି"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Tiles"
+msgstr ""
+
 #. placeholder {0}: draft.timezone
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Time · {0}"
@@ -14140,12 +15012,20 @@ msgstr "ସମୟ · {timeZone}"
 msgid "Time given by an admin or a promotion, and 30-day passes from before, newest first."
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "Time zone"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Time, link, who, what you sent"
 msgstr "ସମୟ, ଲିଙ୍କ୍, କିଏ, ଆପଣ କ'ଣ ପଠାଇଲେ"
 
 #: src/features/career/workspace/prepare.tsx
 msgid "Timed plan"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Timeline"
 msgstr ""
 
 #: src/features/billing/admin/overview.tsx
@@ -14171,9 +15051,14 @@ msgid "Tip"
 msgstr "ପରାମର୍ଶ"
 
 #: src/features/career/knowledge/stories.tsx
+#: src/features/portfolio/editor/section-forms.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
 msgstr "ଶିରୋନାମା"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Title in search results"
+msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "To"
@@ -14406,6 +15291,10 @@ msgstr "ଦୁଇ ସୋପାନ ଯାଞ୍ଚ ଚାଲୁ କରନ୍ତ�
 msgid "Turn this schedule on"
 msgstr "ଏହି ସମୟସୂଚୀ ଚାଲୁ କରନ୍ତୁ"
 
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Turn your resume into a portfolio website"
+msgstr ""
+
 #: src/dialogs/auth/disable-two-factor.tsx
 msgid "Turning off two-step verification…"
 msgstr "ଦୁଇ ସୋପାନ ଯାଞ୍ଚ ବନ୍ଦ ହେଉଛି…"
@@ -14486,6 +15375,7 @@ msgstr "ଟାଇପୋଗ୍ରାଫି"
 msgid "Ukrainian"
 msgstr "ୟୁକ୍ରେନିଆନ୍"
 
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Underline"
 msgstr "ଅଣ୍ଡରଲାଇନ୍"
@@ -14502,6 +15392,7 @@ msgstr "ଲିଙ୍କଗୁଡିକ ଅଣ୍ଡରଲାଇନ୍ କରନ�
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/design/fit.ts
 #: src/features/resume/editor/design/template-group.tsx
@@ -14513,6 +15404,7 @@ msgstr "ଲିଙ୍କଗୁଡିକ ଅଣ୍ଡରଲାଇନ୍ କରନ�
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
 #: src/routes/builder/letter/-components/letter-bar.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Undo"
 msgstr "ପୂର୍ବବତ୍ କରନ୍ତୁ"
 
@@ -14557,15 +15449,32 @@ msgstr "ନାମ ନଥିବା କୀ"
 msgid "Unnamed passkey"
 msgstr "ନାମହୀନ ପାସକି"
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Unpublish"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Unpublish your portfolio?"
+msgstr ""
+
 #. placeholder {0}: formatDate(plan.currentPeriodEndsAt)
 #: src/features/billing/admin/customer.tsx
 msgid "until {0}"
+msgstr ""
+
+#. placeholder {0}: resumeUrl.replace(/^https?:\/\//, "")
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Until now it opened your resume. Your resume stays at <0>{0}</0>, and your portfolio links to it."
 msgstr ""
 
 #: src/features/resume/editor/write/entry-card.tsx
 #: src/features/resume/stylesheet/targets.ts
 msgid "Untitled"
 msgstr "ଆଖ୍ୟାବିହୀନ |"
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Untitled client"
+msgstr ""
 
 #: src/features/documents/use-start-document.ts
 msgid "Untitled letter"
@@ -14574,6 +15483,22 @@ msgstr "ଆଖ୍ୟାବିହୀନ ଅକ୍ଷର |"
 #: src/features/documents/use-start-document.ts
 msgid "Untitled resume"
 msgstr "ଆଖ୍ୟାବିହୀନ ରେଜୁମ୍ |"
+
+#: src/features/portfolio/editor/content-panel.tsx
+msgid "Untitled section"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Untitled service"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Untitled testimonial"
+msgstr ""
+
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Untitled work"
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Up to 2 minutes. Or <0>choose an audio file</0> up to 2 MB."
@@ -14586,6 +15511,10 @@ msgstr "2 ମିନିଟ୍ ପର୍ଯ୍ୟନ୍ତ। ଆପଣ କହି�
 #: src/features/ats-checker/checker.tsx
 msgid "Up to 25 MB · checked in your browser, never uploaded"
 msgstr "25 MB ପର୍ଯ୍ୟନ୍ତ your ଆପଣଙ୍କର ବ୍ରାଉଜରରେ ଯା ed ୍ଚ ହୋଇଛି, କେବେବି ଅପଲୋଡ୍ ହୋଇନାହିଁ |"
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Up to three, under your greeting. The first one stands out."
+msgstr ""
 
 #: src/features/portfolio/page-text.ts
 msgid "Up, a bad change:"
@@ -14649,6 +15578,10 @@ msgstr "ଫଟୋ ଅପଲୋଡ୍ କରନ୍ତୁ"
 
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Uploading a client's logo is coming soon."
 msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
@@ -14864,6 +15797,14 @@ msgstr "ଆପଣଙ୍କ {0} ଟେମ୍ପ୍ଲେଟ୍ ଏବଂ ଡି�
 msgid "Uses your AI provider's own web search where supported, and reads links with the built-in reader."
 msgstr "ଯେଉଁଠାରେ ସମର୍ଥିତ, ଆପଣଙ୍କର AI ପ୍ରଦାନକାରୀଙ୍କର ନିଜସ୍ୱ ୱେବ୍ ସନ୍ଧାନ ବ୍ୟବହାର କରେ ଏବଂ ବିଲ୍ଟ-ଇନ୍ ରିଡର୍ ସହିତ ଲିଙ୍କ୍ ପ read େ |"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Uses your resume's fonts when they're available on the web; otherwise the theme's."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Uses your resume's photo. A portfolio-only photo arrives soon."
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "UX Designer"
 msgstr ""
@@ -14906,6 +15847,10 @@ msgstr "ସତ୍ୟାପନ କରନ୍ତୁ"
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Verify with a backup code"
 msgstr "ବ୍ୟାକଅପ୍ କୋଡ୍ ସହ ସତ୍ୟାପନ କରନ୍ତୁ"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Verify your email address first"
+msgstr ""
 
 #: src/features/billing/purchase-dialog.tsx
 msgid "Verify your email address first, then try again."
@@ -14988,6 +15933,7 @@ msgstr "ଚାକିରି ଆବେଦନ ଦେଖନ୍ତୁ |"
 msgid "View posting"
 msgstr "ଚାକିରି ପୋଷ୍ଟିଂ ଦେଖନ୍ତୁ |"
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "View resume"
 msgstr ""
@@ -15017,6 +15963,10 @@ msgstr "ପରିଦର୍ଶକ"
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors can download the PDF"
 msgstr "ପରିଦର୍ଶକମାନେ PDF ଡାଉନଲୋଡ୍ କରିପାରିବେ |"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Visitors can't see it anymore. Your short link opens your primary resume again, if you have a published one."
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Visitors enter it before they see the resume. Share it only with people you trust."
@@ -15084,11 +16034,18 @@ msgstr "ଆମେ ପୃଷ୍ଠାଟି ପଢ଼ୁ ଏବଂ ଚେକ୍, 
 msgid "We sent a confirmation link to {email}. Open it to finish the change."
 msgstr "ଆମେ {email} କୁ ଏକ ନିଶ୍ଚିତକରଣ ଲିଙ୍କ୍ ପଠାଇଲୁ | ପରିବର୍ତ୍ତନ ଶେଷ କରିବାକୁ ଏହାକୁ ଖୋଲ |"
 
+#. placeholder {0}: owner.email
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "We sent a link to {0}. <0>Send it again</0>"
+msgstr ""
+
 #: src/features/settings/account/profile.tsx
 msgid "We sent a link to {currentEmail} to approve the change. Then open the link we send to {email}."
 msgstr "ପରିବର୍ତ୍ତନ ଅନୁମୋଦନ କରିବାକୁ ଆମେ {currentEmail} କୁ ଏକ ଲିଙ୍କ୍ ପଠାଇଛୁ। ତାପରେ ଆମେ {email} କୁ ପଠାଉଥିବା ଲିଙ୍କ୍ ଖୋଲନ୍ତୁ।"
 
+#. placeholder {0}: owner.email
 #. placeholder {0}: user.email
+#: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/settings/account/profile.tsx
 msgid "We sent a new verification link to {0}."
 msgstr "ଆମେ {0} କୁ ଏକ ନୂତନ ଯାଞ୍ଚ ଲିଙ୍କ୍ ପଠାଇଲୁ |"
@@ -15261,6 +16218,10 @@ msgstr "ଆପଣ ପଠାଉଥିବା PDF ରେ ଫାଇଲ୍ ସ୍ତ�
 msgid "What they asked you to prepare"
 msgstr "ସେମାନେ ଆପଣଙ୍କୁ କ'ଣ ପ୍ରସ୍ତୁତ କରିବାକୁ କହିଲେ"
 
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "What they said"
+msgstr ""
+
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "What to do"
 msgstr "କଣ କରିବେ"
@@ -15311,8 +16272,17 @@ msgstr "ଏହା କ’ଣ ପାଇଁ?"
 msgid "What's working"
 msgstr "କ’ଣ କାମ କରୁଛି |"
 
+#: src/features/portfolio/editor/intro-form.tsx
 #: src/features/portfolio/page-text.ts
 msgid "WhatsApp"
+msgstr ""
+
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "WhatsApp number"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "WhatsApp, with a message naming the service"
 msgstr ""
 
 #: src/features/billing/admin/customer.tsx
@@ -15331,6 +16301,10 @@ msgstr "ସେମାନଙ୍କୁ ଆପଣଙ୍କ ଉତ୍ତର କେବ
 #: src/features/applications/components/insights-view.tsx
 msgid "Where applications come from"
 msgstr "ଯେଉଁଠାରେ ଆବେଦନଗୁଡ଼ିକ ଆସେ |"
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Where it was given (optional)"
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Where you want to work"
@@ -15384,6 +16358,10 @@ msgstr ""
 msgid "Who can see my resume?"
 msgstr "କିଏ ମୋର ରେଜୁମ୍ ଦେଖିପାରିବ?"
 
+#: src/features/portfolio/editor/section-forms.tsx
+msgid "Who you are, what you do best, and what you're looking for."
+msgstr ""
+
 #: src/features/applications/components/interview-dialog.tsx
 #: src/features/career/workspace/shell.tsx
 msgid "Who you'll meet"
@@ -15413,8 +16391,16 @@ msgstr "ମୋର ରେଜୁମ୍ ଅତୀତର ଆବେଦନକାରୀ
 msgid "With a debit or credit card, Apple Pay or Google Pay, on a secure checkout by Polar, our merchant of record. Polar handles payment, invoices and sales tax. Visitors from Indonesia pay in Rupiah; everyone else in US dollars. Prices are before tax: the checkout adds the tax for where you live."
 msgstr ""
 
+#: src/features/portfolio/editor/contact-form.tsx
+msgid "With the country code. Numbers starting with 0 are read as Indonesian (+62)."
+msgstr ""
+
 #: src/features/billing/purchase-dialog.tsx
 msgid "Within 7 days of your first charge you can ask for a full refund if you used no more than 10 Rezumi AI credits from it. Double payments and technical problems are always sorted out."
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Without a resume"
 msgstr ""
 
 #: src/features/settings/ai/api-keys.tsx
@@ -15440,6 +16426,10 @@ msgstr "ଟେକ୍ସଟ୍ ବାହାର କରାଗଲେ ଶବ୍ଦଗ
 
 #: src/features/portfolio/page-text.ts
 msgid "Work"
+msgstr ""
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Work layout"
 msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
@@ -15621,6 +16611,10 @@ msgstr "ଆପଣ ଏଡିଟିଂ ଜାରି ରଖିପାରିବେ | 
 msgid "You can keep up to 30 application questions."
 msgstr "ଆପଣ 30ଟି ପର୍ଯ୍ୟନ୍ତ ଆବେଦନ ପ୍ରଶ୍ନ ରଖିପାରିବେ।"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "You can link a resume later in Publish."
+msgstr ""
+
 #: src/features/settings/account/security.tsx
 msgid "You can no longer sign in with this passkey."
 msgstr "ଆପଣ ଆଉ ଏହି ପାସକି ସହ ସାଇନ୍ ଇନ୍ କରିପାରିବେ ନାହିଁ।"
@@ -15697,9 +16691,17 @@ msgstr "ଆପଣ ଏକ ଅତିଥି ଆକାଉଣ୍ଟ ବ୍ୟବହ�
 msgid "Your {plan} checkout isn't finished"
 msgstr ""
 
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your account is new, so search engines are kept away until {date}, even with this on. It keeps fake pages out of Google."
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Your account was deleted."
 msgstr "ଆପଣଙ୍କର ଖାତା ବିଲୋପ ହେଲା |"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your address"
+msgstr ""
 
 #: src/features/career/coach.tsx
 #: src/features/career/workspace/coach-sheet.tsx
@@ -15766,6 +16768,7 @@ msgstr ""
 
 #: src/routes/builder/$resumeId/-components/use-editor-hotkeys.ts
 #: src/routes/builder/letter/-components/letter-shell.tsx
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 msgid "Your changes are saved automatically."
 msgstr "ଆପଣଙ୍କ ପରିବର୍ତ୍ତନଗୁଡିକ ସ୍ୱୟଂ ଚାଳିତ ଭାବେ ସେଭ୍ ହୋଇଯାଉଛି।"
 
@@ -15885,6 +16888,10 @@ msgstr "ରେଜୁମେରେ ତୁମର ଅବସ୍ଥାନ ବଦଳି
 msgid "Your margins are very narrow."
 msgstr "ଆପଣଙ୍କ ମାର୍ଜିନ୍ ବହୁତ ସଂକୀର୍ଣ୍ଣ।"
 
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your name"
+msgstr ""
+
 #: src/routes/builder/letter/-components/write-panel.tsx
 msgid "Your name and contact details come from a resume."
 msgstr "ତୁମର ନାମ ଏବଂ ଯୋଗାଯୋଗ ବିବରଣୀ ଏକ ରେଜୁମାରୁ ଆସିଛି |"
@@ -15900,6 +16907,14 @@ msgstr "ରେଜୁମାରେ ତୁମର ନାମ ବଦଳିଗଲା | 
 #: src/features/resume/editor/check/issues.ts
 msgid "Your name is missing"
 msgstr "ତୁମର ନାମ ହଜିଯାଇଛି |"
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your name, photo, experience, education and skills follow this resume as it changes. Its summary becomes About me and its projects become your work, to edit freely."
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your name, photo, experience, education, skills and contact details follow this resume as it changes. Your portfolio's own text, work and design stay as they are."
+msgstr ""
 
 #: src/components/layout/loading-screen.tsx
 msgid "Your next opportunity is already looking for you."
@@ -15920,6 +16935,10 @@ msgstr "ଆପଣଙ୍କ ଆରମ୍ଭ"
 #: src/features/career/workspace/prepare.tsx
 msgid "Your opening, the stories to bring and questions to ask. It becomes your checklist 10 minutes before the call."
 msgstr "ଆପଣଙ୍କ ଆରମ୍ଭ, ଆଣିବାକୁ ଥିବା କାହାଣୀ ଓ ପଚାରିବାକୁ ଥିବା ପ୍ରଶ୍ନ। କଲ୍‌ର 10 ମିନିଟ୍ ପୂର୍ବରୁ ଏହା ଆପଣଙ୍କ ଚେକଲିଷ୍ଟ ହୋଇଯାଏ।"
+
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Your own color"
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "Your own endpoint"
@@ -15975,9 +16994,41 @@ msgstr ""
 msgid "Your plan keeps up to {max} resumes outside Trash. Move one you don't need to Trash to make room; you can restore it later."
 msgstr ""
 
+#: src/features/portfolio/portfolio-page.tsx
+msgid "Your portfolio"
+msgstr ""
+
+#: src/routes/builder/portfolio/-components/portfolio-shell.tsx
+msgid "Your portfolio changed somewhere else"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your portfolio is live"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your portfolio is no longer published"
+msgstr ""
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your portfolio still shows its own content. Choose another resume to fill Experience, Education and the other sections again."
+msgstr ""
+
+#: src/features/portfolio/create-dialog.tsx
+msgid "Your primary resume"
+msgstr ""
+
 #: src/features/assistant/assistant-panel.tsx
 msgid "your provider"
 msgstr "ଆପଣଙ୍କର ପ୍ରଦାନକାରୀ"
+
+#: src/features/resume/share/short-link.ts
+msgid "Your published portfolio opens at your short link and custom domain. This resume opens there again if you unpublish the portfolio."
+msgstr ""
+
+#: src/features/resume/share/short-link.ts
+msgid "Your published portfolio opens at your short link and custom domain. Your primary resume opens there again if you unpublish the portfolio."
+msgstr ""
 
 #. placeholder {0}: voice.settings.transcribe.label
 #: src/features/career/workspace/practise.tsx
@@ -16017,17 +17068,21 @@ msgid "Your server provides search for Applications and the assistant. Connect a
 msgstr "ଆପଣଙ୍କ ସର୍ଭର ଆବେଦନଗୁଡ଼ିକ ଏବଂ ସହାୟକ ପାଇଁ ୱେବ୍ ସନ୍ଧାନ ଯୋଗାଏ। ଅନ୍ତର୍ନିହିତ ରିଡର୍ ପଢ଼ିପାରୁନଥିବା ପୃଷ୍ଠାଗୁଡ଼ିକ ପଢ଼ିବା ପାଇଁ ଏକ ସେବା ସଂଯୋଗ କରନ୍ତୁ।"
 
 #. placeholder {0}: current.name
-#: src/features/resume/share/share-panel.tsx
+#: src/features/resume/share/short-link.ts
 msgid "Your short link and custom domain open “{0}”."
 msgstr "ଆପଣଙ୍କ ଛୋଟ ଲିଙ୍କ୍ ଏବଂ କଷ୍ଟମ୍ ଡୋମେନ୍ “{0}” ଖୋଲେ।"
 
-#: src/features/resume/share/share-panel.tsx
+#: src/features/resume/share/short-link.ts
 msgid "Your short link and custom domain open this resume."
 msgstr "ଆପଣଙ୍କ ଛୋଟ ଲିଙ୍କ୍ ଏବଂ କଷ୍ଟମ୍ ଡୋମେନ୍ ଏହି ରେଜ୍ୟୁମେ ଖୋଲେ।"
 
-#: src/features/resume/share/share-panel.tsx
+#: src/features/resume/share/short-link.ts
 msgid "Your short link and custom domain say this resume isn't shared until you publish it again."
 msgstr "ଆପଣ ପୁଣି ପ୍ରକାଶ ନକରିବା ପର୍ଯ୍ୟନ୍ତ, ଆପଣଙ୍କ ଛୋଟ ଲିଙ୍କ୍ ଏବଂ କଷ୍ଟମ୍ ଡୋମେନ୍ ଦେଖାଏ ଯେ ଏହି ରେଜ୍ୟୁମେ ଅଂଶୀଦାର ହୋଇନାହିଁ।"
+
+#: src/features/portfolio/editor/publish-panel.tsx
+msgid "Your source resume is in Trash"
+msgstr ""
 
 #: src/features/career/knowledge/stories.tsx
 msgid "Your stories"

@@ -1,11 +1,3 @@
-import type { ThemePalette } from "../../design";
-
-/** Lugas' neutrals (`01-desain.md` section 5). */
-export const LUGAS_PALETTE: ThemePalette = {
-	light: { bg: "#FFFFFF", surface: "#F3F4F6", text: "#111318", muted: "#596070", border: "#E4E6EA" },
-	dark: { bg: "#0F1115", surface: "#191C21", text: "#ECEEF1", muted: "#9BA2AD", border: "#272B32" },
-};
-
 /**
  * Lugas: one calm 680 px column, pill buttons, a big bold name, works as a ruled list. Values from
  * `mockups/lugas.html`; the variants the theme offers (`PORTFOLIO_THEME_INFO.lugas.variants`) are data attributes.
