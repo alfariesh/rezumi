@@ -264,6 +264,21 @@ catalogs:
     '@shikijs/rehype':
       specifier: ^4.6.0
       version: 4.6.0
+    '@tiptap/core':
+      specifier: ^3.32.0
+      version: 3.32.0
+    '@tiptap/extension-link':
+      specifier: ^3.32.0
+      version: 3.32.0
+    '@tiptap/extension-underline':
+      specifier: ^3.32.0
+      version: 3.32.0
+    '@tiptap/extensions':
+      specifier: ^3.32.0
+      version: 3.32.0
+    '@tiptap/suggestion':
+      specifier: ^3.32.2
+      version: 3.32.2
     '@types/estree':
       specifier: ^1.0.10
       version: 1.0.10
@@ -1218,6 +1233,9 @@ importers:
       '@rezumi/pdf':
         specifier: workspace:*
         version: link:../../packages/pdf
+      '@rezumi/portfolio':
+        specifier: workspace:*
+        version: link:../../packages/portfolio
       '@rezumi/resume':
         specifier: workspace:*
         version: link:../../packages/resume
@@ -1245,6 +1263,9 @@ importers:
       '@tanstack/react-router':
         specifier: ^1.170.46
         version: 1.170.46(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@tiptap/core':
+        specifier: 'catalog:'
+        version: 3.32.0(@tiptap/pm@3.32.0)
       '@tiptap/extension-color':
         specifier: ^3.32.0
         version: 3.32.0(@tiptap/extension-text-style@3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0)))
@@ -1254,6 +1275,9 @@ importers:
       '@tiptap/extension-highlight':
         specifier: ^3.32.0
         version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))
+      '@tiptap/extension-link':
+        specifier: 'catalog:'
+        version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/extension-paragraph':
         specifier: ^3.32.0
         version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))
@@ -1266,6 +1290,12 @@ importers:
       '@tiptap/extension-text-style':
         specifier: ^3.32.0
         version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))
+      '@tiptap/extension-underline':
+        specifier: 'catalog:'
+        version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))
+      '@tiptap/extensions':
+        specifier: 'catalog:'
+        version: 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/pm':
         specifier: ^3.32.0
         version: 3.32.0
@@ -1275,6 +1305,9 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^3.32.0
         version: 3.32.0
+      '@tiptap/suggestion':
+        specifier: 'catalog:'
+        version: 3.32.2(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@types/js-cookie':
         specifier: ^3.0.6
         version: 3.0.6

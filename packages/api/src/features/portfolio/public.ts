@@ -1,11 +1,12 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { ResumeData } from "@rezumi/schema/resume/data";
 import type { SQL, SQLWrapper } from "drizzle-orm";
-import { and, asc, count, eq, isNotNull, isNull, sql } from "drizzle-orm";
+import { and, asc, count, eq, isNotNull, isNull, lte, sql } from "drizzle-orm";
 import { isbot } from "isbot";
 import { db } from "@rezumi/db/client";
 import * as schema from "@rezumi/db/schema";
 import { parsePortfolioData } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS, portfolioIndexableFrom } from "@rezumi/schema/portfolio/limits";
 import { isCustomDomainsEnabled } from "../custom-domain/service";
 import { isOwner, ownerIsNotBanned, resolveViewer } from "../resume/access-policy";
 import { parseStoredResumeData } from "../resume/resume-data-validation";
@@ -42,7 +43,7 @@ export type PublicPortfolio = {
 	ownerName: string;
 	data: PortfolioData;
 	updatedAt: Date;
-	/** Listed in search engines: the owner allows it (Phase 11 adds the young-account rule). */
+	/** Listed in search engines: the owner allows it and the account is old enough (owner decision #5). */
 	indexable: boolean;
 	/** The verified custom domain the portfolio opens at, which search engines are pointed to. */
 	customDomain: string | null;
@@ -66,6 +67,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 			updatedAt: schema.portfolio.updatedAt,
 			username: schema.user.username,
 			ownerName: schema.user.name,
+			ownerCreatedAt: schema.user.createdAt,
 		})
 		.from(schema.portfolio)
 		.innerJoin(schema.user, eq(schema.portfolio.userId, schema.user.id))
@@ -118,7 +120,7 @@ export async function findPublicPortfolio(username: string): Promise<PublicPortf
 		ownerName: row.ownerName,
 		data: parsePortfolioData(row.data),
 		updatedAt: row.updatedAt,
-		indexable: row.showInSearchEngines,
+		indexable: row.showInSearchEngines && portfolioIndexableFrom(row.ownerCreatedAt) <= new Date(),
 		customDomain: domain,
 		resume: resume
 			? {
@@ -159,12 +161,14 @@ export async function recordPortfolioVisit(input: {
 const SITEMAP_PAGE_SIZE = 50_000;
 
 /**
- * Portfolios listed in search engines: shown at `/<username>` now and allowed to be indexed. One with a verified
- * custom domain is left out; its own domain is its address. Needs the `user` join.
+ * Portfolios listed in search engines: shown at `/<username>` now, allowed to be indexed, and the account is at least
+ * a week old (owner decision #5). One with a verified custom domain is left out; its own domain is its address. Needs
+ * the `user` join.
  */
 const indexablePortfolioWhere = () =>
 	and(
 		eq(schema.portfolio.showInSearchEngines, true),
+		lte(schema.user.createdAt, sql`now() - make_interval(days => ${PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS})`),
 		portfolioOwnsProfilePath(schema.portfolio.userId),
 		ownerIsNotBanned(),
 		isCustomDomainsEnabled()

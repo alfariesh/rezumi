@@ -1,8 +1,9 @@
 import type { ThemePalette } from "../design";
 import type { PortfolioTheme } from "@rezumi/schema/portfolio/themes";
 import type { ComponentType } from "react";
-import { LUGAS_CSS, LUGAS_PALETTE } from "./lugas/css";
+import { LUGAS_CSS } from "./lugas/css";
 import { LugasPage } from "./lugas/theme";
+import { LUGAS_PALETTE } from "./palettes";
 
 /** A theme as the renderer uses it: its page component, its rules, and its neutral colours per mode. */
 export type ThemeRenderer = {
@@ -19,6 +20,9 @@ const lugas: ThemeRenderer = { id: "lugas", Page: LugasPage, css: LUGAS_CSS, pal
  * draws as Lugas, which reads every variant value it doesn't offer as its own default.
  */
 const RENDERERS: Partial<Record<PortfolioTheme, ThemeRenderer>> = { lugas };
+
+/** The themes with a renderer; `@rezumi/portfolio/editor` lists the same ones without loading them. */
+export const RENDERED_THEMES = Object.keys(RENDERERS) as PortfolioTheme[];
 
 export function themeRenderer(theme: PortfolioTheme): ThemeRenderer {
 	return RENDERERS[theme] ?? lugas;

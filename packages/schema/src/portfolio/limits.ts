@@ -68,6 +68,17 @@ export const PORTFOLIO_LIMITS = {
 	},
 } as const;
 
+/**
+ * A new account's portfolio stays out of search engines for this many days, even with "Show in search engines" on
+ * (owner decision #5, 2026-11-06): a fresh account is the likeliest to be spam.
+ */
+export const PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS = 7;
+
+/** When an account's portfolio may first be indexed. */
+export function portfolioIndexableFrom(accountCreatedAt: Date): Date {
+	return new Date(accountCreatedAt.getTime() + PORTFOLIO_NEW_ACCOUNT_NOINDEX_DAYS * 86_400_000);
+}
+
 /** Markup may run longer than its text (tags, entities); this bounds one rich-text field's HTML. */
 export const RICH_TEXT_MARKUP_FACTOR = 8;
 
