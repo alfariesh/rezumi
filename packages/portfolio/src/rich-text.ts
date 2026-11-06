@@ -51,6 +51,26 @@ export function sanitizePortfolioHtml(html: string): string {
 	return sanitizeHtml(html, options);
 }
 
+const pageOptions: sanitizeHtml.IOptions = {
+	...options,
+	allowedAttributes: { a: ["href", "rel", "target"], ol: ["start"] },
+	transformTags: {
+		...options.transformTags,
+		// Links visitors follow leave the page in a new tab, and search engines don't credit them to Rezumi.
+		a: (tagName, attribs) => ({
+			tagName,
+			attribs: attribs.href?.startsWith("mailto:")
+				? { href: attribs.href }
+				: { href: attribs.href ?? "", rel: "ugc nofollow noopener noreferrer", target: "_blank" },
+		}),
+	},
+};
+
+/** Rich text as the public page draws it: cleaned again, with outgoing links opening in a new tab as `ugc nofollow`. */
+export function renderPortfolioHtml(html: string): string {
+	return sanitizeHtml(html, pageOptions);
+}
+
 /** Every rich-text field of portfolio data, cleaned. Returns a new object; the input is unchanged. */
 export function sanitizePortfolioData(data: PortfolioData): PortfolioData {
 	return {

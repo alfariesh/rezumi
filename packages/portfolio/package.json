@@ -4,8 +4,12 @@
 	"type": "module",
 	"private": true,
 	"exports": {
+		".": "./src/page.tsx",
+		"./document": "./src/document.ts",
 		"./files": "./src/files.ts",
 		"./initial": "./src/initial.ts",
+		"./messages": "./src/messages.ts",
+		"./metric": "./src/metric.ts",
 		"./rich-text": "./src/rich-text.ts",
 		"./text": "./src/text.ts",
 		"./view": "./src/view.ts"
@@ -20,10 +24,14 @@
 		"@rezumi/fonts": "workspace:*",
 		"@rezumi/schema": "workspace:*",
 		"@rezumi/utils": "workspace:*",
+		"react": "catalog:",
+		"react-dom": "catalog:",
 		"sanitize-html": "^2.18.1"
 	},
 	"devDependencies": {
 		"@rezumi/config": "workspace:*",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
 		"@types/sanitize-html": "^2.16.2",
 		"tsrs": "catalog:",
 		"typescript": "catalog:",

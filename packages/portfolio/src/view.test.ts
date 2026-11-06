@@ -235,7 +235,7 @@ describe("buildPortfolioView contact and buttons", () => {
 	it("resolves buttons to addresses and leaves out the ones that have none", () => {
 		const buttons = [{ kind: "resume" }, { kind: "pdf", label: "CV (PDF)" }, { kind: "contact" }] as const;
 		expect(view({ hero: { buttons: [...buttons] } }).hero.buttons).toEqual([
-			{ label: "Send a message", href: "#contact", external: false },
+			{ label: "Send a message", href: "#contact", external: false, kind: "contact" },
 		]);
 		expect(
 			view(
@@ -243,9 +243,9 @@ describe("buildPortfolioView contact and buttons", () => {
 				{ links: { resume: "/nadia/cv", resumePdf: "/api/resumes/nadia/cv.pdf" } },
 			).hero.buttons,
 		).toEqual([
-			{ label: "View resume", href: "/nadia/cv", external: false },
-			{ label: "CV (PDF)", href: "/api/resumes/nadia/cv.pdf", external: false },
-			{ label: "Send a message", href: "#contact", external: false },
+			{ label: "View resume", href: "/nadia/cv", external: false, kind: "resume" },
+			{ label: "CV (PDF)", href: "/api/resumes/nadia/cv.pdf", external: false, kind: "pdf" },
+			{ label: "Send a message", href: "#contact", external: false, kind: "contact" },
 		]);
 		expect(view({ hero: { buttons: [{ kind: "whatsapp" }, { kind: "link" }] } }).hero.buttons).toEqual([]);
 	});

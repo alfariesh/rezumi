@@ -1,65 +1,18 @@
 import type { createBaseTemplateStyles } from "./base-template-styles";
 import type { ResumeData } from "@rezumi/schema/resume/data";
-import { parseColorString, rgbaStringToHex } from "@rezumi/utils/color";
-
-type Rgb = [number, number, number];
-
-const rgbOf = (color: string): Rgb => {
-	const parsed = parseColorString(color) ?? parseColorString(rgbaStringToHex(color));
-	return parsed ? [parsed.r, parsed.g, parsed.b] : [0, 0, 0];
-};
-
-const hex = ([r, g, b]: Rgb) =>
-	`#${[r, g, b]
-		.map((channel) =>
-			Math.round(Math.max(0, Math.min(255, channel)))
-				.toString(16)
-				.padStart(2, "0"),
-		)
-		.join("")}`;
+import { mixColors, readableOn, readableAccent as sharedReadableAccent } from "@rezumi/utils/contrast";
 
 /** `color` laid over `base` at `amount` (0–1), as one opaque colour: Forme prints tints as flat colours anyway. */
-export const mixColors = (color: string, base: string, amount: number): string => {
-	const [r1, g1, b1] = rgbOf(color);
-	const [r2, g2, b2] = rgbOf(base);
-	return hex([r2 + (r1 - r2) * amount, g2 + (g1 - g2) * amount, b2 + (b1 - b2) * amount]);
-};
-
-// WCAG relative luminance of an sRGB colour.
-const luminance = (color: string) => {
-	const [r, g, b] = rgbOf(color).map((channel) => {
-		const value = channel / 255;
-		return value <= 0.03928 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
-	}) as Rgb;
-	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
-
-const contrast = (a: string, b: string) => {
-	const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number];
-	return (light + 0.05) / (dark + 0.05);
-};
-
-/** Contrast the accent must reach as a text colour: WCAG's floor for bold labels and large text. */
-const ACCENT_TEXT_CONTRAST = 3;
+export { mixColors };
 
 /**
  * The accent as a text colour on `background`: the accent itself when it reads, otherwise the accent mixed toward
- * black (or white, on a dark page) just far enough to reach {@link ACCENT_TEXT_CONTRAST}. Rules, bars and fills keep
- * the accent the user picked; only text and icons drawn in it take this colour.
+ * black (or white, on a dark page) just far enough to reach 3:1, WCAG's floor for bold labels and large text. Rules,
+ * bars and fills keep the accent the user picked; only text and icons drawn in it take this colour. The rule lives in
+ * `@rezumi/utils/contrast`, shared with the portfolio pages (which ask for 4.5:1).
  */
-export const readableAccent = (accent: string, background: string): string => {
-	if (contrast(accent, background) >= ACCENT_TEXT_CONTRAST) return accent;
-	const toward = contrast("#000000", background) >= contrast("#ffffff", background) ? "#000000" : "#ffffff";
-	for (let step = 1; step <= 20; step++) {
-		const candidate = mixColors(accent, toward, 1 - step * 0.05);
-		if (contrast(candidate, background) >= ACCENT_TEXT_CONTRAST) return candidate;
-	}
-	return toward;
-};
-
-/** White or the ink colour, whichever reads better on `background`. */
-const readableOn = (background: string, ink: string): string =>
-	contrast("#ffffff", background) >= contrast(ink, background) ? "#ffffff" : ink;
+export const readableAccent = (accent: string, background: string): string =>
+	sharedReadableAccent(accent, background, 3);
 
 /**
  * Colour roles and type sizes every template of the November 2026 lineup draws with, derived from the resume's own

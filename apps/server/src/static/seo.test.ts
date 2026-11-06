@@ -6,9 +6,28 @@ vi.mock("@rezumi/api/features/resume/web-page", () => ({
 		{ username: "tess", slug: "game-dev", isPrimary: true, updatedAt: new Date("2026-10-01T00:00:00Z") },
 		{ username: "tess", slug: "level-design", isPrimary: false, updatedAt: new Date("2026-10-02T00:00:00Z") },
 	],
+	countIndexableResumes: async () => 2,
+	SITEMAP_PAGE_SIZE: 50_000,
+}));
+vi.mock("@rezumi/api/features/portfolio/public", () => ({
+	listIndexablePortfolios: async (page: number) =>
+		page === 0 ? [{ username: "nadia.r", updatedAt: new Date("2026-11-06T00:00:00Z") }] : [],
+	countIndexablePortfolios: async () => 1,
+	PORTFOLIO_SITEMAP_PAGE_SIZE: 50_000,
 }));
 
-const { handlePagesSitemap, handleResumesSitemap, handleLlms } = await import("./seo");
+const { handlePagesSitemap, handlePortfoliosSitemap, handleResumesSitemap, handleSitemap, handleLlms } =
+	await import("./seo");
+
+it("lists published portfolios at /<username>, on pages of their own in the sitemap index", async () => {
+	const index = await (await handleSitemap()).text();
+	expect(index).toContain("<loc>https://rezumi.app/sitemaps/resumes-1.xml</loc>");
+	expect(index).toContain("<loc>https://rezumi.app/sitemaps/portfolios-1.xml</loc>");
+	const xml = await (await handlePortfoliosSitemap(1)).text();
+	expect(xml).toContain("<url><loc>https://rezumi.app/nadia.r</loc><lastmod>2026-11-06T00:00:00.000Z</lastmod></url>");
+	expect((await handlePortfoliosSitemap(2)).status).toBe(404);
+	expect((await handlePortfoliosSitemap(0)).status).toBe(404);
+});
 
 it("lists each indexed resume at its canonical address: the primary at /<username>", async () => {
 	const xml = await (await handleResumesSitemap(1)).text();

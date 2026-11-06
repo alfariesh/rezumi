@@ -13,6 +13,8 @@
 		"templates:preview": "tsx --tsconfig ../tsconfig.json templates/preview.ts",
 		"templates:previews": "tsx --tsconfig ../tsconfig.json templates/previews.ts",
 		"templates:matrix": "tsx --tsconfig ../tsconfig.json templates/matrix.ts",
+		"portfolio:preview": "tsx --tsconfig ../tsconfig.json portfolio/preview.ts",
+		"portfolio:seed": "tsx --tsconfig ../tsconfig.json portfolio/seed.ts",
 		"icons:sync": "tsx icons/hugeicons-sync.ts",
 		"seed:dev": "tsx seed/dev-seed.ts",
 		"seed:career": "tsx seed/career-seed.ts",
@@ -21,6 +23,7 @@
 	},
 	"dependencies": {
 		"@rezumi/pdf": "workspace:*",
+		"@rezumi/portfolio": "workspace:*",
 		"@rezumi/schema": "workspace:*"
 	},
 	"devDependencies": {

@@ -1,6 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { WEB_PAGE_SOURCE_MESSAGES } from "@rezumi/pdf/web-page-messages";
+import { PORTFOLIO_SOURCE_MESSAGES } from "@rezumi/portfolio/messages";
 import { generatePresentLabels, generateSectionTitleCatalog, generateWebPageCatalog } from "./section-titles";
 
 const catalogs = fileURLToPath(new URL("../../apps/web/locales/", import.meta.url));
@@ -21,3 +22,9 @@ delete webPage["en-US"];
 const webPageOutput = new URL("../../packages/pdf/src/html/web-page-catalog.json", import.meta.url);
 await writeFile(webPageOutput, `${JSON.stringify(webPage, null, "\t")}\n`);
 console.log(`Updated the web page's interface text for ${Object.keys(webPage).length} locales.`);
+
+const portfolio = await generateWebPageCatalog(catalogs, PORTFOLIO_SOURCE_MESSAGES);
+delete portfolio["en-US"];
+const portfolioOutput = new URL("../../packages/portfolio/src/portfolio-catalog.json", import.meta.url);
+await writeFile(portfolioOutput, `${JSON.stringify(portfolio, null, "\t")}\n`);
+console.log(`Updated the portfolio page's interface text for ${Object.keys(portfolio).length} locales.`);
