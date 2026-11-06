@@ -9,6 +9,7 @@ import { coverLettersRouter } from "../features/cover-letters/router";
 import { customDomainRouter } from "../features/custom-domain/router";
 import { documentsRouter } from "../features/documents/router";
 import { flagsRouter } from "../features/flags/router";
+import { portfolioRouter } from "../features/portfolio/router";
 import { resumeRouter } from "../features/resume/router";
 import { statisticsRouter } from "../features/statistics/router";
 import { storageRouter } from "../features/storage/router";
@@ -26,6 +27,7 @@ export default {
 	customDomain: customDomainRouter,
 	documents: documentsRouter,
 	flags: flagsRouter,
+	portfolio: portfolioRouter,
 	resume: resumeRouter,
 	statistics: statisticsRouter,
 	storage: storageRouter,

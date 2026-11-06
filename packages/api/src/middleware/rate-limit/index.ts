@@ -165,3 +165,18 @@ export const resumeUpdatesUserRateLimit = createRatelimitMiddleware<ContextWithH
 	limiter: productionLimiter(resumeUpdatesUserLimiter),
 	key: ({ context }) => `resume-updates-user:${getUserKey(context)}`,
 });
+
+const portfolioUpdateLimiter = createRateLimiter("portfolioUpdateLimiter", rateLimitConfig.orpc.portfolioUpdates);
+const portfolioMutationLimiter = createRateLimiter("portfolioMutationLimiter", rateLimitConfig.orpc.portfolioMutations);
+
+/** Per account: one portfolio each, saved on its own while the owner edits. */
+export const portfolioUpdateRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
+	limiter: productionLimiter(portfolioUpdateLimiter),
+	key: ({ context }) => `portfolio-update:${getUserKey(context)}`,
+});
+
+/** Per account: creating, publishing, settings and deleting. */
+export const portfolioMutationRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
+	limiter: productionLimiter(portfolioMutationLimiter),
+	key: ({ context }) => `portfolio-mutation:${getUserKey(context)}`,
+});

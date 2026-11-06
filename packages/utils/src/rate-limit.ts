@@ -49,5 +49,8 @@ export const rateLimitConfig = {
 		resumeMutations: { maxRequests: 300, window: 60 * 1000 },
 		resumeUpdates: { maxRequests: 20, window: 60 * 1000 },
 		resumeUpdatesUser: { maxRequests: 60, window: 60 * 1000 },
+		// The portfolio editor saves on its own while someone types; publishing and settings change far less often.
+		portfolioUpdates: { maxRequests: 60, window: 60 * 1000 },
+		portfolioMutations: { maxRequests: 20, window: 60 * 1000 },
 	},
 } as const;

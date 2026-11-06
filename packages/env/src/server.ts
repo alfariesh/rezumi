@@ -236,6 +236,10 @@ export const env = createEnv({
 		POLAR_PRODUCT_PLUS_YEARLY: z.uuid().optional(),
 		POLAR_PRODUCT_PRO_AI_MONTHLY: z.uuid().optional(),
 		POLAR_PRODUCT_PRO_AI_YEARLY: z.uuid().optional(),
+
+		// Web portfolios at /<username>: off (nothing changes; the short link keeps opening the primary resume), admins
+		// (only accounts with the admin role can build and publish one), on (every signed-up account).
+		PORTFOLIO_MODE: z.enum(["off", "admins", "on"]).default("off"),
 	},
 	runtimeEnv: deploymentEnvironment(process.env),
 	emptyStringAsUndefined: true,
