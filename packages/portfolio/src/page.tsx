@@ -3,6 +3,7 @@ import type { RenderContext } from "./shared/context";
 import type { PortfolioView } from "./view";
 import { renderToStaticMarkup } from "react-dom/server";
 import { designCss, fontFaceCss, portfolioFontFaces, preloadFont } from "./design";
+import { effectAssets } from "./effects";
 import { PORTFOLIO_PAGE_SCRIPT } from "./script";
 import { BASE_CSS } from "./shared/base-css";
 import { RenderContextValue } from "./shared/context";
@@ -32,7 +33,7 @@ export type PortfolioPage = {
 	head: string;
 	/** Font faces, tokens, shared and theme rules. */
 	css: string;
-	/** The page script, the same text on every page (allowed by hash). */
+	/** The page script (allowed by hash): the same text on every page, plus the intro effect's when it needs one. */
 	script: string;
 	/** A font file worth preloading. */
 	preloadFont: string | null;
@@ -82,16 +83,25 @@ export function renderPortfolioPage(input: RenderPortfolioPageInput): PortfolioP
 	// React hoists a preload for the high-priority picture to the front of its output; it belongs in <head>.
 	const hoisted = /^(?:<link [^>]*\/?>)+/.exec(markup)?.[0] ?? "";
 	const html = markup.slice(hoisted.length);
-	const faces = portfolioFontFaces(view);
+	const faces = portfolioFontFaces(view, theme.headingWeights);
+	const effect = effectAssets(view, theme.palette);
 	return {
 		lang: view.locale,
 		dir: view.dir,
 		scheme: view.design.scheme,
 		html,
 		head: hoisted,
-		css: [fontFaceCss(faces), designCss(view, theme.palette), BASE_CSS, theme.css].join("\n"),
-		script: PORTFOLIO_PAGE_SCRIPT,
-		preloadFont: preloadFont(view, faces),
+		css: [
+			fontFaceCss(faces, theme.headingDisplay === "optional" ? view.design.fonts.heading : undefined),
+			designCss(view, theme.palette),
+			BASE_CSS,
+			theme.css,
+			effect.css,
+		]
+			.filter(Boolean)
+			.join("\n"),
+		script: PORTFOLIO_PAGE_SCRIPT + effect.script,
+		preloadFont: preloadFont(view, faces, theme.nameWeight),
 		themeColors: { light: theme.palette.light.bg, dark: theme.palette.dark.bg },
 	};
 }

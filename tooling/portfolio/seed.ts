@@ -1,15 +1,16 @@
 /**
- * Gives one local account the Lugas persona's portfolio, published, so the public page can be checked before the
- * editor exists (Phase 03): a resume with the persona's career, the portfolio with works, metrics, services,
- * testimonials and clients, and the mockup's pictures stored as the account's uploads.
+ * Gives one local account a persona's portfolio, published, so the public page can be checked in the app: a resume
+ * with the persona's career, the portfolio with works, metrics, services, testimonials, clients and every block type,
+ * and the persona's pictures, logos and PDFs stored as the account's uploads (`persona.ts`).
  *
- *   pnpm portfolio:seed --email you@example.test [--minimal] [--unpublish]
+ *   pnpm portfolio:seed --email you@example.test [--persona nadia|anindya|bayu|citra] [--lang id|en] [--minimal]
+ *     [--unpublish]
  *
  * It replaces that account's portfolio and its "Portfolio persona" resume, and refuses any database that isn't on this
  * machine. Sign up through the app first and make the account an admin when `PORTFOLIO_MODE=admins`; the seed never
- * creates accounts or changes roles. Pictures go to local storage (`STORAGE_BACKEND=local`).
+ * creates accounts or changes roles. Files go to local storage (`STORAGE_BACKEND=local`).
  */
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
@@ -17,12 +18,14 @@ import { Pool } from "pg";
 import sharp from "sharp";
 import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
 import { generateId } from "@rezumi/utils/string";
-import { MOCKUP_IMAGES, minimalPortfolio, PERSONA_FILES, personaPortfolio, personaResume } from "./persona";
+import { buildPersona, isPersonaId, PERSONA_LANGS } from "./persona";
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 const { values: args } = parseArgs({
 	options: {
 		email: { type: "string" },
+		persona: { type: "string", default: "nadia" },
+		lang: { type: "string", default: "id" },
 		minimal: { type: "boolean", default: false },
 		unpublish: { type: "boolean", default: false },
 	},
@@ -34,6 +37,12 @@ if (!databaseUrl)
 if (!LOCAL_HOSTS.has(new URL(databaseUrl).hostname))
 	throw new Error("Refusing to seed: DATABASE_URL must point at a database on this machine.");
 if (!args.email) throw new Error("Pass the account to fill: pnpm portfolio:seed --email you@example.test");
+if (!isPersonaId(args.persona)) throw new Error(`Unknown persona "${args.persona}".`);
+if (!(PERSONA_LANGS as readonly string[]).includes(args.lang)) throw new Error(`Unknown language "${args.lang}".`);
+const persona = buildPersona(args.persona, {
+	lang: args.lang as (typeof PERSONA_LANGS)[number],
+	variant: args.minimal ? "minimal" : "full",
+});
 
 const storageRoot = resolve(
 	process.env.LOCAL_STORAGE_PATH ?? join(dirname(fileURLToPath(import.meta.url)), "../../data"),
@@ -56,21 +65,34 @@ try {
 		await writeFile(path, bytes);
 	};
 
-	for (const file of Object.values(PERSONA_FILES)) {
-		const svg = await readFile(fileURLToPath(new URL(file.file, MOCKUP_IMAGES)));
-		const png = await sharp(svg, { density: 144 }).resize(file.width, file.height, { fit: "cover" }).png().toBuffer();
+	for (const file of persona.files) {
+		const source = await file.read();
+		// Drawings are SVG; the app stores pictures as PNG, JPEG or WebP.
+		const bytes =
+			file.kind === "pdf"
+				? source
+				: await sharp(source, { density: 144 }).resize(file.width, file.height, { fit: "cover" }).png().toBuffer();
 		const key = own(file.key);
-		await store(key, png);
+		await store(key, bytes);
 		await pool.query(
-			`insert into portfolio_file (id, user_id, kind, key, bytes, width, height) values ($1, $2, 'image', $3, $4, $5, $6)
+			`insert into portfolio_file (id, user_id, kind, key, bytes, width, height, pages) values ($1, $2, $3, $4, $5, $6, $7, $8)
 			 on conflict (key) do update set bytes = excluded.bytes`,
-			[generateId(), user.id, key, png.byteLength, file.width, file.height],
+			[
+				generateId(),
+				user.id,
+				file.kind,
+				key,
+				bytes.byteLength,
+				file.kind === "image" ? file.width : null,
+				file.kind === "image" ? file.height : null,
+				file.pages ?? null,
+			],
 		);
 	}
 
-	const resume = personaResume();
+	const resume = persona.resume;
 	const pictureKey = `uploads/${user.id}/pictures/portfolio-persona.jpg`;
-	await store(pictureKey, await readFile(fileURLToPath(new URL("nadia.jpg", MOCKUP_IMAGES))));
+	await store(pictureKey, await persona.photo.read());
 	resume.picture.url = `/${pictureKey}`;
 
 	await pool.query("delete from resume where user_id = $1 and name = 'Portfolio persona'", [user.id]);
@@ -82,9 +104,8 @@ try {
 		[resumeId, `portfolio-persona-${resumeId.slice(-6)}`, JSON.stringify(resume), user.id, primaries.length === 0],
 	);
 
-	const input = args.minimal ? minimalPortfolio() : personaPortfolio();
 	const data = parseWritablePortfolioData(
-		JSON.parse(JSON.stringify(input).replaceAll("uploads/persona-nadia/", `uploads/${user.id}/`)),
+		JSON.parse(JSON.stringify(persona.portfolio).replaceAll(`uploads/persona-${persona.id}/`, `uploads/${user.id}/`)),
 	);
 	if (parsePortfolioData(data).works.items.length !== data.works.items.length)
 		throw new Error("The persona's works didn't parse.");
@@ -96,7 +117,7 @@ try {
 	);
 
 	console.log(
-		`Seeded ${args.minimal ? "the minimal" : "the full"} portfolio for ${args.email} (/${user.username}), ${args.unpublish ? "unpublished" : "published"}.` +
+		`Seeded ${persona.id}'s ${args.minimal ? "minimal" : "full"} portfolio (${persona.theme}, ${args.lang}) for ${args.email} (/${user.username}), ${args.unpublish ? "unpublished" : "published"}.` +
 			(user.role === "admin"
 				? ""
 				: " The account isn't an admin: with PORTFOLIO_MODE=admins its page still shows the resume."),

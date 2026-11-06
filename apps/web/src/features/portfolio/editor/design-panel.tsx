@@ -1,10 +1,9 @@
 import type { PortfolioData } from "@rezumi/schema/portfolio/data";
 import type { PortfolioScheme, PortfolioVariantKey, PortfolioVariantValue } from "@rezumi/schema/portfolio/themes";
 import { Segment } from "@heroui-pro/react";
-import { Chip } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { accentIsCorrected, RENDERED_PORTFOLIO_THEMES } from "@rezumi/portfolio/editor";
+import { accentIsCorrected } from "@rezumi/portfolio/editor";
 import { PORTFOLIO_HERO_BACKGROUNDS } from "@rezumi/schema/portfolio/data";
 import {
 	PORTFOLIO_ACCENTS,
@@ -19,9 +18,10 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { rgbaStringToHex } from "@rezumi/utils/color";
 import { cn } from "@rezumi/utils/style";
 import { ImageField } from "../images/image-field";
-import { themeDescription } from "../themes";
+import { ThemeGallery } from "../theme-gallery";
 import { useSourceResume } from "./context";
 import { ChoiceSelect, PanelGroup } from "./fields";
+import { IntroEffectPicker } from "./intro-effect";
 import { editPortfolio, usePortfolioData } from "./store";
 import { useEditorView } from "./use-view";
 import { ColorPicker } from "@/components/input/color-picker";
@@ -67,7 +67,8 @@ const backgroundLabel = (kind: PortfolioData["hero"]["background"]["kind"]) =>
 	({ plain: t`Plain`, "soft-gradient": t`Soft gradient`, pattern: t`Subtle pattern`, image: t`Picture` })[kind];
 
 /**
- * Design: the theme, light or dark, the accent colour, the fonts, the intro's background and each section's layout.
+ * Design: the theme, light or dark, the accent colour, the intro's background and effect, the fonts and each section's
+ * layout.
  * Only what the theme supports is offered; every change shows in the preview at once.
  */
 export function DesignPanel() {
@@ -75,6 +76,7 @@ export function DesignPanel() {
 		<div className="grid gap-3 p-3">
 			<ThemeGroup />
 			<ColorsGroup />
+			<IntroGroup />
 			<FontsGroup />
 			<LayoutGroup />
 		</div>
@@ -85,43 +87,14 @@ function ThemeGroup() {
 	const { theme } = usePortfolioData();
 	return (
 		<PanelGroup icon="squares-four" title={<Trans>Theme</Trans>}>
-			<div role="radiogroup" aria-label={t`Theme`} className="grid gap-2">
-				{RENDERED_PORTFOLIO_THEMES.map((id) => {
-					const info = PORTFOLIO_THEME_INFO[id];
-					const selected = id === theme;
-					return (
-						<button
-							key={id}
-							type="button"
-							role="radio"
-							aria-checked={selected}
-							onClick={() =>
-								editPortfolio((draft) => {
-									draft.theme = id;
-								})
-							}
-							className={cn(
-								"grid cursor-(--cursor-interactive) gap-1 rounded-2xl border p-3 text-start outline-none focus-visible:ring-2 focus-visible:ring-focus",
-								selected ? "border-accent bg-accent-soft" : "border-separator hover:bg-default",
-							)}
-						>
-							<span className="flex items-center gap-2 text-sm font-semibold">
-								{info.name}
-								{info.plan === "free" && (
-									<Chip size="sm" variant="soft">
-										<Trans>Free</Trans>
-									</Chip>
-								)}
-								{selected && <Icon name="check-circle" size={18} className="ms-auto text-accent" />}
-							</span>
-							<span className="text-xs text-muted">{themeDescription(id)}</span>
-						</button>
-					);
-				})}
-			</div>
-			<p className="text-xs text-muted">
-				<Trans>Prima, Kanvas and Mozaik are coming soon.</Trans>
-			</p>
+			<ThemeGallery
+				value={theme}
+				onChange={(id) =>
+					editPortfolio((draft) => {
+						draft.theme = id;
+					})
+				}
+			/>
 		</PanelGroup>
 	);
 }
@@ -233,35 +206,6 @@ function ColorsGroup() {
 					) : null}
 				</span>
 			</div>
-
-			<ChoiceSelect
-				label={t`Intro background`}
-				value={data.hero.background.kind}
-				options={PORTFOLIO_HERO_BACKGROUNDS.map((kind) => ({
-					id: kind,
-					label: backgroundLabel(kind),
-				}))}
-				onChange={(kind) =>
-					editPortfolio((draft) => {
-						// The picture stays when switching away, so switching back doesn't upload it again.
-						draft.hero.background = { ...draft.hero.background, kind };
-					})
-				}
-			/>
-			{data.hero.background.kind === "image" && (
-				<ImageField
-					label={t`Background picture`}
-					value={data.hero.background.image}
-					altSuggestion=""
-					description={t`A darker layer goes over it so the text stays readable. Wide pictures fit best.`}
-					onChange={(image) =>
-						editPortfolio((draft) => {
-							if (image) draft.hero.background.image = image;
-							else delete draft.hero.background.image;
-						})
-					}
-				/>
-			)}
 		</PanelGroup>
 	);
 }
@@ -292,6 +236,44 @@ function AccentSwatch({ label, color, selected, onSelect, children }: AccentSwat
 		>
 			{children}
 		</button>
+	);
+}
+
+/** The intro's background and its text effect (`01-desain.md` section 18). */
+function IntroGroup() {
+	const data = usePortfolioData();
+	return (
+		<PanelGroup icon="sparkle" title={<Trans>Intro</Trans>}>
+			<ChoiceSelect
+				label={t`Intro background`}
+				value={data.hero.background.kind}
+				options={PORTFOLIO_HERO_BACKGROUNDS.map((kind) => ({
+					id: kind,
+					label: backgroundLabel(kind),
+				}))}
+				onChange={(kind) =>
+					editPortfolio((draft) => {
+						// The picture stays when switching away, so switching back doesn't upload it again.
+						draft.hero.background = { ...draft.hero.background, kind };
+					})
+				}
+			/>
+			{data.hero.background.kind === "image" && (
+				<ImageField
+					label={t`Background picture`}
+					value={data.hero.background.image}
+					altSuggestion=""
+					description={t`A darker layer goes over it so the text stays readable. Wide pictures fit best.`}
+					onChange={(image) =>
+						editPortfolio((draft) => {
+							if (image) draft.hero.background.image = image;
+							else delete draft.hero.background.image;
+						})
+					}
+				/>
+			)}
+			<IntroEffectPicker />
+		</PanelGroup>
 	);
 }
 

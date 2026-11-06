@@ -1,107 +1,54 @@
 /**
- * Renders the portfolio persona to an HTML file, for checking a theme by eye (`02-teknis.md` section 22).
+ * Renders a portfolio persona to an HTML file, for checking a theme by eye (`02-teknis.md` section 22).
  *
- *   pnpm --filter @rezumi/tooling portfolio:preview --out <dir> [--variant full|minimal|long|rtl] [--scheme light|dark|auto]
- *     [--theme lugas] [--accent <#rrggbb>] [--set work=grid-2] [--name <file>]
+ *   pnpm --filter @rezumi/tooling portfolio:preview --out <dir> [--persona nadia|anindya|bayu|citra] [--lang id|en]
+ *     [--variant full|minimal|long|rtl] [--scheme light|dark|auto] [--theme lugas|prima|kanvas|mozaik]
+ *     [--accent <#rrggbb>] [--effect none|fade-up|…] [--set work=grid-2] [--name <file>]
  *
- * The page and the persona's pictures (copied from the Phase 00 mockup) land in `<dir>`; open the HTML file in a
- * browser. `--set` picks a section variant (`hero`, `work`, `services`, `testimonials`, `clients`, `experience`,
- * `education`, `skills`, `metric`). The page renders exactly as the server renders it, minus the script's local time.
+ * Nadia (Lugas) in Indonesian is the default; each persona renders in its own theme unless `--theme` says otherwise
+ * (`persona.ts`). The page and the persona's pictures land in `<dir>`; open the HTML file in a browser. `--set` picks a
+ * section variant (`hero`, `work`, `services`, `testimonials`, `clients`, `experience`, `education`, `skills`,
+ * `metric`). The page renders exactly as the server renders it; the page script fills in the local time.
  */
-import type { PortfolioDataInput } from "@rezumi/schema/portfolio/data";
-import { copyFile, mkdir, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import type { PortfolioHeroEffect, PortfolioScheme, PortfolioTheme } from "@rezumi/schema/portfolio/themes";
+import { resolve } from "node:path";
 import { parseArgs } from "node:util";
-import { renderPortfolioPage } from "@rezumi/portfolio";
-import { renderPortfolioDocument } from "@rezumi/portfolio/document";
-import { portfolioMessages, portfolioViewMessages } from "@rezumi/portfolio/messages";
-import { buildPortfolioView } from "@rezumi/portfolio/view";
-import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
-import { MOCKUP_IMAGES, minimalPortfolio, PERSONA_FILES, personaPortfolio, personaResume } from "./persona";
+import { PORTFOLIO_HERO_EFFECTS, PORTFOLIO_SCHEMES, PORTFOLIO_THEMES } from "@rezumi/schema/portfolio/themes";
+import { isPersonaId, PERSONA_LANGS, PERSONA_VARIANTS } from "./persona";
+import { writePersonaPage } from "./render";
 
 const { values } = parseArgs({
 	options: {
 		out: { type: "string", default: "." },
+		persona: { type: "string", default: "nadia" },
+		lang: { type: "string", default: "id" },
 		variant: { type: "string", default: "full" },
 		scheme: { type: "string" },
 		theme: { type: "string" },
 		accent: { type: "string" },
+		effect: { type: "string" },
 		set: { type: "string", multiple: true, default: [] },
 		name: { type: "string", default: "index.html" },
 	},
 });
 
-const out = resolve(values.out);
-await mkdir(join(out, "img"), { recursive: true });
-
-const resume = personaResume();
-resume.picture.url = "img/nadia.jpg";
-let data: PortfolioDataInput = values.variant === "minimal" ? minimalPortfolio() : personaPortfolio();
-
-if (values.variant === "long") {
-	const full = personaPortfolio();
-	resume.basics.name = "Nadia Kusumawardhani Rahmawati Puspitasari";
-	const works = full.works?.items ?? [];
-	data = {
-		...full,
-		basics: {
-			headline: "Senior Product Manager untuk pembayaran digital, merchant, dan eksperimen produk berskala besar",
-		},
-		works: {
-			items: [
-				...works,
-				// Copies with their own ids and long titles, for a page with twelve works.
-				...works.map((work, index) => ({
-					...(JSON.parse(
-						JSON.stringify(work).replace(/"(id|highlightMetricId)":"([^"]+)"/g, '"$1":"$2-copy"'),
-					) as typeof work),
-					slug: `copy-${index}`,
-					title: `${work.title ?? ""}: catatan lanjutan yang judulnya jauh lebih panjang`.slice(0, 100),
-				})),
-			],
-		},
-	};
+/** The value when it is one of `options`, otherwise an error naming them. */
+function oneOf<T extends string>(name: string, value: string, options: readonly T[]): T {
+	if ((options as readonly string[]).includes(value)) return value as T;
+	throw new Error(`Unknown ${name} "${value}": use ${options.join(", ")}.`);
 }
-if (values.variant === "rtl") data = { ...personaPortfolio(), locale: "ar-SA" };
 
-const variants = Object.fromEntries(values.set.map((assignment) => assignment.split("=", 2) as [string, string]));
-data = {
-	...data,
-	...(values.theme ? { theme: values.theme as PortfolioDataInput["theme"] } : {}),
-	design: {
-		...data.design,
-		...(values.scheme ? { scheme: values.scheme as "light" | "dark" | "auto" } : {}),
-		...(values.accent ? { accent: { source: "custom", color: values.accent } } : {}),
-		variants: { ...(data.design?.variants as Record<string, string> | undefined), ...variants },
-	},
-};
-
-const files = new Map(Object.values(PERSONA_FILES).map((file) => [file.key, file.file]));
-for (const file of [...files.values(), "nadia.jpg"])
-	await copyFile(fileURLToPath(new URL(file, MOCKUP_IMAGES)), join(out, "img", file));
-
-const parsed = parseWritablePortfolioData(data);
-const messages = portfolioMessages(parsed.locale ?? resume.metadata.page.locale);
-const view = buildPortfolioView({
-	portfolio: { data: parsed },
-	resume: { data: resume },
-	owner: { name: "Nadia Rahmawati", username: "nadia" },
-	entitlements: { hidePortfolioCredit: false },
-	messages: portfolioViewMessages(messages),
-	fileUrl: (key) => `img/${files.get(key) ?? "missing.png"}`,
-	links: { resume: "#cv", resumePdf: "#pdf" },
+if (!isPersonaId(values.persona)) throw new Error(`Unknown persona "${values.persona}".`);
+const page = await writePersonaPage(resolve(values.out), values.name, {
+	persona: values.persona,
+	lang: oneOf("language", values.lang, PERSONA_LANGS),
+	variant: oneOf("variant", values.variant, PERSONA_VARIANTS),
+	...(values.theme ? { theme: oneOf<PortfolioTheme>("theme", values.theme, PORTFOLIO_THEMES) } : {}),
+	...(values.scheme ? { scheme: oneOf<PortfolioScheme>("scheme", values.scheme, PORTFOLIO_SCHEMES) } : {}),
+	...(values.effect ? { effect: oneOf<PortfolioHeroEffect>("effect", values.effect, PORTFOLIO_HERO_EFFECTS) } : {}),
+	...(values.accent ? { accent: values.accent } : {}),
+	variants: Object.fromEntries(values.set.map((assignment) => assignment.split("=", 2) as [string, string])),
 });
-const page = renderPortfolioPage({ view, messages, year: new Date().getFullYear(), creditUrl: "https://rezumi.app" });
-const document = renderPortfolioDocument({
-	page,
-	head: {
-		title: view.seo.title,
-		description: view.seo.description,
-		canonicalUrl: "https://rezumi.app/nadia",
-		indexable: false,
-	},
-});
-const target = join(out, values.name);
-await writeFile(target, document);
-console.log(`Wrote ${target} (${Math.round(document.length / 1024)} KB, script ${page.script.length} bytes)`);
+console.log(
+	`Wrote ${page.file} (${page.theme}, ${Math.round(page.bytes / 1024)} KB, script ${page.scriptBytes} bytes)`,
+);
