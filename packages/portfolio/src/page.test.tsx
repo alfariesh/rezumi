@@ -191,6 +191,18 @@ describe("renderPortfolioPage (Lugas)", () => {
 		expect(html).toMatch(/<span class="pf-work-metric"><b>2,8%<\/b><span>Checkout conversion<\/span><\/span>/);
 	});
 
+	it("opens gallery pictures full size, in one viewer the page script fills", () => {
+		expect(html).toContain(
+			'<a class="pf-zoom" href="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-1.webp" data-lightbox="" data-caption="Home screen">',
+		);
+		expect(html).toContain(
+			'<a class="pf-zoom" href="https://rezumi.example/uploads/user-1/pictures/portfolio/shot-2.webp" data-lightbox="">',
+		);
+		expect(count(html, /class="pf-lightbox"/g)).toBe(1);
+		expect(html).toMatch(/<div class="pf-lightbox" role="dialog" aria-modal="true" aria-label="[^"]+" hidden="">/);
+		expect(count(html, /data-lb="(?:close|prev|next)"/g)).toBe(3);
+	});
+
 	it("moves the first picture's preload into the head", () => {
 		expect(page.head).toMatch(/^<link rel="preload" as="image"/);
 		expect(html.startsWith("<div")).toBe(true);
@@ -278,6 +290,43 @@ describe("renderPortfolioPage edge cases", () => {
 		expect(html).not.toContain('<section class="pf-section');
 		expect(html).not.toContain("pf-nav__links");
 		expect(html).not.toMatch(/undefined|NaN/);
+	});
+
+	it("leaves out metrics still being filled in, and the viewer when there's no gallery", () => {
+		const { html } = render({
+			hero: {
+				highlights: [
+					{ id: "h1", label: "", value: { kind: "number", number: 12 }, format: "plain" },
+					{ id: "h2", label: "Years", value: { kind: "number", number: 8 }, format: "plain" },
+				],
+			},
+			works: {
+				items: [
+					{
+						id: "w1",
+						slug: "w1",
+						title: "Draft work",
+						highlightMetricId: "m0",
+						blocks: [
+							{
+								id: "b1",
+								type: "metrics",
+								items: [
+									{ id: "m0", label: "", value: { kind: "number", number: 99 }, format: "percent" },
+									{ id: "m1", label: "Faster checkout", value: { kind: "text", text: "" }, format: "plain" },
+								],
+							},
+						],
+					},
+				],
+			},
+		});
+		expect(html).toContain("Years");
+		expect(html).not.toMatch(/>12</);
+		expect(html).not.toContain("99%");
+		expect(html).not.toContain("Faster checkout");
+		expect(html).not.toContain("pf-work-metric");
+		expect(html).not.toContain("pf-lightbox");
 	});
 
 	it("draws without a resume", () => {

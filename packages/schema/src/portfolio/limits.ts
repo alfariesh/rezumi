@@ -69,6 +69,18 @@ export const PORTFOLIO_LIMITS = {
 } as const;
 
 /**
+ * Pictures uploaded to a portfolio (`02-teknis.md` section 8). The browser shrinks and re-encodes every picture before
+ * it's sent (the server can't resize on Workers): the longest side at most `imageSide`, a small copy at `thumbSide` for
+ * cards, client logos at `logoSide`. The server checks the bytes and pixel size again and refuses anything bigger.
+ */
+export const PORTFOLIO_UPLOAD = {
+	imageBytes: 2.5 * 1024 * 1024,
+	imageSide: 2000,
+	thumbSide: 800,
+	logoSide: 600,
+} as const;
+
+/**
  * A new account's portfolio stays out of search engines for this many days, even with "Show in search engines" on
  * (owner decision #5, 2026-11-06): a fresh account is the likeliest to be spam.
  */

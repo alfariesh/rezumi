@@ -129,7 +129,7 @@ type WorkDetailProps = { work: PortfolioViewWork; previous: PortfolioViewWork; n
  * can be shared. The bar closes back to the list and steps to the previous and next work.
  */
 export function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
-	const { messages, view } = useRender();
+	const { messages, view, imageUrl } = useRender();
 	const titleId = `${work.anchor}-title`;
 	return (
 		<section className="pf-detail" id={work.anchor} role="dialog" aria-labelledby={titleId}>
@@ -193,7 +193,22 @@ export function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
 										<div key={block.id} className="pf-gallery" data-layout={block.layout}>
 											{block.images.map((image, index) => (
 												<figure key={`${image.src}-${index}`}>
-													<Picture image={image} sizes="(min-width: 860px) 820px, 100vw" />
+													{/* The full picture: the page script opens it in the viewer, without it the link opens the file. */}
+													<a
+														className="pf-zoom"
+														href={imageUrl(image.src) ?? image.src}
+														data-lightbox=""
+														{...(image.caption ? { "data-caption": image.caption } : {})}
+													>
+														<Picture
+															image={image}
+															sizes={
+																block.layout === "grid"
+																	? "(min-width: 860px) 400px, 100vw"
+																	: "(min-width: 860px) 820px, 100vw"
+															}
+														/>
+													</a>
 													{image.caption && <figcaption>{image.caption}</figcaption>}
 												</figure>
 											))}
@@ -215,6 +230,37 @@ export function WorkDetail({ work, previous, next, total }: WorkDetailProps) {
 				)}
 			</article>
 		</section>
+	);
+}
+
+/**
+ * The full-screen picture viewer the page script fills from a gallery: one per page, hidden until a gallery picture
+ * is opened. Escape, the arrow keys and swiping step through the gallery; closing returns focus to the picture.
+ */
+export function Lightbox() {
+	const { messages } = useRender();
+	return (
+		<div className="pf-lightbox" role="dialog" aria-modal="true" aria-label={messages.pictureViewer} hidden>
+			<figure className="pf-lightbox__stage">
+				<img alt="" decoding="async" />
+				<figcaption hidden />
+			</figure>
+			<p className="pf-lightbox__count" aria-live="polite" />
+			<button type="button" className="pf-lightbox__btn pf-lightbox__close" data-lb="close" aria-label={messages.close}>
+				<UiIcon name="close" />
+			</button>
+			<button
+				type="button"
+				className="pf-lightbox__btn pf-lightbox__prev"
+				data-lb="prev"
+				aria-label={messages.previous}
+			>
+				<UiIcon name="arrow-left" flip />
+			</button>
+			<button type="button" className="pf-lightbox__btn pf-lightbox__next" data-lb="next" aria-label={messages.next}>
+				<UiIcon name="arrow-right" flip />
+			</button>
+		</div>
 	);
 }
 

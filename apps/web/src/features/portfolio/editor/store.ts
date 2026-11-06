@@ -59,6 +59,11 @@ type PortfolioEditorActions = {
 	flush: () => Promise<boolean>;
 	/** Takes the settings the server returned (published, search engines, source resume), keeping the data as edited. */
 	applySettings: (portfolio: PortfolioRecord) => void;
+	/**
+	 * Takes data the server changed and saved (works imported from the resume): it becomes the edited data, and Undo
+	 * goes back to before it. Call after `flush`, so no edit is waiting.
+	 */
+	applyServerEdit: (portfolio: PortfolioRecord) => void;
 	reset: () => void;
 };
 
@@ -214,6 +219,21 @@ export const usePortfolioEditorStore = create<PortfolioEditorStore>()((set, get)
 						}
 					: state,
 			),
+
+		applyServerEdit: (portfolio) => {
+			const current = get().portfolio;
+			if (!current) return;
+			lastEdit = { key: undefined, at: 0 };
+			set((state) => ({
+				portfolio,
+				undoStack: [...state.undoStack, current.data].slice(-MAX_HISTORY),
+				redoStack: [],
+				revision: state.revision + 1,
+				dirty: false,
+				status: "saved",
+				problem: null,
+			}));
+		},
 
 		reset: () => {
 			clearTimeout(timer);

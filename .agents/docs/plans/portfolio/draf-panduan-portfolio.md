@@ -29,18 +29,49 @@ Changes save on their own (a cloud icon at the top shows the state). **Undo** an
 
 - **Intro** is always first. Your name, headline and location come from your resume; type in the fields to use different ones on the portfolio only, or leave them empty to follow the resume. Add a short **greeting**, choose whether your photo shows, turn on **Open to work** (with your own wording if you like), and add up to three buttons: _View resume_, _Download resume PDF_, _Send a message_, _WhatsApp_, _Email_, a profile or another link.
 - **Sections**: drag a section by its handle, or use its arrows, to change the order. The eye hides a section; the pencil renames it (leave the name empty to use the default). Open a section to edit it:
-  - **About me** and your own sections use a rich text editor: bold, italic, underline, strikethrough, headings, lists, quotes and links.
+  - **About me** and your own sections use a rich text editor: bold, italic, underline, strikethrough, headings, lists, quotes and links. Your own sections can have a picture too.
   - **Services**: name, description, an optional price ("From Rp1.5m"), an icon, and an order button (WhatsApp with a message naming the service, Contact, or a link).
-  - **Testimonials**: add one by confirming it's genuine and that the person agreed to show it.
-  - **Clients**: names (and a brand logo when one is known). **Add from Experience** adds the companies on your resume. _(Uploaded logos: Phase 04.)_
+  - **Testimonials**: add one by confirming it's genuine and that the person agreed to show it, then add the person's photo if you like.
+  - **Clients**: names, with a logo you upload (PNG or WebP with a clear background; uploading it confirms you may show it) or a brand logo when one is known. Logos show grey until a visitor points at them. **Add from Experience** adds the companies on your resume.
   - **Sections from your resume** (Experience, Education, Skills…): switch individual entries off to hide them on the portfolio only; your resume doesn't change. **Edit on resume** opens the resume editor.
   - **Contact**: an invitation line, which details show (email and website on, phone off by default), a WhatsApp button, your profiles, and the **Location card** (city, how you work, open to relocating, your local time). _(Contact form: Phase 08. Map: Phase 05.)_
-  - **Work** lists the work copied from your resume's projects: rename, reorder or hide each one. _(Pictures, text blocks and results: Phase 04; video, PDF and links: Phase 05.)_
+  - **Work**: see [Work](#work) below.
 - **Add a section** adds a section of your own (up to ten) with a title, text and an optional button.
+
+#### Work
+
+Each work has a **card** in the list and a **detail** that opens when a visitor taps it. **Add work** offers:
+
+- **Empty**: fill in the card, then build the detail.
+- **From my resume**: tick projects on your resume; their title, summary, dates and link come along. Projects already added are marked.
+- **Upload pictures**: choose, drop or paste many pictures at once, then make **one work with all of them** (up to 12 per work) or **one work per picture** (good for photographers and illustrators).
+- **Paste a link** _(Phase 05)_.
+
+Open a work to edit it; the preview shows its detail while you do.
+
+- **Card**: a cover (tap the part to keep in view when the card crops it), title, a one- or two-sentence summary, your role, the year ("2024", "Jan–Mar 2025"), up to 12 tags, the **metric on the card** (a result from this work's Metrics blocks, shown as a chip), a main link, **Featured** and **Hide from the page**. The work's address (`rezumi.app/<username>#work-<title>`) follows its title.
+- **Detail** is built from blocks. Use **Add block** between blocks, or type **/** in a text block, to add:
+  - **Text**: paragraphs, headings, lists, quotes and links.
+  - **Pictures**: 1 to 12 pictures, each with a description and an optional caption, shown full width, as a grid, or to swipe sideways. Visitors can open them full screen.
+  - **Metrics**: 1 to 4 results as numbers, such as "+35% checkout conversion". Use numbers you can explain in an interview, and say where they come from.
+  - _(Video, PDF and Link: Phase 05.)_
+- Drag a block by its handle or use its arrows to reorder; removing a block can be undone. An empty work can **Start from a case study outline**: headings for the problem, your role, the process and the result, and a Metrics block.
+
+A portfolio holds up to 50 works, each with up to 30 blocks. _(Plan limits: Phase 07.)_
+
+#### Metrics
+
+A metric has a **value** (a number, or short text such as "Top 3"), how it's **written** (number, percent, rupiah, dollar, short number like 1.2k, times like 3×, a duration, or a rating out of 5), what goes before or after it ("+", "/month"), and a **label**. Optionally: a **change** (up, down or the same, its text such as "+35%", and whether it's good news: a fall can be good), the **value before** (shown as before → after bars), a **small chart** (3 to 12 values in order), **progress** (0–100), **context or source**, and an icon. Numbers are written the way the page's language writes them. The theme's **Metrics** layout in **Design** chooses KPI cards, big numbers, or before → after.
+
+#### Pictures
+
+Pictures are made smaller in your browser before they're uploaded: at most 2,000 pixels on the longest side (logos 600), as WebP, with a smaller copy for cards. This also removes the photo's hidden data, such as where it was taken. A 10 MB phone photo is usually stored at a few hundred kilobytes. JPG, PNG, WebP and still GIF pictures work; SVG files and animated GIFs don't. Every picture needs a short **description** for people who can't see it; it starts from the work's title or the person's name.
+
+Pictures you remove or replace are deleted a day later, so **Undo** can still bring them back.
 
 #### Design
 
-Choose light, dark, or **Device** (each visitor's own setting), an accent colour (the same as your resume, one of eight, or your own; a colour that's hard to read as text is darkened or lightened for text automatically), a font pair, the intro's background, and the layout of each section the theme supports. _(Intro text effects: Phase 06.)_
+Choose light, dark, or **Device** (each visitor's own setting), an accent colour (the same as your resume, one of eight, or your own; a colour that's hard to read as text is darkened or lightened for text automatically), a font pair, the intro's background (plain, a soft gradient, a subtle pattern, or a picture of your own under a darker layer), and the layout of each section the theme supports. _(Intro text effects: Phase 06.)_
 
 #### Publish
 

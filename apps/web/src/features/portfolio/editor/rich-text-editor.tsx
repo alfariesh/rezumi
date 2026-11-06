@@ -1,5 +1,6 @@
+import type { IconName } from "@rezumi/ui/components/icon";
 import type { JSONContent } from "@tiptap/core";
-import { RichTextEditor } from "@heroui-pro/react/rich-text-editor";
+import { filterRichTextEditorSuggestionItems, RichTextEditor } from "@heroui-pro/react/rich-text-editor";
 import { t } from "@lingui/core/macro";
 import { generateJSON } from "@tiptap/core";
 import StarterKit from "@tiptap/starter-kit";
@@ -7,6 +8,15 @@ import { useState } from "react";
 import { Icon } from "@rezumi/ui/components/icon";
 
 const ICON = 18;
+
+/** An entry of the "/" menu: it removes the typed "/…" and does something outside the text (adds a block). */
+export type SlashItem = {
+	title: string;
+	description: string;
+	icon: IconName;
+	keywords: string[];
+	onSelect: () => void;
+};
 
 export type PortfolioRichTextEditorProps = {
 	/** Names the editable area for screen readers. */
@@ -18,6 +28,8 @@ export type PortfolioRichTextEditorProps = {
 	maxLength: number;
 	placeholder?: string | undefined;
 	labelledBy?: string | undefined;
+	/** Typing "/" opens these. */
+	slashItems?: readonly SlashItem[] | undefined;
 };
 
 /** Saved HTML as the editor's document. The editor's own extensions read the same tags (StarterKit holds them all). */
@@ -37,6 +49,7 @@ export default function PortfolioRichTextEditor({
 	maxLength,
 	placeholder,
 	labelledBy,
+	slashItems,
 }: PortfolioRichTextEditorProps) {
 	const [initial] = useState(() => toDocument(value));
 
@@ -112,6 +125,26 @@ export default function PortfolioRichTextEditor({
 					</RichTextEditor.ToolbarGroup>
 				</RichTextEditor.Toolbar>
 				<RichTextEditor.Content />
+				{slashItems && slashItems.length > 0 && (
+					<RichTextEditor.SuggestionMenu
+						char="/"
+						items={({ query }) =>
+							filterRichTextEditorSuggestionItems(
+								slashItems.map((item) => ({
+									title: item.title,
+									description: item.description,
+									keywords: item.keywords,
+									icon: <Icon name={item.icon} size={16} />,
+									command: ({ editor, range }) => {
+										editor.chain().focus().deleteRange(range).run();
+										item.onSelect();
+									},
+								})),
+								query,
+							)
+						}
+					/>
+				)}
 				<RichTextEditor.Footer>
 					<RichTextEditor.CharacterCount />
 				</RichTextEditor.Footer>

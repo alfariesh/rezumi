@@ -32,6 +32,8 @@ export const portfolio = pg.pgTable(
 		suspendedAt: pg.timestamp("suspended_at", { withTimezone: true }),
 		suspendedReason: pg.text("suspended_reason"),
 		data: pg.jsonb("data").notNull().$type<PortfolioData>(),
+		// When the weekly file sweep last compared this portfolio's files with its data and storage; null = never.
+		filesCheckedAt: pg.timestamp("files_checked_at", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 		// Editors send it back with each save to detect a change made elsewhere in the meantime.
 		updatedAt: pg
@@ -71,9 +73,12 @@ export const portfolioFile = pg.pgTable(
 		width: pg.integer("width"),
 		height: pg.integer("height"),
 		pages: pg.integer("pages"),
+		// Since when no saved data uses the file; null while it is used. A file unused for a day is deleted by the
+		// cleanup job, so an upload the editor hasn't saved yet (or an undo away) survives a short while.
+		unusedSince: pg.timestamp("unused_since", { withTimezone: true }),
 		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 	},
-	(t) => [pg.index().on(t.userId)],
+	(t) => [pg.index().on(t.userId), pg.index().on(t.unusedSince)],
 );
 
 /**

@@ -38,6 +38,7 @@ msg`Intro`;
 msg`Role`;
 msg`Year`;
 msg`Close`;
+msg`Picture viewer`;
 msg`Previous`;
 msg`Next`;
 msg`Other work`;

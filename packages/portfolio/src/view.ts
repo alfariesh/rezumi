@@ -44,6 +44,11 @@ import { htmlToText, truncateText } from "./text";
 type ButtonKind = (typeof PORTFOLIO_BUTTON_KINDS)[number];
 
 /** Interface text in the page's language. Phase 02 builds it from the portfolio catalog (`02-teknis.md` 5.5). */
+/** Whether a metric has what the page needs to show it: a label and a value. */
+function isMetricComplete(metric: PortfolioMetric): boolean {
+	return metric.label.trim() !== "" && (metric.value.kind === "number" || metric.value.text.trim() !== "");
+}
+
 export type PortfolioViewMessages = {
 	sections: Record<PortfolioStandardSection, string>;
 	buttons: Record<ButtonKind, string>;
@@ -419,7 +424,7 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 			greeting: data.hero.greeting.trim(),
 			picture: data.hero.showPicture ? picture : null,
 			availability: data.hero.availability.show ? data.hero.availability.text.trim() || messages.openToWork : null,
-			highlights: data.hero.highlights,
+			highlights: data.hero.highlights.filter(isMetricComplete),
 			buttons: data.hero.buttons.map((button) => link(button)).filter((item): item is PortfolioViewLink => !!item),
 			background: {
 				kind:
@@ -477,7 +482,9 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 	}
 
 	function buildWork(work: PortfolioWork): PortfolioViewWork {
-		const metrics = work.blocks.flatMap((block) => (block.type === "metrics" ? block.items : []));
+		const metrics = work.blocks
+			.flatMap((block) => (block.type === "metrics" ? block.items : []))
+			.filter(isMetricComplete);
 		const cover = image(work.cover, work.title);
 		return {
 			id: work.id,
@@ -513,8 +520,11 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 				});
 				return images.length ? { id: block.id, type: "images", layout: block.layout, images } : null;
 			}
-			case "metrics":
-				return block.items.length ? block : null;
+			case "metrics": {
+				// A metric still being filled in (no label yet) stays off the page.
+				const items = block.items.filter(isMetricComplete);
+				return items.length ? { ...block, items } : null;
+			}
 			case "video": {
 				const { provider, videoId, hash } = block;
 				return {

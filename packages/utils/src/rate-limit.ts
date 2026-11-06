@@ -52,5 +52,8 @@ export const rateLimitConfig = {
 		// The portfolio editor saves on its own while someone types; publishing and settings change far less often.
 		portfolioUpdates: { maxRequests: 60, window: 60 * 1000 },
 		portfolioMutations: { maxRequests: 20, window: 60 * 1000 },
+		// Galleries and "one work per picture" upload many pictures in a row, one request each.
+		portfolioUploads: { maxRequests: 60, window: 60 * 1000 },
+		portfolioFileDeletes: { maxRequests: 60, window: 60 * 1000 },
 	},
 } as const;

@@ -58,6 +58,15 @@ describe("portfolio procedures while PORTFOLIO_MODE is off", () => {
 		await expect(client().setPublic({ isPublic: true })).rejects.toMatchObject(disabled);
 		await expect(client().updateSettings({ showInSearchEngines: false })).rejects.toMatchObject(disabled);
 		await expect(client().delete()).rejects.toMatchObject(disabled);
+		await expect(client().importWorks({ resumeItemIds: ["p1"], expectedUpdatedAt: new Date() })).rejects.toMatchObject(
+			disabled,
+		);
+		await expect(
+			client().uploadImage({ file: new File([new Uint8Array([0xff, 0xd8, 0xff])], "a.jpg", { type: "image/jpeg" }) }),
+		).rejects.toMatchObject(disabled);
+		await expect(client().deleteFile({ key: "uploads/member/pictures/portfolio/a.webp" })).rejects.toMatchObject(
+			disabled,
+		);
 	});
 
 	it("rejects invalid data before anything else", async () => {

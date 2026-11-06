@@ -6,6 +6,7 @@ import z from "zod";
 import { toast } from "@rezumi/ui/components/toast";
 import { PortfolioShell } from "./-components/portfolio-shell";
 import { usePortfolioEditorStore } from "@/features/portfolio/editor/store";
+import { usePortfolioEditorUi } from "@/features/portfolio/editor/ui";
 import { orpc } from "@/libs/orpc/client";
 import { createNoindexFollowMeta } from "@/libs/seo";
 
@@ -59,7 +60,13 @@ function RouteComponent() {
 		if (data.portfolio && current?.id !== data.portfolio.id) usePortfolioEditorStore.getState().load(data.portfolio);
 	}, [data.portfolio]);
 
-	useEffect(() => () => usePortfolioEditorStore.getState().reset(), []);
+	useEffect(
+		() => () => {
+			usePortfolioEditorStore.getState().reset();
+			usePortfolioEditorUi.getState().openWork(null);
+		},
+		[],
+	);
 
 	if (!loaded) return null;
 	return <PortfolioShell />;

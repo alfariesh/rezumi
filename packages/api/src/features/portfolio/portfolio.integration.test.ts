@@ -7,6 +7,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vite-
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
+import sharp from "sharp";
 import * as tables from "@rezumi/db/schema";
 import { defaultResumeData } from "@rezumi/schema/resume/default";
 
@@ -14,6 +15,9 @@ const fixture = vi.hoisted(() => ({
 	db: undefined as ReturnType<typeof drizzle> | undefined,
 	mode: "on" as "off" | "admins" | "on",
 	deleted: [] as string[],
+	/** Storage, in memory: key → bytes. */
+	files: new Map<string, Uint8Array>(),
+	failWrites: false,
 }));
 vi.mock("@rezumi/db/client", () => ({
 	get db() {
@@ -32,14 +36,25 @@ vi.mock("@rezumi/env/server", async () => {
 		},
 	};
 });
-vi.mock("../storage", () => ({
-	getStorageService: () => ({
-		delete: (key: string) => {
-			fixture.deleted.push(key);
-			return Promise.resolve(true);
-		},
-	}),
-}));
+vi.mock("../storage", () => {
+	const under = (key: string, prefix: string) => key === prefix || key.startsWith(`${prefix.replace(/\/$/, "")}/`);
+	return {
+		getStorageService: () => ({
+			list: (prefix: string) => Promise.resolve([...fixture.files.keys()].filter((key) => under(key, prefix))),
+			write: ({ key, data }: { key: string; data: Uint8Array }) => {
+				if (fixture.failWrites) return Promise.reject(new Error("Storage is down"));
+				fixture.files.set(key, data);
+				return Promise.resolve();
+			},
+			delete: (key: string) => {
+				fixture.deleted.push(key);
+				const keys = [...fixture.files.keys()].filter((candidate) => under(candidate, key));
+				for (const candidate of keys) fixture.files.delete(candidate);
+				return Promise.resolve(keys.length > 0);
+			},
+		}),
+	};
+});
 
 function getDb() {
 	if (!fixture.db) throw new Error("Test database is not initialized.");
@@ -75,6 +90,7 @@ const image = (userId: string, name: string) => ({
 // Opt-in real PostgreSQL tests: all tables live in an isolated schema that the suite drops afterwards.
 describe.skipIf(!databaseUrl)("portfolio service", () => {
 	let service: typeof import("./service").portfolioService;
+	let jobs: typeof import("./jobs");
 	let admin: Pool;
 	let pool: Pool;
 	const schemaName = `portfolio_test_${randomUUID().replaceAll("-", "")}`;
@@ -122,6 +138,7 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			if (existsSync(file)) await pool.query((await readFile(file, "utf8")).replaceAll('"public".', ""));
 		}
 		({ portfolioService: service } = await import("./service"));
+		jobs = await import("./jobs");
 	}, 30_000);
 
 	afterAll(async () => {
@@ -133,6 +150,8 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 	beforeEach(async () => {
 		fixture.mode = "on";
 		fixture.deleted = [];
+		fixture.files = new Map();
+		fixture.failWrites = false;
 		await pool.query('TRUNCATE "user", released_username CASCADE');
 		await getDb()
 			.insert(tables.user)
@@ -400,6 +419,274 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 			await getDb().delete(tables.user).where(eq(tables.user.id, "member"));
 			expect(await getDb().select().from(tables.portfolio)).toEqual([]);
 			expect(await getDb().select().from(tables.portfolioFile)).toEqual([]);
+		});
+	});
+
+	describe("pictures", () => {
+		const picture = async (width: number, height: number, format: "webp" | "png" | "jpeg" = "webp", name = "a") => {
+			const image = sharp({ create: { width, height, channels: 3, background: "#225588" } });
+			const buffer = await image[format]().toBuffer();
+			return new File([new Uint8Array(buffer)], `${name}.${format}`, { type: `image/${format}` });
+		};
+		const fileRows = (userId = "member") =>
+			getDb()
+				.select({ key: tables.portfolioFile.key, unusedSince: tables.portfolioFile.unusedSince })
+				.from(tables.portfolioFile)
+				.where(eq(tables.portfolioFile.userId, userId));
+
+		it("stores a picture and its small copy, unused until saved data uses them", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const uploaded = await service.uploadImage("member", {
+				file: await picture(1200, 800),
+				thumbnail: await picture(800, 533),
+			});
+			expect(uploaded).toMatchObject({ width: 1200, height: 800 });
+			expect(uploaded.key).toMatch(/^uploads\/member\/pictures\/portfolio\/[\da-f-]{36}\.webp$/);
+			expect(uploaded.thumbKey).toBe(uploaded.key.replace(".webp", "-sm.webp"));
+			expect([...fixture.files.keys()].sort()).toEqual([uploaded.key, uploaded.thumbKey].sort());
+			const stored = [...fixture.files.values()].reduce((sum, data) => sum + data.byteLength, 0);
+			expect(uploaded.bytes).toBe(stored);
+			expect((await service.get("member")).usage.storageBytes).toBe(stored);
+			expect((await fileRows()).every((row) => row.unusedSince instanceof Date)).toBe(true);
+
+			const { key, thumbKey } = uploaded;
+			await save("member", { basics: { picture: { key, thumbKey, width: 1200, height: 800, alt: "Me" } } });
+			expect((await fileRows()).map((row) => row.unusedSince)).toEqual([null, null]);
+			await save("member", { basics: {} });
+			expect((await fileRows()).every((row) => row.unusedSince instanceof Date)).toBe(true);
+		});
+
+		it("refuses files that aren't still JPEG, PNG or WebP pictures, are too big, or too large", async () => {
+			await expect(service.uploadImage("member", { file: await picture(100, 100) })).rejects.toMatchObject({
+				code: "NOT_FOUND",
+			});
+			await service.create("member", { sourceResumeId: null });
+			const invalid = (reason: string) => ({ code: "PORTFOLIO_IMAGE_INVALID", status: 400, data: { reason } });
+			const upload = (file: File, thumbnail?: File) => service.uploadImage("member", { file, thumbnail });
+
+			await expect(upload(new File(["not a picture"], "photo.jpg", { type: "image/jpeg" }))).rejects.toMatchObject(
+				invalid("type"),
+			);
+			const gif = await sharp({ create: { width: 4, height: 4, channels: 3, background: "#000" } })
+				.gif()
+				.toBuffer();
+			await expect(upload(new File([new Uint8Array(gif)], "a.gif", { type: "image/gif" }))).rejects.toMatchObject(
+				invalid("type"),
+			);
+			const animated = new Uint8Array([
+				...new TextEncoder().encode("RIFF"),
+				22,
+				0,
+				0,
+				0,
+				...new TextEncoder().encode("WEBPVP8X"),
+				10,
+				0,
+				0,
+				0,
+				0x02,
+				0,
+				0,
+				0,
+				99,
+				0,
+				0,
+				99,
+				0,
+				0,
+			]);
+			await expect(upload(new File([animated], "a.webp", { type: "image/webp" }))).rejects.toMatchObject(
+				invalid("animated"),
+			);
+			const huge = new Uint8Array(2.6 * 1024 * 1024);
+			huge.set([0xff, 0xd8, 0xff]);
+			await expect(upload(new File([huge], "big.jpg", { type: "image/jpeg" }))).rejects.toMatchObject({
+				code: "PORTFOLIO_FILE_TOO_LARGE",
+				status: 413,
+				data: { bytes: huge.byteLength, max: 2.5 * 1024 * 1024 },
+			});
+			await expect(upload(await picture(2400, 100, "png"))).rejects.toMatchObject(invalid("dimensions"));
+			await expect(upload(await picture(1000, 800), await picture(1000, 800))).rejects.toMatchObject(
+				invalid("dimensions"),
+			);
+			expect(fixture.files.size).toBe(0);
+			expect(await fileRows()).toEqual([]);
+		});
+
+		it("records nothing when storing fails", async () => {
+			await service.create("member", { sourceResumeId: null });
+			fixture.failWrites = true;
+			await expect(service.uploadImage("member", { file: await picture(300, 200, "jpeg") })).rejects.toThrow(
+				"Storage is down",
+			);
+			expect(await fileRows()).toEqual([]);
+		});
+
+		it("never lets one account's data use another account's upload", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await service.create("other", { sourceResumeId: null });
+			const theirs = await service.uploadImage("other", { file: await picture(300, 200) });
+			await expect(
+				save("member", { basics: { picture: { key: theirs.key, width: 300, height: 200, alt: "" } } }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_FILE_NOT_FOUND", data: { key: theirs.key } });
+			await expect(service.deleteFile("member", { key: theirs.key })).rejects.toMatchObject({
+				code: "PORTFOLIO_FILE_NOT_FOUND",
+			});
+			expect(fixture.files.has(theirs.key)).toBe(true);
+		});
+
+		it("deletes a file only once the saved data no longer uses it", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const used = await service.uploadImage("member", { file: await picture(300, 200) });
+			const spare = await service.uploadImage("member", { file: await picture(300, 200) });
+			await save("member", { basics: { picture: { key: used.key, width: 300, height: 200, alt: "" } } });
+
+			await expect(service.deleteFile("member", { key: used.key })).rejects.toMatchObject({
+				code: "PORTFOLIO_FILE_IN_USE",
+				status: 409,
+				data: { key: used.key },
+			});
+			await service.deleteFile("member", { key: spare.key });
+			expect(fixture.files.has(spare.key)).toBe(false);
+			expect((await fileRows()).map((row) => row.key)).toEqual([used.key]);
+			await expect(service.deleteFile("member", { key: spare.key })).rejects.toMatchObject({
+				code: "PORTFOLIO_FILE_NOT_FOUND",
+			});
+		});
+	});
+
+	describe("adding works from the resume", () => {
+		const project = (id: string, name: string) => ({
+			id,
+			hidden: false,
+			name,
+			period: "2025",
+			website: { url: "", label: "", inlineLink: false },
+			description: `<p>${name} story.</p>`,
+		});
+		const resumeWithProjects = (userId: string) => {
+			const data = resumeData(userId);
+			data.sections.projects.items.push(project("p2", "Aplikasi Kopi"), project("p3", "Toko Batik"));
+			return addResume(userId, { data });
+		};
+
+		it("adds the chosen projects in the resume's order, once each, with their own addresses", async () => {
+			await resumeWithProjects("member");
+			const created = await service.create("member", {});
+			expect(created.data.works.items.map((work) => work.fromResumeItemId)).toEqual(["p1", "p2", "p3"]);
+			// Remove two works, then add them back.
+			const trimmed = await save("member", { works: { items: created.data.works.items.slice(0, 1) } });
+
+			const added = await service.importWorks("member", {
+				resumeItemIds: ["p3", "p1", "p2", "missing"],
+				expectedUpdatedAt: trimmed.updatedAt,
+			});
+			expect(added.data.works.items.map((work) => [work.fromResumeItemId, work.slug])).toEqual([
+				["p1", "aplikasi-kopi"],
+				["p2", "aplikasi-kopi-2"],
+				["p3", "toko-batik"],
+			]);
+			expect(added.updatedAt.getTime()).toBeGreaterThan(trimmed.updatedAt.getTime());
+
+			const again = await service.importWorks("member", {
+				resumeItemIds: ["p2"],
+				expectedUpdatedAt: added.updatedAt,
+			});
+			expect(again.data.works.items).toHaveLength(3);
+			expect(again.updatedAt.getTime()).toBe(added.updatedAt.getTime());
+		});
+
+		it("refuses a stale editor, a missing resume and going past the work limit", async () => {
+			await resumeWithProjects("member");
+			const created = await service.create("member", {});
+			const saved = await save("member", { works: { items: [] } });
+			await expect(
+				service.importWorks("member", { resumeItemIds: ["p1"], expectedUpdatedAt: created.updatedAt }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_VERSION_CONFLICT" });
+
+			const many = Array.from({ length: 49 }, (_, index) => ({ id: `w${index}`, slug: `w${index}`, title: "W" }));
+			const full = await save("member", { works: { items: many } }, saved.updatedAt);
+			await expect(
+				service.importWorks("member", { resumeItemIds: ["p1", "p2"], expectedUpdatedAt: full.updatedAt }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_WORKS_LIMIT", status: 400, data: { max: 50 } });
+			await expect(
+				service.importWorks("member", { resumeItemIds: ["p1"], expectedUpdatedAt: full.updatedAt }),
+			).resolves.toMatchObject({ data: { works: { items: expect.any(Array) } } });
+
+			await service.create("other", { sourceResumeId: null });
+			const other = await service.get("other");
+			await expect(
+				service.importWorks("other", { resumeItemIds: ["p1"], expectedUpdatedAt: other.portfolio?.updatedAt as Date }),
+			).rejects.toMatchObject({ code: "PORTFOLIO_SOURCE_INVALID" });
+		});
+	});
+
+	describe("the file cleanup job", () => {
+		const hour = 60 * 60 * 1000;
+		const markUnused = (key: string, since: Date | null) =>
+			getDb().update(tables.portfolioFile).set({ unusedSince: since }).where(eq(tables.portfolioFile.key, key));
+		const stored = (userId: string, name: string) => {
+			const { key } = image(userId, name);
+			fixture.files.set(key, new Uint8Array([1, 2, 3]));
+			return key;
+		};
+
+		it("deletes files unused for a day and stray files, keeps the rest, and is safe to run twice", async () => {
+			const now = new Date();
+			await service.create("member", { sourceResumeId: null });
+			for (const name of ["used", "fresh", "old", "stale-mark", "never-tracked"]) {
+				stored("member", name);
+				await addFile("member", name);
+			}
+			const stray = stored("member", "stray");
+			const created = await save("member", {
+				basics: { picture: image("member", "used") },
+				hero: { background: { kind: "image", image: image("member", "stale-mark") } },
+			});
+			await markUnused(image("member", "fresh").key, new Date(now.getTime() - hour));
+			await markUnused(image("member", "old").key, new Date(now.getTime() - 25 * hour));
+			// Marked unused long ago, but the data uses it again (an undo, say): kept, and marked used.
+			await markUnused(image("member", "stale-mark").key, new Date(now.getTime() - 48 * hour));
+			// Recorded before usage was tracked: unused, but not deleted until a day has passed.
+			await markUnused(image("member", "never-tracked").key, null);
+
+			expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 1, checkedPortfolios: 1 });
+			const rows = await getDb()
+				.select({ key: tables.portfolioFile.key, unusedSince: tables.portfolioFile.unusedSince })
+				.from(tables.portfolioFile)
+				.orderBy(tables.portfolioFile.key);
+			const state = Object.fromEntries(
+				rows.map((row) => [row.key.split("/").pop(), row.unusedSince ? "unused" : "used"]),
+			);
+			expect(state).toEqual({
+				"fresh.webp": "unused",
+				"never-tracked.webp": "unused",
+				"stale-mark.webp": "used",
+				"used.webp": "used",
+			});
+			expect(fixture.files.has(image("member", "old").key)).toBe(false);
+			expect(fixture.files.has(stray)).toBe(false);
+			expect(fixture.files.has(image("member", "used").key)).toBe(true);
+
+			const [portfolio] = await getDb().select().from(tables.portfolio).where(eq(tables.portfolio.userId, "member"));
+			expect(portfolio?.filesCheckedAt?.getTime()).toBe(now.getTime());
+			// The check never changes the data's version: an open editor still saves.
+			expect(portfolio?.updatedAt.getTime()).toBe(created.updatedAt.getTime());
+
+			expect(await jobs.runPortfolioJobs(now)).toEqual({ deletedFiles: 0, checkedPortfolios: 0 });
+			expect(fixture.files.size).toBe(4);
+			// A day later, the file that was never tracked goes too.
+			expect(await jobs.runPortfolioJobs(new Date(now.getTime() + 25 * hour))).toMatchObject({ deletedFiles: 2 });
+		});
+
+		it("leaves files alone while portfolios are off", async () => {
+			await service.create("member", { sourceResumeId: null });
+			stored("member", "old");
+			await addFile("member", "old");
+			await markUnused(image("member", "old").key, new Date(Date.now() - 48 * hour));
+			fixture.mode = "off";
+			expect(await jobs.runPortfolioJobs()).toEqual({ deletedFiles: 0, checkedPortfolios: 0 });
+			expect(fixture.files.size).toBe(1);
 		});
 	});
 

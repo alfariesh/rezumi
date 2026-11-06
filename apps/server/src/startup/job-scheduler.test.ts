@@ -3,13 +3,16 @@ import { startJobScheduler } from "./job-scheduler";
 
 const run = vi.hoisted(() => vi.fn<() => Promise<{ processed: number }>>());
 const billing = vi.hoisted(() => vi.fn<() => Promise<{ releasedReservations: number }>>());
+const portfolio = vi.hoisted(() => vi.fn<() => Promise<{ deletedFiles: number; checkedPortfolios: number }>>());
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: run }));
 vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: billing }));
+vi.mock("@rezumi/api/features/portfolio/jobs", () => ({ runPortfolioJobs: portfolio }));
 
 beforeEach(() => {
 	vi.useFakeTimers();
 	run.mockReset().mockResolvedValue({ processed: 0 });
 	billing.mockReset().mockResolvedValue({ releasedReservations: 0 });
+	portfolio.mockReset().mockResolvedValue({ deletedFiles: 0, checkedPortfolios: 0 });
 });
 afterEach(() => {
 	vi.useRealTimers();
@@ -45,7 +48,7 @@ it("starts immediately, skips overlapping ticks, and drains active work before s
 	expect(billing).toHaveBeenCalledTimes(3);
 });
 
-it("runs billing before career on every tick", async () => {
+it("runs billing, then career, then portfolio upkeep on every tick", async () => {
 	const order: string[] = [];
 	billing.mockImplementation(async () => {
 		order.push("billing");
@@ -55,10 +58,14 @@ it("runs billing before career on every tick", async () => {
 		order.push("career");
 		return { processed: 0 };
 	});
+	portfolio.mockImplementation(async () => {
+		order.push("portfolio");
+		return { deletedFiles: 0, checkedPortfolios: 0 };
+	});
 	const scheduler = startJobScheduler();
 	try {
 		await vi.advanceTimersByTimeAsync(60_000);
-		expect(order).toEqual(["billing", "career", "billing", "career"]);
+		expect(order).toEqual(["billing", "career", "portfolio", "billing", "career", "portfolio"]);
 	} finally {
 		await scheduler.stop();
 	}
@@ -72,6 +79,7 @@ it("still runs career work when billing fails, and recovers on the next tick wit
 	try {
 		await vi.advanceTimersByTimeAsync(0);
 		expect(run).toHaveBeenCalledOnce();
+		expect(portfolio).toHaveBeenCalledOnce();
 		expect(log).toHaveBeenCalledTimes(2);
 		expect(JSON.stringify(log.mock.calls)).not.toContain("private");
 		await vi.advanceTimersByTimeAsync(60_000);
