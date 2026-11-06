@@ -328,11 +328,11 @@ All flags default to `false`.
 
 These appear in `.env.example` but are not used by a running server:
 
-| Variable                                                                                                                   | Used by                                                                                                                     |
-| -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `GOOGLE_CLOUD_API_KEY`                                                                                                     | The script that regenerates the font list.                                                                                  |
-| `CROWDIN_PROJECT_ID`, `CROWDIN_API_TOKEN`                                                                                  | Translation sync tooling.                                                                                                   |
-| `BILLING_TEST_DATABASE_URL`, `COVER_LETTER_TEST_DATABASE_URL`, `OAUTH_TEST_DATABASE_URL`, `INTEGRATIONS_TEST_DATABASE_URL` | Test suites that need a disposable database. Billing and integration credential tests create and remove an isolated schema. |
+| Variable                                                                                                                                                  | Used by                                                                                                                                |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `GOOGLE_CLOUD_API_KEY`                                                                                                                                    | The script that regenerates the font list.                                                                                             |
+| `CROWDIN_PROJECT_ID`, `CROWDIN_API_TOKEN`                                                                                                                 | Translation sync tooling.                                                                                                              |
+| `BILLING_TEST_DATABASE_URL`, `COVER_LETTER_TEST_DATABASE_URL`, `OAUTH_TEST_DATABASE_URL`, `INTEGRATIONS_TEST_DATABASE_URL`, `PORTFOLIO_TEST_DATABASE_URL` | Test suites that need a disposable database. Billing, portfolio and integration credential tests create and remove an isolated schema. |
 
 See [Development setup](/contributing/development) for working on the code.
 

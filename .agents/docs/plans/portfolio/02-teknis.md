@@ -40,10 +40,10 @@ Batasan yang mempengaruhi desain:
 
 | Area               | Lokasi                                                                                                                                                                    | Catatan                                                                                |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| Skema Zod          | `packages/schema/src/portfolio/{data,blocks,metric,themes,default,limits}.ts`                                                                                             | Ekspor eksplisit di `packages/schema/package.json`                                     |
+| Skema Zod          | `packages/schema/src/portfolio/{data,blocks,metric,themes,default,limits,sections,files,links,video,kit}.ts`                                                              | Ekspor eksplisit di `packages/schema/package.json` (`kit.ts` internal); bagian 26      |
 | Tabel              | `packages/db/src/schema/portfolio.ts` (+ `index.ts`)                                                                                                                      | `pnpm db:generate`, baca SQL yang dihasilkan                                           |
-| API                | `packages/api/src/features/portfolio/*`                                                                                                                                   | Router di agregat `@rezumi/api/routers`; tag `Internal` sampai Phase 12                |
-| Render tema        | Paket baru `packages/portfolio` (`@rezumi/portfolio`)                                                                                                                     | Tag Turbo `runtime:universal` + `role:rendering`; jalan di server dan browser          |
+| API                | `packages/api/src/features/portfolio/{mode,service,router}.ts`                                                                                                            | Router di agregat `@rezumi/api/routers`; tag `Internal` sampai Phase 12                |
+| Render tema        | Paket `packages/portfolio` (`@rezumi/portfolio`), dibuat Phase 01: `view`, `initial`, `rich-text`, `files`, `text`                                                        | Tag Turbo `runtime:universal` + `role:rendering`; jalan di server dan browser          |
 | Halaman server     | `apps/server/src/static/{portfolio-page,portfolio-card}.ts`                                                                                                               | Dipasang di `apps/server/src/http/app.ts` dan `apps/server/src/http/custom-domain.ts`  |
 | Web                | `apps/web/src/features/portfolio/{editor,blocks,metrics,media,images,sections}/*`, `apps/web/src/routes/dashboard/portfolio/*`, `apps/web/src/routes/builder/portfolio/*` | Rute statis `builder/portfolio` harus menang atas `builder/$resumeId` (cek route tree) |
 | Gambar galeri tema | `apps/web/public/portfolio-themes/{jpg,thumb}/<tema>.{jpg,webp}` (+ `id/`)                                                                                                | Dibuat skrip tooling                                                                   |
@@ -55,8 +55,8 @@ Paket baru mengikuti aturan batas paket `CLAUDE.md`: impor lewat nama paket dan 
 ## 3. Saklar `PORTFOLIO_MODE`
 
 - `packages/env/src/server.ts`: `PORTFOLIO_MODE: z.enum(["off", "admins", "on"]).default("off")`. Tambahkan ke `.env.example`, `globalPassThroughEnv` dan array `env` tugas tes di `turbo.json`, dan `vars` di `wrangler.jsonc` (`"off"`).
-- `packages/api/src/features/portfolio/mode.ts`: `isPortfolioEnabledFor(user)`. `on` → semua akun terdaftar (bukan tamu/anonymous); `admins` → hanya peran admin; `off` → tidak ada. Menerbitkan butuh email terverifikasi (dicek di `setPublic`).
-- Flag publik `portfolio` (mode ≠ `off`) di flags router untuk bagian publik aplikasi; UI akun memakai `portfolio.get().enabled`.
+- `packages/api/src/features/portfolio/mode.ts`: `isPortfolioEnabledFor(user)`. `on` → semua akun terdaftar (bukan tamu/anonymous); `admins` → hanya peran admin; `off` → tidak ada. Akun tamu tidak pernah. Menerbitkan butuh email terverifikasi (dicek di `setPublic`). Service membaca peran dari database (seperti `isBillingAppliedTo`); saat `off` tidak ada kueri sama sekali.
+- Flag publik `portfolio` di flags router untuk bagian publik aplikasi (beranda, harga): **hanya `true` saat mode `on`** (seperti flag `billing`), agar selama `admins` pengunjung tidak melihat fitur yang belum rilis. UI akun memakai `portfolio.get().enabled`. (Rencana awal menulis "mode ≠ `off`"; diubah di Phase 01.)
 - Rute publik melayani portfolio hanya bila pemiliknya lolos `isPortfolioEnabledFor`. Selain itu `/<username>` jatuh ke CV utama seperti sekarang.
 
 ## 4. Data
@@ -106,10 +106,15 @@ type PortfolioData = {
   locale?: string; // bahasa halaman; kosong = bahasa CV sumber
   basics: { name?: string; headline?: string; picture?: Image | null; location?: string }; // kosong = ikut CV; null = tanpa foto
   design: {
-    scheme: "light" | "dark" | "auto";
+    scheme?: "light" | "dark" | "auto"; // kosong = mode bawaan tema
     accent: { source: "resume" } | { source: "preset"; id: string } | { source: "custom"; color: string }; // #rrggbb
-    fonts: { source: "resume" } | { source: "pair"; id: string };
-    variants: Partial<Record<SectionKey | "metric", string>>; // divalidasi terhadap tema; nilai tak dikenal → bawaan tema
+    fonts: { source: "theme" } | { source: "resume" } | { source: "pair"; id: string }; // "theme" = pasangan bawaan tema
+    variants: Partial<
+      Record<
+        "hero" | "work" | "services" | "testimonials" | "clients" | "experience" | "education" | "skills" | "metric",
+        string
+      >
+    >; // nilai dari katalog global; yang tidak didukung tema → bawaan tema saat render
   };
   hero: {
     greeting: string; // ≤160
@@ -117,7 +122,7 @@ type PortfolioData = {
     availability: { show: boolean; text: string }; // text ≤60, kosong = "Open to work" dalam bahasa halaman
     highlights: Metric[]; // angka pencapaian, ≤4
     buttons: Button[]; // ≤3
-    effect: { id: HeroEffectId; target: "name" | "headline"; phrases?: string[] }; // bagian 23; phrases ≤3 × ≤40 untuk efek ketik (Phase 00: ≤5 detik)
+    effect: { id?: HeroEffectId; target: "name" | "headline"; phrases: string[] }; // id kosong = efek bawaan tema; bagian 23; phrases ≤3 × ≤40 untuk efek ketik (Phase 00: ≤5 detik)
     background: { kind: "plain" | "soft-gradient" | "pattern" | "image"; image?: Image }; // gambar dengan lapisan kontras otomatis
   };
   about: { content: RichText }; // ≤5.000 karakter teks
@@ -126,7 +131,7 @@ type PortfolioData = {
   testimonials: { items: Testimonial[] }; // ≤12
   clients: { items: Client[] }; // ≤24
   sections: {
-    order: SectionKey[];
+    order: SectionKey[]; // kosong atau bagian yang tidak disebut = urutan bawaan tema
     hidden: SectionKey[];
     titles: Partial<Record<SectionKey, string>>; // ≤60
     hiddenItems: Partial<Record<SectionKey, string[]>>; // ID item CV yang disembunyikan
@@ -143,9 +148,11 @@ type PortfolioData = {
     showLocalTime: boolean;
   };
   contact: {
-    email: boolean;
+    email: boolean; // bawaan true
+    phone: boolean; // bawaan false (ditambah Phase 01: telepon CV tidak tampil kecuali dinyalakan)
+    website: boolean; // bawaan true (ditambah Phase 01)
     whatsapp: { show: boolean; number: string };
-    form: boolean;
+    form: boolean; // bawaan false
     profiles: boolean;
     note: string;
   }; // note ≤200
@@ -219,7 +226,7 @@ type SectionKey =
 
 ### 4.3 Model isi campuran
 
-`buildPortfolioView({ portfolio, resume, owner, entitlements, messages, imageUrl })` (fungsi murni di `packages/portfolio`) menghasilkan satu objek tampilan yang dipakai semua tema:
+`buildPortfolioView({ portfolio, resume, owner, entitlements, messages, fileUrl, links?, contactFormAvailable? })` (fungsi murni di `@rezumi/portfolio/view`, dibuat Phase 01; rincian di bagian 26) menghasilkan satu objek tampilan yang dipakai semua tema:
 
 - Data dasar: `basics` portfolio → CV sumber → akun (nama tampilan). `picture: null` berarti sengaja tanpa foto.
 - Dari `resume.data`: profil, pengalaman, pendidikan, keahlian, bahasa, sertifikat, penghargaan, publikasi, relawan, minat, dan bagian kustom CV, plus email, telepon, situs untuk Kontak. Item `hidden` di CV dan item di `sections.hiddenItems` dibuang. Referensi tidak pernah dipakai.
@@ -359,7 +366,7 @@ Rute publik (rute server biasa, bukan oRPC): `POST /api/portfolio/<username>/mes
 - Semua kolom teks kaya portfolio (Tentang saya, blok Teks, bagian bebas) memakai `RichTextEditor` dari `@heroui-pro/react/rich-text-editor`. Ambil dokumentasi lewat MCP `heroui-pro` (`get_component_docs`, komponen `rich-text-editor`) sebelum menulis kode.
 - Toolbar dibatasi ke format yang didukung halaman publik: tebal, miring, garis bawah, coret, tautan, daftar berpoin/bernomor, kutipan, judul H2/H3, Undo/Redo. Tidak ada blok kode, tabel, warna, atau gambar di dalam teks (gambar = blok tersendiri).
 - `RichTextEditor.SuggestionMenu` (karakter `/`) dipakai untuk menyisipkan blok baru setelah blok Teks yang sedang diedit (bagian 16), bukan untuk menyisipkan node ke dalam teks.
-- Penyimpanan: HTML dari `onValueChange(..., details)` (`details.html`), disanitasi di server saat tulis **dan** saat render dengan sanitizer yang sama dengan isi CV (subset di atas; cari dengan graph). Nilai awal HTML (dari ringkasan CV) dimuat ke editor lewat opsi konten Tiptap. Batas panjang memakai `maxLength` + `CharacterCount`.
+- Penyimpanan: HTML dari `onValueChange(..., details)` (`details.html`), disanitasi di server saat tulis **dan** saat render dengan `sanitizePortfolioHtml` (`@rezumi/portfolio/rich-text`, sanitize-html dengan subset di atas). CV sendiri tidak punya sanitizer HTML (teksnya diurai ke node Forme); yang paling dekat adalah `sanitizeCoverLetterHtml`, jadi portfolio punya miliknya sendiri (Phase 01). Nilai awal HTML (dari ringkasan CV) dimuat ke editor lewat opsi konten Tiptap. Batas panjang memakai `maxLength` + `CharacterCount`.
 - Editor dimuat lazy seperti editor CV (Tiptap dan ProseMirror besar). Cek kecocokan versi peer `@tiptap/*` dengan versi yang sudah dipakai web (3.32) sebelum menambah dependensi; satu versi Tiptap saja di bundel.
 - Editor CV tidak diubah di rencana ini (penggantian editor CV ada di backlog bila diinginkan).
 
@@ -370,7 +377,15 @@ type Block =
   | { id: string; type: "text"; html: RichText } // ≤10.000 karakter teks
   | { id: string; type: "images"; images: (Image & { caption?: string })[]; layout: "full" | "grid" | "carousel" } // 1–12; caption ≤140
   | { id: string; type: "metrics"; items: Metric[] } // 1–4, bagian 17
-  | { id: string; type: "video"; provider: "youtube" | "vimeo"; videoId: string; title?: string; thumbnailUrl?: string } // bagian 18
+  | {
+      id: string;
+      type: "video";
+      provider: "youtube" | "vimeo";
+      videoId: string;
+      hash?: string;
+      title?: string;
+      thumbnailUrl?: string;
+    } // bagian 18; hash = video Vimeo tak terdaftar
   | { id: string; type: "pdf"; file: string; title: string; pages: number; preview?: Image } // bagian 19
   | {
       id: string;
@@ -502,3 +517,36 @@ Mockup di `mockups/` adalah HTML/CSS/JS statis (bukan kode produk), tetapi beber
 - **Grafik mini:** SVG `viewBox="0 0 240 44"` dengan `preserveAspectRatio="none"` dan `vector-effect: non-scaling-stroke`; titik akhir digambar sebagai garis nol-panjang dengan `stroke-linecap: round` agar tetap bulat saat SVG melebar.
 - **Detail karya `:target`:** bilah atas detail memakai variabel `--pf-detail-pad` yang sama untuk padding panel dan margin negatif bilah, supaya tidak melebar 4 px saat tema mengubah padding.
 - **Gambar dengan atribut `width`/`height`:** CSS dasar wajib `img { height: auto }`; tanpa itu atribut tinggi mengalahkan `aspect-ratio` (foto Prima sempat memanjang).
+
+## 26. Catatan implementasi Phase 01
+
+Yang dibuat dan keputusan teknis yang perlu diketahui phase berikutnya (2026-11-06).
+
+**Skema (`@rezumi/schema/portfolio/*`).**
+
+- Dua skema dari satu definisi (`kit.ts`, internal): `writablePortfolioDataSchema` (tulis: semua batas, format, rujukan; kolom yang tidak dikirim diisi bawaan sehingga editor lama tetap bisa menyimpan) dan `portfolioDataSchema`/`parsePortfolioData` (baca: tidak pernah gagal; kolom rusak → bawaan, item rusak atau ID kembar dibuang, batas panjang teks **tidak** berlaku agar data lama tetap terbaca, data yang bukan objek → portfolio kosong). Tipe: `PortfolioData` (keluaran) dan `PortfolioDataInput` (masukan klien).
+- Blok berjenis tak dikenal dibuang di kedua skema. Blok Video dengan ID tidak sah dibuang juga saat baca (tidak bisa diputar). Testimoni tanpa `consent: true` ditolak saat tulis dan dibuang saat baca.
+- Aturan lintas kolom saat tulis: `highlightMetricId` harus ada di blok Metrik karya itu (baca: dibuang), alamat karya (`slug`) unik dan sah (baca: alamat sah dipertahankan, sisanya dibuat ulang dari judul), varian per bagian dan kunci bagian dari katalog. Kelengkapan (judul kosong, tombol tautan tanpa URL, WhatsApp tampil tanpa nomor, format mata uang tanpa mata uang) **tidak** ditolak agar simpan otomatis tidak gagal saat mengetik; renderer melewati yang belum lengkap.
+- URL hanya `https:`/`http:`/`mailto:` (`links.ts`; tautan klien, testimoni, dan blok Tautan hanya http/https). Kunci file harus berpola `uploads/<id>/pictures/portfolio/<id>.(webp|jpg|png)` atau `uploads/<id>/documents/portfolio/<id>.pdf` (`files.ts`). Gambar mini video hanya dari `i.ytimg.com`/`i.vimeocdn.com`.
+- `themes.ts` memegang lineup Phase 00, katalog varian global (`PORTFOLIO_VARIANT_OPTIONS`, termasuk `hero`), 8 aksen, 21 pasangan font (ID dari mockup bila ada: `jakarta`, `lora-figtree`, `source-plex`, `archivo`, `bodoni-work`, `bricolage-onest`, `unbounded-albert`, …), dan per tema: paket, mode bawaan, efek (pertama = bawaan), pasangan font (pertama = bawaan), varian per bagian (pertama = bawaan), dan urutan bagian bawaan. Daftar varian per tema adalah tebakan dari `01-desain.md` bagian 5; Phase 02/06 boleh menyesuaikan. Helper `themeVariant`, `themeEffect`, `themeFontPair`, `themeScheme` memilih bawaan tema bila pilihan tersimpan tidak didukung (pilihan tetap tersimpan, jadi kembali ke tema lama memulihkannya).
+- Parser video di `video.ts` (`parseVideoUrl`, `youtubeThumbnailUrl`). Vimeo tak terdaftar (`vimeo.com/<id>/<hash>`, `?h=`) disimpan sebagai `hash`.
+- Portfolio baru (`createDefaultPortfolioData`): aksen ikut CV, font `{ source: "theme" }`, `sections.order` kosong (= urutan tema), bagian `profiles` tersembunyi (tautan profil sudah tampil di Kontak).
+
+**Tabel.** Migrasi `20261106012502_tranquil_crusher_hogan` (hanya `CREATE`). `portfolio.user_id` unik (`portfolio_user_unique`); `source_resume_id` FK `set null` + indeks; `portfolio_file.key` unik, indeks `user_id`. `updatedAt` hanya berubah saat **data** disimpan: `setPublic` dan `updateSettings` mempertahankannya, sehingga menerbitkan di satu tab tidak membuat editor di tab lain konflik.
+
+**API (`packages/api/src/features/portfolio`).**
+
+- Prosedur `portfolio.{get,create,update,setPublic,updateSettings,delete}`, semuanya `protectedProcedure` dengan tag `Internal` (tidak masuk spec publik; satu-satunya perubahan `docs/spec.json` adalah flag `portfolio`). Batas laju: `portfolioUpdateRateLimit` 60/menit dan `portfolioMutationRateLimit` 20/menit per akun.
+- Kode error: `PORTFOLIO_DISABLED` (403), `PORTFOLIO_EXISTS` (409), `NOT_FOUND`, `PORTFOLIO_SOURCE_INVALID` (400), `PORTFOLIO_VERSION_CONFLICT` (409, `data.updatedAt`), `PORTFOLIO_TOO_LARGE` (413, `data.bytes`/`max`), `PORTFOLIO_FILE_NOT_FOUND` (400, `data.key`), `PORTFOLIO_EMAIL_NOT_VERIFIED` (403), `PORTFOLIO_SUSPENDED` (403), `BAD_REQUEST` untuk data tidak sah.
+- `create`: `sourceResumeId` kosong → CV utama, lalu CV aktif yang terakhir diubah, lalu tanpa CV; `null` → tanpa CV. Dua `create` paralel: tepat satu berhasil (`ON CONFLICT DO NOTHING` pada `user_id`).
+- `update`: parse ketat → sanitasi teks kaya → batas 256 KB → setiap kunci file harus di bawah `uploads/<userId>/` dan tercatat di `portfolio_file` milik akun → kunci baris (`FOR UPDATE`) → bandingkan `expectedUpdatedAt` di JavaScript (presisi milidetik, alasan sama dengan resume service).
+- `delete`: hapus folder `pictures/portfolio` dan `documents/portfolio` di penyimpanan, lalu baris `portfolio_file` dan `portfolio`. Hapus akun: baris ikut FK cascade, file ikut penghapusan `uploads/<userId>` yang sudah ada.
+- `get().limits` sekarang batas teknis (`works: 50`, `storageBytes: null`, `dataBytes`); Phase 07 mengisi batas paket.
+- Ekspor data akun belum memuat portfolio (Phase 11).
+
+**`@rezumi/portfolio` (dibuat Phase 01).** `view.ts` (`buildPortfolioView`, `resolveSectionOrder`, `englishPortfolioViewMessages`), `initial.ts` (`createInitialPortfolioData`, `workFromResumeProject`), `rich-text.ts` (`sanitizePortfolioHtml`, `sanitizePortfolioData`), `files.ts` (`portfolioFileKeys`, untuk cek kepemilikan dan job pembersihan), `text.ts` (`htmlToText`, `truncateText`). Bergantung pada `@rezumi/schema`, `@rezumi/utils`, `@rezumi/fonts`, `sanitize-html`. Phase 02 menambah tema dan `renderPortfolioPage` di paket ini.
+
+- `buildPortfolioView` memakai `fileUrl(key)` (gambar dan PDF), `links.resume`/`links.resumePdf` (tombol Lihat CV/Unduh PDF hilang bila tidak ada), dan `contactFormAvailable` (Turnstile, Phase 08). `messages` (judul bagian, label tombol, "Open to work", pesan WhatsApp layanan) diisi katalog Phase 02; tes memakai `englishPortfolioViewMessages`.
+- Font "ikut CV" hanya dipakai bila kedua keluarga ada di daftar web font (`getWebFont`) dan bukan font unggahan; selain itu pasangan bawaan tema. Aksen "ikut CV" tanpa CV → Samudra.
+- Urutan bagian: urutan portfolio; bagian standar yang tidak disebut disisipkan setelah tetangga terdekatnya di urutan tema; bagian bebas portfolio dan bagian kustom CV (kecuali surat lamaran dan referensi) sebelum Kontak. Bagian kosong dan yang disembunyikan tidak masuk.
+- Kontak: email dan situs tampil bawaan, telepon mati bawaan (`contact.phone`), profil dari CV, WhatsApp bila nomor ada. Tombol layanan WhatsApp memakai `messages.serviceInquiry(nama)`.

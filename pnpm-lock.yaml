@@ -1574,6 +1574,9 @@ importers:
       '@rezumi/pdf':
         specifier: workspace:*
         version: link:../pdf
+      '@rezumi/portfolio':
+        specifier: workspace:*
+        version: link:../portfolio
       '@rezumi/resume':
         specifier: workspace:*
         version: link:../resume
@@ -2110,6 +2113,37 @@ importers:
       pdfjs-dist:
         specifier: 6.4.299
         version: 6.4.299
+      tsrs:
+        specifier: 'catalog:'
+        version: 0.18.0-ts7.1.0-dev.20260929
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.3.0(@astrojs/compiler-rs@0.5.2)(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(@vitest/ui@5.0.5)(esbuild@0.28.2)(happy-dom@21.0.4)(jiti@2.7.0)(playwright@1.64.1)(terser@5.51.2)(tsx@4.23.15)(typescript@7.0.2)(yaml@2.9.1)
+
+  packages/portfolio:
+    dependencies:
+      '@rezumi/fonts':
+        specifier: workspace:*
+        version: link:../fonts
+      '@rezumi/schema':
+        specifier: workspace:*
+        version: link:../schema
+      '@rezumi/utils':
+        specifier: workspace:*
+        version: link:../utils
+      sanitize-html:
+        specifier: ^2.18.1
+        version: 2.18.1
+    devDependencies:
+      '@rezumi/config':
+        specifier: workspace:*
+        version: link:../config
+      '@types/sanitize-html':
+        specifier: ^2.16.2
+        version: 2.16.2
       tsrs:
         specifier: 'catalog:'
         version: 0.18.0-ts7.1.0-dev.20260929

@@ -1,0 +1,32 @@
+{
+	"name": "@rezumi/portfolio",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"exports": {
+		"./files": "./src/files.ts",
+		"./initial": "./src/initial.ts",
+		"./rich-text": "./src/rich-text.ts",
+		"./text": "./src/text.ts",
+		"./view": "./src/view.ts"
+	},
+	"scripts": {
+		"typecheck": "tsrs --noEmit",
+		"test": "vp test run --passWithNoTests",
+		"test:coverage": "vp test run --coverage --passWithNoTests",
+		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests"
+	},
+	"dependencies": {
+		"@rezumi/fonts": "workspace:*",
+		"@rezumi/schema": "workspace:*",
+		"@rezumi/utils": "workspace:*",
+		"sanitize-html": "^2.18.1"
+	},
+	"devDependencies": {
+		"@rezumi/config": "workspace:*",
+		"@types/sanitize-html": "^2.16.2",
+		"tsrs": "catalog:",
+		"typescript": "catalog:",
+		"vite-plus": "catalog:"
+	}
+}

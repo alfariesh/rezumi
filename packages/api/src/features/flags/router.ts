@@ -4,6 +4,7 @@ import { publicProcedure } from "../../context";
 import { getBillingMode } from "../billing/entitlements";
 import { isCareerSchedulingEnabled } from "../career/runner";
 import { isCustomDomainsEnabled } from "../custom-domain/service";
+import { getPortfolioMode } from "../portfolio/mode";
 
 export type FeatureFlags = {
 	disableSignups: boolean;
@@ -16,6 +17,7 @@ export type FeatureFlags = {
 	customDomains?: boolean;
 	olacvSuggestion?: boolean;
 	billing?: boolean;
+	portfolio?: boolean;
 };
 
 // Mirrors isSmtpEnabled() in packages/email/src/transport.ts (kept local to avoid an api -> email dependency).
@@ -55,6 +57,7 @@ export const flagsRouter = {
 					.boolean()
 					.describe("Whether accounts without a custom domain see a suggestion to register one at OlaCV."),
 				billing: z.boolean().describe("Whether paid plans and their limits apply to every account on this instance."),
+				portfolio: z.boolean().describe("Whether every account on this instance can publish a web portfolio."),
 			}),
 		)
 		.handler(() => ({
@@ -68,5 +71,7 @@ export const flagsRouter = {
 			customDomains: isCustomDomainsEnabled(),
 			olacvSuggestion: env.FLAG_OLACV_SUGGESTION,
 			billing: getBillingMode() === "on",
+			// Only "on": while admins test portfolios, public pages don't mention them.
+			portfolio: getPortfolioMode() === "on",
 		})),
 };
