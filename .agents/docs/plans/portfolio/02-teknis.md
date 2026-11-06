@@ -102,7 +102,7 @@ Kolom yang menentukan siapa melihat apa (`isPublic`, `showInSearchEngines`, `sus
 ```ts
 type PortfolioData = {
   version: 1;
-  theme: PortfolioTheme; // ID final dari Phase 00
+  theme: PortfolioTheme; // "lugas" | "prima" | "kanvas" | "mozaik" (Phase 00); bawaan "lugas"
   locale?: string; // bahasa halaman; kosong = bahasa CV sumber
   basics: { name?: string; headline?: string; picture?: Image | null; location?: string }; // kosong = ikut CV; null = tanpa foto
   design: {
@@ -117,7 +117,7 @@ type PortfolioData = {
     availability: { show: boolean; text: string }; // text ≤60, kosong = "Open to work" dalam bahasa halaman
     highlights: Metric[]; // angka pencapaian, ≤4
     buttons: Button[]; // ≤3
-    effect: { id: HeroEffectId; target: "name" | "headline"; phrases?: string[] }; // bagian 23; phrases ≤4 × ≤40 untuk efek ketik
+    effect: { id: HeroEffectId; target: "name" | "headline"; phrases?: string[] }; // bagian 23; phrases ≤3 × ≤40 untuk efek ketik (Phase 00: ≤5 detik)
     background: { kind: "plain" | "soft-gradient" | "pattern" | "image"; image?: Image }; // gambar dengan lapisan kontras otomatis
   };
   about: { content: RichText }; // ≤5.000 karakter teks
@@ -475,7 +475,7 @@ type Metric = {
 | `vector-hover` | Garis vektor   | Saat kursor di atas huruf, huruf itu berubah jadi garis tepi putus-putus dengan kotak seleksi ala aplikasi desain (SVG `stroke-dasharray`); di layar sentuh jatuh ke Muncul halus | Ya          |
 
 - Aturan wajib: teks asli selalu ada di HTML (SEO, LCP, pembaca layar); lapisan animasi `aria-hidden`; `prefers-reduced-motion` → tampil statis tanpa animasi; animasi otomatis selesai ≤5 detik atau berhenti sendiri (WCAG 2.2.2); kontras tetap ≥ AA selama animasi (warna gradien dari `--pf-accent-text`); tidak menggeser tata letak (CLS 0, ukuran dicadangkan); total skrip semua efek ≤3 KB.
-- Setiap tema punya efek bawaan yang cocok (misalnya Sintaks → Acak teknologi, Kanvas → Garis vektor, Lugas → Muncul halus) dan boleh menolak efek yang tidak cocok (`supports.effects`).
+- Setiap tema punya efek bawaan (Lugas → Muncul halus, Prima → Tanpa efek, Kanvas → Garis vektor, Mozaik → Gradien hidup) dan menolak efek yang tidak cocok lewat `supports.effects`; daftar per tema di `01-desain.md` bagian 18. Keenam efek masuk rilis (keputusan Phase 00).
 - Editor: pemilih efek di tab Desain → Intro dengan demo mini yang memakai kode efek yang sama; tombol "Putar ulang" di pratinjau. Pratinjau editor yang biasanya inert boleh menjalankan skrip halaman untuk efek ini dengan `sandbox="allow-scripts"` tanpa `allow-same-origin`, atau memutar demo di luar iframe; pilih yang lebih aman dan catat.
 - Paket: aturan turunan #14.
 
@@ -489,3 +489,16 @@ type Metric = {
 - Privasi: bawaan peta mati; presisi bawaan kota; titik kota memakai koordinat pusat kota dari daftar, bukan posisi pengguna; tidak ada fitur "lokasi saya" (GPS) di editor portfolio.
 - Dashboard (Phase 08): `Map` HeroUI juga dipakai untuk "Asal pengunjung" (negara dari Analytics Engine, bagian 9).
 - Ketergantungan OpenFreeMap: layanan gratis tanpa SLA, hanya dipakai di editor dan dashboard. Bila tidak tersedia, form Lokasi tetap bisa disimpan tanpa gambar peta. Ubin peta sendiri (misalnya Protomaps di R2) ada di backlog.
+
+## 25. Catatan teknis dari mockup Phase 00
+
+Mockup di `mockups/` adalah HTML/CSS/JS statis (bukan kode produk), tetapi beberapa temuan berlaku untuk Phase 02, 04, dan 06:
+
+- **Token dan mode:** tema membaca token `--pf-*` (`01-desain.md` bagian 6); mode dipasang sebagai `data-pf-scheme` di `<html>`. Token turunan yang memakai `var()` lain (misalnya `--pf-accent-soft`) harus didefinisikan di elemen yang sama dengan `--pf-bg`-nya; kalau tidak, nilai terhitung di `:root` ikut terwariskan ke area dengan mode lain.
+- **Koreksi kontras di server:** `--pf-accent-text`, `--pf-on-accent`, dan warna turunan Gradien hidup dihitung saat render untuk kedua mode, lalu ditulis sebagai CSS halaman. Mockup menghitungnya di browser (`PFX.safe`) hanya untuk panel percobaan.
+- **Nama panjang:** server menulis `--name-word` (jumlah huruf kata terpanjang) di elemen nama; CSS tema membatasi ukuran huruf dengan `min(<ukuran tema>, calc(<lebar kolom> / (var(--name-word) * k)))` (k ±0,55–0,62 sesuai font). Efek per huruf (Acak teknologi, Garis vektor) membungkus tiap kata dengan `white-space: nowrap`; bila satu kata lebih lebar dari kolom, pembungkusnya kembali ke `normal`.
+- **RTL:** lapisan animasi per huruf diberi `dir="auto"`. Tanpa itu, huruf `inline-block` pada nama Latin di halaman `dir="rtl"` tersusun terbalik (ditemukan di uji mockup).
+- **Efek:** kode acuan ada di skrip inline mockup (`PFX` di `lugas.html` dan halaman lain) dan CSS `.pfx-*` di `mockups/shared.css`, ditulis dari nol. Versi mockup belum diperkecil dan memuat semua efek; di produk hanya efek terpilih yang disisipkan dan total skrip efek tetap ≤3 KB (bagian 23). Muncul halus memulai kata dari opasitas 0,12 (bukan 0) agar teks tidak benar-benar hilang; cek dampaknya pada LCP di Phase 06.
+- **Grafik mini:** SVG `viewBox="0 0 240 44"` dengan `preserveAspectRatio="none"` dan `vector-effect: non-scaling-stroke`; titik akhir digambar sebagai garis nol-panjang dengan `stroke-linecap: round` agar tetap bulat saat SVG melebar.
+- **Detail karya `:target`:** bilah atas detail memakai variabel `--pf-detail-pad` yang sama untuk padding panel dan margin negatif bilah, supaya tidak melebar 4 px saat tema mengubah padding.
+- **Gambar dengan atribut `width`/`height`:** CSS dasar wajib `img { height: auto }`; tanpa itu atribut tinggi mengalahkan `aspect-ratio` (foto Prima sempat memanjang).

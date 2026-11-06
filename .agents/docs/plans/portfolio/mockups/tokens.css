@@ -1,0 +1,64 @@
+/*
+ * Portfolio design tokens (01-desain.md section 6).
+ * Themes read only these custom properties, so accent, font and mode settings apply the same way in every theme.
+ * The page sets data-pf-scheme="light" | "dark" on <html>; "Ikuti perangkat" resolves to one of them.
+ * --pf-accent-text and --pf-on-accent are computed from the accent (contrast ≥ 4.5:1); the values here are fallbacks.
+ */
+:root {
+	color-scheme: light;
+
+	/* Colour */
+	--pf-accent: #1f3a68;
+	--pf-accent-text: #1f3a68;
+	--pf-on-accent: #ffffff;
+	--pf-bg: #ffffff;
+	--pf-surface: #f4f5f7;
+	--pf-text: #14171c;
+	--pf-muted: #5a616d;
+	--pf-border: #e3e6ea;
+	--pf-positive: #0f7a52;
+	--pf-negative: #b42318;
+	--pf-chart: var(--pf-accent-text);
+	--pf-accent-soft: color-mix(in oklab, var(--pf-accent) 11%, var(--pf-bg));
+
+	/* Type */
+	--pf-font-heading: system-ui, sans-serif;
+	--pf-font-body: system-ui, sans-serif;
+	--pf-font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+	--pf-text-xs: 0.8125rem;
+	--pf-text-sm: 0.9375rem;
+	--pf-text-md: 1.0625rem;
+	--pf-text-lg: 1.25rem;
+	--pf-text-xl: 1.625rem;
+	--pf-text-2xl: clamp(1.875rem, 1.4rem + 1.8vw, 2.5rem);
+	--pf-text-name: clamp(2.5rem, 1.6rem + 4.2vw, 4.5rem);
+	--pf-leading-tight: 1.08;
+	--pf-leading-body: 1.6;
+
+	/* Shape and space */
+	--pf-radius: 12px;
+	--pf-radius-sm: 8px;
+	--pf-max-width: 1120px;
+	--pf-space-1: 4px;
+	--pf-space-2: 8px;
+	--pf-space-3: 12px;
+	--pf-space-4: 16px;
+	--pf-space-5: 24px;
+	--pf-space-6: 32px;
+	--pf-space-7: 48px;
+	--pf-space-8: 72px;
+	--pf-space-9: 112px;
+	--pf-gutter: max(16px, env(safe-area-inset-left, 0px));
+}
+
+:root[data-pf-scheme="dark"] {
+	color-scheme: dark;
+	--pf-accent-text: #9db4e6;
+	--pf-bg: #101216;
+	--pf-surface: #191c22;
+	--pf-text: #eceef2;
+	--pf-muted: #a0a7b3;
+	--pf-border: #2a2e36;
+	--pf-positive: #4fd39b;
+	--pf-negative: #ff8a7d;
+}
