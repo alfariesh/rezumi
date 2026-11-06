@@ -71,6 +71,8 @@ describe("a resume rendered by this app", () => {
 	 * checker reads their columns line by line across the gutter, so what each reports below is about that geometry
 	 * (a gutter with interleaved lines, lines from both columns looking tightly spaced), not about lost text. Kirana's
 	 * gutter is narrow enough that a sidebar line and the "Education" title share a line, so the section goes unseen.
+	 * Graphite, Awan, Menara and Cahaya run their sidebar from the top of the page beside the main column, as Kirana
+	 * does, so the checker sees one clean gutter with interleaved lines down the whole page and calls it multi-column.
 	 */
 	const expected: Record<Template, { findings: string[]; score: number }> = {
 		meridian: { findings: [], score: 100 },
@@ -89,6 +91,26 @@ describe("a resume rendered by this app", () => {
 		jejak: { findings: ["READING_ORDER_RISK", "TIGHT_LINE_SPACING"], score: 96 },
 		purnama: { findings: ["COLUMN_GUTTER"], score: 97 },
 		senja: { findings: ["READING_ORDER_RISK"], score: 97 },
+		anggrek: { findings: [], score: 100 },
+		ivory: { findings: [], score: 100 },
+		pilar: { findings: [], score: 100 },
+		bingkai: { findings: [], score: 100 },
+		cerah: { findings: [], score: 100 },
+		mozaik: { findings: [], score: 100 },
+		nusa: { findings: [], score: 100 },
+		selaras: { findings: [], score: 100 },
+		teras: { findings: [], score: 100 },
+		cobalt: { findings: [], score: 100 },
+		kontras: { findings: [], score: 100 },
+		lintasan: { findings: [], score: 100 },
+		graphite: { findings: ["MULTI_COLUMN_LAYOUT"], score: 55 },
+		awan: { findings: ["MULTI_COLUMN_LAYOUT", "TIGHT_LINE_SPACING"], score: 55 },
+		menara: { findings: ["MULTI_COLUMN_LAYOUT"], score: 55 },
+		tepi: { findings: ["READING_ORDER_RISK", "TIGHT_LINE_SPACING"], score: 96 },
+		sekar: { findings: [], score: 100 },
+		marquee: { findings: [], score: 100 },
+		fajar: { findings: ["READING_ORDER_RISK", "TIGHT_LINE_SPACING"], score: 96 },
+		cahaya: { findings: ["MULTI_COLUMN_LAYOUT"], score: 55 },
 	};
 
 	it.each(templateLineup)("reports only what is known for %s", { timeout: 60_000 }, async (template) => {

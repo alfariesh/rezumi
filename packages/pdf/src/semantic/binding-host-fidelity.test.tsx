@@ -182,6 +182,28 @@ describe("semantic binding host fidelity", () => {
 		jejak: 1,
 		purnama: 1,
 		senja: 0,
+		anggrek: 0,
+		ivory: 0,
+		pilar: 0,
+		bingkai: 0,
+		cerah: 0,
+		mozaik: 0,
+		nusa: 0,
+		selaras: 0,
+		teras: 0,
+		cobalt: 0,
+		kontras: 0,
+		// Lintasan keeps the summary off its track too.
+		lintasan: 1,
+		graphite: 0,
+		awan: 0,
+		// Menara, like Purnama, draws its sidebar band beside a header that lives in the sidebar.
+		menara: 1,
+		tepi: 0,
+		sekar: 0,
+		marquee: 0,
+		fajar: 0,
+		cahaya: 0,
 	} as const satisfies Record<Template, number>;
 
 	it.each(Object.entries(primitivePartHosts) as [Template, number][])(

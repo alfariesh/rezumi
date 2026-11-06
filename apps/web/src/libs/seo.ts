@@ -37,7 +37,7 @@ export const getAtsCheckerMeta = () => ({
 
 export const getTemplatesMeta = () => ({
 	title: `${t`Resume templates with PDF examples`} | ${appName}`,
-	description: t`Preview every resume template and download sample PDFs. Start with 5 templates and watermark-free PDF downloads on Free; unlock every template, Word and ODT with Plus or Pro AI.`,
+	description: t`Preview every resume template and download sample PDFs. Start with 8 templates and watermark-free PDF downloads on Free; unlock every template, Word and ODT with Plus or Pro AI.`,
 });
 
 /** A docs page's title and description. The docs are written in English, so neither is translated. */

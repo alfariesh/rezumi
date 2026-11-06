@@ -57,7 +57,7 @@ For each section the user wants to include, gather specific details. Never inven
 
 Ask about preferences:
 
-- Template preference. 16 templates; read the `resume://_meta/design` MCP resource for who each one suits, its layout, whether it needs a paid plan, and the look it was designed with:
+- Template preference. 36 templates; read the `resume://_meta/design` MCP resource for who each one suits, its layout, whether it needs a paid plan, and the look it was designed with:
   - One column (ATS-safe): meridian (default), sterling, aksara, atlas, tunas, summit, cendekia, wibawa, tenun, vector
   - Two columns: kirana, linen, horizon, jejak, purnama, senja
   - Free plan: meridian, sterling, tunas, wibawa, kirana. Former IDs (azurill, onyx, …) are accepted and saved as their successor.

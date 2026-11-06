@@ -64,7 +64,7 @@ describe("billing catalog", () => {
 	});
 
 	it("matches the launch decisions", () => {
-		expect(BILLING_CATALOG_VERSION).toBe(5);
+		expect(BILLING_CATALOG_VERSION).toBe(6);
 		// A free week before the first charge, on Plus only (2026-11-05); prices are before tax.
 		expect([PLANS.free.trialDays, PLANS.plus.trialDays, PLANS["pro-ai"].trialDays]).toEqual([null, 7, null]);
 		expect(BILLING_PRICES_INCLUDE_TAX).toBe(false);

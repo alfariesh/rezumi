@@ -3,18 +3,38 @@ import type { SemanticNodeKind } from "@rezumi/resume/stylesheet/types";
 import type { CustomSectionType, EntryHeader } from "@rezumi/schema/resume/data";
 import type { Template } from "@rezumi/schema/templates";
 import { aksaraSemanticManifest } from "../templates/aksara/semantic";
+import { anggrekSemanticManifest } from "../templates/anggrek/semantic";
 import { atlasSemanticManifest } from "../templates/atlas/semantic";
+import { awanSemanticManifest } from "../templates/awan/semantic";
+import { bingkaiSemanticManifest } from "../templates/bingkai/semantic";
+import { cahayaSemanticManifest } from "../templates/cahaya/semantic";
 import { cendekiaSemanticManifest } from "../templates/cendekia/semantic";
+import { cerahSemanticManifest } from "../templates/cerah/semantic";
+import { cobaltSemanticManifest } from "../templates/cobalt/semantic";
+import { fajarSemanticManifest } from "../templates/fajar/semantic";
+import { graphiteSemanticManifest } from "../templates/graphite/semantic";
 import { horizonSemanticManifest } from "../templates/horizon/semantic";
+import { ivorySemanticManifest } from "../templates/ivory/semantic";
 import { jejakSemanticManifest } from "../templates/jejak/semantic";
 import { kiranaSemanticManifest } from "../templates/kirana/semantic";
+import { kontrasSemanticManifest } from "../templates/kontras/semantic";
 import { linenSemanticManifest } from "../templates/linen/semantic";
+import { lintasanSemanticManifest } from "../templates/lintasan/semantic";
+import { marqueeSemanticManifest } from "../templates/marquee/semantic";
+import { menaraSemanticManifest } from "../templates/menara/semantic";
 import { meridianSemanticManifest } from "../templates/meridian/semantic";
+import { mozaikSemanticManifest } from "../templates/mozaik/semantic";
+import { nusaSemanticManifest } from "../templates/nusa/semantic";
+import { pilarSemanticManifest } from "../templates/pilar/semantic";
 import { purnamaSemanticManifest } from "../templates/purnama/semantic";
+import { sekarSemanticManifest } from "../templates/sekar/semantic";
+import { selarasSemanticManifest } from "../templates/selaras/semantic";
 import { senjaSemanticManifest } from "../templates/senja/semantic";
 import { sterlingSemanticManifest } from "../templates/sterling/semantic";
 import { summitSemanticManifest } from "../templates/summit/semantic";
 import { tenunSemanticManifest } from "../templates/tenun/semantic";
+import { tepiSemanticManifest } from "../templates/tepi/semantic";
+import { terasSemanticManifest } from "../templates/teras/semantic";
 import { tunasSemanticManifest } from "../templates/tunas/semantic";
 import { vectorSemanticManifest } from "../templates/vector/semantic";
 import { wibawaSemanticManifest } from "../templates/wibawa/semantic";
@@ -157,6 +177,26 @@ const TEMPLATE_SEMANTIC_MANIFESTS = {
 	atlas: atlasSemanticManifest,
 	aksara: aksaraSemanticManifest,
 	sterling: sterlingSemanticManifest,
+	anggrek: anggrekSemanticManifest,
+	ivory: ivorySemanticManifest,
+	pilar: pilarSemanticManifest,
+	bingkai: bingkaiSemanticManifest,
+	cerah: cerahSemanticManifest,
+	mozaik: mozaikSemanticManifest,
+	nusa: nusaSemanticManifest,
+	selaras: selarasSemanticManifest,
+	teras: terasSemanticManifest,
+	cobalt: cobaltSemanticManifest,
+	kontras: kontrasSemanticManifest,
+	lintasan: lintasanSemanticManifest,
+	graphite: graphiteSemanticManifest,
+	awan: awanSemanticManifest,
+	menara: menaraSemanticManifest,
+	tepi: tepiSemanticManifest,
+	sekar: sekarSemanticManifest,
+	marquee: marqueeSemanticManifest,
+	fajar: fajarSemanticManifest,
+	cahaya: cahayaSemanticManifest,
 } as const satisfies Readonly<Record<Template, TemplateSemanticManifest>>;
 
 // Every template's entries can be drawn on one line, so the parts of that header belong to all of them.

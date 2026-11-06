@@ -89,7 +89,7 @@ export type PlanDefinition = {
 	trialDays: number | null;
 };
 
-export const BILLING_CATALOG_VERSION = 5;
+export const BILLING_CATALOG_VERSION = 6;
 
 /**
  * Prices are before tax: Polar adds the tax for the buyer's location at checkout and on every renewal. Polar's
@@ -97,13 +97,19 @@ export const BILLING_CATALOG_VERSION = 5;
  */
 export const BILLING_PRICES_INCLUDE_TAX = false;
 
-/** The templates on the free plan: four one-column, ATS-safe layouts and one two-column. */
+/**
+ * The templates on the free plan: seven one-column, ATS-safe layouts and one two-column. Meridian comes first: an
+ * import that names a premium template falls back to it.
+ */
 export const FREE_TEMPLATES = [
 	"meridian",
 	"sterling",
 	"tunas",
 	"wibawa",
 	"kirana",
+	"cerah",
+	"teras",
+	"lintasan",
 ] as const satisfies readonly Template[];
 
 /** Whether a template is one of the free plan's; the others need `premiumTemplates`. */

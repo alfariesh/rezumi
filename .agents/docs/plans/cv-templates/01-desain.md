@@ -155,3 +155,44 @@ Kolom "Preset" adalah titik awal; agent boleh menyesuaikan setelah melihat hasil
 - Nama sangat besar (≈3,2× isi) sans display; blok warna aksen asimetris di kiri atas di belakang monogram inisial (bila tanpa foto) atau di belakang foto yang sedikit bergeser.
 - Dua kolom di bawahnya, sidebar kanan 32%.
 - Preset: Bricolage Grotesque (judul 700) + DM Sans; aksen koral senja.
+
+## Perluasan 2026-11-05 (20 template)
+
+Semua memakai `useLineupBase`, `OneColumnLayout`/`TwoColumnLayout` dan token yang sama. Setiap konsep punya ciri struktur sendiri, bukan sekadar warna atau huruf lain (masalah "kembar" di audit).
+
+### Satu kolom (ATS aman, tes ATS skor 100)
+
+- **Anggrek** — header rata tengah, nama serif display, headline kapital aksen, ornamen aksen pendek; judul bagian kapital di antara dua garis rambut (`sectionHeadingMarker` + `sectionHeadingRule` yang sama-sama `flexGrow`). Preset Playfair Display 500 + Mulish; plum.
+- **Ivory** — nama besar tebal 300, ruang putih lega, judul bagian ringan diawali satu titik aksen, entri satu baris (`entry: inline`). Preset Albert Sans 300; biru batu.
+- **Pilar** — rel garis rambut `fixed` di margin awal; ruas aksen tebal di samping header (border awal header yang menjangkau margin, jalan di RTL); penanda cincin tiap judul bagian diletakkan absolut di atas rel. Preset Public Sans; biru laut.
+- **Bingkai** — bingkai ganda (aksen 1,1 pt + garis 0,5 pt) di setiap halaman, digambar sebagai empat garis isi per persegi (lihat catatan Forme di bawah). Preset Libre Baskerville + Lora; hijau hutan; foto 4:5.
+- **Cerah** — judul bagian di atas pita `accentSoft` membulat dengan titik aksen; foto bulat di depan nama. Preset Figtree; biru cerah.
+- **Mozaik** — header berupa ubin aksen solid; setiap bagian di ubin abu lembut membulat; chip keahlian. Preset Space Grotesk + Inter; ungu.
+- **Nusa** — judul bagian = label aksen solid (teks `onAccent`) diikuti garis tinta sampai margin. Preset Archivo 800; merah bata.
+- **Selaras** — header terbelah: nama kiri, kontak bertumpuk di kanan di balik garis rambut; judul berbatang aksen + garis; entri `eyebrow`. Preset Sora + Onest; hijau zamrud.
+- **Teras** — foto + nama, lalu kontak dalam bilah `accentSoft`; judul label aksen di atas garis lembut tebal 2 pt. Preset Rubik; cokelat amber; foto 4:5.
+- **Cobalt** — batang aksen 4 pt di sisi awal blok nama; judul kapital tinta dengan kotak aksen + garis selebar halaman. Preset Libre Franklin 800; kobalt.
+- **Kontras** — nama Bebas Neue sangat tinggi, garis tinta 3 pt di bawah header, judul display + kotak aksen + garis tinta. Preset Bebas Neue + Barlow; merah.
+- **Lintasan** — timeline Jejak (`sectionTimeline`, bagian bertanggal saja) di satu kolom; titik judul bagian di sumbu yang sama. Preset Lexend; teal.
+
+### Dua kolom (visual)
+
+- **Graphite** — sidebar kanan arang netral `#262a31` (tidak ikut aksen), label sidebar `readableAccent` di atas arang; header di kolom utama. Preset Urbanist; emas.
+- **Awan** — header di sidebar kiri yang berupa panel abu membulat (bukan pita penuh). Preset Nunito Sans; mawar.
+- **Menara** — pita `accentSoft` penuh tinggi + blok aksen solid di puncak sidebar berisi nama/kontak (bentuk L). Preset Red Hat Display + Red Hat Text; biru tua.
+- **Tepi** — garis aksen 6 pt di tepi kertas sisi sidebar (`anchorToColumnStart`), sidebar kiri dibatasi garis rambut, judul utama dengan tanda pisah aksen. Preset Hanken Grotesk; oranye.
+- **Sekar** — header serif rata tengah selebar halaman, sidebar kiri berupa kartu `accentSoft` membulat. Preset Fraunces 500 + Karla; hijau sage.
+- **Marquee** — nama display ≈2,9× + garis aksen tebal selebar halaman; setiap bagian sidebar kanan di kartu `accentSoft`. Preset Syne + Work Sans; magenta.
+- **Fajar** — pita header `accent` 12% penuh lebar (teks tinta), sidebar kiri tanpa isian. Preset Poppins; jingga fajar.
+- **Cahaya** — header di kolom utama, sidebar kanan di balik garis aksen 2 pt. Preset Schibsted Grotesk; sian.
+
+### Catatan Forme dari sesi ini
+
+- View `fixed` absolut yang melewati kotak konten halaman (mis. `bottom` di dalam margin) dibelah Forme jadi dua potong; isian tidak terlihat bedanya, border tampak sebagai sisi ekstra. Bingkai memakai garis isi, bukan border.
+- View absolut yang **tidak** `fixed` diukur dari kotak konten, bukan kertas; `right` negatif di halaman RTL tidak tergambar. Ruas Pilar karena itu dibuat sebagai border header.
+- Latar header yang diletakkan pertama di kolom sidebar ikut direntang setinggi kolom; Menara menaruh warnanya di view dalam (`block`).
+- `alignSelf: flex-start` tidak menyusutkan teks judul; label Nusa butuh baris (judul + `sectionHeadingRule`), dan latar baris ditimpa `sectionHeadingContainer`.
+
+### Hasil tes ATS dua kolom
+
+Sekar, Marquee: bersih (100). Tepi, Fajar: `READING_ORDER_RISK` + `TIGHT_LINE_SPACING` (96). Graphite, Awan, Menara, Cahaya: `MULTI_COLUMN_LAYOUT` (55), pola sama dengan Kirana (sidebar mulai dari atas halaman di samping kolom utama).

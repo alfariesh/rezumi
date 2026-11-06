@@ -29,6 +29,23 @@ Keputusan pemilik yang berlaku untuk semua phase. Agent tidak mengubahnya diam-d
 
 ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template default untuk CV baru: **Meridian**.
 
+**Perluasan 2026-11-05: 20 template baru (total 36)**. Cerah, Teras dan Lintasan masuk paket Gratis (`BILLING_CATALOG_VERSION` 6); 17 lainnya Premium. Spesifikasi di `01-desain.md` → "Perluasan 2026-11-05".
+
+| Nama     | Kolom | Untuk siapa                                     | Nama     | Kolom | Untuk siapa                                 |
+| -------- | ----- | ----------------------------------------------- | -------- | ----- | ------------------------------------------- |
+| Anggrek  | 1     | Mewah rata tengah; perhotelan, PR, private bank | Graphite | 2     | Sidebar arang kanan; tech lead, keuangan    |
+| Ivory    | 1     | Minimalis Nordik; desainer, produk              | Awan     | 2     | Panel bulat kiri berisi nama; kreatif, muda |
+| Pilar    | 1     | Rel aksen di margin; perbankan, audit, BUMN     | Menara   | 2     | Blok aksen di atas sidebar; keuangan, BUMN  |
+| Bingkai  | 1     | Bingkai ganda klasik; akademik, kebijakan       | Tepi     | 2     | Garis aksen di tepi kertas; riset, tech     |
+| Cerah    | 1     | Pita judul lembut; fresh graduate, tech         | Sekar    | 2     | Header serif tengah + kartu; kreatif        |
+| Mozaik   | 1     | Kartu bento; desainer, produk                   | Marquee  | 2     | Nama sangat besar + kartu; kreatif          |
+| Nusa     | 1     | Label judul solid; pemasaran, kreatif muda      | Fajar    | 2     | Pita header lembut; fresh graduate          |
+| Selaras  | 1     | Header terbelah; konsultan, produk, fintech     | Cahaya   | 2     | Garis aksen kolom; cloud, data, fintech     |
+| Teras    | 1     | Bilah kontak berwarna; fresh graduate, CPNS     |          |       |                                             |
+| Cobalt   | 1     | Batang aksen di nama; pemerintahan, keuangan    |          |       |                                             |
+| Kontras  | 1     | Tipografi poster; art director, kreatif         |          |       |                                             |
+| Lintasan | 1     | Timeline satu kolom; fresh graduate, tech       |          |       |                                             |
+
 ## 2. Ikon dan logo
 
 - Ikon PDF pindah dari Phosphor ke **Hugeicons** (sudah ada di `packages/icons`), dengan **tiga gaya: Standar, Rounded, Sharp**. Gaya berlaku untuk seluruh CV.
@@ -39,7 +56,7 @@ ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template defau
 
 ## 3. Paket (membership)
 
-- **Gratis:** Meridian, Sterling, Tunas, Wibawa, Kirana; semua gaya ikon; logo profil.
+- **Gratis:** Meridian, Sterling, Tunas, Wibawa, Kirana, dan sejak 2026-11-05 Cerah, Teras, Lintasan; semua gaya ikon; logo profil.
 - **Plus dan Pro AI:** 11 template lain; logo tools/stack di Keahlian.
 - Aturan lama tetap: dokumen yang sudah memakai template premium tetap memakainya; batas hanya menghalangi memilih template premium baru. Font sendiri, Custom Styles, Word/ODT, API/MCP tidak berubah.
 - Mengubah daftar template gratis = mengubah isi paket: naikkan `BILLING_CATALOG_VERSION` dan perbarui halaman legal/harga yang menyebut template gratis.
@@ -60,3 +77,4 @@ ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template defau
 | 2026-11-04 | Kirana: urutan baca teks diperbaiki di mesin PDF (Forme `row-reverse`), tampilan tetap; bukan memindahkan header ke lebar penuh     | Pemilik |
 | 2026-11-04 | Web dulu: app mobile belum dikerjakan; bagian mobile tiap phase ditunda sampai pemilik memintanya                                   | Pemilik |
 | 2026-11-04 | Foto persona contoh galeri dari Unsplash (nama dan isi CV fiktif); sumber dan lisensi tiap foto di `template-showcase-sources.json` | Pemilik |
+| 2026-11-05 | Tambah 20 template baru yang elegan dan modern (12 satu kolom, 8 dua kolom); semuanya Premium, contoh galeri tanpa foto             | Pemilik |

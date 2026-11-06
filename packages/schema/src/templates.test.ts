@@ -39,10 +39,10 @@ const formerIds = [
 ];
 
 describe("template IDs", () => {
-	it("names exactly the sixteen templates, in gallery order, each once", () => {
+	it("names exactly the thirty-six templates, in gallery order, each once", () => {
 		expect(templateSchema.options).toEqual(templateLineup);
-		expect(templateLineup).toHaveLength(16);
-		expect(new Set(templateLineup).size).toBe(16);
+		expect(templateLineup).toHaveLength(36);
+		expect(new Set(templateLineup).size).toBe(36);
 		expect(templateLineup[0]).toBe(defaultTemplate);
 	});
 
@@ -103,7 +103,7 @@ describe("readableTemplateSchema", () => {
 		expect(readableTemplateSchema.parse(undefined)).toBe(defaultTemplate);
 	});
 
-	it("documents only the sixteen templates", () => {
+	it("documents only the lineup", () => {
 		const json = z.toJSONSchema(readableTemplateSchema, { io: "input" });
 		expect(json).toMatchObject({ enum: [...templateLineup] });
 		expect(JSON.stringify(json)).not.toMatch(/onyx|pikachu|azurill/);
@@ -122,7 +122,7 @@ describe("templateInputSchema", () => {
 			expect(templateInputSchema.safeParse(bad).success).toBe(false);
 	});
 
-	it("documents only the sixteen templates", () => {
+	it("documents only the lineup", () => {
 		const json = z.toJSONSchema(templateInputSchema, { io: "output" });
 		expect(json).toMatchObject({ enum: [...templateLineup] });
 	});

@@ -42,7 +42,7 @@ describe("createResumeDataJsonSchema", () => {
 		expect(generatedSchema.safeParse(mismatched).success).toBe(false);
 	});
 
-	it("names only the sixteen templates, never a former one", () => {
+	it("names only the lineup templates, never a former one", () => {
 		const schema = createResumeDataJsonSchema();
 		const metadata = schema.properties?.metadata;
 		const template = metadata && typeof metadata !== "boolean" ? metadata.properties?.template : undefined;

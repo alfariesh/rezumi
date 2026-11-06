@@ -11,7 +11,7 @@ import { templateLineup } from "@rezumi/schema/templates";
  * Indonesia pay) and the others US dollars; the plan page and checkout use the visitor's country.
  */
 
-/** The templates on the free plan: four one-column, ATS-safe layouts and one two-column. */
+/** The templates on the free plan: seven one-column, ATS-safe layouts and one two-column. */
 export const freeTemplates: readonly Template[] = FREE_TEMPLATES;
 
 /** The currency a landing page in this language shows. */
