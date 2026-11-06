@@ -1,0 +1,58 @@
+---
+/**
+ * A topic (category) or tag archive: its name, its description when an editor wrote one, and its articles. Topic
+ * pages are landing pages for search; tag pages are thinner and stay `noindex, follow`, as do later pages.
+ */
+import type { TermProps } from "../lib/loaders";
+import Pagination from "../components/Pagination.astro";
+import PostCard from "../components/PostCard.astro";
+import { getTranslator } from "../i18n/messages";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { termPath } from "../lib/loaders";
+import { documentTitle } from "../lib/site-settings";
+
+type Props = TermProps;
+
+const { locale, settings, taxonomy, term, posts, nextCursor, isPaged, localeLinks } = Astro.props;
+const t = getTranslator(locale);
+const path = termPath(taxonomy, locale, term.slug);
+const isTopic = taxonomy === "category";
+const description =
+	term.description?.trim() ||
+	(isTopic ? t("meta.categoryDescription", { topic: term.label }) : t("meta.tagDescription", { tag: term.label }));
+---
+
+<BaseLayout
+	locale={locale}
+	settings={settings}
+	title={documentTitle(term.label, settings)}
+	socialTitle={term.label}
+	description={description}
+	path={path}
+	robots={!isTopic || isPaged ? "noindex, follow" : undefined}
+	localeLinks={localeLinks}
+	currentTopic={isTopic ? term.slug : undefined}
+>
+	<section aria-labelledby="term-title" class="mx-auto w-full max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20 lg:px-8">
+		<p class="text-sm font-medium text-accent">{isTopic ? t("archive.category") : t("archive.tag")}</p>
+		<h1 id="term-title" class="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">{term.label}</h1>
+		{term.description && <p class="mt-5 max-w-2xl text-lg text-pretty text-muted">{term.description}</p>}
+	</section>
+
+	<div class="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28 lg:px-8">
+		{
+			posts.length === 0 ? (
+				<p class="rounded-3xl bg-surface p-10 text-center text-muted shadow-surface">{t("archive.empty")}</p>
+			) : (
+				<ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+					{posts.map((post) => (
+						<li class="flex">
+							<PostCard locale={locale} timezone={settings.timezone} post={post} headingLevel="h2" />
+						</li>
+					))}
+				</ul>
+			)
+		}
+		<Pagination locale={locale} basePath={path} nextCursor={nextCursor} isPaged={isPaged} />
+	</div>
+</BaseLayout>

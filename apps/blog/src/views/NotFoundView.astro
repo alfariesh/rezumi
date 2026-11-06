@@ -1,0 +1,31 @@
+---
+/** The 404 page, in the language of the address that was asked for. */
+import Icon from "../components/Icon.astro";
+import { getTranslator } from "../i18n/messages";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { homePath, localeFromPath } from "../lib/paths";
+import { documentTitle, loadSettings } from "../lib/site-settings";
+
+const locale = localeFromPath(Astro.url.pathname);
+const t = getTranslator(locale);
+const settings = await loadSettings();
+---
+
+<BaseLayout
+	locale={locale}
+	settings={settings}
+	title={documentTitle(t("notFound.title"), settings)}
+	description={t("notFound.description")}
+	path={Astro.url.pathname}
+	robots="noindex, follow"
+>
+	<section class="mx-auto flex w-full max-w-3xl flex-col items-start px-4 py-24 sm:px-6 sm:py-32">
+		<p class="font-mono text-sm text-accent">404</p>
+		<h1 class="mt-3 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">{t("notFound.title")}</h1>
+		<p class="mt-5 text-lg text-pretty text-muted">{t("notFound.description")}</p>
+		<a href={homePath(locale)} class="button button--primary button--lg mt-8">
+			<Icon name="arrow-left" />
+			{t("notFound.back")}
+		</a>
+	</section>
+</BaseLayout>

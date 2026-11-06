@@ -1,0 +1,63 @@
+/*
+ * The blog's stylesheet: Tailwind with the HeroUI default theme the app uses (apps/web/DESIGN.md), so the blog reads as
+ * part of Rezumi. Only the components the blog draws are imported, which keeps a page's CSS a fraction of the app's.
+ * HeroUI's BEM classes (`button button--primary`, `chip`) work in plain HTML, so public pages ship no React.
+ */
+@import "tailwindcss";
+@import "@heroui/styles/base" layer(base);
+@import "@heroui/styles/utilities";
+@import "@heroui/styles/variants";
+@import "@heroui/styles/themes/default" layer(theme);
+@import "@heroui/styles/components/button.css" layer(components);
+@import "@heroui/styles/components/chip.css" layer(components);
+@import "@heroui/styles/components/avatar.css" layer(components);
+@import "@heroui/styles/components/separator.css" layer(components);
+/* Google Sans, self-hosted like the app's. Each @font-face carries a unicode-range, so a page loads only its scripts. */
+@import "@fontsource-variable/google-sans/wght.css";
+@import "@fontsource-variable/google-sans/wght-italic.css";
+@import "@fontsource-variable/google-sans-code/wght.css";
+@import "./prose.css";
+
+/* The theme follows the `dark` class the inline script in BaseLayout sets before the first paint, like the app. */
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	--font-sans:
+		"Google Sans Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+		"Segoe UI Symbol", "Noto Color Emoji";
+	--font-mono:
+		"Google Sans Code Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
+
+	/* The app's motion tokens (packages/ui/src/styles/globals.css). */
+	--ease-enter: cubic-bezier(0.23, 1, 0.32, 1);
+	--default-transition-duration: 120ms;
+	--default-transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer base {
+	html {
+		@apply font-sans;
+		scroll-padding-top: calc(var(--header-height, 4rem) + 1.5rem);
+	}
+
+	body {
+		@apply bg-background text-foreground proportional-nums antialiased selection:bg-accent-soft selection:text-foreground;
+	}
+
+	/* HeroUI components draw their own focus ring; everything else gets a 2px ring with a 2px gap. */
+	:focus-visible {
+		outline: 2px solid var(--focus);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		::before,
+		::after {
+			transition-duration: 1ms !important;
+			animation-duration: 1ms !important;
+			scroll-behavior: auto !important;
+		}
+	}
+}

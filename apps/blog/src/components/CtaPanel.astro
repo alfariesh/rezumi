@@ -1,0 +1,56 @@
+---
+/**
+ * A call to action on the accent panel, like the landing page's closing (apps/web/src/features/homepage/closing.tsx):
+ * a statement, one line of support and a secondary button into the app. `size="large"` is the page-wide closing.
+ */
+import type { Locale } from "../i18n/config";
+import type { AppLinkPlacement } from "../lib/app-links";
+import type { CtaKind } from "../lib/cta";
+import { getTranslator } from "../i18n/messages";
+import { appLink } from "../lib/app-links";
+import { CTA_DESTINATIONS } from "../lib/cta";
+import Icon from "./Icon.astro";
+
+type Props = {
+	locale: Locale;
+	kind: CtaKind;
+	placement: AppLinkPlacement;
+	campaign?: string | undefined;
+	size?: "compact" | "large";
+};
+
+const { locale, kind, placement, campaign, size = "compact" } = Astro.props;
+const t = getTranslator(locale);
+const href = appLink(CTA_DESTINATIONS[kind], { locale, placement, campaign });
+const titleId = `cta-${placement}-title`;
+const large = size === "large";
+---
+
+<section
+	aria-labelledby={titleId}
+	class:list={[
+		"relative overflow-hidden bg-accent text-accent-foreground",
+		large ? "rounded-[2rem] px-6 py-16 sm:rounded-[3rem] sm:px-16 sm:py-20" : "rounded-3xl px-6 py-8 sm:px-10 sm:py-10",
+	]}
+>
+	<div class:list={["relative", large ? "max-w-2xl" : "max-w-xl"]}>
+		<h2
+			id={titleId}
+			class:list={[
+				"font-semibold tracking-tight text-balance",
+				large ? "text-4xl sm:text-5xl" : "text-2xl sm:text-3xl",
+			]}
+		>
+			{t(`cta.${kind}.title`)}
+		</h2>
+		<p class:list={["text-pretty text-accent-foreground/80", large ? "mt-4 text-lg" : "mt-3 text-base"]}>
+			{t(`cta.${kind}.description`)}
+		</p>
+		<div class:list={[large ? "mt-8" : "mt-6"]}>
+			<a href={href} class:list={["button button--secondary", large ? "button--lg" : "button--md"]}>
+				{t(`cta.${kind}.action`)}
+				<Icon name="arrow-right" size={large ? 20 : 16} />
+			</a>
+		</div>
+	</div>
+</section>

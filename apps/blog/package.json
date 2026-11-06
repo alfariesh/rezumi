@@ -1,0 +1,42 @@
+{
+	"name": "blog",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"emdash": {
+		"label": "Rezumi Blog",
+		"seed": "seed/seed.json"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"deploy": "astro build && wrangler deploy",
+		"typecheck": "astro check",
+		"test": "vp test run --passWithNoTests",
+		"test:coverage": "vp test run --coverage --passWithNoTests",
+		"test:ci": "vp test run --reporter=default --reporter=github-actions --reporter=json --reporter=junit --outputFile.json=reports/vitest-results.json --outputFile.junit=reports/vitest-junit.xml --passWithNoTests"
+	},
+	"dependencies": {
+		"@astrojs/cloudflare": "^14.4.4",
+		"@astrojs/react": "^7.1.2",
+		"@emdash-cms/cloudflare": "^1.4.0",
+		"@fontsource-variable/google-sans": "catalog:",
+		"@fontsource-variable/google-sans-code": "catalog:",
+		"@heroui/styles": "catalog:",
+		"@rezumi/icons": "workspace:*",
+		"astro": "^7.4.5",
+		"emdash": "^1.4.0",
+		"react": "catalog:",
+		"react-dom": "catalog:"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.12",
+		"@cloudflare/workers-types": "catalog:",
+		"@tailwindcss/vite": "^4.3.4",
+		"tailwindcss": "^4.3.3",
+		"typescript": "^6.0.3",
+		"vite-plus": "catalog:",
+		"wrangler": "catalog:"
+	}
+}

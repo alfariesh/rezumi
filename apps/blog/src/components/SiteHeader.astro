@@ -1,0 +1,120 @@
+---
+/**
+ * The blog bar: the brand, the topics (the `category` terms in this language, so the bar follows what editors create)
+ * and one call to action. From `lg` everything sits in one row; below it the topics scroll under the brand, with
+ * search and the language link at their end, like the landing page's section bar.
+ */
+import type { Locale } from "../i18n/config";
+import type { BlogSettings } from "../lib/site-settings";
+import type { LocaleLinks } from "./LanguageSwitcher.astro";
+import { getTaxonomyTermsWithCacheHint } from "emdash";
+import { getTranslator } from "../i18n/messages";
+import { appLink } from "../lib/app-links";
+import { categoryPath, homePath, searchPath } from "../lib/paths";
+import BrandMark from "./BrandMark.astro";
+import Icon from "./Icon.astro";
+import LanguageSwitcher from "./LanguageSwitcher.astro";
+
+type Props = {
+	locale: Locale;
+	settings: BlogSettings;
+	localeLinks?: LocaleLinks | undefined;
+	/** Slug of the topic being read, marked in the bar. */
+	currentTopic?: string | undefined;
+	/** The article the reader is on, for the call to action's attribution. */
+	campaign?: string | undefined;
+};
+
+const { locale, settings, localeLinks, currentTopic, campaign } = Astro.props;
+const t = getTranslator(locale);
+
+const topics = await getTaxonomyTermsWithCacheHint("category", { locale, includeCounts: false });
+if (Astro.cache?.enabled) Astro.cache.set(topics.cacheHint);
+
+const register = appLink("register", { locale, placement: "header", campaign });
+const topicLink =
+	"block rounded-full px-3 py-1.5 text-sm font-medium whitespace-nowrap text-muted transition-colors hover:text-foreground aria-[current=page]:bg-accent-soft aria-[current=page]:text-accent-soft-foreground";
+---
+
+<header data-site-header class="sticky top-0 z-40 border-b border-separator bg-background/90 backdrop-blur-md">
+	<div class="mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-4 sm:px-6 lg:px-8">
+		<a href={homePath(locale)} class="flex shrink-0 items-center gap-2.5 rounded-lg" aria-label={t("nav.home")}>
+			{settings.logo ? <img src={settings.logo.url} alt="" class="h-8 w-auto" /> : <BrandMark />}
+			<span class="text-lg font-semibold tracking-tight">Rezumi</span>
+			<span aria-hidden="true" class="h-4 w-px bg-separator"></span>
+			<span class="text-lg font-medium text-muted">Blog</span>
+		</a>
+
+		{
+			topics.data.length > 0 && (
+				<nav aria-label={t("nav.topics")} class="hidden min-w-0 lg:block">
+					<ul class="flex items-center gap-1">
+						{topics.data.map((topic) => (
+							<li>
+								<a
+									href={categoryPath(locale, topic.slug)}
+									aria-current={topic.slug === currentTopic ? "page" : undefined}
+									class={topicLink}
+								>
+									{topic.label}
+								</a>
+							</li>
+						))}
+					</ul>
+				</nav>
+			)
+		}
+
+		<div class="ms-auto flex shrink-0 items-center gap-1">
+			<a
+				href={searchPath(locale)}
+				class="button button--ghost button--icon-only button--sm hidden lg:inline-flex"
+				aria-label={t("nav.search")}
+			>
+				<Icon name="magnifying-glass" />
+			</a>
+			<div class="hidden lg:block">
+				<LanguageSwitcher locale={locale} links={localeLinks} />
+			</div>
+			<a href={register} class="button button--primary button--sm ms-1">
+				{t("cta.build-resume.action")}
+				<Icon name="arrow-right" size={16} class="hidden shrink-0 sm:block" />
+			</a>
+		</div>
+	</div>
+
+	<div class="mx-auto flex w-full max-w-6xl items-center gap-2 px-4 pb-2 sm:px-6 lg:hidden">
+		<nav aria-label={t("nav.topics")} class="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none]">
+			<ul class="flex w-max items-center gap-1">
+				{
+					topics.data.map((topic) => (
+						<li>
+							<a
+								href={categoryPath(locale, topic.slug)}
+								aria-current={topic.slug === currentTopic ? "page" : undefined}
+								class={topicLink}
+							>
+								{topic.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+		<a href={searchPath(locale)} class="button button--ghost button--icon-only button--sm" aria-label={t("nav.search")}>
+			<Icon name="magnifying-glass" />
+		</a>
+		<LanguageSwitcher locale={locale} links={localeLinks} />
+	</div>
+</header>
+
+<script is:inline>
+	// Inline so the offset is known before the browser scrolls to a #fragment (html scroll-padding in global.css).
+	(() => {
+		const header = document.querySelector("[data-site-header]");
+		if (!header) return;
+		const set = () => document.documentElement.style.setProperty("--header-height", `${header.offsetHeight}px`);
+		set();
+		new ResizeObserver(set).observe(header);
+	})();
+</script>

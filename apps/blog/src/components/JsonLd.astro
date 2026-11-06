@@ -1,0 +1,11 @@
+---
+/**
+ * Structured data the page adds to EmDash's own (EmDashHead renders BlogPosting or WebSite). `<` is escaped so content
+ * can never close the script element.
+ */
+type Props = { data: Record<string, unknown> };
+
+const json = JSON.stringify(Astro.props.data).replaceAll("<", "\\u003c");
+---
+
+<script type="application/ld+json" set:html={json} />

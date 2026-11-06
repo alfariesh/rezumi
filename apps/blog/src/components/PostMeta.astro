@@ -1,0 +1,43 @@
+---
+/** An article's date and reading time, and on the article itself its authors and last update. */
+import type { Locale } from "../i18n/config";
+import { getTranslator } from "../i18n/messages";
+import { formatDate } from "../lib/dates";
+
+type Props = {
+	locale: Locale;
+	timezone: string;
+	publishedAt: Date | null;
+	readingMinutes: number;
+	/** Shown when an article was revised a day or more after it was published. */
+	updatedAt?: Date | undefined;
+	authors?: readonly string[] | undefined;
+	class?: string | undefined;
+};
+
+const { locale, timezone, publishedAt, readingMinutes, updatedAt, authors = [], class: className } = Astro.props;
+const t = getTranslator(locale);
+const DAY = 24 * 60 * 60 * 1000;
+const revised = publishedAt && updatedAt && updatedAt.getTime() - publishedAt.getTime() >= DAY ? updatedAt : null;
+const items = [
+	authors.length > 0 ? t("post.by", { names: new Intl.ListFormat(locale).format(authors) }) : null,
+	publishedAt ? { date: publishedAt, label: formatDate(publishedAt, locale, timezone) } : null,
+	t("post.readingTime", { minutes: readingMinutes }),
+	revised ? { date: revised, label: t("post.updated", { date: formatDate(revised, locale, timezone) }) } : null,
+].filter((item) => item !== null);
+---
+
+<p class:list={["flex flex-wrap items-center gap-x-2 gap-y-1 text-muted", className]}>
+	{
+		items.map((item, index) => (
+			<>
+				{index > 0 && <span aria-hidden="true">·</span>}
+				{typeof item === "string" ? (
+					<span>{item}</span>
+				) : (
+					<time datetime={item.date.toISOString()}>{item.label}</time>
+				)}
+			</>
+		))
+	}
+</p>

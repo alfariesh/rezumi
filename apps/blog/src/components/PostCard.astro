@@ -1,0 +1,71 @@
+---
+/**
+ * An article in a list. The whole card is the link (its title's link covers it), so the topic inside is plain text.
+ * `feature` is the home page's lead article: larger, with its image beside the text from `md`.
+ */
+import type { Locale } from "../i18n/config";
+import type { PostEntry } from "../lib/entries";
+import { Image } from "emdash/ui";
+import { entrySlug } from "../lib/entries";
+import { postPath } from "../lib/paths";
+import { readingMinutes } from "../lib/portable-text";
+import PostMeta from "./PostMeta.astro";
+
+type Props = {
+	locale: Locale;
+	timezone: string;
+	post: PostEntry;
+	variant?: "card" | "feature";
+	/** The heading level the list sits under: `h2` on the home page's lead, `h3` in a titled grid. */
+	headingLevel?: "h2" | "h3";
+	/** The lead article's image is the page's largest paint, so it loads eagerly. */
+	priority?: boolean;
+};
+
+const { locale, timezone, post, variant = "card", headingLevel = "h3", priority = false } = Astro.props;
+const { title, excerpt, featured_image: image, publishedAt, content, terms } = post.data;
+const topic = terms?.category?.[0];
+const feature = variant === "feature";
+const Heading = headingLevel;
+---
+
+<article
+	class:list={[
+		"group relative w-full overflow-hidden rounded-3xl bg-surface shadow-surface transition-colors hover:bg-surface-secondary has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-focus",
+		feature && image ? "grid md:grid-cols-2" : "flex flex-col",
+	]}
+>
+	{
+		image && (
+			<div class:list={["overflow-hidden bg-default", feature ? "aspect-[16/10] md:aspect-auto" : "aspect-[16/9]"]}>
+				<Image
+					image={image}
+					class="size-full object-cover"
+					sizes={feature ? "(min-width: 768px) 576px, 100vw" : "(min-width: 1024px) 384px, (min-width: 768px) 50vw, 100vw"}
+					priority={priority}
+				/>
+			</div>
+		)
+	}
+	<div class:list={["flex flex-1 flex-col", feature ? "gap-4 p-6 sm:p-10" : "gap-3 p-6"]}>
+		{topic && <p class="text-sm font-medium text-accent">{topic.label}</p>}
+		<Heading
+			class:list={[
+				"font-semibold tracking-tight text-balance",
+				feature ? "text-3xl sm:text-4xl" : "text-xl",
+			]}
+		>
+			<a href={postPath(locale, entrySlug(post))} class="outline-none after:absolute after:inset-0">
+				{title}
+			</a>
+		</Heading>
+		<p class:list={["text-pretty text-muted", feature ? "text-lg" : "line-clamp-3 text-sm"]}>{excerpt}</p>
+		<PostMeta
+			locale={locale}
+			timezone={timezone}
+			publishedAt={publishedAt}
+			readingMinutes={readingMinutes(content)}
+			class={feature ? "mt-auto pt-2 text-sm" : "mt-auto pt-2 text-xs"}
+		/>
+	</div>
+</article>
