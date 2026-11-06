@@ -2,7 +2,7 @@
  * Rules every theme shares: reset, tokens' fixed scale, and the shared building blocks (buttons, chips, navigation,
  * metric widget, covers, work detail, CV lists, location card, footer). Themes restyle them through the tokens and
  * their own rules under `.pf[data-theme="<id>"]`. Ported from `mockups/shared.css` (Phase 00), without the parts later
- * phases add (contact form, map picture, video, PDF and link cards, intro effects).
+ * phases add (contact form, intro effects). Phase 05 added the video, PDF and link cards and the map picture.
  */
 export const BASE_CSS = String.raw`
 *,*::before,*::after{box-sizing:border-box}
@@ -140,6 +140,41 @@ p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
 .pf-lightbox__prev{inset-inline-start:12px}
 .pf-lightbox__next{inset-inline-end:12px}
 @media (max-width:640px){.pf-lightbox__prev,.pf-lightbox__next{top:auto;bottom:max(16px,env(safe-area-inset-bottom,0px));transform:none}}
+.pf-video{position:relative;border-radius:var(--pf-radius);overflow:hidden;background:#0b0d12;color:#fff;--pf-cover-ratio:16/9}
+.pf-video__open{position:relative;display:block;color:inherit;text-decoration:none;cursor:pointer}
+.pf-video .pf-cover{background:radial-gradient(120% 120% at 0% 0%,color-mix(in oklab,var(--pf-accent) 55%,#0b0d12),#0b0d12 70%)}
+.pf-video .pf-cover img{opacity:.82;transition:opacity .2s,transform .3s}
+.pf-video__open:is(:hover,:focus-visible) .pf-cover img{opacity:.92;transform:scale(1.015)}
+.pf-video__play{position:absolute;inset:0;display:grid;place-items:center}
+.pf-video__play>span{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:var(--pf-accent);color:var(--pf-on-accent);box-shadow:0 10px 30px rgb(0 0 0/.35);transition:transform .15s}
+.pf-video__open:is(:hover,:focus-visible) .pf-video__play>span{transform:scale(1.06)}
+.pf-video__icon{width:30px;height:30px;margin-inline-start:4px}
+[dir="rtl"] .pf-video__icon{margin-inline-start:0;margin-inline-end:4px}
+.pf-video__meta{position:absolute;inset-inline:0;bottom:0;padding:40px 20px 16px;background:linear-gradient(transparent,rgb(0 0 0/.72));font-size:var(--pf-text-sm);line-height:1.35;color:rgb(255 255 255/.86)}
+.pf-video__meta b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:#fff;font-size:var(--pf-text-md)}
+.pf-video__open:focus-visible{outline:none}
+.pf-video:has(.pf-video__open:focus-visible){outline:2px solid var(--pf-accent-text);outline-offset:3px}
+.pf-video iframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+@media (max-width:520px){.pf-video__play>span{width:56px;height:56px}.pf-video__icon{width:24px;height:24px}.pf-video__meta{padding:28px 14px 10px;font-size:var(--pf-text-xs)}.pf-video__meta b{-webkit-line-clamp:1;font-size:var(--pf-text-sm)}}
+.pf-pdf,.pf-link{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;padding:14px;border:1px solid var(--pf-border);border-radius:var(--pf-radius);background:var(--pf-surface);color:var(--pf-text)}
+.pf-pdf__page{display:grid;place-items:center;width:84px;aspect-ratio:800/1131;border-radius:4px;box-shadow:0 2px 8px rgb(0 0 0/.16);overflow:hidden;background:#fff;color:#8a8f98}
+.pf-pdf__page img{width:100%;height:100%;object-fit:cover;object-position:top}
+.pf-pdf__icon{width:32px;height:32px}
+.pf-pdf__text{display:grid;gap:4px;justify-items:start;min-width:0}
+.pf-pdf b,.pf-link b{display:block;font-weight:600;line-height:1.35}
+.pf-pdf__text>span{color:var(--pf-muted);font-size:var(--pf-text-xs)}
+.pf-pdf .pf-btn{margin-top:8px;min-height:40px;padding:.45em 1em;font-size:var(--pf-text-xs);background:var(--pf-bg)}
+.pf-link{text-decoration:none;transition:border-color .15s}
+.pf-link:hover{border-color:var(--pf-text)}
+.pf-link__site{display:grid;place-items:center;width:52px;height:52px;border-radius:12px;background:var(--pf-bg);border:1px solid var(--pf-border);color:var(--pf-accent-text)}
+.pf-link__site svg{width:26px;height:26px}
+.pf-link__image{display:block;width:148px;aspect-ratio:1.91/1;border-radius:var(--pf-radius-sm);overflow:hidden;background:var(--pf-bg)}
+.pf-link__image img{width:100%;height:100%;object-fit:cover}
+.pf-link__text{display:grid;gap:2px;min-width:0}
+.pf-link__desc{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:2px;color:var(--pf-muted);font-size:var(--pf-text-sm);line-height:1.45}
+.pf-link__domain{display:inline-flex;align-items:center;gap:6px;margin-top:4px;min-width:0;color:var(--pf-muted);font-size:var(--pf-text-xs)}
+.pf-link__domain .pf-icon{width:.95em;height:.95em}
+@media (max-width:520px){.pf-link[data-image]{grid-template-columns:minmax(0,1fr)}.pf-link[data-image] .pf-link__image{width:100%}.pf-pdf__page{width:72px}}
 .pf-avatar{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:50%;overflow:hidden;background:var(--pf-accent-soft);color:var(--pf-accent-text);font:700 var(--pf-text-sm)/1 var(--pf-font-heading)}
 .pf-avatar img{width:100%;height:100%;object-fit:cover}
 .pf-person{display:flex;align-items:center;gap:12px;min-width:0}
@@ -177,6 +212,14 @@ p,li,blockquote,h1,h2,h3,dt,dd{unicode-bidi:plaintext}
 .pf-extra li span{color:var(--pf-muted);font-size:var(--pf-text-xs)}
 .pf-extra li a{text-underline-offset:3px}
 .pf-loc{display:grid;gap:12px;padding:16px;border:1px solid var(--pf-border);border-radius:var(--pf-radius);background:var(--pf-bg)}
+.pf-loc[data-map]{padding:12px}
+.pf-loc__map{position:relative;overflow:hidden;border-radius:calc(var(--pf-radius) - 4px);aspect-ratio:5/3;max-width:100%;background:var(--pf-surface)}
+.pf-loc__map img{width:100%;height:100%;object-fit:cover}
+.pf-loc__pin{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--pf-accent);border:4px solid #fff;box-shadow:0 0 0 8px color-mix(in oklab,var(--pf-accent) 26%,transparent),0 4px 10px rgb(0 0 0/.3)}
+.pf-loc__attr{position:absolute;inset-inline-end:6px;bottom:6px;padding:1px 6px;border-radius:4px;background:rgb(255 255 255/.85);color:#333;font-size:10px;line-height:1.5}
+.pf-loc__body{display:grid;gap:10px}
+.pf-loc[data-map] .pf-loc__body{padding:2px 4px 4px}
+.pf-loc__open{justify-self:start;color:var(--pf-accent-text);font-size:var(--pf-text-xs);font-weight:600;text-underline-offset:3px}
 .pf-loc__city{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:baseline}
 .pf-loc__city b{font:700 var(--pf-text-lg)/1.2 var(--pf-font-heading)}
 .pf-loc__time{color:var(--pf-muted);font-size:var(--pf-text-xs);font-variant-numeric:tabular-nums}

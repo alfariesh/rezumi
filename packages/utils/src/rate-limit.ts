@@ -55,5 +55,8 @@ export const rateLimitConfig = {
 		// Galleries and "one work per picture" upload many pictures in a row, one request each.
 		portfolioUploads: { maxRequests: 60, window: 60 * 1000 },
 		portfolioFileDeletes: { maxRequests: 60, window: 60 * 1000 },
+		// Each pasted link reads another site; each approved preview picture is fetched from it once.
+		portfolioUnfurls: { maxRequests: 30, window: 60 * 60 * 1000 },
+		portfolioRemoteImages: { maxRequests: 30, window: 60 * 60 * 1000 },
 	},
 } as const;

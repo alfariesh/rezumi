@@ -5,8 +5,8 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { generateId } from "@rezumi/utils/string";
 import { dropMissingHighlight, newMetric } from "../metrics/metrics";
 
-/** The blocks the editor can add now. Video, PDF and link blocks arrive in Phase 05. */
-export const EDITOR_BLOCK_TYPES = ["text", "images", "metrics"] as const;
+/** The blocks the editor offers, in its menus' order (`01-desain.md` section 15). */
+export const EDITOR_BLOCK_TYPES = ["text", "images", "metrics", "video", "pdf", "link"] as const;
 export type EditorBlockType = (typeof EDITOR_BLOCK_TYPES)[number];
 
 export function newTextBlock(html = ""): PortfolioBlockOf<"text"> {

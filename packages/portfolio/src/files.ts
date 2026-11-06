@@ -24,6 +24,7 @@ export function portfolioFileKeys(data: PortfolioData): string[] {
 				image(block.preview);
 			}
 			if (block.type === "link") image(block.image);
+			if (block.type === "video") image(block.thumbnail);
 		}
 	}
 	for (const testimonial of data.testimonials.items) image(testimonial.photo);

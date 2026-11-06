@@ -555,6 +555,122 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 		});
 	});
 
+	describe("PDFs", () => {
+		const pdf = (bytes = 2000, name = "case.pdf") => {
+			const data = new Uint8Array(bytes);
+			data.set(new TextEncoder().encode("%PDF-1.7\n"));
+			return new File([data], name, { type: "application/pdf" });
+		};
+		const pdfRows = (userId = "member") =>
+			getDb()
+				.select({
+					key: tables.portfolioFile.key,
+					kind: tables.portfolioFile.kind,
+					bytes: tables.portfolioFile.bytes,
+					pages: tables.portfolioFile.pages,
+					unusedSince: tables.portfolioFile.unusedSince,
+				})
+				.from(tables.portfolioFile)
+				.where(eq(tables.portfolioFile.userId, userId));
+		const work = (file: string) => ({
+			works: {
+				items: [
+					{
+						id: "w1",
+						slug: "case",
+						title: "Case",
+						blocks: [{ id: "b1", type: "pdf" as const, file, title: "Case study", pages: 3 }],
+					},
+				],
+			},
+		});
+
+		it("stores a PDF under the account's own folder, recorded and unused until a block uses it", async () => {
+			await expect(service.uploadPdf("member", { file: pdf(), pages: 3 })).rejects.toMatchObject({
+				code: "NOT_FOUND",
+			});
+			await service.create("member", { sourceResumeId: null });
+			const uploaded = await service.uploadPdf("member", { file: pdf(), pages: 3 });
+			expect(uploaded).toEqual({ key: expect.any(String), bytes: 2000, pages: 3 });
+			expect(uploaded.key).toMatch(/^uploads\/member\/documents\/portfolio\/[\da-f-]{36}\.pdf$/);
+			expect(fixture.files.get(uploaded.key)?.byteLength).toBe(2000);
+			expect(await pdfRows()).toEqual([
+				{ key: uploaded.key, kind: "pdf", bytes: 2000, pages: 3, unusedSince: expect.any(Date) },
+			]);
+			expect((await service.get("member")).usage.storageBytes).toBe(2000);
+
+			const saved = await save("member", work(uploaded.key));
+			expect(saved.data.works.items[0]?.blocks[0]).toMatchObject({ type: "pdf", file: uploaded.key, pages: 3 });
+			expect((await pdfRows()).map((row) => row.unusedSince)).toEqual([null]);
+		});
+
+		it("refuses files that aren't PDFs or are larger than 10 MB, storing nothing", async () => {
+			await service.create("member", { sourceResumeId: null });
+			const html = new File(["<html><script>alert(1)</script></html>"], "case.pdf", { type: "application/pdf" });
+			await expect(service.uploadPdf("member", { file: html, pages: 1 })).rejects.toMatchObject({
+				code: "PORTFOLIO_PDF_INVALID",
+				status: 400,
+				data: { reason: "type" },
+			});
+			const max = 10 * 1024 * 1024;
+			await expect(service.uploadPdf("member", { file: pdf(max + 1), pages: 1 })).rejects.toMatchObject({
+				code: "PORTFOLIO_FILE_TOO_LARGE",
+				status: 413,
+				data: { bytes: max + 1, max },
+				message: expect.stringContaining("PDF"),
+			});
+			expect(fixture.files.size).toBe(0);
+			expect(await pdfRows()).toEqual([]);
+			await expect(service.uploadPdf("member", { file: pdf(max), pages: 1 })).resolves.toMatchObject({ bytes: max });
+		});
+
+		it("records nothing when storing fails", async () => {
+			await service.create("member", { sourceResumeId: null });
+			fixture.failWrites = true;
+			await expect(service.uploadPdf("member", { file: pdf(), pages: 1 })).rejects.toThrow("Storage is down");
+			expect(await pdfRows()).toEqual([]);
+		});
+
+		it("never lets one account's data use another account's PDF", async () => {
+			await service.create("member", { sourceResumeId: null });
+			await service.create("other", { sourceResumeId: null });
+			const theirs = await service.uploadPdf("other", { file: pdf(), pages: 2 });
+			await expect(save("member", work(theirs.key))).rejects.toMatchObject({
+				code: "PORTFOLIO_FILE_NOT_FOUND",
+				data: { key: theirs.key },
+			});
+			const unknown = "uploads/member/documents/portfolio/00000000-0000-0000-0000-000000000000.pdf";
+			await expect(save("member", work(unknown))).rejects.toMatchObject({
+				code: "PORTFOLIO_FILE_NOT_FOUND",
+				data: { key: unknown },
+			});
+		});
+
+		it("refuses link reading and remote pictures while portfolios are off, without fetching", async () => {
+			fixture.mode = "off";
+			await expect(service.unfurl("member", { url: "https://github.com/" })).rejects.toMatchObject({
+				code: "PORTFOLIO_DISABLED",
+			});
+			await expect(service.fetchRemoteImage("member", { url: "https://github.com/a.png" })).rejects.toMatchObject({
+				code: "PORTFOLIO_DISABLED",
+			});
+			fixture.mode = "on";
+			await expect(service.fetchRemoteImage("member", { url: "http://127.0.0.1/a.png" })).rejects.toMatchObject({
+				code: "NOT_FOUND",
+			});
+			await service.create("member", { sourceResumeId: null });
+			await expect(service.fetchRemoteImage("member", { url: "http://127.0.0.1/a.png" })).rejects.toMatchObject({
+				code: "PORTFOLIO_LINK_UNREADABLE",
+				data: { reason: "unsafe-url" },
+			});
+			await expect(service.unfurl("member", { url: "http://10.1.2.3/" })).rejects.toMatchObject({
+				code: "PORTFOLIO_LINK_UNREADABLE",
+				status: 400,
+				data: { reason: "unsafe-url" },
+			});
+		});
+	});
+
 	describe("adding works from the resume", () => {
 		const project = (id: string, name: string) => ({
 			id,

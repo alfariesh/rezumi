@@ -12,7 +12,7 @@ function asFile(blob: Blob, name: string): File {
 }
 
 /** What went wrong with one picture, in words for the person who chose it. */
-function imageUploadErrorMessage(error: unknown, fileName?: string): string {
+export function imageUploadErrorMessage(error: unknown, fileName?: string): string {
 	const name = fileName ? `“${fileName}”: ` : "";
 	if (error instanceof PortfolioImageError) {
 		switch (error.problem) {
@@ -41,7 +41,7 @@ function imageUploadErrorMessage(error: unknown, fileName?: string): string {
  * Shrinks a picture in the browser and uploads it to the portfolio's storage. The server checks its type, size and
  * dimensions again and records it; the returned image can then be saved in the portfolio's data.
  */
-async function uploadPortfolioImage(
+export async function uploadPortfolioImage(
 	file: File,
 	options: { kind?: PortfolioImageKind; alt?: string } = {},
 ): Promise<PortfolioImage> {

@@ -2,10 +2,13 @@ import z from "zod";
 import { portfolioDataSchema, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
+import { VIDEO_PROVIDERS } from "@rezumi/schema/portfolio/video";
 import { protectedProcedure } from "../../context";
 import {
 	portfolioFileDeleteRateLimit,
 	portfolioMutationRateLimit,
+	portfolioRemoteImageRateLimit,
+	portfolioUnfurlRateLimit,
 	portfolioUpdateRateLimit,
 	portfolioUploadRateLimit,
 } from "../../middleware/rate-limit";
@@ -27,6 +30,43 @@ const conflict = {
 const fileNotFound = {
 	PORTFOLIO_FILE_NOT_FOUND: { status: 400, message: "A file in this portfolio isn't one of its uploads." },
 };
+
+const linkUnreadable = {
+	PORTFOLIO_LINK_UNREADABLE: {
+		status: 400,
+		message: "This site can't be read automatically. Fill in the details yourself.",
+	},
+};
+const remoteUrlSchema = z
+	.string()
+	.trim()
+	.min(1)
+	.max(PORTFOLIO_LIMITS.text.url)
+	.describe("A public http(s) address; one without a scheme is read as https.");
+
+const unfurlSchema = z.discriminatedUnion("kind", [
+	z.object({
+		kind: z.literal("video"),
+		url: z.string().describe("The video's own page."),
+		provider: z.enum(VIDEO_PROVIDERS),
+		videoId: z.string(),
+		hash: z.string().optional().describe("The hash of an unlisted Vimeo video."),
+		title: z.string().optional(),
+		thumbnailUrl: z.string().optional().describe("The video's picture on YouTube's or Vimeo's image server."),
+	}),
+	z.object({
+		kind: z.literal("link"),
+		url: z.string().describe("Where the link ended up after redirects."),
+		title: z.string(),
+		description: z.string().optional(),
+		siteName: z.string().optional(),
+		imageUrl: z
+			.string()
+			.optional()
+			.describe("The page's preview picture on its own site; copy it with fetchRemoteImage + uploadImage."),
+		brandIcon: z.string().optional().describe("The site's logo in the resume icon set, for known sites."),
+	}),
+]);
 
 const portfolioSchema = z.object({
 	id: z.string(),
@@ -242,6 +282,74 @@ export const portfolioRouter = {
 			}),
 		)
 		.handler(({ context, input }) => portfolioService.uploadImage(context.user.id, input)),
+
+	uploadPdf: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/files/pdfs",
+			operationId: "uploadPortfolioPdf",
+			summary: "Upload a PDF for a work",
+			description: `A PDF of at most ${PORTFOLIO_UPLOAD.pdfBytes / 1024 / 1024} MB that opens without a password, with the page count the browser read. Its first page's picture is uploaded with uploadImage. Unused until saved data refers to its key.`,
+		})
+		.input(
+			z.object({
+				file: z.file().describe("The PDF."),
+				pages: z.coerce.number().int().min(1).max(PORTFOLIO_LIMITS.pdfPages).describe("How many pages it has."),
+			}),
+		)
+		.use(portfolioUploadRateLimit)
+		.errors({
+			...disabled,
+			...notFound,
+			PORTFOLIO_FILE_TOO_LARGE: { status: 413, message: "This PDF is too large to upload." },
+			PORTFOLIO_PDF_INVALID: { status: 400, message: "This file isn't a PDF." },
+		})
+		.output(
+			z.object({
+				key: z.string().describe("The PDF's storage key, for the portfolio's data."),
+				bytes: z.number().int(),
+				pages: z.number().int(),
+			}),
+		)
+		.handler(({ context, input }) => portfolioService.uploadPdf(context.user.id, input)),
+
+	unfurl: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/links/unfurl",
+			operationId: "unfurlPortfolioLink",
+			summary: "Read a pasted link",
+			description:
+				"YouTube and Vimeo links become a video (title and picture from the site's oEmbed); other pages a link card from their meta tags. Results are kept for a day.",
+		})
+		.input(z.object({ url: remoteUrlSchema }))
+		.use(portfolioUnfurlRateLimit)
+		.errors({ ...disabled, ...linkUnreadable })
+		.output(unfurlSchema)
+		.handler(({ context, input, signal }) => portfolioService.unfurl(context.user.id, input, signal)),
+
+	fetchRemoteImage: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/links/image",
+			operationId: "fetchPortfolioRemoteImage",
+			summary: "Fetch a link's preview picture",
+			description: `The picture at a public address (JPEG, PNG, WebP or GIF, at most ${PORTFOLIO_UPLOAD.remoteImageBytes / 1024 / 1024} MB), for the browser to shrink and store with uploadImage. Nothing is stored.`,
+		})
+		.input(z.object({ url: remoteUrlSchema }))
+		.use(portfolioRemoteImageRateLimit)
+		.errors({
+			...disabled,
+			...notFound,
+			...linkUnreadable,
+			PORTFOLIO_FILE_TOO_LARGE: { status: 413, message: "This picture is too large to copy." },
+			PORTFOLIO_IMAGE_INVALID: { status: 400, message: "This isn't a picture that can be used." },
+		})
+		.output(z.file().describe("The picture as the site sent it."))
+		.handler(({ context, input, signal }) => portfolioService.fetchRemoteImage(context.user.id, input, signal)),
 
 	deleteFile: protectedProcedure
 		.route({

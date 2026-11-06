@@ -36,7 +36,6 @@ import {
 	themeScheme,
 	themeVariant,
 } from "@rezumi/schema/portfolio/themes";
-import { youtubeThumbnailUrl } from "@rezumi/schema/portfolio/video";
 import { parseColorString, rgbaStringToHex } from "@rezumi/utils/color";
 import { defaultLocale, isLocale, isRTL } from "@rezumi/utils/locale";
 import { htmlToText, truncateText } from "./text";
@@ -108,9 +107,18 @@ export type PortfolioViewBlock =
 			href: string;
 			/** The player, loaded only after the visitor presses play. */
 			embedUrl: string;
-			thumbnail: string | null;
+			/** The thumbnail's copy in the portfolio's storage; the page never loads YouTube's or Vimeo's. */
+			thumbnail: PortfolioViewImage | null;
 	  }
-	| { id: string; type: "pdf"; title: string; href: string; pages: number; preview: PortfolioViewImage | null }
+	| {
+			id: string;
+			type: "pdf";
+			title: string;
+			href: string;
+			pages: number;
+			bytes: number | null;
+			preview: PortfolioViewImage | null;
+	  }
 	| {
 			id: string;
 			type: "link";
@@ -540,7 +548,7 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 						provider === "youtube"
 							? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`
 							: `https://player.vimeo.com/video/${videoId}?dnt=1&autoplay=1${hash ? `&h=${hash}` : ""}`,
-					thumbnail: block.thumbnailUrl ?? (provider === "youtube" ? youtubeThumbnailUrl(videoId) : null),
+					thumbnail: image(block.thumbnail, block.title),
 				};
 			}
 			case "pdf":
@@ -550,6 +558,7 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 					title: block.title,
 					href: input.fileUrl(block.file),
 					pages: block.pages,
+					bytes: block.bytes ?? null,
 					preview: image(block.preview, block.title),
 				};
 			case "link":

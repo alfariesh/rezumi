@@ -164,8 +164,22 @@ describe("buildPortfolioView sections", () => {
 								items: [{ id: "m1", label: "Conversion", value: { kind: "number", number: 35 }, format: "percent" }],
 							},
 							{ id: "v", type: "video", provider: "vimeo", videoId: "76979871", hash: "9f2c1a7b3d" },
-							{ id: "y", type: "video", provider: "youtube", videoId: "dQw4w9WgXcQ" },
-							{ id: "p", type: "pdf", file: "uploads/user-1/documents/portfolio/deck.pdf", title: "Deck", pages: 12 },
+							{
+								id: "y",
+								type: "video",
+								provider: "youtube",
+								videoId: "dQw4w9WgXcQ",
+								thumbnailUrl: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+								thumbnail: { key: "uploads/user-1/pictures/portfolio/thumb.webp", width: 480, height: 360, alt: "" },
+							},
+							{
+								id: "p",
+								type: "pdf",
+								file: "uploads/user-1/documents/portfolio/deck.pdf",
+								title: "Deck",
+								pages: 12,
+								bytes: 2_400_000,
+							},
 						],
 					},
 					{ id: "w2", slug: "secret", title: "Secret", hidden: true },
@@ -185,12 +199,14 @@ describe("buildPortfolioView sections", () => {
 			embedUrl: "https://player.vimeo.com/video/76979871?dnt=1&autoplay=1&h=9f2c1a7b3d",
 			thumbnail: null,
 		});
+		// The page shows the stored copy of a thumbnail, never YouTube's own address.
 		expect(work?.blocks[3]).toMatchObject({
 			embedUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
-			thumbnail: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+			thumbnail: { src: "https://rezumi.example/uploads/user-1/pictures/portfolio/thumb.webp" },
 		});
 		expect(work?.blocks[4]).toMatchObject({
 			href: "https://rezumi.example/uploads/user-1/documents/portfolio/deck.pdf",
+			bytes: 2_400_000,
 		});
 	});
 });

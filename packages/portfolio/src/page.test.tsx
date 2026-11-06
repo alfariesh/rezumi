@@ -78,7 +78,41 @@ const fullData: PortfolioDataInput = {
 							},
 						],
 					},
-					{ id: "b4", type: "video", provider: "youtube", videoId: "dQw4w9WgXcQ" },
+					{
+						id: "b4",
+						type: "video",
+						provider: "youtube",
+						videoId: "dQw4w9WgXcQ",
+						title: "Checkout demo",
+						thumbnailUrl: "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+						thumbnail: image("video-thumb", 480, 360),
+					},
+					{ id: "b5", type: "video", provider: "vimeo", videoId: "76979871", hash: "9f2c1a7b3d" },
+					{
+						id: "b6",
+						type: "pdf",
+						file: "uploads/user-1/documents/portfolio/case-study.pdf",
+						title: "Case study (public version)",
+						pages: 12,
+						bytes: 2_400_000,
+						preview: image("case-study-page", 800, 1131),
+					},
+					{
+						id: "b7",
+						type: "link",
+						url: "https://medium.example.test/@nadia/fewer-failed-payments",
+						title: "How we cut failed payments",
+						description: "Three experiments that mattered most.",
+						siteName: "Medium",
+						brandIcon: "medium",
+					},
+					{
+						id: "b8",
+						type: "link",
+						url: "https://github.example.test/nadia/kopi",
+						title: "nadia/kopi",
+						image: image("repo-card", 1200, 600),
+					},
 				],
 			},
 			{ id: "w2", slug: "no-cover", title: "Work without pictures", summary: "", blocks: [] },
@@ -117,6 +151,9 @@ const fullData: PortfolioDataInput = {
 	custom: [{ id: "x1", title: "Product notes", content: "<p>Every Friday.</p>", hidden: false }],
 	location: {
 		label: "Jakarta, Indonesia",
+		point: { lat: -6.2088, lng: 106.8456, precision: "city" },
+		showMap: true,
+		map: { light: image("map-light", 800, 480), dark: image("map-dark", 800, 480) },
 		workModes: ["hybrid", "remote"],
 		relocate: true,
 		timezone: "Asia/Jakarta",
@@ -230,8 +267,67 @@ describe("renderPortfolioPage (Lugas)", () => {
 		);
 	});
 
-	it("leaves video blocks out until they can play (Phase 05)", () => {
-		expect(html).not.toContain("dQw4w9WgXcQ");
+	it("draws videos as a thumbnail and play button that load nothing from YouTube or Vimeo", () => {
+		// The player only arrives through the page script after a click.
+		expect(html).not.toContain("<iframe");
+		expect(html).not.toMatch(/ytimg|vimeocdn/);
+		expect(html).toContain('data-embed="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"');
+		expect(html).toContain(
+			'data-embed="https://player.vimeo.com/video/76979871?dnt=1&amp;autoplay=1&amp;h=9f2c1a7b3d"',
+		);
+		// Without JavaScript the link opens the video on its own site.
+		expect(html).toContain('href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"');
+		expect(html).toContain("uploads/user-1/pictures/portfolio/video-thumb.webp");
+		expect(html).toContain('aria-label="Putar video: Checkout demo"');
+		expect(html).toContain('aria-label="Putar video (Vimeo)"');
+		expect(count(html, /data-pf-event="video"/g)).toBe(2);
+	});
+
+	it("draws a PDF card with its first page, page count, size and an Open PDF button", () => {
+		expect(html).toContain("uploads/user-1/pictures/portfolio/case-study-page.webp");
+		expect(html).toContain("PDF · 12 halaman · 2,4 MB");
+		expect(html).toMatch(
+			/<a class="pf-btn pf-btn--secondary" href="https:\/\/rezumi\.example\/uploads\/user-1\/documents\/portfolio\/case-study\.pdf" target="_blank" rel="noopener" data-pf-event="document"/,
+		);
+		expect(html).toContain("Buka PDF");
+	});
+
+	it("draws link cards with the site and an outgoing user-content link", () => {
+		expect(html).toContain(
+			'class="pf-link" href="https://medium.example.test/@nadia/fewer-failed-payments" target="_blank" rel="ugc nofollow noopener noreferrer"',
+		);
+		expect(html).toContain("Medium · medium.example.test");
+		expect(html).toContain("Three experiments that mattered most.");
+		expect(html).toContain("uploads/user-1/pictures/portfolio/repo-card.webp");
+		expect(count(html, /data-pf-event="link"/g)).toBe(2);
+		expect(portfolioIconNames(view)).toContain("medium");
+	});
+
+	it("shows the saved map picture with a pin, attribution and an OpenStreetMap link, never map tiles", () => {
+		// A light page shows the light picture only; auto mode lets the device choose.
+		expect(html).toContain("uploads/user-1/pictures/portfolio/map-light.webp");
+		expect(html).not.toContain("map-dark.webp");
+		const auto = render({ ...fullData, design: { scheme: "auto" } }).html;
+		expect(auto).toContain(
+			'<picture><source media="(prefers-color-scheme: dark)" srcSet="https://rezumi.example/uploads/user-1/pictures/portfolio/map-dark.webp"/>',
+		);
+		const dark = render({ ...fullData, design: { scheme: "dark" } }).html;
+		expect(dark).toContain("map-dark.webp");
+		expect(dark).not.toContain("map-light.webp");
+		expect(html).toContain('alt="Peta sekitar Jakarta, Indonesia"');
+		expect(html).toContain('class="pf-loc__pin"');
+		expect(html).toContain("© OpenMapTiles © OpenStreetMap contributors");
+		expect(html).toContain(
+			'href="https://www.openstreetmap.org/?mlat=-6.2088&amp;mlon=106.8456#map=10/-6.2088/106.8456"',
+		);
+		expect(html).not.toMatch(/openfreemap|maplibre|tiles\./i);
+		// A province or country is an area: no pin, no marker on the map link.
+		const region = render({
+			...fullData,
+			location: { ...fullData.location, point: { lat: -6.88, lng: 107.56, precision: "region" } },
+		}).html;
+		expect(region).not.toContain('class="pf-loc__pin"');
+		expect(region).toContain('href="https://www.openstreetmap.org/#map=7/-6.8800/107.5600"');
 	});
 
 	it("shows contact, location and the credit", () => {
@@ -251,7 +347,8 @@ describe("renderPortfolioPage (Lugas)", () => {
 	});
 
 	it("lists the resume icons it needs", () => {
-		expect(portfolioIconNames(view)).toEqual([]);
+		// The link card's brand logo.
+		expect(portfolioIconNames(view)).toEqual(["medium"]);
 	});
 
 	it("wraps the page in a document with its head", () => {

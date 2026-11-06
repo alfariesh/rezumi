@@ -26,6 +26,14 @@ const { text: max } = PORTFOLIO_LIMITS;
 export const PORTFOLIO_BUTTON_KINDS = ["resume", "pdf", "contact", "whatsapp", "email", "profile", "link"] as const;
 export const PORTFOLIO_WORK_MODES = ["remote", "hybrid", "onsite"] as const;
 export const PORTFOLIO_MAP_PRECISIONS = ["city", "region", "country"] as const;
+/**
+ * The map zoom for each precision (`02-teknis.md` section 24): the editor's map and the picture it saves, and the
+ * page's "Open in map" link. City is the default: a point at the city's centre, never a street.
+ */
+export const PORTFOLIO_MAP_ZOOM = { city: 10, region: 7, country: 4 } as const satisfies Record<
+	(typeof PORTFOLIO_MAP_PRECISIONS)[number],
+	number
+>;
 export const PORTFOLIO_HERO_BACKGROUNDS = ["plain", "soft-gradient", "pattern", "image"] as const;
 
 /** Work slugs: lowercase ASCII letters and digits with single dashes, unique within the portfolio. */

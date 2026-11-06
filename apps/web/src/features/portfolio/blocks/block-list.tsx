@@ -28,6 +28,7 @@ import {
 	removeBlock,
 } from "./blocks";
 import { ImagesBlockEditor } from "./images-block";
+import { LinkBlockEditor, PdfBlockEditor, useAddMediaBlock, VideoBlockEditor } from "./media-blocks";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 
 const { text: max } = PORTFOLIO_LIMITS;
@@ -94,46 +95,73 @@ function blockTypeInfo(type: PortfolioBlock["type"]): BlockTypeInfo {
 				keywords: ["metric", "metrik", "number", "angka", "result"],
 			};
 		case "video":
-			return { icon: "play", title: t`Video`, description: t`YouTube or Vimeo`, keywords: ["video"] };
+			return {
+				icon: "play",
+				title: t`Video`,
+				description: t`YouTube or Vimeo, loaded when played`,
+				keywords: ["video", "youtube", "vimeo"],
+			};
 		case "pdf":
-			return { icon: "file-pdf", title: t`PDF`, description: t`A document to open`, keywords: ["pdf"] };
+			return {
+				icon: "file-pdf",
+				title: t`PDF`,
+				description: t`A document up to 10 MB`,
+				keywords: ["pdf", "document", "dokumen"],
+			};
 		case "link":
-			return { icon: "link-simple-horizontal", title: t`Link`, description: t`A link card`, keywords: ["link"] };
+			return {
+				icon: "link-simple-horizontal",
+				title: t`Link`,
+				description: t`A card that fills itself in`,
+				keywords: ["link", "tautan", "url", "behance", "github"],
+			};
 	}
 }
 
 /**
  * Adds a block at a place in a work: text and metrics at once, pictures after they're chosen and uploaded (a Pictures
- * block always holds one). Returns the actions for a menu and the hidden file picker they need.
+ * block always holds one), a video or link once its address is given, a PDF once it's uploaded. Returns the action,
+ * whether something is still uploading, and the pickers and progress the actions show.
  */
 function useAddBlock(work: PortfolioWork, index: number) {
 	const uploads = useImageUploads();
+	const insert = (block: PortfolioBlock) =>
+		editWork(work.id, (draft) => insertBlocks(draft as PortfolioWork, index, [block]), { structural: true });
+	const media = useAddMediaBlock(work, insert, (workId, blockId, recipe) =>
+		editWork(
+			workId,
+			(draft) => {
+				const block = draft.blocks.find((entry) => entry.id === blockId);
+				if (block) recipe(block);
+			},
+			{ structural: true },
+		),
+	);
 
 	async function addPictures(files: File[]) {
 		const images = await uploads.upload(files.slice(0, PORTFOLIO_LIMITS.imagesPerBlock), {
 			alt: () => work.title.trim(),
 		});
-		if (!images.length) return;
-		editWork(work.id, (draft) => insertBlocks(draft as PortfolioWork, index, [newImagesBlock(images)]), {
-			structural: true,
-		});
+		if (images.length) insert(newImagesBlock(images));
 	}
 
 	const picker = useFilePicker((files) => void addPictures(files));
 
 	const add = (type: EditorBlockType) => {
-		if (type === "images") {
-			picker.open();
-			return;
-		}
-		editWork(
-			work.id,
-			(draft) => insertBlocks(draft as PortfolioWork, index, [type === "text" ? newTextBlock() : newMetricsBlock()]),
-			{ structural: true },
-		);
+		if (type === "images") picker.open();
+		else if (type === "video" || type === "pdf" || type === "link") media.add(type);
+		else insert(type === "text" ? newTextBlock() : newMetricsBlock());
 	};
 
-	return { add, uploads, picker: picker.element };
+	const status = (
+		<>
+			{picker.element}
+			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
+			{media.status}
+		</>
+	);
+
+	return { add, busy: uploads.busy || media.busy, status };
 }
 
 type AddBlockMenuProps = {
@@ -142,16 +170,16 @@ type AddBlockMenuProps = {
 	/** The last one, under every block: a full button. */ last?: boolean;
 };
 
-/** "+ Add block" between blocks: Text, Pictures, Metrics (video, PDF and link blocks arrive later). */
+/** "+ Add block" between blocks: Text, Pictures, Metrics, Video, PDF, Link. */
 function AddBlockMenu({ work, index, last = false }: AddBlockMenuProps) {
-	const { add, uploads, picker } = useAddBlock(work, index);
+	const { add, busy, status } = useAddBlock(work, index);
 	const full = blockRoom(work) === 0;
 
 	return (
 		<div className={cn("grid gap-2", !last && "justify-items-center")}>
 			<Dropdown>
 				{last ? (
-					<Button variant="secondary" className="w-fit" isDisabled={full || uploads.busy}>
+					<Button variant="secondary" className="w-fit" isDisabled={full || busy}>
 						<Icon name="plus" size={18} />
 						<Trans>Add a block</Trans>
 					</Button>
@@ -160,7 +188,7 @@ function AddBlockMenu({ work, index, last = false }: AddBlockMenuProps) {
 						size="sm"
 						variant="ghost"
 						className="h-7 text-xs text-muted"
-						isDisabled={full || uploads.busy}
+						isDisabled={full || busy}
 						aria-label={t`Add a block here`}
 					>
 						<Icon name="plus" size={14} />
@@ -169,15 +197,14 @@ function AddBlockMenu({ work, index, last = false }: AddBlockMenuProps) {
 				)}
 				<Dropdown.Popover placement="bottom" className="w-72">
 					<Dropdown.Menu onAction={(key) => add(key as EditorBlockType)}>
-						{[...EDITOR_BLOCK_TYPES, "video" as const, "pdf" as const, "link" as const].map((type) => {
+						{EDITOR_BLOCK_TYPES.map((type) => {
 							const info = blockTypeInfo(type);
-							const soon = !(EDITOR_BLOCK_TYPES as readonly string[]).includes(type);
 							return (
-								<Dropdown.Item key={type} id={type} textValue={info.title} isDisabled={soon}>
+								<Dropdown.Item key={type} id={type} textValue={info.title}>
 									<Icon name={info.icon} className="text-muted" />
 									<div className="grid">
 										<Label>{info.title}</Label>
-										<span className="text-xs text-muted">{soon ? t`Coming soon` : info.description}</span>
+										<span className="text-xs text-muted">{info.description}</span>
 									</div>
 								</Dropdown.Item>
 							);
@@ -185,8 +212,7 @@ function AddBlockMenu({ work, index, last = false }: AddBlockMenuProps) {
 					</Dropdown.Menu>
 				</Dropdown.Popover>
 			</Dropdown>
-			{picker}
-			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
+			{status}
 		</div>
 	);
 }
@@ -358,12 +384,29 @@ function BlockBody({ work, block, index, locale, onRemove }: BlockBodyProps) {
 					}
 				/>
 			);
-		default:
-			// Video, PDF and link blocks (from a resume import, or a newer editor) are edited from Phase 05 on.
+		case "video":
 			return (
-				<p className="text-sm text-muted">
-					<Trans>This kind of block can be edited soon. It shows on the page as it is.</Trans>
-				</p>
+				<VideoBlockEditor
+					work={work}
+					block={block}
+					edit={(recipe, options) => editBlock(work.id, block.id, "video", recipe, options)}
+				/>
+			);
+		case "pdf":
+			return (
+				<PdfBlockEditor
+					work={work}
+					block={block}
+					edit={(recipe, options) => editBlock(work.id, block.id, "pdf", recipe, options)}
+				/>
+			);
+		case "link":
+			return (
+				<LinkBlockEditor
+					work={work}
+					block={block}
+					edit={(recipe, options) => editBlock(work.id, block.id, "link", recipe, options)}
+				/>
 			);
 	}
 }
@@ -372,7 +415,7 @@ type TextBlockEditorProps = { work: PortfolioWork; block: PortfolioBlockOf<"text
 
 /** Rich text; typing "/" adds a block after this one. */
 function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
-	const { add, uploads, picker } = useAddBlock(work, index + 1);
+	const { add, status } = useAddBlock(work, index + 1);
 	const slashItems: SlashItem[] = EDITOR_BLOCK_TYPES.map((type) => {
 		const info = blockTypeInfo(type);
 		return { ...info, onSelect: () => add(type) };
@@ -399,8 +442,7 @@ function TextBlockEditor({ work, block, index }: TextBlockEditorProps) {
 					)
 				}
 			/>
-			{picker}
-			<UploadStatus progress={uploads.progress} errors={uploads.errors} />
+			{status}
 		</>
 	);
 }

@@ -5,6 +5,8 @@ import { msg } from "@lingui/core/macro";
 // extracts it into the app's catalogs for translators; `pnpm pdf:translations` copies the translations to the page.
 // Keep both lists in step: the generator fails when one of these is missing from the catalog.
 const service = "";
+const count = "";
+const place = "";
 
 msg`About me`;
 msg`Work`;
@@ -39,6 +41,12 @@ msg`Role`;
 msg`Year`;
 msg`Close`;
 msg`Picture viewer`;
+msg`Play video`;
+msg`Open PDF`;
+msg`1 page`;
+msg`${count} pages`;
+msg`Open in map`;
+msg`Map around ${place}`;
 msg`Previous`;
 msg`Next`;
 msg`Other work`;

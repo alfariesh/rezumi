@@ -2,7 +2,7 @@ import type { SchemaKit } from "./kit";
 import z from "zod";
 import { createImageSchema, portfolioPdfKeySchema } from "./files";
 import { itemIdSchema } from "./kit";
-import { PORTFOLIO_LIMITS } from "./limits";
+import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "./limits";
 import { webUrlSchema } from "./links";
 import { createMetricSchema } from "./metric";
 import {
@@ -62,7 +62,12 @@ export function createBlockSchema(kit: SchemaKit) {
 				title: kit.optional(kit.text(max.mediaTitle)),
 				thumbnailUrl: kit
 					.optional(z.string().refine(isVideoThumbnailUrl, "Use the video's own thumbnail."))
-					.describe("The thumbnail on YouTube's or Vimeo's image server."),
+					.describe("The thumbnail on YouTube's or Vimeo's image server, for the editor only."),
+				thumbnail: kit
+					.optional(image)
+					.describe(
+						"A copy of the thumbnail in the portfolio's storage. The page shows only this, so visitors reach no other site before they press play.",
+					),
 			})
 			// Not a write-only rule: a block with a bad ID can never play, so stored data drops it too.
 			.refine((block) => (block.provider === "youtube" ? YOUTUBE_ID_PATTERN : VIMEO_ID_PATTERN).test(block.videoId), {
@@ -75,6 +80,7 @@ export function createBlockSchema(kit: SchemaKit) {
 			file: portfolioPdfKeySchema,
 			title: kit.field(kit.text(max.mediaTitle), ""),
 			pages: z.number().int().min(1).max(PORTFOLIO_LIMITS.pdfPages).describe("How many pages the PDF has."),
+			bytes: kit.optional(z.number().int().min(1).max(PORTFOLIO_UPLOAD.pdfBytes)).describe("The PDF's size in bytes."),
 			preview: kit.optional(image).describe("A picture of the first page."),
 		}),
 		z.object({

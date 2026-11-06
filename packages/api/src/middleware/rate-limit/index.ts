@@ -173,6 +173,11 @@ const portfolioFileDeleteLimiter = createRateLimiter(
 	"portfolioFileDeleteLimiter",
 	rateLimitConfig.orpc.portfolioFileDeletes,
 );
+const portfolioUnfurlLimiter = createRateLimiter("portfolioUnfurlLimiter", rateLimitConfig.orpc.portfolioUnfurls);
+const portfolioRemoteImageLimiter = createRateLimiter(
+	"portfolioRemoteImageLimiter",
+	rateLimitConfig.orpc.portfolioRemoteImages,
+);
 
 /** Per account: one portfolio each, saved on its own while the owner edits. */
 export const portfolioUpdateRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
@@ -196,4 +201,16 @@ export const portfolioUploadRateLimit = createRatelimitMiddleware<ContextWithHea
 export const portfolioFileDeleteRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
 	limiter: productionLimiter(portfolioFileDeleteLimiter),
 	key: ({ context }) => `portfolio-file-delete:${getUserKey(context)}`,
+});
+
+/** Per account: pasted links read from other sites (`portfolio.unfurl`). */
+export const portfolioUnfurlRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
+	limiter: productionLimiter(portfolioUnfurlLimiter),
+	key: ({ context }) => `portfolio-unfurl:${getUserKey(context)}`,
+});
+
+/** Per account: preview pictures fetched from other sites once the owner approves them. */
+export const portfolioRemoteImageRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
+	limiter: productionLimiter(portfolioRemoteImageLimiter),
+	key: ({ context }) => `portfolio-remote-image:${getUserKey(context)}`,
 });

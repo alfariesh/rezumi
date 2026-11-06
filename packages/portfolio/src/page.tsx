@@ -48,6 +48,8 @@ export function portfolioIconNames(view: PortfolioView): string[] {
 		...view.works.flatMap((work) => work.blocks.flatMap((block) => (block.type === "metrics" ? block.items : []))),
 	];
 	for (const metric of metrics) if (metric.icon) names.add(metric.icon);
+	for (const work of view.works)
+		for (const block of work.blocks) if (block.type === "link" && block.brandIcon) names.add(block.brandIcon);
 	for (const section of view.sections) {
 		if (section.kind === "services") for (const service of section.services) if (service.icon) names.add(service.icon);
 		if (section.kind === "clients")
