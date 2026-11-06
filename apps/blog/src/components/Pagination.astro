@@ -1,0 +1,44 @@
+---
+/**
+ * Cursor pagination for a list: "Older articles" carries the query's `nextCursor`; a later page also links back to
+ * the newest. Cursor pages are `noindex, follow` (set by the view), so search engines find articles through them and
+ * the sitemap without indexing the pages themselves.
+ */
+import type { Locale } from "../i18n/config";
+import { getTranslator } from "../i18n/messages";
+import Icon from "./Icon.astro";
+
+type Props = {
+	locale: Locale;
+	/** The list's first page. */
+	basePath: string;
+	nextCursor?: string | undefined;
+	/** Whether this page is past the first one. */
+	isPaged: boolean;
+};
+
+const { locale, basePath, nextCursor, isPaged } = Astro.props;
+const t = getTranslator(locale);
+const olderHref = nextCursor ? `${basePath}?${new URLSearchParams({ cursor: nextCursor })}` : null;
+---
+
+{
+	(olderHref || isPaged) && (
+		<nav aria-label={t("pagination.label")} class="mt-12 flex flex-wrap items-center justify-between gap-3">
+			{isPaged ? (
+				<a href={basePath} class="button button--ghost">
+					<Icon name="arrow-left" size={16} />
+					{t("pagination.latest")}
+				</a>
+			) : (
+				<span />
+			)}
+			{olderHref && (
+				<a href={olderHref} rel="next" class="button button--secondary">
+					{t("pagination.older")}
+					<Icon name="arrow-right" size={16} />
+				</a>
+			)}
+		</nav>
+	)
+}

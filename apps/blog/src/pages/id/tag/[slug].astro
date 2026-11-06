@@ -1,0 +1,14 @@
+---
+import { loadTerm } from "../../../lib/loaders";
+import NotFoundView from "../../../views/NotFoundView.astro";
+import TermView from "../../../views/TermView.astro";
+
+const result = await loadTerm(Astro, "id", "tag");
+if (result.type === "redirect") {
+	Astro.cache?.set(false);
+	return Astro.redirect(result.location);
+}
+if (result.type === "not-found") Astro.response.status = 404;
+---
+
+{result.type === "ok" ? <TermView {...result.props} /> : <NotFoundView />}

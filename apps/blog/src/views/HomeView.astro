@@ -1,0 +1,86 @@
+---
+/**
+ * The blog's front page: the promise, the newest article as the lead, a grid of the rest and the closing call to
+ * action. Later pages (`?cursor=`) are the grid alone and stay out of search results.
+ */
+import type { HomeProps } from "../lib/loaders";
+import CtaPanel from "../components/CtaPanel.astro";
+import Pagination from "../components/Pagination.astro";
+import PostCard from "../components/PostCard.astro";
+import { locales } from "../i18n/config";
+import { getTranslator } from "../i18n/messages";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { homePath } from "../lib/paths";
+import { documentTitle } from "../lib/site-settings";
+
+type Props = HomeProps;
+
+const { locale, settings, posts, nextCursor, isPaged } = Astro.props;
+const t = getTranslator(locale);
+const lead = isPaged ? undefined : posts[0];
+const rest = isPaged ? posts : posts.slice(1);
+const localeLinks = Object.fromEntries(locales.map((other) => [other, homePath(other)]));
+---
+
+<BaseLayout
+	locale={locale}
+	settings={settings}
+	title={documentTitle(t("meta.homeTitle"), settings)}
+	socialTitle={settings.siteTitle}
+	description={t("meta.homeDescription")}
+	path={homePath(locale)}
+	robots={isPaged ? "noindex, follow" : undefined}
+	localeLinks={localeLinks}
+>
+	<section aria-labelledby="home-title" class="mx-auto w-full max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20 lg:px-8">
+		<p
+			class="inline-flex items-center rounded-full px-4 py-1 text-base font-medium text-accent ring-1 ring-accent/40 ring-inset"
+		>
+			{t("home.eyebrow")}
+		</p>
+		<h1 id="home-title" class="mt-6 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-6xl">
+			{t("home.title")}
+		</h1>
+		<p class="mt-5 max-w-2xl text-lg text-pretty text-muted sm:text-xl">{t("home.description")}</p>
+	</section>
+
+	<div class="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6 sm:pb-28 lg:px-8">
+		{
+			posts.length === 0 ? (
+				<p class="rounded-3xl bg-surface p-10 text-center text-muted shadow-surface">{t("home.empty")}</p>
+			) : (
+				<>
+					{lead && (
+						<PostCard
+							locale={locale}
+							timezone={settings.timezone}
+							post={lead}
+							variant="feature"
+							headingLevel="h2"
+							priority
+						/>
+					)}
+					{rest.length > 0 && (
+						<section aria-labelledby="latest-title" class:list={[lead && "mt-16"]}>
+							<h2 id="latest-title" class="text-2xl font-semibold tracking-tight">
+								{t("home.latest")}
+							</h2>
+							<ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+								{rest.map((post) => (
+									<li class="flex">
+										<PostCard locale={locale} timezone={settings.timezone} post={post} />
+									</li>
+								))}
+							</ul>
+						</section>
+					)}
+					<Pagination locale={locale} basePath={homePath(locale)} nextCursor={nextCursor} isPaged={isPaged} />
+				</>
+			)
+		}
+
+		<div class="mt-20 sm:mt-28">
+			<CtaPanel locale={locale} kind="build-resume" placement="closing" size="large" />
+		</div>
+	</div>
+</BaseLayout>

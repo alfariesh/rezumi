@@ -1,0 +1,33 @@
+---
+/**
+ * A system icon from the app's Hugeicons set (@rezumi/icons, apps/web/DESIGN.md → Iconography), inlined at render
+ * time. Only the glyphs listed here are bundled. Names follow the app's vocabulary (packages/icons/icons.config.json).
+ * Decorative: pair it with text or give its control a label.
+ */
+import arrowLeft from "@rezumi/icons/svg/stroke-standard/arrow-left-02.svg?raw";
+import arrowRight from "@rezumi/icons/svg/stroke-standard/arrow-right-02.svg?raw";
+import magnifyingGlass from "@rezumi/icons/svg/stroke-standard/search-01.svg?raw";
+import translate from "@rezumi/icons/svg/stroke-standard/translate.svg?raw";
+
+const glyphs = {
+	"arrow-left": arrowLeft,
+	"arrow-right": arrowRight,
+	"magnifying-glass": magnifyingGlass,
+	translate,
+};
+
+type Props = {
+	name: keyof typeof glyphs;
+	size?: 16 | 20 | 24;
+	class?: string;
+};
+
+const { name, size = 20, class: className } = Astro.props;
+
+// The files are 24×24 with `currentColor` strokes; only the outer element changes.
+const svg = glyphs[name]
+	.replace(/\swidth="24"\sheight="24"/, ` width="${size}" height="${size}"`)
+	.replace("<svg ", `<svg aria-hidden="true" focusable="false" class="${className ?? "shrink-0"}" `);
+---
+
+<Fragment set:html={svg} />

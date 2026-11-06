@@ -1,0 +1,43 @@
+---
+/**
+ * Links to this page in the blog's other languages: the translation when it exists, otherwise that language's home.
+ * With two languages it is a single link, labelled with the target language.
+ */
+import type { Locale } from "../i18n/config";
+import { locales } from "../i18n/config";
+import { getTranslator } from "../i18n/messages";
+import { homePath } from "../lib/paths";
+import Icon from "./Icon.astro";
+
+export type LocaleLinks = Partial<Record<Locale, string>>;
+
+type Props = {
+	locale: Locale;
+	/** Paths of this page in other languages, as found by the view. */
+	links?: LocaleLinks | undefined;
+};
+
+const { locale, links = {} } = Astro.props;
+const t = getTranslator(locale);
+const targets = locales
+	.filter((other) => other !== locale)
+	.map((other) => ({ locale: other, href: links[other] ?? homePath(other), label: t(`language.${other}`) }));
+---
+
+<nav aria-label={t("nav.language")} class="flex items-center">
+	{
+		targets.map((target) => (
+			<a
+				href={target.href}
+				hreflang={target.locale}
+				lang={target.locale}
+				class="button button--ghost button--sm gap-1.5 px-2.5"
+				aria-label={target.label}
+				title={target.label}
+			>
+				<Icon name="translate" size={16} />
+				<span class="text-xs font-semibold">{target.locale.toUpperCase()}</span>
+			</a>
+		))
+	}
+</nav>

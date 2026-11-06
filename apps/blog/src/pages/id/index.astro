@@ -1,0 +1,14 @@
+---
+import { loadHome } from "../../lib/loaders";
+import HomeView from "../../views/HomeView.astro";
+import NotFoundView from "../../views/NotFoundView.astro";
+
+const result = await loadHome(Astro, "id");
+if (result.type === "redirect") {
+	Astro.cache?.set(false);
+	return Astro.redirect(result.location);
+}
+if (result.type === "not-found") Astro.response.status = 404;
+---
+
+{result.type === "ok" ? <HomeView {...result.props} /> : <NotFoundView />}
