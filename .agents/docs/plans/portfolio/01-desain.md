@@ -133,6 +133,7 @@ Font mono (`--pf-font-mono`) semua tema: IBM Plex Mono.
 - **Bagian lain:** Layanan sebagai daftar (nama, harga di kanan, deskripsi, tautan pesan); Testimoni bertumpuk dengan tanda kutip aksen; Klien sebagai deret logo abu-abu; Pengalaman dan Pendidikan ringkas; Keahlian sebagai grup chip; Sertifikat/Bahasa/Penghargaan dalam 2 kolom; bagian bebas sebagai kartu `--pf-surface`; Kontak: kalimat ajakan besar (24–36 px, 800), tombol Email/WhatsApp, daftar kontak, form, kartu Lokasi (maks. 420 px).
 - **Urutan bawaan:** Tentang, Karya, Layanan, Testimoni, Klien, Pengalaman, Pendidikan, Keahlian, Sertifikat/Bahasa, bagian bebas, Kontak.
 - **Detail karya:** panel maks. 820 px.
+- **Dibangun di Phase 02:** navigasi memuat 4 bagian pertama + Kontak (sisanya lewat gulir); Bahasa, Sertifikat, Penghargaan, Publikasi, dan Minat yang berurutan tampil dalam satu blok 2 kolom; angka pencapaian intro selalu gaya Angka besar; nomor WhatsApp Indonesia ditulis "+62 812 5550 1824". Varian yang tersedia: intro foto di atas / foto kiri; karya daftar / grid 2 kolom / unggulan + grid; layanan daftar / kartu; testimoni bertumpuk / geser; klien abu-abu / berwarna; pengalaman dan pendidikan ringkas / timeline; keahlian grup / chip; metrik ketiganya.
 
 ### Prima (`prima`, gratis)
 

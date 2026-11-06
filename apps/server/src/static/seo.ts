@@ -57,14 +57,20 @@ const xmlResponse = (root: string, lines: string[]) =>
 		},
 	);
 
-/** The sitemap index: the marketing pages, then resumes listed in search engines, 50,000 to a page. */
+/** The sitemap index: the marketing pages, then resumes and portfolios listed in search engines, 50,000 to a page. */
 export async function handleSitemap() {
 	const baseUrl = appUrl();
-	const { countIndexableResumes, SITEMAP_PAGE_SIZE } = await import("@rezumi/api/features/resume/web-page");
+	const [{ countIndexableResumes, SITEMAP_PAGE_SIZE }, { countIndexablePortfolios, PORTFOLIO_SITEMAP_PAGE_SIZE }] =
+		await Promise.all([
+			import("@rezumi/api/features/resume/web-page"),
+			import("@rezumi/api/features/portfolio/public"),
+		]);
 	const pages = Math.ceil((await countIndexableResumes().catch(() => 0)) / SITEMAP_PAGE_SIZE);
+	const portfolioPages = Math.ceil((await countIndexablePortfolios().catch(() => 0)) / PORTFOLIO_SITEMAP_PAGE_SIZE);
 	const sitemaps = [
 		`${baseUrl}/sitemaps/pages.xml`,
 		...Array.from({ length: pages }, (_, page) => `${baseUrl}/sitemaps/resumes-${page + 1}.xml`),
+		...Array.from({ length: portfolioPages }, (_, page) => `${baseUrl}/sitemaps/portfolios-${page + 1}.xml`),
 	];
 	return xmlResponse(
 		'sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
@@ -105,6 +111,21 @@ export async function handleResumesSitemap(page: number) {
 			(resume) =>
 				// A primary resume's address is /<username>, as its page's canonical says.
 				`  <url><loc>${escapeXml(publicResumeUrl(baseUrl, resume))}</loc><lastmod>${resume.updatedAt.toISOString()}</lastmod></url>`,
+		),
+	);
+}
+
+/** `/sitemaps/portfolios-<n>.xml`: one page of portfolios listed in search engines, each at `/<username>`. */
+export async function handlePortfoliosSitemap(page: number) {
+	const baseUrl = appUrl();
+	const { listIndexablePortfolios } = await import("@rezumi/api/features/portfolio/public");
+	const portfolios = Number.isInteger(page) && page >= 1 ? await listIndexablePortfolios(page - 1) : [];
+	if (portfolios.length === 0) return new Response("Not Found", { status: 404 });
+	return xmlResponse(
+		'urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+		portfolios.map(
+			(portfolio) =>
+				`  <url><loc>${escapeXml(`${baseUrl}/${encodeURIComponent(portfolio.username)}`)}</loc><lastmod>${portfolio.updatedAt.toISOString()}</lastmod></url>`,
 		),
 	);
 }

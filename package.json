@@ -38,6 +38,7 @@
 		"dev": "dotenvx run --ignore=MISSING_ENV_FILE -f .env.local -- turbo run dev --filter=!blog",
 		"dev:blog": "pnpm --filter blog dev",
 		"seed:dev": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling seed:dev",
+		"portfolio:seed": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling portfolio:seed",
 		"seed:career": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling seed:career",
 		"benchmark:ai": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling benchmark:ai",
 		"benchmark:ai:report": "dotenvx run -f .env.local -- pnpm --filter @rezumi/tooling benchmark:ai:report",

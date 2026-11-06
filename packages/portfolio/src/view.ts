@@ -77,7 +77,13 @@ export type PortfolioViewImage = {
 	focus?: { x: number; y: number };
 };
 
-export type PortfolioViewLink = { label: string; href: string; external: boolean };
+export type PortfolioViewLink = {
+	label: string;
+	href: string;
+	external: boolean;
+	/** What the button does, for its icon; absent on links that aren't buttons. */
+	kind?: ButtonKind;
+};
 
 export type PortfolioViewBlock =
 	| { id: string; type: "text"; html: string }
@@ -354,20 +360,21 @@ export function buildPortfolioView(input: PortfolioViewInput): PortfolioView {
 
 	const link = (button: PortfolioButton, fallbackLabel = messages.buttons[button.kind]): PortfolioViewLink | null => {
 		const label = button.label?.trim() || fallbackLabel;
-		switch (button.kind) {
+		const { kind } = button;
+		switch (kind) {
 			case "resume":
-				return input.links?.resume ? { label, href: input.links.resume, external: false } : null;
+				return input.links?.resume ? { label, href: input.links.resume, external: false, kind } : null;
 			case "pdf":
-				return input.links?.resumePdf ? { label, href: input.links.resumePdf, external: false } : null;
+				return input.links?.resumePdf ? { label, href: input.links.resumePdf, external: false, kind } : null;
 			case "contact":
-				return hasContact ? { label, href: "#contact", external: false } : null;
+				return hasContact ? { label, href: "#contact", external: false, kind } : null;
 			case "whatsapp":
-				return whatsappNumber ? { label, href: whatsappHref(), external: true } : null;
+				return whatsappNumber ? { label, href: whatsappHref(), external: true, kind } : null;
 			case "email":
-				return email ? { label, href: `mailto:${email}`, external: false } : null;
+				return email ? { label, href: `mailto:${email}`, external: false, kind } : null;
 			case "profile":
 			case "link":
-				return button.url ? { label, href: button.url, external: !button.url.startsWith("mailto:") } : null;
+				return button.url ? { label, href: button.url, external: !button.url.startsWith("mailto:"), kind } : null;
 		}
 	};
 

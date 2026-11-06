@@ -75,3 +75,31 @@ export const portfolioFile = pg.pgTable(
 	},
 	(t) => [pg.index().on(t.userId)],
 );
+
+/**
+ * Visits to a published portfolio per day (`02-teknis.md` section 9): one row per portfolio and day, counted once an
+ * hour per visitor, never for its owner or crawlers. Phase 08 adds clicks, opened works, messages and sources.
+ */
+export const portfolioStatisticsDaily = pg.pgTable(
+	"portfolio_statistics_daily",
+	{
+		id: pg
+			.text("id")
+			.notNull()
+			.primaryKey()
+			.$defaultFn(() => generateId()),
+		portfolioId: pg
+			.text("portfolio_id")
+			.notNull()
+			.references(() => portfolio.id, { onDelete: "cascade" }),
+		date: pg.date("date", { mode: "string" }).notNull(),
+		views: pg.integer("views").notNull().default(0),
+		createdAt: pg.timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		updatedAt: pg
+			.timestamp("updated_at", { withTimezone: true })
+			.notNull()
+			.defaultNow()
+			.$onUpdate(() => /* @__PURE__ */ new Date()),
+	},
+	(t) => [pg.unique("portfolio_statistics_daily_unique").on(t.portfolioId, t.date)],
+);

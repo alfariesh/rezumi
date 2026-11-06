@@ -30,6 +30,11 @@ async function shouldCountView(key: string, now: number): Promise<boolean> {
 	return true;
 }
 
+/** Whether a visitor's visit to something (`key`) is their first this hour, and so counts. */
+export function isFirstVisitThisHour(key: string, trustedClient?: string): Promise<boolean> {
+	return shouldCountView(`${key}:${getClientKey(trustedClient)}`, Date.now());
+}
+
 /** Counts a visitor's view or download of a resume, once an hour per visitor. Callers decide who counts at all. */
 export async function countVisit(input: {
 	kind: "view" | "download";

@@ -78,6 +78,9 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 	let admin: Pool;
 	let pool: Pool;
 	const schemaName = `portfolio_test_${randomUUID().replaceAll("-", "")}`;
+	// Usernames are claimed under a database-wide advisory lock (`lock_username_claim`). Suites running at the same time
+	// with the same usernames in a different order can deadlock each other, so each run uses its own.
+	const usernameSuffix = randomUUID().slice(0, 8);
 
 	const addResume = async (userId: string, values: Partial<typeof tables.resume.$inferInsert> = {}) => {
 		const [row] = await getDb()
@@ -143,8 +146,8 @@ describe.skipIf(!databaseUrl)("portfolio service", () => {
 				].map((account) => ({
 					name: `${account.id} name`,
 					email: `${account.id}@example.test`,
-					username: account.id,
-					displayUsername: account.id,
+					username: `portfolio-${account.id}-${usernameSuffix}`,
+					displayUsername: `portfolio-${account.id}-${usernameSuffix}`,
 					...account,
 				})),
 			);
