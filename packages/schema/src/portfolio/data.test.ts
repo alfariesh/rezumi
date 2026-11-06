@@ -182,6 +182,51 @@ describe("checking portfolio data before saving", () => {
 		expect(issues({ hero: { highlights: ["a", "b", "c", "d", "e"].map(metric) } })).toEqual(["hero.highlights"]);
 	});
 
+	it("holds 1 to 12 pictures and 1 to 4 metrics per block, with a caption limit", () => {
+		const pictures = (count: number) =>
+			Array.from({ length: count }, (_, index) => ({ ...image(`p${index}`), caption: "" }));
+		const metrics = (count: number) => Array.from({ length: count }, (_, index) => metric(`m${index}`));
+		const block = (extra: Record<string, unknown>) => ({ works: { items: [work("w", { blocks: [extra] })] } });
+		const images = (count: number) => block({ id: "g", type: "images", images: pictures(count), layout: "grid" });
+		const numbers = (count: number) => block({ id: "n", type: "metrics", items: metrics(count) });
+
+		expect(issues(images(PORTFOLIO_LIMITS.imagesPerBlock))).toEqual([]);
+		expect(issues(images(PORTFOLIO_LIMITS.imagesPerBlock + 1))).toEqual(["works.items.0.blocks.0.images"]);
+		expect(issues(images(0))).toEqual(["works.items.0.blocks.0.images"]);
+		expect(issues(numbers(PORTFOLIO_LIMITS.metricsPerBlock))).toEqual([]);
+		expect(issues(numbers(PORTFOLIO_LIMITS.metricsPerBlock + 1))).toEqual(["works.items.0.blocks.0.items"]);
+		expect(issues(numbers(0))).toEqual(["works.items.0.blocks.0.items"]);
+		expect(
+			issues(
+				block({
+					id: "g",
+					type: "images",
+					images: [{ ...image(), caption: "c".repeat(PORTFOLIO_LIMITS.text.caption + 1) }],
+				}),
+			),
+		).toEqual(["works.items.0.blocks.0.images.0.caption"]);
+		expect(issues(block({ id: "g", type: "images", images: pictures(1), layout: "mosaic" }))).toEqual([
+			"works.items.0.blocks.0.layout",
+		]);
+
+		// Stored data over the limits still reads, cut to them.
+		const stored = parsePortfolioData({
+			works: {
+				items: [
+					work("w", {
+						blocks: [
+							{ id: "g", type: "images", images: pictures(15), layout: "grid" },
+							{ id: "n", type: "metrics", items: metrics(6) },
+						],
+					}),
+				],
+			},
+		});
+		const [gallery, group] = stored.works.items[0]?.blocks ?? [];
+		expect(gallery?.type === "images" && gallery.images).toHaveLength(PORTFOLIO_LIMITS.imagesPerBlock);
+		expect(group?.type === "metrics" && group.items).toHaveLength(PORTFOLIO_LIMITS.metricsPerBlock);
+	});
+
 	it("needs each item to have its own id and each work its own address", () => {
 		expect(issues({ works: { items: [work("a"), work("a", { slug: "other" })] } })).toEqual(["works.items.1.id"]);
 		expect(issues({ works: { items: [work("a"), work("b", { slug: "a" })] } })).toEqual(["works.items.1.slug"]);

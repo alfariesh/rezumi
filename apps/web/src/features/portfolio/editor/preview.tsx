@@ -4,7 +4,7 @@ import { Segment } from "@heroui-pro/react";
 import { Spinner } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { webPageImageUrl } from "@rezumi/pdf/web-page";
 import { portfolioIconNames, renderPortfolioPage } from "@rezumi/portfolio";
@@ -15,6 +15,7 @@ import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
 import { usePortfolioData } from "./store";
+import { usePortfolioEditorUi } from "./ui";
 // The page's own text, declared for translators; see the module.
 import "../page-text";
 
@@ -26,12 +27,20 @@ type PreviewInput = {
 	owner: { name: string; username: string };
 	/** Which resume buttons the page would show; the preview's links lead nowhere. */
 	links: { resume: boolean; resumePdf: boolean };
+	/** A work's detail anchor to show open, while that work is being edited. */
+	openAnchor?: string | null;
 };
 
 let glyphs: Promise<Readonly<Record<string, string>>> | undefined;
 
 /** The page a visitor gets, drawn by the server's renderer from the draft, as an inert document. */
-export async function renderPortfolioPreview({ data, resume, owner, links }: PreviewInput): Promise<string> {
+export async function renderPortfolioPreview({
+	data,
+	resume,
+	owner,
+	links,
+	openAnchor,
+}: PreviewInput): Promise<string> {
 	const origin = window.location.origin;
 	const locale = pageLocaleOf(data, resume);
 	const messages = portfolioMessages(locale);
@@ -60,7 +69,11 @@ export async function renderPortfolioPreview({ data, resume, owner, links }: Pre
 		year: new Date().getFullYear(),
 		creditUrl: origin,
 	});
-	return renderPortfolioDocument({ page });
+	const html = renderPortfolioDocument({ page });
+	// The page opens a detail by its address (`:target`); an inert preview has no address to change, so the detail of
+	// the work being edited is shown by a rule instead. Anchors are `work-<slug>`, letters, digits and dashes only.
+	if (!openAnchor || !/^work-[\da-z-]+$/.test(openAnchor)) return html;
+	return html.replace("</head>", `<style>#${openAnchor}{display:block}</style></head>`);
 }
 
 type PortfolioPreviewProps = {
@@ -79,6 +92,12 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 	const [device, setDevice] = useState<Device>("desktop");
 	const [document, setDocument] = useState<string>();
 	const [debouncedData] = useDebounceValue(data, 250);
+	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
+	const openWork = debouncedData.works.items.find((work) => work.id === openWorkId && !work.hidden);
+	const openAnchor = openWork ? `work-${openWork.slug}` : null;
+	const frame = useRef<HTMLIFrameElement>(null);
+	// Where the reader was, so a redrawn preview opens at the same place instead of the top.
+	const scroll = useRef({ page: 0, detail: 0, anchor: null as string | null });
 
 	const resume = source.resume;
 	const showResume = Boolean(resume?.isPublic);
@@ -92,15 +111,34 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 			resume: source.data,
 			owner: { name: owner.name, username: owner.username },
 			links: { resume: showResume, resumePdf: showPdf },
+			openAnchor,
 		})
 			.then((html) => {
-				if (current) setDocument(html);
+				if (!current) return;
+				const view = frame.current?.contentWindow;
+				const detail = scroll.current.anchor ? view?.document.getElementById(scroll.current.anchor) : null;
+				scroll.current = {
+					page: view?.scrollY ?? scroll.current.page,
+					// Another work opened starts at its top.
+					detail: scroll.current.anchor === openAnchor ? (detail?.scrollTop ?? 0) : 0,
+					anchor: openAnchor,
+				};
+				setDocument(html);
 			})
 			.catch((error: unknown) => console.error("Portfolio preview failed", error));
 		return () => {
 			current = false;
 		};
-	}, [debouncedData, source.data, source.isLoading, owner.name, owner.username, showResume, showPdf]);
+	}, [debouncedData, source.data, source.isLoading, owner.name, owner.username, showResume, showPdf, openAnchor]);
+
+	const restoreScroll = () => {
+		const view = frame.current?.contentWindow;
+		if (!view) return;
+		const { page, detail, anchor } = scroll.current;
+		view.scrollTo(0, page);
+		const opened = anchor ? view.document.getElementById(anchor) : null;
+		if (opened) opened.scrollTop = detail;
+	};
 
 	return (
 		<div className="flex h-full min-h-0 flex-col items-center gap-3 bg-background p-3 md:p-4">
@@ -132,8 +170,10 @@ export default function PortfolioPreview({ showDeviceSwitch = true }: PortfolioP
 					// (scripts stay off, so that grants nothing) because uploads are served `Cross-Origin-Resource-Policy:
 					// same-site`, which an opaque origin can't load.
 					<iframe
+						ref={frame}
 						title={t`Portfolio preview`}
 						srcDoc={document}
+						onLoad={restoreScroll}
 						sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
 						className="size-full border-0"
 					/>

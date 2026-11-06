@@ -43,6 +43,7 @@ const ENGLISH = {
 	previous: "Previous",
 	next: "Next",
 	otherWork: "Other work",
+	pictureViewer: "Picture viewer",
 	phone: "Phone",
 	website: "Website",
 	location: "Location",

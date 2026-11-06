@@ -279,6 +279,8 @@ Sampul (gambar dengan titik fokus yang bisa dipilih), judul ≤100, ringkasan �
 - **Mulai dari kerangka studi kasus**: mengisi blok Teks berjudul Masalah, Peran saya, Proses, Hasil, ditambah satu blok Metrik kosong.
 - Galat yang jelas: tautan video tidak dikenali, PDF terlalu besar atau berpassword, situs menolak dibaca (isi manual), gambar terlalu besar.
 
+- **Dibangun di Phase 04:** bagian Karya di tab Isi berupa daftar kartu (sampul kecil, judul, chip Unggulan/Tersembunyi, jumlah blok, mata, naik/turun, hapus dengan konfirmasi) dan tombol "Tambah karya" (dialog berisi kartu pilihan: Kosong, Dari CV saya, Unggah gambar, Tempel tautan bertanda "Segera hadir"). Mengklik karya mengganti isi panel dengan editor karya ("← Semua bagian"), sementara pratinjau membuka detail karya itu. Editor karya: grup **Kartu** (sampul dengan pemilih titik fokus dan dua bingkai contoh potongan 4:3 dan 16:9, judul dengan alamat `…#work-<slug>` di bawahnya, ringkasan, peran, tahun, tag, "Metrik di kartu", tautan utama + teksnya, Unggulan, Sembunyikan) dan grup **Detail** (blok berupa kartu abu-abu: pegangan seret, ikon + nama jenis, naik/turun, hapus dengan toast "Urungkan"; "+ Tambah blok" kecil di antara blok dan tombol penuh di bawah; karya kosong menawarkan "Mulai dari kerangka studi kasus"). Kolom gambar: area seret-lepas ringkas dengan tombol "Pilih gambar" (tempel lewat Ctrl/⌘+V saat area fokus), progres per gambar, pesan galat per file, lalu pratinjau + "Jelaskan gambar" (wajib, ditandai merah bila kosong setelah disentuh) + "Ganti gambar"/"Hapus gambar". Foto Intro berupa pilihan radio: foto di CV, foto khusus portofolio, tanpa foto.
+
 ## 16. Metrik (widget)
 
 Tujuan: hasil kerja terbaca dalam dua detik oleh perekrut ("+35% konversi"), seperti widget KPI di dashboard. Anatomi mengikuti `KPI` HeroUI Pro; halaman publik menggambarnya dengan HTML, CSS, dan SVG milik tema (tanpa HeroUI atau Recharts, agar ringan).
@@ -335,6 +337,8 @@ Keputusan pemilik 2026-11-05: **ketiga varian tersedia sebagai pilihan pengguna*
 - Animasi hitung naik opsional per tema, hanya bila `prefers-reduced-motion` tidak aktif; tanpa JavaScript nilai akhir tetap tampil.
 - Petunjuk di editor: "Pakai angka yang bisa kamu jelaskan saat wawancara." Kolom konteks/sumber dianjurkan.
 - AI hanya menyarankan metrik dari angka yang tertulis di CV (bagian 12).
+
+- **Dibangun di Phase 04:** form metrik berisi Label, pilihan Angka/Teks pendek, Nilai (diketik sesuai bahasa aplikasi: "2,8" di Indonesia), "Ditulis sebagai" (angka, persen, rupiah, dolar, ringkas, kali lipat, durasi + satuan, rating), teks sebelum/sesudah nilai, lalu tombol "Perubahan, sebelum → sesudah, grafik, konteks" yang membuka sisanya (saklar perubahan + arah + teks + kabar baik/buruk, nilai sebelumnya, grafik mini dari 3–12 angka, progres, konteks/sumber, ikon). Di bawahnya pratinjau kecil `KPI` + `TrendChip` HeroUI Pro (warna chip mengikuti baik/buruk, panah mengikuti arah; dimuat lazy, `recharts` sudah ada di bundel web karena halaman wawasan lamaran). Angka pencapaian Intro memakai form yang sama, maks. 4. Metrik tanpa label tidak tampil di halaman sampai diisi.
 
 ## 17. Layanan, Testimoni, Klien
 

@@ -1,13 +1,17 @@
 import type { PortfolioButton } from "@rezumi/schema/portfolio/data";
-import { Button } from "@heroui/react";
+import type { PortfolioImage } from "@rezumi/schema/portfolio/files";
+import { Button, Label, RadioGroup } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
+import { useState } from "react";
 import { PORTFOLIO_BUTTON_KINDS } from "@rezumi/schema/portfolio/data";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
-import { usePortfolioOwner, useSourceResume } from "./context";
-import { ChoiceSelect, ItemToolbar, moveItem, TextInput, UrlInput } from "./fields";
+import { ImageField } from "../images/image-field";
+import { MetricsEditor } from "../metrics/metric-form";
+import { pageLocaleOf, usePortfolioOwner, useSourceResume } from "./context";
+import { ChoiceSelect, ItemToolbar, moveItem, RadioOption, TextInput, UrlInput } from "./fields";
 import { setBasicsText } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
 
@@ -26,8 +30,7 @@ const buttonKindLabel = (kind: PortfolioButton["kind"]) =>
 
 /**
  * The intro, always first on the page: the name, headline and location the portfolio shows (empty follows the
- * resume), a short greeting, the photo, "Open to work" and up to three buttons. Highlights arrive with metrics in
- * Phase 04.
+ * resume), a short greeting, the photo, "Open to work", two to four achievement numbers and up to three buttons.
  */
 export function IntroForm() {
 	const data = usePortfolioData();
@@ -86,21 +89,7 @@ export function IntroForm() {
 					)
 				}
 			/>
-			<SwitchRow
-				isSelected={hero.showPicture}
-				onChange={(checked) =>
-					editPortfolio((draft) => {
-						draft.hero.showPicture = checked;
-					})
-				}
-				label={t`Show my photo`}
-				description={
-					fromResume
-						? t`Uses your resume's photo. A portfolio-only photo arrives soon.`
-						: t`A photo for the portfolio arrives soon.`
-				}
-				className="items-start py-0"
-			/>
+			<HeroPhoto />
 			<SwitchRow
 				isSelected={hero.availability.show}
 				onChange={(checked) =>
@@ -128,7 +117,110 @@ export function IntroForm() {
 					}
 				/>
 			)}
+			<HeroHighlights />
 			<HeroButtons />
+		</div>
+	);
+}
+
+/**
+ * The intro's photo: the resume's, one for the portfolio only, or none. A portfolio-only photo is kept when the
+ * resume's is chosen again, so switching back doesn't upload it twice.
+ */
+function HeroPhoto() {
+	const data = usePortfolioData();
+	const source = useSourceResume();
+	const owner = usePortfolioOwner();
+	const resume = source.data;
+	const resumePhoto = resume && !resume.picture.hidden && resume.picture.url.trim() ? resume.picture.url : null;
+	const { basics, hero } = data;
+	const [kept, setKept] = useState<PortfolioImage | null>(basics.picture ?? null);
+	// "A photo for the portfolio only" stays chosen while its photo is still to be uploaded.
+	const [wantsOwn, setWantsOwn] = useState(false);
+	const stored = !hero.showPicture || basics.picture === null ? "none" : basics.picture ? "own" : "resume";
+	const choice = stored === "resume" && (wantsOwn || !resumePhoto) ? "own" : stored;
+	const name = basics.name?.trim() || resume?.basics.name.trim() || owner.name;
+
+	const choose = (next: string) => {
+		setWantsOwn(next === "own");
+		editPortfolio((draft) => {
+			if (next === "none") {
+				draft.hero.showPicture = false;
+				return;
+			}
+			draft.hero.showPicture = true;
+			if (next === "resume") delete draft.basics.picture;
+			else if (kept) draft.basics.picture = kept;
+			else if (draft.basics.picture === null) delete draft.basics.picture;
+		});
+	};
+
+	return (
+		<div className="grid gap-3">
+			<RadioGroup value={choice} onChange={choose}>
+				<Label>
+					<Trans>Photo</Trans>
+				</Label>
+				{resumePhoto && (
+					<RadioOption value="resume">
+						<Trans>The photo on my resume</Trans>
+					</RadioOption>
+				)}
+				<RadioOption value="own">
+					<Trans>A photo for the portfolio only</Trans>
+				</RadioOption>
+				<RadioOption value="none">
+					<Trans>No photo</Trans>
+				</RadioOption>
+			</RadioGroup>
+			{choice === "own" && (
+				<ImageField
+					label={t`Portfolio photo`}
+					value={basics.picture ?? undefined}
+					altSuggestion={name}
+					description={t`A square photo of your face works best. It's shrunk in your browser before uploading.`}
+					onChange={(image) => {
+						setKept(image ?? null);
+						editPortfolio((draft) => {
+							draft.hero.showPicture = true;
+							if (image) draft.basics.picture = image;
+							else delete draft.basics.picture;
+						});
+					}}
+				/>
+			)}
+		</div>
+	);
+}
+
+/** Two to four achievement numbers under the greeting: a value and a label each. */
+function HeroHighlights() {
+	const data = usePortfolioData();
+	const source = useSourceResume();
+	const locale = pageLocaleOf(data, source.data);
+	return (
+		<div className="grid gap-3">
+			<div className="grid gap-0.5">
+				<span className="text-sm font-medium">
+					<Trans>Achievement numbers</Trans>
+				</span>
+				<span className="text-xs text-muted">
+					<Trans>Two to four of your strongest results, such as “8 years” or “+35% conversion”.</Trans>
+				</span>
+			</div>
+			<MetricsEditor
+				compact
+				metrics={data.hero.highlights}
+				keyPrefix="hero.highlights"
+				locale={locale}
+				maxItems={PORTFOLIO_LIMITS.highlights}
+				addLabel={<Trans>Add a number</Trans>}
+				edit={(recipe, options) =>
+					editPortfolio((draft) => {
+						recipe(draft.hero.highlights);
+					}, options)
+				}
+			/>
 		</div>
 	);
 }

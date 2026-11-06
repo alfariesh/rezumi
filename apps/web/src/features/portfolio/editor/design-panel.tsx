@@ -18,6 +18,7 @@ import {
 import { Icon } from "@rezumi/ui/components/icon";
 import { rgbaStringToHex } from "@rezumi/utils/color";
 import { cn } from "@rezumi/utils/style";
+import { ImageField } from "../images/image-field";
 import { themeDescription } from "../themes";
 import { useSourceResume } from "./context";
 import { ChoiceSelect, PanelGroup } from "./fields";
@@ -235,18 +236,32 @@ function ColorsGroup() {
 
 			<ChoiceSelect
 				label={t`Intro background`}
-				value={data.hero.background.kind === "image" ? "plain" : data.hero.background.kind}
-				options={PORTFOLIO_HERO_BACKGROUNDS.filter((kind) => kind !== "image").map((kind) => ({
+				value={data.hero.background.kind}
+				options={PORTFOLIO_HERO_BACKGROUNDS.map((kind) => ({
 					id: kind,
 					label: backgroundLabel(kind),
 				}))}
-				description={t`A picture behind the intro is coming soon.`}
 				onChange={(kind) =>
 					editPortfolio((draft) => {
-						draft.hero.background = { kind };
+						// The picture stays when switching away, so switching back doesn't upload it again.
+						draft.hero.background = { ...draft.hero.background, kind };
 					})
 				}
 			/>
+			{data.hero.background.kind === "image" && (
+				<ImageField
+					label={t`Background picture`}
+					value={data.hero.background.image}
+					altSuggestion=""
+					description={t`A darker layer goes over it so the text stays readable. Wide pictures fit best.`}
+					onChange={(image) =>
+						editPortfolio((draft) => {
+							if (image) draft.hero.background.image = image;
+							else delete draft.hero.background.image;
+						})
+					}
+				/>
+			)}
 		</PanelGroup>
 	);
 }

@@ -183,3 +183,28 @@ describe("undo and redo", () => {
 		expect(store().dirty).toBe(true);
 	});
 });
+
+describe("changes the server saved", () => {
+	it("takes works the server added as saved, and Undo goes back to before them", async () => {
+		vi.useFakeTimers();
+		mocks.update.mockImplementation(({ data }) =>
+			Promise.resolve(record({ data, updatedAt: new Date(opened.getTime() + 5000) })),
+		);
+		const before = store().portfolio?.data;
+		const imported = parsePortfolioData({
+			works: { items: [{ id: "w1", slug: "kopi", title: "Kopi", fromResumeItemId: "p1" }] },
+		});
+		const savedAt = new Date(opened.getTime() + 1000);
+		const revision = store().revision;
+		store().applyServerEdit(record({ data: imported, updatedAt: savedAt }));
+		expect(store()).toMatchObject({ status: "saved", dirty: false, revision: revision + 1 });
+		expect(store().portfolio?.updatedAt).toEqual(savedAt);
+		expect(store().portfolio?.data.works.items).toHaveLength(1);
+
+		store().undo();
+		expect(store().portfolio?.data).toEqual(before);
+		await vi.advanceTimersByTimeAsync(PORTFOLIO_SAVE_DELAY_MS);
+		// The undo saves against the version the server returned, so it isn't a conflict.
+		expect(mocks.update).toHaveBeenLastCalledWith({ data: before, expectedUpdatedAt: savedAt });
+	});
+});

@@ -12,12 +12,14 @@ import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
 import { IconButton } from "@rezumi/ui/components/icon-button";
 import { cn } from "@rezumi/utils/style";
+import { WorkEditor } from "../works/work-editor";
+import { WorksForm } from "../works/works-form";
 import { ContactForm } from "./contact-form";
 import { useSourceResume } from "./context";
 import { PanelGroup } from "./fields";
 import { IntroForm } from "./intro-form";
 import { ClientsForm, ServicesForm, TestimonialsForm } from "./offer-forms";
-import { AboutForm, addCustomSection, CustomSectionForm, ResumeItemsForm, WorksForm } from "./section-forms";
+import { AboutForm, addCustomSection, CustomSectionForm, ResumeItemsForm } from "./section-forms";
 import {
 	editorSectionOrder,
 	isResumeSection,
@@ -27,6 +29,7 @@ import {
 	setSectionTitle,
 } from "./sections";
 import { editPortfolio, usePortfolioData } from "./store";
+import { usePortfolioEditorUi } from "./ui";
 import { useEditorView, usePageMessages } from "./use-view";
 import { SortableEdge, SortableHandle, SortableProvider, useSortableItem } from "@/components/input/sortable";
 import { usePrompt } from "@/hooks/use-confirm";
@@ -73,6 +76,10 @@ function sectionLabel(
  * reorder, the eye hides it, the pencil renames it; opening one shows its fields.
  */
 export function ContentPanel() {
+	const openWorkId = usePortfolioEditorUi((state) => state.openWorkId);
+	const exists = usePortfolioData().works.items.some((work) => work.id === openWorkId);
+	// A work removed elsewhere (undo, another tab) closes its editor.
+	if (openWorkId && exists) return <WorkEditor key={openWorkId} workId={openWorkId} />;
 	return (
 		<div className="grid gap-3 p-3">
 			<PanelGroup icon="user-circle" title={<Trans>Intro</Trans>}>

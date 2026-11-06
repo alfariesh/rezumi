@@ -81,6 +81,16 @@ msgstr ""
 msgid "(no header)"
 msgstr "(fără antet)"
 
+#. placeholder {0}: chosen.size
+#: src/features/portfolio/works/works-form.tsx
+msgid "{0, plural, =0 {Add work} one {Add # work} other {Add # works}}"
+msgstr ""
+
+#. placeholder {0}: work.blocks.length
+#: src/features/portfolio/works/works-form.tsx
+msgid "{0, plural, =0 {No blocks yet} one {# block} other {# blocks}}"
+msgstr ""
+
 #. placeholder {0}: proposals.length
 #: src/features/resume/editor/proposals/proposals.ts
 msgid "{0, plural, =1 {Edit applied} other {# edits applied}}"
@@ -348,6 +358,11 @@ msgstr ""
 msgid "{0} at {1}"
 msgstr ""
 
+#. placeholder {0}: info.title
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "{0} block removed"
+msgstr ""
+
 #. placeholder {0}: insights.closed
 #: src/features/applications/components/insights-view.tsx
 msgid "{0} closed"
@@ -448,6 +463,11 @@ msgstr ""
 msgid "{0} italic"
 msgstr ""
 
+#. placeholder {0}: client.name.trim()
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "{0} logo"
+msgstr ""
+
 #. placeholder {0}: row.minutes
 #: src/features/career/workspace/prepare.tsx
 msgid "{0} min"
@@ -521,6 +541,12 @@ msgstr "{0} din {1} candidaturi adaptate au primit răspuns; {2} din {3} au fost
 msgid "{0} of {1} terms found"
 msgstr "{0} din {1} termeni găsiți"
 
+#. placeholder {0}: images.length
+#. placeholder {1}: PORTFOLIO_LIMITS.imagesPerBlock
+#: src/features/portfolio/blocks/images-block.tsx
+msgid "{0} of {1}. Drop, choose or paste them."
+msgstr ""
+
 #. placeholder {0}: creditCount(credits)
 #: src/features/assistant/assistant-panel.tsx
 msgid "{0} per reply"
@@ -580,6 +606,12 @@ msgstr "{0}, nu este unul dintre locurile dvs."
 #: src/features/resume/editor/check/actions.ts
 msgid "{0}. Issue resolved."
 msgstr "{0}. Problema rezolvată."
+
+#. placeholder {0}: Math.round(point.x * 100)
+#. placeholder {1}: Math.round(point.y * 100)
+#: src/features/portfolio/images/image-field.tsx
+msgid "{0}% from the left, {1}% from the top"
+msgstr ""
 
 #. placeholder {0}: proposals.length
 #: src/features/assistant/conversation.tsx
@@ -766,6 +798,10 @@ msgstr "{length} min"
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "{lines, plural, one {Runs onto page {next} by about # line} other {Runs onto page {next} by about # lines}}"
 msgstr "{lines, plural, one {Rulează pe pagina {next} cu aproximativ linia #} other {Rulează pe pagina {next} cu aproximativ linii #}}"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "{min} to {most} values in order, oldest first. The page draws them as a small line."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "{minimum} minimum"
@@ -1016,6 +1052,10 @@ msgstr "/ lună"
 msgid "/ year"
 msgstr "/ an"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "/month"
+msgstr ""
+
 #: src/features/resume/editor/check/check-panel.tsx
 msgid "<0>Nothing to fix.</0> Every check passes."
 msgstr "<0>Nimic de remediat.</0> Fiecare cec trece."
@@ -1029,6 +1069,10 @@ msgstr "<0>Trimisă pe {0}.</0> Versiunile trimise sunt păstrate în Salvat. Mo
 #: src/features/resume/editor/write/section-row.tsx
 msgid "1 column, inline"
 msgstr "1 coloană, în linie"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "1 to 12 pictures with captions"
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "10-minute briefing"
@@ -1059,10 +1103,18 @@ msgstr ""
 msgid "2022 – Present"
 msgstr ""
 
+#: src/features/portfolio/works/work-editor.tsx
+msgid "2025 or Jan–Mar 2025"
+msgstr ""
+
 #: src/features/career/schedule-sheet.tsx
 #: src/features/career/today.tsx
 msgid "24 hours before"
 msgstr "Cu 24 de ore înainte"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "3 months after launch"
+msgstr ""
 
 #: src/features/homepage/features.tsx
 msgid "3 of 5 keywords on your resume"
@@ -1126,6 +1178,10 @@ msgstr "O lungime confortabilă și se potrivește pe o singură pagină."
 msgid "A contact form and a map of your city are coming soon."
 msgstr ""
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "A darker layer goes over it so the text stays readable. Wide pictures fit best."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "A date is in the future."
 msgstr "O dată este în viitor."
@@ -1146,6 +1202,10 @@ msgstr "O dată nu va fi citită"
 msgid "A deep night sidebar where a large serif name, the portrait and the contact lines glow in light text, beside a white main column."
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "A document to open"
+msgstr ""
+
 #: src/features/career/knowledge/stories.tsx
 msgid "A fact changed. Review this story."
 msgstr "Un fapt s-a schimbat. Revizuiți această poveste."
@@ -1153,6 +1213,10 @@ msgstr "Un fapt s-a schimbat. Revizuiți această poveste."
 #: src/features/career/coach-chat.tsx
 msgid "A fact you've since forgotten"
 msgstr "Un fapt pe care l-ați uitat între timp"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "A fall can be good, such as faster load times."
+msgstr ""
 
 #: src/features/career/workspace/prepare.tsx
 msgid "A focused plan for this round"
@@ -1172,6 +1236,10 @@ msgstr "O pauză în activitate nu este o problemă. Adăugați o explicație de
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "A link"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "A link card"
 msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
@@ -1223,19 +1291,11 @@ msgid "A photo can be added later."
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
-msgid "A photo for the portfolio arrives soon."
+msgid "A photo for the portfolio only"
 msgstr ""
 
-#: src/features/portfolio/editor/offer-forms.tsx
-msgid "A photo of the person is coming soon."
-msgstr ""
-
-#: src/features/portfolio/editor/design-panel.tsx
-msgid "A picture behind the intro is coming soon."
-msgstr ""
-
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "A picture for this section is coming soon."
+#: src/features/portfolio/blocks/images-block.tsx
+msgid "A Pictures block holds up to 12 pictures. Add another block for more."
 msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
@@ -1276,6 +1336,10 @@ msgstr "O scurtă urmărire este de obicei bine acum"
 
 #: src/dialogs/resume/template/data.ts
 msgid "A soft wash of the accent down the left column for skills and languages; the name, a round portrait and the contact line lead the main column."
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "A square photo of your face works best. It's shrunk in your browser before uploading."
 msgstr ""
 
 #: src/features/career/coach-chat.tsx
@@ -1393,6 +1457,10 @@ msgstr ""
 msgid "Accounts"
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Achievement numbers"
+msgstr ""
+
 #: src/features/homepage/hero.tsx
 msgid "achievements"
 msgstr ""
@@ -1458,6 +1526,14 @@ msgstr "Adăuga"
 msgid "Add “{0}”"
 msgstr "Adăugați „{0}”"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Add a block"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Add a block here"
+msgstr ""
+
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Add a button"
 msgstr ""
@@ -1499,6 +1575,14 @@ msgstr "Adăugați un link"
 msgid "Add a location"
 msgstr "Adăugați o locație"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Add a metric"
+msgstr ""
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Add a Metrics block below to show a result on the card."
+msgstr ""
+
 #: src/features/applications/components/detail/activity.tsx
 msgid "Add a note"
 msgstr "Adăugați o notă"
@@ -1506,6 +1590,10 @@ msgstr "Adăugați o notă"
 #: src/features/applications/components/detail/activity.tsx
 msgid "Add a note…"
 msgstr "Adăugați o notă…"
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Add a number"
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Add a person"
@@ -1625,6 +1713,10 @@ msgstr "Adăugați candidatura"
 msgid "Add award"
 msgstr "Adăugați premiul"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Add block"
+msgstr ""
+
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add certification"
 msgstr "Adăugați certificare"
@@ -1713,6 +1805,10 @@ msgstr "Adaugă pagină"
 #: src/features/settings/account/security.tsx
 msgid "Add passkey"
 msgstr "Adăugați cheia de acces"
+
+#: src/features/portfolio/blocks/images-block.tsx
+msgid "Add pictures"
+msgstr ""
 
 #: src/features/resume/editor/write/outline.tsx
 msgid "Add profile"
@@ -1808,6 +1904,18 @@ msgstr "Adăugați voluntariat"
 msgid "Add what happened before you can save."
 msgstr "Adăugați ce s-a întâmplat înainte de a salva."
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "Add work"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Add work from pictures"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Add work from your resume"
+msgstr ""
+
 #: src/features/settings/ai/providers.tsx
 msgid "Add your first AI provider"
 msgstr ""
@@ -1864,6 +1972,13 @@ msgstr "Adăugat în Pregătire"
 #: src/features/resume/share/address-field.tsx
 msgid "Address"
 msgstr "Adresa"
+
+#. placeholder {0}: window.location.host
+#. placeholder {1}: owner.username
+#. placeholder {2}: work.slug
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Address: {0}/{1}#work-{2}"
+msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Adds a reminder to Today if you haven't heard back by then."
@@ -1924,6 +2039,10 @@ msgstr "După selecția preliminară"
 #: src/features/career/workspace/debrief.tsx
 msgid "After the technical interview"
 msgstr "După interviul tehnic"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "After the value"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "After your first review, a light plan for this week appears here."
@@ -2047,6 +2166,10 @@ msgstr "Toate documentele și cererile de angajare ca JSON, într-un singur zip"
 msgid "All fields"
 msgstr ""
 
+#: src/features/portfolio/works/work-editor.tsx
+msgid "All sections"
+msgstr ""
+
 #: src/features/billing/admin/overview.tsx
 msgid "All statuses"
 msgstr ""
@@ -2078,6 +2201,10 @@ msgstr "Deja acoperit · alege unul pentru a-l găsi pe pagină"
 #. Call-to-action link from registration page to login page
 #: src/features/auth/pages/register.tsx
 msgid "Already have an account? <0>Sign in now <1/></0>"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Already in your work"
 msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
@@ -2157,6 +2284,10 @@ msgstr ""
 #: src/components/layout/error-screen.tsx
 msgid "An unexpected error stopped this page from loading. Try again, or go to the dashboard."
 msgstr "O eroare neașteptată a împiedicat încărcarea acestei pagini. Încearcă din nou sau mergi la panoul de control."
+
+#: src/features/portfolio/images/upload.ts
+msgid "Animated GIFs can't be used. Upload a still picture (JPG, PNG or WebP)."
+msgstr ""
 
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "Another link"
@@ -2597,6 +2728,7 @@ msgstr ""
 
 #: src/features/documents/new-document-dialog.tsx
 #: src/features/portfolio/create-dialog.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/routes/dashboard/settings/route.tsx
 msgid "Back"
 msgstr "Spate"
@@ -2659,6 +2791,10 @@ msgstr ""
 msgid "Background color"
 msgstr "Culoarea de fundal"
 
+#: src/features/portfolio/editor/design-panel.tsx
+msgid "Background picture"
+msgstr ""
+
 #: src/features/auth/pages/verify-2fa.tsx
 msgid "Backup code"
 msgstr "Cod de rezervă"
@@ -2666,6 +2802,10 @@ msgstr "Cod de rezervă"
 #: src/dialogs/auth/enable-two-factor.tsx
 msgid "Backup codes copied"
 msgstr "Codurile de rezervă au fost copiate"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Bad news (red)"
+msgstr ""
 
 #: src/features/resume/editor/design/entries-group.tsx
 msgctxt "Entry header accent: a tinted background behind the header"
@@ -2707,6 +2847,10 @@ msgstr ""
 msgid "Before restore"
 msgstr "Înainte de restaurare"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Before the value"
+msgstr ""
+
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Before titles such as Education, Skills and Certifications."
 msgstr ""
@@ -2717,6 +2861,14 @@ msgstr "Înainte de a trimite"
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Before your email, phone, location, website and custom fields."
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-preview.tsx
+msgid "Before: {before}"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Behance, Dribbble, GitHub, YouTube or any site fills in the card."
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
@@ -2743,7 +2895,7 @@ msgstr ""
 msgid "Big numbers"
 msgstr ""
 
-#: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/themes.ts
 msgid "Big pictures first, for designers, photographers and architects."
 msgstr ""
 
@@ -3004,6 +3156,14 @@ msgstr ""
 msgid "Cancelled; active until {0}"
 msgstr ""
 
+#: src/features/portfolio/blocks/images-block.tsx
+msgid "Caption (optional)"
+msgstr ""
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Card"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Cards"
 msgstr ""
@@ -3058,6 +3218,10 @@ msgstr "Schimbă parola"
 msgid "Change photo"
 msgstr "Schimbați fotografia"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Change text"
+msgstr ""
+
 #: src/features/applications/components/detail/next-step-card.tsx
 msgid "Change the follow-up…"
 msgstr "Schimbați urmărirea..."
@@ -3080,6 +3244,10 @@ msgstr "Schimbă-ți parola"
 
 #: src/features/billing/buy-plans.tsx
 msgid "Change your plan"
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Change, before → after, chart, context"
 msgstr ""
 
 #: src/routes/builder/letter/-components/letter-bar.tsx
@@ -3257,6 +3425,7 @@ msgid "Checklist progress"
 msgstr "Progresul listei de verificare"
 
 #: src/features/billing/admin/overview.tsx
+#: src/features/portfolio/metrics/metric-form.tsx
 msgid "Checkout conversion"
 msgstr ""
 
@@ -3307,6 +3476,10 @@ msgstr "Alege o parolă diferită de cea actuală."
 msgid "Choose a PDF file."
 msgstr "Alege un fișier PDF."
 
+#: src/features/portfolio/images/image-field.tsx
+msgid "Choose a picture"
+msgstr ""
+
 #: src/routes/builder/letter/-components/design-panel.tsx
 msgid "Choose a resume in Write to match its design. Until then, the letter has its own."
 msgstr "Alegeți un CV în Write care să se potrivească cu designul său. Până atunci, scrisoarea are a ei."
@@ -3338,6 +3511,10 @@ msgstr ""
 #: src/components/input/color-picker.tsx
 msgid "Choose color"
 msgstr "Alege culoarea"
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Choose pictures"
+msgstr ""
 
 #: src/features/homepage/plans.ts
 msgid "Choose Pro AI"
@@ -3439,6 +3616,7 @@ msgstr ""
 #: src/features/portfolio/editor/offer-forms.tsx
 #: src/features/portfolio/editor/publish-panel.tsx
 #: src/features/portfolio/page-text.ts
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/builder/password-dialog.tsx
 #: src/features/resume/editor/check/check-panel.tsx
 #: src/features/resume/editor/check/page-layer.tsx
@@ -3533,6 +3711,8 @@ msgid "Columns can scramble the order text is read in."
 msgstr "Coloanele pot amesteca ordinea în care este citit textul."
 
 #: src/features/homepage/pricing.tsx
+#: src/features/portfolio/blocks/block-list.tsx
+#: src/features/portfolio/works/works-form.tsx
 msgid "Coming soon"
 msgstr ""
 
@@ -3790,6 +3970,10 @@ msgstr "Conținut"
 #: src/features/ats-checker/messages.ts
 msgid "Content is laid out in a grid."
 msgstr "Conținutul este dispus într-o grilă."
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Context or source (optional)"
+msgstr ""
 
 #. Button label to continue to dashboard after successful registration
 #. Final action button after saving backup codes
@@ -4628,6 +4812,10 @@ msgstr ""
 msgid "Cover letters that match"
 msgstr ""
 
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Cover picture"
+msgstr ""
+
 #. placeholder {0}: formatShort(payment.periodEnd)
 #: src/features/billing/admin/customer.tsx
 msgid "covers until {0}"
@@ -4916,6 +5104,10 @@ msgstr "Datele nu vor fi citite"
 msgid "Day"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Days"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 msgid "Days (1–366)"
 msgstr ""
@@ -4966,6 +5158,8 @@ msgstr "Ștergeți „{0}” acum?"
 msgid "Delete “{0}”?"
 msgstr "Ștergi „{0}”?"
 
+#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/share/history-tab.tsx
 msgid "Delete “{title}”?"
 msgstr "Ștergeți „{title}”?"
@@ -4974,6 +5168,10 @@ msgstr "Ștergeți „{title}”?"
 #: src/features/assistant/assistant-panel.tsx
 msgid "Delete {0}"
 msgstr "Ștergeți {0}"
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Delete {title}"
+msgstr ""
 
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/data.tsx
@@ -5048,6 +5246,11 @@ msgstr ""
 msgid "Delete version"
 msgstr "Șterge versiunea"
 
+#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/works-form.tsx
+msgid "Delete work"
+msgstr ""
+
 #: src/features/settings/account/data.tsx
 msgid "Delete your account?"
 msgstr "Ștergeți contul?"
@@ -5105,6 +5308,14 @@ msgstr "Refuză accesul"
 msgid "Describe each role with short bullets. Solid paragraphs are harder to skim and to segment."
 msgstr "Descrieți fiecare rol cu puncte scurte. Paragrafele compacte sunt mai greu de parcurs rapid și de segmentat."
 
+#: src/features/portfolio/images/image-field.tsx
+msgid "Describe the picture"
+msgstr ""
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Describe the picture in a few words."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Describe the role"
 msgstr "Descrieți rolul"
@@ -5152,6 +5363,10 @@ msgstr "Design resetat la valorile implicite"
 msgid "Design systems"
 msgstr "Sisteme de design"
 
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Detail"
+msgstr ""
+
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/career/workspace/shell.tsx
 #: src/routes/builder/$resumeId/-components/document-menu.tsx
@@ -5186,6 +5401,10 @@ msgstr "Monedă diferită, necomparat"
 #: src/features/career/offers.tsx
 msgid "Different pay period, not compared"
 msgstr "Perioadă de plată diferită, necomparat"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Direction"
+msgstr ""
 
 #: src/features/career/schedule-sheet.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -5264,6 +5483,10 @@ msgstr ""
 msgid "Documents you move here stay for 30 days."
 msgstr "Documentele pe care le muți aici rămân timp de 30 de zile."
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Dollar ($1.2M)"
+msgstr ""
+
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "Domain connected"
 msgstr "Domeniu conectat"
@@ -5279,6 +5502,7 @@ msgid "Don't send {0}"
 msgstr "Nu trimiteți {0}"
 
 #: src/features/billing/admin/customer.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/features/settings/ai/api-keys.tsx
 msgid "Done"
@@ -5499,6 +5723,10 @@ msgstr "Aruncă un fișier aici sau răsfoiește. PDF, Word, Rezumi sau JSON Res
 msgid "Drop a PDF, Word or JSON file"
 msgstr "Aruncă un fișier PDF, Word sau JSON"
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "Drop pictures here"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Drop the pronouns and start from the verb. That is the convention in most markets."
 msgstr "Renunțați la pronume și începeți cu verbul. Aceasta este convenția pe majoritatea piețelor."
@@ -5535,6 +5763,10 @@ msgstr "„{0}” a fost duplicat"
 #: src/dialogs/resume/index.tsx
 msgid "Duplicating your resume..."
 msgstr "Se duplică CV-ul..."
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Duration"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Dutch"
@@ -5750,6 +5982,7 @@ msgid "Embed all fonts when exporting, so characters map the way you intended."
 msgstr "Încorporați toate fonturile la exportare, astfel încât caracterele să fie mapate așa cum ați intenționat."
 
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/works/works-form.tsx
 msgid "Empty"
 msgstr ""
 
@@ -5817,6 +6050,11 @@ msgstr "Citirea îmbunătățită indisponibilă; a folosit cititorul încorpora
 msgid "Enhanced reading was unavailable. The built-in reader retrieved this posting."
 msgstr "Citirea îmbunătățită nu a fost disponibilă. Cititorul încorporat a preluat această postare de locuri de muncă."
 
+#. placeholder {0}: separator.trim()
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Enter {min} to {most} numbers separated by “{0}”."
+msgstr ""
+
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Enter 7 to 15 digits, with the country code."
 msgstr ""
@@ -5845,6 +6083,14 @@ msgstr "Introduceți un nume, până la 64 de caractere."
 #: src/features/auth/pages/reset-password.tsx
 msgid "Enter a new password for your account."
 msgstr "Introdu o parolă nouă pentru cont."
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Enter a number from {min} to {upper}."
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Enter a number, such as 2.8 or 1200."
+msgstr ""
 
 #: src/features/applications/components/detail/contacts.tsx
 #: src/features/auth/pages/forgot-password.tsx
@@ -6143,6 +6389,11 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
+#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/works-form.tsx
+msgid "Featured"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Featured + grid"
 msgstr ""
@@ -6185,6 +6436,10 @@ msgstr "fișier citit"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Fill fields"
 msgstr "Completează câmpurile"
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Fill in the card, then build the detail from blocks."
+msgstr ""
 
 #: src/features/applications/components/add-application-dialog.tsx
 msgid "Fill in the role and company. Connect an AI provider in Settings to read them from the posting."
@@ -6307,6 +6562,14 @@ msgstr "Aplatizați formularul astfel încât textul să facă parte din pagină
 msgid "Fluency"
 msgstr "Fluență"
 
+#: src/features/portfolio/images/image-field.tsx
+msgid "Focus point"
+msgstr ""
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Focus point of the cover"
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Focus, experience, why this role"
 msgstr "Focus, experiență, de ce acest post"
@@ -6422,6 +6685,10 @@ msgstr "Pentru LibreOffice și alte editoare open-source. Aspectul este simplifi
 msgid "For portals or recruiters who ask for Word. Layout is simplified."
 msgstr "Pentru portaluri sau recrutori care solicită Word. Aspectul este simplificat."
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "For results that aren't a number, such as “Top 3” or “#1”."
+msgstr ""
+
 #: src/features/settings/ai/api-keys.tsx
 msgid "For scripts, extensions and MCP clients. Keys act as you and can read and edit your documents."
 msgstr "Pentru scripturi, extensii și clienți MCP. Tastele acționează ca dvs. și vă pot citi și edita documentele."
@@ -6451,7 +6718,7 @@ msgstr "Ai uitat parola?"
 msgid "Forgot your password?"
 msgstr "V-ați uitat parola?"
 
-#: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/themes.ts
 msgid "Formal and structured, for finance, consulting and management."
 msgstr ""
 
@@ -6562,6 +6829,10 @@ msgstr "Din"
 msgid "From {0} until {1}"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "From 0 to 100, drawn as a bar."
+msgstr ""
+
 #: src/features/career/knowledge/facts.tsx
 msgid "From a debrief"
 msgstr "Dintr-un bilanț"
@@ -6573,6 +6844,10 @@ msgstr "Dintr-un document atașat de dvs."
 #: src/features/career/workspace/fit.tsx
 msgid "From Fit"
 msgstr "Din Potrivire"
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "From my resume"
+msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
 msgid "From resume"
@@ -6622,6 +6897,10 @@ msgstr "Numele complet"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Full width"
 msgstr "Lățime completă"
+
+#: src/features/portfolio/blocks/images-block.tsx
+msgid "Full width, one under another"
+msgstr ""
 
 #: src/components/input/icon-picker-grid.tsx
 msgid "Games and sports"
@@ -6736,6 +7015,10 @@ msgstr ""
 msgid "Go to…"
 msgstr "Accesați…"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Good news (green)"
+msgstr ""
+
 #: src/components/layout/loading-screen.tsx
 msgid "Good things take time. Keep going."
 msgstr ""
@@ -6782,6 +7065,7 @@ msgid "Greeting"
 msgstr "Formulă de adresare"
 
 #: src/features/documents/documents-page.tsx
+#: src/features/portfolio/blocks/images-block.tsx
 msgid "Grid"
 msgstr "Grilă"
 
@@ -6902,6 +7186,8 @@ msgid "Hex color"
 msgstr ""
 
 #: src/components/level/combobox.tsx
+#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/editor/write/entries.tsx
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hidden"
@@ -6927,11 +7213,8 @@ msgstr "Termenii ascunși au revenit"
 msgid "Hidden: {hiddenList}"
 msgstr "Ascuns: {hiddenList}"
 
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "Hide {name} from the page"
-msgstr ""
-
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Hide {title} from the page"
 msgstr "Ascundeți {title} de pe pagină"
@@ -6943,6 +7226,10 @@ msgstr "Ascunde datele de contact"
 #: src/features/resume/editor/write/entry-card.tsx
 msgid "Hide from page"
 msgstr "Ascundeți din pagină"
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Hide from the page"
+msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 msgid "Hide panel"
@@ -7012,6 +7299,10 @@ msgstr "Margine orizontală"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/page.tsx
 msgid "Horizontal spacing"
 msgstr "Spațiere orizontală"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Hours"
+msgstr ""
 
 #: src/features/billing/admin/customer.tsx
 msgid "How"
@@ -7125,6 +7416,10 @@ msgstr "m-am retras"
 msgid "Icon"
 msgstr "Iconiță"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Icon (optional)"
+msgstr ""
+
 #: src/components/input/icon-picker-grid.tsx
 msgid "Icon category"
 msgstr ""
@@ -7135,6 +7430,10 @@ msgstr "Culoarea pictogramei"
 
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Icon for {name}"
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Icon for this metric"
 msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
@@ -7641,6 +7940,10 @@ msgstr "John Doe"
 msgid "john.doe"
 msgstr "john.doe"
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "JPG, PNG or WebP. Each is shrunk in your browser before it's uploaded, and its location data is removed."
+msgstr ""
+
 #: src/features/resume/import/read-file.ts
 msgid "JSON read"
 msgstr "JSON citit"
@@ -7744,6 +8047,10 @@ msgstr "Păstrează cele mai specifice părți"
 msgid "Kept as it is"
 msgstr "Păstrată așa cum este"
 
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Kept here, but visitors don't see it."
+msgstr ""
+
 #: src/features/billing/admin/reason-dialog.tsx
 msgid "Kept in the audit log with your name. At least 3 characters."
 msgstr ""
@@ -7776,6 +8083,10 @@ msgstr "Cuvinte cheie"
 msgid "Khmer"
 msgstr "Khmer"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Kind of value"
+msgstr ""
+
 #: src/features/letters/compose.ts
 msgid "Kind regards,"
 msgstr "Salutări calde,"
@@ -7785,6 +8096,10 @@ msgstr "Salutări calde,"
 #: src/routes/dashboard/career/route.tsx
 msgid "Knowledge"
 msgstr "Cunoștințe"
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Kopi Senja checkout redesign"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Korean"
@@ -7797,6 +8112,8 @@ msgstr ""
 #. Short field label for custom display text associated with a URL
 #: src/components/input/url-input.tsx
 #: src/features/applications/components/detail/contacts.tsx
+#: src/features/portfolio/metrics/metric-form.tsx
+#: src/features/portfolio/metrics/metric-preview.tsx
 msgid "Label"
 msgstr "Etichetă"
 
@@ -7883,6 +8200,7 @@ msgid "Lay the text out horizontally. Rotated runs are often dropped or misplace
 msgstr "Dispuneți textul pe orizontală. Porțiunile rotite sunt adesea eliminate sau plasate greșit."
 
 #: src/features/ats-checker/messages.ts
+#: src/features/portfolio/blocks/images-block.tsx
 #: src/features/resume/editor/check/issues.ts
 #: src/libs/resume/section.tsx
 #: src/routes/builder/$resumeId/-components/design-panel.tsx
@@ -7891,6 +8209,14 @@ msgstr "Layout"
 
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "Layouts"
+msgstr ""
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Layouts that make room for it show this work larger."
+msgstr ""
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Lead designer"
 msgstr ""
 
 #: src/features/homepage/features.tsx
@@ -8098,6 +8424,7 @@ msgid "Lines this close can run together when read. Use at least {minimum}."
 msgstr "Rândurile atât de apropiate pot rula împreună când sunt citite. Utilizați cel puțin {minimum}."
 
 #: src/features/applications/components/import-applications-sheet.tsx
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/fields.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
@@ -8135,6 +8462,10 @@ msgstr "Conectați o cerere de angajare..."
 #: src/features/resume/share/web-page-text.ts
 msgid "Link copied"
 msgstr "Link copiat"
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Link text"
+msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "Link to application"
@@ -8353,6 +8684,10 @@ msgid "Locked. Unlock to edit."
 msgstr "Blocat. Deblocați pentru a edita."
 
 #: src/features/portfolio/editor/offer-forms.tsx
+msgid "Logo (optional)"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
 msgid "Logo design"
 msgstr ""
 
@@ -8363,6 +8698,10 @@ msgstr ""
 
 #: src/features/resume/editor/design/style-groups.tsx
 msgid "Logos beside the tools a skill names, such as React, Python or Figma. The words always print."
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Logos show grey and turn to colour when pointed at. Upload only logos you may show."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -8400,9 +8739,17 @@ msgstr ""
 msgid "Main"
 msgstr "Principal"
 
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Main link (optional)"
+msgstr ""
+
 #: src/routes/_home/-sections/header.tsx
 msgid "Main navigation"
 msgstr "Navigare principală"
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Make"
+msgstr ""
 
 #: src/features/settings/ai/providers.tsx
 msgid "Make default"
@@ -8475,6 +8822,10 @@ msgstr "Gestionat de serverul dvs"
 
 #: src/features/billing/admin/customer.tsx
 msgid "Manual transfer"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Many at once: one work with all of them, or one work per picture."
 msgstr ""
 
 #: src/features/ats-checker/messages.ts
@@ -8624,6 +8975,19 @@ msgstr "Scrieți coach-ului"
 msgid "Messages"
 msgstr "Mesaje"
 
+#. placeholder {0}: index + 1
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Metric {0}"
+msgstr ""
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Metric on the card"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Metrics"
+msgstr ""
+
 #: src/features/career/workspace/practise.tsx
 msgid "Microphone blocked. Allow it in your browser settings, or type your answer."
 msgstr "Microfon blocat. Permiteți-l din setările browserului sau scrieți răspunsul."
@@ -8677,6 +9041,10 @@ msgstr ""
 
 #: src/features/billing/admin/overview.tsx
 msgid "Monthly recurring, before tax"
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Months"
 msgstr ""
 
 #: src/features/resume/editor/chrome/bar.tsx
@@ -8755,10 +9123,12 @@ msgid "Move {name} up"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/works/works-form.tsx
 msgid "Move {title} down"
 msgstr ""
 
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/works/works-form.tsx
 msgid "Move {title} up"
 msgstr ""
 
@@ -8797,6 +9167,16 @@ msgstr "Mutați rolul în sus"
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Move section to another column or page"
 msgstr "Mutați secțiunea în altă coloană sau pagină"
+
+#. placeholder {0}: info.title
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Move the {0} block down"
+msgstr ""
+
+#. placeholder {0}: info.title
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Move the {0} block up"
+msgstr ""
 
 #: src/routes/builder/$resumeId/-sidebar/right/sections/layout/pages.tsx
 msgid "Move to"
@@ -8856,6 +9236,10 @@ msgstr ""
 
 #: src/features/homepage/testimonials.tsx
 msgid "My internships and campus projects finally read like real experience. The ATS check showed me what to fix."
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "My role"
 msgstr ""
 
 #. Label for full name input on registration form
@@ -9307,6 +9691,10 @@ msgstr "Fără număr de telefon"
 msgid "No phone number was found."
 msgstr "Nu a fost găsit niciun număr de telefon."
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "No photo"
+msgstr ""
+
 #: src/features/resume/editor/write/basics-card.tsx
 msgid "No photo. Most ATS ignore photos; some regions expect one."
 msgstr "Nicio fotografie. Majoritatea ATS ignoră fotografiile; unele regiuni se așteaptă la unul."
@@ -9404,6 +9792,7 @@ msgstr "Nu a fost găsită nicio secțiune de experiență de muncă."
 #: src/features/applications/components/add-application-dialog.tsx
 #: src/features/applications/components/application-detail-sheet.tsx
 #: src/features/applications/components/list-view.tsx
+#: src/features/portfolio/works/work-editor.tsx
 msgid "None"
 msgstr "Nici unul"
 
@@ -9678,6 +10067,10 @@ msgstr "Perioadă de preaviz"
 msgid "Now"
 msgstr "Acum"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Number"
+msgstr ""
+
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Numbered list"
@@ -9767,7 +10160,7 @@ msgstr "După ce ați trimis câteva cereri de angajare, aceasta arată cât de 
 msgid "One address that always shows your latest version, public or behind a password."
 msgstr ""
 
-#: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/themes.ts
 msgid "One calm column, a big name and your work as a clear list. Suits every field."
 msgstr ""
 
@@ -9789,10 +10182,28 @@ msgctxt "Entry header layout"
 msgid "One line"
 msgstr ""
 
+#. placeholder {0}: work.summary.length
+#. placeholder {1}: max.workSummary
+#: src/features/portfolio/works/work-editor.tsx
+msgid "One or two sentences on the card. {0}/{1}"
+msgstr ""
+
 #. placeholder {0}: hero.greeting.length
 #. placeholder {1}: max.greeting
 #: src/features/portfolio/editor/intro-form.tsx
 msgid "One or two sentences under your name. {0}/{1}"
+msgstr ""
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "One result from this work's Metrics blocks, shown as a chip on its card."
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "One work per picture (photographers, illustrators)"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "One work with all the pictures"
 msgstr ""
 
 #: src/features/templates/gallery.tsx
@@ -10221,6 +10632,10 @@ msgstr "Paragraf"
 msgid "paragraph {n}"
 msgstr "paragraful {n}"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Paragraphs, headings, lists and links"
+msgstr ""
+
 #: src/features/billing/purchase.ts
 msgid "Partly refunded"
 msgstr ""
@@ -10299,6 +10714,10 @@ msgstr "Lipiți un link de job. Vom salva anunțul de locuri de muncă, astfel �
 #: src/features/resume/editor/check/job-match.tsx
 msgid "Paste a job posting…"
 msgstr "Lipiți o postare de locuri de muncă..."
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Paste a link"
+msgstr ""
 
 #. placeholder {0}: application.company
 #: src/features/career/workspace/messages.tsx
@@ -10396,6 +10815,10 @@ msgstr ""
 msgid "Payments"
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "PDF"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "PDF and Word files are read with"
 msgstr ""
@@ -10437,6 +10860,10 @@ msgstr ""
 msgid "per month, or {yearly} a year"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Percent (2.8%)"
+msgstr ""
+
 #: src/features/billing/admin/customer.tsx
 #: src/features/billing/admin/overview.tsx
 msgid "Period"
@@ -10462,6 +10889,10 @@ msgstr "Telefon"
 #: src/features/applications/components/detail/contacts.tsx
 msgid "Phone (optional)"
 msgstr "Telefon (opțional)"
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Photo"
+msgstr ""
 
 #: src/features/resume/editor/check/issues.ts
 msgid "Photo hidden"
@@ -10503,6 +10934,10 @@ msgstr "Alegeți o pictogramă"
 msgid "Pick one format and use it everywhere."
 msgstr "Alegeți un format și utilizați-l peste tot."
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "Pick projects from your resume: title, summary, dates and link come along."
+msgstr ""
+
 #: src/features/career/workspace/prepare.tsx
 msgid "Pick two examples"
 msgstr "Alegeți două exemple"
@@ -10517,7 +10952,20 @@ msgid "Picture"
 msgstr "Imagine"
 
 #: src/features/portfolio/editor/section-forms.tsx
-msgid "Pictures, text blocks and results for each work are coming soon."
+msgid "Picture (optional)"
+msgstr ""
+
+#. placeholder {0}: index + 1
+#: src/features/portfolio/blocks/images-block.tsx
+msgid "Picture {0}"
+msgstr ""
+
+#: src/features/portfolio/page-text.ts
+msgid "Picture viewer"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Pictures"
 msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
@@ -10595,7 +11043,7 @@ msgstr ""
 msgid "Plans don't apply yet (BILLING_MODE)"
 msgstr ""
 
-#: src/features/portfolio/editor/design-panel.tsx
+#: src/features/portfolio/themes.ts
 msgid "Playful tiles, for creators, freelancers and students."
 msgstr ""
 
@@ -10614,6 +11062,10 @@ msgstr ""
 
 #: src/features/homepage/pricing.tsx
 msgid "Plus, Pro AI and trial credits are coming soon. Paid plan limits are not active yet."
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "PNG or WebP with a clear background. By uploading it, you confirm you may show it."
 msgstr ""
 
 #: src/features/billing/admin/labels.ts
@@ -10688,6 +11140,10 @@ msgstr "Se finisează"
 #: src/routes/builder/portfolio/-components/portfolio-shell.tsx
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Portfolio"
+msgstr ""
+
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Portfolio photo"
 msgstr ""
 
 #: src/features/portfolio/editor/preview.tsx
@@ -10831,6 +11287,16 @@ msgstr ""
 #: src/features/resume/share/download-tab.tsx
 msgid "Preparing {label} file…"
 msgstr "Se pregătește fișierul {label}..."
+
+#. placeholder {0}: progress.done + 1
+#. placeholder {1}: progress.total
+#: src/features/portfolio/images/image-field.tsx
+msgid "Preparing and uploading picture {0} of {1}…"
+msgstr ""
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Preparing and uploading the picture…"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 msgid "Preparing edits…"
@@ -11043,6 +11509,10 @@ msgstr ""
 msgid "Progress"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Progress (optional)"
+msgstr ""
+
 #: src/components/level/combobox.tsx
 msgid "Progress bar"
 msgstr "Bară de progres"
@@ -11050,10 +11520,6 @@ msgstr "Bară de progres"
 #: src/libs/resume/section.tsx
 msgid "Projects"
 msgstr "Proiecte"
-
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "Projects from your resume show here as work. Adding work with pictures, text blocks and results is coming soon."
-msgstr ""
 
 #: src/features/career/workspace/messages.tsx
 msgid "Proposed changes"
@@ -11228,6 +11694,10 @@ msgstr "Ridicați foaia de proiectare"
 msgid "Rated 5 out of 5"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Rating (4.8/5)"
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Re-export from a single-column layout, then copy the text out and check it reads top to bottom."
 msgstr "Exportați din nou dintr-un aspect cu o singură coloană, apoi copiați textul și verificați dacă se citește de sus în jos."
@@ -11260,6 +11730,14 @@ msgstr ""
 #: src/features/career/workspace/practise.tsx
 msgid "Read aloud by {0}, which may use tokens on that account."
 msgstr "Citit cu voce tare de {0}, care poate folosi tokeni din acel cont."
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Read aloud by screen readers and read by search engines."
+msgstr ""
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Read aloud by screen readers. Until you write one, the page uses “{fallback}”."
+msgstr ""
 
 #: src/features/career/workspace/practise.tsx
 msgid "Read aloud by your browser's voice."
@@ -11768,6 +12246,10 @@ msgstr "Eliminați persoana {0}"
 msgid "Remove photo"
 msgstr "Elimină fotografia"
 
+#: src/features/portfolio/images/image-field.tsx
+msgid "Remove picture"
+msgstr ""
+
 #: src/features/career/workspace/apply.tsx
 msgid "Remove question"
 msgstr "Eliminați întrebarea"
@@ -11779,6 +12261,11 @@ msgstr "Eliminați rolul"
 #: src/features/applications/components/application-form-sheet.tsx
 msgid "Remove tag"
 msgstr "Elimină eticheta"
+
+#. placeholder {0}: info.title
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Remove the {0} block"
+msgstr ""
 
 #: src/features/resume/share/share-panel.tsx
 msgid "Remove the password?"
@@ -11865,6 +12352,11 @@ msgstr "Recomandați {0}"
 msgid "Reorder {title}"
 msgstr "Recomandați {title}"
 
+#. placeholder {0}: info.title
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Reorder the {0} block"
+msgstr ""
+
 #. placeholder {0}: jd.stuffedTerms.join(", ")
 #: src/features/ats-checker/report/jd-coverage.tsx
 msgid "Repeated far more often than the posting itself uses them: {0}. Recruiters notice."
@@ -11877,6 +12369,10 @@ msgstr "Înlocui"
 #: src/features/ats-checker/messages.ts
 msgid "Replace icon fonts with plain text, then re-export."
 msgstr "Înlocuiți fonturile de pictograme cu text simplu, apoi exportați din nou."
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Replace picture"
+msgstr ""
 
 #: src/features/ats-checker/messages.ts
 msgid "Replace tables with plain paragraphs and lists. Cells extract in storage order, not reading order."
@@ -11969,6 +12465,10 @@ msgstr "Versiunea a fost restaurată de la {0}. Starea anterioară este salvată
 #: src/features/career/knowledge/stories.tsx
 msgid "Result"
 msgstr "Rezultat"
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Results as numbers, such as +35% conversion"
+msgstr ""
 
 #: src/features/assistant/assistant-panel.tsx
 msgid "resume"
@@ -12315,6 +12815,10 @@ msgstr ""
 #: src/routes/builder/$resumeId/-components/page-canvas.tsx
 msgid "Runs onto page {next}"
 msgstr "Se rulează pe pagina {next}"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Rupiah (Rp1.2m)"
+msgstr ""
 
 #: src/libs/locale.ts
 msgid "Russian"
@@ -12798,6 +13302,10 @@ msgstr ""
 msgid "See the case study"
 msgstr ""
 
+#: src/features/portfolio/works/work-editor.tsx
+msgid "See the live site"
+msgstr ""
+
 #: src/features/homepage/features.tsx
 msgid "See what ATS software reads"
 msgstr ""
@@ -13067,6 +13575,14 @@ msgstr ""
 msgid "Short Link and Domain"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Short number (1.2k, 1.2m)"
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Short text"
+msgstr ""
+
 #: src/features/billing/credits.ts
 msgid "Short text help"
 msgstr ""
@@ -13103,14 +13619,15 @@ msgstr "Afișați încă {0}"
 msgid "Show {0} read"
 msgstr "Afișați {0} citite"
 
-#: src/features/portfolio/editor/section-forms.tsx
-msgid "Show {name} on the page"
-msgstr ""
-
 #: src/features/portfolio/editor/content-panel.tsx
+#: src/features/portfolio/works/works-form.tsx
 #: src/features/resume/editor/write/section-row.tsx
 msgid "Show {title} on the page"
 msgstr "Afișați {title} pe pagină"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Show a change"
+msgstr ""
 
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show a WhatsApp button"
@@ -13161,10 +13678,6 @@ msgstr ""
 msgid "Show my phone number"
 msgstr ""
 
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Show my photo"
-msgstr ""
-
 #: src/features/portfolio/editor/contact-form.tsx
 msgid "Show my profiles"
 msgstr ""
@@ -13212,13 +13725,25 @@ msgstr "Arată-le din nou"
 msgid "Show up. Apply. Repeat."
 msgstr ""
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "Show what you made: a project, a design, an article. Each work has a card in the list and a detail built from text, pictures and results."
+msgstr ""
+
 #: src/features/portfolio/portfolio-page.tsx
 msgid "Show your work, results and services on one page that looks good on any phone, at rezumi.app/your-username."
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Shown as before → after bars, in the same format."
 msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Shown in your timezone."
 msgstr "Afișat în fusul dvs. orar."
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Shown on the card and atop the detail. Landscape pictures fit best."
+msgstr ""
 
 #: src/features/documents/document-actions.tsx
 msgid "Shows the tags they all share. Tags you add go on every document; tags you remove come off every one. Locked documents are left as they are."
@@ -13387,6 +13912,10 @@ msgstr "Slovacă"
 #: src/libs/locale.ts
 msgid "Slovenian"
 msgstr "Slovenă"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Small chart (optional)"
+msgstr ""
 
 #: src/features/applications/components/insights-view.tsx
 msgid "Small numbers, but worth noticing."
@@ -13594,6 +14123,10 @@ msgstr ""
 msgid "Start from"
 msgstr "Începe de la"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Start from a case study outline"
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "Start from one you have and link the application."
 msgstr "Începeți de la unul pe care îl aveți și conectați cererea de angajare."
@@ -13687,6 +14220,10 @@ msgstr ""
 #: src/features/documents/new-document-dialog.tsx
 msgid "Stay here"
 msgstr "Stai aici"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Stayed the same"
+msgstr ""
 
 #: src/features/portfolio/create-dialog.tsx
 msgid "Step 1 of 2 · What it starts from"
@@ -13871,6 +14408,7 @@ msgid "Summaries of your open applications"
 msgstr "Rezumatele candidaturilor dvs. deschise"
 
 #: src/features/homepage/resume.tsx
+#: src/features/portfolio/works/work-editor.tsx
 #: src/features/resume/editor/write/summary-editor.tsx
 #: src/libs/resume/section.tsx
 msgid "Summary"
@@ -13880,6 +14418,10 @@ msgstr "Sumar"
 #: src/features/career/workspace/debrief.tsx
 msgid "Supported"
 msgstr "Susținut"
+
+#: src/features/portfolio/images/upload.ts
+msgid "SVG files can't be used. Export the picture as PNG or JPG, then upload it."
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Swap"
@@ -13904,6 +14446,10 @@ msgstr "Schimbați datele de început și de sfârșit."
 #: src/libs/locale.ts
 msgid "Swedish"
 msgstr "Suedeză"
+
+#: src/features/portfolio/blocks/images-block.tsx
+msgid "Swipe sideways"
+msgstr ""
 
 #: src/features/assistant/conversation.tsx
 msgid "Switch model"
@@ -13972,6 +14518,7 @@ msgstr "Etichetă"
 #: src/features/career/knowledge/stories.tsx
 #: src/features/documents/document-actions.tsx
 #: src/features/documents/documents-page.tsx
+#: src/features/portfolio/works/work-editor.tsx
 msgid "Tags"
 msgstr "Etichete"
 
@@ -14036,6 +14583,10 @@ msgstr ""
 #: src/libs/locale.ts
 msgid "Tamil"
 msgstr "Tamilă"
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Tap the part to keep in view when a card crops the cover. Arrow keys move it too."
+msgstr ""
 
 #: src/features/career/knowledge/preferences.tsx
 msgid "Target roles"
@@ -14171,6 +14722,7 @@ msgstr "Se testează serviciul de căutare pe serverul dvs...."
 msgid "Testing…"
 msgstr "Testarea…"
 
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/section-forms.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Text"
@@ -14179,6 +14731,11 @@ msgstr "Text"
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 msgid "Text alignment"
 msgstr "Alinierea textului"
+
+#. placeholder {0}: work.title.trim() || t`this work`
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Text block of {0}"
+msgstr ""
 
 #: src/features/resume/editor/write/rich-text-editor-field.tsx
 #: src/routes/builder/$resumeId/-sidebar/right/sections/design.tsx
@@ -14354,6 +14911,10 @@ msgstr "Copia este legată de cererea de angajare, așa că Check și asistentul
 msgid "The creative page: a block of the accent anchors the top corner, framing your portrait, beside an oversized name; two columns follow."
 msgstr ""
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "The detail opens when a visitor taps this work. Build it from blocks: text, pictures and results as numbers."
+msgstr ""
+
 #: src/features/resume/editor/write/dates-field.tsx
 msgid "The end is before the start."
 msgstr "Sfârșitul este înainte de început."
@@ -14490,6 +15051,18 @@ msgstr ""
 msgid "The payments couldn't load."
 msgstr ""
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "The photo on my resume"
+msgstr ""
+
+#: src/features/portfolio/images/upload.ts
+msgid "The picture couldn't be uploaded. Check your connection and try again."
+msgstr ""
+
+#: src/features/portfolio/images/upload.ts
+msgid "The picture is still too large after shrinking it. Try a smaller picture."
+msgstr ""
+
 #: src/features/resume/editor/check/job-match.tsx
 msgid "The posting asks for “{label}”. If it's true for me, work it into my resume where it fits. Ask me first."
 msgstr "Anunțul de locuri de muncă solicită „{label}”. Dacă este adevărat pentru mine, includeți-l în CV-ul meu acolo unde se potrivește. Întreabă-mă mai întâi."
@@ -14501,6 +15074,18 @@ msgstr "Anunțul de muncă nu a putut fi citit. Completați rolul și compania."
 #: src/features/applications/components/application-detail-sheet.tsx
 msgid "The posting saved with this application."
 msgstr "Anunțul de angajare a fost salvat cu această cerere de angajare."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "The problem"
+msgstr ""
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "The process"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "The projects couldn't be added. Check your connection, then try again."
+msgstr ""
 
 #: src/features/assistant/provider-setup.tsx
 msgid "The provider didn't answer. Check the key and the model."
@@ -14533,6 +15118,10 @@ msgstr "Motivul este păstrat pentru Insights. Documentele conectate nu sunt ati
 #: src/features/resume/share/custom-domain-field.tsx
 msgid "The records aren't visible yet. Check again later."
 msgstr "Înregistrările nu sunt vizibile încă. Verifică din nou mai târziu."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "The result"
+msgstr ""
 
 #: src/routes/builder/letter/-components/design-panel.tsx
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -14584,6 +15173,10 @@ msgstr "Scorul este plafonat din cauza unei probleme blocante: {0}"
 msgid "The score reflects how reliably text is extracted, not your chances."
 msgstr "Scorul reflectă cât de fiabil este extras textul, nu șansele tale."
 
+#: src/features/portfolio/images/upload.ts
+msgid "The server couldn't read this picture. Try another JPG, PNG or WebP file."
+msgstr ""
+
 #: src/features/settings/ai/web-access.tsx
 msgid "The service didn't respond in time. Try again."
 msgstr "Serviciul nu a răspuns la timp. Încearcă din nou."
@@ -14616,8 +15209,17 @@ msgstr ""
 msgid "The top of the first page does not look like a name."
 msgstr "Partea de sus a primei pagini nu pare a fi un nume."
 
+#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/works-form.tsx
+msgid "The work and its blocks leave the portfolio. You can undo this."
+msgstr ""
+
 #: src/features/portfolio/editor/offer-forms.tsx
 msgid "Their name"
+msgstr ""
+
+#: src/features/portfolio/editor/offer-forms.tsx
+msgid "Their photo (optional)"
 msgstr ""
 
 #: src/features/portfolio/editor/offer-forms.tsx
@@ -14700,6 +15302,10 @@ msgstr "Acest browser nu poate înregistra aici. Alegeți un fișier audio sau s
 msgid "This browser can't take dictation, and none of your AI connections can transcribe speech (OpenAI, Google Gemini, Mistral, xAI, Groq or Vercel AI Gateway can). <0>Add one in Settings</0>, or type your answer."
 msgstr "Acest browser nu poate prelua dictarea, iar niciuna dintre conexiunile dvs. AI nu poate transcrie vorbirea (OpenAI, Google Gemini, Mistral, xAI, Groq sau Vercel AI Gateway pot). <0>Adăugați una în Setări</0> sau scrieți răspunsul."
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "This change is"
+msgstr ""
+
 #: src/features/portfolio/editor/design-panel.tsx
 msgid "This color is hard to read as text here, so links and accent text use a deeper shade of it."
 msgstr ""
@@ -14777,6 +15383,10 @@ msgstr "Acest fișier este mai mare decât acceptă multe formulare de candidatu
 msgid "This file isn't a font Rezumi can read. Upload a TTF or OTF file."
 msgstr ""
 
+#: src/features/portfolio/images/upload.ts
+msgid "This file isn't a picture your browser can read. Use a JPG, PNG or WebP file."
+msgstr ""
+
 #: src/features/documents/new-document-dialog.tsx
 msgid "This file type can't be imported. Use a PDF, Word, Rezumi or JSON Resume file, or a LinkedIn export (.zip)."
 msgstr "Acest tip de fișier nu poate fi importat. Utilizați un fișier PDF, Word, Rezumi sau JSON Resume sau un export LinkedIn (.zip)."
@@ -14808,6 +15418,10 @@ msgstr "Acesta este un formular XFA, astfel încât majoritatea programelor cite
 #: src/features/ats-checker/messages.ts
 msgid "This is not a common resume page size."
 msgstr "Aceasta nu este o dimensiune de pagină obișnuită pentru un CV."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "This kind of block can be edited soon. It shows on the page as it is."
+msgstr ""
 
 #: src/routes/builder/letter/-components/download-sheet.tsx
 msgid "This letter and “{resumeName}” as two PDFs, named to match."
@@ -14880,6 +15494,14 @@ msgstr "Acest PDF este o imagine scanată. Nu există text de citit. Încercați
 #: src/features/ats-checker/checker.tsx
 msgid "This PDF is password protected. Save an unprotected copy and try again."
 msgstr "Acest PDF este protejat cu parolă. Salvați o copie neprotejată și încercați din nou."
+
+#: src/features/portfolio/images/upload.ts
+msgid "This picture is too large to prepare. Use one under 50 MB and 100 megapixels."
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "This portfolio has no resume to take projects from. Choose one in Publish → Source resume."
+msgstr ""
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "This portfolio was taken down"
@@ -14973,6 +15595,10 @@ msgstr "Această oră nu există în fusul dvs. orar. Alegeți altă oră."
 msgid "This week: make your evidence easier to follow"
 msgstr "Săptămâna aceasta: faceți-vă dovezile mai ușor de urmărit"
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "this work"
+msgstr ""
+
 #: src/features/career/workspace/shell.tsx
 msgid "This workspace couldn't be loaded."
 msgstr "Acest spațiu de lucru nu a putut fi încărcat."
@@ -15030,6 +15656,10 @@ msgstr ""
 msgid "Times"
 msgstr ""
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Times (3×)"
+msgstr ""
+
 #: src/features/career/knowledge/preferences.tsx
 msgid "Times are shown in {timeZone}."
 msgstr "Orele sunt afișate în {timeZone}."
@@ -15049,13 +15679,17 @@ msgid "Tip"
 msgstr "Sfat"
 
 #: src/features/career/knowledge/stories.tsx
-#: src/features/portfolio/editor/section-forms.tsx
+#: src/features/portfolio/works/work-editor.tsx
 #: src/features/resume/editor/write/entries.tsx
 msgid "Title"
 msgstr "Titlu"
 
 #: src/features/portfolio/editor/publish-panel.tsx
 msgid "Title in search results"
+msgstr ""
+
+#: src/features/portfolio/works/works-form.tsx
+msgid "Title of the work"
 msgstr ""
 
 #: src/routes/builder/letter/-components/write-panel.tsx
@@ -15096,6 +15730,10 @@ msgstr "Prea multe cereri. Încercați din nou mai târziu."
 msgid "Too many tries in a row. Wait a few minutes, then try again."
 msgstr ""
 
+#: src/features/portfolio/images/upload.ts
+msgid "Too many uploads in a short time. Wait a minute, then try again."
+msgstr ""
+
 #: src/features/billing/plan.ts
 msgid "Tool logos aren't in your plan"
 msgstr ""
@@ -15115,6 +15753,10 @@ msgstr ""
 
 #: src/routes/dashboard/-components/app-shell.tsx
 msgid "Toolbar"
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Top 3"
 msgstr ""
 
 #: src/features/career/offers.tsx
@@ -15313,6 +15955,10 @@ msgstr "Două coloane"
 msgid "Two stories"
 msgstr "Două povești"
 
+#: src/features/portfolio/editor/intro-form.tsx
+msgid "Two to four of your strongest results, such as “8 years” or “+35% conversion”."
+msgstr ""
+
 #: src/features/auth/pages/verify-2fa.tsx
 #: src/features/command-palette/pages/navigation.tsx
 #: src/features/settings/account/security.tsx
@@ -15389,6 +16035,7 @@ msgstr "Subliniați linkurile"
 #: src/features/career/today.tsx
 #: src/features/career/workspace/fit.tsx
 #: src/features/documents/document-actions.tsx
+#: src/features/portfolio/blocks/block-list.tsx
 #: src/features/portfolio/editor/rich-text-editor.tsx
 #: src/features/resume/editor/check/actions.ts
 #: src/features/resume/editor/design/fit.ts
@@ -15408,6 +16055,10 @@ msgstr "Anula"
 #: src/features/resume/stylesheet/toolbar.tsx
 msgid "Undo resume change"
 msgstr "Anulați modificarea CV-ului"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Unit"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Unknown"
@@ -15493,8 +16144,13 @@ msgstr ""
 msgid "Untitled testimonial"
 msgstr ""
 
-#: src/features/portfolio/editor/section-forms.tsx
+#: src/features/portfolio/works/work-editor.tsx
+#: src/features/portfolio/works/works-form.tsx
 msgid "Untitled work"
+msgstr ""
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Up to 12, such as “UX research” or “Figma”. Press Enter or a comma after each."
 msgstr ""
 
 #: src/features/career/workspace/practise.tsx
@@ -15573,17 +16229,25 @@ msgstr ""
 msgid "Upload photo"
 msgstr "Încarcă fotografia"
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "Upload pictures"
+msgstr ""
+
 #: src/features/resume/editor/design/uploaded-fonts.tsx
 msgid "Upload TTF or OTF files you have the right to use, one file per weight or style. Anyone who opens a shared link to this document can download them."
 msgstr ""
 
-#: src/features/portfolio/editor/offer-forms.tsx
-msgid "Uploading a client's logo is coming soon."
+#: src/features/portfolio/works/works-form.tsx
+msgid "Uploaded pictures"
 msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "Uploading photo…"
 msgstr "Se încarcă fotografia…"
+
+#: src/features/portfolio/images/image-field.tsx
+msgid "Uploading pictures"
+msgstr ""
 
 #: src/features/resume/editor/write/picture-settings.tsx
 msgid "URL"
@@ -15698,6 +16362,10 @@ msgstr ""
 msgid "Use my timezone"
 msgstr "Folosește-mi fusul orar"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Use numbers you can explain in an interview, and say where they come from."
+msgstr ""
+
 #: src/features/resume/editor/check/issues.ts
 msgid "Use one column"
 msgstr "Utilizați o coloană"
@@ -15798,10 +16466,6 @@ msgstr "Utilizează propria căutare pe web a furnizorului dvs. de inteligență
 msgid "Uses your resume's fonts when they're available on the web; otherwise the theme's."
 msgstr ""
 
-#: src/features/portfolio/editor/intro-form.tsx
-msgid "Uses your resume's photo. A portfolio-only photo arrives soon."
-msgstr ""
-
 #: src/features/homepage/features.tsx
 msgid "UX Designer"
 msgstr ""
@@ -15814,9 +16478,14 @@ msgstr "Uzbecă"
 msgid "Valuation and dilution uncertain"
 msgstr "Evaluare și diluție incerte"
 
+#: src/features/portfolio/metrics/metric-form.tsx
 #: src/features/resume/share/dns-records-dialog.tsx
 msgid "Value"
 msgstr "Valoare"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Value before (optional)"
+msgstr ""
 
 #: src/features/career/offers.tsx
 msgid "Value uncertain"
@@ -15905,6 +16574,10 @@ msgstr "Au fost recuperate foarte puține cuvinte pentru un CV."
 #: src/features/ats-checker/messages.ts
 msgid "Very little text was recovered for this many pages."
 msgstr "A fost recuperat foarte puțin text pentru acest număr de pagini."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Video"
+msgstr ""
 
 #: src/features/applications/components/interview-dialog.tsx
 msgid "Video link, office address, or phone number"
@@ -16094,6 +16767,10 @@ msgstr ""
 msgid "Website"
 msgstr "Website"
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "Wedding photos, Bandung 2025"
+msgstr ""
+
 #: src/features/applications/components/calendar-view.tsx
 msgid "Week"
 msgstr ""
@@ -16106,9 +16783,21 @@ msgstr "Săptămânal la {clock} · următoarea {next}"
 msgid "weeks"
 msgstr "săptămâni"
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Weeks"
+msgstr ""
+
 #: src/features/career/shared.tsx
 msgid "Weighing each requirement"
 msgstr "Se cântărește fiecare cerință"
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Went down"
+msgstr ""
+
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Went up"
+msgstr ""
 
 #: src/features/career/workspace/debrief.tsx
 msgid "Went well"
@@ -16179,6 +16868,10 @@ msgstr "Ceea ce cere"
 msgid "What it checks"
 msgstr "Ceea ce verifică"
 
+#: src/features/portfolio/images/image-field.tsx
+msgid "What it shows, for people who can't see it"
+msgstr ""
+
 #: src/features/career/coach-chat.tsx
 msgid "What matters"
 msgstr "Ce contează"
@@ -16243,6 +16936,10 @@ msgstr "Ce ați face diferit?"
 #: src/features/career/workspace/fit.tsx
 msgid "What you did: {0}"
 msgstr "Ce ați făcut: {0}"
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "What you made, for whom, and what changed."
+msgstr ""
 
 #: src/features/applications/components/detail/sent-documents.tsx
 msgid "What you sent"
@@ -16467,6 +17164,10 @@ msgstr "Notați ce v-au întrebat cât încă e proaspăt. Coach-ul compară ră
 msgid "Write each role as a clear title and company line, with the dates alongside."
 msgstr "Scrieți fiecare rol ca un rând clar cu titlu și companie, cu datele alături."
 
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "Write here. Type “/” to add a block after this one."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Write it as one uninterrupted piece, with no special spacing."
 msgstr "Scrieți-l ca un bloc neîntrerupt, fără spațiere specială."
@@ -16522,11 +17223,16 @@ msgstr "Se scrie un răspuns…"
 msgid "Writing help, tailored suggestions and the assistant. The default provider is used wherever you don't pick one. Your keys stay encrypted."
 msgstr "Ajutor la scriere, sugestii adaptate și asistentul. Furnizorul implicit este folosit oriunde nu alegeți altul. Cheile dvs. rămân criptate."
 
+#: src/features/portfolio/metrics/metric-form.tsx
+msgid "Written as"
+msgstr ""
+
 #: src/features/career/offers.tsx
 msgid "Written offer"
 msgstr "Ofertă scrisă"
 
 #: src/features/portfolio/page-text.ts
+#: src/features/portfolio/works/work-editor.tsx
 msgid "Year"
 msgstr ""
 
@@ -17052,9 +17758,17 @@ msgstr "CV-ul dumneavoastră a fost duplicat."
 msgid "Your resume has been updated."
 msgstr "CV-ul dumneavoastră a fost actualizat."
 
+#: src/features/portfolio/works/works-form.tsx
+msgid "Your resume has no projects yet. Add them in the resume editor, or start an empty work."
+msgstr ""
+
 #: src/features/ats-checker/messages.ts
 msgid "Your resume uses \"I\" and \"my\"."
 msgstr "CV-ul dvs. folosește „eu” și „al meu”."
+
+#: src/features/portfolio/works/work-editor.tsx
+msgid "Your role"
+msgstr ""
 
 #: src/libs/error-message.ts
 msgid "Your selected font can't display some characters. They show as “?”. In Design, choose a font that has them."
@@ -17120,6 +17834,10 @@ msgstr ""
 #: src/features/auth/components/guest-banner.tsx
 msgid "Your work is lost when you sign out or the session ends. Create an account or sign in to keep your resumes, cover letters and applications."
 msgstr "Munca ta se pierde când te deconectezi sau când sesiunea expiră. Creează un cont sau autentifică-te pentru a-ți păstra CV-urile, scrisorile de intenție și candidaturile."
+
+#: src/features/portfolio/blocks/block-list.tsx
+msgid "YouTube or Vimeo"
+msgstr ""
 
 #: src/features/resume/editor/chrome.tsx
 #: src/features/resume/editor/write/picture-settings.tsx

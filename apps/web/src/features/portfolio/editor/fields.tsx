@@ -1,7 +1,19 @@
+import type { SlashItem } from "./rich-text-editor";
 import type { IconName } from "@rezumi/ui/components/icon";
 import type { ReactNode } from "react";
 import { Widget } from "@heroui-pro/react";
-import { Description, FieldError, Input, Label, ListBox, Select, Skeleton, TextArea, TextField } from "@heroui/react";
+import {
+	Description,
+	FieldError,
+	Input,
+	Label,
+	ListBox,
+	Radio,
+	Select,
+	Skeleton,
+	TextArea,
+	TextField,
+} from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { lazy, Suspense, useId, useState } from "react";
 import { isAllowedPortfolioUrl } from "@rezumi/schema/portfolio/links";
@@ -158,16 +170,29 @@ type RichTextFieldProps = {
 	maxLength: number;
 	placeholder?: string | undefined;
 	description?: ReactNode;
+	/** Typing "/" opens these (blocks to add after this one). */
+	slashItems?: readonly SlashItem[] | undefined;
+	/** The label is for screen readers only (the block around it already says what it is). */
+	hideLabel?: boolean;
 };
 
 /** A labelled rich text field. The editor loads on first use; it starts over after undo, redo or a reload. */
-export function RichTextField({ label, value, onChange, maxLength, placeholder, description }: RichTextFieldProps) {
+export function RichTextField({
+	label,
+	value,
+	onChange,
+	maxLength,
+	placeholder,
+	description,
+	slashItems,
+	hideLabel = false,
+}: RichTextFieldProps) {
 	const revision = usePortfolioEditorStore((state) => state.revision);
 	const labelId = useId();
 
 	return (
 		<div className="grid gap-1.5">
-			<span id={labelId} className="text-sm font-medium">
+			<span id={labelId} className={hideLabel ? "sr-only" : "text-sm font-medium"}>
 				{label}
 			</span>
 			<Suspense fallback={<Skeleton className="h-44 rounded-2xl" />}>
@@ -179,6 +204,7 @@ export function RichTextField({ label, value, onChange, maxLength, placeholder, 
 					onChange={onChange}
 					maxLength={maxLength}
 					placeholder={placeholder}
+					slashItems={slashItems}
 				/>
 			</Suspense>
 			{description && <p className="text-xs text-muted">{description}</p>}
@@ -266,4 +292,20 @@ export function moveItem<T>(items: T[], from: number, to: number): void {
 	if (to < 0 || to >= items.length || from === to) return;
 	const [item] = items.splice(from, 1);
 	if (item !== undefined) items.splice(to, 0, item);
+}
+
+type RadioOptionProps = { value: string; children: ReactNode };
+
+/** One choice of a `RadioGroup`: the dot, then its label. */
+export function RadioOption({ value, children }: RadioOptionProps) {
+	return (
+		<Radio value={value} className="flex min-h-9 items-center rounded-lg px-1 hover:bg-default">
+			<Radio.Content className="flex-1 text-sm">
+				<Radio.Control>
+					<Radio.Indicator />
+				</Radio.Control>
+				{children}
+			</Radio.Content>
+		</Radio>
+	);
 }

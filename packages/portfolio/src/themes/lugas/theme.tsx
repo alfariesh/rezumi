@@ -13,6 +13,7 @@ import {
 	ExtraList,
 	Footer,
 	hostOf,
+	Lightbox,
 	linkAttributes,
 	Picture,
 	Prose,
@@ -311,6 +312,7 @@ export function LugasPage({ year, creditUrl }: LugasPageProps) {
 					total={works.length}
 				/>
 			))}
+			{works.some((work) => work.blocks.some((block) => block.type === "images")) && <Lightbox />}
 		</div>
 	);
 }

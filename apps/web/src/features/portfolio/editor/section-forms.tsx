@@ -4,11 +4,10 @@ import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
 import { Icon } from "@rezumi/ui/components/icon";
-import { IconButton } from "@rezumi/ui/components/icon-button";
 import { generateId } from "@rezumi/utils/string";
-import { cn } from "@rezumi/utils/style";
+import { ImageField } from "../images/image-field";
 import { useSourceResume } from "./context";
-import { ItemToolbar, moveItem, RichTextField, TextInput, UrlInput } from "./fields";
+import { RichTextField, TextInput, UrlInput } from "./fields";
 import { resumeSectionItems, setItemHidden, setSectionHidden } from "./sections";
 import { editPortfolio, usePortfolioData, usePortfolioRecord } from "./store";
 import { useConfirm } from "@/hooks/use-confirm";
@@ -33,82 +32,6 @@ export function AboutForm() {
 				)
 			}
 		/>
-	);
-}
-
-/**
- * Work, for now a simple list: titles, order and which ones show. Covers, blocks and metrics arrive with the full
- * work editor (Phase 04).
- */
-export function WorksForm() {
-	const { works } = usePortfolioData();
-	const items = works.items;
-
-	if (items.length === 0)
-		return (
-			<p className="text-sm text-muted">
-				<Trans>
-					Projects from your resume show here as work. Adding work with pictures, text blocks and results is coming
-					soon.
-				</Trans>
-			</p>
-		);
-
-	return (
-		<div className="grid gap-3">
-			{items.map((work, index) => {
-				const name = work.title.trim() || t`Untitled work`;
-				return (
-					<div key={work.id} className="grid gap-2 rounded-2xl bg-surface-secondary p-3">
-						<TextInput
-							label={t`Title`}
-							value={work.title}
-							maxLength={max.workTitle}
-							onChange={(value) =>
-								editPortfolio(
-									(draft) => {
-										const target = draft.works.items[index];
-										if (target) target.title = value;
-									},
-									{ key: `works.${work.id}.title` },
-								)
-							}
-						/>
-						<ItemToolbar
-							name={name}
-							index={index}
-							count={items.length}
-							onMove={(to) => editPortfolio((draft) => moveItem(draft.works.items, index, to), { structural: true })}
-							onRemove={() =>
-								editPortfolio(
-									(draft) => {
-										draft.works.items.splice(index, 1);
-									},
-									{ structural: true },
-								)
-							}
-						>
-							<IconButton
-								icon={work.hidden ? "eye-slash" : "eye"}
-								size="sm"
-								aria-pressed={work.hidden}
-								label={work.hidden ? t`Show ${name} on the page` : t`Hide ${name} from the page`}
-								className={cn(work.hidden && "text-muted")}
-								onPress={() =>
-									editPortfolio((draft) => {
-										const target = draft.works.items[index];
-										if (target) target.hidden = !target.hidden;
-									})
-								}
-							/>
-						</ItemToolbar>
-					</div>
-				);
-			})}
-			<p className="text-xs text-muted">
-				<Trans>Pictures, text blocks and results for each work are coming soon.</Trans>
-			</p>
-		</div>
 	);
 }
 
@@ -196,9 +119,17 @@ export function CustomSectionForm({ id }: { id: string }) {
 					})
 				}
 			/>
-			<p className="text-xs text-muted">
-				<Trans>A picture for this section is coming soon.</Trans>
-			</p>
+			<ImageField
+				label={t`Picture (optional)`}
+				value={section.image}
+				altSuggestion={section.title.trim()}
+				onChange={(image) =>
+					update((target) => {
+						if (image) target.image = image;
+						else delete target.image;
+					})
+				}
+			/>
 			<Button variant="danger-soft" className="w-fit" onPress={() => void remove()}>
 				<Icon name="trash" size={18} />
 				<Trans>Delete section</Trans>

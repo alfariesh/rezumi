@@ -1,9 +1,14 @@
 import z from "zod";
 import { portfolioDataSchema, writablePortfolioDataSchema } from "@rezumi/schema/portfolio/data";
-import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { PORTFOLIO_LIMITS, PORTFOLIO_UPLOAD } from "@rezumi/schema/portfolio/limits";
 import { portfolioThemeSchema } from "@rezumi/schema/portfolio/themes";
 import { protectedProcedure } from "../../context";
-import { portfolioMutationRateLimit, portfolioUpdateRateLimit } from "../../middleware/rate-limit";
+import {
+	portfolioFileDeleteRateLimit,
+	portfolioMutationRateLimit,
+	portfolioUpdateRateLimit,
+	portfolioUploadRateLimit,
+} from "../../middleware/rate-limit";
 import { portfolioService } from "./service";
 
 // Kept out of the public API and its OpenAPI spec until portfolios launch (portfolio plan Phase 12).
@@ -16,6 +21,12 @@ const sourceInvalid = {
 };
 
 const resumeIdSchema = z.string().min(1).max(64);
+const conflict = {
+	PORTFOLIO_VERSION_CONFLICT: { status: 409, message: "The portfolio changed somewhere else after you opened it." },
+};
+const fileNotFound = {
+	PORTFOLIO_FILE_NOT_FOUND: { status: 400, message: "A file in this portfolio isn't one of its uploads." },
+};
 
 const portfolioSchema = z.object({
 	id: z.string(),
@@ -106,9 +117,9 @@ export const portfolioRouter = {
 		.errors({
 			...disabled,
 			...notFound,
-			PORTFOLIO_VERSION_CONFLICT: { status: 409, message: "The portfolio changed somewhere else after you opened it." },
+			...conflict,
+			...fileNotFound,
 			PORTFOLIO_TOO_LARGE: { status: 413, message: "The portfolio is too large to save." },
-			PORTFOLIO_FILE_NOT_FOUND: { status: 400, message: "A file in this portfolio isn't one of its uploads." },
 		})
 		.output(portfolioSchema)
 		.handler(({ context, input }) => portfolioService.update(context.user.id, input)),
@@ -167,4 +178,86 @@ export const portfolioRouter = {
 		.errors({ ...disabled, ...notFound })
 		.output(z.void())
 		.handler(({ context }) => portfolioService.delete(context.user.id)),
+
+	importWorks: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/works/import",
+			operationId: "importPortfolioWorks",
+			summary: "Add works from the source resume's projects",
+		})
+		.input(
+			z.object({
+				resumeItemIds: z
+					.array(z.string().min(1).max(PORTFOLIO_LIMITS.text.id))
+					.min(1)
+					.max(PORTFOLIO_LIMITS.works)
+					.describe("Projects of the source resume to add; ones already added are skipped."),
+				expectedUpdatedAt: z.coerce.date().describe("The updatedAt the editor has; a different one is a conflict."),
+			}),
+		)
+		.use(portfolioMutationRateLimit)
+		.errors({
+			...disabled,
+			...notFound,
+			...sourceInvalid,
+			...conflict,
+			...fileNotFound,
+			PORTFOLIO_TOO_LARGE: { status: 413, message: "The portfolio is too large to save." },
+			PORTFOLIO_WORKS_LIMIT: { status: 400, message: `A portfolio holds at most ${PORTFOLIO_LIMITS.works} works.` },
+		})
+		.output(portfolioSchema)
+		.handler(({ context, input }) => portfolioService.importWorks(context.user.id, input)),
+
+	uploadImage: protectedProcedure
+		.route({
+			...route,
+			method: "POST",
+			path: "/portfolio/files/images",
+			operationId: "uploadPortfolioImage",
+			summary: "Upload a picture for the portfolio",
+			description: `A JPEG, PNG or WebP picture the browser already made smaller: at most ${PORTFOLIO_UPLOAD.imageBytes / 1024 / 1024} MB and ${PORTFOLIO_UPLOAD.imageSide} px on its longest side, with an optional small copy of at most ${PORTFOLIO_UPLOAD.thumbSide} px. Unused until saved data refers to its key.`,
+		})
+		.input(
+			z.object({
+				file: z.file().describe("The picture."),
+				thumbnail: z.file().optional().describe("A small copy for cards and lists."),
+			}),
+		)
+		.use(portfolioUploadRateLimit)
+		.errors({
+			...disabled,
+			...notFound,
+			PORTFOLIO_FILE_TOO_LARGE: { status: 413, message: "This picture is too large to upload." },
+			PORTFOLIO_IMAGE_INVALID: { status: 400, message: "This picture can't be used." },
+		})
+		.output(
+			z.object({
+				key: z.string().describe("The picture's storage key, for the portfolio's data."),
+				thumbKey: z.string().optional().describe("The small copy's key."),
+				width: z.number().int(),
+				height: z.number().int(),
+				bytes: z.number().int().describe("Bytes stored, both copies together."),
+			}),
+		)
+		.handler(({ context, input }) => portfolioService.uploadImage(context.user.id, input)),
+
+	deleteFile: protectedProcedure
+		.route({
+			...route,
+			method: "DELETE",
+			path: "/portfolio/files",
+			operationId: "deletePortfolioFile",
+			summary: "Delete a portfolio file the portfolio no longer uses",
+		})
+		.input(z.object({ key: z.string().min(1).max(PORTFOLIO_LIMITS.text.url) }))
+		.use(portfolioFileDeleteRateLimit)
+		.errors({
+			...disabled,
+			...fileNotFound,
+			PORTFOLIO_FILE_IN_USE: { status: 409, message: "The portfolio still uses this file." },
+		})
+		.output(z.void())
+		.handler(({ context, input }) => portfolioService.deleteFile(context.user.id, input)),
 };

@@ -8,6 +8,7 @@ import worker from "./index";
 const mocks = vi.hoisted(() => ({
 	run: vi.fn<() => Promise<{ processed: number }>>(),
 	billing: vi.fn<() => Promise<{ releasedReservations: number }>>(),
+	portfolio: vi.fn<() => Promise<{ deletedFiles: number; checkedPortfolios: number }>>(),
 	auth: vi.fn<() => Promise<void>>(),
 	wasm: vi.fn<() => Promise<void>>(),
 	fetch: vi.fn<(request: Request) => Promise<Response>>(),
@@ -49,6 +50,7 @@ vi.mock("@formepdf/core/worker", () => ({ init: mocks.wasm }));
 vi.mock("@rezumi/auth/config", () => ({ initializeAuth: mocks.auth }));
 vi.mock("@rezumi/api/features/career/jobs", () => ({ runCareerJobs: mocks.run }));
 vi.mock("@rezumi/api/features/billing/jobs", () => ({ runBillingJobs: mocks.billing }));
+vi.mock("@rezumi/api/features/portfolio/jobs", () => ({ runPortfolioJobs: mocks.portfolio }));
 vi.mock("@rezumi/api/features/agent/streams", () => ({
 	configureAgentStreamLifetime: (lifetime: (promise: Promise<unknown>) => void) => {
 		mocks.lifetime = lifetime;
@@ -105,6 +107,7 @@ beforeEach(() => {
 	mocks.pools.length = 0;
 	mocks.run.mockReset().mockResolvedValue({ processed: 0 });
 	mocks.billing.mockReset().mockResolvedValue({ releasedReservations: 0 });
+	mocks.portfolio.mockReset().mockResolvedValue({ deletedFiles: 0, checkedPortfolios: 0 });
 	mocks.auth.mockReset().mockResolvedValue();
 	mocks.wasm.mockReset().mockResolvedValue();
 	mocks.fetch.mockReset().mockResolvedValue(new Response("ok"));
@@ -172,7 +175,7 @@ describe("Cloudflare invocation lifetime", () => {
 		expect(pool.end).toHaveBeenCalledOnce();
 	});
 
-	it("runs billing jobs before career jobs on the same pool, and career jobs still run when billing fails", async () => {
+	it("runs billing, career, then portfolio jobs on the same pool, and the others still run when billing fails", async () => {
 		const log = vi.spyOn(console, "error").mockImplementation(() => {});
 		const fixture = invocation();
 		const order: Array<[string, unknown]> = [];
@@ -184,12 +187,17 @@ describe("Cloudflare invocation lifetime", () => {
 			order.push(["career", getPool()]);
 			return { processed: 0 };
 		});
+		mocks.portfolio.mockImplementation(async () => {
+			order.push(["portfolio", getPool()]);
+			return { deletedFiles: 0, checkedPortfolios: 0 };
+		});
 		worker.scheduled(fixture.controller, fixture.bindings, fixture.ctx);
 		await Promise.all(fixture.pending);
 		const pool = invocationPool();
 		expect(order).toEqual([
 			["billing", pool],
 			["career", pool],
+			["portfolio", pool],
 		]);
 		expect(log).toHaveBeenCalledOnce();
 		expect(JSON.stringify(log.mock.calls)).not.toContain("Synthetic billing failure");
@@ -212,6 +220,8 @@ describe("Cloudflare invocation lifetime", () => {
 		expect(pool.end).not.toHaveBeenCalled();
 		background.resolve();
 		await expect(fixture.pending[0]).rejects.toBe(failure);
+		// Portfolio upkeep still ran after career jobs failed.
+		expect(mocks.portfolio).toHaveBeenCalledOnce();
 		expect(pool.end).toHaveBeenCalledOnce();
 	});
 

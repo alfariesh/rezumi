@@ -168,6 +168,11 @@ export const resumeUpdatesUserRateLimit = createRatelimitMiddleware<ContextWithH
 
 const portfolioUpdateLimiter = createRateLimiter("portfolioUpdateLimiter", rateLimitConfig.orpc.portfolioUpdates);
 const portfolioMutationLimiter = createRateLimiter("portfolioMutationLimiter", rateLimitConfig.orpc.portfolioMutations);
+const portfolioUploadLimiter = createRateLimiter("portfolioUploadLimiter", rateLimitConfig.orpc.portfolioUploads);
+const portfolioFileDeleteLimiter = createRateLimiter(
+	"portfolioFileDeleteLimiter",
+	rateLimitConfig.orpc.portfolioFileDeletes,
+);
 
 /** Per account: one portfolio each, saved on its own while the owner edits. */
 export const portfolioUpdateRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
@@ -179,4 +184,16 @@ export const portfolioUpdateRateLimit = createRatelimitMiddleware<ContextWithHea
 export const portfolioMutationRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
 	limiter: productionLimiter(portfolioMutationLimiter),
 	key: ({ context }) => `portfolio-mutation:${getUserKey(context)}`,
+});
+
+/** Per account: pictures for the portfolio, often many in a row (a gallery, one work per picture). */
+export const portfolioUploadRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
+	limiter: productionLimiter(portfolioUploadLimiter),
+	key: ({ context }) => `portfolio-upload:${getUserKey(context)}`,
+});
+
+/** Per account: removing pictures the portfolio no longer uses. */
+export const portfolioFileDeleteRateLimit = createRatelimitMiddleware<ContextWithHeaders, unknown>({
+	limiter: productionLimiter(portfolioFileDeleteLimiter),
+	key: ({ context }) => `portfolio-file-delete:${getUserKey(context)}`,
 });

@@ -9,6 +9,7 @@ import { isAllowedPortfolioUrl } from "@rezumi/schema/portfolio/links";
 import { Icon } from "@rezumi/ui/components/icon";
 import { SwitchRow } from "@rezumi/ui/components/switch";
 import { generateId } from "@rezumi/utils/string";
+import { ImageField } from "../images/image-field";
 import { useSourceResume } from "./context";
 import { ChoiceSelect, ItemToolbar, moveItem, normalizePortfolioUrl, TextInput, UrlInput } from "./fields";
 import { editPortfolio, usePortfolioData } from "./store";
@@ -203,6 +204,17 @@ export function TestimonialsForm() {
 								}, field)
 							}
 						/>
+						<ImageField
+							label={t`Their photo (optional)`}
+							value={item.photo}
+							altSuggestion={item.name.trim()}
+							onChange={(image) =>
+								update((target) => {
+									if (image) target.photo = image;
+									else delete target.photo;
+								})
+							}
+						/>
 						<UrlInput
 							label={t`Where it was given (optional)`}
 							value={item.sourceUrl}
@@ -234,9 +246,6 @@ export function TestimonialsForm() {
 					</div>
 				);
 			})}
-			<p className="text-xs text-muted">
-				<Trans>A photo of the person is coming soon.</Trans>
-			</p>
 			{items.length < PORTFOLIO_LIMITS.testimonials && (
 				<Button variant="secondary" className="w-fit" onPress={() => setAdding(true)}>
 					<Icon name="plus" size={18} />
@@ -360,7 +369,10 @@ function AddTestimonialDialog({ onClose }: { onClose: () => void }) {
 	);
 }
 
-/** Clients: names (and a brand logo when the icon set knows the brand). Uploaded logos arrive in Phase 04. */
+/**
+ * Clients: names, with an uploaded logo or, when the icon set knows the brand, its logo. Uploading a logo states the
+ * right to show it (derived rule #11).
+ */
 export function ClientsForm() {
 	const { clients } = usePortfolioData();
 	const source = useSourceResume();
@@ -393,7 +405,7 @@ export function ClientsForm() {
 										const target = draft.clients.items[index];
 										if (!target) return;
 										target.name = value;
-										// A brand logo follows the name; an uploaded logo (Phase 04) stays.
+										// A brand logo follows the name; an uploaded logo stays.
 										if (!target.logo || "brandIcon" in target.logo) {
 											const next = getBrandIcon(value);
 											if (next && target.logo) target.logo = { brandIcon: next };
@@ -404,7 +416,26 @@ export function ClientsForm() {
 								)
 							}
 						/>
-						{brandIcon && (
+						<ImageField
+							label={t`Logo (optional)`}
+							kind="logo"
+							value={client.logo && "key" in client.logo ? client.logo : undefined}
+							altSuggestion={client.name.trim() ? t`${client.name.trim()} logo` : ""}
+							description={t`PNG or WebP with a clear background. By uploading it, you confirm you may show it.`}
+							onChange={(image) =>
+								editPortfolio((draft) => {
+									const target = draft.clients.items[index];
+									if (!target) return;
+									if (image) target.logo = image;
+									else {
+										const brand = getBrandIcon(target.name);
+										if (brand) target.logo = { brandIcon: brand };
+										else delete target.logo;
+									}
+								})
+							}
+						/>
+						{brandIcon && !(client.logo && "key" in client.logo) && (
 							<SwitchRow
 								isSelected={showsBrand}
 								onChange={(checked) =>
@@ -450,7 +481,7 @@ export function ClientsForm() {
 				);
 			})}
 			<p className="text-xs text-muted">
-				<Trans>Uploading a client's logo is coming soon.</Trans>
+				<Trans>Logos show grey and turn to colour when pointed at. Upload only logos you may show.</Trans>
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{items.length < PORTFOLIO_LIMITS.clients && (
