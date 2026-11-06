@@ -1,0 +1,65 @@
+name: Deploy blog
+run-name: Deploy blog · ${{ github.ref_name }}
+
+# The marketing blog (apps/blog) is its own Worker at blog.rezumi.app. Run it by hand for the first deploy, finish the
+# EmDash setup on the live domain, then set the repository variable BLOG_AUTO_DEPLOY to "true" so pushes to main that
+# touch the blog deploy it too. Steps and required token permissions: .agents/docs/blog.md.
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "apps/blog/**"
+      - "packages/icons/**"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/deploy-blog.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-blog
+  cancel-in-progress: false
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  HEROUI_AUTH_TOKEN: ${{ secrets.HEROUI_AUTH_TOKEN }}
+
+jobs:
+  deploy:
+    name: Build and deploy the blog Worker
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.BLOG_AUTO_DEPLOY == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm --filter blog build
+
+      # EmDash applies its own database migrations on the first request after a deploy; nothing to run here.
+      # Wrangler creates the D1 database, R2 bucket and session KV namespace named in apps/blog/wrangler.jsonc on the
+      # first deploy and reuses them afterwards.
+      - name: Deploy
+        working-directory: apps/blog
+        run: pnpm exec wrangler deploy

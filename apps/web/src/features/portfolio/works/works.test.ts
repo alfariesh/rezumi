@@ -1,0 +1,96 @@
+import type { PortfolioData } from "@rezumi/schema/portfolio/data";
+import { describe, expect, it } from "vite-plus/test";
+import { produce } from "immer";
+import { parsePortfolioData, parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
+import { PORTFOLIO_LIMITS } from "@rezumi/schema/portfolio/limits";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { newWork, resumeProjects, retitleWork, titleFromFileName, workRoom, worksFromImages } from "./works";
+
+const empty = (): PortfolioData => parsePortfolioData({});
+
+const picture = (name: string) => ({
+	image: { key: `uploads/u1/pictures/portfolio/${name}.webp`, width: 1200, height: 800, alt: "" },
+	fileName: `${name}.jpg`,
+});
+
+describe("works", () => {
+	it("gives a new work its own ASCII address", () => {
+		const data = produce(empty(), (draft) => {
+			draft.works.items.push(newWork(draft, "Kopi Senja"));
+			draft.works.items.push(newWork(draft, "Kopi Senja"));
+			draft.works.items.push(newWork(draft, "Café Ümlaut"));
+			draft.works.items.push(newWork(draft));
+		});
+		expect(data.works.items.map((work) => work.slug)).toEqual(["kopi-senja", "kopi-senja-2", "cafe-umlaut", "work"]);
+		expect(() => parseWritablePortfolioData(data)).not.toThrow();
+	});
+
+	it("moves the address with the title while it's the automatic one", () => {
+		const data = produce(empty(), (draft) => {
+			draft.works.items.push(newWork(draft, "Draft"));
+			draft.works.items.push(newWork(draft, "Kopi app"));
+		});
+		const renamed = produce(data, (draft) => {
+			const work = draft.works.items[0];
+			if (work) retitleWork(draft, work, "Kopi app");
+		});
+		expect(renamed.works.items[0]?.slug).toBe("kopi-app-2");
+
+		const kept = produce(data, (draft) => {
+			const work = draft.works.items[0];
+			if (!work) return;
+			work.slug = "chosen-address";
+			retitleWork(draft, work, "Something else");
+		});
+		expect(kept.works.items[0]?.slug).toBe("chosen-address");
+	});
+
+	it("titles works after their files", () => {
+		expect(titleFromFileName("kopi-senja_final.v2.JPG")).toBe("kopi senja final.v2");
+	});
+
+	it("makes one work for all pictures, twelve per work at most", () => {
+		const pictures = Array.from({ length: 14 }, (_, index) => picture(`p${index}`));
+		const works = worksFromImages(empty(), pictures, "one", "Wedding");
+		expect(works).toHaveLength(2);
+		expect(works.map((work) => work.slug)).toEqual(["wedding", "wedding-2"]);
+		expect(works[0]?.cover).toMatchObject({ key: pictures[0]?.image.key, alt: "Wedding" });
+		expect(works[0]?.blocks[0]).toMatchObject({ type: "images", layout: "grid" });
+		expect(works[0]?.blocks[0]?.type === "images" && works[0].blocks[0].images).toHaveLength(12);
+	});
+
+	it("makes one work per picture, as far as the portfolio has room", () => {
+		const works = worksFromImages(empty(), [picture("sunset-01"), picture("sunset-02")], "each", "");
+		expect(works.map((work) => work.title)).toEqual(["sunset 01", "sunset 02"]);
+		expect(works.every((work) => work.blocks.length === 0 && work.cover)).toBe(true);
+
+		const nearlyFull = produce(empty(), (draft) => {
+			for (let index = 0; index < PORTFOLIO_LIMITS.works - 1; index++)
+				draft.works.items.push(newWork(draft, `W${index}`));
+		});
+		expect(workRoom(nearlyFull)).toBe(1);
+		expect(worksFromImages(nearlyFull, [picture("a"), picture("b")], "each", "")).toHaveLength(1);
+		const data = produce(nearlyFull, (draft) => {
+			draft.works.items.push(...worksFromImages(draft, [picture("a")], "each", ""));
+		});
+		expect(() => parseWritablePortfolioData(data)).not.toThrow();
+	});
+
+	it("offers the resume's shown projects, marking ones already in", () => {
+		const resume = produce(defaultResumeData, (draft) => {
+			const base = { hidden: false, period: "2024", description: "", website: { url: "", label: "" }, options: {} };
+			draft.sections.projects.items = [
+				{ ...base, id: "p1", name: "Kopi app" },
+				{ ...base, id: "p2", name: "Hidden", hidden: true },
+				{ ...base, id: "p3", name: " " },
+			] as never;
+		});
+		const data = produce(empty(), (draft) => {
+			draft.works.items.push({ ...newWork(draft, "Kopi app"), fromResumeItemId: "p1" });
+		});
+		expect(resumeProjects(resume, data.works.items)).toEqual([
+			{ id: "p1", name: "Kopi app", period: "2024", imported: true },
+		]);
+		expect(resumeProjects(null, [])).toEqual([]);
+	});
+});

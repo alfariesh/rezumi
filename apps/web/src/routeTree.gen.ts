@@ -42,11 +42,13 @@ import { Route as DocsIndexRouteImport } from "./routes/docs/index";
 import { Route as DocsSplatRouteImport } from "./routes/docs/$";
 import { Route as BuilderResumeIdIndexRouteImport } from "./routes/builder/$resumeId/index";
 import { Route as BuilderLetterCoverLetterIdRouteImport } from "./routes/builder/letter/$coverLetterId";
+import { Route as BuilderPortfolioIndexRouteImport } from "./routes/builder/portfolio/index";
 import { Route as DashboardApplicationsIndexRouteImport } from "./routes/dashboard/applications/index";
 import { Route as DashboardCareerIndexRouteImport } from "./routes/dashboard/career/index";
 import { Route as DashboardCareerKnowledgeRouteRouteImport } from "./routes/dashboard/career/knowledge/route";
 import { Route as DashboardCareerOffersRouteImport } from "./routes/dashboard/career/offers";
 import { Route as DashboardCoachChar123ConversationIdChar125RouteImport } from "./routes/dashboard/coach.{-$conversationId}";
+import { Route as DashboardPortfolioIndexRouteImport } from "./routes/dashboard/portfolio/index";
 import { Route as DashboardResumesIndexRouteImport } from "./routes/dashboard/resumes/index";
 import { Route as DashboardSettingsIndexRouteImport } from "./routes/dashboard/settings/index";
 import { Route as DashboardSettingsAccountRouteImport } from "./routes/dashboard/settings/account";
@@ -66,7 +68,6 @@ import { Route as DashboardCareerKnowledgePreferencesRouteImport } from "./route
 import { Route as DashboardSettingsAuthenticationIndexRouteImport } from "./routes/dashboard/settings/authentication/index";
 import { Route as DashboardSettingsBillingIndexRouteImport } from "./routes/dashboard/settings/billing/index";
 import { Route as DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport } from "./routes/dashboard/career/knowledge/stories.{-$storyId}";
-import { Route as DashboardSettingsBillingReceiptPaymentIdRouteImport } from "./routes/dashboard/settings/billing/receipt.$paymentId";
 import { Route as DashboardSettingsBillingReturnChar123PaymentIdChar125RouteImport } from "./routes/dashboard/settings/billing/return.{-$paymentId}";
 
 const HomeRouteRoute = HomeRouteRouteImport.update({
@@ -234,6 +235,11 @@ const BuilderLetterCoverLetterIdRoute =
     path: "/builder/letter/$coverLetterId",
     getParentRoute: () => rootRouteImport,
   } as any);
+const BuilderPortfolioIndexRoute = BuilderPortfolioIndexRouteImport.update({
+  id: "/builder/portfolio/",
+  path: "/builder/portfolio/",
+  getParentRoute: () => rootRouteImport,
+} as any);
 const DashboardApplicationsIndexRoute =
   DashboardApplicationsIndexRouteImport.update({
     id: "/applications/",
@@ -262,6 +268,11 @@ const DashboardCoachChar123ConversationIdChar125Route =
     path: "/coach/{-$conversationId}",
     getParentRoute: () => DashboardRouteRoute,
   } as any);
+const DashboardPortfolioIndexRoute = DashboardPortfolioIndexRouteImport.update({
+  id: "/portfolio/",
+  path: "/portfolio/",
+  getParentRoute: () => DashboardRouteRoute,
+} as any);
 const DashboardResumesIndexRoute = DashboardResumesIndexRouteImport.update({
   id: "/resumes/",
   path: "/resumes/",
@@ -372,12 +383,6 @@ const DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route =
     path: "/stories/{-$storyId}",
     getParentRoute: () => DashboardCareerKnowledgeRouteRoute,
   } as any);
-const DashboardSettingsBillingReceiptPaymentIdRoute =
-  DashboardSettingsBillingReceiptPaymentIdRouteImport.update({
-    id: "/billing/receipt/$paymentId",
-    path: "/billing/receipt/$paymentId",
-    getParentRoute: () => DashboardSettingsRouteRoute,
-  } as any);
 const DashboardSettingsBillingReturnChar123PaymentIdChar125Route =
   DashboardSettingsBillingReturnChar123PaymentIdChar125RouteImport.update({
     id: "/billing/return/{-$paymentId}",
@@ -429,8 +434,10 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
   "/builder/$resumeId/": typeof BuilderResumeIdIndexRoute;
+  "/builder/portfolio/": typeof BuilderPortfolioIndexRoute;
   "/dashboard/applications/": typeof DashboardApplicationsIndexRoute;
   "/dashboard/career/": typeof DashboardCareerIndexRoute;
+  "/dashboard/portfolio/": typeof DashboardPortfolioIndexRoute;
   "/dashboard/resumes/": typeof DashboardResumesIndexRoute;
   "/dashboard/settings/": typeof DashboardSettingsIndexRoute;
   "/dashboard/admin/billing/$userId": typeof DashboardAdminBillingUserIdRoute;
@@ -442,7 +449,6 @@ export interface FileRoutesByFullPath {
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
-  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRoutesByTo {
@@ -482,8 +488,10 @@ export interface FileRoutesByTo {
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
   "/builder/$resumeId": typeof BuilderResumeIdIndexRoute;
+  "/builder/portfolio": typeof BuilderPortfolioIndexRoute;
   "/dashboard/applications": typeof DashboardApplicationsIndexRoute;
   "/dashboard/career": typeof DashboardCareerIndexRoute;
+  "/dashboard/portfolio": typeof DashboardPortfolioIndexRoute;
   "/dashboard/resumes": typeof DashboardResumesIndexRoute;
   "/dashboard/settings": typeof DashboardSettingsIndexRoute;
   "/dashboard/admin/billing/$userId": typeof DashboardAdminBillingUserIdRoute;
@@ -495,7 +503,6 @@ export interface FileRoutesByTo {
   "/dashboard/settings/authentication": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
-  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRoutesById {
@@ -544,8 +551,10 @@ export interface FileRoutesById {
   "/dashboard/settings/preferences": typeof DashboardSettingsPreferencesRoute;
   "/dashboard/settings/profile": typeof DashboardSettingsProfileRoute;
   "/builder/$resumeId/": typeof BuilderResumeIdIndexRoute;
+  "/builder/portfolio/": typeof BuilderPortfolioIndexRoute;
   "/dashboard/applications/": typeof DashboardApplicationsIndexRoute;
   "/dashboard/career/": typeof DashboardCareerIndexRoute;
+  "/dashboard/portfolio/": typeof DashboardPortfolioIndexRoute;
   "/dashboard/resumes/": typeof DashboardResumesIndexRoute;
   "/dashboard/settings/": typeof DashboardSettingsIndexRoute;
   "/dashboard/admin/billing/$userId": typeof DashboardAdminBillingUserIdRoute;
@@ -557,7 +566,6 @@ export interface FileRoutesById {
   "/dashboard/settings/authentication/": typeof DashboardSettingsAuthenticationIndexRoute;
   "/dashboard/settings/billing/": typeof DashboardSettingsBillingIndexRoute;
   "/dashboard/career/knowledge/stories/{-$storyId}": typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125Route;
-  "/dashboard/settings/billing/receipt/$paymentId": typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   "/dashboard/settings/billing/return/{-$paymentId}": typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 export interface FileRouteTypes {
@@ -606,8 +614,10 @@ export interface FileRouteTypes {
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
     | "/builder/$resumeId/"
+    | "/builder/portfolio/"
     | "/dashboard/applications/"
     | "/dashboard/career/"
+    | "/dashboard/portfolio/"
     | "/dashboard/resumes/"
     | "/dashboard/settings/"
     | "/dashboard/admin/billing/$userId"
@@ -619,7 +629,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/authentication/"
     | "/dashboard/settings/billing/"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
-    | "/dashboard/settings/billing/receipt/$paymentId"
     | "/dashboard/settings/billing/return/{-$paymentId}";
   fileRoutesByTo: FileRoutesByTo;
   to:
@@ -659,8 +668,10 @@ export interface FileRouteTypes {
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
     | "/builder/$resumeId"
+    | "/builder/portfolio"
     | "/dashboard/applications"
     | "/dashboard/career"
+    | "/dashboard/portfolio"
     | "/dashboard/resumes"
     | "/dashboard/settings"
     | "/dashboard/admin/billing/$userId"
@@ -672,7 +683,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/authentication"
     | "/dashboard/settings/billing"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
-    | "/dashboard/settings/billing/receipt/$paymentId"
     | "/dashboard/settings/billing/return/{-$paymentId}";
   id:
     | "__root__"
@@ -720,8 +730,10 @@ export interface FileRouteTypes {
     | "/dashboard/settings/preferences"
     | "/dashboard/settings/profile"
     | "/builder/$resumeId/"
+    | "/builder/portfolio/"
     | "/dashboard/applications/"
     | "/dashboard/career/"
+    | "/dashboard/portfolio/"
     | "/dashboard/resumes/"
     | "/dashboard/settings/"
     | "/dashboard/admin/billing/$userId"
@@ -733,7 +745,6 @@ export interface FileRouteTypes {
     | "/dashboard/settings/authentication/"
     | "/dashboard/settings/billing/"
     | "/dashboard/career/knowledge/stories/{-$storyId}"
-    | "/dashboard/settings/billing/receipt/$paymentId"
     | "/dashboard/settings/billing/return/{-$paymentId}";
   fileRoutesById: FileRoutesById;
 }
@@ -745,6 +756,7 @@ export interface RootRouteChildren {
   DocsRouteRoute: typeof DocsRouteRouteWithChildren;
   BuilderResumeIdRouteRoute: typeof BuilderResumeIdRouteRouteWithChildren;
   BuilderLetterCoverLetterIdRoute: typeof BuilderLetterCoverLetterIdRoute;
+  BuilderPortfolioIndexRoute: typeof BuilderPortfolioIndexRoute;
 }
 
 declare module "@tanstack/react-router" {
@@ -980,6 +992,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof BuilderLetterCoverLetterIdRouteImport;
       parentRoute: typeof rootRouteImport;
     };
+    "/builder/portfolio/": {
+      id: "/builder/portfolio/";
+      path: "/builder/portfolio";
+      fullPath: "/builder/portfolio/";
+      preLoaderRoute: typeof BuilderPortfolioIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     "/dashboard/applications/": {
       id: "/dashboard/applications/";
       path: "/applications";
@@ -1013,6 +1032,13 @@ declare module "@tanstack/react-router" {
       path: "/coach/{-$conversationId}";
       fullPath: "/dashboard/coach/{-$conversationId}";
       preLoaderRoute: typeof DashboardCoachChar123ConversationIdChar125RouteImport;
+      parentRoute: typeof DashboardRouteRoute;
+    };
+    "/dashboard/portfolio/": {
+      id: "/dashboard/portfolio/";
+      path: "/portfolio";
+      fullPath: "/dashboard/portfolio/";
+      preLoaderRoute: typeof DashboardPortfolioIndexRouteImport;
       parentRoute: typeof DashboardRouteRoute;
     };
     "/dashboard/resumes/": {
@@ -1147,13 +1173,6 @@ declare module "@tanstack/react-router" {
       fullPath: "/dashboard/career/knowledge/stories/{-$storyId}";
       preLoaderRoute: typeof DashboardCareerKnowledgeStoriesChar123StoryIdChar125RouteImport;
       parentRoute: typeof DashboardCareerKnowledgeRouteRoute;
-    };
-    "/dashboard/settings/billing/receipt/$paymentId": {
-      id: "/dashboard/settings/billing/receipt/$paymentId";
-      path: "/billing/receipt/$paymentId";
-      fullPath: "/dashboard/settings/billing/receipt/$paymentId";
-      preLoaderRoute: typeof DashboardSettingsBillingReceiptPaymentIdRouteImport;
-      parentRoute: typeof DashboardSettingsRouteRoute;
     };
     "/dashboard/settings/billing/return/{-$paymentId}": {
       id: "/dashboard/settings/billing/return/{-$paymentId}";
@@ -1291,7 +1310,6 @@ interface DashboardSettingsRouteRouteChildren {
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute;
   DashboardSettingsAuthenticationIndexRoute: typeof DashboardSettingsAuthenticationIndexRoute;
   DashboardSettingsBillingIndexRoute: typeof DashboardSettingsBillingIndexRoute;
-  DashboardSettingsBillingReceiptPaymentIdRoute: typeof DashboardSettingsBillingReceiptPaymentIdRoute;
   DashboardSettingsBillingReturnChar123PaymentIdChar125Route: typeof DashboardSettingsBillingReturnChar123PaymentIdChar125Route;
 }
 
@@ -1310,8 +1328,6 @@ const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
     DashboardSettingsAuthenticationIndexRoute:
       DashboardSettingsAuthenticationIndexRoute,
     DashboardSettingsBillingIndexRoute: DashboardSettingsBillingIndexRoute,
-    DashboardSettingsBillingReceiptPaymentIdRoute:
-      DashboardSettingsBillingReceiptPaymentIdRoute,
     DashboardSettingsBillingReturnChar123PaymentIdChar125Route:
       DashboardSettingsBillingReturnChar123PaymentIdChar125Route,
   };
@@ -1331,6 +1347,7 @@ interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute;
   DashboardCoachChar123ConversationIdChar125Route: typeof DashboardCoachChar123ConversationIdChar125Route;
   DashboardApplicationsIndexRoute: typeof DashboardApplicationsIndexRoute;
+  DashboardPortfolioIndexRoute: typeof DashboardPortfolioIndexRoute;
   DashboardResumesIndexRoute: typeof DashboardResumesIndexRoute;
   DashboardApplicationsApplicationIdChar123TabChar125Route: typeof DashboardApplicationsApplicationIdChar123TabChar125Route;
 }
@@ -1346,6 +1363,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardCoachChar123ConversationIdChar125Route:
     DashboardCoachChar123ConversationIdChar125Route,
   DashboardApplicationsIndexRoute: DashboardApplicationsIndexRoute,
+  DashboardPortfolioIndexRoute: DashboardPortfolioIndexRoute,
   DashboardResumesIndexRoute: DashboardResumesIndexRoute,
   DashboardApplicationsApplicationIdChar123TabChar125Route:
     DashboardApplicationsApplicationIdChar123TabChar125Route,
@@ -1388,6 +1406,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocsRouteRoute: DocsRouteRouteWithChildren,
   BuilderResumeIdRouteRoute: BuilderResumeIdRouteRouteWithChildren,
   BuilderLetterCoverLetterIdRoute: BuilderLetterCoverLetterIdRoute,
+  BuilderPortfolioIndexRoute: BuilderPortfolioIndexRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

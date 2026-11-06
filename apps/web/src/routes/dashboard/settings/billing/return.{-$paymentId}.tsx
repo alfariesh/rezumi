@@ -1,19 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
-import z from "zod";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { PaymentReturnPage } from "@/features/billing/payment-return";
-import { paymentIdFromOrderId } from "@/features/billing/purchase";
 
 /**
- * Midtrans' Finish URL and e-wallet callbacks: `return/<payment id>/`, with or without the slash and with Midtrans'
- * query added. The dashboard's fallback Finish URL has no ID, so it comes from `order_id` (`RZ-<payment id>`).
+ * Polar's success URL: `return/<payment id>?checkout_id=…`. The page asks the server about the payment in the path and
+ * reads nothing from the query, which Polar also fills with a customer portal session: the query leaves the address
+ * bar and the history at once, so it isn't shared or reopened from there.
  */
 export const Route = createFileRoute("/dashboard/settings/billing/return/{-$paymentId}")({
-	validateSearch: z.object({ order_id: z.string().max(100).optional().catch(undefined) }),
+	beforeLoad: ({ location, params }) => {
+		if (location.searchStr)
+			throw redirect({ to: "/dashboard/settings/billing/return/{-$paymentId}", params, search: {}, replace: true });
+	},
 	component: RouteComponent,
 });
 
 function RouteComponent() {
 	const { paymentId } = Route.useParams();
-	const { order_id: orderId } = Route.useSearch();
-	return <PaymentReturnPage paymentId={paymentId || paymentIdFromOrderId(orderId)} />;
+	return <PaymentReturnPage paymentId={paymentId || null} />;
 }

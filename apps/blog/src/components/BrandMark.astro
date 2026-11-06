@@ -1,0 +1,9 @@
+---
+/** The Rezumi logomark (the app's `BrandIcon variant="icon"`), in its light and dark versions. */
+type Props = { class?: string };
+
+const { class: className = "size-8" } = Astro.props;
+---
+
+<img src="/icon/light.svg" alt="" width="32" height="32" class:list={[className, "block dark:hidden"]} />
+<img src="/icon/dark.svg" alt="" width="32" height="32" class:list={[className, "hidden dark:block"]} />

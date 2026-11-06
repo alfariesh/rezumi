@@ -1,0 +1,2685 @@
+<!doctype html>
+<html lang="id" dir="ltr" class="t-mozaik" data-pf-scheme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>Tema Mozaik · mockup portfolio</title>
+		<meta
+			name="description"
+			content="Mockup tema Mozaik untuk portfolio Rezumi dengan persona fiktif Citra Maharani."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&family=Albert+Sans:wght@400;500;600&display=swap"
+		/>
+		<link rel="stylesheet" href="tokens.css" />
+		<link rel="stylesheet" href="shared.css" />
+		<style>
+			:root {
+				--pf-max-width: 1200px;
+				--pf-radius: 26px;
+				--pf-radius-sm: 14px;
+				--pf-bg: #eef1ef;
+				--pf-surface: #ffffff;
+				--pf-text: #14201e;
+				--pf-muted: #52605c;
+				--pf-border: #dbe2df;
+				--mz-gap: 14px;
+			}
+			:root[data-pf-scheme="dark"] {
+				--pf-bg: #0b1110;
+				--pf-surface: #141c1b;
+				--pf-text: #e7efed;
+				--pf-muted: #9bada9;
+				--pf-border: #24302e;
+			}
+			.t-mozaik .pf-btn,
+			.t-mozaik .pf-chip {
+				border-radius: 999px;
+			}
+			.t-mozaik .pf-chip {
+				background: var(--pf-bg);
+			}
+			.mz-head {
+				padding-block: 10px;
+			}
+			.mz-brand {
+				display: inline-flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.mz-dot {
+				width: 14px;
+				height: 14px;
+				border-radius: 50%;
+				background: var(--pf-accent);
+				box-shadow: 8px 0 0 var(--pf-accent-soft);
+				margin-inline-end: 8px;
+				flex: none;
+			}
+			.mz-main {
+				display: grid;
+				gap: clamp(48px, 7vw, 88px);
+				padding-block: 12px 40px;
+			}
+			.mz-tile {
+				background: var(--pf-surface);
+				border-radius: var(--pf-radius);
+				padding: clamp(18px, 2.4vw, 28px);
+				min-width: 0;
+			}
+			.mz-tile h2 {
+				font-size: var(--pf-text-md);
+				font-weight: 700;
+				margin-bottom: 14px;
+			}
+			.mz-hero {
+				display: grid;
+				gap: var(--mz-gap);
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				grid-template-areas: "intro intro photo s1" "intro intro photo s2" "about about loc links";
+			}
+			.mz-intro {
+				grid-area: intro;
+				display: grid;
+				gap: 16px;
+				align-content: end;
+				justify-items: start;
+				padding: clamp(22px, 3.4vw, 40px);
+			}
+			.mz-name {
+				font-size: min(
+					clamp(2.4rem, 1.3rem + 4.2vw, 4.4rem),
+					calc((min(100vw, 1200px) - 120px) / (var(--name-word) * 0.62))
+				);
+				font-weight: 800;
+				letter-spacing: -0.035em;
+				line-height: 0.98;
+			}
+			.mz-headline {
+				font: 600 var(--pf-text-lg)/1.3 var(--pf-font-heading);
+				color: var(--pf-accent-text);
+			}
+			.mz-greeting {
+				font-size: var(--pf-text-md);
+				color: var(--pf-muted);
+				max-width: 42ch;
+			}
+			.mz-photo {
+				grid-area: photo;
+				padding: 0;
+				overflow: hidden;
+				min-height: 300px;
+			}
+			.mz-photo img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+			.mz-stat {
+				display: grid;
+				align-content: end;
+				gap: 4px;
+			}
+			.mz-stat:nth-of-type(3) {
+				grid-area: s1;
+			}
+			.mz-stat:nth-of-type(4) {
+				grid-area: s2;
+			}
+			.mz-stat b {
+				font: 800 clamp(2.4rem, 1.6rem + 2.6vw, 3.6rem)/1 var(--pf-font-heading);
+				letter-spacing: -0.03em;
+			}
+			.mz-stat span {
+				font-size: var(--pf-text-sm);
+				font-weight: 500;
+			}
+			.mz-stat em {
+				font-style: normal;
+				font-size: var(--pf-text-xs);
+				color: var(--pf-positive);
+				font-weight: 600;
+			}
+			.mz-stat--solid {
+				background: var(--pf-accent);
+				color: var(--pf-on-accent);
+			}
+			.mz-stat:not(.mz-stat--solid) {
+				background: var(--pf-accent-soft);
+			}
+			.mz-about {
+				grid-area: about;
+			}
+			.mz-about .pf-prose {
+				font-size: var(--pf-text-md);
+			}
+			.mz-loc {
+				grid-area: loc;
+				padding: 0;
+			}
+			.mz-loc .pf-loc {
+				border: 0;
+				background: transparent;
+				height: 100%;
+				padding: 10px;
+			}
+			.mz-loc .pf-loc__map {
+				border-radius: 18px;
+			}
+			.mz-links {
+				grid-area: links;
+			}
+			.mz-links ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				gap: 6px;
+			}
+			.mz-links a {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				gap: 8px;
+				padding: 10px 14px;
+				border-radius: 14px;
+				background: var(--pf-bg);
+				text-decoration: none;
+				font-weight: 600;
+				font-size: var(--pf-text-sm);
+			}
+			.mz-links a:hover {
+				background: var(--pf-accent-soft);
+			}
+			.pf-nophoto .mz-hero {
+				grid-template-areas: "intro intro intro s1" "intro intro intro s2" "about about loc links";
+			}
+			.pf-nophoto .mz-photo {
+				display: none;
+			}
+			@media (max-width: 900px) {
+				.mz-hero {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					grid-template-areas: "intro intro" "photo s1" "photo s2" "about about" "loc links";
+				}
+				.pf-nophoto .mz-hero {
+					grid-template-areas: "intro intro" "s1 s2" "about about" "loc links";
+				}
+				.mz-photo {
+					min-height: 260px;
+				}
+			}
+			@media (max-width: 560px) {
+				.mz-hero {
+					grid-template-areas: "intro intro" "photo s1" "photo s2" "about about" "loc loc" "links links";
+				}
+				.pf-nophoto .mz-hero {
+					grid-template-areas: "intro intro" "s1 s2" "about about" "loc loc" "links links";
+				}
+				.mz-photo {
+					min-height: 220px;
+				}
+				.mz-stat b {
+					font-size: 2.2rem;
+				}
+			}
+			.mz-sec {
+				display: grid;
+				gap: 20px;
+			}
+			.mz-title {
+				font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+				font-weight: 800;
+				letter-spacing: -0.03em;
+			}
+			.mz-works {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				gap: var(--mz-gap);
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				grid-auto-rows: clamp(180px, 19vw, 250px);
+			}
+			.mz-work--1 {
+				grid-column: span 2;
+				grid-row: span 2;
+			}
+			.mz-work--6 {
+				grid-column: span 2;
+			}
+			.mz-work a,
+			.mz-more a {
+				position: relative;
+				display: block;
+				height: 100%;
+				border-radius: var(--pf-radius);
+				overflow: hidden;
+				text-decoration: none;
+				background: var(--pf-surface);
+			}
+			.mz-work__img {
+				position: absolute;
+				inset: 0;
+				height: 100%;
+				aspect-ratio: auto;
+			}
+			.mz-work__img img {
+				transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+			}
+			.mz-work a:hover .mz-work__img img {
+				transform: scale(1.04);
+			}
+			.mz-work__cap {
+				position: absolute;
+				inset-inline: 10px;
+				bottom: 10px;
+				display: grid;
+				gap: 6px;
+				justify-items: start;
+				padding: 12px 14px;
+				border-radius: 18px;
+				background: var(--pf-surface);
+				box-shadow: 0 6px 20px rgb(0 0 0 / 0.12);
+			}
+			.mz-work__title {
+				font: 700 var(--pf-text-sm)/1.25 var(--pf-font-heading);
+			}
+			.mz-work--1 .mz-work__title {
+				font-size: var(--pf-text-lg);
+			}
+			.mz-more a {
+				display: grid;
+				align-content: end;
+				gap: 4px;
+				padding: 24px;
+				background: var(--pf-accent-soft);
+			}
+			.mz-more {
+				grid-column: span 2;
+			}
+			.mz-more b {
+				font: 800 var(--pf-text-xl)/1.1 var(--pf-font-heading);
+				letter-spacing: -0.02em;
+			}
+			.mz-more span {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				font-weight: 600;
+				color: var(--pf-accent-text);
+			}
+			@media (max-width: 900px) {
+				.mz-works {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					grid-auto-rows: clamp(170px, 40vw, 260px);
+				}
+			}
+			@media (max-width: 560px) {
+				.mz-works {
+					grid-template-columns: minmax(0, 1fr);
+					grid-auto-rows: auto;
+				}
+				.mz-work--1,
+				.mz-work--6,
+				.mz-more {
+					grid-column: auto;
+					grid-row: auto;
+				}
+				.mz-work a {
+					aspect-ratio: 4/3;
+				}
+				.mz-more a {
+					min-height: 140px;
+				}
+			}
+			.pf-noimg .mz-work a {
+				background: var(--pf-accent-soft);
+			}
+			.pf-noimg .mz-work__cap {
+				box-shadow: none;
+				background: var(--pf-surface);
+			}
+			.mz-services {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+				gap: var(--mz-gap);
+			}
+			.mz-services .pf-service {
+				display: grid;
+				gap: 10px;
+				align-content: start;
+			}
+			.mz-services h3 {
+				font: 700 var(--pf-text-lg)/1.2 var(--pf-font-heading);
+				letter-spacing: -0.01em;
+			}
+			.mz-services p {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+			}
+			.mz-service__foot {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: center;
+				gap: 8px;
+				margin-top: 6px;
+			}
+			.pf-service__price {
+				display: inline-block;
+				padding: 4px 10px;
+				border-radius: 999px;
+				background: var(--pf-accent-soft);
+				font-weight: 700;
+				font-size: var(--pf-text-xs);
+				font-variant-numeric: tabular-nums;
+			}
+			.pf-service__cta {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				font-weight: 600;
+				font-size: var(--pf-text-sm);
+				color: var(--pf-accent-text);
+				text-underline-offset: 4px;
+			}
+			.mz-grid2 {
+				display: grid;
+				grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+				gap: var(--mz-gap);
+			}
+			@media (max-width: 900px) {
+				.mz-grid2 {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+			.mz-quotes__list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				grid-auto-flow: column;
+				grid-auto-columns: minmax(260px, 82%);
+				gap: 12px;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				padding-bottom: 6px;
+				overscroll-behavior-x: contain;
+			}
+			.mz-quotes__list .pf-quote {
+				scroll-snap-align: start;
+				display: grid;
+				gap: 14px;
+				align-content: space-between;
+				padding: 20px;
+				border-radius: 20px;
+				background: var(--pf-bg);
+			}
+			.mz-quotes__list blockquote {
+				font: 500 var(--pf-text-md)/1.5 var(--pf-font-heading);
+			}
+			.mz-clients .pf-logos {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: 12px;
+			}
+			.mz-clients .pf-logo {
+				padding: 12px;
+				border-radius: 14px;
+				background: var(--pf-bg);
+				font-size: var(--pf-text-sm);
+			}
+			.mz-cv {
+				display: grid;
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+				gap: var(--mz-gap);
+			}
+			.mz-exp {
+				grid-row: span 2;
+			}
+			@media (max-width: 900px) {
+				.mz-cv {
+					grid-template-columns: minmax(0, 1fr);
+				}
+				.mz-exp {
+					grid-row: auto;
+				}
+			}
+			.mz-extras {
+				grid-column: 1/-1;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+				gap: 20px;
+			}
+			.pf-extra h3 {
+				font-size: var(--pf-text-md);
+				margin-bottom: 10px;
+			}
+			.pf-extra ul {
+				list-style: none;
+				padding: 0;
+				display: grid;
+				gap: 10px;
+			}
+			.pf-extra li {
+				display: grid;
+				gap: 1px;
+				font-size: var(--pf-text-sm);
+			}
+			.pf-extra li span {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-xs);
+			}
+			.t-mozaik .pf-tags li {
+				background: var(--pf-bg);
+				border-color: transparent;
+				color: var(--pf-text);
+			}
+			.mz-steps {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+				gap: var(--mz-gap);
+				counter-reset: s;
+			}
+			.mz-steps li {
+				counter-increment: s;
+				display: grid;
+				gap: 8px;
+				align-content: start;
+				padding: 22px;
+				border-radius: var(--pf-radius);
+				background: var(--pf-surface);
+			}
+			.mz-steps li::before {
+				content: counter(s);
+				display: grid;
+				place-items: center;
+				width: 36px;
+				height: 36px;
+				border-radius: 50%;
+				background: var(--pf-accent);
+				color: var(--pf-on-accent);
+				font: 800 var(--pf-text-sm)/1 var(--pf-font-heading);
+			}
+			.mz-steps b {
+				font: 700 var(--pf-text-lg)/1.2 var(--pf-font-heading);
+			}
+			.mz-steps span {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+			}
+			.mz-contact {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+				gap: var(--mz-gap);
+			}
+			@media (max-width: 900px) {
+				.mz-contact {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+			.mz-contact__main {
+				display: grid;
+				gap: 20px;
+				align-content: start;
+				background: var(--pf-accent-soft);
+			}
+			.mz-tile .mz-title {
+				font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+				margin: 0;
+			}
+			.mz-contact__main .mz-title {
+				max-width: 20ch;
+			}
+			.mz-contact__form h3 {
+				font-size: var(--pf-text-lg);
+				margin-bottom: 16px;
+			}
+			.t-mozaik .pf-field input,
+			.t-mozaik .pf-field textarea {
+				border-radius: 14px;
+				background: var(--pf-bg);
+				border-color: transparent;
+			}
+			.t-mozaik .pf-detail__panel {
+				border-radius: 32px;
+			}
+			.t-mozaik .pf-gallery .pf-cover,
+			.t-mozaik .pf-detail__hero,
+			.t-mozaik .pf-video {
+				border-radius: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="pf-wrap mz-head">
+			<nav class="pf-nav" aria-label="Navigasi halaman">
+				<a class="pf-nav__brand mz-brand" href="#top"
+					><span class="mz-dot" aria-hidden="true"></span><span data-person-name>Citra Maharani</span></a
+				>
+				<ul class="pf-nav__links">
+					<li><a href="#about">Tentang</a></li>
+					<li><a href="#work">Karya</a></li>
+					<li><a href="#services">Layanan</a></li>
+					<li><a href="#experience">Pengalaman</a></li>
+					<li><a href="#contact">Kontak</a></li>
+					<li><a class="pf-btn pf-btn--primary" href="#contact">Kirim pesan</a></li>
+				</ul>
+				<details class="pf-menu">
+					<summary>
+						<svg
+							class="pf-icon"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M4 7h16M4 12h16M4 17h16" /></svg
+						>Menu
+					</summary>
+					<ul class="pf-menu__list">
+						<li><a href="#about">Tentang</a></li>
+						<li><a href="#work">Karya</a></li>
+						<li><a href="#services">Layanan</a></li>
+						<li><a href="#experience">Pengalaman</a></li>
+						<li><a href="#contact">Kontak</a></li>
+					</ul>
+				</details>
+			</nav>
+		</header>
+		<main class="pf-wrap mz-main" id="top">
+			<section class="mz-hero" aria-label="Intro">
+				<div class="mz-tile mz-intro">
+					<span class="pf-chip pf-chip--open">Slot proyek Januari 2026 tersedia</span>
+					<h1 class="pf-name mz-name" style="--name-word: 8">
+						<span data-fx-name data-person-name>Citra Maharani</span>
+					</h1>
+					<p class="mz-headline"><span data-fx-headline>Brand &amp; Visual Designer</span></p>
+					<p class="mz-greeting">
+						Brand designer di Bali. Saya membantu vila, kedai kopi, dan perajin punya identitas yang mudah diingat dan
+						konsisten.
+					</p>
+					<div class="pf-btns">
+						<a class="pf-btn pf-btn--primary" href="#"
+							><svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.1z" />
+								<path
+									d="M9 10.5c.5 1.8 2 3.3 3.8 3.8l1.2-1.1 2 .9c-.2 1.2-1.2 2-2.4 1.9A6.5 6.5 0 0 1 8.4 10c0-1.2.7-2.2 1.9-2.4l.9 2z"
+									stroke-width="1.2"
+								/></svg
+							>WhatsApp</a
+						><a class="pf-btn pf-btn--secondary" href="#contact"
+							><svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<rect x="3" y="5" width="18" height="14" rx="2" />
+								<path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg
+							>Kirim brief</a
+						>
+					</div>
+				</div>
+				<div class="mz-tile mz-photo pf-photo">
+					<img src="img/citra.jpg" alt="Foto Citra Maharani" width="480" height="480" />
+				</div>
+				<div class="mz-tile mz-stat mz-stat--solid"><b class="tnum">25+</b><span>klien identitas</span></div>
+				<div class="mz-tile mz-stat"><b class="tnum">85</b><span>toko penjual skincare</span><em>dari 12</em></div>
+				<div class="mz-tile mz-about" id="about">
+					<h2>Tentang saya</h2>
+					<div class="pf-prose">
+						<p>
+							<strong
+								>Brand designer dengan sembilan tahun pengalaman membangun identitas untuk hospitality, kuliner, dan
+								gaya hidup.</strong
+							>
+						</p>
+						<p>
+							Saya mengubah brief menjadi sistem visual yang jelas, dari logo dan tipografi hingga kemasan dan signage,
+							lalu menjaganya tetap konsisten saat merek berkembang.
+						</p>
+					</div>
+				</div>
+				<div class="mz-tile mz-loc">
+					<div class="pf-loc">
+						<div class="pf-loc__map">
+							<img
+								class="pf-map-light"
+								src="img/map-mozaik-light.svg"
+								alt="Peta sekitar Denpasar"
+								loading="lazy"
+								width="800"
+								height="480"
+							/><img
+								class="pf-map-dark"
+								src="img/map-mozaik-dark.svg"
+								alt=""
+								loading="lazy"
+								width="800"
+								height="480"
+							/><span class="pf-loc__pin"></span
+							><span class="pf-loc__attr">© OpenMapTiles © OpenStreetMap contributors</span>
+						</div>
+						<div class="pf-loc__body">
+							<div class="pf-loc__city">
+								<b>Denpasar, Bali</b
+								><span class="pf-loc__time" data-tz="Asia/Makassar" data-tz-label="WITA" data-city="Denpasar"
+									>14.05 WITA di Denpasar</span
+								>
+							</div>
+							<div class="pf-chips"><span class="pf-chip">Remote</span><span class="pf-chip">On-site</span></div>
+							<a
+								class="pf-loc__open"
+								href="https://www.openstreetmap.org/search?query=Denpasar"
+								target="_blank"
+								rel="noopener"
+								>Buka di peta</a
+							>
+						</div>
+					</div>
+				</div>
+				<div class="mz-tile mz-links">
+					<h2>Temukan saya</h2>
+					<ul>
+						<li>
+							<a href="#"
+								><span>Behance</span
+								><svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M7 17 17 7M9 7h8v8" /></svg
+							></a>
+						</li>
+						<li>
+							<a href="#"
+								><span>Dribbble</span
+								><svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M7 17 17 7M9 7h8v8" /></svg
+							></a>
+						</li>
+						<li>
+							<a href="#"
+								><span>Instagram</span
+								><svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M7 17 17 7M9 7h8v8" /></svg
+							></a>
+						</li>
+						<li>
+							<a href="#"
+								><span>Situs</span
+								><svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M7 17 17 7M9 7h8v8" /></svg
+							></a>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="pf-section mz-sec" id="work">
+				<h2 class="mz-title">Karya pilihan</h2>
+				<ul class="mz-works">
+					<li class="mz-work mz-work--1">
+						<a href="#work-tenun-lestari"
+							><div class="pf-cover mz-work__img">
+								<img src="img/mozaik-1.svg" alt="Identitas Tenun Lestari" width="1200" height="900" decoding="async" />
+							</div>
+							<span class="mz-work__cap"
+								><span class="mz-work__title">Identitas Tenun Lestari</span
+								><span class="pf-work-metric"><b>2×</b><span>Penjualan pameran</span></span></span
+							></a
+						>
+					</li>
+					<li class="mz-work mz-work--2">
+						<a href="#work-ubud-food-walk"
+							><div class="pf-cover mz-work__img">
+								<img
+									src="img/mozaik-2.svg"
+									alt="Penunjuk arah Ubud Food Walk"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<span class="mz-work__cap"
+								><span class="mz-work__title">Penunjuk arah Ubud Food Walk</span
+								><span class="pf-work-metric"><b>9 rb</b><span>Pengunjung/bulan</span></span></span
+							></a
+						>
+					</li>
+					<li class="mz-work mz-work--3">
+						<a href="#work-sari-segara"
+							><div class="pf-cover mz-work__img">
+								<img
+									src="img/mozaik-3.svg"
+									alt="Rebranding Sari Segara"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<span class="mz-work__cap"
+								><span class="mz-work__title">Rebranding Sari Segara</span
+								><span class="pf-work-metric"><b>85</b><span>Toko penjual</span></span></span
+							></a
+						>
+					</li>
+					<li class="mz-work mz-work--4">
+						<a href="#work-kopi-pagi-sanur"
+							><div class="pf-cover mz-work__img">
+								<img
+									src="img/mozaik-4.svg"
+									alt="Sistem identitas Kopi Pagi Sanur"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<span class="mz-work__cap"
+								><span class="mz-work__title">Sistem identitas Kopi Pagi Sanur</span
+								><span class="pf-work-metric"><b>40</b><span>Gerai</span></span></span
+							></a
+						>
+					</li>
+					<li class="mz-work mz-work--5">
+						<a href="#work-pustaka-ilustrasi"
+							><div class="pf-cover mz-work__img">
+								<img
+									src="img/mozaik-5.svg"
+									alt="Pustaka ilustrasi bersama"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<span class="mz-work__cap"
+								><span class="mz-work__title">Pustaka ilustrasi bersama</span
+								><span class="pf-work-metric"><b>−50%</b><span>Waktu produksi</span></span></span
+							></a
+						>
+					</li>
+					<li class="mz-work mz-work--6">
+						<a href="#work-pulang-kampung"
+							><div class="pf-cover mz-work__img">
+								<img
+									src="img/mozaik-6.svg"
+									alt="Kampanye “Pulang Kampung”"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<span class="mz-work__cap"
+								><span class="mz-work__title">Kampanye “Pulang Kampung”</span
+								><span class="pf-work-metric"><b>6 jt</b><span>Jangkauan</span></span></span
+							></a
+						>
+					</li>
+					<li class="mz-more">
+						<a href="#"
+							><b>Lebih banyak di Behance</b
+							><span
+								>40+ proyek lain
+								<svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M5 12h14M13 6l6 6-6 6" /></svg></span
+						></a>
+					</li>
+				</ul>
+			</section>
+			<section class="pf-section mz-sec" id="services">
+				<h2 class="mz-title">Layanan</h2>
+				<ul class="mz-services">
+					<li class="mz-tile pf-service">
+						<h3>Identitas merek lengkap</h3>
+						<p>Logo, warna, tipografi, dan aplikasi utama dalam enam minggu.</p>
+						<div class="mz-service__foot">
+							<span class="pf-service__price">Mulai Rp18 jt</span
+							><a class="pf-service__cta" href="#"
+								>Tanya lewat WhatsApp<svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M5 12h14M13 6l6 6-6 6" /></svg
+							></a>
+						</div>
+					</li>
+					<li class="mz-tile pf-service">
+						<h3>Desain kemasan</h3>
+						<p>Kemasan siap cetak, termasuk mockup dan pendampingan ke percetakan.</p>
+						<div class="mz-service__foot">
+							<span class="pf-service__price">Mulai Rp6 jt / SKU</span
+							><a class="pf-service__cta" href="#contact"
+								>Pesan lewat form<svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M5 12h14M13 6l6 6-6 6" /></svg
+							></a>
+						</div>
+					</li>
+					<li class="mz-tile pf-service">
+						<h3>Panduan merek</h3>
+						<p>Buku panduan yang dipakai tim dan vendor tanpa perlu bertanya.</p>
+						<div class="mz-service__foot">
+							<span class="pf-service__price">Mulai Rp8 jt</span
+							><a class="pf-service__cta" href="#contact"
+								>Pesan lewat form<svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M5 12h14M13 6l6 6-6 6" /></svg
+							></a>
+						</div>
+					</li>
+					<li class="mz-tile pf-service">
+						<h3>Signage &amp; wayfinding</h3>
+						<p>Papan nama, peta, dan ikon untuk ruang publik atau usaha.</p>
+						<div class="mz-service__foot">
+							<span class="pf-service__price">Sesuai cakupan</span
+							><a class="pf-service__cta" href="#contact"
+								>Pesan lewat form<svg
+									class="pf-icon pf-flip"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="M5 12h14M13 6l6 6-6 6" /></svg
+							></a>
+						</div>
+					</li>
+				</ul>
+			</section>
+			<section class="mz-grid2" aria-label="Testimoni dan klien">
+				<div class="mz-tile mz-quotes" id="testimonials">
+					<h2>Kata klien</h2>
+					<ul class="mz-quotes__list">
+						<li class="pf-quote">
+							<blockquote>
+								Citra membuat koperasi kami terlihat sekelas butik, tanpa kehilangan cerita para penenun.
+							</blockquote>
+							<div class="pf-person">
+								<span class="pf-avatar" aria-hidden="true">NM</span
+								><span class="pf-person__text"><b>Ni Made Sari</b><span>Ketua, Koperasi Tenun Lestari</span></span>
+							</div>
+						</li>
+						<li class="pf-quote">
+							<blockquote>
+								Panduan mereknya rapi sekali. Tim kami di 40 gerai akhirnya memakai logo yang sama.
+							</blockquote>
+							<div class="pf-person">
+								<span class="pf-avatar" aria-hidden="true">GA</span
+								><span class="pf-person__text"><b>Gede Arimbawa</b><span>Operasional, Kopi Pagi Sanur</span></span>
+							</div>
+						</li>
+						<li class="pf-quote">
+							<blockquote>Cepat, teliti, dan selalu datang dengan tiga arah yang benar-benar berbeda.</blockquote>
+							<div class="pf-person">
+								<span class="pf-avatar" aria-hidden="true">LH</span
+								><span class="pf-person__text"><b>Laura Hendrawan</b><span>Marketing Lead, Sari Segara</span></span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="mz-tile mz-clients" id="clients">
+					<h2>Klien</h2>
+					<ul class="pf-logos">
+						<li class="pf-logo">
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.4" />
+								<circle cx="12" cy="12" r="3.6" fill="currentColor" /></svg
+							><span>Tenun Lestari</span>
+						</li>
+						<li class="pf-logo">
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<rect x="3" y="5" width="18" height="5" rx="2.5" fill="currentColor" />
+								<rect x="3" y="14" width="12" height="5" rx="2.5" fill="currentColor" /></svg
+							><span>Kopi Pagi Sanur</span>
+						</li>
+						<li class="pf-logo">
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M2 20 9.5 7l4 6.5L16 10l6 10z" fill="currentColor" /></svg
+							><span>Sari Segara</span>
+						</li>
+						<li class="pf-logo">
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path d="M5 19C5 10 10 4 20 4c0 10-6 15-15 15z" fill="currentColor" />
+								<path d="M5 19 13 11" stroke="var(--pf-bg)" stroke-width="1.6" /></svg
+							><span>Vila Teras Ubud</span>
+						</li>
+						<li class="pf-logo">
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor" />
+								<rect x="13" y="3" width="8" height="8" rx="4" fill="currentColor" />
+								<rect x="3" y="13" width="8" height="8" rx="4" fill="currentColor" />
+								<rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor" /></svg
+							><span>Ombak Digital</span>
+						</li>
+						<li class="pf-logo">
+							<svg viewBox="0 0 24 24" aria-hidden="true">
+								<path
+									d="M2 9c3.3-3 6.7 3 10 0s6.7 3 10 0M2 15c3.3-3 6.7 3 10 0s6.7 3 10 0"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2.4"
+									stroke-linecap="round"
+								/></svg
+							><span>Rumah Kopi Senja</span>
+						</li>
+					</ul>
+				</div>
+			</section>
+			<section class="mz-cv" aria-label="Riwayat">
+				<div class="mz-tile mz-exp" id="experience">
+					<h2>Pengalaman</h2>
+					<ol class="pf-cvlist">
+						<li class="pf-cvitem">
+							<div class="pf-cvitem__head">
+								<span class="pf-cvitem__role">Senior Brand Designer</span
+								><span class="pf-cvitem__when">Mar 2022 – Sekarang</span>
+							</div>
+							<span class="pf-cvitem__org">Studio Lontar Kreatif · Denpasar</span>
+							<ul>
+								<li>
+									Memimpin proyek identitas untuk lebih dari 25 klien, dari vila butik hingga jaringan kedai kopi dengan
+									40 gerai.
+								</li>
+								<li>Rebranding skincare lokal Bali; toko penjualnya naik dari 12 ke 85 dalam setahun.</li>
+								<li>Menyusun templat panduan merek studio; serah terima dari 3 minggu jadi 1 minggu.</li>
+							</ul>
+						</li>
+						<li class="pf-cvitem">
+							<div class="pf-cvitem__head">
+								<span class="pf-cvitem__role">Visual Designer</span
+								><span class="pf-cvitem__when">Jul 2019 – Feb 2022</span>
+							</div>
+							<span class="pf-cvitem__org">Ombak Digital · Jakarta</span>
+							<ul>
+								<li>
+									Merancang kampanye dan konten media sosial untuk 10 merek ritel dan F&amp;B; salah satu kampanye
+									menjangkau 6 juta orang.
+								</li>
+								<li>Membuat pustaka ilustrasi bersama; waktu produksi konten bulanan turun separuh.</li>
+							</ul>
+						</li>
+						<li class="pf-cvitem">
+							<div class="pf-cvitem__head">
+								<span class="pf-cvitem__role">Graphic Designer</span
+								><span class="pf-cvitem__when">Agu 2017 – Jun 2019</span>
+							</div>
+							<span class="pf-cvitem__org">Rumah Kopi Senja · Bandung</span>
+							<ul>
+								<li>Merancang kemasan 18 produk kopi dan menu 6 kafe sebagai desainer in-house.</li>
+							</ul>
+						</li>
+					</ol>
+				</div>
+				<div class="mz-tile" id="skills">
+					<h2>Keahlian</h2>
+					<div class="pf-skillgroups">
+						<div class="pf-skillgroup">
+							<b>Merek</b>
+							<ul class="pf-tags">
+								<li>Sistem identitas</li>
+								<li>Panduan merek</li>
+								<li>Art direction</li>
+							</ul>
+						</div>
+						<div class="pf-skillgroup">
+							<b>Desain</b>
+							<ul class="pf-tags">
+								<li>Kemasan</li>
+								<li>Tipografi</li>
+								<li>Ilustrasi</li>
+								<li>Signage</li>
+							</ul>
+						</div>
+						<div class="pf-skillgroup">
+							<b>Produksi</b>
+							<ul class="pf-tags">
+								<li>Produksi cetak</li>
+								<li>Manajemen warna</li>
+								<li>Mockup</li>
+							</ul>
+						</div>
+						<div class="pf-skillgroup">
+							<b>Perangkat</b>
+							<ul class="pf-tags">
+								<li>Adobe Illustrator</li>
+								<li>Photoshop</li>
+								<li>InDesign</li>
+								<li>Figma</li>
+								<li>After Effects</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="mz-tile" id="education">
+					<h2>Pendidikan</h2>
+					<ul class="pf-cvlist">
+						<li class="pf-cvitem">
+							<div class="pf-cvitem__head">
+								<span class="pf-cvitem__role">Sarjana Desain (S.Ds.), Desain Komunikasi Visual</span
+								><span class="pf-cvitem__when">2013 – 2017</span>
+							</div>
+							<span class="pf-cvitem__org">Institut Teknologi Bandung · IPK 3,68</span>
+						</li>
+					</ul>
+				</div>
+				<div class="mz-tile mz-extras">
+					<div class="pf-extra">
+						<h3>Sertifikat</h3>
+						<ul>
+							<li><b>Adobe Certified Professional: Illustrator</b><span>Adobe · 2021</span></li>
+							<li><b>Dasar-Dasar Strategi Merek</b><span>Sekolah Merek Nusantara · 2023</span></li>
+						</ul>
+					</div>
+					<div class="pf-extra">
+						<h3>Penghargaan</h3>
+						<ul>
+							<li><b>Emas, Desain Kemasan</b><span>Penghargaan Desain Nusantara · 2024</span></li>
+							<li><b>Identitas Merek Terbaik, kategori UMKM</b><span>Festival Grafis Indonesia · 2023</span></li>
+						</ul>
+					</div>
+					<div class="pf-extra">
+						<h3>Bahasa</h3>
+						<ul>
+							<li><b>Bahasa Indonesia</b><span>Bahasa ibu</span></li>
+							<li><b>Bahasa Inggris</b><span>Profesional</span></li>
+							<li><b>Bahasa Bali</b><span>Percakapan</span></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+			<section class="pf-section mz-sec" id="custom-1">
+				<h2 class="mz-title">Cara saya bekerja</h2>
+				<ol class="pf-steps mz-steps">
+					<li><b>Brief</b><span>Satu jam ngobrol tentang usaha, pelanggan, dan pesaing.</span></li>
+					<li><b>Arah</b><span>Tiga arah visual yang benar-benar berbeda untuk dipilih.</span></li>
+					<li><b>Sistem</b><span>Logo, warna, huruf, dan aplikasi utama.</span></li>
+					<li><b>Serah terima</b><span>File siap pakai dan panduan merek.</span></li>
+				</ol>
+			</section>
+			<section class="pf-section mz-contact" id="contact">
+				<div class="mz-tile mz-contact__main">
+					<h2 class="mz-title">Punya usaha yang butuh identitas baru? Kirim briefmu, saya balas dalam 24 jam.</h2>
+					<div class="pf-btns">
+						<a class="pf-btn pf-btn--primary" href="#"
+							><svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.1z" />
+								<path
+									d="M9 10.5c.5 1.8 2 3.3 3.8 3.8l1.2-1.1 2 .9c-.2 1.2-1.2 2-2.4 1.9A6.5 6.5 0 0 1 8.4 10c0-1.2.7-2.2 1.9-2.4l.9 2z"
+									stroke-width="1.2"
+								/></svg
+							>WhatsApp</a
+						><a class="pf-btn pf-btn--secondary" href="#"
+							><svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<rect x="3" y="5" width="18" height="14" rx="2" />
+								<path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg
+							>Email</a
+						>
+					</div>
+					<ul class="pf-contact-links">
+						<li><span>Email</span><a href="#">citra.maharani@email.com</a></li>
+						<li><span>WhatsApp</span><a href="#">+62 817 5550 6125</a></li>
+						<li><span>Behance</span><a href="#">behance.net/citramaharani</a></li>
+						<li><span>Dribbble</span><a href="#">dribbble.com/citramaharani</a></li>
+						<li><span>Instagram</span><a href="#">@citra.maharani</a></li>
+						<li><span>Situs</span><a href="#">citramaharani.design</a></li>
+					</ul>
+				</div>
+				<div class="mz-tile mz-contact__form">
+					<h3>Kirim brief</h3>
+					<form class="pf-form" action="#" method="post">
+						<div class="pf-form__row">
+							<div class="pf-field">
+								<label for="cf-name">Nama</label><input id="cf-name" name="name" autocomplete="name" required />
+							</div>
+							<div class="pf-field">
+								<label for="cf-email">Email</label
+								><input id="cf-email" name="email" type="email" autocomplete="email" required />
+							</div>
+						</div>
+						<div class="pf-field">
+							<label for="cf-message">Pesan</label
+							><textarea id="cf-message" name="message" maxlength="2000" required></textarea>
+						</div>
+						<p class="pf-form__note">Pesan dikirim ke Citra. Email-mu terlihat olehnya agar ia bisa membalas.</p>
+						<div><button class="pf-btn pf-btn--primary" type="submit">Kirim pesan</button></div>
+						<p class="pf-form__sent" role="status" hidden>
+							Terkirim. Citra akan membalas ke email-mu. (Di mockup, pesan tidak benar-benar dikirim.)
+						</p>
+					</form>
+				</div>
+			</section>
+		</main>
+		<footer class="pf-foot pf-wrap">
+			<span>© 2026 <span data-person-name>Citra Maharani</span></span
+			><span class="pf-foot__right"
+				><a class="pf-badge" href="#"><i>R</i>Dibuat dengan Rezumi</a><a href="#">Laporkan halaman ini</a></span
+			>
+		</footer>
+		<section class="pf-detail" id="work-tenun-lestari" role="dialog" aria-labelledby="work-tenun-lestari-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-pulang-kampung" aria-label="Sebelumnya: Kampanye “Pulang Kampung”"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-ubud-food-walk" aria-label="Berikutnya: Penunjuk arah Ubud Food Walk"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-tenun-lestari-title">Identitas Tenun Lestari</h2>
+					<p class="pf-detail__summary">Identitas, kemasan, dan toko pop-up untuk koperasi 120 perajin tenun.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Lead brand designer</b></span
+						><span>Tahun <b>2024</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Identitas</li>
+						<li>Kemasan</li>
+						<li>Pop-up</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/mozaik-1.svg"
+						alt="Sampul: Identitas Tenun Lestari"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<h3>Masalah</h3>
+						<p>
+							Koperasi 120 penenun di Karangasem menjual kain terbaik, tapi di pameran mereka kalah menonjol dari merek
+							kota. Kemasan dan papan nama dibuat seadanya.
+						</p>
+						<h3>Peran saya</h3>
+						<ul>
+							<li>Riset motif bersama 12 penenun senior.</li>
+							<li>Merancang logo, sistem warna, label kain, dan kotak kemasan.</li>
+							<li>Mengarahkan desain toko pop-up untuk pameran Jakarta.</li>
+						</ul>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Penjualan pameran</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">Rp186 jt</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>2×</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 50%"></i><span>sebelum Rp93 jt</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah Rp186 jt</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-10" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L48.0,33.4 L96.0,26.5 L144.0,17.9 L192.0,9.8 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-10)"
+									/>
+									<path
+										d="M0.0,40.0 L48.0,33.4 L96.0,26.5 L144.0,17.9 L192.0,9.8 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">pameran Jakarta pertama</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pembeli kembali</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">38%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+21 poin</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 45%"></i><span>sebelum 17%</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 38%</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-11" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L48.0,31.4 L96.0,22.9 L144.0,16.0 L192.0,9.1 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-11)"
+									/>
+									<path
+										d="M0.0,40.0 L48.0,31.4 L96.0,22.9 L144.0,16.0 L192.0,9.1 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">6 bulan setelah pameran</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Perajin aktif</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">120</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+34</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 72%"></i><span>sebelum 86</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah 120</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-12" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L48.0,33.6 L96.0,24.1 L144.0,15.6 L192.0,9.3 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-12)"
+									/>
+									<path
+										d="M0.0,40.0 L48.0,33.6 L96.0,24.1 L144.0,15.6 L192.0,9.3 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">anggota koperasi</dd>
+						</div>
+					</dl>
+					<div class="pf-gallery">
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/mozaik-g1.svg"
+									alt="Motif dasar dari kain gringsing"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Motif dasar dari kain gringsing</figcaption>
+						</figure>
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/mozaik-g2.svg"
+									alt="Label dan kotak kain"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Label dan kotak kain</figcaption>
+						</figure>
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/mozaik-g3.svg"
+									alt="Toko pop-up di Jakarta"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Toko pop-up di Jakarta</figcaption>
+						</figure>
+					</div>
+					<div class="pf-prose pf-block--text">
+						<h3>Proses</h3>
+						<p>
+							Logo diambil dari pola dasar kain gringsing yang disederhanakan menjadi empat bentuk. Setiap penenun
+							mendapat label dengan nama dan desanya.
+						</p>
+						<p>Kemasan memakai karton daur ulang dan satu warna cetak agar biaya per kotak tetap di bawah Rp4.000.</p>
+						<blockquote>
+							Pembeli ingin tahu siapa yang menenun kainnya. Label itu kini jadi bagian yang paling sering difoto.
+						</blockquote>
+					</div>
+					<div>
+						<button
+							class="pf-video"
+							type="button"
+							data-site="YouTube"
+							aria-label="Putar video: Proses: dari motif ke logo"
+						>
+							<div class="pf-cover">
+								<img src="img/mozaik-video.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="pf-video__play"
+								><span
+									><svg
+										class="pf-icon"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" /></svg></span></span
+							><span class="pf-video__meta"><b>Proses: dari motif ke logo</b>YouTube · 4:05</span>
+						</button>
+						<p class="pf-caption pf-video__note">Pemutar YouTube baru dimuat setelah tombol putar diklik.</p>
+					</div>
+					<div class="pf-card-row">
+						<div class="pf-pdf">
+							<div class="pf-pdf__page">
+								<img src="img/mozaik-pdf.svg" alt="" loading="lazy" width="800" height="1131" />
+							</div>
+							<div>
+								<b>Panduan merek Tenun Lestari</b><span>PDF · 32 halaman · 6,2 MB</span><br /><a
+									class="pf-btn pf-btn--secondary"
+									href="#"
+									><svg
+										class="pf-icon"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+										<path d="M14 3v5h5" /></svg
+									>Buka PDF</a
+								>
+							</div>
+						</div>
+						<a class="pf-link" href="#"
+							><span class="pf-link__site"
+								><svg
+									class="pf-icon"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="9" />
+									<path
+										d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"
+									/></svg></span
+							><span class="pf-link__text"
+								><b>Tenun Lestari — identitas &amp; kemasan</b>
+								<p>Studi kasus lengkap dengan mockup dan foto pop-up.</p>
+								<span class="pf-link__domain"
+									>behance.net
+									<svg
+										class="pf-icon pf-flip"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M7 17 17 7M9 7h8v8" /></svg></span></span
+						></a>
+					</div>
+					<div class="pf-prose pf-block--text">
+						<h3>Hasil</h3>
+						<p>
+							Penjualan di pameran Jakarta pertama naik dua kali lipat dibanding pameran sebelumnya, dan 38% pembeli
+							kembali membeli dalam enam bulan.
+						</p>
+					</div>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-ubud-food-walk" role="dialog" aria-labelledby="work-ubud-food-walk-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-tenun-lestari" aria-label="Sebelumnya: Identitas Tenun Lestari"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-sari-segara" aria-label="Berikutnya: Rebranding Sari Segara"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-ubud-food-walk-title">Penunjuk arah Ubud Food Walk</h2>
+					<p class="pf-detail__summary">Peta, signage, dan set ikon untuk jalur kuliner sepanjang 3 km.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Desainer wayfinding</b></span
+						><span>Tahun <b>2023</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Signage</li>
+						<li>Ikon</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/mozaik-2.svg"
+						alt="Sampul: Penunjuk arah Ubud Food Walk"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Peta, signage, dan set ikon untuk jalur kuliner sepanjang 3 km.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pengunjung/bulan</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">9 rb</span></dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-sari-segara" role="dialog" aria-labelledby="work-sari-segara-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-ubud-food-walk" aria-label="Sebelumnya: Penunjuk arah Ubud Food Walk"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-kopi-pagi-sanur" aria-label="Berikutnya: Sistem identitas Kopi Pagi Sanur"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-sari-segara-title">Rebranding Sari Segara</h2>
+					<p class="pf-detail__summary">Skincare lokal Bali dengan kemasan baru; toko penjualnya naik dari 12 ke 85.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Senior brand designer</b></span
+						><span>Tahun <b>2023</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Kemasan</li>
+						<li>Rebranding</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/mozaik-3.svg"
+						alt="Sampul: Rebranding Sari Segara"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Skincare lokal Bali dengan kemasan baru; toko penjualnya naik dari 12 ke 85.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Toko penjual</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">85</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>dari 12</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-kopi-pagi-sanur" role="dialog" aria-labelledby="work-kopi-pagi-sanur-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-sari-segara" aria-label="Sebelumnya: Rebranding Sari Segara"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-pustaka-ilustrasi" aria-label="Berikutnya: Pustaka ilustrasi bersama"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-kopi-pagi-sanur-title">Sistem identitas Kopi Pagi Sanur</h2>
+					<p class="pf-detail__summary">Satu panduan merek untuk 40 gerai, dari cangkir sampai papan menu.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Brand designer</b></span
+						><span>Tahun <b>2022</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Panduan merek</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/mozaik-4.svg"
+						alt="Sampul: Sistem identitas Kopi Pagi Sanur"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Satu panduan merek untuk 40 gerai, dari cangkir sampai papan menu.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Gerai</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">40</span></dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-pustaka-ilustrasi" role="dialog" aria-labelledby="work-pustaka-ilustrasi-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-kopi-pagi-sanur" aria-label="Sebelumnya: Sistem identitas Kopi Pagi Sanur"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-pulang-kampung" aria-label="Berikutnya: Kampanye “Pulang Kampung”"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-pustaka-ilustrasi-title">Pustaka ilustrasi bersama</h2>
+					<p class="pf-detail__summary">Ilustrasi modular untuk 10 merek ritel; waktu produksi konten turun separuh.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Visual designer · Ombak Digital</b></span
+						><span>Tahun <b>2021</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Ilustrasi</li>
+						<li>Sistem</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/mozaik-5.svg"
+						alt="Sampul: Pustaka ilustrasi bersama"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Ilustrasi modular untuk 10 merek ritel; waktu produksi konten turun separuh.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Waktu produksi</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">−50%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−50%</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-pulang-kampung" role="dialog" aria-labelledby="work-pulang-kampung-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-pustaka-ilustrasi" aria-label="Sebelumnya: Pustaka ilustrasi bersama"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-tenun-lestari" aria-label="Berikutnya: Identitas Tenun Lestari"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-pulang-kampung-title">Kampanye “Pulang Kampung”</h2>
+					<p class="pf-detail__summary">Kampanye Lebaran untuk jaringan ritel yang menjangkau 6 juta orang.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Visual designer</b></span
+						><span>Tahun <b>2020</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Kampanye</li>
+						<li>Sosial</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/mozaik-6.svg"
+						alt="Sampul: Kampanye “Pulang Kampung”"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Kampanye Lebaran untuk jaringan ritel yang menjangkau 6 juta orang.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Jangkauan</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">6 jt</span></dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<script>
+			window.MK = {
+				name: "Mozaik",
+				accentCv: "#1D6F73",
+				accents: [
+					{ id: "biru", label: "Biru", color: "#2563EB" },
+					{ id: "magenta", label: "Magenta", color: "#C0267B" },
+					{ id: "kuning", label: "Kuning terang", color: "#FFD60A", note: "uji kontras" },
+				],
+				fonts: [
+					{
+						id: "bricolage-onest",
+						label: "Bricolage Grotesque + Onest",
+						heading: "Bricolage Grotesque",
+						body: "Onest",
+						mono: "IBM Plex Mono",
+					},
+					{
+						id: "unbounded-albert",
+						label: "Unbounded + Albert Sans",
+						heading: "Unbounded",
+						body: "Albert Sans",
+						mono: "IBM Plex Mono",
+					},
+				],
+				scheme: "light",
+				effect: "gradient",
+				effects: ["none", "fade-up", "shimmer", "gradient", "typewriter", "scramble", "vector-hover"],
+				effectLabels: {
+					none: "Tanpa efek",
+					"fade-up": "Muncul halus",
+					shimmer: "Kilau",
+					gradient: "Gradien hidup",
+					typewriter: "Ketik berganti",
+					scramble: "Acak teknologi",
+					"vector-hover": "Garis vektor",
+				},
+				metric: "kpi",
+				metrics: ["kpi", "big", "ba"],
+				metricLabels: { kpi: "Kartu KPI", big: "Angka besar", ba: "Sebelum → sesudah" },
+				longName: "Citra Maharani Ayu Pradnyaswari Kusumadewi Wiraatmaja",
+				fullName: "Citra Maharani",
+				phrases: ["Brand Designer", "Desainer kemasan", "Ilustrator"],
+				hasPhoto: true,
+				detail: "#work-tenun-lestari",
+			};
+		</script>
+		<script>
+			/* Intro text effects for the portfolio mockups. Written from scratch for Rezumi (no React Bits code).
+			 * Rules: the real text stays in the DOM, animated layers are aria-hidden, every effect stops by itself
+			 * within about five seconds, and "reduce motion" shows the text without animation. */
+			(() => {
+				const root = document.documentElement;
+				const reduced = () =>
+					root.classList.contains("mk-reduce") || matchMedia("(prefers-reduced-motion: reduce)").matches;
+				const touch = () =>
+					!root.classList.contains("mk-mouse") &&
+					(root.classList.contains("mk-touch") || matchMedia("(hover: none), (pointer: coarse)").matches);
+				const timers = new WeakMap();
+				const GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+=<>/";
+
+				const hex = (h) => {
+					const n = parseInt(h.replace("#", ""), 16);
+					return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+				};
+				const toHex = (rgb) => "#" + rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
+				const lum = (rgb) => {
+					const c = rgb.map((v) => {
+						const s = v / 255;
+						return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+					});
+					return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+				};
+				const contrast = (a, b) => {
+					const [x, y] = [lum(hex(a)), lum(hex(b))].sort((p, q) => q - p);
+					return (x + 0.05) / (y + 0.05);
+				};
+				const toHsl = ([r, g, b]) => {
+					r /= 255;
+					g /= 255;
+					b /= 255;
+					const max = Math.max(r, g, b);
+					const min = Math.min(r, g, b);
+					const l = (max + min) / 2;
+					let h = 0;
+					let s = 0;
+					if (max !== min) {
+						const d = max - min;
+						s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+						h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+						h *= 60;
+					}
+					return [h, s, l];
+				};
+				const fromHsl = ([h, s, l]) => {
+					const k = (n) => (n + h / 30) % 12;
+					const a = s * Math.min(l, 1 - l);
+					const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+					return [f(0) * 255, f(8) * 255, f(4) * 255];
+				};
+				/** Shift lightness until the colour reads as text on the background (≥ min:1). */
+				const safe = (color, bg, min = 4.5) => {
+					const hsl = toHsl(hex(color));
+					const darker = lum(hex(bg)) > 0.4;
+					let out = color;
+					for (let i = 0; i < 100 && contrast(out, bg) < min; i++) {
+						hsl[2] = Math.min(1, Math.max(0, hsl[2] + (darker ? -0.01 : 0.01)));
+						out = toHex(fromHsl(hsl));
+					}
+					return out;
+				};
+				const rotate = (color, deg) => {
+					const hsl = toHsl(hex(color));
+					hsl[0] = (hsl[0] + deg + 360) % 360;
+					return toHex(fromHsl(hsl));
+				};
+
+				const clear = (host) => {
+					for (const t of timers.get(host) || []) clearTimeout(t);
+					timers.set(host, []);
+				};
+				const later = (host, fn, ms) => timers.get(host).push(setTimeout(fn, ms));
+				const reset = (host) => {
+					clear(host);
+					host.className = host.dataset.base;
+					host.removeAttribute("style");
+					host.onpointerover = null;
+					host.onpointerout = null;
+					host.textContent = host.dataset.text;
+				};
+				const restart = (host, cls) => {
+					host.classList.remove(cls);
+					void host.offsetWidth;
+					host.classList.add(cls);
+				};
+				const words = (host) => {
+					host.textContent = "";
+					host.dataset.text.split(/(\s+)/).forEach((part, i) => {
+						if (/^\s+$/.test(part)) return host.append(part);
+						const s = document.createElement("span");
+						s.className = "pfx-word";
+						s.style.setProperty("--i", String(i / 2));
+						s.textContent = part;
+						host.append(s);
+					});
+				};
+				const chars = (host) => {
+					const text = host.dataset.text;
+					host.textContent = "";
+					const sr = document.createElement("span");
+					sr.className = "sr-only";
+					sr.textContent = text;
+					const vis = document.createElement("span");
+					vis.setAttribute("aria-hidden", "true");
+					vis.dir = "auto";
+					const list = [];
+					for (const word of text.split(/(\s+)/)) {
+						if (/^\s+$/.test(word)) {
+							vis.append(word);
+							continue;
+						}
+						const w = document.createElement("span");
+						w.style.whiteSpace = "nowrap";
+						for (const c of word) {
+							const s = document.createElement("span");
+							s.className = "pfx-ch";
+							s.textContent = c;
+							s.dataset.c = c;
+							w.append(s);
+							list.push(s);
+						}
+						vis.append(w);
+					}
+					host.append(sr, vis);
+					const block = host.closest("h1, h2, p, div") || host.parentElement;
+					for (const w of vis.children) if (w.offsetWidth > block.clientWidth) w.style.whiteSpace = "normal";
+					return list;
+				};
+
+				const effects = {
+					none() {},
+					"fade-up"(host) {
+						words(host);
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					shimmer(host) {
+						host.classList.add("pfx-shimmer");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					gradient(host) {
+						const cs = getComputedStyle(host);
+						const bg = cs.getPropertyValue("--pf-bg").trim() || "#ffffff";
+						const a = cs.getPropertyValue("--pf-accent-text").trim() || "#333333";
+						host.style.setProperty("--fx-a", a);
+						host.style.setProperty("--fx-b", safe(rotate(a, 38), bg, 4.5));
+						host.style.setProperty("--fx-c", safe(rotate(a, -34), bg, 4.5));
+						host.classList.add("pfx-gradient");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					typewriter(host, opts) {
+						const phrases = (opts.phrases || [host.dataset.text]).slice(0, 3);
+						host.textContent = "";
+						const sr = document.createElement("span");
+						sr.className = "sr-only";
+						sr.textContent = phrases.join(", ");
+						const box = document.createElement("span");
+						box.className = "pfx-type";
+						box.setAttribute("aria-hidden", "true");
+						box.dir = "auto";
+						for (const p of phrases) {
+							const g = document.createElement("span");
+							g.className = "pfx-type__ghost";
+							g.textContent = p;
+							box.append(g);
+						}
+						const out = document.createElement("span");
+						out.className = "pfx-type__out";
+						out.textContent = phrases[0];
+						box.append(out);
+						host.append(sr, box);
+						if (reduced() || phrases.length < 2) return box.classList.add("pfx-done");
+						const order = [...phrases.slice(1), phrases[0]];
+						let t = 700;
+						let current = phrases[0];
+						for (const next of order) {
+							for (let i = current.length; i >= 0; i--) {
+								const s = current.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 16;
+							}
+							for (let i = 1; i <= next.length; i++) {
+								const s = next.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 30;
+							}
+							t += 700;
+							current = next;
+						}
+						later(host, () => box.classList.add("pfx-done"), t - 600);
+					},
+					scramble(host) {
+						const list = chars(host);
+						if (reduced()) return;
+						for (const s of list) s.style.width = s.getBoundingClientRect().width + "px";
+						const start = 120;
+						const span = 950;
+						list.forEach((s, i) => {
+							const settle = start + (span * (i + 1)) / list.length;
+							for (let t = 0; t < settle; t += 45)
+								later(
+									host,
+									() => {
+										s.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+										s.classList.add("pfx-scr");
+									},
+									t,
+								);
+							later(
+								host,
+								() => {
+									s.textContent = s.dataset.c;
+									s.classList.remove("pfx-scr");
+								},
+								settle,
+							);
+						});
+					},
+					"vector-hover"(host) {
+						if (touch()) return effects["fade-up"](host);
+						host.classList.add("pfx-vector");
+						const list = chars(host);
+						const draw = (ch) => {
+							if (ch.dataset.ready) return;
+							ch.dataset.ready = "1";
+							const probe = document.createElement("span");
+							probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+							ch.append(probe);
+							const base = probe.offsetTop;
+							probe.remove();
+							const w = ch.offsetWidth;
+							const h = ch.offsetHeight;
+							const ns = "http://www.w3.org/2000/svg";
+							const svg = document.createElementNS(ns, "svg");
+							svg.setAttribute("class", "pfx-outline");
+							svg.setAttribute("width", String(w));
+							svg.setAttribute("height", String(h));
+							const text = document.createElementNS(ns, "text");
+							text.setAttribute("x", "0");
+							text.setAttribute("y", String(base));
+							text.textContent = ch.dataset.c;
+							svg.append(text);
+							const boxEl = document.createElement("span");
+							boxEl.className = "pfx-box";
+							boxEl.innerHTML = `<b></b><b></b><b></b><b></b><em>${w} × ${h}</em>`;
+							ch.append(svg, boxEl);
+						};
+						const off = new WeakMap();
+						host.onpointerover = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							clearTimeout(off.get(ch));
+							draw(ch);
+							ch.classList.add("pfx-on");
+						};
+						host.onpointerout = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							off.set(
+								ch,
+								setTimeout(() => ch.classList.remove("pfx-on"), 650),
+							);
+						};
+						return list;
+					},
+				};
+
+				window.PFX = {
+					safe,
+					contrast,
+					apply(host, id, opts = {}) {
+						if (!host.dataset.text) host.dataset.text = host.textContent.trim();
+						if (host.dataset.base === undefined) host.dataset.base = host.className;
+						reset(host);
+						host.dataset.fx = id;
+						(effects[id] || effects.none)(host, opts);
+					},
+					replay(host, opts = {}) {
+						this.apply(host, host.dataset.fx || "none", opts);
+					},
+				};
+			})();
+		</script>
+		<script>
+			/* Mockup-only test panel: tries the customisation the product will offer (accent, mode, font pair,
+			 * intro effect, metric variant) plus robustness checks that are not user settings. */
+			(() => {
+				const MK = window.MK;
+				const root = document.documentElement;
+				const $ = (s, el = document) => el.querySelector(s);
+				const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+				const nameHost = $("[data-fx-name]");
+				const headHost = $("[data-fx-headline]");
+				const state = { scheme: MK.scheme, accent: MK.accentCv, effect: MK.effect };
+
+				const effectiveScheme = () => {
+					if (state.scheme !== "auto") return state.scheme;
+					const host = root.getAttribute("data-theme");
+					if (host === "dark" || host === "light") return host;
+					return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				};
+
+				function applyAccent() {
+					const color = state.accent;
+					root.style.setProperty("--pf-accent", color);
+					const bg = getComputedStyle(root).getPropertyValue("--pf-bg").trim();
+					const text = PFX.safe(color, bg, 4.5);
+					const on = PFX.contrast(color, "#ffffff") >= PFX.contrast(color, "#111111") ? "#ffffff" : "#111111";
+					root.style.setProperty("--pf-accent-text", text);
+					root.style.setProperty("--pf-on-accent", on);
+					const out = $("#mk-readout");
+					if (out) {
+						const ratio = PFX.contrast(text, bg).toFixed(1).replace(".", ",");
+						out.innerHTML =
+							text.toLowerCase() === color.toLowerCase()
+								? `Aksen ${color} aman sebagai teks (kontras ${ratio}:1).`
+								: `Aksen ${color} terlalu ${PFX.contrast(bg, "#000000") > PFX.contrast(bg, "#ffffff") ? "terang" : "gelap"} untuk teks di latar ini.<br>Teks aksen dikoreksi otomatis: ${text} (kontras ${ratio}:1).`;
+					}
+					if (state.effect === "gradient") applyEffect();
+				}
+
+				function applyScheme() {
+					root.dataset.pfScheme = effectiveScheme();
+					applyAccent();
+				}
+
+				function applyFonts(id) {
+					const pair = MK.fonts.find((f) => f.id === id) || MK.fonts[0];
+					const fallback = (f) =>
+						/Mono|Code/.test(f)
+							? `"${f}", ui-monospace, monospace`
+							: /Serif|Lora|Newsreader|Spectral|Bodoni|Garamond|Literata|Caslon/.test(f)
+								? `"${f}", Georgia, serif`
+								: `"${f}", system-ui, sans-serif`;
+					root.style.setProperty("--pf-font-heading", fallback(pair.heading));
+					root.style.setProperty("--pf-font-body", fallback(pair.body));
+					root.style.setProperty("--pf-font-mono", fallback(pair.mono));
+					root.style.setProperty("--pf-name-stretch", pair.stretch || "100%");
+					root.dataset.fontPair = pair.id;
+					if (["scramble", "vector-hover"].includes(state.effect)) document.fonts.ready.then(applyEffect);
+				}
+
+				function applyEffect() {
+					const id = state.effect;
+					if (!nameHost) return;
+					if (id === "typewriter" && headHost) {
+						PFX.apply(nameHost, "none");
+						PFX.apply(headHost, "typewriter", { phrases: MK.phrases });
+					} else {
+						if (headHost) PFX.apply(headHost, "none");
+						PFX.apply(nameHost, id);
+					}
+				}
+
+				function applyMetric(variant) {
+					for (const g of $$(".pf-metrics[data-switch]")) g.dataset.variant = variant;
+				}
+
+				function render() {
+					const seg = (name, items, current) =>
+						`<div class="mk-seg" role="radiogroup">${items
+							.map(
+								(it) =>
+									`<label><input type="radio" name="${name}" value="${it.value}" id="mk-${name}-${it.value}"${it.value === current ? " checked" : ""}>${it.swatch ? `<span class="mk-swatch" style="background:${it.swatch}"></span>` : ""}${it.label}</label>`,
+							)
+							.join("")}</div>`;
+					const panel = document.createElement("aside");
+					panel.className = "mk-panel";
+					panel.setAttribute("aria-label", "Panel percobaan mockup");
+					panel.innerHTML = `
+<button class="mk-panel__toggle" type="button" aria-expanded="false" aria-controls="mk-body"><i></i>Coba pengaturan</button>
+<div class="mk-panel__body" id="mk-body" hidden>
+	<div class="mk-panel__head"><b>Tema ${MK.name} · mockup</b><a href="index.html">Semua mockup</a></div>
+	<fieldset><legend>Warna aksen</legend>${seg(
+		"accent",
+		[
+			{ value: MK.accentCv, label: "Ikut CV", swatch: MK.accentCv },
+			...MK.accents.map((a) => ({ value: a.color, label: a.label, swatch: a.color })),
+		],
+		state.accent,
+	)}<div class="mk-readout" id="mk-readout"></div></fieldset>
+	<fieldset><legend>Mode</legend>${seg(
+		"scheme",
+		[
+			{ value: "light", label: "Terang" },
+			{ value: "dark", label: "Gelap" },
+			{ value: "auto", label: "Ikuti perangkat" },
+		],
+		state.scheme,
+	)}</fieldset>
+	<fieldset><legend>Pasangan font</legend>${seg(
+		"font",
+		MK.fonts.map((f) => ({ value: f.id, label: f.label })),
+		MK.fonts[0].id,
+	)}</fieldset>
+	<fieldset><legend>Efek intro</legend><div class="mk-row"><select id="mk-effect" aria-label="Efek intro">${MK.effects
+		.map(
+			(e) =>
+				`<option value="${e}"${e === state.effect ? " selected" : ""}>${MK.effectLabels[e]}${e === MK.effect ? " (bawaan tema)" : ""}</option>`,
+		)
+		.join("")}</select><button class="mk-small" type="button" id="mk-replay">Putar ulang</button></div>
+		<span class="mk-note">Garis vektor: arahkan kursor ke huruf nama (di HP jatuh ke Muncul halus).</span></fieldset>
+	<fieldset><legend>Widget metrik</legend>${seg(
+		"metric",
+		MK.metrics.map((v) => ({ value: v, label: MK.metricLabels[v] })),
+		MK.metric,
+	)}<label class="mk-check"><input type="checkbox" id="mk-spark" checked> Grafik mini (sparkline)</label></fieldset>
+	<fieldset><legend>Uji ketahanan (bukan pengaturan)</legend>
+		<label class="mk-check"><input type="checkbox" id="mk-long"> Nama sangat panjang</label>
+		<label class="mk-check"><input type="checkbox" id="mk-nophoto"${MK.hasPhoto ? "" : " checked disabled"}> Tanpa foto${MK.hasPhoto ? "" : " (persona ini memang tanpa foto)"}</label>
+		<label class="mk-check"><input type="checkbox" id="mk-noimg"> Karya tanpa gambar</label>
+		<label class="mk-check"><input type="checkbox" id="mk-rtl"> Kanan ke kiri (RTL)</label>
+		<label class="mk-check"><input type="checkbox" id="mk-reduce"> Kurangi gerakan</label>
+		<a href="${MK.detail}">Buka contoh detail karya</a>
+	</fieldset>
+</div>`;
+					document.body.append(panel);
+					const toggle = $(".mk-panel__toggle", panel);
+					const body = $("#mk-body", panel);
+					toggle.addEventListener("click", () => {
+						const open = body.hidden;
+						body.hidden = !open;
+						toggle.setAttribute("aria-expanded", String(open));
+					});
+					panel.addEventListener("change", (e) => {
+						const t = e.target;
+						if (t.name === "accent") {
+							state.accent = t.value;
+							applyAccent();
+						}
+						if (t.name === "scheme") {
+							state.scheme = t.value;
+							applyScheme();
+						}
+						if (t.name === "font") applyFonts(t.value);
+						if (t.name === "metric") applyMetric(t.value);
+						if (t.id === "mk-effect") {
+							state.effect = t.value;
+							applyEffect();
+						}
+						if (t.id === "mk-spark") for (const g of $$(".pf-metrics")) g.dataset.spark = t.checked ? "on" : "off";
+						if (t.id === "mk-long") {
+							const text = t.checked ? MK.longName : MK.fullName;
+							for (const el of $$("[data-person-name]")) el.textContent = text;
+							for (const el of $$(".pf-name"))
+								el.style.setProperty("--name-word", String(Math.max(...text.split(/\s+/).map((w) => w.length))));
+							if (nameHost) {
+								nameHost.dataset.text = text;
+								applyEffect();
+							}
+						}
+						if (t.id === "mk-nophoto") root.classList.toggle("pf-nophoto", t.checked);
+						if (t.id === "mk-noimg") root.classList.toggle("pf-noimg", t.checked);
+						if (t.id === "mk-rtl") root.dir = t.checked ? "rtl" : "ltr";
+						if (t.id === "mk-reduce") {
+							root.classList.toggle("mk-reduce", t.checked);
+							applyEffect();
+						}
+					});
+					$("#mk-replay", panel).addEventListener("click", applyEffect);
+				}
+
+				function wire() {
+					for (const el of $$("[data-tz]")) {
+						const fmt = new Intl.DateTimeFormat("id-ID", {
+							hour: "2-digit",
+							minute: "2-digit",
+							timeZone: el.dataset.tz,
+						});
+						const tick = () =>
+							(el.textContent = `${fmt.format(new Date())} ${el.dataset.tzLabel} di ${el.dataset.city}`);
+						tick();
+						setInterval(tick, 30000);
+					}
+					for (const form of $$(".pf-form")) {
+						form.addEventListener("submit", (e) => {
+							e.preventDefault();
+							const sent = $(".pf-form__sent", form);
+							if (sent) sent.hidden = false;
+						});
+					}
+					for (const b of $$(".pf-video")) {
+						b.addEventListener("click", () =>
+							toast(`Di produk, pemutar ${b.dataset.site} baru dimuat setelah tombol ini diklik.`),
+						);
+					}
+					for (const a of $$('a[href="#"]')) {
+						a.addEventListener("click", (e) => {
+							e.preventDefault();
+							toast("Tautan contoh: di halaman sungguhan, ini membuka tujuan aslinya.");
+						});
+					}
+					matchMedia("(prefers-color-scheme: dark)").addEventListener(
+						"change",
+						() => state.scheme === "auto" && applyScheme(),
+					);
+				}
+
+				let toastTimer;
+				function toast(msg) {
+					let el = $(".mk-toast");
+					if (!el) {
+						el = document.createElement("div");
+						el.className = "mk-toast";
+						el.setAttribute("role", "status");
+						document.body.append(el);
+					}
+					el.textContent = msg;
+					el.hidden = false;
+					clearTimeout(toastTimer);
+					toastTimer = setTimeout(() => (el.hidden = true), 3200);
+				}
+
+				render();
+				wire();
+				applyFonts(MK.fonts[0].id);
+				applyScheme();
+				document.fonts.ready.then(applyEffect);
+			})();
+		</script>
+	</body>
+</html>

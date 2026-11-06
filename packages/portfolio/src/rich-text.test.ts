@@ -1,0 +1,52 @@
+import { describe, expect, it } from "vite-plus/test";
+import { parseWritablePortfolioData } from "@rezumi/schema/portfolio/data";
+import { sanitizePortfolioData, sanitizePortfolioHtml } from "./rich-text";
+
+describe("sanitizePortfolioHtml", () => {
+	it("keeps the formats the editor offers", () => {
+		const html =
+			'<h2>Problem</h2><p><strong>Bold</strong>, <em>italic</em>, <u>under</u>, <s>gone</s> and <a href="https://example.com">a link</a>.</p><ul><li>One</li></ul><ol start="3"><li>Three</li></ol><blockquote><p>Quote</p></blockquote><h3>Small</h3>';
+		expect(sanitizePortfolioHtml(html)).toBe(html);
+	});
+
+	it("removes scripts, event handlers and javascript: links", () => {
+		expect(sanitizePortfolioHtml('<p>Hi<script>alert("x")</script></p>')).toBe("<p>Hi</p>");
+		expect(sanitizePortfolioHtml('<p onclick="steal()">Hi</p><img src="x" onerror="alert(1)">')).toBe("<p>Hi</p>");
+		expect(sanitizePortfolioHtml('<a href="javascript:alert(1)">click</a>')).toBe("<a>click</a>");
+		expect(sanitizePortfolioHtml('<a href="JaVaScRiPt:alert(1)">x</a>')).toBe("<a>x</a>");
+		expect(sanitizePortfolioHtml('<a href="data:text/html,hi">x</a>')).toBe("<a>x</a>");
+		expect(sanitizePortfolioHtml('<a href="//evil.example">x</a>')).toBe("<a>x</a>");
+		expect(sanitizePortfolioHtml('<iframe src="https://evil.example"></iframe><p>ok</p>')).toBe("<p>ok</p>");
+		expect(sanitizePortfolioHtml("<svg><script>alert(1)</script></svg><style>p{}</style>")).toBe("");
+	});
+
+	it("drops styles, classes and unsupported tags but keeps their text", () => {
+		expect(
+			sanitizePortfolioHtml(
+				'<p style="color:red" class="x"><span style="background:url(evil)">Kept</span> <mark>text</mark></p><table><tr><td>cell</td></tr></table>',
+			),
+		).toBe("<p>Kept text</p>cell");
+	});
+
+	it("maps other spellings of the same formats", () => {
+		expect(sanitizePortfolioHtml("<b>B</b><i>I</i><strike>S</strike><h1>Big</h1><h5>Tiny</h5><div>Block</div>")).toBe(
+			"<strong>B</strong><em>I</em><s>S</s><h2>Big</h2><h3>Tiny</h3><p>Block</p>",
+		);
+	});
+});
+
+describe("sanitizePortfolioData", () => {
+	it("cleans every rich-text field and leaves the input alone", () => {
+		const dirty = '<p>Ok<script>x()</script></p><img src=x onerror="alert(1)">';
+		const data = parseWritablePortfolioData({
+			about: { content: dirty },
+			works: { items: [{ id: "w", slug: "w", blocks: [{ id: "t", type: "text", html: dirty }] }] },
+			custom: [{ id: "c", title: "Principles", content: dirty }],
+		});
+		const clean = sanitizePortfolioData(data);
+		expect(clean.about.content).toBe("<p>Ok</p>");
+		expect(clean.works.items[0]?.blocks[0]).toMatchObject({ html: "<p>Ok</p>" });
+		expect(clean.custom[0]?.content).toBe("<p>Ok</p>");
+		expect(data.about.content).toBe(dirty);
+	});
+});

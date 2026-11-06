@@ -1,0 +1,12 @@
+---
+/**
+ * The Portable Text renderer for an article's h2 and h3 blocks: the heading with the anchor `anchorHeadings`
+ * (src/lib/portable-text.ts) gave it, so "On this page" links and shared #fragments land on it.
+ */
+type Props = { node: { style?: string; anchor?: string } };
+
+const { node } = Astro.props;
+const Tag = node.style === "h3" ? "h3" : "h2";
+---
+
+<Tag id={node.anchor}><slot /></Tag>

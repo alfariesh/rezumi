@@ -5,6 +5,7 @@ export * from "./career";
 export * from "./auth";
 export * from "./cover-letter";
 export * from "./custom-domain";
+export * from "./portfolio";
 export * from "./resume";
 export * from "./web-access";
 export * from "./ai-content-report";

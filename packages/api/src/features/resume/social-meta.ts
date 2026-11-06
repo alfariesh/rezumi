@@ -2,6 +2,7 @@ import type { ResumeData } from "@rezumi/schema/resume/data";
 import { eq, isNull } from "drizzle-orm";
 import * as schema from "@rezumi/db/schema";
 import { verifiedDomainColumn } from "../custom-domain/service";
+import { portfolioOwnsProfilePath } from "../portfolio/public";
 import { publicResumeData } from "./access-policy";
 import { findResume } from "./slugs";
 
@@ -24,14 +25,17 @@ export async function getPublicResumeCardData(
 			hideContactDetails: schema.resume.hideContactDetails,
 			isPrimary: schema.resume.isPrimary,
 			customDomain: verifiedDomainColumn(),
+			portfolioOwnsProfile: portfolioOwnsProfilePath(schema.resume.userId),
 		},
 		eq(schema.resume.isPublic, true),
 		isNull(schema.resume.password),
 	);
 	if (!resume) return null;
+	// A published portfolio holds the short address and the custom domain; the resume keeps its own address.
+	const holdsProfileAddress = resume.isPrimary && !resume.portfolioOwnsProfile;
 	return {
 		data: publicResumeData(resume),
-		isPrimary: resume.isPrimary,
-		customDomain: resume.isPrimary ? resume.customDomain : null,
+		isPrimary: holdsProfileAddress,
+		customDomain: holdsProfileAddress ? resume.customDomain : null,
 	};
 }

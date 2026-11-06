@@ -8,12 +8,22 @@ import { ORPCError } from "@orpc/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { billingCurrencySchema } from "@rezumi/schema/billing";
 import { Icon } from "@rezumi/ui/components/icon";
 import { cn } from "@rezumi/utils/style";
 import { BackToPlanLink } from "./back-link";
 import { creditCount } from "./credits";
+import { InvoiceButton } from "./invoice-button";
 import { getPlanName } from "./plan";
-import { formatPrice, getReturnState, isOpenPayment, usePlanDates } from "./purchase";
+import {
+	formatPrice,
+	getReturnState,
+	intervalSuffix,
+	isOpenPayment,
+	isTrialStart,
+	priceLabel,
+	usePlanDates,
+} from "./purchase";
 import { PageHeader } from "@/components/layout/page-header";
 import { orpc } from "@/libs/orpc/client";
 import { renderAsH2 } from "@/libs/typography";
@@ -40,26 +50,55 @@ function ResultCard({ icon, tone, title, children }: ResultCardProps) {
 
 type ResultProps = { payment: PaymentDetail; state: ReturnState; formatDate: (date: Date) => string };
 
+/** A trial's $0 start: what was taken (a card, no money), and when the first charge comes. */
+function TrialResult({ payment, formatDate }: Omit<ResultProps, "state">) {
+	const plan = getPlanName(payment.planId);
+	const price = payment.interval
+		? `${priceLabel(payment.planId, payment.interval, billingCurrencySchema.catch("usd").parse(payment.currency))} ${intervalSuffix(payment.interval)}`
+		: null;
+	return (
+		<ResultCard
+			icon="check-circle"
+			tone="bg-success/15 text-success"
+			title={<Trans>Your free trial has started</Trans>}
+		>
+			<ul className="grid gap-1.5 text-sm">
+				<li>
+					{payment.periodEnd && price ? (
+						<Trans>
+							{plan} is free until {formatDate(payment.periodEnd)}. Then your card is charged {price} plus tax, unless
+							you cancel before.
+						</Trans>
+					) : (
+						<Trans>{plan} is active, free for now.</Trans>
+					)}
+				</li>
+				<li className="text-muted">
+					<Trans>Polar emails you a reminder a few days before the first charge.</Trans>
+				</li>
+			</ul>
+			<div className="flex flex-wrap gap-2">
+				<Link to="/dashboard/settings/billing" className={buttonVariants()}>
+					<Trans>Go to your plan</Trans>
+				</Link>
+			</div>
+		</ResultCard>
+	);
+}
+
 function PaidResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 	const plan = getPlanName(payment.planId);
-	const access = payment.access;
-	// A pass queued behind a higher one starts after the payment, not when it was paid.
-	const paidAt = payment.paidAt ?? payment.createdAt;
-	const startsLater = access !== null && access.startsAt.getTime() > paidAt.getTime() + 60_000;
+	if (isTrialStart(payment)) return <TrialResult payment={payment} formatDate={formatDate} />;
 	return (
 		<ResultCard icon="check-circle" tone="bg-success/15 text-success" title={<Trans>Payment received</Trans>}>
 			<ul className="grid gap-1.5 text-sm">
 				<li>
-					{access === null ? (
-						<Trans>{plan} is being added to your account.</Trans>
-					) : startsLater ? (
+					{payment.periodEnd ? (
 						<Trans>
-							{plan} starts on {formatDate(access.startsAt)} and runs until {formatDate(access.endsAt)}.
+							{plan} is active. It renews on {formatDate(payment.periodEnd)} unless you cancel.
 						</Trans>
 					) : (
-						<Trans>
-							{plan} is active until {formatDate(access.endsAt)}.
-						</Trans>
+						<Trans>{plan} is active.</Trans>
 					)}
 				</li>
 				{payment.credits > 0 && (
@@ -68,20 +107,14 @@ function PaidResult({ payment, formatDate }: Omit<ResultProps, "state">) {
 					</li>
 				)}
 				<li className="text-muted">
-					<Trans>We email the receipt to you as well.</Trans>
+					<Trans>Polar emails you the receipt, and your invoices are in billing.</Trans>
 				</li>
 			</ul>
 			<div className="flex flex-wrap gap-2">
 				<Link to="/dashboard/settings/billing" className={buttonVariants()}>
 					<Trans>Go to your plan</Trans>
 				</Link>
-				<Link
-					to="/dashboard/settings/billing/receipt/$paymentId"
-					params={{ paymentId: payment.id }}
-					className={buttonVariants({ variant: "secondary" })}
-				>
-					<Trans>View receipt</Trans>
-				</Link>
+				{payment.orderId && <InvoiceButton paymentId={payment.id} variant="secondary" />}
 			</div>
 		</ResultCard>
 	);
@@ -91,7 +124,7 @@ type WaitingResultProps = ResultProps & { polling: boolean; onCheckAgain: () => 
 
 function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, checking }: WaitingResultProps) {
 	const plan = getPlanName(payment.planId);
-	const price = formatPrice(payment.amount);
+	const price = formatPrice(payment.totalAmount || payment.amount, payment.currency);
 	const deadline = payment.expiresAt ? formatDate(payment.expiresAt) : null;
 	return (
 		<ResultCard
@@ -105,14 +138,13 @@ function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, chec
 				</p>
 				{state === "closed" ? (
 					<p className="text-muted">
-						<Trans>If you paid just now, it shows here within a few minutes. Otherwise, start a new payment.</Trans>
+						<Trans>If you paid just now, it shows here within a few minutes. Otherwise, start again.</Trans>
 					</p>
 				) : (
 					<p className="text-muted">
 						{deadline ? (
 							<Trans>
-								If you've paid, this page updates by itself in a few seconds. A bank transfer (virtual account) can
-								still be paid any time until {deadline}.
+								If you've paid, this page updates by itself in a few seconds. The checkout stays open until {deadline}.
 							</Trans>
 						) : (
 							<Trans>If you've paid, this page updates by itself in a few seconds.</Trans>
@@ -122,7 +154,7 @@ function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, chec
 				{polling && (
 					<p role="status" className="flex items-center gap-2 text-muted">
 						<Spinner size="sm" color="current" aria-hidden />
-						<Trans>Checking with Midtrans…</Trans>
+						<Trans>Checking with Polar…</Trans>
 					</p>
 				)}
 			</div>
@@ -134,7 +166,7 @@ function WaitingResult({ payment, state, formatDate, polling, onCheckAgain, chec
 				) : (
 					payment.redirectUrl && (
 						<a href={payment.redirectUrl} className={buttonVariants()}>
-							<Trans>Continue payment</Trans>
+							<Trans>Continue checkout</Trans>
 						</a>
 					)
 				)}
@@ -171,20 +203,16 @@ function ClosedResult({ payment, state }: Omit<ResultProps, "formatDate">) {
 		>
 			<p className="text-sm text-muted">
 				{refunded ? (
-					<Trans>The pass it bought has been taken back. Your documents stay as they are.</Trans>
+					<Trans>
+						The money went back, and any credits it brought were taken back. Your documents stay as they are.
+					</Trans>
 				) : (
-					<Trans>Nothing was charged for it. You can start a new {plan} payment.</Trans>
+					<Trans>Nothing was charged for it. You can start {plan} again.</Trans>
 				)}
 			</p>
 			<div className="flex flex-wrap gap-2">
 				{refunded ? (
-					<Link
-						to="/dashboard/settings/billing/receipt/$paymentId"
-						params={{ paymentId: payment.id }}
-						className={buttonVariants({ variant: "secondary" })}
-					>
-						<Trans>View receipt</Trans>
-					</Link>
+					payment.orderId && <InvoiceButton paymentId={payment.id} variant="secondary" />
 				) : (
 					<Link to="/dashboard/settings/billing" search={{ plan: payment.planId }} className={buttonVariants()}>
 						<Trans>Try again</Trans>
@@ -199,14 +227,14 @@ function ClosedResult({ payment, state }: Omit<ResultProps, "formatDate">) {
 }
 
 type PaymentReturnPageProps = {
-	/** From the path, or from Midtrans' `order_id` when the fallback address carries no ID; null when neither does. */
+	/** From the path; null when the link carries none. */
 	paymentId: string | null;
 };
 
 /**
- * Where Midtrans sends the customer back. Midtrans' own query (`transaction_status`, `result`) only says what the
- * browser saw, so the page asks the server, which checks with Midtrans: every 3 seconds for up to 2 minutes while the
- * payment is open and the tab is visible, then on request.
+ * Where Polar sends the customer back after paying. Getting here only says the browser was redirected, so the page asks
+ * the server, which checks with Polar: every 3 seconds for up to 2 minutes while the payment is open and the tab is
+ * visible, then on request. The webhook usually lands first.
  */
 export function PaymentReturnPage({ paymentId }: PaymentReturnPageProps) {
 	const queryClient = useQueryClient();

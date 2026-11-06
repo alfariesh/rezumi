@@ -7,6 +7,7 @@ import * as schema from "@rezumi/db/schema";
 import { env } from "@rezumi/env/server";
 import { publicResumePath } from "@rezumi/resume/sharing";
 import { verifiedDomainColumn } from "../custom-domain/service";
+import { portfolioOwnsProfilePath } from "../portfolio/public";
 import { createPreviewToken, hasResumeAccess, isValidPreviewToken } from "./access";
 import {
 	ownerIsNotBanned,
@@ -35,7 +36,7 @@ export type PublicWebPage =
 			updatedAt: Date;
 			/** What every visitor sees: hidden content and, when the owner hid them, contact details left out. */
 			data: ResumeData;
-			/** The account's primary resume: its own address is `/<username>`. */
+			/** The account's primary resume, at `/<username>`: false once a published portfolio holds that address. */
 			isPrimary: boolean;
 			/** The verified custom domain this primary resume opens at, which search engines are pointed to. */
 			customDomain: string | null;
@@ -73,10 +74,13 @@ export async function loadPublicWebPage(input: {
 			showInSearchEngines: schema.resume.showInSearchEngines,
 			hideContactDetails: schema.resume.hideContactDetails,
 			customDomain: verifiedDomainColumn(),
+			portfolioOwnsProfile: portfolioOwnsProfilePath(schema.resume.userId),
 		},
 		previewToken ? undefined : eq(schema.resume.isPublic, true),
 	);
 	if (!resume) return { status: "unavailable" };
+	// A published portfolio takes the short address and the custom domain; the primary resume keeps its own address.
+	const holdsProfileAddress = resume.isPrimary && !resume.portfolioOwnsProfile;
 
 	const hasPassword = resume.passwordHash !== null;
 	const page = ({ preview }: { preview: boolean }): PublicWebPage => ({
@@ -85,8 +89,8 @@ export async function loadPublicWebPage(input: {
 		slug: resume.slug,
 		updatedAt: resume.updatedAt,
 		data: publicResumeData(resume),
-		isPrimary: resume.isPrimary,
-		customDomain: resume.isPrimary ? resume.customDomain : null,
+		isPrimary: holdsProfileAddress,
+		customDomain: holdsProfileAddress ? resume.customDomain : null,
 		showDownloadButtons: resume.showDownloadButtons,
 		hasPassword,
 		// A preview is never listed, whatever the switch says.
@@ -153,9 +157,14 @@ export async function webPagePreviewUrl(id: string, userId: string): Promise<str
 /** A page of the sitemap holds at most this many addresses, the protocol's limit. */
 export const SITEMAP_PAGE_SIZE = 50_000;
 
+/** Whether the resume opens at `/<username>`: the primary one, unless a published portfolio holds that address. */
+const holdsProfileAddressColumn = () =>
+	sql<boolean>`(${schema.resume.isPrimary} and not ${portfolioOwnsProfilePath(schema.resume.userId)})`;
+
 /**
  * Resumes whose owners let search engines list them: public, no password, outside Trash, owner not banned. A primary
- * resume with a verified custom domain is left out; its own domain is its address. Needs the `user` join.
+ * resume with a verified custom domain is left out; its own domain is its address (unless a published portfolio holds
+ * the domain). Needs the `user` join.
  */
 const indexableResumeWhere = () =>
 	and(
@@ -164,7 +173,7 @@ const indexableResumeWhere = () =>
 		isNull(schema.resume.password),
 		isNull(schema.resume.trashedAt),
 		ownerIsNotBanned(),
-		sql`not (${schema.resume.isPrimary} and ${verifiedDomainColumn()} is not null)`,
+		sql`not (${holdsProfileAddressColumn()} and ${verifiedDomainColumn()} is not null)`,
 	);
 
 export function listIndexableResumes(page: number) {
@@ -173,7 +182,7 @@ export function listIndexableResumes(page: number) {
 			.select({
 				username: schema.user.username,
 				slug: schema.resume.slug,
-				isPrimary: schema.resume.isPrimary,
+				isPrimary: holdsProfileAddressColumn(),
 				updatedAt: schema.resume.updatedAt,
 			})
 			.from(schema.resume)

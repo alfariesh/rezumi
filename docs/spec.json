@@ -60930,6 +60930,10 @@
 										"billing": {
 											"type": "boolean",
 											"description": "Whether paid plans and their limits apply to every account on this instance."
+										},
+										"portfolio": {
+											"type": "boolean",
+											"description": "Whether every account on this instance can publish a web portfolio."
 										}
 									},
 									"required": [
@@ -60941,7 +60945,8 @@
 										"appUrl",
 										"customDomains",
 										"olacvSuggestion",
-										"billing"
+										"billing",
+										"portfolio"
 									]
 								}
 							}

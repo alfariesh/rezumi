@@ -1,0 +1,117 @@
+---
+/**
+ * The footer, after the landing page's (apps/web/src/features/homepage/footer.tsx): the brand and its promise, then
+ * link columns for the product, the blog and the legal pages. Social profiles come from Settings › Social; the
+ * landing links no source code, so neither does the blog.
+ */
+import type { Locale } from "../i18n/config";
+import type { BlogSettings } from "../lib/site-settings";
+import { getTranslator } from "../i18n/messages";
+import { appLink } from "../lib/app-links";
+import { feedPath, homePath, searchPath } from "../lib/paths";
+import { LEGAL_URLS } from "../lib/site";
+import BrandMark from "./BrandMark.astro";
+
+type Props = { locale: Locale; settings: BlogSettings };
+
+const { locale, settings } = Astro.props;
+const t = getTranslator(locale);
+const link = (destination: Parameters<typeof appLink>[0]) => appLink(destination, { locale, placement: "footer" });
+
+const columns = [
+	{
+		id: "product",
+		title: t("footer.product"),
+		links: [
+			{ label: t("footer.features"), href: link("features") },
+			{ label: t("footer.templates"), href: link("templates") },
+			{ label: t("footer.atsChecker"), href: link("ats-checker") },
+			{ label: t("footer.pricing"), href: link("pricing") },
+		],
+	},
+	{
+		id: "blog",
+		title: t("footer.blog"),
+		links: [
+			{ label: t("home.latest"), href: homePath(locale) },
+			{ label: t("nav.search"), href: searchPath(locale) },
+			{ label: t("footer.rss"), href: feedPath(locale) },
+		],
+	},
+	{
+		id: "legal",
+		title: t("footer.legal"),
+		links: [
+			{ label: t("footer.privacy"), href: LEGAL_URLS.privacy },
+			{ label: t("footer.terms"), href: LEGAL_URLS.terms },
+			{ label: t("footer.contact"), href: LEGAL_URLS.contact },
+		],
+	},
+];
+
+// Settings › Social stores handles, not URLs; GitHub is left out on purpose (see above).
+const handle = (value: string | undefined) => value?.trim().replace(/^@/, "") || undefined;
+const { linkedin, instagram, twitter, youtube, facebook } = settings.social;
+const profiles = [
+	{ label: "LinkedIn", href: handle(linkedin) && `https://www.linkedin.com/company/${handle(linkedin)}` },
+	{ label: "Instagram", href: handle(instagram) && `https://www.instagram.com/${handle(instagram)}` },
+	{ label: "X", href: handle(twitter) && `https://x.com/${handle(twitter)}` },
+	{ label: "YouTube", href: handle(youtube) && `https://www.youtube.com/@${handle(youtube)}` },
+	{ label: "Facebook", href: handle(facebook) && `https://www.facebook.com/${handle(facebook)}` },
+].filter((profile): profile is { label: string; href: string } => Boolean(profile.href));
+
+const linkClass = "text-muted transition-colors hover:text-foreground";
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-separator">
+	<div
+		class="mx-auto grid w-full max-w-6xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:px-8"
+	>
+		<div class="flex flex-col items-start gap-4">
+			<a href={appLink("home", { locale, placement: "footer" })} class="flex items-center gap-2.5 rounded-lg">
+				<BrandMark />
+				<span class="text-lg font-semibold tracking-tight">Rezumi</span>
+			</a>
+			<p class="max-w-xs text-sm text-pretty text-muted">{t("footer.tagline")}</p>
+			{
+				profiles.length > 0 && (
+					<ul aria-label={t("footer.follow")} class="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+						{profiles.map((profile) => (
+							<li>
+								<a href={profile.href} rel="me noopener" target="_blank" class={linkClass}>
+									{profile.label}
+								</a>
+							</li>
+						))}
+					</ul>
+				)
+			}
+		</div>
+
+		<div class="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
+			{
+				columns.map((column) => (
+					<nav aria-labelledby={`footer-${column.id}`} class="flex flex-col gap-3 text-sm">
+						<h2 id={`footer-${column.id}`} class="font-semibold">
+							{column.title}
+						</h2>
+						<ul class="flex flex-col gap-2.5">
+							{column.links.map((item) => (
+								<li>
+									<a href={item.href} class={linkClass}>
+										{item.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="border-t border-separator">
+		<p class="mx-auto w-full max-w-6xl px-4 py-6 text-xs text-muted sm:px-6 lg:px-8">© {year} Rezumi</p>
+	</div>
+</footer>

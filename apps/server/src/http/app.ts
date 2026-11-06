@@ -22,10 +22,19 @@ import {
 } from "../openapi/metadata";
 import { handleRpc } from "../rpc/handler";
 import { handleAgentSkillArchive, handleAgentSkillsIndex } from "../static/agent-skills";
+import { handlePortfolioCard } from "../static/portfolio-card";
+import { servePortfolioOrResume } from "../static/portfolio-page";
 import { handleResumeCard } from "../static/resume-card";
 import { serveResumePage } from "../static/resume-page";
 import { handleSchemaJson } from "../static/schema";
-import { handleLlms, handlePagesSitemap, handleResumesSitemap, handleRobots, handleSitemap } from "../static/seo";
+import {
+	handleLlms,
+	handlePagesSitemap,
+	handlePortfoliosSitemap,
+	handleResumesSitemap,
+	handleRobots,
+	handleSitemap,
+} from "../static/seo";
 import { handleUpload } from "../static/uploads";
 import { handleWebApp, isProfilePath, isPublicResumePath, listDocsPaths, serveWebDistStatic } from "../static/web";
 import { handleAlias } from "./alias";
@@ -34,7 +43,7 @@ import { handleAuth, handleOAuth } from "./auth";
 import { handleCareerJobs } from "./career-jobs";
 import { handleCustomDomain, handleTraefikProvider } from "./custom-domain";
 import { handleHealth } from "./health";
-import { handleMidtransPaymentNotification } from "./midtrans";
+import { handlePolarPaymentWebhook } from "./polar";
 import { handlePublicResumePdf } from "./public-resume-pdf";
 import { handleResumePdfDownload } from "./resume-pdf";
 
@@ -81,7 +90,7 @@ export function createApp(options: AppOptions = {}) {
 
 	// The alias domain serves the same public pages; only the signed-in app's sections move to APP_URL.
 	app.use("*", async (c, next) => handleAlias(c.req.raw) ?? (await next()));
-	// A verified custom domain shows its primary resume; other hosts fall through.
+	// A verified custom domain shows its portfolio or primary resume; other hosts fall through.
 	app.use("*", async (c, next) => (await handleCustomDomain(c.req.raw, client(c))) ?? next());
 
 	app.use("/auth/*", async (c, next) => {
@@ -116,7 +125,8 @@ export function createApp(options: AppOptions = {}) {
 	app.use("/api/rpc/*", limitBody(160 * 1024 * 1024));
 	app.use("/api/auth/*", limitBody(1024 * 1024));
 	app.use("/api/storage/stage", limitBody(64 * 1024));
-	app.use("/api/payments/midtrans/notification", limitBody(64 * 1024));
+	// Polar orders embed their customer and subscription; 256 KB leaves room for a few hundred line items.
+	app.use("/api/payments/polar/webhook", limitBody(256 * 1024));
 
 	app.post("/api/storage/stage", (c) => prepareStagedBody(c.req.raw));
 	app.all("/api/rpc/*", (c) => withStagedBody(c.req.raw, (request) => handleRpc(request, client(c))));
@@ -124,7 +134,7 @@ export function createApp(options: AppOptions = {}) {
 	app.get("/api/auth/oauth", (c) => handleOAuth(c.req.raw));
 	app.all("/api/auth/*", (c) => handleAuth(c.req.raw, client(c)));
 	app.get("/api/health", () => handleHealth());
-	app.post("/api/payments/midtrans/notification", (c) => handleMidtransPaymentNotification(c.req.raw));
+	app.post("/api/payments/polar/webhook", (c) => handlePolarPaymentWebhook(c.req.raw));
 	app.get("/api/internal/traefik", (c) => handleTraefikProvider(c.req.raw));
 	app.on(["GET", "POST"], "/api/career/run", (c) => handleCareerJobs(c.req.raw));
 	app.get("/api/resumes/:username/:slug/pdf", (c) =>
@@ -134,6 +144,10 @@ export function createApp(options: AppOptions = {}) {
 	// Outside /api/resumes, which robots.txt keeps crawlers out of: link previews need to fetch these.
 	app.get("/cards/:username/:file{.+\\.png}", (c) =>
 		handleResumeCard(c.req.raw, c.req.param("username"), c.req.param("file").slice(0, -".png".length)),
+	);
+	// One segment: the preview of whatever `/<username>` shows, a published portfolio (or the generic banner).
+	app.get("/cards/:file{[^/]+\\.png}", (c) =>
+		handlePortfolioCard(c.req.raw, c.req.param("file").slice(0, -".png".length)),
 	);
 	app.get("/api/uploads/*", (c) => handleUpload(c.req.raw));
 	app.get("/uploads/*", (c) => handleUpload(c.req.raw));
@@ -164,6 +178,9 @@ export function createApp(options: AppOptions = {}) {
 	app.get("/sitemaps/:page{resumes-[0-9]+\\.xml}", (c) =>
 		handleResumesSitemap(Number(c.req.param("page").slice("resumes-".length, -".xml".length))),
 	);
+	app.get("/sitemaps/:page{portfolios-[0-9]+\\.xml}", (c) =>
+		handlePortfoliosSitemap(Number(c.req.param("page").slice("portfolios-".length, -".xml".length))),
+	);
 	app.get("/llms.txt", () => handleLlms());
 
 	// Compresses only the web app's files and HTML shells: every route registered above answers before reaching
@@ -184,16 +201,15 @@ export function createApp(options: AppOptions = {}) {
 		app.post("/", limitBody(16 * 1024), (c) => serveResumePage(c.req.raw, { id: rootResumeId }, client(c)));
 	if (options.serveStatic !== false && serveWebDistStatic) app.use("/*", serveWebDistStatic);
 	// A resume's web page, rendered here, and its password form; files with the same shape of address were served
-	// just above. `/<username>` is the account's primary resume, on every domain the app answers.
+	// just above. `/<username>` is the account's published portfolio, or else its primary resume, on every domain the
+	// app answers.
 	app.on(["GET", "POST"], "/:username/:slug", limitBody(16 * 1024), (c, next) =>
 		isPublicResumePath(c.req.path)
 			? serveResumePage(c.req.raw, { username: c.req.param("username"), slug: c.req.param("slug") }, client(c))
 			: next(),
 	);
 	app.on(["GET", "POST"], "/:username", limitBody(16 * 1024), (c, next) =>
-		isProfilePath(c.req.path)
-			? serveResumePage(c.req.raw, { username: c.req.param("username"), primary: true }, client(c))
-			: next(),
+		isProfilePath(c.req.path) ? servePortfolioOrResume(c.req.raw, c.req.param("username"), client(c)) : next(),
 	);
 	app.get("/*", (c) => handleWebApp(c.req.raw, options.readWebFile));
 

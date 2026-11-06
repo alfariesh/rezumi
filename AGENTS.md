@@ -41,9 +41,9 @@ This block is written and re-added by `turbo` before repository-scoped commands 
 
 ## Overview
 
-Rezumi is a free, open-source resume builder for creating, importing, exporting, and sharing resumes, cover letters, and job applications. It is a TypeScript pnpm monorepo managed by Turborepo, with three apps: `apps/web` (React 19 SPA with TanStack Router, TanStack Query, Tailwind CSS, and Vite), `apps/server` (Hono / Node.js), and `apps/mobile` (Expo / React Native iOS and Android app with the native Forme renderer from `packages/forme-native`). oRPC connects browser workflows to server business logic; Better Auth handles authentication; Drizzle accesses PostgreSQL. Forme renders PDFs in the browser and on the server.
+Rezumi is a free, open-source resume builder for creating, importing, exporting, and sharing resumes, cover letters, and job applications. It is a TypeScript pnpm monorepo managed by Turborepo, with four apps: `apps/web` (React 19 SPA with TanStack Router, TanStack Query, Tailwind CSS, and Vite), `apps/server` (Hono / Node.js), `apps/mobile` (Expo / React Native iOS and Android app with the native Forme renderer from `packages/forme-native`), and `apps/blog` (the marketing blog at blog.rezumi.app: Astro with the EmDash CMS; see `apps/blog/AGENTS.md`). oRPC connects browser workflows to server business logic; Better Auth handles authentication; Drizzle accesses PostgreSQL. Forme renders PDFs in the browser and on the server.
 
-Production runs only on Cloudflare Workers (`wrangler.jsonc`): Static Assets serve the built web app, the Worker runs the Hono application from `apps/server` (API/auth/MCP/static routes), PostgreSQL is reached through Hyperdrive, and uploads live in private R2. Local dev and `pnpm start` run the same app as a plain Node.js process. Docker, Vercel, Kubernetes, Hostinger, Cloudron, and NAS deployments are dropped; their files and docs are deleted. Some runtime adapters (storage `s3`/`blob`/`local`, Vercel env aliases in `packages/env/src/deployment.ts`) remain in code. Setup and runtime limits: `docs/self-hosting/cloudflare.mdx`.
+Production runs only on Cloudflare Workers (`wrangler.jsonc`): Static Assets serve the built web app, the Worker runs the Hono application from `apps/server` (API/auth/MCP/static routes), PostgreSQL is reached through Hyperdrive, and uploads live in private R2. Local dev and `pnpm start` run the same app as a plain Node.js process. Docker, Vercel, Kubernetes, Hostinger, Cloudron, and NAS deployments are dropped; their files and docs are deleted. Some runtime adapters (storage `s3`/`blob`/`local`, Vercel env aliases in `packages/env/src/deployment.ts`) remain in code. Setup and runtime limits: `docs/self-hosting/cloudflare.mdx`. The blog is a separate Worker (`apps/blog/wrangler.jsonc`) with its own D1 database and R2 bucket; it shares no code path, database or session with the app.
 
 Internal packages are source-consumed through `package.json` export maps pointing at `src` files. Do not assume package-local `dist` output exists unless a package explicitly adds it.
 
@@ -82,6 +82,7 @@ Package typechecks use the pinned experimental `tsrs --noEmit`. Published binari
 ```sh
 pnpm dev
 pnpm dev:web
+pnpm dev:blog
 pnpm db:generate
 pnpm db:migrate
 pnpm db:studio
@@ -89,6 +90,7 @@ pnpm db:studio
 
 - `pnpm dev` runs Vite on `PORT` (default `3000`), Hono on `SERVER_PORT` (default `3001`), and the email template preview on `3002`. Vite proxies API requests to Hono. Vite supplies hot reload; `tsx watch` restarts the server.
 - `pnpm dev:web` starts only Vite; API workflows still need a server. If ports are busy, change `PORT` and `SERVER_PORT` consistently in `.env.local`; keep the email preview's `3002` port free when running all dev tasks.
+- `pnpm dev:blog` runs the blog on `4321` (workerd with local D1 and R2 under `apps/blog/.wrangler`); `pnpm dev` leaves it out. It typechecks with `astro check` on TypeScript 6, because TypeScript 7 has no language-service API yet.
 - Server startup applies migrations before initializing auth and serving traffic. `pnpm db:migrate` applies them without starting the app; `pnpm db:studio` opens the database UI.
 - After adding user-facing strings, use Lingui macros and run `pnpm lingui:extract`. Catalogs live in `apps/web/locales/*.po`; `pnpm pdf:translations` regenerates PDF translations. Root build/check scripts run PDF translation generation automatically.
 - `pnpm docs:gen` regenerates the OpenAPI spec and semantic CSS reference. Use it when changing those public surfaces.
@@ -110,7 +112,7 @@ Where each concern lives, and where new code for it goes:
 | Resume/page/template Zod schemas                                                                | `packages/schema`                                                                                                                                                                                 |
 | Pure resume-domain behavior (no DB/HTTP/DOM/renderer deps)                                      | `packages/resume` (JSON Patch helpers, social-network icons)                                                                                                                                      |
 | Resume PDF rendering                                                                            | `packages/pdf` (React templates converted through `src/forme` to Forme documents, font resolution, browser/server adapters)                                                                       |
-| PDF.js viewer/canvas UI                                                                         | `apps/web/src/features/resume/preview`, `apps/web/src/features/ats-checker` — never in `packages/pdf`                                                                                             |
+| PDF.js viewer/canvas UI                                                                         | `apps/web/src/features/resume/preview`, `apps/web/src/features/ats-checker`, `apps/web/src/features/portfolio/media/pdf.ts` (first-page picture) — never in `packages/pdf`                        |
 | DOCX export                                                                                     | `packages/docx`                                                                                                                                                                                   |
 | MCP tools/prompts/resources/server-card                                                         | `packages/mcp`                                                                                                                                                                                    |
 | Generic UI primitives + hooks                                                                   | `packages/ui` (HeroUI-based custom components); workflow-specific UI stays in the owning web feature                                                                                              |
@@ -118,6 +120,7 @@ Where each concern lives, and where new code for it goes:
 | Focused support surfaces                                                                        | `packages/fonts`, `packages/email`, `packages/import`, `packages/ai`, `packages/utils`, `packages/config` — prefer existing exports over cross-package shortcuts                                  |
 | System icons (web and mobile) and resume icon sets                                              | `packages/icons` (Hugeicons Pro SVGs, generated render data, `catalog.json`; refresh with `pnpm --filter @rezumi/tooling icons:sync <export dir>`; the web `Icon` in `packages/ui` draws from it) |
 | Dev-only scripts                                                                                | `tooling/`, not `packages/`, so packages only hold runtime-bundled code                                                                                                                           |
+| Marketing blog (articles, topics, SEO, EmDash schema and seed)                                  | `apps/blog`; articles live in its D1 database and are edited in `/_emdash/admin` or through its MCP server, not in source                                                                         |
 
 Narrow cross-cutting helpers go in `packages/utils` only after checking no domain package is a better owner. Specifically: resume JSON Patch behavior belongs in `@rezumi/resume/patch` and DOCX builders in `@rezumi/docx` — not in `@rezumi/utils`.
 
@@ -127,7 +130,7 @@ Narrow cross-cutting helpers go in `packages/utils` only after checking no domai
 - The web app is a client-rendered SPA. The web build prerenders marketing homepages per locale; there is no request-time React SSR. `apps/server/src/static/web.ts` serves HTML and injects OpenGraph, canonical, and JSON-LD metadata. When adding a public marketing route, update its server fallback/SEO handling as well as the TanStack route; Vite's dev fallback can otherwise hide production 404s.
 - Builder shell: `apps/web/src/routes/builder/$resumeId`. Public resume route: `apps/web/src/routes/$username/$slug.tsx`.
 - Public docs: `/docs` publishes the MDX pages in `docs/` (groups and order from `docs/docs.json`; the hosted Mintlify site reads the same files). `apps/web/src/features/docs/build.ts` compiles them at build time (links moved under `/docs`, pictures imported with their size, heading ids and table of contents), the web build prerenders every page to `dist-prerender/docs`, and `apps/server/src/static/web.ts` serves them with canonical and article metadata. `pnpm --filter web test src/features/docs` fails on a link to a missing page or a missing picture.
-- Browser-only preview code: `apps/web/src/features/resume/preview`. PDF.js viewer (the ATS checker's upload): `apps/web/src/features/ats-checker`. Keep PDF.js/canvas code in these features, not in `packages/pdf`.
+- Browser-only preview code: `apps/web/src/features/resume/preview`. PDF.js viewer (the ATS checker's upload): `apps/web/src/features/ats-checker`. The portfolio's PDF block reads page count and draws the first page with the same loader (`apps/web/src/features/portfolio/media/pdf.ts`). Keep PDF.js/canvas code in these features, not in `packages/pdf`.
 - oRPC client: `apps/web/src/libs/orpc/client.ts` calls `/api/rpc` with credentials included. `apps/web/src/libs/orpc/fetch.ts` stages large request bodies through Blob on Vercel (legacy adapter; Vercel is no longer a deploy target).
 - For React components with explicit props, use a named props type (e.g. `type FooProps = {...}` with `function Foo(props: FooProps)`) rather than inline object annotations, especially with more than one field or with generics.
 
@@ -237,6 +240,8 @@ pnpm deploy:cloudflare
 ### Deploy
 
 Push to `main` runs `.github/workflows/deploy-cloudflare.yml` (also `workflow_dispatch`). It installs deps, applies migrations with `pnpm --filter @rezumi/db db:migrate` only when secret `DATABASE_URL` is set (direct, non-pooled connection string), then runs `pnpm deploy:cloudflare`. Concurrent runs queue (`cancel-in-progress: false`). Required repo secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`; optional: `DATABASE_URL`. Runtime secrets and bindings (Hyperdrive, R2, `AUTH_SECRET`, etc.) live in Cloudflare per `wrangler.jsonc` and the Cloudflare guide.
+
+The blog deploys separately through `.github/workflows/deploy-blog.yml`: by hand (`workflow_dispatch`), and on pushes to `main` that touch it once the repository variable `BLOG_AUTO_DEPLOY` is `true`. `pnpm deploy:blog` does the same from a machine signed in with Wrangler. First deploy, custom domain and MCP setup: `.agents/docs/blog.md`.
 
 ### CI
 

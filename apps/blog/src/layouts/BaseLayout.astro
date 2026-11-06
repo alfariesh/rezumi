@@ -1,0 +1,158 @@
+---
+/**
+ * Every page's document: the head EmDash fills from the page context (description, canonical, Open Graph, Twitter
+ * card, JSON-LD, verification tags, and for an entry its SEO panel and hreflang links), the blog bar, the page and the
+ * footer. Views build the context; this layout only renders it.
+ */
+import "../styles/global.css";
+import type { LocaleLinks } from "../components/LanguageSwitcher.astro";
+import type { Locale } from "../i18n/config";
+import type { BlogSettings } from "../lib/site-settings";
+import googleSansLatin from "@fontsource-variable/google-sans/files/google-sans-latin-wght-normal.woff2?url";
+import { createPublicPageContext } from "emdash/page";
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { defaultLocale, locales } from "../i18n/config";
+import { getTranslator } from "../i18n/messages";
+import { absoluteUrl, feedPath } from "../lib/paths";
+import { SITE_URL } from "../lib/site";
+
+type Props = {
+	locale: Locale;
+	settings: BlogSettings;
+	/** The document title, site name included (`documentTitle` in src/lib/site-settings.ts). */
+	title: string;
+	/** The title social cards and structured data show, without the site name. */
+	socialTitle?: string | undefined;
+	description?: string | null | undefined;
+	/** The page's path; its absolute URL is the canonical, unless an entry's SEO panel sets another. */
+	path: string;
+	canonical?: string | null | undefined;
+	image?: string | null | undefined;
+	robots?: string | null | undefined;
+	pageType?: "website" | "article";
+	/** The entry the page renders. EmDash then applies its SEO panel and links its translations with hreflang. */
+	content?: { collection: string; id: string; slug: string } | undefined;
+	article?: { publishedTime?: string | null; modifiedTime?: string | null; author?: string | null } | undefined;
+	/**
+	 * Paths of this page in each language. The language link uses them; on pages that are not entries they also
+	 * become the hreflang links (with `x-default` for the default language).
+	 */
+	localeLinks?: LocaleLinks | undefined;
+	currentTopic?: string | undefined;
+	campaign?: string | undefined;
+};
+
+const {
+	locale,
+	settings,
+	title,
+	socialTitle,
+	description,
+	path,
+	canonical,
+	image,
+	robots,
+	pageType = "website",
+	content,
+	article,
+	localeLinks = {},
+	currentTopic,
+	campaign,
+} = Astro.props;
+const t = getTranslator(locale);
+
+if (Astro.cache?.enabled) Astro.cache.set(settings.cacheHint);
+
+// Pages without an image of their own get the default from Settings › SEO, or else the blog's card in their language.
+const socialImage = image ?? (settings.hasDefaultSocialImage ? null : absoluteUrl(`/og/${locale}.png`));
+
+const page = createPublicPageContext({
+	url: Astro.url,
+	locale,
+	kind: content ? "content" : "custom",
+	pageType,
+	title,
+	pageTitle: socialTitle ?? title,
+	description: description ?? null,
+	canonical: canonical ?? absoluteUrl(path),
+	image: socialImage,
+	...(content ? { content } : {}),
+	seo: { ogImage: socialImage, robots: robots ?? null },
+	...(article ? { articleMeta: article } : {}),
+	siteName: settings.siteTitle,
+	siteUrl: SITE_URL,
+});
+
+// Entries get their hreflang links from EmDashHead; other pages list the languages they exist in.
+const alternates = content
+	? []
+	: locales.flatMap((other) => {
+			const href = other === locale ? path : localeLinks[other];
+			return href ? [{ hreflang: other, href: absoluteUrl(href) }] : [];
+		});
+const xDefault = alternates.find((alternate) => alternate.hreflang === defaultLocale);
+---
+
+<!doctype html>
+<html lang={locale}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script is:inline>
+			// The app's theme preference (apps/web/index.html): the `theme` cookie, else the system, before first paint.
+			(() => {
+				try {
+					const match = document.cookie.match(/(?:^|; )theme=([^;]*)/);
+					const theme = match ? decodeURIComponent(match[1]) : "system";
+					const query = window.matchMedia("(prefers-color-scheme: dark)");
+					const apply = () =>
+						document.documentElement.classList.toggle(
+							"dark",
+							theme === "dark" || (theme !== "light" && query.matches),
+						);
+					apply();
+					if (theme === "system") query.addEventListener("change", apply);
+				} catch {
+					// Without cookies or matchMedia the page stays light.
+				}
+			})();
+		</script>
+		<title>{title}</title>
+		<link rel="preload" href={googleSansLatin} as="font" type="font/woff2" crossorigin />
+		<EmDashHead page={page} />
+		{alternates.map((alternate) => <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />)}
+		{alternates.length > 1 && xDefault && <link rel="alternate" hreflang="x-default" href={xDefault.href} />}
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={`${settings.siteTitle} (${t(`language.${locale}`)})`}
+			href={absoluteUrl(feedPath(locale))}
+		/>
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+	</head>
+	<body class="flex min-h-dvh flex-col">
+		<EmDashBodyStart page={page} />
+		<a
+			href="#main"
+			class="sr-only rounded-full bg-surface px-4 py-2 text-sm font-medium shadow-overlay focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50"
+		>
+			{t("nav.skip")}
+		</a>
+		<SiteHeader
+			locale={locale}
+			settings={settings}
+			localeLinks={localeLinks}
+			currentTopic={currentTopic}
+			campaign={campaign}
+		/>
+		<main id="main" tabindex="-1" class="flex-1 outline-none">
+			<slot />
+		</main>
+		<SiteFooter locale={locale} settings={settings} />
+		<EmDashBodyEnd page={page} />
+	</body>
+</html>

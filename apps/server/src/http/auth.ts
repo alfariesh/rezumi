@@ -1,5 +1,6 @@
 import { isIP } from "node:net";
 import { APIError } from "better-auth/api";
+import { endBillingForDeletedUser } from "@rezumi/api/features/billing/deletion";
 import { getStorageService, migrateUserStorage } from "@rezumi/api/features/storage";
 import { auth, setAccountLinkHook, setUserDeleteHook } from "@rezumi/auth/config";
 import { env } from "@rezumi/env/server";
@@ -8,9 +9,11 @@ import { isAllowedOAuthRedirectUri } from "@rezumi/utils/url-security.node";
 
 setAccountLinkHook(({ fromUserId, toUserId }) => migrateUserStorage(fromUserId, toUserId));
 
-// Better Auth's own user deletion (guest cleanup after linking, admin removal) leaves uploads behind.
+// Better Auth's own user deletion (guest cleanup after linking, admin removal) leaves uploads behind, and a
+// subscription would keep billing.
 setUserDeleteHook(async (userId) => {
 	await getStorageService().delete(`uploads/${userId}`);
+	await endBillingForDeletedUser(userId);
 });
 
 const oauthAuthorizeSanitizedParams = [

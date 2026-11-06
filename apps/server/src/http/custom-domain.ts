@@ -6,7 +6,7 @@ import {
 	traefikConfiguration,
 } from "@rezumi/api/features/custom-domain";
 import { env } from "@rezumi/env/server";
-import { serveResumePage } from "../static/resume-page";
+import { servePortfolioOrResume } from "../static/portfolio-page";
 import { onAppDomain } from "./alias";
 
 // Hosts seen recently and whose primary resume they open; a minute is how long a new verification takes to show.
@@ -24,8 +24,9 @@ async function usernameOf(hostname: string): Promise<string | null> {
 }
 
 /**
- * A verified custom domain shows the account's primary resume at `/` and nothing else of the app: the page's PDF
- * downloads pass through, and any other address goes to the app's own domain. Unknown hosts are left alone.
+ * A verified custom domain shows the account's published portfolio at `/`, or else its primary resume, and nothing
+ * else of the app: the resume PDF downloads and the portfolio's own requests pass through, and any other address goes
+ * to the app's own domain. Unknown hosts are left alone. Phase 09 adds the Cloudflare automation.
  */
 export async function handleCustomDomain(request: Request, trustedClient: string): Promise<Response | null> {
 	if (!isCustomDomainsEnabled()) return null;
@@ -34,13 +35,18 @@ export async function handleCustomDomain(request: Request, trustedClient: string
 	const username = await usernameOf(url.hostname);
 	if (!username) return null;
 
-	if (url.pathname.startsWith("/api/resumes/") || /^\/favicon\.(ico|svg)$/.test(url.pathname)) return null;
+	if (
+		url.pathname.startsWith("/api/resumes/") ||
+		url.pathname.startsWith("/api/portfolio/") ||
+		/^\/favicon\.(ico|svg)$/.test(url.pathname)
+	)
+		return null;
 	if (url.pathname === "/robots.txt")
 		return new Response("User-agent: *\nAllow: /\n", { headers: { "Content-Type": "text/plain; charset=UTF-8" } });
 	if (url.pathname !== "/") return Response.redirect(onAppDomain(url), 301);
 
-	// Without a primary resume, the page says it isn't shared, as for any address that isn't.
-	return serveResumePage(request, { username, primary: true }, trustedClient, { customDomain: url.hostname });
+	// Without a portfolio or a primary resume, the page says it isn't shared, as for any address that isn't.
+	return servePortfolioOrResume(request, username, trustedClient, { customDomain: url.hostname });
 }
 
 const NAME = /^[\w@.-]{1,100}$/;

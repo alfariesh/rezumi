@@ -10,6 +10,11 @@ const INLINE_CONTENT_TYPES = new Set(["image/gif", "image/jpeg", "image/png", "i
 const PUBLIC_FONT_CONTENT_TYPES = new Set(["font/ttf", "font/otf"]);
 // Short enough that a deleted picture, or one whose owner was banned, leaves shared caches within the hour.
 const PUBLIC_PICTURE_CACHE_CONTROL = "public, max-age=3600";
+// A portfolio's PDFs (`portfolio.uploadPdf`, which checks the bytes are a PDF) are public too, locked down: shown by
+// the browser's PDF viewer, never sniffed into another type, and sandboxed so nothing in them runs with the app's
+// origin. The address carries no title, so every one is named document.pdf.
+const PUBLIC_PDF_PATH = /^documents\/portfolio\/[\w-]+\.pdf$/;
+const PDF_CONTENT_TYPE = "application/pdf";
 
 export async function handleUpload(request: Request) {
 	const [userId, ...segments] = new URL(request.url).pathname.split("/uploads/")[1]?.split("/") ?? [];
@@ -21,9 +26,11 @@ export async function handleUpload(request: Request) {
 	if (segments[0] === "agent") return new Response("Not Found", { status: 404 });
 
 	const filename = filePath.split("/").pop() ?? filePath;
+	const publicPdfPath = PUBLIC_PDF_PATH.test(filePath);
 	const publicPicturePath =
 		(filePath.startsWith("pictures/") && INLINE_CONTENT_TYPES.has(inferContentType(filename))) ||
-		(filePath.startsWith("fonts/") && PUBLIC_FONT_CONTENT_TYPES.has(inferContentType(filename)));
+		(filePath.startsWith("fonts/") && PUBLIC_FONT_CONTENT_TYPES.has(inferContentType(filename))) ||
+		publicPdfPath;
 	let privateAccess = false;
 	if (!publicPicturePath) {
 		const { resolveAuthenticationFromRequestHeaders } = await import("@rezumi/api/context");
@@ -39,9 +46,11 @@ export async function handleUpload(request: Request) {
 	if (!storedFile) return new Response("Not Found", { status: 404 });
 
 	const contentType = storedFile.contentType ?? inferContentType(filename);
-	const isPublicFont = publicPicturePath && PUBLIC_FONT_CONTENT_TYPES.has(contentType);
-	const isPublicPicture = publicPicturePath && (INLINE_CONTENT_TYPES.has(contentType) || isPublicFont);
-	if (!isPublicPicture && !privateAccess) {
+	const isPublicPdf = publicPdfPath && contentType === PDF_CONTENT_TYPE;
+	const isPublicFont = publicPicturePath && !publicPdfPath && PUBLIC_FONT_CONTENT_TYPES.has(contentType);
+	const isPublicPicture =
+		publicPicturePath && !publicPdfPath && (INLINE_CONTENT_TYPES.has(contentType) || isPublicFont);
+	if (!isPublicPicture && !isPublicPdf && !privateAccess) {
 		const { resolveAuthenticationFromRequestHeaders } = await import("@rezumi/api/context");
 		const authentication = await resolveAuthenticationFromRequestHeaders(request.headers).catch(() => null);
 		if (authentication?.user.id !== userId || !authentication.permissions.includes("read"))
@@ -49,10 +58,10 @@ export async function handleUpload(request: Request) {
 	}
 	const etag = createEtag(storedFile);
 
-	if (isPublicPicture && matchesIfNoneMatch(request.headers.get("If-None-Match"), etag))
+	if ((isPublicPicture || isPublicPdf) && matchesIfNoneMatch(request.headers.get("If-None-Match"), etag))
 		return new Response(null, { status: 304, headers: { ETag: etag, "Cache-Control": PUBLIC_PICTURE_CACHE_CONTROL } });
 
-	const shouldForceDownload = !INLINE_CONTENT_TYPES.has(contentType) && !isPublicFont;
+	const shouldForceDownload = !INLINE_CONTENT_TYPES.has(contentType) && !isPublicFont && !isPublicPdf;
 
 	const headers = new Headers();
 	headers.set("Content-Type", shouldForceDownload ? "application/octet-stream" : contentType);
@@ -61,8 +70,12 @@ export async function handleUpload(request: Request) {
 	if (shouldForceDownload) {
 		headers.set("Content-Disposition", `attachment; filename="${encodeURIComponent(basename(filename))}"`);
 	}
+	if (isPublicPdf) {
+		headers.set("Content-Disposition", 'inline; filename="document.pdf"');
+		headers.set("Content-Security-Policy", "sandbox");
+	}
 
-	headers.set("Cache-Control", isPublicPicture ? PUBLIC_PICTURE_CACHE_CONTROL : "private, no-store");
+	headers.set("Cache-Control", isPublicPicture || isPublicPdf ? PUBLIC_PICTURE_CACHE_CONTROL : "private, no-store");
 	headers.set("ETag", etag);
 	headers.set("X-Content-Type-Options", "nosniff");
 	headers.set("X-Robots-Tag", "noindex, nofollow");

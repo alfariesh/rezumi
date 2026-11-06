@@ -1,0 +1,1468 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"defaultLocale": "en",
+	"meta": {
+		"name": "Rezumi Blog",
+		"description": "Marketing blog for Rezumi: resume, job search and interview advice in English and Indonesian.",
+		"author": "Rezumi"
+	},
+	"settings": {
+		"title": "Rezumi Blog",
+		"tagline": "Resume, job search and interview advice from the team building Rezumi.",
+		"postsPerPage": 12,
+		"timezone": "Asia/Jakarta"
+	},
+	"collections": [
+		{
+			"slug": "posts",
+			"label": "Posts",
+			"labelSingular": "Post",
+			"description": "Articles on blog.rezumi.app. English is the source; translate each post from its Translations panel.",
+			"icon": "article",
+			"urlPattern": "/{slug}",
+			"supports": ["drafts", "revisions", "preview", "scheduling", "search", "seo"],
+			"titleField": "title",
+			"admin": {
+				"listColumns": ["cta"]
+			},
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text",
+					"required": true,
+					"searchable": true,
+					"validation": {
+						"maxLength": 300
+					}
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "cta",
+					"label": "Call to action",
+					"type": "select",
+					"translatable": false,
+					"defaultValue": "build-resume",
+					"validation": {
+						"options": ["build-resume", "ats-checker", "templates", "none"]
+					}
+				}
+			]
+		}
+	],
+	"taxonomies": [
+		{
+			"id": "category-en",
+			"name": "category",
+			"label": "Categories",
+			"labelSingular": "Category",
+			"hierarchical": true,
+			"collections": ["posts"],
+			"locale": "en",
+			"terms": [
+				{
+					"id": "category-resume-tips-en",
+					"slug": "resume-tips",
+					"label": "Resume tips",
+					"locale": "en"
+				},
+				{
+					"id": "category-job-search-en",
+					"slug": "job-search",
+					"label": "Job search",
+					"locale": "en"
+				},
+				{
+					"id": "category-interviews-en",
+					"slug": "interviews",
+					"label": "Interviews",
+					"locale": "en"
+				},
+				{
+					"id": "category-career-growth-en",
+					"slug": "career-growth",
+					"label": "Career growth",
+					"locale": "en"
+				},
+				{
+					"id": "category-product-updates-en",
+					"slug": "product-updates",
+					"label": "Product updates",
+					"locale": "en"
+				}
+			]
+		},
+		{
+			"id": "category-id",
+			"name": "category",
+			"label": "Kategori",
+			"labelSingular": "Kategori",
+			"locale": "id",
+			"translationOf": "category-en",
+			"terms": [
+				{
+					"id": "category-resume-tips-id",
+					"slug": "tips-cv",
+					"label": "Tips CV",
+					"locale": "id",
+					"translationOf": "category-resume-tips-en"
+				},
+				{
+					"id": "category-job-search-id",
+					"slug": "cari-kerja",
+					"label": "Cari kerja",
+					"locale": "id",
+					"translationOf": "category-job-search-en"
+				},
+				{
+					"id": "category-interviews-id",
+					"slug": "wawancara",
+					"label": "Wawancara",
+					"locale": "id",
+					"translationOf": "category-interviews-en"
+				},
+				{
+					"id": "category-career-growth-id",
+					"slug": "pengembangan-karier",
+					"label": "Pengembangan karier",
+					"locale": "id",
+					"translationOf": "category-career-growth-en"
+				},
+				{
+					"id": "category-product-updates-id",
+					"slug": "kabar-produk",
+					"label": "Kabar produk",
+					"locale": "id",
+					"translationOf": "category-product-updates-en"
+				}
+			]
+		},
+		{
+			"id": "tag-en",
+			"name": "tag",
+			"label": "Tags",
+			"labelSingular": "Tag",
+			"hierarchical": false,
+			"collections": ["posts"],
+			"locale": "en",
+			"terms": [
+				{
+					"id": "tag-ats-en",
+					"slug": "ats",
+					"label": "ATS",
+					"locale": "en"
+				},
+				{
+					"id": "tag-ai-en",
+					"slug": "ai",
+					"label": "AI",
+					"locale": "en"
+				},
+				{
+					"id": "tag-cover-letter-en",
+					"slug": "cover-letter",
+					"label": "Cover letter",
+					"locale": "en"
+				},
+				{
+					"id": "tag-fresh-graduate-en",
+					"slug": "fresh-graduate",
+					"label": "Fresh graduate",
+					"locale": "en"
+				}
+			]
+		},
+		{
+			"id": "tag-id",
+			"name": "tag",
+			"label": "Tag",
+			"labelSingular": "Tag",
+			"locale": "id",
+			"translationOf": "tag-en",
+			"terms": [
+				{
+					"id": "tag-ats-id",
+					"slug": "ats",
+					"label": "ATS",
+					"locale": "id",
+					"translationOf": "tag-ats-en"
+				},
+				{
+					"id": "tag-ai-id",
+					"slug": "ai",
+					"label": "AI",
+					"locale": "id",
+					"translationOf": "tag-ai-en"
+				},
+				{
+					"id": "tag-cover-letter-id",
+					"slug": "surat-lamaran",
+					"label": "Surat lamaran",
+					"locale": "id",
+					"translationOf": "tag-cover-letter-en"
+				},
+				{
+					"id": "tag-fresh-graduate-id",
+					"slug": "lulusan-baru",
+					"label": "Lulusan baru",
+					"locale": "id",
+					"translationOf": "tag-fresh-graduate-en"
+				}
+			]
+		}
+	],
+	"bylines": [
+		{
+			"id": "byline-rezumi-team",
+			"slug": "rezumi-team",
+			"displayName": "Rezumi Team",
+			"bio": "The people building Rezumi, the resume builder that stays with you until the offer.",
+			"websiteUrl": "https://rezumi.app"
+		}
+	],
+	"content": {
+		"posts": [
+			{
+				"id": "post-tailor-en",
+				"slug": "tailor-your-resume-to-every-job",
+				"locale": "en",
+				"status": "published",
+				"data": {
+					"title": "Tailor your resume to every job without starting over",
+					"excerpt": "One master resume, a copy for each posting and a few targeted edits: a tailoring routine that takes minutes, not evenings.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "adf0b07a79ed",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "48fff6b2a5d1",
+									"text": "Sending the same resume to every opening is quick, but it rarely matches what each posting asks for. Rewriting it from scratch every time takes an evening you do not have. The middle path is a routine: one complete master resume, a copy for each job, and a handful of targeted edits.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "94bbe4c8aa99",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "1d9bfe95c01e",
+									"text": "Start from one complete master resume",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "275e80bb582c",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "f7257f18582e",
+									"text": "Keep one resume that holds everything: every role, project, tool and result you could reasonably mention. It is long on purpose. You never send it; you copy from it.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "34f72691506b",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "f961a700df42",
+									"text": "Make a copy for each posting",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "9b88454e4690",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "53292777a54d",
+									"text": "Tailor a copy, never the master itself. In Rezumi, choose ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "705c29286557",
+									"text": "Copy for a job…",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "8fa32a326f10",
+									"text": " on a resume in Documents. The copy is linked to that job, so you always know which version went where, and the master stays untouched.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "733f1f1a1de4",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "c44119b4ea9f",
+									"text": "Edit for the posting, in this order",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "0a381e686299",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "b5ab3fde69be",
+									"text": "Headline and summary.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "3fe0de5188a7",
+									"text": " Use the posting's job title if it honestly describes you, and lead with the two or three things the role asks for most.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "1e337ee5c322",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "9fbae59c9872",
+									"text": "Skills.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "ade968db3cfa",
+									"text": " Move the tools and skills the posting names to the top, and drop the ones that do not matter for this role.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "25da5ac43de7",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "d521811048e5",
+									"text": "Bullets.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "e43df60fb667",
+									"text": " For your two most recent roles, keep the bullets that prove what the posting asks for and cut the rest. Add a number wherever you have one: volume, percentage, timeframe or team size.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "41aac0d24933",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "7463a4e94757",
+									"text": "Order.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "be9294e65d53",
+									"text": " Put the most relevant section first. A career changer might lead with projects; a recent graduate with education.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "c991c70d91bf",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "29fcbabe7666",
+									"text": "Let AI draft, then decide yourself",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "098ba33fda68",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "5b8116b410de",
+									"text": "If you use Rezumi's AI assistant, ask it for a version tailored to the posting. It proposes changes you review one by one, and nothing is applied until you accept it. Use it to get a first draft quickly, then check every line: it should still be true, specific and in your own voice.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "6e4e47c17fd3",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "7b31ce068f18",
+									"text": "Check it before you send it",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "9dad1d627b3e",
+							"style": "normal",
+							"markDefs": [
+								{
+									"_type": "link",
+									"_key": "c128d008be25",
+									"href": "https://rezumi.app/ats-checker"
+								}
+							],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "4a29722ff9e4",
+									"text": "Run the tailored PDF through the free ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "2687490bef3f",
+									"text": "ATS checker",
+									"marks": ["c128d008be25"]
+								},
+								{
+									"_type": "span",
+									"_key": "2f8b8ba9a660",
+									"text": " with the posting pasted in. It shows which of the posting's terms your resume already contains, and whether software can read the file at all. Then add the application to your tracker, so you know when to follow up.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"cta": "build-resume"
+				},
+				"taxonomies": {
+					"category": ["job-search"],
+					"tag": ["ai"]
+				},
+				"bylines": [
+					{
+						"byline": "byline-rezumi-team"
+					}
+				]
+			},
+			{
+				"id": "post-tailor-id",
+				"slug": "sesuaikan-cv-untuk-setiap-lowongan",
+				"locale": "id",
+				"translationOf": "post-tailor-en",
+				"status": "published",
+				"data": {
+					"title": "Sesuaikan CV untuk setiap lowongan tanpa mulai dari nol",
+					"excerpt": "Satu CV induk, satu salinan untuk setiap lowongan, dan beberapa penyesuaian terarah: rutinitas yang cukup beberapa menit, bukan semalaman.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "d6f15ed87e56",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "8f7b3050ab5d",
+									"text": "Mengirim CV yang sama ke setiap lowongan memang cepat, tetapi jarang sesuai dengan yang diminta masing-masing lowongan. Menulis ulang dari nol setiap kali butuh waktu semalaman yang tidak Anda punya. Jalan tengahnya adalah sebuah rutinitas: satu CV induk yang lengkap, satu salinan untuk setiap lowongan, dan beberapa penyesuaian yang terarah.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "dfdf36cfcce0",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "dada13ba7f1b",
+									"text": "Mulai dari satu CV induk yang lengkap",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "412b32299494",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "32b616694a59",
+									"text": "Simpan satu CV yang memuat semuanya: setiap posisi, proyek, alat, dan hasil kerja yang masuk akal untuk disebutkan. CV ini memang sengaja panjang. Anda tidak pernah mengirimnya; Anda menyalin darinya.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "c0c4519e5de6",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "0753f5d7538a",
+									"text": "Buat salinan untuk setiap lowongan",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "a6a5b1b5eae2",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "878b07cdf50a",
+									"text": "Sesuaikan salinannya, jangan CV induknya. Di Rezumi, pilih ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "a3cad4134389",
+									"text": "Salin untuk pekerjaan…",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "1a0afe992dea",
+									"text": " pada sebuah CV di Dokumen. Salinan itu terhubung ke lowongan tersebut, sehingga Anda selalu tahu versi mana yang dikirim ke mana, dan CV induk tetap utuh.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "e989ef5d2a90",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "6fb6c6ef3bac",
+									"text": "Sesuaikan dengan lowongan, dengan urutan ini",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "fabf78aa941f",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "82a3614f6309",
+									"text": "Judul dan ringkasan.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "e69b1d465fa9",
+									"text": " Pakai nama posisi dari lowongan jika memang menggambarkan diri Anda, lalu awali dengan dua atau tiga hal yang paling dicari oleh posisi itu.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "f5f33e16b193",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ad5a69e9d1a9",
+									"text": "Keahlian.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "92137eb1d748",
+									"text": " Pindahkan alat dan keahlian yang disebut di lowongan ke urutan teratas, dan hapus yang tidak relevan untuk posisi ini.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "19cda5312bfa",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "dafc6b7053c2",
+									"text": "Poin pengalaman.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "245d56ddd99a",
+									"text": " Untuk dua posisi terakhir Anda, pertahankan poin yang membuktikan apa yang diminta lowongan dan buang sisanya. Tambahkan angka di mana pun Anda punya: volume, persentase, rentang waktu, atau ukuran tim.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "e3840c221aa9",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "810192722482",
+									"text": "Urutan.",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "bde17f6ecd40",
+									"text": " Letakkan bagian yang paling relevan di depan. Orang yang pindah karier bisa membuka dengan proyek; lulusan baru dengan pendidikan.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "d841fa3771ca",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "8e01f1c40cb3",
+									"text": "Biarkan AI membuat draf, lalu Anda yang memutuskan",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "b90944d5655c",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "6552769f6fd2",
+									"text": "Jika Anda memakai asisten AI Rezumi, minta versi yang disesuaikan dengan lowongan. Asisten akan mengusulkan perubahan yang Anda tinjau satu per satu, dan tidak ada yang diterapkan sebelum Anda menyetujuinya. Gunakan untuk mendapatkan draf pertama dengan cepat, lalu periksa setiap baris: semuanya harus tetap benar, spesifik, dan terdengar seperti Anda.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "e6c30d20ebf8",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "6132d77b28be",
+									"text": "Periksa sebelum mengirim",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "83af6d539cf5",
+							"style": "normal",
+							"markDefs": [
+								{
+									"_type": "link",
+									"_key": "7c5c811d3e93",
+									"href": "https://rezumi.app/ats-checker?locale=id-ID"
+								}
+							],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "d7fbc39a87ea",
+									"text": "Jalankan PDF hasil penyesuaian di ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "afeac164c75a",
+									"text": "pemeriksa ATS",
+									"marks": ["7c5c811d3e93"]
+								},
+								{
+									"_type": "span",
+									"_key": "2ed9180e258b",
+									"text": " gratis dengan lowongan yang sudah ditempelkan. Anda akan melihat istilah mana dari lowongan yang sudah ada di CV, dan apakah perangkat lunak bisa membaca file itu. Setelah itu, catat lamarannya di pelacak agar Anda tahu kapan perlu menindaklanjuti.",
+									"marks": []
+								}
+							]
+						}
+					],
+					"cta": "build-resume"
+				},
+				"bylines": [
+					{
+						"byline": "byline-rezumi-team"
+					}
+				]
+			},
+			{
+				"id": "post-ats-en",
+				"slug": "what-an-ats-check-tells-you",
+				"locale": "en",
+				"status": "published",
+				"data": {
+					"title": "What an ATS check can and can't tell you about your resume",
+					"excerpt": "Applicant tracking systems read your resume as plain text before a person does. What a check measures, the problems it catches, and what no score can promise.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "bb7f196a8a48",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "72921ceb217c",
+									"text": "Most companies receive applications through an applicant tracking system (ATS). Before a recruiter opens your resume, the system turns the file into plain text and sorts what it recognises, such as your name, contact details, roles, dates and skills, into the fields recruiters search and filter on.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "c21e13e32606",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "1958b8e67d46",
+									"text": "That conversion is where resumes quietly lose information. Text inside images, two-column layouts read across instead of down, unusual section names and dates in a format software cannot parse can all come out garbled or go missing. Nobody tells you when it happens.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "d892f874c73b",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "de7fbafe2f1f",
+									"text": "What a useful check measures",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "59557f9f258a",
+							"style": "normal",
+							"markDefs": [
+								{
+									"_type": "link",
+									"_key": "e01fb731666f",
+									"href": "https://rezumi.app/ats-checker"
+								}
+							],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "8210e1c89289",
+									"text": "A good ATS check runs the same conversion your application goes through and shows you the result. Rezumi's free ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "6fba54aab714",
+									"text": "ATS checker",
+									"marks": ["e01fb731666f"]
+								},
+								{
+									"_type": "span",
+									"_key": "58eea01fd6d8",
+									"text": " reads the text out of your PDF in your browser, so the file is never uploaded, and flags what came out wrong:",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "d534dbd0766c",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "eb6f540b7afa",
+									"text": "Text that cannot be read at all, such as a scanned page or text saved as an image",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "950ae852f679",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "dcad0995aa0d",
+									"text": "Layouts that break the reading order, like side-by-side columns and grids",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "7c374b59acfd",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "44d5bda4113d",
+									"text": "Sections most systems expect but cannot find, such as Experience and Education",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "1d724d59ded1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "559fab8d33b6",
+									"text": "Dates and contact details written in ways software misreads",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "85292ec6ef27",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "1f7f8578dcff",
+									"text": "Fonts that are not embedded and characters that map to the wrong letters",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "a64455dd7a1e",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "597fec582be0",
+									"text": "It scores the file from 0 to 100 on how reliably the text comes out. Paste a job posting as well and it shows which of the posting's terms your resume already contains.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "1fec0dbe9e36",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "d28d59ddf8f9",
+									"text": "What no score can tell you",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "e0d2b8bc30f8",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "be0ecbff6dcd",
+									"text": "A readability score measures whether software can read your resume, not whether you will get the job. It cannot judge whether your experience fits the role, whether your results are convincing, or how a recruiter will compare you with other candidates. Treat a high score as ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "25151f61e0a4",
+									"text": "nothing technical is in the way",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "dfa3b32ecec2",
+									"text": ", then spend your time on the content.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "f829274ff951",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "801aae08b39d",
+									"text": "Keyword matching deserves the same caution. Using the posting's language helps a recruiter's search find you, but adding terms you cannot back up, or hiding them in white text, backfires as soon as a person reads the page.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "58b61b511c67",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "9148377a3ab2",
+									"text": "A five-minute routine before you apply",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "6e3ab7dadd96",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ffd8c343eb8c",
+									"text": "Export your resume as a text PDF, not a scan or a screenshot.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "2651a9e599f5",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "46620c5694bc",
+									"text": "Check it and open the ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "88008e9a7946",
+									"text": "As software reads it",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "ac9cd4c5ff00",
+									"text": " view. Fix anything that is missing or out of order.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "461145b0fbc6",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "6e5eaae8062b",
+									"text": "Paste the job posting and add the skills it asks for that you genuinely have, in your own words.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "d917ad85206e",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "7147ab36e02e",
+									"text": "Read the final version once more as a person would. Clear, specific bullets still matter most.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						}
+					],
+					"cta": "ats-checker"
+				},
+				"taxonomies": {
+					"category": ["resume-tips"],
+					"tag": ["ats"]
+				},
+				"bylines": [
+					{
+						"byline": "byline-rezumi-team"
+					}
+				]
+			},
+			{
+				"id": "post-ats-id",
+				"slug": "apa-kata-pemeriksa-ats-tentang-cv",
+				"locale": "id",
+				"translationOf": "post-ats-en",
+				"status": "published",
+				"data": {
+					"title": "Yang bisa dan tidak bisa disampaikan pemeriksa ATS tentang CV Anda",
+					"excerpt": "Sistem pelacak pelamar membaca CV Anda sebagai teks biasa sebelum dibaca manusia. Apa yang diukur, masalah yang bisa ditemukan, dan hal yang tidak bisa dijanjikan skor apa pun.",
+					"content": [
+						{
+							"_type": "block",
+							"_key": "d46ca6ffa417",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "abd968b2801d",
+									"text": "Sebagian besar perusahaan menerima lamaran lewat applicant tracking system (ATS), yaitu sistem pelacak pelamar. Sebelum rekruter membuka CV Anda, sistem ini mengubah file menjadi teks biasa lalu memilah bagian yang dikenalinya, seperti nama, kontak, posisi, tanggal, dan keahlian, ke kolom-kolom yang dipakai rekruter untuk mencari dan menyaring kandidat.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "43f25da499a1",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "69e27f3f470a",
+									"text": "Di tahap konversi inilah informasi di CV sering hilang tanpa disadari. Teks di dalam gambar, tata letak dua kolom yang terbaca menyamping alih-alih ke bawah, judul bagian yang tidak lazim, dan format tanggal yang tidak dikenali perangkat lunak bisa berubah kacau atau hilang sama sekali. Tidak ada yang memberi tahu Anda saat itu terjadi.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "ad19bcae2e2b",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "5e9f9dbb3755",
+									"text": "Yang diukur oleh pemeriksaan yang berguna",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "c0a24edcadc4",
+							"style": "normal",
+							"markDefs": [
+								{
+									"_type": "link",
+									"_key": "9645f7da5c99",
+									"href": "https://rezumi.app/ats-checker?locale=id-ID"
+								}
+							],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "de2e250a4916",
+									"text": "Pemeriksaan ATS yang baik menjalankan konversi yang sama dengan yang dilalui lamaran Anda, lalu menunjukkan hasilnya. ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "a1c9e7cabfbe",
+									"text": "Pemeriksa ATS",
+									"marks": ["9645f7da5c99"]
+								},
+								{
+									"_type": "span",
+									"_key": "b264793e5c08",
+									"text": " gratis dari Rezumi membaca teks dari PDF Anda langsung di browser, jadi file tidak pernah diunggah, lalu menandai bagian yang bermasalah:",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "405c4b25e118",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "a435e68d7430",
+									"text": "Teks yang sama sekali tidak terbaca, misalnya halaman hasil pindaian atau teks yang tersimpan sebagai gambar",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "9492512781b3",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "29766d5755bc",
+									"text": "Tata letak yang merusak urutan baca, seperti kolom berdampingan dan grid",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "dcbf6e7ccdfb",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "f430e9026e8d",
+									"text": "Bagian yang biasanya dicari sistem tetapi tidak ditemukan, seperti Pengalaman dan Pendidikan",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "d3b37c3fb517",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "7e8e90b39691",
+									"text": "Tanggal dan kontak yang ditulis dengan cara yang salah dibaca perangkat lunak",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "3cfee5f92f37",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "ccbe7a363298",
+									"text": "Font yang tidak tertanam dan karakter yang terbaca sebagai huruf lain",
+									"marks": []
+								}
+							],
+							"listItem": "bullet",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "832eb059973f",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "1a1204c5327c",
+									"text": "File Anda diberi skor 0 sampai 100 berdasarkan seberapa andal teksnya bisa diambil. Tempelkan juga lowongan kerjanya, dan Anda akan melihat istilah mana dari lowongan itu yang sudah ada di CV Anda.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "9223ba380447",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "87ec363277ea",
+									"text": "Yang tidak bisa disampaikan oleh skor apa pun",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "13c79aac7415",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "732004d385b1",
+									"text": "Skor keterbacaan mengukur apakah perangkat lunak bisa membaca CV Anda, bukan apakah Anda akan diterima. Skor itu tidak bisa menilai apakah pengalaman Anda cocok dengan posisinya, apakah pencapaian Anda meyakinkan, atau bagaimana rekruter membandingkan Anda dengan kandidat lain. Anggap skor tinggi sebagai tanda ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "4fdb51a3f91e",
+									"text": "tidak ada hambatan teknis",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "d69851a9dc3f",
+									"text": ", lalu curahkan waktu Anda untuk isinya.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "71fed214afe7",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "326ec2e17a9d",
+									"text": "Pencocokan kata kunci juga perlu disikapi dengan hati-hati. Memakai bahasa yang sama dengan lowongan membantu Anda ditemukan lewat pencarian rekruter, tetapi menambahkan istilah yang tidak bisa Anda buktikan, atau menyembunyikannya dengan teks putih, justru merugikan begitu CV dibaca manusia.",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "1df04cae0040",
+							"style": "h2",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "015c71789af7",
+									"text": "Rutinitas lima menit sebelum melamar",
+									"marks": []
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"_key": "29be4b38e4f2",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "0b01fb393002",
+									"text": "Ekspor CV sebagai PDF berbasis teks, bukan hasil pindaian atau tangkapan layar.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "f98541fde158",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "f252f35c0d86",
+									"text": "Periksa CV dan buka tab ",
+									"marks": []
+								},
+								{
+									"_type": "span",
+									"_key": "8d782e9ff28b",
+									"text": "Saat perangkat lunak membacanya",
+									"marks": ["strong"]
+								},
+								{
+									"_type": "span",
+									"_key": "b52932a2440e",
+									"text": ". Perbaiki apa pun yang hilang atau urutannya kacau.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "2ef1d36adadb",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "0de591e19b0a",
+									"text": "Tempelkan lowongan kerja dan tambahkan keahlian yang diminta dan memang Anda miliki, dengan kata-kata Anda sendiri.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						},
+						{
+							"_type": "block",
+							"_key": "361e83afcc4d",
+							"style": "normal",
+							"markDefs": [],
+							"children": [
+								{
+									"_type": "span",
+									"_key": "a9ac14dd5218",
+									"text": "Baca versi akhirnya sekali lagi seperti rekruter membacanya. Poin-poin yang jelas dan spesifik tetap yang paling penting.",
+									"marks": []
+								}
+							],
+							"listItem": "number",
+							"level": 1
+						}
+					],
+					"cta": "ats-checker"
+				},
+				"bylines": [
+					{
+						"byline": "byline-rezumi-team"
+					}
+				]
+			}
+		]
+	}
+}

@@ -57,14 +57,20 @@ const xmlResponse = (root: string, lines: string[]) =>
 		},
 	);
 
-/** The sitemap index: the marketing pages, then resumes listed in search engines, 50,000 to a page. */
+/** The sitemap index: the marketing pages, then resumes and portfolios listed in search engines, 50,000 to a page. */
 export async function handleSitemap() {
 	const baseUrl = appUrl();
-	const { countIndexableResumes, SITEMAP_PAGE_SIZE } = await import("@rezumi/api/features/resume/web-page");
+	const [{ countIndexableResumes, SITEMAP_PAGE_SIZE }, { countIndexablePortfolios, PORTFOLIO_SITEMAP_PAGE_SIZE }] =
+		await Promise.all([
+			import("@rezumi/api/features/resume/web-page"),
+			import("@rezumi/api/features/portfolio/public"),
+		]);
 	const pages = Math.ceil((await countIndexableResumes().catch(() => 0)) / SITEMAP_PAGE_SIZE);
+	const portfolioPages = Math.ceil((await countIndexablePortfolios().catch(() => 0)) / PORTFOLIO_SITEMAP_PAGE_SIZE);
 	const sitemaps = [
 		`${baseUrl}/sitemaps/pages.xml`,
 		...Array.from({ length: pages }, (_, page) => `${baseUrl}/sitemaps/resumes-${page + 1}.xml`),
+		...Array.from({ length: portfolioPages }, (_, page) => `${baseUrl}/sitemaps/portfolios-${page + 1}.xml`),
 	];
 	return xmlResponse(
 		'sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
@@ -109,12 +115,27 @@ export async function handleResumesSitemap(page: number) {
 	);
 }
 
+/** `/sitemaps/portfolios-<n>.xml`: one page of portfolios listed in search engines, each at `/<username>`. */
+export async function handlePortfoliosSitemap(page: number) {
+	const baseUrl = appUrl();
+	const { listIndexablePortfolios } = await import("@rezumi/api/features/portfolio/public");
+	const portfolios = Number.isInteger(page) && page >= 1 ? await listIndexablePortfolios(page - 1) : [];
+	if (portfolios.length === 0) return new Response("Not Found", { status: 404 });
+	return xmlResponse(
+		'urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+		portfolios.map(
+			(portfolio) =>
+				`  <url><loc>${escapeXml(`${baseUrl}/${encodeURIComponent(portfolio.username)}`)}</loc><lastmod>${portfolio.updatedAt.toISOString()}</lastmod></url>`,
+		),
+	);
+}
+
 export function handleLlms() {
 	const baseUrl = appUrl();
 	const body = [
 		"# Rezumi",
 		"",
-		`> Rezumi is a resume builder and job search workspace. Write a resume in an editor beside a live page, pick one of ${templateLineup.length} templates, check that applicant tracking systems can read it, tailor it to a job posting, and share it at a public link or download it. Start on the free plan; paid plans are 30-day passes that never renew on their own.`,
+		`> Rezumi is a resume builder and job search workspace. Write a resume in an editor beside a live page, pick one of ${templateLineup.length} templates, check that applicant tracking systems can read it, tailor it to a job posting, and share it at a public link or download it. Start on the free plan; paid plans are monthly or yearly subscriptions you can cancel any time.`,
 		"",
 		"## Search",
 		"",
@@ -132,7 +153,7 @@ export function handleLlms() {
 			? []
 			: ["- Plus, Pro AI and Rezumi AI trial credits are coming soon. Paid plan limits are not active yet."]),
 		"",
-		"- Plans (prices in Indonesian Rupiah): Free (Rp0: 3 active resumes and 3 cover letters, 8 templates, every icon style, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus (Rp29,000 for 30 days: 50 resumes and letters, every template, tool logos in skills, Word and ODT, custom styles, MCP and API); Pro AI (Rp79,000 for 30 days: everything in Plus and 100 AI credits, no API key needed). Paid plans never renew automatically.",
+		"- Plans (US dollars, or Rupiah for visitors from Indonesia; before tax, which the checkout adds): Free ($0: 3 active resumes and 3 cover letters, 8 templates, every icon style, PDF without a watermark, ATS check, job tracker, 5 AI credits to try); Plus ($4.99 a month or $39 a year: 50 resumes and letters, every template, tool logos in skills, Word and ODT, custom styles, MCP and API); Pro AI ($9.99 a month or $79 a year: everything in Plus and 100 AI credits every month, no API key needed). Paid plans are subscriptions you can cancel any time; access lasts until the paid period ends. A first Plus subscription starts with a 7-day free trial.",
 		"- Export: PDF, Markdown and JSON on every plan; Word (DOCX) and ODT with Plus and Pro AI.",
 		"- Import: PDF, LinkedIn data export, JSON Resume, Rezumi JSON; Word files with an AI provider.",
 		"- Sharing: private by default; a public link or a password-protected link, changeable at any time.",

@@ -1,0 +1,2532 @@
+<!doctype html>
+<html lang="id" dir="ltr" class="t-prima" data-pf-scheme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>Tema Prima · mockup portfolio</title>
+		<meta name="description" content="Mockup tema Prima untuk portfolio Rezumi dengan persona fiktif Anindya Dewi." />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap"
+		/>
+		<link rel="stylesheet" href="tokens.css" />
+		<link rel="stylesheet" href="shared.css" />
+		<style>
+			:root {
+				--pf-max-width: 1160px;
+				--pf-radius: 6px;
+				--pf-radius-sm: 4px;
+				--pf-bg: #f5f6f8;
+				--pf-surface: #ffffff;
+				--pf-text: #0e1726;
+				--pf-muted: #4d596b;
+				--pf-border: #d9dee6;
+			}
+			:root[data-pf-scheme="dark"] {
+				--pf-bg: #0b101a;
+				--pf-surface: #121a28;
+				--pf-text: #e7ebf2;
+				--pf-muted: #9ba6b7;
+				--pf-border: #243147;
+			}
+			.pr-head {
+				position: sticky;
+				top: env(safe-area-inset-top, 0px);
+				z-index: 20;
+				background: color-mix(in oklab, var(--pf-bg) 92%, transparent);
+				backdrop-filter: blur(10px);
+				border-bottom: 1px solid var(--pf-border);
+			}
+			.pr-brand {
+				font-family: var(--pf-font-heading);
+				font-size: 1.125rem;
+				font-weight: 600;
+			}
+			.pr-head .pf-btn {
+				min-height: 38px;
+				padding: 0.45em 1em;
+				font-size: var(--pf-text-xs);
+				border-radius: var(--pf-radius);
+			}
+			.pr-hero {
+				display: grid;
+				grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+				gap: clamp(32px, 6vw, 88px);
+				align-items: center;
+				padding-block: clamp(40px, 7vw, 96px) 40px;
+			}
+			.pr-hero__text {
+				display: grid;
+				gap: 20px;
+				justify-items: start;
+			}
+			.pr-headline {
+				font-size: var(--pf-text-xs);
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				font-weight: 600;
+				color: var(--pf-accent-text);
+			}
+			.pr-name {
+				font-size: min(clamp(2.6rem, 1.6rem + 4vw, 4.4rem), calc(min(100vw - 32px, 700px) / (var(--name-word) * 0.55)));
+				font-weight: 600;
+				letter-spacing: -0.025em;
+				line-height: 1.02;
+			}
+			.pr-greeting {
+				font-size: var(--pf-text-lg);
+				line-height: 1.55;
+				color: var(--pf-text);
+				max-width: 40ch;
+			}
+			.pr-photo {
+				display: grid;
+				gap: 10px;
+				justify-self: end;
+				width: 100%;
+				max-width: 360px;
+			}
+			.pr-photo img {
+				width: 100%;
+				aspect-ratio: 4/5;
+				object-fit: cover;
+				border-radius: var(--pf-radius);
+				border: 1px solid var(--pf-border);
+			}
+			.pr-photo figcaption {
+				font-size: var(--pf-text-xs);
+				color: var(--pf-muted);
+				padding-inline-start: 12px;
+				border-inline-start: 2px solid var(--pf-accent);
+			}
+			.pf-nophoto .pr-photo {
+				display: none;
+			}
+			.pf-nophoto .pr-hero {
+				grid-template-columns: minmax(0, 1fr);
+			}
+			@media (max-width: 820px) {
+				.pr-hero {
+					grid-template-columns: minmax(0, 1fr);
+				}
+				.pr-photo {
+					justify-self: start;
+					max-width: 200px;
+					order: -1;
+				}
+			}
+			.pr-kpis {
+				padding-bottom: clamp(40px, 6vw, 72px);
+			}
+			.pr-kpis .pf-metrics[data-variant="kpi"] {
+				grid-template-columns: repeat(4, minmax(0, 1fr));
+				gap: 1px;
+				border: 1px solid var(--pf-border);
+				border-radius: var(--pf-radius);
+				background: var(--pf-border);
+				overflow: hidden;
+			}
+			@media (max-width: 900px) {
+				.pr-kpis .pf-metrics[data-variant="kpi"] {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+				}
+			}
+			.pr-kpis .pf-metrics[data-variant="kpi"] .pf-metric {
+				border: 0;
+				border-radius: 0;
+				padding: 22px 24px;
+			}
+			@media (max-width: 560px) {
+				.pr-kpis .pf-metrics[data-variant="kpi"] .pf-metric {
+					padding: 16px;
+				}
+			}
+			.pr-kpis .pf-metric__value {
+				font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+			}
+			.t-prima .pf-metrics[data-variant="kpi"] .pf-metric {
+				background: var(--pf-surface);
+			}
+			.pr-rows {
+				display: grid;
+			}
+			.pr-row {
+				display: grid;
+				grid-template-columns: 220px minmax(0, 1fr);
+				gap: 24px 48px;
+				padding-block: clamp(36px, 5vw, 64px);
+				border-top: 1px solid var(--pf-border);
+			}
+			.pr-row .pf-section__title {
+				font-size: var(--pf-text-xl);
+				font-weight: 600;
+				letter-spacing: -0.01em;
+			}
+			@media (max-width: 820px) {
+				.pr-row {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+			.pr-row__body {
+				min-width: 0;
+				display: grid;
+				gap: 20px;
+			}
+			.pr-lead {
+				font-size: var(--pf-text-lg);
+			}
+			.pr-timeline {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+			}
+			.pr-timeline > li {
+				display: grid;
+				grid-template-columns: 150px 16px minmax(0, 1fr);
+				gap: 0 18px;
+				position: relative;
+				padding-bottom: 28px;
+			}
+			.pr-timeline > li::before {
+				content: "";
+				position: absolute;
+				inset-inline-start: calc(150px + 18px + 7px);
+				top: 10px;
+				bottom: -4px;
+				width: 2px;
+				background: var(--pf-border);
+			}
+			.pr-timeline > li:last-child::before {
+				display: none;
+			}
+			.pr-when {
+				font-size: var(--pf-text-sm);
+				color: var(--pf-muted);
+				padding-top: 1px;
+			}
+			.pr-dot {
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				border: 2px solid var(--pf-accent-text);
+				background: var(--pf-bg);
+				margin-top: 4px;
+				position: relative;
+				z-index: 1;
+			}
+			.pr-timeline > li:first-child .pr-dot {
+				background: var(--pf-accent-text);
+			}
+			.pr-job {
+				display: grid;
+				gap: 3px;
+			}
+			.pr-job b {
+				font-family: var(--pf-font-heading);
+				font-size: var(--pf-text-lg);
+				font-weight: 600;
+				line-height: 1.3;
+			}
+			.pr-job > span {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+			}
+			.pr-job ul {
+				margin-top: 8px;
+				padding-inline-start: 1.1em;
+				font-size: var(--pf-text-sm);
+				display: grid;
+				gap: 4px;
+			}
+			@media (max-width: 560px) {
+				.pr-timeline > li {
+					grid-template-columns: 16px minmax(0, 1fr);
+					gap: 4px 14px;
+				}
+				.pr-when {
+					grid-column: 2;
+					order: -1;
+				}
+				.pr-timeline > li::before {
+					inset-inline-start: 7px;
+				}
+				.pr-dot {
+					grid-row: 1 / span 2;
+				}
+			}
+			.pr-note {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+			}
+			.pr-cards {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+				gap: 20px;
+			}
+			.pr-card {
+				display: grid;
+				height: 100%;
+				background: var(--pf-surface);
+				border: 1px solid var(--pf-border);
+				border-radius: var(--pf-radius);
+				overflow: hidden;
+				text-decoration: none;
+				transition:
+					border-color 0.2s,
+					box-shadow 0.2s;
+			}
+			.pr-card:hover {
+				border-color: color-mix(in oklab, var(--pf-accent-text) 50%, var(--pf-border));
+				box-shadow: 0 8px 24px rgb(15 23 42 / 0.08);
+			}
+			.pr-card__cover {
+				--pf-cover-ratio: 16/10;
+				border-bottom: 1px solid var(--pf-border);
+			}
+			.pr-card__body {
+				display: grid;
+				gap: 8px;
+				align-content: start;
+				padding: 20px 22px 22px;
+			}
+			.pr-card__meta {
+				font-size: var(--pf-text-xs);
+				color: var(--pf-muted);
+			}
+			.pr-card__title {
+				font: 600 var(--pf-text-lg)/1.3 var(--pf-font-heading);
+			}
+			.pr-card__summary {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+				line-height: 1.5;
+			}
+			.pr-card .pf-work-metric {
+				justify-self: start;
+				margin-top: 4px;
+				border-radius: var(--pf-radius-sm);
+			}
+			.pr-services {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+				gap: 16px;
+			}
+			.pr-services .pf-service {
+				display: grid;
+				gap: 8px;
+				align-content: start;
+				padding: 22px;
+				background: var(--pf-surface);
+				border: 1px solid var(--pf-border);
+				border-radius: var(--pf-radius);
+			}
+			.pf-service__head {
+				display: grid;
+				gap: 4px;
+			}
+			.pf-service h3 {
+				font-size: var(--pf-text-md);
+				font-weight: 600;
+			}
+			.pf-service__price {
+				font-size: var(--pf-text-sm);
+				font-weight: 600;
+				color: var(--pf-accent-text);
+				font-variant-numeric: tabular-nums;
+			}
+			.pf-service p {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-sm);
+			}
+			.pf-service__cta {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				margin-top: 6px;
+				font-weight: 600;
+				font-size: var(--pf-text-sm);
+				color: var(--pf-accent-text);
+				text-underline-offset: 4px;
+			}
+			.pr-quotes {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+				gap: 16px;
+			}
+			.pr-quotes .pf-quote {
+				display: grid;
+				gap: 18px;
+				align-content: space-between;
+				padding: 24px;
+				background: var(--pf-surface);
+				border: 1px solid var(--pf-border);
+				border-radius: var(--pf-radius);
+			}
+			.pr-quotes blockquote {
+				font: 400 var(--pf-text-md)/1.6 var(--pf-font-heading);
+				font-style: italic;
+			}
+			.pr-extras {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+				gap: 28px;
+			}
+			.pf-extra h3 {
+				font-size: var(--pf-text-sm);
+				text-transform: uppercase;
+				letter-spacing: 0.08em;
+				color: var(--pf-muted);
+				margin-bottom: 12px;
+				font-family: var(--pf-font-body);
+			}
+			.pf-extra ul {
+				list-style: none;
+				padding: 0;
+				display: grid;
+				gap: 12px;
+			}
+			.pf-extra li {
+				display: grid;
+				gap: 1px;
+				font-size: var(--pf-text-sm);
+			}
+			.pf-extra li span {
+				color: var(--pf-muted);
+				font-size: var(--pf-text-xs);
+			}
+			.pr-principles ul {
+				list-style: none;
+				padding: 0;
+				display: grid;
+				gap: 12px;
+				counter-reset: p;
+			}
+			.pr-principles li {
+				display: grid;
+				grid-template-columns: auto 1fr;
+				gap: 14px;
+				font: 500 var(--pf-text-lg)/1.45 var(--pf-font-heading);
+				counter-increment: p;
+			}
+			.pr-principles li::before {
+				content: counter(p);
+				display: grid;
+				place-items: center;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				border: 1.5px solid var(--pf-accent-text);
+				color: var(--pf-accent-text);
+				font: 600 var(--pf-text-xs)/1 var(--pf-font-body);
+				margin-top: 2px;
+			}
+			.pr-contact {
+				display: grid;
+				grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+				gap: 32px;
+				align-items: start;
+			}
+			@media (max-width: 900px) {
+				.pr-contact {
+					grid-template-columns: minmax(0, 1fr);
+				}
+			}
+			.pr-contact__main {
+				display: grid;
+				gap: 20px;
+			}
+			.pr-cta {
+				font: 600 var(--pf-text-xl)/1.3 var(--pf-font-heading);
+			}
+			.t-prima .pf-btn {
+				border-radius: var(--pf-radius);
+			}
+			.t-prima .pf-chip {
+				border-radius: var(--pf-radius-sm);
+				background: var(--pf-surface);
+				border: 1px solid var(--pf-border);
+			}
+			.t-prima .pf-logos {
+				gap: 16px 36px;
+			}
+			.t-prima .pf-detail__title {
+				font-weight: 600;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="pr-head">
+			<div class="pf-wrap">
+				<nav class="pf-nav" aria-label="Navigasi halaman">
+					<a class="pf-nav__brand pr-brand" href="#top" data-person-name>Anindya Dewi</a>
+					<ul class="pf-nav__links">
+						<li><a href="#about">Tentang</a></li>
+						<li><a href="#work">Karya</a></li>
+						<li><a href="#services">Layanan</a></li>
+						<li><a href="#experience">Pengalaman</a></li>
+						<li><a href="#contact">Kontak</a></li>
+						<li><a class="pf-btn pf-btn--primary" href="#contact">Kirim pesan</a></li>
+					</ul>
+					<details class="pf-menu">
+						<summary>
+							<svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M4 7h16M4 12h16M4 17h16" /></svg
+							>Menu
+						</summary>
+						<ul class="pf-menu__list">
+							<li><a href="#about">Tentang</a></li>
+							<li><a href="#work">Karya</a></li>
+							<li><a href="#services">Layanan</a></li>
+							<li><a href="#experience">Pengalaman</a></li>
+							<li><a href="#contact">Kontak</a></li>
+						</ul>
+					</details>
+				</nav>
+			</div>
+		</header>
+		<main id="top">
+			<section class="pf-wrap pr-hero" aria-label="Intro">
+				<div class="pr-hero__text">
+					<p class="pr-headline"><span data-fx-headline>Senior Relationship Manager · Private Banking</span></p>
+					<h1 class="pf-name pr-name" style="--name-word: 7">
+						<span data-fx-name data-person-name>Anindya Dewi</span>
+					</h1>
+					<p class="pr-greeting">
+						Saya mendampingi keluarga menata kekayaan lintas generasi, dari suksesi usaha hingga pendidikan anak di luar
+						negeri.
+					</p>
+					<div class="pf-chips">
+						<span class="pf-chip"
+							><svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21z" />
+								<circle cx="12" cy="9.5" r="2.5" /></svg
+							>Jakarta, Indonesia</span
+						><span class="pf-chip pf-chip--open">Terbuka untuk peran Head of Private Banking</span>
+					</div>
+					<div class="pf-btns">
+						<a class="pf-btn pf-btn--primary" href="#"
+							><svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+								<path d="M14 3v5h5" /></svg
+							>Unduh CV (PDF)</a
+						><a class="pf-btn pf-btn--secondary" href="#contact"
+							><svg
+								class="pf-icon"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<rect x="3" y="5" width="18" height="14" rx="2" />
+								<path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg
+							>Jadwalkan perkenalan</a
+						>
+					</div>
+				</div>
+				<figure class="pr-photo pf-photo">
+					<img src="img/anindya.jpg" alt="Foto Anindya Dewi" width="480" height="480" />
+					<figcaption>Lisensi WMI (OJK) · Certified Financial Planner</figcaption>
+				</figure>
+			</section>
+			<section class="pf-wrap pr-kpis" aria-label="Angka pencapaian">
+				<dl class="pf-metrics" data-variant="kpi" data-spark="on">
+					<div class="pf-metric">
+						<dt class="pf-metric__label">Aset dikelola</dt>
+						<dd class="pf-metric__row"><span class="pf-metric__value">Rp4,6 T</span></dd>
+						<dd class="pf-metric__context">48 keluarga</dd>
+					</div>
+					<div class="pf-metric">
+						<dt class="pf-metric__label">Pertumbuhan portofolio</dt>
+						<dd class="pf-metric__row"><span class="pf-metric__value">+38%</span></dd>
+						<dd class="pf-metric__context">dalam 3 tahun</dd>
+					</div>
+					<div class="pf-metric">
+						<dt class="pf-metric__label">Dana baru 2025</dt>
+						<dd class="pf-metric__row"><span class="pf-metric__value">Rp1,2 T</span></dd>
+						<dd class="pf-metric__context">tertinggi dari 26 banker</dd>
+					</div>
+					<div class="pf-metric">
+						<dt class="pf-metric__label">Retensi nasabah utama</dt>
+						<dd class="pf-metric__row"><span class="pf-metric__value">100%</span></dd>
+						<dd class="pf-metric__context">5 tahun terakhir</dd>
+					</div>
+				</dl>
+			</section>
+			<div class="pf-wrap pr-rows">
+				<section class="pf-section pr-row" id="about">
+					<h2 class="pf-section__title">Tentang saya</h2>
+					<div class="pr-row__body">
+						<div class="pf-prose pr-lead">
+							<p>
+								<strong>Private banker dengan empat belas tahun pengalaman di manajemen kekayaan.</strong> Kini saya
+								mendampingi 48 keluarga dengan total aset Rp4,6 T.
+							</p>
+							<p>
+								Saya menyusun portofolio sesuai tujuan keluarga dan menjaga hubungan jangka panjang: tak satu pun dari
+								20 nasabah utama saya berpindah dalam lima tahun terakhir.
+							</p>
+						</div>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="experience">
+					<h2 class="pf-section__title">Pengalaman</h2>
+					<div class="pr-row__body">
+						<ol class="pr-timeline">
+							<li>
+								<span class="pr-when tnum">Jan 2022 – Sekarang</span><span class="pr-dot" aria-hidden="true"></span>
+								<div class="pr-job">
+									<b>Senior Relationship Manager, Private Banking</b><span>Bank Karsa Utama · Jakarta</span>
+									<ul>
+										<li>
+											Mengelola 48 keluarga ultra-high-net-worth dengan aset Rp4,6 T; menumbuhkan portofolio 38% dalam
+											tiga tahun.
+										</li>
+										<li>Menghimpun dana baru Rp1,2 T pada 2025, tertinggi dari 26 private banker.</li>
+										<li>Membina tiga RM junior; dua di antaranya dipromosikan dalam 18 bulan.</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<span class="pr-when tnum">Jul 2018 – Des 2021</span><span class="pr-dot" aria-hidden="true"></span>
+								<div class="pr-job">
+									<b>Relationship Manager, Private Banking</b><span>Bank Karsa Utama · Jakarta</span>
+									<ul>
+										<li>Menumbuhkan dana kelolaan 35 nasabah warisan dari Rp0,6 T menjadi Rp2,1 T.</li>
+										<li>Menyusun portofolio obligasi dan reksa dana tanpa temuan di empat audit.</li>
+										<li>
+											Memperkenalkan tinjauan keluarga per kuartal bersama penasihat pajak dan hukum, yang diadopsi
+											seluruh tim pada 2021.
+										</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<span class="pr-when tnum">Mar 2014 – Jun 2018</span><span class="pr-dot" aria-hidden="true"></span>
+								<div class="pr-job">
+									<b>Relationship Manager, Priority Banking</b><span>Bank Samudra Raya · Jakarta</span>
+									<ul>
+										<li>Melayani 220 nasabah prioritas berdana Rp1,3 T; pendapatan fee naik 52%.</li>
+										<li>Masuk tiga besar nasional penjualan bancassurance pada 2016 dan 2017.</li>
+									</ul>
+								</div>
+							</li>
+							<li>
+								<span class="pr-when tnum">Agu 2011 – Feb 2014</span><span class="pr-dot" aria-hidden="true"></span>
+								<div class="pr-job">
+									<b>Officer Development Program, Personal Banker</b><span>Bank Samudra Raya · Jakarta</span>
+									<ul>
+										<li>Lulus program officer, lalu menambah dana cabang Rp85 miliar dalam setahun.</li>
+									</ul>
+								</div>
+							</li>
+						</ol>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="work">
+					<h2 class="pf-section__title">Studi kasus</h2>
+					<div class="pr-row__body">
+						<p class="pr-note">Nama nasabah disamarkan.</p>
+						<ul class="pr-cards">
+							<li>
+								<a class="pr-card" href="#work-suksesi-keluarga"
+									><div class="pf-cover pr-card__cover">
+										<img src="img/prima-1.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+									</div>
+									<span class="pr-card__body"
+										><span class="pr-card__meta">2024 · Relationship manager utama</span
+										><span class="pr-card__title">Suksesi usaha keluarga generasi kedua</span
+										><span class="pr-card__summary"
+											>Menata ulang aset Rp1,1 T agar tiga bersaudara bisa meneruskan usaha tanpa sengketa.</span
+										><span class="pf-work-metric"><b>Rp1,1 T</b><span>Aset yang ditata</span></span></span
+									></a
+								>
+							</li>
+							<li>
+								<a class="pr-card" href="#work-dana-pendidikan"
+									><div class="pf-cover pr-card__cover">
+										<img src="img/prima-2.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+									</div>
+									<span class="pr-card__body"
+										><span class="pr-card__meta">2021–2025 · Perencana portofolio</span
+										><span class="pr-card__title">Dana pendidikan tiga anak di luar negeri</span
+										><span class="pr-card__summary"
+											>Rencana 12 tahun dengan obligasi bertingkat; target dana tercapai dua tahun lebih cepat.</span
+										><span class="pf-work-metric"><b>2 tahun</b><span>Lebih cepat</span></span></span
+									></a
+								>
+							</li>
+							<li>
+								<a class="pr-card" href="#work-tinjauan-kuartalan"
+									><div class="pf-cover pr-card__cover">
+										<img src="img/prima-3.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+									</div>
+									<span class="pr-card__body"
+										><span class="pr-card__meta">2021 · Penggagas</span
+										><span class="pr-card__title">Tinjauan keluarga per kuartal</span
+										><span class="pr-card__summary"
+											>Format rapat bersama penasihat pajak dan hukum, diadopsi seluruh tim private banking.</span
+										><span class="pf-work-metric"><b>26</b><span>Banker yang memakai</span></span></span
+									></a
+								>
+							</li>
+							<li>
+								<a class="pr-card" href="#work-obligasi-audit"
+									><div class="pf-cover pr-card__cover">
+										<img src="img/prima-4.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+									</div>
+									<span class="pr-card__body"
+										><span class="pr-card__meta">2018–2021 · Relationship manager</span
+										><span class="pr-card__title">Portofolio obligasi tanpa temuan audit</span
+										><span class="pr-card__summary"
+											>Empat audit berturut-turut tanpa temuan untuk portofolio pendapatan tetap Rp2,1 T.</span
+										><span class="pf-work-metric"><b>0</b><span>Temuan audit</span></span></span
+									></a
+								>
+							</li>
+							<li>
+								<a class="pr-card" href="#work-pembinaan-rm"
+									><div class="pf-cover pr-card__cover">
+										<img src="img/prima-5.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+									</div>
+									<span class="pr-card__body"
+										><span class="pr-card__meta">2023–2025 · Mentor</span
+										><span class="pr-card__title">Membina RM junior</span
+										><span class="pr-card__summary"
+											>Pendampingan enam bulan; dua dari tiga RM dipromosikan dalam 18 bulan.</span
+										><span class="pf-work-metric"><b>2 dari 3</b><span>Dipromosikan</span></span></span
+									></a
+								>
+							</li>
+							<li>
+								<a class="pr-card" href="#work-nasabah-prioritas"
+									><div class="pf-cover pr-card__cover">
+										<img src="img/prima-6.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+									</div>
+									<span class="pr-card__body"
+										><span class="pr-card__meta">2014–2018 · Relationship manager</span
+										><span class="pr-card__title">Rencana per segmen nasabah prioritas</span
+										><span class="pr-card__summary"
+											>Menata ulang 220 nasabah prioritas berdana Rp1,3 T; pendapatan fee naik 52%.</span
+										><span class="pf-work-metric"><b>+52%</b><span>Pendapatan fee</span></span></span
+									></a
+								>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="services">
+					<h2 class="pf-section__title">Layanan</h2>
+					<div class="pr-row__body">
+						<ul class="pr-services">
+							<li class="pf-service">
+								<div class="pf-service__head"><h3>Pembicara seminar</h3></div>
+								<p>Topik: perencanaan suksesi keluarga, investasi pendapatan tetap, dan etika penasihat.</p>
+								<a class="pf-service__cta" href="#contact"
+									>Pesan lewat form<svg
+										class="pf-icon pf-flip"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M5 12h14M13 6l6 6-6 6" /></svg
+								></a>
+							</li>
+							<li class="pf-service">
+								<div class="pf-service__head">
+									<h3>Pelatihan relationship manager</h3>
+									<span class="pf-service__price">Mulai Rp12 jt / kelas</span>
+								</div>
+								<p>Kelas dua hari untuk RM baru: membaca kebutuhan keluarga, KYC, dan tinjauan berkala.</p>
+								<a class="pf-service__cta" href="#contact"
+									>Pesan lewat form<svg
+										class="pf-icon pf-flip"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M5 12h14M13 6l6 6-6 6" /></svg
+								></a>
+							</li>
+							<li class="pf-service">
+								<div class="pf-service__head">
+									<h3>Mentoring karier perbankan</h3>
+									<span class="pf-service__price">Rp900 rb / sesi</span>
+								</div>
+								<p>Empat sesi untuk lulusan dan officer muda yang ingin masuk private banking.</p>
+								<a class="pf-service__cta" href="#"
+									>Tanya lewat WhatsApp<svg
+										class="pf-icon pf-flip"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M5 12h14M13 6l6 6-6 6" /></svg
+								></a>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="testimonials">
+					<h2 class="pf-section__title">Testimoni</h2>
+					<div class="pr-row__body">
+						<ul class="pr-quotes">
+							<li class="pf-quote">
+								<blockquote>
+									Anindya adalah alasan banyak keluarga bertahan bersama kami. Ia mendengar lebih dulu, baru
+									menyarankan.
+								</blockquote>
+								<div class="pf-person">
+									<span class="pf-avatar" aria-hidden="true">RD</span
+									><span class="pf-person__text"
+										><b>Ratna Dewanti</b><span>Head of Private Banking, Bank Karsa Utama</span></span
+									>
+								</div>
+							</li>
+							<li class="pf-quote">
+								<blockquote>
+									Tinjauan kuartalan yang ia rancang kini jadi standar tim. Rapat lebih singkat, keputusan lebih jelas.
+								</blockquote>
+								<div class="pf-person">
+									<span class="pf-avatar" aria-hidden="true">HS</span
+									><span class="pf-person__text"><b>Harun Siswanto</b><span>Penasihat pajak keluarga</span></span>
+								</div>
+							</li>
+							<li class="pf-quote">
+								<blockquote>Mentoring dengan Bu Anindya membuat saya siap memegang portofolio pertama saya.</blockquote>
+								<div class="pf-person">
+									<span class="pf-avatar" aria-hidden="true">AP</span
+									><span class="pf-person__text"
+										><b>Alya Prameswari</b><span>Relationship Manager, Bank Karsa Utama</span></span
+									>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="clients">
+					<h2 class="pf-section__title">Institusi</h2>
+					<div class="pr-row__body">
+						<ul class="pf-logos">
+							<li class="pf-logo">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.4" />
+									<circle cx="12" cy="12" r="3.6" fill="currentColor" /></svg
+								><span>Bank Karsa Utama</span>
+							</li>
+							<li class="pf-logo">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<rect x="3" y="5" width="18" height="5" rx="2.5" fill="currentColor" />
+									<rect x="3" y="14" width="12" height="5" rx="2.5" fill="currentColor" /></svg
+								><span>Bank Samudra Raya</span>
+							</li>
+							<li class="pf-logo">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M2 20 9.5 7l4 6.5L16 10l6 10z" fill="currentColor" /></svg
+								><span>Akademi Perbankan Nusa</span>
+							</li>
+							<li class="pf-logo">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<path d="M5 19C5 10 10 4 20 4c0 10-6 15-15 15z" fill="currentColor" />
+									<path d="M5 19 13 11" stroke="var(--pf-bg)" stroke-width="1.6" /></svg
+								><span>Forum Keluarga Usaha</span>
+							</li>
+							<li class="pf-logo">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor" />
+									<rect x="13" y="3" width="8" height="8" rx="4" fill="currentColor" />
+									<rect x="3" y="13" width="8" height="8" rx="4" fill="currentColor" />
+									<rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor" /></svg
+								><span>Mandala Perencana</span>
+							</li>
+							<li class="pf-logo">
+								<svg viewBox="0 0 24 24" aria-hidden="true">
+									<path
+										d="M2 9c3.3-3 6.7 3 10 0s6.7 3 10 0M2 15c3.3-3 6.7 3 10 0s6.7 3 10 0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.4"
+										stroke-linecap="round"
+									/></svg
+								><span>Asuransi Jiwa Teduh</span>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="education">
+					<h2 class="pf-section__title">Pendidikan</h2>
+					<div class="pr-row__body">
+						<ul class="pf-cvlist">
+							<li class="pf-cvitem">
+								<div class="pf-cvitem__head">
+									<span class="pf-cvitem__role">Magister Manajemen (M.M.), Keuangan (kelas eksekutif)</span
+									><span class="pf-cvitem__when">2016 – 2018</span>
+								</div>
+								<span class="pf-cvitem__org">Universitas Prasetiya Mulya</span>
+							</li>
+							<li class="pf-cvitem">
+								<div class="pf-cvitem__head">
+									<span class="pf-cvitem__role">Sarjana Ekonomi (S.E.), Manajemen</span
+									><span class="pf-cvitem__when">2007 – 2011</span>
+								</div>
+								<span class="pf-cvitem__org">Universitas Indonesia · IPK 3,57</span>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="credentials">
+					<h2 class="pf-section__title">Sertifikat & penghargaan</h2>
+					<div class="pr-row__body">
+						<div class="pr-extras">
+							<div class="pf-extra">
+								<h3>Sertifikat</h3>
+								<ul>
+									<li><b>Lisensi WMI</b><span>OJK · 2019</span></li>
+									<li><b>Certified Financial Planner</b><span>FPSB Indonesia · 2020</span></li>
+									<li><b>Lisensi Agen Asuransi Jiwa</b><span>Asosiasi Asuransi Jiwa Nusantara · 2014</span></li>
+								</ul>
+							</div>
+							<div class="pf-extra">
+								<h3>Penghargaan</h3>
+								<ul>
+									<li><b>Private Banker of the Year</b><span>Bank Karsa Utama · 2024</span></li>
+									<li><b>Dana Baru Bersih Terbaik</b><span>Bank Karsa Utama · 2022</span></li>
+									<li><b>President’s Club, Priority Banking</b><span>Bank Samudra Raya · 2016, 2017</span></li>
+								</ul>
+							</div>
+							<div class="pf-extra">
+								<h3>Bahasa</h3>
+								<ul>
+									<li><b>Bahasa Indonesia</b><span>Bahasa ibu</span></li>
+									<li><b>Bahasa Inggris</b><span>Fasih</span></li>
+									<li><b>Bahasa Mandarin</b><span>Percakapan</span></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="skills">
+					<h2 class="pf-section__title">Keahlian</h2>
+					<div class="pr-row__body">
+						<div class="pf-skillgroups">
+							<div class="pf-skillgroup">
+								<b>Penasihat kekayaan</b>
+								<ul class="pf-tags">
+									<li>Penyusunan portofolio</li>
+									<li>Pendapatan tetap</li>
+									<li>Perencanaan suksesi</li>
+								</ul>
+							</div>
+							<div class="pf-skillgroup">
+								<b>Pengembangan nasabah</b>
+								<ul class="pf-tags">
+									<li>Prospek nasabah</li>
+									<li>Family office</li>
+									<li>KYC &amp; APU-PPT</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="custom-1">
+					<h2 class="pf-section__title">Prinsip kerja</h2>
+					<div class="pr-row__body">
+						<div class="pf-prose pr-principles">
+							<ul>
+								<li>Kepentingan keluarga di atas target penjualan.</li>
+								<li>Setiap saran ditulis, lengkap dengan risikonya.</li>
+								<li>Tinjauan rutin, bukan hanya saat pasar turun.</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				<section class="pf-section pr-row" id="contact">
+					<h2 class="pf-section__title">Kontak</h2>
+					<div class="pr-row__body">
+						<div class="pr-contact">
+							<div class="pr-contact__main">
+								<p class="pr-cta">
+									Ingin berdiskusi tentang peran atau undangan bicara? Saya membalas dalam dua hari kerja.
+								</p>
+								<div class="pf-btns">
+									<a class="pf-btn pf-btn--primary" href="#"
+										><svg
+											class="pf-icon"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.8"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											aria-hidden="true"
+										>
+											<rect x="3" y="5" width="18" height="14" rx="2" />
+											<path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg
+										>Email</a
+									><a class="pf-btn pf-btn--secondary" href="#"
+										><svg
+											class="pf-icon"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.8"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											aria-hidden="true"
+										>
+											<path d="M4 20l1.3-3.9A8 8 0 1 1 8 19.1z" />
+											<path
+												d="M9 10.5c.5 1.8 2 3.3 3.8 3.8l1.2-1.1 2 .9c-.2 1.2-1.2 2-2.4 1.9A6.5 6.5 0 0 1 8.4 10c0-1.2.7-2.2 1.9-2.4l.9 2z"
+												stroke-width="1.2"
+											/></svg
+										>WhatsApp</a
+									>
+								</div>
+								<ul class="pf-contact-links">
+									<li><span>Email</span><a href="#">anindya.dewi@email.com</a></li>
+									<li><span>WhatsApp</span><a href="#">+62 815 5556 0937</a></li>
+									<li><span>LinkedIn</span><a href="#">linkedin.com/in/anindyadewi</a></li>
+								</ul>
+								<form class="pf-form" action="#" method="post">
+									<div class="pf-form__row">
+										<div class="pf-field">
+											<label for="cf-name">Nama</label><input id="cf-name" name="name" autocomplete="name" required />
+										</div>
+										<div class="pf-field">
+											<label for="cf-email">Email</label
+											><input id="cf-email" name="email" type="email" autocomplete="email" required />
+										</div>
+									</div>
+									<div class="pf-field">
+										<label for="cf-message">Pesan</label
+										><textarea id="cf-message" name="message" maxlength="2000" required></textarea>
+									</div>
+									<p class="pf-form__note">
+										Pesan dikirim ke Anindya. Email-mu terlihat olehnya agar ia bisa membalas.
+									</p>
+									<div><button class="pf-btn pf-btn--primary" type="submit">Kirim pesan</button></div>
+									<p class="pf-form__sent" role="status" hidden>
+										Terkirim. Anindya akan membalas ke email-mu. (Di mockup, pesan tidak benar-benar dikirim.)
+									</p>
+								</form>
+							</div>
+							<div class="pf-loc">
+								<div class="pf-loc__map">
+									<img
+										class="pf-map-light"
+										src="img/map-prima-light.svg"
+										alt="Peta sekitar Jakarta"
+										loading="lazy"
+										width="800"
+										height="480"
+									/><img
+										class="pf-map-dark"
+										src="img/map-prima-dark.svg"
+										alt=""
+										loading="lazy"
+										width="800"
+										height="480"
+									/><span class="pf-loc__pin"></span
+									><span class="pf-loc__attr">© OpenMapTiles © OpenStreetMap contributors</span>
+								</div>
+								<div class="pf-loc__body">
+									<div class="pf-loc__city">
+										<b>Jakarta, Indonesia</b
+										><span class="pf-loc__time" data-tz="Asia/Jakarta" data-tz-label="WIB" data-city="Jakarta"
+											>14.05 WIB di Jakarta</span
+										>
+									</div>
+									<div class="pf-chips"><span class="pf-chip">On-site</span><span class="pf-chip">Hybrid</span></div>
+									<a
+										class="pf-loc__open"
+										href="https://www.openstreetmap.org/search?query=Jakarta"
+										target="_blank"
+										rel="noopener"
+										>Buka di peta</a
+									>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</main>
+		<footer class="pf-foot pf-wrap">
+			<span>© 2026 <span data-person-name>Anindya Dewi</span></span
+			><span class="pf-foot__right"
+				><a class="pf-badge" href="#"><i>R</i>Dibuat dengan Rezumi</a><a href="#">Laporkan halaman ini</a></span
+			>
+		</footer>
+		<section class="pf-detail" id="work-suksesi-keluarga" role="dialog" aria-labelledby="work-suksesi-keluarga-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-nasabah-prioritas" aria-label="Sebelumnya: Rencana per segmen nasabah prioritas"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-dana-pendidikan" aria-label="Berikutnya: Dana pendidikan tiga anak di luar negeri"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-suksesi-keluarga-title">Suksesi usaha keluarga generasi kedua</h2>
+					<p class="pf-detail__summary">
+						Menata ulang aset Rp1,1 T agar tiga bersaudara bisa meneruskan usaha tanpa sengketa.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Relationship manager utama</b></span
+						><span>Tahun <b>2024</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Suksesi</li>
+						<li>Family office</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/prima-1.svg"
+						alt="Sampul: Suksesi usaha keluarga generasi kedua"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<h3>Masalah</h3>
+						<p>
+							Tiga bersaudara mewarisi usaha distribusi dan aset properti. Tanpa rencana tertulis, setiap rapat keluarga
+							berakhir tanpa keputusan.
+						</p>
+						<h3>Peran saya</h3>
+						<ul>
+							<li>Memimpin 14 rapat keluarga bersama penasihat pajak dan notaris.</li>
+							<li>Menyusun peta aset dan skenario peralihan lima tahun.</li>
+							<li>Menjaga satu dokumen keputusan yang disetujui ketiga ahli waris.</li>
+						</ul>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Aset yang ditata</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">Rp1,1 T</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+77%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 56%"></i><span>sebelum Rp0,62 T</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 100%"></i><span>sesudah Rp1,1 T</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-4" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,40.0 L40.0,34.0 L80.0,28.0 L120.0,22.0 L160.0,15.3 L200.0,10.0 L240.0,4.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-4)"
+									/>
+									<path
+										d="M0.0,40.0 L40.0,34.0 L80.0,28.0 L120.0,22.0 L160.0,15.3 L200.0,10.0 L240.0,4.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,4.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">usaha, properti, dan portofolio</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Rapat keluarga sampai sepakat</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">3</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>dari 11</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 11 rapat</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 27%"></i><span>sesudah 3 rapat</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-5" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L48.0,13.0 L96.0,22.0 L144.0,31.0 L192.0,35.5 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-5)"
+									/>
+									<path
+										d="M0.0,4.0 L48.0,13.0 L96.0,22.0 L144.0,31.0 L192.0,35.5 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">per keputusan besar</dd>
+						</div>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Biaya pajak peralihan</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">−18%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 14l6 6 6-6M12 20V4"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">turun, baik: </span>−18%</span
+								>
+							</dd>
+							<dd class="pf-metric__ba">
+								<span class="pf-metric__bar"><i style="--w: 100%"></i><span>sebelum 100</span></span
+								><span class="pf-metric__bar pf-metric__bar--after"
+									><i style="--w: 82%"></i><span>sesudah 82</span></span
+								>
+							</dd>
+							<dd class="pf-metric__chart">
+								<svg viewBox="0 0 240 44" preserveAspectRatio="none" aria-hidden="true">
+									<defs>
+										<linearGradient id="pf-spark-6" x1="0" y1="0" x2="0" y2="1">
+											<stop offset="0" stop-color="currentColor" stop-opacity="0.22" />
+											<stop offset="1" stop-color="currentColor" stop-opacity="0" />
+										</linearGradient>
+									</defs>
+									<path
+										d="M0.0,4.0 L48.0,12.0 L96.0,22.0 L144.0,30.0 L192.0,36.0 L240.0,40.0 L240,44 L0,44 Z"
+										fill="url(#pf-spark-6)"
+									/>
+									<path
+										d="M0.0,4.0 L48.0,12.0 L96.0,22.0 L144.0,30.0 L192.0,36.0 L240.0,40.0"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linejoin="round"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+									<path
+										d="M240.0,40.0 Z"
+										stroke="currentColor"
+										stroke-width="7"
+										stroke-linecap="round"
+										vector-effect="non-scaling-stroke"
+									/>
+								</svg>
+							</dd>
+							<dd class="pf-metric__context">dibanding skenario awal</dd>
+						</div>
+					</dl>
+					<div class="pf-gallery">
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/prima-g1.svg"
+									alt="Peta aset sebelum penataan"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Peta aset sebelum penataan</figcaption>
+						</figure>
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/prima-g2.svg"
+									alt="Struktur kepemilikan baru"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Struktur kepemilikan baru</figcaption>
+						</figure>
+						<figure>
+							<div class="pf-cover">
+								<img
+									src="img/prima-g3.svg"
+									alt="Jadwal peralihan lima tahun"
+									width="1200"
+									height="900"
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<figcaption>Jadwal peralihan lima tahun</figcaption>
+						</figure>
+					</div>
+					<div class="pf-prose pf-block--text">
+						<h3>Proses</h3>
+						<p>
+							Kami mulai dari pertanyaan, bukan produk: siapa yang ingin menjalankan usaha, siapa yang ingin keluar, dan
+							apa yang dianggap adil oleh orang tua.
+						</p>
+						<p>
+							Setiap skenario ditulis dengan angka pajak, risiko, dan dampaknya pada usaha, lalu dibahas satu per satu.
+						</p>
+						<blockquote>
+							Keluarga tidak butuh produk baru. Mereka butuh satu dokumen yang sama-sama mereka pahami.
+						</blockquote>
+					</div>
+					<div>
+						<button
+							class="pf-video"
+							type="button"
+							data-site="YouTube"
+							aria-label="Putar video: Wawancara: menyiapkan generasi penerus"
+						>
+							<div class="pf-cover">
+								<img src="img/prima-video.svg" alt="" width="1200" height="900" loading="lazy" decoding="async" />
+							</div>
+							<span class="pf-video__play"
+								><span
+									><svg
+										class="pf-icon"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none" /></svg></span></span
+							><span class="pf-video__meta"><b>Wawancara: menyiapkan generasi penerus</b>YouTube · 6:40</span>
+						</button>
+						<p class="pf-caption pf-video__note">Pemutar YouTube baru dimuat setelah tombol putar diklik.</p>
+					</div>
+					<div class="pf-card-row">
+						<div class="pf-pdf">
+							<div class="pf-pdf__page">
+								<img src="img/prima-pdf.svg" alt="" loading="lazy" width="800" height="1131" />
+							</div>
+							<div>
+								<b>Kerangka tinjauan keluarga (contoh tanpa data nasabah)</b><span>PDF · 9 halaman · 1,1 MB</span
+								><br /><a class="pf-btn pf-btn--secondary" href="#"
+									><svg
+										class="pf-icon"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+										<path d="M14 3v5h5" /></svg
+									>Buka PDF</a
+								>
+							</div>
+						</div>
+						<a class="pf-link" href="#"
+							><span class="pf-link__site"
+								><svg
+									class="pf-icon"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.8"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<circle cx="12" cy="12" r="9" />
+									<path
+										d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"
+									/></svg></span
+							><span class="pf-link__text"
+								><b>Lima pertanyaan sebelum menyusun rencana suksesi</b>
+								<p>Tulisan untuk buletin nasabah, kini dipakai sebagai bahan pelatihan RM.</p>
+								<span class="pf-link__domain"
+									>linkedin.com
+									<svg
+										class="pf-icon pf-flip"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										aria-hidden="true"
+									>
+										<path d="M7 17 17 7M9 7h8v8" /></svg></span></span
+						></a>
+					</div>
+					<div class="pf-prose pf-block--text">
+						<h3>Hasil</h3>
+						<p>
+							Ketiga bersaudara menandatangani rencana suksesi dalam tujuh bulan. Usaha tetap berjalan tanpa gangguan,
+							dan aset yang ditata kini Rp1,1 T.
+						</p>
+					</div>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-dana-pendidikan" role="dialog" aria-labelledby="work-dana-pendidikan-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-suksesi-keluarga" aria-label="Sebelumnya: Suksesi usaha keluarga generasi kedua"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-tinjauan-kuartalan" aria-label="Berikutnya: Tinjauan keluarga per kuartal"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-dana-pendidikan-title">Dana pendidikan tiga anak di luar negeri</h2>
+					<p class="pf-detail__summary">
+						Rencana 12 tahun dengan obligasi bertingkat; target dana tercapai dua tahun lebih cepat.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Perencana portofolio</b></span
+						><span>Tahun <b>2021–2025</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Pendidikan</li>
+						<li>Obligasi</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/prima-2.svg"
+						alt="Sampul: Dana pendidikan tiga anak di luar negeri"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Rencana 12 tahun dengan obligasi bertingkat; target dana tercapai dua tahun lebih cepat.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Lebih cepat</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">2 tahun</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>dari rencana</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section
+			class="pf-detail"
+			id="work-tinjauan-kuartalan"
+			role="dialog"
+			aria-labelledby="work-tinjauan-kuartalan-title"
+		>
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-dana-pendidikan" aria-label="Sebelumnya: Dana pendidikan tiga anak di luar negeri"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-obligasi-audit" aria-label="Berikutnya: Portofolio obligasi tanpa temuan audit"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-tinjauan-kuartalan-title">Tinjauan keluarga per kuartal</h2>
+					<p class="pf-detail__summary">
+						Format rapat bersama penasihat pajak dan hukum, diadopsi seluruh tim private banking.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Penggagas</b></span
+						><span>Tahun <b>2021</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Proses</li>
+						<li>Tim</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/prima-3.svg"
+						alt="Sampul: Tinjauan keluarga per kuartal"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Format rapat bersama penasihat pajak dan hukum, diadopsi seluruh tim private banking.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Banker yang memakai</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">26</span></dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-obligasi-audit" role="dialog" aria-labelledby="work-obligasi-audit-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-tinjauan-kuartalan" aria-label="Sebelumnya: Tinjauan keluarga per kuartal"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-pembinaan-rm" aria-label="Berikutnya: Membina RM junior"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-obligasi-audit-title">Portofolio obligasi tanpa temuan audit</h2>
+					<p class="pf-detail__summary">
+						Empat audit berturut-turut tanpa temuan untuk portofolio pendapatan tetap Rp2,1 T.
+					</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Relationship manager</b></span
+						><span>Tahun <b>2018–2021</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Kepatuhan</li>
+						<li>Pendapatan tetap</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/prima-4.svg"
+						alt="Sampul: Portofolio obligasi tanpa temuan audit"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Empat audit berturut-turut tanpa temuan untuk portofolio pendapatan tetap Rp2,1 T.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Temuan audit</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">0</span></dd>
+							<dd class="pf-metric__context">4 audit</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-pembinaan-rm" role="dialog" aria-labelledby="work-pembinaan-rm-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-obligasi-audit" aria-label="Sebelumnya: Portofolio obligasi tanpa temuan audit"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-nasabah-prioritas" aria-label="Berikutnya: Rencana per segmen nasabah prioritas"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-pembinaan-rm-title">Membina RM junior</h2>
+					<p class="pf-detail__summary">Pendampingan enam bulan; dua dari tiga RM dipromosikan dalam 18 bulan.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Mentor</b></span
+						><span>Tahun <b>2023–2025</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Kepemimpinan</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/prima-5.svg"
+						alt="Sampul: Membina RM junior"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Pendampingan enam bulan; dua dari tiga RM dipromosikan dalam 18 bulan.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Dipromosikan</dt>
+							<dd class="pf-metric__row"><span class="pf-metric__value">2 dari 3</span></dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<section class="pf-detail" id="work-nasabah-prioritas" role="dialog" aria-labelledby="work-nasabah-prioritas-title">
+			<article class="pf-detail__panel">
+				<div class="pf-detail__bar">
+					<a href="#work"
+						><svg
+							class="pf-icon pf-flip"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+						>Tutup</a
+					>
+					<nav aria-label="Karya lain">
+						<a href="#work-pembinaan-rm" aria-label="Sebelumnya: Membina RM junior"
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M19 12H5M11 6l-6 6 6 6" /></svg
+							><span class="sr-only">Sebelumnya</span></a
+						><a href="#work-suksesi-keluarga" aria-label="Berikutnya: Suksesi usaha keluarga generasi kedua"
+							><span class="sr-only">Berikutnya</span
+							><svg
+								class="pf-icon pf-flip"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.8"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path d="M5 12h14M13 6l6 6-6 6" /></svg
+						></a>
+					</nav>
+				</div>
+				<header class="pf-detail__head">
+					<h2 class="pf-detail__title" id="work-nasabah-prioritas-title">Rencana per segmen nasabah prioritas</h2>
+					<p class="pf-detail__summary">Menata ulang 220 nasabah prioritas berdana Rp1,3 T; pendapatan fee naik 52%.</p>
+					<div class="pf-detail__meta">
+						<span>Peran <b>Relationship manager</b></span
+						><span>Tahun <b>2014–2018</b></span>
+					</div>
+					<ul class="pf-tags">
+						<li>Segmentasi</li>
+						<li>Penjualan</li>
+					</ul>
+				</header>
+				<div class="pf-cover pf-detail__hero">
+					<img
+						src="img/prima-6.svg"
+						alt="Sampul: Rencana per segmen nasabah prioritas"
+						width="1200"
+						height="900"
+						loading="lazy"
+						decoding="async"
+					/>
+				</div>
+				<div class="pf-blocks">
+					<div class="pf-prose pf-block--text">
+						<p>Menata ulang 220 nasabah prioritas berdana Rp1,3 T; pendapatan fee naik 52%.</p>
+						<p class="pf-caption">Contoh detail yang singkat: karya ini hanya berisi blok Teks dan Metrik.</p>
+					</div>
+					<dl class="pf-metrics" data-variant="kpi" data-spark="on" data-switch>
+						<div class="pf-metric">
+							<dt class="pf-metric__label">Pendapatan fee</dt>
+							<dd class="pf-metric__row">
+								<span class="pf-metric__value">+52%</span
+								><span class="pf-trend" data-good="true"
+									><svg viewBox="0 0 24 24" aria-hidden="true">
+										<path
+											d="M6 10l6-6 6 6M12 4v16"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2.6"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/></svg
+									><span class="sr-only">naik, baik: </span>+52%</span
+								>
+							</dd>
+						</div>
+					</dl>
+				</div>
+			</article>
+		</section>
+		<script>
+			window.MK = {
+				name: "Prima",
+				accentCv: "#161E34",
+				accents: [
+					{ id: "biru", label: "Biru", color: "#2563EB" },
+					{ id: "magenta", label: "Magenta", color: "#C0267B" },
+					{ id: "kuning", label: "Kuning terang", color: "#FFD60A", note: "uji kontras" },
+				],
+				fonts: [
+					{
+						id: "source-plex",
+						label: "Source Serif 4 + IBM Plex Sans",
+						heading: "Source Serif 4",
+						body: "IBM Plex Sans",
+						mono: "IBM Plex Mono",
+					},
+					{ id: "manrope", label: "Manrope", heading: "Manrope", body: "Manrope", mono: "IBM Plex Mono" },
+				],
+				scheme: "light",
+				effect: "none",
+				effects: ["none", "fade-up", "shimmer", "typewriter"],
+				effectLabels: {
+					none: "Tanpa efek",
+					"fade-up": "Muncul halus",
+					shimmer: "Kilau",
+					gradient: "Gradien hidup",
+					typewriter: "Ketik berganti",
+					scramble: "Acak teknologi",
+					"vector-hover": "Garis vektor",
+				},
+				metric: "kpi",
+				metrics: ["kpi", "big", "ba"],
+				metricLabels: { kpi: "Kartu KPI", big: "Angka besar", ba: "Sebelum → sesudah" },
+				longName: "Anindya Dewi Paramitha Kusumawardhani Soerjosoemarno",
+				fullName: "Anindya Dewi",
+				phrases: ["Senior Relationship Manager", "Perencana keuangan keluarga", "Mentor RM"],
+				hasPhoto: true,
+				detail: "#work-suksesi-keluarga",
+			};
+		</script>
+		<script>
+			/* Intro text effects for the portfolio mockups. Written from scratch for Rezumi (no React Bits code).
+			 * Rules: the real text stays in the DOM, animated layers are aria-hidden, every effect stops by itself
+			 * within about five seconds, and "reduce motion" shows the text without animation. */
+			(() => {
+				const root = document.documentElement;
+				const reduced = () =>
+					root.classList.contains("mk-reduce") || matchMedia("(prefers-reduced-motion: reduce)").matches;
+				const touch = () =>
+					!root.classList.contains("mk-mouse") &&
+					(root.classList.contains("mk-touch") || matchMedia("(hover: none), (pointer: coarse)").matches);
+				const timers = new WeakMap();
+				const GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&*+=<>/";
+
+				const hex = (h) => {
+					const n = parseInt(h.replace("#", ""), 16);
+					return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+				};
+				const toHex = (rgb) => "#" + rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
+				const lum = (rgb) => {
+					const c = rgb.map((v) => {
+						const s = v / 255;
+						return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+					});
+					return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+				};
+				const contrast = (a, b) => {
+					const [x, y] = [lum(hex(a)), lum(hex(b))].sort((p, q) => q - p);
+					return (x + 0.05) / (y + 0.05);
+				};
+				const toHsl = ([r, g, b]) => {
+					r /= 255;
+					g /= 255;
+					b /= 255;
+					const max = Math.max(r, g, b);
+					const min = Math.min(r, g, b);
+					const l = (max + min) / 2;
+					let h = 0;
+					let s = 0;
+					if (max !== min) {
+						const d = max - min;
+						s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+						h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+						h *= 60;
+					}
+					return [h, s, l];
+				};
+				const fromHsl = ([h, s, l]) => {
+					const k = (n) => (n + h / 30) % 12;
+					const a = s * Math.min(l, 1 - l);
+					const f = (n) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+					return [f(0) * 255, f(8) * 255, f(4) * 255];
+				};
+				/** Shift lightness until the colour reads as text on the background (≥ min:1). */
+				const safe = (color, bg, min = 4.5) => {
+					const hsl = toHsl(hex(color));
+					const darker = lum(hex(bg)) > 0.4;
+					let out = color;
+					for (let i = 0; i < 100 && contrast(out, bg) < min; i++) {
+						hsl[2] = Math.min(1, Math.max(0, hsl[2] + (darker ? -0.01 : 0.01)));
+						out = toHex(fromHsl(hsl));
+					}
+					return out;
+				};
+				const rotate = (color, deg) => {
+					const hsl = toHsl(hex(color));
+					hsl[0] = (hsl[0] + deg + 360) % 360;
+					return toHex(fromHsl(hsl));
+				};
+
+				const clear = (host) => {
+					for (const t of timers.get(host) || []) clearTimeout(t);
+					timers.set(host, []);
+				};
+				const later = (host, fn, ms) => timers.get(host).push(setTimeout(fn, ms));
+				const reset = (host) => {
+					clear(host);
+					host.className = host.dataset.base;
+					host.removeAttribute("style");
+					host.onpointerover = null;
+					host.onpointerout = null;
+					host.textContent = host.dataset.text;
+				};
+				const restart = (host, cls) => {
+					host.classList.remove(cls);
+					void host.offsetWidth;
+					host.classList.add(cls);
+				};
+				const words = (host) => {
+					host.textContent = "";
+					host.dataset.text.split(/(\s+)/).forEach((part, i) => {
+						if (/^\s+$/.test(part)) return host.append(part);
+						const s = document.createElement("span");
+						s.className = "pfx-word";
+						s.style.setProperty("--i", String(i / 2));
+						s.textContent = part;
+						host.append(s);
+					});
+				};
+				const chars = (host) => {
+					const text = host.dataset.text;
+					host.textContent = "";
+					const sr = document.createElement("span");
+					sr.className = "sr-only";
+					sr.textContent = text;
+					const vis = document.createElement("span");
+					vis.setAttribute("aria-hidden", "true");
+					vis.dir = "auto";
+					const list = [];
+					for (const word of text.split(/(\s+)/)) {
+						if (/^\s+$/.test(word)) {
+							vis.append(word);
+							continue;
+						}
+						const w = document.createElement("span");
+						w.style.whiteSpace = "nowrap";
+						for (const c of word) {
+							const s = document.createElement("span");
+							s.className = "pfx-ch";
+							s.textContent = c;
+							s.dataset.c = c;
+							w.append(s);
+							list.push(s);
+						}
+						vis.append(w);
+					}
+					host.append(sr, vis);
+					const block = host.closest("h1, h2, p, div") || host.parentElement;
+					for (const w of vis.children) if (w.offsetWidth > block.clientWidth) w.style.whiteSpace = "normal";
+					return list;
+				};
+
+				const effects = {
+					none() {},
+					"fade-up"(host) {
+						words(host);
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					shimmer(host) {
+						host.classList.add("pfx-shimmer");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					gradient(host) {
+						const cs = getComputedStyle(host);
+						const bg = cs.getPropertyValue("--pf-bg").trim() || "#ffffff";
+						const a = cs.getPropertyValue("--pf-accent-text").trim() || "#333333";
+						host.style.setProperty("--fx-a", a);
+						host.style.setProperty("--fx-b", safe(rotate(a, 38), bg, 4.5));
+						host.style.setProperty("--fx-c", safe(rotate(a, -34), bg, 4.5));
+						host.classList.add("pfx-gradient");
+						if (!reduced()) restart(host, "pfx-run");
+					},
+					typewriter(host, opts) {
+						const phrases = (opts.phrases || [host.dataset.text]).slice(0, 3);
+						host.textContent = "";
+						const sr = document.createElement("span");
+						sr.className = "sr-only";
+						sr.textContent = phrases.join(", ");
+						const box = document.createElement("span");
+						box.className = "pfx-type";
+						box.setAttribute("aria-hidden", "true");
+						box.dir = "auto";
+						for (const p of phrases) {
+							const g = document.createElement("span");
+							g.className = "pfx-type__ghost";
+							g.textContent = p;
+							box.append(g);
+						}
+						const out = document.createElement("span");
+						out.className = "pfx-type__out";
+						out.textContent = phrases[0];
+						box.append(out);
+						host.append(sr, box);
+						if (reduced() || phrases.length < 2) return box.classList.add("pfx-done");
+						const order = [...phrases.slice(1), phrases[0]];
+						let t = 700;
+						let current = phrases[0];
+						for (const next of order) {
+							for (let i = current.length; i >= 0; i--) {
+								const s = current.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 16;
+							}
+							for (let i = 1; i <= next.length; i++) {
+								const s = next.slice(0, i);
+								later(host, () => (out.textContent = s), t);
+								t += 30;
+							}
+							t += 700;
+							current = next;
+						}
+						later(host, () => box.classList.add("pfx-done"), t - 600);
+					},
+					scramble(host) {
+						const list = chars(host);
+						if (reduced()) return;
+						for (const s of list) s.style.width = s.getBoundingClientRect().width + "px";
+						const start = 120;
+						const span = 950;
+						list.forEach((s, i) => {
+							const settle = start + (span * (i + 1)) / list.length;
+							for (let t = 0; t < settle; t += 45)
+								later(
+									host,
+									() => {
+										s.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+										s.classList.add("pfx-scr");
+									},
+									t,
+								);
+							later(
+								host,
+								() => {
+									s.textContent = s.dataset.c;
+									s.classList.remove("pfx-scr");
+								},
+								settle,
+							);
+						});
+					},
+					"vector-hover"(host) {
+						if (touch()) return effects["fade-up"](host);
+						host.classList.add("pfx-vector");
+						const list = chars(host);
+						const draw = (ch) => {
+							if (ch.dataset.ready) return;
+							ch.dataset.ready = "1";
+							const probe = document.createElement("span");
+							probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+							ch.append(probe);
+							const base = probe.offsetTop;
+							probe.remove();
+							const w = ch.offsetWidth;
+							const h = ch.offsetHeight;
+							const ns = "http://www.w3.org/2000/svg";
+							const svg = document.createElementNS(ns, "svg");
+							svg.setAttribute("class", "pfx-outline");
+							svg.setAttribute("width", String(w));
+							svg.setAttribute("height", String(h));
+							const text = document.createElementNS(ns, "text");
+							text.setAttribute("x", "0");
+							text.setAttribute("y", String(base));
+							text.textContent = ch.dataset.c;
+							svg.append(text);
+							const boxEl = document.createElement("span");
+							boxEl.className = "pfx-box";
+							boxEl.innerHTML = `<b></b><b></b><b></b><b></b><em>${w} × ${h}</em>`;
+							ch.append(svg, boxEl);
+						};
+						const off = new WeakMap();
+						host.onpointerover = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							clearTimeout(off.get(ch));
+							draw(ch);
+							ch.classList.add("pfx-on");
+						};
+						host.onpointerout = (e) => {
+							const ch = e.target.closest(".pfx-ch");
+							if (!ch) return;
+							off.set(
+								ch,
+								setTimeout(() => ch.classList.remove("pfx-on"), 650),
+							);
+						};
+						return list;
+					},
+				};
+
+				window.PFX = {
+					safe,
+					contrast,
+					apply(host, id, opts = {}) {
+						if (!host.dataset.text) host.dataset.text = host.textContent.trim();
+						if (host.dataset.base === undefined) host.dataset.base = host.className;
+						reset(host);
+						host.dataset.fx = id;
+						(effects[id] || effects.none)(host, opts);
+					},
+					replay(host, opts = {}) {
+						this.apply(host, host.dataset.fx || "none", opts);
+					},
+				};
+			})();
+		</script>
+		<script>
+			/* Mockup-only test panel: tries the customisation the product will offer (accent, mode, font pair,
+			 * intro effect, metric variant) plus robustness checks that are not user settings. */
+			(() => {
+				const MK = window.MK;
+				const root = document.documentElement;
+				const $ = (s, el = document) => el.querySelector(s);
+				const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+				const nameHost = $("[data-fx-name]");
+				const headHost = $("[data-fx-headline]");
+				const state = { scheme: MK.scheme, accent: MK.accentCv, effect: MK.effect };
+
+				const effectiveScheme = () => {
+					if (state.scheme !== "auto") return state.scheme;
+					const host = root.getAttribute("data-theme");
+					if (host === "dark" || host === "light") return host;
+					return matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+				};
+
+				function applyAccent() {
+					const color = state.accent;
+					root.style.setProperty("--pf-accent", color);
+					const bg = getComputedStyle(root).getPropertyValue("--pf-bg").trim();
+					const text = PFX.safe(color, bg, 4.5);
+					const on = PFX.contrast(color, "#ffffff") >= PFX.contrast(color, "#111111") ? "#ffffff" : "#111111";
+					root.style.setProperty("--pf-accent-text", text);
+					root.style.setProperty("--pf-on-accent", on);
+					const out = $("#mk-readout");
+					if (out) {
+						const ratio = PFX.contrast(text, bg).toFixed(1).replace(".", ",");
+						out.innerHTML =
+							text.toLowerCase() === color.toLowerCase()
+								? `Aksen ${color} aman sebagai teks (kontras ${ratio}:1).`
+								: `Aksen ${color} terlalu ${PFX.contrast(bg, "#000000") > PFX.contrast(bg, "#ffffff") ? "terang" : "gelap"} untuk teks di latar ini.<br>Teks aksen dikoreksi otomatis: ${text} (kontras ${ratio}:1).`;
+					}
+					if (state.effect === "gradient") applyEffect();
+				}
+
+				function applyScheme() {
+					root.dataset.pfScheme = effectiveScheme();
+					applyAccent();
+				}
+
+				function applyFonts(id) {
+					const pair = MK.fonts.find((f) => f.id === id) || MK.fonts[0];
+					const fallback = (f) =>
+						/Mono|Code/.test(f)
+							? `"${f}", ui-monospace, monospace`
+							: /Serif|Lora|Newsreader|Spectral|Bodoni|Garamond|Literata|Caslon/.test(f)
+								? `"${f}", Georgia, serif`
+								: `"${f}", system-ui, sans-serif`;
+					root.style.setProperty("--pf-font-heading", fallback(pair.heading));
+					root.style.setProperty("--pf-font-body", fallback(pair.body));
+					root.style.setProperty("--pf-font-mono", fallback(pair.mono));
+					root.style.setProperty("--pf-name-stretch", pair.stretch || "100%");
+					root.dataset.fontPair = pair.id;
+					if (["scramble", "vector-hover"].includes(state.effect)) document.fonts.ready.then(applyEffect);
+				}
+
+				function applyEffect() {
+					const id = state.effect;
+					if (!nameHost) return;
+					if (id === "typewriter" && headHost) {
+						PFX.apply(nameHost, "none");
+						PFX.apply(headHost, "typewriter", { phrases: MK.phrases });
+					} else {
+						if (headHost) PFX.apply(headHost, "none");
+						PFX.apply(nameHost, id);
+					}
+				}
+
+				function applyMetric(variant) {
+					for (const g of $$(".pf-metrics[data-switch]")) g.dataset.variant = variant;
+				}
+
+				function render() {
+					const seg = (name, items, current) =>
+						`<div class="mk-seg" role="radiogroup">${items
+							.map(
+								(it) =>
+									`<label><input type="radio" name="${name}" value="${it.value}" id="mk-${name}-${it.value}"${it.value === current ? " checked" : ""}>${it.swatch ? `<span class="mk-swatch" style="background:${it.swatch}"></span>` : ""}${it.label}</label>`,
+							)
+							.join("")}</div>`;
+					const panel = document.createElement("aside");
+					panel.className = "mk-panel";
+					panel.setAttribute("aria-label", "Panel percobaan mockup");
+					panel.innerHTML = `
+<button class="mk-panel__toggle" type="button" aria-expanded="false" aria-controls="mk-body"><i></i>Coba pengaturan</button>
+<div class="mk-panel__body" id="mk-body" hidden>
+	<div class="mk-panel__head"><b>Tema ${MK.name} · mockup</b><a href="index.html">Semua mockup</a></div>
+	<fieldset><legend>Warna aksen</legend>${seg(
+		"accent",
+		[
+			{ value: MK.accentCv, label: "Ikut CV", swatch: MK.accentCv },
+			...MK.accents.map((a) => ({ value: a.color, label: a.label, swatch: a.color })),
+		],
+		state.accent,
+	)}<div class="mk-readout" id="mk-readout"></div></fieldset>
+	<fieldset><legend>Mode</legend>${seg(
+		"scheme",
+		[
+			{ value: "light", label: "Terang" },
+			{ value: "dark", label: "Gelap" },
+			{ value: "auto", label: "Ikuti perangkat" },
+		],
+		state.scheme,
+	)}</fieldset>
+	<fieldset><legend>Pasangan font</legend>${seg(
+		"font",
+		MK.fonts.map((f) => ({ value: f.id, label: f.label })),
+		MK.fonts[0].id,
+	)}</fieldset>
+	<fieldset><legend>Efek intro</legend><div class="mk-row"><select id="mk-effect" aria-label="Efek intro">${MK.effects
+		.map(
+			(e) =>
+				`<option value="${e}"${e === state.effect ? " selected" : ""}>${MK.effectLabels[e]}${e === MK.effect ? " (bawaan tema)" : ""}</option>`,
+		)
+		.join("")}</select><button class="mk-small" type="button" id="mk-replay">Putar ulang</button></div>
+		<span class="mk-note">Garis vektor: arahkan kursor ke huruf nama (di HP jatuh ke Muncul halus).</span></fieldset>
+	<fieldset><legend>Widget metrik</legend>${seg(
+		"metric",
+		MK.metrics.map((v) => ({ value: v, label: MK.metricLabels[v] })),
+		MK.metric,
+	)}<label class="mk-check"><input type="checkbox" id="mk-spark" checked> Grafik mini (sparkline)</label></fieldset>
+	<fieldset><legend>Uji ketahanan (bukan pengaturan)</legend>
+		<label class="mk-check"><input type="checkbox" id="mk-long"> Nama sangat panjang</label>
+		<label class="mk-check"><input type="checkbox" id="mk-nophoto"${MK.hasPhoto ? "" : " checked disabled"}> Tanpa foto${MK.hasPhoto ? "" : " (persona ini memang tanpa foto)"}</label>
+		<label class="mk-check"><input type="checkbox" id="mk-noimg"> Karya tanpa gambar</label>
+		<label class="mk-check"><input type="checkbox" id="mk-rtl"> Kanan ke kiri (RTL)</label>
+		<label class="mk-check"><input type="checkbox" id="mk-reduce"> Kurangi gerakan</label>
+		<a href="${MK.detail}">Buka contoh detail karya</a>
+	</fieldset>
+</div>`;
+					document.body.append(panel);
+					const toggle = $(".mk-panel__toggle", panel);
+					const body = $("#mk-body", panel);
+					toggle.addEventListener("click", () => {
+						const open = body.hidden;
+						body.hidden = !open;
+						toggle.setAttribute("aria-expanded", String(open));
+					});
+					panel.addEventListener("change", (e) => {
+						const t = e.target;
+						if (t.name === "accent") {
+							state.accent = t.value;
+							applyAccent();
+						}
+						if (t.name === "scheme") {
+							state.scheme = t.value;
+							applyScheme();
+						}
+						if (t.name === "font") applyFonts(t.value);
+						if (t.name === "metric") applyMetric(t.value);
+						if (t.id === "mk-effect") {
+							state.effect = t.value;
+							applyEffect();
+						}
+						if (t.id === "mk-spark") for (const g of $$(".pf-metrics")) g.dataset.spark = t.checked ? "on" : "off";
+						if (t.id === "mk-long") {
+							const text = t.checked ? MK.longName : MK.fullName;
+							for (const el of $$("[data-person-name]")) el.textContent = text;
+							for (const el of $$(".pf-name"))
+								el.style.setProperty("--name-word", String(Math.max(...text.split(/\s+/).map((w) => w.length))));
+							if (nameHost) {
+								nameHost.dataset.text = text;
+								applyEffect();
+							}
+						}
+						if (t.id === "mk-nophoto") root.classList.toggle("pf-nophoto", t.checked);
+						if (t.id === "mk-noimg") root.classList.toggle("pf-noimg", t.checked);
+						if (t.id === "mk-rtl") root.dir = t.checked ? "rtl" : "ltr";
+						if (t.id === "mk-reduce") {
+							root.classList.toggle("mk-reduce", t.checked);
+							applyEffect();
+						}
+					});
+					$("#mk-replay", panel).addEventListener("click", applyEffect);
+				}
+
+				function wire() {
+					for (const el of $$("[data-tz]")) {
+						const fmt = new Intl.DateTimeFormat("id-ID", {
+							hour: "2-digit",
+							minute: "2-digit",
+							timeZone: el.dataset.tz,
+						});
+						const tick = () =>
+							(el.textContent = `${fmt.format(new Date())} ${el.dataset.tzLabel} di ${el.dataset.city}`);
+						tick();
+						setInterval(tick, 30000);
+					}
+					for (const form of $$(".pf-form")) {
+						form.addEventListener("submit", (e) => {
+							e.preventDefault();
+							const sent = $(".pf-form__sent", form);
+							if (sent) sent.hidden = false;
+						});
+					}
+					for (const b of $$(".pf-video")) {
+						b.addEventListener("click", () =>
+							toast(`Di produk, pemutar ${b.dataset.site} baru dimuat setelah tombol ini diklik.`),
+						);
+					}
+					for (const a of $$('a[href="#"]')) {
+						a.addEventListener("click", (e) => {
+							e.preventDefault();
+							toast("Tautan contoh: di halaman sungguhan, ini membuka tujuan aslinya.");
+						});
+					}
+					matchMedia("(prefers-color-scheme: dark)").addEventListener(
+						"change",
+						() => state.scheme === "auto" && applyScheme(),
+					);
+				}
+
+				let toastTimer;
+				function toast(msg) {
+					let el = $(".mk-toast");
+					if (!el) {
+						el = document.createElement("div");
+						el.className = "mk-toast";
+						el.setAttribute("role", "status");
+						document.body.append(el);
+					}
+					el.textContent = msg;
+					el.hidden = false;
+					clearTimeout(toastTimer);
+					toastTimer = setTimeout(() => (el.hidden = true), 3200);
+				}
+
+				render();
+				wire();
+				applyFonts(MK.fonts[0].id);
+				applyScheme();
+				document.fonts.ready.then(applyEffect);
+			})();
+		</script>
+	</body>
+</html>

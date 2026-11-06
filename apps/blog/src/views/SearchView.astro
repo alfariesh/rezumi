@@ -1,0 +1,82 @@
+---
+/**
+ * Full-text search over this language's articles. A plain GET form, so it works without JavaScript and every result
+ * page has an address; results pages are `noindex`.
+ */
+import type { SearchProps } from "../lib/loaders";
+import Icon from "../components/Icon.astro";
+import { getTranslator } from "../i18n/messages";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { searchPath } from "../lib/paths";
+import { documentTitle } from "../lib/site-settings";
+
+type Props = SearchProps;
+
+const { locale, settings, query, hits } = Astro.props;
+const t = getTranslator(locale);
+const path = searchPath(locale);
+---
+
+<BaseLayout
+	locale={locale}
+	settings={settings}
+	title={documentTitle(query ? `${t("meta.searchTitle")}: ${query}` : t("meta.searchTitle"), settings)}
+	description={t("meta.homeDescription")}
+	path={path}
+	robots="noindex, follow"
+>
+	<section aria-labelledby="search-title" class="mx-auto w-full max-w-3xl px-4 pt-14 pb-20 sm:px-6 sm:pt-20 sm:pb-28">
+		<h1 id="search-title" class="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
+			{t("search.title")}
+		</h1>
+		<form method="get" action={path} role="search" class="mt-8 flex gap-2">
+			<label for="search-query" class="sr-only">{t("search.label")}</label>
+			<div class="relative flex-1">
+				<span class="pointer-events-none absolute inset-y-0 start-4 flex items-center text-muted">
+					<Icon name="magnifying-glass" />
+				</span>
+				<input
+					id="search-query"
+					type="search"
+					name="q"
+					value={query}
+					placeholder={t("search.placeholder")}
+					maxlength="100"
+					autocomplete="off"
+					class="h-12 w-full rounded-field bg-surface ps-12 pe-4 text-base shadow-surface outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-focus"
+				/>
+			</div>
+			<button type="submit" class="button button--primary button--lg">{t("search.submit")}</button>
+		</form>
+
+		{
+			query && (
+				<div class="mt-12">
+					<h2 class="text-sm font-semibold text-muted">{t("search.results", { query })}</h2>
+					{hits.length === 0 ? (
+						<p class="mt-4 text-muted">{t("search.empty", { query })}</p>
+					) : (
+						<ul class="mt-4 flex flex-col gap-3">
+							{hits.map((hit) => (
+								<li>
+									<a
+										href={hit.path}
+										class="block rounded-2xl bg-surface p-5 shadow-surface transition-colors hover:bg-surface-secondary"
+									>
+										<span class="text-lg font-semibold tracking-tight">{hit.title}</span>
+										{hit.snippetHtml && (
+											<p
+												class="mt-1 text-sm text-muted [&_mark]:rounded-sm [&_mark]:bg-accent-soft [&_mark]:px-0.5 [&_mark]:text-accent-soft-foreground"
+												set:html={hit.snippetHtml}
+											/>
+										)}
+									</a>
+								</li>
+							))}
+						</ul>
+					)}
+				</div>
+			)
+		}
+	</section>
+</BaseLayout>

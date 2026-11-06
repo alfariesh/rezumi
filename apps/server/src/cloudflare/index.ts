@@ -17,6 +17,7 @@ import { Pool } from "pg";
 import { configureAgentStreamLifetime } from "@rezumi/api/features/agent/streams";
 import { runBillingJobs } from "@rezumi/api/features/billing/jobs";
 import { runCareerJobs } from "@rezumi/api/features/career/jobs";
+import { runPortfolioJobs } from "@rezumi/api/features/portfolio/jobs";
 import { configureStorageService, getStorageService, isPublicUploadOwner } from "@rezumi/api/features/storage";
 import { initializeAuth } from "@rezumi/auth/config";
 import { withDatabasePool } from "@rezumi/db/client";
@@ -225,10 +226,15 @@ export default {
 	},
 	scheduled(_controller: ScheduledController, bindings: CloudflareBindings, ctx: ExecutionContext): void {
 		const { pool, store, run } = createInvocation(bindings, ctx);
-		// Billing first: its work is short. A failure there never keeps career jobs from running.
+		// Billing first: its work is short. A failure there never keeps career jobs from running. Portfolio file
+		// cleanup goes last (it can wait), and runs whatever happened to career jobs.
 		const jobs = async () => {
 			await runBillingJobs().catch(() => console.error("[billing] Scheduled work failed; it retries next run."));
-			return runCareerJobs();
+			try {
+				return await runCareerJobs();
+			} finally {
+				await runPortfolioJobs().catch(() => console.error("[portfolio] Scheduled work failed; it retries next run."));
+			}
 		};
 		ctx.waitUntil(run(jobs).finally(() => closePool(pool, store)));
 	},

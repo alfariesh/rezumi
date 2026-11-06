@@ -23,12 +23,16 @@
 				"src/ui/{index,tokens}.ts"
 			]
 		},
+		"apps/blog": {
+			"entry": ["src/live.config.ts"]
+		},
 		"apps/web": {
 			"entry": [
 				"lingui.config.ts",
 				"vitest.config.ts",
 				"src/features/homepage/prerender.tsx",
-				"src/features/docs/prerender.tsx"
+				"src/features/docs/prerender.tsx",
+				"src/features/portfolio/page-text.ts"
 			],
 			"vite": {
 				"config": []
@@ -61,6 +65,7 @@
 				"@bramus/specificity",
 				"@formepdf/react",
 				"@orpc/experimental-ratelimit",
+				"@polar-sh/sdk",
 				"@sindresorhus/slugify",
 				"@t3-oss/env-core",
 				"@uiw/color-convert",

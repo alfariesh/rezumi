@@ -1,0 +1,141 @@
+# Keputusan produk — portfolio web
+
+Keputusan pemilik yang berlaku untuk semua phase. Agent tidak mengubahnya diam-diam: bila implementasi menunjukkan satu keputusan tidak bisa atau tidak sebaiknya dipakai, jelaskan pilihannya, tanya pemilik, lalu catat di log di bawah.
+
+## 1. Konsep
+
+- Portfolio = **website satu halaman per akun**, dibuat dari CV ditambah isi khusus portfolio, ditampilkan dengan tema pilihan.
+- **Builder terstruktur**, bukan web builder bebas. Pengguna mengisi konten, memilih tema, lalu mengatur dalam batas yang aman: warna aksen, font, mode terang/gelap, urutan dan tampil/sembunyi bagian, judul bagian, variasi tampilan per bagian, dan tombol. Tidak ada drag-drop elemen bebas, posisi atau ukuran piksel, HTML/CSS/JavaScript sendiri. Tema menjamin hasilnya rapi di HP dan desktop.
+- **Satu portfolio per akun** di rilis pertama, untuk semua paket. Banyak portfolio per akun ada di backlog.
+- Perubahan **langsung tayang** setelah tersimpan, seperti halaman web CV. Ada saklar Terbitkan/Matikan.
+- **Web dulu.** App mobile tidak dikerjakan (aturan `CLAUDE.md`); portfolio dicatat sebagai pengecualian paritas dan harus menyusul sebelum rilis toko pertama.
+- Nama fitur di aplikasi: "Portfolio" (Inggris), "Portofolio" (Indonesia).
+
+## 2. Alamat
+
+- Portfolio tayang di **`rezumi.app/<username>`**.
+  - Bila portfolio terbit, alamat ini membuka portfolio.
+  - Bila portfolio belum ada atau tidak terbit, alamat ini tetap membuka CV utama seperti sekarang.
+- CV tetap di `rezumi.app/<username>/<slug>`. Portfolio punya tombol "Lihat CV", dan "Unduh PDF" bila CV mengizinkan unduhan.
+- Domain sendiri yang terverifikasi membuka portfolio bila terbit, selain itu CV utama.
+- Saat pertama kali menerbitkan, pengguna diberi tahu bahwa alamat pendeknya kini membuka portfolio dan di mana CV-nya berada.
+- Subdomain `nama.rezumi.app` **tidak** dipakai: username boleh memakai titik dan garis bawah (tidak sah untuk subdomain), perlu setup wildcard, dan nama seperti `login.rezumi.app` bisa dipakai menipu.
+
+## 3. Isi portfolio
+
+### 3a. Data dasar dan hubungan dengan CV (model campuran)
+
+- Portfolio memilih satu **CV sumber**. Bawaan: CV utama; bisa diganti ke CV aktif lain milik akun. Portfolio juga bisa dibuat **tanpa CV**: pengguna mengisi data dasarnya sendiri.
+- **Dari CV, otomatis dan selalu terbaru:** nama, headline, foto, lokasi, email, telepon, situs, profil/tautan, pengalaman, pendidikan, keahlian, bahasa, sertifikat, penghargaan, publikasi, relawan, minat, dan bagian kustom CV. Pengguna bisa menyembunyikan bagian atau item tertentu di portfolio tanpa mengubah CV. Item yang tersembunyi di CV juga tersembunyi di portfolio.
+- **Data dasar khusus portfolio (opsional):** foto, headline, nama tampilan, dan lokasi bisa diganti hanya untuk portfolio. Bawaannya ikut CV. Alasannya: CV di Indonesia sering memakai pas foto formal, sedangkan portfolio biasanya foto santai.
+- **Milik portfolio**, diisi di editor portfolio: sapaan/intro, label "Open to work", angka pencapaian, tombol, Tentang saya, **Karya**, Layanan, Testimoni, Klien/perusahaan, bagian bebas, kontak, SEO, bahasa halaman, dan desain.
+- Saat portfolio dibuat: Tentang saya diisi dari ringkasan CV, dan Karya diisi dari bagian Proyek CV (salinan). Setelah itu keduanya diedit bebas di portfolio. Tombol "Ambil dari CV" menambahkan proyek CV lain kapan saja.
+- Referensi (kontak orang lain) tidak pernah tampil di portfolio.
+- Pengaturan kontak portfolio (tampilkan email, WhatsApp, form) berlaku untuk portfolio; pengaturan "Sembunyikan kontak" CV hanya berlaku untuk halaman CV.
+- Bila CV sumber dihapus atau dipindah ke Trash, portfolio tetap tayang dengan isi miliknya sendiri, dan editor meminta pengguna memilih CV lain.
+
+### 3b. Isi karya: blok sederhana
+
+- Setiap karya punya **kartu** (sampul, judul, ringkasan, peran, tahun, tag, satu metrik unggulan opsional, satu tautan utama opsional) dan **detail** yang tersusun dari **blok** yang bisa ditambah, diubah, dihapus, dan diurutkan. Tidak ada pengaturan posisi atau ukuran bebas; tema yang menata.
+- Jenis blok di rilis pertama:
+  - **Teks**, diedit dengan **Rich Text Editor HeroUI Pro** (`@heroui-pro/react/rich-text-editor`).
+  - **Gambar** (satu atau beberapa gambar).
+  - **Metrik** (opsional): angka hasil kerja yang tampil sebagai **widget metrik**, mengikuti anatomi KPI HeroUI Pro. Pemilik meminta metrik dieksplorasi lebih jauh; usulannya di `01-desain.md` bagian 16, dan varian tampilannya dipilih dari mockup Phase 00.
+  - **Video**: tempel tautan YouTube atau Vimeo. Tidak ada unggah file video.
+  - **PDF**: unggah file PDF.
+  - **Tautan**: tempel tautan (Behance, Dribbble, GitHub, Figma, Medium, dan lain-lain), lalu judul, deskripsi, dan gambar terisi otomatis.
+- **Tempel tautan otomatis** juga bisa membuat karya baru dari satu tautan.
+
+### 3c. Bagian tambahan
+
+Semua masuk rilis pertama: **Angka pencapaian** (2–4 angka di intro, memakai bentuk metrik yang sama), **Layanan/jasa**, **Testimoni**, dan **Logo klien/perusahaan**, serta **Lokasi** (kartu peta dan preferensi kerja di bagian Kontak, chip lokasi di intro; peta dipilih di editor dengan HeroUI Map).
+
+### 3d. Intro (hero) dan efek
+
+- Intro **wajib**, selalu ada dan selalu paling atas. Tidak ada layar pembuka/splash sebelum isi.
+- Efek teks intro **opsional**: pengguna memilih satu efek dari daftar kurasi agar intro lebih ekspresif (misalnya kilau warna, ketik berganti, huruf acak, garis vektor seperti contoh React Bits "Tech Text"). Efek hanya untuk nama atau headline.
+- Efek dibuat sendiri oleh Rezumi, tidak menyalin kode React Bits (lisensi MIT + Commons Clause melarang redistribusi komponennya), ringan, dan menghormati pengaturan "kurangi gerakan".
+- Latar intro bisa dipilih: polos, gradien lembut, pola halus, atau gambar.
+
+## 4. Paket (freemium)
+
+| Hal                      | Gratis                                                         | Plus dan Pro AI                               |
+| ------------------------ | -------------------------------------------------------------- | --------------------------------------------- |
+| Jumlah portfolio         | 1                                                              | 1                                             |
+| Tema                     | 2 tema gratis                                                  | Semua tema                                    |
+| Badge "Made with Rezumi" | Selalu tampil                                                  | Bisa disembunyikan                            |
+| Karya                    | Maks. 6                                                        | Tanpa batas (batas teknis 50)                 |
+| Domain sendiri           | —                                                              | Ya                                            |
+| Penyimpanan gambar + PDF | Usulan 100 MB (aturan turunan #9)                              | Usulan 1 GB (aturan turunan #9)               |
+| Statistik pengunjung     | Ya                                                             | Ya                                            |
+| Form kontak              | Usulan: ya (aturan turunan #1)                                 | Ya                                            |
+| AI isi otomatis          | Kredit coba atau koneksi AI sendiri, sesuai aturan AI yang ada | Kredit paket (Pro AI) atau koneksi AI sendiri |
+
+- Badge di portfolio Gratis adalah promosi gratis untuk Rezumi.
+- Semua jenis blok dan bagian tambahan tersedia di semua paket; yang dibatasi adalah jumlah karya dan penyimpanan.
+- Mengubah isi paket = mengubah katalog: naikkan `BILLING_CATALOG_VERSION` dan perbarui halaman harga, halaman Paket, dan S&K yang menyebutnya.
+- Aturan paket hanya berlaku saat billing aktif untuk akun (`BILLING_MODE`), sama seperti aturan membership lain.
+
+## 5. Cakupan rilis pertama
+
+Rilis pertama (Phase 12) memuat semuanya: editor + tema, semua jenis blok karya (teks, gambar, metrik, video, PDF, tautan otomatis), bagian tambahan (angka pencapaian, layanan, testimoni, logo klien, lokasi dengan peta), efek intro, **statistik pengunjung**, **domain sendiri**, **AI isi otomatis**, dan **form kontak**. Tidak ada rilis sebagian ke semua pengguna sebelum semuanya siap; mode `admins` dipakai untuk mencoba di produksi.
+
+## 6. Aturan turunan (usulan agent, menunggu konfirmasi pemilik)
+
+Agent menanyakan setiap baris di phase yang disebut, lalu memindahkan jawabannya ke log.
+
+| #   | Usulan                                                                                                                                                                                                                                                                                                                                                                                              | Konfirmasi di |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| 1   | Form kontak tersedia untuk semua paket, dengan batas anti-spam yang sama                                                                                                                                                                                                                                                                                                                            | Phase 07      |
+| 2   | Saat paket berbayar berakhir: tema premium yang sedang dipakai tetap tampil (tidak bisa pindah ke tema premium lain), badge muncul lagi, karya lebih dari 6 tetap tampil tapi tidak bisa menambah, file di atas kuota tetap tampil tapi tidak bisa mengunggah, domain sendiri berhenti 7 hari setelah paket berakhir lalu mengarah ke `rezumi.app/<username>` dan aktif lagi saat berlangganan lagi | Phase 07      |
+| 3   | Domain sendiri adalah fitur Plus untuk akun, juga ketika domain itu membuka CV utama (akun tanpa portfolio)                                                                                                                                                                                                                                                                                         | Phase 07      |
+| 4   | Logo tools di Keahlian portfolio mengikuti fitur `brandLogos` (Plus) seperti di CV                                                                                                                                                                                                                                                                                                                  | Phase 07      |
+| 5   | ✅ Selesai 2026-11-06: "Tampil di mesin pencari" menyala bawaan saat terbit, dengan penjelasan dan bisa dimatikan; akun berumur kurang dari 7 hari tidak diindeks walau menyala (lihat log)                                                                                                                                                                                                         | Phase 03, 11  |
+| 6   | Biaya AI: draf portfolio lengkap 3 kredit; tulis ulang satu kolom 1 kredit; temukan angka di CV 1 kredit                                                                                                                                                                                                                                                                                            | Phase 10      |
+| 7   | Pesan dari form kontak disimpan 90 hari lalu dihapus otomatis; pemilik portfolio bisa menghapus lebih cepat                                                                                                                                                                                                                                                                                         | Phase 08      |
+| 8   | ✅ Selesai 2026-11-05: Lugas dan Prima gratis, Kanvas dan Mozaik Plus (dipilih dari 6 mockup; lihat log)                                                                                                                                                                                                                                                                                            | Phase 00      |
+| 9   | Penyimpanan gambar + PDF per akun: Gratis 100 MB, Plus/Pro AI 1 GB; satu PDF maks. 10 MB; satu gambar maks. 2,5 MB setelah dikompres                                                                                                                                                                                                                                                                | Phase 07      |
+| 10  | ✅ Selesai 2026-11-05: ketiga varian (kartu KPI, angka besar, sebelum → sesudah) jadi pilihan pengguna; grafik mini ikut rilis pertama sebagai isian opsional                                                                                                                                                                                                                                       | Phase 00      |
+| 11  | Logo klien tampil abu-abu bawaan dan berwarna saat diarahkan (pengguna bisa memilih berwarna); saat menambah logo pengguna menyatakan berhak menampilkannya; laporan merek dagang ditangani lewat alur Laporkan                                                                                                                                                                                     | Phase 11      |
+| 12  | Testimoni harus asli dan atas izin pemberinya: pengguna mencentang pernyataan saat menambah testimoni; aturan ini masuk S&K                                                                                                                                                                                                                                                                         | Phase 11      |
+| 13  | ✅ Selesai 2026-11-05: keenam efek (Muncul halus, Kilau, Gradien hidup, Ketik berganti, Acak teknologi, Garis vektor) masuk rilis pertama                                                                                                                                                                                                                                                           | Phase 00      |
+| 14  | Muncul halus dan Kilau gratis; Gradien hidup, Ketik berganti, Acak teknologi, dan Garis vektor untuk Plus/Pro AI                                                                                                                                                                                                                                                                                    | Phase 07      |
+| 15  | ✅ Selesai 2026-11-06: peta lokasi mati bawaan, presisi kota bawaan, tanpa "gunakan lokasi saya"; halaman publik menampilkan gambar peta (bukan peta interaktif) (lihat log)                                                                                                                                                                                                                        | Phase 05      |
+| 16  | Statistik dasar (kunjungan, klik, pesan, sumber) untuk semua paket; rincian dari Cloudflare Analytics Engine (negara pada peta, perangkat, perujuk, karya per hari) untuk Plus/Pro AI                                                                                                                                                                                                               | Phase 07      |
+
+## 7. Mutu yang dijanjikan
+
+- Tampil rapi di HP dan desktop, terang dan gelap, dengan isi sangat sedikit maupun sangat banyak, dengan dan tanpa foto atau gambar, nama sangat panjang, dan bahasa yang ditulis dari kanan ke kiri.
+- Cepat: halaman jadi dari server; target LCP di bawah 2,5 detik di HP Android kelas menengah dengan 4G; JavaScript sekecil mungkin; tetap terbaca tanpa JavaScript. Video baru dimuat setelah pengunjung mengklik putar.
+- Aksesibel: kontras WCAG AA (warna aksen dikoreksi otomatis bila perlu), bisa dipakai dengan keyboard, teks alternatif untuk gambar, metrik terbaca pembaca layar (tidak hanya lewat warna atau panah).
+- Aman: tidak ada HTML atau JavaScript dari pengguna; gambar hanya raster; PDF dilayani dalam mode terkunci; tautan keluar `nofollow ugc`; setiap portfolio punya tautan "Laporkan".
+- Privasi: statistik tanpa cookie pelacak; gambar dikompres ulang di browser sehingga data lokasi foto (EXIF) ikut terhapus; video YouTube/Vimeo tidak memuat pemutar (dan pelacaknya) sebelum diklik; peta lokasi tingkat kota dan tanpa permintaan ke penyedia peta saat halaman dibuka.
+- Gerak: efek intro selesai sendiri dalam ±5 detik, mati otomatis bila perangkat meminta "kurangi gerakan", dan tidak pernah menyembunyikan teks asli.
+
+## Log keputusan
+
+| Tanggal    | Keputusan                                                                                                                                                                                                                                                                                                                                                | Oleh                                                                           |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 2026-11-05 | Fitur portfolio dibuat sebagai builder terstruktur (isi + tema + kustomisasi terbatas), bukan web builder bebas                                                                                                                                                                                                                                          | Pemilik (menerima rekomendasi)                                                 |
+| 2026-11-05 | Alamat `rezumi.app/<username>`; CV tetap di `/<username>/<slug>` dengan tombol dari portfolio                                                                                                                                                                                                                                                            | Pemilik                                                                        |
+| 2026-11-05 | Freemium: Gratis 1 portfolio, 2 tema, badge wajib, maks. 6 karya; Plus/Pro AI semua tema, badge bisa disembunyikan, domain sendiri, karya tanpa batas                                                                                                                                                                                                    | Pemilik                                                                        |
+| 2026-11-05 | Model isi campuran: data karier otomatis dari CV sumber; intro, Tentang saya, Karya, bagian bebas milik portfolio                                                                                                                                                                                                                                        | Pemilik                                                                        |
+| 2026-11-05 | Rilis pertama wajib memuat statistik pengunjung, domain sendiri, AI isi otomatis, dan form kontak                                                                                                                                                                                                                                                        | Pemilik                                                                        |
+| 2026-11-05 | Satu portfolio per akun; perubahan langsung tayang; web dulu                                                                                                                                                                                                                                                                                             | Agent (usulan bawaan; pemilik bisa ubah)                                       |
+| 2026-11-05 | Isi karya = blok sederhana; blok teks memakai Rich Text Editor HeroUI Pro; ada blok Metrik opsional yang tampil sebagai widget metrik, dieksplorasi lebih jauh oleh agent                                                                                                                                                                                | Pemilik                                                                        |
+| 2026-11-05 | Jenis blok tambahan: video YouTube/Vimeo (tanpa unggah file video), PDF, tempel tautan otomatis                                                                                                                                                                                                                                                          | Pemilik                                                                        |
+| 2026-11-05 | Bagian tambahan di rilis pertama: angka pencapaian, layanan/jasa, testimoni, logo klien/perusahaan                                                                                                                                                                                                                                                       | Pemilik                                                                        |
+| 2026-11-05 | Foto, headline, nama tampilan, dan lokasi bisa diganti khusus portfolio (bawaan ikut CV); portfolio bisa dibuat tanpa CV                                                                                                                                                                                                                                 | Agent (disampaikan ke pemilik, tidak ada keberatan)                            |
+| 2026-11-05 | Lokasi dengan peta HeroUI masuk rilis pertama (posisi diserahkan ke agent: chip di intro + kartu Lokasi di Kontak)                                                                                                                                                                                                                                       | Pemilik                                                                        |
+| 2026-11-05 | Intro wajib; efek teks intro opsional yang bisa dipilih pengguna (contoh: kilau warna, React Bits Tech Text)                                                                                                                                                                                                                                             | Pemilik                                                                        |
+| 2026-11-05 | Efek dibuat sendiri, bukan salinan React Bits (lisensi); daftar kurasi + aturan gerak dan aksesibilitas                                                                                                                                                                                                                                                  | Agent (saran diterima sebagai usulan; daftar final di Phase 00)                |
+| 2026-11-05 | Cloudflare Analytics Engine dinilai relevan: dipakai untuk rincian statistik di produksi, Postgres tetap untuk angka inti                                                                                                                                                                                                                                | Agent (pemilik meminta dievaluasi)                                             |
+| 2026-11-05 | Phase 00: tema rilis Lugas dan Prima (gratis), Kanvas dan Mozaik (Plus); nama tetap, ID `lugas`, `prima`, `kanvas`, `mozaik`; Sintaks dan Warta ke backlog B1                                                                                                                                                                                            | Pemilik (menerima rekomendasi)                                                 |
+| 2026-11-05 | Phase 00: widget metrik dengan tiga varian sebagai pilihan pengguna (bawaan per tema); grafik mini ikut rilis pertama, opsional per metrik                                                                                                                                                                                                               | Pemilik (menerima rekomendasi)                                                 |
+| 2026-11-05 | Phase 00: keenam efek intro masuk rilis pertama; Ketik berganti dibatasi 3 frasa agar selesai ±5 detik                                                                                                                                                                                                                                                   | Pemilik (batas 3 frasa: agent, menjaga aturan gerak)                           |
+| 2026-11-05 | Phase 00: 8 warna aksen kurasi (Samudra, Toska, Daun, Kunyit, Jingga, Cabai, Anggrek, Grafit) dan 5–6 pasangan font per tema (`01-desain.md` bagian 5 dan 6)                                                                                                                                                                                             | Pemilik (menerima rekomendasi)                                                 |
+| 2026-11-05 | Phase 00: mockup empat tema, widget metrik, dan efek intro disetujui tanpa revisi; mockup final di `mockups/`                                                                                                                                                                                                                                            | Pemilik                                                                        |
+| 2026-11-06 | Phase 01: nomor telepon dari CV tidak tampil di Kontak portfolio kecuali pengguna menyalakannya; email dan situs tampil bawaan (seperti rencana)                                                                                                                                                                                                         | Agent (usulan bawaan; pemilik bisa ubah)                                       |
+| 2026-11-06 | Aturan turunan #5: "Tampil di mesin pencari" menyala bawaan saat terbit (dialog Terbitkan menjelaskannya dan bisa dimatikan); akun berumur kurang dari 7 hari tidak diindeks walau menyala. Aturan 7 hari langsung dipasang di Phase 03 (halaman, sitemap), bukan menunggu Phase 11                                                                      | Pemilik                                                                        |
+| 2026-11-06 | Phase 04: gambar yang dihapus atau diganti di editor dihapus dari penyimpanan 24 jam kemudian (bukan seketika), agar Urungkan dan tab lain tetap aman; menghapus portfolio tetap menghapus semua file seketika. Logo klien: unggahan dianggap pernyataan berhak menampilkannya (teks di kolom logo), dikonfirmasi bersama aturan turunan #11 di Phase 11 | Agent (usulan bawaan; pemilik bisa ubah)                                       |
+| 2026-11-06 | Aturan turunan #15: peta lokasi mati bawaan, presisi kota bawaan, tanpa "gunakan lokasi saya"; halaman publik menampilkan gambar peta (terang dan gelap) yang dibuat editor, bukan peta interaktif. Dipasang di Phase 05; penanda yang digeser dibulatkan ±1 km, dan presisi provinsi/negara memusatkan peta di tengah wilayah tanpa penanda             | Pemilik (aturan disetujui apa adanya; pembulatan dan pemusatan wilayah: agent) |

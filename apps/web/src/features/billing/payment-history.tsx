@@ -3,22 +3,22 @@ import { Button, Chip, Spinner, Table } from "@heroui/react";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
 import { useId } from "react";
+import { InvoiceButton } from "./invoice-button";
 import { getPlanName } from "./plan";
 import {
 	formatPrice,
-	getPaymentMethodName,
+	getPaymentReasonLabel,
 	getPaymentStatusColor,
 	getPaymentStatusLabel,
-	hasReceipt,
+	hasInvoice,
 } from "./purchase";
 import { WidgetHeading } from "@/components/layout/widget-heading";
 import { orpc } from "@/libs/orpc/client";
 
 type PaymentHistorySectionProps = { formatDay: (date: Date) => string };
 
-/** Every payment the account started, newest first, with its receipt once paid. Hidden until there is one. */
+/** Every payment the account made or started, newest first, with Polar's invoice once paid. Hidden until there is one. */
 export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps) {
 	const history = useInfiniteQuery(
 		orpc.billing.payments.infiniteOptions({
@@ -39,7 +39,7 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 				icon="clipboard-text"
 				id={titleId}
 				title={<Trans>Payments</Trans>}
-				description={<Trans>Receipts are proof of payment, not tax invoices.</Trans>}
+				description={<Trans>Invoices come from Polar, which sells the subscription and handles tax.</Trans>}
 			/>
 			<Widget.Content className="flex flex-col gap-0 p-0">
 				<Table variant="secondary">
@@ -56,14 +56,14 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 									<Trans>Amount</Trans>
 								</Table.Column>
 								<Table.Column>
-									<Trans>Method</Trans>
+									<Trans>What</Trans>
 								</Table.Column>
 								<Table.Column>
 									<Trans>Status</Trans>
 								</Table.Column>
 								<Table.Column>
 									<span className="sr-only">
-										<Trans>Receipt</Trans>
+										<Trans>Invoice</Trans>
 									</span>
 								</Table.Column>
 							</Table.Header>
@@ -75,9 +75,9 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 										</Table.Cell>
 										<Table.Cell className="whitespace-nowrap">{getPlanName(payment.planId)}</Table.Cell>
 										<Table.Cell className="text-end whitespace-nowrap tabular-nums">
-											{formatPrice(payment.amount)}
+											{formatPrice(payment.totalAmount || payment.amount, payment.currency)}
 										</Table.Cell>
-										<Table.Cell>{getPaymentMethodName(payment.paymentType)}</Table.Cell>
+										<Table.Cell className="whitespace-nowrap text-muted">{getPaymentReasonLabel(payment)}</Table.Cell>
 										<Table.Cell>
 											<Chip
 												size="sm"
@@ -88,17 +88,7 @@ export function PaymentHistorySection({ formatDay }: PaymentHistorySectionProps)
 												<Chip.Label>{getPaymentStatusLabel(payment.status)}</Chip.Label>
 											</Chip>
 										</Table.Cell>
-										<Table.Cell>
-											{hasReceipt(payment) && (
-												<Link
-													to="/dashboard/settings/billing/receipt/$paymentId"
-													params={{ paymentId: payment.id }}
-													className="whitespace-nowrap underline underline-offset-2 hover:text-foreground"
-												>
-													<Trans>Receipt</Trans>
-												</Link>
-											)}
-										</Table.Cell>
+										<Table.Cell>{hasInvoice(payment) && <InvoiceButton paymentId={payment.id} />}</Table.Cell>
 									</Table.Row>
 								))}
 							</Table.Body>

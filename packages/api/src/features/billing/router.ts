@@ -1,25 +1,39 @@
 import type { RequestAuthentication } from "../../context";
 import { ORPCError } from "@orpc/server";
 import z from "zod";
-import { BILLING_PAYMENT_STATUSES } from "@rezumi/db/schema";
-import { creditSourceSchema, paidPlanIdSchema, planIdSchema } from "@rezumi/schema/billing";
+import { BILLING_PAYMENT_STATUSES, BILLING_SUBSCRIPTION_STATUSES } from "@rezumi/db/schema";
+import {
+	billingCurrencySchema,
+	billingIntervalSchema,
+	creditSourceSchema,
+	paidPlanIdSchema,
+	planIdSchema,
+} from "@rezumi/schema/billing";
 import { protectedProcedure } from "../../context";
 import { checkoutRateLimit } from "../../middleware/rate-limit";
 import { assertBillingAdmin, billingAdmin } from "./admin";
 import { listRecentAlerts } from "./alerts";
 import {
-	changePaymentMethod,
+	CANCELLATION_REASONS,
+	changePlan,
 	checkout,
+	currencyOf,
+	getInvoice,
 	getPayment,
 	getPendingPayment,
+	hasTrialAvailable,
 	listPayments,
-	previewPurchase,
+	openBillingPortal,
 	purchaseBlocker,
+	setSubscriptionCancellation,
+	toSubscriptionView,
 } from "./checkout";
 import { getCreditBalance, listCreditHistory } from "./credits";
 import { getEntitlements, isBillingAppliedTo } from "./entitlements";
 import { countActiveDocuments } from "./limits";
+import { REFUND_REASONS } from "./refunds";
 import { billingDailySeries, billingMetrics, exportPaymentsCsv, listRecentPayments, previousRange } from "./reports";
+import { getCurrentSubscription } from "./subscriptions";
 
 const route = { tags: ["Internal"] };
 
@@ -72,54 +86,66 @@ const creditHistoryEntry = z.discriminatedUnion("type", [
 
 const payment = z.object({
 	id: z.string(),
-	orderId: z.string().describe("The order number Midtrans and the receipt show."),
+	orderId: z.string().nullable().describe("Polar's order id, once the payment has an order."),
 	planId: paidPlanIdSchema,
-	amount: z.number().int().describe("Whole Rupiah."),
+	interval: billingIntervalSchema
+		.nullable()
+		.describe("Monthly or yearly; null for a 30-day pass from before subscriptions."),
+	billingReason: z
+		.enum(["purchase", "subscription_create", "subscription_cycle", "subscription_update", "subscription_meter_cycle"])
+		.nullable()
+		.describe("A new subscription, a renewal, or a plan change."),
+	amount: z
+		.number()
+		.int()
+		.describe("Before tax, in the currency's smallest unit (US cents; Rupiah has two decimals too)."),
+	taxAmount: z.number().int(),
+	totalAmount: z.number().int().describe("What was charged, tax included."),
 	currency: z.string(),
-	durationDays: z.number().int(),
-	credits: z.number().int().describe("Rezumi AI credits that come with it."),
+	credits: z.number().int().describe("Rezumi AI credits that came with it."),
 	status: z.enum(BILLING_PAYMENT_STATUSES),
-	paymentType: z.string().nullable().describe("The Midtrans method used, once chosen."),
 	createdAt: z.date(),
-	expiresAt: z.date().nullable().describe("When it can no longer be paid."),
+	expiresAt: z.date().nullable().describe("When its checkout page closes."),
 	paidAt: z.date().nullable(),
+	periodStart: z.date().nullable(),
+	periodEnd: z.date().nullable().describe("The end of the subscription period it paid for."),
 	refundedAmount: z.number().int(),
 	redirectUrl: z
 		.string()
 		.nullable()
-		.describe("Where to continue paying: web sessions only, while the payment is open."),
-});
-
-const paymentDetail = payment.extend({
-	access: z
-		.object({ startsAt: z.date(), endsAt: z.date() })
+		.describe("Where to continue paying: web sessions only, while the checkout is open."),
+	trialDays: z
+		.number()
+		.int()
 		.nullable()
-		.describe("When the pass it bought runs, first day to last; null until it is granted."),
+		.describe("The free trial its checkout offered, in days. Paid with a total of 0, it is that trial starting."),
 });
 
-const purchasePreview = z.object({
+const subscription = z.object({
+	id: z.string(),
 	planId: paidPlanIdSchema,
-	amount: z.number().int().describe("Whole Rupiah, as checkout would charge now."),
+	interval: billingIntervalSchema,
+	status: z.enum(BILLING_SUBSCRIPTION_STATUSES),
+	amount: z.number().int().describe("The recurring price before tax and discounts, in the currency's smallest unit."),
 	currency: z.string(),
-	durationDays: z.number().int(),
-	credits: z.number().int().describe("Rezumi AI credits that come with it."),
-	schedule: z
-		.array(z.object({ planId: paidPlanIdSchema, startsAt: z.date(), endsAt: z.date(), purchase: z.boolean() }))
-		.describe(
-			"The account's paid time if this pass were paid now, in the order it is used; purchase marks the new pass.",
-		),
+	currentPeriodStart: z.date(),
+	currentPeriodEnd: z.date().nullable().describe("When it renews, or ends when cancelAtPeriodEnd."),
+	cancelAtPeriodEnd: z.boolean(),
+	pendingChange: z
+		.object({ planId: paidPlanIdSchema, interval: billingIntervalSchema })
+		.nullable()
+		.describe("The plan it changes to at the next renewal, when a downgrade is scheduled."),
 });
 
 const checkoutResult = z.object({
 	paymentId: z.string(),
-	redirectUrl: z.string().describe("The Midtrans payment page to send the browser to."),
+	redirectUrl: z.string().describe("Polar's checkout page to send the browser to."),
 	expiresAt: z.date(),
-	reused: z.boolean().describe("Whether this is an open payment from before rather than a new one."),
+	reused: z.boolean().describe("Whether this is an open checkout from before rather than a new one."),
 });
 
 const paymentIdInput = z.object({ paymentId: z.string().min(1).max(100) });
-// Midtrans keeps a refund reason of up to 255 characters.
-const refundReason = z.string().trim().min(3).max(255);
+const refundReason = z.string().trim().min(3).max(500);
 const reportRange = z
 	.object({ from: z.date(), to: z.date() })
 	.refine((range) => range.to > range.from, { message: "The end must be after the start." });
@@ -130,6 +156,7 @@ const refundResult = z.object({
 	amount: z.number().int(),
 	paymentStatus: z.enum(BILLING_PAYMENT_STATUSES),
 	refundedAmount: z.number().int(),
+	subscriptionEnded: z.boolean(),
 });
 
 const idempotencyKey = z
@@ -145,6 +172,14 @@ function authenticationOf(context: { authentication?: RequestAuthentication | nu
 	return context.authentication;
 }
 
+/** The visitor's country (Cloudflare's CF-IPCountry) and address, for their currency and Polar's tax location. */
+function originOf(context: { reqHeaders?: Headers; trustedClient?: string | undefined }) {
+	return {
+		country: context.reqHeaders?.get("cf-ipcountry") ?? null,
+		ip: context.trustedClient ?? context.reqHeaders?.get("x-real-ip") ?? null,
+	};
+}
+
 const adminProcedure = protectedProcedure.use(async ({ context, next }) => {
 	await assertBillingAdmin(context.authentication);
 	return next();
@@ -158,7 +193,14 @@ export const billingRouter = {
 			z.object({
 				enabled: z.boolean().describe("Whether plans apply to this account. False means unlimited."),
 				planId: planIdSchema,
-				currentPeriodEndsAt: z.date().nullable(),
+				currentPeriodEndsAt: z.date().nullable().describe("When the current plan ends, or renews when renews."),
+				source: z
+					.enum(["subscription", "period"])
+					.nullable()
+					.describe("Where the current plan comes from: a subscription, or access granted outside one."),
+				renews: z.boolean(),
+				subscription: subscription.nullable().describe("The account's subscription, live or the last one."),
+				currency: billingCurrencySchema.describe("The currency this visitor is charged in."),
 				upcoming: z.array(z.object({ planId: paidPlanIdSchema, startsAt: z.date(), endsAt: z.date() })),
 				limits: z.object({ activeResumes: usage, activeCoverLetters: usage }),
 				features: z.object({
@@ -170,26 +212,36 @@ export const billingRouter = {
 					automationApi: z.boolean(),
 				}),
 				credits: credits.nullable().describe("Rezumi AI credits; null while plans don't apply to the account."),
-				canPurchase: z.boolean().describe("Whether this session can buy a pass now (web sessions only)."),
+				canPurchase: z.boolean().describe("Whether this session can subscribe or change plans now (web only)."),
 				purchaseBlockedBy: z
 					.enum(["unavailable", "paused", "web_only", "guest", "email_not_verified"])
 					.nullable()
 					.describe("Why it can't, when it can't."),
-				pendingPayment: payment.nullable().describe("The newest payment that can still be paid; web sessions only."),
+				pendingPayment: payment.nullable().describe("The newest checkout that can still be paid; web sessions only."),
+				trialAvailable: z
+					.boolean()
+					.describe(
+						"Whether a first subscription to a plan with trialDays in the catalog starts with that free trial.",
+					),
 			}),
 		)
 		.handler(async ({ context }) => {
 			const now = new Date();
 			const authentication = authenticationOf(context);
-			const [entitlements, used, blocker] = await Promise.all([
+			const [entitlements, used, blocker, current] = await Promise.all([
 				getEntitlements(context.user.id, now),
 				countActiveDocuments(context.user.id),
 				purchaseBlocker(authentication),
+				getCurrentSubscription(context.user.id),
 			]);
 			return {
 				enabled: entitlements.enabled,
 				planId: entitlements.planId,
 				currentPeriodEndsAt: entitlements.currentPeriodEndsAt,
+				source: entitlements.source,
+				renews: entitlements.renews,
+				subscription: entitlements.enabled && current ? toSubscriptionView(current) : null,
+				currency: currencyOf(originOf(context)),
 				upcoming: entitlements.upcoming,
 				limits: {
 					activeResumes: { used: used.activeResumes, max: entitlements.limits.activeResumes },
@@ -200,45 +252,88 @@ export const billingRouter = {
 				canPurchase: blocker === null,
 				purchaseBlockedBy: blocker,
 				pendingPayment: entitlements.enabled ? await getPendingPayment(authentication, now) : null,
+				trialAvailable: entitlements.enabled && !current && (await hasTrialAvailable(context.user.id)),
 			};
 		}),
-
-	previewPurchase: protectedProcedure
-		.route({ ...route, method: "GET", path: "/billing/purchase-preview" })
-		.input(z.object({ planId: paidPlanIdSchema }))
-		.output(purchasePreview)
-		.handler(({ context, input }) => previewPurchase(context.user.id, input.planId)),
 
 	checkout: protectedProcedure
 		.route({ ...route, method: "POST", path: "/billing/checkout" })
 		.use(checkoutRateLimit)
-		.input(z.object({ planId: paidPlanIdSchema, idempotencyKey }))
+		.input(z.object({ planId: paidPlanIdSchema, interval: billingIntervalSchema, idempotencyKey }))
 		.output(checkoutResult)
 		.handler(({ context, input }) =>
 			checkout({
 				authentication: authenticationOf(context),
 				planId: input.planId,
+				interval: input.interval,
 				idempotencyKey: input.idempotencyKey,
+				origin: originOf(context),
 				locale: context.locale,
 			}),
 		),
 
-	changePaymentMethod: protectedProcedure
-		.route({ ...route, method: "POST", path: "/billing/payments/{paymentId}/change-method" })
+	changePlan: protectedProcedure
+		.route({ ...route, method: "POST", path: "/billing/subscription/plan" })
 		.use(checkoutRateLimit)
-		.input(z.object({ paymentId: z.string().min(1).max(100) }))
-		.output(checkoutResult)
+		.input(z.object({ planId: paidPlanIdSchema, interval: billingIntervalSchema }))
+		.output(z.object({ effective: z.enum(["now", "renewal"]), subscription }))
 		.handler(({ context, input }) =>
-			changePaymentMethod({
+			changePlan({ authentication: authenticationOf(context), planId: input.planId, interval: input.interval }),
+		),
+
+	cancelSubscription: protectedProcedure
+		.route({ ...route, method: "POST", path: "/billing/subscription/cancel" })
+		.use(checkoutRateLimit)
+		.input(
+			z
+				.object({
+					reason: z.enum(CANCELLATION_REASONS).optional(),
+					comment: z.string().trim().max(1000).optional(),
+				})
+				.optional(),
+		)
+		.output(subscription)
+		.handler(({ context, input }) =>
+			setSubscriptionCancellation({
 				authentication: authenticationOf(context),
-				paymentId: input.paymentId,
+				cancel: true,
+				reason: input?.reason,
+				comment: input?.comment,
 			}),
 		),
+
+	resumeSubscription: protectedProcedure
+		.route({ ...route, method: "POST", path: "/billing/subscription/resume" })
+		.use(checkoutRateLimit)
+		.input(z.object({}).optional())
+		.output(subscription)
+		.handler(({ context }) =>
+			setSubscriptionCancellation({ authentication: authenticationOf(context), cancel: false }),
+		),
+
+	portal: protectedProcedure
+		.route({ ...route, method: "POST", path: "/billing/portal" })
+		.use(checkoutRateLimit)
+		.input(z.object({}).optional())
+		.output(z.object({ url: z.string().describe("Polar's customer portal, signed in as this account; it expires.") }))
+		.handler(({ context }) => openBillingPortal(authenticationOf(context))),
+
+	invoice: protectedProcedure
+		.route({ ...route, method: "POST", path: "/billing/payments/{id}/invoice" })
+		.use(checkoutRateLimit)
+		.input(z.object({ id: z.string().min(1).max(100) }))
+		.output(
+			z.discriminatedUnion("status", [
+				z.object({ status: z.literal("ready"), url: z.string() }),
+				z.object({ status: z.enum(["generating", "unavailable"]) }),
+			]),
+		)
+		.handler(({ context, input }) => getInvoice(authenticationOf(context), input.id)),
 
 	payment: protectedProcedure
 		.route({ ...route, method: "GET", path: "/billing/payments/{id}" })
 		.input(z.object({ id: z.string().min(1).max(100) }))
-		.output(paymentDetail)
+		.output(payment)
 		.handler(({ context, input }) => getPayment(authenticationOf(context), input.id)),
 
 	payments: protectedProcedure
@@ -367,6 +462,7 @@ export const billingRouter = {
 						paid: previous.checkouts.paid,
 						signups: previous.signups.total,
 						creditsUsed: previous.credits.used,
+						activeSubscriptions: previous.subscriptions.active,
 					},
 					daily: await billingDailySeries(input),
 				};
@@ -398,8 +494,7 @@ export const billingRouter = {
 			.input(paymentIdInput)
 			.output(
 				z.object({
-					found: z.boolean().describe("Whether Midtrans has a transaction for it yet."),
-					transactionStatus: z.string().nullable(),
+					found: z.boolean().describe("Whether Polar has a checkout or order for it."),
 					status: z.enum(BILLING_PAYMENT_STATUSES),
 					changed: z.boolean(),
 				}),
@@ -410,30 +505,23 @@ export const billingRouter = {
 			.route({ ...route, method: "POST", path: "/billing/admin/payments/{paymentId}/refund" })
 			.input(
 				paymentIdInput.extend({
-					amount: z.number().int().min(1).max(100_000_000).optional().describe("Rupiah; the rest when left out."),
+					amount: z
+						.number()
+						.int()
+						.min(1)
+						.max(10_000_000_000)
+						.optional()
+						.describe("Before tax, in the currency's smallest unit; the rest when left out."),
 					reason: refundReason,
-					revokeBenefits: z.boolean().optional().describe("Also take the pass and credits back on a partial refund."),
+					polarReason: z
+						.enum(REFUND_REASONS)
+						.optional()
+						.describe("The reason Polar records; customer_request by default."),
+					revokeBenefits: z.boolean().optional().describe("Also take the payment's credits back on a partial refund."),
+					endSubscription: z.boolean().optional().describe("Also end the subscription now (access stops at once)."),
 				}),
 			)
 			.output(refundResult)
 			.handler(({ context, input }) => billingAdmin.refund({ ...input, actorUserId: context.user.id })),
-
-		recordManualRefund: adminProcedure
-			.route({ ...route, method: "POST", path: "/billing/admin/payments/{paymentId}/manual-refund" })
-			.input(
-				paymentIdInput.extend({
-					amount: z.number().int().min(1).max(100_000_000),
-					reason: refundReason,
-					revokeBenefits: z.boolean().optional(),
-				}),
-			)
-			.output(refundResult)
-			.handler(({ context, input }) => billingAdmin.recordManualRefund({ ...input, actorUserId: context.user.id })),
-
-		resendReceipt: adminProcedure
-			.route({ ...route, method: "POST", path: "/billing/admin/payments/{paymentId}/receipt" })
-			.input(paymentIdInput)
-			.output(z.object({ sent: z.boolean() }))
-			.handler(({ context, input }) => billingAdmin.resendReceipt({ ...input, actorUserId: context.user.id })),
 	},
 };

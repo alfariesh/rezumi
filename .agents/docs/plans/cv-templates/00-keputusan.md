@@ -29,7 +29,7 @@ Keputusan pemilik yang berlaku untuk semua phase. Agent tidak mengubahnya diam-d
 
 ID teknis = nama dalam huruf kecil (`meridian`, `sterling`, …). Template default untuk CV baru: **Meridian**.
 
-**Perluasan 2026-11-05: 20 template baru (total 36)**. Cerah, Teras dan Lintasan masuk paket Gratis (`BILLING_CATALOG_VERSION` 4); 17 lainnya Premium. Spesifikasi di `01-desain.md` → "Perluasan 2026-11-05".
+**Perluasan 2026-11-05: 20 template baru (total 36)**. Cerah, Teras dan Lintasan masuk paket Gratis (`BILLING_CATALOG_VERSION` 6); 17 lainnya Premium. Spesifikasi di `01-desain.md` → "Perluasan 2026-11-05".
 
 | Nama     | Kolom | Untuk siapa                                     | Nama     | Kolom | Untuk siapa                                 |
 | -------- | ----- | ----------------------------------------------- | -------- | ----- | ------------------------------------------- |

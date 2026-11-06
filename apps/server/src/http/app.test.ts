@@ -26,7 +26,7 @@ const mocks = vi.hoisted(() => ({
 	handleLlms: vi.fn(),
 	serveWebDistStatic: vi.fn(),
 	handleWebApp: vi.fn(),
-	handleMidtransPaymentNotification: vi.fn(),
+	handlePolarPaymentWebhook: vi.fn(),
 }));
 
 vi.mock("@rezumi/env/server", async (original) => {
@@ -92,8 +92,8 @@ vi.mock("./public-resume-pdf", () => ({
 	handlePublicResumePdf: mocks.handlePublicResumePdf,
 }));
 
-vi.mock("./midtrans", () => ({
-	handleMidtransPaymentNotification: mocks.handleMidtransPaymentNotification,
+vi.mock("./polar", () => ({
+	handlePolarPaymentWebhook: mocks.handlePolarPaymentWebhook,
 }));
 
 const transportEnv = (remoteAddress: string) =>
@@ -290,7 +290,7 @@ it.each([
 	{ path: "/api/openapi/files", limit: 40 * 1024 * 1024, handler: mocks.handleOpenApi },
 	{ path: "/api/rpc/resume/import", limit: 160 * 1024 * 1024, handler: mocks.handleRpc },
 	{ path: "/api/auth/oauth2/register", limit: 1024 * 1024, handler: mocks.handleAuth },
-	{ path: "/api/payments/midtrans/notification", limit: 64 * 1024, handler: mocks.handleMidtransPaymentNotification },
+	{ path: "/api/payments/polar/webhook", limit: 256 * 1024, handler: mocks.handlePolarPaymentWebhook },
 ])("rejects oversized bodies for $path before parsing them", async ({ path, limit, handler }) => {
 	const { createApp } = await import("./app");
 	const response = await createApp().request(`http://localhost:3000${path}`, {
@@ -304,16 +304,19 @@ it.each([
 	expect(handler).not.toHaveBeenCalled();
 });
 
-it("hands Midtrans payment notifications to the billing handler without a redirect", async () => {
-	mocks.handleMidtransPaymentNotification.mockResolvedValue(new Response(null, { status: 200 }));
+it("hands Polar webhooks to the billing handler with their raw body and signature headers", async () => {
+	mocks.handlePolarPaymentWebhook.mockResolvedValue(new Response(null, { status: 200 }));
 	const { createApp } = await import("./app");
-	const response = await createApp().request("http://localhost:3000/api/payments/midtrans/notification", {
+	const body = JSON.stringify({ type: "order.paid", data: { id: "order" } });
+	const response = await createApp().request("http://localhost:3000/api/payments/polar/webhook", {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ order_id: "RZ-test" }),
+		headers: { "Content-Type": "application/json", "webhook-id": "msg_1", "webhook-signature": "v1,abc" },
+		body,
 	});
 	expect(response.status).toBe(200);
-	expect(mocks.handleMidtransPaymentNotification).toHaveBeenCalledOnce();
-	const [request] = mocks.handleMidtransPaymentNotification.mock.calls[0] as [Request];
-	expect(await request.json()).toEqual({ order_id: "RZ-test" });
+	expect(mocks.handlePolarPaymentWebhook).toHaveBeenCalledOnce();
+	const [request] = mocks.handlePolarPaymentWebhook.mock.calls[0] as [Request];
+	expect(await request.text()).toBe(body);
+	expect(request.headers.get("webhook-id")).toBe("msg_1");
+	expect(request.headers.get("webhook-signature")).toBe("v1,abc");
 });

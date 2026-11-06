@@ -1,0 +1,14 @@
+---
+import { loadPost } from "../../lib/loaders";
+import NotFoundView from "../../views/NotFoundView.astro";
+import PostView from "../../views/PostView.astro";
+
+const result = await loadPost(Astro, "id");
+if (result.type === "redirect") {
+	Astro.cache?.set(false);
+	return Astro.redirect(result.location);
+}
+if (result.type === "not-found") Astro.response.status = 404;
+---
+
+{result.type === "ok" ? <PostView {...result.props} /> : <NotFoundView />}

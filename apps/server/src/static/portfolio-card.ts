@@ -1,0 +1,81 @@
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { initWasm, Resvg } from "@resvg/resvg-wasm";
+import { findPublicPortfolio } from "@rezumi/api/features/portfolio/public";
+import { env } from "@rezumi/env/server";
+import { CARD_WIDTH, resumeCardSvg } from "@rezumi/pdf/web-page-card";
+import { defaultResumeData } from "@rezumi/schema/resume/default";
+import { matchesIfNoneMatch } from "@rezumi/utils/http";
+import { publicPortfolioView } from "./portfolio-page";
+
+let ready: Promise<void> | undefined;
+const initialize = () =>
+	(ready ??= readFile(fileURLToPath(import.meta.resolve("@resvg/resvg-wasm/index_bg.wasm"))).then((bytes) =>
+		initWasm(bytes),
+	));
+
+// Recent cards by what they draw; crawlers fetch a card once per share, so a small cache covers bursts.
+const cache = new Map<string, Uint8Array>();
+const CACHE_LIMIT = 200;
+
+const banner = () => Response.redirect(new URL("/opengraph/banner.jpg", env.APP_URL), 302);
+
+/**
+ * `GET /cards/<username>.png`: a published portfolio's link preview (WhatsApp, LinkedIn): name, headline, photo and
+ * address in the portfolio's fonts and accent. An address that doesn't show a portfolio gets the generic banner, so a
+ * card never shows what a visitor can't.
+ */
+export async function handlePortfolioCard(request: Request, username: string): Promise<Response> {
+	const portfolio = await findPublicPortfolio(username).catch(() => null);
+	if (!portfolio) return banner();
+	const view = publicPortfolioView(portfolio);
+
+	const address = portfolio.customDomain ?? `${new URL(env.APP_ALIAS_URL ?? env.APP_URL).host}/${portfolio.username}`;
+	const text = { name: view.basics.name, headline: view.basics.headline, address, color: view.design.accent };
+	const picture = view.basics.picture?.src ?? "";
+	const fonts = { heading: view.design.fonts.heading, body: view.design.fonts.body };
+	const key = createHash("sha256")
+		.update(JSON.stringify([text, fonts, picture, view.locale]))
+		.digest("hex");
+	const headers = { "Cache-Control": "public, max-age=3600", ETag: `"${key.slice(0, 32)}"` };
+	if (matchesIfNoneMatch(request.headers.get("if-none-match"), headers.ETag))
+		return new Response(null, { status: 304, headers });
+
+	let png = cache.get(key);
+	if (!png) {
+		try {
+			// The card's fonts and photo load the way a resume card's do: a resume shaped like the portfolio's choices.
+			const data = structuredClone(defaultResumeData);
+			data.metadata.page.locale = view.locale;
+			data.metadata.typography.heading.fontFamily = fonts.heading;
+			data.metadata.typography.body.fontFamily = fonts.body;
+			data.picture = { ...data.picture, url: picture, hidden: !picture };
+			const [{ loadResumeCardAssets }, { readUploadedFont }] = await Promise.all([
+				import("@rezumi/pdf/server"),
+				import("@rezumi/api/features/storage"),
+			]);
+			const assets = await loadResumeCardAssets(data, env.APP_URL, readUploadedFont);
+			const svg = resumeCardSvg({
+				...text,
+				headingFamily: assets.headingFamily,
+				bodyFamily: assets.bodyFamily,
+				picture: assets.picture,
+			});
+			await initialize();
+			const resvg = new Resvg(svg, {
+				fitTo: { mode: "width", value: CARD_WIDTH },
+				font: { fontBuffers: assets.fonts, defaultFontFamily: assets.bodyFamily, loadSystemFonts: false },
+			});
+			png = resvg.render().asPng();
+			resvg.free();
+			if (cache.size >= CACHE_LIMIT) cache.clear();
+			// A photo that failed to load is tried again next time.
+			if (!picture || assets.picture) cache.set(key, png);
+		} catch (error) {
+			console.error("Portfolio card rendering failed", error);
+			return banner();
+		}
+	}
+	return new Response(png as Uint8Array<ArrayBuffer>, { headers: { ...headers, "Content-Type": "image/png" } });
+}
